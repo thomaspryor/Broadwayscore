@@ -1,4 +1,4 @@
-# Roadmap — Last updated 2026-03-25 (BD zone monitoring + SERP cost fixes)
+# Roadmap — Last updated 2026-03-26 (image pipeline hardening)
 
 > **Active work is now tracked on the [GitHub Projects board](https://github.com/users/thomaspryor/projects/1).**
 > Open issues with `session` label = active Claude Code sessions.
@@ -86,7 +86,7 @@
 ## LOW PRIORITY / BACKLOG
 
 **iOS App:** Widget, Spotlight search, iPad layout, Android, Share sheet, App Clips, Siri
-**Image gaps:** Dear England WE (score 83, 7 reviews) has no image — auto-fetch missed it, may need manual sourcing or TodayTix mapping fix.
+**Image gaps:** Dear England WE (score 83, 7 reviews) has no image — auto-fetch missed it, may need manual sourcing. Birthright/Giulia/Whoopi Monologues (previews) have CDN placeholders — will auto-archive when TodayTix releases real art.
 **Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging). gather-reviews outlet-SERP cut 200→30 searches for routine runs (2026-03-25), 200 preserved for opening nights (max_tier=3)
 **Scraper resilience:** Consolidate inline SERP in collect-review-texts.js to use shared url-discovery.js module (eliminates diverged 200-line fork). Migrate `recollect-for-scores.js`, `scrape-theater-tips.js` to use `scraper.js` fetchPage() instead of calling SB API directly (currently in CI exempt list — no BD fallback)
 **Domain matching:** `domainMatchesExpected()` in `scraper.js` doesn't match subdomains of registry aliases (e.g., `articles.philly.com` doesn't match alias `philly.com`). Workaround: added explicit subdomain aliases. Real fix: extend the matching function. LOW priority.
@@ -108,6 +108,23 @@
 - **9 duplicate review-text files** — `validate-review-texts.js` reports: timeout-london/timeout outlet aliasing (5 WE shows), unknown→named critic aliasing (cabaret-kit-kat, great-gatsby, giant). Failing CI. Fix: delete the `timeout-london` and `unknown` duplicates in the private review-texts repo. MEDIUM priority.
 
 ## Recently Completed
+
+### Image Pipeline Hardening (2026-03-26)
+- **Hash-based placeholder detection** — 6 known "Coming Soon" hash variants added. Downloads rejected, `--missing` filter re-queues affected shows. CI now errors on open/previews shows with placeholder disk files via `validatePlaceholderImageHashes()` in validate-data.js.
+- **276 orphan dirs + 48 placeholder files deleted** — 40.6 MB freed. Stale dirs from old ID formats (before `-off-broadway-`/`-west-end-` suffixes standardized).
+- **Burnout Paradise restored** — Root cause: Mar 3 auto-fetch archived Contentful CDN URL already serving placeholder hash `52968e9f`. Fixed: removed bad CDN entry, converted poster.jpg → hero.webp via Sharp, pinned.
+- **Jerome dates corrected** — Wrong year (2025→2026), wrong status (open→upcoming), contaminated cast/creativeTeam removed.
+- **Bughouse confirmed** — Dark Maria Baranova production photo IS real art. TodayTix CDN serves "Coming Soon"; our site correct. Pinned to prevent future overwrite.
+- **West End/OWE audit** — All 58 open shows confirmed clean.
+
+### Discount Tickets / Box Office / Showtimes Launch Audit (2026-03-25)
+- **Status filter bug fixed** — All 5 discount pages used `'preview'` instead of `'previews'` (plural). Shows in previews were silently excluded. Fixed + best-value was missing previews entirely.
+- **Grosses data freshened** — Updated from week ending 3/15 → 3/22 (force-triggered weekly scraper). 25 shows now have thisWeek data (was 24). Every Brilliant Thing now included.
+- **West End grosses contamination fixed (systematic)** — 32 West End entries had Broadway+WE combined allTime data. Removed entries + added slug guards in both `scrape-grosses.ts` and `scrape-alltime.ts` to prevent recurrence.
+- **Lottery data quality (systematic)** — HP duplicate lottery/digitalRush: added dedup rule in sanitizer. BOM null platform: added null/empty cleanup. URL casing: `normalizeUrl()` now lowercases domains. Generic URL overwrite: merge logic preserves specific URLs. Schedule junk: writer now filters closed/announced shows.
+- **8 generic lottery URLs upgraded** — Hamilton, Harry Potter, Book of Mormon, Hadestown, etc. now link to show-specific lottery pages from BWayRush.
+- **All fixes tested** — dry-run scraper, unit tests for each rule (dedup, URL merge, schedule filter, slug filter, null cleanup, URL normalization). Every fix is pipeline-level, not data-level.
+- **Ship-check passed** — tsc, lint, validate-data, all 6 pages verified at 390px + 1440px. Production verified: all pages 200, box office shows 3/22 data.
 
 ### Infrastructure Recovery + SERP Cost Optimization (2026-03-25)
 - **Bright Data admin token rotation** — Old token had User role (read-only for zone management). New token `d52fd1e8` has Admin role. Updated in all 4 GitHub repos + local `.env`.
@@ -237,6 +254,7 @@ All re-runnable. Run `flag-wrong-production-by-date.js` after adding more dates.
 - **Component consolidation** — Completed (ShowListCard, MiniShowCard, Modal, useClickOutside, useShowSearch, ShowSearchDropdown, SortIcon, icons, formatCurrency, useSortableTable, formatDate). CollapsibleSection evaluated and rejected (insufficient duplication to justify abstraction).
 - **Cookie refresh** — Already covered by health check alerts + email. Manual step can't be automated.
 
+
 ### Week of 2026-03-19 — WE Aggregator Sweep
 - **WE aggregator sweep fully operational** — 4 aggregators (WET 48, TR 24, SD 34, TS 28), archive-first caching, ~1,200 total reviews. Weekly Tuesday 8AM UTC.
 - **Archive-first for all aggregators** — WET/TR/SD/TS all cache results. Numbers stable across runs, no WAF variance.
@@ -255,6 +273,8 @@ All re-runnable. Run `flag-wrong-production-by-date.js` after adding more dates.
 - Off-West End classification + venue filter
 - iOS: Sentry, push notifications, offline queue, haptics, store review, deep linking (Build #29)
 - BTC: TBD badges + curated nominees QA
+
+
 
 
 

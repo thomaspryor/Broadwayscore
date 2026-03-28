@@ -10,6 +10,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${BASE_URL}/feedback`,
   },
+  openGraph: {
+    title: 'Feedback & Bug Reports — Broadway Scorecard',
+    description: 'Share your feedback, report bugs, or suggest new features for Broadway Scorecard.',
+    url: `${BASE_URL}/feedback`,
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Feedback & Bug Reports — Broadway Scorecard',
+    description: 'Share your feedback, report bugs, or suggest new features for Broadway Scorecard.',
+  },
 };
 
 export default function FeedbackPage() {

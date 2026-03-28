@@ -211,7 +211,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   }
 
   const lastUpdated = getShowLastUpdated(show.id);
-  const showSchema = generateShowSchema(show, lastUpdated || undefined);
+  const castFileForSchema = getShowCastFile(show.id);
+  const performers = castFileForSchema?.openingNightCast
+    ?.filter(m => m.name && !m.flags?.includes('Standby') && !m.flags?.includes('Understudy'))
+    .map(m => ({ name: m.name }));
+  const showSchema = generateShowSchema(show, lastUpdated || undefined, performers);
   const isWestEnd = isLondonMarket(show.category);
   const isOffBroadway = show.category === 'off-broadway';
   const breadcrumbSchema = generateBreadcrumbSchema([
