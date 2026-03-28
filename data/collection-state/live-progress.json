@@ -1,49 +1,18 @@
 {
-  "updatedAt": "2026-03-28T09:31:47.443Z",
-  "processed": 23,
-  "failed": 26,
-  "successRate": "46.9%",
+  "updatedAt": "2026-03-28T09:40:32.465Z",
+  "processed": 1,
+  "failed": 3,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 2
+    "archiveToday": 1,
+    "archive": 0
   },
-  "browserbaseSessions": 3,
-  "recentActivity": [
-    {
-      "t": "2026-03-28T09:24:04.060Z",
-      "event": "bb-session",
-      "session": "804e1808",
-      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
-    },
-    {
-      "t": "2026-03-28T09:24:42.137Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    37 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
-    },
-    {
-      "t": "2026-03-28T09:24:58.240Z",
-      "event": "bb-session",
-      "session": "d34f063b",
-      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
-    },
-    {
-      "t": "2026-03-28T09:30:32.366Z",
-      "event": "bb-session",
-      "session": "47038042",
-      "url": "https://www.thestage.co.uk/reviews/grace-pervades-review-theatre-royal-bath"
-    },
-    {
-      "t": "2026-03-28T09:31:10.932Z",
-      "event": "bb-login-fail",
-      "domain": "thestage.co.uk",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not visible\n    - retrying click action\n      - waiting 100ms\n    37 × waiting for element to be visible, enabled and stable\n       - element is not visible\n     - retrying click action\n       - waiting 500ms\n"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
