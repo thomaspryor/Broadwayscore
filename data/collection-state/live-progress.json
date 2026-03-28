@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T05:32:51.648Z",
-  "processed": 48,
-  "failed": 165,
-  "successRate": "22.5%",
+  "updatedAt": "2026-03-28T05:34:46.615Z",
+  "processed": 55,
+  "failed": 168,
+  "successRate": "24.7%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 31,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 88,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-28T03:45:37.819Z",
@@ -69,6 +69,28 @@
       "t": "2026-03-28T04:07:49.965Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T05:33:10.059Z",
+      "event": "bb-session",
+      "session": "9fb7cecc",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-28T05:33:11.472Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-28T05:34:15.376Z",
+      "event": "bb-session",
+      "session": "3ed77973",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-28T05:34:16.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

@@ -47,7 +47,14 @@
     "wicked-2003/broadwayworld--lynn-beaver.json",
     "wicked-2003/broadwayworld--tyler-hinton.json",
     "grace-pervades-west-end-2026/thestage--unknown.json",
-    "sweetmeats-west-end-2026/standard--maya-chandran.json"
+    "sweetmeats-west-end-2026/standard--maya-chandran.json",
+    "all-out-2025/nytg--gillian-russo.json",
+    "all-out-2025/ew--unknown.json",
+    "waiting-for-godot-2025/nypost--entertainment-critic.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/metro--claire-allfree.json",
@@ -214,7 +221,10 @@
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "man-to-man-west-end-2026/stagebuddy--unknown.json",
     "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
-    "high-noon-west-end-2025/times-uk--clive-davis.json"
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/broadwaynews--unknown.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -245,7 +255,11 @@
       "wicked-2003/broadwayworld--linda-hodges.json",
       "wicked-2003/broadwayworld--lynn-beaver.json",
       "wicked-2003/broadwayworld--tyler-hinton.json",
-      "sweetmeats-west-end-2026/standard--maya-chandran.json"
+      "sweetmeats-west-end-2026/standard--maya-chandran.json",
+      "all-out-2025/nytg--gillian-russo.json",
+      "all-out-2025/ew--unknown.json",
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
     ],
     "amp": [],
     "browserbase": [
@@ -258,14 +272,19 @@
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json"
+      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/cititour--brian-scott-lipton.json",
       "harry-potter-2021/nbcnews--unknown.json",
       "the-price-2017/dailybeast--chris-jones.json",
-      "the-price-2017/huffpost--stephen-suskin.json"
+      "the-price-2017/huffpost--stephen-suskin.json",
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -368,7 +387,7 @@
     ]
   },
   "startTime": "2026-03-28T03:43:33.811Z",
-  "lastProcessed": "high-noon-west-end-2025/times-uk--clive-davis.json",
+  "lastProcessed": "redwood-2025/gmanetwork--stuart-santiago.json",
   "log": [
     {
       "t": "2026-03-28T03:45:37.819Z",
@@ -424,6 +443,28 @@
       "t": "2026-03-28T04:07:49.965Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T05:33:10.059Z",
+      "event": "bb-session",
+      "session": "9fb7cecc",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-28T05:33:11.472Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-28T05:34:15.376Z",
+      "event": "bb-session",
+      "session": "3ed77973",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-28T05:34:16.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
