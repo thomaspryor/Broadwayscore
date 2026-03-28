@@ -110,6 +110,8 @@ function getFoundOutletIds(showId) {
     if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      // Skip wrongProduction/wrongShow files — they shouldn't block re-discovery
+      if (data.wrongProduction || data.wrongShow) continue;
       if (data.outletId) outletIds.add(data.outletId.toLowerCase());
     } catch {}
   }
