@@ -60,7 +60,11 @@
     "life-of-pi-2023/newyorker--unknown.json",
     "some-like-it-hot-2022/newyorker--unknown.json",
     "topdog-underdog-2022/corey-hawkins--unknown.json",
-    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json"
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+    "west-side-story-2020/vulture--helen-shaw.json",
+    "tina-2019/newyorker--unknown.json",
+    "tootsie-2019/latimes--charles-mcnulty.json"
   ],
   "failed": [
     "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json",
@@ -161,7 +165,13 @@
     "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
     "trouble-in-mind-2021/deadline--greg-evans.json",
     "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
-    "the-lehman-trilogy-2021/thestage--nicole-serratore.json"
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json",
+    "ink-2019/thestage--naveen-kumar.json",
+    "kiss-me-kate-2019/deadline--pete-hammond.json",
+    "be-more-chill-2019/out-magazine--david-clarke.json",
+    "choir-boy-2019/out-magazine--trevell-anderson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -213,7 +223,9 @@
       "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
       "waiting-for-godot-2025/nypost--entertainment-critic.json",
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
-      "the-last-five-years-2025/nypost--lou-lumenick.json"
+      "the-last-five-years-2025/nypost--lou-lumenick.json",
+      "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -274,11 +286,14 @@
       "grey-house-2023/slash-film--caroline-cao.json",
       "fat-ham-2023/nytimes--jesse-green.json",
       "some-like-it-hot-2022/newyorker--unknown.json",
-      "the-skin-of-our-teeth-2022/vulture--helen-shaw.json"
+      "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+      "west-side-story-2020/vulture--helen-shaw.json",
+      "tina-2019/newyorker--unknown.json",
+      "tootsie-2019/latimes--charles-mcnulty.json"
     ]
   },
   "startTime": "2026-03-28T03:42:42.349Z",
-  "lastProcessed": "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+  "lastProcessed": "choir-boy-2019/out-magazine--trevell-anderson.json",
   "log": [
     {
       "t": "2026-03-28T03:44:08.946Z",
@@ -367,6 +382,17 @@
       "t": "2026-03-28T04:39:23.473Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-28T04:42:48.074Z",
+      "event": "bb-session",
+      "session": "5fbd6576",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-28T04:42:49.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
