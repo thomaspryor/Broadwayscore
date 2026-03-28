@@ -96,7 +96,9 @@
     "the-waverly-gallery-2018/vulture--matt-windman.json",
     "the-price-2017/huffpost--stephen-suskin.json",
     "the-price-2017/thestage--chris-jones.json",
-    "oh-hello-on-broadway-2016/northjerseycom--unknown.json"
+    "oh-hello-on-broadway-2016/northjerseycom--unknown.json",
+    "oleanna-2009/theatermania--unknown.json",
+    "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -545,7 +547,15 @@
     "time-stands-still-2010/new-jersey-newsroom--michael-sommers.json",
     "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
     "race-2009/theatermania--charles-isherwood.json",
-    "memphis-2009/variety--charles-isherwood.json"
+    "memphis-2009/variety--charles-isherwood.json",
+    "oleanna-2009/times-uk--dominic-maxwell.json",
+    "a-steady-rain-2009/latimes--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "9-to-5-2009/lansing-city-pulse--allan-i-ross.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -594,7 +604,8 @@
       "its-only-a-play-2014/timeout--david-cote.json",
       "bullets-over-broadway-2014/timeout--david-cote.json",
       "once-2012/ew--emlyn-travis.json",
-      "oh-hello-on-broadway-2016/northjerseycom--unknown.json"
+      "oh-hello-on-broadway-2016/northjerseycom--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -607,7 +618,9 @@
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json"
+      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "oh-hello-on-broadway-2016/northjerseycom--unknown.json"
@@ -672,7 +685,7 @@
     ]
   },
   "startTime": "2026-03-28T09:38:57.589Z",
-  "lastProcessed": "memphis-2009/variety--charles-isherwood.json",
+  "lastProcessed": "the-philanthropist-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-03-28T10:37:37.435Z",
@@ -726,6 +739,17 @@
     },
     {
       "t": "2026-03-28T11:12:18.316Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-28T11:55:09.658Z",
+      "event": "bb-session",
+      "session": "a350e951",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-28T11:55:10.790Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
