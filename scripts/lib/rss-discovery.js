@@ -44,6 +44,7 @@ const ENTERTAINMENT_FEEDS = [
   { url: 'https://feeds.content.dowjones.io/public/rss/RSSLifestyle', outletId: 'wsj', name: 'WSJ Lifestyle', needsFilter: true },
   { url: 'https://www.latimes.com/entertainment-arts/rss2.0.xml', outletId: 'latimes', name: 'LA Times Entertainment', needsFilter: true },
   { url: 'https://feeds.washingtonpost.com/rss/entertainment', outletId: 'washpost', name: 'WashPost Entertainment', needsFilter: true },
+  { url: 'https://www.newyorker.com/feed/culture', outletId: 'newyorker', name: 'New Yorker Culture', needsFilter: true },
 ];
 
 const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...ENTERTAINMENT_FEEDS];
