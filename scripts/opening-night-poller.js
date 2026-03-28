@@ -570,19 +570,13 @@ async function runAggregators(show) {
       const searchTitle = show.title.replace(/['"'\u2018\u2019]/g, '');
       const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
 
-      // Use https.get instead of execSync curl — more reliable in CI
-      const apiResult = await new Promise((resolve) => {
-        require('https').get(apiUrl, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'application/json' },
-        }, res => {
-          if (res.statusCode !== 200) { console.log(`    WET API status: ${res.statusCode}`); resolve(null); return; }
-          let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-        }).on('error', e => { console.log(`    WET API error: ${e.message}`); resolve(null); });
-      });
-
+      // Use fetchJSON for proxy-routed WP API call (avoids TLS blocking in CI)
       let posts = [];
-      if (apiResult) {
-        try { posts = JSON.parse(apiResult); } catch (e) { console.log(`    WET API parse error: ${(e.message || '').substring(0, 60)}`); }
+      try {
+        posts = await fetchJSON(apiUrl);
+        if (!Array.isArray(posts)) posts = [];
+      } catch (e) {
+        console.log(`    WET API error: ${(e.message || '').substring(0, 60)}`);
       }
 
       if (Array.isArray(posts) && posts.length > 0) {
@@ -609,24 +603,8 @@ async function runAggregators(show) {
           if (wetReviews.length === 0 && post.link) {
             try {
               console.log(`    Fetching rendered page: ${post.link}`);
-              const pageHtml = await new Promise((resolve) => {
-                require('https').get(post.link, {
-                  headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'text/html' },
-                }, res => {
-                  // Follow redirect
-                  if (res.statusCode === 301 || res.statusCode === 302) {
-                    require('https').get(res.headers.location, {
-                      headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'text/html' },
-                    }, res2 => {
-                      if (res2.statusCode !== 200) { resolve(null); return; }
-                      let d = ''; res2.on('data', c => d += c); res2.on('end', () => resolve(d));
-                    }).on('error', () => resolve(null));
-                    return;
-                  }
-                  if (res.statusCode !== 200) { resolve(null); return; }
-                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-                }).on('error', () => resolve(null));
-              });
+              const pageResult = await fetchPage(post.link, { renderJs: false });
+              const pageHtml = pageResult?.content || null;
               if (pageHtml) {
                 const $w = cheerioWet.load(pageHtml);
                 $w('.reviewnewpubhead').each((_, el) => {
