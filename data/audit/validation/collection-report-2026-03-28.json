@@ -1,70 +1,66 @@
 {
-  "runDate": "2026-03-28T08:40:26.640Z",
+  "runDate": "2026-03-28T09:40:37.268Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "john-proctor-is-the-villain-west-end-2026",
+    "showFilter": "mexodus-off-broadway-2026,ice-queen-off-broadway-2026,pied-a-terre-off-broadway-2026,los-soles-truncos-off-broadway-2025,the-adding-machine-off-broadway-2026,la-llamada-off-broadway-2024,no-singing-in-the-navy-off-broadway-2026,seagull-true-story-off-broadway-2026,how-my-grandparents-fell-in-love-a-musical-off-broadway-2026,la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 1,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 2,
-    "tier3Attempts": 3,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 3,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeePageCredits": 30,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "john-proctor-is-the-villain-west-end-2026/whatsonstage--sarah-crompton.json",
-    "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json"
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json"
   ],
   "failed": [
-    "john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
-    "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
-    "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
-    "john-proctor-is-the-villain-west-end-2026/standard--unknown.json",
-    "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json"
+    "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
+    "mexodus-off-broadway-2026/playbill--unknown.json",
+    "la-llamada-off-broadway-2024/nytg--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "john-proctor-is-the-villain-west-end-2026/whatsonstage--sarah-crompton.json",
-      "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json"
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -72,26 +68,10 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
-      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json"
+      "data/review-texts/no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
-      "oldUrl": "https://www.thestage.co.uk/reviews/the-curious-case-of-benjamin-button-review-at-ambassadors-theatre-london-by-jethro-compton-and-f-scott-fitzgerald",
-      "newUrl": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
