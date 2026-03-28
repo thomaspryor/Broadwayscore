@@ -43,7 +43,14 @@
     "wicked-2003/broadwayworld--lauren-gienow.json",
     "wicked-2003/broadwayworld--linda-hodges.json",
     "wicked-2003/broadwayworld--lynn-beaver.json",
-    "wicked-2003/broadwayworld--tyler-hinton.json"
+    "wicked-2003/broadwayworld--tyler-hinton.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "all-out-2025/ew--unknown.json",
+    "waiting-for-godot-2025/nypost--entertainment-critic.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
   ],
   "failed": [
     "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json",
@@ -121,7 +128,10 @@
     "the-lion-king-1997/timeout--adam-feldman.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "man-to-man-west-end-2026/stagebuddy--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json"
+    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/broadwaynews--unknown.json",
+    "call-me-izzy-2025/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -159,12 +169,19 @@
       "wicked-2003/broadwayworld--katrina-fageol.json",
       "wicked-2003/broadwayworld--lauren-gienow.json",
       "wicked-2003/broadwayworld--linda-hodges.json",
-      "wicked-2003/broadwayworld--tyler-hinton.json"
+      "wicked-2003/broadwayworld--tyler-hinton.json",
+      "all-out-2025/ew--unknown.json",
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -214,11 +231,13 @@
       "wicked-2003/broadwayworld--armando-urdiales.json",
       "wicked-2003/broadwayworld--courtney-symes.json",
       "wicked-2003/broadwayworld--david-copney.json",
-      "wicked-2003/broadwayworld--lynn-beaver.json"
+      "wicked-2003/broadwayworld--lynn-beaver.json",
+      "grace-pervades-west-end-2026/thestage--unknown.json",
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
     ]
   },
   "startTime": "2026-03-28T03:42:42.349Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+  "lastProcessed": "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
   "log": [
     {
       "t": "2026-03-28T03:44:08.946Z",
@@ -285,6 +304,28 @@
       "t": "2026-03-28T04:27:49.506Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-28T04:38:27.561Z",
+      "event": "bb-session",
+      "session": "14cd33e0",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-28T04:38:28.790Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-28T04:39:22.163Z",
+      "event": "bb-session",
+      "session": "d3215e27",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-28T04:39:23.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
