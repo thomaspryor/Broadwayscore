@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-28T11:41:14.928Z",
+  "timestamp": "2026-03-28T12:02:01.371Z",
   "stats": {
-    "totalReviews": 32537,
+    "totalReviews": 32536,
     "alreadyFlagged": 11189,
     "dateGuardCatches": 145,
-    "directorMismatch": 966,
+    "directorMismatch": 965,
     "tvFilmSignals": 3458,
-    "londonSignals": 1050,
+    "londonSignals": 1049,
     "offBroadwaySignals": 1013,
     "yearMismatch": 71,
     "noPublishDate": 6703
@@ -26361,25 +26361,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 498d before show (2024-11-07 vs 2026-03-20)"
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "timeout--unknown.json",
-      "score": 85,
-      "publishDate": "2026-03-26",
-      "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
