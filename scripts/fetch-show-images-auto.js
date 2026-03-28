@@ -1576,7 +1576,12 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       '3kXlmb7NIDQUq2fEi8FK8C', '2NXMbF8ZGgylEVESpiUIlf', '4dVF8DYwWDn4B5OFSi3x3c',
     ]);
     const getAssetId = (url) => { const m = url && url.match(/ctfassets\.net\/[^/]+\/([^/]+)/); return m ? m[1] : null; };
-    const isComingSoon = (url) => url && (/coming.?soon/i.test(url) || COMING_SOON_ASSET_IDS.has(getAssetId(url)));
+    const isComingSoon = (url) => url && (
+      /coming.?soon/i.test(url) ||
+      /NORAM[_\s]/i.test(url) ||          // TodayTix generic "Coming Soon" poster/hero template
+      /square_photo\.png/i.test(url) ||    // TodayTix generic "Coming Soon" square template
+      COMING_SOON_ASSET_IDS.has(getAssetId(url))
+    );
     const filteredThumb = isComingSoon(thumbnail) ? null : thumbnail;
     const filteredPoster = isComingSoon(poster) ? null : poster;
     const filteredHero = isComingSoon(hero) ? null : hero;

@@ -176,6 +176,14 @@ async function main() {
       const url = show.images[format];
       if (!url) continue;
 
+      // Reject "Coming Soon" placeholder CDN URLs — don't download or archive them
+      if (!url.startsWith('/images/') && (/coming.?soon/i.test(url) || /NORAM[_\s]/i.test(url) || /square_photo\.png/i.test(url))) {
+        console.log(`  ⚠ ${show.title} ${format}: CDN URL is a "Coming Soon" placeholder — clearing`);
+        show.images[format] = null;
+        showChanged = true;
+        continue;
+      }
+
       // Skip pinned thumbnails — these were manually curated
       if (format === 'thumbnail' && PINNED_IMAGES.has(show.id) && !force) {
         const localPath = path.join(OUTPUT_DIR, show.id, 'thumbnail.webp');
