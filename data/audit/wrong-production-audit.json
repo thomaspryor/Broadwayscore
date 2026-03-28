@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-28T04:05:49.612Z",
+  "timestamp": "2026-03-28T05:32:41.052Z",
   "stats": {
     "totalReviews": 32523,
     "alreadyFlagged": 11188,
     "dateGuardCatches": 143,
     "directorMismatch": 964,
-    "tvFilmSignals": 3452,
+    "tvFilmSignals": 3451,
     "londonSignals": 1046,
-    "offBroadwaySignals": 1005,
+    "offBroadwaySignals": 1008,
     "yearMismatch": 70,
     "noPublishDate": 6706
   },
@@ -19651,19 +19651,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "grey-house-2023",
-      "file": "slash-film--caroline-cao.json",
-      "publishDate": "2023-06-07",
-      "url": "https://www.slashfilm.com/1307195/the-grey-house-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -85633,6 +85620,45 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--armando-urdiales.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--courtney-symes.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--david-copney.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--lynn-beaver.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
