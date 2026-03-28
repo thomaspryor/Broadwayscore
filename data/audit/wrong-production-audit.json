@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-28T08:10:47.988Z",
+  "timestamp": "2026-03-28T08:35:02.284Z",
   "stats": {
-    "totalReviews": 32533,
-    "alreadyFlagged": 11187,
-    "dateGuardCatches": 144,
+    "totalReviews": 32537,
+    "alreadyFlagged": 11188,
+    "dateGuardCatches": 145,
     "directorMismatch": 964,
     "tvFilmSignals": 3457,
     "londonSignals": 1047,
     "offBroadwaySignals": 1007,
     "yearMismatch": 70,
-    "noPublishDate": 6713
+    "noPublishDate": 6715
   },
   "findings": [
     {
@@ -26289,7 +26289,7 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "independent--unknown.json",
+      "file": "independent--alice-saville.json",
       "score": 83,
       "publishDate": "2026-03-27",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
@@ -26342,6 +26342,8 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "standard--nick-curtis.json",
+      "publishDate": "2024-11-07",
+      "url": "https://www.standard.co.uk/culture/theatre/the-curious-case-of-benjamin-button-ambassadors-theatre-review-brad-pitt-b1192173.html",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -63771,6 +63773,18 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "alice-in-wonderland-west-end-2026",
+      "file": "guardian--kate-wyver.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2025-12-17 vs 2026-03-27)"
         }
       ]
     },
