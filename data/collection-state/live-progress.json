@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-28T04:01:46.367Z",
-  "processed": 3,
-  "failed": 17,
-  "successRate": "15.0%",
+  "updatedAt": "2026-03-28T04:09:18.294Z",
+  "processed": 5,
+  "failed": 25,
+  "successRate": "16.7%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 11,
+    "archiveToday": 16,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-28T03:50:34.684Z",
@@ -45,6 +45,28 @@
     },
     {
       "t": "2026-03-28T03:55:56.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T04:03:41.307Z",
+      "event": "bb-session",
+      "session": "292c6f4f",
+      "url": "https://www.thestage.co.uk/reviews/it-walks-around-the-house-at-night-review-sou"
+    },
+    {
+      "t": "2026-03-28T04:03:42.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-28T04:06:40.994Z",
+      "event": "bb-session",
+      "session": "87d8067d",
+      "url": "https://www.thestage.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-f"
+    },
+    {
+      "t": "2026-03-28T04:06:42.066Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
