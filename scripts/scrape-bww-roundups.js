@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutletFull, slugify: canonicalSlugify } = require('./lib/review-normalization');
 const { excerptMentionsWrongShow } = require('./lib/excerpt-validation');
@@ -235,39 +236,18 @@ async function searchBWWRoundup(show) {
 
 /**
  * Search the web for BWW Review Roundup article
- * Uses ScrapingBee Google Search API (requires SCRAPINGBEE_API_KEY)
+ * Uses shared SERP provider chain (Bright Data first → ScrapingBee fallback)
  */
 async function searchWebForBWWRoundup(show) {
-  const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
-
-  if (!SCRAPINGBEE_KEY) {
-    console.log(`  No SCRAPINGBEE_API_KEY, skipping web search`);
-    return null;
-  }
-
-  console.log(`  Searching Google via ScrapingBee: ${show.title}...`);
+  console.log(`  Searching Google for BWW roundup: ${show.title}...`);
   const searchQuery = `site:broadwayworld.com "Review Roundup" "${show.title}" Broadway`;
-  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(searchQuery)}`;
 
   try {
-    const response = await new Promise((resolve, reject) => {
-      https.get(apiUrl, { timeout: 30000 }, (res) => {
-        let data = '';
-        res.on('data', chunk => data += chunk);
-        res.on('end', () => {
-          if (res.statusCode === 200) {
-            resolve(JSON.parse(data));
-          } else {
-            reject(new Error(`HTTP ${res.statusCode}`));
-          }
-        });
-      }).on('error', reject);
-    });
+    const results = await serpQuery(searchQuery, { nbResults: 5 });
+    if (!results) return null;
 
-    // Parse organic results
-    const results = response.organic_results || [];
-    for (const result of results.slice(0, 5)) {
-      const url = result.url || result.link;
+    for (const result of results) {
+      const url = result.url;
       if (url && url.includes('broadwayworld.com/article/') && url.toLowerCase().includes('review-roundup')) {
         console.log(`  Trying search result: ${url}`);
         const pageResult = await httpGet(url);

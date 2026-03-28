@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 const { buildTelechargeUrl, normalizeShowName } = require('./lib/url-utils');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -107,95 +108,19 @@ function matchTicketmasterFromResults(results, showTitle, existingUrl) {
   return null; // No matching result found
 }
 
-/**
- * SERP search via ScrapingBee (primary — uses Google search credits)
- */
-async function serpViaScrapingBee(query) {
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  if (!apiKey) return null;
-
-  const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}`;
-  const result = await httpGet(searchUrl);
-  if (result.statusCode !== 200) {
-    console.log(`    ScrapingBee SERP HTTP ${result.statusCode}`);
-    return null;
-  }
-
-  const data = JSON.parse(result.body);
-  return data.organic_results || data.results || [];
-}
-
-/**
- * SERP search via BrightData SERP API (fallback — async polling)
- */
-async function serpViaBrightData(query) {
-  const apiKey = process.env.BRIGHTDATA_TOKEN;
-  if (!apiKey) return null;
-
-  const customer = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
-  const zone = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
-
-  try {
-    // Submit request
-    const submitResult = await httpGet(
-      `https://api.brightdata.com/serp/req?customer=${customer}&zone=${zone}`,
-      { method: 'POST', body: JSON.stringify({ query: { q: query, gl: 'us' } }) }
-    );
-    if (submitResult.statusCode !== 200) {
-      console.log(`    BrightData SERP submit HTTP ${submitResult.statusCode}`);
-      return null;
-    }
-    const submitData = JSON.parse(submitResult.body);
-    const responseId = submitData.response_id;
-    if (!responseId) return null;
-
-    // Poll for results (max 20s)
-    for (let i = 0; i < 10; i++) {
-      await new Promise(r => setTimeout(r, 2000));
-      const pollResult = await httpGet(
-        `https://api.brightdata.com/serp/get_result?response_id=${responseId}`,
-        { headers: { 'Authorization': `Bearer ${apiKey}` } }
-      );
-      if (pollResult.statusCode === 202) continue;
-      if (pollResult.statusCode !== 200) return null;
-
-      const data = JSON.parse(pollResult.body);
-      if (data.organic) {
-        return data.organic.slice(0, 10).map(r => ({
-          url: r.link || r.url || '',
-          title: r.title || '',
-        }));
-      }
-      if (data.response_id) continue;
-      return [];
-    }
-    console.log('    BrightData SERP timeout (20s)');
-    return null;
-  } catch (e) {
-    console.log(`    BrightData SERP error: ${e.message}`);
-    return null;
-  }
-}
+// SERP functions removed — using shared serpQuery from url-discovery.js
 
 async function serpVerifyTicketmaster(showTitle, existingUrl) {
   const query = `site:ticketmaster.com "${showTitle}" broadway tickets`;
 
-  // Try ScrapingBee first (primary)
-  let results = await serpViaScrapingBee(query);
-  let source = 'ScrapingBee';
-
-  // Fallback to BrightData SERP API
-  if (!results) {
-    results = await serpViaBrightData(query);
-    source = 'BrightData';
-  }
+  const results = await serpQuery(query);
 
   // No SERP provider available — skip gracefully
   if (!results) {
     return { status: 'skip', reason: 'all SERP providers unavailable' };
   }
 
-  console.log(`    (via ${source}, ${results.length} results)`);
+  console.log(`    (${results.length} results)`);
   const match = matchTicketmasterFromResults(results, showTitle, existingUrl);
   if (match) return match;
 

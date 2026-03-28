@@ -29,6 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -219,47 +220,17 @@ async function fetchRedditJson(url, maxRetries = 2) {
 }
 
 /**
- * Google search via ScrapingBee Google Search API
+ * Google search via shared SERP provider chain (Bright Data first → ScrapingBee fallback)
  */
 async function googleSearch(query) {
-  if (!SCRAPINGBEE_KEY) return [];
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=10`;
-
   try {
-    const data = await new Promise((resolve, reject) => {
-      const req = https.get(apiUrl, (res) => {
-        let d = '';
-        res.on('data', chunk => d += chunk);
-        res.on('end', () => {
-          if (res.statusCode === 200) {
-            resolve(d);
-          } else {
-            reject(new Error(`Google search HTTP ${res.statusCode}`));
-          }
-        });
-      });
-      req.on('error', reject);
-      req.setTimeout(30000, () => { req.destroy(); reject(new Error('Timeout')); });
-    });
-
-    try {
-      const results = JSON.parse(data);
-      return (results.organic_results || []).map(r => ({
-        url: r.url,
-        title: r.title || '',
-        description: r.description || '',
-      }));
-    } catch (e) {
-      // Fallback: extract URLs from raw data
-      const urls = [];
-      const linkPattern = /https?:\/\/(?:playbill\.com|www\.broadwayworld\.com)\/article\/[^\s"',)]+/gi;
-      let match;
-      while ((match = linkPattern.exec(data)) !== null) {
-        urls.push({ url: match[0], title: '', description: '' });
-      }
-      return urls;
-    }
+    const results = await serpQuery(query, { nbResults: 10 });
+    if (!results) return [];
+    return results.map(r => ({
+      url: r.url,
+      title: r.title || '',
+      description: '',
+    }));
   } catch (e) {
     if (verbose) console.log(`  [Google] Search failed: ${e.message}`);
     stats.errors.push(`Google search: ${e.message}`);

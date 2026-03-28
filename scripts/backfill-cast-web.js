@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -85,24 +86,14 @@ function httpRequest(url, options = {}) {
 // ============================================================================
 
 async function searchCast(title, year, category) {
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
-  if (!apiKey) throw new Error('SCRAPINGBEE_API_KEY not set');
-
   const isWestEnd = isLondonMarket(category);
   const location = isWestEnd ? 'west end london' : 'off-broadway new york';
 
   // Broad query — no site: filters (they eliminate too many valid results for OB/WE)
   const query = `"${title}" cast ${year || ''} ${location}`.trim();
-  const searchUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${apiKey}&search=${encodeURIComponent(query)}`;
 
-  const result = await httpRequest(searchUrl);
-  if (result.statusCode !== 200) {
-    console.log(`  SERP HTTP ${result.statusCode}`);
-    return [];
-  }
-
-  const data = JSON.parse(result.body);
-  const results = data.organic_results || data.results || [];
+  const results = await serpQuery(query);
+  if (!results) return [];
 
   // Score each result by relevance to cast data
   const titleLower = title.toLowerCase().split(':')[0].trim();

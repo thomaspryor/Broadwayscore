@@ -48,6 +48,7 @@ const stats = {
 };
 
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -102,43 +103,14 @@ async function fetchHtml(url, maxRetries = 2) {
 // ---------------------------------------------------------------------------
 
 async function googleSearch(query) {
-  if (!SCRAPINGBEE_KEY) {
-    console.log('  [WARN] No SCRAPINGBEE_API_KEY set, skipping Google search');
+  try {
+    const results = await serpQuery(query, { nbResults: 10 });
+    if (!results) return [];
+    return results.map(r => r.url).filter(url => url && url.includes('playbill.com/article/'));
+  } catch (e) {
+    console.log(`  Google search error: ${e.message}`);
     return [];
   }
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=10`;
-
-  return new Promise((resolve, reject) => {
-    const req = https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const results = JSON.parse(data);
-            const urls = (results.organic_results || [])
-              .map(r => r.url)
-              .filter(url => url && url.includes('playbill.com/article/'));
-            resolve(urls);
-          } catch (e) {
-            // Try extracting URLs from raw HTML fallback
-            const urls = [];
-            const linkPattern = /href="(https?:\/\/playbill\.com\/article\/[^"]+)"/gi;
-            let match;
-            while ((match = linkPattern.exec(data)) !== null) {
-              urls.push(match[1]);
-            }
-            resolve(urls);
-          }
-        } else {
-          reject(new Error(`Google search HTTP ${res.statusCode}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Timeout')); });
-  });
 }
 
 // ---------------------------------------------------------------------------

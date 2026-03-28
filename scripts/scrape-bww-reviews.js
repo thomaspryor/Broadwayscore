@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
+const { serpQuery } = require('./lib/url-discovery');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
@@ -131,31 +132,14 @@ async function fetchHtml(url, maxRetries = 2) {
 }
 
 async function googleSearch(query, numResults = 10) {
-  if (!SCRAPINGBEE_KEY) {
-    // Google search is SB-only; BWW internal search serves as fallback for roundup discovery
+  try {
+    const results = await serpQuery(query, { nbResults: numResults });
+    if (!results) return [];
+    return results.map(r => r.url).filter(Boolean);
+  } catch (e) {
+    console.log(`  Google search error: ${e.message}`);
     return [];
   }
-  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=${numResults}`;
-  return new Promise((resolve, reject) => {
-    const req = https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const results = JSON.parse(data);
-            resolve((results.organic_results || []).map(r => r.url).filter(Boolean));
-          } catch (e) {
-            resolve([]);
-          }
-        } else {
-          reject(new Error(`Google search HTTP ${res.statusCode}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Timeout')); });
-  });
 }
 
 /**

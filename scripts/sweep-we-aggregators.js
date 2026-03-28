@@ -19,6 +19,7 @@ const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { serpQuery } = require('./lib/url-discovery');
 
 // Reuse extraction functions from existing scrapers
 const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPage } = require('./scrape-westendtheatre-roundups');
@@ -109,64 +110,19 @@ function validateSerpUrl(url, showTitle) {
 }
 
 async function serpSearch(site, showTitle) {
-  if (!SB_KEY && !BD_KEY) return null;
   const query = `site:${site} "${showTitle}" review`;
 
-  // Try ScrapingBee first (structured JSON)
-  if (SB_KEY) {
-    try {
-      const axios = require('axios');
-      const resp = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-        params: { api_key: SB_KEY, search: query },
-        timeout: 15000,
-      });
-      const results = resp.data?.organic_results || resp.data?.results || [];
-      // Validate first result URL contains show title words
-      for (const r of results.slice(0, 3)) {
-        const url = r.url || r.link;
-        if (url && validateSerpUrl(url, showTitle)) return url;
-      }
-      if (results.length > 0) {
-        console.log(`    [SERP] Rejected: ${(results[0].url || results[0].link || '').substring(0, 80)} (doesn't match "${showTitle}")`);
-      }
-    } catch {}
-  }
+  try {
+    const results = await serpQuery(query, { nbResults: 3 });
+    if (!results) return null;
 
-  // Fallback: BrightData SERP
-  if (BD_KEY) {
-    try {
-      const https = require('https');
-      const body = JSON.stringify({ query: { q: query, gl: 'uk' } });
-      const resp = await new Promise((resolve, reject) => {
-        const req = https.request(`https://api.brightdata.com/serp/req?customer=hl_a2c64a47&zone=serp_api1`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${BD_KEY}`, 'Content-Type': 'application/json' },
-        }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
-        req.on('error', reject);
-        req.end(body);
-      });
-      // BD SERP is async — poll for result
-      if (resp.response_id) {
-        for (let i = 0; i < 10; i++) {
-          await sleep(2000);
-          const poll = await new Promise((resolve) => {
-            https.get(`https://api.brightdata.com/serp/get_result?response_id=${resp.response_id}`, {
-              headers: { Authorization: `Bearer ${BD_KEY}` },
-            }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => { try { resolve(JSON.parse(d)); } catch { resolve(null); } }); }).on('error', () => resolve(null));
-          });
-          if (poll?.organic) {
-            for (const r of poll.organic.slice(0, 3)) {
-              if (r?.link && validateSerpUrl(r.link, showTitle)) return r.link;
-            }
-            if (poll.organic[0]?.link) {
-              console.log(`    [SERP] Rejected: ${poll.organic[0].link.substring(0, 80)} (doesn't match "${showTitle}")`);
-            }
-            break;
-          }
-        }
-      }
-    } catch {}
-  }
+    for (const r of results) {
+      if (r.url && validateSerpUrl(r.url, showTitle)) return r.url;
+    }
+    if (results.length > 0) {
+      console.log(`    [SERP] Rejected: ${results[0].url.substring(0, 80)} (doesn't match "${showTitle}")`);
+    }
+  } catch {}
 
   return null;
 }
