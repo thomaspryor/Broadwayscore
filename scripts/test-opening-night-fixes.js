@@ -661,6 +661,44 @@ assert(
   'NY: Negative — generic headline does NOT match Giant'
 );
 
+// ============================================================
+// NY Stage Review + NY Theater RSS feed configuration
+// ============================================================
+console.log('\n=== T2 RSS Feeds: NY Stage Review, NY Theater ===\n');
+
+const nysrFeed = ALL_FEEDS.find(f => f.outletId === 'nysr');
+assert(nysrFeed !== undefined, 'NY Stage Review is present in ALL_FEEDS');
+assert(nysrFeed && nysrFeed.needsFilter === true, 'NYSR uses needsFilter (title matching)');
+assert(nysrFeed && !nysrFeed.openingWindow, 'NYSR has no openingWindow (covers all shows)');
+assert(nysrFeed && nysrFeed.url.includes('nystagereview.com'), 'NYSR has correct feed URL');
+
+const nytTheaterFeed = ALL_FEEDS.find(f => f.outletId === 'nyt-theater');
+assert(nytTheaterFeed !== undefined, 'NY Theater is present in ALL_FEEDS');
+assert(nytTheaterFeed && nytTheaterFeed.needsFilter === true, 'NY Theater uses needsFilter');
+assert(nytTheaterFeed && nytTheaterFeed.url.includes('newyorktheater.me'), 'NY Theater has correct feed URL');
+
+// Title matching for NYSR and NY Theater headline patterns
+assert(
+  titleMatchesShow('Giant: Author/Antisemite Roald Dahl Erupts Volcanically', 'Giant'),
+  'NYSR: Giant review headline matches'
+);
+assert(
+  titleMatchesShow('Jesa: Honoring the Ancestors, or Maybe Not', 'Jesa'),
+  'NYSR: Jesa review headline matches'
+);
+assert(
+  titleMatchesShow('Giant Review. John Lithgow as Roald Dahl, Antisemite', 'Giant'),
+  'NYT: Giant review headline matches'
+);
+assert(
+  !titleMatchesShow('No Kings Protests Today in NYC', 'Giant'),
+  'NYT: Negative — protest news does NOT match Giant'
+);
+assert(
+  !titleMatchesShow('Giant: Author/Antisemite Roald Dahl Erupts Volcanically', 'Hamilton'),
+  'NYSR: Negative — Giant review does NOT match Hamilton'
+);
+
 // Title matching for typical WSJ/LAT/WashPost review headlines
 assert(
   titleMatchesShow("'Giant' Review: John Lithgow as a Venomous Roald Dahl", 'Giant'),
