@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-28T10:37:24.398Z",
-  "processed": 12,
-  "failed": 12,
-  "successRate": "50.0%",
+  "updatedAt": "2026-03-28T10:38:17.856Z",
+  "processed": 15,
+  "failed": 19,
+  "successRate": "44.1%",
   "tierBreakdown": {
     "playwright": 12,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-28T10:37:37.435Z",
+      "event": "bb-session",
+      "session": "bd5b7545",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-28T10:37:38.853Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

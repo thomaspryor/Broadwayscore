@@ -11,7 +11,10 @@
     "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
     "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "chess-2025/playbill--logan-culwell-block.json",
-    "all-my-sons-west-end-2025/whatsonstage--unknown.json"
+    "all-my-sons-west-end-2025/whatsonstage--unknown.json",
+    "just-in-time-2025/billboard--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "starlight-express-west-end-2024/the-express--unknown.json"
   ],
   "failed": [
     "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
@@ -25,7 +28,14 @@
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
     "oh-mary-west-end-2025/standard--nick-curtis.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--unknown.json",
-    "two-strangers-bway-2025/guardian--unknown.json"
+    "two-strangers-bway-2025/guardian--unknown.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -44,16 +54,34 @@
       "all-my-sons-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "just-in-time-2025/billboard--unknown.json",
+      "starlight-express-west-end-2024/the-express--unknown.json"
+    ]
   },
   "startTime": "2026-03-28T09:38:57.589Z",
-  "lastProcessed": "all-my-sons-west-end-2025/whatsonstage--unknown.json",
-  "log": []
+  "lastProcessed": "starlight-express-west-end-2024/the-express--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-28T10:37:37.435Z",
+      "event": "bb-session",
+      "session": "bd5b7545",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-28T10:37:38.853Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
