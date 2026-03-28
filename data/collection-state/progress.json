@@ -1,45 +1,53 @@
 {
-  "processed": [],
+  "processed": [
+    "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json"
+  ],
   "failed": [
-    "teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
-    "teeth-n-smiles-west-end-2026/thestage--unknown.json"
+    "john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
-      "data/review-texts/teeth-n-smiles-west-end-2026/thestage--unknown.json"
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
-  "startTime": "2026-03-28T20:16:17.027Z",
-  "lastProcessed": "teeth-n-smiles-west-end-2026/thestage--unknown.json",
+  "startTime": "2026-03-28T21:20:20.462Z",
+  "lastProcessed": "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
-      "t": "2026-03-28T20:17:52.551Z",
+      "t": "2026-03-28T21:27:02.720Z",
       "event": "bb-session",
-      "session": "b63b9239",
-      "url": "https://www.thestage.co.uk/reviews/teeth-n-smiles-review-duke-of-yorks-theatre-l"
+      "session": "51b32341",
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
     },
     {
-      "t": "2026-03-28T20:17:53.792Z",
+      "t": "2026-03-28T21:27:04.166Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-03-28T20:20:05.518Z",
+      "t": "2026-03-28T21:28:01.339Z",
       "event": "bb-session",
-      "session": "d508c0f5",
-      "url": "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-l"
+      "session": "2952f985",
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
     },
     {
-      "t": "2026-03-28T20:20:06.815Z",
+      "t": "2026-03-28T21:28:02.624Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
