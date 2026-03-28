@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-28T07:18:51.011Z",
+  "timestamp": "2026-03-28T08:10:47.988Z",
   "stats": {
-    "totalReviews": 32532,
-    "alreadyFlagged": 11186,
+    "totalReviews": 32533,
+    "alreadyFlagged": 11187,
     "dateGuardCatches": 144,
     "directorMismatch": 964,
-    "tvFilmSignals": 3456,
+    "tvFilmSignals": 3457,
     "londonSignals": 1047,
     "offBroadwaySignals": 1007,
     "yearMismatch": 70,
@@ -41724,6 +41724,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-suite-off-broadway-2026",
+      "file": "wsj--robert-greskovic.json",
+      "score": 45,
+      "publishDate": "2026-03-09",
+      "url": "https://www.wsj.com/arts-culture/theater/romeo-juliet-suite-review-tragedy-reinterpreted-d6bcc704",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
