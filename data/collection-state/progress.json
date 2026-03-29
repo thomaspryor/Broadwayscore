@@ -1,22 +1,51 @@
 {
   "processed": [
-    "all-my-sons-west-end-2025/whatsonstage--unknown.json"
+    "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
+    "evening-all-afternoon-west-end-2026/thestage--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "all-my-sons-west-end-2025/whatsonstage--unknown.json"
+      "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/evening-all-afternoon-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-03-29T03:22:10.856Z",
-  "lastProcessed": "all-my-sons-west-end-2025/whatsonstage--unknown.json",
-  "log": []
+  "startTime": "2026-03-29T03:33:18.303Z",
+  "lastProcessed": "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-03-29T03:34:59.310Z",
+      "event": "bb-session",
+      "session": "4d378647",
+      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse"
+    },
+    {
+      "t": "2026-03-29T03:35:00.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-29T03:36:55.523Z",
+      "event": "bb-session",
+      "session": "5e253619",
+      "url": "https://www.thestage.co.uk/review-round-ups/evening-all-afternoon-at-the-donmar-"
+    },
+    {
+      "t": "2026-03-29T03:36:56.559Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
