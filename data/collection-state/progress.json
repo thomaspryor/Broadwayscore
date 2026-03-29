@@ -49,7 +49,11 @@
     "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
     "the-last-five-years-2025/nypost--lou-lumenick.json",
     "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
-    "left-on-tenth-2024/nytimes--laura-collins-hughes.json"
+    "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+    "the-cottage-2023/theatermania--peter-hempstead.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
+    "grey-house-2023/slash-film--caroline-cao.json"
   ],
   "failed": [
     "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
@@ -175,7 +179,13 @@
     "redwood-2025/gmanetwork--stuart-santiago.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
     "eureka-day-2024/times-uk--clive-davis.json",
-    "romeo-juliet-2024/thestage--nicole-serratore.json"
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "yellow-face-2024/washpost--naveen-kumar.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "life-of-pi-2023/newyorker--unknown.json",
+    "the-collaboration-2022/hollywood-reporter--angie-han.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -215,7 +225,9 @@
       "sweetmeats-west-end-2026/standard--maya-chandran.json",
       "all-out-2025/nytg--gillian-russo.json",
       "all-out-2025/ew--unknown.json",
-      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json"
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "the-cottage-2023/theatermania--peter-hempstead.json",
+      "once-upon-a-one-more-time-2023/ap--mark-kennedy.json"
     ],
     "amp": [],
     "browserbase": [
@@ -228,11 +240,13 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+      "just-for-us-2023/timeout--adam-feldman.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/harry-potter-2021/billboard--unknown.json"
+      "data/review-texts/harry-potter-2021/billboard--unknown.json",
+      "data/review-texts/life-of-pi-2023/newyorker--unknown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -244,11 +258,12 @@
       "wicked-2003/broadwayworld--linda-hodges.json",
       "wicked-2003/broadwayworld--lynn-beaver.json",
       "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
-      "left-on-tenth-2024/nytimes--laura-collins-hughes.json"
+      "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+      "grey-house-2023/slash-film--caroline-cao.json"
     ]
   },
   "startTime": "2026-03-29T03:49:46.540Z",
-  "lastProcessed": "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
+  "lastProcessed": "the-collaboration-2022/hollywood-reporter--angie-han.json",
   "log": [
     {
       "t": "2026-03-29T03:49:59.212Z",
@@ -282,6 +297,17 @@
       "t": "2026-03-29T20:56:22.095Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-29T21:00:01.631Z",
+      "event": "bb-session",
+      "session": "87d71858",
+      "url": "https://www.newyorker.com/magazine/2023/03/13/life-of-pi-comes-to-broadway"
+    },
+    {
+      "t": "2026-03-29T21:00:03.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
