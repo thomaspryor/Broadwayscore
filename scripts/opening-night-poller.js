@@ -452,9 +452,12 @@ async function runAggregators(show) {
       for (const trUrl of trUrls) {
         try {
           const result = await fetchPage(trUrl, { renderJs: false });
-          // Check content is a real roundup page, not a 404 error page (can be 400KB+)
+          // Check content is the actual roundup page — must contain ⭑ star ratings
+          // AND a key word from the show title (not just generic site chrome)
+          const titleWord = show.title.split(/\s+/).filter(w => w.length > 3)[0] || show.title;
           if (result && result.content && result.content.length > 1000 &&
-              (result.content.includes('★') || result.content.includes('reviews-roundup') || result.content.includes('star'))) {
+              result.content.includes('⭑') &&
+              result.content.toLowerCase().includes(titleWord.toLowerCase())) {
             trHtml = result.content;
             console.log(`    Found at: ${trUrl} (via ${result.source})`);
             break;
