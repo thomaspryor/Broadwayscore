@@ -50,16 +50,8 @@ if (!OUTLET_EXTRACTORS[outlet]) {
   process.exit(1);
 }
 
-// Cookie domain map for paywalled outlets
-const COOKIE_DOMAIN_MAP = {
-  'telegraph.co.uk': { fileKey: 'telegraph', envVar: 'TELEGRAPH_COOKIES' },
-  'thetimes.co.uk': { fileKey: 'thetimes', envVar: 'THETIMES_COOKIES' },
-  'thetimes.com': { fileKey: 'thetimes', envVar: 'THETIMES_COOKIES' },
-  'thestage.co.uk': { fileKey: 'thestage', envVar: 'THESTAGE_COOKIES' },
-  'standard.co.uk': { fileKey: 'standard', envVar: 'STANDARD_COOKIES' },
-  'independent.co.uk': { fileKey: 'independent', envVar: 'INDEPENDENT_COOKIES' },
-  'ft.com': { fileKey: 'ft', envVar: 'FT_COOKIES' },
-};
+// Cookie domain map from shared cookie-loader (full map, not just UK outlets)
+const { COOKIE_DOMAIN_MAP, loadCookiesForDomain: _loadCookiesForDomain } = require('./lib/cookie-loader');
 
 // Essential auth cookie patterns per domain (for ScrapingBee URL length limits).
 // Full cookie set goes to Playwright; only these go via ScrapingBee forward_headers.
@@ -73,24 +65,10 @@ const ESSENTIAL_COOKIE_PATTERNS = {
 function loadCookiesForUrl(url) {
   try {
     const hostname = new URL(url).hostname.replace(/^www\./, '');
-    for (const [domain, config] of Object.entries(COOKIE_DOMAIN_MAP)) {
+    for (const domain of Object.keys(COOKIE_DOMAIN_MAP)) {
       if (hostname === domain || hostname.endsWith('.' + domain)) {
-        // Try env var first (CI: base64-encoded JSON)
-        const envVal = process.env[config.envVar];
-        if (envVal) {
-          try {
-            const cookies = JSON.parse(Buffer.from(envVal, 'base64').toString('utf-8'));
-            if (Array.isArray(cookies) && cookies.length > 0) return { cookies, domain };
-          } catch (e) { /* skip */ }
-        }
-        // Try local file
-        const fp = path.join(__dirname, '..', 'data', 'cookies', `${config.fileKey}.json`);
-        if (fs.existsSync(fp)) {
-          try {
-            const cookies = JSON.parse(fs.readFileSync(fp, 'utf-8'));
-            if (Array.isArray(cookies) && cookies.length > 0) return { cookies, domain };
-          } catch (e) { /* skip */ }
-        }
+        const cookies = _loadCookiesForDomain(domain);
+        if (cookies) return { cookies, domain };
       }
     }
   } catch (e) { /* skip */ }
