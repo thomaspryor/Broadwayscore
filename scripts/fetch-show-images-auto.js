@@ -2132,6 +2132,15 @@ async function main() {
   }
 
   if (onlyMissing) {
+    // Exclude closed shows by default — there are 2000+ and most will never
+    // have images online. Without this, --missing takes 3+ hours instead of ~25 min.
+    // Use --include-closed for explicit historical backfill runs.
+    const includeClosed = args.includes('--include-closed');
+    if (!includeClosed) {
+      const before = shows.length;
+      shows = shows.filter(s => s.status !== 'closed');
+      console.log(`Excluding ${before - shows.length} closed shows (use --include-closed to override)`);
+    }
     shows = shows.filter(s => {
       // Missing in JSON
       if (!s.images?.poster || !s.images?.thumbnail) return true;
