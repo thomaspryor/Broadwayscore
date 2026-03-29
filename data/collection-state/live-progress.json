@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-29T21:19:23.872Z",
-  "processed": 83,
-  "failed": 191,
+  "updatedAt": "2026-03-29T21:21:51.218Z",
+  "processed": 86,
+  "failed": 198,
   "successRate": "30.3%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 48,
     "amp": 0,
     "browserbase": 10,
     "directCookies": 1,
-    "scrapingbee": 8,
+    "scrapingbee": 9,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 24
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-29T03:49:59.212Z",
@@ -91,6 +91,17 @@
       "t": "2026-03-29T21:16:20.291Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-29T21:20:30.224Z",
+      "event": "bb-session",
+      "session": "0e7366fd",
+      "url": "https://www.wsj.com/articles/a-delicate-balance-and-the-high-wire-humor-of-edwar"
+    },
+    {
+      "t": "2026-03-29T21:20:31.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
