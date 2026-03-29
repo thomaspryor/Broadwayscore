@@ -47,8 +47,8 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
         run: |
-          if [ -z "$WSJ_COOKIES" ]; then
-            echo "::warning::WSJ_COOKIES secret not set — skipping recovery"
+          if [ -z "$COOKIES_BUNDLE_11" ]; then
+            echo "::warning::Cookie bundles not set — skipping recovery"
             echo "SKIP=true" >> $GITHUB_ENV
           else
             echo "SKIP=false" >> $GITHUB_ENV
