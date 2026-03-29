@@ -91,7 +91,7 @@ const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
 const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml } = require('./lib/content-quality');
-const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
+const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -4304,6 +4304,43 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       delete data.misattributedFullText;
       delete data.extractedByline;
       delete data.expectedCritic;
+
+      // Rename file to match enriched critic name (prevents stale --unknown filenames)
+      const currentFile = path.basename(review.filePath);
+      if (currentFile.includes('--unknown')) {
+        const showDir = path.dirname(review.filePath);
+        const outletId = normalizeOutlet(data.outletId || data.outlet);
+        const newFilename = generateReviewFilename(outletId, extractedAuthor);
+        if (newFilename !== currentFile) {
+          const newPath = path.join(showDir, newFilename);
+          if (fs.existsSync(newPath)) {
+            // Named file already exists — merge unique fields from --unknown into it, then delete --unknown
+            try {
+              const existingData = JSON.parse(fs.readFileSync(newPath, 'utf8'));
+              let merged = false;
+              for (const [key, val] of Object.entries(data)) {
+                if (val != null && !existingData[key]) {
+                  existingData[key] = val;
+                  merged = true;
+                }
+              }
+              if (merged) {
+                fs.writeFileSync(newPath, JSON.stringify(existingData, null, 2));
+              }
+              fs.unlinkSync(review.filePath);
+              console.log(`    → Merged enriched --unknown into existing ${newFilename} and deleted stale file`);
+              review.filePath = newPath;
+            } catch (mergeErr) {
+              console.warn(`    → Warning: could not merge into ${newFilename}: ${mergeErr.message}`);
+            }
+          } else {
+            // No named file exists — just rename
+            fs.renameSync(review.filePath, newPath);
+            review.filePath = newPath;
+            console.log(`    → Renamed ${currentFile} → ${newFilename}`);
+          }
+        }
+      }
     }
   }
 
