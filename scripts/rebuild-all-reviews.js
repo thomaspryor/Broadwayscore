@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -848,6 +848,107 @@ const crossShowFingerprints = new Map();
     console.log(`Pre-opening guard: flagged ${preOpenFlagged} reviews as wrongProduction\n`);
   }
   stats.preOpeningFlagged = preOpenFlagged;
+}
+
+// Stale --unknown filename cleanup: when a file is named --unknown but its critic was enriched,
+// rename it to match the enriched critic name. If a named file already exists, merge unique fields
+// from the --unknown file into it and delete the stale --unknown file. This prevents duplicate
+// entries in validate-review-texts.js (which keys on JSON criticName, not filename).
+{
+  let renamedCount = 0, mergedCount = 0, errorCount = 0;
+  for (const sid of showDirs) {
+    const sDir = path.join(reviewTextsDir, sid);
+    const unknownFiles = fs.readdirSync(sDir).filter(f => f.endsWith('.json') && f.includes('--unknown'));
+    for (const f of unknownFiles) {
+      try {
+        const filePath = path.join(sDir, f);
+        const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const critic = (d.criticName || '').trim();
+        if (!critic || critic.toLowerCase() === 'unknown' || critic.toLowerCase() === 'unnamed') continue;
+        // Critic was enriched — filename is stale
+        const outletId = normalizeOutletCanonical(d.outletId || d.outlet);
+        const expectedFilename = generateReviewFilename(outletId, critic);
+        if (expectedFilename === f) continue; // Already correct (shouldn't happen but guard)
+        const expectedPath = path.join(sDir, expectedFilename);
+        if (fs.existsSync(expectedPath)) {
+          // Named file exists — merge unique fields from --unknown, then delete it
+          const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
+          let merged = false;
+          for (const [key, val] of Object.entries(d)) {
+            if (val != null && !existingData[key]) {
+              existingData[key] = val;
+              merged = true;
+            }
+          }
+          if (merged) {
+            fs.writeFileSync(expectedPath, JSON.stringify(existingData, null, 2) + '\n');
+          }
+          fs.unlinkSync(filePath);
+          mergedCount++;
+        } else {
+          // No named file — just rename
+          fs.renameSync(filePath, expectedPath);
+          renamedCount++;
+        }
+      } catch (e) {
+        errorCount++;
+      }
+    }
+  }
+  if (renamedCount > 0 || mergedCount > 0) {
+    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted${errorCount ? `, ${errorCount} errors` : ''}`);
+  }
+  stats.staleUnknownRenamed = renamedCount;
+  stats.staleUnknownMerged = mergedCount;
+}
+
+// Stale outlet-mismatch cleanup: when a file's outlet prefix doesn't match the outletId in JSON
+// (e.g., timeout--critic.json but outletId is "timeout-london" due to URL-based resolution),
+// rename or merge into the correctly-named file.
+{
+  let renamedCount = 0, mergedCount = 0, errorCount = 0;
+  for (const sid of showDirs) {
+    const sDir = path.join(reviewTextsDir, sid);
+    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
+      try {
+        const filePath = path.join(sDir, f);
+        const fileOutlet = f.split('--')[0];
+        const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const jsonOutlet = normalizeOutletCanonical(d.outletId || d.outlet);
+        if (!jsonOutlet || !fileOutlet || jsonOutlet === fileOutlet) continue;
+        const expectedFilename = generateReviewFilename(jsonOutlet, d.criticName || 'Unknown');
+        if (expectedFilename === f) continue;
+        const expectedPath = path.join(sDir, expectedFilename);
+        if (fs.existsSync(expectedPath)) {
+          // Named file exists — merge unique fields, delete stale
+          const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
+          let merged = false;
+          for (const [key, val] of Object.entries(d)) {
+            if (val != null && !existingData[key]) {
+              existingData[key] = val;
+              merged = true;
+            }
+          }
+          if (merged) {
+            fs.writeFileSync(expectedPath, JSON.stringify(existingData, null, 2) + '\n');
+          }
+          fs.unlinkSync(filePath);
+          mergedCount++;
+        } else {
+          // No correctly-named file — just rename
+          fs.renameSync(filePath, expectedPath);
+          renamedCount++;
+        }
+      } catch (e) {
+        errorCount++;
+      }
+    }
+  }
+  if (renamedCount > 0 || mergedCount > 0) {
+    console.log(`Stale outlet-mismatch cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted${errorCount ? `, ${errorCount} errors` : ''}`);
+  }
+  stats.staleOutletRenamed = renamedCount;
+  stats.staleOutletMerged = mergedCount;
 }
 
 // URL-domain mismatch guard: detect reviews where URL domain doesn't match outlet's registered domain.
