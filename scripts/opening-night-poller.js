@@ -217,7 +217,7 @@ async function runAggregators(show) {
       if (validation.valid) {
         // Playwright-extracted reviews take priority
         if (ss.reviews && ss.reviews.length > 0) {
-          console.log(`  Show Score: ${ss.reviews.length} reviews (Playwright)`);
+          console.log(`  Show Score: ${ss.reviews.length} reviews (Playwright): ${ss.reviews.map(r => r.outlet || 'unknown').join(', ')}`);
           for (const r of ss.reviews) {
             results.push({
               showId: show.id,
@@ -1137,17 +1137,30 @@ async function pollCycle() {
     }
     let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market)
       .filter(o => !foundOutletIds.has(o.id.toLowerCase()));
-    // For WE shows: prioritize UK outlets over dual-market US outlets (NYT, Variety)
-    // to avoid wasting SERP calls on outlets that rarely review WE shows
+    // For WE shows: also search notable T3 WE outlets that regularly review shows
+    // (these are legitimate reviewers, not blogs — they're just classified T3 by scale)
     if (isLondonMarket(market)) {
+      const WE_T3_SERP_OUTLETS = [
+        'afridiziak-theatre-news', 'new-statesman', 'all-that-dazzles-uk',
+        'theatreandtonic', 'west-end-best-friend', 'london-box-office',
+        'artsdesk', 'theatre-weekly',
+      ];
       const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
       const allOutlets = reg.outlets || reg;
-      const ukFirst = missingOutlets.filter(o => {
+      for (const t3Id of WE_T3_SERP_OUTLETS) {
+        if (foundOutletIds.has(t3Id.toLowerCase())) continue;
+        const outlet = allOutlets[t3Id];
+        if (outlet) {
+          missingOutlets.push({ id: t3Id, name: outlet.displayName || t3Id, tier: outlet.tier, domain: outlet.domain });
+        }
+      }
+      // Sort: UK T1/T2 first, then UK T3, then dual-market US
+      const ukOutlets = missingOutlets.filter(o => {
         const outlet = allOutlets[o.id];
         return outlet && (outlet.region === 'london' || outlet.region === 'uk');
       });
-      const rest = missingOutlets.filter(o => !ukFirst.find(u => u.id === o.id));
-      missingOutlets = [...ukFirst, ...rest];
+      const rest = missingOutlets.filter(o => !ukOutlets.find(u => u.id === o.id));
+      missingOutlets = [...ukOutlets, ...rest];
     }
     if (missingOutlets.length > 0) {
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
