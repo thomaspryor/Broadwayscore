@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-29T21:58:55.162Z",
-  "processed": 90,
-  "failed": 304,
+  "updatedAt": "2026-03-29T22:01:22.540Z",
+  "processed": 92,
+  "failed": 312,
   "successRate": "22.8%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 51,
     "amp": 0,
     "browserbase": 10,
     "directCookies": 1,
     "scrapingbee": 9,
     "brightdata": 0,
-    "archiveToday": 6,
+    "archiveToday": 7,
     "archive": 27
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-03-29T03:49:59.212Z",
@@ -100,6 +100,17 @@
     },
     {
       "t": "2026-03-29T21:20:31.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-29T21:59:04.103Z",
+      "event": "bb-session",
+      "session": "f917e262",
+      "url": "https://www.wsj.com/articles/a-delicate-balance-and-the-high-wire-humor-of-edwar"
+    },
+    {
+      "t": "2026-03-29T21:59:05.332Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
