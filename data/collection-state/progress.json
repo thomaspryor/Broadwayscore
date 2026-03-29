@@ -1,6 +1,13 @@
 {
   "processed": [
-    "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
+    "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+    "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+    "encores-the-wild-party-off-broadway-2026/playbill--unknown.json",
+    "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+    "broken-glass-west-end-2026/independent--samuel-mathewson.json"
   ],
   "failed": [
     "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
@@ -85,11 +92,21 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--unknown.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json",
+      "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+      "a-mirrored-monet-west-end-2026/whatsonstage--unknown.json",
+      "encores-the-wild-party-off-broadway-2026/playbill--unknown.json",
+      "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "broken-glass-west-end-2026/independent--samuel-mathewson.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
@@ -99,10 +116,12 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
+    ]
   },
   "startTime": "2026-03-29T03:49:46.540Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "broken-glass-west-end-2026/independent--samuel-mathewson.json",
   "log": [
     {
       "t": "2026-03-29T03:49:59.212Z",
