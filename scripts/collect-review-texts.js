@@ -79,7 +79,7 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // Score extraction for original scores
-const { extractScore, extractDesignation } = require('./lib/score-extractors');
+const { extractScore, extractDesignation, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
@@ -4244,9 +4244,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     delete data.promptVersion;
   }
 
-  // Extract original score from HTML/text if not already present
+  // Extract original score from HTML/text if not already present,
+  // or if the existing score came from Show Score (SS assigns its own stars,
+  // which are wrong ~11% of the time and invented for outlets without native ratings).
+  // Re-extract to replace SS-assigned scores with verified outlet scores.
   // Phase 2a: Run both old regex AND new LLM extraction, log disagreements, use LLM result
-  if (!data.originalScore && (html || text)) {
+  const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright';
+  const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
+  if ((!data.originalScore || hasUnverifiedSSScore) && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
 
     // Old regex extraction (for comparison logging)
@@ -4272,6 +4277,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // Use LLM result if available, otherwise fall back to regex
     const scoreResult = llmResult || regexResult;
     if (scoreResult) {
+      if (hasUnverifiedSSScore) {
+        console.log(`    → Replacing SS score (${data.originalScore}) with verified: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
+        data.previousShowScoreRating = data.originalScore;
+      } else {
+        console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
+      }
       data.originalScore = scoreResult.originalScore;
       data.originalScoreNormalized = scoreResult.normalizedScore;
       data.scoreSource = scoreResult.source;
@@ -4279,9 +4290,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       if (scoreResult.confidence) {
         data.scoreConfidence = scoreResult.confidence;
       }
-      console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
-    } else {
-      // Both failed — mark as pending for retry
+    } else if (!hasUnverifiedSSScore) {
+      // Both failed and no existing score — mark as pending for retry
+      // Don't mark pending if we were trying to replace an SS score (keep SS as fallback)
       data.scoreExtractionPending = true;
     }
   }

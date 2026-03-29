@@ -20,7 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION } = require('./lib/score-extractors');
+const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -224,7 +224,11 @@ async function main() {
       const fp = path.join(REVIEW_DIR, dir, file);
       try {
         const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
-        if (data.originalScore) continue; // Already has score
+        // Skip if already has a verified score — but re-extract if score came from Show Score
+        // (SS assigns its own stars, wrong ~11% of the time)
+        const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright';
+        const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
+        if (data.originalScore && !hasUnverifiedSSScore) continue;
         if (!data.url) continue; // No URL to fetch
         if (data.wrongShow) continue; // Flagged as wrong content
         if (data.wrongProduction) continue; // URL is for a different production
@@ -246,7 +250,8 @@ async function main() {
     }
   }
 
-  console.log(`Found ${targets.length} reviews without originalScore`);
+  const ssTargets = targets.filter(t => t.data.originalScore);
+  console.log(`Found ${targets.length} reviews to process (${targets.length - ssTargets.length} missing score, ${ssTargets.length} replacing SS score)`);
   const toProcess = targets.slice(0, limit);
   console.log(`Processing ${toProcess.length} of ${targets.length}\n`);
 
@@ -275,11 +280,20 @@ async function main() {
 
       if (result && result.originalScore) {
         extracted++;
-        console.log(`  FOUND: ${result.originalScore} -> ${result.normalizedScore}`);
+        if (t.data.originalScore) {
+          console.log(`  FOUND: ${result.originalScore} -> ${result.normalizedScore} (replacing SS: ${t.data.originalScore})`);
+        } else {
+          console.log(`  FOUND: ${result.originalScore} -> ${result.normalizedScore}`);
+        }
 
         if (execute) {
+          if (t.data.originalScore) {
+            t.data.previousShowScoreRating = t.data.originalScore;
+          }
           t.data.originalScore = result.originalScore;
           t.data.originalScoreNormalized = result.normalizedScore;
+          t.data.scoreSource = result.source;
+          t.data.originalScoreSource = result.source;
           t.data._scoreNote = `Re-collected for score extraction (${new Date().toISOString().split('T')[0]})`;
           // Save archive of the HTML
           if (!t.data.htmlContent && html.length > 1000) {
