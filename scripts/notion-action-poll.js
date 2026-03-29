@@ -249,17 +249,49 @@ Output format:
 
 IMPORTANT — If the Existing Outcome contains a Review with BLOCKERS, address every blocker before implementing. Do not ignore review findings.
 
-MANDATORY VERIFICATION before pushing:
+Follow this sequence strictly. Do NOT skip steps.
+
+## Phase 1: Implement
+- Read the Plan and Review in Existing Outcome
+- Address all Review blockers
+- Make the code changes
+- Commit frequently (never >2 uncommitted files)
+
+## Phase 2: Does It Work? (MANDATORY before push)
+Run ALL of these and check output — "looks correct" is not verification:
 1. \`npx tsc --noEmit\` — zero TypeScript errors
 2. \`npx next lint\` — no new warnings
-3. For changed scripts: run each with smallest scope (--limit 1, --dry-run) and confirm non-zero results
+3. For changed scripts: run each with smallest scope (--limit 1, --dry-run, or a representative test) and confirm non-zero, semantically correct results
 4. For changed src/ files: verify the build succeeds
-5. Run \`node scripts/validate-data.js 2>&1 | tail -5\` — confirm exit code 0
+5. \`node scripts/validate-data.js 2>&1 | tail -10\` — exit code 0
+6. Check: did you break anything adjacent? grep for callers of functions you changed. Run related tests.
 
-Do NOT push code that hasn't passed these checks. "Looks correct" is not verification — run the commands and check the output.
+If ANY check fails, fix before pushing.
 
-After pushing, if the push touches src/public/config files, confirm the deploy workflow triggered:
-\`gh run list --limit 3 --json workflowName,status,conclusion,createdAt\``,
+## Phase 3: Push & Verify Deploy
+- Push to main
+- If push touches src/public/config: confirm deploy workflow triggered via \`gh run list --limit 3\`
+- If deploy fails: fix it NOW, do not leave it broken
+
+## Phase 4: Ship Check
+After pushing, review your own changes as if you were a different engineer:
+- Read the full diff (\`git diff HEAD~1\`)
+- Are there any regressions, missing edge cases, or broken callers?
+- Did you introduce any security issues (hardcoded secrets, injection, XSS)?
+- Are there related files that need the same fix but were missed?
+
+## Phase 5: What Else? (Adjacent discoveries)
+Before wrapping up, apply these lenses to what you just built:
+- **Pattern reuse:** Did you create something that solves a problem elsewhere too? Did you fix a bug that has cousins in other files?
+- **Edges:** What was harder than expected? What does that imply about adjacent work? Where did you hit architecture limits?
+- **Data quality:** Did you discover data issues, gaps, or inconsistencies while working?
+- **Compounding:** What's the obvious next step someone would ask about?
+
+## Phase 6: Wrap Up & Create Cards
+This is MANDATORY — do not skip.
+1. For EVERY issue, TODO, edge case, adjacent improvement, or "what-else" discovery: create a new Notion card in the BWSC Roadmap (data source: collection://fa7b3ff2-c073-4097-b54c-0a78e56e06b6) with Name, Status="Not started", appropriate Priority and Tags, and a one-line Notes description. Do NOT just mention discoveries in the Outcome — they MUST become cards.
+2. Write your implementation summary (what changed, why, gotchas, cards created) — this goes in the ACTION_RESULT markers below.
+3. If the card's work is fully complete, note "CARD STATUS: Done" in your result. If partially done or blocked, note "CARD STATUS: Paused" with the reason.`,
   };
 
   const instruction = actionInstructions[card.action] || actionInstructions.Investigate;
