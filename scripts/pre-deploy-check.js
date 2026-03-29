@@ -214,6 +214,9 @@ try {
     const pct = (lost / watermark.reviewCount * 100).toFixed(1);
     if (lost > 0 && parseFloat(pct) > MAX_REVIEW_DROP_PCT) {
       fail(`Review count dropped ${lost} (${pct}%) from last deploy: ${watermark.reviewCount} → ${reviewCount}`);
+      console.error(`   If drop is unexpected: check that review-texts checkout is complete.`);
+      console.error(`   If drop is intentional: run rebuild to sync the watermark baseline, then re-deploy.`);
+      console.error(`   Command: gh workflow run "Rebuild Reviews Data" -f reason="Post-cleanup sync" -f force_write=true`);
     } else {
       ok(`Review count: ${reviewCount} (watermark: ${watermark.reviewCount})`);
     }
