@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-29T03:06:36.144Z",
+  "generatedAt": "2026-03-29T03:40:18.692Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -2665,33 +2665,43 @@
       "researchedAt": "2026-03-28T22:35:03.384Z"
     },
     "romeo-juliet-2024": {
-      "title": "Romeo + Juliet",
-      "slug": "romeo-juliet-2024",
-      "openingDate": "2024-10-24",
-      "status": "closed",
       "capitalization": 7000000,
-      "capitalizationSource": "Playbill article 'Broadway's Romeo + Juliet Recouped; Reveals Youngest Average Audience in History', by Margaret Hall, February 18 2025",
+      "capitalizationSource": "Reported by Broadway trade press (BroadwayNews / BroadwayWorld / Playbill)",
       "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
+      "costMethodology": null,
       "recouped": true,
       "recoupedDate": "2025-02",
-      "recoupedSource": "Broadway News article 'Broadway’s ‘Romeo + Juliet’ revival recoups investment ahead of closing', by Andy Lefkowitz, February 17 2025",
-      "designation": "Trickle",
-      "notes": "The show opened on October 24 2024 with a $7 million capitalization and recouped that investment during its 20-week limited engagement, breaking even in its final week.",
+      "recoupedSource": "Reported by Broadway trade press (BroadwayNews / BroadwayWorld)",
+      "estimatedRecoupmentPct": null,
+      "designation": "Easy Winner",
+      "notes": "Reports agree the Sam Gold–directed revival had a $7M budget and fully recouped during its 20-week run ([www.broadwaynews.com](https://www.broadwaynews.com/broadways-romeo-juliet-revival-recoups-investment-ahead-of-closing/#:~:text=Broadway%E2%80%99s%20recent%20%E2%80%9CRomeo%20%2B%20Juliet%E2%80%9D,Circle%20in%20the%20Square%20Theatre)) ([www.broadwayworld.com](https://www.broadwayworld.com/article/ROMEO-JULIET-Recoups-on-Broadway-20250217#:~:text=Sam%20Gold%E2%80%99s%20production%20of%20ROMEO,Golden%20Globe%20Award%20winner%20Rachel)). Weekly costs are not publicly reported.",
+      "confidence": "high",
       "sources": [
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/broadways-romeo-juliet-recouped-reveals-youngest-average-audience-in-history",
-          "date": "2025-02-18"
-        },
         {
           "type": "trade",
           "url": "https://www.broadwaynews.com/broadways-romeo-juliet-revival-recoups-investment-ahead-of-closing/",
           "date": "2025-02-17"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/ROMEO-JULIET-Recoups-on-Broadway-20250217",
+          "date": "2025-02-17"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/broadway-grosses-analysis-romeo-juliet-ends-run-with-its-highest-gross",
+          "date": "2025-02-18"
         }
       ],
-      "confidence": "high",
-      "researchedAt": "2026-03-28T22:36:22.656Z"
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Romeo + Juliet",
+      "slug": "romeo-juliet-2024",
+      "openingDate": "2024-10-24",
+      "status": "closed",
+      "researchedAt": "2026-03-29T03:40:18.692Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "stephen-sondheims-old-friends-2025": {
       "title": "Stephen Sondheim's Old Friends",
