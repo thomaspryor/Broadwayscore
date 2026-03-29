@@ -465,8 +465,8 @@ function applyPending() {
       recoupedSource: entry.recoupedSource || null,
       notes: entry.notes || '',
       sources: entry.sources || [],
-      lastUpdated: new Date().toISOString().split('T')[0],
-      firstAdded: new Date().toISOString().split('T')[0],
+      lastUpdated: new Date().toISOString(),
+      firstAdded: new Date().toISOString(),
     };
 
     commercial.shows[showId] = commercialEntry;

@@ -282,7 +282,7 @@ async function main() {
 
       drafts[theaterName] = {
         ...tips,
-        lastUpdated: new Date().toISOString().split('T')[0],
+        lastUpdated: new Date().toISOString(),
         hasScrapedData: !!scrapedData,
       };
 

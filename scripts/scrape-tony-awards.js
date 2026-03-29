@@ -528,7 +528,7 @@ async function main() {
     awardsData = {
       _meta: {
         description: 'Broadway show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League',
-        lastUpdated: new Date().toISOString().split('T')[0],
+        lastUpdated: new Date().toISOString(),
         sources: ['Wikipedia', 'TonyAwards.com']
       },
       shows: {}

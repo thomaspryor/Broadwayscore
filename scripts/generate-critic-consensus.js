@@ -321,7 +321,7 @@ async function main() {
 
       consensusData.shows[showId] = {
         text: finalText,
-        lastUpdated: new Date().toISOString().split('T')[0],
+        lastUpdated: new Date().toISOString(),
         reviewCount: reviews.length,
         fullTextCount,
         meanScore,

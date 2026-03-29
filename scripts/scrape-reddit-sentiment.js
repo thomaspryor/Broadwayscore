@@ -152,7 +152,7 @@ function calculateBuzzScore(classifications, totalPosts = 0, totalComments = 0) 
       neutral: Math.round(sentimentCounts.neutral / relevant.length * 100) / 100,
     },
     positiveRate: (sentimentCounts.enthusiastic + sentimentCounts.positive) / relevant.length,
-    lastUpdated: new Date().toISOString().split('T')[0]
+    lastUpdated: new Date().toISOString()
   };
 }
 
