@@ -313,7 +313,7 @@ async function main() {
         score,
         reviewCount: data.reviewsCount,
         starRating: data.ratingAverage,
-        lastUpdated: new Date().toISOString().slice(0, 10),
+        lastUpdated: new Date().toISOString(),
         ...(data.ratings ? { ratingDistribution: data.ratings } : {}),
       };
 
@@ -330,7 +330,7 @@ async function main() {
       buzzData.shows[show.id] = showEntry;
 
       // Write back immediately (re-read + merge pattern)
-      buzzData._meta.lastUpdated = new Date().toISOString().slice(0, 10);
+      buzzData._meta.lastUpdated = new Date().toISOString();
       if (!buzzData._meta.sources.includes('SeatPlan')) {
         buzzData._meta.sources.push('SeatPlan');
       }

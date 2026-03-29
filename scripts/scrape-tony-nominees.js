@@ -566,7 +566,7 @@ function writeOutput(nominations, expectedShowCount, actualShowCount, awardsData
   const output = {
     _meta: {
       description: 'Person-level Tony Award nominations and wins',
-      lastUpdated: new Date().toISOString().split('T')[0],
+      lastUpdated: new Date().toISOString(),
       source: 'IBDB',
       coverage: '1970-present',
       expectedShowCount,

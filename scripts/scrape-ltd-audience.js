@@ -352,7 +352,7 @@ async function main() {
         score,
         reviewCount: data.reviewCount,
         starRating: data.ratingValue,
-        lastUpdated: new Date().toISOString().slice(0, 10),
+        lastUpdated: new Date().toISOString(),
       };
 
       // Recalculate combined score
@@ -367,7 +367,7 @@ async function main() {
       showEntry.title = show.title;
       buzzData.shows[show.id] = showEntry;
 
-      buzzData._meta.lastUpdated = new Date().toISOString().slice(0, 10);
+      buzzData._meta.lastUpdated = new Date().toISOString();
       if (!buzzData._meta.sources.includes('LTD')) {
         buzzData._meta.sources.push('LTD');
       }

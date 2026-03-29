@@ -166,7 +166,7 @@ function main() {
 
   const showScoreData = {
     _meta: {
-      lastUpdated: new Date().toISOString().split('T')[0],
+      lastUpdated: new Date().toISOString(),
       source: 'show-score.com'
     },
     shows: {}

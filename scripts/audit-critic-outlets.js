@@ -199,7 +199,7 @@ function main() {
   const registryOutput = {
     _meta: {
       description: 'Auto-generated critic-outlet affinity registry',
-      lastUpdated: new Date().toISOString().split('T')[0],
+      lastUpdated: new Date().toISOString(),
       generatedBy: 'scripts/audit-critic-outlets.js',
       totalCritics: registryCount,
       totalReviews: Object.values(registry).reduce((sum, c) => sum + c.totalReviews, 0),
@@ -210,7 +210,7 @@ function main() {
   const auditOutput = {
     _meta: {
       description: 'Critic-outlet affinity audit report',
-      lastUpdated: new Date().toISOString().split('T')[0],
+      lastUpdated: new Date().toISOString(),
       generatedBy: 'scripts/audit-critic-outlets.js',
       totalFilesScanned: totalFiles,
       skippedFiles,

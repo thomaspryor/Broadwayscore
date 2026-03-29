@@ -272,7 +272,7 @@ async function main() {
           const entry = {
             intro,
             ...(year ? { year } : { monthYear }),
-            lastUpdated: new Date().toISOString().split('T')[0],
+            lastUpdated: new Date().toISOString(),
             showCount: guideShows.length,
           };
 

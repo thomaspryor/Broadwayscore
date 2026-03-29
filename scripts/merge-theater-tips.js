@@ -58,7 +58,7 @@ function main() {
 
     // Build the structuredTips object matching our TypeScript interface
     const structuredTips = {
-      lastUpdated: tips.lastUpdated || new Date().toISOString().split('T')[0],
+      lastUpdated: tips.lastUpdated || new Date().toISOString(),
     };
 
     // Seating
