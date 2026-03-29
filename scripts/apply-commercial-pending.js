@@ -147,8 +147,8 @@ function main() {
     if (entry.notes) commercialEntry.notes = entry.notes;
     if (entry.sources && entry.sources.length > 0) commercialEntry.sources = entry.sources;
 
-    commercialEntry.lastUpdated = new Date().toISOString().split('T')[0];
-    commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString().split('T')[0];
+    commercialEntry.lastUpdated = new Date().toISOString();
+    commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString();
 
     // Preserve research tracking metadata from existing entry
     if (existing) {

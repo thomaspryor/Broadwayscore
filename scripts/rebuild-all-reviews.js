@@ -2606,7 +2606,7 @@ if (consistencyIssues.length > 0) {
 const output = {
   _meta: {
     description: "Critic reviews - raw input data",
-    lastUpdated: new Date().toISOString().split('T')[0],
+    lastUpdated: new Date().toISOString(),
     notes: "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     stats: {
       totalReviews: stats.totalReviews,
