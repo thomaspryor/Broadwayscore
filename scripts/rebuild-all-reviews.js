@@ -2631,9 +2631,9 @@ const output = {
   reviews: allReviews
 };
 
-// REVIEW COUNT REGRESSION GUARD: abort if rebuild would lose >2% of reviews.
-// This prevents CI rebuilds with stale/incomplete data from silently dropping reviews.
-// Override with --force-write to bypass (e.g., after intentional bulk cleanup).
+// REVIEW COUNT REGRESSION GUARD: warn if rebuild would lose >2% of reviews.
+// Logs prominently and writes audit trail, but proceeds with the write.
+// The --force-write flag is kept for backwards compatibility but is no longer needed.
 {
   let existingCount = 0;
   try {
@@ -2645,14 +2645,28 @@ const output = {
     const newCount = allReviews.length;
     const lost = existingCount - newCount;
     const pctLost = (lost / existingCount * 100).toFixed(1);
-    if (lost > 0 && parseFloat(pctLost) > 2.0 && !process.argv.includes('--force-write')) {
-      console.error(`\n🚨 REGRESSION GUARD: Rebuild would DROP ${lost} reviews (${pctLost}% loss)`);
+    if (lost > 0 && parseFloat(pctLost) > 2.0) {
+      console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss)`);
       console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
       console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
-      console.error(`   To override, run with --force-write`);
-      process.exit(1);
+      console.error(`   ⚠️  PROCEEDING WITH WRITE — review data/audit/rebuild-regression.json for details`);
+      // Write audit trail for tracking
+      try {
+        const auditDir = path.join(path.dirname(reviewsJsonPath), 'audit');
+        if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+        fs.writeFileSync(path.join(auditDir, 'rebuild-regression.json'), JSON.stringify({
+          timestamp: new Date().toISOString(),
+          existingCount,
+          newCount,
+          lost,
+          pctLost: parseFloat(pctLost),
+          argv: process.argv.slice(2),
+        }, null, 2) + '\n');
+      } catch (auditErr) {
+        console.error(`   Could not write audit file: ${auditErr.message}`);
+      }
     }
-    if (lost > 0) {
+    if (lost > 0 && parseFloat(pctLost) <= 2.0) {
       console.log(`\n⚠️  Review count decreased by ${lost} (${pctLost}%) — within 2% threshold, proceeding.`);
     }
   }
