@@ -1,41 +1,30 @@
 {
-  "updatedAt": "2026-03-29T03:46:40.453Z",
-  "processed": 17,
-  "failed": 659,
-  "successRate": "2.5%",
+  "updatedAt": "2026-03-29T03:50:15.347Z",
+  "processed": 1,
+  "failed": 2,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 6,
+    "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-03-28T21:27:02.720Z",
+      "t": "2026-03-29T03:49:59.212Z",
       "event": "bb-session",
-      "session": "51b32341",
-      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
+      "session": "9e225549",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     },
     {
-      "t": "2026-03-28T21:27:04.166Z",
+      "t": "2026-03-29T03:50:00.340Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-03-28T21:28:01.339Z",
-      "event": "bb-session",
-      "session": "2952f985",
-      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-th"
-    },
-    {
-      "t": "2026-03-28T21:28:02.624Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "variety.com"
     }
   ]
 }
