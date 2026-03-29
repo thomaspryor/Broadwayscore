@@ -609,14 +609,13 @@ async function fetchShowsFromLondonTheatre() {
 
 const OWE_VENUE_PAGES = [
   { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
-  { name: 'Soho Theatre', url: 'https://sohotheatre.com/all-shows/', linkPattern: /\/events\/[^/]+/ },
+  { name: 'Soho Theatre', url: 'https://sohotheatre.com/all-shows/', linkPattern: /\/events\/[^/]+/, titleFromHeading: true },
   // Arcola: shows rendered in-page without individual links — needs Playwright (v2)
-  // Theatre503: returns 403 — needs different approach (v2)
   { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/, titleFromSlug: true },
   { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
-  { name: "King's Head Theatre", url: 'https://www.kingsheadtheatre.com/whats-on', linkPattern: /\/whats-on\/[^/]+/ },
+  { name: "King's Head Theatre", url: 'https://www.kingsheadtheatre.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, stripSlugHash: true },
   { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
-  { name: 'Theatre503', url: 'https://theatre503.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/ },
+  { name: 'Theatre503', url: 'https://theatre503.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
 ];
 
 // Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
@@ -655,39 +654,25 @@ async function fetchShowsFromOweVenues() {
 }
 
 async function fetchSingleVenuePage(venue) {
-  const html = await new Promise((resolve, reject) => {
-    const urlObj = new URL(venue.url);
-    const req = https.get(venue.url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'en-GB,en;q=0.9',
-      },
-      timeout: 15000,
-    }, (res) => {
-      // Follow one redirect
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        const redirectUrl = new URL(res.headers.location, venue.url).href;
-        res.resume();
-        https.get(redirectUrl, {
-          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
-          timeout: 15000,
-        }, (res2) => {
-          if (res2.statusCode !== 200) { reject(new Error(`HTTP ${res2.statusCode} after redirect`)); res2.resume(); return; }
-          let data = '';
-          res2.on('data', chunk => data += chunk);
-          res2.on('end', () => resolve(data));
-        }).on('error', reject);
-        return;
-      }
-      if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); res.resume(); return; }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
+  // Use fetch() instead of https.get() — CDN-protected sites TLS-fingerprint block Node's http module
+  let html;
+  const resp = await fetch(venue.url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml',
+      'Accept-Language': 'en-GB,en;q=0.9',
+    },
+    redirect: 'follow',
+    signal: AbortSignal.timeout(15000),
   });
+  if (resp.ok) {
+    html = await resp.text();
+  } else {
+    // Fallback to fetchPage (Bright Data / ScrapingBee proxy) for CDN-blocked sites
+    const result = await fetchPage(venue.url);
+    if (!result.html) throw new Error(`HTTP ${resp.status} (proxy also failed)`);
+    html = result.html;
+  }
 
   if (html.length < 1000) return [];
 
@@ -734,11 +719,25 @@ async function fetchSingleVenuePage(venue) {
     // Skip navigation/category pages and online/virtual content
     if (/\/(past-shows|access|participation|account|login|logout|search|tag|category|page\/|online|virtual|digital)/i.test(href)) continue;
 
-    // For venues with noisy link text (cards with concatenated content), extract title from URL slug
+    // For venues with noisy link text (cards with concatenated content), extract title from URL slug or heading
     let title;
     if (venue.titleFromSlug) {
-      const slug = href.split('/').filter(Boolean).pop() || '';
+      let slug = href.split('/').filter(Boolean).pop() || '';
+      // Strip hash suffixes from slugs (e.g., "in-the-print-8y4s" → "in-the-print")
+      if (venue.stripSlugHash) slug = slug.replace(/-[a-z0-9]{3,4}$/, '');
       title = slug.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase()).replace(/ \w/g, c => c.toUpperCase());
+    } else if (venue.titleFromHeading) {
+      // Try heading inside the link first, then in closest card container (sibling divs)
+      const heading = link.querySelector('h1, h2, h3, h4, h5');
+      if (heading) {
+        title = heading.textContent.trim();
+      } else {
+        // Theatre503-style: link is an empty image wrapper, heading is in a sibling <div class="details">
+        const parent = link.parentElement;
+        const container = parent?.parentElement || parent;
+        const nearby = container?.querySelector('h1, h2, h3, h4, h5');
+        title = nearby ? nearby.textContent.trim() : '';
+      }
     } else {
       title = cleanVenueTitle(link.textContent || '');
     }
@@ -746,7 +745,7 @@ async function fetchSingleVenuePage(venue) {
     if (seen.has(title.toLowerCase())) continue;
     if (shouldExcludeVenueShow(title)) continue;
     // Skip generic link text and single-word category labels
-    if (/^(read more|book now|buy tickets|find out more|view|details|more info|back|next|previous|more|book|drama|comedy|musical|theatre|cabaret|main house|later|all shows|past shows|participation)/i.test(title)) continue;
+    if (/^(read more|book now|buy tickets|find out more|view|details|more info|back|next|previous|more|book|drama|comedy|musical|theatre|cabaret|main ?house(later)?|later|all shows|past shows|participation|standupcomedy)/i.test(title)) continue;
     if (/^stand.?up/i.test(title)) continue;
 
     seen.add(title.toLowerCase());
