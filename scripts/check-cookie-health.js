@@ -18,8 +18,7 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-
-const COOKIE_DIR = path.join(__dirname, '..', 'data', 'cookies');
+const { loadCookiesByFileKey, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');
 
 // --- Outlet Configuration ---
 
@@ -66,42 +65,11 @@ const CRITICAL_OUTLETS = {
   },
 };
 
-// All outlet fileKey → envVar mappings (for Layer 1 structure check)
-const ALL_OUTLETS = {
-  wsj: 'WSJ_COOKIES',
-  newyorker: 'NEWYORKER_COOKIES',
-  nytimes: 'NYT_COOKIES',
-  vulture: 'VULTURE_COOKIES',
-  wapo: 'WAPO_COOKIES',
-  ft: 'FT_COOKIES',
-  timeout: 'TIMEOUT_COOKIES',
-  nypost: 'NYPOST_COOKIES',
-  nydailynews: 'NYDAILYNEWS_COOKIES',
-  deadline: 'DEADLINE_COOKIES',
-  observer: 'OBSERVER_COOKIES',
-  hollywoodreporter: 'THR_COOKIES',
-  variety: 'VARIETY_COOKIES',
-  indiewire: 'INDIEWIRE_COOKIES',
-  ew: 'EW_COOKIES',
-  theatermania: 'THEATERMANIA_COOKIES',
-  huffpost: 'HUFFPOST_COOKIES',
-  usatoday: 'USATODAY_COOKIES',
-  northjersey: 'NORTHJERSEY_COOKIES',
-  bloomberg: 'BLOOMBERG_COOKIES',
-  thestage: 'THESTAGE_COOKIES',
-  talkinbroadway: 'TALKINBROADWAY_COOKIES',
-  backstage: 'BACKSTAGE_COOKIES',
-  amny: 'AMNY_COOKIES',
-  frontmezzjunkies: 'FRONTMEZZJUNKIES_COOKIES',
-  telegraph: 'TELEGRAPH_COOKIES',
-  thetimes: 'THETIMES_COOKIES',
-  standard: 'STANDARD_COOKIES',
-  independent: 'INDEPENDENT_COOKIES',
-  chicagotribune: 'CHICAGOTRIBUNE_COOKIES',
-  thewrap: 'THEWRAP_COOKIES',
-  nbcnewyork: 'NBCNEWYORK_COOKIES',
-  newsday: 'NEWSDAY_COOKIES',
-};
+// All outlet fileKey → envVar mappings (from shared cookie-loader)
+const ALL_OUTLETS = {};
+for (const fk of getAllFileKeys()) {
+  ALL_OUTLETS[fk] = getEnvVarForFileKey(fk);
+}
 
 // Thresholds
 const AUTH_ERROR_DAYS = 2;   // Auth cookie <2 days = fail
@@ -133,28 +101,9 @@ function httpsGet(url, headers = {}, timeoutMs = 15000) {
   });
 }
 
-// --- Cookie Loading ---
-
-function loadCookies(fileKey) {
-  const envVar = ALL_OUTLETS[fileKey];
-  if (envVar && process.env[envVar]) {
-    try {
-      const decoded = Buffer.from(process.env[envVar], 'base64').toString('utf-8');
-      const cookies = JSON.parse(decoded);
-      if (Array.isArray(cookies)) return { source: 'env', cookies };
-    } catch {}
-  }
-
-  const filePath = path.join(COOKIE_DIR, `${fileKey}.json`);
-  if (fs.existsSync(filePath)) {
-    try {
-      const cookies = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-      if (Array.isArray(cookies)) return { source: 'file', cookies };
-    } catch {}
-  }
-
-  return null;
-}
+// Cookie loading delegated to shared cookie-loader.js
+// loadCookiesByFileKey returns { source: 'bundle'|'env'|'file', cookies: [] } or null
+const loadCookies = loadCookiesByFileKey;
 
 function buildCookieHeader(cookies, targetHostname = null) {
   let filtered = cookies.filter(c => c.name && c.value);
