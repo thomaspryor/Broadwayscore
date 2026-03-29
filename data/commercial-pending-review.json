@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-29T03:40:18.692Z",
+  "generatedAt": "2026-03-29T21:22:00.182Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -829,19 +829,17 @@
       "researchedAt": "2026-03-28T21:13:03.466Z"
     },
     "doubt-2024": {
-      "title": "Doubt: A Parable",
-      "slug": "doubt",
-      "openingDate": "2024-03-07",
-      "status": "closed",
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
       "designation": "Nonprofit",
-      "notes": "The Roundabout Theatre Company revival of Doubt: A Parable was produced by a nonprofit theatre company; financial details such as capitalization, weekly running cost, and recoupment are not publicly disclosed.",
+      "notes": "Roundabout Theatre Company (a nonprofit) produced *Doubt*. It ran 34 previews/50 performances and closed April 21, 2024 ([playbill.com](https://playbill.com/article/doubt-a-parable-completes-broadway-run-april-21#:~:text=Following%20a%20one,previews%20and%2050%20regular%20performances)). No public budget or recoup data is available. It likely did not recoup its investment.",
+      "confidence": "low",
       "sources": [
         {
           "type": "trade",
@@ -849,13 +847,23 @@
           "date": "2024-04-21"
         },
         {
-          "type": "trade",
-          "url": "https://en.wikipedia.org/wiki/Roundabout_Theatre_Company",
-          "date": "2026-03-28"
+          "type": "other",
+          "url": "https://www.ibdb.com/broadway-production/doubt-537819",
+          "date": null
+        },
+        {
+          "type": "other",
+          "url": "https://www.taxexemptworld.com/organization.asp?tn=138776",
+          "date": null
         }
       ],
-      "confidence": "medium",
-      "researchedAt": "2026-03-28T21:13:48.014Z"
+      "title": "Doubt: A Parable",
+      "slug": "doubt-2024",
+      "openingDate": "2024-03-07",
+      "status": "closed",
+      "researchedAt": "2026-03-29T13:57:37.285Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "grey-house-2023": {
       "title": "Grey House",
@@ -882,33 +890,41 @@
       "researchedAt": "2026-03-28T21:15:18.689Z"
     },
     "hairspray-2002": {
-      "title": "Hairspray",
-      "slug": "hairspray-2002",
-      "openingDate": "2002-08-15",
-      "status": "closed",
       "capitalization": 10500000,
-      "capitalizationSource": "Playbill: Good Morning, New York: Hairspray Begins Broadway Previews July 18",
+      "capitalizationSource": "Producer quote via Playbill (May 2003) ([playbill.com](https://playbill.com/article/broadway-smash-hairspray-returns-investment-com-113452#:~:text=News%20Broadway%20Smash%20Hairspray%20Returns,Line))",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": true,
       "recoupedDate": "2003-05",
-      "recoupedSource": "Playbill: Broadway Smash Hairspray Returns Investment",
+      "recoupedSource": "Trade press (Playbill) reporting recoupment of $10.5M investment ([playbill.com](https://playbill.com/article/broadway-smash-hairspray-returns-investment-com-113452#:~:text=News%20Broadway%20Smash%20Hairspray%20Returns,Line))",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
       "designation": "Windfall",
-      "notes": "Hairspray opened Aug. 15, 2002 with a $10.5M capitalization, recouped its investment in May 2003 (≈9.5 months), and ran until Jan. 2009, delivering strong profits.",
+      "notes": "Hairspray raised ~$10.5 million and recouped by mid-2003 ([playbill.com](https://playbill.com/article/broadway-smash-hairspray-returns-investment-com-113452#:~:text=News%20Broadway%20Smash%20Hairspray%20Returns,Line)). It closed in 2009 with ~$252.2M gross ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/HAIRSPRAY#:~:text=Gross%20%24252%2C181%2C270)). Weekly costs not publicly available. Commercial production at the Neil Simon (nonprofit status N/A).",
+      "confidence": "high",
       "sources": [
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/good-morning-new-york-hairspray-begins-broadway-previews-july-18-2002",
-          "date": "2002-07-18"
-        },
         {
           "type": "trade",
           "url": "https://playbill.com/article/broadway-smash-hairspray-returns-investment-com-113452",
           "date": "2003-05-30"
+        },
+        {
+          "type": "other",
+          "url": "https://www.broadwayworld.com/grosses/HAIRSPRAY",
+          "date": null
         }
       ],
-      "confidence": "medium",
-      "researchedAt": "2026-03-28T21:16:20.680Z"
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Hairspray",
+      "slug": "hairspray-2002",
+      "openingDate": "2002-08-15",
+      "status": "closed",
+      "researchedAt": "2026-03-29T04:50:09.877Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "i-need-that-2023": {
       "title": "I Need That",
@@ -1061,33 +1077,36 @@
       "researchedAt": "2026-03-28T21:20:24.471Z"
     },
     "prayer-for-the-french-republic-2024": {
-      "title": "Prayer for the French Republic",
-      "slug": "prayer-for-the-french-republic",
-      "openingDate": "2024-01-09",
-      "status": "closed",
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "Not publicly reported; no Form D or press budget data found",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
       "designation": "Nonprofit",
-      "notes": "Produced by nonprofit Manhattan Theatre Club; no public data on capitalization or weekly running costs, and recoupment is not applicable.",
+      "notes": "Manhattan Theatre Club (a nonprofit) produced Prayer for the French Republic ([playbill.com](https://playbill.com/article/prayer-for-the-french-republic-gets-final-broadway-extension-into-march#:~:text=The%20Joshua%20Harmon%20play%20opened,Theatre%20via%20Manhattan%20Theatre%20Club)). No public data was found for the show's capitalization or weekly expenses. The Broadway run grossed about $4.9M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/PRAYER-FOR-THE-FRENCH-REPUBLIC#:~:text=Gross%20%244%2C898%2C981)), but with no disclosed budget its recoupment cannot be determined. As a nonprofit production, recoupment is not applicable.",
+      "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.manhattantheatreclub.com/shows/2023-24-season/prayer-for-the-french-republic/",
-          "date": null
+          "url": "https://playbill.com/article/prayer-for-the-french-republic-gets-final-broadway-extension-into-march",
+          "date": "2024-01-18"
         },
         {
           "type": "trade",
-          "url": "https://www.manhattantheatreclub.com/content/uploads/2025/01/MTC24AnnualReportFinalLowRes.pdf",
-          "date": null
+          "url": "https://www.broadwayworld.com/grosses/PRAYER-FOR-THE-FRENCH-REPUBLIC",
+          "date": "2024-03-04"
         }
       ],
-      "confidence": "high",
-      "researchedAt": "2026-03-28T21:21:11.929Z"
+      "title": "Prayer for the French Republic",
+      "slug": "prayer-for-the-french-republic-2024",
+      "openingDate": "2024-01-09",
+      "status": "closed",
+      "researchedAt": "2026-03-29T13:48:25.876Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "spamalot-2023": {
       "title": "Spamalot",
@@ -1124,33 +1143,39 @@
       "researchedAt": "2026-03-28T21:22:53.701Z"
     },
     "the-cottage-2023": {
-      "title": "The Cottage",
-      "slug": "the-cottage",
-      "openingDate": "2023-07-24",
-      "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 8142196,
+      "capitalizationSource": "Implied from NYC production tax credit (25% of ~$8.14M costs = $2,035,549 credit ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=Days%20On%20Broadway%20Inc%20,%24350%2C000)))",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "The Cottage ran on Broadway from July 24 to October 29, 2023, at the Helen Hayes Theater. Financial details such as its initial capitalization, weekly running costs, and recoupment status have not been publicly disclosed.",
+      "recoupedSource": "Total gross ($5.218M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/THE-COTTAGE#:~:text=All%20time))) far below implied $8.14M budget from tax credit ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=Days%20On%20Broadway%20Inc%20,%24350%2C000))",
+      "estimatedRecoupmentPct": [
+        60,
+        70
+      ],
+      "designation": "Fizzle",
+      "notes": "Closed without recouping. Budget inferred from NYC tax credit; weekly costs unknown.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://playbill.com/article/broadways-the-cottage-closes-for-the-season-october-29",
-          "date": "2023-10-29"
+          "url": "https://www.broadwayworld.com/grosses/THE-COTTAGE",
+          "date": null
         },
         {
-          "type": "trade",
-          "url": "https://en.wikipedia.org/wiki/The_Cottage_(play)",
-          "date": null
+          "type": "other",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-03-28T21:24:19.560Z"
+      "title": "The Cottage",
+      "slug": "the-cottage-2023",
+      "openingDate": "2023-07-24",
+      "status": "closed",
+      "researchedAt": "2026-03-29T13:52:38.523Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "heart-of-rock-and-roll-2024": {
       "title": "The Heart of Rock and Roll",
@@ -1366,38 +1391,41 @@
       "researchedAt": "2026-03-28T21:32:26.598Z"
     },
     "beautiful-the-carole-king-musical-2014": {
-      "title": "Beautiful The Carole King Musical",
-      "slug": "beautiful-the-carole-king-musical-2014",
-      "openingDate": "2014-01-12",
-      "status": "closed",
       "capitalization": 13000000,
-      "capitalizationSource": "BroadwayWorld article by Tyler Peterson, September 15, 2014",
+      "capitalizationSource": "Reported in Broadway trade press (Broadway.com and Deadline) ([www.broadway.com](https://www.broadway.com/buzz/177472/some-kind-of-wonderful-beautiful-the-carole-king-musical-recoups-on-broadway/#:~:text=It%E2%80%99s%20one%20fine%20day%20for,2%20in%20the%20title%20role)) ([www.yahoo.com](https://www.yahoo.com/entertainment/carole-king-musical-beautiful-recoups-152547435.html#:~:text=Beautiful%20%E2%80%94%20The%20Carole%20King,com%20learned))",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": true,
       "recoupedDate": "2014-09",
-      "recoupedSource": "BroadwayWorld article by Tyler Peterson, September 15, 2014",
-      "designation": "Miracle",
-      "notes": "Beautiful: The Carole King Musical opened in January 2014 with a $13 million capitalization and recouped its production costs in less than ten months, going on to gross over $350 million during its nearly six-year Broadway run, marking it as a standout commercial success.",
+      "recoupedSource": "Industry trades (Broadway.com/Deadline) ([www.broadway.com](https://www.broadway.com/buzz/177472/some-kind-of-wonderful-beautiful-the-carole-king-musical-recoups-on-broadway/#:~:text=It%E2%80%99s%20one%20fine%20day%20for,2%20in%20the%20title%20role)) ([www.yahoo.com](https://www.yahoo.com/entertainment/carole-king-musical-beautiful-recoups-152547435.html#:~:text=Beautiful%20%E2%80%94%20The%20Carole%20King,com%20learned))",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
+      "designation": "Windfall",
+      "notes": "Official sources report a $13M capitalization ([www.broadway.com](https://www.broadway.com/buzz/177472/some-kind-of-wonderful-beautiful-the-carole-king-musical-recoups-on-broadway/#:~:text=It%E2%80%99s%20one%20fine%20day%20for,2%20in%20the%20title%20role)) ([www.yahoo.com](https://www.yahoo.com/entertainment/carole-king-musical-beautiful-recoups-152547435.html#:~:text=Beautiful%20%E2%80%94%20The%20Carole%20King,com%20learned)). No published weekly cost was found. According to Deadline/Broadway.com, Beautiful recouped in ~10 months (Sep 2014) ([www.yahoo.com](https://www.yahoo.com/entertainment/carole-king-musical-beautiful-recoups-152547435.html#:~:text=Beautiful%20%E2%80%94%20The%20Carole%20King,com%20learned)) ([www.broadway.com](https://www.broadway.com/buzz/177472/some-kind-of-wonderful-beautiful-the-carole-king-musical-recoups-on-broadway/#:~:text=It%E2%80%99s%20one%20fine%20day%20for,2%20in%20the%20title%20role)). The show’s nearly 6-year run and full recoup suggest a major hit (‘Windfall’).",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/article/BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Recoups-Broadway-Investment-20140915",
+          "url": "https://www.yahoo.com/entertainment/carole-king-musical-beautiful-recoups-152547435.html",
           "date": "2014-09-15"
         },
         {
           "type": "trade",
           "url": "https://www.broadway.com/buzz/177472/some-kind-of-wonderful-beautiful-the-carole-king-musical-recoups-on-broadway/",
           "date": "2014-09-15"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.latimes.com/entertainment/arts/culture/la-et-cm-carole-king-musical-broadway-movie-20150323-story.html",
-          "date": "2015-03-23"
         }
       ],
-      "confidence": "high",
-      "researchedAt": "2026-03-28T21:33:34.921Z"
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Beautiful The Carole King Musical",
+      "slug": "beautiful-the-carole-king-musical-2014",
+      "openingDate": "2014-01-12",
+      "status": "closed",
+      "researchedAt": "2026-03-29T04:45:58.038Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "come-from-away-2017": {
       "title": "Come From Away",
@@ -1603,24 +1631,25 @@
       "researchedAt": "2026-03-28T21:42:48.588Z"
     },
     "bad-cinderella-2023": {
-      "title": "Bad Cinderella",
-      "slug": "bad-cinderella-2023",
-      "openingDate": "2023-03-23",
-      "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
+      "capitalization": 12000000,
+      "capitalizationSource": "BroadwayWorld (NYC tax credit list, 3M credit → ~12M budget) ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=weeks%20ago))",
+      "weeklyRunningCost": 700000,
       "costMethodology": "industry-estimate",
       "recouped": false,
       "recoupedDate": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": [
+        0,
+        20
+      ],
       "designation": "Flop",
-      "notes": "Bad Cinderella closed after 85 performances and 33 previews at the Imperial Theatre, grossing only $8.1 million against a multimillion-dollar capitalization, and did not recoup its investment.",
+      "notes": "Full $3M tax credit (25%) implies ~$12M budget ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=weeks%20ago)); closed after 85 performances without recoup (gross ~$8.1M), so losses were not covered.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://playbill.com/production/bad-cinderella-broadway-imperial-theatre-2023",
-          "date": "2023-06-04"
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+          "date": "2025-09-04"
         },
         {
           "type": "trade",
@@ -1628,8 +1657,13 @@
           "date": "2023-05-11"
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-03-28T21:44:15.567Z"
+      "title": "Bad Cinderella",
+      "slug": "bad-cinderella-2023",
+      "openingDate": "2023-03-23",
+      "status": "closed",
+      "researchedAt": "2026-03-29T21:22:00.182Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "between-riverside-and-crazy-2022": {
       "title": "Between Riverside and Crazy",
@@ -1661,62 +1695,81 @@
       "researchedAt": "2026-03-28T21:45:51.565Z"
     },
     "bob-fosses-dancin-2023": {
-      "title": "Bob Fosse's Dancin'",
-      "slug": "bob-fosses-dancin-2023",
-      "openingDate": "2023-03-19",
-      "status": "closed",
-      "capitalization": 7500000,
-      "capitalizationSource": "Broadway Journal: reported $7.5M capitalization raised from 130 investors per New York Times",
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Flop",
-      "notes": "The 2023 revival of Bob Fosse’s Dancin’ raised $7.5M in capitalization but closed after 65 performances with average weekly grosses of about $550K, failing to cover operating costs and recoup its investment.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/dancin-designers-due-more-than-200000",
-          "date": "2025-05-29"
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-03-28T21:46:40.884Z"
-    },
-    "camelot-2023": {
-      "title": "Camelot",
-      "slug": "camelot-2023",
-      "openingDate": "2023-04-13",
-      "status": "closed",
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Broadway Scorecard – 2023-2024 Season data updated 2026-03-26 shows Camelot did not recoup",
+      "recoupedSource": "Closed May 14, 2023 with total gross $5,744,416 ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/BOB-FOSSE-S-DANCIN-#:~:text=All%20time))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Fizzle",
+      "notes": "Closed 5/14/2023 after 65 performances with total gross $5.744M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/BOB-FOSSE-S-DANCIN-#:~:text=All%20time)). No budget data found; sales were weak (e.g. $386,970 gross <50% capacity in late April ([www.yahoo.com](https://www.yahoo.com/entertainment/bob-fosse-dancin-sets-broadway-223000642.html#:~:text=The%20musical%2C%20directed%20by%20Wayne,Box%20Theatre%2C%20grossing%20just%20%24386%2C970))). Show did not recoup.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "other",
+          "url": "https://www.broadwayworld.com/grosses/BOB-FOSSE-S-DANCIN-",
+          "date": "2023-05-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.yahoo.com/entertainment/bob-fosse-dancin-sets-broadway-223000642.html",
+          "date": "2023-05-02"
+        }
+      ],
+      "title": "Bob Fosse's Dancin'",
+      "slug": "bob-fosses-dancin-2023",
+      "openingDate": "2023-03-19",
+      "status": "closed",
+      "researchedAt": "2026-03-29T06:31:15.908Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "camelot-2023": {
+      "capitalization": null,
+      "capitalizationSource": "No public data available on capitalization (nonprofit LCT production)",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Early closing in July 2023 ([broadwaydirect.com](https://broadwaydirect.com/camelot-to-close-early-on-broadway/#:~:text=The%20Lincoln%20Center%20Theater%20revival,2023%2C%20at%20the%20%204)) ([playbill.com](https://playbill.com/article/broadway-camelot-gets-early-closing-notice#:~:text=Lincoln%20Center%20Theater%20%27s%20Broadway,closing%20notice%20shortens%20that%20extension)), no recoupment announced",
+      "estimatedRecoupmentPct": [
+        50,
+        80
+      ],
       "designation": "Nonprofit",
-      "notes": "Lincoln Center Theater’s nonprofit revival of Camelot grossed $15.2 M in 115 performances but did not recoup before closing on July 23, 2023.",
+      "notes": "LCT-produced revival at nonprofit Beaumont theater ([www.ibdb.com](https://www.ibdb.com/broadway-production/camelot-534339#:~:text=Theatre%20Owned%20%2F%20Operated%20by,Director%20of%20Development%20and%20Planning)); closed early July 2023 ([broadwaydirect.com](https://broadwaydirect.com/camelot-to-close-early-on-broadway/#:~:text=The%20Lincoln%20Center%20Theater%20revival,2023%2C%20at%20the%20%204)); total gross ~$18.9M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/CAMELOT#:~:text=All%20time)); no budget reported.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://playbill.com/production/camelot-broadway-vivian-beaumont-theater-2023",
-          "date": "2023-07-23"
+          "url": "https://broadwaydirect.com/camelot-to-close-early-on-broadway/",
+          "date": "2023-06-29"
         },
         {
           "type": "trade",
-          "url": "https://broadwayscorecard.com/biz",
-          "date": "2026-03-26"
+          "url": "https://playbill.com/article/broadway-camelot-gets-early-closing-notice",
+          "date": "2023-06-28"
         },
         {
-          "type": "trade",
-          "url": "https://media.lct.org/filer_public/a4/5b/a45bf112-df09-4805-bb72-3e1bf3dea462/lincoln_center_theater_6-30-2023_audited_fin_stmts.pdf",
-          "date": "2023-10-27"
+          "type": "other",
+          "url": "https://www.broadwayworld.com/grosses/CAMELOT",
+          "date": null
+        },
+        {
+          "type": "other",
+          "url": "https://www.ibdb.com/broadway-production/camelot-534339",
+          "date": null
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-03-28T21:48:05.264Z"
+      "title": "Camelot",
+      "slug": "camelot-2023",
+      "openingDate": "2023-04-13",
+      "status": "closed",
+      "researchedAt": "2026-03-29T07:55:06.167Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "cost-of-living-2022": {
       "title": "Cost of Living",
@@ -1830,28 +1883,35 @@
       "researchedAt": "2026-03-28T21:52:34.227Z"
     },
     "into-the-woods-2022": {
+      "capitalization": null,
+      "capitalizationSource": "No published budget or Form D found for this production",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recoupedDate": null,
+      "recoupedSource": "No source found reporting a recoupment; the show was a limited run",
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "As of closing (Jan 8, 2023) the show had grossed about $36.6M ([playbill.com](https://playbill.com/production/into-the-woods-broadway-st-james-theatre-2022#:~:text=,Capacity%3A%2081.51)). No official budget or cost figures were found, and no announcement of recoupment was made. Commercial production (no nonprofit), limited engagement, outcome unclear.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/into-the-woods-broadway-st-james-theatre-2022",
+          "date": "2023-01-08"
+        },
+        {
+          "type": "news",
+          "url": "https://broadwaynews.com/2022/07/06/broadways-box-office-holds-steady-as-into-the-woods-begins-previews/",
+          "date": "2022-07-06"
+        }
+      ],
       "title": "Into the Woods",
       "slug": "into-the-woods-2022",
       "openingDate": "2022-08-06",
       "status": "closed",
-      "capitalization": 4000000,
-      "capitalizationSource": "Broadway Scorecard – 2022-2023 Season overview",
-      "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
-      "recouped": true,
-      "recoupedDate": null,
-      "recoupedSource": "Broadway Scorecard – 2022-2023 Season overview",
-      "designation": "Easy Winner",
-      "notes": "The 2022 Broadway revival of Into the Woods opened with an estimated capitalization of $4.0 M and grossed $51.3 M over its run, recouping in approximately 17 weeks before closing on January 8, 2023.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://broadwayscorecard.com/biz/season/2022-2023",
-          "date": "2026-03-26"
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-03-28T21:54:14.524Z"
+      "researchedAt": "2026-03-29T07:13:34.905Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "kpop-2022": {
       "title": "KPOP",
@@ -1912,38 +1972,36 @@
       "researchedAt": "2026-03-28T21:57:06.522Z"
     },
     "life-of-pi-2023": {
-      "title": "Life of Pi",
-      "slug": "life-of-pi-2023",
-      "openingDate": "2023-03-30",
-      "status": "closed",
-      "capitalization": 9341464,
-      "capitalizationSource": "NYC Tax Credit program: Pi Broadway Production Services Corp received $2,335,366 credit, implying eligible costs of $9,341,464",
+      "capitalization": 7000000,
+      "capitalizationSource": "SEC Form D (Pi Broadway Ltd) ([www.sec.gov](https://www.sec.gov/Archives/edgar/data/1932838/000193283822000001/xslFormDX01/primary_doc.xml#:~:text=13))",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "‘Life of Pi’ to Close on Broadway in July – Yahoo Entertainment",
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
       "designation": "Fizzle",
-      "notes": "Despite critical acclaim and multiple awards, Life of Pi did not recoup its production costs during its Broadway run and closed after a 17-week engagement.",
+      "notes": "Broadway run grossed ~$10.06M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/LIFE-OF-PI#:~:text=All%20time)) vs. roughly $7M capital ([www.sec.gov](https://www.sec.gov/Archives/edgar/data/1932838/000193283822000001/xslFormDX01/primary_doc.xml#:~:text=13)); closed without recouping its investment.",
+      "confidence": "medium",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
+          "type": "sec",
+          "url": "https://sec.gov/Archives/edgar/data/1932838/000193283822000001/xslFormDX01/primary_doc.xml",
+          "date": "2022-06-19"
         },
         {
           "type": "trade",
           "url": "https://www.broadwayworld.com/grosses/LIFE-OF-PI",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.yahoo.com/entertainment/life-pi-close-broadway-july-183918793.html",
-          "date": null
+          "date": "2023-07-23"
         }
       ],
-      "confidence": "medium",
-      "researchedAt": "2026-03-28T21:59:26.274Z"
+      "title": "Life of Pi",
+      "slug": "life-of-pi-2023",
+      "openingDate": "2023-03-30",
+      "status": "closed",
+      "researchedAt": "2026-03-29T20:20:14.233Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "peter-pan-goes-wrong-2023": {
       "title": "Peter Pan Goes Wrong",
@@ -2207,19 +2265,20 @@
       "researchedAt": "2026-03-28T22:11:52.941Z"
     },
     "all-in-comedy-about-love-2024": {
-      "title": "All In: Comedy About Love",
-      "slug": "all-in-comedy-about-love-2024",
-      "openingDate": "2024-12-22",
-      "status": "closed",
       "capitalization": 4800000,
-      "capitalizationSource": "Documents filed with the Securities and Exchange Commission, as reported by Broadway News",
+      "capitalizationSource": "BroadwayNews report on SEC filings (Feb 18, 2025)",
       "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
+      "costMethodology": null,
       "recouped": true,
       "recoupedDate": "2025-02",
-      "recoupedSource": "Broadway News article by Michael Abourizk, February 18, 2025",
+      "recoupedSource": "Producers’ announcement reported in Deadline/Yahoo & BroadwayNews (Feb 18, 2025)",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
       "designation": "Easy Winner",
-      "notes": "The production, with an initial capitalization of $4.8M, recouped its investment during its ten-week engagement, regularly grossing over $1M per week and setting a $2.08M house record at the Hudson Theatre.",
+      "notes": "Show opened Dec 22, 2024 and closed Feb 16, 2025.  Its reported capitalization was $4.8M ([www.broadwaynews.com](https://www.broadwaynews.com/all-in-recoups-on-broadway/#:~:text=The%20production%E2%80%99s%20initial%20capitalization%20was,recently%20made%20back%20their%20initial)), and it recouped that amount by closing ([www.yahoo.com](https://www.yahoo.com/entertainment/comedy-love-recoups-broadway-capitalization-152339575.html#:~:text=All%20In%3A%20Comedy%20About%20Love%2C,the%20Hudson%20Theatre%2C%20producers%20announced)) ([www.broadwaynews.com](https://www.broadwaynews.com/all-in-recoups-on-broadway/#:~:text=%E2%80%9CAll%20In%3A%20Comedy%20About%20Love%E2%80%9D,22%20at%20the%20Hudson%20Theatre)).  No official weekly nut is available.  Grosses (~$14.7M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/ALL-INCOMEDY-ABOUT-LOVE#:~:text=Gross%20%2414%2C734%2C778))) far exceeded the cap.  Hudson Theatre is a commercial venue, not nonprofit.  The limited-run play recouped quickly, fitting an “Easy Winner” profile.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
@@ -2228,12 +2287,19 @@
         },
         {
           "type": "trade",
-          "url": "https://www.yahoo.com/entertainment/comedy-love-recoups-broadway-plans-161533410.html",
+          "url": "https://www.yahoo.com/entertainment/comedy-love-recoups-broadway-capitalization-152339575.html",
           "date": "2025-02-18"
         }
       ],
-      "confidence": "medium",
-      "researchedAt": "2026-03-28T22:13:18.724Z"
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "All In: Comedy About Love",
+      "slug": "all-in-comedy-about-love-2024",
+      "openingDate": "2024-12-22",
+      "status": "closed",
+      "researchedAt": "2026-03-29T05:25:59.681Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "cult-of-love-2024": {
       "title": "Cult of Love",
@@ -2549,33 +2615,36 @@
       "researchedAt": "2026-03-28T22:29:01.580Z"
     },
     "mcneal-2024": {
-      "title": "McNeal",
-      "slug": "mcneal-2024",
-      "openingDate": "2024-09-30",
-      "status": "closed",
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "No public budget/Form D data found",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
       "designation": "Nonprofit",
-      "notes": "Produced by nonprofit Lincoln Center Theater, McNeal grossed $14,358,874 over 53 performances at 100% capacity with an average ticket price of $172.31 and a highest weekly gross of $1,438,345.",
+      "notes": "Lincoln Center Theater (at the Vivian Beaumont) is a 501(c)(3) nonprofit ([www.causeiq.com](https://www.causeiq.com/organizations/lincoln-center-theater%2C133004747/#:~:text=IRS%20501)). McNeal grossed ~$14.36M in 53 performances ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/MCNEAL#:~:text=All%20time)), but no budget or running-cost figures were publicly reported. Without that data, recoupment cannot be verified.",
+      "confidence": "medium",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://playbill.com/production/mcneal-broadway-vivian-beaumont-theater-2024",
-          "date": "2024-11-24"
+          "type": "other",
+          "url": "https://www.broadwayworld.com/grosses/MCNEAL",
+          "date": null
         },
         {
-          "type": "trade",
-          "url": "https://en.wikipedia.org/wiki/Vivian_Beaumont_Theater",
-          "date": "2026-03-28"
+          "type": "other",
+          "url": "https://www.causeiq.com/organizations/lincoln-center-theater,133004747/",
+          "date": null
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-03-28T22:30:43.999Z"
+      "title": "McNeal",
+      "slug": "mcneal-2024",
+      "openingDate": "2024-09-30",
+      "status": "closed",
+      "researchedAt": "2026-03-29T15:07:49.804Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "othello-2025": {
       "capitalization": null,
@@ -2753,33 +2822,44 @@
       "researchedAt": "2026-03-28T22:37:29.544Z"
     },
     "the-hills-of-california-2024": {
+      "capitalization": 7500000,
+      "capitalizationSource": "SEC Form D (Hills of California Limited Partnership) ([www.streetinsider.com](https://www.streetinsider.com/SEC%2BFilings/Form%2BD%2BHills%2Bof%2BCalifornia%2BLimi/23346945.html#:~:text=Total%20Offering%20Amount%20%20,USD))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": [
+        85,
+        90
+      ],
+      "designation": "Fizzle",
+      "notes": "Budget raised was $7.5M ([www.streetinsider.com](https://www.streetinsider.com/SEC%2BFilings/Form%2BD%2BHills%2Bof%2BCalifornia%2BLimi/23346945.html#:~:text=Total%20Offering%20Amount%20%20,USD)); total Broadway gross ~$6.61M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/THE-HILLS-OF-CALIFORNIA#:~:text=All%20time)). Did not recoup before closing 2024-12 ([www.broadwayworld.com](https://www.broadwayworld.com/article/Broadway-Grosses-Week-Ending-122224-20241224#:~:text=ALL%20IN%3A%20COMEDY%20ABOUT%20LOVE,OF%20CALIFORNIA%20closed%20on%2012%2F22)).",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.streetinsider.com/SEC+Filings/Form+D+Hills+of+California+Limi/23346945.html",
+          "date": "2024-06-11"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/THE-HILLS-OF-CALIFORNIA",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Broadway-Grosses-Week-Ending-122224-20241224",
+          "date": "2024-12-24"
+        }
+      ],
       "title": "The Hills of California",
       "slug": "the-hills-of-california-2024",
       "openingDate": "2024-09-29",
       "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "The Hills of California closed after 97 performances with total gross of $6,613,914.94; production budget was not publicly disclosed.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/the-hills-of-california-closes-on-broadway-december-22",
-          "date": "2024-12-22"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/production/the-hills-of-california-broadway-broadhurst-theatre-2024",
-          "date": "2024-12-22"
-        }
-      ],
-      "confidence": "low",
-      "researchedAt": "2026-03-28T22:39:06.595Z"
+      "researchedAt": "2026-03-29T15:03:38.936Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "the-last-five-years-2025": {
       "title": "The Last Five Years",
@@ -2811,33 +2891,44 @@
       "researchedAt": "2026-03-28T22:40:20.225Z"
     },
     "yellow-face-2024": {
-      "title": "Yellow Face",
-      "slug": "yellow-face-2024",
-      "openingDate": "2024-10-01",
-      "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 4583628,
+      "capitalizationSource": "NYC tax credit award for show ($1,145,907) ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=French%20Republic%C2%A0,are%20based%20on%20expected%20runs)) implies ≈$4,583,628 budget (credit ÷ 25%).",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "Total gross ($3,585,480 ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/YELLOW-FACE#:~:text=Gross%20%243%2C585%2C480))) vs. implied budget (~$4,583,628) from tax credit ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=French%20Republic%C2%A0,are%20based%20on%20expected%20runs))",
+      "estimatedRecoupmentPct": [
+        75,
+        80
+      ],
       "designation": "Nonprofit",
-      "notes": "Presented by nonprofit Roundabout Theatre Company at the Todd Haimes Theatre, \"Yellow Face\" did not publicly disclose its production capitalization or weekly operating costs and closed its limited run on November 24, 2024.",
+      "notes": "Produced by Roundabout Theatre Company (a non-profit) ([broadwaydirect.com](https://broadwaydirect.com/the-pirates-of-penzance-yellow-face-and-more-set-for-roundabout/#:~:text=Roundabout%20Theatre%20Company%20has%20revealed,Dae%20Kim%20set%20to%20star)). With ~$3.586M total gross and ~4.58M in costs (from tax credit data), Yellow Face did not recoup its investment.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://en.wikipedia.org/wiki/Yellow_Face_(play)",
-          "date": "2026-01-23"
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+          "date": "2025-09-04"
         },
         {
           "type": "trade",
           "url": "https://www.broadwayworld.com/grosses/YELLOW-FACE",
-          "date": null
+          "date": "2024-11-24"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwaydirect.com/the-pirates-of-penzance-yellow-face-and-more-set-for-roundabout/",
+          "date": "2024-01-09"
         }
       ],
-      "confidence": "high",
-      "researchedAt": "2026-03-28T22:41:38.640Z"
+      "title": "Yellow Face",
+      "slug": "yellow-face-2024",
+      "openingDate": "2024-10-01",
+      "status": "closed",
+      "researchedAt": "2026-03-29T15:13:02.333Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "data-off-broadway": {
       "capitalization": null,
@@ -3064,6 +3155,374 @@
       "openingDate": "2025-10-28",
       "status": "closed",
       "researchedAt": "2026-03-29T01:55:57.038Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "prima-facie-2023": {
+      "capitalization": 4100000,
+      "capitalizationSource": "Playbill (news report citing producer announced $4.1M cap)",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2023-06",
+      "recoupedSource": "Playbill (producer announcement) ([playbill.com](https://playbill.com/article/prima-facie-recoups-on-broadway#:~:text=Empire%20Street%20Productions%20%27%C2%A0%203%C2%A0has,Killing%20Eve))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Easy Winner",
+      "notes": "Broadway transfer starring Jodie Comer; budget ≈$4.1M and ran Apr23–Jul2, 2023 (limited run). Recouped full budget by June 2023 ([playbill.com](https://playbill.com/article/prima-facie-recoups-on-broadway#:~:text=Empire%20Street%20Productions%20%27%C2%A0%203%C2%A0has,Killing%20Eve)). Weekly operating cost not found.",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/prima-facie-recoups-on-broadway",
+          "date": "2023-06-20"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.yahoo.com/entertainment/prima-facie-starring-jodie-comer-123000602.html",
+          "date": "2023-06-20"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Prima Facie",
+      "slug": "prima-facie-2023",
+      "openingDate": "2023-04-23",
+      "status": "closed",
+      "researchedAt": "2026-03-29T07:06:03.572Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "spamalot": {
+      "capitalization": null,
+      "capitalizationSource": "No public data or filings found",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "The Spamalot revival ran Nov 16, 2023–Apr 7, 2024 ([www.ibdb.com](https://www.ibdb.com/broadway-production/spamalot-537710#:~:text=Nov%2016%2C%202023)) and closed without any reported recoupment. No budget or weekly cost figures are available, so it is assumed to have closed well short of recouping its investment.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "other",
+          "url": "https://www.ibdb.com/broadway-production/spamalot-537710",
+          "date": null
+        }
+      ],
+      "title": "Spamalot",
+      "slug": "spamalot",
+      "openingDate": "2023-11-16",
+      "status": "closed",
+      "researchedAt": "2026-03-29T07:49:20.445Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "how-to-dance-in-ohio": {
+      "capitalization": null,
+      "capitalizationSource": "none found",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "All-time gross about $5.5M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/HOW-TO-DANCE-IN-OHIO#:~:text=Gross%20%245%2C505%2C349)); closed February 2024 ([www.broadway.com](https://www.broadway.com/shows/how-to-dance-in-ohio/#:~:text=This%20show%20is%20closed)). Likely well below any recoup threshold.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/HOW-TO-DANCE-IN-OHIO",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadway.com/shows/how-to-dance-in-ohio/",
+          "date": null
+        }
+      ],
+      "title": "How to Dance in Ohio",
+      "slug": "how-to-dance-in-ohio",
+      "openingDate": "2023-12-10",
+      "status": "closed",
+      "researchedAt": "2026-03-29T08:30:26.281Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "doubt": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Presented by the Roundabout Theatre Company (a 501(c)(3) nonprofit) ([projects.propublica.org](https://projects.propublica.org/nonprofits/organizations/136192346#:~:text=,6192346)). No budget or weekly cost figures were found. BroadwayWorld reports the total gross at ~$5.726M ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/DOUBTA-PARABLE#:~:text=Gross%20%245%2C726%2C733)); the limited run closed with no announcement of recoupment. Likely did not recoup its costs.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "other",
+          "url": "https://www.broadwayworld.com/grosses/DOUBTA-PARABLE",
+          "date": "2026-03-29"
+        },
+        {
+          "type": "other",
+          "url": "https://projects.propublica.org/nonprofits/organizations/136192346",
+          "date": "2026-03-29"
+        }
+      ],
+      "title": "Doubt: A Parable",
+      "slug": "doubt",
+      "openingDate": "2024-03-07",
+      "status": "closed",
+      "researchedAt": "2026-03-29T09:05:42.082Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "heart-of-rock-and-roll": {
+      "capitalization": null,
+      "capitalizationSource": "No publicly disclosed budget found",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "BroadwayWorld reports a total gross of $3,663,539 ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/THE-HEART-OF-ROCK-AND-ROLL#:~:text=All%20time)) and the show closed June 23, 2024 ([playbill.com](https://playbill.com/article/broadways-the-heart-of-rock-and-roll-sets-a-june-closing#:~:text=Image%20Corey%20Cott%20in%20The,Rock%20and%20Roll%20Matthew%20Murphy)). No official budget or weekly cost was found; the short run and low gross imply it never recouped.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/broadways-the-heart-of-rock-and-roll-sets-a-june-closing",
+          "date": "2024-06-18"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/THE-HEART-OF-ROCK-AND-ROLL",
+          "date": null
+        }
+      ],
+      "title": "The Heart of Rock and Roll",
+      "slug": "heart-of-rock-and-roll",
+      "openingDate": "2024-04-22",
+      "status": "closed",
+      "researchedAt": "2026-03-29T10:18:35.060Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "the-wiz": {
+      "capitalization": 16500000,
+      "capitalizationSource": "SEC Form D filing for 'The Wiz' (RWHC, The Broadway Musical LLC, offering $16.5M) ([www.sec.gov](https://www.sec.gov/Archives/edgar/data/2018681/000110465924047409/xslFormDX01/primary_doc.xml#:~:text=Total%20Offering%20Amount%20%20,or%20%C2%A0%C2%A0%20Indefinite))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": [
+        50,
+        80
+      ],
+      "designation": "Fizzle",
+      "notes": "Budget ~$16.5M (Form D) ([www.sec.gov](https://www.sec.gov/Archives/edgar/data/2018681/000110465924047409/xslFormDX01/primary_doc.xml#:~:text=Total%20Offering%20Amount%20%20,or%20%C2%A0%C2%A0%20Indefinite)). No published weekly nut found. Grosses started ~$1.48M/week and reached ~$1.68M near close ([www.broadwayworld.com](https://www.broadwayworld.com/article/Broadway-Grosses-Week-Ending-42124-20240423#:~:text=Top%205%20by%20This%20Week,5%20by%20This%20Week%20Gross)) ([playbill.com](https://playbill.com/article/broadway-grosses-analysis-the-wiz-revival-among-top-5-highest-grossing-shows#:~:text=The%20Schele%20Williams%20,1%2C683%2C439%20at%20the%20box%20office)). Closed Aug 18, 2024 with no published recoup; estimated ~50–80% of costs covered by gross.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2018681/000110465924047409/xslFormDX01/primary_doc.xml",
+          "date": "2024-XX-XX"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Broadway-Grosses-Week-Ending-42124-20240423",
+          "date": "2024-04-23"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/broadway-grosses-analysis-the-wiz-revival-among-top-5-highest-grossing-shows",
+          "date": "2024-08-13"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/THE-WIZ-Concludes-Broadway-Run-20240818",
+          "date": "2024-08-18"
+        }
+      ],
+      "title": "The Wiz",
+      "slug": "the-wiz",
+      "openingDate": "2024-04-17",
+      "status": "closed",
+      "researchedAt": "2026-03-29T10:54:00.671Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "lempicka": {
+      "capitalization": 19200000,
+      "capitalizationSource": "NYer report (Rachel Syme, May 27, 2024) ([www.newyorker.com](https://www.newyorker.com/magazine/2024/06/03/behind-the-scenes-of-a-short-lived-broadway-musical#:~:text=scheduled%20a%20pre,new%20set))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Total Broadway gross ~$3.44M (Broadway grosses data ([www.theatricalindex.com](https://www.theatricalindex.com/show/lempicka/lempicka-bway#:~:text=Total%20Gross%3A%20%243%2C439%2C902))) vs capital $19.2M ([www.newyorker.com](https://www.newyorker.com/magazine/2024/06/03/behind-the-scenes-of-a-short-lived-broadway-musical#:~:text=scheduled%20a%20pre,new%20set))",
+      "estimatedRecoupmentPct": [
+        17,
+        18
+      ],
+      "designation": "Flop",
+      "notes": "Capitalization ~$19.2M; total Broadway gross ~$3.44M ([www.theatricalindex.com](https://www.theatricalindex.com/show/lempicka/lempicka-bway#:~:text=Total%20Gross%3A%20%243%2C439%2C902)) ([www.newyorker.com](https://www.newyorker.com/magazine/2024/06/03/behind-the-scenes-of-a-short-lived-broadway-musical#:~:text=scheduled%20a%20pre,new%20set)). Closed May 2024 after ~41 performances; did not recoup.",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.newyorker.com/magazine/2024/06/03/behind-the-scenes-of-a-short-lived-broadway-musical",
+          "date": "2024-06-03"
+        },
+        {
+          "type": "other",
+          "url": "https://www.theatricalindex.com/show/lempicka/lempicka-bway",
+          "date": null
+        }
+      ],
+      "title": "Lempicka",
+      "slug": "lempicka",
+      "openingDate": "2024-04-14",
+      "status": "closed",
+      "researchedAt": "2026-03-29T10:59:28.557Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "the-balusters": {
+      "capitalization": null,
+      "capitalizationSource": "No public information found (MTC is a non-profit presenter) ([www.manhattantheatreclub.com](https://www.manhattantheatreclub.com/#:~:text=Manhattan%20Theatre%20Club%20is%20one,musicals%20at%20our%20Samuel%20J))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Closed after limited run without recoup ([www.ibdb.com](https://www.ibdb.com/broadway-production/the-balusters-545181#:~:text=Opening%20Date))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Produced by MTC (non-profit); no public budget or cost data; closed after ~4 weeks, likely unrecovered costs.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "other",
+          "url": "https://www.manhattantheatreclub.com/",
+          "date": null
+        },
+        {
+          "type": "other",
+          "url": "https://www.ibdb.com/broadway-production/the-balusters-545181",
+          "date": null
+        }
+      ],
+      "title": "The Balusters",
+      "slug": "the-balusters",
+      "openingDate": "2026-04-21",
+      "status": "previews",
+      "researchedAt": "2026-03-29T12:36:49.633Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "fallen-angels": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Fallen Angels (Roundabout Theatre Company, Todd Haimes Theatre) was a Spring 2026 limited-run revival ([www.talkinbroadway.com](https://www.talkinbroadway.com/allthatchat_new/d.php?id=2617057#:~:text=FALLEN%20ANGELS%3A%20Spring%202026%20at,Interim%20Artistic%20Director%20Scott%20Ellis)) ([www.broadwayworld.com](https://www.broadwayworld.com/shows/Fallen-Angels-335593.html#:~:text=Run%20Type%3A%20Limited%20Run)). Roundabout is a 501(c)(3) nonprofit organization ([projects.propublica.org](https://projects.propublica.org/nonprofits/organizations/136192346#:~:text=Roundabout%20Theatre%20Company%20Inc)). We found no public figures for the production's capitalization or weekly running costs, and no sources confirming any recoupment. All such financial details remain undocumented.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "other",
+          "url": "https://projects.propublica.org/nonprofits/organizations/136192346",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2617057",
+          "date": "2025-03-07"
+        },
+        {
+          "type": "other",
+          "url": "https://www.broadwayworld.com/shows/Fallen-Angels-335593.html",
+          "date": null
+        }
+      ],
+      "title": "Fallen Angels",
+      "slug": "fallen-angels",
+      "openingDate": "2026-04-19",
+      "status": "previews",
+      "researchedAt": "2026-03-29T12:41:03.783Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "dog-day-afternoon": {
+      "capitalization": 7500000,
+      "capitalizationSource": "SEC Form D filing (Dog Days of Spring, LLC) ([www.streetinsider.com](https://www.streetinsider.com/SEC%2BFilings/Form%2B%2BD%2B%2B%2B%2B%2B%2B%2B%2B%2B%2BDOG%2BDAYS%2BOF%2BSPRING%2C%2BLLC/25570337.html#:~:text=Total%20Offering%20Amount%20%20,USD))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": [
+        30,
+        50
+      ],
+      "designation": "Fizzle",
+      "notes": "Raised ~$7.5M (SEC Form D) for production; weekly operating cost not publicly reported; closed (Jun 28, 2026) without recouping capital (estimated ~30–50% recovery).",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.streetinsider.com/SEC+Filings/Form++D++++++++++DOG+DAYS+OF+SPRING,+LLC/25570337.html",
+          "date": "2025-11-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.yahoo.com/entertainment/tv/articles/broadway-box-office-dog-day-195102365.html",
+          "date": "2026-03-17"
+        }
+      ],
+      "title": "Dog Day Afternoon",
+      "slug": "dog-day-afternoon",
+      "openingDate": "2026-03-30",
+      "status": "previews",
+      "researchedAt": "2026-03-29T13:16:46.946Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "ragtime": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public data was found on the production’s budget or running costs.  As a Lincoln Center (nonprofit) show it was not eligible for the state credit ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=area%20of%20Level%20One%20,%E2%80%9D)).  Recoupment is not reported.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+          "date": "2025-09-04"
+        }
+      ],
+      "title": "Ragtime",
+      "slug": "ragtime",
+      "openingDate": "2025-10-16",
+      "status": "open",
+      "researchedAt": "2026-03-29T20:48:02.113Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "manual"
     }
