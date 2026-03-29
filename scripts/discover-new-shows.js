@@ -609,13 +609,12 @@ async function fetchShowsFromLondonTheatre() {
 
 const OWE_VENUE_PAGES = [
   { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
-  { name: 'Soho Theatre', url: 'https://sohotheatre.com/all-shows/', linkPattern: /\/events\/[^/]+/, titleFromHeading: true },
+  // Removed Soho Theatre, King's Head, Theatre503 — tiny OWE venues with near-zero review/aggregator
+  // coverage. Shows that matter transfer to bigger houses and get picked up there.
   // Arcola: shows rendered in-page without individual links — needs Playwright (v2)
   { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/, titleFromSlug: true },
   { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
-  { name: "King's Head Theatre", url: 'https://www.kingsheadtheatre.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, stripSlugHash: true },
   { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
-  { name: 'Theatre503', url: 'https://theatre503.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
 ];
 
 // Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
@@ -722,22 +721,8 @@ async function fetchSingleVenuePage(venue) {
     // For venues with noisy link text (cards with concatenated content), extract title from URL slug or heading
     let title;
     if (venue.titleFromSlug) {
-      let slug = href.split('/').filter(Boolean).pop() || '';
-      // Strip hash suffixes from slugs (e.g., "in-the-print-8y4s" → "in-the-print")
-      if (venue.stripSlugHash) slug = slug.replace(/-[a-z0-9]{3,4}$/, '');
+      const slug = href.split('/').filter(Boolean).pop() || '';
       title = slug.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase()).replace(/ \w/g, c => c.toUpperCase());
-    } else if (venue.titleFromHeading) {
-      // Try heading inside the link first, then in closest card container (sibling divs)
-      const heading = link.querySelector('h1, h2, h3, h4, h5');
-      if (heading) {
-        title = heading.textContent.trim();
-      } else {
-        // Theatre503-style: link is an empty image wrapper, heading is in a sibling <div class="details">
-        const parent = link.parentElement;
-        const container = parent?.parentElement || parent;
-        const nearby = container?.querySelector('h1, h2, h3, h4, h5');
-        title = nearby ? nearby.textContent.trim() : '';
-      }
     } else {
       title = cleanVenueTitle(link.textContent || '');
     }
@@ -745,7 +730,7 @@ async function fetchSingleVenuePage(venue) {
     if (seen.has(title.toLowerCase())) continue;
     if (shouldExcludeVenueShow(title)) continue;
     // Skip generic link text and single-word category labels
-    if (/^(read more|book now|buy tickets|find out more|view|details|more info|back|next|previous|more|book|drama|comedy|musical|theatre|cabaret|main ?house(later)?|later|all shows|past shows|participation|standupcomedy)/i.test(title)) continue;
+    if (/^(read more|book now|buy tickets|find out more|view|details|more info|back|next|previous|more|book|drama|comedy|musical|theatre|cabaret|main house|later|all shows|past shows|participation)/i.test(title)) continue;
     if (/^stand.?up/i.test(title)) continue;
 
     seen.add(title.toLowerCase());
