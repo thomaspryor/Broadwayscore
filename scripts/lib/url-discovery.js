@@ -546,7 +546,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
       || (primaryTitleLower && title.includes(primaryTitleLower));
     const urlHasShow = urlLower.includes(showSlugCheck) || urlLower.includes(shortSlug)
       || (primarySlugCheck && urlLower.includes(primarySlugCheck));
-    const reviewTerms = ['review', 'theater', 'theatre', 'stage', 'musical', 'broadway', 'west end'];
+    const reviewTerms = ['review', 'theater', 'theatre', 'stage', 'musical', 'broadway', 'west end',
+      'culture', 'arts', 'entertainment', 'article'];
     const titleHasReview = reviewTerms.some(t => title.includes(t));
     const urlHasReview = reviewTerms.some(t => urlLower.includes(t));
 
