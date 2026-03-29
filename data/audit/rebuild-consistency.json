@@ -1,6 +1,14 @@
 {
-  "generatedAt": "2026-03-29T21:46:13.026Z",
+  "generatedAt": "2026-03-29T21:55:45.693Z",
   "issues": [
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "outlet": "nypost",
+      "critic": "Johnny Oleksinski",
+      "detail": "originalRating \"3.5/4 stars\" (=88) vs score 42 (source: llmScore-override-star-conflict)"
+    },
     {
       "type": "rating-score-mismatch",
       "severity": "high",
@@ -8,6 +16,14 @@
       "outlet": "nypost",
       "critic": "Johnny Oleksinski",
       "detail": "originalRating \"4 stars\" (=80) vs score 25 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "an-ark-off-broadway-2026",
+      "outlet": "ew",
+      "critic": "Thom Geier",
+      "detail": "originalRating \"A\" (=90) vs score 63 (source: llmScore-override-star-conflict)"
     },
     {
       "type": "rating-score-mismatch",
@@ -40,6 +56,22 @@
       "outlet": "nysr",
       "critic": "David Finkle",
       "detail": "originalRating \"4/5 stars\" (=80) vs score 52 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "dead-outlaw-2025",
+      "outlet": "nypost",
+      "critic": "Johnny Oleksinski",
+      "detail": "originalRating \"4/4 stars\" (=100) vs score 48 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "death-of-a-salesman-2022",
+      "outlet": "nypost",
+      "critic": "Johnny Oleksinski",
+      "detail": "originalRating \"3.5/4 stars\" (=88) vs score 42 (source: llmScore-override-star-conflict)"
     },
     {
       "type": "rating-score-mismatch",
@@ -284,6 +316,14 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
+      "showId": "dead-outlaw-2025",
+      "outlet": "nypost",
+      "critic": "Johnny Oleksinski",
+      "detail": "humanReviewScore 48 (mixed) overrides explicit \"4/4 stars\" (=100, positive)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
       "showId": "good-night-and-good-luck-2025",
       "outlet": "digital-journal",
       "critic": "Markos Papadatos",
@@ -376,6 +416,12 @@
     {
       "type": "score-clustering",
       "severity": "low",
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "detail": "8/15 reviews (53%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
       "showId": "oh-mary-west-end-2025",
       "detail": "8/16 reviews (50%) scored exactly 80"
     },
@@ -390,6 +436,12 @@
       "severity": "low",
       "showId": "paranormal-activity-west-end-2025",
       "detail": "9/15 reviews (60%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "shadowlands-west-end-2026",
+      "detail": "8/14 reviews (57%) scored exactly 60"
     },
     {
       "type": "score-clustering",
