@@ -23,31 +23,51 @@ runs:
       env:
         CORE_DATA_TOKEN: ${{ inputs.token }}
       run: |
-        START=$(date +%s)
+        MAX_RETRIES=2
+        for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+          START=$(date +%s)
+          SUCCESS=false
 
-        if [ -d "/tmp/core-data-checkout/.git" ]; then
-          # Cache restored — fast update via fetch
-          cd /tmp/core-data-checkout
-          git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
-          if git fetch origin main --depth 1 2>/dev/null && git reset --hard origin/main 2>/dev/null; then
-            ELAPSED=$(($(date +%s) - START))
-            echo "Core data updated from cache in ${ELAPSED}s (git fetch)"
+          if [ -d "/tmp/core-data-checkout/.git" ]; then
+            # Cache restored — fast update via fetch
+            cd /tmp/core-data-checkout
+            git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
+            if git fetch origin main --depth 1 2>/dev/null && git reset --hard origin/main 2>/dev/null; then
+              ELAPSED=$(($(date +%s) - START))
+              echo "Core data updated from cache in ${ELAPSED}s (git fetch)"
+              SUCCESS=true
+            else
+              # Fetch failed — fall back to full clone
+              echo "::warning::Cache update failed — falling back to full clone"
+              cd /tmp
+              rm -rf /tmp/core-data-checkout
+              if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout; then
+                ELAPSED=$(($(date +%s) - START))
+                echo "Core data cloned fresh in ${ELAPSED}s (fallback)"
+                SUCCESS=true
+              fi
+            fi
           else
-            # Fetch failed — fall back to full clone
-            echo "::warning::Cache update failed — falling back to full clone"
-            cd /tmp
+            # No cache — full clone
             rm -rf /tmp/core-data-checkout
-            git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout
-            ELAPSED=$(($(date +%s) - START))
-            echo "Core data cloned fresh in ${ELAPSED}s (fallback)"
+            if git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout; then
+              ELAPSED=$(($(date +%s) - START))
+              echo "Core data cloned fresh in ${ELAPSED}s"
+              SUCCESS=true
+            fi
           fi
-        else
-          # No cache — full clone
-          rm -rf /tmp/core-data-checkout
-          git clone --depth 1 "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout
-          ELAPSED=$(($(date +%s) - START))
-          echo "Core data cloned fresh in ${ELAPSED}s"
-        fi
+
+          if [ "$SUCCESS" = "true" ]; then
+            break
+          elif [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+            echo "::warning::Core data checkout failed (attempt $ATTEMPT/$MAX_RETRIES) — retrying in 10s"
+            sleep 10
+            rm -rf /tmp/core-data-checkout
+          else
+            echo "::error::Core data checkout failed after $MAX_RETRIES attempts"
+            exit 1
+          fi
+        done
 
     - name: Copy core data to data/
       shell: bash

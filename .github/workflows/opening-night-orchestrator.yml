@@ -343,5 +343,8 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Orchestrator Failed'
-          severity: 'low'
+          severity: 'critical'
+          email: 'true'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
