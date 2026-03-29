@@ -591,35 +591,6 @@ def main():
             finally:
                 os.unlink(tmp_path)
 
-        # ---- Also push individual secrets (backward compat during migration) ----
-        print()
-        print("=" * 60)
-        print("  Pushing individual cookie secrets (backward compat)...")
-        print("=" * 60)
-        print()
-
-        for cmd in gh_commands:
-            with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as tmp:
-                tmp.write(cmd["b64"])
-                tmp_path = tmp.name
-
-            try:
-                result = subprocess.run(
-                    ["gh", "secret", "set", cmd["name"], "--repo", "thomaspryor/Broadwayscore"],
-                    stdin=open(tmp_path, "r"),
-                    capture_output=True, text=True, timeout=30,
-                )
-                if result.returncode == 0:
-                    print(f"  ✓ {cmd['name']}: {cmd['count']} cookies pushed")
-                else:
-                    print(f"  ✗ {cmd['name']}: {result.stderr.strip()}")
-            except FileNotFoundError:
-                print(f"  ✗ {cmd['name']}: 'gh' CLI not found — install GitHub CLI first")
-                break
-            except Exception as e:
-                print(f"  ✗ {cmd['name']}: {e}")
-            finally:
-                os.unlink(tmp_path)
     else:
         # Print commands for manual copy-paste
         print()
