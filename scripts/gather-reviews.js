@@ -2283,7 +2283,10 @@ function createReviewFile(showId, reviewData, options = {}) {
     fullText: null,  // Never populate from excerpts — let collect-review-texts.js scrape real fullText
     isFullReview: false,
     dtliExcerpt: cleanText(reviewData.dtliExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null,
-    originalScore: reviewData.originalRating ? parseRating(reviewData.originalRating, normalizedOutletId) : null,
+    originalScore: reviewData.originalRating
+      ? parseRating(reviewData.originalRating, normalizedOutletId)
+      : (reviewData.score != null ? reviewData.score : null),
+    scoreSource: reviewData.scoreSource || null,
     assignedScore: null,
     source: reviewData.source || 'gather-reviews',
     dtliThumb: reviewData.dtliThumb || null,
