@@ -50,6 +50,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const https = require('https');
 // const { HttpsProxyAgent } = require('https-proxy-agent'); // Not used - Bright Data needs zone setup
 
@@ -352,153 +353,11 @@ const OUTLET_WAIT_CONFIGS = {
 // ============================================================================
 // COOKIE INJECTION (bypass paywall login via exported browser cookies)
 // ============================================================================
-// Cookies can be provided via:
-//   1. Local files: data/cookies/{domain-key}.json (e.g., data/cookies/wsj.json)
-//   2. Environment variables: WSJ_COOKIES, NEWYORKER_COOKIES (base64-encoded JSON arrays)
-// Format: Playwright-compatible cookie array [{name, value, domain, path, ...}]
-// When cookies are available for a domain, login attempts are skipped entirely.
-
-const COOKIE_DOMAIN_MAP = {
-  'wsj.com': { envVar: 'WSJ_COOKIES', fileKey: 'wsj' },
-  'newyorker.com': { envVar: 'NEWYORKER_COOKIES', fileKey: 'newyorker' },
-  'nytimes.com': { envVar: 'NYT_COOKIES', fileKey: 'nytimes' },
-  'vulture.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },
-  'nymag.com': { envVar: 'VULTURE_COOKIES', fileKey: 'vulture' },  // Same Condé Nast auth
-  'washingtonpost.com': { envVar: 'WAPO_COOKIES', fileKey: 'wapo' },
-  'ft.com': { envVar: 'FT_COOKIES', fileKey: 'ft' },
-  'timeout.com': { envVar: 'TIMEOUT_COOKIES', fileKey: 'timeout' },
-  'nypost.com': { envVar: 'NYPOST_COOKIES', fileKey: 'nypost' },
-  'nydailynews.com': { envVar: 'NYDAILYNEWS_COOKIES', fileKey: 'nydailynews' },
-  'deadline.com': { envVar: 'DEADLINE_COOKIES', fileKey: 'deadline' },
-  'observer.com': { envVar: 'OBSERVER_COOKIES', fileKey: 'observer' },
-  'hollywoodreporter.com': { envVar: 'THR_COOKIES', fileKey: 'hollywoodreporter' },
-  'variety.com': { envVar: 'VARIETY_COOKIES', fileKey: 'variety' },
-  'indiewire.com': { envVar: 'INDIEWIRE_COOKIES', fileKey: 'indiewire' },
-  'ew.com': { envVar: 'EW_COOKIES', fileKey: 'ew' },
-  // Free-site domains (anti-bot bypass, metered paywalls, GDPR walls)
-  'theatermania.com': { envVar: 'THEATERMANIA_COOKIES', fileKey: 'theatermania' },
-  'huffpost.com': { envVar: 'HUFFPOST_COOKIES', fileKey: 'huffpost' },
-  'huffingtonpost.com': { envVar: 'HUFFPOST_COOKIES', fileKey: 'huffpost' },
-  'usatoday.com': { envVar: 'USATODAY_COOKIES', fileKey: 'usatoday' },
-  'northjersey.com': { envVar: 'NORTHJERSEY_COOKIES', fileKey: 'northjersey' },
-  'bloomberg.com': { envVar: 'BLOOMBERG_COOKIES', fileKey: 'bloomberg' },
-  'thestage.co.uk': { envVar: 'THESTAGE_COOKIES', fileKey: 'thestage' },
-  'talkinbroadway.com': { envVar: 'TALKINBROADWAY_COOKIES', fileKey: 'talkinbroadway' },
-  'backstage.com': { envVar: 'BACKSTAGE_COOKIES', fileKey: 'backstage' },
-  'amny.com': { envVar: 'AMNY_COOKIES', fileKey: 'amny' },
-  'frontmezzjunkies.com': { envVar: 'FRONTMEZZJUNKIES_COOKIES', fileKey: 'frontmezzjunkies' },
-  // UK outlets
-  'telegraph.co.uk': { envVar: 'TELEGRAPH_COOKIES', fileKey: 'telegraph' },
-  'thetimes.co.uk': { envVar: 'THETIMES_COOKIES', fileKey: 'thetimes' },
-  'thetimes.com': { envVar: 'THETIMES_COOKIES', fileKey: 'thetimes' },
-  'standard.co.uk': { envVar: 'STANDARD_COOKIES', fileKey: 'standard' },
-  'independent.co.uk': { envVar: 'INDEPENDENT_COOKIES', fileKey: 'independent' },
-  // US outlets
-  'chicagotribune.com': { envVar: 'CHICAGOTRIBUNE_COOKIES', fileKey: 'chicagotribune' },
-  'thewrap.com': { envVar: 'THEWRAP_COOKIES', fileKey: 'thewrap' },
-  'nbcnewyork.com': { envVar: 'NBCNEWYORK_COOKIES', fileKey: 'nbcnewyork' },
-  'newsday.com': { envVar: 'NEWSDAY_COOKIES', fileKey: 'newsday' },
-};
+// Cookie loading is centralized in scripts/lib/cookie-loader.js
+// Provides 3-tier fallback: COOKIES_BUNDLE_* → individual env vars → local files
 
 // Domains where login triggers OTC/OTP emails — use cookie injection ONLY, never attempt login
 const COOKIE_ONLY_DOMAINS = ['newyorker.com'];
-
-// Cache loaded cookies to avoid re-reading files/decoding base64 every time
-const _cookieCache = {};
-
-/**
- * Load cookies for a given domain. Checks env var first (base64 JSON), then local file.
- * Returns Playwright-compatible cookie array or null if none available.
- */
-function loadCookiesForDomain(domain) {
-  // Normalize domain (strip www.)
-  const normalizedDomain = domain.replace(/^www\./, '');
-
-  // Find matching cookie config
-  const cookieConfig = COOKIE_DOMAIN_MAP[normalizedDomain];
-  if (!cookieConfig) return null;
-
-  // Check cache
-  if (_cookieCache[normalizedDomain] !== undefined) {
-    return _cookieCache[normalizedDomain];
-  }
-
-  // Try env var first (base64-encoded JSON array — used in CI)
-  const envVal = process.env[cookieConfig.envVar];
-  if (envVal) {
-    try {
-      const decoded = Buffer.from(envVal, 'base64').toString('utf-8');
-      const cookies = JSON.parse(decoded);
-      if (Array.isArray(cookies) && cookies.length > 0) {
-        console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar}`);
-        _cookieCache[normalizedDomain] = cookies;
-        return cookies;
-      }
-    } catch (e) {
-      console.log(`  ⚠ Failed to parse ${cookieConfig.envVar} env var: ${e.message}`);
-    }
-  }
-
-  // Try local file (data/cookies/{fileKey}.json)
-  const cookieFilePath = path.join('data', 'cookies', `${cookieConfig.fileKey}.json`);
-  if (fs.existsSync(cookieFilePath)) {
-    try {
-      const cookies = JSON.parse(fs.readFileSync(cookieFilePath, 'utf-8'));
-      if (Array.isArray(cookies) && cookies.length > 0) {
-        console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from ${cookieFilePath}`);
-        _cookieCache[normalizedDomain] = cookies;
-        return cookies;
-      }
-    } catch (e) {
-      console.log(`  ⚠ Failed to parse cookie file ${cookieFilePath}: ${e.message}`);
-    }
-  }
-
-  _cookieCache[normalizedDomain] = null;
-  return null;
-}
-
-/**
- * Check if cookies are available for a URL's domain.
- * Returns the domain key if cookies exist, null otherwise.
- */
-function hasCookiesForUrl(url) {
-  try {
-    const hostname = new URL(url).hostname.replace(/^www\./, '');
-    for (const domain of Object.keys(COOKIE_DOMAIN_MAP)) {
-      if (hostname === domain || hostname.endsWith('.' + domain)) {
-        const cookies = loadCookiesForDomain(domain);
-        if (cookies) return domain;
-      }
-    }
-  } catch {}
-  return null;
-}
-
-/**
- * Build an HTTP Cookie header string for a URL's domain.
- * Returns "name1=val1; name2=val2" or null if no cookies available.
- * Used for ScrapingBee forward_headers and direct HTTP fetch with subscriber auth.
- */
-function buildCookieHeaderForUrl(url) {
-  const domain = hasCookiesForUrl(url);
-  if (!domain) return null;
-
-  const cookies = loadCookiesForDomain(domain);
-  if (!cookies || cookies.length === 0) return null;
-
-  // Filter to cookies matching this domain, build header string
-  const hostname = new URL(url).hostname.replace(/^www\./, '');
-  return cookies
-    .filter(c => c.name && c.value && c.domain)
-    .filter(c => {
-      const cookieDomain = c.domain.replace(/^\./, '');
-      return hostname === cookieDomain || hostname.endsWith('.' + cookieDomain) ||
-             cookieDomain === hostname || cookieDomain.endsWith('.' + hostname);
-    })
-    .map(c => `${c.name}=${c.value}`)
-    .join('; ');
-}
 
 /**
  * Inject cookies into a Playwright browser context.
