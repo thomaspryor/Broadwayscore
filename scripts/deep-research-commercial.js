@@ -239,7 +239,8 @@ Find and report the following financial information. Only report data you can ve
 
 **A. Reddit and forums — use site: searches for precision:**
 - Search \`site:reddit.com/r/Broadway "${title}" capitalization\`, then recouped, then budget, then "weekly nut"
-- Reddit users post detailed weekly grosses analyses with financial breakdowns (capitalization, weekly operating costs, estimated profit/loss) — especially for musicals. Look for season post-mortem threads.
+- **Key source for weekly running costs:** Reddit user u/Boring_Waltz_9545 posts weekly "Grosses Analysis" threads on r/Broadway with per-show breakdowns: gross, capacity %, ATP (average ticket price), and estimated weekly operating costs. Search \`site:reddit.com/r/Broadway "Grosses Analysis" "${title}"\` and also \`site:reddit.com/r/Broadway "${title}" "break even" OR "operating cost"\`
+- Also look for season post-mortem threads with financial summaries.
 - Search \`site:forum.broadwayworld.com "${title}" capitalization\` and \`"${title}" budget\`
 - BroadwayWorld forums have investor discussions with capitalization figures, offering paper details, and recoupment speculation
 
