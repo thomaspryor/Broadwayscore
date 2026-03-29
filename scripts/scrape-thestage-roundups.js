@@ -104,14 +104,16 @@ async function loginToTheStage(page) {
     }));
     await page.context().addCookies(pwCookies);
 
-    // Verify cookies work by loading a paywalled page
-    await page.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', {
+    // Verify cookies work by loading an actual paywalled roundup page
+    await page.goto('https://www.thestage.co.uk/review-round-ups/broken-glass-at-the-young-vic-review-round-up', {
       waitUntil: 'networkidle', timeout: 30000,
     });
     await page.waitForTimeout(3000);
     const html = await page.content();
-    if (!html.includes('NOT A PAYWALL') && !html.includes('create a free account')) {
-      console.log('  ✓ Cookie auth verified');
+    const hasStars = html.includes('★') || /\*{2,5}/.test(html);
+    const hasPaywall = html.includes('create a free account') || html.includes('Subscribe to continue');
+    if (hasStars && !hasPaywall) {
+      console.log('  ✓ Cookie auth verified (stars visible, no paywall)');
       return true;
     }
     console.log('  ⚠ Cookies did not bypass paywall, trying credentials...');

@@ -84,6 +84,20 @@ jobs:
           fi
           echo "All writable workflows with checkout-core-data have matching push-core-data"
 
+      - name: Check for tracked symlinks or gitlinks
+        run: |
+          # Symlinks (120000) and gitlinks (160000) to local paths dangle in CI.
+          # This has caused cascading workflow failures 3 times (reviews.json,
+          # .core-data-checkout, .claude/worktrees/fix-ci-noise).
+          BAD=$(git ls-files --stage | grep -E "^(120000|160000)" || true)
+          if [ -n "$BAD" ]; then
+            echo "::error::Tracked symlinks or gitlinks found — these break CI:"
+            echo "$BAD"
+            echo "Fix: git rm --cached <path> and add to .gitignore"
+            exit 1
+          fi
+          echo "No tracked symlinks or gitlinks"
+
       - name: Check scraping workflows have multi-service fallback
         run: |
           # Any workflow that uses SCRAPINGBEE_API_KEY for actual scraping
