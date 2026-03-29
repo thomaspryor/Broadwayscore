@@ -39,7 +39,12 @@
     "wicked-2003/broadwayworld--lauren-gienow.json",
     "wicked-2003/broadwayworld--linda-hodges.json",
     "wicked-2003/broadwayworld--lynn-beaver.json",
-    "wicked-2003/broadwayworld--tyler-hinton.json"
+    "wicked-2003/broadwayworld--tyler-hinton.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "sweetmeats-west-end-2026/standard--maya-chandran.json",
+    "all-out-2025/nytg--gillian-russo.json",
+    "all-out-2025/ew--unknown.json",
+    "waiting-for-godot-2025/nypost--entertainment-critic.json"
   ],
   "failed": [
     "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
@@ -155,7 +160,12 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
-    "the-lion-king-1997/timeout--adam-feldman.json"
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "man-to-man-west-end-2026/stagebuddy--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -190,12 +200,18 @@
       "wicked-2003/broadwayworld--jared-fessler.json",
       "wicked-2003/broadwayworld--katrina-fageol.json",
       "wicked-2003/broadwayworld--lauren-gienow.json",
-      "wicked-2003/broadwayworld--tyler-hinton.json"
+      "wicked-2003/broadwayworld--tyler-hinton.json",
+      "grace-pervades-west-end-2026/thestage--unknown.json",
+      "sweetmeats-west-end-2026/standard--maya-chandran.json",
+      "all-out-2025/nytg--gillian-russo.json",
+      "all-out-2025/ew--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "data/review-texts/waiting-for-godot-2025/nypost--entertainment-critic.json",
+      "waiting-for-godot-2025/nypost--entertainment-critic.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -215,7 +231,7 @@
     ]
   },
   "startTime": "2026-03-29T03:49:46.540Z",
-  "lastProcessed": "the-lion-king-1997/timeout--adam-feldman.json",
+  "lastProcessed": "art-2025/broadwaynews--unknown.json",
   "log": [
     {
       "t": "2026-03-29T03:49:59.212Z",
@@ -227,6 +243,17 @@
       "t": "2026-03-29T03:50:00.340Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-29T20:55:08.803Z",
+      "event": "bb-session",
+      "session": "81b8b986",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-29T20:55:09.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
