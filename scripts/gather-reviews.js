@@ -2583,6 +2583,56 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     }
 
     health.showScore.extracted = showScoreCount;
+
+    // Extract verified star ratings from outlet pages for SS-sourced reviews.
+    // SS assigns its own star ratings which are wrong ~11% of the time.
+    // Fetching the actual outlet page and running extractScore() gives us the
+    // outlet's real rating at gather time, before collect-review-texts.js runs.
+    const ssReviews = foundReviews.filter(r =>
+      (r.source === 'show-score-playwright' || r.source === 'show-score') && r.url
+    );
+    if (ssReviews.length > 0) {
+      console.log(`\n    --- Extracting verified star ratings from ${ssReviews.length} SS outlet URLs ---`);
+      let extracted = 0, skipped = 0, failed = 0;
+      for (const review of ssReviews) {
+        // Skip if we already have a verified score from an aggregator for this outlet
+        const hasAggregatorScore = foundReviews.some(r =>
+          r !== review &&
+          normalizeOutlet(r.outlet || r.outletId) === normalizeOutlet(review.outlet || review.outletId) &&
+          r.scoreSource && OUTLET_VERIFIED_SOURCES.has(r.scoreSource)
+        );
+        if (hasAggregatorScore) {
+          skipped++;
+          continue;
+        }
+        try {
+          const result = await fetchPage(review.url);
+          const html = result?.content || (typeof result === 'string' ? result : '');
+          if (html && html.length > 500) {
+            const outletId = normalizeOutlet(review.outlet || review.outletId);
+            const score = extractScore(html, '', outletId);
+            if (score && score.normalizedScore != null) {
+              const prevRating = review.originalRating || '(none)';
+              review.originalRating = score.originalScore || `${Math.round(score.normalizedScore)}/100`;
+              review.score = score.normalizedScore;
+              review.scoreSource = score.source || 'outlet-page-extraction';
+              extracted++;
+              console.log(`      ✓ ${outletId}: ${review.originalRating} [${review.scoreSource}] (was SS: ${prevRating})`);
+            }
+          }
+        } catch (e) {
+          failed++;
+          // Silently fall back to SS star rating
+        }
+        await sleep(1000); // Rate limit outlet fetches
+      }
+      console.log(`    Star extraction: ${extracted} verified, ${skipped} had aggregator score, ${failed} failed`);
+      if (!health.starExtraction) health.starExtraction = {};
+      health.starExtraction.extracted = extracted;
+      health.starExtraction.skipped = skipped;
+      health.starExtraction.failed = failed;
+    }
+
     // Archive the page
     archiveAggregatorPage('show-score', showId, showScoreResult.url, showScoreResult.html);
   }
