@@ -74,6 +74,7 @@ for (const fk of getAllFileKeys()) {
 // Thresholds
 const AUTH_ERROR_DAYS = 2;   // Auth cookie <2 days = fail
 const AUTH_WARN_DAYS = 5;    // Auth cookie <5 days = warn
+const AUTH_HEADSUP_DAYS = 7; // Auth cookie <7 days = heads-up (action message)
 const EXPIRED_PCT_WARN = 80; // >80% of all cookies expired = warn
 
 // --- HTTP Helper ---
@@ -199,10 +200,13 @@ function checkAuthExpiry(cookies, authCookieNames) {
   const days = Math.round((earliest.expires - now) / 86400 * 10) / 10;
 
   if (days < AUTH_ERROR_DAYS) {
-    return { status: 'fail', message: `Auth expires in ${days}d (${earliest.name})`, authDays: days };
+    return { status: 'fail', message: `Auth expires in ${days}d (${earliest.name}) — login in Safari NOW, then run: python3 scripts/extract-safari-cookies.py --push`, authDays: days };
   }
   if (days < AUTH_WARN_DAYS) {
-    return { status: 'warn', message: `Auth expires in ${days}d (${earliest.name})`, authDays: days };
+    return { status: 'warn', message: `Auth expires in ${days}d (${earliest.name}) — login in Safari soon, then run: python3 scripts/extract-safari-cookies.py --push`, authDays: days };
+  }
+  if (days < AUTH_HEADSUP_DAYS) {
+    return { status: 'warn', message: `Auth expires in ${days}d (${earliest.name}) — refresh within ${Math.round(days - AUTH_ERROR_DAYS)}d`, authDays: days };
   }
 
   return { status: 'pass', message: `Auth OK ${days}d (${earliest.name})`, authDays: days };

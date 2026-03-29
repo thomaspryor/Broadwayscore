@@ -207,6 +207,16 @@ DOMAIN_GROUPS = {
         "output": "newsday.json",
         "secret_name": "NEWSDAY_COOKIES",
     },
+    "curtainup": {
+        "domains": [".curtainup.com", "curtainup.com"],
+        "output": "curtainup.json",
+        "secret_name": "CURTAINUP_COOKIES",
+    },
+    "theaterscene": {
+        "domains": [".theaterscene.net", "theaterscene.net"],
+        "output": "theaterscene.json",
+        "secret_name": "THEATERSCENE_COOKIES",
+    },
 }
 
 # Project root (where data/ lives)
