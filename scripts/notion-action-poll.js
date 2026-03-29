@@ -245,7 +245,21 @@ Output format:
 - [specific improvement]
 
 **VERDICT:** "Ready to Start" / "Fix N blockers first" / "Rethink approach"`,
-    Start: `IMPLEMENT this card. First investigate and plan, then actually build it. Use a worktree for any src/ changes. Push code and trigger deploys as needed. This is a full implementation session.`,
+    Start: `IMPLEMENT this card. First investigate and plan, then actually build it. Use a worktree for any src/ changes. Push code and trigger deploys as needed. This is a full implementation session.
+
+IMPORTANT — If the Existing Outcome contains a Review with BLOCKERS, address every blocker before implementing. Do not ignore review findings.
+
+MANDATORY VERIFICATION before pushing:
+1. \`npx tsc --noEmit\` — zero TypeScript errors
+2. \`npx next lint\` — no new warnings
+3. For changed scripts: run each with smallest scope (--limit 1, --dry-run) and confirm non-zero results
+4. For changed src/ files: verify the build succeeds
+5. Run \`node scripts/validate-data.js 2>&1 | tail -5\` — confirm exit code 0
+
+Do NOT push code that hasn't passed these checks. "Looks correct" is not verification — run the commands and check the output.
+
+After pushing, if the push touches src/public/config files, confirm the deploy workflow triggered:
+\`gh run list --limit 3 --json workflowName,status,conclusion,createdAt\``,
   };
 
   const instruction = actionInstructions[card.action] || actionInstructions.Investigate;
