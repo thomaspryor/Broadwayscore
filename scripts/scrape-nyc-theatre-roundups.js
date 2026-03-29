@@ -32,6 +32,7 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
 
+const { serpQuery } = require('./lib/url-discovery');
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 // ---------------------------------------------------------------------------
@@ -100,51 +101,24 @@ function sleep(ms) {
 // ---------------------------------------------------------------------------
 
 async function googleSearchForShow(showTitle, category, year) {
-  if (!SCRAPINGBEE_KEY) {
-    console.log('  [WARN] No SCRAPINGBEE_API_KEY set, skipping Google search');
-    return null;
-  }
-
   // Use category-appropriate search term (don't search "broadway" for WE/OB shows)
   const categoryLabel = isLondonMarket(category) ? 'west end'
     : category === 'off-broadway' ? 'off-broadway'
     : 'broadway';
   const yearSuffix = year ? ` ${year}` : '';
   const query = `site:newyorkcitytheatre.com/news/reviews/ "${showTitle}" ${categoryLabel}${yearSuffix}`;
-  const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(query)}&nb_results=5`;
 
-  return new Promise((resolve, reject) => {
-    const req = https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const results = JSON.parse(data);
-            const urls = (results.organic_results || [])
-              .map(r => r.url)
-              .filter(url => url && url.includes('newyorkcitytheatre.com'));
-            // Only accept /news/reviews/ URLs (critic roundups)
-            const roundupUrl = urls.find(u => /\/news\/reviews\/\d+/.test(u));
-            resolve(roundupUrl || null);
-          } catch (e) {
-            // Fallback: extract URLs from raw content, only /news/reviews/ paths
-            const urls = [];
-            const linkPattern = /(https?:\/\/(?:www\.)?newyorkcitytheatre\.com\/news\/reviews\/\d+)/gi;
-            let match;
-            while ((match = linkPattern.exec(data)) !== null) {
-              urls.push(match[1]);
-            }
-            resolve(urls.length > 0 ? urls[0] : null);
-          }
-        } else {
-          reject(new Error(`Google search HTTP ${res.statusCode}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Timeout')); });
-  });
+  try {
+    const results = await serpQuery(query, { nbResults: 5 });
+    if (!results) return null;
+
+    const urls = results.map(r => r.url).filter(url => url && url.includes('newyorkcitytheatre.com'));
+    // Only accept /news/reviews/ URLs (critic roundups)
+    return urls.find(u => /\/news\/reviews\/\d+/.test(u)) || null;
+  } catch (e) {
+    console.log(`  Google search error: ${e.message}`);
+    return null;
+  }
 }
 
 // ---------------------------------------------------------------------------

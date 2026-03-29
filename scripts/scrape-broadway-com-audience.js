@@ -67,6 +67,18 @@ function sleep(ms) {
 }
 
 /**
+ * Wrapper around fetchPage with a hard timeout to prevent hanging.
+ */
+async function fetchPageWithTimeout(url, options = {}, timeoutMs = 30000) {
+  return Promise.race([
+    fetchPage(url, options),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error(`fetchPage timeout after ${timeoutMs / 1000}s`)), timeoutMs)
+    ),
+  ]);
+}
+
+/**
  * Detect bot challenge pages (Cloudflare, etc.) that return valid 200 but no real content.
  */
 function isBotChallenge(html) {
@@ -95,7 +107,7 @@ async function discoverShows() {
   // If listing page is bot-challenged, retry via shared scraper (Playwright → Bright Data → ScrapingBee)
   if (isBotChallenge(html)) {
     console.log('  Bot challenge on listing page, trying scraper fallback chain...');
-    const result = await fetchPage('https://www.broadway.com/shows/', { renderJs: true });
+    const result = await fetchPageWithTimeout('https://www.broadway.com/shows/', { renderJs: true });
     const scraperHtml = result?.content || '';
     if (scraperHtml.length > 10000 && !isBotChallenge(scraperHtml)) {
       html = scraperHtml;
@@ -571,7 +583,7 @@ async function main() {
       if (!rating && isBotChallenge(html)) {
         if (verbose) console.log(`  Bot challenge detected for ${show.id}, trying scraper fallback...`);
         try {
-          const result = await fetchPage(bc.url, { renderJs: true });
+          const result = await fetchPageWithTimeout(bc.url, { renderJs: true });
           const scraperHtml = result?.content || '';
           if (scraperHtml && !isBotChallenge(scraperHtml)) {
             rating = extractJsonLdRating(scraperHtml) || extractHtmlRating(scraperHtml);
@@ -666,7 +678,9 @@ async function main() {
   }
 }
 
-main().catch(e => {
+main().then(() => {
+  process.exit(0);
+}).catch(e => {
   console.error('Fatal error:', e);
   process.exit(1);
 });

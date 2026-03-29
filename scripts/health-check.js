@@ -54,7 +54,7 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Box office data is out of date. Updated weekly — may just be a slow week.' },
   { match: /^Freshness: audience-buzz\.json$/, urgency: 'this-week', workflow: 'update-show-score.yml',
     humanFallback: 'Audience scores are out of date.' },
-  { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'update-commercial.yml',
+  { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'commercial-weekly.yml',
     humanFallback: 'Commercial data is out of date.' },
   { match: /^Freshness: critic-consensus\.json$/, urgency: 'low', workflow: 'update-critic-consensus.yml',
     humanFallback: 'Critic consensus summaries are out of date.' },
@@ -199,7 +199,7 @@ const FRESHNESS_CHECKS = [
   { file: 'shows.json', field: '_meta.lastUpdated', warnH: 24, errorH: 36, hint: 'Check update-show-status workflow in Actions tab' },
   { file: 'grosses.json', field: 'lastUpdated', warnH: 240, errorH: 336, hint: 'Check weekly-grosses workflow in Actions tab' },
   { file: 'audience-buzz.json', field: '_meta.lastUpdated', warnH: 240, errorH: 336, hint: 'Check audience buzz workflows in Actions tab' },
-  { file: 'commercial.json', field: '_meta.lastUpdated', warnH: 336, errorH: 504, hint: 'Check update-commercial workflow in Actions tab' },
+  { file: 'commercial.json', field: '_meta.lastUpdated', warnH: 336, errorH: 504, hint: 'Check commercial-weekly workflow in Actions tab' },
   { file: 'critic-consensus.json', field: '_meta.lastGenerated', warnH: 336, errorH: 504, hint: 'Check update-critic-consensus workflow in Actions tab' },
   { file: 'lottery-rush.json', field: 'lastUpdated', warnH: 336, errorH: 504, hint: 'Check update-lottery-rush workflow in Actions tab' },
 ];

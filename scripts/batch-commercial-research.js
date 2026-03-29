@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -110,60 +111,17 @@ function fetchViaScrapingBee(url) {
  * Returns array of {title, url, snippet}.
  */
 async function googleSearch(query) {
-  return new Promise((resolve) => {
-    if (!SCRAPINGBEE_KEY) {
-      resolve([]);
-      return;
-    }
-
-    const params = new URLSearchParams({
-      api_key: SCRAPINGBEE_KEY,
-      search: query,
-      nb_results: '8',
-    });
-    const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?${params}`;
-
-    https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode !== 200) {
-          console.warn(`    ⚠️  Google search API returned ${res.statusCode}`);
-          resolve([]);
-          return;
-        }
-        try {
-          const parsed = JSON.parse(data);
-          const results = (parsed.organic_results || []).slice(0, 5).map(r => ({
-            title: r.title || '',
-            url: r.url || r.link || '',
-            snippet: r.description || '',
-          }));
-          resolve(results);
-        } catch {
-          // Fall back to regex parsing of raw HTML
-          const results = [];
-          const titleRegex = /<h3[^>]*>(.*?)<\/h3>/g;
-          const linkRegex = /<a[^>]*href="(https?:\/\/(?!google\.com|gstatic\.com)[^"]+)"[^>]*>/g;
-          let match;
-          const titles = [];
-          while ((match = titleRegex.exec(data)) !== null) {
-            titles.push(match[1].replace(/<[^>]+>/g, ''));
-          }
-          const links = [];
-          while ((match = linkRegex.exec(data)) !== null) {
-            links.push(match[1]);
-          }
-          for (let i = 0; i < Math.min(titles.length, links.length, 5); i++) {
-            results.push({ title: titles[i], url: links[i] });
-          }
-          resolve(results);
-        }
-      });
-    }).on('error', () => {
-      resolve([]);
-    });
-  });
+  try {
+    const results = await serpQuery(query, { nbResults: 8 });
+    if (!results) return [];
+    return results.slice(0, 5).map(r => ({
+      title: r.title || '',
+      url: r.url || '',
+      snippet: r.snippet || '',
+    }));
+  } catch {
+    return [];
+  }
 }
 
 /**

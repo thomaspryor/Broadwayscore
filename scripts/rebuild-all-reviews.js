@@ -791,20 +791,30 @@ const crossShowUrlIndex = new Map();
 const crossShowFingerprints = new Map();
 
 // Pre-opening guard pass: flag reviews published 90+ days before a show's earliest date
-// as wrongProduction. Runs on ALL show dirs (including previews/upcoming that get skipped
-// in the main loop) so that files are flagged persistently before a show transitions to "open".
+// as wrongProduction. Runs on ALL shows regardless of status — a 2019 review filed under
+// a 2026 remount is wrong whether the show is in previews, open, or closed.
 {
   let preOpenFlagged = 0;
   for (const sid of showDirs) {
-    const status = showStatusMap[sid];
-    if (status !== 'previews' && status !== 'upcoming' && status !== 'announced') continue;
     const showEarliest = showDateMap[sid];
     if (!showEarliest) continue;
     const sDir = path.join(reviewTextsDir, sid);
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
-        if (d.wrongProduction || d.wrongShow || d.wrongProductionManualClear) continue;
+        if (d.wrongProduction || d.wrongShow) continue;
+        // Respect manual clears UNLESS the date mismatch is large (>180 days) —
+        // a prior-production review is wrong regardless of manual override
+        if (d.wrongProductionManualClear) {
+          let mcReviewDate = null;
+          if (d.publishDate) {
+            const mcCleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
+            mcReviewDate = new Date(mcCleaned);
+            if (isNaN(mcReviewDate.getTime())) mcReviewDate = null;
+          }
+          if (!mcReviewDate || (showEarliest - mcReviewDate) <= 180 * 86400000) continue;
+          // Extreme date mismatch — override manual clear
+        }
         let reviewDate = null;
         if (d.publishDate) {
           const cleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
@@ -1222,13 +1232,25 @@ showDirs.forEach(showId => {
       // OVERRIDE: If wrongProduction was set by cross-market guard ("US outlet reviewing London show")
       // but the URL is actually a UK domain, clear it — the guard was wrong.
       // Also clears stale flags (no note, "US-only" script) on UK/dual-market outlets with London URLs.
-      if (data.wrongProduction === true && isLondonMarket(showCat) && data.url) {
+      // BUT: Never auto-clear if the review date is >90 days before the show's earliest date —
+      // that's a genuine wrong-production, not a cross-market false positive.
+      if (data.wrongProduction === true && !data.wrongProductionOverride && isLondonMarket(showCat) && data.url) {
         const wpNote = data.wrongProductionNote || '';
         // Only auto-clear cross-market, US-only, or stale no-note flags — NOT legitimate
         // "Same URL exists", "Pre-opening guard", or "days before show opened" flags
         const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
           || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
-        if (!isStructuralFlag) {
+        // Date-aware guard: if review is >90 days before the show's earliest date, it's genuinely
+        // from a prior production — do NOT auto-clear regardless of URL domain
+        let isDateMismatch = false;
+        if (data.publishDate && showDateMap[showId]) {
+          const cleaned = data.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
+          const reviewDate = new Date(cleaned);
+          if (!isNaN(reviewDate.getTime()) && (showDateMap[showId] - reviewDate) > 90 * 86400000) {
+            isDateMismatch = true;
+          }
+        }
+        if (!isStructuralFlag && !isDateMismatch) {
           // Compute outlet early for wrongProduction override check
           const earlyRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
           const earlyCanonicalOutlet = normalizeOutletCanonical(earlyRawOutlet);
@@ -1261,8 +1283,17 @@ showDirs.forEach(showId => {
       // the wrongShow flag is almost certainly a false positive from LLM classification.
       // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
       // BUT: Do NOT auto-clear if content verification flagged wrongArticle (e.g., news/preview, not a review).
+      // AND: Do NOT auto-clear if the review date is >90 days before the show — that's a prior production.
       const isWrongArticle = data.contentVerification && data.contentVerification.wrongArticle === true;
-      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle) {
+      let wsDateMismatch = false;
+      if (data.publishDate && showDateMap[showId]) {
+        const wsCleaned = data.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
+        const wsReviewDate = new Date(wsCleaned);
+        if (!isNaN(wsReviewDate.getTime()) && (showDateMap[showId] - wsReviewDate) > 90 * 86400000) {
+          wsDateMismatch = true;
+        }
+      }
+      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsDateMismatch) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;

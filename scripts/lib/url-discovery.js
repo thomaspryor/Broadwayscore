@@ -144,6 +144,7 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
       return (data.organic_results || data.results || []).map(r => ({
         url: r.url || r.link,
         title: r.title || '',
+        snippet: r.description || r.snippet || '',
       }));
     } catch (error) {
       const status = error.response?.status;
@@ -246,6 +247,7 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
         return data.organic.slice(0, 10).map(r => ({
           url: r.link || r.url || '',
           title: r.title || '',
+          snippet: r.description || r.snippet || '',
         }));
       }
       if (data.response_id) continue;
@@ -289,6 +291,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
       return data.organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
         title: r.title || '',
+        snippet: r.description || r.snippet || '',
       }));
     }
 
@@ -627,11 +630,46 @@ function validateUrlDomain(url, outletId) {
   }
 }
 
+/**
+ * General-purpose Google SERP query.
+ * Provider chain: Bright Data (cheap) → ScrapingBee (25 credits/query fallback).
+ * With preferSpeed=true: ScrapingBee first → Bright Data fallback.
+ *
+ * @param {string} query - Google search query
+ * @param {Object} [options] - Optional settings
+ * @param {string} [options.scrapingBeeKey] - ScrapingBee API key (env: SCRAPINGBEE_API_KEY)
+ * @param {string} [options.brightDataKey] - Bright Data token (env: BRIGHTDATA_TOKEN)
+ * @param {Function} [options.log] - Logging function (default: console.log)
+ * @param {number} [options.nbResults] - Max results to return (default: 10)
+ * @param {{ dateMin: Date, dateMax: Date }} [options.dateRange] - Optional date range filter
+ * @param {boolean} [options.preferSpeed] - If true, ScrapingBee first (for time-sensitive flows)
+ * @returns {Array<{url: string, title: string}>|null} organic results, or null if all providers unavailable
+ */
+async function serpQuery(query, options = {}) {
+  const sbKey = options.scrapingBeeKey || process.env.SCRAPINGBEE_API_KEY || '';
+  const bdKey = options.brightDataKey || process.env.BRIGHTDATA_TOKEN || '';
+  const log = options.log || console.log;
+  const dateRange = options.dateRange || null;
+  const preferSpeed = options.preferSpeed || false;
+  const nbResults = options.nbResults || 10;
+
+  if (!sbKey && !bdKey) {
+    log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
+    return null;
+  }
+
+  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed);
+  if (!results) return null;
+
+  return results.slice(0, nbResults);
+}
+
 module.exports = {
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,
   DOMAIN_REDIRECTS,
   discoverCorrectUrl,
+  serpQuery,
   getShowInfo,
   calculateDateWindow,
   buildDateTbs,

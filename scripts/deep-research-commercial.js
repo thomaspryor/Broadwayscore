@@ -184,7 +184,7 @@ function estimateCost(usage, model) {
  * Poll a background response until completed or timeout.
  * Returns the completed response object.
  */
-async function pollForCompletion(responseId, maxWaitMs = 900000) {
+async function pollForCompletion(responseId, maxWaitMs = 1800000) {
   const pollInterval = 15000; // 15 seconds
   const startTime = Date.now();
 
@@ -239,7 +239,8 @@ Find and report the following financial information. Only report data you can ve
 
 **A. Reddit and forums — use site: searches for precision:**
 - Search \`site:reddit.com/r/Broadway "${title}" capitalization\`, then recouped, then budget, then "weekly nut"
-- Reddit users post detailed weekly grosses analyses with financial breakdowns (capitalization, weekly operating costs, estimated profit/loss) — especially for musicals. Look for season post-mortem threads.
+- **Key source for weekly running costs:** Reddit user u/Boring_Waltz_9545 posts weekly "Grosses Analysis" threads on r/Broadway with per-show breakdowns: gross, capacity %, ATP (average ticket price), and estimated weekly operating costs. Search \`site:reddit.com/r/Broadway "Grosses Analysis" "${title}"\` and also \`site:reddit.com/r/Broadway "${title}" "break even" OR "operating cost"\`
+- Also look for season post-mortem threads with financial summaries.
 - Search \`site:forum.broadwayworld.com "${title}" capitalization\` and \`"${title}" budget\`
 - BroadwayWorld forums have investor discussions with capitalization figures, offering paper details, and recoupment speculation
 
@@ -794,10 +795,10 @@ async function main() {
     fs.writeFileSync(COST_LOG_PATH, JSON.stringify([...existingLog, ...costLog], null, 2) + '\n');
   }
 
-  // Clean up progress file after successful complete run
+  // Preserve which shows were researched this run (don't wipe progress)
   if (!DRY_RUN && researchedCount > 0) {
     fs.writeFileSync(PROGRESS_PATH, JSON.stringify({
-      completed: [],
+      completed: progress.completed,
       lastRunAt: new Date().toISOString(),
       lastRunShows: researchedCount,
     }, null, 2) + '\n');
@@ -810,6 +811,40 @@ async function main() {
   console.log(`Weekly spend: $${weeklySpend.toFixed(2)} / $${WEEKLY_SPEND_CAP}`);
   if (!DRY_RUN) {
     console.log(`Pending results: ${Object.keys(pending.shows).length} shows in ${PENDING_PATH}`);
+  }
+
+  // Auto-commit results so they aren't lost
+  if (!DRY_RUN && researchedCount > 0) {
+    console.log('\nAuto-committing results...');
+    try {
+      const { execSync } = require('child_process');
+      const cwd = path.join(__dirname, '..');
+      const gitOpts = { cwd, stdio: 'pipe', timeout: 30000 };
+
+      // Set git identity for unattended runs
+      try { execSync('git config user.name', gitOpts); } catch {
+        execSync('git config user.name "Deep Research Bot"', gitOpts);
+        execSync('git config user.email "noreply@broadwayscorecard.com"', gitOpts);
+      }
+
+      // Stage data files only
+      execSync('git add data/commercial-pending-review.json data/deep-research-progress.json data/deep-research-cost-log.json data/commercial-research-spend.json', gitOpts);
+
+      const msg = `data: Deep research batch — ${researchedCount} shows, $${totalCost.toFixed(2)} spent`;
+      execSync(`git commit -m "${msg}" --allow-empty`, gitOpts);
+
+      // Push with rebase to handle concurrent pushes
+      try {
+        execSync('git pull --rebase origin main', gitOpts);
+      } catch (e) {
+        console.warn('    Pull-rebase warning:', e.message?.slice(0, 100));
+      }
+      execSync('git push origin main', gitOpts);
+      console.log('    Committed and pushed.');
+    } catch (e) {
+      console.warn(`    Auto-commit failed: ${e.message?.slice(0, 200) || 'unknown error'}`);
+      console.warn('    Results are still saved locally in pending-review.json');
+    }
   }
 }
 

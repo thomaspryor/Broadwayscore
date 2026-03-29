@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T23:22:57.393Z",
+  "generatedAt": "2026-03-29T01:03:42.970Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -144,6 +144,14 @@
       "outlet": "theater-life",
       "critic": "Samuel L. Leiter",
       "detail": "originalRating \"5/5 stars\" (=100) vs score 78 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outlet": "timeout-london",
+      "critic": "Andrzej Lukowski",
+      "detail": "originalRating \"5/5\" (=100) vs score 63 (source: llmScore-override-star-conflict)"
     },
     {
       "type": "designation-score-mismatch",
@@ -356,38 +364,14 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "all-my-sons-west-end-2025",
-      "detail": "9/11 reviews (82%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
       "showId": "broken-glass-west-end-2026",
       "detail": "9/15 reviews (60%) scored exactly 60"
     },
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-      "detail": "9/13 reviews (69%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "im-sorry-prime-minister-west-end-2026",
-      "detail": "10/13 reviews (77%) scored exactly 60"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "matilda-the-musical-west-end-2021",
-      "detail": "10/17 reviews (59%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "detail": "8/15 reviews (53%) scored exactly 80"
+      "showId": "hadestown-west-end-2024",
+      "detail": "8/16 reviews (50%) scored exactly 80"
     },
     {
       "type": "score-clustering",
@@ -398,38 +382,8 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "oliver-west-end-2024",
-      "detail": "12/20 reviews (60%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "operation-mincemeat-west-end-2024",
-      "detail": "11/17 reviews (65%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "paddington-the-musical-west-end-2025",
-      "detail": "12/21 reviews (57%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
       "showId": "paranormal-activity-west-end-2025",
       "detail": "9/15 reviews (60%) scored exactly 80"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "shadowlands-west-end-2026",
-      "detail": "8/14 reviews (57%) scored exactly 60"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "six-the-musical-west-end-2021",
-      "detail": "10/19 reviews (53%) scored exactly 100"
     },
     {
       "type": "score-clustering",

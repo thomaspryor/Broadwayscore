@@ -162,10 +162,12 @@ function extractReviews(html, showId) {
     if (!text) return;
 
     // --- Detect star-tier header ---
-    // Patterns: "4 stars ⭑⭑⭑⭑" or "3 stars ⭑⭑⭑" (with or without <span>)
-    const tierMatch = text.match(/^(\d)\s*stars?\s*[⭑★]+$/i);
+    // Patterns: "4 stars ⭑⭑⭑⭑" or "Three stars ⭑⭑⭑" (digit or word, with or without <span>)
+    const WORD_TO_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+    const tierMatch = text.match(/^(\d|one|two|three|four|five)\s*stars?\s*[⭑★]+$/i);
     if (tierMatch) {
-      currentStars = parseInt(tierMatch[1], 10);
+      const raw = tierMatch[1].toLowerCase();
+      currentStars = WORD_TO_NUM[raw] || parseInt(raw, 10);
       return;
     }
 

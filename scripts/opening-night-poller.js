@@ -49,6 +49,7 @@ const { normalizeOutlet } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 const { matchTitleToShow } = require('./lib/show-matching');
+const { fetchPage, fetchJSON } = require('./lib/scraper');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -109,6 +110,8 @@ function getFoundOutletIds(showId) {
     if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      // Skip wrongProduction/wrongShow files — they shouldn't block re-discovery
+      if (data.wrongProduction || data.wrongShow) continue;
       if (data.outletId) outletIds.add(data.outletId.toLowerCase());
     } catch {}
   }
@@ -286,22 +289,14 @@ async function runAggregators(show) {
         console.log('  Talkin\' Broadway: already have review file, skipping');
       } else {
         console.log(`  Checking Talkin' Broadway: ${tbUrl}`);
-        // Try plain HTTPS first — TB serves HTML on direct article URLs
-        const tbResult = await new Promise((resolve) => {
-          const req = require('https').get(tbUrl, {
-            timeout: 10000,
-            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Broadway Scorecard/1.0)' }
-          }, res => {
-            if (res.statusCode === 200 || res.statusCode === 301) {
-              resolve({ ok: true, status: res.statusCode });
-            } else {
-              resolve({ ok: false, status: res.statusCode });
-            }
-            res.resume();
-          });
-          req.on('error', () => resolve({ ok: false, status: 0 }));
-          req.on('timeout', () => { req.destroy(); resolve({ ok: false, status: 0 }); });
-        });
+        // Try via proxy to avoid TLS blocking — only need to check if URL exists (HEAD-style)
+        let tbResult = { ok: false, status: 0 };
+        try {
+          const tbPage = await fetchPage(tbUrl, { renderJs: false });
+          tbResult = { ok: !!(tbPage && tbPage.content && tbPage.content.length > 500), status: 200 };
+        } catch (e) {
+          tbResult = { ok: false, status: 0 };
+        }
 
         if (tbResult.ok) {
           console.log(`  Talkin' Broadway: URL confirmed (${tbResult.status}) — creating stub`);
@@ -353,15 +348,8 @@ async function runAggregators(show) {
       if (lboUrl) {
         console.log(`    Curated URL: ${lboUrl}`);
         try {
-          const https = require('https');
-          lboHtml = await new Promise((resolve, reject) => {
-            https.get(lboUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, res => {
-              if (res.statusCode !== 200) { resolve(null); return; }
-              let data = '';
-              res.on('data', c => data += c);
-              res.on('end', () => resolve(data));
-            }).on('error', reject);
-          });
+          const lboResult = await fetchPage(lboUrl, { renderJs: false });
+          lboHtml = lboResult?.content || null;
         } catch (e) {
           console.log(`    LBO fetch error: ${e.message}`);
         }
@@ -373,14 +361,11 @@ async function runAggregators(show) {
       // Fallback: live sitemap discovery (free, ~16 entries)
       if (!lboHtml) {
         try {
-          const sitemapXml = await new Promise((resolve) => {
-            require('https').get('https://www.londonboxoffice.co.uk/news-sitemap.xml', {
-              headers: { 'User-Agent': 'Mozilla/5.0' },
-            }, res => {
-              if (res.statusCode !== 200) { resolve(null); return; }
-              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-            }).on('error', () => resolve(null));
-          });
+          let sitemapXml = null;
+          try {
+            const smResult = await fetchPage('https://www.londonboxoffice.co.uk/news-sitemap.xml', { renderJs: false });
+            sitemapXml = smResult?.content || null;
+          } catch (e) { /* sitemap fetch failed, continue */ }
           if (sitemapXml) {
             // Match show title words against review URL slugs
             // LBO uses both "review-round-up-{show}" and "{show}-review-{venue}" patterns
@@ -398,14 +383,10 @@ async function runAggregators(show) {
             });
             if (match) {
               console.log(`    Sitemap match: ${match}`);
-              lboHtml = await new Promise((resolve) => {
-                require('https').get(match, {
-                  headers: { 'User-Agent': 'Mozilla/5.0' },
-                }, res => {
-                  if (res.statusCode !== 200) { resolve(null); return; }
-                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-                }).on('error', () => resolve(null));
-              });
+              try {
+                const matchResult = await fetchPage(match, { renderJs: false });
+                lboHtml = matchResult?.content || null;
+              } catch (e) { /* page fetch failed */ }
               // Cache to archive
               if (lboHtml) {
                 const archDir = path.dirname(lboArchivePath);
@@ -467,32 +448,23 @@ async function runAggregators(show) {
       }
 
       let trHtml = null;
+      // Try direct URL construction via proxy (avoids TLS fingerprint blocking in CI)
       for (const trUrl of trUrls) {
         try {
-          const fetched = await new Promise((resolve, reject) => {
-            const req = require('https').get(trUrl, {
-              headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
-            }, res => {
-              if (res.statusCode === 301 || res.statusCode === 302) {
-                require('https').get(res.headers.location, {
-                  headers: { 'User-Agent': 'Mozilla/5.0' },
-                }, res2 => {
-                  if (res2.statusCode !== 200) { resolve(null); return; }
-                  let d = ''; res2.on('data', c => d += c); res2.on('end', () => resolve(d));
-                }).on('error', () => resolve(null));
-                return;
-              }
-              if (res.statusCode !== 200) { resolve(null); return; }
-              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-            });
-            req.on('error', () => resolve(null));
-          });
-          if (fetched && fetched.length > 1000) {
-            trHtml = fetched;
-            console.log(`    Found at: ${trUrl}`);
+          const result = await fetchPage(trUrl, { renderJs: false });
+          // Check content is the actual roundup page — must contain ⭑ star ratings
+          // AND a key word from the show title (not just generic site chrome)
+          const titleWord = show.title.split(/\s+/).filter(w => w.length > 3)[0] || show.title;
+          if (result && result.content && result.content.length > 1000 &&
+              result.content.includes('⭑') &&
+              result.content.toLowerCase().includes(titleWord.toLowerCase())) {
+            trHtml = result.content;
+            console.log(`    Found at: ${trUrl} (via ${result.source})`);
             break;
           }
-        } catch (e) {}
+        } catch (e) {
+          // 404/403 are expected for guessed URLs — continue to next variation
+        }
       }
 
       // Fallback: WP API search when URL construction misses
@@ -500,28 +472,15 @@ async function runAggregators(show) {
         try {
           const searchTitle = show.title.replace(/['"']/g, '');
           const wpApiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
-          const wpResult = await new Promise((resolve) => {
-            require('https').get(wpApiUrl, {
-              headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'application/json' },
-            }, res => {
-              if (res.statusCode !== 200) { resolve(null); return; }
-              let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-            }).on('error', () => resolve(null));
-          });
-          if (wpResult) {
-            const posts = JSON.parse(wpResult);
+          const posts = await fetchJSON(wpApiUrl);
+          if (posts && Array.isArray(posts)) {
             const roundup = posts.find(p => p.link && p.link.includes('/reviews-roundup/'));
             if (roundup) {
               console.log(`    WP API found: ${roundup.link}`);
-              const fetched = await new Promise((resolve) => {
-                require('https').get(roundup.link, {
-                  headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)' },
-                }, res => {
-                  if (res.statusCode !== 200) { resolve(null); return; }
-                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-                }).on('error', () => resolve(null));
-              });
-              if (fetched && fetched.length > 1000) trHtml = fetched;
+              const pageResult = await fetchPage(roundup.link, { renderJs: false });
+              if (pageResult && pageResult.content && pageResult.content.length > 1000) {
+                trHtml = pageResult.content;
+              }
             }
           }
         } catch (e) {
@@ -596,19 +555,13 @@ async function runAggregators(show) {
       const searchTitle = show.title.replace(/['"'\u2018\u2019]/g, '');
       const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
 
-      // Use https.get instead of execSync curl — more reliable in CI
-      const apiResult = await new Promise((resolve) => {
-        require('https').get(apiUrl, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'application/json' },
-        }, res => {
-          if (res.statusCode !== 200) { console.log(`    WET API status: ${res.statusCode}`); resolve(null); return; }
-          let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-        }).on('error', e => { console.log(`    WET API error: ${e.message}`); resolve(null); });
-      });
-
+      // Use fetchJSON for proxy-routed WP API call (avoids TLS blocking in CI)
       let posts = [];
-      if (apiResult) {
-        try { posts = JSON.parse(apiResult); } catch (e) { console.log(`    WET API parse error: ${(e.message || '').substring(0, 60)}`); }
+      try {
+        posts = await fetchJSON(apiUrl);
+        if (!Array.isArray(posts)) posts = [];
+      } catch (e) {
+        console.log(`    WET API error: ${(e.message || '').substring(0, 60)}`);
       }
 
       if (Array.isArray(posts) && posts.length > 0) {
@@ -627,6 +580,8 @@ async function runAggregators(show) {
               const outletLine = before.split('\n').filter(l => l.trim()).pop()?.trim() || '';
               if (!outletLine || outletLine.length < 2 || outletLine.length > 50) continue;
               if (outletLine.startsWith('"') || outletLine.startsWith('\u201c')) continue;
+              // Skip table headers parsed as outlet names
+              if (/publication|rating|critic/i.test(outletLine)) continue;
               wetReviews.push({ outlet: outletLine, stars, critic: 'Unknown' });
             }
           }
@@ -635,24 +590,8 @@ async function runAggregators(show) {
           if (wetReviews.length === 0 && post.link) {
             try {
               console.log(`    Fetching rendered page: ${post.link}`);
-              const pageHtml = await new Promise((resolve) => {
-                require('https').get(post.link, {
-                  headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', Accept: 'text/html' },
-                }, res => {
-                  // Follow redirect
-                  if (res.statusCode === 301 || res.statusCode === 302) {
-                    require('https').get(res.headers.location, {
-                      headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'text/html' },
-                    }, res2 => {
-                      if (res2.statusCode !== 200) { resolve(null); return; }
-                      let d = ''; res2.on('data', c => d += c); res2.on('end', () => resolve(d));
-                    }).on('error', () => resolve(null));
-                    return;
-                  }
-                  if (res.statusCode !== 200) { resolve(null); return; }
-                  let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
-                }).on('error', () => resolve(null));
-              });
+              const pageResult = await fetchPage(post.link, { renderJs: false });
+              const pageHtml = pageResult?.content || null;
               if (pageHtml) {
                 const $w = cheerioWet.load(pageHtml);
                 $w('.reviewnewpubhead').each((_, el) => {

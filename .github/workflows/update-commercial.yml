@@ -1,8 +1,10 @@
 name: Update Commercial Data
 
 on:
-  schedule:
-    - cron: '0 16 * * 3'  # Wednesday 4pm UTC / 11am ET
+  # Cron disabled — Sunday deep research (commercial-weekly.yml) handles this.
+  # Manual dispatch still available as fallback.
+  # schedule:
+  #   - cron: '0 16 * * 3'  # Wednesday 4pm UTC / 11am ET
   workflow_dispatch:
     inputs:
       dry_run:
@@ -15,6 +17,10 @@ on:
         required: false
         type: boolean
         default: false
+
+concurrency:
+  group: commercial-data-write
+  cancel-in-progress: false
 
 jobs:
   update-commercial:

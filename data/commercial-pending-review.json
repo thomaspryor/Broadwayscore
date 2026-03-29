@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T23:04:43.611Z",
+  "generatedAt": "2026-03-29T01:16:57.964Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -118,28 +118,46 @@
       "researchedAt": "2026-02-04T19:28:49.374Z"
     },
     "shucked-2023": {
+      "capitalization": 16000000,
+      "capitalizationSource": "BWW forum 'OPERATION MINCEMEAT... plots its course to New York' comment by binau, posted 2024-05-08",
+      "weeklyRunningCost": 650000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Broadway News article 'Shucked will end its Broadway run', published 2023-10-12",
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Shucked was capitalized at $16M, had estimated weekly running costs of $600K–$650K, and closed on January 14, 2024 without recouping its investment.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "forum",
+          "url": "forum.broadwayworld.com/thread/ArticleOPERATION-MINCEMEAT--plots-its-course-to-New-York",
+          "date": "2024-05-08"
+        },
+        {
+          "type": "forum",
+          "url": "forum.broadwayworld.com/thread/Broadway-GrossesWeek-Ending-7-30-23",
+          "date": "2023-08-01"
+        },
+        {
+          "type": "trade",
+          "url": "broadwaynews.com/shucked-announces-final-performance",
+          "date": "2023-10-12"
+        },
+        {
+          "type": "other",
+          "url": "en.wikipedia.org/wiki/Nederlander_Theatre",
+          "date": null
+        }
+      ],
       "title": "Shucked",
       "slug": "shucked-2023",
       "openingDate": "2023-04-04",
       "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": 625000,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "Show ran from April 2023 to January 2024 with weekly running costs discussed as $600-650K range. No clear recoupment information available.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://forum.broadwayworld.com/thread/Budgets-and-Breakevens--2023-2024",
-          "date": "2023-09-13"
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-02-04T19:30:30.987Z"
+      "researchedAt": "2026-03-29T01:16:57.964Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     },
     "my-joy-is-heavy-off-broadway": {
       "capitalization": null,
@@ -800,17 +818,19 @@
       "researchedAt": "2026-03-27T03:24:18.895Z"
     },
     "appropriate-2023": {
-      "capitalization": 3750000,
-      "capitalizationSource": "Forbes (2024) – reported $3.75M cost to mount the Broadway transfer ([www.forbes.com](https://www.forbes.com/sites/marchershberg/2024/02/09/commercial-transfer-of-best-selling-broadway-play-prompts-questions/#:~:text=After%20Appropriate%20concludes%20its%20limited,75%20million))",
+      "title": "Appropriate",
+      "slug": "appropriate",
+      "openingDate": "2023-12-18",
+      "status": "closed",
+      "capitalization": null,
+      "capitalizationSource": null,
       "weeklyRunningCost": 440866,
       "costMethodology": "trade-reported",
-      "recouped": false,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "NYC tax-credit ($1.72M) implies ~ $6.9M eligible costs ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=%241%2C871%2C543%2C%C2%A0KPOP%C2%A0,%241%2C146%2C568%2C%C2%A0Mother%20Play)). Required ~ $760K/week to recoup ([www.forbes.com](https://www.forbes.com/sites/marchershberg/2024/02/09/commercial-transfer-of-best-selling-broadway-play-prompts-questions/#:~:text=Taking%20into%20account%20a%20%241,440%2C866%20before%20royalties%20and%20rent)). Closed after limited run ([playbill.com](https://playbill.com/article/broadways-appropriate-announces-3rd-and-final-extension#:~:text=The%20Second%20Stage%20Theater%20revival,continue%20performances%20through%20June%2030)) with no public recoup announcement.",
-      "confidence": "medium",
+      "designation": "TBD",
+      "notes": "Despite strong box office performance and a well-received commercial transfer, “Appropriate” did not publicly announce recoupment of its initial investment by its June 30, 2024 closing, and its production budget remains undisclosed.",
       "sources": [
         {
           "type": "trade",
@@ -819,22 +839,12 @@
         },
         {
           "type": "trade",
-          "url": "https://www.playbill.com/article/broadways-appropriate-announces-3rd-and-final-extension",
-          "date": "2024-05-30"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
-          "date": "2025-09-04"
+          "url": "https://playbill.com/article/appropriate-ends-broadway-run-june-30",
+          "date": "2024-06-30"
         }
       ],
-      "title": "Appropriate",
-      "slug": "appropriate-2023",
-      "openingDate": "2023-12-18",
-      "status": "closed",
-      "researchedAt": "2026-03-28T23:04:43.611Z",
-      "model": "o4-mini-deep-research",
-      "researchTrigger": "manual"
+      "confidence": "low",
+      "researchedAt": "2026-03-28T21:13:03.466Z"
     },
     "doubt-2024": {
       "title": "Doubt: A Parable",
@@ -2828,6 +2838,203 @@
       ],
       "confidence": "high",
       "researchedAt": "2026-03-28T22:41:38.640Z"
+    },
+    "data-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No verifiable financial data for Data has been published. Trade articles confirm its production details but do not report any budget or weekly costs ([playbill.com](https://playbill.com/article/matthew-libbys-data-sets-new-york-stage-premiere-off-broadway#:~:text=Matthew%20Libby%27s%20suspense%20thriller%C2%A0Data%20will,Weather%20Girl%29%C2%A0will%20direct)) ([stageandcinema.com](https://stageandcinema.com/2026/01/29/data-off-broadway-review-lucille-lortel/#:~:text=Logging%20in%20to%20tackle%20these,the%20intersection%20of%20algorithmic%20predetermination)), and the New York City production tax credit summaries (Aug 2025) list no award to Data ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=The%20program%E2%80%99s%20first%20payouts%20were,season%20have%20yet%20received%20payment)). There is no public information on recoupment.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/matthew-libbys-data-sets-new-york-stage-premiere-off-broadway",
+          "date": "2025-11-18"
+        },
+        {
+          "type": "trade",
+          "url": "https://stageandcinema.com/2026/01/29/data-off-broadway-review-lucille-lortel/",
+          "date": "2026-01-29"
+        },
+        {
+          "type": "other",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "Data",
+      "slug": "data-off-broadway",
+      "openingDate": "2026-01-09",
+      "status": "open",
+      "researchedAt": "2026-03-28T23:03:33.218Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "the-dinosaurs-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No financial figures (budget or weekly operating cost) were reported for The Dinosaurs. The show ran Off-Broadway at Playwrights Horizons ([playbill.com](https://playbill.com/article/the-dinosaurs-begins-off-broadway-world-premiere-february-4#:~:text=Jacob%20Perkins%20%27%C2%A0%203%20begins,Rubin%20Theater)), and Playwrights Horizons is a 501(c)(3) nonprofit theater company ([projects.propublica.org](https://projects.propublica.org/nonprofits/organizations/132805131#:~:text=Type%20of%20Nonprofit)). As a nonprofit production, it did not have a public capitalization or recoupment report. The limited run closed in March 2026 with no announcement of recoupment or reported grosses.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/the-dinosaurs-begins-off-broadway-world-premiere-february-4",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "other",
+          "url": "https://projects.propublica.org/nonprofits/organizations/132805131",
+          "date": null
+        }
+      ],
+      "title": "The Dinosaurs",
+      "slug": "the-dinosaurs-off-broadway",
+      "openingDate": "2026-02-04",
+      "status": "closed",
+      "researchedAt": "2026-03-28T23:24:07.255Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "bughouse-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": "No public figure found (nonprofit Off-Broadway production, not a commercially budgeted show) ([vineyardtheatre.org](https://vineyardtheatre.org/about/#:~:text=FEARLESSLY%20MADE%20IN%20NEW%20YORK))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Bughouse was presented by the Vineyard Theatre (an Off-Broadway theatre company) in spring 2026 ([vineyardtheatre.org](https://vineyardtheatre.org/about/#:~:text=FEARLESSLY%20MADE%20IN%20NEW%20YORK)) ([vineyardtheatre.org](https://vineyardtheatre.org/shows/bughouse/#:~:text=)). No publicly reported capitalization or weekly running cost could be found. It ran a limited engagement (Feb 26–Apr 3, 2026 ([vineyardtheatre.org](https://vineyardtheatre.org/shows/bughouse/#:~:text=))) with no reports of recoupment.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "other",
+          "url": "https://vineyardtheatre.org/about",
+          "date": "2026-03-12"
+        },
+        {
+          "type": "other",
+          "url": "https://vineyardtheatre.org/shows/bughouse",
+          "date": "2026-03-12"
+        }
+      ],
+      "title": "Bughouse",
+      "slug": "bughouse-off-broadway",
+      "openingDate": "2026-03-11",
+      "status": "open",
+      "researchedAt": "2026-03-28T23:30:21.849Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "stereophonic-off-broadway-2023": {
+      "capitalization": 4000000,
+      "capitalizationSource": "Broadway Journal (Philip Boroff, Apr 30, 2024) ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson))",
+      "weeklyRunningCost": 541000,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "According to a Broadway Journal analysis, Stereophonic had about a $4.0M capitalization ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson)).  Its most recent weekly gross was $541K, roughly matching its weekly expenses ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson)).  This production ran at nonprofit Playwrights Horizons (Off-Broadway) and has since closed, so traditional commercial recoupment isn’t applicable.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/",
+          "date": "2024-04-30"
+        }
+      ],
+      "title": "Stereophonic",
+      "slug": "stereophonic-off-broadway-2023",
+      "openingDate": "2023-10-17",
+      "status": "closed",
+      "researchedAt": "2026-03-28T23:36:37.162Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "masquerade-off-broadway": {
+      "capitalization": 25000000,
+      "capitalizationSource": "NYTimes reported $25M production cost including renovation ([vi.web-platforms-vi.nyti.nyt.net](https://vi.web-platforms-vi.nyti.nyt.net/2026/01/19/theater/phantom-of-the-opera-masquerade.html#:~:text=No%20expense%20was%20seemingly%20spared%2C,had%20more%20than%2030%2C000%20crystals))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "NYT reports a $25M production cost ([vi.web-platforms-vi.nyti.nyt.net](https://vi.web-platforms-vi.nyti.nyt.net/2026/01/19/theater/phantom-of-the-opera-masquerade.html#:~:text=No%20expense%20was%20seemingly%20spared%2C,had%20more%20than%2030%2C000%20crystals)).  No public data on weekly operating cost or recoupment was found; show had sold-out extensions ([playbill.com](https://playbill.com/article/immersive-phantom-revival-masquerade-extends-after-total-sell-out#:~:text=Remember%20those%20new%20performances%20we,of%20%205%20Andrew%20Lloyd)) ([www.omdkc.com](https://www.omdkc.com/masquerade-extends-through-sunday-march-29-2026-tickets-on-sale-now/#:~:text=New%20York%2C%20NY%20,th%7D%20Street)) but remains ongoing.  Classification pending more info.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.nytimes.com/2026/01/19/theater/phantom-of-the-opera-masquerade.html",
+          "date": "2026-01-19"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/immersive-phantom-revival-masquerade-extends-after-total-sell-out",
+          "date": "2025-07-08"
+        }
+      ],
+      "title": "Masquerade",
+      "slug": "masquerade-off-broadway",
+      "openingDate": "2025-07-31",
+      "status": "open",
+      "researchedAt": "2026-03-29T00:30:42.495Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "hadestown": {
+      "capitalization": 11500000,
+      "capitalizationSource": "Trade press announcement (Playbill article, Nov. 11, 2019)",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2019-11",
+      "recoupedSource": "Trade press (Playbill/Deadline announcement, Nov. 2019)",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
+      "designation": "Windfall",
+      "notes": "Hadestown’s Broadway production cap was $11.5M and it recouped that amount in ~6 months (announced Nov. 2019).  No official data found on weekly running costs.  Commercial Broadway production.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/tony-awardwinning-hadestown-recoups-on-broadway",
+          "date": "2019-11-11"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2019/11/hadestown-recoup-investment-broadway-1202782727/",
+          "date": "2019-11-11"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Hadestown",
+      "slug": "hadestown",
+      "openingDate": "2019-04-17",
+      "status": "open",
+      "researchedAt": "2026-03-29T01:15:01.275Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     }
   }
 }
