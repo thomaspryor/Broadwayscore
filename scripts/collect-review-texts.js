@@ -1125,22 +1125,29 @@ async function loginToSite(domain, email, password) {
       await page.waitForTimeout(3000);
       const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
       if (cookieBtn) { const v = await cookieBtn.isVisible().catch(() => false); if (v) { console.log('    → Dismissing cookie consent...'); await cookieBtn.click(); await page.waitForTimeout(1000); } }
-      const emailInput = await page.$('input[type="email"], input[name="email"], input[id*="email"]');
-      if (!emailInput) { console.log('    ✗ The Stage login FAILED (no email field)'); return false; }
+      // /login has two forms (main + nav) — find the visible one
+      const emailInputs = await page.$$('input[type="email"], input[name="email"], input[id*="email"]');
+      let emailInput = null;
+      for (const inp of emailInputs) { if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; } }
+      if (!emailInput) { console.log('    ✗ The Stage login FAILED (no visible email field)'); return false; }
       await emailInput.click();
       await emailInput.type(email, { delay: 30 });
       await page.waitForTimeout(500);
-      const passInput = await page.$('input[type="password"], input[name="password"]');
+      const passInputs = await page.$$('input[type="password"], input[name="password"]');
+      let passInput = null;
+      for (const inp of passInputs) { if (await inp.isVisible().catch(() => false)) { passInput = inp; break; } }
       if (passInput) {
         await passInput.click();
         await passInput.type(password, { delay: 30 });
         await page.waitForTimeout(500);
-        const signInBtn = await page.$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Login"), button[type="submit"]');
+        const signInBtns = await page.$$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Login"), button[type="submit"], input[type="submit"]');
+        let signInBtn = null;
+        for (const btn of signInBtns) { if (await btn.isVisible().catch(() => false)) { signInBtn = btn; break; } }
         if (signInBtn) await signInBtn.click();
         else await page.keyboard.press('Enter');
         await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
         await page.waitForTimeout(3000);
-      } else { console.log('    ✗ The Stage login FAILED (no password field)'); return false; }
+      } else { console.log('    ✗ The Stage login FAILED (no visible password field)'); return false; }
       const postUrl = page.url();
       if (!postUrl.includes('/login')) { console.log('    ✓ The Stage login verified'); return true; }
       console.log('    ⚠ The Stage login uncertain - continuing');
@@ -1615,22 +1622,29 @@ async function browserbaseLogin(bbPage, domain, email, password) {
     await bbPage.waitForTimeout(3000);
     const cookieBtn = await bbPage.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
     if (cookieBtn) { const v = await cookieBtn.isVisible().catch(() => false); if (v) { console.log('    → Dismissing cookie consent...'); await cookieBtn.click(); await bbPage.waitForTimeout(1000); } }
-    const emailInput = await bbPage.$('input[type="email"], input[name="email"], input[id*="email"]');
-    if (!emailInput) { console.log('    ✗ The Stage login FAILED (no email field)'); return false; }
+    // /login has two forms (main + nav) — find the visible one
+    const emailInputs = await bbPage.$$('input[type="email"], input[name="email"], input[id*="email"]');
+    let emailInput = null;
+    for (const inp of emailInputs) { if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; } }
+    if (!emailInput) { console.log('    ✗ The Stage login FAILED (no visible email field)'); return false; }
     await emailInput.click();
     await emailInput.type(email, { delay: 30 });
     await bbPage.waitForTimeout(500);
-    const passInput = await bbPage.$('input[type="password"], input[name="password"]');
+    const passInputs = await bbPage.$$('input[type="password"], input[name="password"]');
+    let passInput = null;
+    for (const inp of passInputs) { if (await inp.isVisible().catch(() => false)) { passInput = inp; break; } }
     if (passInput) {
       await passInput.click();
       await passInput.type(password, { delay: 30 });
       await bbPage.waitForTimeout(500);
-      const signInBtn = await bbPage.$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Login"), button[type="submit"]');
+      const signInBtns = await bbPage.$$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Login"), button[type="submit"], input[type="submit"]');
+      let signInBtn = null;
+      for (const btn of signInBtns) { if (await btn.isVisible().catch(() => false)) { signInBtn = btn; break; } }
       if (signInBtn) await signInBtn.click();
       else await bbPage.keyboard.press('Enter');
       await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
       await bbPage.waitForTimeout(3000);
-    } else { console.log('    ✗ The Stage login FAILED (no password field)'); return false; }
+    } else { console.log('    ✗ The Stage login FAILED (no visible password field)'); return false; }
     const postUrl = bbPage.url();
     if (!postUrl.includes('/login')) { console.log('    ✓ The Stage login succeeded (via Browserbase)'); return true; }
     console.log('    ⚠ The Stage login uncertain - continuing');

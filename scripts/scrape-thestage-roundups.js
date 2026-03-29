@@ -164,7 +164,7 @@ async function loginToTheStage(page) {
   await page.waitForTimeout(500);
 
   // Find visible submit button
-  const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Sign in"), input[type="submit"]');
+  const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Log in"), button:has-text("Sign in"), button[type="submit"], input[type="submit"]');
   let submitBtn = null;
   for (const btn of submitBtns) {
     if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }

@@ -729,6 +729,9 @@ async function runAggregators(show) {
 
             const stageEmail = process.env.THESTAGE_EMAIL;
             const stagePassword = process.env.THESTAGE_PASSWORD;
+            if (!stageEmail || !stagePassword) {
+              throw new Error('THESTAGE_EMAIL or THESTAGE_PASSWORD not set');
+            }
 
             // Step 1: Login via /login page (listing page has no login form)
             console.log('  The Stage: logging in via /login...');
@@ -765,7 +768,7 @@ async function runAggregators(show) {
                 await passInput.type(stagePassword, { delay: 30 });
                 await page.waitForTimeout(500);
 
-                const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Sign in"), input[type="submit"]');
+                const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Log in"), button:has-text("Sign in"), button[type="submit"], input[type="submit"]');
                 let submitBtn = null;
                 for (const btn of submitBtns) {
                   if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
