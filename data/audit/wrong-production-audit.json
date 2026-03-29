@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-29T02:26:46.360Z",
+  "timestamp": "2026-03-29T03:14:07.043Z",
   "stats": {
-    "totalReviews": 32547,
+    "totalReviews": 32548,
     "alreadyFlagged": 11743,
     "dateGuardCatches": 18,
-    "directorMismatch": 939,
+    "directorMismatch": 940,
     "tvFilmSignals": 3376,
-    "londonSignals": 1003,
+    "londonSignals": 1004,
     "offBroadwaySignals": 985,
     "yearMismatch": 69,
     "noPublishDate": 6340
@@ -25770,6 +25770,25 @@
       "score": 78,
       "publishDate": "2026-03-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "west-end-best-friend--unknown.json",
+      "score": 86,
+      "publishDate": "2026-03-28",
+      "url": "https://www.westendbestfriend.co.uk/news/review-john-proctor-is-the-villain-royal-court",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
