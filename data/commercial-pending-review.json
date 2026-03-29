@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T23:30:21.849Z",
+  "generatedAt": "2026-03-29T03:06:36.144Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -2386,33 +2386,41 @@
       "researchedAt": "2026-03-28T22:21:25.257Z"
     },
     "glengarry-glen-ross-2025": {
-      "title": "Glengarry Glen Ross",
-      "slug": "glengarry-glen-ross-2025",
-      "openingDate": "2025-03-31",
-      "status": "closed",
       "capitalization": 7500000,
-      "capitalizationSource": "WTYE Entertainment article citing SEC filing",
+      "capitalizationSource": "SEC Form D reported in trade press (Deadline) ([www.yahoo.com](https://www.yahoo.com/entertainment/articles/glengarry-glen-ross-recoups-broadway-141919265.html#:~:text=Glengarry%E2%80%98s%20recoupment%20coincides%20with%20the,4M))",
       "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
+      "costMethodology": null,
       "recouped": true,
       "recoupedDate": "2025-05",
-      "recoupedSource": "RCI Theatricals article",
+      "recoupedSource": "Deadline (producers announced recoupment on May 13, 2025) ([www.yahoo.com](https://www.yahoo.com/entertainment/articles/glengarry-glen-ross-recoups-broadway-141919265.html#:~:text=Glengarry%20Glen%20Ross%2C%20the%20hit,its%20investment%2C%20producers%20announced%20today))",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
       "designation": "Easy Winner",
-      "notes": "The star-studded revival at the Palace Theatre was capitalized for $7.5 M and recouped its entire initial investment in nine weeks, with weekly grosses peaking at $2.4 M, before closing June 28, 2025.",
+      "notes": "Limited-run Broadway revival with $7.5M capitalization, recouped in ~9 weeks ([www.yahoo.com](https://www.yahoo.com/entertainment/articles/glengarry-glen-ross-recoups-broadway-141919265.html#:~:text=Glengarry%E2%80%98s%20recoupment%20coincides%20with%20the,4M)) ([playbill.com](https://playbill.com/article/broadways-glengarry-glen-ross-recoups#:~:text=Broadway%27s%20high,4%20million)). No weekly operating cost found. Recoupment ~100%.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.wtyefm.com/2025/05/13/glengarry-glen-ross-starring-kieran-culkin-bob-odenkirk-and-bill-burr-recoups-7-5-million-investment-on-broadway/",
+          "url": "https://playbill.com/article/broadways-glengarry-glen-ross-recoups",
           "date": "2025-05-13"
         },
         {
           "type": "trade",
-          "url": "https://www.rcitheatricals.com/news/2025/5/13/broadways-glengarry-glen-ross-recoups",
+          "url": "https://www.yahoo.com/entertainment/articles/glengarry-glen-ross-recoups-broadway-141919265.html",
           "date": "2025-05-13"
         }
       ],
-      "confidence": "high",
-      "researchedAt": "2026-03-28T22:22:52.298Z"
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Glengarry Glen Ross",
+      "slug": "glengarry-glen-ross-2025",
+      "openingDate": "2025-03-31",
+      "status": "closed",
+      "researchedAt": "2026-03-29T03:06:36.144Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "home-2024": {
       "title": "Home",
@@ -2570,38 +2578,38 @@
       "researchedAt": "2026-03-28T22:30:43.999Z"
     },
     "othello-2025": {
-      "title": "Othello",
-      "slug": "othello-2025",
-      "openingDate": "2025-03-23",
-      "status": "closed",
-      "capitalization": 9000000,
-      "capitalizationSource": "Washington Post: How celebrities dominated Broadway plays in 2025",
+      "capitalization": null,
+      "capitalizationSource": "No reliable data found (no public Form D or press figures)",
       "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
+      "costMethodology": null,
       "recouped": true,
       "recoupedDate": "2025-05",
-      "recoupedSource": "Playbill: Othello Recoups on Broadway",
-      "designation": "Miracle",
-      "notes": "The Denzel Washington- and Jake Gyllenhaal-led revival was capitalized at $9M and recouped its investment in just nine weeks on Broadway, driven by record-breaking weekly grosses exceeding $3.8M and nearly 100% capacity.",
+      "recoupedSource": "BroadwayNews/Deadline ([www.broadwaynews.com](https://www.broadwaynews.com/othello-on-broadway-announces-recoupment/#:~:text=The%20Denzel%20Washington,its%20investment%20in%20nine%20weeks))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Easy Winner",
+      "notes": "The Washington/Gyllenhaal Othello ran 15 weeks on Broadway and sold out every week ([www.broadwaynews.com](https://www.broadwaynews.com/othello-on-broadway-announces-recoupment/#:~:text=As%20of%20the%20week%20ending,ever%20achieve%20such%20a%20feat)).  Producers announced on May 1, 2025 that the show had recouped its investment in nine weeks ([www.broadwaynews.com](https://www.broadwaynews.com/othello-on-broadway-announces-recoupment/#:~:text=The%20Denzel%20Washington,its%20investment%20in%20nine%20weeks)) ([www.yahoo.com](https://www.yahoo.com/entertainment/articles/othello-recoups-broadway-investment-no-210840443.html#:~:text=Denzel%20Washington%20and%20Jake%20Gyllenhaal,has%20officially%20recouped%20its%20investment)).  No official budget or running-cost figures are available from trade sources.  It closed having fully recouped, fitting the profile of a limited-run hit.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.washingtonpost.com/entertainment/theater/interactive/2026/broadway-celebrities-box-office/",
-          "date": "2026-01-01"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/othello-recoups-on-broadway",
+          "url": "https://www.broadwaynews.com/othello-on-broadway-announces-recoupment/",
           "date": "2025-05-01"
         },
         {
           "type": "trade",
-          "url": "https://www.forbes.com/sites/mattcraig/2025/06/05/why-hollywood-stars-make-bank-on-broadway-for-producers/",
-          "date": "2025-06-05"
+          "url": "https://www.yahoo.com/entertainment/othello-recoups-broadway-investment-no-210840443.html",
+          "date": "2025-05-01"
         }
       ],
-      "confidence": "high",
-      "researchedAt": "2026-03-28T22:32:17.396Z"
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Othello",
+      "slug": "othello-2025",
+      "openingDate": "2025-03-23",
+      "status": "closed",
+      "researchedAt": "2026-03-29T03:01:52.901Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
     },
     "pirates-the-penzance-musical-2025": {
       "title": "Pirates! The Penzance Musical",
@@ -2919,6 +2927,133 @@
       "openingDate": "2026-03-11",
       "status": "open",
       "researchedAt": "2026-03-28T23:30:21.849Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "stereophonic-off-broadway-2023": {
+      "capitalization": 4000000,
+      "capitalizationSource": "Broadway Journal (Philip Boroff, Apr 30, 2024) ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson))",
+      "weeklyRunningCost": 541000,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "According to a Broadway Journal analysis, Stereophonic had about a $4.0M capitalization ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson)).  Its most recent weekly gross was $541K, roughly matching its weekly expenses ([www.broadwayjournal.com](https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/#:~:text=Stereophonic%2C%20David%20Adjmi%27s%20ecstatically%20reviewed,Producers%20Sue%20Wagner%2C%20John%20Johnson)).  This production ran at nonprofit Playwrights Horizons (Off-Broadway) and has since closed, so traditional commercial recoupment isn’t applicable.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/stereophonic-makes-tony-history-in-hazardous-season/",
+          "date": "2024-04-30"
+        }
+      ],
+      "title": "Stereophonic",
+      "slug": "stereophonic-off-broadway-2023",
+      "openingDate": "2023-10-17",
+      "status": "closed",
+      "researchedAt": "2026-03-28T23:36:37.162Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "masquerade-off-broadway": {
+      "capitalization": 25000000,
+      "capitalizationSource": "NYTimes reported $25M production cost including renovation ([vi.web-platforms-vi.nyti.nyt.net](https://vi.web-platforms-vi.nyti.nyt.net/2026/01/19/theater/phantom-of-the-opera-masquerade.html#:~:text=No%20expense%20was%20seemingly%20spared%2C,had%20more%20than%2030%2C000%20crystals))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "NYT reports a $25M production cost ([vi.web-platforms-vi.nyti.nyt.net](https://vi.web-platforms-vi.nyti.nyt.net/2026/01/19/theater/phantom-of-the-opera-masquerade.html#:~:text=No%20expense%20was%20seemingly%20spared%2C,had%20more%20than%2030%2C000%20crystals)).  No public data on weekly operating cost or recoupment was found; show had sold-out extensions ([playbill.com](https://playbill.com/article/immersive-phantom-revival-masquerade-extends-after-total-sell-out#:~:text=Remember%20those%20new%20performances%20we,of%20%205%20Andrew%20Lloyd)) ([www.omdkc.com](https://www.omdkc.com/masquerade-extends-through-sunday-march-29-2026-tickets-on-sale-now/#:~:text=New%20York%2C%20NY%20,th%7D%20Street)) but remains ongoing.  Classification pending more info.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.nytimes.com/2026/01/19/theater/phantom-of-the-opera-masquerade.html",
+          "date": "2026-01-19"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/immersive-phantom-revival-masquerade-extends-after-total-sell-out",
+          "date": "2025-07-08"
+        }
+      ],
+      "title": "Masquerade",
+      "slug": "masquerade-off-broadway",
+      "openingDate": "2025-07-31",
+      "status": "open",
+      "researchedAt": "2026-03-29T00:30:42.495Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "hadestown": {
+      "capitalization": 11500000,
+      "capitalizationSource": "Trade press announcement (Playbill article, Nov. 11, 2019)",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2019-11",
+      "recoupedSource": "Trade press (Playbill/Deadline announcement, Nov. 2019)",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
+      "designation": "Windfall",
+      "notes": "Hadestown’s Broadway production cap was $11.5M and it recouped that amount in ~6 months (announced Nov. 2019).  No official data found on weekly running costs.  Commercial Broadway production.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/tony-awardwinning-hadestown-recoups-on-broadway",
+          "date": "2019-11-11"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2019/11/hadestown-recoup-investment-broadway-1202782727/",
+          "date": "2019-11-11"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Hadestown",
+      "slug": "hadestown",
+      "openingDate": "2019-04-17",
+      "status": "open",
+      "researchedAt": "2026-03-29T01:15:01.275Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "liberation": {
+      "capitalization": null,
+      "capitalizationSource": "No public data found",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "No report found indicating recoupment",
+      "estimatedRecoupmentPct": null,
+      "notes": "Limited Broadway run (Oct 2025–Feb 2026) ending with $6.76M total gross ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/LIBERATION#:~:text=Gross%20%246%2C762%2C136)) and no recoupment announcement. Closed without recouping; likely returned over 30% of costs but well short of full budget.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/liberation-closes-to-highest-box-office-of-run-and-more-from-last-weeks-broadway-grosses",
+          "date": "2026-02-03"
+        },
+        {
+          "type": "other",
+          "url": "https://www.broadwayworld.com/grosses/LIBERATION",
+          "date": null
+        }
+      ],
+      "title": "Liberation",
+      "slug": "liberation",
+      "openingDate": "2025-10-28",
+      "status": "closed",
+      "researchedAt": "2026-03-29T01:55:57.038Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "manual"
     }
