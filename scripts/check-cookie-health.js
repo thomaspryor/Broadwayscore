@@ -71,10 +71,9 @@ for (const fk of getAllFileKeys()) {
   ALL_OUTLETS[fk] = getEnvVarForFileKey(fk);
 }
 
-// Thresholds
-const AUTH_ERROR_DAYS = 2;   // Auth cookie <2 days = fail
-const AUTH_WARN_DAYS = 5;    // Auth cookie <5 days = warn
-const AUTH_HEADSUP_DAYS = 7; // Auth cookie <7 days = heads-up (action message)
+// Thresholds — NYT cookies only last ~7 days, so thresholds must be tight
+const AUTH_ERROR_DAYS = 1;   // Auth cookie <1 day = fail
+const AUTH_WARN_DAYS = 3;    // Auth cookie <3 days = warn
 const EXPIRED_PCT_WARN = 80; // >80% of all cookies expired = warn
 
 // --- HTTP Helper ---
@@ -204,9 +203,6 @@ function checkAuthExpiry(cookies, authCookieNames) {
   }
   if (days < AUTH_WARN_DAYS) {
     return { status: 'warn', message: `Auth expires in ${days}d (${earliest.name}) — login in Safari soon, then run: python3 scripts/extract-safari-cookies.py --push`, authDays: days };
-  }
-  if (days < AUTH_HEADSUP_DAYS) {
-    return { status: 'warn', message: `Auth expires in ${days}d (${earliest.name}) — refresh within ${Math.round(days - AUTH_ERROR_DAYS)}d`, authDays: days };
   }
 
   return { status: 'pass', message: `Auth OK ${days}d (${earliest.name})`, authDays: days };
