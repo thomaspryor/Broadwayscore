@@ -730,12 +730,12 @@ async function runAggregators(show) {
             const stageEmail = process.env.THESTAGE_EMAIL;
             const stagePassword = process.env.THESTAGE_PASSWORD;
 
-            // Step 1: Login via the roundups listing page (same approach as scrape-thestage-roundups.js)
-            console.log('  The Stage: logging in...');
-            await page.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', {
-              waitUntil: 'networkidle', timeout: 30000,
+            // Step 1: Login via /login page (listing page has no login form)
+            console.log('  The Stage: logging in via /login...');
+            await page.goto('https://www.thestage.co.uk/login', {
+              waitUntil: 'domcontentloaded', timeout: 30000,
             });
-            await page.waitForTimeout(5000);
+            await page.waitForTimeout(3000);
 
             // Dismiss cookie consent if present
             const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
@@ -745,42 +745,36 @@ async function runAggregators(show) {
             }
 
             // Find and fill login form
-            await page.waitForSelector('input[name="email"], input[type="email"]', { timeout: 10000 }).catch(() => {});
-            const emailInputs = await page.$$('input[type="text"][name="email"], input[type="email"], input[name="email"]');
-            let emailInput = null;
-            for (const inp of emailInputs) {
-              if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
-            }
-
+            const emailInput = await page.$('input[name="email"], input[type="email"], input[id*="email"]');
             if (emailInput) {
               await emailInput.click();
               await emailInput.type(stageEmail, { delay: 30 });
               await page.waitForTimeout(500);
 
-              const passInputs = await page.$$('input[type="password"]');
-              let passInput = null;
-              for (const inp of passInputs) {
-                if (await inp.isVisible().catch(() => false)) { passInput = inp; break; }
-              }
+              const passInput = await page.$('input[type="password"], input[name="password"]');
               if (passInput) {
                 await passInput.click();
                 await passInput.type(stagePassword, { delay: 30 });
                 await page.waitForTimeout(500);
 
-                const submitBtns = await page.$$('button:has-text("Login"), input[type="submit"]');
-                let submitBtn = null;
-                for (const btn of submitBtns) {
-                  if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
-                }
+                const submitBtn = await page.$('button:has-text("Login"), button:has-text("Sign in"), input[type="submit"]');
                 if (submitBtn) await submitBtn.click();
                 else await page.keyboard.press('Enter');
 
                 await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-                await page.waitForTimeout(5000);
-                console.log('  The Stage: login submitted');
+                await page.waitForTimeout(3000);
+
+                const postLoginUrl = page.url();
+                if (!postLoginUrl.includes('/login')) {
+                  console.log('  The Stage: login verified');
+                } else {
+                  console.log('  The Stage: login may have failed (still on /login)');
+                }
+              } else {
+                console.log('  The Stage: no password field found');
               }
             } else {
-              console.log('  The Stage: no login form found, continuing (may already be logged in)');
+              console.log('  The Stage: no email field found on /login — may already be logged in');
             }
 
             // Step 2: Navigate to listing and discover the roundup URL for this show
