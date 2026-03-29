@@ -55,7 +55,7 @@ const { verifyProduction, quickDateCheck } = require('./lib/production-verifier'
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { LETTER_GRADES, extractScore, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
+const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
@@ -2595,11 +2595,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
       console.log(`\n    --- Extracting verified star ratings from ${ssReviews.length} SS outlet URLs ---`);
       let extracted = 0, skipped = 0, failed = 0;
       for (const review of ssReviews) {
-        // Skip if we already have a verified score from an aggregator for this outlet
+        // Skip if we already have a score from an aggregator for this outlet
         const hasAggregatorScore = foundReviews.some(r =>
           r !== review &&
           normalizeOutlet(r.outlet || r.outletId) === normalizeOutlet(review.outlet || review.outletId) &&
-          r.scoreSource && OUTLET_VERIFIED_SOURCES.has(r.scoreSource)
+          r.scoreSource
         );
         if (hasAggregatorScore) {
           skipped++;
