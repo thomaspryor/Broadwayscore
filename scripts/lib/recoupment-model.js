@@ -209,14 +209,26 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   // Theater cost: max(floor, pct of gross)
   const theaterCost = calcTheaterOverage(adjGross, weeklyNut);
 
-  // Fixed costs: the weeklyNut we have is CURRENT (or at-closing).
-  // For historical weeks, deflate backwards from the reported cost.
-  // Cost escalation is ~3%/year, so earlier weeks had lower costs.
+  // Fixed costs: phased model reflecting how costs change over a run.
+  // The weeklyNut we have is typically the steady-state cost.
+  // Phase 1 (weeks 1-26): Full nut (launch period, original cast/stars)
+  // Phase 2 (weeks 27-52): Full nut (steady state, year 1)
+  // Phase 3 (weeks 53-104): Nut × 0.93 (year 2+: cast replacements save ~7%, reduced marketing)
+  // Phase 4 (weeks 105+): Nut × 0.88 (mature run: further optimization, but offset by union escalators)
   let fixedCosts = weeklyNut * mult.fixedCost;
-  if (totalWeeks && weekNumber < totalWeeks) {
-    // Deflate: earlier weeks cost less than current
+  if (weekNumber > 104) {
+    fixedCosts *= 0.88;
+  } else if (weekNumber > 52) {
+    fixedCosts *= 0.93;
+  }
+  // For very old shows where nut reflects current costs, deflate further
+  if (totalWeeks && totalWeeks > 260 && weekNumber < totalWeeks) {
+    // Shows running 5+ years: additional 2%/year deflation for earlier weeks
+    // (ticket price inflation means older years had lower absolute costs)
     const yearsFromEnd = (totalWeeks - weekNumber) / 52;
-    fixedCosts /= Math.pow(1 + ANNUAL_COST_ESCALATION, yearsFromEnd);
+    if (yearsFromEnd > 5) {
+      fixedCosts /= Math.pow(1.02, yearsFromEnd - 5);
+    }
   }
 
   // Preview cost premium
