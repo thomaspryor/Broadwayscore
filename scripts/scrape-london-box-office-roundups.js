@@ -29,6 +29,7 @@ const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -276,6 +277,9 @@ function extractReviewsFromLBO(html, showId) {
 
     if (!currentOutlet) continue;
 
+    // Skip LBO boilerplate / footer content
+    if (/^100% Honest Reviews/i.test(text) || /^If you're interested in more/i.test(text)) continue;
+
     // Star rating line — Unicode ★ characters (in <p> elements)
     const starMatch = text.match(/^(★+)\s*$/);
     if (starMatch) {
@@ -354,6 +358,19 @@ function extractReviewsFromLBO(html, showId) {
 
       if (excerpt.length > 30) {
         currentExcerpt = excerpt;
+
+        // Fallback critic extraction from inline patterns like "Name called it..."
+        // Only if no Reviewer: line was found for this review
+        if (!currentCritic) {
+          const inlineMatch = excerpt.match(/^[""\u201C]?.{0,5}(?:[""\u201D]\s*)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?)\s+(?:called|thought|was\s|said\s|wrote\s|praised\s|described\s|noted\s|found\s|felt\s|hailed\s|loved\s)/);
+          if (inlineMatch) {
+            const candidateCritic = inlineMatch[1];
+            // Don't match outlet names (The Guardian, The Times, etc.)
+            if (!/^The\s/i.test(candidateCritic) && candidateCritic.toLowerCase() !== currentOutlet.toLowerCase()) {
+              currentCritic = candidateCritic;
+            }
+          }
+        }
       }
     }
   }
@@ -677,7 +694,8 @@ async function scrapeLBORoundups() {
     } else {
       console.log(`[FETCH] ${showId}: ${url}`);
       try {
-        html = await fetchWithRetry(url);
+        const result = await fetchPage(url);
+        html = result ? result.content : null;
         if (!html || html.length < 500) {
           console.log(`  Empty or too short page, skipping`);
           continue;
@@ -749,7 +767,8 @@ async function scrapeLBORoundups() {
       } else {
         console.log(`[FETCH] ${showId}: ${url}`);
         try {
-          html = await fetchWithRetry(url);
+          const result = await fetchPage(url);
+          html = result ? result.content : null;
           if (!html || html.length < 500) {
             console.log(`  Empty or too short page, skipping`);
             continue;
@@ -797,6 +816,7 @@ async function scrapeLBORoundups() {
   }
   if (DRY_RUN) console.log('\n[DRY RUN] No files were written');
 
+  await cleanupScraper();
   return stats;
 }
 
