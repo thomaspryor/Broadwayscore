@@ -69,6 +69,7 @@ function diffSnapshots(prev, curr) {
     if (currRc > prevRc) {
       changes.newReviews.push({
         id, slug: currShow.s, title: currShow.t, added: currRc - prevRc, total: currRc,
+        prevCount: prevRc,
       });
     }
 
@@ -97,12 +98,20 @@ function diffSnapshots(prev, curr) {
     }
   }
 
+  // Flag suspicious changes: >24 reviews added in a single day is abnormal
+  changes.suspiciousChanges = changes.newReviews.filter(r => r.added > 24);
+  // Remove suspicious entries from newReviews so they aren't double-counted
+  if (changes.suspiciousChanges.length > 0) {
+    changes.newReviews = changes.newReviews.filter(r => r.added <= 24);
+  }
+
   return changes;
 }
 
 function hasChanges(changes) {
   return changes.newShows.length + changes.newReviews.length +
-    changes.scoreChanges.length + changes.audienceChanges.length > 0;
+    changes.scoreChanges.length + changes.audienceChanges.length +
+    (changes.suspiciousChanges || []).length > 0;
 }
 
 async function sendEmail(html, subject) {
@@ -145,9 +154,12 @@ async function main() {
   }
 
   // Build and send email
+  const suspiciousCount = (changes.suspiciousChanges || []).length;
   const totalChanges = changes.newShows.length + changes.newReviews.length +
-    changes.scoreChanges.length + changes.audienceChanges.length;
-  const subject = `Daily Digest: ${totalChanges} change${totalChanges !== 1 ? 's' : ''} on ${today}`;
+    changes.scoreChanges.length + changes.audienceChanges.length + suspiciousCount;
+  const subject = suspiciousCount > 0
+    ? `⚠️ Daily Digest: ${totalChanges} changes (${suspiciousCount} suspicious) on ${today}`
+    : `Daily Digest: ${totalChanges} change${totalChanges !== 1 ? 's' : ''} on ${today}`;
   const html = buildDailyDigestHtml(changes, today);
 
   if (DRY_RUN) {
@@ -157,6 +169,7 @@ async function main() {
     console.log(`  New reviews: ${changes.newReviews.length} shows`);
     console.log(`  Score changes: ${changes.scoreChanges.length}`);
     console.log(`  Audience changes: ${changes.audienceChanges.length}`);
+    console.log(`  Suspicious changes: ${suspiciousCount}`);
     fs.writeFileSync('/tmp/daily-digest-preview.html', html);
     console.log('  HTML preview: /tmp/daily-digest-preview.html');
   } else {

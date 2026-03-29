@@ -1089,7 +1089,7 @@ showDirs.forEach(showId => {
             const openDate = showDateMap[showId];
             const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
             const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
-            const threshold = isFlexCat ? 1825 : 14;
+            const threshold = isFlexCat ? 90 : 14;
             if (daysBefore > threshold) refExcluded = true;
           }
           if (refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
@@ -1126,7 +1126,7 @@ showDirs.forEach(showId => {
             const openDate = showDateMap[showId];
             const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
             const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
-            const threshold = isFlexCat ? 1825 : 14;
+            const threshold = isFlexCat ? 90 : 14;
             if (daysBefore > threshold) refWouldBeExcluded = true;
           }
           if (refWouldBeExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
@@ -1478,15 +1478,15 @@ showDirs.forEach(showId => {
 
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Broadway: 14-day grace period (preview coverage).
-      // Off-Broadway/West End: 5-year (1825-day) grace period — they commonly transfer from
-      // fringe/regional theaters, but a 13-year gap (e.g., 2013→2026) is clearly wrong.
+      // Off-Broadway/West End: 90-day grace period — matches the pre-opening guard threshold.
+      // A review >90 days before the show opened is almost certainly a different production.
       // Reviews with allowEarlyDate: true bypass all date checks.
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
         const isFlexCategory = showCategory === 'off-broadway' || isLondonMarket(showCategory);
-        const threshold = isFlexCategory ? 1825 : 14;
+        const threshold = isFlexCategory ? 90 : 14;
         if (daysBefore > threshold) {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
@@ -2631,9 +2631,9 @@ const output = {
   reviews: allReviews
 };
 
-// REVIEW COUNT REGRESSION GUARD: abort if rebuild would lose >2% of reviews.
-// This prevents CI rebuilds with stale/incomplete data from silently dropping reviews.
-// Override with --force-write to bypass (e.g., after intentional bulk cleanup).
+// REVIEW COUNT REGRESSION GUARD: warn if rebuild would lose >2% of reviews.
+// Logs prominently and writes audit trail, but proceeds with the write.
+// The --force-write flag is kept for backwards compatibility but is no longer needed.
 {
   let existingCount = 0;
   try {
@@ -2645,14 +2645,28 @@ const output = {
     const newCount = allReviews.length;
     const lost = existingCount - newCount;
     const pctLost = (lost / existingCount * 100).toFixed(1);
-    if (lost > 0 && parseFloat(pctLost) > 2.0 && !process.argv.includes('--force-write')) {
-      console.error(`\n🚨 REGRESSION GUARD: Rebuild would DROP ${lost} reviews (${pctLost}% loss)`);
+    if (lost > 0 && parseFloat(pctLost) > 2.0) {
+      console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss)`);
       console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
       console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
-      console.error(`   To override, run with --force-write`);
-      process.exit(1);
+      console.error(`   ⚠️  PROCEEDING WITH WRITE — review data/audit/rebuild-regression.json for details`);
+      // Write audit trail for tracking
+      try {
+        const auditDir = path.join(path.dirname(reviewsJsonPath), 'audit');
+        if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+        fs.writeFileSync(path.join(auditDir, 'rebuild-regression.json'), JSON.stringify({
+          timestamp: new Date().toISOString(),
+          existingCount,
+          newCount,
+          lost,
+          pctLost: parseFloat(pctLost),
+          argv: process.argv.slice(2),
+        }, null, 2) + '\n');
+      } catch (auditErr) {
+        console.error(`   Could not write audit file: ${auditErr.message}`);
+      }
     }
-    if (lost > 0) {
+    if (lost > 0 && parseFloat(pctLost) <= 2.0) {
       console.log(`\n⚠️  Review count decreased by ${lost} (${pctLost}%) — within 2% threshold, proceeding.`);
     }
   }

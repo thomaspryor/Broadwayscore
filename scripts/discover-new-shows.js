@@ -608,11 +608,11 @@ async function fetchShowsFromLondonTheatre() {
 // TodayTix, OLT, Theatremonkey, or LondonTheatre.co.uk.
 
 const OWE_VENUE_PAGES = [
-  { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/ },
+  { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
   { name: 'Soho Theatre', url: 'https://sohotheatre.com/all-shows/', linkPattern: /\/events\/[^/]+/ },
   // Arcola: shows rendered in-page without individual links — needs Playwright (v2)
   // Theatre503: returns 403 — needs different approach (v2)
-  { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/ },
+  { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/, titleFromSlug: true },
   { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
   { name: "King's Head Theatre", url: 'https://www.kingsheadtheatre.com/whats-on', linkPattern: /\/whats-on\/[^/]+/ },
   { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
