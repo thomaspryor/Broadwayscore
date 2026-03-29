@@ -98,8 +98,10 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   const filename = generateReviewFilename(outletId, criticName);
   const filepath = path.join(showDir, filename);
 
-  // Cross-scraper dedup: find by outlet+critic regardless of filename format
-  const existing = findExistingReviewFile(showDir, input.outlet || outletId, criticName !== 'Unknown' ? criticName : null);
+  // Cross-scraper dedup: find by outlet+critic regardless of filename format.
+  // Use the refined outletId (not input.outlet) so URL-based disambiguation is respected —
+  // e.g. after refinement, outletId='timeout-london' not 'timeout' for timeout.com/london URLs.
+  const existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null);
 
   if (existing && existing.data) {
     return _mergeIntoExisting(existing.path, existing.data, { showId, outletId, input, fields, criticName, dryRun, onMerge });
