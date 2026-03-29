@@ -218,6 +218,33 @@ function buildPrompt(card) {
   const actionInstructions = {
     Investigate: `INVESTIGATE this card. Search the codebase, git history, related files, and existing patterns. Write your findings as a structured summary. Do NOT make any code changes.`,
     Plan: `PLAN the implementation for this card. First investigate (codebase, git history, patterns), then write a detailed implementation plan with specific files, functions, and steps. Do NOT make any code changes.`,
+    Review: `REVIEW the implementation plan in "Existing Outcome" above. You are a senior engineer doing a pre-implementation review. Do NOT make any code changes.
+
+Your job is to find problems that will waste time or break things — not to nitpick style.
+
+For each file mentioned in the plan:
+1. Read the current state of the file
+2. Check if the planned changes are compatible with the existing code
+3. Look for hidden dependencies the plan doesn't mention
+
+Find these problems:
+1. **Will it compile?** Check that every new reference (variable, function, import, constant) actually exists or is being created.
+2. **Is anything missing?** Are there callers of modified functions that need updating? Use grep to find all call sites.
+3. **Will it break existing behavior?** Check for changes to function signatures, renamed/removed exports, changed return types.
+4. **Is the fix systematic?** Does the plan fix just one instance of a problem, or the root cause?
+5. **Edge cases in real data:** Check actual data files for edge cases the plan doesn't handle — null values, missing fields, empty arrays.
+
+Output format:
+**BLOCKERS** (must fix before implementing):
+- [specific issue with file:line reference]
+
+**WARNINGS** (should fix, easy to miss):
+- [specific issue with file:line reference]
+
+**SUGGESTIONS** (nice to have):
+- [specific improvement]
+
+**VERDICT:** "Ready to Start" / "Fix N blockers first" / "Rethink approach"`,
     Start: `IMPLEMENT this card. First investigate and plan, then actually build it. Use a worktree for any src/ changes. Push code and trigger deploys as needed. This is a full implementation session.`,
   };
 
