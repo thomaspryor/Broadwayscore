@@ -60,51 +60,7 @@ function sleep(ms) {
 // HTTP helpers
 // ---------------------------------------------------------------------------
 
-function fetchUrl(url, renderJs = false) {
-  // LBO pages are static HTML — try direct fetch first, fall back to ScrapingBee
-  const targetUrl = SCRAPINGBEE_KEY
-    ? `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`
-    : url;
-
-  return new Promise((resolve, reject) => {
-    const handler = (res) => {
-      // Follow redirects
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        https.get(res.headers.location, handler).on('error', reject);
-        return;
-      }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    };
-    const req = https.get(targetUrl, handler);
-    req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
-  });
-}
-
-async function fetchWithRetry(url, maxRetries = 2) {
-  let lastError;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await fetchUrl(url);
-    } catch (e) {
-      lastError = e;
-      if (attempt < maxRetries) {
-        await sleep(3000 * (attempt + 1));
-      }
-    }
-  }
-  throw lastError;
-}
-
-// Fetch raw XML without ScrapingBee (sitemap is public, no bot protection)
+// Fetch raw XML without proxy (sitemap is public, no bot protection)
 function fetchRaw(url) {
   return new Promise((resolve, reject) => {
     const req = https.get(url, (res) => {

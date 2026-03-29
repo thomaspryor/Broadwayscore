@@ -183,6 +183,7 @@ jobs:
 
       - name: Scrape LBO roundups
         env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
           echo "Scraping London Box Office review roundups..."
