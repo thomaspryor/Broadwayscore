@@ -82,13 +82,13 @@ jobs:
           SHOW_INPUT="${{ inputs.show }}"
 
           if [ -n "$SHOWS_INPUT" ]; then
-            # Multiple shows: run once per show
+            # Multiple shows: run once per show with 120s timeout each
             IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS_INPUT"
             for SHOW_ID in "${SHOW_ARRAY[@]}"; do
-              node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_ID"
+              timeout 120 node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_ID" || echo "⚠ $SHOW_ID timed out or failed (exit $?), continuing..."
             done
           elif [ -n "$SHOW_INPUT" ]; then
-            node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_INPUT"
+            timeout 300 node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_INPUT"
           else
             LIMIT_ARG=""
             if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
