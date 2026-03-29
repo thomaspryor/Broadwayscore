@@ -1556,11 +1556,49 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       console.log(`     - Portrait (poster): ${filteredPoster ? 'from API' : 'not available'}`);
       console.log(`     - Landscape (hero): ${filteredHero ? 'from API' : 'not available'}`);
 
-      return {
-        hero: addWebp(filteredHero),
-        thumbnail: addWebp(filteredThumb),
-        poster: addWebp(filteredPoster),
-      };
+      // Verify TodayTix API images when --verify is active.
+      // TodayTix was the source of every Coming Soon placeholder that hit the site —
+      // visual verification catches novel placeholder designs that URL patterns miss.
+      if (verifyCtx) {
+        const { verifyImage: verifyTodayTixImage } = require('./lib/verify-image');
+        const verifyUrl = addWebp(filteredThumb || filteredPoster);
+        try {
+          const buffer = await downloadImageDirect(verifyUrl);
+          if (buffer) {
+            const result = await verifyTodayTixImage(buffer, show.title, {
+              year: show.openingDate ? show.openingDate.substring(0, 4) : null,
+              openingDate: show.openingDate,
+              rateLimiter: verifyCtx.rateLimiter,
+            });
+            if (result.match === false && result.confidence === 'high') {
+              console.log(`   ✗ TodayTix API image REJECTED by verification: ${result.description} [${result.issues?.join(', ')}]`);
+              // Fall through to other sources
+            } else {
+              console.log(`   ✓ TodayTix API image verified: ${result.description}`);
+              return {
+                hero: addWebp(filteredHero),
+                thumbnail: addWebp(filteredThumb),
+                poster: addWebp(filteredPoster),
+              };
+            }
+          }
+        } catch (err) {
+          // Verification failed (network, rate limit) — trust URL-based detection and accept
+          console.log(`   ⚠ TodayTix API verification failed (${err.message}), accepting based on URL check`);
+          return {
+            hero: addWebp(filteredHero),
+            thumbnail: addWebp(filteredThumb),
+            poster: addWebp(filteredPoster),
+          };
+        }
+      } else {
+        // No verification — trust URL-based filtering
+        return {
+          hero: addWebp(filteredHero),
+          thumbnail: addWebp(filteredThumb),
+          poster: addWebp(filteredPoster),
+        };
+      }
     }
 
     console.log(`   API match found but all images are placeholders, trying other sources`);

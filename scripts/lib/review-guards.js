@@ -131,4 +131,27 @@ function urlLooksLikeReview(url, showTitle) {
   return matchCount >= Math.ceil(titleWords.length * 0.5);
 }
 
-module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview };
+/**
+ * Date-mismatch guard: detects reviews likely from a prior production.
+ *
+ * If a review was published more than `thresholdDays` before the show's
+ * earliest known date (opening night or first preview), it's almost
+ * certainly reviewing a different production.
+ *
+ * Handles ordinal suffixes in date strings (e.g., "May 10th, 2019").
+ *
+ * @param {string|null} reviewDateStr - Review publish date string
+ * @param {string|null} showEarliestDateStr - Show's earliest date (YYYY-MM-DD)
+ * @param {number} thresholdDays - Days before show date to flag (default 90)
+ * @returns {boolean} true if review is likely from a wrong production
+ */
+function isLikelyWrongProduction(reviewDateStr, showEarliestDateStr, thresholdDays = 90) {
+  if (!reviewDateStr || !showEarliestDateStr) return false;
+  const cleaned = reviewDateStr.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
+  const reviewDate = new Date(cleaned);
+  const showDate = new Date(showEarliestDateStr);
+  if (isNaN(reviewDate.getTime()) || isNaN(showDate.getTime())) return false;
+  return (showDate - reviewDate) > thresholdDays * 86400000;
+}
+
+module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction };
