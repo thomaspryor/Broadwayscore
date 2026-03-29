@@ -4,11 +4,11 @@
   "failed": 246,
   "successRate": "26.3%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 56,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 14,
     "directCookies": 1,
-    "scrapingbee": 9,
+    "scrapingbee": 11,
     "brightdata": 0,
     "archiveToday": 5,
     "archive": 26
@@ -102,6 +102,28 @@
       "t": "2026-03-29T21:20:31.599Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-29T21:35:02.973Z",
+      "event": "bb-session",
+      "session": "48a88ee7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-29T21:35:04.377Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-29T21:37:35.210Z",
+      "event": "bb-session",
+      "session": "b60fc635",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-29T21:37:36.483Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
