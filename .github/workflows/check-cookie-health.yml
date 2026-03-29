@@ -33,40 +33,29 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           # Critical outlet cookies
-          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
-          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
-          NEWYORKER_COOKIES: ${{ secrets.NEWYORKER_COOKIES }}
-          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
-          FT_COOKIES: ${{ secrets.FT_COOKIES }}
-          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
-          TIMEOUT_COOKIES: ${{ secrets.TIMEOUT_COOKIES }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           # Other outlet cookies
-          NYPOST_COOKIES: ${{ secrets.NYPOST_COOKIES }}
-          NYDAILYNEWS_COOKIES: ${{ secrets.NYDAILYNEWS_COOKIES }}
-          DEADLINE_COOKIES: ${{ secrets.DEADLINE_COOKIES }}
-          OBSERVER_COOKIES: ${{ secrets.OBSERVER_COOKIES }}
-          THR_COOKIES: ${{ secrets.THR_COOKIES }}
-          VARIETY_COOKIES: ${{ secrets.VARIETY_COOKIES }}
-          INDIEWIRE_COOKIES: ${{ secrets.INDIEWIRE_COOKIES }}
-          EW_COOKIES: ${{ secrets.EW_COOKIES }}
-          THEATERMANIA_COOKIES: ${{ secrets.THEATERMANIA_COOKIES }}
-          HUFFPOST_COOKIES: ${{ secrets.HUFFPOST_COOKIES }}
-          USATODAY_COOKIES: ${{ secrets.USATODAY_COOKIES }}
-          NORTHJERSEY_COOKIES: ${{ secrets.NORTHJERSEY_COOKIES }}
-          BLOOMBERG_COOKIES: ${{ secrets.BLOOMBERG_COOKIES }}
-          THESTAGE_COOKIES: ${{ secrets.THESTAGE_COOKIES }}
-          TALKINBROADWAY_COOKIES: ${{ secrets.TALKINBROADWAY_COOKIES }}
-          BACKSTAGE_COOKIES: ${{ secrets.BACKSTAGE_COOKIES }}
-          AMNY_COOKIES: ${{ secrets.AMNY_COOKIES }}
-          FRONTMEZZJUNKIES_COOKIES: ${{ secrets.FRONTMEZZJUNKIES_COOKIES }}
-          TELEGRAPH_COOKIES: ${{ secrets.TELEGRAPH_COOKIES }}
-          THETIMES_COOKIES: ${{ secrets.THETIMES_COOKIES }}
-          STANDARD_COOKIES: ${{ secrets.STANDARD_COOKIES }}
-          INDEPENDENT_COOKIES: ${{ secrets.INDEPENDENT_COOKIES }}
-          CHICAGOTRIBUNE_COOKIES: ${{ secrets.CHICAGOTRIBUNE_COOKIES }}
-          THEWRAP_COOKIES: ${{ secrets.THEWRAP_COOKIES }}
-          NBCNEWYORK_COOKIES: ${{ secrets.NBCNEWYORK_COOKIES }}
-          NEWSDAY_COOKIES: ${{ secrets.NEWSDAY_COOKIES }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
         run: node scripts/check-cookie-health.js
 
       - name: Notify on failure
