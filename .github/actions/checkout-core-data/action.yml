@@ -52,6 +52,12 @@ runs:
     - name: Copy core data to data/
       shell: bash
       run: |
+        # Remove any dangling symlinks in data/ before copying (e.g. reviews.json
+        # was previously tracked as a symlink to a local Mac path, which dangles in CI)
+        for f in /tmp/core-data-checkout/*.json; do
+          basename=$(basename "$f")
+          [ -L "data/$basename" ] && rm -f "data/$basename"
+        done
         for f in /tmp/core-data-checkout/*.json; do
           [ -f "$f" ] && cp -f "$f" data/
         done
