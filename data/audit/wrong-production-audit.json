@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-29T21:05:43.601Z",
+  "timestamp": "2026-03-29T21:20:27.418Z",
   "stats": {
     "totalReviews": 32553,
-    "alreadyFlagged": 11744,
+    "alreadyFlagged": 11745,
     "dateGuardCatches": 18,
     "directorMismatch": 942,
     "tvFilmSignals": 3378,
     "londonSignals": 1006,
-    "offBroadwaySignals": 985,
+    "offBroadwaySignals": 980,
     "yearMismatch": 69,
-    "noPublishDate": 6340
+    "noPublishDate": 6339
   },
   "findings": [
     {
@@ -26095,6 +26095,7 @@
     {
       "showId": "just-in-time-2025",
       "file": "timeout--adam-feldman.json",
+      "score": 85,
       "publishDate": "April 26th, 2025",
       "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
       "findings": [
@@ -82106,59 +82107,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--david-copney.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--emily-short.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--jared-fessler.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--katrina-fageol.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--lauren-gienow.json",
+      "file": "broadwayworld--linda-hodges.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
@@ -82172,19 +82121,6 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--lynn-beaver.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--tyler-hinton.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
