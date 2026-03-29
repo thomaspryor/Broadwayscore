@@ -477,6 +477,7 @@ def main():
             "b64": cookie_b64,
             "group_name": group_name,
             "count": len(matched),
+            "_cookies": matched,  # Raw cookies for bundle bin-packing
         })
 
         print()
@@ -496,18 +497,108 @@ def main():
 
     # Auto-push to GitHub secrets if --push flag is set
     auto_push = "--push" in sys.argv
-    if auto_push:
-        print()
-        print("=" * 60)
-        print("  Pushing cookies to GitHub secrets...")
-        print("=" * 60)
-        print()
+    dry_run = "--dry-run" in sys.argv
 
+    if auto_push or dry_run:
         import subprocess
         import tempfile
 
+        # ---- Build bundles (bin-pack outlets into ≤48KB chunks) ----
+        MAX_BUNDLE_SIZE = 46 * 1024  # 46KB with headroom (GitHub limit is 48KB)
+
+        # Build per-outlet cookie data keyed by fileKey
+        outlet_cookies = {}
         for cmd in gh_commands:
-            # IMPORTANT: Write base64 to temp file, NOT echo pipe (echo truncates long strings)
+            # Find the fileKey for this group (from DOMAIN_GROUPS)
+            for group_name, group in DOMAIN_GROUPS.items():
+                if group["secret_name"] == cmd["name"]:
+                    file_key = group["output"].replace(".json", "")
+                    outlet_cookies[file_key] = cmd["_cookies"]
+                    break
+
+        # Bin-pack into bundles
+        bundles = []
+        current_bundle = {}
+        for file_key, cookies in sorted(outlet_cookies.items()):
+            test_bundle = {**current_bundle, file_key: cookies}
+            test_json = json.dumps(test_bundle)
+            test_b64_size = len(base64.b64encode(test_json.encode("utf-8")))
+
+            if test_b64_size > MAX_BUNDLE_SIZE and current_bundle:
+                bundles.append(current_bundle)
+                current_bundle = {file_key: cookies}
+            else:
+                current_bundle = test_bundle
+
+        if current_bundle:
+            bundles.append(current_bundle)
+
+        # Print bundle plan
+        print()
+        print("=" * 60)
+        print(f"  Cookie Bundles: {len(bundles)} bundles from {len(outlet_cookies)} outlets")
+        print("=" * 60)
+        print()
+
+        for i, bundle in enumerate(bundles, 1):
+            raw = json.dumps(bundle)
+            b64 = base64.b64encode(raw.encode("utf-8"))
+            size_kb = len(b64) / 1024
+            warn = " ⚠ >40KB" if size_kb > 40 else ""
+            outlets = list(bundle.keys())
+            print(f"  COOKIES_BUNDLE_{i}: {len(outlets)} outlets, {size_kb:.1f} KB{warn}")
+            print(f"    → {', '.join(outlets)}")
+
+        if dry_run:
+            print()
+            print("Dry run — no secrets pushed.")
+            print()
+            print("Done! Cookies saved locally.")
+            return
+
+        # ---- Push bundles ----
+        print()
+        print("=" * 60)
+        print("  Pushing cookie bundles to GitHub secrets...")
+        print("=" * 60)
+        print()
+
+        for i, bundle in enumerate(bundles, 1):
+            secret_name = f"COOKIES_BUNDLE_{i}"
+            raw = json.dumps(bundle)
+            b64_val = base64.b64encode(raw.encode("utf-8")).decode("utf-8")
+
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as tmp:
+                tmp.write(b64_val)
+                tmp_path = tmp.name
+
+            try:
+                result = subprocess.run(
+                    ["gh", "secret", "set", secret_name, "--repo", "thomaspryor/Broadwayscore"],
+                    stdin=open(tmp_path, "r"),
+                    capture_output=True, text=True, timeout=30,
+                )
+                outlets = list(bundle.keys())
+                if result.returncode == 0:
+                    print(f"  ✓ {secret_name}: {len(outlets)} outlets pushed ({', '.join(outlets)})")
+                else:
+                    print(f"  ✗ {secret_name}: {result.stderr.strip()}")
+            except FileNotFoundError:
+                print(f"  ✗ {secret_name}: 'gh' CLI not found — install GitHub CLI first")
+                break
+            except Exception as e:
+                print(f"  ✗ {secret_name}: {e}")
+            finally:
+                os.unlink(tmp_path)
+
+        # ---- Also push individual secrets (backward compat during migration) ----
+        print()
+        print("=" * 60)
+        print("  Pushing individual cookie secrets (backward compat)...")
+        print("=" * 60)
+        print()
+
+        for cmd in gh_commands:
             with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as tmp:
                 tmp.write(cmd["b64"])
                 tmp_path = tmp.name
@@ -540,7 +631,6 @@ def main():
 
         for cmd in gh_commands:
             print(f"# {cmd['group_name']}: {cmd['count']} cookies")
-            # Write to temp file to avoid echo truncation
             print(f"printf '%s' '{cmd['b64'][:20]}...' > /tmp/cookies-b64.txt && gh secret set {cmd['name']} < /tmp/cookies-b64.txt")
             print()
 
