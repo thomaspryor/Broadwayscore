@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-29T01:35:51.022Z",
+  "timestamp": "2026-03-29T01:45:32.813Z",
   "stats": {
     "totalReviews": 32547,
-    "alreadyFlagged": 11741,
+    "alreadyFlagged": 11740,
     "dateGuardCatches": 18,
-    "directorMismatch": 938,
-    "tvFilmSignals": 3377,
-    "londonSignals": 1005,
+    "directorMismatch": 939,
+    "tvFilmSignals": 3378,
+    "londonSignals": 1006,
     "offBroadwaySignals": 985,
     "yearMismatch": 69,
-    "noPublishDate": 6351
+    "noPublishDate": 6352
   },
   "findings": [
     {
@@ -25714,6 +25714,20 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "independent--alice-saville.json",
       "score": 83,
       "publishDate": "2026-03-27",
@@ -25747,6 +25761,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 78,
+      "publishDate": "2026-03-27",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
