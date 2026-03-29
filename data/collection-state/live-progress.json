@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-29T21:37:01.455Z",
-  "processed": 94,
-  "failed": 350,
-  "successRate": "21.2%",
+  "updatedAt": "2026-03-29T21:37:54.979Z",
+  "processed": 95,
+  "failed": 359,
+  "successRate": "20.9%",
   "tierBreakdown": {
     "playwright": 52,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 1,
     "scrapingbee": 11,
     "brightdata": 0,
     "archiveToday": 5,
     "archive": 25
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-03-29T03:49:59.212Z",
@@ -111,6 +111,17 @@
     },
     {
       "t": "2026-03-29T21:35:04.377Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-29T21:37:35.210Z",
+      "event": "bb-session",
+      "session": "b60fc635",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-29T21:37:36.483Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

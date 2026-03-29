@@ -93,7 +93,8 @@
     "once-2012/ew--emlyn-travis.json",
     "oleanna-2009/theatermania--unknown.json",
     "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
-    "cymbeline-2007/nytimes--ben-brantley.json"
+    "cymbeline-2007/nytimes--ben-brantley.json",
+    "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
   ],
   "failed": [
     "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
@@ -445,7 +446,16 @@
     "the-ritz-2007/new-jersey-newsroom--michael-sommers.json",
     "xanadu-2007/variety--david-rooney.json",
     "high-fidelity-2006/times-uk--clive-davis.json",
-    "mary-poppins-2006/variety--charles-isherwood.json"
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "primo-2005/the-globe-and-mail--kelly-nestruck.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "a-little-night-music-1973/backstage--erik-haagensen.json",
+    "data-2026/vulture--jackson-mchenry.json",
+    "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json",
+    "the-monsters-2026/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -516,7 +526,9 @@
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
       "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
-      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
+      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "oh-hello-on-broadway-2016/northjerseycom--unknown.json"
@@ -571,7 +583,7 @@
     ]
   },
   "startTime": "2026-03-29T03:49:46.540Z",
-  "lastProcessed": "mary-poppins-2006/variety--charles-isherwood.json",
+  "lastProcessed": "the-monsters-2026/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-03-29T03:49:59.212Z",
@@ -669,6 +681,17 @@
     },
     {
       "t": "2026-03-29T21:35:04.377Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-29T21:37:35.210Z",
+      "event": "bb-session",
+      "session": "b60fc635",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-29T21:37:36.483Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
