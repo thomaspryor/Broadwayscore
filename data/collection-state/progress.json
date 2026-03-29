@@ -95,7 +95,8 @@
     "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
     "the-nance-2013/timeout--adam-feldman.json",
     "once-2012/ew--emlyn-travis.json",
-    "oleanna-2009/theatermania--unknown.json"
+    "oleanna-2009/theatermania--unknown.json",
+    "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
@@ -535,7 +536,16 @@
     "memphis-2009/variety--charles-isherwood.json",
     "oleanna-2009/times-uk--dominic-maxwell.json",
     "burn-the-floor-2009/ew--jennifer-armstrong.json",
-    "burn-the-floor-2009/backstage--jo-sagolla.json"
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "9-to-5-2009/lansing-city-pulse--allan-i-ross.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json",
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "blithe-spirit-2009/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -605,7 +615,9 @@
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json"
+      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "oh-hello-on-broadway-2016/northjerseycom--unknown.json"
@@ -665,7 +677,7 @@
     ]
   },
   "startTime": "2026-03-29T03:49:46.540Z",
-  "lastProcessed": "burn-the-floor-2009/backstage--jo-sagolla.json",
+  "lastProcessed": "blithe-spirit-2009/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-29T03:49:59.212Z",
@@ -765,6 +777,17 @@
       "t": "2026-03-29T21:59:05.332Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-29T22:17:03.294Z",
+      "event": "bb-session",
+      "session": "245277d6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-29T22:17:09.250Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
