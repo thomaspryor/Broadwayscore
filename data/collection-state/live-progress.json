@@ -1,18 +1,63 @@
 {
-  "updatedAt": "2026-03-29T20:48:46.244Z",
-  "processed": 27,
-  "failed": 107,
-  "successRate": "20.1%",
+  "updatedAt": "2026-03-29T21:00:19.590Z",
+  "processed": 54,
+  "failed": 130,
+  "successRate": "29.3%",
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 38,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 4
+    "archiveToday": 2,
+    "archive": 11
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-03-29T03:49:59.212Z",
+      "event": "bb-session",
+      "session": "9e225549",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-29T03:50:00.340Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-29T20:55:08.803Z",
+      "event": "bb-session",
+      "session": "81b8b986",
+      "url": "https://nypost.com/author/johnny-oleksinski/page/5/"
+    },
+    {
+      "t": "2026-03-29T20:55:09.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-29T20:56:20.586Z",
+      "event": "bb-session",
+      "session": "730a4652",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-29T20:56:22.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-29T21:00:01.631Z",
+      "event": "bb-session",
+      "session": "87d71858",
+      "url": "https://www.newyorker.com/magazine/2023/03/13/life-of-pi-comes-to-broadway"
+    },
+    {
+      "t": "2026-03-29T21:00:03.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
