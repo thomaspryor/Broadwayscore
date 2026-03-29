@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T23:36:37.162Z",
+  "generatedAt": "2026-03-29T01:16:57.964Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -118,28 +118,46 @@
       "researchedAt": "2026-02-04T19:28:49.374Z"
     },
     "shucked-2023": {
+      "capitalization": 16000000,
+      "capitalizationSource": "BWW forum 'OPERATION MINCEMEAT... plots its course to New York' comment by binau, posted 2024-05-08",
+      "weeklyRunningCost": 650000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Broadway News article 'Shucked will end its Broadway run', published 2023-10-12",
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Shucked was capitalized at $16M, had estimated weekly running costs of $600K–$650K, and closed on January 14, 2024 without recouping its investment.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "forum",
+          "url": "forum.broadwayworld.com/thread/ArticleOPERATION-MINCEMEAT--plots-its-course-to-New-York",
+          "date": "2024-05-08"
+        },
+        {
+          "type": "forum",
+          "url": "forum.broadwayworld.com/thread/Broadway-GrossesWeek-Ending-7-30-23",
+          "date": "2023-08-01"
+        },
+        {
+          "type": "trade",
+          "url": "broadwaynews.com/shucked-announces-final-performance",
+          "date": "2023-10-12"
+        },
+        {
+          "type": "other",
+          "url": "en.wikipedia.org/wiki/Nederlander_Theatre",
+          "date": null
+        }
+      ],
       "title": "Shucked",
       "slug": "shucked-2023",
       "openingDate": "2023-04-04",
       "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": 625000,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "Show ran from April 2023 to January 2024 with weekly running costs discussed as $600-650K range. No clear recoupment information available.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://forum.broadwayworld.com/thread/Budgets-and-Breakevens--2023-2024",
-          "date": "2023-09-13"
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-02-04T19:30:30.987Z"
+      "researchedAt": "2026-03-29T01:16:57.964Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     },
     "my-joy-is-heavy-off-broadway": {
       "capitalization": null,
@@ -2946,6 +2964,75 @@
       "openingDate": "2023-10-17",
       "status": "closed",
       "researchedAt": "2026-03-28T23:36:37.162Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "manual"
+    },
+    "masquerade-off-broadway": {
+      "capitalization": 25000000,
+      "capitalizationSource": "NYTimes reported $25M production cost including renovation ([vi.web-platforms-vi.nyti.nyt.net](https://vi.web-platforms-vi.nyti.nyt.net/2026/01/19/theater/phantom-of-the-opera-masquerade.html#:~:text=No%20expense%20was%20seemingly%20spared%2C,had%20more%20than%2030%2C000%20crystals))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "NYT reports a $25M production cost ([vi.web-platforms-vi.nyti.nyt.net](https://vi.web-platforms-vi.nyti.nyt.net/2026/01/19/theater/phantom-of-the-opera-masquerade.html#:~:text=No%20expense%20was%20seemingly%20spared%2C,had%20more%20than%2030%2C000%20crystals)).  No public data on weekly operating cost or recoupment was found; show had sold-out extensions ([playbill.com](https://playbill.com/article/immersive-phantom-revival-masquerade-extends-after-total-sell-out#:~:text=Remember%20those%20new%20performances%20we,of%20%205%20Andrew%20Lloyd)) ([www.omdkc.com](https://www.omdkc.com/masquerade-extends-through-sunday-march-29-2026-tickets-on-sale-now/#:~:text=New%20York%2C%20NY%20,th%7D%20Street)) but remains ongoing.  Classification pending more info.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.nytimes.com/2026/01/19/theater/phantom-of-the-opera-masquerade.html",
+          "date": "2026-01-19"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/immersive-phantom-revival-masquerade-extends-after-total-sell-out",
+          "date": "2025-07-08"
+        }
+      ],
+      "title": "Masquerade",
+      "slug": "masquerade-off-broadway",
+      "openingDate": "2025-07-31",
+      "status": "open",
+      "researchedAt": "2026-03-29T00:30:42.495Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "hadestown": {
+      "capitalization": 11500000,
+      "capitalizationSource": "Trade press announcement (Playbill article, Nov. 11, 2019)",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2019-11",
+      "recoupedSource": "Trade press (Playbill/Deadline announcement, Nov. 2019)",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
+      "designation": "Windfall",
+      "notes": "Hadestown’s Broadway production cap was $11.5M and it recouped that amount in ~6 months (announced Nov. 2019).  No official data found on weekly running costs.  Commercial Broadway production.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/tony-awardwinning-hadestown-recoups-on-broadway",
+          "date": "2019-11-11"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2019/11/hadestown-recoup-investment-broadway-1202782727/",
+          "date": "2019-11-11"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Hadestown",
+      "slug": "hadestown",
+      "openingDate": "2019-04-17",
+      "status": "open",
+      "researchedAt": "2026-03-29T01:15:01.275Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "manual"
     }
