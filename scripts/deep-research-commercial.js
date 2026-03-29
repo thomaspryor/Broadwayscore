@@ -231,66 +231,50 @@ async function researchShowWithOpenAI(show, model) {
   const status = show.status || '';
   const type = show.type || 'musical';
 
-  const prompt = `Research the Broadway ${type} "${title}"${venue ? ` at ${venue}` : ''}${openingDate ? ` (opened ${openingDate})` : ''}${show.closingDate ? ` (closed ${show.closingDate})` : ''}. It is currently ${status}.
+  const prompt = `Find financial data for the Broadway ${type} "${title}"${venue ? ` at ${venue}` : ''}${openingDate ? ` (opened ${openingDate})` : ''}${show.closingDate ? ` (closed ${show.closingDate})` : ''}. Status: ${status}.
 
-Find and report the following financial information. Only report data you can verify from actual sources — do not estimate or guess.
+## IMPORTANT: Be efficient. Stop searching once you have what you need. Use at most 40 web searches total. If you haven't found data after 30 searches, conclude with what you have — the data probably isn't public.
 
-## Where to search (in priority order)
+## Target data (in priority order — stop early if found)
+1. **Capitalization / production budget** (most important)
+2. **Weekly running cost / weekly nut**
+3. **Recoupment status** (did it recoup? when?)
 
-**A. Reddit and forums — use site: searches for precision:**
-- Search \`site:reddit.com/r/Broadway "${title}" capitalization\`, then recouped, then budget, then "weekly nut"
-- **Key source for weekly running costs:** Reddit user u/Boring_Waltz_9545 posts weekly "Grosses Analysis" threads on r/Broadway with per-show breakdowns: gross, capacity %, ATP (average ticket price), and estimated weekly operating costs. Search \`site:reddit.com/r/Broadway "Grosses Analysis" "${title}"\` and also \`site:reddit.com/r/Broadway "${title}" "break even" OR "operating cost"\`
-- Also look for season post-mortem threads with financial summaries.
-- Search \`site:forum.broadwayworld.com "${title}" capitalization\` and \`"${title}" budget\`
-- BroadwayWorld forums have investor discussions with capitalization figures, offering paper details, and recoupment speculation
+## Where to search
+Try these in order. Move to the next source only if the previous didn't have what you need:
 
-**B. SEC EDGAR Form D filings:**
-- Search \`site:sec.gov "${title}"\` and try the producing LLC name. Broadway shows file Form D when raising capital.
+1. **NYC tax credits** — check https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit for the show or its production company. The 25% credit ÷ 0.25 = production costs.
+2. **Reddit** — search site:reddit.com/r/Broadway "${title}" capitalization OR budget OR "weekly nut"
+3. **BroadwayWorld forums** — search site:forum.broadwayworld.com "${title}" capitalization OR budget
+4. **SEC EDGAR** — search site:sec.gov "${title}" for Form D filings
+5. **Trade press** — "${title}" broadway capitalization OR budget OR recouped
 
-**C. Trade press:**
-- Search Variety, Deadline, Broadway News, The Broadway Journal, Playbill, TheaterMania, BroadwayWorld, and producer interviews
-- Search for: "${title}" broadway capitalization OR budget OR investment OR recouped
+## Rules
+- Only report verified data. Null for anything you can't confirm.
+- ${venue && /samuel j\. friedman|helen hayes|todd haimes|vivian beaumont/i.test(venue) ? 'This venue is a nonprofit theater — use "Nonprofit" designation.' : ''}
+- If this is a revival, only report data about THIS production, not prior ones.
+- Capitalization in dollars (15000000 not 15). Weekly costs in dollars (650000 not 650).
+- Designation: Miracle, Windfall, Easy Winner, Trickle, Fizzle, Flop, Nonprofit, or TBD.
 
-**D. NYC tax credits — check this specific page:**
-- https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit
-- The NYC 25% tax credit implies capitalization: credit amount ÷ 0.25 = eligible production costs. Search the page for the show title or related production company name.
-- The Broadway League publishes weekly grosses data
-
-## What to find
-
-1. **Capitalization (budget):** How much was raised to produce the show? Look for Form D amounts, trade press budgets, producer interviews, Reddit post-mortems.
-
-2. **Weekly running cost:** Look for "weekly nut", operating costs, or Reddit grosses analyses that break down costs vs. revenue.
-
-3. **Recoupment status:** Has it recouped? Look for trade announcements, Reddit analyses. If not, estimate what percentage was recovered based on total grosses vs. capitalization.
-
-4. **Nonprofit check:** If the venue is Samuel J. Friedman Theatre (Manhattan Theatre Club), Helen Hayes Theater (Second Stage), Todd Haimes Theatre (Roundabout), or Vivian Beaumont (Lincoln Center Theater) — verify whether this was a nonprofit production. If so, use "Nonprofit" designation.
-
-5. **Commercial designation:** Miracle (mega-hit, 10+ year run), Windfall (solid hit, recouped well), Easy Winner (limited run, recouped quickly), Trickle (barely broke even), Fizzle (closed without recouping, recovered 30%+), Flop (closed without recouping, <30% back), Nonprofit, TBD (insufficient data).
-
-## Critical rules
-
-- **Wrong-production trap:** If this is a revival, make sure ALL data is about THIS production, not a prior one. A show may have recouped in 2005 but flopped as a 2023 revival. Check dates carefully.
-- Report ONLY what you can verify. If you cannot find information for a field, say so explicitly. Do not fabricate data or URLs.
-- Capitalization should be in dollars (e.g., 15000000 not 15). Weekly costs in dollars (e.g., 650000 not 650).
-
-Write your research findings as a report, then at the VERY END include a structured JSON block wrapped in \`\`\`json fences containing ONLY the following fields:
+## Output format
+Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
 
 \`\`\`json
 {
   "capitalization": <number in dollars or null>,
-  "capitalizationSource": "<description of source>",
+  "capitalizationSource": "<source description>",
   "weeklyRunningCost": <number in dollars or null>,
   "costMethodology": "<sec-filing|trade-reported|industry-estimate|null>",
   "recouped": <true|false|null>,
-  "recoupedDate": "<YYYY-MM or YYYY or null>",
-  "recoupedSource": "<description or null>",
-  "estimatedRecoupmentPct": <[low, high] range 0-100 or null>,
+  "recoupedDate": "<YYYY-MM or null>",
+  "recoupedSource": "<source description or null>",
+  "estimatedRecoupmentPct": <[low, high] or null>,
   "designation": "<designation>",
-  "notes": "<brief summary of findings>",
+  "notes": "<brief summary>",
   "confidence": "<high|medium|low>",
-  "sources": [{"type": "<sec|trade|reddit|other>", "url": "<url>", "date": "<YYYY-MM-DD or null>"}]
-}`;
+  "sources": [{"type": "<sec|trade|reddit>", "url": "<url>", "date": "<YYYY-MM-DD or null>"}]
+}
+\`\`\``;
 
   const isDeep = model.includes('deep-research');
 
