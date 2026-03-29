@@ -226,7 +226,7 @@ async function main() {
         const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
         // Skip if already has a verified score — but re-extract if score came from Show Score
         // (SS assigns its own stars, wrong ~11% of the time)
-        const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright';
+        const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
         const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
         if (data.originalScore && !hasUnverifiedSSScore) continue;
         if (!data.url) continue; // No URL to fetch
