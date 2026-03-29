@@ -1560,11 +1560,12 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       // TodayTix was the source of every Coming Soon placeholder that hit the site —
       // visual verification catches novel placeholder designs that URL patterns miss.
       if (verifyCtx) {
+        const { verifyImage: verifyTodayTixImage } = require('./lib/verify-image');
         const verifyUrl = addWebp(filteredThumb || filteredPoster);
         try {
           const buffer = await downloadImageDirect(verifyUrl);
           if (buffer) {
-            const result = await verifyImage(buffer, show.title, {
+            const result = await verifyTodayTixImage(buffer, show.title, {
               year: show.openingDate ? show.openingDate.substring(0, 4) : null,
               openingDate: show.openingDate,
               rateLimiter: verifyCtx.rateLimiter,
