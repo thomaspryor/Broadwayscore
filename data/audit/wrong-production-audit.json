@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-29T01:56:12.534Z",
+  "timestamp": "2026-03-29T02:07:10.750Z",
   "stats": {
     "totalReviews": 32547,
-    "alreadyFlagged": 11740,
+    "alreadyFlagged": 11743,
     "dateGuardCatches": 18,
     "directorMismatch": 939,
-    "tvFilmSignals": 3378,
-    "londonSignals": 1006,
+    "tvFilmSignals": 3377,
+    "londonSignals": 1002,
     "offBroadwaySignals": 985,
     "yearMismatch": 69,
-    "noPublishDate": 6352
+    "noPublishDate": 6345
   },
   "findings": [
     {
@@ -46689,25 +46689,6 @@
       ]
     },
     {
-      "showId": "teeth-n-smiles-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": null,
-      "publishDate": "2026-03-26",
-      "url": "https://www.standard.co.uk/culture/theatre/teeth-n-smiles-duke-of-yorks-review-b1276552.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
       "showId": "that-championship-season-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 38,
@@ -73255,19 +73236,6 @@
       ]
     },
     {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "financialtimes--unknown.json",
-      "publishDate": null,
-      "url": "https://www.westendtheatre.com/335071/news/reviews/american-psycho-reviews-2026/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "oslo-2017",
       "file": "cititour--brian-scott-lipton.json",
       "score": 88,
@@ -80018,19 +79986,6 @@
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "independent--unknown.json",
-      "publishDate": null,
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-playboy-of-the-western-world-nicola-coughlan-b2883264.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "telegraph--marianka-swain.json",
       "score": 85,
       "publishDate": "2023-11-15",
@@ -80040,20 +79995,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "whatsonstage--alun-hood.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/christmas-carol-goes-wrong-review-an-eber-knees-up-in-the-west-end_1706553/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
