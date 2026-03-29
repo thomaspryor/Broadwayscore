@@ -33,8 +33,12 @@ const THEATER_FEEDS = [
 const WE_THEATER_FEEDS = [
   { url: 'https://www.whatsonstage.com/feed/', outletId: 'whatsonstage', name: 'WhatsOnStage', market: 'west-end' },
   { url: 'https://www.standard.co.uk/culture/theatre/rss', outletId: 'standard', name: 'Evening Standard Theatre', needsFilter: true, market: 'west-end' },
+  { url: 'https://theatreweekly.com/feed/', outletId: 'theatre-weekly', name: 'Theatre Weekly', needsFilter: true, market: 'west-end' },
   // The Stage has no RSS feed (404 as of March 2026)
   // Telegraph theatre RSS is defunct (404 as of March 2026)
+  // Time Out London theatre RSS is defunct (404 as of March 2026)
+  // London Theatre (londontheatre.co.uk) returns HTML, not RSS (March 2026)
+  // BWW West End RSS is defunct (404 as of March 2026)
 ];
 
 // General entertainment feeds (need title keyword filtering)
