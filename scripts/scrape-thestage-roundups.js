@@ -122,51 +122,28 @@ async function loginToTheStage(page) {
     return false;
   }
 
-  // Credential-based login (works via BrowserBase in CI)
-  console.log('  Logging in to The Stage...');
+  // Credential-based login via /login page (roundup pages have no inline login form)
+  console.log('  Logging in to The Stage via /login...');
+  await page.goto('https://www.thestage.co.uk/login', {
+    waitUntil: 'domcontentloaded', timeout: 30000,
+  });
+  await page.waitForTimeout(3000);
 
-  // Try a known paywalled roundup page first — inline login form appears on these
-  const loginPages = [
-    'https://www.thestage.co.uk/review-round-ups/broken-glass-at-the-young-vic-review-round-up',
-    'https://www.thestage.co.uk/review-round-ups/review-round-ups',
-  ];
-
-  let emailInput = null;
-
-  for (const loginUrl of loginPages) {
-    console.log(`  Trying login on: ${loginUrl.split('/').pop()}`);
-    await page.goto(loginUrl, { waitUntil: 'networkidle', timeout: 30000 });
-
-    // Wait longer for JS to render the login form
-    await page.waitForTimeout(8000);
-
-    // Scroll down to trigger any lazy-loaded content
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
-    await page.waitForTimeout(2000);
-
-    // Dismiss cookie consent if present
-    const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
-    if (cookieBtn) {
-      const v = await cookieBtn.isVisible().catch(() => false);
-      if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
-    }
-
-    // Try waiting for any email input to appear
-    await page.waitForSelector('input[name="email"], input[type="email"]', { timeout: 10000 }).catch(() => {});
-
-    // Find visible email input (there may be multiple — header + inline paywall)
-    const emailInputs = await page.$$('input[type="text"][name="email"], input[type="email"], input[name="email"]');
-    for (const inp of emailInputs) {
-      if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
-    }
-
-    if (emailInput) break;
-    console.log('  No visible login form on this page');
+  // Dismiss cookie consent if present
+  const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
+  if (cookieBtn) {
+    const v = await cookieBtn.isVisible().catch(() => false);
+    if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
   }
 
+  // The /login page has two forms (main + nav) — find the visible email input
+  const emailInputs = await page.$$('input[name="email"], input[type="email"], input[id*="email"]');
+  let emailInput = null;
+  for (const inp of emailInputs) {
+    if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
+  }
   if (!emailInput) {
-    console.log('  ⚠ No visible login form found on any page — login JS may not have rendered');
-    console.log('  Continuing without auth — will only get non-paywalled content');
+    console.log('  ⚠ No visible email field on /login — continuing without auth');
     return false;
   }
 
@@ -174,20 +151,20 @@ async function loginToTheStage(page) {
   await emailInput.type(email, { delay: 30 });
   await page.waitForTimeout(500);
 
-  // Find visible password input
-  const passInputs = await page.$$('input[type="password"]');
+  // Find visible password input (same form as the email input)
+  const passInputs = await page.$$('input[type="password"], input[name="password"]');
   let passInput = null;
   for (const inp of passInputs) {
     if (await inp.isVisible().catch(() => false)) { passInput = inp; break; }
   }
-  if (!passInput) { console.log('  ✗ No visible password field'); return false; }
+  if (!passInput) { console.log('  ✗ No visible password field on /login'); return false; }
 
   await passInput.click();
   await passInput.type(password, { delay: 30 });
   await page.waitForTimeout(500);
 
   // Find visible submit button
-  const submitBtns = await page.$$('button:has-text("Login"), input[type="submit"]');
+  const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Sign in"), input[type="submit"]');
   let submitBtn = null;
   for (const btn of submitBtns) {
     if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
@@ -196,21 +173,15 @@ async function loginToTheStage(page) {
   else await page.keyboard.press('Enter');
 
   await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-  await page.waitForTimeout(5000);
-
-  // Navigate back to roundups listing (login may redirect)
-  await page.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', {
-    waitUntil: 'networkidle', timeout: 30000,
-  });
   await page.waitForTimeout(3000);
 
-  const postLoginHtml = await page.content();
-  if (!postLoginHtml.includes('NOT A PAYWALL') && !postLoginHtml.includes('create a free account')) {
-    console.log('  ✓ Login verified — content accessible');
+  const postLoginUrl = page.url();
+  if (!postLoginUrl.includes('/login')) {
+    console.log('  ✓ Login verified — redirected away from /login');
     return true;
   }
 
-  console.log('  ⚠ Login may not have succeeded — continuing anyway');
+  console.log('  ⚠ Login may not have succeeded (still on /login) — continuing anyway');
   return true;
 }
 
