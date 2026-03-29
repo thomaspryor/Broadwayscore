@@ -1089,7 +1089,7 @@ showDirs.forEach(showId => {
             const openDate = showDateMap[showId];
             const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
             const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
-            const threshold = isFlexCat ? 1825 : 14;
+            const threshold = isFlexCat ? 90 : 14;
             if (daysBefore > threshold) refExcluded = true;
           }
           if (refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
@@ -1126,7 +1126,7 @@ showDirs.forEach(showId => {
             const openDate = showDateMap[showId];
             const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
             const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
-            const threshold = isFlexCat ? 1825 : 14;
+            const threshold = isFlexCat ? 90 : 14;
             if (daysBefore > threshold) refWouldBeExcluded = true;
           }
           if (refWouldBeExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
@@ -1478,15 +1478,15 @@ showDirs.forEach(showId => {
 
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Broadway: 14-day grace period (preview coverage).
-      // Off-Broadway/West End: 5-year (1825-day) grace period — they commonly transfer from
-      // fringe/regional theaters, but a 13-year gap (e.g., 2013→2026) is clearly wrong.
+      // Off-Broadway/West End: 90-day grace period — matches the pre-opening guard threshold.
+      // A review >90 days before the show opened is almost certainly a different production.
       // Reviews with allowEarlyDate: true bypass all date checks.
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
         const isFlexCategory = showCategory === 'off-broadway' || isLondonMarket(showCategory);
-        const threshold = isFlexCategory ? 1825 : 14;
+        const threshold = isFlexCategory ? 90 : 14;
         if (daysBefore > threshold) {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
