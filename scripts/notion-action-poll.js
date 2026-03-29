@@ -386,6 +386,23 @@ function runClaude(prompt, card) {
   }
 }
 
+// ── Retry helper for Notion API (handles network timeouts) ───────────
+
+async function withRetry(fn, label, retries = 2) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt < retries && (err.message.includes('fetch failed') || err.message.includes('ETIMEDOUT'))) {
+        log(`  Retry ${attempt + 1}/${retries} for ${label}: ${err.message}`);
+        await new Promise(r => setTimeout(r, 3000 * (attempt + 1)));
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
 // ── Update card after processing ─────────────────────────────────────
 
 async function updateCardOutcome(card, result) {
@@ -395,22 +412,22 @@ async function updateCardOutcome(card, result) {
     ? `${header}\n\n${result}\n\n---\n\n${card.outcome}`
     : `${header}\n\n${result}`;
 
-  // 1. Update Outcome (prepend new result)
-  await notion.pages.update({
+  // 1. Update Outcome (prepend new result) — with retry for network timeouts
+  await withRetry(() => notion.pages.update({
     page_id: card.id,
     properties: {
       Outcome: {
         rich_text: [{ type: 'text', text: { content: newOutcome.slice(0, 2000) } }],
       },
     },
-  });
+  }), 'updateOutcome');
   log(`Updated Outcome for "${card.name}"`);
 }
 
 async function addComment(card, result) {
-  // 2. Add comment (triggers push notification)
+  // 2. Add comment (triggers push notification) — with retry
   const summary = result.length > 300 ? result.slice(0, 297) + '...' : result;
-  await notion.comments.create({
+  await withRetry(() => notion.comments.create({
     parent: { page_id: card.id },
     rich_text: [
       {
@@ -420,18 +437,18 @@ async function addComment(card, result) {
         },
       },
     ],
-  });
+  }), 'addComment');
   log(`Added comment to "${card.name}"`);
 }
 
 async function clearAction(card) {
-  // 3. Clear Action LAST (prevents orphaned cards)
-  await notion.pages.update({
+  // 3. Clear Action LAST (prevents orphaned cards) — with retry
+  await withRetry(() => notion.pages.update({
     page_id: card.id,
     properties: {
       Action: { select: null },
     },
-  });
+  }), 'clearAction');
   log(`Cleared Action for "${card.name}"`);
 }
 
