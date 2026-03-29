@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-03-29T03:30:03.598Z",
-  "processed": 14,
-  "failed": 547,
-  "successRate": "2.5%",
+  "updatedAt": "2026-03-29T03:37:22.668Z",
+  "processed": 1,
+  "failed": 2,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 14,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-03-29T03:34:59.310Z",
+      "event": "bb-session",
+      "session": "4d378647",
+      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse"
+    },
+    {
+      "t": "2026-03-29T03:35:00.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-03-29T03:36:55.523Z",
+      "event": "bb-session",
+      "session": "5e253619",
+      "url": "https://www.thestage.co.uk/review-round-ups/evening-all-afternoon-at-the-donmar-"
+    },
+    {
+      "t": "2026-03-29T03:36:56.559Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
