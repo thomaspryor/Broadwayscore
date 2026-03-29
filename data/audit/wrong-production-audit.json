@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-29T02:07:10.750Z",
+  "timestamp": "2026-03-29T02:15:04.216Z",
   "stats": {
     "totalReviews": 32547,
     "alreadyFlagged": 11743,
     "dateGuardCatches": 18,
     "directorMismatch": 939,
-    "tvFilmSignals": 3377,
-    "londonSignals": 1002,
+    "tvFilmSignals": 3376,
+    "londonSignals": 1003,
     "offBroadwaySignals": 985,
     "yearMismatch": 69,
-    "noPublishDate": 6345
+    "noPublishDate": 6340
   },
   "findings": [
     {
@@ -40119,20 +40119,6 @@
       ]
     },
     {
-      "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
-      "file": "whatsonstage--tom-millward.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/robin-hood-pantomime-at-the-london-palladium-review_1657477/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
       "showId": "rock-n-roll-2007",
       "file": "nydailynews--joe-dziemianowicz-bway.json",
       "publishDate": "2007-11-05",
@@ -56356,7 +56342,7 @@
       "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 83,
-      "publishDate": null,
+      "publishDate": "2023-05-18",
       "url": "https://www.standard.co.uk/culture/theatre/once-on-this-island-at-regent-s-park-open-air-theatre-review-little-mermaid-b1081969.html",
       "findings": [
         {
@@ -56370,13 +56356,18 @@
       "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "timeout--andrzej-lukowski.json",
       "score": 60,
-      "publishDate": null,
+      "publishDate": "2023-05-17",
       "url": "https://www.timeout.com/london/theatre/once-on-this-island-1-review",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },

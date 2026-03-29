@@ -1,73 +1,87 @@
 {
-  "runDate": "2026-03-28T20:20:28.433Z",
+  "runDate": "2026-03-28T21:28:31.713Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "teeth-n-smiles-west-end-2026",
+    "showFilter": "john-proctor-is-the-villain-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 1,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "20.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 2,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 0,
+    "tier1Attempts": 4,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
+    "tier2Attempts": 3,
+    "tier2Success": 3,
     "tier3Attempts": 2,
     "tier3Success": 0,
     "tier3_6Attempts": 2,
     "tier3_6Success": 2,
     "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 30,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json"
+  ],
   "failed": [
-    "teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
-    "teeth-n-smiles-west-end-2026/thestage--unknown.json"
+    "john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "john-proctor-is-the-villain-west-end-2026/whatsonstage--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "john-proctor-is-the-villain-west-end-2026/broadwayworld--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
-      "data/review-texts/teeth-n-smiles-west-end-2026/thestage--unknown.json"
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "john-proctor-is-the-villain-west-end-2026/thestage--unknown.json",
+      "oldUrl": "https://www.thestage.co.uk/reviews/the-curious-case-of-benjamin-button-review-at-ambassadors-theatre-london-by-jethro-compton-and-f-scott-fitzgerald",
+      "newUrl": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london"
+    }
+  ]
 }
