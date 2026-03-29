@@ -45,17 +45,6 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           # Other outlet cookies
-          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
-          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
-          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
-          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
-          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
-          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
-          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
-          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
-          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
-          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
-          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
         run: node scripts/check-cookie-health.js
 
       - name: Notify on failure
