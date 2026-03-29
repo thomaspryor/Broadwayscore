@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-29T01:15:52.949Z",
+  "timestamp": "2026-03-29T01:26:16.602Z",
   "stats": {
     "totalReviews": 32547,
-    "alreadyFlagged": 11729,
+    "alreadyFlagged": 11741,
     "dateGuardCatches": 18,
     "directorMismatch": 938,
     "tvFilmSignals": 3377,
-    "londonSignals": 1009,
+    "londonSignals": 1005,
     "offBroadwaySignals": 985,
     "yearMismatch": 69,
     "noPublishDate": 6351
@@ -78102,38 +78102,10 @@
     },
     {
       "showId": "the-encounter-2016",
-      "file": "a-younger-theatre--camilla-gurtler.json",
-      "score": 94,
-      "publishDate": "February 17th, 2016",
-      "url": "http://www.ayoungertheatre.com/review-the-encounter-barbican/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "the-encounter-2016",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 42,
       "publishDate": "2016-09-29",
       "url": "https://frontmezzjunkies.com/2016/09/29/the-encounter/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "the-encounter-2016",
-      "file": "huffpost--lucy-bell.json",
-      "score": 77,
-      "publishDate": "March 1st, 2016",
-      "url": "http://www.huffingtonpost.co.uk/lucy-bell/taking-complicity-to-a-ne_b_9353844.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -78172,20 +78144,6 @@
     },
     {
       "showId": "the-encounter-2016",
-      "file": "standard--henry-hitchings.json",
-      "score": 89,
-      "publishDate": "February 17th, 2016",
-      "url": "http://www.standard.co.uk/goingout/theatre/the-encounter-theatre-review-unmissable-amazonian-trip-a3182566.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "the-encounter-2016",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 92,
       "publishDate": null,
@@ -78209,20 +78167,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
-        }
-      ]
-    },
-    {
-      "showId": "the-encounter-2016",
-      "file": "timeout--alice-saville.json",
-      "score": 95,
-      "publishDate": "February 17th, 2016",
-      "url": "https://www.timeout.com/london/theatre/the-encounter",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
