@@ -1135,8 +1135,20 @@ async function pollCycle() {
     for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
     }
-    const missingOutlets = getMissingT1T2Outlets(SHOW_ID, market)
+    let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market)
       .filter(o => !foundOutletIds.has(o.id.toLowerCase()));
+    // For WE shows: prioritize UK outlets over dual-market US outlets (NYT, Variety)
+    // to avoid wasting SERP calls on outlets that rarely review WE shows
+    if (isLondonMarket(market)) {
+      const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
+      const allOutlets = reg.outlets || reg;
+      const ukFirst = missingOutlets.filter(o => {
+        const outlet = allOutlets[o.id];
+        return outlet && (outlet.region === 'london' || outlet.region === 'uk');
+      });
+      const rest = missingOutlets.filter(o => !ukFirst.find(u => u.id === o.id));
+      missingOutlets = [...ukFirst, ...rest];
+    }
     if (missingOutlets.length > 0) {
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
     } else {
