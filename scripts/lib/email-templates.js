@@ -675,6 +675,18 @@ function buildDailyDigestHtml(changes, date) {
 
   const sections = [];
 
+  // Suspicious Changes (shown first as a warning)
+  if (changes.suspiciousChanges && changes.suspiciousChanges.length > 0) {
+    let html = `<tr><td style="padding:20px 20px 8px;">
+      <p style="margin:0;font-size:11px;font-weight:600;color:#ef4444;text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">&#9888;&#65039; Suspicious Changes (${changes.suspiciousChanges.length})</p>
+    </td></tr>`;
+    html += `<tr><td style="padding:4px 20px;font-size:13px;color:#f97316;line-height:1.5;font-family:${FONT};">Shows with &gt;24 new reviews in a single day &mdash; likely a data ingestion issue or wrong-production batch.</td></tr>`;
+    for (const r of changes.suspiciousChanges) {
+      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#f97316;line-height:1.5;font-family:${FONT};border-left:2px solid #ef4444;">&#8226;&nbsp; ${showLink(r.title, r.slug)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
+    }
+    sections.push(html);
+  }
+
   // New Shows
   if (changes.newShows.length > 0) {
     let html = sectionHeader(`New Shows (${changes.newShows.length})`);
