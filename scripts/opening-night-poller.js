@@ -1212,6 +1212,19 @@ async function pollCycle() {
   }
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
+  // Zero-review alert: warn if show has been open >24h with very few reviews
+  if (show.openingDate) {
+    const hoursSinceOpening = (Date.now() - new Date(show.openingDate).getTime()) / 3600000;
+    if (hoursSinceOpening > 24 && postStatus.total < 3) {
+      const msg = `⚠️ LOW COVERAGE: ${show.title} opened ${Math.round(hoursSinceOpening)}h ago but only has ${postStatus.total} scored reviews. Expected 8+ by now.`;
+      console.log(`\n${msg}`);
+      // Emit as GitHub Actions warning annotation
+      if (process.env.GITHUB_ACTIONS) {
+        console.log(`::warning::${msg}`);
+      }
+    }
+  }
+
   // GitHub Actions outputs
   console.log(`\n::set-output name=ready::${postStatus.ready}`);
   console.log(`::set-output name=new_reviews::${newReviews}`);
