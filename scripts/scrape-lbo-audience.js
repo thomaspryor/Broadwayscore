@@ -416,7 +416,7 @@ async function main() {
         score,
         reviewCount: data.reviewCount,
         starRating: data.rating,
-        lastUpdated: new Date().toISOString().slice(0, 10),
+        lastUpdated: new Date().toISOString(),
       };
 
       const showInfo = { closingDate: show.closingDate, status: show.status };
@@ -430,7 +430,7 @@ async function main() {
       showEntry.title = show.title;
       buzzData.shows[show.id] = showEntry;
 
-      buzzData._meta.lastUpdated = new Date().toISOString().slice(0, 10);
+      buzzData._meta.lastUpdated = new Date().toISOString();
       if (!buzzData._meta.sources.includes('LBO')) {
         buzzData._meta.sources.push('LBO');
       }

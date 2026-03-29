@@ -312,6 +312,51 @@ function validateSlugs(shows) {
   }
 }
 
+function validateLastUpdatedFormats() {
+  info('Checking lastUpdated timestamp formats in data files...');
+  // Full ISO 8601 with time component (e.g. 2026-03-29T01:23:45.678Z)
+  const isoDatetimeRegex = /^\d{4}-\d{2}-\d{2}T/;
+  // Date-only (e.g. 2026-03-29) — lossy, no intra-day resolution
+  const dateOnlyRegex = /^\d{4}-\d{2}-\d{2}$/;
+  let dateOnlyCount = 0;
+  let isoCount = 0;
+
+  let files;
+  try {
+    files = fs.readdirSync(DATA_DIR).filter(f => f.endsWith('.json'));
+  } catch (e) {
+    warn(`Could not read data directory: ${e.message}`);
+    return;
+  }
+
+  for (const filename of files) {
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(DATA_DIR, filename), 'utf8'));
+      const candidates = [
+        data._meta?.lastUpdated,
+        data.lastUpdated,
+        data._meta?.updatedAt,
+        data.updatedAt,
+      ].filter(Boolean);
+      for (const val of candidates) {
+        if (dateOnlyRegex.test(val) && !isoDatetimeRegex.test(val)) {
+          warn(`${filename}: timestamp is date-only "${val}" — run the generating script to update to full ISO 8601`);
+          dateOnlyCount++;
+        } else if (isoDatetimeRegex.test(val)) {
+          isoCount++;
+        }
+      }
+    } catch (e) { /* skip unreadable files */ }
+  }
+
+  if (dateOnlyCount === 0) {
+    ok(`All ${isoCount} data file timestamps use full ISO 8601 format`);
+  } else {
+    // Warn only — existing files have date-only values; they update naturally on next script run
+    warn(`${dateOnlyCount} data file(s) still using date-only timestamps (${isoCount} already use full ISO 8601)`);
+  }
+}
+
 function validateImageUrls(shows) {
   info('Checking image URLs...');
   // Accept both external URLs (https://) and local paths (/images/)
@@ -3284,6 +3329,8 @@ function runValidation() {
   validateShowMatchingAliases(shows);
   console.log('');
   validateLotteryRushData(shows);
+  console.log('');
+  validateLastUpdatedFormats();
 
   // Summary
   console.log('');
@@ -3317,7 +3364,7 @@ function runValidation() {
     tonyNominations: tonyResult?.totalNominations || null,
     tonyWins: tonyResult?.totalWins || null,
     perShowReviews,
-    updatedAt: new Date().toISOString().split('T')[0],
+    updatedAt: new Date().toISOString(),
   };
   try {
     const auditDir = path.dirname(BASELINE_FILE);

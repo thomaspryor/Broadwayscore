@@ -542,7 +542,7 @@ async function main() {
   if (fetchedShowScore) {
     fs.writeFileSync(SHOW_SCORE_URLS_PATH, JSON.stringify({
       _meta: {
-        lastUpdated: new Date().toISOString().split('T')[0],
+        lastUpdated: new Date().toISOString(),
         source: 'Show Score Broadway section',
         needsManualFetch: [],
         needsManualFetchNote: 'URLs auto-updated by fetch script'
