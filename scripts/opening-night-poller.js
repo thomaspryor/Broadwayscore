@@ -1137,11 +1137,17 @@ async function pollCycle() {
     }
     let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market)
       .filter(o => !foundOutletIds.has(o.id.toLowerCase()));
-    // For WE shows: also search notable T3 WE outlets that regularly review shows
-    // (these are legitimate reviewers, not blogs — they're just classified T3 by scale)
-    if (isLondonMarket(market)) {
+    // For WE shows on day 2+: also search notable T3 WE outlets
+    // Skip on opening night (day 0-1) — T3 outlets haven't published yet and SERP adds ~90s
+    const daysSinceOpening = show.openingDate
+      ? (Date.now() - new Date(show.openingDate).getTime()) / 86400000
+      : 999;
+    if (isLondonMarket(market) && daysSinceOpening < 1.5) {
+      console.log(`  [T3 SERP skipped: opening night (${daysSinceOpening.toFixed(1)} days since opening). T3 outlets added on day 2+]`);
+    }
+    if (isLondonMarket(market) && daysSinceOpening >= 1.5) {
       // Notable T3 WE outlets that regularly review shows and have searchable domains
-      // ~18 outlets × 5s each = ~90s extra SERP time per show, acceptable for 4-day window
+      // ~18 outlets × 5s each = ~90s extra SERP time per show, acceptable for day 2+ polls
       const WE_T3_SERP_OUTLETS = [
         'new-statesman', 'afridiziak-theatre-news', 'theatreandtonic',
         'west-end-best-friend', 'all-that-dazzles-uk',
