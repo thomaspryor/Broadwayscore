@@ -26,6 +26,8 @@ const {
   isJunkOutlet,
   maybeUpgradeUrl,
   getOutletDisplayName,
+  resolveOutletFromUrl,
+  loadOutletRegistry,
 } = require('./review-normalization');
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
@@ -55,8 +57,26 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   const fields = input.fields || {};
 
   // --- Guard: normalize outlet ---
-  const outletId = input.outletId || normalizeOutlet(input.outlet);
+  let outletId = input.outletId || normalizeOutlet(input.outlet);
   if (!outletId) return { action: 'skipped', reason: 'no-outlet' };
+
+  // URL-based outlet refinement for shared-domain outlets.
+  // Some outlets share a domain but serve different markets via URL path
+  // (e.g. timeout.com: /newyork → timeout, /london → timeout-london).
+  // The URL path is more authoritative than the outlet display name scraped from HTML,
+  // which may be ambiguous (e.g. "Time Out" resolves to "timeout" regardless of market).
+  if (input.url) {
+    const urlResolved = resolveOutletFromUrl(input.url);
+    if (urlResolved && urlResolved.outletId !== outletId) {
+      const registry = loadOutletRegistry();
+      const urlOutlet = registry?.outlets?.[urlResolved.outletId];
+      const nameOutlet = registry?.outlets?.[outletId];
+      if (urlOutlet && nameOutlet && urlOutlet.domain === nameOutlet.domain) {
+        // Same domain, different path-based outlet — URL is authoritative
+        outletId = urlResolved.outletId;
+      }
+    }
+  }
 
   // --- Guard: junk outlet ---
   if (isJunkOutlet(outletId) || isJunkOutlet(input.outlet)) {
@@ -74,9 +94,8 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   const showDir = path.join(reviewTextsDir, showId);
 
   // --- Try to find existing file ---
-  const filename = input.outletId
-    ? `${input.outletId}--${criticSlug}.json`
-    : generateReviewFilename(outletId, criticName);
+  // Use the (possibly URL-refined) outletId for the filename, not the raw input.outletId
+  const filename = generateReviewFilename(outletId, criticName);
   const filepath = path.join(showDir, filename);
 
   // Cross-scraper dedup: find by outlet+critic regardless of filename format

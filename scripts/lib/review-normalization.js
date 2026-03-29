@@ -983,6 +983,7 @@ function findExistingReviewFile(showDir, outletName, criticName) {
   const normalizedOutlet = normalizeOutlet(outletName);
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
 
+  // Pass 1: match by filename prefix (fast path — no file reads needed)
   for (const file of files) {
     const parts = file.replace('.json', '').split('--');
     if (parts.length !== 2) continue;
@@ -1008,13 +1009,108 @@ function findExistingReviewFile(showDir, outletName, criticName) {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        // Skip wrongProduction files — they're from a different production
-        // and should not block discovery of reviews for the current production
-        if (data && data.wrongProduction) continue;
+        // Skip wrongProduction and duplicateOf files — they should not act as merge targets
+        if (data && (data.wrongProduction || data.duplicateOf)) continue;
         return { path: filePath, filename: file, data };
       } catch {
         return { path: filePath, filename: file, data: null };
       }
+    }
+  }
+
+  // Pass 2: match by outletId stored inside the JSON file.
+  // Catches files where the filename prefix doesn't match the stored outletId —
+  // e.g. a file named "nytimes--adam-feldman.json" that has outletId: "timeout" inside,
+  // caused by bulk fix scripts that update outletId without renaming files.
+  // Without this pass, the next write creates a correctly-named duplicate.
+  const normalizedCriticForPass2 = criticName && criticName.toLowerCase() !== 'unknown'
+    ? normalizeCritic(criticName)
+    : null;
+
+  for (const file of files) {
+    const parts = file.replace('.json', '').split('--');
+    if (parts.length !== 2) continue;
+
+    // Skip files already matched by filename in pass 1 (their outlet normalized to same value)
+    const fileOutletNormalized = normalizeOutlet(parts[0]);
+    if (fileOutletNormalized === normalizedOutlet) continue; // already checked above
+
+    const filePath = path.join(showDir, file);
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    } catch {
+      continue;
+    }
+    if (!data || data.wrongProduction || data.duplicateOf) continue;
+    if (!data.outletId) continue;
+
+    if (normalizeOutlet(data.outletId) !== normalizedOutlet) continue;
+
+    // Outlet matches by internal field — check critic
+    if (normalizedCriticForPass2 && data.criticName) {
+      const dataFileCritic = normalizeCritic(data.criticName);
+      if (normalizedCriticForPass2 !== dataFileCritic &&
+          !areCriticsSimilar(criticName, data.criticName)) {
+        continue; // Different critic at same outlet — not a duplicate
+      }
+    }
+
+    return { path: filePath, filename: file, data };
+  }
+
+  // Pass 3: shared-domain outlet dedup via URL resolution.
+  // Catches the case where different scrapers use different outlet aliases for the
+  // same publication (e.g., "timeout" vs "timeout-london" both on timeout.com).
+  // Pass 1 and 2 miss this because the outlet IDs normalize to different canonical values.
+  // We only read files where the critic matches AND both outlets share a registered domain.
+  const registry = loadOutletRegistry();
+  const outletDefs = registry ? (registry.outlets || {}) : {};
+  const incomingDomain = outletDefs[normalizedOutlet] ? outletDefs[normalizedOutlet].domain : null;
+
+  if (incomingDomain) {
+    const normalizedCriticForPass3 = criticName && criticName.toLowerCase() !== 'unknown'
+      ? normalizeCritic(criticName)
+      : null;
+
+    for (const file of files) {
+      const parts = file.replace('.json', '').split('--');
+      if (parts.length !== 2) continue;
+
+      const fileOutletNormalized = normalizeOutlet(parts[0]);
+      if (fileOutletNormalized === normalizedOutlet) continue; // already checked in pass 1
+
+      // Check if this file's outlet shares the same domain as the incoming outlet
+      const fileDomain = outletDefs[fileOutletNormalized] ? outletDefs[fileOutletNormalized].domain : null;
+      if (!fileDomain || fileDomain !== incomingDomain) continue;
+
+      // Critic pre-filter: only proceed if critic matches (avoids unnecessary file reads)
+      if (normalizedCriticForPass3) {
+        const fileCriticNorm = normalizeCritic(parts[1]);
+        if (fileCriticNorm !== normalizedCriticForPass3 &&
+            !areCriticsSimilar(criticName, parts[1].replace(/-/g, ' '))) {
+          continue;
+        }
+      }
+
+      const filePath = path.join(showDir, file);
+      let data;
+      try {
+        data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      } catch {
+        continue;
+      }
+      if (!data || data.wrongProduction || data.duplicateOf) continue;
+
+      // Verify via URL resolution: does this file's URL resolve to the incoming outlet?
+      // Without URL confirmation, different regional editions on the same domain would
+      // be falsely merged (e.g., timeout.com/london vs timeout.com/newyork).
+      if (!data.url) continue;
+      const resolved = resolveOutletFromUrl(data.url);
+      if (!resolved || resolved.outletId !== normalizedOutlet) continue;
+
+      // File's URL resolves to same outlet as incoming — duplicate under a different alias
+      return { path: filePath, filename: file, data };
     }
   }
 
