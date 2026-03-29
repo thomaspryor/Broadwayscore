@@ -2633,8 +2633,9 @@ const output = {
 
 // REVIEW COUNT REGRESSION GUARD: warn if rebuild would lose >2% of reviews.
 // Logs prominently and writes audit trail, but proceeds with the write.
-// The --force-write flag is kept for backwards compatibility but is no longer needed.
+// Pass --force-write to suppress this warning when the drop is intentional.
 {
+  const forceWrite = process.argv.includes('--force-write');
   let existingCount = 0;
   try {
     const existing = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
@@ -2646,10 +2647,16 @@ const output = {
     const lost = existingCount - newCount;
     const pctLost = (lost / existingCount * 100).toFixed(1);
     if (lost > 0 && parseFloat(pctLost) > 2.0) {
-      console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss)`);
-      console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
-      console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
-      console.error(`   ⚠️  PROCEEDING WITH WRITE — review data/audit/rebuild-regression.json for details`);
+      if (forceWrite) {
+        console.log(`\n⚠️  REGRESSION GUARD: Dropping ${lost} reviews (${pctLost}%) — suppressed by --force-write`);
+      } else {
+        console.error(`\n🚨 REGRESSION GUARD: Rebuild is dropping ${lost} reviews (${pctLost}% loss)`);
+        console.error(`   Existing: ${existingCount} reviews → New: ${newCount} reviews`);
+        console.error(`   This usually means the review-texts checkout is stale or incomplete.`);
+        console.error(`   PROCEEDING WITH WRITE — deploy may be blocked by pre-deploy-check.js (3% threshold).`);
+        console.error(`   Details: data/audit/rebuild-regression.json`);
+        console.error(`   To override: gh workflow run "Rebuild Reviews Data" -f reason="..." -f force_write=true`);
+      }
       // Write audit trail for tracking
       try {
         const auditDir = path.join(path.dirname(reviewsJsonPath), 'audit');

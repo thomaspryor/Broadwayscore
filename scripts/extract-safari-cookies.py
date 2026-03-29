@@ -22,7 +22,13 @@ import pathlib
 # Difference in seconds
 MAC_EPOCH_OFFSET = 978307200
 
-COOKIE_FILE = os.path.expanduser("~/Library/Cookies/Cookies.binarycookies")
+# macOS <15: ~/Library/Cookies/Cookies.binarycookies
+# macOS 15+ (Tahoe): sandboxed container path
+COOKIE_FILE_CANDIDATES = [
+    os.path.expanduser("~/Library/Cookies/Cookies.binarycookies"),
+    os.path.expanduser("~/Library/Containers/com.apple.Safari/Data/Library/Cookies/Cookies.binarycookies"),
+]
+COOKIE_FILE = next((p for p in COOKIE_FILE_CANDIDATES if os.path.isfile(p)), COOKIE_FILE_CANDIDATES[0])
 
 # Domain groups: which domains map to which output file
 DOMAIN_GROUPS = {
