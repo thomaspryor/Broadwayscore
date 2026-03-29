@@ -744,20 +744,32 @@ async function runAggregators(show) {
               if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
             }
 
-            // Find and fill login form
-            const emailInput = await page.$('input[name="email"], input[type="email"], input[id*="email"]');
+            // Find visible login form (page has two forms — main + nav; only one is visible)
+            const emailInputs = await page.$$('input[name="email"], input[type="email"], input[id*="email"]');
+            let emailInput = null;
+            for (const inp of emailInputs) {
+              if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
+            }
             if (emailInput) {
               await emailInput.click();
               await emailInput.type(stageEmail, { delay: 30 });
               await page.waitForTimeout(500);
 
-              const passInput = await page.$('input[type="password"], input[name="password"]');
+              const passInputs = await page.$$('input[type="password"], input[name="password"]');
+              let passInput = null;
+              for (const inp of passInputs) {
+                if (await inp.isVisible().catch(() => false)) { passInput = inp; break; }
+              }
               if (passInput) {
                 await passInput.click();
                 await passInput.type(stagePassword, { delay: 30 });
                 await page.waitForTimeout(500);
 
-                const submitBtn = await page.$('button:has-text("Login"), button:has-text("Sign in"), input[type="submit"]');
+                const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Sign in"), input[type="submit"]');
+                let submitBtn = null;
+                for (const btn of submitBtns) {
+                  if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
+                }
                 if (submitBtn) await submitBtn.click();
                 else await page.keyboard.press('Enter');
 
@@ -771,10 +783,10 @@ async function runAggregators(show) {
                   console.log('  The Stage: login may have failed (still on /login)');
                 }
               } else {
-                console.log('  The Stage: no password field found');
+                console.log('  The Stage: no visible password field found');
               }
             } else {
-              console.log('  The Stage: no email field found on /login — may already be logged in');
+              console.log('  The Stage: no visible email field on /login — may already be logged in');
             }
 
             // Step 2: Navigate to listing and discover the roundup URL for this show

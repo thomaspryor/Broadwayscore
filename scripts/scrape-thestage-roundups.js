@@ -136,9 +136,14 @@ async function loginToTheStage(page) {
     if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
   }
 
-  const emailInput = await page.$('input[name="email"], input[type="email"], input[id*="email"]');
+  // The /login page has two forms (main + nav) — find the visible email input
+  const emailInputs = await page.$$('input[name="email"], input[type="email"], input[id*="email"]');
+  let emailInput = null;
+  for (const inp of emailInputs) {
+    if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
+  }
   if (!emailInput) {
-    console.log('  ⚠ No email field found on /login — continuing without auth');
+    console.log('  ⚠ No visible email field on /login — continuing without auth');
     return false;
   }
 
@@ -146,14 +151,24 @@ async function loginToTheStage(page) {
   await emailInput.type(email, { delay: 30 });
   await page.waitForTimeout(500);
 
-  const passInput = await page.$('input[type="password"], input[name="password"]');
-  if (!passInput) { console.log('  ✗ No password field on /login'); return false; }
+  // Find visible password input (same form as the email input)
+  const passInputs = await page.$$('input[type="password"], input[name="password"]');
+  let passInput = null;
+  for (const inp of passInputs) {
+    if (await inp.isVisible().catch(() => false)) { passInput = inp; break; }
+  }
+  if (!passInput) { console.log('  ✗ No visible password field on /login'); return false; }
 
   await passInput.click();
   await passInput.type(password, { delay: 30 });
   await page.waitForTimeout(500);
 
-  const submitBtn = await page.$('button:has-text("Login"), button:has-text("Sign in"), input[type="submit"]');
+  // Find visible submit button
+  const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Sign in"), input[type="submit"]');
+  let submitBtn = null;
+  for (const btn of submitBtns) {
+    if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
+  }
   if (submitBtn) await submitBtn.click();
   else await page.keyboard.press('Enter');
 
