@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-03-29T03:37:28.086Z",
+  "runDate": "2026-03-29T03:50:19.378Z",
   "config": {
     "batchSize": 5,
     "maxReviews": 5,
     "priority": "all",
-    "showFilter": "evening-all-afternoon-west-end-2026",
+    "showFilter": "my-neighbour-totoro-west-end-2025",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -17,59 +17,57 @@
     "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 1,
     "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 2,
-    "tier3Attempts": 2,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 2,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 2,
-    "scrapingBeePageCredits": 20,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json"
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json"
   ],
   "failed": [
-    "evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
-    "evening-all-afternoon-west-end-2026/thestage--unknown.json"
+    "my-neighbour-totoro-west-end-2025/the-sun--dominic-maxwell.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "evening-all-afternoon-west-end-2026/whatsonstage--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
-      "data/review-texts/evening-all-afternoon-west-end-2026/thestage--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
