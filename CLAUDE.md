@@ -7,10 +7,10 @@
 ## CRITICAL RULES
 
 ### 1. Git Workflow
-- **Worktree isolation (MANDATORY):** If editing `src/` or config files, create a worktree first. Prevents concurrent sessions from clobbering each other. Skip for pure data/CI/docs work.
-- **Branch check:** `git branch --show-current` before ANY commit/push.
-- **Commit frequently.** After each logical unit. Never >2 uncommitted files. 15+ min without committing → stop and commit NOW. WIP commits are fine.
+Global rules apply (worktree-first, branch check, commit frequently). Project additions:
+- **Worktree scope:** `src/` or config files → worktree. Pure data/CI/docs → skip.
 - **Push** every ~30 min or after milestones.
+- **15+ min without committing** → stop and commit NOW.
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
@@ -19,9 +19,8 @@ Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **"Pushed" ≠ "Deployed"** — confirm workflow triggered. If failed → fix. If in-progress → tell user the run ID.
 
 ### 3. Core Data Rules
-- **Never guess/fake data.** If you can't access a source, say so.
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
-- **Never commit copyrighted text, PII, or API keys to public repo.** Review texts, aggregator archive, core data → private repos, all gitignored.
+- **Copyrighted text, PII, API keys** → private repos, all gitignored (see §11).
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
 
 ### 4. Design System
@@ -43,7 +42,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **If Notion unreachable:** Warn user, continue without tracking. On wrap-up failure, output Outcome text so nothing is lost.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
-For 3+ workflow/CI changes: plan → review → test 3 representative cases → verify all steps.
+See global CLAUDE.md. Additionally: test 3 representative cases before merging.
 
 ### 8. Pipeline Operations
 **E2E test before large dispatch** (5+ runs or 50+ reviews). Test 5 reviews first.
@@ -64,8 +63,8 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 1. `npx tsc --noEmit` — zero errors in changed files
 2. `npx next lint` — no new warnings
 3. Auth-aware build with feature flags
-4. **For scripts that fetch URLs or parse data:** run with `--limit 1` (or equivalent smallest flag), confirm the output contains non-zero results and a sample looks semantically correct. `node --check` is syntax only — it does NOT count as testing.
-5. **For script migrations (refactoring existing logic):** compare output against the old behavior. Check that the same input produces equivalent output. Empty results after a migration = broken, not "no data."
+4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test.
+5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
 **If any check fails, fix before committing.** Never push broken code.
 
