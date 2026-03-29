@@ -106,12 +106,17 @@ jobs:
           THESTAGE_PASSWORD: ${{ secrets.THESTAGE_PASSWORD }}
           FT_EMAIL: ${{ secrets.FT_EMAIL }}
           FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
-          FT_COOKIES: ${{ secrets.FT_COOKIES }}
-          TIMEOUT_COOKIES: ${{ secrets.TIMEOUT_COOKIES }}
-          TELEGRAPH_COOKIES: ${{ secrets.TELEGRAPH_COOKIES }}
-          THETIMES_COOKIES: ${{ secrets.THETIMES_COOKIES }}
-          STANDARD_COOKIES: ${{ secrets.STANDARD_COOKIES }}
-          INDEPENDENT_COOKIES: ${{ secrets.INDEPENDENT_COOKIES }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: mcp_unlocker

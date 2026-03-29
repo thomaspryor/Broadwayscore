@@ -181,11 +181,10 @@ async function main() {
   console.log('\nBase64-encoded value (copy this into GitHub Secrets):');
   console.log('\n' + base64);
   console.log('\n' + '='.repeat(50));
-  console.log(`\nTo set the GitHub Secret:`);
+  console.log(`\nNOTE: Cookies are now stored in COOKIES_BUNDLE_* secrets.`);
+  console.log(`Prefer using extract-safari-cookies.py --push to update all bundles at once.`);
+  console.log(`\nLegacy individual secret (if needed):`);
   console.log(`  gh secret set ${domainConfig.envVar} --body "${base64.length > 100 ? base64.substring(0, 50) + '...' : base64}"`);
-  console.log(`\nOr paste the full base64 value above into:`);
-  console.log(`  GitHub repo > Settings > Secrets > Actions > New repository secret`);
-  console.log(`  Name: ${domainConfig.envVar}`);
 
   // List some key cookie names for verification
   const keyNames = formattedCookies.map(c => c.name).slice(0, 10);

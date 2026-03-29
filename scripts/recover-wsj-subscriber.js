@@ -29,6 +29,7 @@ const { execSync } = require('child_process');
 // Shared libraries
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
+const { loadCookiesForDomain } = require('./lib/cookie-loader');
 
 // ============================================================================
 // Configuration
@@ -69,40 +70,9 @@ const CONFIG = {
   dryRun: process.env.DRY_RUN === 'true',
 };
 
-// ============================================================================
-// Cookie loading
-// ============================================================================
-
+// Cookie loading delegated to shared cookie-loader.js
 function loadCookies() {
-  // Try env var first (base64-encoded JSON — used in CI)
-  const envVal = process.env.WSJ_COOKIES;
-  if (envVal) {
-    try {
-      const decoded = Buffer.from(envVal, 'base64').toString('utf-8');
-      const cookies = JSON.parse(decoded);
-      if (Array.isArray(cookies) && cookies.length > 0) {
-        console.log(`  Loaded ${cookies.length} cookies from WSJ_COOKIES env var`);
-        return cookies;
-      }
-    } catch (e) {
-      console.log(`  Warning: WSJ_COOKIES env var parse error: ${e.message}`);
-    }
-  }
-
-  // Try local file
-  if (fs.existsSync(CONFIG.cookiePath)) {
-    try {
-      const cookies = JSON.parse(fs.readFileSync(CONFIG.cookiePath, 'utf-8'));
-      if (Array.isArray(cookies) && cookies.length > 0) {
-        console.log(`  Loaded ${cookies.length} cookies from ${CONFIG.cookiePath}`);
-        return cookies;
-      }
-    } catch (e) {
-      console.log(`  Warning: Cookie file parse error: ${e.message}`);
-    }
-  }
-
-  return null;
+  return loadCookiesForDomain('wsj.com');
 }
 
 function buildCookieHeader(cookies) {
