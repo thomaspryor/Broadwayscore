@@ -4249,7 +4249,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // which are wrong ~11% of the time and invented for outlets without native ratings).
   // Re-extract to replace SS-assigned scores with verified outlet scores.
   // Phase 2a: Run both old regex AND new LLM extraction, log disagreements, use LLM result
-  const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright';
+  const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
   const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
   if ((!data.originalScore || hasUnverifiedSSScore) && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
