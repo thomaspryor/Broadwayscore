@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-03-28T23:33:18.692Z",
+    "generatedAt": "2026-03-29T00:02:58.565Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 33238,
       "inReviewsJson": 16775,
-      "skippedExcluded": 83,
-      "withFullText": 21,
-      "excerptOnly": 2034,
-      "llmClassified": 20,
+      "skippedExcluded": 410,
+      "withFullText": 20,
+      "excerptOnly": 2011,
+      "llmClassified": 19,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
-      "uncertainCases": 20,
-      "budgetUsed": 0.0021000000000000003,
-      "llmCalls": 21,
+      "nonReviewsFound": 1,
+      "uncertainCases": 18,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14637
+      "skippedAlreadyClassified": 14334
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "beetlejuice-2022/broadwayworld--colin-fleming-stumpf.json",
+      "showId": "beetlejuice-2022",
+      "outlet": "BroadwayWorld",
+      "outletId": "broadwayworld",
+      "contentType": "preview",
+      "confidence": "high",
+      "reasoning": "The article describes the plot and background of the musical \"Beetlejuice\" without offering a critical evaluation or opinion on the quality of the production.",
+      "currentScore": 77
+    }
+  ],
   "uncertainCases": [
     {
       "file": "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
@@ -40,7 +51,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the play's plot and themes, and discusses the historical context of the Liberian Civil Wars. It does not offer a critical evaluation or recommendation of the production itself.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -60,7 +71,7 @@
       "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "medium",
-      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in photo captions at the end. It does not offer a review or evaluation of \"First Date.\"",
+      "reasoning": "The article primarily discusses \"The Bridges of Madison County\" and only mentions \"First Date\" in a photo caption. It does not offer a review or evaluation of \"First Date.\"",
       "currentScore": 57
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and advertisements related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and advertisements related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -100,18 +111,8 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered, so it is not a review.",
       "currentScore": 88
-    },
-    {
-      "file": "once-on-this-island-2017/frequentbusinesstraveler--jonathan-spira.json",
-      "showId": "once-on-this-island-2017",
-      "outlet": "frequentbusinesstraveler",
-      "outletId": "frequentbusinesstraveler",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The article describes the plot and setting of \"Once on This Island\" without offering a critical evaluation or opinion on the quality of the production. It focuses on the story and background, indicating a preview rather than a review.",
-      "currentScore": 82
     },
     {
       "file": "once-on-this-island-2017/talkinbroadway--matthew-murray.json",
@@ -120,7 +121,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -130,7 +131,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -140,7 +141,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no review content present.",
+      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. Based on the available text, it seems to be a news article or advertisement rather than a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -150,7 +151,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -160,7 +161,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the history it represents.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -180,7 +181,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -190,18 +191,8 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
-    },
-    {
-      "file": "thoughts-of-a-colored-man-2021/vulture--helen-shaw.json",
-      "showId": "thoughts-of-a-colored-man-2021",
-      "outlet": "Vulture",
-      "outletId": "vulture",
-      "contentType": "feature",
-      "confidence": "medium",
-      "reasoning": "The article describes the set design and the playwright's intentions, but does not offer an evaluation or recommendation of the show itself. It reads more like a feature piece exploring the themes and context of the play.",
-      "currentScore": 64
     },
     {
       "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
@@ -220,11 +211,17 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion about the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it lacks a judgment or recommendation, indicating it's more of a p",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "beetlejuice-2022",
+      "currentCount": 4,
+      "removed": 1
+    }
+  ]
 }
