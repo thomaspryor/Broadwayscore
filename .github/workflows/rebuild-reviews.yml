@@ -25,6 +25,11 @@ on:
         required: false
         default: 'Manual sync'
         type: string
+      force_write:
+        description: 'Override regression guard (true/false)'
+        required: false
+        default: 'false'
+        type: string
 
 permissions:
   contents: write
@@ -131,8 +136,14 @@ jobs:
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
+          FORCE_FLAG=""
+          if [ "${{ inputs.force_write || 'false' }}" = "true" ]; then
+            FORCE_FLAG="--force-write"
+            echo "⚠️  Force-write enabled — regression guard overridden"
+          fi
+
           # First attempt
-          if node scripts/rebuild-all-reviews.js; then
+          if node scripts/rebuild-all-reviews.js $FORCE_FLAG; then
             echo "Rebuild succeeded on first attempt"
             exit 0
           fi
@@ -146,7 +157,7 @@ jobs:
           git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
 
           # Retry rebuild
-          node scripts/rebuild-all-reviews.js
+          node scripts/rebuild-all-reviews.js $FORCE_FLAG
 
       - name: Snapshot rebuilt core data for private repo push
         if: always()
