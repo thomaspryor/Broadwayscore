@@ -1140,10 +1140,15 @@ async function pollCycle() {
     // For WE shows: also search notable T3 WE outlets that regularly review shows
     // (these are legitimate reviewers, not blogs — they're just classified T3 by scale)
     if (isLondonMarket(market)) {
+      // Notable T3 WE outlets that regularly review shows and have searchable domains
+      // ~18 outlets × 5s each = ~90s extra SERP time per show, acceptable for 4-day window
       const WE_T3_SERP_OUTLETS = [
-        'afridiziak-theatre-news', 'new-statesman', 'all-that-dazzles-uk',
-        'theatreandtonic', 'west-end-best-friend', 'london-box-office',
-        'artsdesk', 'theatre-weekly',
+        'new-statesman', 'afridiziak-theatre-news', 'theatreandtonic',
+        'west-end-best-friend', 'all-that-dazzles-uk',
+        'london-box-office', 'artsdesk', 'theatre-weekly', 'theupcoming',
+        'musical-theatre-review', 'british-theatre', 'everything-theatre',
+        'londonist', 'thereviewshub', 'city-am', 'a-younger-theatre',
+        'west-end-wilma', 'digital-spy',
       ];
       const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
       const allOutlets = reg.outlets || reg;
