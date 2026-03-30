@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T13:25:13.652Z",
+  "timestamp": "2026-03-30T13:38:18.970Z",
   "stats": {
     "totalReviews": 31953,
     "alreadyFlagged": 11336,
     "dateGuardCatches": 18,
     "directorMismatch": 949,
-    "tvFilmSignals": 3359,
+    "tvFilmSignals": 3360,
     "londonSignals": 1007,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6167
+    "noPublishDate": 6166
   },
   "findings": [
     {
@@ -1464,6 +1464,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "a-soldiers-play-2020",
+      "file": "washpost--peter-marks.json",
+      "score": 73,
+      "publishDate": "January 24th, 2020",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/tried-and-true-formulas-work-in-a-soldiers-play-and-grand-horizons/2020/01/23/3675c154-3de2-11ea-baca-eb7ace0a3455_story.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
