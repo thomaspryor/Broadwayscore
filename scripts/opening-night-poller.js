@@ -272,10 +272,33 @@ async function runAggregators(show) {
   // Use --tb-review-url=<url> to override if constructed URL fails.
   if (!isOffBroadway && !isWestEnd) {
     try {
-      const tbSlug = show.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const tbYear = year;
-      const tbConstructedUrl = `https://www.talkinbroadway.com/page/world/${tbSlug}${tbYear}.html`;
-      const tbUrl = TB_REVIEW_URL || tbConstructedUrl;
+      // TB uses CamelCase slugs: "MeteorShower2017", "ADollsHouse", "OnceUponaOneMoreTime"
+      // Articles (a, an, the) are lowercase in the middle but capitalized at start.
+      // Year format varies: 4-digit (2017), 2-digit (24), or omitted entirely.
+      const tbCamelSlug = show.title
+        .replace(/[^a-zA-Z0-9\s]/g, '')  // strip punctuation
+        .split(/\s+/)
+        .map((w, i) => {
+          const lower = w.toLowerCase();
+          // Preserve Roman numerals (II, III, IV, etc.)
+          if (/^[IVXLCDMivxlcdm]+$/.test(w) && w.length <= 5) return w.toUpperCase();
+          // Lowercase articles/prepositions in middle position
+          if (i > 0 && ['a', 'an', 'the', 'of', 'in', 'on', 'at', 'to', 'for'].includes(lower)) {
+            return lower;
+          }
+          return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+        })
+        .join('');
+      const tbLowerSlug = show.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const tbYear2 = String(year).slice(-2);
+
+      // Try multiple URL variants — TB is inconsistent about year format
+      const tbUrls = TB_REVIEW_URL ? [TB_REVIEW_URL] : [
+        `https://www.talkinbroadway.com/page/world/${tbCamelSlug}${year}.html`,
+        `https://www.talkinbroadway.com/page/world/${tbCamelSlug}${tbYear2}.html`,
+        `https://www.talkinbroadway.com/page/world/${tbCamelSlug}.html`,
+        `https://www.talkinbroadway.com/page/world/${tbLowerSlug}${year}.html`,
+      ];
 
       // Check if we already have a TB review file for this show
       const showReviewDir = path.join(REVIEW_TEXTS_DIR, show.id);
@@ -288,40 +311,30 @@ async function runAggregators(show) {
       if (hasTbReview) {
         console.log('  Talkin\' Broadway: already have review file, skipping');
       } else {
-        console.log(`  Checking Talkin' Broadway: ${tbUrl}`);
-        // Try via proxy to avoid TLS blocking — only need to check if URL exists (HEAD-style)
-        let tbResult = { ok: false, status: 0 };
-        try {
-          const tbPage = await fetchPage(tbUrl, { renderJs: false });
-          tbResult = { ok: !!(tbPage && tbPage.content && tbPage.content.length > 500), status: 200 };
-        } catch (e) {
-          tbResult = { ok: false, status: 0 };
+        let tbFound = false;
+        for (const tbUrl of tbUrls) {
+          console.log(`  Checking Talkin' Broadway: ${tbUrl}`);
+          try {
+            const tbPage = await fetchPage(tbUrl, { renderJs: false });
+            if (tbPage && tbPage.content && tbPage.content.length > 500) {
+              console.log(`  Talkin' Broadway: URL confirmed — creating stub`);
+              results.push({
+                showId: show.id,
+                outletId: 'talkinbroadway',
+                outlet: "Talkin' Broadway",
+                criticName: 'Unknown',
+                url: tbUrl,
+                source: TB_REVIEW_URL ? 'direct-url-override' : 'direct-url-construction',
+              });
+              tbFound = true;
+              break;
+            }
+          } catch (e) {
+            // Try next URL variant
+          }
         }
-
-        if (tbResult.ok) {
-          console.log(`  Talkin' Broadway: URL confirmed (${tbResult.status}) — creating stub`);
-          results.push({
-            showId: show.id,
-            outletId: 'talkinbroadway',
-            outlet: "Talkin' Broadway",
-            criticName: 'Unknown',
-            url: tbUrl,
-            source: 'direct-url-construction',
-          });
-        } else if (TB_REVIEW_URL) {
-          // User provided override URL — create stub even if check failed (may be behind Cloudflare)
-          console.log(`  Talkin' Broadway: status ${tbResult.status} on override URL — creating stub anyway`);
-          results.push({
-            showId: show.id,
-            outletId: 'talkinbroadway',
-            outlet: "Talkin' Broadway",
-            criticName: 'Unknown',
-            url: TB_REVIEW_URL,
-            source: 'direct-url-override',
-          });
-        } else {
-          console.log(`  Talkin' Broadway: ${tbResult.status} on ${tbUrl} — will need manual URL or SERP`);
-          console.log(`    Suggested URL to try: ${tbConstructedUrl}`);
+        if (!tbFound) {
+          console.log(`  Talkin' Broadway: all ${tbUrls.length} URL variants failed — review may not be published yet`);
         }
       }
     } catch (err) {
