@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-30T15:08:52.082Z",
+  "generatedAt": "2026-03-30T16:39:07.778Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -416,6 +416,12 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "humanReviewScore 75 (positive) overrides explicit \"1/5\" (=20, negative)"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "all-my-sons-west-end-2025",
+      "detail": "8/14 reviews (57%) scored exactly 100"
     },
     {
       "type": "score-clustering",
