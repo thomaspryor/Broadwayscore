@@ -14,7 +14,7 @@
  * Maps normalized base titles to their canonical forms.
  * Add entries here when new edge cases are discovered.
  */
-const { normalizeVenueName } = require('./venue-classification');
+const { normalizeVenueName, getMarketPool } = require('./venue-classification');
 
 const KNOWN_DUPLICATES = {
   // Short titles that need special handling
@@ -266,18 +266,6 @@ function isMultiProduction(newShow, existing) {
     return Math.abs(newYear - existingYear) > 2;
   }
   return false;
-}
-
-/**
- * Get the market pool for a category. Shows within the same pool
- * (e.g., west-end + off-west-end) share a browse page and must be
- * deduplicated against each other. Only truly different pools
- * (NYC vs London) are cross-market.
- */
-function getMarketPool(category) {
-  const cat = category || 'broadway';
-  if (cat === 'west-end' || cat === 'off-west-end') return 'london';
-  return 'nyc'; // broadway, off-broadway
 }
 
 /**
