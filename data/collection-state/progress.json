@@ -1,9 +1,6 @@
 {
   "processed": [
-    "a-mirrored-monet-west-end-2026/thestage--unknown.json",
-    "a-mirrored-monet-west-end-2026/whatsonstage--miriam-sallon.json",
-    "consumed-west-end-2026/standard--unknown.json",
-    "consumed-west-end-2026/thestage--dave-fargnoli.json",
+    "dog-day-afternoon-2026/nytimes--unknown.json",
     "dog-day-afternoon-2026/hollywood-reporter--caitlin-huston.json",
     "dog-day-afternoon-2026/theatermania--david-gordon.json",
     "dog-day-afternoon-2026/playbill--unknown.json",
@@ -337,10 +334,6 @@
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "a-mirrored-monet-west-end-2026/thestage--unknown.json",
-      "a-mirrored-monet-west-end-2026/whatsonstage--miriam-sallon.json",
-      "consumed-west-end-2026/standard--unknown.json",
-      "consumed-west-end-2026/thestage--dave-fargnoli.json",
       "dog-day-afternoon-2026/theatermania--david-gordon.json",
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--alex-wood.json",
       "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
@@ -395,15 +388,10 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/a-mirrored-monet-west-end-2026/variety--brent-lang.json",
+      "data/review-texts/dog-day-afternoon-2026/nytimes--unknown.json",
+      "dog-day-afternoon-2026/nytimes--unknown.json",
       "data/review-texts/dog-day-afternoon-2026/hollywood-reporter--caitlin-huston.json",
-      "dog-day-afternoon-2026/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
-      "the-last-five-years-2025/nypost--lou-lumenick.json",
-      "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
-      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
-      "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json"
+      "dog-day-afternoon-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -418,10 +406,6 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/back-to-the-future-west-end-2021/british-theatre--unknown.json",
-      "data/review-texts/spongebob-squarepants-2017/wsj--edward-rothstein.json",
-      "data/review-texts/a-delicate-balance-2014/wsj--terry-teachout.json",
-      "data/review-texts/harvey-2012/backstage--erik-haagensen.json",
       "data/review-texts/dog-day-afternoon-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
@@ -468,81 +452,26 @@
   "lastProcessed": "la-cage-aux-folles-2010/times-uk--clive-davis.json",
   "log": [
     {
-      "t": "2026-03-30T02:34:03.961Z",
+      "t": "2026-03-30T04:48:48.411Z",
       "event": "bb-session",
-      "session": "abae0e6e",
-      "url": "https://variety.com/2026/legit/news/jojo-broadway-chess-lea-michele-joanna-leves"
+      "session": "8ef4c00f",
+      "url": "https://www.nytimes.com/2026/03/25/theater/dog-day-afternoon-broadway-stephen-ad"
     },
     {
-      "t": "2026-03-30T02:34:05.439Z",
+      "t": "2026-03-30T04:48:49.682Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-03-30T02:54:20.320Z",
+      "t": "2026-03-30T04:50:18.446Z",
       "event": "bb-session",
-      "session": "6587481b",
+      "session": "13993b7a",
       "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-dog"
     },
     {
-      "t": "2026-03-30T02:54:21.933Z",
+      "t": "2026-03-30T04:50:19.720Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-30T03:10:02.514Z",
-      "event": "bb-session",
-      "session": "7dea56d4",
-      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
-    },
-    {
-      "t": "2026-03-30T03:10:04.120Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-03-30T03:16:17.528Z",
-      "event": "bb-session",
-      "session": "879360a4",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
-    },
-    {
-      "t": "2026-03-30T03:16:18.942Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-30T03:21:04.263Z",
-      "event": "bb-session",
-      "session": "96d38b22",
-      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
-    },
-    {
-      "t": "2026-03-30T03:21:05.731Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-30T03:28:17.659Z",
-      "event": "bb-session",
-      "session": "8b5ca3fe",
-      "url": "https://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349"
-    },
-    {
-      "t": "2026-03-30T03:28:19.217Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-30T03:31:09.494Z",
-      "event": "bb-session",
-      "session": "3530b948",
-      "url": "https://www.wsj.com/articles/a-delicate-balance-and-the-high-wire-humor-of-edwar"
-    },
-    {
-      "t": "2026-03-30T03:31:11.014Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
