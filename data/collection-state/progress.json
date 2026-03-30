@@ -210,7 +210,14 @@
     "just-in-time-2025/nytimes--adam-feldman.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/the-telegrap--dominic-cavendish.json",
     "six-the-musical-west-end-2021/the-telegrap--marianka-swain.json",
-    "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json"
+    "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
+    "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+    "book-of-mormon-2011/amny--unknown.json",
+    "book-of-mormon-2011/latimes--unknown.json",
+    "wicked-west-end-2021/the-telegrap--charles-spencer.json",
+    "the-lion-king-west-end-2021/timeout-london--unknown.json",
+    "the-lion-king-west-end-2021/the-telegrap--david-gritten.json",
+    "mamma-mia-west-end-2021/timeout-london--nina-caplan.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -1013,7 +1020,10 @@
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/the-telegrap--dominic-cavendish.json",
     "showstopper-the-improvised-musical-west-end-2023/the-telegrap--dominic-cavendish.json",
     "the-play-that-goes-wrong-west-end-2021/the-telegrap--marianka-swain.json",
-    "the-play-that-goes-wrong-west-end-2021/the-telegrap--tim-walker.json"
+    "the-play-that-goes-wrong-west-end-2021/the-telegrap--tim-walker.json",
+    "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json",
+    "billy-elliot-the-musical-west-end-2027/daily-mail--unknown.json",
+    "the-comedy-about-spies-west-end-2026/daily-mail--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1146,7 +1156,8 @@
       "stereophonic-2024/thestage--lane-williamson.json",
       "giant-2026/nytg--joe-dziemianowicz.json",
       "giant-2026/theatrely--juan-a-ramirez.json",
-      "just-in-time-2025/nytimes--adam-feldman.json"
+      "just-in-time-2025/nytimes--adam-feldman.json",
+      "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1197,7 +1208,9 @@
       "oh-mary-west-end-2025/the-telegrap--dominic-cavendish.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/the-telegrap--dominic-cavendish.json",
       "six-the-musical-west-end-2021/the-telegrap--marianka-swain.json",
-      "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json"
+      "the-play-that-goes-wrong-west-end-2021/timeout-london--unknown.json",
+      "book-of-mormon-2011/latimes--unknown.json",
+      "the-lion-king-west-end-2021/timeout-london--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1489,7 +1502,9 @@
       "data/review-texts/back-to-the-future-west-end-2021/guardian--unknown.json",
       "data/review-texts/six-the-musical-west-end-2021/guardian--unknown.json",
       "data/review-texts/hamilton-west-end-2021/guardian--unknown.json",
-      "data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--unknown.json"
+      "data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--unknown.json",
+      "data/review-texts/billy-elliot-the-musical-west-end-2027/daily-mail--unknown.json",
+      "data/review-texts/the-comedy-about-spies-west-end-2026/daily-mail--unknown.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/playbill--unknown.json",
@@ -1539,11 +1554,15 @@
       "woman-in-mind-west-end-2025/broadwayworld--unknown.json",
       "dog-day-afternoon-2026/deadline--unknown.json",
       "bughouse-off-broadway-2026/vulture--sara-holdren.json",
-      "encores-the-wild-party-off-broadway-2026/vulture--jackson-mchenry.json"
+      "encores-the-wild-party-off-broadway-2026/vulture--jackson-mchenry.json",
+      "book-of-mormon-2011/amny--unknown.json",
+      "wicked-west-end-2021/the-telegrap--charles-spencer.json",
+      "the-lion-king-west-end-2021/the-telegrap--david-gritten.json",
+      "mamma-mia-west-end-2021/timeout-london--nina-caplan.json"
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/the-telegrap--tim-walker.json",
+  "lastProcessed": "the-comedy-about-spies-west-end-2026/daily-mail--unknown.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -1753,6 +1772,17 @@
       "t": "2026-03-30T06:20:19.609Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T11:20:36.330Z",
+      "event": "bb-session",
+      "session": "2c0c5cae",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-book-of-mormon-4-stars-"
+    },
+    {
+      "t": "2026-03-30T11:20:37.765Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
