@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T11:38:35.546Z",
+  "timestamp": "2026-03-30T11:49:56.081Z",
   "stats": {
-    "totalReviews": 31962,
-    "alreadyFlagged": 11326,
+    "totalReviews": 31960,
+    "alreadyFlagged": 11328,
     "dateGuardCatches": 18,
-    "directorMismatch": 947,
-    "tvFilmSignals": 3355,
-    "londonSignals": 1002,
-    "offBroadwaySignals": 970,
+    "directorMismatch": 949,
+    "tvFilmSignals": 3358,
+    "londonSignals": 1003,
+    "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6178
+    "noPublishDate": 6177
   },
   "findings": [
     {
@@ -5543,6 +5543,20 @@
     },
     {
       "showId": "back-to-the-future-2023",
+      "file": "deadline--greg-evans.json",
+      "score": 76,
+      "publishDate": "August 4th, 2023",
+      "url": "https://deadline.com/2023/08/back-to-the-future-musical-broadway-review-deadline-1235453191/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-2023",
       "file": "front-row-center--david-walters.json",
       "score": 62,
       "publishDate": "2023-08-14T16:08:51",
@@ -5585,6 +5599,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "nytg--gillian-russo.json",
+      "score": 81,
+      "publishDate": "August 4th, 2023",
+      "url": "https://www.newyorktheatreguide.com/reviews/back-to-the-future-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -25854,6 +25882,20 @@
       "score": 78,
       "publishDate": "April 26, 2025",
       "url": "https://www.newyorktheatreguide.com/reviews/just-in-time-broadway-review-jonathan-groff-bobby-darin",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "nytimes--adam-feldman.json",
+      "score": 87,
+      "publishDate": "April 26th, 2025",
+      "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -51666,6 +51708,11 @@
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
@@ -60129,6 +60176,20 @@
     },
     {
       "showId": "wicked-west-end-2021",
+      "file": "the-telegrap--charles-spencer.json",
+      "score": 74,
+      "publishDate": "January 1st, 2009",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-west-end-2021",
       "file": "whatsonstage--editorial-staff.json",
       "score": 76,
       "publishDate": "2006-09-27",
@@ -62422,6 +62483,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "nytimes--jesse-green.json",
+      "score": 73,
+      "publishDate": "August 3rd, 2023",
+      "url": "https://www.nytimes.com/2023/08/03/theater/back-to-the-future-review-broadway.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -81860,20 +81935,6 @@
     {
       "showId": "yellow-face-2024",
       "file": "thewrap--robert-hofler.json",
-      "score": null,
-      "publishDate": "October 1, 2024",
-      "url": "https://www.thewrap.com/yellow-face-broadway-review-david-henry-hwang/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "yellow-face-2024",
-      "file": "thewrap--unknown.json",
       "score": 62,
       "publishDate": "October 1, 2024",
       "url": "https://www.thewrap.com/yellow-face-broadway-review-david-henry-hwang/",
