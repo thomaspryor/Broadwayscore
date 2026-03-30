@@ -286,8 +286,12 @@ jobs:
           if [ -n "${{ inputs.send_to }}" ]; then
             SEND_TO_FLAG="--send-to=${{ inputs.send_to }}"
             echo "** PREVIEW MODE — sending test email to ${{ inputs.send_to }} only **"
+          elif [ "${{ inputs.send_to_all }}" != "true" ]; then
+            # Automated run: send preview to owner for approval (no subscriber sends)
+            SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
+            echo "** PREVIEW MODE — sending preview to owner for approval **"
           else
-            echo "** DRAFT MODE — creating Buttondown draft for owner to review and send **"
+            echo "** DRAFT MODE — creating Buttondown draft for send_to_all dispatch **"
           fi
 
           SENT="false"
