@@ -3,14 +3,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { getScoreColorClass, getScoreTier } from '@/components/show-cards';
+import { getGoldThreshold } from '@/config/score-buckets';
 
 interface StickyScoreHeaderProps {
   title: string;
   score?: number | null;
   showAfterPx?: number;
+  category?: string;
 }
 
-export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: StickyScoreHeaderProps) {
+export default function StickyScoreHeader({ title, score, showAfterPx = 200, category }: StickyScoreHeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   // Throttled scroll handler for better performance
@@ -37,11 +39,12 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200 }: S
   if (!isVisible) return null;
 
   const roundedScore = score ? Math.round(score) : null;
-  const scoreColorClass = roundedScore !== null ? getScoreColorClass(roundedScore) : 'bg-gray-600';
-  const tier = roundedScore !== null ? getScoreTier(roundedScore) : null;
+  const scoreColorClass = roundedScore !== null ? getScoreColorClass(roundedScore, category) : 'bg-gray-600';
+  const tier = roundedScore !== null ? getScoreTier(roundedScore, category) : null;
   const scoreLabel = tier?.label ?? '';
   // Dark text on bright backgrounds (gold, amber), white on everything else
-  const scoreTextClass = (roundedScore !== null && (roundedScore >= 83 || (roundedScore >= 55 && roundedScore < 65))) ? 'text-gray-900' : 'text-white';
+  const goldThreshold = getGoldThreshold(category);
+  const scoreTextClass = (roundedScore !== null && (roundedScore >= goldThreshold || (roundedScore >= 55 && roundedScore < 65))) ? 'text-gray-900' : 'text-white';
 
   return (
     <div
