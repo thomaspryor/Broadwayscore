@@ -15,10 +15,11 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const US_ONLY_OUTLETS = new Set([
   'amny', 'nydailynews', 'newsday', 'nbcny', 'nypost',
   'backstage', 'curtainup', 'nysr', 'nyt-theater',
-  'broadwaynews', 'theatermania',
+  'broadwaynews', 'theatermania', 'theatrely',
   'dailybeast', 'thewrap', 'huffpost', 'observer',
   'wsj', 'ew', 'vulture', 'washpost', 'chicagotribune',
-  'latimes', 'san-francisco-chronicle', 'usatoday', 'bostonglobe'
+  'latimes', 'san-francisco-chronicle', 'usatoday', 'bostonglobe',
+  'front-row-center', 'musical-theatre-review', 'stageandcinema'
 ]);
 
 // NYT London correspondents / international critics whose WE reviews are legitimate
