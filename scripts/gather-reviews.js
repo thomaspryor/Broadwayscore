@@ -165,6 +165,64 @@ function slugify(text) {
     .replace(/^-|-$/g, '');
 }
 
+// Cross-show URL slug detection: lazy-loaded index of show title slugs.
+// Used to catch URLs that clearly belong to a different show.
+// Exclude titles that are common URL path words (cause false positives).
+const CROSS_SHOW_SLUG_EXCLUDE = new Set([
+  'broadway', 'west-end', 'the-story', 'romantic-comedy', 'the-red-shoes',
+  'les-miserables', 'once-in-a-lifetime', 'body-count', 'the-car-man',
+  'good-night-oscar', 'the-visit', 'the-outsiders', 'the-notebook',
+]);
+let _showSlugIndex = null;
+function getShowSlugIndex() {
+  if (_showSlugIndex) return _showSlugIndex;
+  _showSlugIndex = [];
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const shows = showsData.shows || showsData;
+    for (const s of shows) {
+      const slug = slugify(s.title);
+      if (slug.length >= 8 && !CROSS_SHOW_SLUG_EXCLUDE.has(slug)) {
+        _showSlugIndex.push({ id: s.id, title: s.title, slug });
+      }
+    }
+  } catch {}
+  return _showSlugIndex;
+}
+
+/**
+ * Detect if a URL's path clearly belongs to a different show.
+ * Returns { matchedTitle, showTitle } if mismatch found, null otherwise.
+ */
+function detectCrossShowUrlMismatch(showId, url) {
+  if (!url) return null;
+  try {
+    const urlPath = new URL(url).pathname.toLowerCase();
+    const index = getShowSlugIndex();
+    const thisShow = index.find(s => s.id === showId);
+    if (!thisShow) return null;
+
+    // Check if URL contains this show's slug — if yes, no mismatch
+    if (urlPath.includes(thisShow.slug)) return null;
+
+    // Also check the show ID slug (without year/market suffix) for partial matches
+    const idSlug = showId.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
+    if (idSlug.length >= 8 && urlPath.includes(idSlug)) return null;
+
+    // Check if URL contains a different show's slug
+    for (const other of index) {
+      if (other.id === showId) continue;
+      // Skip shows that share a base title with this show
+      const otherIdSlug = other.id.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
+      if (otherIdSlug === idSlug) continue;
+      if (urlPath.includes(other.slug)) {
+        return { matchedTitle: other.title, showTitle: thisShow.title };
+      }
+    }
+  } catch {}
+  return null;
+}
+
 /**
  * Load show data
  */
@@ -2092,6 +2150,17 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (reviewData.url && isProfileUrl(reviewData.url)) {
     console.log(`    ✗ Skipping ${filename}: profile URL "${reviewData.url}"`);
     return 'profileUrl';
+  }
+
+  // CROSS-SHOW URL SLUG GUARD: reject URLs whose path clearly belongs to a different show.
+  // Catches misattributions where SERP/aggregator returns a review for Show B but it's
+  // being filed under Show A (e.g., Into the Woods review filed under Phantom).
+  if (reviewData.url) {
+    const mismatch = detectCrossShowUrlMismatch(showId, reviewData.url);
+    if (mismatch) {
+      console.log(`    ✗ Skipping ${filename}: URL belongs to "${mismatch.matchedTitle}" not "${mismatch.showTitle}" — ${reviewData.url}`);
+      return 'crossShowUrl';
+    }
   }
 
   // URL-DOMAIN MISMATCH CHECK: reject URLs that don't match the outlet's registered domain
