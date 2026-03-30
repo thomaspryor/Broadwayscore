@@ -721,7 +721,7 @@ async function fetchSingleVenuePage(venue) {
     // For venues with noisy link text (cards with concatenated content), extract title from URL slug or heading
     let title;
     if (venue.titleFromSlug) {
-      const slug = href.split('/').filter(Boolean).pop() || '';
+      const slug = href.split('#')[0].split('/').filter(Boolean).pop() || '';
       title = slug.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase()).replace(/ \w/g, c => c.toUpperCase());
     } else {
       title = cleanVenueTitle(link.textContent || '');
