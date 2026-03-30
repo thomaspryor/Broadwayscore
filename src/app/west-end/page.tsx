@@ -53,7 +53,11 @@ export default function WestEndPage() {
     notFound();
   }
 
-  const shows = getWestEndShows();
+  const weShows = getWestEndShows();
+  const oweShows = getOffWestEndShows();
+
+  // Combine WE + OWE shows for the main page
+  const shows = [...weShows, ...oweShows];
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -72,22 +76,22 @@ export default function WestEndPage() {
       startDate: show.openingDate,
       endDate: show.closingDate,
       status: show.status,
-      category: 'west-end',
+      category: show.category || 'west-end',
     })),
     'West End Shows'
   );
 
   const schemas = [breadcrumbSchema, itemListSchema];
 
-  // Only show WE shows that have critic reviews (hide unscored/TBD shows)
+  // Only show shows that have critic reviews (hide unscored/TBD shows)
   const scoredShows = shows.filter(s => s.criticScore && s.criticScore.reviewCount >= 1);
   const serializedShows = scoredShows.map(serializeShow);
 
-  // Count reviews across scored WE shows only
+  // Count reviews across all scored shows (WE + OWE)
   const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
 
-  // Best Off-West End shows for featured row
-  const bestOweShows = getOffWestEndShows()
+  // Best Off-West End shows for featured row (kept as cross-promo to /off-west-end)
+  const bestOweShows = oweShows
     .filter(s => s.criticScore?.score && hasEnoughReviews(
       s.criticScore.reviewCount ?? 0, s.category,
       (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0)

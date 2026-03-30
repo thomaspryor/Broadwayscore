@@ -66,8 +66,8 @@ export function CategoryBadge({ category }: { category?: string }) {
       colorClass: 'bg-teal-500/15 text-teal-400 border border-teal-500/30',
     },
     'off-west-end': {
-      label: 'OFF-WEST END',
-      colorClass: 'bg-violet-500/15 text-violet-400 border border-violet-500/30',
+      label: 'Off-WE',
+      colorClass: 'bg-white/5 text-gray-400 border border-white/10',
     },
   };
 
