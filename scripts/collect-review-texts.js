@@ -215,7 +215,7 @@ const CONFIG = {
     'bloomberg.com': { emailVar: 'BLOOMBERG_EMAIL', passVar: 'BLOOMBERG_PASSWORD' },
     'northjersey.com': { emailVar: 'NORTHJERSEY_EMAIL', passVar: 'NORTHJERSEY_PASSWORD' },
     'usatoday.com': { emailVar: 'NORTHJERSEY_EMAIL', passVar: 'NORTHJERSEY_PASSWORD' },
-    'thestage.co.uk': { emailVar: 'THESTAGE_EMAIL', passVar: 'THESTAGE_PASSWORD' },
+    // thestage.co.uk: cookie-only auth (no email/password login — avoids session limit)
     'ft.com': { emailVar: 'FT_EMAIL', passVar: 'FT_PASSWORD' },
   },
 
