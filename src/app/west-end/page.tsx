@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getWestEndShows, getOffWestEndShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
-import { hasEnoughReviews } from '@/config/score-buckets';
+// hasEnoughReviews no longer needed — OWE shows mixed into main list
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import WestEndPageClient from '@/components/WestEndPageClient';
 import type { WestEndShow } from '@/components/WestEndPageClient';
@@ -90,15 +90,6 @@ export default function WestEndPage() {
   // Count reviews across all scored shows (WE + OWE)
   const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
 
-  // Best Off-West End shows for featured row (kept as cross-promo to /off-west-end)
-  const bestOweShows = oweShows
-    .filter(s => s.criticScore?.score && hasEnoughReviews(
-      s.criticScore.reviewCount ?? 0, s.category,
-      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0)
-    ))
-    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-    .map(serializeShow);
-
   return (
     <>
       <script
@@ -112,7 +103,6 @@ export default function WestEndPage() {
           totalShows={scoredShows.length}
           totalReviews={totalReviews}
           scoredShows={scoredShows.length}
-          bestOweShows={bestOweShows}
         />
       </Suspense>
     </>

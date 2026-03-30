@@ -13,12 +13,12 @@ export function ordinalSuffix(n: number): string {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-export function getScoreClass(score: number): string {
-  return _getScoreColorClass(score);
+export function getScoreClass(score: number, category?: string): string {
+  return _getScoreColorClass(score, category);
 }
 
-export function getScoreTextColor(score: number): string {
-  return getScoreTier(score)?.color ?? '#ef4444';
+export function getScoreTextColor(score: number, category?: string): string {
+  return getScoreTier(score, category)?.color ?? '#ef4444';
 }
 
 export function formatDate(parsedDate: number | null): string {

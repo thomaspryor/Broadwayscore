@@ -603,6 +603,7 @@ export interface ActorShowEntry {
   isRevival: boolean;
   score: number | null;
   audienceScore: number | null;
+  category?: string;
   wasObc?: boolean;
   flags?: string[];
 }
