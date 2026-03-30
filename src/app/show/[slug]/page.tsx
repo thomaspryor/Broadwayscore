@@ -107,9 +107,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       : `${BASE_URL}/og/home.png`;
 
   return {
-    title: roundedScore
-      ? `${show.title} Reviews (${roundedScore}/100) — ${reviewCount} Critic Reviews Aggregated`
-      : `${show.title} Reviews ${marketLabel} — ${siteName}`,
+    title: {
+      absolute: roundedScore
+        ? `${show.title} Reviews (${roundedScore}/100) — ${reviewCount} Critic Reviews Aggregated | ${siteName}`
+        : `${show.title} Reviews ${marketLabel} — ${siteName}`,
+    },
     description,
     alternates: {
       canonical: canonicalUrl,

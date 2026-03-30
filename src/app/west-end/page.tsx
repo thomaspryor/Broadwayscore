@@ -10,7 +10,9 @@ import type { WestEndShow } from '@/components/WestEndPageClient';
 import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
-  title: 'West End Scorecard - London Theatre Ratings & Reviews',
+  title: {
+    absolute: 'West End Scorecard - London Theatre Ratings & Reviews',
+  },
   description: 'CriticScore ratings for London West End shows. See which musicals and plays are getting the best reviews from UK theatre critics.',
   alternates: {
     canonical: `${BASE_URL}/west-end`,

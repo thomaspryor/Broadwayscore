@@ -11,7 +11,9 @@ import { featureFlags } from '@/config/feature-flags';
 const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
-  title: `Best Off-West End Shows (${currentYear}) — London Theatre Reviews & Ratings`,
+  title: {
+    absolute: `Best Off-West End Shows (${currentYear}) — London Theatre Reviews & Ratings`,
+  },
   description: 'CriticScore ratings for Off-West End shows in London, aggregated from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
   alternates: {
     canonical: `${BASE_URL}/off-west-end`,
