@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-03-30T11:54:00.370Z",
-  "processed": 27,
+  "updatedAt": "2026-03-30T13:15:28.770Z",
+  "processed": 29,
   "failed": 39,
-  "successRate": "40.9%",
+  "successRate": "42.6%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 21,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 16,
     "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-03-30T13:14:52.083Z",
+      "event": "bb-session",
+      "session": "50a2b38f",
+      "url": "https://deadline.com/2026/03/broadway-chicago-whitney-leavitt-dog-day-afternoon-"
+    },
+    {
+      "t": "2026-03-30T13:14:53.316Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
