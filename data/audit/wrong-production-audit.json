@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T08:27:44.593Z",
+  "timestamp": "2026-03-30T08:39:29.580Z",
   "stats": {
-    "totalReviews": 31854,
-    "alreadyFlagged": 11273,
+    "totalReviews": 31862,
+    "alreadyFlagged": 11274,
     "dateGuardCatches": 18,
     "directorMismatch": 942,
     "tvFilmSignals": 3348,
-    "londonSignals": 998,
+    "londonSignals": 1000,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6221
+    "noPublishDate": 6239
   },
   "findings": [
     {
@@ -23083,7 +23083,7 @@
       "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 66,
-      "publishDate": "2026-02-13",
+      "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/i-m-sorry-prime-minister-review-apollo-theatre-b1270903.html",
       "findings": [
         {
@@ -29483,7 +29483,7 @@
       "showId": "man-and-boy-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 81,
-      "publishDate": "2026-02-10",
+      "publishDate": null,
       "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_1711733/",
       "findings": [
         {
@@ -64953,7 +64953,7 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 71,
-      "publishDate": "February 25th, 2026",
+      "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/feb/25/evening-all-afternoon-review-donmar-warehouse-london",
       "findings": [
         {
@@ -64996,6 +64996,20 @@
       "file": "standard--nick-curits.json",
       "score": 62,
       "publishDate": "2026-02-25",
+      "url": "https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 63,
+      "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html",
       "findings": [
         {
@@ -68363,7 +68377,7 @@
       "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 66,
-      "publishDate": "2026-02-17",
+      "publishDate": null,
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15555245/PATRICK-MARMION-review-Im-sorry-Prime-Minister-youre-power-wit.html",
       "findings": [
         {
@@ -78230,6 +78244,20 @@
       "score": 71,
       "publishDate": "2026-03-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-HOLY-ROSENBERGS-Menier-Chocolate-Factory-20260309",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "london-theatre--matt-wolf.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-factory",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
