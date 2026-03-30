@@ -89,6 +89,10 @@ const LTD_OVERRIDES = {
   'Romeo and Juliet': 'romeo-and-juliet-london',
   'A Midsummer Night\'s Dream': 'a-midsummer-nights-dream-london',
   'Shadowlands': 'shadowlands-the-play',
+  'Cabaret at the Kit Kat Club': 'kit-kat-club',
+  'Austentatious: An Improvised Jane Austen Novel': 'austentatious',
+  'SIX the Musical': 'six',
+  'Moulin Rouge! The Musical': 'moulin-rouge',
 };
 
 // LTD uses /musical/, /play/, and /experience/ prefixes

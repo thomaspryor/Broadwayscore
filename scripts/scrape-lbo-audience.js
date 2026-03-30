@@ -76,6 +76,11 @@ const LBO_OVERRIDES = {
   'Witness for the Prosecution': 'witness-for-the-prosecution-by-agatha-christie',
   'Cabaret at the Kit Kat Club': 'cabaret',
   'The Hunger Games On Stage': 'hunger-games',
+  'Paddington The Musical': 'paddington',
+  'Harry Potter And The Cursed Child: Both Parts': 'harry-potter',
+  'Stranger Things: The First Shadow': 'stranger-things',
+  'Death Note: The Musical': 'death-note',
+  'Billy Elliot the Musical': 'billy-elliot',
 };
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');

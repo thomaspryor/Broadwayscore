@@ -77,8 +77,8 @@ const ANCHOR_SHOWS = {
 
 // Manual slug overrides for shows whose SeatPlan slug doesn't match titleToSlug()
 const SEATPLAN_OVERRIDES = {
-  // Add overrides as discovered, e.g.:
-  // '& Juliet': 'and-juliet-the-musical',
+  'Paddington The Musical': 'paddington-musical',
+  'Cabaret at the Kit Kat Club': 'cabaret',
 };
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
