@@ -105,7 +105,12 @@
     "the-normal-heart-2011/newsday--thursday-may.json",
     "oleanna-2009/theatermania--unknown.json",
     "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
-    "cymbeline-2007/nytimes--ben-brantley.json"
+    "cymbeline-2007/nytimes--ben-brantley.json",
+    "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+    "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
+    "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+    "happy-ending-west-end-2026/standard--the-standard.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -382,7 +387,12 @@
     "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "a-little-night-music-1973/backstage--erik-haagensen.json"
+    "a-little-night-music-1973/backstage--erik-haagensen.json",
+    "data-2026/vulture--jackson-mchenry.json",
+    "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json",
+    "the-monsters-2026/vulture--jackson-mchenry.json",
+    "indian-princesses-off-broadway-2025/theatermania--linda-buchwald.json",
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -442,7 +452,11 @@
       "kinky-boots-the-musical-west-end-2026/times-uk--unknown.json",
       "dracula-west-end-2025/british-theatre--julia-jordan.json",
       "les-miserables-west-end-2021/timeout-london--unknown.json",
-      "oleanna-2009/theatermania--unknown.json"
+      "oleanna-2009/theatermania--unknown.json",
+      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+      "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
+      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+      "happy-ending-west-end-2026/standard--the-standard.json"
     ],
     "amp": [],
     "browserbase": [
@@ -456,7 +470,9 @@
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
       "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
-      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
+      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -519,7 +535,7 @@
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "a-little-night-music-1973/backstage--erik-haagensen.json",
+  "lastProcessed": "jackals-off-broadway-2026/times-uk--anne-treneman.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -606,6 +622,17 @@
     },
     {
       "t": "2026-03-30T04:56:08.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-30T05:01:02.659Z",
+      "event": "bb-session",
+      "session": "aa586c02",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-30T05:01:04.006Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
