@@ -71,7 +71,7 @@ const ShowListCard = memo(function ShowListCard({
   let audienceGrade = show.audienceGrade;
 
   const criticScore = show.criticScore?.score;
-  const criticTier = getScoreTier(criticScore);
+  const criticTier = getScoreTier(criticScore, category);
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
 
@@ -85,7 +85,7 @@ const ShowListCard = memo(function ShowListCard({
     }
   } else {
     score = criticScore;
-    tier = hasEnoughReviews(reviewCount, category, t1t2) ? getScoreTier(score) : null;
+    tier = hasEnoughReviews(reviewCount, category, t1t2) ? getScoreTier(score, category) : null;
     audienceGrade = show.audienceGrade;
   }
 

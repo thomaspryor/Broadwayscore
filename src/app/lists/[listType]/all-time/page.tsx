@@ -69,6 +69,7 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
   const allSeasons = getSeasonsForList(listType);
   const isAudienceList = listType === 'audience-gold';
   const isCriticList = listType === 'critical-gold' || listType === 'critical-gold-west-end';
+  const listCategory = listType.includes('west-end') ? 'west-end' : undefined;
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -213,11 +214,11 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
                 {/* Score/Value */}
                 {isCriticList ? (
                   <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
-                    {(() => { const tier = getScoreTier(entry.value); return tier ? (
+                    {(() => { const tier = getScoreTier(entry.value, listCategory); return tier ? (
                       <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
                         style={{ color: tier.color }}>{tier.label}</span>
                     ) : null; })()}
-                    <ScoreBadge score={entry.value} size="lg" showCrown status={entry.status || undefined} />
+                    <ScoreBadge score={entry.value} size="lg" showCrown status={entry.status || undefined} category={listCategory} />
                   </div>
                 ) : isAudienceList ? (
                   <AudienceGradeBadge score={entry.value} />

@@ -108,50 +108,70 @@ export const T3_ONLY_EXTRA_REVIEWS = 2;
 export const MIN_TIER1_FOR_HIGH_CONFIDENCE = 3;
 
 // ===========================================
+// PER-MARKET GOLD THRESHOLD
+// ===========================================
+// WE star ratings (5-point scale) cluster at 80/100, inflating scores.
+// WE Gold requires 85+ vs Broadway's 83+ for a more meaningful distinction.
+
+export const MARKET_GOLD_THRESHOLD: Record<string, number> = {
+  'west-end': 85,
+  'off-west-end': 85,
+};
+const DEFAULT_GOLD_THRESHOLD = 83;
+
+/** Get the Critical Gold minimum score for a given market */
+export function getGoldThreshold(category?: string): number {
+  return MARKET_GOLD_THRESHOLD[category || ''] ?? DEFAULT_GOLD_THRESHOLD;
+}
+
+// ===========================================
 // HELPER FUNCTIONS
 // ===========================================
 
 /**
- * Get the score bucket for a given score
+ * Get the score bucket for a given score, market-aware for Gold threshold
  */
-export function getScoreBucket(score: number | null): ScoreBucketConfig {
+export function getScoreBucket(score: number | null, category?: string): ScoreBucketConfig {
   if (score === null) {
     return SCORE_BUCKETS.find(b => b.id === 'pending')!;
   }
 
-  const bucket = SCORE_BUCKETS.find(b =>
-    b.id !== 'pending' && score >= b.minScore && score <= b.maxScore
-  );
-
-  return bucket || SCORE_BUCKETS.find(b => b.id === 'stay-away')!;
+  const goldMin = getGoldThreshold(category);
+  // Must-see uses market-aware threshold; other buckets use static ranges
+  if (score >= goldMin) return SCORE_BUCKETS.find(b => b.id === 'must-see')!;
+  // Recommended upper bound adjusts with Gold threshold
+  if (score >= 75) return SCORE_BUCKETS.find(b => b.id === 'recommended')!;
+  if (score >= 65) return SCORE_BUCKETS.find(b => b.id === 'worth-seeing')!;
+  if (score >= 55) return SCORE_BUCKETS.find(b => b.id === 'skippable')!;
+  return SCORE_BUCKETS.find(b => b.id === 'stay-away')!;
 }
 
 /**
  * Get the score bucket ID for a given score
  */
-export function getScoreBucketId(score: number | null): ScoreBucket {
-  return getScoreBucket(score).id;
+export function getScoreBucketId(score: number | null, category?: string): ScoreBucket {
+  return getScoreBucket(score, category).id;
 }
 
 /**
  * Get the display label for a score
  */
-export function getScoreLabel(score: number | null): string {
-  return getScoreBucket(score).label;
+export function getScoreLabel(score: number | null, category?: string): string {
+  return getScoreBucket(score, category).label;
 }
 
 /**
  * Get the color class for a score
  */
-export function getScoreColor(score: number | null): string {
-  return getScoreBucket(score).color;
+export function getScoreColor(score: number | null, category?: string): string {
+  return getScoreBucket(score, category).color;
 }
 
 /**
  * Get the background color class for a score
  */
-export function getScoreBgColor(score: number | null): string {
-  return getScoreBucket(score).bgColor;
+export function getScoreBgColor(score: number | null, category?: string): string {
+  return getScoreBucket(score, category).bgColor;
 }
 
 /**

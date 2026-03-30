@@ -2,6 +2,7 @@
 
 import { ComputedShow } from './engine';
 import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel } from './venue-classification';
+import { getGoldThreshold } from '@/config/score-buckets';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -305,10 +306,11 @@ export function generateShowFAQSchema(show: ComputedShow) {
   // Q: What is the score?
   const minReviewsForFAQ = getMarketMinReviews(show.category);
   if (score && reviewCount >= minReviewsForFAQ) {
+    const goldMin = getGoldThreshold(show.category);
     faqs.push({
       question: `What is the CriticScore for ${show.title}?`,
       answer: `${show.title} has a CriticScore of ${score}/100 based on ${reviewCount} professional reviews. ${
-        score >= 83 ? 'This is considered a "Critical Gold" show.' :
+        score >= goldMin ? 'This is considered a "Critical Gold" show.' :
         score >= 75 ? 'This is a "Recommended" show.' :
         score >= 65 ? 'This is rated "Worth Seeing".' :
         score >= 55 ? 'This show is rated "Skippable".' :

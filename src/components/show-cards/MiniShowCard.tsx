@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { getScoreColorClass, MustSeeCrown } from '@/components/show-cards';
+import { getGoldThreshold } from '@/config/score-buckets';
 import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { ShowCardShow } from './types';
@@ -56,11 +57,11 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
         {/* Score overlay — outside overflow-hidden so crown can escape */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
-            {score !== undefined && score !== null && score >= 83 && (
+            {score !== undefined && score !== null && score >= getGoldThreshold(category) && (
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score)
+              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, category)
             }`}>
               {score !== undefined && score !== null ? Math.round(score) : '—'}
             </div>

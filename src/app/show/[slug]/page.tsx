@@ -191,11 +191,11 @@ function LimitedRunBadge() {
   );
 }
 
-function getSentimentLabel(score: number): { label: string; colorClass: string } {
-  const tier = getScoreTier(score);
+function getSentimentLabel(score: number, category?: string): { label: string; colorClass: string } {
+  const tier = getScoreTier(score, category);
   return {
     label: tier?.label ?? 'Stay Away',
-    colorClass: getScoreTextColorClass(score),
+    colorClass: getScoreTextColorClass(score, category),
   };
 }
 
@@ -269,9 +269,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const tier2Count = show.criticScore?.tier2Count || 0;
   const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
   const roundedScore = score ? Math.round(score) : null;
-  const sentiment = score ? getSentimentLabel(score) : null;
+  const sentiment = score ? getSentimentLabel(score, show.category) : null;
   const scoreColorClass = (!showTBD && roundedScore !== null)
-    ? getScoreColorClass(roundedScore)
+    ? getScoreColorClass(roundedScore, show.category)
     : 'bg-surface-overlay text-gray-400 border border-white/10';
   const hasAudience = !showTBD && audienceBuzz != null && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz);
   const audienceGrade = hasAudience ? getAudienceGrade(audienceBuzz!.combinedScore!) : null;
@@ -285,7 +285,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
       />
 
       {/* Sticky Score Header */}
-      <StickyScoreHeader title={show.title} score={score} />
+      <StickyScoreHeader title={show.title} score={score} category={show.category} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Breadcrumb items={[
@@ -603,10 +603,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 const tier2Count = show.criticScore?.tier2Count || 0;
                 const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
                 const roundedScore = score ? Math.round(score) : null;
-                const sentiment = score ? getSentimentLabel(score) : null;
+                const sentiment = score ? getSentimentLabel(score, show.category) : null;
 
                 const scoreColorClass = (!showTBD && roundedScore !== null)
-                  ? getScoreColorClass(roundedScore)
+                  ? getScoreColorClass(roundedScore, show.category)
                   : 'bg-surface-overlay text-gray-400 border border-white/10';
 
                 const scoreBox = (
@@ -952,7 +952,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               ...r,
               outletSlug: getOutletSlugById(r.outletId) || undefined,
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
-            }))} initialCount={5} />
+            }))} initialCount={5} category={show.category} />
           </div>
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
           <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
