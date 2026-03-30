@@ -551,6 +551,17 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     const titleHasReview = reviewTerms.some(t => title.includes(t));
     const urlHasReview = reviewTerms.some(t => urlLower.includes(t));
 
+    // Reject non-review content: interviews, box office reports, ticket/cast announcements, photos
+    const nonReviewTerms = ['interview', 'box-office', 'box office', 'grosses', 'gross-', 'begins-previews',
+      'first-look', 'first look', 'cast-announced', 'cast announced', 'full-cast', 'meet-the-cast',
+      'photos:', 'photo-gallery', 'tickets-on-sale', 'lottery', 'rush-policy', 'all-that-chat',
+      'allthatchat', '/forum/', 'business-news'];
+    const isNonReview = nonReviewTerms.some(t => title.includes(t) || urlLower.includes(t));
+    if (isNonReview) {
+      log(`    ✗ Skipping non-review: ${url.substring(0, 80)}...`);
+      continue;
+    }
+
     if (!titleHasShow && !urlHasShow) continue;
     const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
     if (!titleHasReview && !urlHasReview && !isTimeoutListing) continue;

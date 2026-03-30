@@ -1190,7 +1190,7 @@ async function pollCycle() {
         'london-box-office', 'artsdesk', 'theatre-weekly', 'theupcoming',
         'musical-theatre-review', 'british-theatre', 'everything-theatre',
         'londonist', 'thereviewshub', 'city-am', 'a-younger-theatre',
-        'west-end-wilma', 'digital-spy',
+        'west-end-wilma', 'digital-spy', 'monstagigz',
       ];
       const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
       const allOutlets = reg.outlets || reg;

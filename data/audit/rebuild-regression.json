@@ -1,13 +1,22 @@
 {
-  "timestamp": "2026-03-30T02:10:30.757Z",
+  "timestamp": "2026-03-30T12:56:51.426Z",
   "regressions": [
     {
-      "showId": "the-phantom-of-the-opera-off-west-end-2021",
-      "oldCount": 4,
-      "newCount": 0,
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "oldCount": 44,
+      "newCount": 39,
+      "dropped": 5,
+      "scoredOnDisk": 48,
+      "flaggedScored": 28,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "oldCount": 53,
+      "newCount": 49,
       "dropped": 4,
-      "scoredOnDisk": 4,
-      "flaggedScored": 2,
+      "scoredOnDisk": 53,
+      "flaggedScored": 17,
       "reason": "scored files exist but being dropped"
     }
   ]
