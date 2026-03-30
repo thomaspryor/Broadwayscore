@@ -240,8 +240,6 @@ jobs:
           BLOOMBERG_PASSWORD: ${{ secrets.BLOOMBERG_PASSWORD }}
           NORTHJERSEY_EMAIL: ${{ secrets.NORTHJERSEY_EMAIL }}
           NORTHJERSEY_PASSWORD: ${{ secrets.NORTHJERSEY_PASSWORD }}
-          THESTAGE_EMAIL: ${{ secrets.THESTAGE_EMAIL }}
-          THESTAGE_PASSWORD: ${{ secrets.THESTAGE_PASSWORD }}
           FT_EMAIL: ${{ secrets.FT_EMAIL }}
           FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
           COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
@@ -584,8 +582,6 @@ jobs:
           BLOOMBERG_PASSWORD: ${{ secrets.BLOOMBERG_PASSWORD }}
           NORTHJERSEY_EMAIL: ${{ secrets.NORTHJERSEY_EMAIL }}
           NORTHJERSEY_PASSWORD: ${{ secrets.NORTHJERSEY_PASSWORD }}
-          THESTAGE_EMAIL: ${{ secrets.THESTAGE_EMAIL }}
-          THESTAGE_PASSWORD: ${{ secrets.THESTAGE_PASSWORD }}
           FT_EMAIL: ${{ secrets.FT_EMAIL }}
           FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
           NYDAILYNEWS_EMAIL: ${{ secrets.NYDAILYNEWS_EMAIL }}

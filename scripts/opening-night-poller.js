@@ -713,10 +713,12 @@ async function runAggregators(show) {
         console.log('  The Stage: found archive');
       }
 
-      // Live fetch via BrowserBase if no archive and credentials are present
+      // Live fetch via BrowserBase if no archive and cookies are present
+      const { loadCookiesForDomain: loadStageCookies } = require('./lib/cookie-loader');
+      const stageCookies = loadStageCookies('thestage.co.uk');
       if (!tsHtml && process.env.BROWSERBASE_API_KEY && process.env.BROWSERBASE_PROJECT_ID
-          && process.env.THESTAGE_EMAIL && process.env.THESTAGE_PASSWORD) {
-        console.log('  The Stage: no archive — attempting live fetch via BrowserBase...');
+          && stageCookies) {
+        console.log('  The Stage: no archive — attempting live fetch via BrowserBase (cookie auth)...');
         try {
           const { chromium } = require('playwright');
           const https = require('https');
@@ -754,72 +756,17 @@ async function runAggregators(show) {
             const context = browser.contexts()[0] || await browser.newContext();
             const page = context.pages()[0] || await context.newPage();
 
-            const stageEmail = process.env.THESTAGE_EMAIL;
-            const stagePassword = process.env.THESTAGE_PASSWORD;
-            if (!stageEmail || !stagePassword) {
-              throw new Error('THESTAGE_EMAIL or THESTAGE_PASSWORD not set');
-            }
+            // Inject cookies instead of logging in (avoids creating new sessions)
+            const pwCookies = stageCookies.map(c => ({
+              name: c.name, value: c.value,
+              domain: c.domain || '.thestage.co.uk',
+              path: c.path || '/', secure: c.secure !== false, httpOnly: !!c.httpOnly,
+              ...(c.sameSite ? { sameSite: c.sameSite } : {}),
+            }));
+            await context.addCookies(pwCookies);
+            console.log('  The Stage: cookies injected');
 
-            // Step 1: Login via /login page (listing page has no login form)
-            console.log('  The Stage: logging in via /login...');
-            await page.goto('https://www.thestage.co.uk/login', {
-              waitUntil: 'domcontentloaded', timeout: 30000,
-            });
-            await page.waitForTimeout(3000);
-
-            // Dismiss cookie consent if present
-            const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
-            if (cookieBtn) {
-              const v = await cookieBtn.isVisible().catch(() => false);
-              if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
-            }
-
-            // Find visible login form (page has two forms — main + nav; only one is visible)
-            const emailInputs = await page.$$('input[name="email"], input[type="email"], input[id*="email"]');
-            let emailInput = null;
-            for (const inp of emailInputs) {
-              if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
-            }
-            if (emailInput) {
-              await emailInput.click();
-              await emailInput.type(stageEmail, { delay: 30 });
-              await page.waitForTimeout(500);
-
-              const passInputs = await page.$$('input[type="password"], input[name="password"]');
-              let passInput = null;
-              for (const inp of passInputs) {
-                if (await inp.isVisible().catch(() => false)) { passInput = inp; break; }
-              }
-              if (passInput) {
-                await passInput.click();
-                await passInput.type(stagePassword, { delay: 30 });
-                await page.waitForTimeout(500);
-
-                const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Log in"), button:has-text("Sign in"), button[type="submit"], input[type="submit"]');
-                let submitBtn = null;
-                for (const btn of submitBtns) {
-                  if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
-                }
-                if (submitBtn) await submitBtn.click();
-                else await page.keyboard.press('Enter');
-
-                await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-                await page.waitForTimeout(3000);
-
-                const postLoginUrl = page.url();
-                if (!postLoginUrl.includes('/login')) {
-                  console.log('  The Stage: login verified');
-                } else {
-                  console.log('  The Stage: login may have failed (still on /login)');
-                }
-              } else {
-                console.log('  The Stage: no visible password field found');
-              }
-            } else {
-              console.log('  The Stage: no visible email field on /login — may already be logged in');
-            }
-
-            // Step 2: Navigate to listing and discover the roundup URL for this show
+            // Navigate to listing and discover the roundup URL for this show
             // Stage URLs are unpredictable (include venue, creative team) — must discover, not construct
             await page.goto('https://www.thestage.co.uk/review-round-ups/review-round-ups', {
               waitUntil: 'networkidle', timeout: 30000,
@@ -900,8 +847,7 @@ async function runAggregators(show) {
         const missing = [];
         if (!process.env.BROWSERBASE_API_KEY) missing.push('BROWSERBASE_API_KEY');
         if (!process.env.BROWSERBASE_PROJECT_ID) missing.push('BROWSERBASE_PROJECT_ID');
-        if (!process.env.THESTAGE_EMAIL) missing.push('THESTAGE_EMAIL');
-        if (!process.env.THESTAGE_PASSWORD) missing.push('THESTAGE_PASSWORD');
+        if (!stageCookies) missing.push('THESTAGE_COOKIES (no cookies in bundle/env/file)');
         console.log(`  The Stage: no archive, live fetch skipped (missing: ${missing.join(', ')})`);
       }
 
