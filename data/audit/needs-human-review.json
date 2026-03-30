@@ -1,10 +1,9 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-30T14:35:16.657Z",
-    "totalFlagged": 36,
+    "generatedAt": "2026-03-30T14:39:05.784Z",
+    "totalFlagged": 37,
     "reasons": {
-      "possible-tour-fulltext": 34,
-      "originalScore-llm-conflict": 1,
+      "possible-tour-fulltext": 36,
       "borderline-rave": 1
     }
   },
@@ -21,7 +20,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:00.793Z"
+      "flaggedAt": "2026-03-30T14:38:26.791Z"
     },
     {
       "showId": "700-sundays-2013",
@@ -35,7 +34,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:01.215Z"
+      "flaggedAt": "2026-03-30T14:38:27.008Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "broadwayworld",
+      "criticName": "Cary Ginell",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring company\\b",
+      "llmScore": 64,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "bwwScore": null,
+      "flaggedAt": "2026-03-30T14:38:27.076Z"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -49,7 +62,21 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:01.328Z"
+      "flaggedAt": "2026-03-30T14:38:27.078Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "broadwayworld",
+      "criticName": "Michael Quintos",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\btouring company\\b",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "bwwScore": null,
+      "flaggedAt": "2026-03-30T14:38:27.082Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -63,7 +90,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-03-30T14:34:02.642Z"
+      "flaggedAt": "2026-03-30T14:38:27.760Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -77,7 +104,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-03-30T14:34:04.999Z"
+      "flaggedAt": "2026-03-30T14:38:28.965Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -91,7 +118,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:05.086Z"
+      "flaggedAt": "2026-03-30T14:38:29.009Z"
     },
     {
       "showId": "bright-star-2016",
@@ -105,7 +132,7 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-03-30T14:34:10.897Z"
+      "flaggedAt": "2026-03-30T14:38:31.978Z"
     },
     {
       "showId": "bright-star-2016",
@@ -119,7 +146,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 7,
-      "flaggedAt": "2026-03-30T14:34:10.951Z"
+      "flaggedAt": "2026-03-30T14:38:32.005Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -133,21 +160,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:11.054Z"
-    },
-    {
-      "showId": "broken-glass-west-end-2026",
-      "outletId": "times-uk",
-      "criticName": "Clive Davis",
-      "reason": "originalScore-llm-conflict",
-      "detail": "originalScore \"3/5\" (=60, bucket=mixed) vs LLM 88 (bucket=positive, conf=high)",
-      "llmScore": 88,
-      "llmBucket": "Rave",
-      "llmConfidence": "high",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:11.123Z"
+      "flaggedAt": "2026-03-30T14:38:32.058Z"
     },
     {
       "showId": "chicago-1996",
@@ -161,7 +174,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:14.042Z"
+      "flaggedAt": "2026-03-30T14:38:33.586Z"
     },
     {
       "showId": "follies-2011",
@@ -175,7 +188,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-30T14:34:20.868Z"
+      "flaggedAt": "2026-03-30T14:38:37.083Z"
     },
     {
       "showId": "follies-2011",
@@ -189,7 +202,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-30T14:34:20.907Z"
+      "flaggedAt": "2026-03-30T14:38:37.103Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -203,7 +216,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-30T14:34:22.073Z"
+      "flaggedAt": "2026-03-30T14:38:37.704Z"
     },
     {
       "showId": "indecent-2017",
@@ -217,7 +230,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:30.161Z"
+      "flaggedAt": "2026-03-30T14:38:41.889Z"
     },
     {
       "showId": "it-walks-around-the-house-at-night-west-end-2026",
@@ -231,7 +244,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:30.901Z"
+      "flaggedAt": "2026-03-30T14:38:42.264Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -245,7 +258,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:32.037Z"
+      "flaggedAt": "2026-03-30T14:38:42.837Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -259,7 +272,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:35.428Z"
+      "flaggedAt": "2026-03-30T14:38:44.600Z"
     },
     {
       "showId": "les-miserables-west-end-2021",
@@ -273,7 +286,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:35.555Z"
+      "flaggedAt": "2026-03-30T14:38:44.664Z"
     },
     {
       "showId": "life-of-pi-2023",
@@ -287,7 +300,21 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:35.829Z"
+      "flaggedAt": "2026-03-30T14:38:44.807Z"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "broadwayworld",
+      "criticName": "Jon Bee",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bnational tour\\b",
+      "llmScore": 83,
+      "llmBucket": "Rave",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-03-30T14:38:44.810Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -301,21 +328,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-03-30T14:34:36.161Z"
-    },
-    {
-      "showId": "master-class-2011",
-      "outletId": "broadwayworld",
-      "criticName": "Michael Dale",
-      "reason": "possible-tour-fulltext",
-      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
-      "llmScore": 80,
-      "llmBucket": "Positive",
-      "llmConfidence": "medium",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "bwwScore": 9,
-      "flaggedAt": "2026-03-30T14:34:38.750Z"
+      "flaggedAt": "2026-03-30T14:38:44.976Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -329,7 +342,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:41.325Z"
+      "flaggedAt": "2026-03-30T14:38:47.630Z"
     },
     {
       "showId": "mrs-warrens-profession-2010",
@@ -343,7 +356,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:41.870Z"
+      "flaggedAt": "2026-03-30T14:38:47.914Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -357,7 +370,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:42.033Z"
+      "flaggedAt": "2026-03-30T14:38:48.000Z"
     },
     {
       "showId": "noises-off-2016",
@@ -371,7 +384,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-30T14:34:43.369Z"
+      "flaggedAt": "2026-03-30T14:38:48.684Z"
     },
     {
       "showId": "present-laughter-2010",
@@ -385,7 +398,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:48.731Z"
+      "flaggedAt": "2026-03-30T14:38:51.410Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -399,7 +412,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:49.505Z"
+      "flaggedAt": "2026-03-30T14:38:51.818Z"
     },
     {
       "showId": "ragtime-2009",
@@ -413,7 +426,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:50.465Z"
+      "flaggedAt": "2026-03-30T14:38:52.311Z"
     },
     {
       "showId": "ragtime-2025",
@@ -427,7 +440,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:50.508Z"
+      "flaggedAt": "2026-03-30T14:38:52.333Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -441,7 +454,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-30T14:34:52.856Z"
+      "flaggedAt": "2026-03-30T14:38:53.525Z"
     },
     {
       "showId": "spamalot-2023",
@@ -455,7 +468,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:34:54.668Z"
+      "flaggedAt": "2026-03-30T14:38:54.464Z"
     },
     {
       "showId": "the-color-purple-2015",
@@ -469,7 +482,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-03-30T14:34:59.568Z"
+      "flaggedAt": "2026-03-30T14:38:56.989Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -483,7 +496,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-03-30T14:35:01.644Z"
+      "flaggedAt": "2026-03-30T14:38:58.046Z"
     },
     {
       "showId": "the-lightning-thief-2019",
@@ -497,7 +510,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:35:04.366Z"
+      "flaggedAt": "2026-03-30T14:38:59.437Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -511,7 +524,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-03-30T14:35:10.322Z"
+      "flaggedAt": "2026-03-30T14:39:02.450Z"
     }
   ]
 }

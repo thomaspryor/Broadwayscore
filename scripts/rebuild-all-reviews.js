@@ -1316,7 +1316,9 @@ showDirs.forEach(showId => {
             data.wrongProduction = true;
             promoted = true;
           }
-          const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url);
+          // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
+          // wrongArticle means the fetched text is genuinely for a different show/venue)
+          const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
           if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon) {
             data.wrongShow = true;
             promoted = true;
@@ -1330,6 +1332,18 @@ showDirs.forEach(showId => {
             stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
           }
+        }
+
+        // Fallback: if cv is stale but wrongShowReason explicitly describes a wrong article,
+        // promote wrongShow anyway. The wrongShowReason was set by the collector LLM and
+        // describes the actual content mismatch — staleness of the verification timestamp
+        // doesn't invalidate the finding if the text is still wrong.
+        if (cvIsStale && data.wrongShow !== true && data.wrongShowReason
+            && /wrong|different|not a review|not the|Minerva|Chichester/i.test(data.wrongShowReason)) {
+          data.wrongShow = true;
+          data.contentVerificationPromoted = `rebuild: promoted via wrongShowReason fallback (stale cv)`;
+          stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
+          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
         }
       }
 
@@ -1390,7 +1404,9 @@ showDirs.forEach(showId => {
       // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
       // BUT: Do NOT auto-clear if content verification flagged wrongArticle (e.g., news/preview, not a review).
       // AND: Do NOT auto-clear if the review date is >90 days before the show — that's a prior production.
-      const isWrongArticle = data.contentVerification && data.contentVerification.wrongArticle === true;
+      // Check multiple signals for wrong-article detection (LLM sets these via different paths)
+      const isWrongArticle = (data.contentVerification && data.contentVerification.wrongArticle === true)
+        || (data.wrongShowReason && /wrong|different|not a review|not the/i.test(data.wrongShowReason));
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
         const wsCleaned = data.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');

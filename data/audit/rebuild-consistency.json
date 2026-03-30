@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-30T14:35:16.445Z",
+  "generatedAt": "2026-03-30T14:39:05.686Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -24,14 +24,6 @@
       "outlet": "timeout",
       "critic": "Adam Feldman",
       "detail": "originalRating \"5/5\" (=100) vs score 63 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "broken-glass-west-end-2026",
-      "outlet": "times-uk",
-      "critic": "Clive Davis",
-      "detail": "originalRating \"3/5\" (=60) vs score 88 (source: llmScore-override-star-conflict)"
     },
     {
       "type": "rating-score-mismatch",
@@ -428,12 +420,6 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "all-my-sons-west-end-2025",
-      "detail": "8/14 reviews (57%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
       "showId": "im-sorry-prime-minister-west-end-2026",
       "detail": "8/13 reviews (62%) scored exactly 60"
     },
@@ -447,19 +433,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "paddington-the-musical-west-end-2025",
-      "detail": "10/19 reviews (53%) scored exactly 100"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "detail": "8/10 reviews (80%) scored exactly 80"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "the-playboy-of-the-western-world-west-end-2025",
-      "detail": "8/10 reviews (80%) scored exactly 60"
+      "detail": "10/18 reviews (56%) scored exactly 100"
     }
   ]
 }
