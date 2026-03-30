@@ -1414,8 +1414,11 @@ async function searchBWWRoundup(show, year, options = {}) {
   }
 
   // Priority 2: Check for existing valid archive (less than 30 days old)
+  // Skip cache near opening night — BWW roundups are updated with new reviews on opening day
+  const isNearOpeningNight = show.openingDate &&
+    Math.abs(Date.now() - new Date(show.openingDate).getTime()) < 2 * 24 * 60 * 60 * 1000; // within 48h
   const archivePath = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups', `${showId}.html`);
-  if (fs.existsSync(archivePath)) {
+  if (!isNearOpeningNight && fs.existsSync(archivePath)) {
     const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
     if (age < 30) {
       const html = fs.readFileSync(archivePath, 'utf8');
@@ -1426,6 +1429,8 @@ async function searchBWWRoundup(show, year, options = {}) {
         return { url, html };
       }
     }
+  } else if (isNearOpeningNight && fs.existsSync(archivePath)) {
+    console.log('    Skipping BWW cache — show opens within 48h, fetching fresh');
   }
 
   // Priority 3: Google SERP search — BWW uses unpredictable URL formats
