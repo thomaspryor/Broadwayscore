@@ -326,7 +326,9 @@ async function main() {
 
     // Add to pending
     if (!DRY_RUN) {
-      pending.shows[show.id] = {
+      // Use slug as key (not id) — commercial.json is keyed by slug
+      const pendingKey = show.slug || show.id;
+      pending.shows[pendingKey] = {
         title: show.title,
         slug: show.slug,
         openingDate: show.openingDate,

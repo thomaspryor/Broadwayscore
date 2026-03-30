@@ -87,6 +87,54 @@ function loadShows(): Map<string, string> {
   showMap.set(normalizeTitle("The Notebook"), 'the-notebook');
   showMap.set(normalizeTitle("All Out: Comedy About Ambition"), 'all-out');
 
+  // 2024-25 season shows with year suffixes
+  showMap.set(normalizeTitle("Glengarry Glen Ross"), 'glengarry-glen-ross-2025');
+  showMap.set(normalizeTitle("Waiting for Godot"), 'waiting-for-godot-2025');
+  showMap.set(normalizeTitle("Art"), 'art-2025');
+  showMap.set(normalizeTitle("Romeo + Juliet"), 'romeo-juliet-2024');
+  showMap.set(normalizeTitle("Romeo and Juliet"), 'romeo-juliet-2024');
+  showMap.set(normalizeTitle("Our Town"), 'our-town');
+  showMap.set(normalizeTitle("An Enemy of the People"), 'an-enemy-of-the-people');
+  showMap.set(normalizeTitle("Appropriate"), 'appropriate');
+  showMap.set(normalizeTitle("Stereophonic"), 'stereophonic');
+  showMap.set(normalizeTitle("Good Night, and Good Luck"), 'good-night-and-good-luck-2025');
+  showMap.set(normalizeTitle("Othello"), 'othello-2025');
+  showMap.set(normalizeTitle("Dead Outlaw"), 'dead-outlaw-2025');
+  showMap.set(normalizeTitle("SMASH"), 'smash-2025');
+  showMap.set(normalizeTitle("Swept Away"), 'swept-away-2024');
+  showMap.set(normalizeTitle("Once Upon a Mattress"), 'once-upon-a-mattress-2024');
+  showMap.set(normalizeTitle("Tammy Faye"), 'tammy-faye-2024');
+  showMap.set(normalizeTitle("Sunset Blvd."), 'sunset-boulevard-2024');
+  showMap.set(normalizeTitle("Sunset Boulevard"), 'sunset-boulevard-2024');
+  showMap.set(normalizeTitle("McNeal"), 'mcneal-2024');
+  showMap.set(normalizeTitle("Left on Tenth"), 'left-on-tenth-2024');
+  showMap.set(normalizeTitle("Yellow Face"), 'yellow-face-2024');
+  showMap.set(normalizeTitle("Eureka Day"), 'eureka-day-2024');
+  showMap.set(normalizeTitle("The Hills of California"), 'the-hills-of-california-2024');
+  showMap.set(normalizeTitle("Leopoldstadt"), 'leopoldstadt-2022');
+  showMap.set(normalizeTitle("Into the Woods"), 'into-the-woods-2022');
+  showMap.set(normalizeTitle("Sweeney Todd: The Demon Barber of Fleet Street"), 'sweeney-todd-2023');
+  showMap.set(normalizeTitle("Sweeney Todd"), 'sweeney-todd-2023');
+  showMap.set(normalizeTitle("KPOP"), 'kpop-2022');
+  showMap.set(normalizeTitle("1776"), '1776-2022');
+  showMap.set(normalizeTitle("A Doll's House"), 'a-dolls-house-2023');
+  showMap.set(normalizeTitle("Bad Cinderella"), 'bad-cinderella-2023');
+  showMap.set(normalizeTitle("Camelot"), 'camelot-2023');
+  showMap.set(normalizeTitle("Parade"), 'parade-2023');
+  showMap.set(normalizeTitle("Kimberly Akimbo"), 'kimberly-akimbo-2022');
+  showMap.set(normalizeTitle("New York, New York"), 'new-york-new-york-2023');
+  showMap.set(normalizeTitle("Prima Facie"), 'prima-facie-2023');
+  showMap.set(normalizeTitle("Some Like It Hot"), 'some-like-it-hot-2022');
+  showMap.set(normalizeTitle("Good Night, Oscar"), 'good-night-oscar-2023');
+  showMap.set(normalizeTitle("Peter Pan Goes Wrong"), 'peter-pan-goes-wrong-2023');
+  showMap.set(normalizeTitle("Spamalot"), 'spamalot-2023');
+  showMap.set(normalizeTitle("Bob Fosse's Dancin'"), 'bob-fosses-dancin-2023');
+  showMap.set(normalizeTitle("Dancin'"), 'bob-fosses-dancin-2023');
+  showMap.set(normalizeTitle("The Outsiders"), 'the-outsiders');
+  showMap.set(normalizeTitle("Cabaret at the Kit Kat Club"), 'cabaret-2024');
+  showMap.set(normalizeTitle("Cabaret"), 'cabaret-2024');
+  showMap.set(normalizeTitle("Harmony"), 'harmony-2023');
+
   return showMap;
 }
 
