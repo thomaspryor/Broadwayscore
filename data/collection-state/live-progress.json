@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-30T16:06:46.042Z",
-  "processed": 57,
-  "failed": 81,
-  "successRate": "41.3%",
+  "updatedAt": "2026-03-30T16:11:52.192Z",
+  "processed": 60,
+  "failed": 88,
+  "successRate": "40.5%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 38,
+    "archiveToday": 42,
     "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -58,6 +58,28 @@
       "t": "2026-03-30T15:48:46.963Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-30T16:07:28.255Z",
+      "event": "bb-session",
+      "session": "0f285288",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-30T16:07:29.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T16:09:00.106Z",
+      "event": "bb-session",
+      "session": "794a15aa",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-30T16:09:01.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

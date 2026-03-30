@@ -56,7 +56,10 @@
     "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--ella-satin.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--alun-hood.json",
-    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json"
+    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -139,7 +142,14 @@
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
     "dracula-west-end-2025/times-uk--clive-davis.json",
     "chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json",
-    "shadowlands-west-end-2026/times-uk--clive-davis.json"
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "an-ark-off-broadway-2026/wsj--unknown.json",
+    "an-ark-off-broadway-2026/ap--mark-kennedy.json",
+    "an-ark-off-broadway-2026/playbill--unknown.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
+    "two-strangers-bway-2025/guardian--arifa-akbar.json",
+    "chess-2025/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -180,7 +190,10 @@
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--ella-satin.json",
       "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--alun-hood.json",
-      "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json"
+      "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/whatsonstage--sarah-crompton.json",
+      "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+      "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -243,7 +256,11 @@
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
-      "data/review-texts/chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
+      "data/review-texts/an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/chess-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -257,7 +274,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "shadowlands-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "chess-2025/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -302,6 +319,28 @@
       "t": "2026-03-30T15:48:46.963Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-30T16:07:28.255Z",
+      "event": "bb-session",
+      "session": "0f285288",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-30T16:07:29.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T16:09:00.106Z",
+      "event": "bb-session",
+      "session": "794a15aa",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-30T16:09:01.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
