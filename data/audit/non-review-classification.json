@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-03-30T11:15:38.597Z",
+    "generatedAt": "2026-03-30T11:25:31.810Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32670,
-      "inReviewsJson": 16544,
+      "inReviewsJson": 16539,
       "skippedExcluded": 53,
-      "withFullText": 102,
-      "excerptOnly": 1973,
-      "llmClassified": 50,
+      "withFullText": 67,
+      "excerptOnly": 1965,
+      "llmClassified": 49,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 12,
+      "uncertainCases": 15,
       "budgetUsed": 0.005,
       "llmCalls": 50,
       "rateLimitHits": 0,
-      "errors": 0,
-      "skippedAlreadyClassified": 14416
+      "errors": 1,
+      "skippedAlreadyClassified": 14454
     },
     "calibration": null
   },
@@ -40,7 +40,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, but it does not contain any evaluative content about a specific production of 'Fences' or any other show. It seems to be a list of search terms or categories.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and advertisements related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and advertisements related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no review content present.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news item or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links, not an article about a specific show. It mentions 'musical theatre reviews' but doesn't contain one.",
       "currentScore": 80
     },
     {
@@ -140,50 +140,76 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or recommendation. It includes an interview with an actor, but the primary focus is on the show's themes and relevance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
+    },
+    {
+      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
+      "showId": "the-assembled-parties-2013",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "currentScore": 42
+    },
+    {
+      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "The Front Row Center",
+      "outletId": "front-row-center",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review that evaluates the show's quality.",
+      "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "parade-2023/nytimes--jesse-green.json",
-    "parade-2023/theatrely--kobi-kassal.json",
-    "paradise-square-2022/thewrap--robert-hofler.json",
-    "paranormal-activity-west-end-2025/artsdesk--gary-naylor.json",
-    "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json",
-    "patriots-2024/variety--frank-rizzo.json",
-    "peter-pan-goes-wrong-2023/nydailynews--new-york-daily-news.json",
-    "peter-pan-goes-wrong-2023/nytimes--jesse-green.json",
-    "peter-pan-goes-wrong-2023/vulture--jackson-mchenry.json",
-    "prayer-for-the-french-republic-2024/vulture--sara-holdren.json",
-    "present-laughter-2017/nytimes--ben-brantley.json",
-    "prima-facie-2023/nytimes--jesse-green.json",
-    "promises-promises-2010/nypost--elisabeth-vincentelli.json",
-    "punch-2025/nytg--caroline-cao.json",
-    "ragtime-2025/nysr--roma-torre.json",
-    "ragtime-2025/wsj--charles-isherwood.json",
-    "romeo-juliet-2024/vulture--sara-holdren.json",
-    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "she-loves-me-2016/nytimes--ben-brantley.json",
-    "shucked-2023/dailybeast--tim-teeman.json",
-    "shucked-2023/variety--frank-rizzo.json",
-    "shucked-2023/vulture--jackson-mchenry.json",
-    "side-show-2014/timeout--david-cote.json",
-    "six-the-musical-west-end-2021/london-theatre--sam-marlowe.json",
-    "skylight-2015/nytimes--ben-brantley.json",
-    "sondheim-on-sondheim-2010/nypost--elisabeth-vincentelli.json",
-    "starlight-express-west-end-2024/timeout-london--andrzej-lukowski.json",
-    "stephen-sondheims-old-friends-2025/theatrely--joey-sims.json",
-    "stephen-sondheims-old-friends-2025/vulture--jackson-mchenry.json",
-    "stereophonic-2024/thestage--lane-williamson.json",
-    "stereophonic-off-broadway-2023/nytimes--jesse-green.json",
-    "straight-white-men-2018/nytimes--jesse-green.json",
-    "straight-white-men-2018/vulture--sara-holdren.json",
-    "summer-1976-2023/nytimes--laura-collins-hughes.json",
-    "sunday-in-the-park-with-george-2017/timeout--david-cote.json",
-    "sweat-2017/nytimes--ben-brantley.json",
-    "sylvia-2015/nytimes--charles-isherwood.json",
-    "tammy-faye-2024/nytg--joe-dziemianowicz.json"
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/the-telegrap--dominic-cavendish.json",
+    "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
+    "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+    "tammy-faye-2024/variety--frank-rizzo.json",
+    "the-addams-family-2010/nypost--elisabeth-vincentelli.json",
+    "the-bands-visit-2017/nytimes--ben-brantley.json",
+    "the-bands-visit-2017/theater-life--isa-goldberg.json",
+    "the-children-2017/nytimes--jesse-green.json",
+    "the-color-purple-2015/nytimes--ben-brantley.json",
+    "the-crucible-2016/hollywood-reporter--david-rooney.json",
+    "the-devil-wears-prada-west-end-2024/guardian--arifa-akbar.json",
+    "the-gin-game-2015/nbcny--robert-kahn.json",
+    "the-great-gatsby-2024/nytimes--laura-collins-hughes.json",
+    "the-inheritance-2019/vulture--helen-shaw.json",
+    "the-king-and-i-2015/timeout--david-cote.json",
+    "the-kite-runner-2022/variety--marylin-stasio.json",
+    "the-kite-runner-2022/vulture--naveen-kumar.json",
+    "the-last-five-years-2025/nysr--bob-verini.json",
+    "the-last-ship-2014/ew--kyle-anderson.json",
+    "the-last-ship-2014/nytimes--charles-isherwood.json",
+    "the-lehman-trilogy-2021/nytimes--laura-collins-hughes.json",
+    "the-lifespan-of-a-fact-2018/vulture--sara-holdren.json",
+    "the-lion-king-1997/timeout--jenna-scherer.json",
+    "the-nance-2013/ew--melissa-rose-bernardo.json",
+    "the-outsiders-2024/vulture--sara-holdren.json",
+    "the-parisian-woman-2017/guardian--jake-nevins.json",
+    "the-piano-lesson-2022/nytimes--maya-phillips.json",
+    "the-real-thing-2014/timeout--david-cote.json",
+    "the-skin-of-our-teeth-2022/nytimes--alexis-soloski.json",
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "the-testament-of-mary-2013/amny--matt-windman.json",
+    "the-velocity-of-autumn-2014/hollywood-reporter--frank-scheck.json",
+    "the-velocity-of-autumn-2014/nytimes--charles-isherwood.json",
+    "the-visit-2015/variety--marilyn-stasio.json"
   ],
   "perShowSummary": []
 }
