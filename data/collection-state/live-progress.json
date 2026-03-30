@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-30T15:35:54.144Z",
-  "processed": 38,
-  "failed": 40,
-  "successRate": "48.7%",
+  "updatedAt": "2026-03-30T15:40:19.883Z",
+  "processed": 45,
+  "failed": 43,
+  "successRate": "51.1%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 31,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 16,
-    "archive": 6
+    "archiveToday": 17,
+    "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -25,6 +25,28 @@
       "t": "2026-03-30T13:14:53.316Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-30T15:39:28.711Z",
+      "event": "bb-session",
+      "session": "5bc13e38",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-03-30T15:39:29.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-30T15:39:53.934Z",
+      "event": "bb-session",
+      "session": "a6e3113f",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
+    },
+    {
+      "t": "2026-03-30T15:39:55.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
