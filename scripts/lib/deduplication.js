@@ -14,6 +14,8 @@
  * Maps normalized base titles to their canonical forms.
  * Add entries here when new edge cases are discovered.
  */
+const { normalizeVenueName } = require('./venue-classification');
+
 const KNOWN_DUPLICATES = {
   // Short titles that need special handling
   'six': ['six', 'six the musical', 'six on broadway'],
@@ -235,9 +237,12 @@ function isMultiProduction(newShow, existing) {
   const newCat = newShow.category || 'broadway';
   const existingCat = existing.category || 'broadway';
   if (newCat !== existingCat && getMarketPool(newCat) === getMarketPool(existingCat)) {
-    const newVenue = (newShow.venue || '').toLowerCase().trim().replace(/\s*[-–—]\s*.+$/, '');
-    const existVenue = (existing.venue || '').toLowerCase().trim().replace(/\s*[-–—]\s*.+$/, '');
-    if (!newVenue || !existVenue || (newVenue !== existVenue && !newVenue.startsWith(existVenue) && !existVenue.startsWith(newVenue))) {
+    // normalizeVenueName handles apostrophes, parentheticals, trailing Theatre/Theater.
+    // Also strip dash-suffixes for dedup (e.g., "The Other Palace - Main Theatre" → "the other palace").
+    const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
+    const newVenue = stripDash(normalizeVenueName(newShow.venue));
+    const existVenue = stripDash(normalizeVenueName(existing.venue));
+    if (!newVenue || !existVenue || newVenue !== existVenue) {
       return true; // Different (or unknown) venues = legitimate transfer
     }
     // Same venue = likely duplicate, not a transfer — fall through to other checks
