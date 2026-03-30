@@ -74,6 +74,7 @@ async function fetchPage(url) {
  */
 function cleanTitle(title) {
   return title
+    .replace(/['']/g, "'")          // normalize smart quotes to ASCII
     .replace(/^Disney's\s+/i, '')
     .replace(/\s+the Musical$/i, '')
     .trim();
