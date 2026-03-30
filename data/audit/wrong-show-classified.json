@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-30T02:32:13.623Z",
+    "generatedAt": "2026-03-30T02:47:57.345Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "a-mirrored-monet-west-end-2026",
+      "showTitle": "A Mirrored Monet",
+      "file": "thestage--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions Claude Monet, his relationship with Camille, and the impressionist movement, all of which align with the show's title and likely subject matter. It also mentions the Edinburgh Fringe premiere, which helps confirm it's the correct show."
+    }
+  ]
 }
