@@ -46,7 +46,9 @@
     "giant-2026/amny--unknown.json",
     "giant-2026/people--unknown.json",
     "heartbreak-hotel-off-broadway-2026/heartbreakhotelplaycom--unknown.json",
-    "consumed-west-end-2026/times-uk--clive-davis.json"
+    "consumed-west-end-2026/times-uk--clive-davis.json",
+    "every-brilliant-thing-2026/hollywood-reporter--unknown.json",
+    "every-brilliant-thing-2026/nytg--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -99,7 +101,15 @@
     "my-joy-is-heavy-off-broadway-2025/culturesauce--thom-geier.json",
     "my-joy-is-heavy-off-broadway-2025/one-minute-critic--unknown.json",
     "my-joy-is-heavy-off-broadway-2025/playbill--unknown.json",
-    "my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json"
+    "my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json",
+    "titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json",
+    "titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json",
+    "calf-scramble-off-broadway-2026/talkinbroadway--howard-miller.json",
+    "maltby-and-shires-about-time-off-broadway-2026/theater-pizzazz--samuel-l-leiter.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "every-brilliant-thing-2026/talkinbroadway--unknown.json",
+    "public-charge-off-broadway-2026/culturesauce--unknown.json",
+    "public-charge-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -135,7 +145,8 @@
       "john-proctor-is-the-villain-west-end-2026/standard--nick-curtis.json",
       "john-proctor-is-the-villain-west-end-2026/whatsonstage--alun-hood.json",
       "giant-2026/people--unknown.json",
-      "consumed-west-end-2026/times-uk--clive-davis.json"
+      "consumed-west-end-2026/times-uk--clive-davis.json",
+      "every-brilliant-thing-2026/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -144,7 +155,9 @@
       "data/review-texts/giant-2026/variety--unknown.json",
       "giant-2026/variety--unknown.json",
       "data/review-texts/giant-2026/amny--unknown.json",
-      "giant-2026/amny--unknown.json"
+      "giant-2026/amny--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--unknown.json",
+      "every-brilliant-thing-2026/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -176,7 +189,14 @@
       "data/review-texts/giant-2026/talkinbroadway--unknown.json",
       "data/review-texts/no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/my-joy-is-heavy-off-broadway-2025/culturesauce--thom-geier.json",
-      "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json"
+      "data/review-texts/my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json",
+      "data/review-texts/titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json",
+      "data/review-texts/titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json",
+      "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--howard-miller.json",
+      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/theater-pizzazz--samuel-l-leiter.json",
+      "data/review-texts/every-brilliant-thing-2026/talkinbroadway--unknown.json",
+      "data/review-texts/public-charge-off-broadway-2026/culturesauce--unknown.json",
+      "data/review-texts/public-charge-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -189,7 +209,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--unknown.json",
+  "lastProcessed": "public-charge-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -223,6 +243,17 @@
       "t": "2026-03-30T15:39:55.214Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-30T15:48:45.789Z",
+      "event": "bb-session",
+      "session": "4d4864ff",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-03-30T15:48:46.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
