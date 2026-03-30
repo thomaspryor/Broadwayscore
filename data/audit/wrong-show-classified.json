@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-30T10:15:14.161Z",
+    "generatedAt": "2026-03-30T10:27:46.207Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "encores-the-wild-party-off-broadway-2026",
+      "showTitle": "Encores! The Wild Party",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions \"The Wild Party,\" Michael John LaChiusa, George C. Wolfe, City Center Encores!, and cast members like Jasmine Amy Rogers and Jordan Donica, all associated with the show."
+    }
+  ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T10:21:15.365Z",
+  "timestamp": "2026-03-30T10:33:41.884Z",
   "stats": {
     "totalReviews": 31860,
-    "alreadyFlagged": 11273,
+    "alreadyFlagged": 11275,
     "dateGuardCatches": 18,
     "directorMismatch": 942,
-    "tvFilmSignals": 3349,
-    "londonSignals": 1001,
+    "tvFilmSignals": 3350,
+    "londonSignals": 1002,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6237
+    "noPublishDate": 6225
   },
   "findings": [
     {
@@ -56111,6 +56111,20 @@
     },
     {
       "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 46,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/once-on-this-island-review-regents-park-open-air-theatre-london-gabrielle-brooks-lynn-ahrens-stephen-flaherty-ola-ince-little-mermaid",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 60,
       "publishDate": "2023-05-17",
@@ -70644,6 +70658,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "score": 80,
+      "publishDate": "2026-02-11",
+      "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
