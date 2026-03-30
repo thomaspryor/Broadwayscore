@@ -105,7 +105,7 @@ const faqSchema = {
       name: 'What do the score ranges mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Scores of 83+ indicate "Critical Gold" (drop-everything great), 75-82 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Stay Away" (not recommended). Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
+        text: 'Scores of 83+ indicate "Critical Gold" (drop-everything great), 75-82 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Stay Away" (not recommended). West End shows require 85+ for Critical Gold because UK outlets use star ratings almost exclusively, which compresses scores toward the top. Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
       },
     },
     {
@@ -184,6 +184,7 @@ export default function MethodologyPage() {
               <div>
                 <span className="text-white font-medium">Critical Gold™</span>
                 <span className="text-gray-500 block sm:inline sm:ml-2">— Drop-everything great. If you&apos;re seeing one show, make it this.</span>
+                <span className="text-gray-500 block text-xs mt-0.5">West End: 85+ (UK star ratings compress scores higher)</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
