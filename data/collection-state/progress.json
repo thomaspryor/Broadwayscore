@@ -147,7 +147,8 @@
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json",
     "data-off-broadway-2026/timeout--unknown.json",
     "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
-    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
+    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+    "paddington-the-musical-west-end-2025/thestage--unknown.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -493,7 +494,16 @@
     "oh-mary-west-end-2025/standard--nick-curtis.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
     "two-strangers-bway-2025/guardian--arifa-akbar.json",
-    "chess-2025/talkinbroadway--unknown.json"
+    "chess-2025/talkinbroadway--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
+    "dirty-books-off-broadway-2025/nytg--unknown.json",
+    "paddington-the-musical-west-end-2025/broadwayworld--christiana-rose.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/ny1--unknown.json",
+    "ragtime-2025/usatoday--samantha-gholar.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "the-producers-west-end-2025/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -581,7 +591,8 @@
       "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--tanyel-gumushan.json",
       "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json",
       "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
-      "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
+      "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json",
+      "paddington-the-musical-west-end-2025/thestage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -655,7 +666,12 @@
       "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
       "data/review-texts/an-ark-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
-      "data/review-texts/chess-2025/talkinbroadway--unknown.json"
+      "data/review-texts/chess-2025/talkinbroadway--unknown.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
+      "data/review-texts/paddington-the-musical-west-end-2025/broadwayworld--christiana-rose.json",
+      "data/review-texts/ragtime-2025/ny1--unknown.json",
+      "data/review-texts/ragtime-2025/usatoday--samantha-gholar.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/playbill--unknown.json",
@@ -704,7 +720,7 @@
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "chess-2025/talkinbroadway--unknown.json",
+  "lastProcessed": "the-producers-west-end-2025/thestage--paul-vale.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -846,6 +862,17 @@
     },
     {
       "t": "2026-03-30T05:53:11.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T05:57:58.221Z",
+      "event": "bb-session",
+      "session": "c03e11a4",
+      "url": "https://www.wsj.com/articles/the-25th-annual-putnam-county-spelling-bee-review-a"
+    },
+    {
+      "t": "2026-03-30T05:58:00.660Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
