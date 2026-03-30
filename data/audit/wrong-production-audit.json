@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T18:52:16.813Z",
+  "timestamp": "2026-03-30T23:41:13.519Z",
   "stats": {
-    "totalReviews": 31958,
-    "alreadyFlagged": 11681,
+    "totalReviews": 31959,
+    "alreadyFlagged": 11683,
     "dateGuardCatches": 14,
     "directorMismatch": 927,
-    "tvFilmSignals": 3298,
+    "tvFilmSignals": 3299,
     "londonSignals": 978,
     "offBroadwaySignals": 968,
     "yearMismatch": 64,
-    "noPublishDate": 6042
+    "noPublishDate": 6041
   },
   "findings": [
     {
@@ -18975,6 +18975,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "grey-house-2023",
+      "file": "slash-film--caroline-cao.json",
+      "publishDate": "2023-06-07",
+      "url": "https://www.slashfilm.com/1307195/the-grey-house-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },

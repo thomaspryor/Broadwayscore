@@ -162,6 +162,22 @@ describe('market partitioning', () => {
     const ob = getOffBroadwayShows().length;
     assert.strictEqual(bw + we + ob, all, 'Market partitions should sum to total shows');
   });
+
+  test('each market function returns unique show IDs (no duplicates)', () => {
+    for (const [name, fn] of [
+      ['getBroadwayShows', getBroadwayShows],
+      ['getWestEndShows', getWestEndShows],
+      ['getOffBroadwayShows', getOffBroadwayShows],
+    ] as const) {
+      const shows = (fn as () => ComputedShow[])();
+      const ids = shows.map(s => s.id);
+      const uniqueIds = new Set(ids);
+      assert.strictEqual(
+        uniqueIds.size, ids.length,
+        `${name} returned duplicate IDs: ${ids.filter((id, i) => ids.indexOf(id) !== i).join(', ')}`
+      );
+    }
+  });
 });
 
 // ===========================================
