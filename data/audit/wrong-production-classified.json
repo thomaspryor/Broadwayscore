@@ -1,16 +1,34 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-30T10:27:44.241Z",
+    "generatedAt": "2026-03-30T10:41:31.202Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 68,
-    "classified": 0,
+    "classified": 1,
     "wrongProduction": 0,
-    "correctProduction": 0,
+    "correctProduction": 1,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
+      "file": "timeout--jenna-scherer.json",
+      "outlet": "Time Out New York",
+      "criticName": "Jenna Scherer",
+      "publishDate": "June 18, 2014",
+      "originalSignals": [
+        "publishDate 2014 is 17 years after original opening 1997",
+        "year 1998 in text matches revival the-lion-king-west-end-2021"
+      ],
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review mentions Julie Taymor as the director, the Minskoff Theatre as the venue, and the 1997 opening date. It also mentions the show has been running for nearly 20 years, which aligns with the 2014 publish date."
+    }
+  ]
 }
