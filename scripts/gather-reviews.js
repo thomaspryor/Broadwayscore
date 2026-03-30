@@ -212,9 +212,12 @@ function detectCrossShowUrlMismatch(showId, url) {
     // Check if URL contains a different show's slug
     for (const other of index) {
       if (other.id === showId) continue;
-      // Skip shows that share a base title with this show
+      // Skip shows that share a base title with this show (same slug or prefix relationship)
       const otherIdSlug = other.id.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
       if (otherIdSlug === idSlug) continue;
+      // Skip if one show's slug is a prefix of the other (e.g., "kinky-boots" vs "kinky-boots-the-musical")
+      if (thisShow.slug.startsWith(other.slug) || other.slug.startsWith(thisShow.slug)) continue;
+      if (idSlug.startsWith(otherIdSlug) || otherIdSlug.startsWith(idSlug)) continue;
       if (urlPath.includes(other.slug)) {
         return { matchedTitle: other.title, showTitle: thisShow.title };
       }
