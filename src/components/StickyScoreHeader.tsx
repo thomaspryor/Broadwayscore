@@ -10,9 +10,10 @@ interface StickyScoreHeaderProps {
   score?: number | null;
   showAfterPx?: number;
   category?: string;
+  backHref?: string;
 }
 
-export default function StickyScoreHeader({ title, score, showAfterPx = 200, category }: StickyScoreHeaderProps) {
+export default function StickyScoreHeader({ title, score, showAfterPx = 200, category, backHref = '/' }: StickyScoreHeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   // Throttled scroll handler for better performance
@@ -59,7 +60,7 @@ export default function StickyScoreHeader({ title, score, showAfterPx = 200, cat
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-2 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <Link
-            href="/"
+            href={backHref}
             className="text-gray-400 hover:text-white transition-colors flex-shrink-0 inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded"
             aria-label="Back to all shows"
           >

@@ -285,7 +285,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
       />
 
       {/* Sticky Score Header */}
-      <StickyScoreHeader title={show.title} score={score} category={show.category} />
+      <StickyScoreHeader title={show.title} score={score} category={show.category} backHref={isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/'} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Breadcrumb items={[
