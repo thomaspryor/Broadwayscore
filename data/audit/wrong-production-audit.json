@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T07:47:11.588Z",
+  "timestamp": "2026-03-30T08:18:30.507Z",
   "stats": {
-    "totalReviews": 31888,
-    "alreadyFlagged": 11272,
+    "totalReviews": 31854,
+    "alreadyFlagged": 11273,
     "dateGuardCatches": 18,
-    "directorMismatch": 943,
-    "tvFilmSignals": 3346,
-    "londonSignals": 996,
+    "directorMismatch": 942,
+    "tvFilmSignals": 3348,
+    "londonSignals": 998,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6258
+    "noPublishDate": 6221
   },
   "findings": [
     {
@@ -6320,24 +6320,6 @@
       ]
     },
     {
-      "showId": "beetlejuice-west-end-2026",
-      "file": "thestage--unknown.json",
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/news/beetlejuice-transfers-to-uk-for-the-first-time",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
       "file": "latimes--charles-mcnulty.json",
       "score": 80,
@@ -12091,6 +12073,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "file": "thestage--alistair-smith.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -57127,6 +57128,20 @@
       ]
     },
     {
+      "showId": "trash-off-broadway-2026",
+      "file": "nytimes--laura-collins-hughes.json",
+      "score": 66,
+      "publishDate": "2026-03-15",
+      "url": "https://www.nytimes.com/2026/03/15/theater/trash-review-perelman.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
       "showId": "travesties-1975",
       "file": "broadwayworld--michael-dale.json",
       "score": 77,
@@ -62169,6 +62184,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 73,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -81451,6 +81480,20 @@
       "score": 63,
       "publishDate": "2006-09-28",
       "url": "https://variety.com/2006/legit/reviews/wicked-3-1200513030/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 76,
+      "publishDate": "2026-01-07",
+      "url": "https://www.broadwayworld.com/westend/article/Review-WOMAN-IN-MIND-Duke-Of-Yorks-Theatre-20260107",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
