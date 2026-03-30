@@ -145,7 +145,9 @@
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/thestage--paul-vale.json",
     "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--tanyel-gumushan.json",
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json",
-    "data-off-broadway-2026/timeout--unknown.json"
+    "data-off-broadway-2026/timeout--unknown.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
+    "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -483,7 +485,15 @@
     "11-to-midnight-off-broadway-2026/playbill--unknown.json",
     "the-tempest-globe-west-end-2026/i-paper--fiona-mountford.json",
     "an-ark-off-broadway-2026/wsj--unknown.json",
-    "an-ark-off-broadway-2026/ap--mark-kennedy.json"
+    "an-ark-off-broadway-2026/ap--mark-kennedy.json",
+    "an-ark-off-broadway-2026/playbill--unknown.json",
+    "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+    "garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
+    "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
+    "oh-mary-west-end-2025/standard--nick-curtis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
+    "two-strangers-bway-2025/guardian--arifa-akbar.json",
+    "chess-2025/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -569,7 +579,9 @@
       "evening-all-afternoon-west-end-2026/standard--nick-curits.json",
       "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/thestage--paul-vale.json",
       "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--tanyel-gumushan.json",
-      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json"
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json",
+      "garry-starr-classic-penguins-garrick-west-end-2026/west-end-best-friend--livvy-perrett.json",
+      "the-hunger-games-on-stage-west-end-2025/thestage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -640,7 +652,10 @@
       "data/review-texts/cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
       "data/review-texts/chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/an-ark-off-broadway-2026/wsj--unknown.json",
-      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json"
+      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
+      "data/review-texts/an-ark-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/garry-starr-classic-penguins-garrick-west-end-2026/timeout-london--unknown.json",
+      "data/review-texts/chess-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/playbill--unknown.json",
@@ -689,7 +704,7 @@
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "an-ark-off-broadway-2026/ap--mark-kennedy.json",
+  "lastProcessed": "chess-2025/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -820,6 +835,17 @@
     },
     {
       "t": "2026-03-30T05:51:10.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T05:53:09.879Z",
+      "event": "bb-session",
+      "session": "b1add2d6",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-30T05:53:11.293Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
