@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T16:02:20.918Z",
+  "timestamp": "2026-03-30T16:23:04.044Z",
   "stats": {
-    "totalReviews": 31966,
-    "alreadyFlagged": 11675,
+    "totalReviews": 31962,
+    "alreadyFlagged": 11676,
     "dateGuardCatches": 14,
     "directorMismatch": 927,
     "tvFilmSignals": 3298,
-    "londonSignals": 977,
+    "londonSignals": 978,
     "offBroadwaySignals": 969,
     "yearMismatch": 64,
-    "noPublishDate": 6057
+    "noPublishDate": 6050
   },
   "findings": [
     {
@@ -65173,6 +65173,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "amny--matt-windman.json",
+      "score": 76,
+      "publishDate": "2026-03-23",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
