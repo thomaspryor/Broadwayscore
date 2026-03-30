@@ -1191,6 +1191,8 @@ async function pollCycle() {
         'musical-theatre-review', 'british-theatre', 'everything-theatre',
         'londonist', 'thereviewshub', 'city-am', 'a-younger-theatre',
         'west-end-wilma', 'digital-spy', 'monstagigz',
+        'radio-times', 'attitude', 'metro-uk', 'lost-in-theatreland',
+        'the-spectator-uk', 'shy-strange-manic',
       ];
       const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
       const allOutlets = reg.outlets || reg;
