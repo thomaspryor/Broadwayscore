@@ -235,9 +235,9 @@ function isMultiProduction(newShow, existing) {
   const newCat = newShow.category || 'broadway';
   const existingCat = existing.category || 'broadway';
   if (newCat !== existingCat && getMarketPool(newCat) === getMarketPool(existingCat)) {
-    const newVenue = (newShow.venue || '').toLowerCase().trim();
-    const existVenue = (existing.venue || '').toLowerCase().trim();
-    if (!newVenue || !existVenue || newVenue !== existVenue) {
+    const newVenue = (newShow.venue || '').toLowerCase().trim().replace(/\s*[-–—]\s*.+$/, '');
+    const existVenue = (existing.venue || '').toLowerCase().trim().replace(/\s*[-–—]\s*.+$/, '');
+    if (!newVenue || !existVenue || (newVenue !== existVenue && !newVenue.startsWith(existVenue) && !existVenue.startsWith(newVenue))) {
       return true; // Different (or unknown) venues = legitimate transfer
     }
     // Same venue = likely duplicate, not a transfer — fall through to other checks
