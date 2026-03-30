@@ -211,7 +211,7 @@ async function generateShowOG(
                   fontWeight: 800,
                   background: scoreColor.bg,
                   color: scoreColor.text,
-                  boxShadow: displayScore && displayScore >= 83
+                  boxShadow: displayScore && displayScore >= getGoldThreshold(category)
                     ? '0 0 40px rgba(212, 175, 55, 0.4)'
                     : '0 4px 24px rgba(0, 0, 0, 0.3)',
                 }}
