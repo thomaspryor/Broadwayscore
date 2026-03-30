@@ -1,9 +1,8 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getWestEndShows, getOffWestEndShows } from '@/lib/data-core';
+import { getWestEndShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
-// hasEnoughReviews no longer needed — OWE shows mixed into main list
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import WestEndPageClient from '@/components/WestEndPageClient';
 import type { WestEndShow } from '@/components/WestEndPageClient';
@@ -55,11 +54,8 @@ export default function WestEndPage() {
     notFound();
   }
 
-  const weShows = getWestEndShows();
-  const oweShows = getOffWestEndShows();
-
-  // Combine WE + OWE shows for the main page
-  const shows = [...weShows, ...oweShows];
+  // getWestEndShows() already returns both WE + OWE shows
+  const shows = getWestEndShows();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
