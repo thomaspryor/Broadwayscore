@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T06:03:20.077Z",
+  "timestamp": "2026-03-30T06:14:08.663Z",
   "stats": {
     "totalReviews": 31886,
-    "alreadyFlagged": 11269,
+    "alreadyFlagged": 11270,
     "dateGuardCatches": 18,
     "directorMismatch": 941,
-    "tvFilmSignals": 3340,
-    "londonSignals": 990,
+    "tvFilmSignals": 3345,
+    "londonSignals": 993,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6264
+    "noPublishDate": 6263
   },
   "findings": [
     {
@@ -11787,6 +11787,20 @@
       ]
     },
     {
+      "showId": "data-off-broadway-2026",
+      "file": "timeout--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-16",
+      "url": "https://www.timeout.com/newyork/theater/data",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "days-of-wine-and-roses-2024",
       "file": "cititour--brian-scott-lipton.json",
       "score": 78,
@@ -13224,6 +13238,20 @@
     },
     {
       "showId": "dracula-west-end-2025",
+      "file": "thestage--sam-marlowe.json",
+      "score": 61,
+      "publishDate": "February 17th, 2026",
+      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-williams-cynthia-erivo",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 61,
       "publishDate": "2026-02-17",
@@ -13912,6 +13940,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -50505,6 +50547,20 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "thestage--unknown.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-hunger-games-on-stage-review-troubadour-canary-wharf-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "whatsonstage--alex-wood.json",
       "score": 77,
       "publishDate": "2025-11-13",
@@ -57702,6 +57758,20 @@
       ]
     },
     {
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026",
+      "file": "thestage--paul-vale.json",
+      "score": 89,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/unfortunate-the-untold-story-of-ursula-the-sea-witch-review-at-southwark-playhouse-elephant-london-by-robyn-grant",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "vanya-and-sonia-and-masha-and-spike-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
@@ -64847,10 +64917,38 @@
     },
     {
       "showId": "evening-all-afternoon-west-end-2026",
+      "file": "standard--nick-curits.json",
+      "score": 62,
+      "publishDate": "2026-02-25",
+      "url": "https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 82,
       "publishDate": "2026-02-24",
       "url": "https://theatreweekly.com/review-evening-all-afternoon-at-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/review-round-ups/evening-all-afternoon-at-the-donmar-warehouse-review-round-up",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80751,6 +80849,20 @@
       "score": null,
       "publishDate": "April 24, 2024",
       "url": "https://variety.com/2020/legit/reviews/uncle-vanya-review-toby-jones-london-1203478623/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026",
+      "file": "whatsonstage--tanyel-gumushan.json",
+      "score": 80,
+      "publishDate": "2026-01-08",
+      "url": "https://www.whatsonstage.com/news/unfortunate-the-untold-story-of-ursula-the-sea-witch-reveals-full-london-casting_1708127/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
