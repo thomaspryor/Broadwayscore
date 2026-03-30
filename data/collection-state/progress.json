@@ -103,7 +103,8 @@
     "an-ark-off-broadway-2026/nytimes--roslyn-sulcas.json",
     "les-miserables-west-end-2021/timeout-london--unknown.json",
     "the-normal-heart-2011/newsday--thursday-may.json",
-    "oleanna-2009/theatermania--unknown.json"
+    "oleanna-2009/theatermania--unknown.json",
+    "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -352,7 +353,16 @@
     "race-2009/theatermania--charles-isherwood.json",
     "memphis-2009/variety--charles-isherwood.json",
     "oleanna-2009/times-uk--dominic-maxwell.json",
-    "burn-the-floor-2009/ew--jennifer-armstrong.json"
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "9-to-5-2009/lansing-city-pulse--allan-i-ross.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json",
+    "exit-the-king-2009/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -424,7 +434,9 @@
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
-      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json"
+      "fiddler-on-the-roof-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
+      "waiting-for-godot-2009/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -486,7 +498,7 @@
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "burn-the-floor-2009/ew--jennifer-armstrong.json",
+  "lastProcessed": "exit-the-king-2009/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -564,6 +576,17 @@
       "t": "2026-03-30T03:31:11.014Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T04:56:07.540Z",
+      "event": "bb-session",
+      "session": "8b031202",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-revi"
+    },
+    {
+      "t": "2026-03-30T04:56:08.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
