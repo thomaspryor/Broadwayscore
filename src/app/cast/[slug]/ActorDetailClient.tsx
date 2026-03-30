@@ -19,7 +19,7 @@ function formatDate(dateStr: string): string {
 }
 
 function ShowCard({ show, loading = 'lazy', tonyInfo }: { show: ActorProfile['shows'][0]; loading?: 'eager' | 'lazy'; tonyInfo?: ShowTonyInfo }) {
-  const tier = show.score !== null ? getScoreTier(show.score) : null;
+  const tier = show.score !== null ? getScoreTier(show.score, show.category) : null;
 
   return (
     <Link
@@ -199,8 +199,10 @@ export default function ActorDetailClient({
     [profile.shows]
   );
 
-  const highTier = profile.highScore ? getScoreTier(profile.highScore.score) : null;
-  const lowTier = profile.lowScore ? getScoreTier(profile.lowScore.score) : null;
+  const highShow = profile.highScore ? profile.shows.find(s => s.title === profile.highScore!.showTitle) : null;
+  const lowShow = profile.lowScore ? profile.shows.find(s => s.title === profile.lowScore!.showTitle) : null;
+  const highTier = profile.highScore ? getScoreTier(profile.highScore.score, highShow?.category) : null;
+  const lowTier = profile.lowScore ? getScoreTier(profile.lowScore.score, lowShow?.category) : null;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
