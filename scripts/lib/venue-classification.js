@@ -43,6 +43,8 @@ function isUkOutletUrl(url) {
   if (!url) return false;
   try {
     const hostname = new URL(url).hostname || '';
+    // theatrely.com is a US/NYC outlet — exclude from the 'theatre' hostname heuristic
+    if (hostname.includes('theatrely')) return false;
     return hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
       || /london|theatre|whatsonstage|thestage|theguardian|telegraph|thetimes|independent|standard|inews|variety|nytimes|timeout/.test(hostname);
   } catch {

@@ -1363,8 +1363,9 @@ showDirs.forEach(showId => {
             || outletRegionMap[earlyCanonicalOutlet] === 'london' || outletRegionMap[earlyRawOutlet] === 'london';
           try {
             const hostname = new URL(data.url).hostname || '';
+            // theatrely.com is a US/NYC outlet — "theatre" substring is a false positive
             const isUkUrl = hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-              || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork'));
+              || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork') && !hostname.includes('theatrely'));
             if (isUkUrl || outletIsDualOrUk) {
               // UK/dual-market outlet + London URL → clear false positive
               if (isUkUrl) {

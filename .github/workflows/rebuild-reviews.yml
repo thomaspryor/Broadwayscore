@@ -115,7 +115,7 @@ jobs:
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/backfill-unknown-critics.js --critics-only --limit=200
+        run: node scripts/backfill-unknown-critics.js --critics-only --limit=50
         continue-on-error: true
         timeout-minutes: 15
 
