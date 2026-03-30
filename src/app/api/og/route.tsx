@@ -1,6 +1,7 @@
 import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
 import { getMarketMinReviews } from '@/lib/market-utils';
+import { getGoldThreshold } from '@/config/score-buckets';
 
 export const runtime = 'edge';
 
@@ -14,17 +15,17 @@ const SCORE_COLORS = {
   tbd: { bg: '#2a2a2a', text: '#9ca3af' },
 };
 
-function getScoreColor(score: number | null, reviewCount: number) {
+function getScoreColor(score: number | null, reviewCount: number, category?: string) {
   if (reviewCount < 5 || score === null) return SCORE_COLORS.tbd;
-  if (score >= 83) return SCORE_COLORS.mustSee;
+  if (score >= getGoldThreshold(category)) return SCORE_COLORS.mustSee;
   if (score >= 75) return SCORE_COLORS.great;
   if (score >= 65) return SCORE_COLORS.good;
   if (score >= 55) return SCORE_COLORS.tepid;
   return SCORE_COLORS.skip;
 }
 
-function getScoreLabel(score: number): string {
-  if (score >= 83) return 'Critical Gold';
+function getScoreLabel(score: number, category?: string): string {
+  if (score >= getGoldThreshold(category)) return 'Critical Gold';
   if (score >= 75) return 'Recommended';
   if (score >= 65) return 'Worth Seeing';
   if (score >= 55) return 'Skippable';
@@ -73,10 +74,10 @@ async function generateShowOG(
   posterUrl: string,
   category?: string
 ) {
-  const scoreColor = getScoreColor(score, reviewCount);
+  const scoreColor = getScoreColor(score, reviewCount, category);
   const minReviews = getMarketMinReviews(category);
   const displayScore = reviewCount >= minReviews && score !== null ? Math.round(score) : null;
-  const scoreLabel = displayScore ? getScoreLabel(displayScore) : 'Awaiting Reviews';
+  const scoreLabel = displayScore ? getScoreLabel(displayScore, category) : 'Awaiting Reviews';
 
   return new ImageResponse(
     (
@@ -210,7 +211,7 @@ async function generateShowOG(
                   fontWeight: 800,
                   background: scoreColor.bg,
                   color: scoreColor.text,
-                  boxShadow: displayScore && displayScore >= 83
+                  boxShadow: displayScore && displayScore >= getGoldThreshold(category)
                     ? '0 0 40px rgba(212, 175, 55, 0.4)'
                     : '0 4px 24px rgba(0, 0, 0, 0.3)',
                 }}

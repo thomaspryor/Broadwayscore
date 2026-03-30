@@ -9,11 +9,13 @@ import Link from 'next/link';
 import { getOptimizedImageUrl, getCdnSrcSet } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreBadge';
+import { getGoldThreshold } from '@/config/score-buckets';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { HomepageShow } from '@/components/HomePageClient';
 
 function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: boolean }) {
   const score = show.criticScore?.score;
+  const category = show.category ?? 'broadway';
   const imgSrc = show.images?.poster
     ? getOptimizedImageUrl(show.images.poster, 'card')
     : show.images?.thumbnail
@@ -53,11 +55,11 @@ function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: 
         {/* Score overlay */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
-            {score !== undefined && score !== null && score >= 83 && (
+            {score !== undefined && score !== null && score >= getGoldThreshold(category) && (
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score)
+              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, category)
             }`}>
               {score !== undefined && score !== null ? Math.round(score) : '—'}
             </div>

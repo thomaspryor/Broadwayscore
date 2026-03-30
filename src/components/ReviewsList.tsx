@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
 import { getScoreColorClass } from '@/components/show-cards';
+import { getGoldThreshold } from '@/config/score-buckets';
 
 interface Review {
   showId: string;
@@ -26,6 +27,7 @@ interface Review {
 interface ReviewsListProps {
   reviews: Review[];
   initialCount?: number;
+  category?: string;
 }
 
 function ChevronDownIcon({ className }: { className?: string }) {
@@ -139,9 +141,10 @@ function ExternalLinkIcon({ className }: { className?: string }) {
   );
 }
 
-const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review; isLast: boolean }) {
+const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { review: Review; isLast: boolean; category?: string }) {
+  const goldMin = getGoldThreshold(category);
   let scoreLabel: string;
-  if (review.reviewScore >= 83) scoreLabel = 'Critical Gold';
+  if (review.reviewScore >= goldMin) scoreLabel = 'Critical Gold';
   else if (review.reviewScore >= 75) scoreLabel = 'Recommended';
   else if (review.reviewScore >= 65) scoreLabel = 'Worth Seeing';
   else if (review.reviewScore >= 55) scoreLabel = 'Skippable';
@@ -230,7 +233,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
 
 type SortMode = 'score' | 'date';
 
-export default function ReviewsList({ reviews, initialCount = 5 }: ReviewsListProps) {
+export default function ReviewsList({ reviews, initialCount = 5, category }: ReviewsListProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>('score');
 
@@ -275,6 +278,7 @@ export default function ReviewsList({ reviews, initialCount = 5 }: ReviewsListPr
           key={`${review.outletId}-${review.publishDate}`}
           review={review}
           isLast={false}
+          category={category}
         />
       ))}
 

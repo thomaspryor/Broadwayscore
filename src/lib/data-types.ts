@@ -204,6 +204,8 @@ export interface AudienceBuzzSource {
   starRating?: number;
   totalPosts?: number;
   totalComments?: number;
+  /** Resolved URL for the platform's audience review page (stored by scrapers) */
+  url?: string;
 }
 
 export interface AudienceBuzzData {

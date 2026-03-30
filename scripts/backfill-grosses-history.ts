@@ -58,7 +58,9 @@ function loadShows(): Map<string, string> {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));
   const showMap = new Map<string, string>();
 
-  for (const show of data.shows) {
+  // data.shows is an object keyed by index, not an array
+  for (const show of Object.values(data.shows) as any[]) {
+    if (!show.slug || !show.title) continue;
     showMap.set(show.slug, show.slug);
     showMap.set(normalizeTitle(show.title), show.slug);
     const titleSlug = createSlug(show.title);

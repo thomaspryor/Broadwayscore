@@ -1,4 +1,5 @@
 import { getMarketMinReviews } from '@/lib/market-utils';
+import { getGoldThreshold } from '@/config/score-buckets';
 
 // Score tier labels and tooltips
 export const SCORE_TIERS = {
@@ -41,10 +42,10 @@ export const SCORE_TIERS = {
 
 export type ScoreTier = typeof SCORE_TIERS.mustSee;
 
-export function getScoreTier(score: number | null | undefined): ScoreTier | null {
+export function getScoreTier(score: number | null | undefined, category?: string): ScoreTier | null {
   if (score === null || score === undefined) return null;
   const rounded = Math.round(score);
-  if (rounded >= 83) return SCORE_TIERS.mustSee;
+  if (rounded >= getGoldThreshold(category)) return SCORE_TIERS.mustSee;
   if (rounded >= 75) return SCORE_TIERS.recommended;
   if (rounded >= 65) return SCORE_TIERS.worthSeeing;
   if (rounded >= 55) return SCORE_TIERS.skippable;
@@ -67,13 +68,13 @@ const TIER_TEXT_CLASS: Record<string, string> = {
   'Stay Away': 'text-score-skip',
 };
 
-export function getScoreColorClass(score: number): string {
-  const tier = getScoreTier(score);
+export function getScoreColorClass(score: number, category?: string): string {
+  const tier = getScoreTier(score, category);
   return tier ? TIER_COLOR_CLASS[tier.label] ?? 'score-skip' : 'score-skip';
 }
 
-export function getScoreTextColorClass(score: number): string {
-  const tier = getScoreTier(score);
+export function getScoreTextColorClass(score: number, category?: string): string {
+  const tier = getScoreTier(score, category);
   return tier ? TIER_TEXT_CLASS[tier.label] ?? 'text-score-skip' : 'text-score-skip';
 }
 
@@ -140,8 +141,8 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
   }
 
   const roundedScore = Math.round(score);
-  const colorClass = getScoreColorClass(roundedScore);
-  const tier = getScoreTier(roundedScore);
+  const colorClass = getScoreColorClass(roundedScore, category);
+  const tier = getScoreTier(roundedScore, category);
   const label = tier?.label ?? 'Stay Away';
 
   const badge = (
@@ -150,7 +151,7 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
     </div>
   );
 
-  if (showCrown && roundedScore >= 83) {
+  if (showCrown && roundedScore >= getGoldThreshold(category)) {
     return (
       <div className="relative overflow-visible">
         <MustSeeCrown size={size} />
