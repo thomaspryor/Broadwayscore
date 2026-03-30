@@ -138,7 +138,7 @@ function parseYesNo(response) {
  */
 async function llmValidatePageMatch(headingText, showTitle, options = {}) {
   const yearHint = options.openingYear ? ` The show opened in ${options.openingYear}.` : '';
-  const prompt = `Is this page about the Broadway/theater show titled "${showTitle}"?${yearHint}\nThe show title "${showTitle}" should appear in the page headings. Headings may include additional context like cast names, dates, or "Review Roundup" — that's normal. Focus on whether the SHOW TITLE matches.\nReject only if the page is about a genuinely DIFFERENT show (e.g., "Blood/Love" vs "Bloody Bloody Andrew Jackson").\nPage title and headings: "${headingText.substring(0, 500)}"\nAnswer YES or NO only.`;
+  const prompt = `Is this page a THEATER review or review roundup for the Broadway/West End show titled "${showTitle}"?${yearHint}\nThe show title "${showTitle}" should appear in the page headings. Headings may include additional context like cast names, dates, or "Review Roundup" — that's normal.\nAnswer NO if: the page is about a movie, book, TV show, or concert (not a stage production), OR about a genuinely DIFFERENT show (e.g., "Blood/Love" vs "Bloody Bloody Andrew Jackson").\nPage title and headings: "${headingText.substring(0, 500)}"\nAnswer YES or NO only.`;
 
   // Try Gemini first (cheapest)
   try {

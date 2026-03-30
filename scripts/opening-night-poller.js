@@ -280,8 +280,9 @@ async function runAggregators(show) {
         .split(/\s+/)
         .map((w, i) => {
           const lower = w.toLowerCase();
-          // Preserve Roman numerals (II, III, IV, etc.)
-          if (/^[IVXLCDMivxlcdm]+$/.test(w) && w.length <= 5) return w.toUpperCase();
+          // Preserve Roman numerals (II, III, IV, V, VI, etc.) — strict pattern avoids
+          // false matches on English words like "Did", "Ill", "Mid", "Mix", "Dim"
+          if (/^(?:I{1,3}|IV|VI{0,3}|IX|XI{0,3}|XIV|XV|XVI{0,3}|XIX|XX)$/i.test(w)) return w.toUpperCase();
           // Lowercase articles/prepositions in middle position
           if (i > 0 && ['a', 'an', 'the', 'of', 'in', 'on', 'at', 'to', 'for'].includes(lower)) {
             return lower;
