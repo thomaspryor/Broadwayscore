@@ -1,14 +1,6 @@
 {
-  "generatedAt": "2026-03-30T07:05:39.969Z",
+  "generatedAt": "2026-03-30T07:14:29.667Z",
   "issues": [
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-      "outlet": "nypost",
-      "critic": "Johnny Oleksinski",
-      "detail": "originalRating \"3.5/4 stars\" (=88) vs score 42 (source: llmScore-override-star-conflict)"
-    },
     {
       "type": "rating-score-mismatch",
       "severity": "high",
@@ -16,14 +8,6 @@
       "outlet": "nypost",
       "critic": "Johnny Oleksinski",
       "detail": "originalRating \"4 stars\" (=80) vs score 25 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "an-ark-off-broadway-2026",
-      "outlet": "ew",
-      "critic": "Thom Geier",
-      "detail": "originalRating \"A\" (=90) vs score 63 (source: llmScore-override-star-conflict)"
     },
     {
       "type": "rating-score-mismatch",
@@ -72,14 +56,6 @@
       "outlet": "nypost",
       "critic": "Johnny Oleksinski",
       "detail": "originalRating \"4/4 stars\" (=100) vs score 48 (source: human-review)"
-    },
-    {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "death-of-a-salesman-2022",
-      "outlet": "nypost",
-      "critic": "Johnny Oleksinski",
-      "detail": "originalRating \"3.5/4 stars\" (=88) vs score 42 (source: llmScore-override-star-conflict)"
     },
     {
       "type": "rating-score-mismatch",
@@ -212,6 +188,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "the-last-five-years-2025",
+      "outlet": "nypost",
+      "critic": "Johnny Oleksinski",
+      "detail": "originalRating \"2.5/4 stars\" (=63) vs score 40 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "the-normal-heart-2011",
       "outlet": "timeout",
       "critic": "Adam Feldman",
@@ -224,6 +208,14 @@
       "outlet": "timeout",
       "critic": "David Cote",
       "detail": "originalRating \"1/5\" (=20) vs score 53 (source: llmScore-lowconf)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "the-piano-lesson-2022",
+      "outlet": "ew",
+      "critic": "Dave Quinn",
+      "detail": "originalRating \"F\" (=20) vs score 90 (source: human-review)"
     },
     {
       "type": "rating-score-mismatch",
@@ -400,6 +392,22 @@
       "outlet": "ew",
       "critic": "Kristen Baldwin",
       "detail": "humanReviewScore 45 (mixed) overrides explicit \"B+\" (=80, positive)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "the-last-five-years-2025",
+      "outlet": "nypost",
+      "critic": "Johnny Oleksinski",
+      "detail": "humanReviewScore 40 (negative) overrides explicit \"2.5/4 stars\" (=63, mixed)"
+    },
+    {
+      "type": "human-override-vs-explicit-grade",
+      "severity": "high",
+      "showId": "the-piano-lesson-2022",
+      "outlet": "ew",
+      "critic": "Dave Quinn",
+      "detail": "humanReviewScore 90 (positive) overrides explicit \"F\" (=20, negative)"
     },
     {
       "type": "human-override-vs-explicit-grade",
