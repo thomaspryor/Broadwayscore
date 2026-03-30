@@ -2862,7 +2862,20 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
         if (posts && Array.isArray(posts)) {
           for (const post of posts.slice(0, 3)) {
             const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '\u2013').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
-            if (!wpTitle.toLowerCase().includes(searchTitle.toLowerCase().substring(0, 8))) continue;
+            // Validate the WP post title actually matches our show.
+            // Old check used first 8 chars which was too loose (e.g. "op" matched American Psycho for Op Mincemeat).
+            // New check: normalize both titles and require significant word overlap.
+            const normalizeForMatch = (t) => t.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+            const wpNorm = normalizeForMatch(wpTitle);
+            const showNorm = normalizeForMatch(searchTitle);
+            const showWords = showNorm.split(' ').filter(w => w.length > 2);
+            const matchedWords = showWords.filter(w => wpNorm.includes(w));
+            // Require at least 60% of significant words to match, minimum 2 words (or all if title is 1-2 words)
+            const minMatch = showWords.length <= 2 ? showWords.length : Math.ceil(showWords.length * 0.6);
+            if (matchedWords.length < minMatch) {
+              console.log(`    ✗ WET title mismatch: "${wpTitle.slice(0, 60)}" doesn't match "${searchTitle}" (${matchedWords.length}/${showWords.length} words)`);
+              continue;
+            }
 
             const htmlContent = post.content?.rendered || '';
             let reviews = extractStarRatings(htmlContent).map(r => ({

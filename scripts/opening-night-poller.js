@@ -580,6 +580,19 @@ async function runAggregators(show) {
 
       if (Array.isArray(posts) && posts.length > 0) {
         for (const post of posts.slice(0, 3)) {
+          // Validate post title matches our show (WP search can return wrong shows)
+          const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '\u2013').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
+          const normalizeForMatch = (t) => t.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+          const wpNorm = normalizeForMatch(wpTitle);
+          const showNorm = normalizeForMatch(searchTitle);
+          const showWords = showNorm.split(' ').filter(w => w.length > 2);
+          const matchedWords = showWords.filter(w => wpNorm.includes(w));
+          const minMatch = showWords.length <= 2 ? showWords.length : Math.ceil(showWords.length * 0.6);
+          if (matchedWords.length < minMatch) {
+            console.log(`    ✗ WET title mismatch: "${wpTitle.slice(0, 60)}" doesn't match "${searchTitle}"`);
+            continue;
+          }
+
           const htmlContent = post.content?.rendered || '';
           let wetReviews = [];
 

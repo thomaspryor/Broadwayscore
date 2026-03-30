@@ -96,6 +96,7 @@ function buildAllProfiles() {
               isRevival: !!(show.tags && show.tags.includes('revival')),
               score: show.criticScore?.score ?? null,
               audienceScore: buzz?.combinedScore ?? null,
+              category: show.category,
               wasObc: castType === 'obc',
             },
             flags: new Set(member.flags || []),

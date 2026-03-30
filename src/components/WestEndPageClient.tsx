@@ -34,7 +34,6 @@ interface WestEndPageClientProps {
   totalShows: number;
   totalReviews: number;
   scoredShows: number;
-  bestOweShows?: WestEndShow[];
 }
 
 // URL parameter values
@@ -53,7 +52,7 @@ const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 function weHasEnoughReviews(show: WestEndShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
-  return hasEnoughReviews(rc, 'west-end', t1t2);
+  return hasEnoughReviews(rc, show.category || 'west-end', t1t2);
 }
 
 // Map URL params to internal values
@@ -101,7 +100,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) 
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, bestOweShows }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: WestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -114,7 +113,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, bestOw
     scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
     q: initialSearchParams.get('q') || '',
-    venue: (initialSearchParams.get('venue') === 'all' ? 'all' : 'west-end-only') as 'all' | 'west-end-only',
+    venue: (initialSearchParams.get('venue') === 'west-end-only' ? 'west-end-only' : 'all') as 'all' | 'west-end-only',
   }));
 
   // Separate synchronous state for search input — startTransition drops keystrokes on controlled inputs
@@ -150,7 +149,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, bestOw
       if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
       if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
       if (next.q) urlParams.set('q', next.q);
-      if (next.venue === 'all') urlParams.set('venue', next.venue);
+      if (next.venue === 'west-end-only') urlParams.set('venue', next.venue);
 
       const paramString = urlParams.toString();
       window.history.replaceState({}, '', paramString ? `/west-end?${paramString}` : '/west-end');
@@ -388,11 +387,11 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, bestOw
           <ToggleBar
             label="VENUE:"
             options={[
-              { value: 'west-end-only' as const, label: 'WEST END' },
-              { value: 'all' as const, label: '+ OFF-WEST END' },
+              { value: 'all' as const, label: 'ALL LONDON' },
+              { value: 'west-end-only' as const, label: 'WEST END ONLY' },
             ]}
             value={venueFilter}
-            onChange={(v) => updateParams({ venue: v === 'west-end-only' ? null : v })}
+            onChange={(v) => updateParams({ venue: v === 'all' ? null : v })}
             ariaLabel="Filter by venue type"
           />
         </div>
@@ -518,22 +517,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, bestOw
         <FeaturedRow title="Closing Soon" shows={closingSoonShows} />
       </div>
 
-      {/* Best Off-West End — cross-promote */}
-      {bestOweShows && bestOweShows.length > 0 && (
-        <div className="mt-8 pt-8 border-t border-white/5">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-bold text-white">Best Off-West End</h2>
-            <Link href="/off-west-end" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
-              View all →
-            </Link>
-          </div>
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {bestOweShows.map((show) => (
-              <MiniShowCard key={show.id} show={show} />
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Off-West End cross-promo link */}
+      <div className="mt-8 pt-4 border-t border-white/5 text-center">
+        <Link href="/off-west-end" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
+          View all Off-West End shows →
+        </Link>
+      </div>
     </div>
   );
 }
