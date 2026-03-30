@@ -11,10 +11,12 @@
  *   node scripts/enrich-west-end-dates.js [options]
  *
  * Options:
- *   --dry-run       Show what would change without modifying files
- *   --show=SLUG     Only process a specific show by slug
- *   --verify        Compare dates vs shows.json, report discrepancies (no writes)
- *   --force         Overwrite existing dates
+ *   --dry-run            Show what would change without modifying files
+ *   --show=SLUG          Only process a specific show by slug
+ *   --verify             Compare dates vs shows.json, report discrepancies (no writes)
+ *   --force              Overwrite existing dates
+ *   --fix-unconfirmed    Also process shows with unconfirmed openingDateSource
+ *                        (todaytix, showscore, unknown) — used by daily cron
  */
 
 const fs = require('fs');
@@ -43,7 +45,8 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const verify = args.includes('--verify');
 const force = args.includes('--force');
-const missingOnly = !force;
+const fixUnconfirmed = args.includes('--fix-unconfirmed');
+const missingOnly = !force && !fixUnconfirmed;
 
 const showArg = args.find(a => a.startsWith('--show='));
 const showSlug = showArg ? showArg.split('=')[1] : null;
@@ -357,6 +360,7 @@ async function main() {
   console.log('='.repeat(60));
   console.log(`Mode: ${verify ? 'VERIFY' : dryRun ? 'DRY RUN' : 'LIVE'}`);
   if (force) console.log('  FORCE mode: will overwrite existing dates');
+  if (fixUnconfirmed) console.log('  FIX-UNCONFIRMED mode: will correct shows with todaytix/showscore/unknown sources');
   if (showSlug) console.log(`Show filter: ${showSlug}`);
   console.log('');
 
@@ -376,10 +380,18 @@ async function main() {
     }
   }
 
-  // Candidates: shows missing previewsStartDate (in missing-only mode)
-  const candidateShows = missingOnly && !verify && !showSlug
-    ? weShows.filter(s => !s.previewsStartDate)
-    : weShows;
+  // Candidates: shows that need date enrichment
+  // - missing-only mode: shows without previewsStartDate
+  // - fix-unconfirmed mode: also includes shows with unconfirmed openingDate sources
+  //   (todaytix, showscore, unknown, null) — these need press night confirmation
+  const UNCONFIRMED_SOURCES = new Set(['todaytix', 'showscore', 'unknown', null, undefined]);
+  const candidateShows = verify || showSlug
+    ? weShows
+    : fixUnconfirmed
+      ? weShows.filter(s => !s.previewsStartDate || UNCONFIRMED_SOURCES.has(s.openingDateSource))
+      : missingOnly
+        ? weShows.filter(s => !s.previewsStartDate)
+        : weShows;
 
   console.log(`Candidate shows for enrichment: ${candidateShows.length}`);
   console.log('');
@@ -430,14 +442,35 @@ async function main() {
       continue;
     }
 
+    // Determine the openingDateSource value for this entry
+    // "both" (TM + Playbill agree) → use "theatremonkey" (the primary source)
+    const entryDateSource = entry.source === 'both' ? 'theatremonkey' : entry.source;
+
     // TodayTix mismatch: existing openingDate matches new preview date
-    const todaytixMismatch = entry.firstPreview && entry.opening &&
-      show.openingDate === entry.firstPreview && !show.previewsStartDate;
+    // Also catches shows with unconfirmed sources where we now have a real press night
+    const todaytixMismatch = entry.firstPreview && entry.opening && (
+      (show.openingDate === entry.firstPreview && !show.previewsStartDate) ||
+      (show.openingDate === entry.firstPreview && UNCONFIRMED_SOURCES.has(show.openingDateSource))
+    );
+
+    // Same-date fix: openingDate === previewsStartDate and we now have a distinct press night
+    const sameDateFix = entry.opening && show.openingDate && show.previewsStartDate &&
+      show.openingDate === show.previewsStartDate &&
+      entry.opening !== show.openingDate &&
+      UNCONFIRMED_SOURCES.has(show.openingDateSource);
 
     if (todaytixMismatch) {
-      showChanges.push({ field: 'previewsStartDate', old: null, new: entry.firstPreview });
+      showChanges.push({ field: 'previewsStartDate', old: show.previewsStartDate, new: entry.firstPreview });
       showChanges.push({ field: 'openingDate', old: show.openingDate, new: entry.opening });
+      showChanges.push({ field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource });
       console.log(`  FIX ${show.title}: openingDate ${show.openingDate} is actually preview -> preview=${entry.firstPreview}, opening=${entry.opening} [${entry.source}]`);
+    } else if (sameDateFix) {
+      showChanges.push({ field: 'openingDate', old: show.openingDate, new: entry.opening });
+      showChanges.push({ field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource });
+      if (entry.firstPreview && entry.firstPreview !== show.previewsStartDate) {
+        showChanges.push({ field: 'previewsStartDate', old: show.previewsStartDate, new: entry.firstPreview });
+      }
+      console.log(`  FIX ${show.title}: same-date ${show.openingDate} corrected -> preview=${entry.firstPreview || show.previewsStartDate}, opening=${entry.opening} [${entry.source}]`);
     } else {
       // Check previewsStartDate
       if (entry.firstPreview) {
@@ -463,12 +496,19 @@ async function main() {
       if (entry.opening) {
         if (!show.openingDate) {
           showChanges.push({ field: 'openingDate', old: null, new: entry.opening });
+          showChanges.push({ field: 'openingDateSource', old: show.openingDateSource || null, new: entryDateSource });
         } else if (show.openingDate !== entry.opening) {
-          if (force && isCandidate) {
+          if ((force || fixUnconfirmed) && isCandidate) {
             showChanges.push({ field: 'openingDate', old: show.openingDate, new: entry.opening });
+            showChanges.push({ field: 'openingDateSource', old: show.openingDateSource || null, new: entryDateSource });
           } else {
             showDiscrepancies.push({ field: 'openingDate', current: show.openingDate, external: entry.opening, source: entry.source });
           }
+        } else if (show.openingDate === entry.opening && UNCONFIRMED_SOURCES.has(show.openingDateSource)) {
+          // TM/Playbill confirms the existing date — upgrade source to trusted
+          // This handles legitimate cold-open shows where preview === press night
+          showChanges.push({ field: 'openingDateSource', old: show.openingDateSource || null, new: entryDateSource });
+          console.log(`  CONFIRM ${show.title}: openingDate ${show.openingDate} confirmed by ${entryDateSource} (was ${show.openingDateSource || 'null'})`);
         }
       }
     }
