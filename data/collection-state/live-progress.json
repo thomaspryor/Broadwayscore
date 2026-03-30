@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-30T23:44:30.907Z",
-  "processed": 131,
-  "failed": 337,
-  "successRate": "28.0%",
+  "updatedAt": "2026-03-30T23:48:47.642Z",
+  "processed": 133,
+  "failed": 345,
+  "successRate": "27.8%",
   "tierBreakdown": {
     "playwright": 86,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 13,
     "directCookies": 0,
-    "scrapingbee": 21,
+    "scrapingbee": 18,
     "brightdata": 0,
-    "archiveToday": 154,
-    "archive": 23
+    "archiveToday": 158,
+    "archive": 24
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-03-30T23:22:40.195Z",
-      "event": "bb-session",
-      "session": "9ebc57e9",
-      "url": "https://www.newyorker.com/culture/the-theatre/review-camelot-aaron-sorkin-bartle"
-    },
-    {
-      "t": "2026-03-30T23:22:41.721Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-03-30T23:23:04.051Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-03-30T23:44:12.388Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-30T23:45:39.461Z",
+      "event": "bb-session",
+      "session": "4d1cc318",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-30T23:45:40.989Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

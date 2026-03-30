@@ -130,7 +130,9 @@
     "grey-house-2023/slash-film--caroline-cao.json",
     "life-of-pi-2023/newyorker--katy-waldman.json",
     "some-like-it-hot-2022/newyorker--helen-shaw.json",
-    "topdog-underdog-2022/corey-hawkins--jessica-wang.json"
+    "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
+    "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+    "tina-2019/newyorker--michael-schulman.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -469,7 +471,15 @@
     "beetlejuice-2022/albuquerque-journal--adrian-gomez.json",
     "paradise-square-2022/talkinbroadway--matthew-murray.json",
     "trouble-in-mind-2021/washpost--mark-kennedy.json",
-    "trouble-in-mind-2021/deadline--greg-evans.json"
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "trouble-in-mind-2021/theatermania--jesse-green.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json",
+    "a-christmas-carol-2019/chicagotribune--chris-jones-bway.json",
+    "a-christmas-carol-2019/talkinbroadway--matthew-murray.json",
+    "sea-wall-a-life-2019/curtainup--elyse-sommer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -573,7 +583,9 @@
       "every-brilliant-thing-2026/hollywood-reporter--unknown.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
       "my-neighbour-totoro-west-end-2025/variety--unknown.json",
-      "data/review-texts/topdog-underdog-2022/kenny-leon--unknown.json"
+      "data/review-texts/topdog-underdog-2022/kenny-leon--unknown.json",
+      "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -594,10 +606,7 @@
       "data-off-broadway-2026/timeout--unknown.json",
       "the-last-five-years-2025/nypost--lou-lumenick.json",
       "left-on-tenth-2024/nytimes--laura-collins-hughes.json",
-      "just-for-us-2023/timeout--adam-feldman.json",
-      "a-beautiful-noise-the-neil-diamond-musical-2022/broadwayworld--michael-rabice.json",
-      "tootsie-2019/latimes--charles-mcnulty.json",
-      "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json"
+      "just-for-us-2023/timeout--adam-feldman.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -754,7 +763,11 @@
       "data/review-texts/how-i-learned-to-drive-2022/theatrely--juan-a-ramirez.json",
       "data/review-texts/american-buffalo-2022/usatoday--charles-isherwood.json",
       "data/review-texts/paradise-square-2022/talkinbroadway--matthew-murray.json",
-      "data/review-texts/trouble-in-mind-2021/washpost--mark-kennedy.json"
+      "data/review-texts/trouble-in-mind-2021/washpost--mark-kennedy.json",
+      "data/review-texts/trouble-in-mind-2021/theatermania--jesse-green.json",
+      "data/review-texts/a-christmas-carol-2019/chicagotribune--chris-jones-bway.json",
+      "data/review-texts/a-christmas-carol-2019/talkinbroadway--matthew-murray.json",
+      "data/review-texts/sea-wall-a-life-2019/curtainup--elyse-sommer.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -779,11 +792,12 @@
       "art-2025/hollywood-reporter--caitlin-huston.json",
       "grey-house-2023/slash-film--caroline-cao.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
-      "some-like-it-hot-2022/newyorker--helen-shaw.json"
+      "some-like-it-hot-2022/newyorker--helen-shaw.json",
+      "tina-2019/newyorker--michael-schulman.json"
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "trouble-in-mind-2021/deadline--greg-evans.json",
+  "lastProcessed": "sea-wall-a-life-2019/curtainup--elyse-sommer.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -1026,6 +1040,17 @@
       "t": "2026-03-30T23:44:12.388Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-30T23:45:39.461Z",
+      "event": "bb-session",
+      "session": "4d1cc318",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-30T23:45:40.989Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
