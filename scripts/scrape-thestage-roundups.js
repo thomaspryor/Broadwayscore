@@ -19,7 +19,7 @@
  * Usage:
  *   node scripts/scrape-thestage-roundups.js [--shows=X,Y,Z] [--dry-run] [--force] [--extract-only]
  *
- * Environment: THESTAGE_EMAIL, THESTAGE_PASSWORD (or THESTAGE_COOKIES)
+ * Environment: COOKIES_BUNDLE_* (or THESTAGE_COOKIES env, or data/cookies/thestage.json)
  *              BROWSERBASE_API_KEY, BROWSERBASE_PROJECT_ID (optional, for CI)
  */
 
