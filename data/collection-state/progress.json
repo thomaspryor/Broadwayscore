@@ -154,7 +154,9 @@
     "oliver-west-end-2024/thestage--dave-fargnoli.json",
     "oliver-west-end-2024/thestage--matt-hemley.json",
     "oliver-west-end-2024/thestage--sam-marlowe.json",
-    "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json"
+    "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json",
+    "magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/thestage--dave-fargnoli.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -533,7 +535,15 @@
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json",
     "stranger-things-the-first-shadow-west-end-2023/everything-theatre--unknown.json",
-    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "witness-for-the-prosecution-west-end-2022/theatre-weekly--unknown.json",
+    "mj-2022/variety--unknown.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "magic-mike-live-west-end-2021/a-younger-theatre--unknown.json",
+    "magic-mike-live-west-end-2021/the-express--neil-norman.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/londonist--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -628,7 +638,9 @@
       "oliver-west-end-2024/thestage--dave-fargnoli.json",
       "oliver-west-end-2024/thestage--matt-hemley.json",
       "oliver-west-end-2024/thestage--sam-marlowe.json",
-      "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json"
+      "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json",
+      "magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/thestage--dave-fargnoli.json"
     ],
     "amp": [],
     "browserbase": [
@@ -719,7 +731,12 @@
       "data/review-texts/the-outsiders-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/hadestown-west-end-2024/broadwayworld--cindy-marcolina.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json",
-      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/everything-theatre--unknown.json"
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/everything-theatre--unknown.json",
+      "data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
+      "data/review-texts/mj-2022/variety--unknown.json",
+      "data/review-texts/mj-2022/wsj--charles-isherwood.json",
+      "data/review-texts/magic-mike-live-west-end-2021/a-younger-theatre--unknown.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/londonist--unknown.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/playbill--unknown.json",
@@ -768,7 +785,7 @@
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/thestage--dave-fargnoli.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -965,6 +982,17 @@
     },
     {
       "t": "2026-03-30T06:15:53.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T06:20:18.218Z",
+      "event": "bb-session",
+      "session": "29e65983",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-03-30T06:20:19.609Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

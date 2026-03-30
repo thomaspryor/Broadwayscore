@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-03-30T06:20:17.333Z",
-  "processed": 155,
-  "failed": 377,
-  "successRate": "29.1%",
+  "updatedAt": "2026-03-30T06:31:18.061Z",
+  "processed": 157,
+  "failed": 385,
+  "successRate": "29.0%",
   "tierBreakdown": {
-    "playwright": 91,
+    "playwright": 93,
     "amp": 0,
     "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 0,
-    "archiveToday": 52,
+    "archiveToday": 57,
     "archive": 43
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-03-30T05:01:02.659Z",
-      "event": "bb-session",
-      "session": "aa586c02",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
-    },
-    {
-      "t": "2026-03-30T05:01:04.006Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-03-30T05:13:17.031Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-03-30T06:15:53.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T06:20:18.218Z",
+      "event": "bb-session",
+      "session": "29e65983",
+      "url": "https://www.wsj.com/articles/juliet-review-a-shakespeare-sequel-that-sparkles-11"
+    },
+    {
+      "t": "2026-03-30T06:20:19.609Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
