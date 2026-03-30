@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T02:21:05.981Z",
+  "timestamp": "2026-03-30T02:41:26.434Z",
   "stats": {
-    "totalReviews": 32298,
-    "alreadyFlagged": 11624,
+    "totalReviews": 32278,
+    "alreadyFlagged": 11617,
     "dateGuardCatches": 18,
-    "directorMismatch": 938,
-    "tvFilmSignals": 3354,
-    "londonSignals": 991,
-    "offBroadwaySignals": 976,
+    "directorMismatch": 937,
+    "tvFilmSignals": 3352,
+    "londonSignals": 990,
+    "offBroadwaySignals": 975,
     "yearMismatch": 66,
-    "noPublishDate": 6307
+    "noPublishDate": 6296
   },
   "findings": [
     {
@@ -4178,7 +4178,7 @@
     },
     {
       "showId": "an-act-of-god-2016",
-      "file": "newsday--unknown.json",
+      "file": "newsday--linda-winer.json",
       "score": 77,
       "publishDate": null,
       "url": "https://www.newsday.com/entertainment/theater/an-act-of-god-with-jim-parsons-review-irreverent-yet-sweet-1.10480001",
@@ -14439,20 +14439,6 @@
     },
     {
       "showId": "fiddler-on-the-roof-2015",
-      "file": "ap--unknown.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://www.wral.com/review-fiddler-on-the-roof-revival-vibrant-and-heartfelt/15189164/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
-        }
-      ]
-    },
-    {
-      "showId": "fiddler-on-the-roof-2015",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": 58,
       "publishDate": null,
@@ -20452,20 +20438,6 @@
     },
     {
       "showId": "hand-to-god-2015",
-      "file": "newsday--unknown.json",
-      "score": 42,
-      "publishDate": null,
-      "url": "http://www.newsday.com/entertainment/theater/hand-to-god-review-a-devilish-sock-puppet-and-sex-1.10206908",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "hand-to-god-2015",
       "file": "variety--gordon-cox.json",
       "score": 88,
       "publishDate": "April 7, 2015",
@@ -21209,20 +21181,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "hedwig-and-the-angry-inch-2014",
-      "file": "newsday--unknown.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.newsday.com/entertainment/theater/hedwig-and-the-angry-inch-review-neil-patrick-harris-triumphs-1.7782175",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -29115,7 +29073,7 @@
     },
     {
       "showId": "macbeth-2008",
-      "file": "ap--jennifer-farrar-associated.json",
+      "file": "ap--jennifer-farrar.json",
       "score": 81,
       "publishDate": null,
       "url": "http://abcnews.go.com/Entertainment/wireStory/review-hawke-broody-monarch-macbeth-20974301",
@@ -55417,7 +55375,7 @@
     },
     {
       "showId": "the-testament-of-mary-2013",
-      "file": "newsday--unknown.json",
+      "file": "newsday--linda-winer.json",
       "score": 88,
       "publishDate": null,
       "url": "http://www.newsday.com/entertainment/theater/testament-of-mary-review-fiona-shaw-shines-in-audacious-drama-1.5115487",
@@ -67456,20 +67414,6 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
-      "file": "amny--matt-windman.json",
-      "score": 86,
-      "publishDate": "2025-07-13",
-      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
       "file": "nytg--aa-cristi.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710",
@@ -67626,20 +67570,6 @@
       "file": "nytimes--elizabeth-vincentelli.json",
       "score": 90,
       "publishDate": "April 20, 2024",
-      "url": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "file": "nytimes--franklin-elisabeth-vincentelli.json",
-      "score": 82,
-      "publishDate": "2024-04-20",
       "url": "https://www.nytimes.com/2024/04/20/theater/hells-kitchen-review-alicia-keys.html",
       "findings": [
         {
