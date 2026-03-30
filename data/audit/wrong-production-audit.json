@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T06:32:27.454Z",
+  "timestamp": "2026-03-30T06:42:58.150Z",
   "stats": {
     "totalReviews": 31886,
-    "alreadyFlagged": 11270,
+    "alreadyFlagged": 11271,
     "dateGuardCatches": 18,
     "directorMismatch": 941,
-    "tvFilmSignals": 3345,
-    "londonSignals": 993,
+    "tvFilmSignals": 3346,
+    "londonSignals": 995,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6263
+    "noPublishDate": 6262
   },
   "findings": [
     {
@@ -21561,6 +21561,20 @@
       "score": 94,
       "publishDate": "2025-06-26",
       "url": "https://theatreweekly.com/review-disneys-hercules-at-theatre-royal-drury-lane-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "thestage--sam-marlowe.json",
+      "score": 65,
+      "publishDate": "2025-06-25",
+      "url": "https://www.thestage.co.uk/review-round-ups/hercules-at-the-theatre-royal-drury-lane-review-round-up",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -72321,6 +72335,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "thestage--matt-hemley.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review-round-up",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "thestage--sam-marlowe.json",
+      "score": 82,
+      "publishDate": "2025-01-15",
+      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review-round-up",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
