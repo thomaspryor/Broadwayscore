@@ -39,12 +39,21 @@ function isLondonMarket(category) {
  * Used to prevent wrongShow false positives on London-market shows
  * reviewed by UK outlets.
  */
+// US outlets whose hostnames contain 'theatre' — excluded from the UK hostname heuristic
+const US_THEATRE_HOSTNAMES = new Set([
+  'theatrely.com', 'www.theatrely.com',
+  'musicaltheatrereview.com', 'www.musicaltheatrereview.com',
+  'thefrontrowcenter.com', 'www.thefrontrowcenter.com',
+  'nystagereview.com', 'www.nystagereview.com',
+  'stageandcinema.com', 'www.stageandcinema.com',
+]);
+
 function isUkOutletUrl(url) {
   if (!url) return false;
   try {
     const hostname = new URL(url).hostname || '';
-    // theatrely.com is a US/NYC outlet — exclude from the 'theatre' hostname heuristic
-    if (hostname.includes('theatrely')) return false;
+    // Exclude known US outlets before applying 'theatre' hostname heuristic
+    if (US_THEATRE_HOSTNAMES.has(hostname)) return false;
     return hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
       || /london|theatre|whatsonstage|thestage|theguardian|telegraph|thetimes|independent|standard|inews|variety|nytimes|timeout/.test(hostname);
   } catch {
