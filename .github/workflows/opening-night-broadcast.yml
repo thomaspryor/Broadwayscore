@@ -119,8 +119,62 @@ jobs:
             done
           fi
 
+      - name: Time gate — no broadcast before 7 AM ET
+        if: steps.find.outputs.has_shows == 'true' && inputs.send_to_all != 'true'
+        id: time_gate
+        run: |
+          # Automated runs must wait until 7 AM ET (12:00 UTC in EDT, 11:00 UTC in EST)
+          # Manual dispatch with send_to_all bypasses this gate
+          HOUR_UTC=$(date -u +%H)
+          # 7 AM ET = 11 AM UTC (EDT) or 12 PM UTC (EST). Use 11 as the threshold.
+          if [ "$HOUR_UTC" -lt 11 ]; then
+            echo "::notice::Time gate: $HOUR_UTC UTC is before 7 AM ET (11 UTC). Skipping broadcast — will retry on next scoring cycle."
+            echo "blocked=true" >> $GITHUB_OUTPUT
+          else
+            echo "Time gate passed: $HOUR_UTC UTC (after 7 AM ET)"
+            echo "blocked=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Readiness gate — 15+ scored reviews with aggregator coverage
+        if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && inputs.send_to_all != 'true'
+        id: readiness_gate
+        run: |
+          # Require 15+ scored reviews AND reviews from at least 2 aggregator sources
+          # (BWW roundup + DTLI/Show Score). This prevents thin broadcasts.
+          SHOWS="${{ steps.find.outputs.shows }}"
+          RESULT=$(node -e "
+            const reviews = require('./data/reviews.json').reviews || require('./data/reviews.json');
+            const allReviews = Array.isArray(reviews) ? reviews : [];
+            const shows = '$SHOWS'.split(',');
+            for (const id of shows) {
+              const showReviews = allReviews.filter(r => r.showId === id && r.assignedScore != null);
+              const count = showReviews.length;
+              // Check aggregator coverage via thumb fields in reviews.json
+              const hasDtli = showReviews.some(r => r.dtliThumb);
+              const hasBww = showReviews.some(r => r.bwwThumb);
+              const aggCount = [hasDtli, hasBww].filter(Boolean).length;
+              if (count < 15) {
+                console.error(id + ': only ' + count + '/15 scored reviews — not ready');
+                process.exit(1);
+              }
+              if (aggCount < 2) {
+                const aggNames = [hasDtli && 'DTLI', hasBww && 'BWW'].filter(Boolean);
+                console.error(id + ': only ' + aggCount + '/2 aggregator sources (' + (aggNames.join(', ') || 'none') + ') — need both DTLI + BWW');
+                process.exit(1);
+              }
+              console.log(id + ': ' + count + ' scored reviews, aggregators: DTLI=' + hasDtli + ' BWW=' + hasBww + ' — ready');
+            }
+          " 2>&1) || {
+            echo "$RESULT"
+            echo "::notice::Readiness gate: not enough reviews or aggregator coverage yet. Will retry on next scoring cycle."
+            echo "blocked=true" >> $GITHUB_OUTPUT
+            exit 0
+          }
+          echo "$RESULT"
+          echo "blocked=false" >> $GITHUB_OUTPUT
+
       - name: Check already broadcast
-        if: steps.find.outputs.has_shows == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && steps.readiness_gate.outputs.blocked != 'true'
         id: check
         run: |
           # Read opening-night-sent.json if it exists, filter out completed shows
