@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T01:18:34.873Z",
+  "timestamp": "2026-03-30T01:25:17.288Z",
   "stats": {
     "totalReviews": 32364,
-    "alreadyFlagged": 11669,
+    "alreadyFlagged": 11654,
     "dateGuardCatches": 18,
-    "directorMismatch": 932,
+    "directorMismatch": 944,
     "tvFilmSignals": 3363,
-    "londonSignals": 989,
+    "londonSignals": 993,
     "offBroadwaySignals": 977,
     "yearMismatch": 69,
-    "noPublishDate": 6328
+    "noPublishDate": 6329
   },
   "findings": [
     {
@@ -36279,10 +36279,193 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 93,
+      "publishDate": "2023-05-10",
+      "url": "https://www.allthatdazzles.co.uk/post/review-operation-mincemeat-fortune-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 89,
+      "publishDate": "2023-05-11",
+      "url": "https://theartsdesk.com/theatre/operation-mincemeat-fortune-theatre-review-high-octane-musical-comedy-hits-big-time",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 93,
+      "publishDate": "May 10th, 2023",
+      "url": "https://www.broadwayworld.com/westend/article/Review-OPERATION-MINCEMEAT-Fortune-Theatre-20230510",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "broadwayworld--unknown.json",
+      "score": 89,
+      "publishDate": null,
+      "url": "https://stagedoor.com/musicals/13086-operation-mincemeat/critic-reviews",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "everything-theatre--lily-middleton.json",
+      "score": 92,
+      "publishDate": "2023-05-10",
+      "url": "https://everything-theatre.co.uk/2023/05/review-operation-mincemeat-fortune-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "london-box-office--stuart-king.json",
       "score": 80,
       "publishDate": "2023-05-26",
       "url": "https://www.londonboxoffice.co.uk/news/post/operation-mincemeat-tenth-extension-west-end",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 92,
+      "publishDate": "2023-05-11",
+      "url": "https://www.londontheatre.co.uk/reviews/operation-mincemeat-review-fortune-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "lost-in-theatreland--amy-rye.json",
+      "score": 92,
+      "publishDate": "2023-05-10",
+      "url": "https://lostintheatreland.co.uk/operation-mincemeat-review-fortune-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 82,
+      "publishDate": "2023-05-10",
+      "url": "https://www.standard.co.uk/culture/theatre/operation-mincemeat-fortune-theatre-review-world-war-2-musical-b1079967.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 83,
+      "publishDate": "2023-05-10",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 90,
+      "publishDate": "2023-05-09",
+      "url": "https://theatreweekly.com/review-operation-mincemeat-at-the-fortune-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-05-10",
+      "url": "https://www.timeout.com/london/theatre/operation-mincemeat-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 89,
+      "publishDate": "2023-05-10",
+      "url": "https://www.whatsonstage.com/news/operation-mincemeat-review-genuine-hilarity-with-enormous-heart-on-the-west-end-stage_58905/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -72766,6 +72949,20 @@
       "score": 76,
       "publishDate": "March 20, 2025",
       "url": "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "guardian--emma-john.json",
+      "score": 79,
+      "publishDate": "2023-05-10",
+      "url": "https://www.theguardian.com/stage/2023/may/10/operation-mincemeat-review-fortune-theatre-london-west-end",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
