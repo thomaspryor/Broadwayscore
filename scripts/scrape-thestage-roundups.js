@@ -89,18 +89,17 @@ async function launchBrowser() {
 // ─── The Stage Login ─────────────────────────────────────────────────────────
 
 async function loginToTheStage(page) {
-  const email = process.env.THESTAGE_EMAIL;
-  const password = process.env.THESTAGE_PASSWORD;
-
-  // Try cookie-based auth first (works locally with Safari cookies)
-  const cookieFile = path.join(__dirname, '..', 'data', 'cookies', 'thestage.json');
-  if (fs.existsSync(cookieFile)) {
-    console.log('  Loading Stage cookies...');
-    const cookies = JSON.parse(fs.readFileSync(cookieFile, 'utf8'));
+  // Cookie-only auth (cookie-loader: bundles → env → local file)
+  // No email/password login — avoids creating new sessions that trigger session limit warnings
+  const { loadCookiesForDomain } = require('./lib/cookie-loader');
+  const cookies = loadCookiesForDomain('thestage.co.uk');
+  if (cookies) {
+    console.log(`  Loading Stage cookies (${cookies.length} cookies)...`);
     const pwCookies = cookies.map(c => ({
       name: c.name, value: c.value,
       domain: c.domain || '.thestage.co.uk',
-      path: c.path || '/', secure: !!c.secure, httpOnly: !!c.httpOnly,
+      path: c.path || '/', secure: c.secure !== false, httpOnly: !!c.httpOnly,
+      ...(c.sameSite ? { sameSite: c.sameSite } : {}),
     }));
     await page.context().addCookies(pwCookies);
 
@@ -116,75 +115,13 @@ async function loginToTheStage(page) {
       console.log('  ✓ Cookie auth verified (stars visible, no paywall)');
       return true;
     }
-    console.log('  ⚠ Cookies did not bypass paywall, trying credentials...');
-  }
-
-  if (!email || !password) {
-    console.log('  ✗ No Stage credentials found (THESTAGE_EMAIL/THESTAGE_PASSWORD)');
+    console.log('  ⚠ Cookies did not bypass paywall — cookies may be expired');
     return false;
   }
 
-  // Credential-based login via /login page (roundup pages have no inline login form)
-  console.log('  Logging in to The Stage via /login...');
-  await page.goto('https://www.thestage.co.uk/login', {
-    waitUntil: 'domcontentloaded', timeout: 30000,
-  });
-  await page.waitForTimeout(3000);
-
-  // Dismiss cookie consent if present
-  const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
-  if (cookieBtn) {
-    const v = await cookieBtn.isVisible().catch(() => false);
-    if (v) { await cookieBtn.click(); await page.waitForTimeout(1000); }
-  }
-
-  // The /login page has two forms (main + nav) — find the visible email input
-  const emailInputs = await page.$$('input[name="email"], input[type="email"], input[id*="email"]');
-  let emailInput = null;
-  for (const inp of emailInputs) {
-    if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; }
-  }
-  if (!emailInput) {
-    console.log('  ⚠ No visible email field on /login — continuing without auth');
-    return false;
-  }
-
-  await emailInput.click();
-  await emailInput.type(email, { delay: 30 });
-  await page.waitForTimeout(500);
-
-  // Find visible password input (same form as the email input)
-  const passInputs = await page.$$('input[type="password"], input[name="password"]');
-  let passInput = null;
-  for (const inp of passInputs) {
-    if (await inp.isVisible().catch(() => false)) { passInput = inp; break; }
-  }
-  if (!passInput) { console.log('  ✗ No visible password field on /login'); return false; }
-
-  await passInput.click();
-  await passInput.type(password, { delay: 30 });
-  await page.waitForTimeout(500);
-
-  // Find visible submit button
-  const submitBtns = await page.$$('button:has-text("Login"), button:has-text("Log in"), button:has-text("Sign in"), button[type="submit"], input[type="submit"]');
-  let submitBtn = null;
-  for (const btn of submitBtns) {
-    if (await btn.isVisible().catch(() => false)) { submitBtn = btn; break; }
-  }
-  if (submitBtn) await submitBtn.click();
-  else await page.keyboard.press('Enter');
-
-  await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-  await page.waitForTimeout(3000);
-
-  const postLoginUrl = page.url();
-  if (!postLoginUrl.includes('/login')) {
-    console.log('  ✓ Login verified — redirected away from /login');
-    return true;
-  }
-
-  console.log('  ⚠ Login may not have succeeded (still on /login) — continuing anyway');
-  return true;
+  // No cookies available (not in bundle, env, or local file)
+  console.log('  ✗ No Stage cookies found (check COOKIES_BUNDLE or data/cookies/thestage.json)');
+  return false;
 }
 
 // ─── Discovery ───────────────────────────────────────────────────────────────

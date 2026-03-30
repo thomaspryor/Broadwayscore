@@ -3052,12 +3052,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
         console.log(`    TR live fetch error: ${(err.message || '').substring(0, 60)}`);
       }
 
-      // TS live fetch: SERP to discover URL + BB with login
+      // TS live fetch: SERP to discover URL + BB with cookie auth (no login session)
       const bbApiKey = process.env.BROWSERBASE_API_KEY;
       const bbProjectId = process.env.BROWSERBASE_PROJECT_ID;
-      const tsEmail = process.env.THESTAGE_EMAIL;
-      const tsPassword = process.env.THESTAGE_PASSWORD;
-      if (bbApiKey && bbProjectId && tsEmail && tsPassword) {
+      const { loadCookiesForDomain: loadStageCookies } = require('./lib/cookie-loader');
+      const stageCookies = loadStageCookies('thestage.co.uk');
+      if (bbApiKey && bbProjectId && stageCookies) {
         try {
           // SERP to find the roundup URL (shared provider chain: BD first → SB fallback)
           const serpResults = await serpQuery(
@@ -3076,7 +3076,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
           }
 
           if (tsUrl) {
-            // BB session with login to fetch paywalled page
+            // BB session with cookie injection (no login — avoids session limit)
             const { chromium } = require('playwright');
             const tsSession = await new Promise((resolve, reject) => {
               const req = require('https').request('https://www.browserbase.com/v1/sessions', {
@@ -3091,24 +3091,16 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
             const tsCtx = tsBrowser.contexts()[0] || await tsBrowser.newContext();
             const tsPage = tsCtx.pages()[0] || await tsCtx.newPage();
 
-            // Login
-            await tsPage.goto('https://www.thestage.co.uk/login', { waitUntil: 'networkidle', timeout: 30000 });
-            await tsPage.waitForTimeout(3000);
-            try { const cb = tsPage.locator('button:has-text("Accept")').first(); if (await cb.isVisible({ timeout: 2000 }).catch(() => false)) await cb.click(); } catch {}
-            await tsPage.waitForSelector('input[name="email"], input[type="email"]', { timeout: 10000 }).catch(() => {});
-            const tsEmailInput = await tsPage.$('input[name="email"], input[type="email"]');
-            if (tsEmailInput) {
-              await tsEmailInput.fill(tsEmail);
-              const tsPassInput = await tsPage.$('input[type="password"]');
-              if (tsPassInput) await tsPassInput.fill(tsPassword);
-              const tsBtn = await tsPage.$('button:has-text("Sign in"), button:has-text("Login")');
-              if (tsBtn) await tsBtn.click();
-              else await tsPage.keyboard.press('Enter');
-              await tsPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-              await tsPage.waitForTimeout(3000);
-            }
+            // Inject cookies instead of logging in (avoids creating new sessions)
+            const pwCookies = stageCookies.map(c => ({
+              name: c.name, value: c.value,
+              domain: c.domain || '.thestage.co.uk',
+              path: c.path || '/', secure: c.secure !== false, httpOnly: !!c.httpOnly,
+              ...(c.sameSite ? { sameSite: c.sameSite } : {}),
+            }));
+            await tsCtx.addCookies(pwCookies);
 
-            // Fetch the roundup page
+            // Fetch the roundup page directly (no login needed)
             await tsPage.goto(tsUrl, { waitUntil: 'networkidle', timeout: 30000 });
             await tsPage.waitForTimeout(2000);
             const tsHtml = await tsPage.content();
