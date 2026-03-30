@@ -55,6 +55,7 @@ const { verifyProduction, quickDateCheck } = require('./lib/production-verifier'
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
+const { isLikelyTourReview } = require('./lib/review-guards');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
@@ -2115,6 +2116,12 @@ function createReviewFile(showId, reviewData, options = {}) {
     return 'nonBroadway';
   }
 
+  // TOUR/REGIONAL GUARD: Reject regional BWW and local paper tour reviews
+  if (isLikelyTourReview(reviewData.url, showId)) {
+    console.log(`    ✗ Skipping ${filename}: tour/regional review (${reviewData.url?.substring(0, 60)})`);
+    return 'tourReview';
+  }
+
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
   // Always run venue verification (cheap text scan). Date-based verification only when dates look suspicious.
   {
@@ -3088,44 +3095,47 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
             });
 
             const tsBrowser = await chromium.connectOverCDP(`wss://connect.browserbase.com?apiKey=${bbApiKey}&sessionId=${tsSession.id}`);
-            const tsCtx = tsBrowser.contexts()[0] || await tsBrowser.newContext();
-            const tsPage = tsCtx.pages()[0] || await tsCtx.newPage();
+            try {
+              const tsCtx = tsBrowser.contexts()[0] || await tsBrowser.newContext();
+              const tsPage = tsCtx.pages()[0] || await tsCtx.newPage();
 
-            // Inject cookies instead of logging in (avoids creating new sessions)
-            const pwCookies = stageCookies.map(c => ({
-              name: c.name, value: c.value,
-              domain: c.domain || '.thestage.co.uk',
-              path: c.path || '/', secure: c.secure !== false, httpOnly: !!c.httpOnly,
-              ...(c.sameSite ? { sameSite: c.sameSite } : {}),
-            }));
-            await tsCtx.addCookies(pwCookies);
+              // Inject cookies instead of logging in (avoids creating new sessions)
+              const pwCookies = stageCookies.map(c => ({
+                name: c.name, value: c.value,
+                domain: c.domain || '.thestage.co.uk',
+                path: c.path || '/', secure: c.secure !== false, httpOnly: !!c.httpOnly,
+                ...(c.sameSite ? { sameSite: c.sameSite } : {}),
+              }));
+              await tsCtx.addCookies(pwCookies);
 
-            // Fetch the roundup page directly (no login needed)
-            await tsPage.goto(tsUrl, { waitUntil: 'networkidle', timeout: 30000 });
-            await tsPage.waitForTimeout(2000);
-            const tsHtml = await tsPage.content();
-            await tsBrowser.close();
+              // Fetch the roundup page directly (no login needed)
+              await tsPage.goto(tsUrl, { waitUntil: 'networkidle', timeout: 30000 });
+              await tsPage.waitForTimeout(2000);
+              const tsHtml = await tsPage.content();
 
-            if (tsHtml && tsHtml.length > 5000) {
-              const { extractReviews: extractTS } = require('./scrape-thestage-roundups');
-              const tsReviews = extractTS(tsHtml, showId);
-              if (tsReviews.length > 0) {
-                console.log(`    ✓ TS live: ${tsReviews.length} reviews`);
-                for (const r of tsReviews) {
-                  foundReviews.push({
-                    outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
-                    criticName: r.critic || 'Unknown', url: r.url || '',
-                    excerpt: r.excerpt || '',
-                    score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
-                    scoreSource: r.stars ? 'thestage-roundup-star-rating' : undefined,
-                    source: 'thestage-roundup', publishDate: null,
-                  });
+              if (tsHtml && tsHtml.length > 5000) {
+                const { extractReviews: extractTS } = require('./scrape-thestage-roundups');
+                const tsReviews = extractTS(tsHtml, showId);
+                if (tsReviews.length > 0) {
+                  console.log(`    ✓ TS live: ${tsReviews.length} reviews`);
+                  for (const r of tsReviews) {
+                    foundReviews.push({
+                      outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+                      criticName: r.critic || 'Unknown', url: r.url || '',
+                      excerpt: r.excerpt || '',
+                      score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
+                      scoreSource: r.stars ? 'thestage-roundup-star-rating' : undefined,
+                      source: 'thestage-roundup', publishDate: null,
+                    });
+                  }
+                  // Cache
+                  const tsArchDir = path.join(archBase, 'thestage-roundups');
+                  if (!fs.existsSync(tsArchDir)) fs.mkdirSync(tsArchDir, { recursive: true });
+                  fs.writeFileSync(path.join(tsArchDir, `${showId}.html`), tsHtml);
                 }
-                // Cache
-                const tsArchDir = path.join(archBase, 'thestage-roundups');
-                if (!fs.existsSync(tsArchDir)) fs.mkdirSync(tsArchDir, { recursive: true });
-                fs.writeFileSync(path.join(tsArchDir, `${showId}.html`), tsHtml);
               }
+            } finally {
+              await tsBrowser.close().catch(() => {});
             }
           }
         } catch (err) {
