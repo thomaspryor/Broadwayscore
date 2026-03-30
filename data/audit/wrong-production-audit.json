@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T10:12:13.087Z",
+  "timestamp": "2026-03-30T10:46:47.738Z",
   "stats": {
-    "totalReviews": 31860,
-    "alreadyFlagged": 11273,
+    "totalReviews": 31961,
+    "alreadyFlagged": 11326,
     "dateGuardCatches": 18,
-    "directorMismatch": 942,
-    "tvFilmSignals": 3349,
-    "londonSignals": 1001,
-    "offBroadwaySignals": 969,
+    "directorMismatch": 943,
+    "tvFilmSignals": 3352,
+    "londonSignals": 999,
+    "offBroadwaySignals": 970,
     "yearMismatch": 66,
-    "noPublishDate": 6237
+    "noPublishDate": 6178
   },
   "findings": [
     {
@@ -929,8 +929,8 @@
       "showId": "a-dolls-house-part-2-2017",
       "file": "huffpost--michael-glitz.json",
       "score": 75,
-      "publishDate": null,
-      "url": "https://www.huffpost.com/entry/aisle-view-back-to-the-dolls-house-part-2_us_598dd536e4b063e2ae057f27",
+      "publishDate": "May 4th, 2017",
+      "url": "http://www.huffingtonpost.com/entry/theater-mourning-mourning-delightful-dolls-house_us_590a48c8e4b05279d4edc259",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -1707,7 +1707,7 @@
       "file": "vulture--helen-shaw.json",
       "score": 82,
       "publishDate": "April 26, 2022",
-      "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html?utm_source=flipboard.com&utm_medium=social_acct&utm_campaign=feed-part",
+      "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -3213,8 +3213,8 @@
       "showId": "all-my-sons-2019",
       "file": "nytimes--jesse-green.json",
       "score": 59,
-      "publishDate": "April 23, 2019",
-      "url": "http://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
+      "publishDate": "April 22, 2019",
+      "url": "https://www.nytimes.com/2019/04/22/theater/all-my-sons-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -3549,7 +3549,7 @@
       "showId": "allegiance-2015",
       "file": "variety--marilyn-stasio.json",
       "score": 61,
-      "publishDate": "November 8, 2015",
+      "publishDate": "November 8th, 2015",
       "url": "http://variety.com/2015/legit/reviews/allegiance-review-broadway-george-takei-1201636192/",
       "findings": [
         {
@@ -3591,7 +3591,7 @@
       "showId": "almost-famous-2022",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 72,
-      "publishDate": "November 4, 2022",
+      "publishDate": "November 3, 2022",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-theater-review-cameron-crowe-recaptures-70s-rock-fandom-on-broadway-1235254652/",
       "findings": [
         {
@@ -3674,8 +3674,8 @@
     {
       "showId": "almost-famous-2022",
       "file": "vulture--jackson-mchenry.json",
-      "score": null,
-      "publishDate": "November 4, 2022",
+      "score": 64,
+      "publishDate": "November 3, 2022",
       "url": "https://www.vulture.com/2022/11/theater-review-almost-famous-broadway-musical.html",
       "findings": [
         {
@@ -4221,9 +4221,9 @@
     {
       "showId": "an-american-in-paris-2015",
       "file": "deadline--jeremy-gerard.json",
-      "score": 55,
+      "score": 69,
       "publishDate": "April 12th, 2015",
-      "url": "https://deadline.com/2015/04/an-american-in-paris-christopher-wheeldon-broadway-review-1201408600/",
+      "url": "http://deadline.com/2015/04/an-american-in-paris-christopher-wheeldon-broadway-review-1201408600/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -6335,6 +6335,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
+      "file": "latimes--unknown.json",
+      "score": 80,
+      "publishDate": "March 31, 2011",
+      "url": "http://latimesblogs.latimes.com/culturemonster/2011/03/theater-review-bengal-tiger-at-the-baghdad-zoo-on-broadway-1.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -8600,6 +8614,20 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "the-telegrap--dominic-cavendish.json",
+      "score": 94,
+      "publishDate": "December 13th, 2021",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "thestage--tim-bano.json",
       "score": 80,
       "publishDate": "December 13th, 2021",
@@ -8614,6 +8642,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 78,
+      "publishDate": "December 13th, 2021",
+      "url": "https://www.timeout.com/london/theatre/cabaret-3",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
         }
       ]
     },
@@ -8827,27 +8869,13 @@
       "showId": "call-me-izzy-2025",
       "file": "vulture--jackson-mchenry.json",
       "score": 30,
-      "publishDate": "2025-06-12",
+      "publishDate": "June 12, 2025",
       "url": "https://www.vulture.com/article/jean-smart-call-me-izzy-theater-review.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "call-me-izzy-2025",
-      "file": "washpost--naveen-kumar.json",
-      "score": 72,
-      "publishDate": "2025-06-12",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2025/06/12/call-me-izzy-angry-alan-jean-smart-john-krasinski/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -10036,8 +10064,8 @@
       "showId": "charlie-and-the-chocolate-factory-2017",
       "file": "newyorker--michael-schulman.json",
       "score": 63,
-      "publishDate": "2017-04-25",
-      "url": "https://www.newyorker.com/culture/culture-desk/not-exactly-golden-tickets-charlie-and-the-chocolate-factory-and-anastasia-on-broadway",
+      "publishDate": "April 25th, 2017",
+      "url": "http://www.newyorker.com/culture/culture-desk/not-exactly-golden-tickets-charlie-and-the-chocolate-factory-and-anastasia-on-broadway",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -11103,8 +11131,8 @@
       "showId": "company-2021",
       "file": "nysr--melissa-rose-bernardo.json",
       "score": 94,
-      "publishDate": "2021-12-09T20:51:14",
-      "url": "https://nystagereview.com/2021/12/09/company-everybody-rise-for-this-smashing-sondheim-revival/",
+      "publishDate": "December 9, 2021",
+      "url": "http://nystagereview.com/2021/12/09/company-everybody-rise-for-this-smashing-sondheim-revival/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -11355,7 +11383,7 @@
     {
       "showId": "cult-of-love-2024",
       "file": "guardian--jesse-hassenger.json",
-      "score": null,
+      "score": 77,
       "publishDate": "December 12, 2024",
       "url": "https://www.theguardian.com/stage/2024/dec/12/cult-of-love-review-broadway-play",
       "findings": [
@@ -12601,7 +12629,7 @@
       "showId": "death-of-a-salesman-2022",
       "file": "vulture--rob-weinert-kendt.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "October 9th, 2022",
       "url": "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
       "findings": [
         {
@@ -12942,8 +12970,8 @@
       "showId": "diana-the-musical-2021",
       "file": "theatermania--david-gordon.json",
       "score": 76,
-      "publishDate": "November 18, 2021",
-      "url": "https://www.theatermania.com/news/review-live-on-broadway-diana-the-musical-is-a-cult-classic-in-the-making_93013/",
+      "publishDate": "November 17, 2021",
+      "url": "https://www.theatermania.com/broadway/reviews/review-live-on-broadway-diana-the-musical_93013.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -13546,8 +13574,8 @@
       "showId": "elf-2024",
       "file": "nysr--bob-verini.json",
       "score": 82,
-      "publishDate": "2024-11-17T19:55:49",
-      "url": "https://nystagereview.com/2024/11/17/elf-irrepressible-holiday-hijinks-for-adults-and-kids-too/",
+      "publishDate": "November 17, 2024",
+      "url": "https://nystagereview.com/2024/11/17/elf-ho-ho-hokum-done-with-flair/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14006,10 +14034,24 @@
       ]
     },
     {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 76,
+      "publishDate": "February 25th, 2026",
+      "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
       "showId": "every-brilliant-thing-2026",
       "file": "deadline--greg-evans.json",
       "score": 86,
-      "publishDate": "2026-03-03",
+      "publishDate": "March 12th, 2026",
       "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
       "findings": [
         {
@@ -14574,9 +14616,9 @@
     {
       "showId": "fiddler-on-the-roof-2015",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": null,
+      "score": 91,
       "publishDate": "December 20, 2015",
-      "url": "https://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349",
+      "url": "http://www.hollywoodreporter.com/review/fiddler-roof-theater-review-850349",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14857,7 +14899,7 @@
       "file": "timeout--david-cote.json",
       "score": 95,
       "publishDate": "December 20, 2015",
-      "url": "https://www.timeout.com/newyork/theater/fiddler-on-the-roof-1",
+      "url": "http://www.timeout.com/newyork/theater/fiddler-on-the-roof-1",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -15114,8 +15156,8 @@
       "showId": "finding-neverland-2015",
       "file": "variety--marilyn-stasio.json",
       "score": 63,
-      "publishDate": "April 15, 2015",
-      "url": "http://variety.com/2014/legit/reviews/theater-review-finding-neverland-musical-1201282806/",
+      "publishDate": "April 15th, 2015",
+      "url": "http://variety.com/2015/legit/reviews/finding-neverland-review-broadway-1201473086/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -17805,20 +17847,6 @@
     },
     {
       "showId": "glengarry-glen-ross-2012",
-      "file": "nytimes--jesse-green.json",
-      "score": 44,
-      "publishDate": "2012-12-10",
-      "url": "https://www.nytimes.com/2012/12/10/theater/reviews/glengarry-glen-ross-by-david-mamet-with-al-pacino.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from glengarry-glen-ross-2005"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
       "file": "theatermania--david-rooney.json",
       "score": 62,
       "publishDate": "December 9, 2012",
@@ -18703,8 +18731,8 @@
       "showId": "good-night-oscar-2023",
       "file": "nytimes--jesse-green.json",
       "score": 54,
-      "publishDate": "May 9, 2023",
-      "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes.html",
+      "publishDate": "April 24, 2023",
+      "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes-with-demerol-and-cadenzas.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -18984,7 +19012,7 @@
       "file": "nytimes--ben-brantley.json",
       "score": 25,
       "publishDate": "August 20, 2007",
-      "url": "https://www.nytimes.com/2007/08/20/theater/reviews/20grea.html",
+      "url": "http://theater.nytimes.com/2007/08/20/theater/reviews/20grea.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -19042,7 +19070,7 @@
     {
       "showId": "grey-house-2023",
       "file": "deadline--greg-evans.json",
-      "score": null,
+      "score": 81,
       "publishDate": "June 1, 2023",
       "url": "https://deadline.com/2023/06/grey-house-broadway-review-laurie-metcalf-tatiana-maslany-1235375962/",
       "findings": [
@@ -20924,7 +20952,7 @@
     {
       "showId": "heart-of-rock-and-roll-2024",
       "file": "nytimes--elisabeth-vincentelli.json",
-      "score": null,
+      "score": 76,
       "publishDate": "April 22, 2024",
       "url": "https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html",
       "findings": [
@@ -21720,7 +21748,7 @@
       "file": "nytimes--charles-isherwood.json",
       "score": 48,
       "publishDate": "April 19, 2011",
-      "url": "https://www.nytimes.com/2011/04/20/theater/reviews/high-with-kathleen-turner-review.html",
+      "url": "http://theater.nytimes.com/2011/04/20/theater/reviews/high-with-kathleen-turner-review.html?adxnnl=1&amp;adxnnlx=1303265374-VbG+jQP1fiFgLcboprFEZA",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -21999,8 +22027,8 @@
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
       "file": "variety--frank-rizzo.json",
       "score": 82,
-      "publishDate": null,
-      "url": "https://variety.com/2016/legit/reviews/holiday-inn-review-broadway-1201880340/",
+      "publishDate": "October 6th, 2016",
+      "url": "http://variety.com/2016/legit/reviews/holiday-inn-review-broadway-1201880340/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -22382,7 +22410,7 @@
     {
       "showId": "hughie-2016",
       "file": "deadline--jeremy-gerard.json",
-      "score": null,
+      "score": 45,
       "publishDate": "February 25, 2016",
       "url": "http://deadline.com/2016/02/forest-whitaker-hughie-broadway-review-1201709239/",
       "findings": [
@@ -22846,7 +22874,7 @@
       "file": "nbcny--david-cote.json",
       "score": 66,
       "publishDate": "March 30, 2014",
-      "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-Idina-Menzel-Shines-in-IfThen-253125321.html",
+      "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Idina-Menzel-Shines-in-IfThen-253125321.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -25552,7 +25580,7 @@
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 85,
-      "publishDate": "2026-03-26",
+      "publishDate": "March 26th, 2026",
       "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
       "findings": [
         {
@@ -25721,7 +25749,7 @@
       "showId": "just-for-us-2023",
       "file": "vulture--jackson-mchenry.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "June 26th, 2023",
       "url": "https://www.vulture.com/2023/06/theater-reviews-just-for-us-and-one-woman-show.html",
       "findings": [
         {
@@ -25826,20 +25854,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming service\""
-        }
-      ]
-    },
-    {
-      "showId": "just-in-time-2025",
-      "file": "timeout--adam-feldman.json",
-      "score": 82,
-      "publishDate": "April 26th, 2025",
-      "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -26751,7 +26765,7 @@
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 77,
       "publishDate": "April 19, 2010",
-      "url": "https://www.nypost.com/p/entertainment/theater/rattling_la_cage_Hx9U6kOolDwRy7Jb9VxefL",
+      "url": "http://www.nypost.com/p/entertainment/theater/rattling_la_cage_Hx9U6kOolDwRy7Jb9VxefL",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28457,7 +28471,7 @@
       "file": "nytimes--ben-brantley.json",
       "score": 61,
       "publishDate": "April 20, 2015",
-      "url": "https://www.nytimes.com/2015/04/21/theater/review-renee-fleming-plays-against-type-in-living-on-love.html?_r=0",
+      "url": "http://www.nytimes.com/2015/04/21/theater/review-renee-fleming-plays-against-type-in-living-on-love.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -28653,8 +28667,8 @@
       "showId": "long-days-journey-into-night-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 93,
-      "publishDate": null,
-      "url": "https://deadline.com/2016/04/loong-days-journey-into-night-review-1201745554/",
+      "publishDate": "April 27th, 2016",
+      "url": "http://deadline.com/2016/04/loong-days-journey-into-night-review-1201745554/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -28780,7 +28794,7 @@
       "file": "nytimes--charles-isherwood.json",
       "score": 65,
       "publishDate": "March 14, 2010",
-      "url": "https://www.nytimes.com/2010/03/15/theater/reviews/15looped.html",
+      "url": "http://theater.nytimes.com/2010/03/15/theater/reviews/15looped.html?ref=theater",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30311,8 +30325,8 @@
       "showId": "matilda-the-musical-west-end-2021",
       "file": "guardian--lyn-gardner.json",
       "score": 94,
-      "publishDate": "2011-11-25",
-      "url": "http://www.guardian.co.uk/stage/2011/nov/25/matilda-review",
+      "publishDate": "November 25th, 2011",
+      "url": "https://www.theguardian.com/stage/2011/nov/25/matilda-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -30397,6 +30411,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "the-telegrap--charles-spencer.json",
+      "score": 93,
+      "publishDate": "November 25th, 2011",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/matilda-cambridge-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
         }
       ]
     },
@@ -35386,7 +35414,7 @@
     {
       "showId": "oklahoma-2019",
       "file": "nytimes--ben-brantley.json",
-      "score": null,
+      "score": 95,
       "publishDate": "April 7, 2019",
       "url": "https://www.nytimes.com/2019/04/07/theater/oklahoma-review.html",
       "findings": [
@@ -36732,7 +36760,7 @@
       "showId": "our-town-2024",
       "file": "vulture--sara-holdren.json",
       "score": 61,
-      "publishDate": null,
+      "publishDate": "October 10th, 2024",
       "url": "https://www.vulture.com/article/theater-review-jim-parsons-kenny-leon-our-town.html",
       "findings": [
         {
@@ -36995,7 +37023,7 @@
       "showId": "parade-2023",
       "file": "nytimes--jesse-green.json",
       "score": 76,
-      "publishDate": "February 27, 2023",
+      "publishDate": "March 16, 2023",
       "url": "https://www.nytimes.com/2023/03/16/theater/parade-review-leo-frank.html",
       "findings": [
         {
@@ -37156,6 +37184,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": 85,
+      "publishDate": "December 15th, 2025",
+      "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -37541,7 +37583,8 @@
     {
       "showId": "patriots-2024",
       "file": "variety--frank-rizzo.json",
-      "publishDate": null,
+      "score": 42,
+      "publishDate": "April 25th, 2024",
       "url": "https://variety.com/2024/legit/reviews/patriots-review-broadway-peter-morgan-play-1235978407/",
       "findings": [
         {
@@ -39111,7 +39154,7 @@
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 82,
       "publishDate": "April 26, 2010",
-      "url": "https://www.nypost.com/p/entertainment/theater/promises_are_fulfilled_NknsdSoPPOk1FuD87dnabM?CMP=OTC-rss&FEEDNAME=",
+      "url": "http://www.nypost.com/p/entertainment/theater/promises_are_fulfilled_NknsdSoPPOk1FuD87dnabM",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -40689,7 +40732,7 @@
       "file": "nytimes--charles-isherwood.json",
       "score": 45,
       "publishDate": "November 15, 2012",
-      "url": "http://www.nytimes.com/2012/11/16/theater/reviews/scandalous-the-life-and-trials-of-aimee-semple-mcpherson.html?_r=0",
+      "url": "http://theater.nytimes.com/2012/11/16/theater/reviews/scandalous-the-life-and-trials-of-aimee-semple-mcpherson.html?pagewanted=all&amp;_r=0",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -41316,7 +41359,7 @@
       "showId": "shucked-2023",
       "file": "variety--frank-rizzo.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "April 5th, 2023",
       "url": "https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-brandy-clark-shane-mcanally-1235574263/",
       "findings": [
         {
@@ -41448,7 +41491,7 @@
       "file": "timeout--david-cote.json",
       "score": 80,
       "publishDate": "November 17, 2014",
-      "url": "https://www.timeout.com/newyork/theater/side-show-1",
+      "url": "http://www.timeout.com/newyork/theater/side-show-1",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -41908,7 +41951,7 @@
       "file": "nytimes--ben-brantley.json",
       "score": 92,
       "publishDate": "April 2, 2015",
-      "url": "http://www.nytimes.com/2015/04/03/theater/review-skylight-with-carey-mulligan-and-bill-nighy-opens-on-broadway.html?partner=rss&emc=rss&_r=0",
+      "url": "http://www.nytimes.com/2015/04/03/theater/review-skylight-with-carey-mulligan-and-bill-nighy-opens-on-broadway.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43566,7 +43609,7 @@
       "showId": "starlight-express-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 62,
-      "publishDate": "2024-06-30",
+      "publishDate": "June 30th, 2024",
       "url": "https://www.whatsonstage.com/news/starlight-express-review-not-first-class-but-a-technical-rollercoaster-ride_1610072/",
       "findings": [
         {
@@ -44785,7 +44828,7 @@
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "timeout--david-cote.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "February 23rd, 2017",
       "url": "https://www.timeout.com/newyork/blog/broadway-review-jake-gyllenhaal-is-amazing-in-sunday-in-the-park-with-george-022317",
       "findings": [
         {
@@ -46734,7 +46777,7 @@
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 47,
       "publishDate": "April 10, 2010",
-      "url": "https://www.nypost.com/p/entertainment/theater/not_altogether_ooky_ZVxoMHGEoaq9yJJlHa7tNI",
+      "url": "http://www.nypost.com/p/entertainment/theater/not_altogether_ooky_ZVxoMHGEoaq9yJJlHa7tNI",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -50161,7 +50204,7 @@
       "file": "nytimes--charles-isherwood.json",
       "score": 76,
       "publishDate": "March 19, 2015",
-      "url": "http://www.nytimes.com/2015/03/20/theater/review-the-heidi-chronicles-with-elisabeth-moss-opens-on-broadway.html?_r=0",
+      "url": "http://www.nytimes.com/2015/03/20/theater/review-the-heidi-chronicles-with-elisabeth-moss-opens-on-broadway.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -52966,7 +53009,7 @@
     {
       "showId": "the-parisian-woman-2017",
       "file": "guardian--jake-nevins.json",
-      "score": 58,
+      "score": 66,
       "publishDate": "November 30, 2017",
       "url": "https://www.theguardian.com/stage/2017/nov/30/the-parisian-woman-uma-thurman-broadway-review",
       "findings": [
@@ -53094,7 +53137,7 @@
       "file": "nytimes--jesse-green.json",
       "score": 44,
       "publishDate": "November 30, 2017",
-      "url": "https://www.nytimes.com/2017/11/30/theater/the-parisian-woman-uma-thurman-review.html",
+      "url": "https://www.nytimes.com/2017/11/30/theater/the-parisian-woman-uma-thurman-review.html ",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -56111,6 +56154,20 @@
     },
     {
       "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 46,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/once-on-this-island-review-regents-park-open-air-theatre-london-gabrielle-brooks-lynn-ahrens-stephen-flaherty-ola-ince-little-mermaid",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 60,
       "publishDate": "2023-05-17",
@@ -56377,7 +56434,7 @@
       "file": "nytimes--jesse-green.json",
       "score": 91,
       "publishDate": "March 29, 2018",
-      "url": "https://www.nytimes.com/2018/03/29/theater/review-three-tall-women-glenda-jackson-albee.html",
+      "url": "https://www.nytimes.com/2018/03/29/theater/review-three-tall-woman-glenda-jackson-albee.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -57112,7 +57169,7 @@
       "showId": "topdog-underdog-2022",
       "file": "vulture--rob-weinert-kendt.json",
       "score": 71,
-      "publishDate": null,
+      "publishDate": "October 20th, 2022",
       "url": "https://www.vulture.com/2022/10/theater-review-topdog-underdog-suzan-lori-parks-broadway.html",
       "findings": [
         {
@@ -57957,24 +58014,6 @@
     },
     {
       "showId": "waiting-for-godot-2009",
-      "file": "hollywood-reporter--david-rooney.json",
-      "publishDate": "2009-04-30",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/waiting-for-godot-broadway-review-keanu-reeves-alex-winter-1236387450/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from waiting-for-godot-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-2009",
       "file": "nytg--joe-dziemianowicz.json",
       "score": 91,
       "publishDate": null,
@@ -58068,6 +58107,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "file": "deadline--greg-evans.json",
+      "score": 78,
+      "publishDate": "September 28, 2025",
+      "url": "https://deadline.com/2025/09/waiting-for-godot-broadway-review-keanu-reeves-1236556987/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbomax\""
         }
       ]
     },
@@ -59522,7 +59575,8 @@
     {
       "showId": "west-side-story-2020",
       "file": "vulture--helen-shaw.json",
-      "publishDate": "2020-02-20",
+      "score": 48,
+      "publishDate": "February 20th, 2020",
       "url": "https://www.vulture.com/2020/02/theater-review-a-new-west-side-story-onscreen-all-the-way.html",
       "findings": [
         {
@@ -61156,7 +61210,7 @@
       "file": "timeout--david-cote.json",
       "score": 94,
       "publishDate": "November 12, 2015",
-      "url": "https://www.timeout.com/newyork/theater/a-view-from-the-bridge",
+      "url": "http://www.timeout.com/newyork/theater/a-view-from-the-bridge",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -62098,7 +62152,7 @@
       "showId": "appropriate-2023",
       "file": "hollywood-reporter--lovia-gyarkye.json",
       "score": 78,
-      "publishDate": "December 19, 2023",
+      "publishDate": "December 19th, 2023",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
       "findings": [
         {
@@ -62472,7 +62526,7 @@
       "showId": "betrayal-2019",
       "file": "vulture--sara-holdren.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "September 5th, 2019",
       "url": "https://www.vulture.com/2019/09/review-broadways-tight-new-betrayal-with-tom-hiddleston.html",
       "findings": [
         {
@@ -64972,7 +65026,7 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 71,
-      "publishDate": null,
+      "publishDate": "February 25th, 2026",
       "url": "https://www.theguardian.com/stage/2026/feb/25/evening-all-afternoon-review-donmar-warehouse-london",
       "findings": [
         {
@@ -65299,7 +65353,7 @@
       "showId": "fat-ham-2023",
       "file": "hollywood-reporter--lovia-gyarkye.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "April 19th, 2023",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review-1235391595/",
       "findings": [
         {
@@ -65425,7 +65479,7 @@
       "showId": "fat-ham-2023",
       "file": "timeout--raven-snook.json",
       "score": 94,
-      "publishDate": null,
+      "publishDate": "April 12th, 2023",
       "url": "https://www.timeout.com/newyork/theater/fat-ham-broadway-review",
       "findings": [
         {
@@ -67081,7 +67135,7 @@
       "showId": "hamilton-2015",
       "file": "variety--marilyn-stasio.json",
       "score": 94,
-      "publishDate": "2015-08-06",
+      "publishDate": "August 6th, 2015",
       "url": "http://variety.com/2015/legit/reviews/hamilton-review-broadway-1201557679/",
       "findings": [
         {
@@ -69388,7 +69442,7 @@
       "file": "huffpost--steven-suskin.json",
       "score": 82,
       "publishDate": "November 1, 2015",
-      "url": "https://www.huffpost.com/entry/theater-king-charles-iii_b_8508852",
+      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-vivat-charles_b_8447450.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -69699,9 +69753,9 @@
     {
       "showId": "la-cage-aux-folles-2010",
       "file": "ew--thom-geier.json",
-      "score": 43,
+      "score": 85,
       "publishDate": "April 18, 2010",
-      "url": "https://www.ew.com/ew/article/0,,20361924,00.html",
+      "url": "http://www.ew.com/ew/article/0,,20361924,00.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -70649,6 +70703,20 @@
     },
     {
       "showId": "man-and-boy-west-end-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "score": 80,
+      "publishDate": "2026-02-11",
+      "url": "https://www.broadwayworld.com/westend/article/Review-MAN-AND-BOY-National-Theatre-20260211",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 48,
       "publishDate": "2026-02-11",
@@ -71533,7 +71601,7 @@
       "showId": "mj-the-musical-west-end-2024",
       "file": "guardian--anya-ryan.json",
       "score": 42,
-      "publishDate": "2024-03-27",
+      "publishDate": "March 27th, 2024",
       "url": "https://www.theguardian.com/stage/2024/mar/27/mj-the-musical-review-prince-edward-theatre-london",
       "findings": [
         {
@@ -72143,7 +72211,8 @@
     {
       "showId": "oh-mary-2024",
       "file": "variety--christian-lewis.json",
-      "publishDate": null,
+      "score": 90,
+      "publishDate": "July 11th, 2024",
       "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
       "findings": [
         {
@@ -72339,7 +72408,7 @@
       "showId": "oliver-west-end-2024",
       "file": "artsdesk--helen-hawkins.json",
       "score": 91,
-      "publishDate": "2025-01-15",
+      "publishDate": "January 15th, 2025",
       "url": "https://theartsdesk.com/theatre/oliver-gielgud-theatre-review-lionel-barts-1960-masterpiece-bourne-again",
       "findings": [
         {
@@ -72451,8 +72520,8 @@
       "showId": "oliver-west-end-2024",
       "file": "thestage--sam-marlowe.json",
       "score": 82,
-      "publishDate": "2025-01-15",
-      "url": "https://www.thestage.co.uk/review-round-ups/oliver-starring-simon-lipkin--review-round-up",
+      "publishDate": "January 15th, 2025",
+      "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -72955,13 +73024,27 @@
       "showId": "paranormal-activity-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
       "score": 48,
-      "publishDate": "2025-12-23",
+      "publishDate": "December 23rd, 2025",
       "url": "https://theartsdesk.com/theatre/paranormal-activity-ambassadors-theatre-review-franchise-frightener-flops-stage",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "times-uk--rachel-halliburton.json",
+      "score": 76,
+      "publishDate": "December 16th, 2025",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz?gaa_at=eafs&gaa_n=AWEtsqc0hUH9KoQ4XW_xHQI3YlaYk3ddGSuPLhoNCgtRG27k_ugyuAd5eEuvyyNh0wM%3D&gaa_ts=695300de&gaa_sig=Xw4QOETBlXABAvt0TZvRowDWPHNVHFtiHbv5jxLzZUBFlPyacS1-6lLOzdOP0aw_Mje-9gNBXOYTL54R2ye1IQ%3D%3D&gearefresh=",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -73046,20 +73129,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "passing-strange-2008",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/passing-strange-young-vic-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -73235,8 +73304,8 @@
       "showId": "present-laughter-2017",
       "file": "nytimes--ben-brantley.json",
       "score": 76,
-      "publishDate": "April 6, 2017",
-      "url": "http://www.nytimes.com/2017/04/05/theater/review-kevin-kline-serves-ham-in-soignee-silk-in-present-laughter.html?_r=0",
+      "publishDate": "April 5, 2017",
+      "url": "https://www.nytimes.com/2017/04/05/theater/review-kevin-kline-serves-ham-in-soignee-silk-in-present-laughter.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73415,7 +73484,7 @@
     {
       "showId": "queen-versailles-2025",
       "file": "vulture--sara-holdren.json",
-      "score": null,
+      "score": 26,
       "publishDate": "November 9, 2025",
       "url": "https://www.vulture.com/article/theater-review-the-queen-of-versailles-broadway-burning-cauldron-fiery-fire.html",
       "findings": [
@@ -73594,20 +73663,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "rock-n-roll-2007",
-      "file": "telegraph--claire-allfree.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/rock-n-roll-hampstead-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -74075,7 +74130,7 @@
       "showId": "shadowlands-west-end-2026",
       "file": "thestage--holly-omahony.json",
       "score": 73,
-      "publishDate": "2026-02-13",
+      "publishDate": "February 13th, 2026",
       "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hugh-bonneville-maggie-siff",
       "findings": [
         {
@@ -74943,7 +74998,7 @@
       "file": "nytimes--jesse-green.json",
       "score": 76,
       "publishDate": "July 23, 2018",
-      "url": "http://www.nytimes.com/2018/07/23/theater/straight-white-men-review-armie-hammer-josh-charles.html",
+      "url": "https://www.nytimes.com/2018/07/23/theater/straight-white-men-review-armie-hammer-josh-charles.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -76649,8 +76704,8 @@
       "showId": "the-bands-visit-2017",
       "file": "theater-life--isa-goldberg.json",
       "score": 82,
-      "publishDate": null,
-      "url": "https://theaterlife.com/the-bands-visit/",
+      "publishDate": "November 16th, 2017",
+      "url": "http://theaterlife.com/the-bands-visit/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -78329,20 +78384,6 @@
     },
     {
       "showId": "the-homecoming-2007",
-      "file": "telegraph--marianka-swain.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-homecoming-young-vic-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "the-homecoming-2007",
       "file": "west-end-best-friend--diana-feng.json",
       "score": 83,
       "publishDate": "December 6th, 2023",
@@ -78902,6 +78943,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "the-telegrap--david-gritten.json",
+      "score": 89,
+      "publishDate": "October 17th, 2014",
+      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -80550,8 +80605,8 @@
       "showId": "time-and-the-conways-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": 44,
-      "publishDate": null,
-      "url": "https://deadline.com/2017/10/time-and-the-conways-elizabeth-mcgovern-measure-for-measure-review-1202185137/",
+      "publishDate": "October 10th, 2017",
+      "url": "http://deadline.com/2017/10/time-and-the-conways-elizabeth-mcgovern-measure-for-measure-review-1202185137/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -80593,7 +80648,7 @@
       "file": "nytimes--jesse-green.json",
       "score": 62,
       "publishDate": "October 10, 2017",
-      "url": "https://www.nytimes.com/2017/10/10/theater/time-and-the-conways-theater-review-roundabout.html?_r=0",
+      "url": "https://www.nytimes.com/2017/10/10/theater/time-and-the-conways-theater-review-roundabout.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80718,7 +80773,7 @@
       "showId": "topdog-underdog-2022",
       "file": "hollywood-reporter--lovia-gyarkye.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "October 21st, 2022",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/topdog-underdog-corey-hawkins-yahya-abdul-mateen-ii-suzan-lori-parks-1235245724/",
       "findings": [
         {
@@ -80997,9 +81052,9 @@
     {
       "showId": "uncle-vanya-2024",
       "file": "variety--trish-deitch.json",
-      "score": null,
+      "score": 54,
       "publishDate": "April 24, 2024",
-      "url": "https://variety.com/2020/legit/reviews/uncle-vanya-review-toby-jones-london-1203478623/",
+      "url": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81131,20 +81186,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-2009",
-      "file": "nytimes--laura-collins-hughes.json",
-      "score": 82,
-      "publishDate": "2009-05-01",
-      "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01godo.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -81719,6 +81760,20 @@
     },
     {
       "showId": "yellow-face-2024",
+      "file": "thewrap--unknown.json",
+      "score": 62,
+      "publishDate": "October 1, 2024",
+      "url": "https://www.thewrap.com/yellow-face-broadway-review-david-henry-hwang/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "yellow-face-2024",
       "file": "timeout--adam-feldman.json",
       "score": 78,
       "publishDate": "October 2, 2024",
@@ -81748,7 +81803,7 @@
     {
       "showId": "yellow-face-2024",
       "file": "vulture--sara-holdren.json",
-      "score": null,
+      "score": 84,
       "publishDate": "October 1, 2024",
       "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
       "findings": [
