@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T15:12:25.032Z",
+  "timestamp": "2026-03-30T15:20:53.225Z",
   "stats": {
-    "totalReviews": 31955,
-    "alreadyFlagged": 11597,
+    "totalReviews": 31966,
+    "alreadyFlagged": 11675,
     "dateGuardCatches": 14,
-    "directorMismatch": 928,
-    "tvFilmSignals": 3304,
-    "londonSignals": 979,
+    "directorMismatch": 927,
+    "tvFilmSignals": 3298,
+    "londonSignals": 977,
     "offBroadwaySignals": 969,
     "yearMismatch": 64,
-    "noPublishDate": 6122
+    "noPublishDate": 6057
   },
   "findings": [
     {
@@ -232,48 +232,6 @@
       "score": 77,
       "publishDate": "April 30, 2009",
       "url": "https://www.theatermania.com/news/9-to-5_18872/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "file": "broadwayworld--brit-asplen.json",
-      "score": 67,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/cleveland/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Connor-Palace-Key-Bank-Broadway-Series-20241010",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "file": "broadwayworld--marie-reiter.json",
-      "score": 65,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/cleveland/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Connor-Palace-Key-Bank-Broadway-Series-20241010",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "file": "broadwayworld--roy-berko.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/cleveland/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Connor-Palace-Key-Bank-Broadway-Series-20241010",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -4131,20 +4089,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "file": "broadwayworld--michael-dale.json",
-      "score": 76,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/denver/article/BWW-Review-AN-ACT-OF-GOD-at-Denver-Center-20161206",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -17398,20 +17342,6 @@
     },
     {
       "showId": "gigi-2015",
-      "file": "broadwayworld--charles-shubow.json",
-      "score": 74,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/washington-dc/article/BWW-Reviews-GIGI-Premieres-at-the-Kennedy-Center-Thank-Heaven-for-Little-I-Mean-Older-Women-20150203?PageSpeed=noscript",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "gigi-2015",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 58,
       "publishDate": "2015-04-08",
@@ -23592,20 +23522,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-1987",
-      "file": "broadwayworld--steve-murray.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/san-francisco/article/Review-INTO-THE-WOODS-At-The-Curran-San-Francisco-20230621",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-2022",
       "file": "amny--matt-windman.json",
       "score": 78,
@@ -27704,20 +27620,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "life-of-pi-2023",
-      "file": "seattle-times--gemma-wilson.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.seattletimes.com/entertainment/theater/life-of-pi-review-from-bestselling-novel-to-magical-stage-production/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -69331,20 +69233,6 @@
     },
     {
       "showId": "life-of-pi-2023",
-      "file": "broadwayworld--timoth-david-copney.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/baltimore/article/Review-THE-LIFE-OF-PI-at-The-Hippodrome-20241211",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "life-of-pi-2023",
       "file": "nysr--frank-scheck.json",
       "score": 78,
       "publishDate": "2023-03-30T21:52:43",
@@ -73156,20 +73044,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "shucked-2023",
-      "file": "broadwayworld--jeffrey-kare.json",
-      "score": 71,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/raleigh/article/Review-SHUCKED-National-Tour-at-Durham-Performing-Arts-Center-20250305",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

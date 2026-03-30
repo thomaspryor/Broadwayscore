@@ -1,13 +1,22 @@
 {
-  "timestamp": "2026-03-30T14:52:35.810Z",
+  "timestamp": "2026-03-30T15:20:38.303Z",
   "regressions": [
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "oldCount": 18,
-      "newCount": 15,
-      "dropped": 3,
-      "scoredOnDisk": 18,
-      "flaggedScored": 6,
+      "showId": "shucked-2023",
+      "oldCount": 51,
+      "newCount": 39,
+      "dropped": 12,
+      "scoredOnDisk": 44,
+      "flaggedScored": 51,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "oldCount": 36,
+      "newCount": 29,
+      "dropped": 7,
+      "scoredOnDisk": 34,
+      "flaggedScored": 42,
       "reason": "scored files exist but being dropped"
     }
   ]
