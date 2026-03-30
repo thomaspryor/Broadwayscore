@@ -71,7 +71,7 @@ const BASE_VARIABLE_RATES = {
 
 /** Range multipliers for three-scenario output */
 const SCENARIO_MULTIPLIERS = {
-  optimistic:  { variableCost: 0.85, fixedCost: 0.95, grossAdj: 1.02 },
+  optimistic:  { variableCost: 0.80, fixedCost: 0.92, grossAdj: 1.02 },
   central:     { variableCost: 1.00, fixedCost: 1.00, grossAdj: 1.00 },
   pessimistic: { variableCost: 1.20, fixedCost: 1.08, grossAdj: 0.97 },
 };
@@ -307,13 +307,19 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
     ? (parseTaxCreditFromNotes(commercial.notes) || Math.min(capitalization * 0.25, 3000000))
     : 0;
 
-  // Reserve fund: added to cap requirement (must be funded before declared recoupment)
-  const reserveFund = weeklyNut * RESERVE_FUND_WEEKS;
+  // Reserve fund: scaled by run length. Long-running shows need full reserve;
+  // limited runs (< 6 months) need less because producers budget to the close date.
+  const isLimitedRun = show.closingDate && show.openingDate &&
+    (new Date(show.closingDate) - new Date(show.openingDate)) < 200 * 86400000;
+  const reserveWeeks = isLimitedRun ? 1.0 : RESERVE_FUND_WEEKS;
+  const reserveFund = weeklyNut * reserveWeeks;
   // Effective cap can't go below zero (SVOG can't make cap negative)
   const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
 
-  // Tax credit: applied as lump sum at lag point, not upfront
-  const taxCreditWeek = TAX_CREDIT_LAG_WEEKS;
+  // Tax credit timing: for closed shows, apply at closing (credit is eventual certainty).
+  // For running shows, lag 18 months from opening.
+  const isClosed = show.closingDate && new Date(show.closingDate) < new Date();
+  const taxCreditWeek = isClosed ? Infinity : TAX_CREDIT_LAG_WEEKS; // Infinity = applied at end
 
   // --- Gross data ---
   const openingDate = show.openingDate ? new Date(show.openingDate) : null;
@@ -390,6 +396,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
         // Recalculate this week with post-recoup royalties
         // (small correction — the week of recoupment splits pre/post)
       }
+    }
+
+    // Apply tax credit at end for closed shows (it's an eventual certainty)
+    if (taxCreditWeek === Infinity) {
+      cumProfit += taxCreditAmount;
     }
 
     const recoupmentPct = (cumProfit / effectiveCap) * 100;
@@ -568,12 +579,21 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
 function estimateWeeklyNut(show, commercial) {
   const type = show.type || 'musical';
   const category = classifyShow(show);
+  const title = (show.title || '').toLowerCase();
+
+  // Solo/one-person shows have much lower costs
+  const isSolo = /solo|one.?(?:man|woman|person)|stand.?up|comedy/i.test(title) ||
+    type === 'special' ||
+    // Known solo shows
+    /prima facie|just for us|fleabag|mike birbiglia|alex edelman|colin quinn/i.test(title);
+
+  if (isSolo) return 250000;
 
   const defaults = {
     musicalSpectacle: 1100000,
     musical: 750000,
-    playStar: 700000,
-    play: 475000,
+    playStar: 600000,  // Reduced from 700K — stars add variable cost, not fixed
+    play: 425000,      // Reduced from 475K — typical straight play
     special: 300000,
   };
 
