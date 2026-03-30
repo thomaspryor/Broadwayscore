@@ -153,7 +153,8 @@
     "stranger-things-2024/thestage--unknown.json",
     "oliver-west-end-2024/thestage--dave-fargnoli.json",
     "oliver-west-end-2024/thestage--matt-hemley.json",
-    "oliver-west-end-2024/thestage--sam-marlowe.json"
+    "oliver-west-end-2024/thestage--sam-marlowe.json",
+    "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -523,7 +524,16 @@
     "titanique-west-end-2024/theatreandtonic--unknown.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
-    "oh-mary-2024/newyorker--naomi-fry.json"
+    "oh-mary-2024/newyorker--naomi-fry.json",
+    "starlight-express-west-end-2024/thereviewshub--unknown.json",
+    "la-llamada-off-broadway-2024/nytg--unknown.json",
+    "the-great-gatsby-2024/wsj--charles-isherwood.json",
+    "the-outsiders-2024/talkinbroadway--matthew-murray.json",
+    "hadestown-west-end-2024/broadwayworld--cindy-marcolina.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json",
+    "stranger-things-the-first-shadow-west-end-2023/everything-theatre--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -617,7 +627,8 @@
       "stranger-things-2024/thestage--unknown.json",
       "oliver-west-end-2024/thestage--dave-fargnoli.json",
       "oliver-west-end-2024/thestage--matt-hemley.json",
-      "oliver-west-end-2024/thestage--sam-marlowe.json"
+      "oliver-west-end-2024/thestage--sam-marlowe.json",
+      "stranger-things-the-first-shadow-west-end-2023/thestage--tom-wicker.json"
     ],
     "amp": [],
     "browserbase": [
@@ -702,7 +713,13 @@
       "data/review-texts/death-becomes-her-2024/wsj--unknown.json",
       "data/review-texts/maybe-happy-ending-2024/wsj--unknown.json",
       "data/review-texts/titanique-west-end-2024/theatreandtonic--unknown.json",
-      "data/review-texts/oh-mary-2024/newyorker--naomi-fry.json"
+      "data/review-texts/oh-mary-2024/newyorker--naomi-fry.json",
+      "data/review-texts/starlight-express-west-end-2024/thereviewshub--unknown.json",
+      "data/review-texts/the-great-gatsby-2024/wsj--charles-isherwood.json",
+      "data/review-texts/the-outsiders-2024/talkinbroadway--matthew-murray.json",
+      "data/review-texts/hadestown-west-end-2024/broadwayworld--cindy-marcolina.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/everything-theatre--unknown.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/playbill--unknown.json",
@@ -751,7 +768,7 @@
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "oh-mary-2024/newyorker--naomi-fry.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -939,6 +956,17 @@
       "t": "2026-03-30T06:14:18.992Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-03-30T06:15:52.271Z",
+      "event": "bb-session",
+      "session": "e4793754",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-03-30T06:15:53.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
