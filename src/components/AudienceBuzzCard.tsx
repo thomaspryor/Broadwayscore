@@ -13,6 +13,9 @@ interface AudienceBuzzCardProps {
   showScoreUrl?: string;
   limitedSources?: boolean;
   market?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end';
+  showId?: string;
+  showTitle?: string;
+  getPlatformUrl?: (sourceKey: string, showId: string, showTitle: string) => string | undefined;
 }
 
 // Heart icon for "Loving It"
@@ -143,7 +146,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, volumeLab
     </>
   );
 
-  const className = `flex-1 min-w-[72px] bg-surface-overlay rounded-lg p-3 border border-white/5 hover:bg-white/5 transition-colors ${url ? 'hover:border-white/10' : ''}`;
+  const className = `bg-surface-overlay rounded-lg p-3 border border-white/5 hover:bg-white/5 transition-colors ${url ? 'hover:border-white/10' : ''}`;
 
   if (url) {
     return (
@@ -161,7 +164,7 @@ const SOURCE_ICONS: Record<string, (props: { className?: string }) => React.Reac
   lbo: BroadwayComIcon, ltd: BroadwayComIcon, theatr: TheatrIcon, broadwayCom: BroadwayComIcon, reddit: RedditIcon,
 };
 
-export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, market }: AudienceBuzzCardProps) {
+export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, market, showId, showTitle, getPlatformUrl }: AudienceBuzzCardProps) {
   const grade = getAudienceGrade(buzz.combinedScore);
   const colors = getAudienceGradeClasses(buzz.combinedScore);
   const visibleSources = market ? AUDIENCE_SOURCES.filter(s => s.markets.includes(market)) : AUDIENCE_SOURCES;
@@ -192,21 +195,25 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, m
         </div>
       </div>
 
-      {/* Source Cards Row — dynamically render sources with data */}
-      <div className="flex flex-wrap gap-2 sm:gap-3 items-stretch">
+      {/* Source Cards Grid — wraps to 2 rows when 4+ sources */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {visibleSources.map(src => {
           const data = buzz.sources[src.key];
           if (!data || data.score == null) return null;
           const IconComponent = SOURCE_ICONS[src.key] || ShowScoreIcon;
+          // Show Score uses curated URL; other platforms use getPlatformUrl
+          const url = src.key === 'showScore'
+            ? showScoreUrl
+            : (showId && showTitle && getPlatformUrl ? getPlatformUrl(src.key, showId, showTitle) : undefined);
           return (
             <SourceCard
               key={src.key}
-              name={src.name}
+              name={src.shortName || src.name}
               icon={<IconComponent className={src.iconColor} />}
               score={data.score}
               reviewCount={data.reviewCount ?? null}
               starRating={src.showStarRating ? data.starRating : undefined}
-              url={src.key === 'showScore' ? showScoreUrl : undefined}
+              url={url}
               volumeLabel={src.volumeLabel}
             />
           );

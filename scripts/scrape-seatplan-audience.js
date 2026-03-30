@@ -230,6 +230,7 @@ async function main() {
     const urlVariants = buildSeatplanUrls(title);
     let html = null;
     let lastError = null;
+    let usedUrl = null;
 
     for (const url of urlVariants) {
       console.log(`  URL: ${url}`);
@@ -245,7 +246,7 @@ async function main() {
           lastError = e;
         }
       }
-      if (html) break;
+      if (html) { usedUrl = url; break; }
       if (urlVariants.indexOf(url) < urlVariants.length - 1) await sleep(RATE_LIMIT_MS);
     }
 
@@ -315,6 +316,7 @@ async function main() {
         starRating: data.ratingAverage,
         lastUpdated: new Date().toISOString(),
         ...(data.ratings ? { ratingDistribution: data.ratings } : {}),
+        ...(usedUrl ? { url: usedUrl } : {}),
       };
 
       // Recalculate combined score
