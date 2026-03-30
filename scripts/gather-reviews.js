@@ -55,6 +55,7 @@ const { verifyProduction, quickDateCheck } = require('./lib/production-verifier'
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
+const { isLikelyTourReview } = require('./lib/review-guards');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
@@ -2113,6 +2114,12 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
+  }
+
+  // TOUR/REGIONAL GUARD: Reject regional BWW and local paper tour reviews
+  if (isLikelyTourReview(reviewData.url, showId)) {
+    console.log(`    ✗ Skipping ${filename}: tour/regional review (${reviewData.url?.substring(0, 60)})`);
+    return 'tourReview';
   }
 
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
