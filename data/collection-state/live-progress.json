@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-03-30T11:25:02.582Z",
-  "processed": 218,
-  "failed": 804,
-  "successRate": "21.3%",
+  "updatedAt": "2026-03-30T11:29:36.310Z",
+  "processed": 224,
+  "failed": 808,
+  "successRate": "21.7%",
   "tierBreakdown": {
-    "playwright": 130,
+    "playwright": 134,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 1,
     "scrapingbee": 31,
     "brightdata": 0,
-    "archiveToday": 291,
-    "archive": 52
+    "archiveToday": 295,
+    "archive": 53
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-03-30T05:36:27.502Z",
-      "event": "bb-session",
-      "session": "b500bce9",
-      "url": "https://www.nytimes.com/2026/02/25/theater/mother-russia-lauren-yee-profile.html"
-    },
-    {
-      "t": "2026-03-30T05:36:28.756Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-03-30T05:51:08.994Z",
-      "event": "bb-session",
-      "session": "87e3625f",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-30T05:51:10.287Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-30T05:53:09.879Z",
-      "event": "bb-session",
-      "session": "b1add2d6",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-03-30T05:53:11.293Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-03-30T05:57:58.221Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-03-30T11:20:37.765Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-30T11:25:03.531Z",
+      "event": "bb-session",
+      "session": "8082271e",
+      "url": "https://www.amny.com/news/review-the-last-five-years-2025/"
+    },
+    {
+      "t": "2026-03-30T11:25:04.809Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-30T11:26:38.110Z",
+      "event": "bb-session",
+      "session": "057ffc71",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/12/19/appropriate-broadway-rev"
+    },
+    {
+      "t": "2026-03-30T11:26:39.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-30T11:26:48.902Z",
+      "event": "bb-session",
+      "session": "0fc440ab",
+      "url": "https://www.wsj.com/arts-culture/theater/gutenberg-the-musical-review-broadway-j"
+    },
+    {
+      "t": "2026-03-30T11:26:50.258Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

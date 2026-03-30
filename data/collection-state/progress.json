@@ -217,7 +217,13 @@
     "wicked-west-end-2021/the-telegrap--charles-spencer.json",
     "the-lion-king-west-end-2021/timeout-london--unknown.json",
     "the-lion-king-west-end-2021/the-telegrap--david-gritten.json",
-    "mamma-mia-west-end-2021/timeout-london--nina-caplan.json"
+    "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
+    "the-last-five-years-2025/amny--matt-windman.json",
+    "the-picture-of-dorian-gray-2025/new-york-sun--ar-hoffman.json",
+    "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "yellow-face-2024/thewrap--unknown.json",
+    "jajas-african-hair-braiding-2023/theatermania--david-gordon.json",
+    "back-to-the-future-2023/nytg--gillian-russo.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -1023,7 +1029,11 @@
     "the-play-that-goes-wrong-west-end-2021/the-telegrap--tim-walker.json",
     "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json",
     "billy-elliot-the-musical-west-end-2027/daily-mail--unknown.json",
-    "the-comedy-about-spies-west-end-2026/daily-mail--unknown.json"
+    "the-comedy-about-spies-west-end-2026/daily-mail--unknown.json",
+    "appropriate-2023/washpost--peter-marks.json",
+    "gutenberg-2023/wsj--terry-teachout.json",
+    "purlie-victorious-2023/theatermania--david-gordon.json",
+    "the-shark-is-broken-2023/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1157,7 +1167,11 @@
       "giant-2026/nytg--joe-dziemianowicz.json",
       "giant-2026/theatrely--juan-a-ramirez.json",
       "just-in-time-2025/nytimes--adam-feldman.json",
-      "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json"
+      "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+      "the-picture-of-dorian-gray-2025/new-york-sun--ar-hoffman.json",
+      "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json",
+      "jajas-african-hair-braiding-2023/theatermania--david-gordon.json",
+      "back-to-the-future-2023/nytg--gillian-russo.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1174,7 +1188,9 @@
       "waiting-for-godot-2009/hollywood-reporter--david-rooney.json",
       "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
       "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
-      "data/review-texts/a-mirrored-monet-west-end-2026/variety--brent-lang.json"
+      "data/review-texts/a-mirrored-monet-west-end-2026/variety--brent-lang.json",
+      "data/review-texts/the-last-five-years-2025/amny--matt-windman.json",
+      "the-last-five-years-2025/amny--matt-windman.json"
     ],
     "directCookies": [
       "beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json"
@@ -1504,7 +1520,11 @@
       "data/review-texts/hamilton-west-end-2021/guardian--unknown.json",
       "data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/telegraph--unknown.json",
       "data/review-texts/billy-elliot-the-musical-west-end-2027/daily-mail--unknown.json",
-      "data/review-texts/the-comedy-about-spies-west-end-2026/daily-mail--unknown.json"
+      "data/review-texts/the-comedy-about-spies-west-end-2026/daily-mail--unknown.json",
+      "data/review-texts/appropriate-2023/washpost--peter-marks.json",
+      "data/review-texts/gutenberg-2023/wsj--terry-teachout.json",
+      "data/review-texts/purlie-victorious-2023/theatermania--david-gordon.json",
+      "data/review-texts/the-shark-is-broken-2023/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/playbill--unknown.json",
@@ -1558,11 +1578,12 @@
       "book-of-mormon-2011/amny--unknown.json",
       "wicked-west-end-2021/the-telegrap--charles-spencer.json",
       "the-lion-king-west-end-2021/the-telegrap--david-gritten.json",
-      "mamma-mia-west-end-2021/timeout-london--nina-caplan.json"
+      "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
+      "yellow-face-2024/thewrap--unknown.json"
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "the-comedy-about-spies-west-end-2026/daily-mail--unknown.json",
+  "lastProcessed": "back-to-the-future-2023/nytg--gillian-russo.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -1783,6 +1804,39 @@
       "t": "2026-03-30T11:20:37.765Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-30T11:25:03.531Z",
+      "event": "bb-session",
+      "session": "8082271e",
+      "url": "https://www.amny.com/news/review-the-last-five-years-2025/"
+    },
+    {
+      "t": "2026-03-30T11:25:04.809Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-30T11:26:38.110Z",
+      "event": "bb-session",
+      "session": "057ffc71",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/12/19/appropriate-broadway-rev"
+    },
+    {
+      "t": "2026-03-30T11:26:39.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-30T11:26:48.902Z",
+      "event": "bb-session",
+      "session": "0fc440ab",
+      "url": "https://www.wsj.com/arts-culture/theater/gutenberg-the-musical-review-broadway-j"
+    },
+    {
+      "t": "2026-03-30T11:26:50.258Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
