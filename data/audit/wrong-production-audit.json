@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-29T23:59:35.232Z",
+  "timestamp": "2026-03-30T00:14:42.353Z",
   "stats": {
     "totalReviews": 32364,
-    "alreadyFlagged": 11667,
+    "alreadyFlagged": 11669,
     "dateGuardCatches": 18,
-    "directorMismatch": 931,
+    "directorMismatch": 932,
     "tvFilmSignals": 3363,
-    "londonSignals": 990,
+    "londonSignals": 989,
     "offBroadwaySignals": 977,
     "yearMismatch": 69,
     "noPublishDate": 6328
@@ -36278,6 +36278,20 @@
       ]
     },
     {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "london-box-office--stuart-king.json",
+      "score": 80,
+      "publishDate": "2023-05-26",
+      "url": "https://www.londonboxoffice.co.uk/news/post/operation-mincemeat-tenth-extension-west-end",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
       "showId": "orphans-2013",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 74,
@@ -64294,20 +64308,6 @@
       "score": 85,
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 93,
-      "publishDate": "2023-06-20",
-      "url": "https://www.whatsonstage.com/news/dear-england-at-the-national-theatre-review-the-beautiful-game-in-a-beautiful-play_1404772/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
