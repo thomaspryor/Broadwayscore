@@ -1,45 +1,45 @@
 {
-  "runDate": "2026-03-30T02:35:25.923Z",
+  "runDate": "2026-03-30T04:29:35.554Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "consumed-west-end-2026,jajas-african-hair-braiding-west-end-2026,a-mirrored-monet-west-end-2026",
+    "showFilter": "dog-day-afternoon-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
+    "processed": 3,
     "failed": 1,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 1,
     "tier1_5Success": 1,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
     "totalFailed": 1,
     "scrapingBeePageCredits": 0,
@@ -51,29 +51,29 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "a-mirrored-monet-west-end-2026/thestage--unknown.json",
-    "a-mirrored-monet-west-end-2026/whatsonstage--miriam-sallon.json",
-    "consumed-west-end-2026/standard--unknown.json",
-    "consumed-west-end-2026/thestage--dave-fargnoli.json"
+    "dog-day-afternoon-2026/hollywood-reporter--caitlin-huston.json",
+    "dog-day-afternoon-2026/theatermania--david-gordon.json",
+    "dog-day-afternoon-2026/playbill--unknown.json"
   ],
   "failed": [
-    "a-mirrored-monet-west-end-2026/variety--brent-lang.json"
+    "dog-day-afternoon-2026/talkinbroadway--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "a-mirrored-monet-west-end-2026/thestage--unknown.json",
-      "a-mirrored-monet-west-end-2026/whatsonstage--miriam-sallon.json",
-      "consumed-west-end-2026/standard--unknown.json",
-      "consumed-west-end-2026/thestage--dave-fargnoli.json"
+      "dog-day-afternoon-2026/theatermania--david-gordon.json",
+      "dog-day-afternoon-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/a-mirrored-monet-west-end-2026/variety--brent-lang.json"
+      "data/review-texts/dog-day-afternoon-2026/hollywood-reporter--caitlin-huston.json",
+      "dog-day-afternoon-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/dog-day-afternoon-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
