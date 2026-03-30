@@ -1082,8 +1082,10 @@ async function consumeShowScoreCandidatesFile() {
 
       // For WE/OB shows, TodayTix startDate is first preview, NOT press night.
       // Scrape Show Score for the actual press night ("Opens Mar 09") date.
-      let openingDate = ttShow.startDate || null;
-      let previewsStartDate = null;
+      // If ShowScore has no "Opens" date, leave openingDate null — don't guess.
+      let openingDate = null;
+      let openingDateSource = null;
+      let previewsStartDate = ttShow.startDate || null;
       if (isLondonMarket(candidate.category) || candidate.category === 'off-broadway') {
         let ssData = null;
         try {
@@ -1092,10 +1094,14 @@ async function consumeShowScoreCandidatesFile() {
         } catch { /* ShowScore fetch failed */ }
         if (ssData?.openingDate) {
           // Show Score "Opens X" = press night = true opening date
-          previewsStartDate = ttShow.startDate || null;
           openingDate = ssData.openingDate;
+          openingDateSource = 'showscore';
           console.log(`    Date correction: TT startDate ${previewsStartDate} → previewsStart, SS "Opens" ${openingDate} → openingDate`);
         }
+      } else {
+        // Broadway: TodayTix startDate is used as openingDate until IBDB enrichment
+        openingDate = ttShow.startDate || null;
+        openingDateSource = openingDate ? 'todaytix' : null;
       }
 
       validated.push({
@@ -1103,6 +1109,7 @@ async function consumeShowScoreCandidatesFile() {
         venue: (typeof ttShow.venue === 'string' ? ttShow.venue : ttShow.venue?.name) || 'TBA',
         slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
         openingDate,
+        openingDateSource,
         previewsStartDate,
         closingDate: ttShow.endDate === 'null' ? null : ttShow.endDate || null,
         category: candidate.category,
@@ -1131,6 +1138,7 @@ async function consumeShowScoreCandidatesFile() {
 
       const venue = ssData?.venue || 'TBA';
       const openingDate = ssData?.openingDate || null;
+      const openingDateSource = openingDate ? 'showscore' : null;
       const closingDate = ssData?.closingDate || null;
       const source = ssData ? 'showScore+scraped' : 'showScore';
 
@@ -1139,6 +1147,7 @@ async function consumeShowScoreCandidatesFile() {
         venue,
         slug: candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
         openingDate,
+        openingDateSource,
         closingDate,
         category: candidate.category,
         description: '',
@@ -1555,6 +1564,7 @@ async function discoverShows() {
           if (show.openingDate) {
             show.previewsStartDate = show.openingDate;
             show.openingDate = null;
+            show.openingDateSource = null;
             console.log(`  ℹ️  "${show.title}": No IBDB data, treating Begins date as previewsStartDate`);
           }
           continue;
@@ -1563,6 +1573,7 @@ async function discoverShows() {
         // IBDB opening date is authoritative - overwrite Broadway.org "Begins:"
         if (ibdb.openingDate) {
           show.openingDate = ibdb.openingDate;
+          show.openingDateSource = 'ibdb';
         }
 
         // Fill in preview start date
@@ -1786,6 +1797,7 @@ async function discoverShows() {
           status = 'previews';
           show.previewsStartDate = show.openingDate;
           show.openingDate = null;
+          show.openingDateSource = null;
           openingDate = null;
         } else {
           status = 'open';
@@ -1824,6 +1836,7 @@ async function discoverShows() {
         synopsis: show.description ? show.description.replace(/<[^>]*>/g, '').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim().substring(0, 500) : '',
         ageRecommendation: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].ageRecommendation) || null,
         previewsStartDate: show.previewsStartDate || null,
+        openingDateSource: show.openingDateSource || null,
         tags: tags,
         theaterAddress: getTheaterAddress(show.venue) || null,
         ticketLinks: [],

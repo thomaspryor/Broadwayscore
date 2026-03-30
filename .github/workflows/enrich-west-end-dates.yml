@@ -2,12 +2,16 @@ name: Enrich West End Dates
 
 on:
   schedule:
-    # Weekly on Thursdays at 8 AM UTC — catch newly announced WE shows
+    # Daily at 7 AM UTC — fix shows with unconfirmed press night sources
+    # (todaytix, showscore, unknown) so the orchestrator can fire correctly.
+    # Critical for 12-24hr WE opening night response time.
+    - cron: '0 7 * * *'
+    # Weekly on Thursdays at 8 AM UTC — full enrichment for newly announced WE shows
     - cron: '0 8 * * 4'
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all)'
+        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all), fix-unconfirmed (correct todaytix/showscore dates)'
         required: true
         default: 'enrich'
         type: choice
@@ -15,6 +19,7 @@ on:
           - enrich
           - verify
           - force
+          - fix-unconfirmed
       show:
         description: 'Optional: specific show slug to process'
         required: false
@@ -50,12 +55,28 @@ jobs:
         id: enrich
         run: |
           FLAGS=""
-          MODE="${{ inputs.mode || 'enrich' }}"
+          MODE="${{ inputs.mode || '' }}"
+
+          # Auto-detect mode from cron schedule if not manually specified
+          if [ -z "$MODE" ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            HOUR=$(date -u +%H)
+            DOW=$(date -u +%u)  # 1=Mon, 4=Thu
+            if [ "$DOW" = "4" ] && [ "$HOUR" = "08" ]; then
+              MODE="enrich"
+              echo "Thursday 8 AM UTC cron → enrich mode (full enrichment)"
+            else
+              MODE="fix-unconfirmed"
+              echo "Daily 7 AM UTC cron → fix-unconfirmed mode (correct unconfirmed sources)"
+            fi
+          fi
+          MODE="${MODE:-enrich}"
 
           if [ "$MODE" = "verify" ]; then
             FLAGS="$FLAGS --verify --dry-run"
           elif [ "$MODE" = "force" ]; then
             FLAGS="$FLAGS --force"
+          elif [ "$MODE" = "fix-unconfirmed" ]; then
+            FLAGS="$FLAGS --fix-unconfirmed"
           fi
 
           if [ -n "${{ inputs.show }}" ]; then

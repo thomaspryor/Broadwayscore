@@ -122,6 +122,9 @@ jobs:
             cutoff.setDate(cutoff.getDate() - (isWE ? 4 : 2));
             cutoff.setHours(0,0,0,0);
             const market = '$MARKET';
+            // Trusted sources for WE press night dates — only fire orchestrator
+            // when we're confident the date is a real press night, not a preview
+            const TRUSTED_SOURCES = new Set(['theatremonkey', 'playbill', 'ibdb', 'manual']);
             const opened = shows.filter(s => {
               if (!s.openingDate) return false;
               if (s.status !== 'open' && s.status !== 'upcoming') return false;
@@ -129,6 +132,11 @@ jobs:
               // Market filter
               if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
               if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
+              // For WE shows (not OWE), require a trusted openingDateSource
+              // OWE shows often open cold — todaytix source is acceptable
+              if (cat === 'west-end' && !TRUSTED_SOURCES.has(s.openingDateSource)) {
+                return false;
+              }
               const d = new Date(s.openingDate);
               d.setHours(0,0,0,0);
               return d >= cutoff && d <= now;
