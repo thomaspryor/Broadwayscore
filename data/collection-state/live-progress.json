@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-30T16:11:52.192Z",
-  "processed": 60,
-  "failed": 88,
-  "successRate": "40.5%",
+  "updatedAt": "2026-03-30T16:16:44.750Z",
+  "processed": 62,
+  "failed": 96,
+  "successRate": "39.2%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 42,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 42,
+    "archiveToday": 46,
     "archive": 8
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -78,6 +78,17 @@
     },
     {
       "t": "2026-03-30T16:09:01.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T16:12:19.615Z",
+      "event": "bb-session",
+      "session": "91e27914",
+      "url": "https://www.wsj.com/articles/the-25th-annual-putnam-county-spelling-bee-review-a"
+    },
+    {
+      "t": "2026-03-30T16:12:20.724Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

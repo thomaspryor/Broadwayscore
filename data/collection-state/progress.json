@@ -59,7 +59,9 @@
     "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/whatsonstage--sarah-crompton.json",
     "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
-    "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json"
+    "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json",
+    "chess-2025/playbill--logan-culwell-block.json",
+    "paddington-the-musical-west-end-2025/whatsonstage--unknown.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -149,7 +151,15 @@
     "an-ark-off-broadway-2026/wsj--charles-isherwood.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
     "two-strangers-bway-2025/guardian--arifa-akbar.json",
-    "chess-2025/talkinbroadway--unknown.json"
+    "chess-2025/talkinbroadway--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
+    "dirty-books-off-broadway-2025/nytg--unknown.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/ny1--unknown.json",
+    "ragtime-2025/usatoday--samantha-gholar.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "la-ternura-off-broadway-2025/nytg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -193,7 +203,9 @@
       "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
       "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/whatsonstage--sarah-crompton.json",
       "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
-      "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json"
+      "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json",
+      "chess-2025/playbill--logan-culwell-block.json",
+      "paddington-the-musical-west-end-2025/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -260,7 +272,11 @@
       "data/review-texts/an-ark-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json",
       "data/review-texts/an-ark-off-broadway-2026/wsj--charles-isherwood.json",
-      "data/review-texts/chess-2025/talkinbroadway--unknown.json"
+      "data/review-texts/chess-2025/talkinbroadway--unknown.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
+      "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
+      "data/review-texts/ragtime-2025/ny1--unknown.json",
+      "data/review-texts/ragtime-2025/usatoday--samantha-gholar.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -274,7 +290,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "chess-2025/talkinbroadway--unknown.json",
+  "lastProcessed": "la-ternura-off-broadway-2025/nytg--unknown.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -339,6 +355,17 @@
     },
     {
       "t": "2026-03-30T16:09:01.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T16:12:19.615Z",
+      "event": "bb-session",
+      "session": "91e27914",
+      "url": "https://www.wsj.com/articles/the-25th-annual-putnam-county-spelling-bee-review-a"
+    },
+    {
+      "t": "2026-03-30T16:12:20.724Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
