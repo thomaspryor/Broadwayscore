@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-30T13:15:28.770Z",
-  "processed": 29,
-  "failed": 39,
-  "successRate": "42.6%",
+  "updatedAt": "2026-03-30T15:57:34.977Z",
+  "processed": 50,
+  "failed": 68,
+  "successRate": "42.4%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 33,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 16,
-    "archive": 4
+    "archiveToday": 32,
+    "archive": 8
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -25,6 +25,39 @@
       "t": "2026-03-30T13:14:53.316Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-30T15:39:28.711Z",
+      "event": "bb-session",
+      "session": "5bc13e38",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-03-30T15:39:29.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-30T15:39:53.934Z",
+      "event": "bb-session",
+      "session": "a6e3113f",
+      "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/"
+    },
+    {
+      "t": "2026-03-30T15:39:55.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-30T15:48:45.789Z",
+      "event": "bb-session",
+      "session": "4d4864ff",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-03-30T15:48:46.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
