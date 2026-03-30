@@ -29,9 +29,20 @@ function isWestEndVenue(venue) {
   return WEST_END_VENUES.has(normalizeVenueName(venue));
 }
 
+/**
+ * Get the market pool for a category. Shows within the same pool share a
+ * browse page and must be deduplicated against each other.
+ * Returns 'london' for west-end/off-west-end, 'nyc' for broadway/off-broadway.
+ */
+function getMarketPool(category) {
+  const cat = category || 'broadway';
+  if (cat === 'west-end' || cat === 'off-west-end') return 'london';
+  return 'nyc';
+}
+
 /** Returns true for both 'west-end' and 'off-west-end' — i.e., any London market. */
 function isLondonMarket(category) {
-  return category === 'west-end' || category === 'off-west-end';
+  return getMarketPool(category) === 'london';
 }
 
 /**
@@ -61,4 +72,4 @@ function isUkOutletUrl(url) {
   }
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, isUkOutletUrl, normalizeVenueName, WEST_END_VENUES };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, getMarketPool, isUkOutletUrl, normalizeVenueName, WEST_END_VENUES };
