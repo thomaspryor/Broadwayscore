@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T01:25:17.288Z",
+  "timestamp": "2026-03-30T01:32:46.913Z",
   "stats": {
-    "totalReviews": 32364,
-    "alreadyFlagged": 11654,
+    "totalReviews": 32308,
+    "alreadyFlagged": 11632,
     "dateGuardCatches": 18,
-    "directorMismatch": 944,
-    "tvFilmSignals": 3363,
-    "londonSignals": 993,
-    "offBroadwaySignals": 977,
-    "yearMismatch": 69,
-    "noPublishDate": 6329
+    "directorMismatch": 938,
+    "tvFilmSignals": 3354,
+    "londonSignals": 992,
+    "offBroadwaySignals": 976,
+    "yearMismatch": 66,
+    "noPublishDate": 6310
   },
   "findings": [
     {
@@ -1811,20 +1811,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "a-time-to-kill-2013",
-      "file": "bloomberg--jeremy-gerard.json",
-      "score": 68,
-      "publishDate": "2013-10-21",
-      "url": "https://www.bloomberg.com/news/2013-10-21/-a-time-to-kill-brings-grisham-tale-to-broadway-review.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -8965,20 +8951,6 @@
       "showId": "call-me-izzy-2025",
       "file": "washpost--naveen-kumar.json",
       "score": 72,
-      "publishDate": "2025-06-12",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2025/06/12/call-me-izzy-angry-alan-jean-smart-john-krasinski/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "call-me-izzy-2025",
-      "file": "washpost--unknown.json",
-      "score": 50,
       "publishDate": "2025-06-12",
       "url": "https://www.washingtonpost.com/entertainment/theater/2025/06/12/call-me-izzy-angry-alan-jean-smart-john-krasinski/",
       "findings": [
@@ -21084,20 +21056,6 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
-      "file": "hollywood-reporter--unknown.json",
-      "score": 68,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
       "file": "mashable--kristy-puchko.json",
       "score": 90,
       "publishDate": "2025-07-11",
@@ -21509,7 +21467,7 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "file": "afridiziak-theatre-news--unknown.json",
+      "file": "afridiziak-theatre-news--basil-g-lumsden.json",
       "score": 88,
       "publishDate": "2025-06-24",
       "url": "https://www.afridiziak.com/reviews/disneys-hercules-theatre-royal-drury-lane/",
@@ -21850,7 +21808,7 @@
     },
     {
       "showId": "high-noon-west-end-2025",
-      "file": "broadwayworld--unknown.json",
+      "file": "broadwayworld--gary-naylor.json",
       "score": 91,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/westend/article/Review-HIGH-NOON-starring-Billy-Crudup-Harold-Pinter-Theatre-20260110",
@@ -29157,7 +29115,7 @@
     },
     {
       "showId": "macbeth-2008",
-      "file": "ap--unknown.json",
+      "file": "ap--jennifer-farrar-associated.json",
       "score": 81,
       "publishDate": null,
       "url": "http://abcnews.go.com/Entertainment/wireStory/review-hawke-broody-monarch-macbeth-20974301",
@@ -29236,20 +29194,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2022",
-      "file": "huffpost--unknown.json",
-      "score": 44,
-      "publishDate": null,
-      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-hawkes-macbeth_b_4309246.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
         }
       ]
     },
@@ -29464,8 +29408,8 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "file": "telegraph--unknown.json",
-      "score": null,
+      "file": "telegraph--marianka-swain.json",
+      "score": 80,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/theatre/tickets/london/mamma-mia/",
       "findings": [
@@ -39233,20 +39177,6 @@
     },
     {
       "showId": "promises-promises-2010",
-      "file": "usatoday--unknown.json",
-      "score": 56,
-      "publishDate": "April 25, 2010",
-      "url": "https://www.usatoday.com/life/theater/reviews/2010-04-26-promises26_ST_N.htm",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "promises-promises-2010",
       "file": "variety--steven-suskin.json",
       "score": 62,
       "publishDate": null,
@@ -42952,30 +42882,6 @@
     },
     {
       "showId": "spamalot-2023",
-      "file": "broadwaynews--unknown.json",
-      "score": 80,
-      "publishDate": "November 17, 2023",
-      "url": "https://www.broadwaynews.com/the-broadway-review-monty-pythons-spamalot-broad-hilarity-at-breakneck-speed/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2005 (2x) more than 2023 (1x). 2005 matches production: spamalot-2005"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-2023",
       "file": "cititour--brian-scott-lipton.json",
       "score": 85,
       "publishDate": null,
@@ -43441,30 +43347,6 @@
     },
     {
       "showId": "spring-awakening-2006",
-      "file": "hollywood-reporter--unknown.json",
-      "score": 57,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/deaf-wests-spring-awakening-theater-827479",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"andy mientus\" from spring-awakening-2015"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael arden\" from spring-awakening-2015"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2015 (2x) more than 2006 (0x). 2015 matches production: spring-awakening-2015"
-        }
-      ]
-    },
-    {
-      "showId": "spring-awakening-2006",
       "file": "nytimes--ben-brantley.json",
       "score": 81,
       "publishDate": "December 11, 2006",
@@ -43531,7 +43413,7 @@
     },
     {
       "showId": "spring-awakening-2015",
-      "file": "dctheatrescene--unknown.json",
+      "file": "dctheatrescene--var-block.json",
       "score": 82,
       "publishDate": "2015-09-27",
       "url": "https://dcmetrotheaterarts.com/2015/09/27/spring-awakening-at-the-brooks-atkinson-theatre-in-nyc/",
@@ -43568,25 +43450,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
-        }
-      ]
-    },
-    {
-      "showId": "spring-awakening-2015",
-      "file": "huffpost--unknown.json",
-      "score": 74,
-      "publishDate": null,
-      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-a-touch-of-spr_b_8205104.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2006 (4x) more than 2015 (2x). 2006 matches production: spring-awakening-2006"
         }
       ]
     },
@@ -46639,20 +46502,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "that-championship-season-2011",
-      "file": "hollywood-reporter--unknown.json",
-      "score": 38,
-      "publishDate": "March 6, 2011",
-      "url": "http://www.reuters.com/article/2011/03/07/us-stage-championship-idUSTRE7260DK20110307",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -49958,20 +49807,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
-      "file": "thewrap--unknown.json",
-      "score": 84,
-      "publishDate": null,
-      "url": "http://www.thewrap.com/the-glass-menagerie-theater-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -54997,20 +54832,6 @@
     },
     {
       "showId": "the-royal-family-2009",
-      "file": "berkshire-eagle--unknown.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://theberkshireedge.com/theatre-review-barrington-stages-the-royal-family-of-broadway-is-broadway-worthy/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ellis rabb\" from the-royal-family-1975"
-        }
-      ]
-    },
-    {
-      "showId": "the-royal-family-2009",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 88,
       "publishDate": "December 17, 2009",
@@ -55359,7 +55180,7 @@
     },
     {
       "showId": "the-tempest-globe-west-end-2026",
-      "file": "standard--unknown.json",
+      "file": "standard--nick-curtis.json",
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/the-tempest-review-shakespeare-globe-b1268906.html",
       "findings": [
@@ -58256,20 +58077,6 @@
     },
     {
       "showId": "waiting-for-godot-2025",
-      "file": "culturesauce--unknown.json",
-      "score": 65,
-      "publishDate": "September 28th, 2025",
-      "url": "https://culturesauce.com/2025/09/28/keanu-reeves-alex-winter-waiting-for-godot-broadway-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 45,
       "publishDate": null,
@@ -60311,20 +60118,6 @@
       "file": "standard--nick-curtis.json",
       "score": 62,
       "publishDate": "January 7th, 2026",
-      "url": "https://www.standard.co.uk/culture/theatre/woman-in-mind-duke-of-york-s-theatre-review-b1265306.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "woman-in-mind-west-end-2025",
-      "file": "standard--unknown.json",
-      "score": 63,
-      "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/woman-in-mind-duke-of-york-s-theatre-review-b1265306.html",
       "findings": [
         {
@@ -72209,20 +72002,6 @@
     },
     {
       "showId": "oedipus-2025",
-      "file": "thewrap--unknown.json",
-      "score": 90,
-      "publishDate": null,
-      "url": "https://www.thewrap.com/the-seat-of-our-pants-off-broadway-review-musical/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "oedipus-2025",
       "file": "washpost--melissa-rose-bernardo.json",
       "publishDate": "2025-11-14",
       "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/14/oedipus-broadway-review-lesley-manville-mark-strong/",
@@ -79346,7 +79125,7 @@
     },
     {
       "showId": "the-normal-heart-2011",
-      "file": "newsday--unknown.json",
+      "file": "newsday--thursday-may.json",
       "score": null,
       "publishDate": "April 27, 2011",
       "url": "https://www.newsday.com/entertainment/tv/tv-zone-1.811968/hbo-s-the-normal-heart-review-1.8142492",
@@ -79946,7 +79725,7 @@
     },
     {
       "showId": "the-river-2014",
-      "file": "chicagotribune--unknown.json",
+      "file": "chicagotribune--chris-jones.json",
       "score": 82,
       "publishDate": null,
       "url": "http://www.chicagotribune.com/entertainment/theater/broadway/ct-the-river-broadway-review-20141116-column.html",
@@ -80323,7 +80102,7 @@
     },
     {
       "showId": "the-testament-of-mary-2013",
-      "file": "nydailynews--unknown.json",
+      "file": "nydailynews--joe-dziemianowicz.json",
       "score": 82,
       "publishDate": null,
       "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-testament-mary-article-1.1324310",
@@ -81807,24 +81586,10 @@
     },
     {
       "showId": "woman-in-mind-west-end-2025",
-      "file": "metro--unknown.json",
+      "file": "metro--luke-dillon.json",
       "score": 78,
       "publishDate": "2026-01-07",
       "url": "https://www.westendtheatre.com/330166/news/reviews/west-end-reviews-of-woman-in-mind-starring-sheridan-smith-romesh-ranganathan/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "woman-in-mind-west-end-2025",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 63,
-      "publishDate": "January 7th, 2026",
-      "url": "https://www.whatsonstage.com/news/woman-in-mind-west-end-review-sheridan-smith-gives-a-strong-turn-in-an-outdated-tragicomedy_1707895/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81849,7 +81614,7 @@
     },
     {
       "showId": "yellow-face-2024",
-      "file": "latimes--unknown.json",
+      "file": "latimes--charles-mcnulty.json",
       "score": 77,
       "publishDate": "2024-10-10",
       "url": "https://www.latimes.com/entertainment-arts/story/2024-10-10/broadway-fall-theater-season-yellow-face-job-good-bones",
