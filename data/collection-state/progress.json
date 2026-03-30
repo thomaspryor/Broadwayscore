@@ -61,7 +61,12 @@
     "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
     "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json",
     "chess-2025/playbill--logan-culwell-block.json",
-    "paddington-the-musical-west-end-2025/whatsonstage--unknown.json"
+    "paddington-the-musical-west-end-2025/whatsonstage--unknown.json",
+    "just-in-time-2025/billboard--rebecca-milzoff.json",
+    "my-neighbour-totoro-west-end-2025/variety--unknown.json",
+    "oliver-west-end-2024/guardian--ammar-kalia.json",
+    "oliver-west-end-2024/i-paper--unknown.json",
+    "oliver-west-end-2024/whatsonstage--rachel-agyekum.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -159,7 +164,12 @@
     "ragtime-2025/ny1--unknown.json",
     "ragtime-2025/usatoday--samantha-gholar.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
-    "la-ternura-off-broadway-2025/nytg--unknown.json"
+    "la-ternura-off-broadway-2025/nytg--unknown.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "death-becomes-her-2024/wsj--unknown.json",
+    "maybe-happy-ending-2024/wsj--unknown.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -205,7 +215,9 @@
       "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
       "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json",
       "chess-2025/playbill--logan-culwell-block.json",
-      "paddington-the-musical-west-end-2025/whatsonstage--unknown.json"
+      "paddington-the-musical-west-end-2025/whatsonstage--unknown.json",
+      "oliver-west-end-2024/i-paper--unknown.json",
+      "oliver-west-end-2024/whatsonstage--rachel-agyekum.json"
     ],
     "amp": [],
     "browserbase": [
@@ -216,7 +228,9 @@
       "data/review-texts/giant-2026/amny--unknown.json",
       "giant-2026/amny--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--unknown.json",
-      "every-brilliant-thing-2026/hollywood-reporter--unknown.json"
+      "every-brilliant-thing-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--unknown.json",
+      "my-neighbour-totoro-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -227,7 +241,8 @@
       "heartbreak-hotel-off-broadway-2026/heartbreakhotelplaycom--unknown.json",
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
       "bigfoot-off-broadway-2026/timeout--unknown.json",
-      "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json"
+      "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json",
+      "oliver-west-end-2024/guardian--ammar-kalia.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -276,7 +291,9 @@
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/wsj--unknown.json",
       "data/review-texts/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/ragtime-2025/ny1--unknown.json",
-      "data/review-texts/ragtime-2025/usatoday--samantha-gholar.json"
+      "data/review-texts/ragtime-2025/usatoday--samantha-gholar.json",
+      "data/review-texts/death-becomes-her-2024/wsj--unknown.json",
+      "data/review-texts/maybe-happy-ending-2024/wsj--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -286,11 +303,12 @@
       "copenhagen-west-end-2026/telegraph--suzanne-king.json",
       "inter-alia-west-end-2026/daily-mail--patrick-marmion.json",
       "giant-2026/vulture--unknown.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+      "just-in-time-2025/billboard--rebecca-milzoff.json"
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "la-ternura-off-broadway-2025/nytg--unknown.json",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -366,6 +384,39 @@
     },
     {
       "t": "2026-03-30T16:12:20.724Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T16:17:04.496Z",
+      "event": "bb-session",
+      "session": "7f5507be",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-03-30T16:17:05.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-30T16:17:56.433Z",
+      "event": "bb-session",
+      "session": "f43fc184",
+      "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-h"
+    },
+    {
+      "t": "2026-03-30T16:17:57.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-30T16:19:38.246Z",
+      "event": "bb-session",
+      "session": "d0562a29",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-03-30T16:19:39.563Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
