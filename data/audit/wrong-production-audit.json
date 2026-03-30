@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-30T11:49:56.081Z",
+  "timestamp": "2026-03-30T12:02:32.089Z",
   "stats": {
     "totalReviews": 31960,
     "alreadyFlagged": 11328,
     "dateGuardCatches": 18,
     "directorMismatch": 949,
-    "tvFilmSignals": 3358,
-    "londonSignals": 1003,
+    "tvFilmSignals": 3359,
+    "londonSignals": 1005,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
     "noPublishDate": 6177
@@ -60185,6 +60185,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -72439,6 +72444,20 @@
       ]
     },
     {
+      "showId": "oh-mary-west-end-2025",
+      "file": "the-telegrap--dominic-cavendish.json",
+      "score": 82,
+      "publishDate": "December 19th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "ohio-state-murders-2022",
       "file": "dtli--juan-michael-porter-ii.json",
       "score": 42,
@@ -74501,6 +74520,20 @@
       "file": "telegraph--marianka-swain.json",
       "score": 90,
       "publishDate": "2023-11-11",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "file": "the-telegrap--marianka-swain.json",
+      "score": 91,
+      "publishDate": "November 11th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
       "findings": [
         {
