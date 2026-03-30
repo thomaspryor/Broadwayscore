@@ -128,6 +128,23 @@ const KNOWN_SVOG = {
   'tina': 10000000,
 };
 
+/** Known star deals — weekly premium + % of gross above threshold */
+const KNOWN_STAR_DEALS = {
+  'the-music-man-2022': { weeklyPremium: 350000, grossPct: 0.08, grossThreshold: 1200000 }, // Jackman ($150K+/wk + 10% of gross) + Foster + elaborate production
+  'hells-kitchen': { weeklyPremium: 75000, grossPct: 0.03, grossThreshold: 1000000 }, // Alicia Keys creator deal
+  'gypsy-2024': { weeklyPremium: 100000, grossPct: 0.02, grossThreshold: 1200000 }, // Audra McDonald
+};
+
+/** Default star premium for star-driven shows without specific deal data */
+const DEFAULT_STAR_PREMIUM = {
+  weeklyPremium: 75000,    // Additional fixed weekly cost
+  grossPct: 0.02,          // Additional % of gross
+  grossThreshold: 1000000, // Only on gross above this
+};
+
+/** Max simulation weeks (10 years) */
+const MAX_SIMULATION_WEEKS = 520;
+
 // ---------------------------------------------------------------------------
 // Model Functions
 // ---------------------------------------------------------------------------
@@ -198,12 +215,18 @@ function calcTheaterOverage(weeklyGross, weeklyNut) {
  * @param {number} scenarioMult - Scenario multiplier object
  * @returns {{ profit: number, variableCosts: number, theaterCost: number, fixedCosts: number }}
  */
-function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks) {
+function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType) {
   const mult = scenarioMult || SCENARIO_MULTIPLIERS.central;
   const adjGross = weeklyGross * mult.grossAdj;
 
   // Variable costs (percentage of gross, excluding theater)
-  const adjVarRate = baseVarRate * mult.variableCost;
+  // Post-recoupment: REMOVE author royalty from base rate (replaced by royalty pool)
+  let effectiveVarRate = baseVarRate;
+  if (isPostRecoup) {
+    const authorRate = AUTHOR_ROYALTY_PRE[showType] || AUTHOR_ROYALTY_PRE.musical;
+    effectiveVarRate = baseVarRate - authorRate; // Authors shift to profit pool
+  }
+  const adjVarRate = effectiveVarRate * mult.variableCost;
   const variableCosts = adjGross * adjVarRate;
 
   // Theater cost: max(floor, pct of gross)
@@ -217,19 +240,12 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   // Phase 4 (weeks 105+): Nut × 0.88 (mature run: further optimization, but offset by union escalators)
   let fixedCosts = weeklyNut * mult.fixedCost;
   if (weekNumber > 104) {
-    fixedCosts *= 0.88;
+    fixedCosts *= 0.88; // Mature run cap — no further reduction
   } else if (weekNumber > 52) {
     fixedCosts *= 0.93;
   }
-  // For very old shows where nut reflects current costs, deflate further
-  if (totalWeeks && totalWeeks > 260 && weekNumber < totalWeeks) {
-    // Shows running 5+ years: additional 2%/year deflation for earlier weeks
-    // (ticket price inflation means older years had lower absolute costs)
-    const yearsFromEnd = (totalWeeks - weekNumber) / 52;
-    if (yearsFromEnd > 5) {
-      fixedCosts /= Math.pow(1.02, yearsFromEnd - 5);
-    }
-  }
+  // No additional deflation for long runs — Broadway costs inflate over time.
+  // The 0.88 floor already captures cast replacement savings and optimization.
 
   // Preview cost premium
   if (isPreview) {
@@ -296,16 +312,33 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
   const category = classifyShow(show);
   const baseVarRate = getBaseVariableRate(category);
 
-  // --- Effective capitalization ---
+  // --- Star deal ---
   const slug = show.slug || show.id;
+  // Star deals: only apply for KNOWN deals, not as a default.
+  // Most plays don't have above-scale star compensation — applying a default
+  // causes false negatives for shows that actually recouped.
+  const starDeal = KNOWN_STAR_DEALS[slug] || null;
+  if (starDeal) {
+    warnings.push(`Star deal: +$${(starDeal.weeklyPremium/1000).toFixed(0)}K/wk + ${(starDeal.grossPct*100).toFixed(0)}% above $${(starDeal.grossThreshold/1e6).toFixed(1)}M`);
+  }
+
+  // --- Effective capitalization ---
   const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
 
-  // Tax credit: only for shows that opened before Oct 2025 cutoff
+  // Tax credit: only if mentioned in notes OR show opened in eligible window (2004-2025)
+  // Don't assume every show got the credit — only apply when evidence supports it
   const openYear = show.openingDate ? parseInt(show.openingDate.split('-')[0]) : 2020;
-  const eligibleForTaxCredit = openYear >= 2004; // NYC tax credit started ~2004
-  const taxCreditAmount = eligibleForTaxCredit
-    ? (parseTaxCreditFromNotes(commercial.notes) || Math.min(capitalization * 0.25, 3000000))
-    : 0;
+  const notesCredit = parseTaxCreditFromNotes(commercial.notes);
+  const eligibleForTaxCredit = openYear >= 2004 && openYear <= 2025;
+  // If notes explicitly mention a credit amount, use it. Otherwise estimate only for
+  // shows where we have medium+ confidence commercial data (not speculative)
+  const hasConfidentData = commercial.confidence === 'high' || commercial.confidence === 'medium';
+  const taxCreditAmount = notesCredit
+    ? notesCredit
+    : (eligibleForTaxCredit && hasConfidentData ? Math.min(capitalization * 0.25, 3000000) : 0);
+  if (!taxCreditAmount) {
+    warnings.push('No tax credit applied (insufficient confidence)');
+  }
 
   // Reserve fund: scaled by run length. Long-running shows need full reserve;
   // limited runs (< 6 months) need less because producers budget to the close date.
@@ -372,7 +405,10 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
     let totalGross = 0;
     let totalProfit = 0;
 
-    for (let i = 0; i < weeklySchedule.length; i++) {
+    // Cap simulation at 520 weeks (10 years) to prevent accumulation errors
+    const maxWeeks = Math.min(weeklySchedule.length, 520);
+
+    for (let i = 0; i < maxWeeks; i++) {
       const week = weeklySchedule[i];
       const weekNum = i + 1;
 
@@ -382,12 +418,21 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
       }
 
       const weekResult = calcWeeklyProfit(
-        week.gross, weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length
+        week.gross, weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical'
       );
 
-      cumProfit += weekResult.profit;
+      let weekProfit = weekResult.profit;
+
+      // Star deal: additional cost above standard nut
+      if (starDeal) {
+        weekProfit -= starDeal.weeklyPremium;
+        const grossAboveThreshold = Math.max(0, weekResult.adjGross - starDeal.grossThreshold);
+        weekProfit -= grossAboveThreshold * starDeal.grossPct;
+      }
+
+      cumProfit += weekProfit;
       totalGross += weekResult.adjGross;
-      totalProfit += weekResult.profit;
+      totalProfit += weekProfit;
 
       // Check recoupment threshold
       if (!isPostRecoup && cumProfit >= effectiveCap) {
@@ -587,7 +632,7 @@ function estimateWeeklyNut(show, commercial) {
     // Known solo shows
     /prima facie|just for us|fleabag|mike birbiglia|alex edelman|colin quinn/i.test(title);
 
-  if (isSolo) return 250000;
+  if (isSolo) return 175000;
 
   const defaults = {
     musicalSpectacle: 1100000,
