@@ -491,10 +491,12 @@ function dualScorePostHTML(height, config) {
 
 // ── Posts 12-16: Show Scorecards ──
 function scorecardHTML(height, config) {
-  const { title, headline, score, exact, reviews, audGrade, audScore, t1, t2, t3, opened, venue, status, posterId } = config;
+  const { title, headline, score, reviews, audGrade, audScore, opened, venue, status, posterId } = config;
   const tier = tierClass(score);
   const ext = config.posterExt || 'webp';
   const posterUrl = `https://broadwayscorecard.com/images/shows/${posterId}/poster.${ext}`;
+  const topPad = height === 2700 ? 120 : 96;
+  const botPad = height === 2700 ? 100 : 80;
 
   const audColorMap = grade => {
     if (grade.startsWith('A')) return { bg: '#22c55e', color: '#fff' };
@@ -505,79 +507,67 @@ function scorecardHTML(height, config) {
   const ac = audColorMap(audGrade);
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
-  ${baseCSS(height)} ${pageCSS(height)}
-  .header { text-align: center; margin-bottom: 48px; }
-  .header h1 { font-size: 96px; font-weight: 900; line-height: 1.05; color: #fff; letter-spacing: -0.02em; margin-bottom: 16px; }
-  .header .sub { font-size: 30px; font-weight: 400; color: #9ca3af; }
-  .header .sub .brand { color: #d4a574; font-weight: 700; }
-  .card { background: #1a1a24; border-radius: 40px; padding: 56px; border: 1px solid rgba(255,255,255,0.05); max-width: 1800px; margin: 0 auto; width: 100%; }
-  .card-top { display: flex; gap: 48px; margin-bottom: 40px; }
-  .card-poster { width: 340px; height: 490px; border-radius: 20px; object-fit: cover; flex-shrink: 0; background: #2a2a38; }
-  .card-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-  .card-title { font-size: 80px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 20px; }
-  .card-meta { font-size: 28px; color: #6b7280; line-height: 1.6; }
-  .card-meta span { color: #9ca3af; }
-  .scores-row { display: flex; gap: 32px; align-items: flex-start; }
-  .score-block { flex: 1; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; padding: 28px 16px; }
-  .score-block-label { font-size: 20px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #6b7280; margin-bottom: 12px; }
-  .score-block-value { font-size: 64px; font-weight: 800; line-height: 1; }
-  .score-block-sub { font-size: 18px; color: #6b7280; margin-top: 8px; }
-  .big-score-badge { width: 140px; height: 140px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 68px; font-weight: 700; }
-  .big-score-badge.gold { background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%); color: #1a1a1a; border: 4px solid #C8960E; box-shadow: 0 0 24px rgba(218,165,32,0.55), 0 0 12px rgba(255,215,0,0.4), 0 4px 12px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.3); }
-  .big-score-badge.recommended { background: #22c55e; color: #fff; }
-  .big-score-badge.worth-seeing { background: #14b8a6; color: #fff; }
-  .big-score-badge.skippable { background: #d97706; color: #1a1a1a; }
-  .big-score-badge.stay-away { background: #ef4444; color: #fff; }
-  .big-aud-badge { width: 140px; height: 140px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 56px; font-weight: 700; }
-  .big-crown { margin-bottom: -6px; position: relative; z-index: 1; }
-  ${footerCSS()}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 2160px; height: ${height}px; background: #0f0f14; font-family: 'Inter', ui-sans-serif, -apple-system, sans-serif; color: #e5e7eb; overflow: hidden; -webkit-font-smoothing: antialiased; }
+  .page { padding: ${topPad}px 100px ${botPad}px; height: 100%; display: flex; flex-direction: column; }
+  .page-label { font-size: 28px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #4b5563; text-align: center; margin-bottom: 28px; }
+  .card { background: #1a1a24; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex: 1; overflow: hidden; min-height: 0; }
+  .card-poster { width: 520px; flex-shrink: 0; object-fit: cover; display: block; background: #2a2a38; }
+  .card-right { flex: 1; padding: 72px 80px; display: flex; flex-direction: column; justify-content: space-between; }
+  .show-headline { font-size: 34px; font-weight: 500; color: #6b7280; margin-bottom: 20px; line-height: 1.4; }
+  .show-title { font-size: 100px; font-weight: 900; color: #fff; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 40px; }
+  .show-meta { font-size: 28px; color: #6b7280; line-height: 1.8; }
+  .show-meta b { color: #9ca3af; font-weight: 500; }
+  .scores-row { display: flex; gap: 32px; }
+  .score-block { flex: 1; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; padding: 36px 16px; }
+  .score-label { font-size: 20px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; margin-bottom: 16px; }
+  .score-badge { width: 180px; height: 180px; border-radius: 32px; display: flex; align-items: center; justify-content: center; font-size: 80px; font-weight: 700; }
+  .score-badge.gold { background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%); color: #1a1a1a; border: 4px solid #C8960E; box-shadow: 0 0 32px rgba(218,165,32,0.55), 0 0 16px rgba(255,215,0,0.4), inset 0 2px 0 rgba(255,255,255,0.3); }
+  .score-badge.recommended { background: #22c55e; color: #fff; box-shadow: 0 2px 16px rgba(34,197,94,0.3); }
+  .score-badge.worth-seeing { background: #14b8a6; color: #fff; box-shadow: 0 2px 16px rgba(20,184,166,0.3); }
+  .score-badge.skippable { background: #d97706; color: #1a1a1a; box-shadow: 0 2px 16px rgba(217,119,6,0.3); }
+  .score-badge.stay-away { background: #ef4444; color: #fff; box-shadow: 0 2px 16px rgba(239,68,68,0.3); }
+  .aud-badge { width: 180px; height: 180px; border-radius: 32px; display: flex; align-items: center; justify-content: center; font-size: 64px; font-weight: 700; }
+  .score-sub { font-size: 20px; color: #6b7280; margin-top: 12px; text-align: center; }
+  .crown { margin-bottom: -8px; position: relative; z-index: 1; }
+  .footer { text-align: center; margin-top: 32px; flex-shrink: 0; }
+  .footer-logo { font-size: 44px; font-weight: 900; letter-spacing: -0.5px; }
+  .footer-logo .white { color: #fff; }
+  .footer-logo .gold { background: linear-gradient(135deg, #d4a574 0%, #b8956a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .footer-logo .tm { font-size: 16px; font-weight: 400; vertical-align: super; margin-left: 4px; color: #9ca3af; -webkit-text-fill-color: #9ca3af; }
   </style></head><body><div class="page">
-    <div class="header">
-      <h1>${headline}</h1>
-      <div class="sub">broadwayscorecard.com</div>
-    </div>
+    <div class="page-label">broadwayscorecard.com</div>
     <div class="card">
-      <div class="card-top">
-        <img class="card-poster" src="${posterUrl}" alt="${title}">
-        <div class="card-info">
-          <div class="card-title">${title}</div>
-          <div class="card-meta">
-            ${venue ? `<span>Venue:</span> ${venue}<br>` : ''}
-            <span>Opened:</span> ${opened}<br>
-            <span>Status:</span> ${status} · <span>Reviews:</span> ${reviews}
+      <img class="card-poster" src="${posterUrl}" alt="${title}">
+      <div class="card-right">
+        <div>
+          <div class="show-headline">${headline}</div>
+          <div class="show-title">${title}</div>
+          <div class="show-meta">
+            ${venue ? `<b>Venue</b> ${venue}<br>` : ''}
+            <b>Opened</b> ${opened}<br>
+            <b>Status</b> ${status}
+          </div>
+        </div>
+        <div class="scores-row">
+          <div class="score-block">
+            <div class="score-label">CriticScore™</div>
+            ${tier === 'gold' ? '<div class="crown"><svg width="44" height="20" viewBox="0 0 24 14"><path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.85"/></svg></div>' : ''}
+            <div class="score-badge ${tier}">${score}</div>
+            <div class="score-sub">${reviews} reviews</div>
+          </div>
+          <div class="score-block">
+            <div class="score-label">Audience</div>
+            <div class="aud-badge" style="background:${ac.bg};color:${ac.color};box-shadow:0 2px 16px ${ac.bg}44">${audGrade}</div>
+            <div class="score-sub">${audScore ? audScore + '/100' : '&nbsp;'}</div>
           </div>
         </div>
       </div>
-      <div class="scores-row">
-        <div class="score-block">
-          <div class="score-block-label">CriticScore™</div>
-          ${tier === 'gold' ? '<div class="big-crown"><svg width="36" height="16" viewBox="0 0 24 14"><path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.85"/></svg></div>' : ''}
-          <div class="big-score-badge ${tier}">${score}</div>
-          <div class="score-block-sub">${tierLabel(tier)}</div>
-        </div>
-        <div class="score-block">
-          <div class="score-block-label">Audience</div>
-          <div class="big-aud-badge" style="background:${ac.bg};color:${ac.color};box-shadow:0 2px 12px ${ac.bg}44">${audGrade}</div>
-          <div class="score-block-sub">${audScore ? audScore + '/100' : ''}</div>
-        </div>
-        <div class="score-block">
-          <div class="score-block-label">Tier 1 Avg</div>
-          <div class="score-block-value" style="color:#fff">${t1.avg}</div>
-          <div class="score-block-sub">${t1.count} reviews</div>
-        </div>
-        <div class="score-block">
-          <div class="score-block-label">Tier 2 Avg</div>
-          <div class="score-block-value" style="color:#fff">${t2.avg}</div>
-          <div class="score-block-sub">${t2.count} reviews</div>
-        </div>
-        <div class="score-block">
-          <div class="score-block-label">Tier 3 Avg</div>
-          <div class="score-block-value" style="color:#fff">${t3.avg}</div>
-          <div class="score-block-sub">${t3.count} reviews</div>
-        </div>
-      </div>
     </div>
-    ${footerHTML()}
+    <div class="footer">
+      <div class="footer-logo"><span class="white">Broadway</span><span class="gold">Scorecard</span><span class="tm">™</span></div>
+    </div>
   </div></body></html>`;
 }
 

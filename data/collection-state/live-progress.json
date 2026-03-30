@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-03-30T02:35:06.883Z",
-  "processed": 4,
-  "failed": 1,
-  "successRate": "80.0%",
+  "updatedAt": "2026-03-30T03:14:45.723Z",
+  "processed": 55,
+  "failed": 50,
+  "successRate": "52.4%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 15
   },
   "browserbaseSessions": 1,
   "recentActivity": [
@@ -25,6 +25,28 @@
       "t": "2026-03-30T02:34:05.439Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-30T02:54:20.320Z",
+      "event": "bb-session",
+      "session": "6587481b",
+      "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-dog"
+    },
+    {
+      "t": "2026-03-30T02:54:21.933Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-30T03:10:02.514Z",
+      "event": "bb-session",
+      "session": "7dea56d4",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-30T03:10:04.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

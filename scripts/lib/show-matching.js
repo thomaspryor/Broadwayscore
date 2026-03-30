@@ -459,12 +459,32 @@ function buildLondonSlugVariants(title, slugFn) {
   if (baseSlug.endsWith('-musical') && !baseSlug.endsWith('-the-musical')) {
     variants.push(baseSlug.replace(/-(?:a-)?musical$/, ''));
   }
+  // Drop internal "-the-" (e.g., "paddington-the-musical" → "paddington-musical")
+  for (const slug of [...variants]) {
+    const withoutThe = slug.replace(/-the-/g, '-');
+    if (withoutThe !== slug) variants.push(withoutThe);
+  }
+  // Drop common suffixes: "-on-stage", "-the-classic-story-on-stage", "-the-first-shadow"
+  for (const suffix of ['-on-stage', '-the-classic-story-on-stage', '-the-first-shadow',
+    '-a-comedy-by-florian-zeller', '-an-improvised-jane-austen-novel',
+    '-the-untold-story-of-ursula-the-sea-witch', '-new-wimbledon-theatre',
+    '-and-the-merry-mandem']) {
+    for (const slug of [...variants]) {
+      if (slug.endsWith(suffix)) variants.push(slug.replace(new RegExp(suffix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$'), ''));
+    }
+  }
   // Drop subtitle after colon
   const subtitleIdx = title.indexOf(':');
   if (subtitleIdx > 0) variants.push(toSlug(title.slice(0, subtitleIdx)));
   // Drop "-both-parts"
   const bpIdx = baseSlug.indexOf('-both-parts');
   if (bpIdx > 0) variants.push(baseSlug.slice(0, bpIdx));
+  // First 2-3 words for very long slugs
+  const parts = baseSlug.split('-');
+  if (parts.length > 5) {
+    variants.push(parts.slice(0, 2).join('-'));
+    variants.push(parts.slice(0, 3).join('-'));
+  }
   return [...new Set(variants)];
 }
 
