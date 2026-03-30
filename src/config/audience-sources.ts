@@ -9,6 +9,8 @@
 export interface AudienceSourceConfig {
   key: string;
   name: string;
+  /** Short name for compact card display (falls back to name) */
+  shortName?: string;
   volumeLabel: string;
   iconColor: string;
   markets: ('broadway' | 'west-end' | 'off-broadway' | 'off-west-end')[];
@@ -20,8 +22,8 @@ export const AUDIENCE_SOURCES: AudienceSourceConfig[] = [
   { key: 'showScore', name: 'Show Score', volumeLabel: 'reviews', iconColor: 'text-yellow-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'] },
   { key: 'mezzanine', name: 'Mezzanine', volumeLabel: 'reviews', iconColor: 'text-purple-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'], showStarRating: true },
   { key: 'seatplan', name: 'SeatPlan', volumeLabel: 'reviews', iconColor: 'text-cyan-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
-  { key: 'lbo', name: 'London Box Office', volumeLabel: 'reviews', iconColor: 'text-emerald-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
-  { key: 'ltd', name: 'London Theatre Direct', volumeLabel: 'reviews', iconColor: 'text-rose-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
+  { key: 'lbo', name: 'London Box Office', shortName: 'London BO', volumeLabel: 'reviews', iconColor: 'text-emerald-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
+  { key: 'ltd', name: 'London Theatre Direct', shortName: 'London TD', volumeLabel: 'reviews', iconColor: 'text-rose-400', markets: ['west-end', 'off-west-end'], showStarRating: true },
   { key: 'theatr', name: 'Theatr', volumeLabel: 'votes', iconColor: 'text-teal-400', markets: ['broadway', 'off-broadway'] },
   { key: 'broadwayCom', name: 'Broadway.com', volumeLabel: 'reviews', iconColor: 'text-blue-400', markets: ['broadway', 'off-broadway'], showStarRating: true },
   { key: 'reddit', name: 'Reddit', volumeLabel: 'mentions', iconColor: 'text-orange-400', markets: ['broadway', 'west-end', 'off-broadway', 'off-west-end'] },

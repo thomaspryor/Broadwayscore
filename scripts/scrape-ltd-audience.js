@@ -273,6 +273,7 @@ async function main() {
 
     const urlVariants = buildLtdUrls(title);
     let html = null;
+    let usedUrl = null;
 
     // Try each URL variant — stop at first success
     for (const url of urlVariants) {
@@ -289,6 +290,7 @@ async function main() {
         }
       }
       if (html) {
+        usedUrl = url;
         console.log(`  URL: ${url}`);
         break;
       }
@@ -353,6 +355,7 @@ async function main() {
         reviewCount: data.reviewCount,
         starRating: data.ratingValue,
         lastUpdated: new Date().toISOString(),
+        ...(usedUrl ? { url: usedUrl } : {}),
       };
 
       // Recalculate combined score

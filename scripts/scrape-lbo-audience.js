@@ -417,6 +417,7 @@ async function main() {
         reviewCount: data.reviewCount,
         starRating: data.rating,
         lastUpdated: new Date().toISOString(),
+        ...(usedUrl ? { url: usedUrl } : {}),
       };
 
       const showInfo = { closingDate: show.closingDate, status: show.status };
