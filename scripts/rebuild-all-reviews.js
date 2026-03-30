@@ -892,6 +892,7 @@ const crossShowFingerprints = new Map();
         }
       } catch (e) {
         errorCount++;
+        console.warn(`  [stale-unknown] Error processing ${sid}/${f}: ${e.message}`);
       }
     }
   }
@@ -905,6 +906,7 @@ const crossShowFingerprints = new Map();
 // Stale outlet-mismatch cleanup: when a file's outlet prefix doesn't match the outletId in JSON
 // (e.g., timeout--critic.json but outletId is "timeout-london" due to URL-based resolution),
 // rename or merge into the correctly-named file.
+// Uses fresh readdirSync per directory (not cached from Pass 1) to see renamed files correctly.
 {
   let renamedCount = 0, mergedCount = 0, errorCount = 0;
   for (const sid of showDirs) {
@@ -912,6 +914,7 @@ const crossShowFingerprints = new Map();
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const filePath = path.join(sDir, f);
+        if (!fs.existsSync(filePath)) continue; // File may have been renamed by Pass 1
         const fileOutlet = f.split('--')[0];
         const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         const jsonOutlet = normalizeOutletCanonical(d.outletId || d.outlet);
@@ -941,6 +944,7 @@ const crossShowFingerprints = new Map();
         }
       } catch (e) {
         errorCount++;
+        console.warn(`  [outlet-mismatch] Error processing ${sid}/${f}: ${e.message}`);
       }
     }
   }
