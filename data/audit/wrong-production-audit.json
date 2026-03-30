@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T11:09:16.939Z",
+  "timestamp": "2026-03-30T11:38:35.546Z",
   "stats": {
     "totalReviews": 31962,
     "alreadyFlagged": 11326,
     "dateGuardCatches": 18,
-    "directorMismatch": 944,
-    "tvFilmSignals": 3354,
+    "directorMismatch": 947,
+    "tvFilmSignals": 3355,
     "londonSignals": 1002,
     "offBroadwaySignals": 970,
     "yearMismatch": 66,
-    "noPublishDate": 6179
+    "noPublishDate": 6178
   },
   "findings": [
     {
@@ -13301,7 +13301,7 @@
     {
       "showId": "dracula-west-end-2025",
       "file": "the-telegrap--dominic-cavendish.json",
-      "score": 83,
+      "score": 78,
       "publishDate": "February 17th, 2026",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
       "findings": [
@@ -29476,6 +29476,20 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
+      "file": "timeout-london--nina-caplan.json",
+      "score": 74,
+      "publishDate": "March 21st, 2017",
+      "url": "https://www.timeout.com/london/theatre/mamma-mia",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
       "file": "variety--matt-wolf.json",
       "score": 56,
       "publishDate": "2015-09-03",
@@ -30466,6 +30480,20 @@
       "file": "timeout--sam-marlowe.json",
       "score": 80,
       "publishDate": "2011-11-24",
+      "url": "https://www.timeout.com/london/theatre/matilda-the-musical-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "timeout-london--sam-marlowe.json",
+      "score": 83,
+      "publishDate": "January 1st, 2012",
       "url": "https://www.timeout.com/london/theatre/matilda-the-musical-review",
       "findings": [
         {
@@ -36432,7 +36460,7 @@
     {
       "showId": "operation-mincemeat-west-end-2024",
       "file": "the-telegrap--dominic-cavendish.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "May 10th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
       "findings": [
@@ -51632,6 +51660,25 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "the-telegrap--david-gritten.json",
+      "score": 89,
+      "publishDate": "October 17th, 2014",
+      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "theupcoming--connor-campbell.json",
       "score": 62,
       "publishDate": "November 26, 2019",
@@ -51661,6 +51708,20 @@
     {
       "showId": "the-lion-king-west-end-2021",
       "file": "timeout-london--ben-walters.json",
+      "score": 80,
+      "publishDate": "March 15th, 2018",
+      "url": "https://www.timeout.com/london/theatre/the-lion-king",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "timeout-london--unknown.json",
       "score": 80,
       "publishDate": "March 15th, 2018",
       "url": "https://www.timeout.com/london/theatre/the-lion-king",
@@ -79009,20 +79070,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "the-telegrap--david-gritten.json",
-      "score": 89,
-      "publishDate": "October 17th, 2014",
-      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
