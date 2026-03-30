@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-30T10:46:47.738Z",
+  "timestamp": "2026-03-30T10:57:22.892Z",
   "stats": {
     "totalReviews": 31961,
     "alreadyFlagged": 11326,
     "dateGuardCatches": 18,
-    "directorMismatch": 943,
-    "tvFilmSignals": 3352,
-    "londonSignals": 999,
+    "directorMismatch": 944,
+    "tvFilmSignals": 3354,
+    "londonSignals": 1002,
     "offBroadwaySignals": 970,
     "yearMismatch": 66,
     "noPublishDate": 6178
@@ -13284,6 +13284,25 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 85,
       "publishDate": "2026-02-17",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "the-telegrap--dominic-cavendish.json",
+      "score": 83,
+      "publishDate": "February 17th, 2026",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
       "findings": [
         {
@@ -35300,6 +35319,25 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 65,
+      "publishDate": "December 19th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
       "file": "standard--nick.json",
       "score": 85,
       "publishDate": "2025-12-20",
@@ -36382,6 +36420,20 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 83,
       "publishDate": "2023-05-10",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "the-telegrap--dominic-cavendish.json",
+      "score": 81,
+      "publishDate": "May 10th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
       "findings": [
         {
@@ -72471,6 +72523,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 82,
+      "publishDate": "January 15th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
