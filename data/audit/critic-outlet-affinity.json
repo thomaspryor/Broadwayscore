@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-03-30T03:57:32.015Z",
+    "lastUpdated": "2026-03-30T04:07:03.588Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 32626,
-    "skippedFiles": 11958,
-    "totalCritics": 1531,
-    "registryCritics": 503,
+    "totalFilesScanned": 32627,
+    "skippedFiles": 11901,
+    "totalCritics": 1530,
+    "registryCritics": 507,
     "flaggedReviews": 40
   },
   "flaggedReviews": [
@@ -16,10 +16,10 @@
       "outlet": "plays-to-see",
       "showId": "touch-2026",
       "file": "plays-to-see--austin-fimmano.json",
-      "outletShare": 8,
+      "outletShare": 7,
       "primaryOutlet": "nytg",
-      "primaryShare": 92,
-      "totalReviews": 13
+      "primaryShare": 93,
+      "totalReviews": 14
     },
     {
       "critic": "Charles McNulty",
@@ -217,7 +217,7 @@
       "outletShare": 3,
       "primaryOutlet": "theatrely",
       "primaryShare": 97,
-      "totalReviews": 34
+      "totalReviews": 32
     },
     {
       "critic": "Steven Ross",
@@ -316,7 +316,7 @@
       "outletShare": 6,
       "primaryOutlet": "nytg",
       "primaryShare": 94,
-      "totalReviews": 16
+      "totalReviews": 17
     },
     {
       "critic": "David Roberts",
@@ -393,7 +393,7 @@
       "outletShare": 3,
       "primaryOutlet": "whatsonstage",
       "primaryShare": 97,
-      "totalReviews": 34
+      "totalReviews": 36
     },
     {
       "critic": "Amelia Merrill",
@@ -404,7 +404,7 @@
       "outletShare": 5,
       "primaryOutlet": "nytg",
       "primaryShare": 95,
-      "totalReviews": 21
+      "totalReviews": 22
     },
     {
       "critic": "Isa Goldberg",
@@ -465,7 +465,7 @@
         "chicagotribune",
         "theatermania"
       ],
-      "totalReviews": 508
+      "totalReviews": 512
     },
     {
       "critic": "David Finkle",
@@ -546,7 +546,7 @@
         "new-york-sun",
         "newyorker"
       ],
-      "totalReviews": 224
+      "totalReviews": 225
     },
     {
       "critic": "Charles Isherwood",
@@ -576,15 +576,16 @@
         "playbill",
         "frontmezzjunkies",
         "timeout",
-        "musical-theatre-review",
+        "nytg",
         "west-end-wilma",
         "london-box-office",
-        "nytg",
+        "musical-theatre-review",
         "nydailynews",
         "ny1",
         "theatre-weekly",
         "backstage",
         "chicagotribune",
+        "nytimes",
         "everything-theatre",
         "newsday",
         "artsdesk",
@@ -592,18 +593,20 @@
         "amny",
         "broadwayworld",
         "stagebuddy",
-        "nytimes",
         "washpost",
         "ew",
         "nypost",
         "vulture",
         "cititour",
+        "guardian",
+        "variety",
+        "times-uk",
         "hollywood-reporter",
         "london-theatre",
+        "whatsonstage",
         "londonist",
-        "guardian",
         "usatoday",
-        "times-uk",
+        "timeout-london",
         "bloomberg",
         "telegraph",
         "metro",
@@ -611,13 +614,11 @@
         "minneapolis-star-tribune",
         "nysr",
         "theatrely",
-        "variety",
         "new-york-sun",
         "latimes",
         "one-minute-critic",
         "huffpost",
         "nbcny",
-        "timeout-london",
         "all-that-dazzles-uk",
         "theatreandtonic",
         "abc-news",
@@ -629,7 +630,6 @@
         "americanpsychothemusicalcomlottery",
         "british-theatre",
         "around-the-town-chicago",
-        "whatsonstage",
         "theater-life",
         "ct-now",
         "nycitycenterorg",
@@ -672,7 +672,7 @@
         "exeunt-magazine",
         "kenny-leon"
       ],
-      "totalReviews": 488
+      "totalReviews": 496
     },
     {
       "critic": "Brittani Samuel",
@@ -776,9 +776,10 @@
         "newyorker",
         "nytimes",
         "timeout",
-        "4columns"
+        "4columns",
+        "timeout-london"
       ],
-      "totalReviews": 126
+      "totalReviews": 127
     },
     {
       "critic": "Michael Dale",
@@ -833,7 +834,7 @@
         "newyorker",
         "nypost"
       ],
-      "totalReviews": 562
+      "totalReviews": 564
     },
     {
       "critic": "David Gordon",
@@ -951,7 +952,7 @@
         "newsday",
         "theaternewsonline"
       ],
-      "totalReviews": 409
+      "totalReviews": 410
     },
     {
       "critic": "Thom Geier",
@@ -1176,7 +1177,7 @@
         "stageandcinema",
         "vulture"
       ],
-      "totalReviews": 109
+      "totalReviews": 108
     },
     {
       "critic": "Matthew Wexler",
@@ -1303,7 +1304,7 @@
         "broadwaynews",
         "playbill"
       ],
-      "totalReviews": 14
+      "totalReviews": 15
     },
     {
       "critic": "David Quinn",
@@ -1434,6 +1435,17 @@
       "totalReviews": 26
     },
     {
+      "critic": "Mark Shenton",
+      "slug": "mark-shenton",
+      "outlets": [
+        "thestage",
+        "nytg",
+        "london-theatre",
+        "amny"
+      ],
+      "totalReviews": 54
+    },
+    {
       "critic": "Sam Marlowe",
       "slug": "sam-marlowe",
       "outlets": [
@@ -1450,12 +1462,21 @@
       "outlets": [
         "thestage",
         "financialtimes",
-        "standard",
         "timeout-london",
+        "standard",
         "times-uk",
         "independent"
       ],
-      "totalReviews": 20
+      "totalReviews": 21
+    },
+    {
+      "critic": "Dominic Maxwell",
+      "slug": "dominic-maxwell",
+      "outlets": [
+        "times-uk",
+        "the-sun"
+      ],
+      "totalReviews": 13
     },
     {
       "critic": "Kevin Filipski",
@@ -1536,17 +1557,6 @@
       "totalReviews": 9
     },
     {
-      "critic": "Mark Shenton",
-      "slug": "mark-shenton",
-      "outlets": [
-        "thestage",
-        "nytg",
-        "london-theatre",
-        "amny"
-      ],
-      "totalReviews": 53
-    },
-    {
       "critic": "Christian Lewis",
       "slug": "christian-lewis",
       "outlets": [
@@ -1619,10 +1629,10 @@
       "critic": "Theo Bosanquet",
       "slug": "theo-bosanquet",
       "outlets": [
-        "whatsonstage",
-        "london-theatre"
+        "london-theatre",
+        "whatsonstage"
       ],
-      "totalReviews": 9
+      "totalReviews": 8
     },
     {
       "critic": "Paul Raven",

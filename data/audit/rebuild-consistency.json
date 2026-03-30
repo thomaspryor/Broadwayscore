@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-30T03:57:22.127Z",
+  "generatedAt": "2026-03-30T04:06:53.810Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -40,6 +40,14 @@
       "outlet": "timeout",
       "critic": "Adam Feldman",
       "detail": "originalRating \"5/5\" (=100) vs score 63 (source: human-review)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
+      "showId": "broken-glass-west-end-2026",
+      "outlet": "times-uk",
+      "critic": "Clive Davis",
+      "detail": "originalRating \"3/5\" (=60) vs score 88 (source: llmScore-override-star-conflict)"
     },
     {
       "type": "rating-score-mismatch",
@@ -412,32 +420,20 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "broken-glass-west-end-2026",
-      "detail": "8/13 reviews (62%) scored exactly 60"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "hadestown-west-end-2024",
-      "detail": "8/16 reviews (50%) scored exactly 80"
+      "showId": "all-my-sons-west-end-2025",
+      "detail": "8/14 reviews (57%) scored exactly 100"
     },
     {
       "type": "score-clustering",
       "severity": "low",
       "showId": "oh-mary-west-end-2025",
-      "detail": "8/15 reviews (53%) scored exactly 80"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "oliver-west-end-2024",
-      "detail": "10/19 reviews (53%) scored exactly 100"
+      "detail": "9/17 reviews (53%) scored exactly 80"
     },
     {
       "type": "score-clustering",
       "severity": "low",
       "showId": "paddington-the-musical-west-end-2025",
-      "detail": "9/18 reviews (50%) scored exactly 100"
+      "detail": "10/19 reviews (53%) scored exactly 100"
     },
     {
       "type": "score-clustering",
