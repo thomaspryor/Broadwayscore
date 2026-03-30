@@ -1922,9 +1922,22 @@ function isValidAuthorName(name) {
 function cleanAuthorName(name) {
   let cleaned = name.trim();
   cleaned = cleaned.replace(/^By\s+/i, '');
+  // Strip wire service suffixes (AP, Associated, Associated Press, Reuters)
+  cleaned = cleaned.replace(/\s+(?:Associated(?:\s+Press)?|AP|Reuters|UPI)\s*$/i, '').trim();
   cleaned = cleaned.replace(/[,;|]+$/, '').trim();
-  cleaned = cleaned.split(/\s+/).map(w => {
+  // Fix double punctuation (e.g., "A.. " → "A. ")
+  cleaned = cleaned.replace(/\.{2,}/g, '.');
+  // Title-case: convert ALL CAPS to proper case, preserve abbreviations and small words
+  const PRESERVE_UPPER = new Set(['II', 'III', 'IV', 'UK', 'US', 'USA', 'NYC', 'THR', 'NBC', 'CBS', 'AP']);
+  const KEEP_LOWER = new Set(['and', 'or', 'the', 'of', 'in', 'for', 'to', 'by', 'de', 'van', 'von', 'di', 'del', 'la', 'le', 'el']);
+  cleaned = cleaned.split(/\s+/).filter(Boolean).map((w, i) => {
     if (w.length <= 2) return w;
+    if (PRESERVE_UPPER.has(w.toUpperCase())) return w.toUpperCase();
+    if (/^[A-Z]\./.test(w)) return w; // Preserve dot-separated initials (A.R.)
+    if (/^\(/.test(w)) return w; // Preserve parenthetical words as-is
+    if (i > 0 && KEEP_LOWER.has(w.toLowerCase())) return w.toLowerCase();
+    // If word is all-caps, convert to title case
+    if (w === w.toUpperCase()) return w[0].toUpperCase() + w.slice(1).toLowerCase();
     return w[0].toUpperCase() + w.slice(1);
   }).join(' ');
   return cleaned;

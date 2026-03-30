@@ -473,10 +473,14 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
   const weekDates = Object.keys(weeklyData).sort();
   const hasWeekly = weekDates.length > 0;
 
-  // Decide: use weekly history if it covers most of the run (>60%),
-  // otherwise use allTime which covers the full run
+  // Decide: use weekly history if available AND either:
+  // (a) covers most of the run (>50%), OR
+  // (b) allTime data is contaminated (too many performances from prior productions)
   const weeklyCoverage = hasWeekly ? weekDates.length / Math.max(totalRunWeeks, 1) : 0;
-  const useWeekly = hasWeekly && weeklyCoverage > 0.6;
+  const expectedPerfs = totalRunWeeks * 8;
+  const actualPerfs = grossesAllTime?.performances || 0;
+  const isContaminated = actualPerfs > expectedPerfs * 1.3;
+  const useWeekly = hasWeekly && (weeklyCoverage > 0.5 || isContaminated);
 
   if (useWeekly) {
     // Tier 1: Weekly data covers most of the run
