@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T03:07:39.936Z",
+  "timestamp": "2026-03-30T03:30:59.791Z",
   "stats": {
-    "totalReviews": 32278,
-    "alreadyFlagged": 11616,
-    "dateGuardCatches": 18,
-    "directorMismatch": 937,
-    "tvFilmSignals": 3352,
-    "londonSignals": 990,
+    "totalReviews": 32189,
+    "alreadyFlagged": 11553,
+    "dateGuardCatches": 17,
+    "directorMismatch": 936,
+    "tvFilmSignals": 3351,
+    "londonSignals": 989,
     "offBroadwaySignals": 975,
     "yearMismatch": 66,
-    "noPublishDate": 6296
+    "noPublishDate": 6278
   },
   "findings": [
     {
@@ -3715,7 +3715,7 @@
     },
     {
       "showId": "amazing-grace-2015",
-      "file": "jks-theatre-scene--unknown.json",
+      "file": "jks-theatre-scene--view-my-complete.json",
       "score": 42,
       "publishDate": null,
       "url": "https://jkstheatrescene.blogspot.com/2015/07/review-amazing-grace.html",
@@ -8705,20 +8705,6 @@
       "score": 89,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/a-new-cabaret-for-the-ages-on-broadway-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 63,
-      "publishDate": "2023-06-15",
-      "url": "https://www.thetimes.com/article/romeo-and-juliet-review-star-crossed-lovers-shine-in-a-vague-setting-zxmcx7hgg",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52184,20 +52170,6 @@
       ]
     },
     {
-      "showId": "the-mousetrap-west-end-2021",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 74,
-      "publishDate": "2025-03-18",
-      "url": "https://www.whatsonstage.com/news/dracula-a-comedy-of-terrors-at-menier-chocolate-factory-review_1669776/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
       "showId": "the-music-man-2022",
       "file": "amny--matt-windman.json",
       "score": 45,
@@ -60899,7 +60871,7 @@
     },
     {
       "showId": "a-streetcar-named-desire-2012",
-      "file": "slantmagazine--unknown.json",
+      "file": "slantmagazine--dan-rubins.json",
       "score": 66,
       "publishDate": null,
       "url": "https://www.slantmagazine.com/theater/a-streetcar-named-desire-review-paul-mescal/",
@@ -69611,18 +69583,6 @@
       ]
     },
     {
-      "showId": "kinky-boots-the-musical-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 75,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 71d before show (2026-01-05 vs 2026-03-17)"
-        }
-      ]
-    },
-    {
       "showId": "kiss-me-kate-2019",
       "file": "guardian--jesse-green.json",
       "score": 82,
@@ -77503,19 +77463,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
