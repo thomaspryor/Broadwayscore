@@ -127,7 +127,12 @@ jobs:
             const TRUSTED_SOURCES = new Set(['theatremonkey', 'playbill', 'ibdb', 'manual']);
             const opened = shows.filter(s => {
               if (!s.openingDate) return false;
-              if (s.status !== 'open' && s.status !== 'upcoming') return false;
+              // Include 'previews' shows whose opening date has passed — update-show-status
+              // runs at 8 AM UTC but the orchestrator runs at 10 PM UTC, so shows may still
+              // be in 'previews' on their opening night.
+              const validStatus = s.status === 'open' || s.status === 'upcoming' ||
+                (s.status === 'previews' && s.openingDate && new Date(s.openingDate) <= now);
+              if (!validStatus) return false;
               const cat = s.category || 'broadway';
               // Market filter
               if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;

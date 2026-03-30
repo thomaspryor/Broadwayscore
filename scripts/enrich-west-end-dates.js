@@ -145,6 +145,40 @@ function extractTheatremonkeyDates(html) {
 /**
  * Scrape Theatremonkey: index → match to our shows → fetch matched pages
  */
+/**
+ * Generate TM slug candidates from a show title.
+ * TM slugs are lowercase, hyphenated, no special chars.
+ */
+function titleToTmSlugs(show) {
+  const title = (show.title || '').toLowerCase().trim();
+  const base = title
+    .replace(/['']/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  const slugs = [base];
+
+  // Try with "the-" prefix stripped/added
+  if (base.startsWith('the-')) {
+    slugs.push(base.slice(4));
+  } else {
+    slugs.push('the-' + base);
+  }
+
+  // Try with venue appended (TM sometimes uses "show-venue" slugs)
+  if (show.venue) {
+    const venueSlug = show.venue.toLowerCase()
+      .replace(/['']/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-');
+    slugs.push(base + '-' + venueSlug);
+  }
+
+  return [...new Set(slugs)];
+}
+
 async function scrapeTheatremonkey(weShows) {
   console.log('--- THEATREMONKEY ---');
   console.log(`Fetching index: ${TM_INDEX_URL}`);
@@ -171,10 +205,45 @@ async function scrapeTheatremonkey(weShows) {
     }
   }
   console.log(`Matched ${matched.length} to our WE shows (skipping ${indexEntries.length - matched.length} unmatched)`);
+
+  // When --show is used and index matching found nothing, try direct page fetch.
+  // TM index only lists ~88 current shows; many valid pages exist outside the index.
+  // Extract dates inline to avoid redundant re-fetch in the main loop.
+  const directEntries = [];
+  if (showSlug && matched.length === 0 && weShows.length <= 3) {
+    console.log('  No index match — trying direct TM page fetch...');
+    for (const show of weShows) {
+      const slugCandidates = titleToTmSlugs(show);
+      let found = false;
+      for (const slug of slugCandidates) {
+        const url = `${TM_SHOW_URL}${slug}/`;
+        const html = await fetchPage(url);
+        if (html && !html.includes('page-not-found')) {
+          const dates = extractTheatremonkeyDates(html);
+          if (dates.showingFrom || dates.pressNight) {
+            directEntries.push({
+              title: show.title,
+              firstPreview: dates.showingFrom,
+              opening: dates.pressNight,
+              source: 'theatremonkey'
+            });
+            console.log(`  Direct hit: ${show.title} → ${slug} | Preview: ${dates.showingFrom || '—'} | Press Night: ${dates.pressNight || '—'}`);
+            found = true;
+            break;
+          }
+        }
+        await sleep(500);
+      }
+      if (!found) {
+        console.log(`  No TM page found for ${show.title}`);
+      }
+    }
+  }
+
   console.log('');
 
-  // Fetch each matched show page
-  const entries = [];
+  // Fetch each index-matched show page
+  const entries = [...directEntries];
   for (let i = 0; i < matched.length; i++) {
     const m = matched[i];
     if (i > 0) await sleep(FETCH_DELAY_MS);
