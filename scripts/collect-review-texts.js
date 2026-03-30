@@ -4325,7 +4325,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
                 }
               }
               if (merged) {
-                fs.writeFileSync(newPath, JSON.stringify(existingData, null, 2));
+                fs.writeFileSync(newPath, JSON.stringify(existingData, null, 2) + '\n');
               }
               fs.unlinkSync(review.filePath);
               console.log(`    → Merged enriched --unknown into existing ${newFilename} and deleted stale file`);
