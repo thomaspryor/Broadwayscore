@@ -51,6 +51,17 @@ import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 
 export const revalidate = 86400;
 
+/** Map category + show type to the correct browse page slug */
+function getBrowseSlug(category: string | undefined, type: string): string {
+  const isMusical = type === 'musical';
+  switch (category) {
+    case 'west-end': return isMusical ? 'best-west-end-musicals' : 'best-west-end-plays';
+    case 'off-west-end': return isMusical ? 'best-off-west-end-musicals' : 'best-off-west-end-plays';
+    case 'off-broadway': return isMusical ? 'best-off-broadway-musicals' : 'best-off-broadway-plays';
+    default: return isMusical ? 'best-broadway-musicals' : 'best-broadway-dramas';
+  }
+}
+
 export function generateStaticParams() {
   // Pre-render open + previews + recently closed shows (high traffic).
   // Rest generated on-demand via ISR, cached at Vercel edge until next deploy.
@@ -219,13 +230,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const isWestEnd = isLondonMarket(show.category);
   const isOffBroadway = show.category === 'off-broadway';
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: BASE_URL },
-    ...(isWestEnd
-      ? [{ name: 'West End', url: `${BASE_URL}/west-end` }]
-      : isOffBroadway
-      ? [{ name: 'Off-Broadway', url: `${BASE_URL}/off-broadway` }]
-      : [{ name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` }]
-    ),
+    { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL },
+    { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
     { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
   ]);
   const faqSchema = generateShowFAQSchema(show);
@@ -289,13 +295,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Breadcrumb items={[
-          { label: 'Home', href: '/' },
-          ...(isWestEnd
-            ? [{ label: 'West End', href: '/west-end' }]
-            : isOffBroadway
-            ? [{ label: 'Off-Broadway', href: '/off-broadway' }]
-            : [{ label: show.type === 'musical' ? 'Musicals' : 'Plays', href: `/browse/${show.type === 'musical' ? 'best-broadway-musicals' : 'best-broadway-dramas'}` }]
-          ),
+          { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
+          { label: show.type === 'musical' ? 'Musicals' : 'Plays', href: `/browse/${getBrowseSlug(show.category, show.type)}` },
           { label: show.title },
         ]} />
 
