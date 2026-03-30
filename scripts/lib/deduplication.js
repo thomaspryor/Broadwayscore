@@ -212,11 +212,12 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
  * Returns true if both have year info and opening years differ by >2 years.
  */
 function isMultiProduction(newShow, existing) {
-  // Try year from ID suffix first, then from openingDate
+  // Prefer openingDate (actual production date) over ID suffix (may be historical).
+  // e.g., "phantom-west-end-1986" has ID year 1986 but openingDate 2021-07-27.
   const getYear = (show) => {
+    if (show.openingDate) return new Date(show.openingDate).getFullYear();
     const idMatch = (show.id || show.slug || '').match(/-(\d{4})$/);
     if (idMatch) return parseInt(idMatch[1]);
-    if (show.openingDate) return new Date(show.openingDate).getFullYear();
     return null;
   };
 
@@ -225,6 +226,21 @@ function isMultiProduction(newShow, existing) {
   const existingIbdb = existing.ibdbUrl || '';
   if (newIbdb && existingIbdb && newIbdb !== existingIbdb) {
     return true;
+  }
+
+  // Transfers within the same market pool (e.g., off-broadway → broadway)
+  // are separate productions IF they have different venues. Same venue +
+  // same pool + same title = duplicate, not a transfer (e.g., Phantom WE
+  // was miscategorized as both west-end and off-west-end at His Majesty's).
+  const newCat = newShow.category || 'broadway';
+  const existingCat = existing.category || 'broadway';
+  if (newCat !== existingCat && getMarketPool(newCat) === getMarketPool(existingCat)) {
+    const newVenue = (newShow.venue || '').toLowerCase().trim();
+    const existVenue = (existing.venue || '').toLowerCase().trim();
+    if (!newVenue || !existVenue || newVenue !== existVenue) {
+      return true; // Different (or unknown) venues = legitimate transfer
+    }
+    // Same venue = likely duplicate, not a transfer — fall through to other checks
   }
 
   const newYear = getYear(newShow);
@@ -248,13 +264,24 @@ function isMultiProduction(newShow, existing) {
 }
 
 /**
- * Check if two shows are in different markets (e.g., Broadway vs West End).
- * Cross-market shows with the same title are NOT duplicates.
+ * Get the market pool for a category. Shows within the same pool
+ * (e.g., west-end + off-west-end) share a browse page and must be
+ * deduplicated against each other. Only truly different pools
+ * (NYC vs London) are cross-market.
+ */
+function getMarketPool(category) {
+  const cat = category || 'broadway';
+  if (cat === 'west-end' || cat === 'off-west-end') return 'london';
+  return 'nyc'; // broadway, off-broadway
+}
+
+/**
+ * Check if two shows are in different market pools (NYC vs London).
+ * Cross-market shows with the same title are NOT duplicates (e.g., Hamilton BW + Hamilton WE).
+ * Shows in the same pool (e.g., west-end + off-west-end) ARE potential duplicates.
  */
 function isCrossMarket(newShow, existing) {
-  const newCat = newShow.category || 'broadway';
-  const existingCat = existing.category || 'broadway';
-  return newCat !== existingCat;
+  return getMarketPool(newShow.category) !== getMarketPool(existing.category);
 }
 
 /**
@@ -431,5 +458,6 @@ module.exports = {
   areTitlesSimilar,
   checkKnownDuplicates,
   isCrossMarket,
+  getMarketPool,
   KNOWN_DUPLICATES
 };

@@ -13,9 +13,8 @@ interface AudienceBuzzCardProps {
   showScoreUrl?: string;
   limitedSources?: boolean;
   market?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end';
-  showId?: string;
-  showTitle?: string;
-  getPlatformUrl?: (sourceKey: string, showId: string, showTitle: string) => string | undefined;
+  /** Pre-computed URLs for each audience platform (keyed by source key) */
+  platformUrls?: Record<string, string>;
 }
 
 // Heart icon for "Loving It"
@@ -164,7 +163,7 @@ const SOURCE_ICONS: Record<string, (props: { className?: string }) => React.Reac
   lbo: BroadwayComIcon, ltd: BroadwayComIcon, theatr: TheatrIcon, broadwayCom: BroadwayComIcon, reddit: RedditIcon,
 };
 
-export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, market, showId, showTitle, getPlatformUrl }: AudienceBuzzCardProps) {
+export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, market, platformUrls }: AudienceBuzzCardProps) {
   const grade = getAudienceGrade(buzz.combinedScore);
   const colors = getAudienceGradeClasses(buzz.combinedScore);
   const visibleSources = market ? AUDIENCE_SOURCES.filter(s => s.markets.includes(market)) : AUDIENCE_SOURCES;
@@ -201,10 +200,9 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, m
           const data = buzz.sources[src.key];
           if (!data || data.score == null) return null;
           const IconComponent = SOURCE_ICONS[src.key] || ShowScoreIcon;
-          // Show Score uses curated URL; other platforms use getPlatformUrl
           const url = src.key === 'showScore'
             ? showScoreUrl
-            : (showId && showTitle && getPlatformUrl ? getPlatformUrl(src.key, showId, showTitle) : undefined);
+            : platformUrls?.[src.key];
           return (
             <SourceCard
               key={src.key}

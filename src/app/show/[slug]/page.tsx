@@ -986,9 +986,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               showScoreUrl={audienceBuzz.sources.showScore ? getShowScoreUrl(show.id) : undefined}
               limitedSources={isHistorical && sourceCount <= 1}
               market={(show.category as 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end') || 'broadway'}
-              showId={show.id}
-              showTitle={show.title}
-              getPlatformUrl={getAudiencePlatformUrl}
+              platformUrls={Object.fromEntries(
+                Object.keys(audienceBuzz.sources)
+                  .filter(k => k !== 'showScore')
+                  .map(k => [k, getAudiencePlatformUrl(k, show.id, show.title)])
+                  .filter((entry): entry is [string, string] => entry[1] != null)
+              )}
             />
           );
         })() : show.status === 'previews' || show.status === 'upcoming' ? (
