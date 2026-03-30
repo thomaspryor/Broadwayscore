@@ -241,8 +241,14 @@ async function checkRSSFeeds(showTitle, options = {}) {
           if (!titleMatchesShow(item.title, showTitle)) continue;
         }
 
-        // Check for review-like keywords in title (applied to all feeds)
+        // Reject non-review content: interviews, box office, cast news, photos
         const titleLower = item.title.toLowerCase();
+        const nonReviewPatterns = ['interview', 'box office', 'grosses', 'begins previews',
+          'first look', 'cast announced', 'full cast', 'meet the cast', 'photos:',
+          'tickets on sale', 'lottery', 'rush policy'];
+        if (nonReviewPatterns.some(t => titleLower.includes(t))) continue;
+
+        // Check for review-like keywords in title (applied to all feeds)
         const isReviewLike = titleLower.includes('review') ||
           titleLower.includes('critic') ||
           titleMatchesShow(item.title, showTitle);
