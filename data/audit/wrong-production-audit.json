@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T08:08:03.270Z",
+  "timestamp": "2026-03-30T08:18:30.507Z",
   "stats": {
     "totalReviews": 31854,
-    "alreadyFlagged": 11270,
+    "alreadyFlagged": 11273,
     "dateGuardCatches": 18,
     "directorMismatch": 942,
-    "tvFilmSignals": 3349,
-    "londonSignals": 999,
+    "tvFilmSignals": 3348,
+    "londonSignals": 998,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6224
+    "noPublishDate": 6221
   },
   "findings": [
     {
@@ -57130,6 +57130,7 @@
     {
       "showId": "trash-off-broadway-2026",
       "file": "nytimes--laura-collins-hughes.json",
+      "score": 66,
       "publishDate": "2026-03-15",
       "url": "https://www.nytimes.com/2026/03/15/theater/trash-review-perelman.html",
       "findings": [
@@ -59979,20 +59980,6 @@
       "score": 81,
       "publishDate": "2012-03-13T16:11:00",
       "url": "https://theaterlife.com/wit/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "witness-for-the-prosecution-west-end-2022",
-      "file": "artsdesk--unknown.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://stagedoor.com/plays/3615-witness-for-the-prosecution/critic-reviews",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -71688,20 +71675,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "observer--unknown.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "https://stagedoor.com/plays/16616-my-neighbour-totoro/critic-reviews",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
