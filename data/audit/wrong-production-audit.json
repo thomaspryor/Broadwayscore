@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T06:54:09.038Z",
+  "timestamp": "2026-03-30T07:05:47.384Z",
   "stats": {
-    "totalReviews": 31887,
-    "alreadyFlagged": 11271,
+    "totalReviews": 31888,
+    "alreadyFlagged": 11272,
     "dateGuardCatches": 18,
-    "directorMismatch": 941,
+    "directorMismatch": 943,
     "tvFilmSignals": 3346,
-    "londonSignals": 995,
+    "londonSignals": 996,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6263
+    "noPublishDate": 6258
   },
   "findings": [
     {
@@ -5788,6 +5788,20 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
+      "file": "thestage--tim-bano.json",
+      "score": 67,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-theatre-london-john-rando-olly-dobson-alan-silvestri-glen-ballard",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
       "file": "timeout-london--adam-feldman.json",
       "score": 73,
       "publishDate": "2026-01-15",
@@ -8599,6 +8613,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "thestage--tim-bano.json",
+      "score": 80,
+      "publishDate": "December 13th, 2021",
+      "url": "https://www.thestage.co.uk/long-reviews/cabaret-review-eddie-redmayne-jessie-buckley-kit-kat-club-london-2021-rebecca-frecknall",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
