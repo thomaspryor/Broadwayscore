@@ -125,7 +125,9 @@
     "summerfolk-west-end-2026/thestage--unknown.json",
     "summerfolk-west-end-2026/times-uk--clive-davis.json",
     "jesa-off-broadway-2026/vulture--unknown.json",
-    "jesa-off-broadway-2026/timeout--unknown.json"
+    "jesa-off-broadway-2026/timeout--unknown.json",
+    "mexodus-off-broadway-2026/timeout--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -433,7 +435,15 @@
     "public-charge-off-broadway-2026/talkinbroadway--unknown.json",
     "bughouse-off-broadway-2026/vulture--sara-holdren.json",
     "bughouse-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "bughouse-off-broadway-2026/talkinbroadway--unknown.json"
+    "bughouse-off-broadway-2026/talkinbroadway--unknown.json",
+    "jesa-off-broadway-2026/nysr--unknown.json",
+    "spare-parts-off-broadway-2026/talkinbroadway--unknown.json",
+    "mexodus-off-broadway-2026/playbill--unknown.json",
+    "tru-off-broadway-2026/playbill--unknown.json",
+    "burnout-paradise-off-broadway-2026/playbill--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/talkinbroadway--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/buy-tickets--unknown.json",
+    "mother-russia-off-broadway-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -506,7 +516,8 @@
       "teeth-n-smiles-west-end-2026/thestage--sam-marlowe.json",
       "no-singing-in-the-navy-off-broadway-2026/theatermania--unknown.json",
       "summerfolk-west-end-2026/thestage--unknown.json",
-      "summerfolk-west-end-2026/times-uk--clive-davis.json"
+      "summerfolk-west-end-2026/times-uk--clive-davis.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -537,7 +548,8 @@
       "an-ark-off-broadway-2026/nytimes--roslyn-sulcas.json",
       "cymbeline-2007/nytimes--ben-brantley.json",
       "dog-day-afternoon-2026/nytimes--michael-paulson.json",
-      "seagull-true-story-off-broadway-2026/cititour--brian-scott-lipton.json"
+      "seagull-true-story-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "mexodus-off-broadway-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -560,7 +572,11 @@
       "data/review-texts/public-charge-off-broadway-2026/culturesauce--unknown.json",
       "data/review-texts/public-charge-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/bughouse-off-broadway-2026/vulture--sara-holdren.json",
-      "data/review-texts/bughouse-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/bughouse-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/spare-parts-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/buy-tickets--unknown.json",
+      "data/review-texts/mother-russia-off-broadway-2026/nytimes--unknown.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/playbill--unknown.json",
@@ -607,7 +623,7 @@
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "jesa-off-broadway-2026/timeout--unknown.json",
+  "lastProcessed": "mother-russia-off-broadway-2026/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -718,6 +734,17 @@
       "t": "2026-03-30T05:13:19.105Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-30T05:36:27.502Z",
+      "event": "bb-session",
+      "session": "b500bce9",
+      "url": "https://www.nytimes.com/2026/02/25/theater/mother-russia-lauren-yee-profile.html"
+    },
+    {
+      "t": "2026-03-30T05:36:28.756Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
