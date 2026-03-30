@@ -449,7 +449,17 @@
     "almost-famous-2022/usatoday--charles-isherwood.json",
     "walking-with-ghosts-2022/dtli--ran-xia.json",
     "topdog-underdog-2022/kenny-leon--unknown.json",
-    "topdog-underdog-2022/usatoday--charles-isherwood.json"
+    "topdog-underdog-2022/usatoday--charles-isherwood.json",
+    "death-of-a-salesman-2022/talkinbroadway--matthew-murray.json",
+    "cost-of-living-2022/washpost--peter-marks.json",
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "leopoldstadt-2022/newsweek--joe-westerfield.json",
+    "leopoldstadt-2022/wsj--terry-teachout.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "the-kite-runner-2022/thewrap--robert-hofler.json",
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+    "mr-saturday-night-2022/front-row-center--victoria-dammer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -723,7 +733,10 @@
       "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/theatrely--juan-a-ramirez.json",
       "data/review-texts/almost-famous-2022/talkinbroadway--matthew-murray.json",
       "data/review-texts/almost-famous-2022/usatoday--charles-isherwood.json",
-      "data/review-texts/topdog-underdog-2022/usatoday--charles-isherwood.json"
+      "data/review-texts/topdog-underdog-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/death-of-a-salesman-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/cost-of-living-2022/washpost--peter-marks.json",
+      "data/review-texts/leopoldstadt-2022/wsj--terry-teachout.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -752,7 +765,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
+  "lastProcessed": "mr-saturday-night-2022/front-row-center--victoria-dammer.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -962,6 +975,28 @@
       "t": "2026-03-30T23:35:45.504Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-30T23:38:14.598Z",
+      "event": "bb-session",
+      "session": "07642254",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/10/21/cost-of-living-broadway-"
+    },
+    {
+      "t": "2026-03-30T23:38:15.861Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-30T23:38:42.382Z",
+      "event": "bb-session",
+      "session": "dac3aea0",
+      "url": "https://www.wsj.com/articles/leopoldstadt-review-tom-stoppards-final-play-is-a-h"
+    },
+    {
+      "t": "2026-03-30T23:38:43.693Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
