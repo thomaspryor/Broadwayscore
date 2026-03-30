@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T09:19:05.518Z",
+  "timestamp": "2026-03-30T09:39:52.696Z",
   "stats": {
-    "totalReviews": 31862,
-    "alreadyFlagged": 11274,
+    "totalReviews": 31861,
+    "alreadyFlagged": 11273,
     "dateGuardCatches": 18,
     "directorMismatch": 942,
-    "tvFilmSignals": 3348,
-    "londonSignals": 1000,
+    "tvFilmSignals": 3349,
+    "londonSignals": 1001,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6239
+    "noPublishDate": 6238
   },
   "findings": [
     {
@@ -23090,6 +23090,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "file": "timeout-london--tom-wicker.json",
+      "score": 70,
+      "publishDate": "2026-02-13",
+      "url": "https://www.timeout.com/london/theatre/im-sorry-prime-minister-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
