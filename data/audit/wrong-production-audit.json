@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T05:40:06.638Z",
+  "timestamp": "2026-03-30T05:52:01.471Z",
   "stats": {
     "totalReviews": 31886,
-    "alreadyFlagged": 11267,
+    "alreadyFlagged": 11269,
     "dateGuardCatches": 18,
-    "directorMismatch": 940,
-    "tvFilmSignals": 3339,
+    "directorMismatch": 941,
+    "tvFilmSignals": 3340,
     "londonSignals": 990,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6271
+    "noPublishDate": 6264
   },
   "findings": [
     {
@@ -25427,6 +25427,20 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 85,
       "publishDate": "2026-03-26",
@@ -44157,6 +44171,20 @@
       "score": 38,
       "publishDate": "April 23, 2018",
       "url": "https://variety.com/2018/legit/reviews/summer-review-donna-summer-musical-broadway-1202782604/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 93,
+      "publishDate": "2026-03-18",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/summerfolk-olivier-national-theatre-review-fxg9sjknh",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -81152,7 +81180,7 @@
     },
     {
       "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
-      "file": "theatermania--unknown.json",
+      "file": "theatermania--zachary-stewart.json",
       "score": null,
       "publishDate": "January 23, 2026",
       "url": "https://www.theatermania.com/news/review-what-we-did-before-our-moth-days-wallace-shawn-on-death-and-sex_1826595/",
