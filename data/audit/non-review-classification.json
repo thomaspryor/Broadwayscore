@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-03-30T10:50:20.335Z",
+    "generatedAt": "2026-03-30T11:04:01.663Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 32669,
-      "inReviewsJson": 16540,
+      "totalFiles": 32670,
+      "inReviewsJson": 16544,
       "skippedExcluded": 53,
-      "withFullText": 186,
-      "excerptOnly": 1969,
+      "withFullText": 143,
+      "excerptOnly": 1973,
       "llmClassified": 50,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
-      "uncertainCases": 6,
+      "nonReviewsFound": 0,
+      "uncertainCases": 9,
       "budgetUsed": 0.005,
       "llmCalls": 50,
       "rateLimitHits": 0,
       "errors": 0,
-      "skippedAlreadyClassified": 14332
+      "skippedAlreadyClassified": 14375
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "every-brilliant-thing-2026/deadline--greg-evans.json",
-      "showId": "every-brilliant-thing-2026",
-      "outlet": "Deadline",
-      "outletId": "deadline",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article reports on Broadway box office numbers for the week, including a mention of 'Every Brilliant Thing's' performance, but does not evaluate the quality of the show.",
-      "currentScore": 86
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
@@ -51,7 +40,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The text describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production itself. The truncated portion appears to be about other shows.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -71,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of theater-related keywords and links, suggesting a news or directory-type page rather than a review of 'Funny Girl'.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -81,7 +70,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -93,59 +82,81 @@
       "confidence": "low",
       "reasoning": "This appears to be a list of links and advertisements related to theater, not a review of a specific show.",
       "currentScore": 78
+    },
+    {
+      "file": "liberation-2025/newyorker--helen-shaw.json",
+      "showId": "liberation-2025",
+      "outlet": "The New Yorker",
+      "outletId": "newyorker",
+      "contentType": "other",
+      "confidence": "low",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "currentScore": 88
+    },
+    {
+      "file": "once-on-this-island-2017/talkinbroadway--matthew-murray.json",
+      "showId": "once-on-this-island-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "currentScore": 89
+    },
+    {
+      "file": "one-man-two-guvnors-2012/faster-times--jonathan-mandell.json",
+      "showId": "one-man-two-guvnors-2012",
+      "outlet": "Faster Times",
+      "outletId": "faster-times",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "currentScore": 74
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "1776-2022/variety--frank-rizzo.json",
-    "all-my-sons-2019/timeout--helen-shaw.json",
-    "allegiance-2015/variety--marilyn-stasio.json",
-    "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
-    "baby-its-you-2011/nytimes--charles-isherwood.json",
-    "beautiful-little-fool-west-end-2026/timeout-london--tim-bano.json",
-    "beetlejuice-2019/vulture--sara-holdren.json",
-    "birthday-candles-2022/nytimes--maya-phillips.json",
-    "bright-star-2016/nytimes--charles-isherwood.json",
-    "burlesque-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "cabaret-2024/amny--matt-windman.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/timeout-london--andrzej-lukowski.json",
-    "cats-2016/nytimes--charles-isherwood.json",
-    "chess-2025/hollywood-reporter--richard-lawson.json",
-    "clydes-2021/nysr--melissa-rose-bernardo.json",
-    "clydes-2021/variety--naveen-kumar.json",
-    "come-fly-away-2010/nytimes--charles-isherwood.json",
-    "company-2021/nysr--melissa-rose-bernardo.json",
-    "cost-of-living-2022/deadline--greg-evans.json",
-    "dear-evan-hansen-2016/nytimes--charles-isherwood.json",
-    "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json",
-    "doctor-zhivago-2015/timeout--david-cote.json",
-    "doctor-zhivago-2015/vulture--jesse-green.json",
-    "encores-the-wild-party-off-broadway-2026/theatrely--emily-wyrwa.json",
-    "finding-neverland-2015/timeout--david-cote.json",
-    "finding-neverland-2015/variety--marilyn-stasio.json",
-    "grease-2007/nytimes--ben-brantley.json",
-    "grey-house-2023/vulture--jackson-mchenry.json",
-    "groundhog-day-2017/nytimes--ben-brantley.json",
-    "gutenberg-2023/vulture--sara-holdren.json",
-    "hand-to-god-2015/nytimes--charles-isherwood.json",
-    "harmony-2023/variety--trish-deitch.json",
-    "harmony-2023/vulture--jackson-mchenry.json",
-    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/timeout-london--andrzej-lukowski.json",
-    "heart-of-rock-and-roll-2024/nytimes--elisabeth-vincentelli.json",
-    "hells-kitchen-2024/thewrap--robert-hofler.json",
-    "here-lies-love-2023/vulture--jackson-mchenry.json",
-    "high-2011/nytimes--charles-isherwood.json",
-    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
-    "how-i-learned-to-drive-2022/deadline--greg-evans.json",
-    "illinoise-2024/hollywood-reporter--david-rooney.json",
-    "into-the-woods-2022/nytimes--alexis-soloski.json",
-    "into-the-woods-west-end-2025/whatsonstage--sarah-crompton.json"
+    "jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
+    "jekyll-and-hyde-2013/nytimes--charles-isherwood.json",
+    "john-lithgow-stories-by-heart-2018/nytimes--jesse-green.json",
+    "just-for-us-2023/variety--naveen-kumar.json",
+    "just-for-us-2023/vulture--jackson-mchenry.json",
+    "kiss-me-kate-2019/variety--frank-rizzo.json",
+    "leopoldstadt-2022/vulture--naveen-kumar.json",
+    "life-of-pi-2023/nytimes--alexis-soloski.json",
+    "long-days-journey-into-night-2016/ew--jeff-labrecque.json",
+    "long-days-journey-into-night-2016/guardian--alexis-soloski.json",
+    "long-days-journey-into-night-2016/thewrap--robert-hofler.json",
+    "looped-2010/nytimes--charles-isherwood.json",
+    "love-letters-2014/nbcny--robert-kahn.json",
+    "love-letters-2014/nytimes--charles-isherwood.json",
+    "man-and-boy-west-end-2026/broadwayworld--clementine-scott.json",
+    "marvins-room-2017/nytimes--jesse-green.json",
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+    "maybe-happy-ending-2024/variety--christian-lewis.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "mcneal-2024/deadline--greg-evans.json",
+    "million-dollar-quartet-2010/vulture--stephanie-zacharek.json",
+    "misery-2015/nytimes--ben-brantley.json",
+    "mj-2022/deadline--greg-evans.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "mj-the-musical-west-end-2024/guardian--anya-ryan.json",
+    "mj-the-musical-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "mother-russia-off-broadway-2026/theatermania--zachary-stewart.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "new-york-new-york-2023/broadwaynews--brittani-samuel.json",
+    "of-mice-and-men-2014/nytimes--ben-brantley.json",
+    "oh-mary-west-end-2025/times-uk--clive-davis.json",
+    "ohio-state-murders-2022/vulture--jackson-mchenry.json",
+    "oklahoma-2019/nytimes--ben-brantley.json",
+    "oliver-west-end-2024/artsdesk--helen-hawkins.json",
+    "on-the-town-2014/nytimes--ben-brantley.json",
+    "on-your-feet-2015/nytimes--charles-isherwood.json",
+    "once-on-this-island-2017/nytimes--jesse-green.json",
+    "once-upon-a-one-more-time-2023/nydailynews--new-york-daily-news.json",
+    "othello-2025/vulture--sara-holdren.json",
+    "our-town-2024/vulture--sara-holdren.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "every-brilliant-thing-2026",
-      "currentCount": 27,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
