@@ -37,6 +37,7 @@ const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
 const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
+const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 
 // --- Names that are NOT theater critics (outlet names, wire service labels, etc.) ---
 const REJECT_NAMES = new Set([
@@ -105,29 +106,16 @@ function scanReviewFiles() {
   return { unknownOutlets, unknownCritics };
 }
 
-// --- HTTP fetch with timeout ---
-async function fetchWithTimeout(url, timeoutMs = 8000) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-
+// --- HTTP fetch via scraper infrastructure (Bright Data → ScrapingBee → Playwright) ---
+async function fetchHtml(url) {
   try {
-    const resp = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9',
-        'Accept-Language': 'en-US,en;q=0.9',
-      },
-      redirect: 'follow'
-    });
-
-    clearTimeout(timer);
-    if (!resp.ok) return { status: resp.status, html: null };
-    const html = await resp.text();
-    return { status: resp.status, html };
+    const result = await fetchPage(url);
+    if (result && result.content && result.content.length > 100) {
+      return { html: result.content };
+    }
+    return { html: null };
   } catch (e) {
-    clearTimeout(timer);
-    return { status: 'error', error: e.message, html: null };
+    return { html: null, error: e.message };
   }
 }
 
@@ -235,7 +223,6 @@ async function phaseB(unknownCritics) {
 
   let bylineResolved = 0;
   let httpResolved = 0;
-  let failed404 = 0;
   let failedNoAuthor = 0;
   let failedError = 0;
   let duplicatesRemoved = 0;
@@ -254,17 +241,9 @@ async function phaseB(unknownCritics) {
       bylineResolved++;
     }
 
-    // Strategy 2: HTTP fetch + HTML extraction
+    // Strategy 2: Fetch HTML via scraper infrastructure (Bright Data → ScrapingBee → Playwright)
     if (!critic && !skipHttp && u.url) {
-      const result = await fetchWithTimeout(u.url);
-
-      if (result.status === 404 || result.status === 410) {
-        failed404++;
-        if (i < 5 || i % 200 === 0) {
-          console.log(`  [${i+1}/${toProcess.length}] 404: ${u.outletId} ${u.url.slice(0, 60)}`);
-        }
-        continue;
-      }
+      const result = await fetchHtml(u.url);
 
       if (result.html) {
         critic = extractAuthorFromHtml(result.html);
@@ -281,8 +260,8 @@ async function phaseB(unknownCritics) {
         failedError++;
       }
 
-      // Rate limit: 5 requests/second
-      await new Promise(r => setTimeout(r, 200));
+      // Rate limit: 1 request/second (scraper infrastructure is heavier than bare fetch)
+      await new Promise(r => setTimeout(r, 1000));
     } else if (!critic && skipHttp) {
       skippedNoUrl++;
       continue;
@@ -332,7 +311,6 @@ async function phaseB(unknownCritics) {
   console.log(`  Total resolved: ${totalResolved}`);
   console.log(`  Renamed: ${renamed}`);
   console.log(`  Duplicates removed: ${duplicatesRemoved}`);
-  console.log(`  Failed - 404/410: ${failed404}`);
   console.log(`  Failed - no author: ${failedNoAuthor}`);
   console.log(`  Failed - error: ${failedError}`);
   if (skippedNoUrl) console.log(`  Skipped (--skip-http): ${skippedNoUrl}`);
@@ -362,6 +340,7 @@ async function main() {
     await phaseB(unknownCritics);
   }
 
+  await cleanupScraper();
   console.log('\nDone.');
 }
 
