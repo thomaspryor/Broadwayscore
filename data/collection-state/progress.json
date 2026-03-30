@@ -132,7 +132,8 @@
     "some-like-it-hot-2022/newyorker--helen-shaw.json",
     "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
     "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
-    "tina-2019/newyorker--michael-schulman.json"
+    "tina-2019/newyorker--michael-schulman.json",
+    "tootsie-2019/latimes--charles-mcnulty.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -479,7 +480,16 @@
     "a-soldiers-play-2020/wsj--terry-teachout.json",
     "a-christmas-carol-2019/chicagotribune--chris-jones-bway.json",
     "a-christmas-carol-2019/talkinbroadway--matthew-murray.json",
-    "sea-wall-a-life-2019/curtainup--elyse-sommer.json"
+    "sea-wall-a-life-2019/curtainup--elyse-sommer.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/broadwaynews--charles-isherwood.json",
+    "ink-2019/gotham-playgoer--robert-sholiton.json",
+    "ink-2019/thestage--naveen-kumar.json",
+    "all-my-sons-2019/washpost--peter-marks.json",
+    "burn-this-2019/broadwaynews--charles-isherwood.json",
+    "oklahoma-2019/broadwaynews--charles-isherwood.json",
+    "oklahoma-2019/dctheatrescene--richard-seff.json",
+    "king-lear-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "kiss-me-kate-2019/theater-reviews-from-my-seat--joe-lombardi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -767,7 +777,10 @@
       "data/review-texts/trouble-in-mind-2021/theatermania--jesse-green.json",
       "data/review-texts/a-christmas-carol-2019/chicagotribune--chris-jones-bway.json",
       "data/review-texts/a-christmas-carol-2019/talkinbroadway--matthew-murray.json",
-      "data/review-texts/sea-wall-a-life-2019/curtainup--elyse-sommer.json"
+      "data/review-texts/sea-wall-a-life-2019/curtainup--elyse-sommer.json",
+      "data/review-texts/all-my-sons-2019/washpost--peter-marks.json",
+      "data/review-texts/king-lear-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+      "data/review-texts/kiss-me-kate-2019/theater-reviews-from-my-seat--joe-lombardi.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -793,11 +806,12 @@
       "grey-house-2023/slash-film--caroline-cao.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
       "some-like-it-hot-2022/newyorker--helen-shaw.json",
-      "tina-2019/newyorker--michael-schulman.json"
+      "tina-2019/newyorker--michael-schulman.json",
+      "tootsie-2019/latimes--charles-mcnulty.json"
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "sea-wall-a-life-2019/curtainup--elyse-sommer.json",
+  "lastProcessed": "kiss-me-kate-2019/theater-reviews-from-my-seat--joe-lombardi.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -1051,6 +1065,17 @@
       "t": "2026-03-30T23:45:40.989Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-30T23:49:25.666Z",
+      "event": "bb-session",
+      "session": "f6cbf73a",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on"
+    },
+    {
+      "t": "2026-03-30T23:49:26.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
