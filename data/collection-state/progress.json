@@ -142,7 +142,10 @@
     "evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
     "evening-all-afternoon-west-end-2026/thestage--unknown.json",
     "evening-all-afternoon-west-end-2026/standard--nick-curits.json",
-    "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/thestage--paul-vale.json"
+    "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/thestage--paul-vale.json",
+    "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json",
+    "data-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "a-mirrored-monet-west-end-2026/variety--brent-lang.json",
@@ -473,7 +476,14 @@
     "cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "dracula-west-end-2025/times-uk--clive-davis.json",
-    "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json"
+    "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json",
+    "chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "im-sorry-prime-minister-west-end-2026/i-paper--fiona-mountford.json",
+    "11-to-midnight-off-broadway-2026/playbill--unknown.json",
+    "the-tempest-globe-west-end-2026/i-paper--fiona-mountford.json",
+    "an-ark-off-broadway-2026/wsj--unknown.json",
+    "an-ark-off-broadway-2026/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -557,7 +567,9 @@
       "evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
       "evening-all-afternoon-west-end-2026/thestage--unknown.json",
       "evening-all-afternoon-west-end-2026/standard--nick-curits.json",
-      "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/thestage--paul-vale.json"
+      "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/thestage--paul-vale.json",
+      "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json"
     ],
     "amp": [],
     "browserbase": [
@@ -592,7 +604,8 @@
       "mexodus-off-broadway-2026/timeout--unknown.json",
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
       "bigfoot-off-broadway-2026/timeout--unknown.json",
-      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytimes--helen-shaw.json"
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026/nytimes--helen-shaw.json",
+      "data-off-broadway-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -624,7 +637,10 @@
       "data/review-texts/bigfoot-off-broadway-2026/talkinbroadway--marc-miller.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/talkinbroadway--unknown.json",
-      "data/review-texts/cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json"
+      "data/review-texts/cold-war-choir-practice-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
+      "data/review-texts/chinese-republicans-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/an-ark-off-broadway-2026/ap--mark-kennedy.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/playbill--unknown.json",
@@ -673,7 +689,7 @@
     ]
   },
   "startTime": "2026-03-30T02:34:03.051Z",
-  "lastProcessed": "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026/thestage--paul-vale.json",
+  "lastProcessed": "an-ark-off-broadway-2026/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-03-30T02:34:03.961Z",
@@ -795,6 +811,17 @@
       "t": "2026-03-30T05:36:28.756Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-30T05:51:08.994Z",
+      "event": "bb-session",
+      "session": "87e3625f",
+      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
+    },
+    {
+      "t": "2026-03-30T05:51:10.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
