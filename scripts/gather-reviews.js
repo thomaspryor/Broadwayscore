@@ -59,6 +59,7 @@ const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
 let chromium, playwright;
@@ -260,6 +261,21 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
 }
 
 /**
+ * Quick title-based validation for aggregator pages.
+ * Extracts <title> from raw HTML and checks show title words appear.
+ * Returns true if page appears to be about the right show (or can't validate).
+ */
+function quickTitleCheck(html, showTitle) {
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (!titleMatch) return true; // No title tag = can't validate, accept
+  const result = titleWordsMatchWithConfidence(showTitle, titleMatch[1]);
+  if (!result.matched) {
+    console.log(`    [TITLE MISMATCH] Page title "${titleMatch[1].trim().slice(0, 80)}" doesn't match "${showTitle}" (${result.matchCount}/${result.threshold} words)`);
+  }
+  return result.matched;
+}
+
+/**
  * Search aggregator for show reviews using simple HTTP
  */
 async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
@@ -457,7 +473,8 @@ async function searchDTLI(show) {
     const url = `https://didtheylikeit.com/shows/${mappedSlug}/`;
     console.log(`  Searching Did They Like It (mapped: ${mappedSlug})...`);
     const result = await searchAggregator('DTLI', url);
-    if (result.found && result.html && result.html.includes('<div class="review-item">')) {
+    if (result.found && result.html && result.html.includes('<div class="review-item">') &&
+        quickTitleCheck(result.html, show.title)) {
       console.log(`    ✓ Found via slug map: ${url}`);
       return { url, html: result.html };
     }
@@ -575,7 +592,8 @@ async function searchDTLI(show) {
   for (const slug of uniqueVariations) {
     const url = `https://didtheylikeit.com/shows/${slug}/`;
     const result = await searchAggregator('DTLI', url);
-    if (result.found && result.html && result.html.includes('<div class="review-item">')) {
+    if (result.found && result.html && result.html.includes('<div class="review-item">') &&
+        quickTitleCheck(result.html, show.title)) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
@@ -608,7 +626,8 @@ async function searchShowScore(show) {
       }
     } else {
       const result = await searchAggregator('ShowScore', curatedUrl);
-      if (result.found && result.html && result.html.includes('score')) {
+      if (result.found && result.html && result.html.includes('score') &&
+          quickTitleCheck(result.html, show.title)) {
         console.log(`    ✓ Found at: ${curatedUrl}`);
         return { url: curatedUrl, html: result.html };
       }
@@ -705,13 +724,14 @@ async function searchShowScore(show) {
       const url = `${showScoreBase}/${slug}`;
       const result = await searchAggregator('ShowScore', url);
 
-      // Check that we got actual show content, not the homepage
+      // Check that we got actual show content, not the homepage, and not a wrong show
       // For off-broadway shows, accept /off-broadway-shows/ but still reject /off-off-broadway-shows/
       if (result.found && result.html &&
           result.html.includes('score') &&
           !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>') &&
           !result.html.includes('/off-off-broadway-shows/') &&
-          (isOffBroadway || !result.html.includes('/off-broadway-shows/'))) {
+          (isOffBroadway || !result.html.includes('/off-broadway-shows/')) &&
+          quickTitleCheck(result.html, show.title)) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html };
       }
@@ -1408,94 +1428,14 @@ async function searchBWWRoundup(show, year, options = {}) {
     }
   }
 
-  // Priority 3: Live fetch - generate title variations for URL
-  const titleVariations = [
-    show.title.toUpperCase().replace(/[^A-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
-    show.title.replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
-    show.title.replace(/'/g, '').replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
-  ];
-
-  // Format openingDate as YYYYMMDD for date-specific URL patterns
-  // BWW often uses the full date in the slug: Review-Roundup-TITLE-Opens-on-Broadway-YYYYMMDD
-  const dateSlug = show.openingDate ? show.openingDate.replace(/-/g, '') : null;
-
-  const searchUrls = [];
-  if (isLondonMarket(show.category)) {
-    // West End BWW roundup URL patterns (broadwayworld.com/london/ subdomain + main domain)
-    // Date-specific patterns first (most precise, avoids wrong-production collisions)
-    if (dateSlug) {
-      for (const title of titleVariations) {
-        searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${dateSlug}`);
-      }
-    }
-    // Year-only patterns (fallback)
-    for (const title of titleVariations) {
-      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-In-London-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
-    }
-  } else {
-    // Broadway BWW roundup URL patterns
-    // Date-specific patterns first (most precise, avoids wrong-production collisions)
-    if (dateSlug) {
-      for (const title of titleVariations) {
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${dateSlug}`);
-      }
-    }
-    // Year-only patterns (fallback)
-    for (const title of titleVariations) {
-      // BWW URLs have inconsistent capitalization — try common variants
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
-    }
-  }
-
-  // Try Playwright first — BWW loads review content via JavaScript on many pages
-  if (chromium) {
-    for (const url of searchUrls) {
-      const result = await scrapeBWWRoundupWithPlaywright(url);
-      if (result) {
-        console.log(`    ✓ Found at: ${url} (Playwright)`);
-        return { url, html: result.html };
-      }
-      await sleep(300);
-    }
-  }
-
-  // Fall back to HTTP fetch (works for older BWW pages with static content)
-  for (const url of searchUrls) {
-    const result = await searchAggregator('BWW', url);
-    // Validate we got an actual article page, not the BWW homepage (301 redirect false positive).
-    // Homepage contains "Review Roundup" text in article listings, causing false matches.
-    if (result.found && result.html && result.html.includes('Review Roundup') &&
-        (result.html.includes('BlogPosting') || result.html.includes('articleBody') || result.html.includes('Photo Credit:'))) {
-      console.log(`    ✓ Found at: ${url}`);
-      return { url, html: result.html };
-    }
-    await sleep(200);
-  }
-
-  // Priority 4: Google SERP search — BWW uses unpredictable URL formats
-  // (e.g., "Tony-Winner-Daniel-Radcliffe-Stars-in-..." instead of "{SHOW}-Opens-on-Broadway-...")
-  // so SERP discovery is essential, not just a fallback.
+  // Priority 3: Google SERP search — BWW uses unpredictable URL formats
+  // (e.g., "Updating-LIVE-2026" instead of "{SHOW}-Opens-on-Broadway-20260330")
+  // SERP finds the actual URL regardless of BWW's slug choice. Run BEFORE URL guessing.
   try {
     const titleForSearch = show.title.replace(/'/g, '');
     const marketKeyword = isLondonMarket(show.category) ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : 'broadway';
     const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" ${marketKeyword} ${year}`;
-    console.log(`    Trying Google search for BWW roundup...`);
+    console.log(`    Searching Google for BWW roundup...`);
     const serpResults = await serpQuery(searchQuery, { nbResults: 5 });
     const searchResult = serpResults
       ? (serpResults.map(r => r.url).filter(url => url && url.includes('broadwayworld.com/article/Review-Roundup'))[0] || null)
@@ -1509,7 +1449,77 @@ async function searchBWWRoundup(show, year, options = {}) {
       const result = await searchAggregator('BWW', searchResult);
       if (result.found && result.html) return { url: searchResult, html: result.html };
     }
-  } catch (e) { /* Google search failed, continue */ }
+  } catch (e) {
+    console.log('    Google search unavailable, falling back to URL patterns...');
+  }
+
+  // Priority 4: URL pattern guessing — fallback when SERP unavailable or hasn't indexed yet
+  // (e.g., same-day opening where Google hasn't crawled the roundup yet)
+  const titleVariations = [
+    show.title.toUpperCase().replace(/[^A-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
+    show.title.replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
+    show.title.replace(/'/g, '').replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
+  ];
+
+  const dateSlug = show.openingDate ? show.openingDate.replace(/-/g, '') : null;
+
+  const searchUrls = [];
+  if (isLondonMarket(show.category)) {
+    if (dateSlug) {
+      for (const title of titleVariations) {
+        searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${dateSlug}`);
+      }
+    }
+    for (const title of titleVariations) {
+      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-In-London-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
+    }
+  } else {
+    if (dateSlug) {
+      for (const title of titleVariations) {
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${dateSlug}`);
+        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${dateSlug}`);
+      }
+    }
+    for (const title of titleVariations) {
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${year}`);
+      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
+    }
+  }
+
+  if (chromium) {
+    for (const url of searchUrls) {
+      const result = await scrapeBWWRoundupWithPlaywright(url);
+      if (result) {
+        console.log(`    ✓ Found at: ${url} (Playwright)`);
+        return { url, html: result.html };
+      }
+      await sleep(300);
+    }
+  }
+
+  for (const url of searchUrls) {
+    const result = await searchAggregator('BWW', url);
+    if (result.found && result.html && result.html.includes('Review Roundup') &&
+        (result.html.includes('BlogPosting') || result.html.includes('articleBody') || result.html.includes('Photo Credit:'))) {
+      console.log(`    ✓ Found at: ${url}`);
+      return { url, html: result.html };
+    }
+    await sleep(200);
+  }
 
   console.log('    ✗ Not found on BWW');
   return null;
