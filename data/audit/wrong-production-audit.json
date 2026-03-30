@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-30T12:56:18.933Z",
+  "timestamp": "2026-03-30T13:03:45.268Z",
   "stats": {
-    "totalReviews": 31960,
-    "alreadyFlagged": 11328,
+    "totalReviews": 31952,
+    "alreadyFlagged": 11336,
     "dateGuardCatches": 18,
     "directorMismatch": 949,
     "tvFilmSignals": 3359,
-    "londonSignals": 1005,
+    "londonSignals": 1007,
     "offBroadwaySignals": 969,
     "yearMismatch": 66,
-    "noPublishDate": 6177
+    "noPublishDate": 6166
   },
   "findings": [
     {
@@ -70491,6 +70491,20 @@
     },
     {
       "showId": "life-of-pi-2023",
+      "file": "broadwayworld--timoth-david-copney.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/baltimore/article/Review-THE-LIFE-OF-PI-at-The-Hippodrome-20241211",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-2023",
       "file": "nysr--frank-scheck.json",
       "score": 78,
       "publishDate": "2023-03-30T21:52:43",
@@ -74400,6 +74414,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "shucked-2023",
+      "file": "broadwayworld--jeffrey-kare.json",
+      "score": 71,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/raleigh/article/Review-SHUCKED-National-Tour-at-Durham-Performing-Arts-Center-20250305",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
