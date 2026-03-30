@@ -106,52 +106,24 @@ export function getShowScoreUrl(showId: string): string | undefined {
 }
 
 /**
- * Generate a slug from a show title (matches scraper slug logic).
- */
-function titleToSlug(title: string): string {
-  return title
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim();
-}
-
-/**
  * Get the audience review page URL for a platform.
- * Uses scraper-stored URL when available, falls back to generated URL.
+ * Returns stored URL from audience-buzz.json (populated by scrapers/backfill).
+ * Show Score uses a separate curated URL map.
  */
 export function getAudiencePlatformUrl(
   sourceKey: string,
   showId: string,
-  showTitle: string,
+  _showTitle: string,
 ): string | undefined {
-  // Check for scraper-stored URL first
-  const buzz = audienceBuzz.shows[showId];
-  const sourceData = buzz?.sources?.[sourceKey];
-  if (sourceData?.url) {
-    return sourceData.url;
-  }
-
   // Show Score uses curated URL map
   if (sourceKey === 'showScore') {
     return getShowScoreUrl(showId);
   }
 
-  // Generate URL from title slug for web-based platforms
-  const slug = titleToSlug(showTitle);
-  switch (sourceKey) {
-    case 'seatplan':
-      return `https://seatplan.com/london/${slug}-tickets/`;
-    case 'lbo':
-      return `https://www.londonboxoffice.co.uk/${slug}-tickets`;
-    case 'ltd':
-      return `https://www.londontheatredirect.com/musical/${slug}-tickets`;
-    default:
-      return undefined;
-  }
+  // Use scraper-stored URL (no fallback generation — avoids 404s)
+  const buzz = audienceBuzz.shows[showId];
+  const sourceData = buzz?.sources?.[sourceKey];
+  return sourceData?.url || undefined;
 }
 
 /**
