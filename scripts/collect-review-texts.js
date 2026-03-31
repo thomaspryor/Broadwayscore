@@ -4568,6 +4568,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     data.wordCount = tierResult.wordCount;
     data.truncationSignals = tierResult.truncationSignals;
     data.tierReason = tierResult.tierReason;
+
+    // Sync textStatus with contentTier — prevents stale "truncated" blocking pull quote extraction
+    if (data.contentTier === 'complete') {
+      data.textStatus = 'full';
+    }
   }
 
   // Set incompleteReason if content is not complete
