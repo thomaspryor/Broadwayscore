@@ -328,7 +328,7 @@ async function main() {
       const totalScored = breakdown.positive + breakdown.mixed + breakdown.negative;
       const allPositive = totalScored > 0 && breakdown.mixed === 0 && breakdown.negative === 0;
       const NEGATIVE_KEYWORDS = /\b(divided|split|mixed|dismiss|less compelling|not all|polariz)/i;
-      const HEDGED_NEGATIVE = /\bthough (some|one|a few|critics) (find|note|dismiss|say|argue|feel)\b/i;
+      const HEDGED_NEGATIVE = /\bthough (some|one|a few|critics?)(\s+critics?)? (find|note|dismiss|say|argue|feel)\w*/i;
       if (allPositive && (NEGATIVE_KEYWORDS.test(consensus) || HEDGED_NEGATIVE.test(consensus))) {
         console.warn(`  ⚠️  Sentiment mismatch: all ${totalScored} reviews are positive but text implies criticism — regenerating...`);
         // Retry once with an explicit instruction about the breakdown
