@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T11:34:23.866Z",
+  "timestamp": "2026-03-31T11:46:29.293Z",
   "stats": {
-    "totalReviews": 32133,
-    "alreadyFlagged": 11840,
+    "totalReviews": 32122,
+    "alreadyFlagged": 11881,
     "dateGuardCatches": 14,
-    "directorMismatch": 921,
-    "tvFilmSignals": 3312,
-    "londonSignals": 963,
-    "offBroadwaySignals": 965,
+    "directorMismatch": 925,
+    "tvFilmSignals": 3313,
+    "londonSignals": 964,
+    "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 6007
+    "noPublishDate": 5950
   },
   "findings": [
     {
@@ -5730,6 +5730,20 @@
       "file": "thestage--tim-bano.json",
       "score": 67,
       "publishDate": "2021-09-13",
+      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-theatre-london-john-rando-olly-dobson-alan-silvestri-glen-ballard",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "thestage--unknown.json",
+      "score": 66,
+      "publishDate": null,
       "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-theatre-london-john-rando-olly-dobson-alan-silvestri-glen-ballard",
       "findings": [
         {
@@ -43552,6 +43566,25 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "city-am--adam-bloodworth.json",
+      "score": 82,
+      "publishDate": "2023-12-15",
+      "url": "https://www.cityam.com/stranger-things-the-first-shadow-review-gorgeous-shocking-thrillfest/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "daily-mail--luke-jones.json",
       "score": 93,
       "publishDate": "December 14, 2023",
@@ -46824,6 +46857,25 @@
       "score": 95,
       "publishDate": "2013-03-24",
       "url": "https://www.theguardian.com/stage/2013/mar/24/book-of-mormon-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "independent--alice-saville.json",
+      "score": null,
+      "publishDate": "2025-08-12",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-the-book-of-mormon-lord-they-move-in-hilarious-ways-8547090.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -66491,6 +66543,20 @@
       ]
     },
     {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "broadwayworld--debbie-gilpin.json",
+      "score": 82,
+      "publishDate": "2025-09-19",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-LAND-OF-THE-LIVING-starring-Juliet-Stevenson-20250919",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "head-over-heels-2018",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -80282,6 +80348,84 @@
     },
     {
       "showId": "wicked-2003",
+      "file": "broadwayworld--armando-urdiales.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--courtney-symes.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--david-copney.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--emily-short.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--jared-fessler.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--katrina-fageol.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
       "file": "broadwayworld--lauren-gienow.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
@@ -80309,6 +80453,19 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--lynn-beaver.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Wicked",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "broadwayworld--tyler-hinton.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
