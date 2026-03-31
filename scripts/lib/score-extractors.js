@@ -418,22 +418,31 @@ function extractNYPostScore(html, text) {
   // NY Post uses CSS star widgets on newer articles (2019+).
   // rating__star--filled = full star, rating__star--half = half star, on a 4-star scale.
   // IMPORTANT: Scope to review section only — sidebar/related articles have their own stars.
-  let starHtml = html;
-  const reviewIdx = html.indexOf('inline-module--review');
-  if (reviewIdx > -1) {
-    const reviewEnd = html.indexOf('</section>', reviewIdx);
-    starHtml = reviewEnd > -1 ? html.substring(reviewIdx, reviewEnd) : html.substring(reviewIdx, reviewIdx + 5000);
+  // Without scoping, sidebar widgets inflate scores (Dog Day Afternoon: 3.5/4 from sidebar, review was a pan).
+  let starHtml = null;
+  // Try multiple selectors to find the review body
+  const scopeSelectors = ['inline-module--review', 'article-body', 'entry-content', 'review__body'];
+  for (const selector of scopeSelectors) {
+    const idx = html.indexOf(selector);
+    if (idx > -1) {
+      const end = html.indexOf('</section>', idx);
+      starHtml = end > -1 ? html.substring(idx, end) : html.substring(idx, idx + 5000);
+      break;
+    }
   }
-  const filled = (starHtml.match(/rating__star--filled/g) || []).length;
-  const half = (starHtml.match(/rating__star--half/g) || []).length;
-  if (filled > 0) {
-    const rating = filled + (half * 0.5);
-    if (rating >= 0.5 && rating <= 4) {
-      return {
-        originalScore: `${rating}/4 stars`,
-        normalizedScore: starsToNumeric(rating, 4),
-        source: 'css-stars'
-      };
+  // If no review section found, do NOT fall back to full HTML — too many false positives from sidebars
+  if (starHtml) {
+    const filled = (starHtml.match(/rating__star--filled/g) || []).length;
+    const half = (starHtml.match(/rating__star--half/g) || []).length;
+    if (filled > 0) {
+      const rating = filled + (half * 0.5);
+      if (rating >= 0.5 && rating <= 4) {
+        return {
+          originalScore: `${rating}/4 stars`,
+          normalizedScore: starsToNumeric(rating, 4),
+          source: 'css-stars'
+        };
+      }
     }
   }
 

@@ -295,26 +295,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started.
-          # This prevents spam while ensuring stale deploys don't block fresh ones.
-          # Old logic checked "last deploy < 15 min ago" which caused missed deploys
-          # when multiple rebuilds chained (scoring → rebuild → deploy skipped).
-          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
-
-          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
-            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
-            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
-            NOW_TS=$(date +%s)
-            DIFF=$((NOW_TS - RECENT_TS))
-
-            # Skip only if: deploy was triggered AFTER this rebuild started AND within 15 min
-            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
-              echo "Skipping deploy — one was already triggered after this rebuild started (${DIFF}s ago)"
-              exit 0
-            fi
-          fi
-
+          # Always deploy after rebuild. Vercel deploys are idempotent — if code hasn't
+          # changed, the build is a no-op. The previous dedup logic caused stale data on
+          # the live site during Dog Day Afternoon opening night (2026-03-30) when a deploy
+          # from a stale rebuild blocked deploys from subsequent correct rebuilds.
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
 

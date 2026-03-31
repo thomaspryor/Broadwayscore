@@ -343,15 +343,15 @@ function quickTitleCheck(html, showTitle) {
  * Search aggregator for show reviews using simple HTTP
  */
 async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
-  return new Promise((resolve) => {
-    // Validate URL before making request
-    try {
-      new URL(searchUrl);
-    } catch (e) {
-      resolve({ found: false, error: `Invalid URL: ${searchUrl}` });
-      return;
-    }
+  // Validate URL before making request
+  try {
+    new URL(searchUrl);
+  } catch (e) {
+    return { found: false, error: `Invalid URL: ${searchUrl}` };
+  }
 
+  // Try direct https.get first (fast, no API cost)
+  const directResult = await new Promise((resolve) => {
     const req = https.get(searchUrl, { timeout: 30000 }, (res) => {
       if (res.statusCode === 200) {
         let data = '';
@@ -376,7 +376,6 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
           // Redirected to homepage - this URL doesn't exist
           resolve({ found: false, redirectedToHomepage: true });
         } else if (maxRedirects > 0) {
-          // Follow redirect
           searchAggregator(aggregatorName, redirectUrl, maxRedirects - 1).then(resolve);
         } else {
           resolve({ found: false, tooManyRedirects: true });
@@ -391,6 +390,27 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
       resolve({ found: false, error: 'timeout' });
     });
   });
+
+  // If direct fetch succeeded with real content, return it
+  if (directResult.found && directResult.html && directResult.html.length > 2000) {
+    return directResult;
+  }
+
+  // Fallback: use fetchPage (Bright Data → ScrapingBee → Playwright) for CI environments
+  // where https.get gets TLS-fingerprinted and blocked by CDNs
+  if (typeof fetchPage === 'function') {
+    try {
+      const fpResult = await fetchPage(searchUrl);
+      if (fpResult && fpResult.html && fpResult.html.length > 2000) {
+        console.log(`    → ${aggregatorName}: fetchPage fallback succeeded (${(fpResult.html.length / 1024).toFixed(0)}KB)`);
+        return { found: true, html: fpResult.html, finalUrl: searchUrl, method: 'fetchPage-fallback' };
+      }
+    } catch (err) {
+      // fetchPage not available or failed — return original result
+    }
+  }
+
+  return directResult;
 }
 
 /**
