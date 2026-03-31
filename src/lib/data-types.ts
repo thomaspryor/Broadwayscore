@@ -296,6 +296,8 @@ export interface ApproachingRecoupmentShow {
   season: string;
   capitalization: number;
   estimatedRecoupmentPct: [number, number];
+  modelRecoupmentPct?: [number, number, number] | null;
+  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   trend: import('@/config/commercial').RecoupmentTrend;
   weeklyGross: number | null;
 }

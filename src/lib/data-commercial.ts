@@ -328,12 +328,19 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
       season: getSeason(show.openingDate) || 'Unknown',
       capitalization: data.capitalization || 0,
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || [0, 0],
+      modelRecoupmentPct: data.modelRecoupmentPct || null,
+      modelMethod: data.modelMethod || null,
       trend,
       weeklyGross: grossData?.thisWeek?.gross || null,
     });
   }
 
-  return results.sort((a, b) => b.estimatedRecoupmentPct[1] - a.estimatedRecoupmentPct[1]);
+  // Sort by best available recoupment estimate (model central or AI high)
+  return results.sort((a, b) => {
+    const aVal = a.modelRecoupmentPct?.[1] ?? a.estimatedRecoupmentPct[1];
+    const bVal = b.modelRecoupmentPct?.[1] ?? b.estimatedRecoupmentPct[1];
+    return bVal - aVal;
+  });
 }
 
 /**
