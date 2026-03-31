@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-31T11:37:48.356Z",
-  "processed": 177,
-  "failed": 51,
-  "successRate": "77.6%",
+  "updatedAt": "2026-03-31T11:46:30.424Z",
+  "processed": 196,
+  "failed": 82,
+  "successRate": "70.5%",
   "tierBreakdown": {
-    "playwright": 128,
+    "playwright": 139,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 14,
+    "scrapingbee": 17,
     "brightdata": 0,
     "archiveToday": 4,
-    "archive": 28
+    "archive": 31
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -91,6 +91,28 @@
       "t": "2026-03-31T11:01:49.546Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-31T11:40:25.078Z",
+      "event": "bb-session",
+      "session": "4b04b6a7",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-31T11:40:26.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-31T11:44:18.162Z",
+      "event": "bb-session",
+      "session": "3de2534d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-31T11:44:19.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
