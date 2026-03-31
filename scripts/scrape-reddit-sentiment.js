@@ -98,11 +98,11 @@ function calculateBuzzScore(classifications, totalPosts = 0, totalComments = 0) 
   if (relevant.length === 0) return null;
 
   const sentimentScores = {
-    enthusiastic: 98,
-    positive: 88,
-    mixed: 68,
-    negative: 40,
-    neutral: 60
+    enthusiastic: 95,
+    positive: 75,
+    mixed: 50,
+    negative: 20,
+    neutral: 50
   };
 
   const sentimentCounts = {
