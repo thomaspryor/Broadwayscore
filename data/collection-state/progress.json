@@ -221,7 +221,8 @@
     "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
     "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
     "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
-    "spongebob-squarepants-2017/wsj--edward-rothstein.json"
+    "spongebob-squarepants-2017/wsj--edward-rothstein.json",
+    "dog-day-afternoon-2026/slantmagazine--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -429,7 +430,9 @@
     "1984-2017/chicagotribune--chris-jones-bway.json",
     "a-dolls-house-part-2-2017/out-magazine--michael-musto.json",
     "bandstand-2017/li-herald--elyse-trevers.json",
-    "amelie-a-new-musical-2017/theatermania--adam-feldman.json"
+    "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
+    "dog-day-afternoon-2026/wsj--unknown.json",
+    "dog-day-afternoon-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -585,7 +588,8 @@
       "hadestown-west-end-2024/independent--paul-raven.json",
       "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
       "the-play-that-goes-wrong-west-end-2021/independent--alice-saville.json",
-      "topdog-underdog-2022/corey-hawkins--jessica-wang.json"
+      "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
+      "dog-day-afternoon-2026/slantmagazine--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -651,7 +655,9 @@
       "data/review-texts/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--unknown.json",
       "data/review-texts/bernhardthamlet-2018/newnownextcom--michael-musto.json",
       "data/review-texts/the-bands-visit-2017/gay-city-news--christopher-byrne.json",
-      "data/review-texts/prince-of-broadway-2017/vulture--jesse-green.json"
+      "data/review-texts/prince-of-broadway-2017/vulture--jesse-green.json",
+      "data/review-texts/dog-day-afternoon-2026/wsj--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -694,7 +700,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
+  "lastProcessed": "dog-day-afternoon-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -820,6 +826,17 @@
     },
     {
       "t": "2026-03-31T12:24:56.063Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-31T12:42:10.231Z",
+      "event": "bb-session",
+      "session": "be89cd9b",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
+    },
+    {
+      "t": "2026-03-31T12:42:11.657Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
