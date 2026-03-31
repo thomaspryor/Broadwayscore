@@ -352,10 +352,20 @@ function getBestScore(data, opts = {}) {
   }
 
   // P0.5: originalScore (aggregator-provided)
-  const isShowScoreSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
+  // Downgrade ALL aggregator-sourced ratings for WE unless the scoreSource
+  // proves the rating was extracted from the outlet's own page.
+  // Aggregators rate shows independently — their stars are NOT the outlet's rating.
+  const AGGREGATOR_SOURCES = new Set([
+    'show-score', 'show-score-playwright', 'showscore-roundup',
+    'theatre-reviews', 'theatre-reviews-roundup',
+    'westendtheatre', 'stagedoor',
+    'bww-roundup', 'bww-reviews', 'playbill-verdict',
+    'lbo-roundup', 'nyc-theatre',
+  ]);
+  const isAggregatorSource = AGGREGATOR_SOURCES.has(data.source);
   const isWestEnd = data._showCategory === 'west-end' || data._showCategory === 'off-west-end';
   const isOutletVerified = OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
-  const downgradeShowScore = isShowScoreSource && isWestEnd && !isOutletVerified;
+  const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified;
 
   if (data.originalScore && !downgradeShowScore) {
     if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon' || data.scoreSource === 'star-icon-cleared') {

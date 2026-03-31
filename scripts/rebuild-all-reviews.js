@@ -2321,7 +2321,9 @@ showDirs.forEach(showId => {
         criticName: data.criticName || null,
         url: data.url || null,
         publishDate: normalizePublishDate(data.publishDate),
-        originalRating: data.originalScore || null,
+        originalRating: (source === 'originalScore-priority0' || source === 'originalScore-showscore-downgraded')
+          ? data.originalScore || null
+          : null,  // Don't display star rating when it wasn't used for scoring
         pullQuote: (() => {
           data._showStatus = showStatusMap[showId];
           const raw = selectBestExcerpt(data, showTitleMap[showId]);
