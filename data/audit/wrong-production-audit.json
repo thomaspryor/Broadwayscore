@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T11:21:31.055Z",
+  "timestamp": "2026-03-31T11:34:23.866Z",
   "stats": {
-    "totalReviews": 32143,
-    "alreadyFlagged": 11826,
+    "totalReviews": 32133,
+    "alreadyFlagged": 11840,
     "dateGuardCatches": 14,
-    "directorMismatch": 919,
+    "directorMismatch": 921,
     "tvFilmSignals": 3312,
-    "londonSignals": 960,
+    "londonSignals": 963,
     "offBroadwaySignals": 965,
     "yearMismatch": 64,
-    "noPublishDate": 6037
+    "noPublishDate": 6007
   },
   "findings": [
     {
@@ -13024,7 +13024,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "chicagotribune--chris-jones.json",
-      "score": null,
+      "score": 65,
       "publishDate": "2026-03-31",
       "url": "https://www.chicagotribune.com/2026/03/30/review-dog-day-afternoon-broadway/",
       "findings": [
@@ -13080,7 +13080,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "new-york-sun--elysa-gardner.json",
-      "score": null,
+      "score": 68,
       "publishDate": "2026-03-31",
       "url": "https://www.nysun.com/article/dog-day-afternoon-unleashes-on-broadway-with-a-loud-contemporary-bark",
       "findings": [
@@ -13150,7 +13150,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "theatrely--emily-wyrwa.json",
-      "score": null,
+      "score": 64,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
       "findings": [
@@ -13178,7 +13178,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "timeout--adam-feldman.json",
-      "score": null,
+      "score": 38,
       "publishDate": "2026-03-31",
       "url": "https://www.timeout.com/newyork/news/broadway-review-a-heist-and-a-play-go-wrong-in-dog-day-afternoon-033126",
       "findings": [
@@ -13192,7 +13192,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "variety--owen-gleiberman.json",
-      "score": null,
+      "score": 64,
       "publishDate": "2026-03-31",
       "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
       "findings": [
@@ -24239,6 +24239,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "independent--louis-chilton.json",
+      "score": 79,
+      "publishDate": "2025-12-12",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
       "publishDate": "December 12th, 2025",
@@ -24290,6 +24304,20 @@
       "score": 63,
       "publishDate": "December 12th, 2025",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 88,
+      "publishDate": "2026-01-15",
+      "url": "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -71119,6 +71147,20 @@
       ]
     },
     {
+      "showId": "oh-mary-west-end-2025",
+      "file": "timeout--paul-raven.json",
+      "score": 61,
+      "publishDate": "2025-12-19",
+      "url": "https://www.westendtheatre.com/328554/news/reviews/reviews-of-oh-mary-starring-mason-alexander-park-at-the-trafalgar-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "ohio-state-murders-2022",
       "file": "dtli--juan-michael-porter-ii.json",
       "score": 42,
@@ -71344,10 +71386,38 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "observer--susannah-clapp.json",
+      "score": 83,
+      "publishDate": "2025-01-19",
+      "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
       "score": 92,
       "publishDate": "2025-01-16",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "the-telegrap--dominic-cavendish.json",
+      "score": 85,
+      "publishDate": "January 14th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
