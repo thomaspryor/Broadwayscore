@@ -363,7 +363,8 @@ export function getShowsAtRisk(): AtRiskShow[] {
     if (!weeklyGross || !weeklyRunningCost) continue;
 
     const isBelowBreakEven = weeklyGross < weeklyRunningCost;
-    const estRecoupmentHigh = data.estimatedRecoupmentPct?.[1] || 0;
+    // Use model optimistic (index 2) or AI high (index 1)
+    const estRecoupmentHigh = data.modelRecoupmentPct?.[2] ?? data.estimatedRecoupmentPct?.[1] ?? 0;
     const isBelowRecoupmentThreshold = estRecoupmentHigh < 30;
 
     if (!isBelowBreakEven || !isBelowRecoupmentThreshold) continue;

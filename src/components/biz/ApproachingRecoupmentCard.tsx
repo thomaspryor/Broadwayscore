@@ -13,6 +13,8 @@ interface ApproachingRecoupmentCardProps {
   season: string;
   capitalization: number;
   estimatedRecoupmentPct: [number, number];
+  modelRecoupmentPct?: [number, number, number] | null;
+  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   trend: RecoupmentTrend;
   weeklyGross?: number | null;
 }
@@ -40,6 +42,7 @@ export default function ApproachingRecoupmentCard({
   season,
   capitalization,
   estimatedRecoupmentPct,
+  modelRecoupmentPct,
   trend,
 }: ApproachingRecoupmentCardProps) {
   const trendLabel = TREND_LABELS[trend];
@@ -63,7 +66,9 @@ export default function ApproachingRecoupmentCard({
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Est. Recouped</span>
         <span className="text-amber-400 font-semibold">
-          ~{estimatedRecoupmentPct[0]}-{estimatedRecoupmentPct[1]}% recouped
+          {modelRecoupmentPct
+            ? `${Math.round(modelRecoupmentPct[1])}% recouped`
+            : `~${estimatedRecoupmentPct[0]}-${estimatedRecoupmentPct[1]}% recouped`}
         </span>
       </div>
       <div className="flex justify-between text-sm mt-1">
