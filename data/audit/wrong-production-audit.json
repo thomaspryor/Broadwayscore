@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T13:29:24.806Z",
+  "timestamp": "2026-03-31T13:38:21.584Z",
   "stats": {
     "totalReviews": 32111,
-    "alreadyFlagged": 11956,
+    "alreadyFlagged": 11957,
     "dateGuardCatches": 14,
     "directorMismatch": 917,
-    "tvFilmSignals": 3307,
+    "tvFilmSignals": 3306,
     "londonSignals": 942,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 5919
+    "noPublishDate": 5918
   },
   "findings": [
     {
@@ -16158,20 +16158,6 @@
       "score": 42,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/article/BWW-Review-Patti-Murin-Is-A-Ray-of-Sunshine-in-Disappointingly-Perfunctory-FROZEN-20180323",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2018",
-      "file": "catholic-transcript--bernard-carragher.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://dearead.com/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
