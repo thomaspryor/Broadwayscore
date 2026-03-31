@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-31T09:25:48.001Z",
-  "processed": 15,
-  "failed": 13,
-  "successRate": "53.6%",
+  "updatedAt": "2026-03-31T11:06:44.919Z",
+  "processed": 60,
+  "failed": 18,
+  "successRate": "76.9%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 44,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "archiveToday": 3,
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -36,6 +36,61 @@
       "t": "2026-03-31T09:24:53.849Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T10:56:16.106Z",
+      "event": "bb-session",
+      "session": "c2b26d8f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dog-day-afternoon-review-theate"
+    },
+    {
+      "t": "2026-03-31T10:56:17.466Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T10:56:46.574Z",
+      "event": "bb-session",
+      "session": "4a4c8293",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
+    },
+    {
+      "t": "2026-03-31T10:56:47.846Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-31T10:57:01.878Z",
+      "event": "bb-session",
+      "session": "4ca4c1f0",
+      "url": "https://deadline.com/2026/03/broadway-box-office-cats-jellicle-ball-dog-day-afte"
+    },
+    {
+      "t": "2026-03-31T10:57:03.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-31T10:58:37.038Z",
+      "event": "bb-session",
+      "session": "c3ec8c29",
+      "url": "https://www.amny.com/entertainment/review-dog-day-afternoon/"
+    },
+    {
+      "t": "2026-03-31T10:58:38.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-31T11:01:48.206Z",
+      "event": "bb-session",
+      "session": "37b540ad",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-03-31T11:01:49.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
