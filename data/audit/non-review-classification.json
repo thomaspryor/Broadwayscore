@@ -1,38 +1,28 @@
 {
   "meta": {
-    "generatedAt": "2026-03-31T13:00:11.985Z",
+    "generatedAt": "2026-03-31T13:09:52.831Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32833,
       "inReviewsJson": 16317,
       "skippedExcluded": 9,
-      "withFullText": 20,
+      "withFullText": 19,
       "excerptOnly": 1858,
-      "llmClassified": 19,
+      "llmClassified": 18,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 17,
-      "budgetUsed": 0.0020000000000000005,
-      "llmCalls": 20,
+      "uncertainCases": 16,
+      "budgetUsed": 0.0019000000000000006,
+      "llmCalls": 19,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14430
+      "skippedAlreadyClassified": 14431
     },
     "calibration": null
   },
   "nonReviews": [],
   "uncertainCases": [
-    {
-      "file": "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
-      "showId": "arcadia-west-end-2026",
-      "outlet": "The Telegraph",
-      "outletId": "telegraph",
-      "contentType": "profile",
-      "confidence": "low",
-      "reasoning": "The text includes a biographical note about Dominic Cavendish, the Telegraph's lead theatre critic, and mentions Stoppard's Arcadia, but does not contain a review of the play itself. The text is incomplete.",
-      "currentScore": 80
-    },
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
       "showId": "eclipsed-2016",
@@ -50,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain any review content itself.",
       "currentScore": 82
     },
     {
@@ -60,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific production.",
       "currentScore": 62
     },
     {
@@ -70,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -90,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered, so it is not a review.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -140,7 +130,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on its quality. It also includes an interview excerpt, suggesting a feature-style piece.",
       "currentScore": 83
     },
     {
@@ -150,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -160,7 +150,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article provides production details and ticket information, resembling a news item or listing rather than a review with critical evaluation.",
       "currentScore": 64
     },
     {
@@ -180,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -190,14 +180,14 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece setting the stage for the play's themes and b",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "dog-day-afternoon-2026/slantmagazine--dan-rubins.json",
-    "dog-day-afternoon-2026/usatoday--patrick-ryan.json"
+    "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
+    "dog-day-afternoon-2026/slantmagazine--dan-rubins.json"
   ],
   "perShowSummary": []
 }
