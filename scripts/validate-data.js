@@ -1848,6 +1848,47 @@ function validateTourReviewContamination() {
 }
 
 /**
+ * Detect review files where aggregator star ratings leaked into originalScore.
+ * These should be stored as aggregatorStars metadata only.
+ */
+function validateAggregatorScoreContamination() {
+  info('Checking for aggregator scores stored as originalScore...');
+
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  if (!fs.existsSync(reviewTextsDir)) return;
+
+  const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+
+  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
+    try { return fs.statSync(path.join(reviewTextsDir, d)).isDirectory() && !d.startsWith('.') && d !== 'aggregator-archive'; }
+    catch { return false; }
+  });
+
+  let contaminated = 0;
+  const examples = [];
+
+  for (const showDir of showDirs) {
+    const showPath = path.join(reviewTextsDir, showDir);
+    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
+    for (const f of files) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(showPath, f), 'utf8'));
+        if (data.scoreSource && AGGREGATOR_SCORE_SOURCES.has(data.scoreSource) && data.originalScore != null) {
+          contaminated++;
+          if (examples.length < 5) examples.push(`${showDir}/${f}`);
+        }
+      } catch { /* skip */ }
+    }
+  }
+
+  if (contaminated === 0) {
+    ok('No aggregator scores stored as originalScore');
+  } else {
+    error(`${contaminated} review files have aggregator scores as originalScore (should be aggregatorStars). Examples: ${examples.join(', ')}`);
+  }
+}
+
+/**
  * Detect Broadway/US reviews incorrectly in West End show directories.
  * Catches: NYC outlet URLs, "broadway" in URL path, known US-only outlets.
  * Only checks unflagged files (wrongProduction/wrongShow not set).
@@ -3462,6 +3503,8 @@ function runValidation() {
   validateTourReviewContamination();
   console.log('');
   validateCrossMarketSourceFiles();
+  console.log('');
+  validateAggregatorScoreContamination();
   console.log('');
   validateLastUpdatedFormats();
 
