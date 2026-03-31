@@ -250,7 +250,9 @@
     "stephen-sondheims-old-friends-2025/broadwaynews--brittani-samuel.json",
     "ifthen-2014/theatermania--charles-isherwood.json",
     "gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json",
-    "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json"
+    "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
+    "once-2012/ew--emlyn-travis.json",
+    "wit-2012/nypost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -999,7 +1001,15 @@
     "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
     "end-of-the-rainbow-2012/theatermania--adam-feldman.json",
     "end-of-the-rainbow-2012/backstage--david-sheward.json",
-    "jesus-christ-superstar-2012/backstage--david-sheward.json"
+    "jesus-christ-superstar-2012/backstage--david-sheward.json",
+    "once-2012/ap--mark-kennedy.json",
+    "once-2012/backstage--david-sheward.json",
+    "death-of-a-salesman-2012/usatoday--elysa-gardner.json",
+    "death-of-a-salesman-2012/theatermania--david-finkle.json",
+    "death-of-a-salesman-2012/northjerseycom--robert-feldberg.json",
+    "wit-2012/ap--mark-kennedy.json",
+    "wit-2012/backstage--david-sheward.json",
+    "the-road-to-mecca-2012/ew--melissa-rose-bernardo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1169,7 +1179,8 @@
       "silver-manhattan-off-broadway-2026/huffpost--lourdes-avila-uribe.json",
       "the-outsiders-2024/theatermania--adam-feldman.json",
       "the-choir-of-man-west-end-2026/whatsonstage--unknown.json",
-      "ifthen-2014/theatermania--charles-isherwood.json"
+      "ifthen-2014/theatermania--charles-isherwood.json",
+      "once-2012/ew--emlyn-travis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1196,7 +1207,9 @@
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
       "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
       "data/review-texts/gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json",
-      "gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json"
+      "gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json",
+      "data/review-texts/wit-2012/nypost--elisabeth-vincentelli.json",
+      "wit-2012/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1510,7 +1523,9 @@
       "data/review-texts/evita-2012/washpost--peter-marks.json",
       "data/review-texts/evita-2012/theatermania--david-finkle.json",
       "data/review-texts/end-of-the-rainbow-2012/washpost--peter-marks.json",
-      "data/review-texts/end-of-the-rainbow-2012/theatermania--adam-feldman.json"
+      "data/review-texts/end-of-the-rainbow-2012/theatermania--adam-feldman.json",
+      "data/review-texts/death-of-a-salesman-2012/usatoday--elysa-gardner.json",
+      "data/review-texts/death-of-a-salesman-2012/theatermania--david-finkle.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1561,7 +1576,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "jesus-christ-superstar-2012/backstage--david-sheward.json",
+  "lastProcessed": "the-road-to-mecca-2012/ew--melissa-rose-bernardo.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -1948,6 +1963,17 @@
       "t": "2026-03-31T19:46:28.109Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T19:49:27.675Z",
+      "event": "bb-session",
+      "session": "d453c671",
+      "url": "http://www.nypost.com/p/entertainment/theater/cancer_drama_stays_wit_you_mBSXHjg"
+    },
+    {
+      "t": "2026-03-31T19:49:29.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
