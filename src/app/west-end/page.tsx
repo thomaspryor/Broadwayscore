@@ -45,6 +45,8 @@ function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEn
     audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
     audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
     creativeTeam: show.creativeTeam,
+    tags: show.tags,
+    ageRecommendation: show.ageRecommendation ?? undefined,
     category: (show.category as 'west-end' | 'off-west-end') || 'west-end',
   };
 }
@@ -81,9 +83,13 @@ export default function WestEndPage() {
 
   const schemas = [breadcrumbSchema, itemListSchema];
 
-  // Only show shows that have critic reviews (hide unscored/TBD shows)
+  // Scored shows + upcoming/previews (upcoming shelf needs unscored shows)
   const scoredShows = shows.filter(s => s.criticScore && s.criticScore.reviewCount >= 1);
-  const serializedShows = scoredShows.map(serializeShow);
+  const allRelevantShows = shows.filter(s =>
+    (s.criticScore && s.criticScore.reviewCount >= 1) ||
+    s.status === 'upcoming' || s.status === 'previews'
+  );
+  const serializedShows = allRelevantShows.map(serializeShow);
 
   // Count reviews across all scored shows (WE + OWE)
   const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);

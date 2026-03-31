@@ -254,7 +254,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   const upcomingShows = useMemo(() => {
     return shows
       .filter(show => show.status === 'upcoming' || show.status === 'previews')
-      .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime());
+      .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime())
+      .slice(0, 20);
   }, [shows]);
 
   const kidsShows = useMemo(() => {
@@ -282,7 +283,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 
   const jukeboxMusicals = useMemo(() => {
     return shows
-      .filter(show => show.status === 'open' && show.tags?.includes('jukebox'))
+      .filter(show => (show.status === 'open' || show.status === 'upcoming' || show.status === 'previews') && show.tags?.includes('jukebox'))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
