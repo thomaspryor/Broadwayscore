@@ -1010,6 +1010,61 @@ const KNOWN_SYNDICATION_PAIRS = {
   'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
 };
 
+// === PRE-PASS: Promote contentVerification flags to top-level on ALL files ===
+// This runs before the main loop so flags are set even on upcoming/duplicate files
+// that the main loop skips. The reason string prevents the auto-clear from overriding.
+{
+  let cvPromoted = 0;
+  for (const sid of showDirs) {
+    const sDir = path.join(reviewTextsDir, sid);
+    const sCat = showCategoryMap[sid] || 'broadway';
+    let files;
+    try { files = fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json'); } catch { continue; }
+    for (const f of files) {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+        const cv = d.contentVerification;
+        if (!cv || (cv.confidence !== 'high' && cv.confidence !== 'medium')) continue;
+        // Staleness check
+        let stale = false;
+        if (d.textFetchedAt && cv.verifiedAt) {
+          if (new Date(d.textFetchedAt).getTime() > new Date(cv.verifiedAt).getTime()) stale = true;
+        }
+        if (!stale && cv.contentHash && d.fullText) {
+          const h = crypto.createHash('md5').update(d.fullText.substring(0, 2500)).digest('hex');
+          if (cv.contentHash !== h) stale = true;
+        }
+        if (stale) continue;
+        let promoted = false;
+        if (cv.wrongProduction === true && d.wrongProduction !== true
+            && !d.wrongProductionOverride && !d.wrongProductionManualClear) {
+          d.wrongProduction = true;
+          d.wrongProductionReason = d.wrongProductionReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
+          promoted = true;
+        }
+        const wpConf = cv.confidence || 'medium';
+        const skipLondon = isLondonMarket(sCat) && isUkOutletUrl(d.url) && wpConf !== 'high';
+        if (cv.wrongArticle === true && d.wrongShow !== true && !skipLondon) {
+          d.wrongShow = true;
+          d.wrongShowReason = d.wrongShowReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
+          promoted = true;
+        }
+        if (cv.isFilmTv === true && d.wrongShow !== true && !skipLondon) {
+          d.wrongShow = true;
+          d.wrongShowReason = d.wrongShowReason || `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
+          promoted = true;
+        }
+        if (promoted) {
+          d.contentVerificationPromoted = `rebuild: promoted from contentVerification (${cv.verifiedBy}, ${cv.confidence})`;
+          try { fs.writeFileSync(path.join(sDir, f), JSON.stringify(d, null, 2) + '\n'); } catch {}
+          cvPromoted++;
+        }
+      } catch { /* skip malformed */ }
+    }
+  }
+  if (cvPromoted > 0) console.log(`  CV pre-pass: promoted ${cvPromoted} contentVerification flags`);
+}
+
 showDirs.forEach(showId => {
   // Skip Broadway shows in previews — they haven't opened yet, all reviews are wrong-production
   // Off-Broadway and West End shows commonly get reviewed during previews, so don't skip them

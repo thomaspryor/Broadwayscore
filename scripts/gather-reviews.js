@@ -56,6 +56,7 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLikelyTourReview } = require('./lib/review-guards');
+const { isBroadwayUrl } = require('./lib/venue-classification');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
@@ -2120,6 +2121,15 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (isLikelyTourReview(reviewData.url, showId)) {
     console.log(`    ✗ Skipping ${filename}: tour/regional review (${reviewData.url?.substring(0, 60)})`);
     return 'tourReview';
+  }
+
+  // CROSS-MARKET GUARD: Reject obviously-Broadway URLs for WE shows
+  if (allowWestEnd && reviewData.url) {
+    const broadwayReason = isBroadwayUrl(reviewData.url, reviewData.outletId);
+    if (broadwayReason) {
+      console.log(`    ✗ Skipping ${filename}: ${broadwayReason}`);
+      return 'crossMarketBroadway';
+    }
   }
 
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)

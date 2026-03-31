@@ -75,4 +75,47 @@ function isUkOutletUrl(url) {
   }
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, getMarketPool, isUkOutletUrl, normalizeVenueName, WEST_END_VENUES };
+/**
+ * Broadway URL patterns — used by ingestion guards and CI validation.
+ * Matches URLs that are clearly about Broadway productions (not WE).
+ */
+const BROADWAY_URL_PATTERNS = [
+  /\/newyork\//i,
+  /\/new-york\//i,
+  /newyork\.timeout\.com/i,
+  /broadway-review/i,
+  /broadway-musical-rev/i,
+  /-broadway-/i,
+  /\/broadway\//i,
+  /-on-broadway-/i,
+  /opens-on-broadway/i,
+];
+
+/** US-only outlets that never review WE shows. Conservative list to avoid false positives. */
+const US_ONLY_OUTLET_IDS = new Set([
+  'nypost', 'nydailynews', 'chicagotribune', 'usatoday',
+  'thewrap', 'cititour', 'sea-coast-online', 'press-herald',
+]);
+
+/**
+ * Returns a reason string if the URL + outlet indicate a Broadway review,
+ * or null if the URL appears legitimate for a WE show.
+ */
+function isBroadwayUrl(url, outletId) {
+  if (!url) return null;
+  const lowerUrl = url.toLowerCase();
+  // US-only outlet
+  if (outletId && US_ONLY_OUTLET_IDS.has(outletId.toLowerCase())) {
+    return `US-only outlet "${outletId}" reviewing WE show`;
+  }
+  // Broadway URL patterns (exclude broadwayworld.com domain matches)
+  for (const pat of BROADWAY_URL_PATTERNS) {
+    if (pat.test(lowerUrl)) {
+      if (lowerUrl.includes('broadwayworld.com') && !lowerUrl.includes('/broadway/')) continue;
+      return `Broadway URL pattern: ${pat}`;
+    }
+  }
+  return null;
+}
+
+module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES };
