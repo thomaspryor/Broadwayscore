@@ -220,7 +220,8 @@
     "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
     "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
     "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
-    "the-lifespan-of-a-fact-2018/vulture--sara-holden.json"
+    "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+    "spongebob-squarepants-2017/wsj--edward-rothstein.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -419,7 +420,16 @@
     "children-of-a-lesser-god-2018/melindas-malarky--melinda-pressler.json",
     "three-tall-women-2018/usatoday--charles-isherwood.json",
     "angels-in-america-2018/theater-news-online--david-cote.json",
-    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json"
+    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+    "the-bands-visit-2017/gay-city-news--christopher-byrne.json",
+    "prince-of-broadway-2017/vulture--jesse-green.json",
+    "marvins-room-2017/wsj--terry-teachout.json",
+    "marvins-room-2017/thestage--nicole-serratore.json",
+    "1984-2017/chicagotribune--chris-jones-bway.json",
+    "a-dolls-house-part-2-2017/out-magazine--michael-musto.json",
+    "bandstand-2017/li-herald--elyse-trevers.json",
+    "amelie-a-new-musical-2017/theatermania--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -639,7 +649,9 @@
       "data/review-texts/come-from-away-2017/usatoday--elysa-gardner.json",
       "data/review-texts/the-glass-menagerie-2017/ap--unknown.json",
       "data/review-texts/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--unknown.json",
-      "data/review-texts/bernhardthamlet-2018/newnownextcom--michael-musto.json"
+      "data/review-texts/bernhardthamlet-2018/newnownextcom--michael-musto.json",
+      "data/review-texts/the-bands-visit-2017/gay-city-news--christopher-byrne.json",
+      "data/review-texts/prince-of-broadway-2017/vulture--jesse-green.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -677,11 +689,12 @@
       "the-terms-of-my-surrender-2017/thestage--mark-sheton.json",
       "sweat-2017/timeout--david-rooney.json",
       "the-price-2017/thestage--chris-jones.json",
-      "the-lifespan-of-a-fact-2018/vulture--sara-holden.json"
+      "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+      "spongebob-squarepants-2017/wsj--edward-rothstein.json"
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+  "lastProcessed": "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -798,6 +811,17 @@
       "event": "bb-session",
       "session": "de571ff8",
       "url": "https://bigstory.ap.org/article/review-bways-glass-menagerie-thrilling"
+    },
+    {
+      "t": "2026-03-31T12:24:54.290Z",
+      "event": "bb-session",
+      "session": "4f2dde7d",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-31T12:24:56.063Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
