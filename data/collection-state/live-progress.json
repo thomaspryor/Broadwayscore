@@ -1,43 +1,20 @@
 {
-  "updatedAt": "2026-03-31T17:37:30.712Z",
-  "processed": 233,
-  "failed": 695,
-  "successRate": "25.1%",
+  "updatedAt": "2026-03-31T19:10:47.925Z",
+  "processed": 242,
+  "failed": 696,
+  "successRate": "25.8%",
   "tierBreakdown": {
-    "playwright": 157,
+    "playwright": 163,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 22,
     "directCookies": 0,
-    "scrapingbee": 25,
+    "scrapingbee": 26,
     "brightdata": 0,
     "archiveToday": 257,
     "archive": 42
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-03-31T12:00:26.657Z",
-      "event": "bb-session",
-      "session": "de571ff8",
-      "url": "https://bigstory.ap.org/article/review-bways-glass-menagerie-thrilling"
-    },
-    {
-      "t": "2026-03-31T12:24:54.290Z",
-      "event": "bb-session",
-      "session": "4f2dde7d",
-      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
-    },
-    {
-      "t": "2026-03-31T12:24:56.063Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-31T12:51:52.897Z",
-      "event": "bb-session",
-      "session": "39af36a3",
-      "url": "https://www.northjersey.com/arts-and-entertainment/theater/musical-numbers-uplif"
-    },
     {
       "t": "2026-03-31T12:51:54.007Z",
       "event": "bb-cookie-inject",
@@ -125,6 +102,28 @@
       "t": "2026-03-31T13:28:12.929Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T19:07:35.331Z",
+      "event": "bb-session",
+      "session": "77982c70",
+      "url": "https://www.nytimes.com/2023/06/04/arts/dance/ballet-hispanico-sor-juana-review."
+    },
+    {
+      "t": "2026-03-31T19:07:36.642Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-31T19:07:56.218Z",
+      "event": "bb-session",
+      "session": "cf3b6fc2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/waterfall-theater-rev"
+    },
+    {
+      "t": "2026-03-31T19:07:57.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

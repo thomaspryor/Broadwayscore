@@ -232,7 +232,16 @@
     "dog-day-afternoon-2026/slantmagazine--unknown.json",
     "bernhardthamlet-2018/newnownextcom--michael-musto.json",
     "the-bands-visit-2017/gay-city-news--christopher-byrne.json",
-    "prince-of-broadway-2017/vulture--jesse-green.json"
+    "prince-of-broadway-2017/vulture--jesse-green.json",
+    "lost-in-del-valle-off-broadway-2026/nytimes--brian-seibert.json",
+    "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+    "maltby-and-shires-about-time-off-broadway-2026/latimes--charles-mcnulty.json",
+    "maltby-and-shires-about-time-off-broadway-2026/whatsonstage--alun-hood.json",
+    "spare-parts-off-broadway-2026/ap--mark-kennedy.json",
+    "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
+    "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+    "broken-glass-west-end-2026/independent--steve-fowler.json",
+    "silver-manhattan-off-broadway-2026/huffpost--lourdes-avila-uribe.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -929,7 +938,8 @@
     "bring-it-on-the-musical-2012/nydailynews--joe-dziemianowicz.json",
     "bring-it-on-the-musical-2012/ap--mark-kennedy.json",
     "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
-    "bring-it-on-the-musical-2012/bloomberg--jeremy-gerard.json"
+    "bring-it-on-the-musical-2012/bloomberg--jeremy-gerard.json",
+    "jesa-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1090,7 +1100,13 @@
       "the-elephant-man-2014/financialtimes--financial-times.json",
       "its-only-a-play-2014/timeout--david-cote.json",
       "bullets-over-broadway-2014/timeout--david-cote.json",
-      "dog-day-afternoon-2026/slantmagazine--unknown.json"
+      "dog-day-afternoon-2026/slantmagazine--unknown.json",
+      "maltby-and-shires-about-time-off-broadway-2026/whatsonstage--alun-hood.json",
+      "spare-parts-off-broadway-2026/ap--mark-kennedy.json",
+      "bloodlove-off-broadway-2026/theatermania--linda-buchwald.json",
+      "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+      "broken-glass-west-end-2026/independent--steve-fowler.json",
+      "silver-manhattan-off-broadway-2026/huffpost--lourdes-avila-uribe.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1111,7 +1127,11 @@
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
       "the-last-five-years-2025/nypost--lou-lumenick.json",
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
-      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/nytimes--brian-seibert.json",
+      "lost-in-del-valle-off-broadway-2026/nytimes--brian-seibert.json",
+      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+      "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1139,7 +1159,8 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
       "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
       "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
-      "spring-awakening-2015/njcom--christopher-kelly.json"
+      "spring-awakening-2015/njcom--christopher-kelly.json",
+      "maltby-and-shires-about-time-off-broadway-2026/latimes--charles-mcnulty.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1447,7 +1468,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "bring-it-on-the-musical-2012/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "silver-manhattan-off-broadway-2026/huffpost--lourdes-avila-uribe.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -1669,6 +1690,28 @@
       "t": "2026-03-31T13:28:12.929Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T19:07:35.331Z",
+      "event": "bb-session",
+      "session": "77982c70",
+      "url": "https://www.nytimes.com/2023/06/04/arts/dance/ballet-hispanico-sor-juana-review."
+    },
+    {
+      "t": "2026-03-31T19:07:36.642Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-03-31T19:07:56.218Z",
+      "event": "bb-session",
+      "session": "cf3b6fc2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/waterfall-theater-rev"
+    },
+    {
+      "t": "2026-03-31T19:07:57.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
