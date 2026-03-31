@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-31T08:02:54.236Z",
+  "generatedAt": "2026-03-31T08:16:47.117Z",
   "issues": [
     {
       "type": "designation-score-mismatch",
@@ -16,6 +16,12 @@
       "outlet": "nytimes",
       "critic": "Elisabeth Vincentelli",
       "detail": "Critics_Pick but score=45 (source: llmScore)"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
+      "showId": "oh-mary-west-end-2025",
+      "detail": "8/14 reviews (57%) scored exactly 80"
     }
   ]
 }

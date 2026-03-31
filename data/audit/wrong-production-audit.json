@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T08:03:01.528Z",
+  "timestamp": "2026-03-31T08:16:54.271Z",
   "stats": {
-    "totalReviews": 31970,
-    "alreadyFlagged": 11786,
+    "totalReviews": 31972,
+    "alreadyFlagged": 11781,
     "dateGuardCatches": 14,
     "directorMismatch": 919,
-    "tvFilmSignals": 3308,
+    "tvFilmSignals": 3310,
     "londonSignals": 960,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
-    "noPublishDate": 5904
+    "noPublishDate": 5914
   },
   "findings": [
     {
@@ -21477,6 +21477,20 @@
       "score": 63,
       "publishDate": "2025-06-24",
       "url": "https://www.theguardian.com/stage/2025/jun/24/hercules-review-disney-musical-theatre-royal-drury-lane",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 31,
+      "publishDate": null,
+      "url": "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -56970,6 +56984,20 @@
     },
     {
       "showId": "violet-2014",
+      "file": "ap--mark-kennedy.json",
+      "score": 82,
+      "publishDate": "April 20, 2014",
+      "url": "http://abcnews.go.com/Entertainment/wireStory/review-bways-violet-shows-beauty-score-23402268?page=1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "violet-2014",
       "file": "front-row-center--tulis-mccall.json",
       "score": 82,
       "publishDate": "2014-04-26T13:21:12",
@@ -60487,7 +60515,7 @@
       "showId": "all-my-sons-west-end-2025",
       "file": "independent--annabel-nugent.json",
       "score": 89,
-      "publishDate": "2025-11-27",
+      "publishDate": null,
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/all-my-sons-review-bryan-cranston-paapa-essiedu-b2870394.html",
       "findings": [
         {
