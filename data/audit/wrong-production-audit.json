@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T12:36:29.416Z",
+  "timestamp": "2026-03-31T12:52:18.801Z",
   "stats": {
-    "totalReviews": 32124,
-    "alreadyFlagged": 11915,
+    "totalReviews": 32125,
+    "alreadyFlagged": 11934,
     "dateGuardCatches": 14,
-    "directorMismatch": 925,
-    "tvFilmSignals": 3312,
+    "directorMismatch": 924,
+    "tvFilmSignals": 3311,
     "londonSignals": 955,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 5933
+    "noPublishDate": 5924
   },
   "findings": [
     {
@@ -51019,20 +51019,6 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
-      "file": "telegraph--harriet-alexander.json",
-      "score": 72,
-      "publishDate": "2009-10-19",
-      "url": "https://www.telegraph.co.uk/culture/theatre/6371871/The-Lion-King-marks-10th-anniversary-Culture-Minute.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
       "file": "the-telegrap--david-gritten.json",
       "score": 89,
       "publishDate": "October 17th, 2014",
@@ -52129,20 +52115,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-other-place-off-broadway-2026",
-      "file": "vulture--scott-brown.json",
-      "score": 87,
-      "publishDate": "2026-02-11",
-      "url": "https://www.vulture.com/article/theater-review-the-other-place-is-a-low-stakes-antigone.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from the-other-place-2013"
         }
       ]
     },
