@@ -1079,7 +1079,17 @@
     "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
     "born-yesterday-2011/amny--unknown.json",
     "born-yesterday-2011/village-voice--michael-musto.json",
-    "jerusalem-2011/backstage--erik-haagensen.json"
+    "jerusalem-2011/backstage--erik-haagensen.json",
+    "sister-act-2011/northjerseycom--robert-feldberg.json",
+    "sister-act-2011/scheckontheater--frank-scheck.json",
+    "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
+    "sister-act-2011/backstage--erik-haagensen.json",
+    "high-2011/ap--mark-kennedy.json",
+    "high-2011/scheckontheater--frank-scheck.json",
+    "high-2011/backstage--erik-haagensen.json",
+    "wonderland-2011/ew--melissa-rose-bernardo.json",
+    "wonderland-2011/northjerseycom--robert-feldberg.json",
+    "wonderland-2011/st-petersburg-times--john-fleming.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1622,7 +1632,9 @@
       "data/review-texts/the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
       "data/review-texts/baby-its-you-2011/wsj--terry-teachout.json",
       "data/review-texts/the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
-      "data/review-texts/the-house-of-blue-leaves-2011/vulture--scott-brown.json"
+      "data/review-texts/the-house-of-blue-leaves-2011/vulture--scott-brown.json",
+      "data/review-texts/sister-act-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/wonderland-2011/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1674,7 +1686,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "jerusalem-2011/backstage--erik-haagensen.json",
+  "lastProcessed": "wonderland-2011/st-petersburg-times--john-fleming.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -2199,6 +2211,28 @@
       "t": "2026-03-31T20:26:31.282Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-31T20:31:24.538Z",
+      "event": "bb-session",
+      "session": "a9d1aab4",
+      "url": "https://www.northjersey.com/arts_entertainment/120339269_Theater_review___Sister"
+    },
+    {
+      "t": "2026-03-31T20:31:25.682Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T20:34:41.787Z",
+      "event": "bb-session",
+      "session": "224b5e23",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/120045819_Theater_review_"
+    },
+    {
+      "t": "2026-03-31T20:34:42.934Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
