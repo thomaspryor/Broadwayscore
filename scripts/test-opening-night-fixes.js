@@ -800,6 +800,88 @@ if (rssMismatches === 0) {
 }
 
 // ============================================================
+// Tour/Regional Review Guard (review-guards.js)
+// Detects regional BWW URLs and local paper tour reviews.
+// ============================================================
+console.log('\n=== isLikelyTourReview: tour/regional review detection ===\n');
+
+const { isLikelyTourReview } = require('./lib/review-guards');
+
+// Regional BWW cities → should flag for Broadway shows
+assert(
+  isLikelyTourReview('https://www.broadwayworld.com/des-moines/article/Review-LIFE-OF-PI', 'life-of-pi-2023'),
+  'Regional BWW (des-moines): flagged for Broadway show'
+);
+assert(
+  isLikelyTourReview('https://www.broadwayworld.com/cleveland/article/Review-SHUCKED', 'shucked-2023'),
+  'Regional BWW (cleveland): flagged for Broadway show'
+);
+assert(
+  isLikelyTourReview('https://www.broadwayworld.com/san-francisco/article/Review-A-BEAUTIFUL-NOISE', 'a-beautiful-noise-the-neil-diamond-musical-2022'),
+  'Regional BWW (san-francisco): flagged for Broadway show'
+);
+
+// Local papers covering tour stops → should flag
+assert(
+  isLikelyTourReview('https://www.houstonchronicle.com/entertainment/theater/article/life-of-pi', 'life-of-pi-2023'),
+  'Houston Chronicle: flagged as tour review'
+);
+assert(
+  isLikelyTourReview('https://wehotimes.com/life-of-pi-at-the-ahmanson/', 'life-of-pi-2023'),
+  'WeHo Times: flagged as tour review'
+);
+assert(
+  isLikelyTourReview('https://bocamag.com/theatre-review-broadways-shucked-at-broward-center/', 'shucked-2023'),
+  'Boca Magazine: flagged as tour review'
+);
+
+// Main BWW → should NOT flag
+assert(
+  !isLikelyTourReview('https://www.broadwayworld.com/article/Review-LIFE-OF-PI', 'life-of-pi-2023'),
+  'Main BWW article: NOT flagged'
+);
+
+// Major outlets → should NOT flag
+assert(
+  !isLikelyTourReview('https://www.nytimes.com/2023/03/30/theater/life-of-pi-review.html', 'life-of-pi-2023'),
+  'NYT: NOT flagged'
+);
+assert(
+  !isLikelyTourReview('https://variety.com/2022/legit/news/life-of-pi-broadway', 'life-of-pi-2023'),
+  'Variety: NOT flagged'
+);
+
+// West End shows → regional BWW should NOT flag (legitimate WE coverage)
+assert(
+  !isLikelyTourReview('https://www.broadwayworld.com/westend/article/Review', 'teeth-n-smiles-west-end-2026'),
+  'BWW westend for WE show: NOT flagged (legit WE coverage)'
+);
+assert(
+  !isLikelyTourReview('https://www.broadwayworld.com/denver/article/Review', 'oh-mary-west-end-2025'),
+  'BWW denver for WE show: NOT flagged (WE shows skip guard entirely)'
+);
+
+// Off-Broadway shows → should NOT flag
+assert(
+  !isLikelyTourReview('https://www.broadwayworld.com/chicago/article/Review', 'something-off-broadway-2026'),
+  'BWW regional for off-broadway show: NOT flagged'
+);
+
+// Edge cases
+assert(
+  !isLikelyTourReview('', 'life-of-pi-2023'),
+  'Empty URL: NOT flagged'
+);
+assert(
+  !isLikelyTourReview(null, 'life-of-pi-2023'),
+  'Null URL: NOT flagged'
+);
+assert(
+  !isLikelyTourReview('https://www.broadwayworld.com/off-broadway/article/Review', 'life-of-pi-2023'),
+  'BWW off-broadway section: NOT flagged (nonRegional list)'
+);
+
+// ============================================================
 // Summary
 // ============================================================
 console.log(`\n${'='.repeat(50)}`);
