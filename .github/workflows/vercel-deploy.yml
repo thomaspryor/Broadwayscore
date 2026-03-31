@@ -73,13 +73,6 @@ jobs:
       - name: Pre-deploy data integrity check
         run: node scripts/pre-deploy-check.js
 
-      - name: Cache Vercel CLI
-        id: vercel-cli-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm/_npx
-          key: vercel-cli-${{ runner.os }}
-
       - name: Install Vercel CLI
         run: npm install -g vercel
 
@@ -155,37 +148,43 @@ jobs:
       - name: Smoke test production
         run: |
           # Poll until pages return 200, up to 60s (typically <10s)
-          URLS=(
-            "https://broadwayscorecard.com/"
-            "https://broadwayscorecard.com/show/wicked"
-            "https://broadwayscorecard.com/tony-awards"
-          )
-          NAMES=("Homepage" "Show page" "Tony Awards hub")
-
-          for idx in "${!URLS[@]}"; do
-            URL="${URLS[$idx]}"
-            NAME="${NAMES[$idx]}"
-            OK=false
+          check_url() {
+            local URL="$1" NAME="$2"
             for attempt in $(seq 1 12); do
               STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
               if [ "$STATUS" = "200" ]; then
                 echo "${NAME} returned HTTP 200 (attempt ${attempt})"
-                OK=true
-                break
+                return 0
               fi
-              echo "${NAME} returned HTTP ${STATUS} — retrying in 5s (attempt ${attempt}/12)"
+              echo "${NAME} returned HTTP ${STATUS} — retrying (attempt ${attempt}/12)"
               sleep 5
             done
-            if [ "$OK" != "true" ]; then
-              echo "::error::Production smoke test failed — ${NAME} never returned HTTP 200 after 60s"
-              exit 1
-            fi
-          done
-          echo "Smoke test passed — production is live"
+            echo "::error::Production smoke test failed — ${NAME} never returned HTTP 200 after 60s"
+            return 1
+          }
+          check_url "https://broadwayscorecard.com/" "Homepage" & PID1=$!
+          check_url "https://broadwayscorecard.com/show/wicked" "Show page" & PID2=$!
+          check_url "https://broadwayscorecard.com/tony-awards" "Tony Awards hub" & PID3=$!
+          FAIL=0
+          wait $PID1 || FAIL=1
+          wait $PID2 || FAIL=1
+          wait $PID3 || FAIL=1
+          [ $FAIL -eq 0 ] && echo "Smoke test passed — production is live" || exit 1
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Content smoke test (Playwright)
         run: |
-          npx playwright install chromium --with-deps > /dev/null 2>&1
+          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
+            npx playwright install chromium --with-deps > /dev/null 2>&1
+          else
+            npx playwright install-deps chromium > /dev/null 2>&1
+          fi
           npx playwright test --project=chromium tests/e2e/smoke.spec.ts
 
       - name: Dispatch async watermark update

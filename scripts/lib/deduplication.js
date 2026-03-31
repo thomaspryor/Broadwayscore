@@ -168,12 +168,16 @@ function areTitlesSimilar(title1, title2) {
   const maxLen = Math.max(title1.length, title2.length);
   if (maxLen === 0) return false;
 
-  const distance = levenshteinDistance(title1, title2);
-  const similarity = 1 - (distance / maxLen);
-
   // For short titles (< 6 chars), require 90% similarity
   // For longer titles, 85% is sufficient
   const threshold = maxLen < 6 ? 0.9 : 0.85;
+
+  // Length difference alone exceeds max allowed edit distance — skip Levenshtein
+  // (Levenshtein distance >= |len1 - len2|, so similarity can never reach threshold)
+  if (Math.abs(title1.length - title2.length) > maxLen * (1 - threshold)) return false;
+
+  const distance = levenshteinDistance(title1, title2);
+  const similarity = 1 - (distance / maxLen);
 
   return similarity >= threshold;
 }
