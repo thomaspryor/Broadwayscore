@@ -18,6 +18,14 @@ const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
 
+// Score sources from aggregator sites — these are third-party star ratings,
+// not the outlet's own score. Used to prevent contamination at both ingestion
+// (gather-reviews.js) and merge (mergeReviews below) time.
+const AGGREGATOR_SCORE_SOURCES = new Set([
+  'theatre-reviews-star-rating', 'westendtheatre-star-rating',
+  'show-score-stars', 'stagedoor-star-rating',
+]);
+
 // Cache for the outlet registry data
 let _registryCache = null;
 let _registryAliasMap = null;
@@ -566,10 +574,6 @@ function mergeReviews(existing, incoming) {
 
   // Prefer original scores — but NEVER overwrite outlet-verified scores
   // with aggregator scores (prevents theatre-reviews/ShowScore contamination)
-  const AGGREGATOR_SCORE_SOURCES = new Set([
-    'theatre-reviews-star-rating', 'westendtheatre-star-rating',
-    'show-score-stars', 'stagedoor-star-rating',
-  ]);
   const incomingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(incoming.scoreSource);
   if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator) {
     merged.originalScore = incoming.originalScore;
@@ -1274,6 +1278,7 @@ module.exports = {
   getOutletAliases,
   isProfileUrl,
   CRITIC_ALIASES,
+  AGGREGATOR_SCORE_SOURCES,
 };
 
 // OUTLET_ALIASES as a lazy getter — auto-generates from registry on first access
