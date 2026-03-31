@@ -252,25 +252,38 @@ function isRoundupUrl(url) {
 function isVenueMismatch(url, showVenue, showCategory) {
   if (!url || !showVenue) return { isMismatch: false };
 
-  const urlLower = url.toLowerCase();
-
   // Only check WE shows — Broadway venue matching is different
   if (showCategory !== 'west-end' && showCategory !== 'off-west-end') return { isMismatch: false };
 
-  // Check for National Theatre in URL when show is not at NT
-  const isNtVenue = /national theatre|dorfman|lyttelton|olivier theatre/i.test(showVenue);
-  if (!isNtVenue && /national-theatre|dorfman-theatre|lyttelton-theatre/i.test(urlLower)) {
-    return { isMismatch: true, reason: 'URL mentions National Theatre but show is not at NT' };
-  }
+  // Strip hostname so we only match URL path (avoids false positives from domain names)
+  const urlPath = url.replace(/https?:\/\/[^/]+/, '').toLowerCase();
 
-  // Check for Chichester when show is not there
-  if (!/chichester/i.test(showVenue) && /chichester/i.test(urlLower)) {
-    return { isMismatch: true, reason: 'URL mentions Chichester but show venue is ' + showVenue };
-  }
+  // Each entry: [urlPattern, venueName, venueMatchPattern]
+  // urlPattern matches the URL path; venueMatchPattern matches the show's actual venue.
+  // If the URL matches but the venue does NOT match, it's a mismatch.
+  const VENUE_CHECKS = [
+    [/national-theatre|(?:^|[-/])dorfman(?:[-/]|$)|(?:^|[-/])lyttelton(?:[-/]|$)|(?:^|[-/])olivier-theatre/, 'National Theatre', /national theatre|dorfman|lyttelton|olivier theatre/i],
+    [/chichester-festival|chichester-theatre/, 'Chichester Festival Theatre', /chichester/i],
+    [/menier-chocolate/, 'Menier Chocolate Factory', /menier/i],
+    [/donmar-warehouse/, 'Donmar Warehouse', /donmar/i],
+    [/(?:^|[-/])almeida-theatre|[-/]almeida(?:[-/]|$)/, 'Almeida Theatre', /almeida/i],
+    [/young-vic(?:[-/]|$)/, 'Young Vic', /young vic/i],
+    [/(?:^|[-/])bridge-theatre/, 'Bridge Theatre', /bridge theatre/i],
+    [/royal-court(?:-theatre)?/, 'Royal Court', /royal court/i],
+    [/rose-theatre-kingston/, 'Rose Theatre Kingston', /rose theatre/i],
+    [/waterloo-east/, 'Waterloo East Theatre', /waterloo east/i],
+    [/hampstead-theatre/, 'Hampstead Theatre', /hampstead/i],
+    [/bush-theatre/, 'Bush Theatre', /bush theatre/i],
+  ];
 
-  // Check for Menier when show is not there
-  if (!/menier/i.test(showVenue) && /menier-chocolate/i.test(urlLower)) {
-    return { isMismatch: true, reason: 'URL mentions Menier Chocolate Factory but show venue is ' + showVenue };
+  for (const [urlPattern, venueName, venueMatch] of VENUE_CHECKS) {
+    if (urlPattern.test(urlPath)) {
+      // Skip "bridge-theatre" matching "cambridge-theatre" (substring false positive)
+      if (venueName === 'Bridge Theatre' && /cambridge/i.test(url)) continue;
+      if (!venueMatch.test(showVenue)) {
+        return { isMismatch: true, reason: 'URL mentions ' + venueName + ' but show venue is ' + showVenue };
+      }
+    }
   }
 
   return { isMismatch: false };
