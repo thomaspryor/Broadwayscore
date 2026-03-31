@@ -489,7 +489,17 @@
     "old-times-2015/wsj--terry-teachout.json",
     "amazing-grace-2015/northjerseycom--robert-feldberg.json",
     "amazing-grace-2015/usatoday--elysa-gardner.json",
-    "airline-highway-2015/nytg--stanford-friedman.json"
+    "airline-highway-2015/nytg--stanford-friedman.json",
+    "the-visit-2015/washpost--peter-marks.json",
+    "something-rotten-2015/cititour--brian-scott-lipton.json",
+    "something-rotten-2015/northjerseycom--robert-feldberg.json",
+    "something-rotten-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "doctor-zhivago-2015/deadline--jeremy-gerard.json",
+    "living-on-love-2015/ap--unknown.json",
+    "living-on-love-2015/perez-hilton--perez-hilton.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "the-king-and-i-2015/off-script-with-dan-dwyer--dan-dwyer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -749,7 +759,14 @@
       "data/review-texts/old-times-2015/wsj--terry-teachout.json",
       "data/review-texts/amazing-grace-2015/northjerseycom--robert-feldberg.json",
       "data/review-texts/amazing-grace-2015/usatoday--elysa-gardner.json",
-      "data/review-texts/airline-highway-2015/nytg--stanford-friedman.json"
+      "data/review-texts/airline-highway-2015/nytg--stanford-friedman.json",
+      "data/review-texts/the-visit-2015/washpost--peter-marks.json",
+      "data/review-texts/something-rotten-2015/cititour--brian-scott-lipton.json",
+      "data/review-texts/something-rotten-2015/northjerseycom--robert-feldberg.json",
+      "data/review-texts/something-rotten-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/living-on-love-2015/ap--unknown.json",
+      "data/review-texts/living-on-love-2015/perez-hilton--perez-hilton.json",
+      "data/review-texts/the-king-and-i-2015/off-script-with-dan-dwyer--dan-dwyer.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -792,7 +809,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "airline-highway-2015/nytg--stanford-friedman.json",
+  "lastProcessed": "the-king-and-i-2015/off-script-with-dan-dwyer--dan-dwyer.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -990,6 +1007,28 @@
     },
     {
       "t": "2026-03-31T13:22:40.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T13:24:45.290Z",
+      "event": "bb-session",
+      "session": "1fcd2891",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-visit-on-broadway"
+    },
+    {
+      "t": "2026-03-31T13:24:46.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T13:28:11.949Z",
+      "event": "bb-session",
+      "session": "96f44c84",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/shakespeare-and-the-f"
+    },
+    {
+      "t": "2026-03-31T13:28:12.929Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
