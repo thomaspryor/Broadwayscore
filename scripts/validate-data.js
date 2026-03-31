@@ -255,6 +255,15 @@ function validateDates(shows) {
       warn(`Show "${show.title}" still previews but openingDate has passed: ${show.openingDate}`);
     }
 
+    // Previews with no opening date AND old previewsStartDate = likely stale/bogus entry
+    if (show.status === 'previews' && !show.openingDate && show.previewsStartDate) {
+      const previewYear = new Date(show.previewsStartDate).getFullYear();
+      const currentYear = new Date().getFullYear();
+      if (currentYear - previewYear > 1) {
+        warn(`Show "${show.title}" (${show.id}) has status "previews" with no openingDate and stale previewsStartDate ${show.previewsStartDate} — likely a duplicate or stale entry`);
+      }
+    }
+
     // Closing before opening = data error (or COVID show that never opened — should null openingDate)
     if (show.openingDate && show.closingDate && show.closingDate < show.openingDate) {
       warn(`Show "${show.title}" has closingDate (${show.closingDate}) before openingDate (${show.openingDate}). If it never opened, set openingDate to null.`);

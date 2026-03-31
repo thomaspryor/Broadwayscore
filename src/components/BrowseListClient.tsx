@@ -111,6 +111,7 @@ export default function BrowseListClient({
         case 'alpha':
           return a.title.localeCompare(b.title);
         case 'newest':
+          // Shows without openingDate sort to the end
           if (!a.openingDate && !b.openingDate) return 0;
           if (!a.openingDate) return 1;
           if (!b.openingDate) return -1;

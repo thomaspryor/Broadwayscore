@@ -253,11 +253,22 @@ function isMultiProduction(newShow, existing) {
 
   // If the existing show is still running, a new listing for the same title
   // in the same market is usually the same production, not a revival.
-  // Exception: if both have year info and differ by >2 years, they are
-  // historical entries (e.g., Death of a Salesman 1975 vs 2026).
+  // Exception: if both have year info from OPENING DATES (not just ID suffixes)
+  // and differ by >2 years, they are historical entries (e.g., Death of a Salesman 1975 vs 2026).
+  // But same venue overrides this — two shows at the same venue = same production.
   if (existing.status === 'open' || existing.status === 'previews') {
-    if (newYear && existingYear && Math.abs(newYear - existingYear) > 2) {
-      return true; // Historical entry vs current production
+    // Same venue = definitively the same production, never a revival
+    const newVenueNorm = newShow.venue ? normalizeVenueName(newShow.venue) : '';
+    const existVenueNorm = existing.venue ? normalizeVenueName(existing.venue) : '';
+    if (newVenueNorm && existVenueNorm && newVenueNorm === existVenueNorm) {
+      return false; // Same venue + open/previews = same production
+    }
+    // Only trust year difference from actual openingDates, not ID suffixes
+    // ID suffixes (e.g., -2021) are often TodayTix artifacts, not production years
+    const newYearFromDate = newShow.openingDate ? new Date(newShow.openingDate).getFullYear() : null;
+    const existYearFromDate = existing.openingDate ? new Date(existing.openingDate).getFullYear() : null;
+    if (newYearFromDate && existYearFromDate && Math.abs(newYearFromDate - existYearFromDate) > 2) {
+      return true; // Historical entry vs current production (verified by actual dates)
     }
     return false; // Same/close year + open show = same production
   }
