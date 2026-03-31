@@ -253,7 +253,9 @@
     "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
     "once-2012/ew--emlyn-travis.json",
     "wit-2012/nypost--elisabeth-vincentelli.json",
-    "stick-fly-2011/timeout--david-cote.json"
+    "stick-fly-2011/timeout--david-cote.json",
+    "the-normal-heart-2011/newsday--thursday-may.json",
+    "born-yesterday-2011/backstage--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1069,7 +1071,15 @@
     "the-people-in-the-picture-2011/backstage--david-sheward.json",
     "the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
     "baby-its-you-2011/wsj--terry-teachout.json",
-    "the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json"
+    "the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
+    "the-normal-heart-2011/scheckontheater--frank-scheck.json",
+    "baby-its-you-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/backstage--unknown.json",
+    "the-house-of-blue-leaves-2011/vulture--scott-brown.json",
+    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+    "born-yesterday-2011/amny--unknown.json",
+    "born-yesterday-2011/village-voice--michael-musto.json",
+    "jerusalem-2011/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1302,7 +1312,8 @@
       "spring-awakening-2015/njcom--christopher-kelly.json",
       "maltby-and-shires-about-time-off-broadway-2026/latimes--charles-mcnulty.json",
       "stephen-sondheims-old-friends-2025/broadwaynews--brittani-samuel.json",
-      "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json"
+      "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
+      "born-yesterday-2011/backstage--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1610,7 +1621,8 @@
       "data/review-texts/the-people-in-the-picture-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
       "data/review-texts/baby-its-you-2011/wsj--terry-teachout.json",
-      "data/review-texts/the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json"
+      "data/review-texts/the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/vulture--scott-brown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1657,11 +1669,12 @@
       "prince-of-broadway-2017/vulture--jesse-green.json",
       "wicked-west-end-2021/nydailynews--joe-neumaier.json",
       "wicked-west-end-2021/huffpost--marshall-fine.json",
-      "wicked-west-end-2021/rollingstone--peter-travers.json"
+      "wicked-west-end-2021/rollingstone--peter-travers.json",
+      "the-normal-heart-2011/newsday--thursday-may.json"
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
+  "lastProcessed": "jerusalem-2011/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -2164,6 +2177,28 @@
       "t": "2026-03-31T20:22:08.632Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-31T20:25:44.479Z",
+      "event": "bb-session",
+      "session": "763a0e57",
+      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_a_cramped_and_m.htm"
+    },
+    {
+      "t": "2026-03-31T20:25:45.802Z",
+      "event": "bb-cookie-inject",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-03-31T20:26:29.662Z",
+      "event": "bb-session",
+      "session": "a9db1e42",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-born-yesterday-3-5-stars-1."
+    },
+    {
+      "t": "2026-03-31T20:26:31.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
