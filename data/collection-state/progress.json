@@ -248,7 +248,9 @@
     "wicked-west-end-2021/rollingstone--peter-travers.json",
     "the-choir-of-man-west-end-2026/whatsonstage--unknown.json",
     "stephen-sondheims-old-friends-2025/broadwaynews--brittani-samuel.json",
-    "ifthen-2014/theatermania--charles-isherwood.json"
+    "ifthen-2014/theatermania--charles-isherwood.json",
+    "gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json",
+    "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -989,7 +991,15 @@
     "peter-and-the-starcatcher-2012/new-jersey-newsroom--michael-sommers.json",
     "magicbird-2012/boston-globe--don-aucoin.json",
     "magicbird-2012/zap-2-it--jacqueline-cutler.json",
-    "magicbird-2012/backstage--suzy-evans.json"
+    "magicbird-2012/backstage--suzy-evans.json",
+    "evita-2012/washpost--peter-marks.json",
+    "evita-2012/theatermania--david-finkle.json",
+    "end-of-the-rainbow-2012/ap--mark-kennedy.json",
+    "end-of-the-rainbow-2012/washpost--peter-marks.json",
+    "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
+    "end-of-the-rainbow-2012/theatermania--adam-feldman.json",
+    "end-of-the-rainbow-2012/backstage--david-sheward.json",
+    "jesus-christ-superstar-2012/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1184,7 +1194,9 @@
       "data/review-texts/lost-in-del-valle-off-broadway-2026/nytimes--brian-seibert.json",
       "lost-in-del-valle-off-broadway-2026/nytimes--brian-seibert.json",
       "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
-      "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json"
+      "maltby-and-shires-about-time-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+      "data/review-texts/gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json",
+      "gore-vidals-the-best-man-2012/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1214,7 +1226,8 @@
       "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
       "spring-awakening-2015/njcom--christopher-kelly.json",
       "maltby-and-shires-about-time-off-broadway-2026/latimes--charles-mcnulty.json",
-      "stephen-sondheims-old-friends-2025/broadwaynews--brittani-samuel.json"
+      "stephen-sondheims-old-friends-2025/broadwaynews--brittani-samuel.json",
+      "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1493,7 +1506,11 @@
       "data/review-texts/one-man-two-guvnors-2012/backstage--david-sheward.json",
       "data/review-texts/one-man-two-guvnors-2012/talkinbroadway--matthew-murray.json",
       "data/review-texts/magicbird-2012/boston-globe--don-aucoin.json",
-      "data/review-texts/magicbird-2012/zap-2-it--jacqueline-cutler.json"
+      "data/review-texts/magicbird-2012/zap-2-it--jacqueline-cutler.json",
+      "data/review-texts/evita-2012/washpost--peter-marks.json",
+      "data/review-texts/evita-2012/theatermania--david-finkle.json",
+      "data/review-texts/end-of-the-rainbow-2012/washpost--peter-marks.json",
+      "data/review-texts/end-of-the-rainbow-2012/theatermania--adam-feldman.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1544,7 +1561,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "magicbird-2012/backstage--suzy-evans.json",
+  "lastProcessed": "jesus-christ-superstar-2012/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -1898,6 +1915,39 @@
       "t": "2026-03-31T19:36:34.521Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T19:43:01.693Z",
+      "event": "bb-session",
+      "session": "deb44264",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/evita-review-ricky-ma"
+    },
+    {
+      "t": "2026-03-31T19:43:03.251Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T19:45:08.785Z",
+      "event": "bb-session",
+      "session": "c299eae6",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/end-of-the-rainbow-on"
+    },
+    {
+      "t": "2026-03-31T19:45:10.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T19:46:26.940Z",
+      "event": "bb-session",
+      "session": "5abcbc9f",
+      "url": "https://www.hollywoodreporter.com/news/general-news/gore-vidals-best-man-theater"
+    },
+    {
+      "t": "2026-03-31T19:46:28.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
