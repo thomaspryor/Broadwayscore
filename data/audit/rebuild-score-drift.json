@@ -1,31 +1,607 @@
 {
-  "timestamp": "2026-03-31T19:04:25.526Z",
-  "totalDrifted": 3,
+  "timestamp": "2026-03-31T19:14:38.630Z",
+  "totalDrifted": 75,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "side-show-2014",
-      "outlet": "Time Out New York",
-      "critic": "David Cote",
+      "showId": "the-book-of-mormon-west-end-2024",
+      "outlet": "London Box Office",
+      "critic": "Daniel Perks",
+      "oldScore": 85,
+      "newScore": 40,
+      "delta": 45
+    },
+    {
+      "showId": "magic-mike-live-west-end-2021",
+      "outlet": "London Theatre",
+      "critic": "Mark Shenton",
       "oldScore": 80,
-      "newScore": 60,
+      "newScore": 41,
+      "delta": 39
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outlet": "The Telegraph",
+      "critic": "Dominic Cavendish",
+      "oldScore": 80,
+      "newScore": 42,
+      "delta": 38
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outlet": "The Guardian",
+      "critic": "Arifa Akbar",
+      "oldScore": 40,
+      "newScore": 76,
+      "delta": 36
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outlet": "Evening Standard",
+      "critic": "India Block",
+      "oldScore": 100,
+      "newScore": 70,
+      "delta": 30
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "outlet": "The i",
+      "critic": "Sam Marlowe",
+      "oldScore": 100,
+      "newScore": 73,
+      "delta": 27
+    },
+    {
+      "showId": "starlight-express-west-end-2024",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "oldScore": 76,
+      "newScore": 100,
+      "delta": 24
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "outlet": "The Times (UK)",
+      "critic": "Clive Davis",
+      "oldScore": 60,
+      "newScore": 82,
+      "delta": 22
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "outlet": "Time Out London",
+      "critic": "Andrzej Lukowski",
+      "oldScore": 60,
+      "newScore": 82,
+      "delta": 22
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "outlet": "Evening Standard",
+      "critic": "Tim Bano",
+      "oldScore": 100,
+      "newScore": 78,
+      "delta": 22
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "outlet": "Evening Standard",
+      "critic": "Nick Curtis",
+      "oldScore": 80,
+      "newScore": 58,
+      "delta": 22
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "outlet": "Theatre Weekly",
+      "critic": "Greg Stewart",
+      "oldScore": 100,
+      "newScore": 78,
+      "delta": 22
+    },
+    {
+      "showId": "burlesque-west-end-2026",
+      "outlet": "The Guardian",
+      "critic": "Arifa Akbar",
+      "oldScore": 100,
+      "newScore": 80,
       "delta": 20
     },
     {
-      "showId": "wicked-west-end-2021",
-      "outlet": "The Telegraph",
-      "critic": "Charles Spencer",
+      "showId": "evening-all-afternoon-west-end-2026",
+      "outlet": "London Theatre",
+      "critic": "Holly O'Mahony",
       "oldScore": 60,
       "newScore": 80,
       "delta": 20
     },
     {
-      "showId": "the-king-and-i-2015",
-      "outlet": "Time Out New York",
-      "critic": "David Cote",
-      "oldScore": 87,
+      "showId": "oh-mary-west-end-2025",
+      "outlet": "The Independent",
+      "critic": "Alice Saville",
+      "oldScore": 80,
+      "newScore": 60,
+      "delta": 20
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "outlet": "The Guardian",
+      "critic": "Arifa Akbar",
+      "oldScore": 60,
+      "newScore": 80,
+      "delta": 20
+    },
+    {
+      "showId": "this-is-not-about-me-off-west-end-2026",
+      "outlet": "The Guardian",
+      "critic": "David Jays",
+      "oldScore": 60,
+      "newScore": 80,
+      "delta": 20
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "outlet": "The Arts Desk",
+      "critic": "Helen Hawkins",
+      "oldScore": 100,
+      "newScore": 81,
+      "delta": 19
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "outlet": "London Box Office",
+      "critic": "Miriam Gibson",
+      "oldScore": 60,
+      "newScore": 79,
+      "delta": 19
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "outlet": "The Guardian",
+      "critic": "Arifa Akbar",
+      "oldScore": 60,
+      "newScore": 78,
+      "delta": 18
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "outlet": "London Box Office",
+      "critic": "Miriam Gibson",
+      "oldScore": 60,
+      "newScore": 78,
+      "delta": 18
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "outlet": "London Theatre",
+      "critic": "Marianka Swain",
+      "oldScore": 100,
+      "newScore": 82,
+      "delta": 18
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "outlet": "The Times (UK)",
+      "critic": "Clive Davis",
+      "oldScore": 60,
+      "newScore": 78,
+      "delta": 18
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "oldScore": 62,
+      "newScore": 80,
+      "delta": 18
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "outlet": "London Theatre",
+      "critic": "Peter Brown",
+      "oldScore": 100,
+      "newScore": 82,
+      "delta": 18
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "outlet": "The Times (UK)",
+      "critic": "Dominic Maxwell",
+      "oldScore": 100,
+      "newScore": 82,
+      "delta": 18
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "outlet": "Evening Standard",
+      "critic": "Nick Curtis",
+      "oldScore": 80,
+      "newScore": 63,
+      "delta": 17
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "outlet": "The Guardian",
+      "critic": "Arifa Akbar",
+      "oldScore": 60,
+      "newScore": 76,
+      "delta": 16
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2026",
+      "outlet": "Theatre Weekly",
+      "critic": "Unknown",
+      "oldScore": 60,
+      "newScore": 76,
+      "delta": 16
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "outlet": "Theatre and Tonic",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 84,
+      "delta": 16
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "outlet": "All That Dazzles  (UK)",
+      "critic": "Daz Gale",
+      "oldScore": 84,
       "newScore": 100,
+      "delta": 16
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "oldScore": 100,
+      "newScore": 84,
+      "delta": 16
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "outlet": "The Independent",
+      "critic": "Alice Saville",
+      "oldScore": 100,
+      "newScore": 85,
+      "delta": 15
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "outlet": "The Arts Desk",
+      "critic": "Unknown",
+      "oldScore": 60,
+      "newScore": 75,
+      "delta": 15
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "outlet": "Musical Theatre Review",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 85,
+      "delta": 15
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "outlet": "BroadwayWorld",
+      "critic": "Aliya Al-Hussan",
+      "oldScore": 60,
+      "newScore": 75,
+      "delta": 15
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "outlet": "The Upcoming",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 85,
+      "delta": 15
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "outlet": "London Box Office",
+      "critic": "Camille Leadbeater",
+      "oldScore": 75,
+      "newScore": 60,
+      "delta": 15
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "outlet": "The Times (UK)",
+      "critic": "Clive Davis",
+      "oldScore": 60,
+      "newScore": 75,
+      "delta": 15
+    },
+    {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "outlet": "The Upcoming",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 85,
+      "delta": 15
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "outlet": "Theatre Weekly",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "outlet": "West End Wilma",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "outlet": "Evening Standard",
+      "critic": "Jessie Thompson",
+      "oldScore": 100,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "outlet": "West End Wilma",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "outlet": "London Box Office",
+      "critic": "Unknown",
+      "oldScore": 60,
+      "newScore": 74,
+      "delta": 14
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "outlet": "Musical Theatre Review",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "outlet": "Everything Theatre",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "outlet": "Metro",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "outlet": "The i",
+      "critic": "Fiona Mountford",
+      "oldScore": 60,
+      "newScore": 74,
+      "delta": 14
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "outlet": "Time Out London",
+      "critic": "Andrzej Lukowski",
+      "oldScore": 60,
+      "newScore": 74,
+      "delta": 14
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "outlet": "Musical Theatre Review",
+      "critic": "Unknown",
+      "oldScore": 60,
+      "newScore": 73,
       "delta": 13
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "outlet": "The Independent",
+      "critic": "Alice Saville",
+      "oldScore": 60,
+      "newScore": 73,
+      "delta": 13
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "outlet": "The Stage",
+      "critic": "Dave Fargnoli",
+      "oldScore": 60,
+      "newScore": 73,
+      "delta": 13
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "outlet": "The Arts Desk",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 87,
+      "delta": 13
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "outlet": "Daily Mail",
+      "critic": "Luke Jones",
+      "oldScore": 80,
+      "newScore": 93,
+      "delta": 13
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "oldScore": 67,
+      "newScore": 80,
+      "delta": 13
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "outlet": "The Independent",
+      "critic": "Alice Saville",
+      "oldScore": 60,
+      "newScore": 73,
+      "delta": 13
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "outlet": "The Recs",
+      "critic": "Erin Muldoon",
+      "oldScore": 67,
+      "newScore": 80,
+      "delta": 13
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "outlet": "West End Wilma",
+      "critic": "Unknown",
+      "oldScore": 60,
+      "newScore": 73,
+      "delta": 13
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "outlet": "The Stage",
+      "critic": "Paul Vale",
+      "oldScore": 60,
+      "newScore": 73,
+      "delta": 13
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "outlet": "The Stage",
+      "critic": "Unknown",
+      "oldScore": 60,
+      "newScore": 72,
+      "delta": 12
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "outlet": "Everything Theatre",
+      "critic": "Unknown",
+      "oldScore": 100,
+      "newScore": 88,
+      "delta": 12
+    },
+    {
+      "showId": "high-noon-west-end-2025",
+      "outlet": "London Theatre",
+      "critic": "Julia Rank",
+      "oldScore": 60,
+      "newScore": 72,
+      "delta": 12
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "outlet": "Time Out London",
+      "critic": "Andrzej Lukowski",
+      "oldScore": 100,
+      "newScore": 88,
+      "delta": 12
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "outlet": "The Arts Desk",
+      "critic": "Helen Hawkins",
+      "oldScore": 100,
+      "newScore": 88,
+      "delta": 12
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "outlet": "London Theatre",
+      "critic": "Olivia Rook",
+      "oldScore": 60,
+      "newScore": 72,
+      "delta": 12
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "outlet": "London Theatre",
+      "critic": "Olivia Rook",
+      "oldScore": 100,
+      "newScore": 88,
+      "delta": 12
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "outlet": "London Box Office",
+      "critic": "Daniel Perks",
+      "oldScore": 88,
+      "newScore": 100,
+      "delta": 12
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "outlet": "The Times (UK)",
+      "critic": "Maxie Szalwinska",
+      "oldScore": 100,
+      "newScore": 89,
+      "delta": 11
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "outlet": "London Theatre",
+      "critic": "Anya Ryan",
+      "oldScore": 60,
+      "newScore": 71,
+      "delta": 11
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "outlet": "The Independent",
+      "critic": "Alice Saville",
+      "oldScore": 60,
+      "newScore": 49,
+      "delta": 11
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "outlet": "BroadwayWorld",
+      "critic": "Franco Milazzo",
+      "oldScore": 71,
+      "newScore": 60,
+      "delta": 11
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "outlet": "BroadwayWorld",
+      "critic": "Cindy Marcolina",
+      "oldScore": 60,
+      "newScore": 71,
+      "delta": 11
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "outlet": "The Guardian",
+      "critic": "Arifa Akbar",
+      "oldScore": 60,
+      "newScore": 71,
+      "delta": 11
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "outlet": "Tim Talks Theatre",
+      "critic": "Tim Talks Theatre (UK)",
+      "oldScore": 100,
+      "newScore": 89,
+      "delta": 11
     }
   ]
 }
