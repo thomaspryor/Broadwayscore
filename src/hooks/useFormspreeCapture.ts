@@ -74,6 +74,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
         email: email.toLowerCase().trim(),
         source: options.source,
         market,
+        page: typeof window !== 'undefined' ? window.location.pathname : '/',
       };
       if (extra?.firstName) body.firstName = extra.firstName;
       if (!isSubscriber && options.showId) {
