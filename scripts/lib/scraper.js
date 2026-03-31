@@ -63,9 +63,11 @@ for (const group of DOMAIN_ALIAS_GROUPS) {
 // Only includes domains that actually flow through scraper.js's fetchPage().
 // BWW already has separate Playwright-first handling (line ~203).
 const PLAYWRIGHT_FIRST_DOMAINS = new Set([
-  'ibdb.com',        // Public theater database — simple HTML, no anti-bot
-  'broadway.com',    // Schedule/runtime pages — public, needs JS for some content
-  'broadway.org',    // Playbill/closing dates — public HTML
+  'ibdb.com',           // Public theater database — simple HTML, no anti-bot
+  'broadway.com',       // Schedule/runtime pages — public, needs JS for some content
+  'broadway.org',       // Playbill/closing dates — public HTML
+  'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
+  'dailymail.co.uk',    // Star ratings rendered via client-side JS (rating-star CSS classes)
 ]);
 
 /**

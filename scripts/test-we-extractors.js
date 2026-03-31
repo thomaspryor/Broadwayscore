@@ -12,10 +12,10 @@ const TESTS = [
   { outlet: 'timeout-london', url: 'https://www.timeout.com/london/theatre/mj-the-musical-review', expectedStars: '3/5' },
   { outlet: 'standard', url: 'https://www.standard.co.uk/culture/theatre/the-producers-garrick-theatre-review-mel-brooks-b1247818.html', expectedStars: '5/5' },
   { outlet: 'independent', url: 'https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-producers-musical-menier-chocolate-factory-mel-brooks-b2661942.html', expectedStars: '4/5' },
-  { outlet: 'whatsonstage', url: 'https://www.whatsonstage.com/news/mj-the-musical-west-end-review-an-exhilarating-jukebox-musical/', expectedStars: '4/5' },
+  { outlet: 'whatsonstage', url: 'https://www.whatsonstage.com/news/the-boy-who-harnessed-the-wind-musical-at-the-rsc-and-in-the-west-end-review_1712861/', expectedStars: '4/5' },
   { outlet: 'thestage', url: 'https://www.thestage.co.uk/reviews/reviews/the-producers-review-garrick-theatre-london-mel-brooks-patrick-marber-andy-nyman', expectedStars: '4/5' },
   { outlet: 'artsdesk', url: 'https://theartsdesk.com/theatre/producers-garrick-theatre-review-ve-haf-vays-making-you-laugh', expectedStars: '4/5' },
-  { outlet: 'daily-mail', url: 'https://www.dailymail.co.uk/tvshowbiz/reviews/article-14576489/The-Producers-review-Garrick-Theatre-London.html', expectedStars: '4/5' },
+  { outlet: 'daily-mail', url: 'https://www.dailymail.co.uk/tvshowbiz/article-15314889/amp/Breaking-Dad-Bryan-Cranston-wringer-tale-family-despair-PATRICK-MARMION-reviews.html', expectedStars: '4/5' },
   { outlet: 'broadwayworld', url: 'https://www.broadwayworld.com/westend/article/Review-THE-PRODUCERS-Garrick-Theatre-20250915', expectedStars: '5/5' },
 ];
 
