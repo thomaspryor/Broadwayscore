@@ -33,6 +33,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { isRoundupUrl, isVenueMismatch } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 
@@ -1019,7 +1020,35 @@ showDirs.forEach(showId => {
   }
 
   // Skip shows in "upcoming" status across all markets — no valid reviews can exist yet
+  // BUT: still promote contentVerification flags on upcoming shows so flags are ready when show opens
   if (showStatusMap[showId] === 'upcoming') {
+    const upcomingDir = path.join(reviewTextsDir, showId);
+    try {
+      const upcomingFiles = fs.readdirSync(upcomingDir).filter(f => f.endsWith('.json'));
+      for (const uf of upcomingFiles) {
+        try {
+          const ud = JSON.parse(fs.readFileSync(path.join(upcomingDir, uf), 'utf8'));
+          const ucv = ud.contentVerification;
+          if (!ucv || (ucv.confidence !== 'high' && ucv.confidence !== 'medium')) continue;
+          let promoted = false;
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !ud.wrongProductionOverride && !ud.wrongProductionManualClear) {
+            ud.wrongProduction = true;
+            ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
+            promoted = true;
+          }
+          if (ucv.wrongArticle === true && ud.wrongShow !== true) {
+            ud.wrongShow = true;
+            ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
+            promoted = true;
+          }
+          if (promoted) {
+            ud.contentVerificationPromoted = `rebuild: promoted from contentVerification (${ucv.verifiedBy}, ${ucv.confidence})`;
+            stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
+            try { fs.writeFileSync(path.join(upcomingDir, uf), JSON.stringify(ud, null, 2) + '\n'); } catch (e) {}
+          }
+        } catch { /* skip malformed */ }
+      }
+    } catch { /* no dir */ }
     stats.skippedUpcomingShows = (stats.skippedUpcomingShows || 0) + 1;
     return;
   }
@@ -1314,6 +1343,7 @@ showDirs.forEach(showId => {
               && !data.wrongProductionOverride && !data.wrongProductionManualClear
               && isHighMediumConfidence) {
             data.wrongProduction = true;
+            data.wrongProductionReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
@@ -1321,10 +1351,12 @@ showDirs.forEach(showId => {
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
           if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon) {
             data.wrongShow = true;
+            data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
           if (cv.isFilmTv === true && data.wrongShow !== true && !skipWsForLondon) {
             data.wrongShow = true;
+            data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
           if (promoted) {
@@ -2231,6 +2263,33 @@ showDirs.forEach(showId => {
             stats.skippedFilmTvContamination = (stats.skippedFilmTvContamination || 0) + 1;
             return;
           }
+        }
+      }
+
+      // ROUNDUP URL DETECTION: Auto-flag reviews whose URL matches known roundup patterns.
+      // Roundup pages aggregate multiple outlets' ratings — they are not individual reviews.
+      if (data.url && !data.isRoundupArticle) {
+        const roundupCheck = isRoundupUrl(data.url);
+        if (roundupCheck.isRoundup) {
+          data.isRoundupArticle = true;
+          data.roundupNote = roundupCheck.reason;
+          stats.autoFlaggedRoundup = (stats.autoFlaggedRoundup || 0) + 1;
+          // Don't return — roundup reviews can still be scored, but the flag
+          // prevents them from being treated as individual outlet reviews in display
+        }
+      }
+
+      // VENUE MISMATCH DETECTION: Flag when review URL mentions a venue that doesn't
+      // match the show's actual venue (e.g., URL says "national-theatre" but show is WE).
+      // This catches reviews of pre-transfer/try-out runs filed under the WE production.
+      if (data.url && !data.wrongProduction) {
+        const showObj = showsData.shows.find(s => s.id === showId);
+        const showVenue = showObj && showObj.venue;
+        const showCat = showCategoryMap[showId] || 'broadway';
+        const venueCheck = isVenueMismatch(data.url, showVenue, showCat);
+        if (venueCheck.isMismatch) {
+          flagForHumanReview(data, 'venue-url-mismatch', venueCheck.reason);
+          stats.venueMismatchFlags = (stats.venueMismatchFlags || 0) + 1;
         }
       }
 

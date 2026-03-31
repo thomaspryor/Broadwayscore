@@ -26,7 +26,10 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const GROSSES_PATH = path.join(DATA_DIR, 'grosses.json');
 const GROSSES_HISTORY_PATH = path.join(DATA_DIR, 'grosses-history.json');
-const COMMERCIAL_PATH = path.join(os.homedir(), 'broadway-scorecard-data', 'commercial.json');
+// CI uses data/commercial.json (checkout-core-data copies it there); local uses ~/broadway-scorecard-data/
+const COMMERCIAL_PATH = fs.existsSync(path.join(DATA_DIR, 'commercial.json'))
+  ? path.join(DATA_DIR, 'commercial.json')
+  : path.join(os.homedir(), 'broadway-scorecard-data', 'commercial.json');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');

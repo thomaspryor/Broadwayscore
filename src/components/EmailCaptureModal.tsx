@@ -10,6 +10,7 @@ import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
+import { isLondonPath } from '@/hooks/useCurrentMarket';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
@@ -103,7 +104,7 @@ export default function EmailCaptureModal({
   const [error, setError] = useState('');
   const pathname = usePathname();
 
-  const isWE = pathname?.startsWith('/west-end') ?? false;
+  const isWE = pathname ? isLondonPath(pathname) : false;
   const formId = isWE ? FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID : FORMSPREE_SUBSCRIBER_FORM_ID;
   const marketKey = isWE ? 'west-end' : 'broadway';
   const copy = getTriggerCopy(trigger, isWE);
@@ -149,6 +150,7 @@ export default function EmailCaptureModal({
           email: userData.email,
           source: `modal-${trigger}`,
           market: marketKey,
+          page: pathname || '/',
         };
         if (userData.name) body.firstName = userData.name;
         const res = await fetch(`https://formspree.io/f/${formId}`, {
