@@ -191,7 +191,11 @@
     "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
     "grey-house-2023/slash-film--caroline-cao.json",
     "life-of-pi-2023/newyorker--katy-waldman.json",
-    "some-like-it-hot-2022/newyorker--helen-shaw.json"
+    "some-like-it-hot-2022/newyorker--helen-shaw.json",
+    "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+    "a-christmas-carol-2019/usatoday--david-rooney.json",
+    "tina-2019/newyorker--michael-schulman.json",
+    "tootsie-2019/latimes--charles-mcnulty.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -269,7 +273,13 @@
     "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
     "trouble-in-mind-2021/deadline--greg-evans.json",
     "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
-    "the-lehman-trilogy-2021/thestage--nicole-serratore.json"
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json",
+    "ink-2019/thestage--naveen-kumar.json",
+    "kiss-me-kate-2019/deadline--pete-hammond.json",
+    "be-more-chill-2019/out-magazine--david-clarke.json",
+    "choir-boy-2019/out-magazine--trevell-anderson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -411,7 +421,8 @@
       "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
       "the-cottage-2023/theatermania--peter-hempstead.json",
       "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
-      "grey-house-2023/slash-film--caroline-cao.json"
+      "grey-house-2023/slash-film--caroline-cao.json",
+      "a-christmas-carol-2019/usatoday--david-rooney.json"
     ],
     "amp": [],
     "browserbase": [
@@ -430,7 +441,9 @@
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
       "giant-2026/variety--daniel-daddario.json",
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
-      "the-last-five-years-2025/nypost--lou-lumenick.json"
+      "the-last-five-years-2025/nypost--lou-lumenick.json",
+      "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -448,7 +461,9 @@
       "the-book-of-mormon-west-end-2024/independent--alice-saville.json",
       "matilda-the-musical-west-end-2021/times-uk--clive-davis.json",
       "the-mousetrap-west-end-2021/guardian--arifa-akbar.json",
-      "just-for-us-2023/timeout--adam-feldman.json"
+      "just-for-us-2023/timeout--adam-feldman.json",
+      "tina-2019/newyorker--michael-schulman.json",
+      "tootsie-2019/latimes--charles-mcnulty.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -492,7 +507,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+  "lastProcessed": "choir-boy-2019/out-magazine--trevell-anderson.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -581,6 +596,17 @@
       "t": "2026-03-31T11:40:26.532Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-31T11:44:18.162Z",
+      "event": "bb-session",
+      "session": "3de2534d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-03-31T11:44:19.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
