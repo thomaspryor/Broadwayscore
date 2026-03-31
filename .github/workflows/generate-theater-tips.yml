@@ -47,9 +47,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright (for scraping)
+      - name: Setup Playwright
         if: ${{ inputs.skip_scrape != true }}
-        run: npx playwright install chromium
+        uses: ./.github/actions/setup-playwright
 
       - name: Scrape theater dining & parking data
         if: ${{ inputs.skip_scrape != true }}

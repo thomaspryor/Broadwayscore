@@ -60,9 +60,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright Chromium
+      - name: Setup Playwright
         if: inputs.extract_only != true
-        run: npx playwright install chromium
+        uses: ./.github/actions/setup-playwright
 
       - name: Run The Stage roundups scraper
         env:

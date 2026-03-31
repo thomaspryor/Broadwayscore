@@ -43,8 +43,8 @@ jobs:
 
       - run: npm ci
 
-      - name: Install Playwright
-        run: npx playwright install chromium --with-deps
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Determine shows to process
         id: shows

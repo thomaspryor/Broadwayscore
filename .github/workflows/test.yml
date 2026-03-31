@@ -412,8 +412,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install chromium --with-deps
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Run unit tests
         run: |
@@ -528,8 +528,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install chromium webkit --with-deps
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+        with:
+          browsers: 'chromium webkit'
 
       - name: Run visual regression tests
         run: npx playwright test tests/e2e/visual-regression.spec.ts --project=chromium --project=mobile ${{ github.event.inputs.update_snapshots == 'true' && '--update-snapshots' || '' }}

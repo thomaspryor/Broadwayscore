@@ -139,9 +139,9 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         run: npm ci
 
-      - name: Install Playwright
+      - name: Setup Playwright
         if: steps.find.outputs.has_shows == 'true'
-        run: npx playwright install chromium
+        uses: ./.github/actions/setup-playwright
 
       - name: Run poller for each show
         if: steps.find.outputs.has_shows == 'true'

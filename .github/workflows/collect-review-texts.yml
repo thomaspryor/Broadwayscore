@@ -195,9 +195,9 @@ jobs:
         if: steps.sched.outputs.skip != 'true'
         run: npm install
 
-      - name: Install Playwright browsers
+      - name: Setup Playwright
         if: steps.sched.outputs.skip != 'true'
-        run: npx playwright install chromium
+        uses: ./.github/actions/setup-playwright
 
       - name: Create directories
         if: steps.sched.outputs.skip != 'true'
@@ -543,8 +543,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Playwright browsers
-        run: npx playwright install chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Create directories
         run: |

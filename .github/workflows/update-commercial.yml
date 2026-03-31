@@ -41,8 +41,8 @@ jobs:
         with:
           configure-git: 'true'
 
-      - name: Install Playwright
-        run: npx playwright install chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Run commercial data update
         id: update
