@@ -1382,7 +1382,12 @@ showDirs.forEach(showId => {
             const isUkUrl = _isUkUrl(data.url);
             if (isUkUrl || outletIsDualOrUk) {
               // UK/dual-market outlet + London URL → clear false positive
-              if (isUkUrl) {
+              // BUT: Do NOT auto-clear if contentVerification explicitly confirmed wrongProduction
+              // (e.g., touring/outdoor production reviewed by UK outlet) or if manual reason is set
+              const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
+                && data.contentVerification?.confidence === 'high';
+              const hasManualReason = !!data.wrongProductionReason;
+              if (isUkUrl && !cvConfirmedWrong && !hasManualReason) {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
                 data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
