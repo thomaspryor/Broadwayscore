@@ -388,9 +388,6 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
         </section>
       )}
 
-      {/* Top Plays - Featured Shelf */}
-      <FeaturedRow title="Top Plays" shows={topPlays} />
-
       {/* Search */}
       <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
         <label htmlFor="we-show-search" className="sr-only">Search West End shows</label>
@@ -566,6 +563,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 
       {/* Featured Rows */}
       <div className="mt-8 pt-8 border-t border-white/5">
+        <FeaturedRow title="Top Plays" shows={topPlays} />
         <FeaturedRow title="Best Off-West End" shows={bestOffWestEnd} />
         <FeaturedRow title="Olivier Award Winning Shows" shows={olivierWinners} />
         <FeaturedRow title="Upcoming" shows={upcomingShows} />

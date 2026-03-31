@@ -306,9 +306,12 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
     if (data.designation !== 'TBD') continue;
-    if (!data.estimatedRecoupmentPct) continue;
 
-    const [lower] = data.estimatedRecoupmentPct;
+    // Use model data if available, fall back to AI estimates
+    const recoupPct = data.modelRecoupmentPct || data.estimatedRecoupmentPct;
+    if (!recoupPct) continue;
+
+    const lower = recoupPct[0];
     if (lower < 40) continue;
 
     const show = rawShows.find(s => s.slug === slug);
@@ -324,7 +327,7 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
       capitalization: data.capitalization || 0,
-      estimatedRecoupmentPct: data.estimatedRecoupmentPct,
+      estimatedRecoupmentPct: data.estimatedRecoupmentPct || [0, 0],
       trend,
       weeklyGross: grossData?.thisWeek?.gross || null,
     });
@@ -490,6 +493,8 @@ export function getAllOpenShowsWithCommercial(): Array<{
   weeklyGross: number | null;
   totalGross: number | null;
   estimatedRecoupmentPct: [number, number] | null;
+  modelRecoupmentPct?: [number, number, number] | null;
+  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   trend: RecoupmentTrend;
   recouped: boolean | null;
   recoupedWeeks: number | null;
@@ -502,6 +507,8 @@ export function getAllOpenShowsWithCommercial(): Array<{
     weeklyGross: number | null;
     totalGross: number | null;
     estimatedRecoupmentPct: [number, number] | null;
+    modelRecoupmentPct?: [number, number, number] | null;
+    modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
     trend: RecoupmentTrend;
     recouped: boolean | null;
     recoupedWeeks: number | null;
@@ -521,6 +528,8 @@ export function getAllOpenShowsWithCommercial(): Array<{
       weeklyGross: grossData?.thisWeek?.gross || null,
       totalGross: grossData?.allTime?.gross || null,
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
+      modelRecoupmentPct: data.modelRecoupmentPct || null,
+      modelMethod: data.modelMethod || null,
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped,
       recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate),
@@ -543,6 +552,8 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
   weeklyGross: number | null;
   totalGross: number | null;
   estimatedRecoupmentPct: [number, number] | null;
+  modelRecoupmentPct?: [number, number, number] | null;
+  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   trend: RecoupmentTrend;
   recouped: boolean | null;
   recoupedWeeks: number | null;
@@ -556,6 +567,8 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
     weeklyGross: number | null;
     totalGross: number | null;
     estimatedRecoupmentPct: [number, number] | null;
+    modelRecoupmentPct?: [number, number, number] | null;
+    modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
     trend: RecoupmentTrend;
     recouped: boolean | null;
     recoupedWeeks: number | null;
@@ -579,6 +592,8 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
       weeklyGross: grossData?.thisWeek?.gross || null,
       totalGross: grossData?.allTime?.gross || null,
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
+      modelRecoupmentPct: data.modelRecoupmentPct || null,
+      modelMethod: data.modelMethod || null,
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped,
       recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate),
