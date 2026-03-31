@@ -65,8 +65,11 @@ function isUkOutletUrl(url) {
     const hostname = new URL(url).hostname || '';
     // Exclude known US outlets before applying 'theatre' hostname heuristic
     if (US_THEATRE_HOSTNAMES.has(hostname)) return false;
+    // Only match genuinely UK-specific outlet hostnames.
+    // DO NOT include global/US outlets like variety, nytimes, timeout here —
+    // they review both Broadway and West End shows.
     return hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
-      || /london|theatre|whatsonstage|thestage|theguardian|telegraph|thetimes|independent|standard|inews|variety|nytimes|timeout/.test(hostname);
+      || /london|theatre|whatsonstage|thestage|theguardian|telegraph|thetimes|independent|standard|inews/.test(hostname);
   } catch {
     return false;
   }
