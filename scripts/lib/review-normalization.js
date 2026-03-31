@@ -564,8 +564,14 @@ function mergeReviews(existing, incoming) {
     merged.bwwThumb = incoming.bwwThumb;
   }
 
-  // Prefer original scores
-  if (incoming.originalScore && !existing.originalScore) {
+  // Prefer original scores — but NEVER overwrite outlet-verified scores
+  // with aggregator scores (prevents theatre-reviews/ShowScore contamination)
+  const AGGREGATOR_SCORE_SOURCES = new Set([
+    'theatre-reviews-star-rating', 'westendtheatre-star-rating',
+    'show-score-stars', 'stagedoor-star-rating',
+  ]);
+  const incomingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(incoming.scoreSource);
+  if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator) {
     merged.originalScore = incoming.originalScore;
     merged.originalRating = incoming.originalRating;
   }
