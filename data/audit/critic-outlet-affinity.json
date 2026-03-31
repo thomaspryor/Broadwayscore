@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-03-31T13:05:57.701Z",
+    "lastUpdated": "2026-03-31T13:50:36.420Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 32833,
-    "skippedFiles": 12514,
-    "totalCritics": 1398,
-    "registryCritics": 481,
-    "flaggedReviews": 36
+    "totalFilesScanned": 32819,
+    "skippedFiles": 12542,
+    "totalCritics": 1392,
+    "registryCritics": 478,
+    "flaggedReviews": 37
   },
   "flaggedReviews": [
     {
@@ -405,6 +405,17 @@
       "primaryOutlet": "ew",
       "primaryShare": 94,
       "totalReviews": 17
+    },
+    {
+      "critic": "Claire Allfree",
+      "criticSlug": "claire-allfree",
+      "outlet": "metro",
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "metro--claire-allfree.json",
+      "outletShare": 9,
+      "primaryOutlet": "telegraph",
+      "primaryShare": 91,
+      "totalReviews": 11
     }
   ],
   "freelancers": [
@@ -519,115 +530,6 @@
         "financialtimes"
       ],
       "totalReviews": 570
-    },
-    {
-      "critic": "Unknown",
-      "slug": "unknown",
-      "outlets": [
-        "wsj",
-        "ap",
-        "talkinbroadway",
-        "thestage",
-        "nyt-theater",
-        "theatermania",
-        "frontmezzjunkies",
-        "playbill",
-        "timeout",
-        "west-end-wilma",
-        "london-box-office",
-        "nytg",
-        "musical-theatre-review",
-        "nydailynews",
-        "ny1",
-        "backstage",
-        "artsdesk",
-        "chicagotribune",
-        "theatre-weekly",
-        "newsday",
-        "guardian",
-        "theupcoming",
-        "amny",
-        "washpost",
-        "everything-theatre",
-        "telegraph",
-        "stagebuddy",
-        "ew",
-        "nypost",
-        "broadwayworld",
-        "cititour",
-        "hollywood-reporter",
-        "vulture",
-        "londonist",
-        "nytimes",
-        "usatoday",
-        "times-uk",
-        "bloomberg",
-        "metro",
-        "buy-tickets",
-        "london-theatre",
-        "minneapolis-star-tribune",
-        "deadline",
-        "nysr",
-        "theatrely",
-        "variety",
-        "new-york-sun",
-        "latimes",
-        "one-minute-critic",
-        "huffpost",
-        "nbcny",
-        "all-that-dazzles-uk",
-        "theatreandtonic",
-        "theater-pizzazz",
-        "dctheatrescene",
-        "stannswarehouseorg",
-        "contra-costa-times",
-        "american-theater-web",
-        "americanpsychothemusicalcomlottery",
-        "whatsonstage",
-        "theater-life",
-        "ct-now",
-        "nycitycenterorg",
-        "slantmagazine",
-        "ricky-martin",
-        "financialtimes",
-        "burlington-free-press",
-        "cnn",
-        "san-jose-mercury-news",
-        "seattlereporg",
-        "parterre-box",
-        "i-paper",
-        "3news",
-        "aussie-theatre",
-        "herald-sun",
-        "daily-mail",
-        "a-younger-theatre",
-        "tapintonet",
-        "fathomentertainmentcom",
-        "stageandcinema",
-        "the-morning-star",
-        "the-sun",
-        "center-on-the-aisle",
-        "culturesauce",
-        "schoolofrockthemusicalcomtickets",
-        "abc-news",
-        "by-clicking-here",
-        "standard",
-        "newyorker",
-        "thereviewshub",
-        "arenastageorg",
-        "lighting-and-sound-america",
-        "theater-news-online",
-        "hypable",
-        "reviews",
-        "familyvacationcritic",
-        "streetdirectory",
-        "manhattantheatreclubcom",
-        "timeout-london",
-        "bamorg",
-        "exeunt-magazine",
-        "kenny-leon"
-      ],
-      "totalReviews": 471
     },
     {
       "critic": "Brittani Samuel",
@@ -771,6 +673,114 @@
         "ny-theater"
       ],
       "totalReviews": 354
+    },
+    {
+      "critic": "Unknown",
+      "slug": "unknown",
+      "outlets": [
+        "wsj",
+        "ap",
+        "talkinbroadway",
+        "thestage",
+        "nyt-theater",
+        "theatermania",
+        "frontmezzjunkies",
+        "playbill",
+        "timeout",
+        "west-end-wilma",
+        "london-box-office",
+        "nytg",
+        "musical-theatre-review",
+        "nydailynews",
+        "ny1",
+        "backstage",
+        "artsdesk",
+        "chicagotribune",
+        "theatre-weekly",
+        "newsday",
+        "guardian",
+        "theupcoming",
+        "amny",
+        "washpost",
+        "everything-theatre",
+        "telegraph",
+        "stagebuddy",
+        "ew",
+        "nypost",
+        "broadwayworld",
+        "cititour",
+        "hollywood-reporter",
+        "vulture",
+        "londonist",
+        "nytimes",
+        "usatoday",
+        "times-uk",
+        "bloomberg",
+        "metro",
+        "buy-tickets",
+        "minneapolis-star-tribune",
+        "deadline",
+        "nysr",
+        "theatrely",
+        "variety",
+        "new-york-sun",
+        "latimes",
+        "one-minute-critic",
+        "huffpost",
+        "nbcny",
+        "all-that-dazzles-uk",
+        "theatreandtonic",
+        "theater-pizzazz",
+        "dctheatrescene",
+        "stannswarehouseorg",
+        "contra-costa-times",
+        "american-theater-web",
+        "americanpsychothemusicalcomlottery",
+        "whatsonstage",
+        "theater-life",
+        "london-theatre",
+        "ct-now",
+        "nycitycenterorg",
+        "slantmagazine",
+        "ricky-martin",
+        "financialtimes",
+        "burlington-free-press",
+        "cnn",
+        "san-jose-mercury-news",
+        "seattlereporg",
+        "parterre-box",
+        "i-paper",
+        "3news",
+        "aussie-theatre",
+        "herald-sun",
+        "a-younger-theatre",
+        "tapintonet",
+        "fathomentertainmentcom",
+        "stageandcinema",
+        "the-morning-star",
+        "the-sun",
+        "center-on-the-aisle",
+        "culturesauce",
+        "schoolofrockthemusicalcomtickets",
+        "abc-news",
+        "by-clicking-here",
+        "standard",
+        "newyorker",
+        "thereviewshub",
+        "arenastageorg",
+        "lighting-and-sound-america",
+        "theater-news-online",
+        "hypable",
+        "reviews",
+        "familyvacationcritic",
+        "streetdirectory",
+        "manhattantheatreclubcom",
+        "timeout-london",
+        "bamorg",
+        "exeunt-magazine",
+        "kenny-leon"
+      ],
+      "totalReviews": 467
     },
     {
       "critic": "Jesse Green",
@@ -1212,7 +1222,7 @@
         "nytimes",
         "variety"
       ],
-      "totalReviews": 32
+      "totalReviews": 31
     },
     {
       "critic": "Simon Saltzman",
@@ -1397,7 +1407,7 @@
         "timeout-london",
         "london-theatre"
       ],
-      "totalReviews": 16
+      "totalReviews": 14
     },
     {
       "critic": "Tim Bano",
@@ -1633,10 +1643,9 @@
         "london-theatre",
         "telegraph",
         "broadwayworld",
-        "the-telegrap",
         "artsdesk"
       ],
-      "totalReviews": 25
+      "totalReviews": 23
     },
     {
       "critic": "Emlyn Travis",
@@ -1838,16 +1847,6 @@
       "totalReviews": 3
     },
     {
-      "critic": "Claire Allfree",
-      "slug": "claire-allfree",
-      "outlets": [
-        "telegraph",
-        "metro",
-        "the-telegrap"
-      ],
-      "totalReviews": 13
-    },
-    {
       "critic": "Bill Canacci",
       "slug": "bill-canacci",
       "outlets": [
@@ -1892,7 +1891,7 @@
         "london-theatre",
         "thestage"
       ],
-      "totalReviews": 9
+      "totalReviews": 8
     },
     {
       "critic": "Tom Wicker",
@@ -1985,28 +1984,10 @@
       "outlets": [
         "london-theatre",
         "guardian",
-        "timeout-london",
-        "timeout"
+        "timeout",
+        "timeout-london"
       ],
-      "totalReviews": 10
-    },
-    {
-      "critic": "Charles Spencer",
-      "slug": "charles-spencer",
-      "outlets": [
-        "telegraph",
-        "the-telegrap"
-      ],
-      "totalReviews": 6
-    },
-    {
-      "critic": "Tim Walker",
-      "slug": "tim-walker",
-      "outlets": [
-        "telegraph",
-        "the-telegrap"
-      ],
-      "totalReviews": 3
+      "totalReviews": 9
     },
     {
       "critic": "Oscar E Moore",

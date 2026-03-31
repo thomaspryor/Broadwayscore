@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T13:05:55.281Z",
+  "timestamp": "2026-03-31T13:50:34.010Z",
   "stats": {
-    "totalReviews": 32125,
-    "alreadyFlagged": 11934,
+    "totalReviews": 32111,
+    "alreadyFlagged": 11957,
     "dateGuardCatches": 14,
-    "directorMismatch": 924,
-    "tvFilmSignals": 3311,
-    "londonSignals": 955,
+    "directorMismatch": 917,
+    "tvFilmSignals": 3306,
+    "londonSignals": 942,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 5924
+    "noPublishDate": 5918
   },
   "findings": [
     {
@@ -8487,20 +8487,6 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "the-telegrap--dominic-cavendish.json",
-      "score": 94,
-      "publishDate": "December 13th, 2021",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "thestage--tim-bano.json",
       "score": 80,
       "publishDate": "December 13th, 2021",
@@ -13048,7 +13034,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "culturesauce--thom-geier.json",
-      "score": 50,
+      "score": 38,
       "publishDate": "2026-03-31",
       "url": "https://culturesauce.com/2026/03/31/dog-day-afternoon-jon-bernthal-broadway-review/",
       "findings": [
@@ -13118,7 +13104,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "nysr--roma-torre.json",
-      "score": 72,
+      "score": 58,
       "publishDate": "2026-03-31",
       "url": "https://nystagereview.com/2026/03/31/dog-day-afternoon-more-punchlines-than-peril/",
       "findings": [
@@ -13316,25 +13302,6 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 85,
       "publishDate": "2026-02-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
-      "file": "the-telegrap--dominic-cavendish.json",
-      "score": 78,
-      "publishDate": "February 17th, 2026",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
       "findings": [
         {
@@ -16191,20 +16158,6 @@
       "score": 42,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/article/BWW-Review-Patti-Murin-Is-A-Ray-of-Sunshine-in-Disappointingly-Perfunctory-FROZEN-20180323",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2018",
-      "file": "catholic-transcript--bernard-carragher.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://dearead.com/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30226,20 +30179,6 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
-      "file": "the-telegrap--charles-spencer.json",
-      "score": 93,
-      "publishDate": "November 25th, 2011",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/matilda-cambridge-theatre-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
       "file": "thestage--lisa-martland.json",
       "score": 89,
       "publishDate": "2011-11-24",
@@ -31833,25 +31772,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
-        }
-      ]
-    },
-    {
-      "showId": "mj-the-musical-west-end-2024",
-      "file": "guardian--arifa-akbar.json",
-      "score": 79,
-      "publishDate": "2024-03-27",
-      "url": "https://www.theguardian.com/stage/2024/mar/31/the-week-in-theatre-opening-night-ivo-van-hove-rufus-wainwright-sheridan-smith-gielgud-theatre-west-end-review-mj-the-musical-prince-edward-theatre-broadway-west-end-christopher-wheeldon-lynn-nottage",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -35925,20 +35845,6 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
-      "file": "london-box-office--stuart-king.json",
-      "score": 80,
-      "publishDate": "2023-05-26",
-      "url": "https://www.londonboxoffice.co.uk/news/post/operation-mincemeat-tenth-extension-west-end",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
       "publishDate": "2023-05-11",
@@ -35994,20 +35900,6 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 83,
       "publishDate": "2023-05-10",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "the-telegrap--dominic-cavendish.json",
-      "score": 80,
-      "publishDate": "May 10th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
       "findings": [
         {
@@ -51019,30 +50911,6 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
-      "file": "the-telegrap--david-gritten.json",
-      "score": 89,
-      "publishDate": "October 17th, 2014",
-      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
       "file": "timeout--ben-walters.json",
       "score": 78,
       "publishDate": "2011-11-04",
@@ -53285,25 +53153,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "guardian--kate-kellaway.json",
-      "score": 65,
-      "publishDate": "2019-04-28",
-      "url": "https://www.theguardian.com/stage/2019/apr/28/all-my-sons-ghosts-the-play-that-goes-wrong-theatre-reviews",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -59082,25 +58931,6 @@
       ]
     },
     {
-      "showId": "wicked-west-end-2021",
-      "file": "the-telegrap--charles-spencer.json",
-      "score": 74,
-      "publishDate": "January 1st, 2009",
-      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
       "showId": "wit-2012",
       "file": "nytimes--ben-brantley.json",
       "score": 76,
@@ -61991,20 +61821,6 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
-      "file": "guardian--alfred-hickling.json",
-      "score": 78,
-      "publishDate": "2026-03-04",
-      "url": "https://www.theguardian.com/stage/2026/mar/04/broken-glass-review-theatre-young-vic-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "broken-glass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 78,
       "publishDate": "2026-03-04",
@@ -63492,20 +63308,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "deep-azure-globe-west-end-2026",
-      "file": "london-theatre--matt-wolf.json",
-      "score": 78,
-      "publishDate": "2026-02-18",
-      "url": "https://www.londontheatre.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -66445,20 +66247,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-      "file": "broadwayworld--debbie-gilpin.json",
-      "score": 82,
-      "publishDate": "2025-09-19",
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-LAND-OF-THE-LIVING-starring-Juliet-Stevenson-20250919",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -71106,20 +70894,6 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
-      "file": "the-telegrap--dominic-cavendish.json",
-      "score": 82,
-      "publishDate": "December 19th, 2025",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
       "file": "timeout--paul-raven.json",
       "score": 61,
       "publishDate": "2025-12-19",
@@ -71344,34 +71118,6 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 92,
-      "publishDate": "2025-01-16",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "the-telegrap--dominic-cavendish.json",
-      "score": 85,
-      "publishDate": "January 14th, 2025",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 92,
       "publishDate": "2025-01-15",
@@ -71390,20 +71136,6 @@
       "score": 82,
       "publishDate": "January 15th, 2025",
       "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 87,
-      "publishDate": "2025-01-14",
-      "url": "https://www.whatsonstage.com/news/the-other-place-at-the-national-theatre-review-emma-darcy-and-tobias-menzies-in-an-astonishing-take-on-antigone_1637832/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73069,20 +72801,6 @@
       "file": "telegraph--marianka-swain.json",
       "score": 90,
       "publishDate": "2023-11-11",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "six-the-musical-west-end-2021",
-      "file": "the-telegrap--marianka-swain.json",
-      "score": 91,
-      "publishDate": "November 11th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
       "findings": [
         {
@@ -77686,19 +77404,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "guardian--arifa-akbar.json",
-      "publishDate": null,
-      "url": "https://www.theguardian.com/stage/article/2024/jul/19/the-hot-wing-king-review-dorfman-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },

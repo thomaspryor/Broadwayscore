@@ -252,28 +252,81 @@ function isRoundupUrl(url) {
 function isVenueMismatch(url, showVenue, showCategory) {
   if (!url || !showVenue) return { isMismatch: false };
 
-  const urlLower = url.toLowerCase();
-
   // Only check WE shows — Broadway venue matching is different
   if (showCategory !== 'west-end' && showCategory !== 'off-west-end') return { isMismatch: false };
 
-  // Check for National Theatre in URL when show is not at NT
-  const isNtVenue = /national theatre|dorfman|lyttelton|olivier theatre/i.test(showVenue);
-  if (!isNtVenue && /national-theatre|dorfman-theatre|lyttelton-theatre/i.test(urlLower)) {
-    return { isMismatch: true, reason: 'URL mentions National Theatre but show is not at NT' };
-  }
+  // Strip hostname so we only match URL path (avoids false positives from domain names)
+  const urlPath = url.replace(/https?:\/\/[^/]+/, '').toLowerCase();
 
-  // Check for Chichester when show is not there
-  if (!/chichester/i.test(showVenue) && /chichester/i.test(urlLower)) {
-    return { isMismatch: true, reason: 'URL mentions Chichester but show venue is ' + showVenue };
-  }
+  // Each entry: [urlPattern, venueName, venueMatchPattern]
+  // urlPattern matches the URL path; venueMatchPattern matches the show's actual venue.
+  // If the URL matches but the venue does NOT match, it's a mismatch.
+  const VENUE_CHECKS = [
+    [/national-theatre|(?:^|[-/])dorfman(?:[-/]|$)|(?:^|[-/])lyttelton(?:[-/]|$)|(?:^|[-/])olivier-theatre/, 'National Theatre', /national theatre|dorfman|lyttelton|olivier theatre/i],
+    [/chichester-festival|chichester-theatre/, 'Chichester Festival Theatre', /chichester/i],
+    [/menier-chocolate/, 'Menier Chocolate Factory', /menier/i],
+    [/donmar-warehouse/, 'Donmar Warehouse', /donmar/i],
+    [/(?:^|[-/])almeida-theatre|[-/]almeida(?:[-/]|$)/, 'Almeida Theatre', /almeida/i],
+    [/young-vic(?:[-/]|$)/, 'Young Vic', /young vic/i],
+    [/(?:^|[-/])bridge-theatre/, 'Bridge Theatre', /bridge theatre/i],
+    [/royal-court(?:-theatre)?/, 'Royal Court', /royal court/i],
+    [/rose-theatre-kingston/, 'Rose Theatre Kingston', /rose theatre/i],
+    [/waterloo-east/, 'Waterloo East Theatre', /waterloo east/i],
+    [/hampstead-theatre/, 'Hampstead Theatre', /hampstead/i],
+    [/bush-theatre/, 'Bush Theatre', /bush theatre/i],
+  ];
 
-  // Check for Menier when show is not there
-  if (!/menier/i.test(showVenue) && /menier-chocolate/i.test(urlLower)) {
-    return { isMismatch: true, reason: 'URL mentions Menier Chocolate Factory but show venue is ' + showVenue };
+  for (const [urlPattern, venueName, venueMatch] of VENUE_CHECKS) {
+    if (urlPattern.test(urlPath)) {
+      // Skip "bridge-theatre" matching "cambridge-theatre" (substring false positive)
+      if (venueName === 'Bridge Theatre' && /cambridge/i.test(url)) continue;
+      if (!venueMatch.test(showVenue)) {
+        return { isMismatch: true, reason: 'URL mentions ' + venueName + ' but show venue is ' + showVenue };
+      }
+    }
   }
 
   return { isMismatch: false };
 }
 
-module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview, isRoundupUrl, isVenueMismatch };
+/**
+ * Detect when a review URL's slug clearly names a different show than expected.
+ * Catches cases where SERP discovery filed a review under the wrong show directory.
+ *
+ * @param {string} url - Review URL
+ * @param {string} showTitle - Expected show title from shows.json
+ * @returns {{ isMismatch: boolean, reason?: string, urlTitle?: string }}
+ */
+function isUrlTitleMismatch(url, showTitle) {
+  if (!url || !showTitle) return { isMismatch: false };
+
+  // Extract the likely show-title slug from the URL path
+  // Common patterns: /review-TITLE-venue/, /TITLE-review/, /review/TITLE/
+  const urlPath = url.replace(/https?:\/\/[^/]+/, '').toLowerCase();
+
+  // Normalize show title to URL-slug form for comparison
+  const titleSlug = showTitle.toLowerCase()
+    .replace(/['']/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  // Extract key words from show title (3+ char, non-common)
+  const STOP_WORDS = new Set(['the', 'and', 'for', 'with', 'from', 'that', 'this', 'review', 'theatre', 'theater', 'musical', 'play', 'london', 'broadway', 'west', 'end', 'new', 'york']);
+  const titleWords = titleSlug.split('-').filter(w => w.length >= 3 && !STOP_WORDS.has(w));
+
+  if (titleWords.length === 0) return { isMismatch: false };
+
+  // Check if ANY significant title word appears in the URL path
+  const matchCount = titleWords.filter(w => urlPath.includes(w)).length;
+  const matchRate = matchCount / titleWords.length;
+
+  // If zero title words match AND the URL path is long enough to contain a show name,
+  // this is likely a wrong-show URL
+  if (matchRate === 0 && urlPath.length > 30) {
+    return { isMismatch: true, reason: 'URL contains none of the show title words (' + titleWords.join(', ') + ')' };
+  }
+
+  return { isMismatch: false };
+}
+
+module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview, isRoundupUrl, isVenueMismatch, isUrlTitleMismatch };
