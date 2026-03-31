@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-31T01:22:45.897Z",
+    "generatedAt": "2026-03-31T01:35:43.178Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-scottsboro-boys-2010",
+      "showTitle": "The Scottsboro Boys",
+      "file": "northjerseycom--robert-feldberg.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Scottsboro Boys\" and discusses the plot, cast (Joshua Henry, Colman Domingo, Forrest McClendon, John Cullum), creative team (John Kander, Fred Ebb, David Thompson, Susan Stroman), and venue (Lyceum Theatre)."
+    }
+  ]
 }

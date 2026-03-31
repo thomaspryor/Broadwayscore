@@ -1,16 +1,34 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-31T01:22:44.607Z",
+    "generatedAt": "2026-03-31T01:35:40.995Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 67,
-    "classified": 0,
-    "wrongProduction": 0,
+    "total": 68,
+    "classified": 1,
+    "wrongProduction": 1,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 1,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-merchant-of-venice-1973",
+      "showTitle": "The Merchant of Venice",
+      "showYear": 1973,
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "outlet": "New Jersey Newsroom",
+      "criticName": "Michael Sommers",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, transfer from",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-merchant-of-venice-2010",
+      "reasoning": "The review mentions Daniel Sullivan as director, Al Pacino and Lily Rabe as cast, and the Broadhurst Theatre as the venue. These are all associated with the 2010 production."
+    }
+  ]
 }

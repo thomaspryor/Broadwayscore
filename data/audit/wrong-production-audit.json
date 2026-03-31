@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-31T01:29:03.597Z",
+  "timestamp": "2026-03-31T01:40:56.144Z",
   "stats": {
     "totalReviews": 31959,
     "alreadyFlagged": 11683,
     "dateGuardCatches": 14,
-    "directorMismatch": 927,
-    "tvFilmSignals": 3298,
-    "londonSignals": 978,
-    "offBroadwaySignals": 968,
+    "directorMismatch": 928,
+    "tvFilmSignals": 3304,
+    "londonSignals": 980,
+    "offBroadwaySignals": 969,
     "yearMismatch": 64,
     "noPublishDate": 6041
   },
@@ -1035,6 +1035,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 72,
+      "publishDate": null,
+      "url": "https://broadwayworld.com/showtime/viewblog.cfm?blogid=2913",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -13988,6 +14002,20 @@
     },
     {
       "showId": "everyday-rapture-2010",
+      "file": "ap--unknown.json",
+      "score": 78,
+      "publishDate": "April 29, 2010",
+      "url": "http://abcnews.go.com/Entertainment/wireStory?id=10514074",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "everyday-rapture-2010",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 42,
       "publishDate": "April 29, 2010",
@@ -15461,6 +15489,20 @@
       "score": 25,
       "publishDate": null,
       "url": "https://www.stagezine.com/fish-dark-half-baked/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "fish-in-the-dark-2015",
+      "file": "theater-life--patrick-christiano.json",
+      "score": 22,
+      "publishDate": null,
+      "url": "https://theaterlife.com/node/13574",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26387,6 +26429,20 @@
     },
     {
       "showId": "la-bete-1991",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.newjerseynewsroom.com/movies/populist-and-elitist-views-clash-in-la-bete",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from la-bete-2010"
+        }
+      ]
+    },
+    {
+      "showId": "la-bete-1991",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 36,
       "publishDate": null,
@@ -28275,6 +28331,20 @@
     },
     {
       "showId": "lombardi-2010",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 72,
+      "publishDate": null,
+      "url": "https://broadwayworld.com/showtime/viewblog.cfm?blogid=2925",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "lombardi-2010",
       "file": "variety--david-rooney.json",
       "score": 45,
       "publishDate": "October 21, 2010",
@@ -28368,6 +28438,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "long-days-journey-into-night-2016",
+      "file": "out-magazine--michael-musto.json",
+      "score": 72,
+      "publishDate": "May 2nd, 2016",
+      "url": "http://www.out.com/michael-musto/2016/5/02/jesse-tyler-ferguson-wont-serve-you-legumes-fully-committed",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -38514,6 +38598,20 @@
       "showId": "priscilla-queen-of-the-desert-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 81,
+      "publishDate": "March 20, 2011",
+      "url": "http://www.hollywoodreporter.com/review/priscilla-queen-desert-theater-review-169436",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "priscilla-queen-of-the-desert-2011",
+      "file": "hollywood-reporter--unknown.json",
+      "score": 80,
       "publishDate": "March 20, 2011",
       "url": "http://www.hollywoodreporter.com/review/priscilla-queen-desert-theater-review-169436",
       "findings": [
@@ -63816,6 +63914,20 @@
     },
     {
       "showId": "elling-2010",
+      "file": "hollywood-reporter--unknown.json",
+      "score": 42,
+      "publishDate": "November 21, 2010",
+      "url": "http://www.hollywoodreporter.com/review/elling-theater-review-47935",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "elling-2010",
       "file": "variety--marilyn-stasio.json",
       "score": 45,
       "publishDate": null,
@@ -72487,6 +72599,19 @@
     },
     {
       "showId": "rent-1996",
+      "file": "curtainup--unknown-1999.json",
+      "publishDate": "1999-01-01",
+      "url": "https://www.curtainup.com/rent.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "rent-1996",
       "file": "nypost--clive-barnes-1996-offbway.json",
       "score": 80,
       "publishDate": "1996-02-25",
@@ -80092,6 +80217,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-2011",
+      "file": "chicagotribune--unknown.json",
+      "score": 88,
+      "publishDate": "April 14, 2011",
+      "url": "https://leisureblogs.chicagotribune.com/the_theater_loop/2011/04/war-horse-broadway-review-national-theatre-great-britain.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
