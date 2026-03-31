@@ -331,7 +331,9 @@ const ShowListCard = memo(function ShowListCard({
     // Browse variant with rank badge: rank outside the link
     return (
       <div className="flex items-center gap-3">
-        <RankBadge rank={rank} />
+        <div className="hidden sm:block">
+          <RankBadge rank={rank} />
+        </div>
         <Link
           href={`/show/${show.slug}`}
           className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
