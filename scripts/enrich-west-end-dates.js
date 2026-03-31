@@ -591,6 +591,58 @@ async function main() {
     }
   }
 
+  // Phase 4: Infer press nights from review dates (fallback)
+  // For shows where TM/PB had no data and the source is still unconfirmed,
+  // use the mode (most common) review publish date as the press night.
+  // Guards: 3+ dated reviews, mode date has 2+ reviews, gap 8-90 days.
+  if (fixUnconfirmed) {
+    console.log('');
+    console.log('--- PHASE 4: INFER FROM REVIEW DATES ---');
+    const reviewsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'reviews.json'), 'utf8'));
+    const allReviews = reviewsData.reviews || [];
+    let inferred = 0;
+
+    for (const show of candidateShows) {
+      if (changes.some(c => c.id === show.id)) continue;
+      if (!UNCONFIRMED_SOURCES.has(show.openingDateSource)) continue;
+      if (!show.openingDate) continue;
+
+      const showReviews = allReviews.filter(r => r.showId === show.id);
+      const validDates = showReviews
+        .map(r => r.publishDate)
+        .filter(d => d && !isNaN(new Date(d).getTime()) && new Date(d) > new Date(show.openingDate))
+        .sort();
+
+      if (validDates.length < 3) continue;
+
+      const dateCounts = {};
+      for (const d of validDates) {
+        const iso = new Date(d).toISOString().split('T')[0];
+        dateCounts[iso] = (dateCounts[iso] || 0) + 1;
+      }
+      const modeEntry = Object.entries(dateCounts).sort((a, b) => b[1] - a[1])[0];
+      const modeDate = modeEntry[0];
+      const modeCount = modeEntry[1];
+      const gapDays = Math.round((new Date(modeDate) - new Date(show.openingDate)) / 86400000);
+
+      if (gapDays <= 7) continue;
+      if (gapDays > 90) continue;
+      if (modeCount < 2) continue;
+
+      console.log(`  INFER ${show.title}: mode review date ${modeDate} (${modeCount}x) is ${gapDays}d after opening ${show.openingDate}`);
+      changes.push({
+        show: show.title, slug: show.slug, id: show.id,
+        changes: [
+          { field: 'previewsStartDate', old: show.previewsStartDate, new: show.openingDate },
+          { field: 'openingDate', old: show.openingDate, new: modeDate },
+          { field: 'openingDateSource', old: show.openingDateSource, new: 'inferred-from-reviews' },
+        ],
+      });
+      inferred++;
+    }
+    console.log(`Inferred ${inferred} press night(s) from review dates`);
+  }
+
   // Report
   console.log('');
   console.log('='.repeat(60));
