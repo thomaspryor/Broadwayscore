@@ -60,15 +60,22 @@ function loadShows(): Map<string, string> {
 
   // data.shows is an object keyed by index, not an array
   // Playbill only covers Broadway — skip West End, Off-Broadway, Off-West-End
-  for (const show of Object.values(data.shows) as any[]) {
-    if (!show.slug || !show.title) continue;
-    if (show.id?.includes('west-end') || show.id?.includes('off-broadway') || show.id?.includes('off-west-end')) continue;
+  // Sort by openingDate descending so the most recent production wins title collisions
+  const broadwayShows = (Object.values(data.shows) as any[])
+    .filter((s: any) => s.slug && s.title &&
+      !s.id?.includes('west-end') && !s.id?.includes('off-broadway') && !s.id?.includes('off-west-end'))
+    .sort((a: any, b: any) => (b.openingDate || '').localeCompare(a.openingDate || ''));
+
+  for (const show of broadwayShows) {
     showMap.set(show.slug, show.slug);
-    showMap.set(normalizeTitle(show.title), show.slug);
+    // Title-based keys: only set if not already claimed by a more recent production
+    const normTitle = normalizeTitle(show.title);
+    if (!showMap.has(normTitle)) showMap.set(normTitle, show.slug);
     const titleSlug = createSlug(show.title);
-    showMap.set(titleSlug, show.slug);
+    if (!showMap.has(titleSlug)) showMap.set(titleSlug, show.slug);
     const withoutThe = show.title.replace(/^The\s+/i, '');
-    showMap.set(normalizeTitle(withoutThe), show.slug);
+    const normWithout = normalizeTitle(withoutThe);
+    if (!showMap.has(normWithout)) showMap.set(normWithout, show.slug);
   }
 
   // Manual mappings for Playbill title variations

@@ -264,7 +264,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const goldListMemberships = getShowSeasonGoldLists(show.id);
   const blogReview = getBlogReviewByShowSlug(show.slug);
   const relatedShowsOpen = getRelatedShowsOpen(show);
-  const relatedShowsClosed = getRelatedShowsClosed(show);
+  const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end') ? getRelatedShowsClosed(show) : [];
   const otherProductions = getOtherProductions(show);
   const comparisons = getComparisonsForShow(show.slug);
 
@@ -1263,7 +1263,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Related Shows */}
         <RelatedShows shows={relatedShowsOpen} title="Open Shows You Might Like" />
-        <RelatedShows shows={relatedShowsClosed} title="Closed Shows You Might Like" />
+        {show.category !== 'west-end' && show.category !== 'off-west-end' && (
+          <RelatedShows shows={relatedShowsClosed} title="Closed Shows You Might Like" />
+        )}
 
         {/* Compare This Show */}
         {comparisons.length > 0 && (
