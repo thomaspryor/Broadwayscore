@@ -133,9 +133,12 @@ export function getGuideList(slug: string): GuideList | null {
   if (config.sort === 'score') {
     filtered.sort((a, b) => (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0));
   } else if (config.sort === 'opening-date') {
-    filtered.sort((a, b) =>
-      new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
-    );
+    filtered.sort((a, b) => {
+      if (!a.openingDate && !b.openingDate) return 0;
+      if (!a.openingDate) return 1;
+      if (!b.openingDate) return -1;
+      return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+    });
   } else if (config.sort === 'closing-date') {
     filtered.sort((a, b) => {
       if (!a.closingDate) return 1;

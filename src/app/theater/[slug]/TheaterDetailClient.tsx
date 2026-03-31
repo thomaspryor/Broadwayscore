@@ -49,7 +49,12 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
     const list = [...filtered];
     switch (sortMode) {
       case 'newest':
-        return list.sort((a, b) => new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime());
+        return list.sort((a, b) => {
+          if (!a.openingDate && !b.openingDate) return 0;
+          if (!a.openingDate) return 1;
+          if (!b.openingDate) return -1;
+          return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+        });
       case 'highest': {
         const getScore = (s: TheaterShow) =>
           scoreMode === 'audience' ? (s.audienceCombinedScore ?? -1) : (s.criticScore?.score ?? -1);

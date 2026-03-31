@@ -351,9 +351,12 @@ export function getAllTheaters(): Theater[] {
         structuredTips: theaterMeta?.structuredTips,
         images: theaterMeta?.images,
         currentShow,
-        allShows: data.shows.sort((a, b) =>
-          new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
-        ),
+        allShows: data.shows.sort((a, b) => {
+          if (!a.openingDate && !b.openingDate) return 0;
+          if (!a.openingDate) return 1;
+          if (!b.openingDate) return -1;
+          return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+        }),
         showCount: data.shows.length,
       };
     }).sort((a, b) => b.showCount - a.showCount);

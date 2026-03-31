@@ -254,7 +254,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
   const upcomingShows = useMemo(() => {
     return shows
       .filter(show => show.status === 'upcoming' || show.status === 'previews')
-      .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime())
+      .sort((a, b) => {
+        if (!a.openingDate && !b.openingDate) return 0;
+        if (!a.openingDate) return 1;
+        if (!b.openingDate) return -1;
+        return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
+      })
       .slice(0, 20);
   }, [shows]);
 
@@ -350,6 +355,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
           return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
         case 'recent':
         default:
+          if (!a.openingDate && !b.openingDate) return 0;
+          if (!a.openingDate) return 1;
+          if (!b.openingDate) return -1;
           return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
       }
     });
