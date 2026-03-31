@@ -569,7 +569,7 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 2d. Daily Mail: star rating in image filename (rating_showbiz_N.gif)
+  // 2d. Daily Mail: star rating in image filename (rating_showbiz_N.gif) — old format
   const dailyMailMatch = html.match(/rating_showbiz_(\d)\.gif/);
   if (dailyMailMatch) {
     const rating = parseInt(dailyMailMatch[1]);
@@ -579,6 +579,23 @@ function extractUKStarRating(html, text) {
         normalizedScore: starsToNumeric(rating, 5),
         source: 'dailymail-rating-img'
       };
+    }
+  }
+
+  // 2d2. Daily Mail: CSS star classes (new format) — mol-ratings-solid with rating-star selected
+  if (html.includes('mol-ratings') || html.includes('rating-star')) {
+    const ratingBlock = html.match(/mol-ratings[^"]*"[^>]*>[\s\S]*?<\/p>/i);
+    if (ratingBlock) {
+      const selected = (ratingBlock[0].match(/rating-star selected/g) || []).length;
+      // Count individual star spans: "rating-star " (with space/quote, not "rating-stars")
+      const total = (ratingBlock[0].match(/rating-star[\s"]/g) || []).length;
+      if (selected > 0 && total === 5) {
+        return {
+          originalScore: `${selected}/5 stars`,
+          normalizedScore: starsToNumeric(selected, 5),
+          source: 'dailymail-css-stars'
+        };
+      }
     }
   }
 
@@ -1129,7 +1146,7 @@ function scoreToThumb(score) {
 const OUTLET_VERIFIED_SOURCES = new Set([
   'json-ld', 'meta-itemprop', 'guardian-api', 'guardian-json-ld', 'guardian-svg-stars',
   'wos-star-images', 'stage-star-svg',
-  'telegraph-svg', 'telegraph-svg-stars', 'dailymail-rating-img', 'fivestar-widget',
+  'telegraph-svg', 'telegraph-svg-stars', 'dailymail-rating-img', 'dailymail-css-stars', 'fivestar-widget',
   'star-class', 'unicode-stars', 'numeric-stars', 'original-star-rating',
   'timeout-star-widget', 'timeout-svg-stars',
   'lbo-star-rating', 'express-star-count', 'standard-star-count', 'dailymail-star-count',
