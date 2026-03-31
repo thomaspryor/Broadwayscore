@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T03:58:32.118Z",
+  "timestamp": "2026-03-31T04:11:37.690Z",
   "stats": {
-    "totalReviews": 31943,
-    "alreadyFlagged": 11681,
+    "totalReviews": 31945,
+    "alreadyFlagged": 11745,
     "dateGuardCatches": 14,
-    "directorMismatch": 928,
-    "tvFilmSignals": 3304,
-    "londonSignals": 979,
-    "offBroadwaySignals": 969,
+    "directorMismatch": 922,
+    "tvFilmSignals": 3301,
+    "londonSignals": 971,
+    "offBroadwaySignals": 967,
     "yearMismatch": 64,
-    "noPublishDate": 6032
+    "noPublishDate": 5982
   },
   "findings": [
     {
@@ -3248,20 +3248,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
-      "file": "nytg--mark-shenton.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/review-of-all-my-sons-starring-annette-bening-tracy-letts-on-broadway",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
         }
       ]
     },
@@ -6599,25 +6585,6 @@
     },
     {
       "showId": "betrayal-2019",
-      "file": "nysr--melissa-rose-bernardo.json",
-      "score": 88,
-      "publishDate": "2019-09-05T20:16:16",
-      "url": "https://nystagereview.com/2019/09/05/betrayal-less-is-more-in-this-london-born-revival/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"peter hall\" from betrayal-1980"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
       "file": "nysr--steven-suskin.json",
       "score": 78,
       "publishDate": "2019-09-05T20:15:22",
@@ -8473,20 +8440,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "nytg--amelia-merrill.json",
-      "score": 61,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/cabaret-broadway-review-eddie-redmayne-gayle-rankin",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
         }
       ]
     },
@@ -13070,6 +13023,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "amny--matt-windman.json",
+      "score": 45,
+      "publishDate": "2026-03-30",
+      "url": "https://www.amny.com/entertainment/review-dog-day-afternoon/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -24687,20 +24654,6 @@
       ]
     },
     {
-      "showId": "jesus-christ-superstar-2012",
-      "file": "independent--michael-coveney.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-o2-arena-london-8164001.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
       "showId": "jitney-2017",
       "file": "front-row-center--tulis-mccall.json",
       "score": 58,
@@ -29120,6 +29073,7 @@
     {
       "showId": "mamma-mia-west-end-2021",
       "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 76,
       "publishDate": "2025-08-15",
       "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html",
       "findings": [
@@ -30046,6 +30000,7 @@
     {
       "showId": "matilda-the-musical-west-end-2021",
       "file": "nytimes--ben-brantley.json",
+      "score": 92,
       "publishDate": "2013-04-12",
       "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shubert-theater.html?pagewanted=all&_r=2&",
       "findings": [
@@ -31493,20 +31448,6 @@
     },
     {
       "showId": "miss-saigon-2017",
-      "file": "stagezine--david-nounou.json",
-      "score": 32,
-      "publishDate": null,
-      "url": "https://www.stagezine.com/miss-saigon-returns-to-broadway-via-london/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "miss-saigon-2017",
       "file": "theater-life--barry-gordin.json",
       "score": 82,
       "publishDate": "2017-05-06T15:07:02",
@@ -32379,48 +32320,6 @@
       "score": 82,
       "publishDate": "2022-01-21",
       "url": "https://theartsdesk.com/theatre/moulin-rouge-musical-piccadilly-theatre-review-spectacular-escapism",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "broadwayworld--jay-irwin.json",
-      "score": 40,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/chicago/article/BWW-CHICAGO-REVIEW-NATIONAL-TOUR-OF-MOULIN-ROUGE-THE-MUSICAL-at-Nederlander-Theatre-20220422",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "broadwayworld--michael-rabice.json",
-      "score": 73,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/chicago/article/BWW-CHICAGO-REVIEW-NATIONAL-TOUR-OF-MOULIN-ROUGE-THE-MUSICAL-at-Nederlander-Theatre-20220422",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "broadwayworld--roy-berko.json",
-      "score": 73,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/chicago/article/BWW-CHICAGO-REVIEW-NATIONAL-TOUR-OF-MOULIN-ROUGE-THE-MUSICAL-at-Nederlander-Theatre-20220422",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45747,20 +45646,6 @@
     },
     {
       "showId": "tammy-faye-2024",
-      "file": "thestage--sam-marlowe.json",
-      "score": 68,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/long-reviews/tammy-faye-review-at-the-almeida-theatre-london-from-james-graham-elton-john-and-jake-shears",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "tammy-faye-2024",
       "file": "thewrap--robert-hofler.json",
       "score": 15,
       "publishDate": "November 14, 2024",
@@ -52909,25 +52794,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "nytg--diep-tran.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/everything-you-need-to-know-about-the-phantom-of-the-opera-on-broadway",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -65457,20 +65323,6 @@
     },
     {
       "showId": "groundhog-day-2017",
-      "file": "guardian--jesse-green.json",
-      "score": 79,
-      "publishDate": "April 18, 2017",
-      "url": "https://www.theguardian.com/stage/2023/jun/09/groundhog-day-review-old-vic-london-tim-minchin",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "groundhog-day-2017",
       "file": "huffpost--steven-suskin.json",
       "score": 68,
       "publishDate": null,
@@ -65564,20 +65416,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "groundhog-day-2017",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 95,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/london-theatre/reviews/review-groundhog-day-old-vic-tim-minchin_41556.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -68542,20 +68380,6 @@
     },
     {
       "showId": "king-charles-iii-2015",
-      "file": "time--richard-zoglin.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://time.com/3457265/king-charles-iii-theater-review-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "king-charles-iii-2015",
       "file": "variety--david-benedict.json",
       "score": 61,
       "publishDate": "2015-11-02",
@@ -69647,20 +69471,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "machinal-2014",
-      "file": "thestage--sam-marlowe.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/reviews/machinal-review-at-almeida-theatre-london--captivating-intense-and-resonant",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -71271,20 +71081,6 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
-      "file": "nytg--austin-fimmano.json",
-      "score": 89,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
       "file": "the-telegrap--dominic-cavendish.json",
       "score": 82,
       "publishDate": "December 19th, 2025",
@@ -72171,20 +71967,6 @@
       "score": 81,
       "publishDate": "April 23, 2024",
       "url": "https://www.theguardian.com/stage/2022/jul/17/patriots-almeida-peter-morgan-tom-hollander-the-tempest-ustinov-theatre-royal-bath-deborah-warner-king-lear-shakespeare-globe-kathryn-hunter-michelle-terry",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "patriots-2024",
-      "file": "guardian--michael-billington.json",
-      "score": 79,
-      "publishDate": "April 23, 2024",
-      "url": "https://www.theguardian.com/stage/2022/jul/13/patriots-review-almeida-theatre-london-tom-hollander",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76739,20 +76521,6 @@
       ]
     },
     {
-      "showId": "the-encounter-2016",
-      "file": "whatsonstage--daisy-bowie-sell.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/london-theatre/reviews/the-encounter-barbican-theatre-_39747.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
       "showId": "the-father-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 72,
@@ -79318,20 +79086,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/london-theatre/news/glenn-close-elaine-may-new-york-mother-maid_47912.html/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
