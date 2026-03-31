@@ -14,7 +14,16 @@
     "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
     "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
     "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
-    "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json"
+    "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+    "dog-day-afternoon-2026/hollywood-reporter--unknown.json",
+    "dog-day-afternoon-2026/nytimes--unknown.json",
+    "dog-day-afternoon-2026/variety--unknown.json",
+    "dog-day-afternoon-2026/deadline--unknown.json",
+    "dog-day-afternoon-2026/ew--unknown.json",
+    "dog-day-afternoon-2026/new-york-sun--unknown.json",
+    "dog-day-afternoon-2026/theatermania--unknown.json",
+    "dog-day-afternoon-2026/thewrap--unknown.json",
+    "dog-day-afternoon-2026/timeout--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -29,7 +38,8 @@
     "ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json",
     "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json",
     "indian-princesses-off-broadway-2025/theatermania--linda-buchwald.json",
-    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -42,20 +52,32 @@
       "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
       "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
       "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
-      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json"
+      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json",
+      "dog-day-afternoon-2026/ew--unknown.json",
+      "dog-day-afternoon-2026/new-york-sun--unknown.json",
+      "dog-day-afternoon-2026/theatermania--unknown.json",
+      "dog-day-afternoon-2026/timeout--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/titus-andronicus-off-broadway-2026/amny--matt-windman.json",
       "titus-andronicus-off-broadway-2026/amny--matt-windman.json",
       "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
-      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/dog-day-afternoon-2026/hollywood-reporter--unknown.json",
+      "dog-day-afternoon-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/variety--unknown.json",
+      "dog-day-afternoon-2026/variety--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/deadline--unknown.json",
+      "dog-day-afternoon-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
       "bigfoot-off-broadway-2026/timeout--unknown.json",
-      "data-off-broadway-2026/timeout--unknown.json"
+      "data-off-broadway-2026/timeout--unknown.json",
+      "dog-day-afternoon-2026/nytimes--unknown.json",
+      "dog-day-afternoon-2026/thewrap--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -67,7 +89,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "jackals-off-broadway-2026/times-uk--anne-treneman.json",
+  "lastProcessed": "dog-day-afternoon-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -90,6 +112,39 @@
       "t": "2026-03-31T09:24:53.849Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T10:56:16.106Z",
+      "event": "bb-session",
+      "session": "c2b26d8f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dog-day-afternoon-review-theate"
+    },
+    {
+      "t": "2026-03-31T10:56:17.466Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T10:56:46.574Z",
+      "event": "bb-session",
+      "session": "4a4c8293",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
+    },
+    {
+      "t": "2026-03-31T10:56:47.846Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-31T10:57:01.878Z",
+      "event": "bb-session",
+      "session": "4ca4c1f0",
+      "url": "https://deadline.com/2026/03/broadway-box-office-cats-jellicle-ball-dog-day-afte"
+    },
+    {
+      "t": "2026-03-31T10:57:03.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
