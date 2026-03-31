@@ -1136,6 +1136,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'text-pattern-verified', 'bww-star-image',
   'theatre-weekly-star-image', 'radiotimes-page-json', 'radiotimes-svg-stars',
   'lbo-css-stars', 'atd-emoji-stars',
+  'text-pattern', 'css-stars', 'word-stars', 'star-rating',
 ]);
 
 module.exports = {
