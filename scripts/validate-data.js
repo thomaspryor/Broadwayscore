@@ -1847,6 +1847,85 @@ function validateTourReviewContamination() {
   }
 }
 
+/**
+ * Detect Broadway/US reviews incorrectly in West End show directories.
+ * Catches: NYC outlet URLs, "broadway" in URL path, known US-only outlets.
+ * Only checks unflagged files (wrongProduction/wrongShow not set).
+ */
+function validateCrossMarketSourceFiles() {
+  info('Checking review source files for cross-market contamination (Broadway in WE)...');
+
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  if (!fs.existsSync(reviewTextsDir)) return;
+
+  // Patterns that strongly indicate a Broadway/US review
+  const BROADWAY_URL_PATTERNS = [
+    /\/newyork\//i,
+    /\/new-york\//i,
+    /newyork\.timeout\.com/i,
+    /broadway-review/i,
+    /broadway-musical-rev/i,
+    /-broadway-/i,
+    /\/broadway\//i,
+    /-on-broadway-/i,
+    /opens-on-broadway/i,
+  ];
+
+  // US-only outlets that never review WE shows (their WE coverage = different critics/URLs)
+  const US_ONLY_OUTLET_IDS = new Set([
+    'nypost', 'nydailynews', 'chicagotribune', 'usatoday',
+    'thewrap', 'cititour', 'sea-coast-online', 'press-herald',
+  ]);
+
+  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
+    try { return d.includes('west-end') && fs.statSync(path.join(reviewTextsDir, d)).isDirectory(); }
+    catch { return false; }
+  });
+
+  const problems = [];
+
+  for (const showDir of showDirs) {
+    const showPath = path.join(reviewTextsDir, showDir);
+    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
+
+    for (const f of files) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(showPath, f), 'utf8'));
+        if (data.wrongProduction || data.wrongShow || data.fabricatedEntry) continue;
+
+        const url = (data.url || '').toLowerCase();
+        const outletId = (data.outletId || '').toLowerCase();
+
+        // Check US-only outlet
+        if (US_ONLY_OUTLET_IDS.has(outletId)) {
+          problems.push({ show: showDir, file: f, reason: `US-only outlet "${outletId}" in WE show` });
+          continue;
+        }
+
+        // Check Broadway URL patterns
+        for (const pat of BROADWAY_URL_PATTERNS) {
+          if (pat.test(url)) {
+            // Exclude legitimate WE URLs that happen to mention Broadway
+            // (e.g., BWW articles about WE shows with "broadway" in domain)
+            if (url.includes('broadwayworld.com') && !url.includes('/broadway/')) continue;
+            problems.push({ show: showDir, file: f, reason: `Broadway URL pattern in WE show: ${pat}` });
+            break;
+          }
+        }
+      } catch { /* skip malformed */ }
+    }
+  }
+
+  if (problems.length === 0) {
+    ok('No cross-market contamination found (Broadway reviews in WE shows)');
+  } else {
+    for (const p of problems) {
+      warn(`Cross-market: "${p.show}/${p.file}" — ${p.reason}`);
+    }
+    warn(`${problems.length} unflagged Broadway/US reviews in WE show directories`);
+  }
+}
+
 function validateReviewTextDuplicates(shows) {
   info('Checking for duplicate review-text files...');
 
@@ -3412,6 +3491,8 @@ function runValidation() {
   validateLotteryRushData(shows);
   console.log('');
   validateTourReviewContamination();
+  console.log('');
+  validateCrossMarketSourceFiles();
   console.log('');
   validateLastUpdatedFormats();
 
