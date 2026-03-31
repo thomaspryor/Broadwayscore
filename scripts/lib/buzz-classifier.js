@@ -103,25 +103,33 @@ For each comment, determine:
    - Sharing personal experience of watching the show
 
    ✗ NO - Mark NOT relevant if:
-   - The person has NOT actually seen the show — e.g., "I refuse to see it", "I won't go", "I've heard it's bad", "planning to see it"
+   - The person has NOT actually seen the show yet — e.g., "I refuse to see it", "I won't go", "I've heard it's bad", "planning to see it", "I'm about to see it", "seeing it tonight", "going tomorrow", "can't wait to see it"
    - Boycott or protest sentiment about the show's creators, source material author, or associated artists — not a review of the production itself
    - Opinions about source material (book, film, original artist) rather than the theatrical production — e.g., "the book was terrible" or "I don't support the author"
    - Comment is about a DIFFERENT show by name - e.g., "I saw Hamilton..." or "Book of Mormon was better"
    - Industry talk: injuries, cast contracts, working conditions, backstage drama, closing notices
    - Technical theater: stage rakes, set measurements, lighting rigs, costumes, props
    - Meta discussion: ticket prices, lottery, seating, scheduling
+   - Venue/logistics: stage door experience, usher behavior, concessions, bathrooms, crowd behavior, accessibility — these are about the venue, not the show
    - Just mentions "${showTitle}" in passing without an audience opinion
 
-   IMPORTANT: The person MUST have actually attended/seen the show. "I refuse to see it" or "I'll never give them my money" is NOT an audience reaction. If comment discusses a different show BY NAME, mark not relevant. But if it says "I saw it" or "the show" without naming another show, assume it's about "${showTitle}".
+   IMPORTANT: The person MUST have ALREADY attended/seen the show (past tense). Future tense ("I'm going to see it") or present anticipation ("about to see it") = NOT relevant. If comment discusses a different show BY NAME, mark not relevant. But if it says "I saw it" or "the show" without naming another show, assume it's about "${showTitle}".
 
 2. sentiment (only if is_relevant is true):
-   - enthusiastic: Strong positive - superlatives like amazing, incredible, best, 10/10, life-changing, cried happy tears
-   - positive: Liked it - enjoyed, good, fun, recommend, worth seeing, glad I went, seeing it again, taking friends/family
-   - mixed: Explicitly mentions both good AND bad aspects in the same comment
-   - negative: Disappointed, boring, not worth it, wouldn't recommend, waste of money, walked out
-   - neutral: ONLY if truly no opinion expressed (rare) - just factual statements with zero sentiment
+   - enthusiastic: Strong positive - superlatives like amazing, incredible, best, 10/10, life-changing, cried happy tears, "blown away"
+   - positive: Liked it - enjoyed, good, fun, recommend, worth seeing, glad I went. Also: sharing a highlight moment, describing participation in interactive elements, or any implied enjoyment
+   - mixed: Explicitly mentions BOTH good AND bad aspects in the SAME comment — e.g., "loved the performances but the story didn't work"
+   - negative: Disappointed, boring, not worth it, wouldn't recommend, waste of money, walked out, regretted going
+   - neutral: ONLY for purely factual statements with absolutely zero sentiment (extremely rare — almost every audience reaction has some sentiment)
 
-   NOTE: If someone says "saw it twice" or "going back" or "taking my mom", that implies POSITIVE sentiment - they wouldn't return if they didn't like it. Don't mark these neutral.
+   POSITIVE SIGNALS — do NOT mark these neutral:
+   - "Saw it twice" / "going back" / "taking my mom" → positive (they wouldn't return if they didn't like it)
+   - Sharing a specific moment they enjoyed or found moving → positive or enthusiastic
+   - Describing participation in interactive elements (chosen by performer, brought on stage) → positive (this is a highlight)
+   - Answering "should I see it?" affirmatively → positive
+   - Sharing the experience without complaint → positive (people don't share neutral experiences)
+
+   If you're unsure between neutral and positive, choose positive. Neutral should be <5% of relevant comments.
 ${schemaNote}
 Comments to classify:
 ${formatted}
