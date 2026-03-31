@@ -15,7 +15,7 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
-- Pushes touching `src/`, `public/`, config, key `data/*.json` → auto-deploy (~13 min).
+- Pushes touching `src/`, `public/`, config, key `data/*.json` → auto-deploy (~5 min, up to ~10 min if queued behind another deploy).
 - Manual deploy: `gh workflow run "Deploy to Vercel"`.
 - **"Pushed" ≠ "Deployed"** — confirm workflow triggered. If failed → fix. If in-progress → tell user the run ID.
 
