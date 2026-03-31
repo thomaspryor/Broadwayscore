@@ -257,7 +257,7 @@ async function sweepWET(show) {
         outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
         critic: r.critic || 'Unknown', stars: r.stars, starsOutOf: 5,
         excerpt: r.excerpt || '', url: r.reviewUrl || '',
-        source: 'westendtheatre', scoreSource: 'westendtheatre-star-rating',
+        source: 'westendtheatre',
       }));
       if (reviews.length > 0) return reviews;
     } catch {}
@@ -345,7 +345,7 @@ async function sweepWET(show) {
           outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
           critic: r.critic || 'Unknown', stars: r.stars, starsOutOf: 5,
           excerpt: r.excerpt || '', url: r.reviewUrl || post.link || '',
-          source: 'westendtheatre', scoreSource: 'westendtheatre-star-rating',
+          source: 'westendtheatre',
         }));
 
         // Archive the rendered page

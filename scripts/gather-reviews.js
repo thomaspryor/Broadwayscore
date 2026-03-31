@@ -2824,8 +2824,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
               outlet: r.outlet, outletId: r.outletId || normalizeOutlet(r.outlet),
               criticName: r.critic || 'Unknown', url: r.url || '',
               excerpt: r.excerpt || '',
-              score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
-              scoreSource: r.stars ? r.scoreSource || 'westendtheatre-star-rating' : undefined,
+              // WET rates shows independently — don't use as outlet's score
+              wetStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
               source: 'westendtheatre', publishDate: null,
             });
           }
@@ -2979,8 +2979,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
                   outlet: r.outlet, outletId: r.outletId,
                   criticName: r.criticName, url: r.url,
                   excerpt: r.excerpt,
-                  score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
-                  scoreSource: r.stars ? 'westendtheatre-star-rating' : undefined,
+                  // WET rates shows independently — don't use as outlet's score
+                  wetStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
                   source: 'westendtheatre', publishDate: post.date || null,
                 });
               }
@@ -2988,7 +2988,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
               const wetArchDir = path.join(archBase, 'westendtheatre');
               if (!fs.existsSync(wetArchDir)) fs.mkdirSync(wetArchDir, { recursive: true });
               fs.writeFileSync(path.join(wetArchDir, `${showId}.json`),
-                JSON.stringify({ reviews: reviews.map(r => ({ ...r, source: 'westendtheatre', scoreSource: 'westendtheatre-star-rating' })), fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
+                JSON.stringify({ reviews: reviews.map(r => ({ ...r, source: 'westendtheatre' })), fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
               break;
             }
           }

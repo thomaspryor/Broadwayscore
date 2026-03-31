@@ -681,8 +681,8 @@ async function runAggregators(show) {
               criticName: r.critic,
               url: r.url || post.link || '',
               excerpt: '',
-              score: Math.round((r.stars / 5) * 100),
-              scoreSource: 'westendtheatre-star-rating',
+              // WET rates shows independently — don't use as outlet's score
+              wetStars: r.stars ? `${r.stars}/5` : undefined,
               source: 'westendtheatre',
               // Pass roundup post date so createReviewFile can validate against opening date
               publishDate: post.date ? post.date.slice(0, 10) : undefined,
