@@ -378,11 +378,17 @@ function getBestScore(data, opts = {}) {
   // Only downgrade if: aggregator source + WE + NOT outlet-verified + NOT a known star outlet
   const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified && !isKnownStarOutlet;
 
-  if (data.originalScore && !downgradeShowScore) {
+  // Effective score: use originalScore, or for known star outlets, treat aggregatorStars
+  // as the outlet's own published rating (aggregators relay "Guardian: 4/5" etc.)
+  const effectiveOriginalScore = data.originalScore
+    || (data.aggregatorStars && isKnownStarOutlet ? data.aggregatorStars : null);
+  const effectiveScoreLabel = data.originalScore ? 'originalScore' : 'aggregatorStars (known star outlet)';
+
+  if (effectiveOriginalScore && !downgradeShowScore) {
     if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon' || data.scoreSource === 'star-icon-cleared') {
       inc('skippedLowConfidenceOriginal');
     } else {
-      const parsed = parseOriginalScore(data.originalScore, data.outletId);
+      const parsed = parseOriginalScore(effectiveOriginalScore, data.outletId);
       if (parsed !== null) {
         const llm = data.llmScore && data.llmScore.score;
         const llmConf = data.llmScore && data.llmScore.confidence;
@@ -401,7 +407,7 @@ function getBestScore(data, opts = {}) {
           const llmBucket = llm >= 70 ? 'positive' : llm <= 40 ? 'negative' : 'mixed';
           if (parsedBucket !== llmBucket) {
             flagForHumanReview(data, 'originalScore-llm-conflict',
-              `originalScore "${data.originalScore}" (=${parsed}, bucket=${parsedBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})` +
+              `${effectiveScoreLabel} "${effectiveOriginalScore}" (=${parsed}, bucket=${parsedBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})` +
               (isHighReliability ? ` [HIGH-reliability: ${data.scoreSource} — kept]` : ' [LOW-reliability — LLM override]'));
             // Only let LLM override LOW-reliability extractions (css-stars reading
             // wrong element, generic pattern matches). HIGH-reliability sources
