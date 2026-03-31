@@ -166,6 +166,20 @@ function shouldRegenerate(existing, reviews) {
     }
   }
 
+  // Trigger 5: Bucket breakdown changed (e.g., review rescored from Mixed to Positive)
+  if (existing.bucketBreakdown) {
+    const currentBuckets = { positive: 0, mixed: 0, negative: 0 };
+    for (const r of scoredReviews) {
+      if (r.score >= 61) currentBuckets.positive++;
+      else if (r.score >= 40) currentBuckets.mixed++;
+      else currentBuckets.negative++;
+    }
+    const prev = existing.bucketBreakdown;
+    if (prev.positive !== currentBuckets.positive || prev.mixed !== currentBuckets.mixed || prev.negative !== currentBuckets.negative) {
+      return { should: true, reason: `bucket breakdown changed (P:${prev.positive}/M:${prev.mixed}/N:${prev.negative} → P:${currentBuckets.positive}/M:${currentBuckets.mixed}/N:${currentBuckets.negative})` };
+    }
+  }
+
   return { should: false };
 }
 
@@ -314,7 +328,7 @@ async function main() {
       const totalScored = breakdown.positive + breakdown.mixed + breakdown.negative;
       const allPositive = totalScored > 0 && breakdown.mixed === 0 && breakdown.negative === 0;
       const NEGATIVE_KEYWORDS = /\b(divided|split|mixed|dismiss|less compelling|not all|polariz)/i;
-      const HEDGED_NEGATIVE = /\bthough (some|one|a few|critics) (find|note|dismiss|say|argue|feel)\b/i;
+      const HEDGED_NEGATIVE = /\bthough (some|one|a few|critics?)(\s+critics?)? (find|note|dismiss|say|argue|feel)\w*/i;
       if (allPositive && (NEGATIVE_KEYWORDS.test(consensus) || HEDGED_NEGATIVE.test(consensus))) {
         console.warn(`  ⚠️  Sentiment mismatch: all ${totalScored} reviews are positive but text implies criticism — regenerating...`);
         // Retry once with an explicit instruction about the breakdown
@@ -345,6 +359,32 @@ Write only the concise consensus (max 280 chars), nothing else.`;
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
+      // Layer 5b: Output validation — inverse check: mostly negative/mixed but text says unanimous praise
+      const mostlyNegative = totalScored > 0 && (breakdown.negative + breakdown.mixed) >= totalScored * 0.5;
+      const POSITIVE_KEYWORDS = /\b(universal acclaim|unanimous|universally praised|all praise|every critic|rave reviews|critics rave)\b/i;
+      if (mostlyNegative && POSITIVE_KEYWORDS.test(consensus)) {
+        console.warn(`  ⚠️  Inverse sentiment mismatch: ${breakdown.negative}N/${breakdown.mixed}M/${breakdown.positive}P but text implies unanimous praise — regenerating...`);
+        const retryPrompt = `You are writing a "Critics' Take" for the Broadway show "${showTitle}".
+
+IMPORTANT: Reviews are mixed/negative (${breakdown.positive} positive, ${breakdown.mixed} mixed, ${breakdown.negative} negative out of ${totalScored}). Do NOT say "universal acclaim", "unanimous praise", or "critics rave." Reflect the actual divided or negative reception.
+
+Based on these ${reviews.length} critic reviews, write a brief summary (1-2 SHORT sentences, maximum 280 characters total). Be concise, objective, and use present tense.
+
+Reviews:
+${reviews.map((r, i) => `Review ${i + 1} (${r.outlet} - ${r.critic}, score: ${r.score}/100):\n${r.text.slice(0, 500)}...`).join('\n\n')}
+
+Write only the concise consensus (max 280 chars), nothing else.`;
+        const retryMsg = await anthropic.messages.create({
+          model: 'claude-sonnet-4-5-20250929',
+          max_tokens: 150,
+          temperature: 0.5,
+          messages: [{ role: 'user', content: retryPrompt }],
+        });
+        consensus = retryMsg.content[0].text.trim();
+        console.log(`  ✅ Inverse retry complete`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
       // Layer 5b: Output validation — length check (> 280 chars = too long)
       let finalText = consensus;
       if (consensus.length > 280) {
@@ -361,12 +401,21 @@ Write only the concise consensus (max 280 chars), nothing else.`;
         ? Math.round(scoredForMean.reduce((a, r) => a + r.score, 0) / scoredForMean.length)
         : null;
 
+      // Compute bucket breakdown for change detection
+      const bucketBreakdown = { positive: 0, mixed: 0, negative: 0 };
+      for (const r of scoredForMean) {
+        if (r.score >= 61) bucketBreakdown.positive++;
+        else if (r.score >= 40) bucketBreakdown.mixed++;
+        else bucketBreakdown.negative++;
+      }
+
       consensusData.shows[showId] = {
         text: finalText,
         lastUpdated: new Date().toISOString(),
         reviewCount: reviews.length,
         fullTextCount,
         meanScore,
+        bucketBreakdown,
       };
 
       console.log(`  ✅ Generated: "${(consensusData.shows[showId].text).slice(0, 80)}..."`);
