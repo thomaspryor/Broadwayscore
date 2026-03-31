@@ -23,6 +23,8 @@ interface ShowData {
   weeklyGross: number | null;
   totalGross?: number | null;
   estimatedRecoupmentPct: [number, number] | null;
+  modelRecoupmentPct?: [number, number, number] | null;
+  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   trend: RecoupmentTrend;
   recouped: boolean | null;
   recoupedWeeks: number | null;
@@ -99,8 +101,8 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
           comparison = (a.totalGross ?? -Infinity) - (b.totalGross ?? -Infinity);
           break;
         case 'recoupment': {
-          const aVal = a.recouped ? 100 : (a.estimatedRecoupmentPct?.[1] ?? -Infinity);
-          const bVal = b.recouped ? 100 : (b.estimatedRecoupmentPct?.[1] ?? -Infinity);
+          const aVal = a.recouped ? 100 : (a.modelRecoupmentPct?.[1] ?? a.estimatedRecoupmentPct?.[1] ?? -Infinity);
+          const bVal = b.recouped ? 100 : (b.modelRecoupmentPct?.[1] ?? b.estimatedRecoupmentPct?.[1] ?? -Infinity);
           comparison = aVal - bVal;
           break;
         }
@@ -207,6 +209,13 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                   <td className="py-3 px-4 hidden xl:table-cell">
                     {show.recouped ? (
                       <span className="text-emerald-400">Recouped</span>
+                    ) : show.modelRecoupmentPct ? (
+                      <span className="text-amber-400">
+                        {Math.round(show.modelRecoupmentPct[1])}%
+                        <span className="text-gray-500 text-xs ml-1">
+                          ({Math.round(show.modelRecoupmentPct[0])}–{Math.round(show.modelRecoupmentPct[2])})
+                        </span>
+                      </span>
                     ) : show.estimatedRecoupmentPct ? (
                       <span className="text-amber-400">
                         ~{show.estimatedRecoupmentPct[0]}-{show.estimatedRecoupmentPct[1]}%

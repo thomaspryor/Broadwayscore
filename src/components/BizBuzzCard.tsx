@@ -206,6 +206,18 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             </div>
           )}
 
+          {/* Weekly Breakeven (from model) */}
+          {commercial.modelBreakeven && !commercial.recouped && (
+            <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+              <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-300 tracking-tight">
+                {formatCurrency(commercial.modelBreakeven)}
+              </div>
+              <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+                Breakeven
+              </div>
+            </div>
+          )}
+
           {/* Total Box Office Gross (for closed shows without weeks-to-recoup) */}
           {showStatus === 'closed' && allTimeGross && !(commercial.recouped && commercial.recoupedWeeks) && (
             <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
@@ -219,11 +231,12 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           )}
         </div>
 
-        {/* Recoupment Progress (for shows with estimates) */}
-        {commercial.estimatedRecoupmentPct && (
+        {/* Recoupment Progress — prefer model-calculated over AI-estimated */}
+        {(commercial.modelRecoupmentPct || commercial.estimatedRecoupmentPct) && (
           <RecoupmentProgressBar
-            estimatedPct={commercial.estimatedRecoupmentPct}
-            source={commercial.estimatedRecoupmentSource}
+            estimatedPct={commercial.modelRecoupmentPct || commercial.estimatedRecoupmentPct!}
+            source={commercial.modelMethod ? undefined : commercial.estimatedRecoupmentSource}
+            modelMethod={commercial.modelMethod}
           />
         )}
 
