@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-31T04:46:16.644Z",
+  "timestamp": "2026-03-31T04:58:54.057Z",
   "stats": {
-    "totalReviews": 31970,
+    "totalReviews": 31973,
     "alreadyFlagged": 11779,
     "dateGuardCatches": 14,
     "directorMismatch": 919,
-    "tvFilmSignals": 3307,
+    "tvFilmSignals": 3309,
     "londonSignals": 968,
     "offBroadwaySignals": 967,
     "yearMismatch": 64,
@@ -13037,6 +13037,20 @@
     },
     {
       "showId": "dog-day-afternoon-2026",
+      "file": "culturesauce--thom-geier.json",
+      "score": 50,
+      "publishDate": "2026-03-31",
+      "url": "https://culturesauce.com/2026/03/31/dog-day-afternoon-jon-bernthal-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
       "file": "ew--dalton-ross.json",
       "score": 76,
       "publishDate": "2026-03-31",
@@ -13083,6 +13097,20 @@
       "score": 72,
       "publishDate": "2026-03-31",
       "url": "https://nystagereview.com/2026/03/31/dog-day-afternoon-more-punchlines-than-peril/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "slantmagazine--dan-rubins.json",
+      "score": 43,
+      "publishDate": "2026-03-31",
+      "url": "https://www.slantmagazine.com/theater/dog-day-afternoon-review-jon-bernthal-ebon-moss-bachrach/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
