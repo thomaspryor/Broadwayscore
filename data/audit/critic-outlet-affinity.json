@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-03-31T09:28:05.024Z",
+    "lastUpdated": "2026-03-31T09:41:04.453Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 32677,
-    "skippedFiles": 12360,
-    "totalCritics": 1406,
-    "registryCritics": 483,
-    "flaggedReviews": 38
+    "totalFilesScanned": 32859,
+    "skippedFiles": 12370,
+    "totalCritics": 1410,
+    "registryCritics": 487,
+    "flaggedReviews": 40
   },
   "flaggedReviews": [
     {
@@ -385,6 +385,17 @@
       "totalReviews": 17
     },
     {
+      "critic": "Arifa Akbar",
+      "criticSlug": "arifa-akbar",
+      "outlet": "city-am",
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "city-am--arifa-akbar.json",
+      "outletShare": 3,
+      "primaryOutlet": "guardian",
+      "primaryShare": 97,
+      "totalReviews": 34
+    },
+    {
       "critic": "Amelia Merrill",
       "criticSlug": "amelia-merrill",
       "outlet": "vulture",
@@ -427,6 +438,17 @@
       "primaryOutlet": "ew",
       "primaryShare": 94,
       "totalReviews": 17
+    },
+    {
+      "critic": "Sarah Crompton",
+      "criticSlug": "sarah-crompton",
+      "outlet": "telegraph",
+      "showId": "glengarry-glen-ross-2012",
+      "file": "telegraph--sarah-crompton.json",
+      "outletShare": 8,
+      "primaryOutlet": "whatsonstage",
+      "primaryShare": 92,
+      "totalReviews": 12
     }
   ],
   "freelancers": [
@@ -552,73 +574,82 @@
         "talkinbroadway",
         "nyt-theater",
         "theatermania",
+        "timeout",
         "frontmezzjunkies",
         "playbill",
-        "timeout",
+        "west-end-wilma",
+        "london-box-office",
         "nytg",
+        "musical-theatre-review",
         "nydailynews",
         "ny1",
-        "london-box-office",
+        "artsdesk",
         "chicagotribune",
         "backstage",
+        "guardian",
+        "telegraph",
+        "theatre-weekly",
         "amny",
+        "broadwayworld",
         "newsday",
-        "artsdesk",
+        "financialtimes",
+        "theupcoming",
         "stagebuddy",
         "ew",
         "washpost",
+        "everything-theatre",
+        "london-theatre",
         "nypost",
+        "times-uk",
         "hollywood-reporter",
+        "daily-mail",
         "vulture",
+        "whatsonstage",
         "cititour",
         "nytimes",
         "usatoday",
-        "west-end-wilma",
-        "broadwayworld",
+        "independent",
+        "londonist",
         "new-york-sun",
         "nysr",
         "theatrely",
         "variety",
-        "guardian",
-        "musical-theatre-review",
         "bloomberg",
-        "telegraph",
+        "metro",
         "buy-tickets",
-        "london-theatre",
         "minneapolis-star-tribune",
         "deadline",
         "latimes",
+        "timeout-london",
         "one-minute-critic",
         "huffpost",
         "nbcny",
-        "everything-theatre",
+        "standard",
         "all-that-dazzles-uk",
+        "theatreandtonic",
         "theater-pizzazz",
         "dctheatrescene",
-        "theatre-weekly",
         "stannswarehouseorg",
         "contra-costa-times",
         "american-theater-web",
         "americanpsychothemusicalcomlottery",
         "around-the-town-chicago",
-        "whatsonstage",
+        "the-express",
         "theater-life",
         "ct-now",
         "nycitycenterorg",
         "thewrap",
         "ricky-martin",
-        "financialtimes",
         "burlington-free-press",
         "cnn",
         "san-jose-mercury-news",
         "seattlereporg",
         "parterre-box",
+        "i-paper",
         "3news",
         "aussie-theatre",
         "herald-sun",
-        "daily-mail",
         "a-younger-theatre",
-        "londonist",
         "tapintonet",
         "fathomentertainmentcom",
         "stageandcinema",
@@ -630,10 +661,10 @@
         "abc-news",
         "by-clicking-here",
         "newyorker",
+        "thereviewshub",
         "city-am",
         "arenastageorg",
         "lighting-and-sound-america",
-        "times-uk",
         "theater-news-online",
         "hypable",
         "reviews",
@@ -641,12 +672,11 @@
         "streetdirectory",
         "lincolncenterfestivalorg",
         "manhattantheatreclubcom",
-        "timeout-london",
         "bamorg",
         "exeunt-magazine",
         "kenny-leon"
       ],
-      "totalReviews": 436
+      "totalReviews": 525
     },
     {
       "critic": "Brittani Samuel",
@@ -1387,6 +1417,27 @@
       "totalReviews": 16
     },
     {
+      "critic": "Tom Wicker",
+      "slug": "tom-wicker",
+      "outlets": [
+        "thestage",
+        "telegraph",
+        "exeunt-magazine",
+        "timeout-london",
+        "timeout"
+      ],
+      "totalReviews": 11
+    },
+    {
+      "critic": "Rachel Halliburton",
+      "slug": "rachel-halliburton",
+      "outlets": [
+        "times-uk",
+        "artsdesk"
+      ],
+      "totalReviews": 3
+    },
+    {
       "critic": "Caroline Cao",
       "slug": "caroline-cao",
       "outlets": [
@@ -1417,7 +1468,7 @@
         "timeout-london",
         "london-theatre"
       ],
-      "totalReviews": 18
+      "totalReviews": 25
     },
     {
       "critic": "Tim Bano",
@@ -1430,16 +1481,7 @@
         "times-uk",
         "independent"
       ],
-      "totalReviews": 19
-    },
-    {
-      "critic": "Dominic Maxwell",
-      "slug": "dominic-maxwell",
-      "outlets": [
-        "times-uk",
-        "the-sun"
-      ],
-      "totalReviews": 11
+      "totalReviews": 23
     },
     {
       "critic": "Kevin Filipski",
@@ -1606,7 +1648,7 @@
         "london-theatre",
         "whatsonstage"
       ],
-      "totalReviews": 5
+      "totalReviews": 6
     },
     {
       "critic": "Paul Raven",
@@ -1614,11 +1656,10 @@
       "outlets": [
         "financialtimes",
         "telegraph",
-        "publicationratingcriticwhat-s-on-stage",
         "timeout",
         "standard"
       ],
-      "totalReviews": 6
+      "totalReviews": 5
     },
     {
       "critic": "Regina Robbins",
@@ -1657,7 +1698,7 @@
         "the-telegrap",
         "artsdesk"
       ],
-      "totalReviews": 25
+      "totalReviews": 26
     },
     {
       "critic": "Emlyn Travis",
@@ -1866,7 +1907,7 @@
         "metro",
         "the-telegrap"
       ],
-      "totalReviews": 12
+      "totalReviews": 14
     },
     {
       "critic": "Bill Canacci",
@@ -1916,18 +1957,6 @@
       "totalReviews": 9
     },
     {
-      "critic": "Tom Wicker",
-      "slug": "tom-wicker",
-      "outlets": [
-        "telegraph",
-        "exeunt-magazine",
-        "thestage",
-        "timeout-london",
-        "timeout"
-      ],
-      "totalReviews": 9
-    },
-    {
       "critic": "Chris Kompanek",
       "slug": "chris-kompanek",
       "outlets": [
@@ -1955,6 +1984,15 @@
       "totalReviews": 3
     },
     {
+      "critic": "Adam Bloodworth",
+      "slug": "adam-bloodworth",
+      "outlets": [
+        "city-am",
+        "metro"
+      ],
+      "totalReviews": 3
+    },
+    {
       "critic": "A.A. Cristi",
       "slug": "a-a-cristi",
       "outlets": [
@@ -1974,6 +2012,17 @@
       "totalReviews": 5
     },
     {
+      "critic": "Anya Ryan",
+      "slug": "anya-ryan",
+      "outlets": [
+        "london-theatre",
+        "guardian",
+        "timeout-london",
+        "timeout"
+      ],
+      "totalReviews": 11
+    },
+    {
       "critic": "Scott Mitchell",
       "slug": "scott-mitchell",
       "outlets": [
@@ -1990,17 +2039,6 @@
         "indianapolis-business-journal"
       ],
       "totalReviews": 3
-    },
-    {
-      "critic": "Anya Ryan",
-      "slug": "anya-ryan",
-      "outlets": [
-        "london-theatre",
-        "guardian",
-        "timeout",
-        "timeout-london"
-      ],
-      "totalReviews": 9
     },
     {
       "critic": "Charles Spencer",
