@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-03-31T20:18:20.550Z",
+    "generatedAt": "2026-03-31T20:28:12.665Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32819,
-      "inReviewsJson": 16281,
+      "inReviewsJson": 16280,
       "skippedExcluded": 9,
-      "withFullText": 20,
+      "withFullText": 17,
       "excerptOnly": 1828,
-      "llmClassified": 19,
+      "llmClassified": 16,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
+      "nonReviewsFound": 0,
       "uncertainCases": 16,
-      "budgetUsed": 0.0020000000000000005,
-      "llmCalls": 20,
+      "budgetUsed": 0.0017000000000000006,
+      "llmCalls": 17,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14424
+      "skippedAlreadyClassified": 14426
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "stick-fly-2011/timeout--david-cote.json",
-      "showId": "stick-fly-2011",
-      "outlet": "Time Out NY",
-      "outletId": "timeout",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a list of various articles, none of which are specifically about 'Stick Fly' or appear to be reviews.",
-      "currentScore": 80
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -41,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items about other shows.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -51,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, but it does not contain any evaluative content or opinion about a specific production. It seems to be a list of search terms or categories.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, rather than a review of a specific show. It mentions 'Broadway review subscriptions' but does not contain a review itself.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, rather than a review of a specific show. It mentions 'Broadway review subscriptions' but does not contain any actual review content.",
       "currentScore": 62
     },
     {
@@ -91,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered, so it is not a review.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -101,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -111,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -121,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news item related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -141,7 +130,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It includes interview snippets, but the primary focus is on the show's themes and relevance.",
       "currentScore": 83
     },
     {
@@ -171,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show. It does not evaluate \"The Price\".",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It is closest to news.",
       "currentScore": 78
     },
     {
@@ -181,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -191,20 +180,11 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion about its quality. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a verdict or recommendation.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
-    "wit-2012/nypost--elisabeth-vincentelli.json"
-  ],
-  "perShowSummary": [
-    {
-      "showId": "stick-fly-2011",
-      "currentCount": 15,
-      "removed": 1
-    }
-  ]
+  "reviewsConfirmed": [],
+  "perShowSummary": []
 }
