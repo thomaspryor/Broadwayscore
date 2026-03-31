@@ -300,6 +300,10 @@ jobs:
         run: node scripts/validate-archive-productions.js
         continue-on-error: true  # Don't fail build, just warn - archives need manual refetch
 
+      - name: Test star rating extractors
+        run: node tests/star-rating-extractors.test.js
+        # Verifies all outlet-specific star extractors against saved HTML fixtures
+
       - name: Validate aggregator truth
         run: node scripts/validate-aggregator-truth.js
         # Compares local review counts to aggregator data
