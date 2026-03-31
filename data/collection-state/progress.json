@@ -181,7 +181,12 @@
     "man-and-boy-west-end-2026/timeout-london--andrzej-lukowski.json",
     "sweetmeats-west-end-2026/standard--maya-chandran.json",
     "all-out-2025/nytg--gillian-russo.json",
-    "all-out-2025/ew--dalton-ross.json"
+    "all-out-2025/ew--dalton-ross.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
+    "the-cottage-2023/theatermania--peter-hempstead.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -239,7 +244,12 @@
     "cyrano-de-bergerac-west-end-2026/daily-mail--robert-gore-langton.json",
     "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
     "high-noon-west-end-2025/times-uk--clive-davis.json",
-    "art-2025/broadwaynews--michael-abourizk.json"
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -376,7 +386,10 @@
       "man-and-boy-west-end-2026/timeout-london--andrzej-lukowski.json",
       "sweetmeats-west-end-2026/standard--maya-chandran.json",
       "all-out-2025/nytg--gillian-russo.json",
-      "all-out-2025/ew--dalton-ross.json"
+      "all-out-2025/ew--dalton-ross.json",
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
+      "the-cottage-2023/theatermania--peter-hempstead.json"
     ],
     "amp": [],
     "browserbase": [
@@ -393,7 +406,9 @@
       "data/review-texts/dog-day-afternoon-2026/amny--unknown.json",
       "dog-day-afternoon-2026/amny--unknown.json",
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
-      "giant-2026/variety--daniel-daddario.json"
+      "giant-2026/variety--daniel-daddario.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -447,11 +462,12 @@
       "wicked-2003/broadwayworld--lynn-beaver.json",
       "wicked-2003/broadwayworld--tyler-hinton.json",
       "the-lion-king-west-end-2021/telegraph--claire-allfree.json",
-      "mamma-mia-west-end-2021/telegraph--dominic-cavendish.json"
+      "mamma-mia-west-end-2021/telegraph--dominic-cavendish.json",
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "art-2025/broadwaynews--michael-abourizk.json",
+  "lastProcessed": "the-cottage-2023/theatermania--peter-hempstead.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -529,6 +545,17 @@
       "t": "2026-03-31T11:01:49.546Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-03-31T11:40:25.078Z",
+      "event": "bb-session",
+      "session": "4b04b6a7",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-03-31T11:40:26.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
