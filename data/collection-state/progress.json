@@ -222,7 +222,8 @@
     "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
     "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
     "spongebob-squarepants-2017/wsj--edward-rothstein.json",
-    "hughie-2016/huffpost--michael-glitz.json"
+    "hughie-2016/huffpost--michael-glitz.json",
+    "spring-awakening-2015/njcom--christopher-kelly.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -479,7 +480,16 @@
     "king-charles-iii-2015/talkinbroadway--matthew-murray.json",
     "therese-raquin-2015/timeout--adam-feldman.json",
     "sylvia-2015/film-festival-traveler--kevin-filipski.json",
-    "sylvia-2015/zeal-nyc--jil-picariello.json"
+    "sylvia-2015/zeal-nyc--jil-picariello.json",
+    "the-gin-game-2015/northjerseycom--robert-feldberg.json",
+    "fool-for-love-2015/zeal-nyc--jil-picariello.json",
+    "old-times-2015/wsj--unknown.json",
+    "old-times-2015/ap--mark-kennedy.json",
+    "old-times-2015/dailybeast--tim-teeman.json",
+    "old-times-2015/wsj--terry-teachout.json",
+    "amazing-grace-2015/northjerseycom--robert-feldberg.json",
+    "amazing-grace-2015/usatoday--elysa-gardner.json",
+    "airline-highway-2015/nytg--stanford-friedman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -684,7 +694,8 @@
       "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
       "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
-      "arcadia-west-end-2026/telegraph--dominic-cavendish.json"
+      "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
+      "spring-awakening-2015/njcom--christopher-kelly.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -729,7 +740,16 @@
       "data/review-texts/king-charles-iii-2015/wsj--terry-teachout.json",
       "data/review-texts/king-charles-iii-2015/zeal-nyc--mark-mclaren.json",
       "data/review-texts/king-charles-iii-2015/talkinbroadway--matthew-murray.json",
-      "data/review-texts/sylvia-2015/film-festival-traveler--kevin-filipski.json"
+      "data/review-texts/sylvia-2015/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/sylvia-2015/zeal-nyc--jil-picariello.json",
+      "data/review-texts/the-gin-game-2015/northjerseycom--robert-feldberg.json",
+      "data/review-texts/fool-for-love-2015/zeal-nyc--jil-picariello.json",
+      "data/review-texts/old-times-2015/wsj--unknown.json",
+      "data/review-texts/old-times-2015/dailybeast--tim-teeman.json",
+      "data/review-texts/old-times-2015/wsj--terry-teachout.json",
+      "data/review-texts/amazing-grace-2015/northjerseycom--robert-feldberg.json",
+      "data/review-texts/amazing-grace-2015/usatoday--elysa-gardner.json",
+      "data/review-texts/airline-highway-2015/nytg--stanford-friedman.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -772,7 +792,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "sylvia-2015/zeal-nyc--jil-picariello.json",
+  "lastProcessed": "airline-highway-2015/nytg--stanford-friedman.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -922,6 +942,56 @@
       "t": "2026-03-31T13:03:13.030Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-31T13:16:21.634Z",
+      "event": "bb-session",
+      "session": "c2961ca9",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/pair-of-broadway-vete"
+    },
+    {
+      "t": "2026-03-31T13:16:22.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T13:18:42.197Z",
+      "event": "bb-session",
+      "session": "c338781d",
+      "url": "https://www.wsj.com/article_email/old-times-review-made-in-england-assembled-on-"
+    },
+    {
+      "t": "2026-03-31T13:18:43.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-31T13:20:27.370Z",
+      "event": "bb-session",
+      "session": "0b04926d",
+      "url": "https://www.thedailybeast.com/old-times-on-broadway-clive-owen-kelly-reilly-and-"
+    },
+    {
+      "t": "2026-03-31T13:20:38.126Z",
+      "event": "bb-session",
+      "session": "014b49c8",
+      "url": "http://www.wsj.com/article_email/old-times-review-made-in-england-assembled-on-b"
+    },
+    {
+      "t": "2026-03-31T13:20:39.148Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-31T13:22:38.854Z",
+      "event": "bb-session",
+      "session": "17d4769a",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/a-wretch-s-search-for"
+    },
+    {
+      "t": "2026-03-31T13:22:40.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
