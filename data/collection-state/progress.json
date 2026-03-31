@@ -197,7 +197,10 @@
     "tina-2019/newyorker--michael-schulman.json",
     "tootsie-2019/latimes--charles-mcnulty.json",
     "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
-    "bernhardthamlet-2018/stage-left--william-wolf.json"
+    "bernhardthamlet-2018/stage-left--william-wolf.json",
+    "three-tall-women-2018/theater-life--david-sheward.json",
+    "latin-history-for-morons-2017/stage-left--william-wolf.json",
+    "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -289,7 +292,14 @@
     "bernhardthamlet-2018/newnownextcom--michael-musto.json",
     "saint-joan-2018/show-buzz-nyc--laura-heller.json",
     "travesties-2018/washpost--peter-marks.json",
-    "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json"
+    "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
+    "children-of-a-lesser-god-2018/melindas-malarky--melinda-pressler.json",
+    "three-tall-women-2018/usatoday--charles-isherwood.json",
+    "angels-in-america-2018/theater-news-online--david-cote.json",
+    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+    "spongebob-squarepants-2017/wsj--edward-rothstein.json",
+    "the-bands-visit-2017/gay-city-news--christopher-byrne.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -433,7 +443,10 @@
       "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
       "grey-house-2023/slash-film--caroline-cao.json",
       "a-christmas-carol-2019/usatoday--david-rooney.json",
-      "bernhardthamlet-2018/stage-left--william-wolf.json"
+      "bernhardthamlet-2018/stage-left--william-wolf.json",
+      "three-tall-women-2018/theater-life--david-sheward.json",
+      "latin-history-for-morons-2017/stage-left--william-wolf.json",
+      "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
     ],
     "amp": [],
     "browserbase": [
@@ -483,7 +496,9 @@
       "data/review-texts/dog-day-afternoon-2026/usatoday--unknown.json",
       "data/review-texts/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--unknown.json",
       "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
-      "data/review-texts/bernhardthamlet-2018/newnownextcom--michael-musto.json"
+      "data/review-texts/bernhardthamlet-2018/newnownextcom--michael-musto.json",
+      "data/review-texts/spongebob-squarepants-2017/wsj--edward-rothstein.json",
+      "data/review-texts/the-bands-visit-2017/gay-city-news--christopher-byrne.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -521,7 +536,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
+  "lastProcessed": "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -621,6 +636,17 @@
       "t": "2026-03-31T11:44:19.467Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T11:51:09.728Z",
+      "event": "bb-session",
+      "session": "ad94fab7",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-03-31T11:51:10.976Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
