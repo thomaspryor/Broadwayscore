@@ -518,8 +518,8 @@ async function runAggregators(show) {
             criticName: r.critic || 'Unknown',
             url: r.url || '',
             excerpt: r.excerpt || '',
-            score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
-            scoreSource: r.stars ? 'theatre-reviews-star-rating' : undefined,
+            // TR rates shows independently — don't use as outlet's score
+            theatreReviewsStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
             source: 'theatre-reviews',
           });
         }

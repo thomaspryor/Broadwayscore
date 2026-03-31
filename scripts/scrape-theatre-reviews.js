@@ -319,11 +319,11 @@ function writeReviewFiles(reviews, showId) {
     if (review.url && !data.url) data.url = review.url;
     if (review.excerpt) data.theatreReviewsExcerpt = review.excerpt;
 
-    // Star rating → P0 score (X/5 → 0-100)
-    if (review.stars && !data.originalScore) {
-      data.originalScore = `${review.stars}/${review.starsOutOf}`;
-      data.originalScoreNormalized = Math.round((review.stars / review.starsOutOf) * 100);
-      data.scoreSource = 'theatre-reviews-star-rating';
+    // Store theatre.reviews' star rating as metadata only — NOT as the outlet's
+    // originalScore. TR rates shows independently; attributing TR's rating to
+    // the listed outlet causes wrong scores (e.g. TR gives 3/5, outlet gave 5/5).
+    if (review.stars) {
+      data.theatreReviewsStars = `${review.stars}/${review.starsOutOf}`;
     }
 
     if (!DRY_RUN) {
