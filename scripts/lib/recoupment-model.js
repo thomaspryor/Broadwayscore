@@ -351,14 +351,15 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
   const openYear = show.openingDate ? parseInt(show.openingDate.split('-')[0]) : 2020;
   const notesCredit = parseTaxCreditFromNotes(commercial.notes);
   const eligibleForTaxCredit = openYear >= 2004 && openYear <= 2025;
-  // If notes explicitly mention a credit amount, use it. Otherwise estimate only for
-  // shows where we have medium+ confidence commercial data (not speculative)
-  const hasConfidentData = commercial.confidence === 'high' || commercial.confidence === 'medium';
+  // If notes explicitly mention a credit amount, use it. Otherwise estimate for
+  // shows where we have solid data (reported costs or SEC filings).
+  const hasReportedCosts = commercial.costMethodology &&
+    ['sec-filing', 'trade-reported', 'reddit-standard'].includes(commercial.costMethodology);
   const taxCreditAmount = notesCredit
     ? notesCredit
-    : (eligibleForTaxCredit && hasConfidentData ? Math.min(capitalization * 0.25, 3000000) : 0);
+    : (eligibleForTaxCredit && (hasReportedCosts || commercial.weeklyRunningCost) ? Math.min(capitalization * 0.25, 3000000) : 0);
   if (!taxCreditAmount) {
-    warnings.push('No tax credit applied (insufficient confidence)');
+    warnings.push('No tax credit applied (no reported cost data)');
   }
 
   // Reserve fund: scaled by run length. Long-running shows need full reserve;
@@ -709,11 +710,140 @@ function parseTaxCreditFromNotes(notes) {
 }
 
 // ---------------------------------------------------------------------------
+// Simplified Lifetime Model (Tier 2: shows running 10+ years)
+// ---------------------------------------------------------------------------
+
+/**
+ * For ultra-long-running shows, the weekly simulation breaks down because:
+ * - Weekly nut reflects current costs, not historical
+ * - Cost phases and marketing surcharges accumulate errors over decades
+ * - The 10-year cap truncates most of the run
+ *
+ * Instead: use total lifetime gross with a blended cost ratio.
+ * Formula: operatingProfit = totalGross × (1 - totalCostRate) - (weeklyNut × totalWeeks)
+ * Where totalCostRate includes variable costs + theater overage as a % of gross.
+ *
+ * The blended weekly nut is deflated to a run-average (current nut reflects end-of-run costs).
+ */
+function calculateLifetimeRecoupment(show, commercial, grossesAllTime) {
+  const warnings = ['Simplified lifetime model (10+ year run)'];
+
+  const capitalization = commercial.capitalization;
+  if (!capitalization || !grossesAllTime?.gross) {
+    return { error: 'Missing cap or gross data', warnings };
+  }
+
+  const slug = show.slug || show.id;
+  const category = classifyShow(show);
+  const baseVarRate = getBaseVariableRate(category);
+  const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
+
+  // Effective capitalization
+  const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
+  const reserveFund = weeklyNut * 1.5; // Minimal for established long-runners
+  const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
+
+  // Tax credit (most long-runners got it)
+  const taxCredit = Math.min(capitalization * 0.25, 3000000);
+
+  // Run duration
+  const openDate = show.openingDate ? new Date(show.openingDate) : null;
+  const closeDate = show.closingDate ? new Date(show.closingDate) : new Date();
+  let totalWeeks = openDate ? Math.round((closeDate - openDate) / (7 * 86400000)) : 0;
+
+  // Subtract COVID dark weeks
+  if (openDate && openDate < COVID_DARK_END && closeDate > COVID_DARK_START) {
+    const darkStart = openDate < COVID_DARK_START ? COVID_DARK_START : openDate;
+    const darkEnd = closeDate > COVID_DARK_END ? COVID_DARK_END : closeDate;
+    totalWeeks -= Math.max(0, Math.round((darkEnd - darkStart) / (7 * 86400000)));
+  }
+
+  const totalGross = grossesAllTime.gross;
+
+  // Theater overage as % of gross (simplified: flat rate since we don't have weekly data)
+  const theaterOverageRate = Math.max(0, THEATER_DEAL.pctOfGross - THEATER_DEAL.rentPctOfNut * weeklyNut / (totalGross / totalWeeks));
+
+  // Total variable cost rate (pre-recoup rate for most of the run is wrong —
+  // long-runners recoup early, so most weeks are post-recoup with lower author royalties)
+  const authorRate = AUTHOR_ROYALTY_PRE[show.type] || AUTHOR_ROYALTY_PRE.musical;
+  const postRecoupVarRate = baseVarRate - authorRate; // Authors in royalty pool
+  // Assume recoup at ~week 50, so ~95% of weeks are post-recoup
+  const blendedVarRate = postRecoupVarRate * 0.95 + baseVarRate * 0.05;
+
+  // Blended cost ratio: variable + theater overage
+  const totalCostRate = blendedVarRate + theaterOverageRate;
+
+  // Average weekly nut over the run — deflate current nut by 2%/year for historical average
+  const runYears = totalWeeks / 52;
+  const avgNutDeflator = runYears > 3 ? (1 - Math.pow(0.98, runYears)) / (runYears * 0.02) : 1;
+  const avgWeeklyNut = weeklyNut * avgNutDeflator * 0.88; // 0.88 = phase 4 mature run
+
+  // Post-recoup royalty pool: 35% of operating profit after recoupment
+  // Since most of the run is post-recoup, apply pool to ~90% of profit
+  const grossAfterVariable = totalGross * (1 - totalCostRate);
+  const totalFixedCosts = avgWeeklyNut * totalWeeks;
+  const rawOperatingProfit = grossAfterVariable - totalFixedCosts;
+  const royaltyPoolDrag = Math.max(0, rawOperatingProfit * 0.90) * ROYALTY_POOL_POST_RECOUP;
+  const operatingProfit = rawOperatingProfit - royaltyPoolDrag + taxCredit;
+
+  // Three scenarios
+  const scenarios = {};
+  for (const [name, mult] of Object.entries(SCENARIO_MULTIPLIERS)) {
+    const adjGross = totalGross * mult.grossAdj;
+    const adjVarCosts = adjGross * totalCostRate * mult.variableCost;
+    const adjFixedCosts = avgWeeklyNut * totalWeeks * mult.fixedCost;
+    const adjRawProfit = adjGross - adjVarCosts - adjFixedCosts;
+    const adjRoyalty = Math.max(0, adjRawProfit * 0.90) * ROYALTY_POOL_POST_RECOUP;
+    const adjProfit = adjRawProfit - adjRoyalty + taxCredit;
+    const pct = (adjProfit / effectiveCap) * 100;
+
+    scenarios[name] = {
+      cumulativeProfit: Math.round(adjProfit),
+      recoupmentPct: Math.round(pct * 10) / 10,
+      recouped: pct >= 100,
+      recoupWeek: pct >= 100 ? Math.round(effectiveCap / (adjProfit / totalWeeks)) : null,
+      totalGross: Math.round(adjGross),
+      totalProfit: Math.round(adjProfit),
+      avgWeeklyProfit: totalWeeks > 0 ? Math.round(adjProfit / totalWeeks) : 0,
+    };
+  }
+
+  return {
+    slug,
+    title: show.title,
+    category,
+    capitalization,
+    svogGrant,
+    taxCreditAmount: taxCredit,
+    reserveFund: Math.round(reserveFund),
+    effectiveCapitalization: Math.round(effectiveCap),
+    weeklyFixedCosts: weeklyNut,
+    weeklyFixedCostSource: commercial.weeklyRunningCost ? 'reported' : 'estimated',
+    baseVariableRate: Math.round(blendedVarRate * 1000) / 1000,
+    previewWeeks: 0,
+    totalRunWeeks: totalWeeks,
+    optimistic: scenarios.optimistic,
+    central: scenarios.central,
+    pessimistic: scenarios.pessimistic,
+    recoupmentPctLow: scenarios.pessimistic.recoupmentPct,
+    recoupmentPctCentral: scenarios.central.recoupmentPct,
+    recoupmentPctHigh: scenarios.optimistic.recoupmentPct,
+    modelRecouped: scenarios.central.recouped,
+    weeklyBreakeven: Math.round(weeklyNut / (1 - totalCostRate)),
+    weeksToRecoupEstimate: scenarios.central.recoupWeek,
+    dataQuality: commercial.weeklyRunningCost ? 'medium' : 'low',
+    grossDataSource: 'alltime-lifetime',
+    warnings,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Exports
 // ---------------------------------------------------------------------------
 
 module.exports = {
   calculateRecoupment,
+  calculateLifetimeRecoupment,
   classifyShow,
   getBaseVariableRate,
   calcWeeklyProfit,
