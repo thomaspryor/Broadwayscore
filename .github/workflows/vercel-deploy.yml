@@ -73,13 +73,10 @@ jobs:
       - name: Pre-deploy data integrity check
         run: node scripts/pre-deploy-check.js
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel
-
       - name: Pull Vercel Environment
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+        run: npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
 
       - name: Cache Next.js build
         uses: actions/cache@v4
@@ -118,7 +115,7 @@ jobs:
           SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
         run: |
           BUILD_START=$(date +%s)
-          vercel build --prod --token=$VERCEL_TOKEN
+          npx vercel build --prod --token=$VERCEL_TOKEN
           BUILD_SECS=$(( $(date +%s) - BUILD_START ))
           echo "build_seconds=$BUILD_SECS" >> "$GITHUB_OUTPUT"
           echo "Build completed in ${BUILD_SECS}s"
@@ -127,7 +124,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          URL=$(vercel deploy --prebuilt --prod --archive=tgz --token=$VERCEL_TOKEN)
+          URL=$(npx vercel deploy --prebuilt --prod --archive=tgz --token=$VERCEL_TOKEN)
           echo "Deployed to production: $URL"
 
       - name: Check build duration
