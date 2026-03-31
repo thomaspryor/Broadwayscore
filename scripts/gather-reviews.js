@@ -2373,7 +2373,16 @@ function createReviewFile(showId, reviewData, options = {}) {
     outlet: getOutletDisplayName(normalizedOutletId),
     criticName: reviewData.criticName || 'Unknown',
     url: reviewData.url || null,
-    publishDate: normalizePublishDate(reviewData.publishDate) || null,
+    publishDate: normalizePublishDate(reviewData.publishDate) || (() => {
+      // Fallback: use show's opening date when no review date available
+      try {
+        const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
+        const showsJSON = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+        const show = showsJSON.shows.find(s => s.id === showId);
+        if (show && show.openingDate) return show.openingDate;
+      } catch {}
+      return null;
+    })(),
     fullText: null,  // Never populate from excerpts — let collect-review-texts.js scrape real fullText
     isFullReview: false,
     dtliExcerpt: cleanText(reviewData.dtliExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null,
