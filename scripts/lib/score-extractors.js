@@ -417,8 +417,15 @@ function extractGuardianScore(html, text) {
 function extractNYPostScore(html, text) {
   // NY Post uses CSS star widgets on newer articles (2019+).
   // rating__star--filled = full star, rating__star--half = half star, on a 4-star scale.
-  const filled = (html.match(/rating__star--filled/g) || []).length;
-  const half = (html.match(/rating__star--half/g) || []).length;
+  // IMPORTANT: Scope to review section only — sidebar/related articles have their own stars.
+  let starHtml = html;
+  const reviewIdx = html.indexOf('inline-module--review');
+  if (reviewIdx > -1) {
+    const reviewEnd = html.indexOf('</section>', reviewIdx);
+    starHtml = reviewEnd > -1 ? html.substring(reviewIdx, reviewEnd) : html.substring(reviewIdx, reviewIdx + 5000);
+  }
+  const filled = (starHtml.match(/rating__star--filled/g) || []).length;
+  const half = (starHtml.match(/rating__star--half/g) || []).length;
   if (filled > 0) {
     const rating = filled + (half * 0.5);
     if (rating >= 0.5 && rating <= 4) {
