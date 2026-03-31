@@ -11,6 +11,7 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 - **Worktree scope:** `src/` or config files → worktree. Pure data/CI/docs → skip.
 - **Push** every ~30 min or after milestones.
 - **15+ min without committing** → stop and commit NOW.
+- **`git pull` before every shows.json edit.** CI commits to shows.json every ~30 min. In long sessions, your local copy goes stale and `git rebase` silently re-introduces deleted entries. Always pull immediately before reading shows.json for edits, and verify fixes survived after rebase.
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
