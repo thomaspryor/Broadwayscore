@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T11:08:23.604Z",
+  "timestamp": "2026-03-31T11:21:31.055Z",
   "stats": {
-    "totalReviews": 32156,
-    "alreadyFlagged": 11804,
+    "totalReviews": 32143,
+    "alreadyFlagged": 11826,
     "dateGuardCatches": 14,
     "directorMismatch": 919,
-    "tvFilmSignals": 3310,
+    "tvFilmSignals": 3312,
     "londonSignals": 960,
     "offBroadwaySignals": 965,
     "yearMismatch": 64,
-    "noPublishDate": 6072
+    "noPublishDate": 6037
   },
   "findings": [
     {
@@ -13010,7 +13010,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "amny--matt-windman.json",
-      "score": 47,
+      "score": 48,
       "publishDate": "2026-03-30",
       "url": "https://www.amny.com/entertainment/review-dog-day-afternoon/",
       "findings": [
@@ -13024,7 +13024,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "chicagotribune--chris-jones.json",
-      "score": 65,
+      "score": null,
       "publishDate": "2026-03-31",
       "url": "https://www.chicagotribune.com/2026/03/30/review-dog-day-afternoon-broadway/",
       "findings": [
@@ -13066,9 +13066,9 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "ew--dalton-ross.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2026-03-31",
-      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173?srsltid=AfmBOoqmhO9gSQmcphyiCxftiIPAc9Ye8R2P3bv6dIx89oP0iFFGQM8f",
+      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -13080,7 +13080,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "new-york-sun--elysa-gardner.json",
-      "score": 67,
+      "score": null,
       "publishDate": "2026-03-31",
       "url": "https://www.nysun.com/article/dog-day-afternoon-unleashes-on-broadway-with-a-loud-contemporary-bark",
       "findings": [
@@ -13102,6 +13102,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 49,
+      "publishDate": "2026-03-31",
+      "url": "https://nystagereview.com/2026/03/31/dog-day-afternoon-now-you-too-can-chant-attica-attica/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -13135,6 +13149,20 @@
     },
     {
       "showId": "dog-day-afternoon-2026",
+      "file": "theatrely--emily-wyrwa.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
       "file": "theatrely--juan-a-ramirez.json",
       "score": 66,
       "publishDate": null,
@@ -13150,7 +13178,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "timeout--adam-feldman.json",
-      "score": 36,
+      "score": null,
       "publishDate": "2026-03-31",
       "url": "https://www.timeout.com/newyork/news/broadway-review-a-heist-and-a-play-go-wrong-in-dog-day-afternoon-033126",
       "findings": [
@@ -13164,7 +13192,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "variety--owen-gleiberman.json",
-      "score": 63,
+      "score": null,
       "publishDate": "2026-03-31",
       "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
       "findings": [
