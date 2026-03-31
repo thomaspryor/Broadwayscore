@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T07:27:01.321Z",
+  "timestamp": "2026-03-31T07:35:44.555Z",
   "stats": {
     "totalReviews": 31970,
     "alreadyFlagged": 11786,
     "dateGuardCatches": 14,
     "directorMismatch": 919,
-    "tvFilmSignals": 3306,
+    "tvFilmSignals": 3308,
     "londonSignals": 960,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
-    "noPublishDate": 5906
+    "noPublishDate": 5904
   },
   "findings": [
     {
@@ -13037,6 +13037,20 @@
     },
     {
       "showId": "dog-day-afternoon-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 76,
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_Broadway/Dog-Day-Afternoon/1365",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 50,
       "publishDate": "2026-03-31",
@@ -13158,6 +13172,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "yale-daily-news--cielo-gazard.json",
+      "score": 36,
+      "publishDate": "2026-03-27",
+      "url": "https://yaledailynews.com/articles/lend-me-your-ears-broadway-s-dog-day-afternoon-is-a-doggone-mess",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
