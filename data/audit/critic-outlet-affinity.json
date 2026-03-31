@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-03-31T11:34:26.320Z",
+    "lastUpdated": "2026-03-31T11:46:31.713Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 32841,
-    "skippedFiles": 12420,
+    "totalFilesScanned": 32830,
+    "skippedFiles": 12461,
     "totalCritics": 1409,
     "registryCritics": 484,
-    "flaggedReviews": 39
+    "flaggedReviews": 38
   },
   "flaggedReviews": [
     {
@@ -427,17 +427,6 @@
       "primaryOutlet": "ew",
       "primaryShare": 94,
       "totalReviews": 17
-    },
-    {
-      "critic": "Sarah Crompton",
-      "criticSlug": "sarah-crompton",
-      "outlet": "telegraph",
-      "showId": "glengarry-glen-ross-2012",
-      "file": "telegraph--sarah-crompton.json",
-      "outletShare": 9,
-      "primaryOutlet": "whatsonstage",
-      "primaryShare": 91,
-      "totalReviews": 11
     }
   ],
   "freelancers": [
@@ -563,9 +552,9 @@
         "talkinbroadway",
         "nyt-theater",
         "theatermania",
-        "timeout",
         "frontmezzjunkies",
         "playbill",
+        "timeout",
         "west-end-wilma",
         "london-box-office",
         "nytg",
@@ -575,39 +564,35 @@
         "backstage",
         "artsdesk",
         "chicagotribune",
-        "guardian",
-        "telegraph",
         "theatre-weekly",
         "newsday",
+        "guardian",
         "theupcoming",
         "amny",
-        "broadwayworld",
         "stagebuddy",
         "washpost",
         "everything-theatre",
+        "telegraph",
         "ew",
         "nypost",
+        "broadwayworld",
         "cititour",
         "usatoday",
-        "times-uk",
         "hollywood-reporter",
-        "daily-mail",
-        "financialtimes",
         "vulture",
-        "whatsonstage",
-        "london-theatre",
         "londonist",
         "nytimes",
+        "times-uk",
         "bloomberg",
         "metro",
         "buy-tickets",
+        "london-theatre",
         "minneapolis-star-tribune",
         "nysr",
         "theatrely",
         "variety",
         "new-york-sun",
         "latimes",
-        "independent",
         "one-minute-critic",
         "huffpost",
         "nbcny",
@@ -620,11 +605,13 @@
         "american-theater-web",
         "americanpsychothemusicalcomlottery",
         "around-the-town-chicago",
+        "whatsonstage",
         "theater-life",
         "ct-now",
         "nycitycenterorg",
         "deadline",
         "ricky-martin",
+        "financialtimes",
         "burlington-free-press",
         "cnn",
         "san-jose-mercury-news",
@@ -634,6 +621,7 @@
         "3news",
         "aussie-theatre",
         "herald-sun",
+        "daily-mail",
         "a-younger-theatre",
         "tapintonet",
         "fathomentertainmentcom",
@@ -648,7 +636,6 @@
         "standard",
         "newyorker",
         "thereviewshub",
-        "city-am",
         "arenastageorg",
         "lighting-and-sound-america",
         "theater-news-online",
@@ -663,7 +650,7 @@
         "exeunt-magazine",
         "kenny-leon"
       ],
-      "totalReviews": 492
+      "totalReviews": 475
     },
     {
       "critic": "Brittani Samuel",
@@ -1422,7 +1409,7 @@
         "standard",
         "telegraph"
       ],
-      "totalReviews": 23
+      "totalReviews": 22
     },
     {
       "critic": "Sam Marlowe",
@@ -1434,7 +1421,7 @@
         "timeout-london",
         "london-theatre"
       ],
-      "totalReviews": 23
+      "totalReviews": 18
     },
     {
       "critic": "Tim Bano",
@@ -1447,7 +1434,16 @@
         "times-uk",
         "independent"
       ],
-      "totalReviews": 23
+      "totalReviews": 19
+    },
+    {
+      "critic": "Dominic Maxwell",
+      "slug": "dominic-maxwell",
+      "outlets": [
+        "times-uk",
+        "the-sun"
+      ],
+      "totalReviews": 13
     },
     {
       "critic": "Kevin Filipski",
@@ -1664,7 +1660,7 @@
         "the-telegrap",
         "artsdesk"
       ],
-      "totalReviews": 26
+      "totalReviews": 25
     },
     {
       "critic": "Emlyn Travis",
@@ -1958,6 +1954,15 @@
       "outlets": [
         "hollywood-reporter",
         "nysr"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Adam Bloodworth",
+      "slug": "adam-bloodworth",
+      "outlets": [
+        "city-am",
+        "metro"
       ],
       "totalReviews": 3
     },
