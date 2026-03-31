@@ -289,4 +289,44 @@ function isVenueMismatch(url, showVenue, showCategory) {
   return { isMismatch: false };
 }
 
-module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview, isRoundupUrl, isVenueMismatch };
+/**
+ * Detect when a review URL's slug clearly names a different show than expected.
+ * Catches cases where SERP discovery filed a review under the wrong show directory.
+ *
+ * @param {string} url - Review URL
+ * @param {string} showTitle - Expected show title from shows.json
+ * @returns {{ isMismatch: boolean, reason?: string, urlTitle?: string }}
+ */
+function isUrlTitleMismatch(url, showTitle) {
+  if (!url || !showTitle) return { isMismatch: false };
+
+  // Extract the likely show-title slug from the URL path
+  // Common patterns: /review-TITLE-venue/, /TITLE-review/, /review/TITLE/
+  const urlPath = url.replace(/https?:\/\/[^/]+/, '').toLowerCase();
+
+  // Normalize show title to URL-slug form for comparison
+  const titleSlug = showTitle.toLowerCase()
+    .replace(/['']/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  // Extract key words from show title (3+ char, non-common)
+  const STOP_WORDS = new Set(['the', 'and', 'for', 'with', 'from', 'that', 'this', 'review', 'theatre', 'theater', 'musical', 'play', 'london', 'broadway', 'west', 'end', 'new', 'york']);
+  const titleWords = titleSlug.split('-').filter(w => w.length >= 3 && !STOP_WORDS.has(w));
+
+  if (titleWords.length === 0) return { isMismatch: false };
+
+  // Check if ANY significant title word appears in the URL path
+  const matchCount = titleWords.filter(w => urlPath.includes(w)).length;
+  const matchRate = matchCount / titleWords.length;
+
+  // If zero title words match AND the URL path is long enough to contain a show name,
+  // this is likely a wrong-show URL
+  if (matchRate === 0 && urlPath.length > 30) {
+    return { isMismatch: true, reason: 'URL contains none of the show title words (' + titleWords.join(', ') + ')' };
+  }
+
+  return { isMismatch: false };
+}
+
+module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview, isRoundupUrl, isVenueMismatch, isUrlTitleMismatch };
