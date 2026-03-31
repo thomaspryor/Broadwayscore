@@ -615,26 +615,28 @@ async function main() {
 
       if (validDates.length < 3) continue;
 
-      const dateCounts = {};
-      for (const d of validDates) {
-        const iso = new Date(d).toISOString().split('T')[0];
-        dateCounts[iso] = (dateCounts[iso] || 0) + 1;
-      }
-      const modeEntry = Object.entries(dateCounts).sort((a, b) => b[1] - a[1])[0];
-      const modeDate = modeEntry[0];
-      const modeCount = modeEntry[1];
-      const gapDays = Math.round((new Date(modeDate) - new Date(show.openingDate)) / 86400000);
+      // Press night = earliest review date - 1 day (critics attend evening, publish next morning)
+      // Use date clustering as confidence check: require 2+ reviews within 3 days of earliest
+      const earliestIso = new Date(validDates[0]).toISOString().split('T')[0];
+      const earliestMs = new Date(earliestIso).getTime();
+      const nearEarliest = validDates.filter(d => {
+        const ms = new Date(d).getTime();
+        return ms >= earliestMs && ms <= earliestMs + 3 * 86400000;
+      });
+      if (nearEarliest.length < 2) continue; // Only 1 review near earliest — could be a preview outlier
+
+      const pressNight = new Date(earliestMs - 86400000).toISOString().split('T')[0];
+      const gapDays = Math.round((earliestMs - new Date(show.openingDate).getTime()) / 86400000);
 
       if (gapDays <= 7) continue;
       if (gapDays > 90) continue;
-      if (modeCount < 2) continue;
 
-      console.log(`  INFER ${show.title}: mode review date ${modeDate} (${modeCount}x) is ${gapDays}d after opening ${show.openingDate}`);
+      console.log(`  INFER ${show.title}: earliest review ${earliestIso} (${nearEarliest.length} within 3d) → press night ${pressNight} (${gapDays}d after opening ${show.openingDate})`);
       changes.push({
         show: show.title, slug: show.slug, id: show.id,
         changes: [
           { field: 'previewsStartDate', old: show.previewsStartDate, new: show.openingDate },
-          { field: 'openingDate', old: show.openingDate, new: modeDate },
+          { field: 'openingDate', old: show.openingDate, new: pressNight },
           { field: 'openingDateSource', old: show.openingDateSource, new: 'inferred-from-reviews' },
         ],
       });
