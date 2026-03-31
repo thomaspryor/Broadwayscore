@@ -87,7 +87,7 @@ jobs:
             # Excluded: theater-life, london-theatre (no stars in HTML)
             # Excluded: times-uk, financialtimes (paywalled, no cookies)
             # Excluded: nydailynews, rollingstone (no star ratings)
-            OUTLETS="timeout,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic"
+            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am"
           else
             OUTLETS="$OUTLETS_INPUT"
           fi
