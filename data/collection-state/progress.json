@@ -969,7 +969,17 @@
     "nice-work-if-you-can-get-it-2012/backstage--david-sheward.json",
     "ghost-the-musical-2012/ap--mark-kennedy.json",
     "the-lyons-2012/ap--mark-kennedy.json",
-    "the-lyons-2012/northjerseycom--robert-feldberg.json"
+    "the-lyons-2012/northjerseycom--robert-feldberg.json",
+    "the-lyons-2012/backstage--david-sheward.json",
+    "a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+    "clybourne-park-2012/ew--melissa-rose-bernardo.json",
+    "clybourne-park-2012/amny--matt-windman.json",
+    "clybourne-park-2012/ap--mark-kennedy.json",
+    "clybourne-park-2012/philadelphia-inquirer--howard-shapiro.json",
+    "clybourne-park-2012/washpost--peter-marks.json",
+    "clybourne-park-2012/new-jersey-newsroom--michael-sommers.json",
+    "clybourne-park-2012/times-uk--clive-davis.json",
+    "one-man-two-guvnors-2012/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1464,7 +1474,10 @@
       "data/review-texts/nice-work-if-you-can-get-it-2012/usatoday--elysa-gardner.json",
       "data/review-texts/ghost-the-musical-2012/ap--mark-kennedy.json",
       "data/review-texts/the-lyons-2012/ap--mark-kennedy.json",
-      "data/review-texts/the-lyons-2012/northjerseycom--robert-feldberg.json"
+      "data/review-texts/the-lyons-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/a-streetcar-named-desire-2012/ap--mark-kennedy.json",
+      "data/review-texts/clybourne-park-2012/washpost--peter-marks.json",
+      "data/review-texts/one-man-two-guvnors-2012/new-jersey-newsroom--michael-sommers.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1515,7 +1528,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "the-lyons-2012/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "one-man-two-guvnors-2012/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -1814,6 +1827,39 @@
       "t": "2026-03-31T19:29:23.529Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T19:30:17.238Z",
+      "event": "bb-session",
+      "session": "171a3618",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviv"
+    },
+    {
+      "t": "2026-03-31T19:30:18.380Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T19:31:31.926Z",
+      "event": "bb-session",
+      "session": "b4007d53",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-clybourne-park-4-stars-1.3"
+    },
+    {
+      "t": "2026-03-31T19:31:33.008Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-31T19:33:46.277Z",
+      "event": "bb-session",
+      "session": "33f9aaeb",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/clybourne-park-at-the"
+    },
+    {
+      "t": "2026-03-31T19:33:47.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
