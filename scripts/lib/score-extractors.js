@@ -958,7 +958,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'star-class', 'unicode-stars', 'numeric-stars', 'original-star-rating',
   'timeout-star-widget', 'timeout-svg-stars',
   'lbo-star-rating', 'express-star-count', 'standard-star-count', 'dailymail-star-count',
-  'text-pattern-verified',
+  'text-pattern-verified', 'bww-star-image',
 ]);
 
 module.exports = {
