@@ -151,7 +151,8 @@
     "in-transit-2016/dctheatrescene--lorraine-treanor.json",
     "giant-2026/variety--daniel-daddario.json",
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--tatiana-siegel.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--tatiana-siegel.json",
+    "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -729,7 +730,16 @@
     "bloodlove-off-broadway-2026/playbill--unknown.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
-    "silver-manhattan-off-broadway-2026/theatermania--unknown.json"
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
+    "two-strangers-bway-2025/guardian--arifa-akbar.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -849,7 +859,9 @@
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--tatiana-siegel.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--tatiana-siegel.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/hollywood-reporter--tatiana-siegel.json",
+      "data/review-texts/an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "an-ark-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1196,7 +1208,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -1614,6 +1626,17 @@
     },
     {
       "t": "2026-03-31T02:37:47.376Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T02:38:34.359Z",
+      "event": "bb-session",
+      "session": "72d36323",
+      "url": "http://www.hollywoodreporter.com/review/angels-america-theater-review-33427%20%2"
+    },
+    {
+      "t": "2026-03-31T02:38:35.729Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
