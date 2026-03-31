@@ -269,6 +269,17 @@ export interface ShowCommercial {
     excerpt?: string;
   }>;
   deepResearch?: DeepResearchMetadata;
+
+  // Model-calculated recoupment fields (from merge-model-recoupment.js)
+  modelRecoupmentPct?: [number, number, number] | null; // [pessimistic, central, optimistic]
+  modelRecouped?: boolean | null;
+  modelBreakeven?: number | null;
+  modelDataQuality?: 'high' | 'medium' | 'low';
+  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated';
+  modelCategory?: string;
+  modelLastRun?: string;
+  modelWarnings?: string[];
+  modelDesignationFlag?: string;
 }
 
 export interface SeasonStats {
