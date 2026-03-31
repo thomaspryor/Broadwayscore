@@ -133,7 +133,8 @@
     "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
     "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
     "tina-2019/newyorker--michael-schulman.json",
-    "tootsie-2019/latimes--charles-mcnulty.json"
+    "tootsie-2019/latimes--charles-mcnulty.json",
+    "bernhardthamlet-2018/stage-left--william-wolf.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -519,7 +520,16 @@
     "the-ferryman-2018/theater-reviews-from-my-seat--joe-lombardi.json",
     "the-ferryman-2018/center-on-the-aisle--meredith-ganzman.json",
     "the-ferryman-2018/talkinbroadway--matthew-murray.json",
-    "the-ferryman-2018/walterthinnes--walter-thinnes.json"
+    "the-ferryman-2018/walterthinnes--walter-thinnes.json",
+    "the-lifespan-of-a-fact-2018/washpost--peter-marks.json",
+    "the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+    "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+    "the-nap-2018/broadwaynews--charles-isherwood.json",
+    "the-nap-2018/curtainup--elyse-sommer.json",
+    "bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json",
+    "pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
+    "pretty-woman-the-musical-2018/theatermania--hayley-levitt.json",
+    "pretty-woman-the-musical-2018/dctheatrescene--richard-seff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -609,7 +619,8 @@
       "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
       "les-miserables-west-end-2021/standard--the-standard.json",
       "mother-russia-off-broadway-2026/nytimes--laura-collins-hughes.json",
-      "topdog-underdog-2022/corey-hawkins--jessica-wang.json"
+      "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
+      "bernhardthamlet-2018/stage-left--william-wolf.json"
     ],
     "amp": [],
     "browserbase": [
@@ -828,7 +839,15 @@
       "data/review-texts/the-ferryman-2018/broadwaynews--charles-isherwood.json",
       "data/review-texts/the-ferryman-2018/theater-reviews-from-my-seat--joe-lombardi.json",
       "data/review-texts/the-ferryman-2018/center-on-the-aisle--meredith-ganzman.json",
-      "data/review-texts/the-ferryman-2018/talkinbroadway--matthew-murray.json"
+      "data/review-texts/the-ferryman-2018/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-lifespan-of-a-fact-2018/washpost--peter-marks.json",
+      "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sara-holden.json",
+      "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+      "data/review-texts/the-nap-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/the-nap-2018/curtainup--elyse-sommer.json",
+      "data/review-texts/bernhardthamlet-2018/broadwaynews--elizabeth-bradley.json",
+      "data/review-texts/pretty-woman-the-musical-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/pretty-woman-the-musical-2018/theatermania--hayley-levitt.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -859,7 +878,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "the-ferryman-2018/walterthinnes--walter-thinnes.json",
+  "lastProcessed": "pretty-woman-the-musical-2018/dctheatrescene--richard-seff.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -1194,6 +1213,46 @@
       "event": "bb-session",
       "session": "b0561b03",
       "url": "https://centerontheaisle.com/4551/review-jez-butterworths-the-ferryman-on-broadw"
+    },
+    {
+      "t": "2026-03-31T00:09:20.719Z",
+      "event": "bb-session",
+      "session": "20496841",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-lifespan-of-a-fac"
+    },
+    {
+      "t": "2026-03-31T00:09:22.108Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T00:11:46.561Z",
+      "event": "bb-session",
+      "session": "addca2ec",
+      "url": "http://broadway.news/2018/09/27/review-colorful-characters-punch-up-the-nap/"
+    },
+    {
+      "t": "2026-03-31T00:12:51.991Z",
+      "event": "bb-session",
+      "session": "bfc3ac44",
+      "url": "https://broadway.news/2018/09/25/review-an-exploration-of-female-power-in-bernha"
+    },
+    {
+      "t": "2026-03-31T00:13:16.471Z",
+      "event": "bb-session",
+      "session": "b7f3f46b",
+      "url": "https://broadway.news/2018/08/16/review-pretty-woman-is-a-cardboard-cutout-of-th"
+    },
+    {
+      "t": "2026-03-31T00:13:25.675Z",
+      "event": "bb-session",
+      "session": "034c6cf3",
+      "url": "https://origin-www.theatermania.com/broadway/reviews/pretty-woman-brings-the-fai"
+    },
+    {
+      "t": "2026-03-31T00:13:27.091Z",
+      "event": "bb-cookie-inject",
+      "domain": "theatermania.com"
     }
   ]
 }
