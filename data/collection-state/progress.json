@@ -949,7 +949,17 @@
     "jesa-off-broadway-2026/playbill--unknown.json",
     "indecent-2017/forward--jesse-green.json",
     "bring-it-on-the-musical-2012/talkinbroadway--matthew-murray.json",
-    "fela-2012/variety--marilyn-stasio.json"
+    "fela-2012/variety--marilyn-stasio.json",
+    "fela-2012/backstage--david-sheward.json",
+    "harvey-2012/amny--matt-windman.json",
+    "harvey-2012/philadelphia-inquirer--howard-shapiro.json",
+    "harvey-2012/theatermania--david-finkle.json",
+    "harvey-2012/backstage--erik-haagensen.json",
+    "dont-dress-for-dinner-2012/philadelphia-inquirer--howard-shapiro.json",
+    "leap-of-faith-2012/ap--mark-kennedy.json",
+    "leap-of-faith-2012/philadelphia-inquirer--howard-shapiro.json",
+    "leap-of-faith-2012/usatoday--elysa-gardner.json",
+    "dont-dress-for-dinner-2012/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1436,7 +1446,10 @@
       "data/review-texts/cyrano-de-bergerac-2012/usatoday--elysa-gardner.json",
       "data/review-texts/an-enemy-of-the-people-2012/wsj--terry-teachout.json",
       "data/review-texts/indecent-2017/forward--jesse-green.json",
-      "data/review-texts/bring-it-on-the-musical-2012/talkinbroadway--matthew-murray.json"
+      "data/review-texts/bring-it-on-the-musical-2012/talkinbroadway--matthew-murray.json",
+      "data/review-texts/harvey-2012/theatermania--david-finkle.json",
+      "data/review-texts/harvey-2012/backstage--erik-haagensen.json",
+      "data/review-texts/leap-of-faith-2012/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1487,7 +1500,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "fela-2012/variety--marilyn-stasio.json",
+  "lastProcessed": "dont-dress-for-dinner-2012/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -1731,6 +1744,17 @@
       "t": "2026-03-31T19:07:57.326Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T19:17:34.925Z",
+      "event": "bb-session",
+      "session": "b422a2e2",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-harvey-3-5-stars-1.3783132"
+    },
+    {
+      "t": "2026-03-31T19:17:36.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
