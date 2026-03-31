@@ -1020,7 +1020,35 @@ showDirs.forEach(showId => {
   }
 
   // Skip shows in "upcoming" status across all markets — no valid reviews can exist yet
+  // BUT: still promote contentVerification flags on upcoming shows so flags are ready when show opens
   if (showStatusMap[showId] === 'upcoming') {
+    const upcomingDir = path.join(reviewTextsDir, showId);
+    try {
+      const upcomingFiles = fs.readdirSync(upcomingDir).filter(f => f.endsWith('.json'));
+      for (const uf of upcomingFiles) {
+        try {
+          const ud = JSON.parse(fs.readFileSync(path.join(upcomingDir, uf), 'utf8'));
+          const ucv = ud.contentVerification;
+          if (!ucv || (ucv.confidence !== 'high' && ucv.confidence !== 'medium')) continue;
+          let promoted = false;
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !ud.wrongProductionOverride && !ud.wrongProductionManualClear) {
+            ud.wrongProduction = true;
+            ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
+            promoted = true;
+          }
+          if (ucv.wrongArticle === true && ud.wrongShow !== true) {
+            ud.wrongShow = true;
+            ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
+            promoted = true;
+          }
+          if (promoted) {
+            ud.contentVerificationPromoted = `rebuild: promoted from contentVerification (${ucv.verifiedBy}, ${ucv.confidence})`;
+            stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
+            try { fs.writeFileSync(path.join(upcomingDir, uf), JSON.stringify(ud, null, 2) + '\n'); } catch (e) {}
+          }
+        } catch { /* skip malformed */ }
+      }
+    } catch { /* no dir */ }
     stats.skippedUpcomingShows = (stats.skippedUpcomingShows || 0) + 1;
     return;
   }
@@ -1315,6 +1343,7 @@ showDirs.forEach(showId => {
               && !data.wrongProductionOverride && !data.wrongProductionManualClear
               && isHighMediumConfidence) {
             data.wrongProduction = true;
+            data.wrongProductionReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
@@ -1322,10 +1351,12 @@ showDirs.forEach(showId => {
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
           if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon) {
             data.wrongShow = true;
+            data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
           if (cv.isFilmTv === true && data.wrongShow !== true && !skipWsForLondon) {
             data.wrongShow = true;
+            data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
           if (promoted) {
