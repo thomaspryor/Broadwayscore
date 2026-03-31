@@ -1039,7 +1039,17 @@
     "godspell-2011/usatoday--elysa-gardner.json",
     "godspell-2011/backstage--david-sheward.json",
     "other-desert-cities-2011/ap--mark-kennedy.json",
-    "other-desert-cities-2011/latimes--charles-mcnulty-bway.json"
+    "other-desert-cities-2011/latimes--charles-mcnulty-bway.json",
+    "other-desert-cities-2011/northjerseycom--robert-feldberg.json",
+    "other-desert-cities-2011/backstage--erik-haagensen.json",
+    "other-desert-cities-2011/bloomberg--jeremy-gerard.json",
+    "other-desert-cities-2011/usatoday--elysa-garder.json",
+    "chinglish-2011/newsday--linda-winer.json",
+    "chinglish-2011/ap--mark-kennedy.json",
+    "chinglish-2011/ny1--roma-torre.json",
+    "chinglish-2011/backstage--erik-haagensen.json",
+    "relatively-speaking-2011/scheckontheater--frank-scheck.json",
+    "relatively-speaking-2011/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1569,7 +1579,10 @@
       "data/review-texts/private-lives-2011/talkinbroadway--matthew-murray.json",
       "data/review-texts/venus-in-fur-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/godspell-2011/usatoday--elysa-gardner.json",
-      "data/review-texts/other-desert-cities-2011/latimes--charles-mcnulty-bway.json"
+      "data/review-texts/other-desert-cities-2011/latimes--charles-mcnulty-bway.json",
+      "data/review-texts/other-desert-cities-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/other-desert-cities-2011/usatoday--elysa-garder.json",
+      "data/review-texts/chinglish-2011/ny1--roma-torre.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1620,7 +1633,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "other-desert-cities-2011/latimes--charles-mcnulty-bway.json",
+  "lastProcessed": "relatively-speaking-2011/variety--charles-isherwood.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -2051,6 +2064,28 @@
       "t": "2026-03-31T20:06:32.032Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T20:09:37.738Z",
+      "event": "bb-session",
+      "session": "0c4b93ec",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/133218453_Painful_past_ri"
+    },
+    {
+      "t": "2026-03-31T20:09:38.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T20:10:45.645Z",
+      "event": "bb-session",
+      "session": "7b37e78b",
+      "url": "https://www.newsday.com/entertainment/theater/ch-inglish-gets-lost-in-translatio"
+    },
+    {
+      "t": "2026-03-31T20:10:46.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
