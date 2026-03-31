@@ -10,7 +10,11 @@
     "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
     "encores-the-wild-party-off-broadway-2026/playbill--unknown.json",
     "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
-    "data-off-broadway-2026/timeout--unknown.json"
+    "data-off-broadway-2026/timeout--unknown.json",
+    "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+    "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
+    "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -21,7 +25,11 @@
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "body-count-off-broadway-2026/rollingstone--christopher-r-weingarten.json",
     "titanique-off-broadway-2022/newyorker--dan-stahl.json",
-    "ai-yah-goy-vey-off-broadway-2026/talkinbroadway--james-wilson.json"
+    "ai-yah-goy-vey-off-broadway-2026/talkinbroadway--james-wilson.json",
+    "ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json",
+    "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json",
+    "indian-princesses-off-broadway-2025/theatermania--linda-buchwald.json",
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -31,12 +39,17 @@
       "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
       "encores-the-wild-party-off-broadway-2026/playbill--unknown.json",
-      "zack-off-broadway-2026/the-interested-bystander--cary-wong.json"
+      "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+      "imitation-of-life-off-broadway-2026/theatermania--david-gordon.json",
+      "the-emporium-off-broadway-2025/theatermania--linda-buchwald.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/titus-andronicus-off-broadway-2026/amny--matt-windman.json",
-      "titus-andronicus-off-broadway-2026/amny--matt-windman.json"
+      "titus-andronicus-off-broadway-2026/amny--matt-windman.json",
+      "data/review-texts/imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json",
+      "imitation-of-life-off-broadway-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -46,14 +59,15 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/ai-yah-goy-vey-off-broadway-2026/talkinbroadway--james-wilson.json"
+      "data/review-texts/ai-yah-goy-vey-off-broadway-2026/talkinbroadway--james-wilson.json",
+      "data/review-texts/ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "ai-yah-goy-vey-off-broadway-2026/talkinbroadway--james-wilson.json",
+  "lastProcessed": "jackals-off-broadway-2026/times-uk--anne-treneman.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -65,6 +79,17 @@
       "t": "2026-03-31T09:18:56.515Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-31T09:24:52.714Z",
+      "event": "bb-session",
+      "session": "8536be98",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
+    },
+    {
+      "t": "2026-03-31T09:24:53.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
