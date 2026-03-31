@@ -36,7 +36,22 @@ for (const entry of manifest) {
   }
 
   const html = fs.readFileSync(fixturePath, 'utf8');
-  const result = extractScore(html, '', entry.id);
+  // For negative tests (NO-STARS-*), use the outlet name after the prefix
+  const outletId = entry.id.startsWith('NO-STARS-') ? entry.id.replace('NO-STARS-', '') : entry.id;
+  const result = extractScore(html, '', outletId);
+
+  // Negative test: expected null (outlet doesn't use stars)
+  if (entry.expected === null) {
+    if (!result) {
+      console.log(`PASS ${entry.id} — correctly returned null (no stars expected)`);
+      pass++;
+    } else {
+      console.log(`FAIL ${entry.id} — false positive! Got ${result.originalScore} [${result.source}] but expected no stars`);
+      fail++;
+      failures.push({ outlet: entry.id, expected: 'null', got: result.originalScore, source: result.source });
+    }
+    continue;
+  }
 
   if (!result) {
     console.log(`FAIL ${entry.id} — extractScore returned null (expected ${entry.expected})`);
