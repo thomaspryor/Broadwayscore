@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-24T06:04:44.671Z",
+    "generatedAt": "2026-03-31T06:21:28.652Z",
     "threshold": 40,
-    "showsScanned": 1312,
-    "reviewsScanned": 27016,
-    "duplicatesFound": 78,
+    "showsScanned": 1320,
+    "reviewsScanned": 27302,
+    "duplicatesFound": 87,
     "byMethod": {
       "similarity+llm": [
         {
@@ -48,6 +48,21 @@
           "secondaryOutlet": "amNY",
           "secondaryCritic": "Matt Windman",
           "primaryScore": 46,
+          "secondaryScore": 44,
+          "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "elling-2010",
+          "method": "similarity+llm",
+          "similarity": 44,
+          "primaryFile": "hollywood-reporter--unknown.json",
+          "primaryOutlet": "The Hollywood Reporter",
+          "primaryCritic": "",
+          "secondaryFile": "reuters--david-rooney.json",
+          "secondaryOutlet": "Reuters/Hollywood Reporter",
+          "secondaryCritic": "David Rooney",
+          "primaryScore": 42,
           "secondaryScore": 44,
           "scoreDiff": 2,
           "textSource": "fullText"
@@ -277,6 +292,21 @@
           "primaryScore": 79,
           "secondaryScore": 70,
           "scoreDiff": 9,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "ann-2013",
+          "method": "similarity",
+          "similarity": 72,
+          "primaryFile": "newsday--linda-winer.json",
+          "primaryOutlet": "Newsday",
+          "primaryCritic": "Linda Winer",
+          "secondaryFile": "amny--matt-windman.json",
+          "secondaryOutlet": "amNewYork",
+          "secondaryCritic": "Matt Windman",
+          "primaryScore": 48,
+          "secondaryScore": 64,
+          "scoreDiff": 16,
           "textSource": "fullText"
         },
         {
@@ -700,21 +730,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "on-the-twentieth-century-2015",
-          "method": "similarity",
-          "similarity": 78,
-          "primaryFile": "ap--unknown.json",
-          "primaryOutlet": "Associated Press",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "reading-eagle--jennifer-farrar.json",
-          "secondaryOutlet": "Reading Eagle",
-          "secondaryCritic": "Jennifer Farrar",
-          "primaryScore": 81,
-          "secondaryScore": 87,
-          "scoreDiff": 6,
-          "textSource": "fullText"
-        },
-        {
           "showId": "on-your-feet-2015",
           "method": "similarity",
           "similarity": 76,
@@ -726,6 +741,21 @@
           "secondaryCritic": "Robert Kahn",
           "primaryScore": 81,
           "secondaryScore": 81,
+          "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "once-upon-a-one-more-time-2023",
+          "method": "similarity",
+          "similarity": 76,
+          "primaryFile": "nydailynews--new-york-daily-news.json",
+          "primaryOutlet": "New York Daily News",
+          "primaryCritic": "New York Daily News",
+          "secondaryFile": "chicagotribune--chris-jones.json",
+          "secondaryOutlet": "Chicago Tribune",
+          "secondaryCritic": "Chris Jones",
+          "primaryScore": 18,
+          "secondaryScore": 18,
           "scoreDiff": 0,
           "textSource": "fullText"
         },
@@ -742,6 +772,21 @@
           "primaryScore": 78,
           "secondaryScore": 90,
           "scoreDiff": 12,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "peter-pan-goes-wrong-2023",
+          "method": "similarity",
+          "similarity": 75,
+          "primaryFile": "chicagotribune--chris-jones.json",
+          "primaryOutlet": "Chicago Tribune",
+          "primaryCritic": "Chris Jones",
+          "secondaryFile": "nydailynews--new-york-daily-news.json",
+          "secondaryOutlet": "New York Daily News",
+          "secondaryCritic": "New York Daily News",
+          "primaryScore": 84,
+          "secondaryScore": 83,
+          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -787,21 +832,6 @@
           "primaryScore": 76,
           "secondaryScore": 76,
           "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "rocky-2014",
-          "method": "similarity",
-          "similarity": 91,
-          "primaryFile": "huffpost--rex-reed.json",
-          "primaryOutlet": "Huffington Post",
-          "primaryCritic": "Rex Reed",
-          "secondaryFile": "rex-reed--unknown.json",
-          "secondaryOutlet": "Rex Reed",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 86,
-          "secondaryScore": 85,
-          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -852,16 +882,16 @@
         {
           "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
           "method": "similarity",
-          "similarity": 90,
-          "primaryFile": "ap--mark-kennedy.json",
-          "primaryOutlet": "Associated Press",
-          "primaryCritic": "Mark Kennedy",
-          "secondaryFile": "washington-times--unknown.json",
+          "similarity": 96,
+          "primaryFile": "abc-news--unknown.json",
+          "primaryOutlet": "ABC News",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "washington-times--mark-kennedy.json",
           "secondaryOutlet": "Washington Times",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 79,
+          "secondaryCritic": "Mark Kennedy",
+          "primaryScore": 78,
           "secondaryScore": 80,
-          "scoreDiff": 1,
+          "scoreDiff": 2,
           "textSource": "fullText"
         },
         {
@@ -870,7 +900,7 @@
           "similarity": 76,
           "primaryFile": "nydailynews--unknown.json",
           "primaryOutlet": "New York Daily News",
-          "primaryCritic": "Unknown",
+          "primaryCritic": "",
           "secondaryFile": "chicagotribune--chris-jones.json",
           "secondaryOutlet": "Chicago Tribune",
           "secondaryCritic": "Chris Jones",
@@ -908,21 +938,6 @@
           "secondaryScore": 42,
           "scoreDiff": 21,
           "textSource": "fullText"
-        },
-        {
-          "showId": "stranger-things-the-first-shadow-west-end-2023",
-          "method": "similarity",
-          "similarity": 98,
-          "primaryFile": "broadwayworld--alexander-cohen.json",
-          "primaryOutlet": "BroadwayWorld",
-          "primaryCritic": "Alexander Cohen",
-          "secondaryFile": "city-am--unknown.json",
-          "secondaryOutlet": "CityAM",
-          "secondaryCritic": "Adam Bloodworth",
-          "primaryScore": 81,
-          "secondaryScore": null,
-          "scoreDiff": 81,
-          "textSource": "excerpts"
         },
         {
           "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -967,6 +982,21 @@
           "primaryScore": 92,
           "secondaryScore": 84,
           "scoreDiff": 8,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "the-bridges-of-madison-county-2014",
+          "method": "similarity",
+          "similarity": 92,
+          "primaryFile": "ap--mark-kennedy.json",
+          "primaryOutlet": "Associated Press",
+          "primaryCritic": "Mark Kennedy",
+          "secondaryFile": "huffpost--huff-wires.json",
+          "secondaryOutlet": "The Huffington Post",
+          "secondaryCritic": "Huff Wires",
+          "primaryScore": 84,
+          "secondaryScore": 81,
+          "scoreDiff": 3,
           "textSource": "fullText"
         },
         {
@@ -1030,6 +1060,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "the-glass-menagerie-2013",
+          "method": "similarity",
+          "similarity": 86,
+          "primaryFile": "wsj--terry-teachout.json",
+          "primaryOutlet": "The Wall Street Journal",
+          "primaryCritic": "Terry Teachout",
+          "secondaryFile": "ap--mark-kennedy.json",
+          "secondaryOutlet": "Associated Press",
+          "secondaryCritic": "Mark Kennedy",
+          "primaryScore": 76,
+          "secondaryScore": 88,
+          "scoreDiff": 12,
+          "textSource": "fullText"
+        },
+        {
           "showId": "the-music-man-2022",
           "method": "similarity",
           "similarity": 95,
@@ -1057,6 +1102,21 @@
           "primaryScore": 77,
           "secondaryScore": 76,
           "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "the-play-that-goes-wrong-west-end-2021",
+          "method": "similarity",
+          "similarity": 84,
+          "primaryFile": "telegraph--marianka-swain.json",
+          "primaryOutlet": "The Telegraph (UK)",
+          "primaryCritic": "Marianka Swain",
+          "secondaryFile": "the-telegrap--tim-walker.json",
+          "secondaryOutlet": "The Telegrap",
+          "secondaryCritic": "Tim Walker",
+          "primaryScore": 85,
+          "secondaryScore": 80,
+          "scoreDiff": 5,
           "textSource": "fullText"
         },
         {
@@ -1137,6 +1197,36 @@
           "textSource": "fullText"
         },
         {
+          "showId": "hand-to-god-2015",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "variety--marilyn-stasio.json",
+          "primaryOutlet": "Variety",
+          "primaryCritic": "Marilyn Stasio",
+          "secondaryFile": "boston-herald--gordon-cox.json",
+          "secondaryOutlet": "Boston Herald",
+          "secondaryCritic": "Gordon Cox",
+          "primaryScore": 91,
+          "secondaryScore": 86,
+          "scoreDiff": 5,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "in-transit-2016",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "nbcny--robert-kahn.json",
+          "primaryOutlet": "NBC New York",
+          "primaryCritic": "Robert Kahn",
+          "secondaryFile": "labor-press--leonard-golubchick.json",
+          "secondaryOutlet": "labor-press",
+          "secondaryCritic": "Leonard Golubchick",
+          "primaryScore": 76,
+          "secondaryScore": 36,
+          "scoreDiff": 40,
+          "textSource": "fullText"
+        },
+        {
           "showId": "macbeth-2008",
           "method": "fingerprint",
           "similarity": 100,
@@ -1149,6 +1239,21 @@
           "primaryScore": 65,
           "secondaryScore": null,
           "scoreDiff": 65,
+          "textSource": "excerpts"
+        },
+        {
+          "showId": "my-neighbour-totoro-west-end-2025",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "telegraph--dominic-cavendish.json",
+          "primaryOutlet": "The Telegraph (UK)",
+          "primaryCritic": "Dominic Cavendish",
+          "secondaryFile": "the-telegrap--dominic-cavendish.json",
+          "secondaryOutlet": "The Telegrap",
+          "secondaryCritic": "Dominic Cavendish",
+          "primaryScore": 81,
+          "secondaryScore": null,
+          "scoreDiff": 81,
           "textSource": "excerpts"
         },
         {
@@ -1167,18 +1272,48 @@
           "textSource": "excerpts"
         },
         {
-          "showId": "stranger-things-the-first-shadow-west-end-2023",
+          "showId": "the-bands-visit-2017",
           "method": "fingerprint",
           "similarity": 100,
-          "primaryFile": "latimes--unknown.json",
-          "primaryOutlet": "Los Angeles Times (Charles McNulty)*",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "city-am--unknown.json",
-          "secondaryOutlet": "CityAM",
-          "secondaryCritic": "Adam Bloodworth",
+          "primaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
+          "primaryOutlet": "Off Script with Dan Dwyer",
+          "primaryCritic": "Dan Dwyer",
+          "secondaryFile": "theater-life--isa-goldberg.json",
+          "secondaryOutlet": "Theater Life",
+          "secondaryCritic": "Isa Goldberg",
+          "primaryScore": 84,
+          "secondaryScore": 82,
+          "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "the-book-of-mormon-west-end-2024",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "timeout--david-cote.json",
+          "primaryOutlet": "Time Out New York",
+          "primaryCritic": "David Cote",
+          "secondaryFile": "timeout-london--david-cote.json",
+          "secondaryOutlet": "Time Out London",
+          "secondaryCritic": "David Cote",
           "primaryScore": null,
-          "secondaryScore": null,
-          "scoreDiff": 0,
+          "secondaryScore": 88,
+          "scoreDiff": 88,
+          "textSource": "excerpts"
+        },
+        {
+          "showId": "the-other-place-2026",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "telegraph--claire-allfree.json",
+          "primaryOutlet": "The Telegraph",
+          "primaryCritic": "Claire Allfree",
+          "secondaryFile": "the-telegrap--claire-allfree.json",
+          "secondaryOutlet": "The Telegrap",
+          "secondaryCritic": "Claire Allfree",
+          "primaryScore": 81,
+          "secondaryScore": 82,
+          "scoreDiff": 1,
           "textSource": "excerpts"
         }
       ]
@@ -1258,6 +1393,21 @@
       "primaryScore": 79,
       "secondaryScore": 70,
       "scoreDiff": 9,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "ann-2013",
+      "method": "similarity",
+      "similarity": 72,
+      "primaryFile": "newsday--linda-winer.json",
+      "primaryOutlet": "Newsday",
+      "primaryCritic": "Linda Winer",
+      "secondaryFile": "amny--matt-windman.json",
+      "secondaryOutlet": "amNewYork",
+      "secondaryCritic": "Matt Windman",
+      "primaryScore": 48,
+      "secondaryScore": 64,
+      "scoreDiff": 16,
       "textSource": "fullText"
     },
     {
@@ -1348,6 +1498,21 @@
       "primaryScore": 82,
       "secondaryScore": 83,
       "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "elling-2010",
+      "method": "similarity+llm",
+      "similarity": 44,
+      "primaryFile": "hollywood-reporter--unknown.json",
+      "primaryOutlet": "The Hollywood Reporter",
+      "primaryCritic": "",
+      "secondaryFile": "reuters--david-rooney.json",
+      "secondaryOutlet": "Reuters/Hollywood Reporter",
+      "secondaryCritic": "David Rooney",
+      "primaryScore": 42,
+      "secondaryScore": 44,
+      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -1546,6 +1711,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "hand-to-god-2015",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "variety--marilyn-stasio.json",
+      "primaryOutlet": "Variety",
+      "primaryCritic": "Marilyn Stasio",
+      "secondaryFile": "boston-herald--gordon-cox.json",
+      "secondaryOutlet": "Boston Herald",
+      "secondaryCritic": "Gordon Cox",
+      "primaryScore": 91,
+      "secondaryScore": 86,
+      "scoreDiff": 5,
+      "textSource": "fullText"
+    },
+    {
       "showId": "harry-potter-2021",
       "method": "similarity",
       "similarity": 79,
@@ -1618,6 +1798,21 @@
       "primaryScore": 76,
       "secondaryScore": 76,
       "scoreDiff": 0,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "in-transit-2016",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "nbcny--robert-kahn.json",
+      "primaryOutlet": "NBC New York",
+      "primaryCritic": "Robert Kahn",
+      "secondaryFile": "labor-press--leonard-golubchick.json",
+      "secondaryOutlet": "labor-press",
+      "secondaryCritic": "Leonard Golubchick",
+      "primaryScore": 76,
+      "secondaryScore": 36,
+      "scoreDiff": 40,
       "textSource": "fullText"
     },
     {
@@ -1786,6 +1981,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "telegraph--dominic-cavendish.json",
+      "primaryOutlet": "The Telegraph (UK)",
+      "primaryCritic": "Dominic Cavendish",
+      "secondaryFile": "the-telegrap--dominic-cavendish.json",
+      "secondaryOutlet": "The Telegrap",
+      "secondaryCritic": "Dominic Cavendish",
+      "primaryScore": 81,
+      "secondaryScore": null,
+      "scoreDiff": 81,
+      "textSource": "excerpts"
+    },
+    {
       "showId": "next-fall-2010",
       "method": "fingerprint",
       "similarity": 100,
@@ -1846,21 +2056,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "on-the-twentieth-century-2015",
-      "method": "similarity",
-      "similarity": 78,
-      "primaryFile": "ap--unknown.json",
-      "primaryOutlet": "Associated Press",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "reading-eagle--jennifer-farrar.json",
-      "secondaryOutlet": "Reading Eagle",
-      "secondaryCritic": "Jennifer Farrar",
-      "primaryScore": 81,
-      "secondaryScore": 87,
-      "scoreDiff": 6,
-      "textSource": "fullText"
-    },
-    {
       "showId": "on-your-feet-2015",
       "method": "similarity",
       "similarity": 76,
@@ -1872,6 +2067,21 @@
       "secondaryCritic": "Robert Kahn",
       "primaryScore": 81,
       "secondaryScore": 81,
+      "scoreDiff": 0,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "method": "similarity",
+      "similarity": 76,
+      "primaryFile": "nydailynews--new-york-daily-news.json",
+      "primaryOutlet": "New York Daily News",
+      "primaryCritic": "New York Daily News",
+      "secondaryFile": "chicagotribune--chris-jones.json",
+      "secondaryOutlet": "Chicago Tribune",
+      "secondaryCritic": "Chris Jones",
+      "primaryScore": 18,
+      "secondaryScore": 18,
       "scoreDiff": 0,
       "textSource": "fullText"
     },
@@ -1921,6 +2131,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "peter-pan-goes-wrong-2023",
+      "method": "similarity",
+      "similarity": 75,
+      "primaryFile": "chicagotribune--chris-jones.json",
+      "primaryOutlet": "Chicago Tribune",
+      "primaryCritic": "Chris Jones",
+      "secondaryFile": "nydailynews--new-york-daily-news.json",
+      "secondaryOutlet": "New York Daily News",
+      "secondaryCritic": "New York Daily News",
+      "primaryScore": 84,
+      "secondaryScore": 83,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
       "showId": "present-laughter-2017",
       "method": "similarity",
       "similarity": 95,
@@ -1963,21 +2188,6 @@
       "primaryScore": 76,
       "secondaryScore": 76,
       "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "rocky-2014",
-      "method": "similarity",
-      "similarity": 91,
-      "primaryFile": "huffpost--rex-reed.json",
-      "primaryOutlet": "Huffington Post",
-      "primaryCritic": "Rex Reed",
-      "secondaryFile": "rex-reed--unknown.json",
-      "secondaryOutlet": "Rex Reed",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 86,
-      "secondaryScore": 85,
-      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -2028,16 +2238,16 @@
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
       "method": "similarity",
-      "similarity": 90,
-      "primaryFile": "ap--mark-kennedy.json",
-      "primaryOutlet": "Associated Press",
-      "primaryCritic": "Mark Kennedy",
-      "secondaryFile": "washington-times--unknown.json",
+      "similarity": 96,
+      "primaryFile": "abc-news--unknown.json",
+      "primaryOutlet": "ABC News",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "washington-times--mark-kennedy.json",
       "secondaryOutlet": "Washington Times",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 79,
+      "secondaryCritic": "Mark Kennedy",
+      "primaryScore": 78,
       "secondaryScore": 80,
-      "scoreDiff": 1,
+      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -2046,7 +2256,7 @@
       "similarity": 76,
       "primaryFile": "nydailynews--unknown.json",
       "primaryOutlet": "New York Daily News",
-      "primaryCritic": "Unknown",
+      "primaryCritic": "",
       "secondaryFile": "chicagotribune--chris-jones.json",
       "secondaryOutlet": "Chicago Tribune",
       "secondaryCritic": "Chris Jones",
@@ -2084,36 +2294,6 @@
       "secondaryScore": 42,
       "scoreDiff": 21,
       "textSource": "fullText"
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "latimes--unknown.json",
-      "primaryOutlet": "Los Angeles Times (Charles McNulty)*",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "city-am--unknown.json",
-      "secondaryOutlet": "CityAM",
-      "secondaryCritic": "Adam Bloodworth",
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "method": "similarity",
-      "similarity": 98,
-      "primaryFile": "broadwayworld--alexander-cohen.json",
-      "primaryOutlet": "BroadwayWorld",
-      "primaryCritic": "Alexander Cohen",
-      "secondaryFile": "city-am--unknown.json",
-      "secondaryOutlet": "CityAM",
-      "secondaryCritic": "Adam Bloodworth",
-      "primaryScore": 81,
-      "secondaryScore": null,
-      "scoreDiff": 81,
-      "textSource": "excerpts"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -2162,6 +2342,21 @@
     },
     {
       "showId": "the-bands-visit-2017",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
+      "primaryOutlet": "Off Script with Dan Dwyer",
+      "primaryCritic": "Dan Dwyer",
+      "secondaryFile": "theater-life--isa-goldberg.json",
+      "secondaryOutlet": "Theater Life",
+      "secondaryCritic": "Isa Goldberg",
+      "primaryScore": 84,
+      "secondaryScore": 82,
+      "scoreDiff": 2,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "the-bands-visit-2017",
       "method": "similarity",
       "similarity": 99,
       "primaryFile": "theater-life--barry-gordin.json",
@@ -2173,6 +2368,36 @@
       "primaryScore": 92,
       "secondaryScore": 84,
       "scoreDiff": 8,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "timeout--david-cote.json",
+      "primaryOutlet": "Time Out New York",
+      "primaryCritic": "David Cote",
+      "secondaryFile": "timeout-london--david-cote.json",
+      "secondaryOutlet": "Time Out London",
+      "secondaryCritic": "David Cote",
+      "primaryScore": null,
+      "secondaryScore": 88,
+      "scoreDiff": 88,
+      "textSource": "excerpts"
+    },
+    {
+      "showId": "the-bridges-of-madison-county-2014",
+      "method": "similarity",
+      "similarity": 92,
+      "primaryFile": "ap--mark-kennedy.json",
+      "primaryOutlet": "Associated Press",
+      "primaryCritic": "Mark Kennedy",
+      "secondaryFile": "huffpost--huff-wires.json",
+      "secondaryOutlet": "The Huffington Post",
+      "secondaryCritic": "Huff Wires",
+      "primaryScore": 84,
+      "secondaryScore": 81,
+      "scoreDiff": 3,
       "textSource": "fullText"
     },
     {
@@ -2251,6 +2476,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "the-glass-menagerie-2013",
+      "method": "similarity",
+      "similarity": 86,
+      "primaryFile": "wsj--terry-teachout.json",
+      "primaryOutlet": "The Wall Street Journal",
+      "primaryCritic": "Terry Teachout",
+      "secondaryFile": "ap--mark-kennedy.json",
+      "secondaryOutlet": "Associated Press",
+      "secondaryCritic": "Mark Kennedy",
+      "primaryScore": 76,
+      "secondaryScore": 88,
+      "scoreDiff": 12,
+      "textSource": "fullText"
+    },
+    {
       "showId": "the-humans-2016",
       "method": "similarity+llm",
       "similarity": 68,
@@ -2281,6 +2521,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "the-other-place-2026",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "telegraph--claire-allfree.json",
+      "primaryOutlet": "The Telegraph",
+      "primaryCritic": "Claire Allfree",
+      "secondaryFile": "the-telegrap--claire-allfree.json",
+      "secondaryOutlet": "The Telegrap",
+      "secondaryCritic": "Claire Allfree",
+      "primaryScore": 81,
+      "secondaryScore": 82,
+      "scoreDiff": 1,
+      "textSource": "excerpts"
+    },
+    {
       "showId": "the-piano-lesson-2022",
       "method": "similarity",
       "similarity": 83,
@@ -2293,6 +2548,21 @@
       "primaryScore": 77,
       "secondaryScore": 76,
       "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "method": "similarity",
+      "similarity": 84,
+      "primaryFile": "telegraph--marianka-swain.json",
+      "primaryOutlet": "The Telegraph (UK)",
+      "primaryCritic": "Marianka Swain",
+      "secondaryFile": "the-telegrap--tim-walker.json",
+      "secondaryOutlet": "The Telegrap",
+      "secondaryCritic": "Tim Walker",
+      "primaryScore": 85,
+      "secondaryScore": 80,
+      "scoreDiff": 5,
       "textSource": "fullText"
     },
     {
