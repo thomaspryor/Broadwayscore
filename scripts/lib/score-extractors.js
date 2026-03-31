@@ -21,7 +21,7 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
-const EXTRACTOR_VERSION = 3;  // v3: Telegraph text-based rating, raw HTML fallback for outlet extractors
+const EXTRACTOR_VERSION = 4;  // v4: BWW star image extractor, aggregator downgrade fixes
 
 /**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
@@ -128,6 +128,42 @@ function extractTimeOutScore(html, text) {
     };
   }
 
+  return null;
+}
+
+/**
+ * Extract score from BroadwayWorld review
+ * Format: Star image filename (e.g., "5stars.png", "4stars.png")
+ * BWW uses cloudimages2.broadwayworld.com/Nstars.png images
+ */
+function extractBWWScore(html, text) {
+  if (!html) return null;
+  // Match star image: "5stars.png", "4stars.png", etc.
+  // The image src contains "Nstars.png" where N is 1-5
+  // Also check data-src/data-lazy-src for lazy-loaded images
+  const match = html.match(/(?:(?:data-(?:lazy-)?)?src(?:set)?)=["'][^"']*?(\d)stars?\.png/i);
+  if (match) {
+    const stars = parseInt(match[1]);
+    if (stars >= 1 && stars <= 5) {
+      return {
+        originalScore: `${stars}/5`,
+        normalizedScore: starsToNumeric(stars, 5),
+        source: 'bww-star-image',
+      };
+    }
+  }
+  // Also check for half-star images (e.g., "4halfstars.png" or "4.5stars.png")
+  const halfMatch = html.match(/(?:(?:data-(?:lazy-)?)?src(?:set)?)=["'][^"']*?(\d)(?:half|\.5)stars?\.png/i);
+  if (halfMatch) {
+    const stars = parseInt(halfMatch[1]) + 0.5;
+    if (stars >= 0.5 && stars <= 5) {
+      return {
+        originalScore: `${stars}/5`,
+        normalizedScore: starsToNumeric(stars, 5),
+        source: 'bww-star-image',
+      };
+    }
+  }
   return null;
 }
 
@@ -706,6 +742,7 @@ const OUTLET_EXTRACTORS = {
   'time-out': extractTimeOutScore,
   'time-out-new-york': extractTimeOutScore,
   'timeoutny': extractTimeOutScore,
+  'broadwayworld': extractBWWScore,
   'ew': extractEWScore,
   'entertainment-weekly': extractEWScore,
   'nysr': extractNYSRScore,
@@ -974,6 +1011,7 @@ module.exports = {
   extractGenericLetterGrade,
   extractUKStarRating,
   extractUSATodayScore,
+  extractBWWScore,
   extractNYTCriticsPick,
   extractTheaterManiaMustSee,
   LETTER_GRADES,

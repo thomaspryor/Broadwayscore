@@ -352,9 +352,10 @@ function getBestScore(data, opts = {}) {
   }
 
   // P0.5: originalScore (aggregator-provided)
-  // Downgrade ALL aggregator-sourced ratings for WE unless the scoreSource
-  // proves the rating was extracted from the outlet's own page.
-  // Aggregators rate shows independently — their stars are NOT the outlet's rating.
+  // Downgrade aggregator-sourced ratings for WE ONLY when the aggregator is rating
+  // the show independently (e.g., Show Score's own 1-100). Trust the rating when
+  // a known star-rating outlet's score is relayed through an aggregator (e.g.,
+  // WestEndTheatre.com reporting "Guardian: 4/5" — that IS the Guardian's real rating).
   const AGGREGATOR_SOURCES = new Set([
     'show-score', 'show-score-playwright', 'showscore-roundup',
     'theatre-reviews', 'theatre-reviews-roundup',
@@ -362,10 +363,20 @@ function getBestScore(data, opts = {}) {
     'bww-roundup', 'bww-reviews', 'playbill-verdict',
     'lbo-roundup', 'nyc-theatre',
   ]);
+  // Outlets known to publish their own star ratings — when an aggregator reports
+  // a star rating for one of these outlets, it's relaying the outlet's own score.
+  const KNOWN_STAR_OUTLETS = new Set([
+    'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
+    'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
+    'artsdesk', 'thestage', 'whatsonstage', 'london-theatre',
+    'metro', 'the-sun', 'digital-spy', 'radio-times',
+  ]);
   const isAggregatorSource = AGGREGATOR_SOURCES.has(data.source);
   const isWestEnd = data._showCategory === 'west-end' || data._showCategory === 'off-west-end';
   const isOutletVerified = OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
-  const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified;
+  const isKnownStarOutlet = KNOWN_STAR_OUTLETS.has(data.outletId);
+  // Only downgrade if: aggregator source + WE + NOT outlet-verified + NOT a known star outlet
+  const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified && !isKnownStarOutlet;
 
   if (data.originalScore && !downgradeShowScore) {
     if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon' || data.scoreSource === 'star-icon-cleared') {

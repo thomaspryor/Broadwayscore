@@ -33,6 +33,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { isRoundupUrl, isVenueMismatch } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 
@@ -2231,6 +2232,33 @@ showDirs.forEach(showId => {
             stats.skippedFilmTvContamination = (stats.skippedFilmTvContamination || 0) + 1;
             return;
           }
+        }
+      }
+
+      // ROUNDUP URL DETECTION: Auto-flag reviews whose URL matches known roundup patterns.
+      // Roundup pages aggregate multiple outlets' ratings — they are not individual reviews.
+      if (data.url && !data.isRoundupArticle) {
+        const roundupCheck = isRoundupUrl(data.url);
+        if (roundupCheck.isRoundup) {
+          data.isRoundupArticle = true;
+          data.roundupNote = roundupCheck.reason;
+          stats.autoFlaggedRoundup = (stats.autoFlaggedRoundup || 0) + 1;
+          // Don't return — roundup reviews can still be scored, but the flag
+          // prevents them from being treated as individual outlet reviews in display
+        }
+      }
+
+      // VENUE MISMATCH DETECTION: Flag when review URL mentions a venue that doesn't
+      // match the show's actual venue (e.g., URL says "national-theatre" but show is WE).
+      // This catches reviews of pre-transfer/try-out runs filed under the WE production.
+      if (data.url && !data.wrongProduction) {
+        const showObj = showsData.shows.find(s => s.id === showId);
+        const showVenue = showObj && showObj.venue;
+        const showCat = showCategoryMap[showId] || 'broadway';
+        const venueCheck = isVenueMismatch(data.url, showVenue, showCat);
+        if (venueCheck.isMismatch) {
+          flagForHumanReview(data, 'venue-url-mismatch', venueCheck.reason);
+          stats.venueMismatchFlags = (stats.venueMismatchFlags || 0) + 1;
         }
       }
 

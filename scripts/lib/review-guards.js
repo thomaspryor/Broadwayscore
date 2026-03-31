@@ -215,4 +215,65 @@ function isLikelyTourReview(url, showId) {
   return false;
 }
 
-module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview };
+/**
+ * Detect roundup/aggregator URLs that shouldn't be treated as individual reviews.
+ * Returns { isRoundup: true, reason: string } or { isRoundup: false }.
+ */
+function isRoundupUrl(url) {
+  if (!url) return { isRoundup: false };
+
+  // The Stage review-round-ups section
+  if (/thestage\.co\.uk\/review-round-ups\//i.test(url)) {
+    return { isRoundup: true, reason: 'The Stage review-round-ups page' };
+  }
+
+  // WestEndTheatre.com reviews pages (aggregator roundups, not individual reviews)
+  if (/westendtheatre\.com\/.*\/reviews\//i.test(url)) {
+    return { isRoundup: true, reason: 'WestEndTheatre.com aggregator roundup page' };
+  }
+
+  // Generic roundup URL patterns
+  if (/review-round-?ups?\b/i.test(url) || /reviews-round-?up\b/i.test(url)) {
+    return { isRoundup: true, reason: 'URL contains roundup pattern' };
+  }
+
+  return { isRoundup: false };
+}
+
+/**
+ * Detect URL/venue mismatches that suggest wrong production.
+ * Checks if the review URL mentions a different venue than expected.
+ *
+ * @param {string} url - Review URL
+ * @param {string} showVenue - Expected venue from shows.json
+ * @param {string} showCategory - Show category (west-end, broadway, etc.)
+ * @returns {{ isMismatch: boolean, reason?: string }}
+ */
+function isVenueMismatch(url, showVenue, showCategory) {
+  if (!url || !showVenue) return { isMismatch: false };
+
+  const urlLower = url.toLowerCase();
+
+  // Only check WE shows — Broadway venue matching is different
+  if (showCategory !== 'west-end' && showCategory !== 'off-west-end') return { isMismatch: false };
+
+  // Check for National Theatre in URL when show is not at NT
+  const isNtVenue = /national theatre|dorfman|lyttelton|olivier theatre/i.test(showVenue);
+  if (!isNtVenue && /national-theatre|dorfman-theatre|lyttelton-theatre/i.test(urlLower)) {
+    return { isMismatch: true, reason: 'URL mentions National Theatre but show is not at NT' };
+  }
+
+  // Check for Chichester when show is not there
+  if (!/chichester/i.test(showVenue) && /chichester/i.test(urlLower)) {
+    return { isMismatch: true, reason: 'URL mentions Chichester but show venue is ' + showVenue };
+  }
+
+  // Check for Menier when show is not there
+  if (!/menier/i.test(showVenue) && /menier-chocolate/i.test(urlLower)) {
+    return { isMismatch: true, reason: 'URL mentions Menier Chocolate Factory but show venue is ' + showVenue };
+  }
+
+  return { isMismatch: false };
+}
+
+module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview, isRoundupUrl, isVenueMismatch };
