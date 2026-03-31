@@ -11,6 +11,9 @@ import { chromium } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
 
+// Use shared show-matching library (260+ aliases, market filtering, era preference)
+const { matchTitleToShow } = require('./lib/show-matching');
+
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const PLAYBILL_URL = 'https://playbill.com/grosses';
@@ -31,138 +34,24 @@ interface GrossesHistory {
   weeks: Record<string, Record<string, HistoryEntry>>;
 }
 
-// Normalize show titles for matching
-function normalizeTitle(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/['']/g, "'")
-    .replace(/[""]/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/\s+/g, ' ')
-    .replace(/^the\s+/, '')
-    .trim();
-}
-
-// Create a slug from a title
-function createSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim();
-}
-
-// Load our shows database for matching
-function loadShows(): Map<string, string> {
+// Load shows array for shared matching library
+let allShows: any[] = [];
+function loadShows(): void {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));
-  const showMap = new Map<string, string>();
-
-  // data.shows is an object keyed by index, not an array
-  // Playbill only covers Broadway — skip West End, Off-Broadway, Off-West-End
-  // Sort by openingDate descending so the most recent production wins title collisions
-  const broadwayShows = (Object.values(data.shows) as any[])
-    .filter((s: any) => s.slug && s.title &&
-      !s.id?.includes('west-end') && !s.id?.includes('off-broadway') && !s.id?.includes('off-west-end'))
-    .sort((a: any, b: any) => (b.openingDate || '').localeCompare(a.openingDate || ''));
-
-  for (const show of broadwayShows) {
-    showMap.set(show.slug, show.slug);
-    // Title-based keys: only set if not already claimed by a more recent production
-    const normTitle = normalizeTitle(show.title);
-    if (!showMap.has(normTitle)) showMap.set(normTitle, show.slug);
-    const titleSlug = createSlug(show.title);
-    if (!showMap.has(titleSlug)) showMap.set(titleSlug, show.slug);
-    const withoutThe = show.title.replace(/^The\s+/i, '');
-    const normWithout = normalizeTitle(withoutThe);
-    if (!showMap.has(normWithout)) showMap.set(normWithout, show.slug);
-  }
-
-  // Manual mappings for Playbill title variations
-  showMap.set(normalizeTitle('SIX: The Musical'), 'six');
-  showMap.set(normalizeTitle('SIX THE MUSICAL'), 'six');
-  showMap.set(normalizeTitle('& Juliet'), 'and-juliet');
-  showMap.set(normalizeTitle('ALADDIN'), 'aladdin');
-  showMap.set(normalizeTitle('MJ The Musical'), 'mj');
-  showMap.set(normalizeTitle('Moulin Rouge! The Musical'), 'moulin-rouge');
-  showMap.set(normalizeTitle("Harry Potter and the Cursed Child"), 'harry-potter');
-  showMap.set(normalizeTitle('Stranger Things: The First Shadow'), 'stranger-things');
-  showMap.set(normalizeTitle('Two Strangers (Carry a Cake Across New York)'), 'two-strangers');
-  showMap.set(normalizeTitle("Mamma Mia!"), 'mamma-mia');
-  showMap.set(normalizeTitle("Oh, Mary!"), 'oh-mary');
-  showMap.set(normalizeTitle("A Wonderful World: The Louis Armstrong Musical"), 'wonderful-world');
-  showMap.set(normalizeTitle("Suffs"), 'suffs');
-  showMap.set(normalizeTitle("Water for Elephants"), 'water-for-elephants');
-  showMap.set(normalizeTitle("The Who's Tommy"), 'the-whos-tommy');
-  showMap.set(normalizeTitle("The Wiz"), 'the-wiz');
-  showMap.set(normalizeTitle("The Notebook"), 'the-notebook');
-  showMap.set(normalizeTitle("All Out: Comedy About Ambition"), 'all-out');
-
-  // 2024-25 season shows with year suffixes
-  showMap.set(normalizeTitle("Glengarry Glen Ross"), 'glengarry-glen-ross-2025');
-  showMap.set(normalizeTitle("Waiting for Godot"), 'waiting-for-godot-2025');
-  showMap.set(normalizeTitle("Art"), 'art-2025');
-  showMap.set(normalizeTitle("Romeo + Juliet"), 'romeo-juliet-2024');
-  showMap.set(normalizeTitle("Romeo and Juliet"), 'romeo-juliet-2024');
-  showMap.set(normalizeTitle("Our Town"), 'our-town');
-  showMap.set(normalizeTitle("An Enemy of the People"), 'an-enemy-of-the-people');
-  showMap.set(normalizeTitle("Appropriate"), 'appropriate');
-  showMap.set(normalizeTitle("Stereophonic"), 'stereophonic');
-  showMap.set(normalizeTitle("Good Night, and Good Luck"), 'good-night-and-good-luck-2025');
-  showMap.set(normalizeTitle("Othello"), 'othello-2025');
-  showMap.set(normalizeTitle("Dead Outlaw"), 'dead-outlaw-2025');
-  showMap.set(normalizeTitle("SMASH"), 'smash-2025');
-  showMap.set(normalizeTitle("Swept Away"), 'swept-away-2024');
-  showMap.set(normalizeTitle("Once Upon a Mattress"), 'once-upon-a-mattress-2024');
-  showMap.set(normalizeTitle("Tammy Faye"), 'tammy-faye-2024');
-  showMap.set(normalizeTitle("Sunset Blvd."), 'sunset-boulevard-2024');
-  showMap.set(normalizeTitle("Sunset Boulevard"), 'sunset-boulevard-2024');
-  showMap.set(normalizeTitle("McNeal"), 'mcneal-2024');
-  showMap.set(normalizeTitle("Left on Tenth"), 'left-on-tenth-2024');
-  showMap.set(normalizeTitle("Yellow Face"), 'yellow-face-2024');
-  showMap.set(normalizeTitle("Eureka Day"), 'eureka-day-2024');
-  showMap.set(normalizeTitle("The Hills of California"), 'the-hills-of-california-2024');
-  showMap.set(normalizeTitle("Leopoldstadt"), 'leopoldstadt-2022');
-  showMap.set(normalizeTitle("Into the Woods"), 'into-the-woods-2022');
-  showMap.set(normalizeTitle("Sweeney Todd: The Demon Barber of Fleet Street"), 'sweeney-todd-2023');
-  showMap.set(normalizeTitle("Sweeney Todd"), 'sweeney-todd-2023');
-  showMap.set(normalizeTitle("KPOP"), 'kpop-2022');
-  showMap.set(normalizeTitle("1776"), '1776-2022');
-  showMap.set(normalizeTitle("A Doll's House"), 'a-dolls-house-2023');
-  showMap.set(normalizeTitle("Bad Cinderella"), 'bad-cinderella-2023');
-  showMap.set(normalizeTitle("Camelot"), 'camelot-2023');
-  showMap.set(normalizeTitle("Parade"), 'parade-2023');
-  showMap.set(normalizeTitle("Kimberly Akimbo"), 'kimberly-akimbo-2022');
-  showMap.set(normalizeTitle("New York, New York"), 'new-york-new-york-2023');
-  showMap.set(normalizeTitle("Prima Facie"), 'prima-facie-2023');
-  showMap.set(normalizeTitle("Some Like It Hot"), 'some-like-it-hot-2022');
-  showMap.set(normalizeTitle("Good Night, Oscar"), 'good-night-oscar-2023');
-  showMap.set(normalizeTitle("Peter Pan Goes Wrong"), 'peter-pan-goes-wrong-2023');
-  showMap.set(normalizeTitle("Spamalot"), 'spamalot-2023');
-  showMap.set(normalizeTitle("Bob Fosse's Dancin'"), 'bob-fosses-dancin-2023');
-  showMap.set(normalizeTitle("Dancin'"), 'bob-fosses-dancin-2023');
-  showMap.set(normalizeTitle("The Outsiders"), 'the-outsiders');
-  showMap.set(normalizeTitle("Cabaret at the Kit Kat Club"), 'cabaret-2024');
-  showMap.set(normalizeTitle("Cabaret"), 'cabaret-2024');
-  showMap.set(normalizeTitle("Harmony"), 'harmony-2023');
-
-  return showMap;
+  allShows = Array.isArray(data.shows) ? data.shows : Object.values(data.shows);
 }
 
-function findMatchingSlug(title: string, showMap: Map<string, string>): string | null {
-  const normalized = normalizeTitle(title);
-
-  if (showMap.has(normalized)) return showMap.get(normalized)!;
-
-  const slugVersion = createSlug(title);
-  if (showMap.has(slugVersion)) return showMap.get(slugVersion)!;
-
-  for (const [key, slug] of showMap) {
-    if (key.length < 5) continue;
-    if (normalized.includes(key) || key.includes(normalized)) return slug;
+// Match a Playbill title to a show slug using the shared library
+// Playbill only covers Broadway → market: 'broadway', prefer most recent open production
+function findMatchingSlug(title: string): string | null {
+  const result = matchTitleToShow(title, allShows, { market: 'broadway', prefer: 'open' });
+  if (!result?.show) return null;
+  const show = result.show;
+  // Double-check: reject WE/OB matches (safety net)
+  if (show.id?.includes('west-end') || show.id?.includes('off-broadway') || show.id?.includes('off-west-end')) {
+    return null;
   }
-
-  return null;
+  return show.slug;
 }
 
 // Parse currency string to number
@@ -243,7 +132,7 @@ async function backfillHistory(): Promise<void> {
 
   console.log(`Backfilling ${numWeeks} weeks of grosses history from Playbill...`);
 
-  const showMap = loadShows();
+  loadShows();
   const history = loadHistory();
   const weekDates = getWeekDates(numWeeks, startFrom);
 
@@ -325,7 +214,7 @@ async function backfillHistory(): Promise<void> {
           for (const row of rowData) {
             if (!row || !row.showName) continue;
 
-            const slug = findMatchingSlug(row.showName, showMap);
+            const slug = findMatchingSlug(row.showName);
             if (slug) {
               weekSnapshot[slug] = {
                 gross: parseCurrency(row.gross),

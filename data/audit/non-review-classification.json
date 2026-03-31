@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-03-31T12:22:03.502Z",
+    "generatedAt": "2026-03-31T13:00:11.985Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 32832,
-      "inReviewsJson": 16335,
+      "totalFiles": 32833,
+      "inReviewsJson": 16317,
       "skippedExcluded": 9,
       "withFullText": 20,
-      "excerptOnly": 1860,
+      "excerptOnly": 1858,
       "llmClassified": 19,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
+      "nonReviewsFound": 0,
       "uncertainCases": 17,
       "budgetUsed": 0.0020000000000000005,
       "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14446
+      "skippedAlreadyClassified": 14430
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "kinky-boots-the-musical-west-end-2026/telegraph--dominic-cavendish.json",
-      "showId": "kinky-boots-the-musical-west-end-2026",
-      "outlet": "Telegraph",
-      "outletId": "telegraph",
-      "contentType": "profile",
-      "confidence": "high",
-      "reasoning": "The article is a profile of Dominic Cavendish, a theater critic, and does not contain a review of Kinky Boots.",
-      "currentScore": 60
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "arcadia-west-end-2026/telegraph--dominic-cavendish.json",
@@ -41,7 +30,7 @@
       "outletId": "telegraph",
       "contentType": "profile",
       "confidence": "low",
-      "reasoning": "The article starts with a profile of the critic, Dominic Cavendish, and then mentions the play 'Arcadia' in passing, but does not offer a review of the production itself. The text is incomplete.",
+      "reasoning": "The text includes a biographical note about Dominic Cavendish, the Telegraph's lead theatre critic, and mentions Stoppard's Arcadia, but does not contain a review of the play itself. The text is incomplete.",
       "currentScore": 80
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -81,7 +70,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -101,7 +90,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered, so it is not a review.",
       "currentScore": 88
     },
     {
@@ -111,7 +100,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -121,7 +110,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -141,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -151,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -161,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -171,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -181,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -201,19 +190,14 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions the playwright's connection to the work, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play to the audienc",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json"
+    "dog-day-afternoon-2026/slantmagazine--dan-rubins.json",
+    "dog-day-afternoon-2026/usatoday--patrick-ryan.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "kinky-boots-the-musical-west-end-2026",
-      "currentCount": 1,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }

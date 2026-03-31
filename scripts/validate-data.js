@@ -1858,24 +1858,8 @@ function validateCrossMarketSourceFiles() {
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
   if (!fs.existsSync(reviewTextsDir)) return;
 
-  // Patterns that strongly indicate a Broadway/US review
-  const BROADWAY_URL_PATTERNS = [
-    /\/newyork\//i,
-    /\/new-york\//i,
-    /newyork\.timeout\.com/i,
-    /broadway-review/i,
-    /broadway-musical-rev/i,
-    /-broadway-/i,
-    /\/broadway\//i,
-    /-on-broadway-/i,
-    /opens-on-broadway/i,
-  ];
-
-  // US-only outlets that never review WE shows (their WE coverage = different critics/URLs)
-  const US_ONLY_OUTLET_IDS = new Set([
-    'nypost', 'nydailynews', 'chicagotribune', 'usatoday',
-    'thewrap', 'cititour', 'sea-coast-online', 'press-herald',
-  ]);
+  // Use shared patterns from venue-classification.js (single source of truth)
+  const { isBroadwayUrl } = require('./lib/venue-classification');
 
   const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
     try { return d.includes('west-end') && fs.statSync(path.join(reviewTextsDir, d)).isDirectory(); }
@@ -1893,24 +1877,9 @@ function validateCrossMarketSourceFiles() {
         const data = JSON.parse(fs.readFileSync(path.join(showPath, f), 'utf8'));
         if (data.wrongProduction || data.wrongShow || data.fabricatedEntry) continue;
 
-        const url = (data.url || '').toLowerCase();
-        const outletId = (data.outletId || '').toLowerCase();
-
-        // Check US-only outlet
-        if (US_ONLY_OUTLET_IDS.has(outletId)) {
-          problems.push({ show: showDir, file: f, reason: `US-only outlet "${outletId}" in WE show` });
-          continue;
-        }
-
-        // Check Broadway URL patterns
-        for (const pat of BROADWAY_URL_PATTERNS) {
-          if (pat.test(url)) {
-            // Exclude legitimate WE URLs that happen to mention Broadway
-            // (e.g., BWW articles about WE shows with "broadway" in domain)
-            if (url.includes('broadwayworld.com') && !url.includes('/broadway/')) continue;
-            problems.push({ show: showDir, file: f, reason: `Broadway URL pattern in WE show: ${pat}` });
-            break;
-          }
+        const reason = isBroadwayUrl(data.url, data.outletId);
+        if (reason) {
+          problems.push({ show: showDir, file: f, reason });
         }
       } catch { /* skip malformed */ }
     }

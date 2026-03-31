@@ -21,11 +21,11 @@ const MIN_REDDIT_ITEMS = 50;
 const REDDIT_RECENCY_YEARS = 3;
 const MAX_SINGLE_SOURCE_WEIGHT = 0.80;
 
-// Reddit scores average ~11 points below ShowScore and ~4 below Mezzanine on the same
-// shows — a systematic scale difference, not a signal difference. This calibration
-// aligns Reddit's scale with the other sources before combining.
-// Analysis: flat +8 minimizes avg gap to SS+Mezz consensus across 74 head-to-head shows.
-const REDDIT_SCORE_CALIBRATION = 8;
+// Reddit sentiment scores now use a full 20-95 range (previously 40-98, compressing
+// everything into the top half). With the wider range, Reddit scores naturally align
+// with other sources for well-liked shows and diverge for polarizing ones — no
+// artificial calibration needed.
+const REDDIT_SCORE_CALIBRATION = 0;
 const REDDIT_CALIBRATION_CAP = 95;
 
 /**
