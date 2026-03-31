@@ -102,8 +102,8 @@ function getReviewStats(reviews, showId) {
   let positive = 0, mixed = 0, negative = 0;
 
   for (const r of showReviews) {
-    if (r.assignedScore >= 70) positive++;
-    else if (r.assignedScore >= 55) mixed++;
+    if (r.assignedScore >= 65) positive++;
+    else if (r.assignedScore >= 40) mixed++;
     else negative++;
   }
 
