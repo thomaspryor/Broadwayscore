@@ -231,13 +231,18 @@ function validateDates(shows) {
   let issues = 0;
 
   for (const show of shows) {
-    // Format check
-    if (show.openingDate && !dateRegex.test(show.openingDate)) {
-      error(`Show "${show.title}" has invalid openingDate format: "${show.openingDate}"`);
+    // Format + validity check (catches "TBD", "2026-13-45", non-ISO strings)
+    const isValidDate = (d) => dateRegex.test(d) && !isNaN(new Date(d).getTime());
+    if (show.openingDate && !isValidDate(show.openingDate)) {
+      error(`Show "${show.title}" has invalid openingDate: "${show.openingDate}"`);
       issues++;
     }
-    if (show.closingDate && !dateRegex.test(show.closingDate)) {
-      error(`Show "${show.title}" has invalid closingDate format: "${show.closingDate}"`);
+    if (show.closingDate && !isValidDate(show.closingDate)) {
+      error(`Show "${show.title}" has invalid closingDate: "${show.closingDate}"`);
+      issues++;
+    }
+    if (show.previewsStartDate && !isValidDate(show.previewsStartDate)) {
+      error(`Show "${show.title}" has invalid previewsStartDate: "${show.previewsStartDate}"`);
       issues++;
     }
 
