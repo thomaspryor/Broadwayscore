@@ -1598,6 +1598,39 @@ showDirs.forEach(showId => {
         }
       }
 
+      // URL-path cross-market guard: catch Broadway reviews assigned to WE shows
+      // (and vice versa) even from dual-market outlets. The outlet may cover both markets,
+      // but a URL containing "-broadway-review" or "on-broadway" is reviewing a specific production.
+      // Excludes broadwayworld.com (outlet domain, not a production indicator).
+      if (data.url && !data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
+        try {
+          const urlObj = new URL(data.url);
+          const hostname = urlObj.hostname.replace(/^www\./, '');
+          const urlPath = urlObj.pathname.toLowerCase();
+          if (isLondonMarket(showCategory) && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
+            // WE show but URL path contains Broadway production indicators
+            if (/[-/](broadway-review|on-broadway|broadway[-/])/.test(urlPath)
+                || /\/(chicago|national-tour)[-/]/.test(urlPath)) {
+              data.wrongProduction = true;
+              data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains Broadway/tour indicator on London show`;
+              try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+              stats.skippedUrlPathCrossMarket = (stats.skippedUrlPathCrossMarket || 0) + 1;
+              return;
+            }
+          } else if ((showCategory === 'broadway' || showCategory === 'off-broadway')
+                     && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
+            // Broadway show but URL path contains West End production indicators
+            if (/[-/](west-end-review|london-review|london[-/])/.test(urlPath)) {
+              data.wrongProduction = true;
+              data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains London indicator on Broadway show`;
+              try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+              stats.skippedUrlPathCrossMarket = (stats.skippedUrlPathCrossMarket || 0) + 1;
+              return;
+            }
+          }
+        } catch (e) { /* ignore malformed URLs */ }
+      }
+
       // Skip pre-opening reviews (published before show opened — wrong production)
       // Broadway: 14-day grace period (preview coverage).
       // Off-Broadway/West End: 90-day grace period — matches the pre-opening guard threshold.
