@@ -177,7 +177,9 @@
     "spring-awakening-2015/njcom--christopher-kelly.json",
     "the-elephant-man-2014/financialtimes--financial-times.json",
     "disgraced-2014/timeout--david-cote.json",
-    "its-only-a-play-2014/timeout--david-cote.json"
+    "its-only-a-play-2014/timeout--david-cote.json",
+    "violet-2014/ap--mark-kennedy.json",
+    "of-mice-and-men-2014/timeout--david-cote.json"
   ],
   "failed": [
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
@@ -1132,7 +1134,15 @@
     "its-only-a-play-2014/talkinbroadway--matthew-murray.json",
     "the-country-house-2014/talkinbroadway--matthew-murray.json",
     "love-letters-2014/ap--mark-kennedy.json",
-    "holler-if-ya-hear-me-2014/ap--mark-kennedy.json"
+    "holler-if-ya-hear-me-2014/ap--mark-kennedy.json",
+    "the-velocity-of-autumn-2014/ew--stephan-lee.json",
+    "the-velocity-of-autumn-2014/wsj--terry-teachout.json",
+    "violet-2014/northjerseycom--robert-feldberg.json",
+    "act-one-2014/northjerseycom--robert-feldberg.json",
+    "act-one-2014/timeout--david-cote.json",
+    "of-mice-and-men-2014/northjerseycom--robert-feldberg.json",
+    "lady-day-at-emersons-bar-and-grill-2014/av-club--oliver-sava.json",
+    "bullets-over-broadway-2014/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1301,7 +1311,9 @@
       "dog-day-afternoon-2026/thewrap--unknown.json",
       "dog-day-afternoon-2026/timeout--unknown.json",
       "dog-day-afternoon-2026/chicagotribune--unknown.json",
-      "disgraced-2014/timeout--david-cote.json"
+      "disgraced-2014/timeout--david-cote.json",
+      "violet-2014/ap--mark-kennedy.json",
+      "of-mice-and-men-2014/timeout--david-cote.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1712,7 +1724,12 @@
       "data/review-texts/its-only-a-play-2014/talkinbroadway--matthew-murray.json",
       "data/review-texts/the-country-house-2014/talkinbroadway--matthew-murray.json",
       "data/review-texts/love-letters-2014/ap--mark-kennedy.json",
-      "data/review-texts/holler-if-ya-hear-me-2014/ap--mark-kennedy.json"
+      "data/review-texts/holler-if-ya-hear-me-2014/ap--mark-kennedy.json",
+      "data/review-texts/the-velocity-of-autumn-2014/wsj--terry-teachout.json",
+      "data/review-texts/violet-2014/northjerseycom--robert-feldberg.json",
+      "data/review-texts/act-one-2014/northjerseycom--robert-feldberg.json",
+      "data/review-texts/of-mice-and-men-2014/northjerseycom--robert-feldberg.json",
+      "data/review-texts/lady-day-at-emersons-bar-and-grill-2014/av-club--oliver-sava.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -1753,7 +1770,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "holler-if-ya-hear-me-2014/ap--mark-kennedy.json",
+  "lastProcessed": "bullets-over-broadway-2014/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -2287,17 +2304,6 @@
     },
     {
       "t": "2026-03-31T05:00:07.557Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-31T07:17:46.785Z",
-      "event": "bb-session",
-      "session": "6faa5c6f",
-      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
-    },
-    {
-      "t": "2026-03-31T07:17:48.038Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
