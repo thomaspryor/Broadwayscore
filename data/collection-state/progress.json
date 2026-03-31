@@ -32,7 +32,16 @@
     "alice-in-wonderland-west-end-2026/timeout-london--andrzej-lukowski.json",
     "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
     "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json",
-    "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json"
+    "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json",
+    "alice-in-wonderland-west-end-2026/times-uk--rachel-halliburton.json",
+    "john-proctor-is-the-villain-west-end-2026/whatsonstage--alex-wood.json",
+    "teeth-n-smiles-west-end-2026/times-uk--dominic-maxwell.json",
+    "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+    "a-mirrored-monet-west-end-2026/whatsonstage--miriam-sallon.json",
+    "giant-2026/variety--daniel-daddario.json",
+    "giant-2026/vulture--sara-holdren.json",
+    "consumed-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "kinky-boots-the-musical-west-end-2026/timeout-london--andrzej-lukowski.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -49,7 +58,8 @@
     "indian-princesses-off-broadway-2025/theatermania--linda-buchwald.json",
     "jackals-off-broadway-2026/times-uk--anne-treneman.json",
     "inter-alia-west-end-2026/thestage--sam-marlowe.json",
-    "dog-day-afternoon-2026/usatoday--unknown.json"
+    "dog-day-afternoon-2026/usatoday--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -73,7 +83,14 @@
       "dog-day-afternoon-2026/playbill--unknown.json",
       "alice-in-wonderland-west-end-2026/timeout-london--andrzej-lukowski.json",
       "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
-      "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json"
+      "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json",
+      "alice-in-wonderland-west-end-2026/times-uk--rachel-halliburton.json",
+      "john-proctor-is-the-villain-west-end-2026/whatsonstage--alex-wood.json",
+      "teeth-n-smiles-west-end-2026/times-uk--dominic-maxwell.json",
+      "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+      "a-mirrored-monet-west-end-2026/whatsonstage--miriam-sallon.json",
+      "consumed-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "kinky-boots-the-musical-west-end-2026/timeout-london--andrzej-lukowski.json"
     ],
     "amp": [],
     "browserbase": [
@@ -88,7 +105,9 @@
       "data/review-texts/dog-day-afternoon-2026/deadline--unknown.json",
       "dog-day-afternoon-2026/deadline--unknown.json",
       "data/review-texts/dog-day-afternoon-2026/amny--unknown.json",
-      "dog-day-afternoon-2026/amny--unknown.json"
+      "dog-day-afternoon-2026/amny--unknown.json",
+      "data/review-texts/giant-2026/variety--daniel-daddario.json",
+      "giant-2026/variety--daniel-daddario.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -106,11 +125,12 @@
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
-      "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json"
+      "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json",
+      "giant-2026/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json",
+  "lastProcessed": "kinky-boots-the-musical-west-end-2026/timeout-london--andrzej-lukowski.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -177,6 +197,17 @@
       "t": "2026-03-31T10:58:38.440Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-31T11:01:48.206Z",
+      "event": "bb-session",
+      "session": "37b540ad",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-03-31T11:01:49.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

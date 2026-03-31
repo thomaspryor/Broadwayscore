@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-31T11:00:40.440Z",
-  "processed": 33,
-  "failed": 15,
-  "successRate": "68.8%",
+  "updatedAt": "2026-03-31T11:02:35.693Z",
+  "processed": 42,
+  "failed": 16,
+  "successRate": "72.4%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -80,6 +80,17 @@
       "t": "2026-03-31T10:58:38.440Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-31T11:01:48.206Z",
+      "event": "bb-session",
+      "session": "37b540ad",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-03-31T11:01:49.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
