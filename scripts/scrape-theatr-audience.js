@@ -261,8 +261,9 @@ function theatrToScore(stats) {
 
   if (totalVotes < MIN_VOTES) return null;
 
-  // Weighted approval: likes = 1.0, mixed = 0.5, dislikes = 0.0
-  const score = ((likes + mixed * 0.5) / totalVotes) * 100;
+  // Weighted approval: likes = 1.0, mixed = 0.0 (neutral), dislikes = 0.0
+  // Mixed = "I have reservations" — not half a recommendation
+  const score = (likes / totalVotes) * 100;
   return Math.round(score * 10) / 10; // one decimal
 }
 
