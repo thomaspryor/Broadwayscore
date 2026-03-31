@@ -1,19 +1,52 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-24T06:01:44.787Z",
-    "totalScanned": 27470,
-    "flagged": 22,
+    "generatedAt": "2026-03-31T06:18:21.179Z",
+    "totalScanned": 27334,
+    "flagged": 52,
     "byType": {
-      "garbage_scrape": 3,
+      "preview_article": 32,
+      "garbage_scrape": 4,
       "awards_coverage": 5,
-      "preview_article": 4,
+      "news_article": 7,
       "obituary": 1,
-      "news_article": 6,
       "press_release": 2,
       "interview": 1
     }
   },
   "flagged": [
+    {
+      "showId": "a-view-from-the-bridge-2010",
+      "file": "theatermania--andy-propst.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating that the page cannot be found, not a review of a",
+      "outlet": "TheaterMania",
+      "critic": "Andy Propst",
+      "score": 77
+    },
+    {
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "file": "theatermania--david-gordon.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW: The text is an error message indicating the page was not found, not a review of the musi",
+      "outlet": "TheaterMania",
+      "critic": "David Gordon",
+      "score": 76
+    },
+    {
+      "showId": "after-midnight-2013",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW: The text is an error message indicating the page cannot be found, not a review of the sh",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 90
+    },
     {
       "showId": "allegiance-2015",
       "file": "womens-voices-for-change--alexandra-macaaron.json",
@@ -24,6 +57,50 @@
       "outlet": "womens-voices-for-change",
       "critic": "Alexandra MacAaron",
       "score": 77
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "theatermania--adam-feldman.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of a perfor",
+      "outlet": "TheaterMania",
+      "critic": "Adam Feldman",
+      "score": 77
+    },
+    {
+      "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
+      "file": "theatermania--david-finkle.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, indicating that the page for the review cou",
+      "outlet": "TheaterMania",
+      "critic": "David Finkle",
+      "score": 62
+    },
+    {
+      "showId": "bob-fosses-dancin-2023",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW: The text is an error message indicating the page was not found, not a review of the show",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 76
+    },
+    {
+      "showId": "born-yesterday-2011",
+      "file": "theatermania--andy-propst.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
+      "outlet": "TheaterMania",
+      "critic": "Andy Propst",
+      "score": 81
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -37,6 +114,72 @@
       "score": 62
     },
     {
+      "showId": "bring-it-on-the-musical-2012",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting there is no review present.",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 71
+    },
+    {
+      "showId": "clybourne-park-2012",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting there is no review present.",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 76
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "file": "theatermania--adam-feldman.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, so it's not a review of the play.",
+      "outlet": "TheaterMania",
+      "critic": "Adam Feldman",
+      "score": 78
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "file": "theatermania--jesse-green.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, so it cannot be a review.",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "score": 81
+    },
+    {
+      "showId": "cyrano-de-bergerac-2012",
+      "file": "theatermania--david-finkle.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting there is no review present.",
+      "outlet": "TheaterMania",
+      "critic": "David Finkle",
+      "score": 76
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "has been cancelled | LLM: NOT_REVIEW: This is a news announcement about a cancelled preview performance, not an evaluation of ",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 78
+    },
+    {
       "showId": "diana-the-musical-2021",
       "file": "theater-life--barry-gordin.json",
       "type": "preview_article",
@@ -46,6 +189,17 @@
       "outlet": "Theater Life",
       "critic": "Barry Gordin",
       "score": 42
+    },
+    {
+      "showId": "disgraced-2014",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW: The text indicates that the page was not found, suggesting it's an error message rather ",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 79
     },
     {
       "showId": "doubt-2024",
@@ -70,6 +224,50 @@
       "score": 93
     },
     {
+      "showId": "end-of-the-rainbow-2012",
+      "file": "theatermania--david-rooney.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page or review could not be found.",
+      "outlet": "TheaterMania",
+      "critic": "David Rooney",
+      "score": 83
+    },
+    {
+      "showId": "golden-boy-2012",
+      "file": "theatermania--charles-isherwood.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
+      "outlet": "TheaterMania",
+      "critic": "Charles Isherwood",
+      "score": 61
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "theatermania--jesse-green.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "score": 81
+    },
+    {
+      "showId": "hand-to-god-2015",
+      "file": "theatermania--adam-feldman.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW: The text indicates that the page was not found, so it cannot be a review.",
+      "outlet": "TheaterMania",
+      "critic": "Adam Feldman",
+      "score": 82
+    },
+    {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
       "file": "broadstreetreview--steve-cohen.json",
       "type": "garbage_scrape",
@@ -92,15 +290,37 @@
       "score": 76
     },
     {
+      "showId": "illinoise-2024",
+      "file": "theatermania--jesse-green.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, so it is not a review of the show.",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "score": 83
+    },
+    {
       "showId": "indecent-2017",
       "file": "theatermania--dan-bacalzo.json",
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. This text focuses on the extension of the show's run due to audience response and connec",
+      "evidence": "closing notice | LLM: NOT_REVIEW. This text focuses on the extension of the show's run due to audience response and doesn'",
       "outlet": "TheaterMania",
       "critic": "Dan Bacalzo",
       "score": 82
+    },
+    {
+      "showId": "irving-berlins-white-christmas-2009",
+      "file": "theatermania--david-finkle.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting there is no review present.",
+      "outlet": "TheaterMania",
+      "critic": "David Finkle",
+      "score": 61
     },
     {
       "showId": "la-bete-2010",
@@ -114,12 +334,23 @@
       "score": 61
     },
     {
+      "showId": "left-on-tenth-2024",
+      "file": "theatermania--jesse-green.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, indicating that the requested page (presuma",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "score": 70
+    },
+    {
       "showId": "marvins-room-2017",
       "file": "broadwayworld--michael-dale.json",
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Award winners | LLM: NOT_REVIEW. The text primarily discusses the playwright, director, and history of the play rather th",
+      "evidence": "Award winners | LLM: NOT_REVIEW. The text primarily discusses the playwright, director, and the play's history, rather th",
       "outlet": "BroadwayWorld",
       "critic": "Michael Dale",
       "score": 75
@@ -141,7 +372,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. The text primarily discusses the show's closing, its history, and changes made to the pr",
+      "evidence": "closing notice | LLM: NOT_REVIEW. While the text offers some evaluative comments (\"tighter,\" \"more endearing\"), it primari",
       "outlet": "WNBC",
       "critic": "Robert Kahn",
       "score": 77
@@ -156,6 +387,17 @@
       "outlet": "amNY",
       "critic": "Matt Windman",
       "score": 60
+    },
+    {
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "file": "theatermania--david-gordon.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, not a review of a performance.",
+      "outlet": "TheaterMania",
+      "critic": "David Gordon",
+      "score": 75
     },
     {
       "showId": "on-your-feet-2015",
@@ -174,10 +416,32 @@
       "type": "press_release",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "announces that | LLM: NOT_REVIEW. The text describes expectations and a general tone, but doesn't evaluate specific perfor",
+      "evidence": "announces that | LLM: NOT_REVIEW. The text describes expectations and a general tone rather than evaluating specific perfo",
       "outlet": "The Times",
       "critic": "Libby Purves",
       "score": 75
+    },
+    {
+      "showId": "parade-2023",
+      "file": "theatermania--jesse-green.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, and it includes search functionality and",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "score": 86
+    },
+    {
+      "showId": "pass-over-2021",
+      "file": "theatermania--jesse-green.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, indicating that the page for the review can",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "score": 79
     },
     {
       "showId": "patriots-2024",
@@ -185,10 +449,32 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "previews begin | LLM: NOT_REVIEW. This text is a news announcement about the play's transfer to Broadway, including dates,",
+      "evidence": "previews begin | LLM: NOT_REVIEW. This text primarily announces the play's transfer to Broadway, provides cast information",
       "outlet": "Deadline",
       "critic": "Pete Hammond",
       "score": 82
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "theatermania--frank-scheck.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW: This is an error message indicating the page or review could not be found, not an actual",
+      "outlet": "TheaterMania",
+      "critic": "Frank Scheck",
+      "score": 79
+    },
+    {
+      "showId": "picnic-2013",
+      "file": "theatermania--david-rooney.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
+      "outlet": "TheaterMania",
+      "critic": "David Rooney",
+      "score": 76
     },
     {
       "showId": "pippin-2013",
@@ -202,12 +488,34 @@
       "score": 84
     },
     {
+      "showId": "seminar-2011",
+      "file": "theatermania--david-rooney.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is a \"page not found\" message, not a review of the play \"Seminar.\"",
+      "outlet": "TheaterMania",
+      "critic": "David Rooney",
+      "score": 77
+    },
+    {
+      "showId": "shucked-2023",
+      "file": "theatermania--david-gordon.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting there is no review present.",
+      "outlet": "TheaterMania",
+      "critic": "David Gordon",
+      "score": 78
+    },
+    {
       "showId": "skeleton-crew-2022",
       "file": "hollywood-reporter--angie-han.json",
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments about its relevance",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and parallels with the theater industry's struggl",
       "outlet": "The Hollywood Reporter",
       "critic": "Angie Han",
       "score": 77
@@ -218,7 +526,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than provid",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than evalua",
       "outlet": "The Hollywood Reporter",
       "critic": "Anita Gates",
       "score": 76
@@ -233,6 +541,17 @@
       "outlet": "edge-new-york",
       "critic": "Steve Weinstein",
       "score": 63
+    },
+    {
+      "showId": "swept-away-2024",
+      "file": "theatermania--jesse-green.json",
+      "type": "preview_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is a \"page not found\" message from a website, not a review of a theatrical prod",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "score": 83
     },
     {
       "showId": "the-crucible-2016",
@@ -255,6 +574,17 @@
       "outlet": "Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 47
+    },
+    {
+      "showId": "the-prom-2018",
+      "file": "wsj--terry-teachout.json",
+      "type": "garbage_scrape",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The text discusses political polarization and its potential impact on theater, rather th",
+      "outlet": "Wall Street Journal",
+      "critic": "Terry Teachout",
+      "score": 82
     }
   ]
 }
