@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T20:47:40.523Z",
+  "timestamp": "2026-03-31T21:10:24.285Z",
   "stats": {
-    "totalReviews": 32110,
-    "alreadyFlagged": 11955,
+    "totalReviews": 32108,
+    "alreadyFlagged": 11956,
     "dateGuardCatches": 14,
     "directorMismatch": 917,
-    "tvFilmSignals": 3306,
+    "tvFilmSignals": 3305,
     "londonSignals": 944,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 5917
+    "noPublishDate": 5916
   },
   "findings": [
     {
@@ -6244,7 +6244,7 @@
       "file": "latimes--charles-mcnulty.json",
       "score": 80,
       "publishDate": "March 31, 2011",
-      "url": "https://latimesblogs.latimes.com/culturemonster/2011/03/theater-review-bengal-tiger-at-the-baghdad-zoo-on-broadway-1.html",
+      "url": "http://latimesblogs.latimes.com/culturemonster/2011/03/theater-review-bengal-tiger-at-the-baghdad-zoo-on-broadway-1.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -6255,20 +6255,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
-      "file": "latimes--unknown.json",
-      "score": 80,
-      "publishDate": "March 31, 2011",
-      "url": "http://latimesblogs.latimes.com/culturemonster/2011/03/theater-review-bengal-tiger-at-the-baghdad-zoo-on-broadway-1.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
