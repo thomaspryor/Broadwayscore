@@ -85,17 +85,27 @@ const PREVIEW_DEFAULTS = {
   costMultiplier: 1.25,   // 125% of weekly nut during previews (overtime, tech)
 };
 
-/** Reserve fund: weeks of operating costs held before declaring recoupment */
-const RESERVE_FUND_WEEKS = 2.5;
+/** Reserve fund: weeks of operating costs held before declaring recoupment.
+ *  Industry standard: 3-4 weeks for open-ended, 1.5 for limited runs. */
+const RESERVE_FUND_WEEKS = 3;
 
 /** Tax credit lag in weeks from opening date */
 const TAX_CREDIT_LAG_WEEKS = 78; // ~18 months
 
-/** Above-nut marketing surcharges (applied to specific week ranges) */
+/** Above-nut marketing surcharges by show type (incremental above base marketing in the nut) */
 const MARKETING_SURCHARGES = {
-  openingPush: { weeks: [1, 2, 3, 4, 5, 6, 7, 8], amount: 75000 },
-  tonySeasonApprox: { weekOfYear: [18, 19, 20, 21, 22, 23], amount: 50000 }, // May-June
-  holidayApprox: { weekOfYear: [47, 48, 49, 50, 51, 52, 1], amount: 40000 }, // Nov-Jan
+  openingPush: {
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8],
+    musicalSpectacle: 200000, musical: 150000, play: 75000, playStar: 75000, special: 50000,
+  },
+  tonySeasonApprox: {
+    weekOfYear: [18, 19, 20, 21, 22, 23],
+    musicalSpectacle: 175000, musical: 125000, play: 60000, playStar: 60000, special: 40000,
+  },
+  holidayApprox: {
+    weekOfYear: [47, 48, 49, 50, 51, 52, 1],
+    musicalSpectacle: 100000, musical: 75000, play: 40000, playStar: 40000, special: 25000,
+  },
 };
 
 /** Cost escalation: annual rate applied from week 53 onward */
@@ -140,6 +150,16 @@ const DEFAULT_STAR_PREMIUM = {
   weeklyPremium: 75000,    // Additional fixed weekly cost
   grossPct: 0.02,          // Additional % of gross
   grossThreshold: 1000000, // Only on gross above this
+};
+
+/** Closing costs: strike, crew buyout, contract termination.
+ *  Proportional to show size. Quick flops pay these on a near-empty treasury. */
+const CLOSING_COSTS = {
+  musicalSpectacle: 500000,  // Large scenic teardown
+  musical: 300000,           // Standard scenic + crew
+  play: 150000,              // Minimal scenic
+  playStar: 200000,          // Moderate
+  special: 75000,            // Minimal
 };
 
 /** Max simulation weeks (10 years) */
@@ -215,7 +235,7 @@ function calcTheaterOverage(weeklyGross, weeklyNut) {
  * @param {number} scenarioMult - Scenario multiplier object
  * @returns {{ profit: number, variableCosts: number, theaterCost: number, fixedCosts: number }}
  */
-function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType) {
+function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType, showCategory) {
   const mult = scenarioMult || SCENARIO_MULTIPLIERS.central;
   const adjGross = weeklyGross * mult.grossAdj;
 
@@ -252,9 +272,10 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
     fixedCosts *= PREVIEW_DEFAULTS.costMultiplier;
   }
 
-  // Marketing surcharges
+  // Marketing surcharges (scaled by show type)
+  const cat = showCategory || 'musical';
   if (weekNumber <= 8) {
-    fixedCosts += MARKETING_SURCHARGES.openingPush.amount;
+    fixedCosts += MARKETING_SURCHARGES.openingPush[cat] || MARKETING_SURCHARGES.openingPush.musical;
   }
 
   // Pre-recoupment operating profit
@@ -344,7 +365,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
   // limited runs (< 6 months) need less because producers budget to the close date.
   const isLimitedRun = show.closingDate && show.openingDate &&
     (new Date(show.closingDate) - new Date(show.openingDate)) < 200 * 86400000;
-  const reserveWeeks = isLimitedRun ? 1.0 : RESERVE_FUND_WEEKS;
+  const reserveWeeks = isLimitedRun ? 1.5 : RESERVE_FUND_WEEKS;
   const reserveFund = weeklyNut * reserveWeeks;
   // Effective cap can't go below zero (SVOG can't make cap negative)
   const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
@@ -418,7 +439,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
       }
 
       const weekResult = calcWeeklyProfit(
-        week.gross, weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical'
+        week.gross, weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category
       );
 
       let weekProfit = weekResult.profit;
@@ -446,6 +467,13 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
     // Apply tax credit at end for closed shows (it's an eventual certainty)
     if (taxCreditWeek === Infinity) {
       cumProfit += taxCreditAmount;
+    }
+
+    // Closing costs for shows that closed within 2 years (strike, crew buyouts).
+    // Long-running shows budget closing into their final weeks' nut.
+    if (isClosed && weeklySchedule.length < 104) {
+      const closingCost = CLOSING_COSTS[category] || CLOSING_COSTS.musical;
+      cumProfit -= closingCost;
     }
 
     const recoupmentPct = (cumProfit / effectiveCap) * 100;
