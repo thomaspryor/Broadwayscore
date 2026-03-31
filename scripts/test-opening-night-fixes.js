@@ -851,20 +851,28 @@ assert(
   'Variety: NOT flagged'
 );
 
-// West End shows → regional BWW should NOT flag (legitimate WE coverage)
+// West End shows → BWW westend/london legit, US cities are cross-market contamination
 assert(
   !isLikelyTourReview('https://www.broadwayworld.com/westend/article/Review', 'teeth-n-smiles-west-end-2026'),
   'BWW westend for WE show: NOT flagged (legit WE coverage)'
 );
 assert(
-  !isLikelyTourReview('https://www.broadwayworld.com/denver/article/Review', 'oh-mary-west-end-2025'),
-  'BWW denver for WE show: NOT flagged (WE shows skip guard entirely)'
+  !isLikelyTourReview('https://www.broadwayworld.com/london/article/Review', 'teeth-n-smiles-west-end-2026'),
+  'BWW london for WE show: NOT flagged (legit UK coverage)'
+);
+assert(
+  isLikelyTourReview('https://www.broadwayworld.com/chicago/article/Review', 'moulin-rouge-west-end-2021'),
+  'BWW chicago for WE show: FLAGGED (cross-market, US tour on WE show)'
+);
+assert(
+  isLikelyTourReview('https://www.broadwayworld.com/denver/article/Review', 'oh-mary-west-end-2025'),
+  'BWW denver for WE show: FLAGGED (cross-market contamination)'
 );
 
-// Off-Broadway shows → should NOT flag
+// Off-Broadway shows → US regional BWW should flag (cross-market)
 assert(
-  !isLikelyTourReview('https://www.broadwayworld.com/chicago/article/Review', 'something-off-broadway-2026'),
-  'BWW regional for off-broadway show: NOT flagged'
+  isLikelyTourReview('https://www.broadwayworld.com/chicago/article/Review', 'something-off-broadway-2026'),
+  'BWW chicago for off-broadway show: FLAGGED (cross-market)'
 );
 
 // Edge cases

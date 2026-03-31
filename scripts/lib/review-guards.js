@@ -156,22 +156,22 @@ function isLikelyWrongProduction(reviewDateStr, showEarliestDateStr, thresholdDa
 
 /**
  * Detect regional BWW URLs and local paper tour reviews that should not be
- * attributed to the original Broadway production.
+ * attributed to the production.
  *
- * Only applies to Broadway shows (not WE/OB). Regional BWW articles use a
- * city slug before /article/ (e.g., /denver/article/). Local papers covering
- * tour stops are matched by domain patterns.
+ * For Broadway shows: blocks US regional BWW and local paper tour reviews.
+ * For WE/OB shows: blocks US regional BWW (cross-market contamination) but
+ * allows BWW westend/london (legitimate WE coverage).
  *
  * @param {string} url - Review URL
- * @param {string} showId - Show ID (used to skip WE/OB shows)
+ * @param {string} showId - Show ID
  * @returns {boolean} true if the URL indicates a tour/regional review
  */
 function isLikelyTourReview(url, showId) {
   if (!url || !showId) return false;
-  // Skip non-Broadway shows — WE/OB shows legitimately have regional coverage
-  if (/-west-end/.test(showId) || /-off-broadway/.test(showId) || /-off-west-end/.test(showId)) return false;
 
   const lower = url.toLowerCase();
+  const isWestEnd = /-west-end/.test(showId) || /-off-west-end/.test(showId);
+  const isOffBroadway = /-off-broadway/.test(showId);
 
   // Regional BWW (city-specific subdirectories)
   const bwwMatch = lower.match(/broadwayworld\.com\/([a-z-]+)\/article\//);
@@ -179,29 +179,40 @@ function isLikelyTourReview(url, showId) {
     const city = bwwMatch[1];
     // These are NOT regional — they're main BWW sections
     const nonRegional = ['article', 'off-broadway', 'reviews', 'board', 'columns', 'people', 'video', 'shows'];
-    if (!nonRegional.includes(city)) return true;
+    if (nonRegional.includes(city)) { /* not regional, fall through */ }
+    else if (isWestEnd || isOffBroadway) {
+      // For WE/OB shows: BWW westend and london are legitimate, US cities are not
+      const ukCities = ['westend', 'london', 'uk-regional'];
+      if (!ukCities.includes(city)) return true;
+    } else {
+      // For Broadway shows: all regional BWW is suspect
+      return true;
+    }
   }
 
-  // Local paper tour indicators
-  const tourPatterns = [
-    /star-telegram\.com.*fort-worth/i,
-    /houstonchronicle\.com/i,
-    /seattletimes\.com.*theater.*review/i,
-    /dallasvoice\.com/i,
-    /wehotimes\.com/i,
-    /bocamag\.com/i,
-    /cleveland\.com.*entertainment/i,
-    /dailycardinal\.com/i,
-    /latinlifedenver\.com/i,
-    /charlotteledger\.substack\.com/i,
-    /orlandoweekly\.com.*broadway-in-orlando/i,
-    /mdtheatreguide\.com.*(national-tour|kennedy-center|hippodrome)/i,
-    /dailygazette\.com.*nippertown.*proctors/i,
-    /berkshireedge\.com.*proctors/i,
-    /lansingcitypulse\.com/i,
-  ];
+  // Local paper tour indicators (Broadway shows only)
+  if (!isWestEnd && !isOffBroadway) {
+    const tourPatterns = [
+      /star-telegram\.com.*fort-worth/i,
+      /houstonchronicle\.com/i,
+      /seattletimes\.com.*theater.*review/i,
+      /dallasvoice\.com/i,
+      /wehotimes\.com/i,
+      /bocamag\.com/i,
+      /cleveland\.com.*entertainment/i,
+      /dailycardinal\.com/i,
+      /latinlifedenver\.com/i,
+      /charlotteledger\.substack\.com/i,
+      /orlandoweekly\.com.*broadway-in-orlando/i,
+      /mdtheatreguide\.com.*(national-tour|kennedy-center|hippodrome)/i,
+      /dailygazette\.com.*nippertown.*proctors/i,
+      /berkshireedge\.com.*proctors/i,
+      /lansingcitypulse\.com/i,
+    ];
+    return tourPatterns.some(pattern => pattern.test(url));
+  }
 
-  return tourPatterns.some(pattern => pattern.test(url));
+  return false;
 }
 
 module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview };
