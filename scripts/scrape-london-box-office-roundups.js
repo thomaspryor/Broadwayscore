@@ -470,12 +470,11 @@ function stripTheatreFromSlug(slug) {
 function saveLBOReview(showId, reviewInfo) {
   const sourceName = reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup';
 
-  // Build score fields (only if score present)
+  // Build score fields — aggregator score, store as metadata only
   const scoreFields = {};
   if (reviewInfo.score !== null && reviewInfo.score !== undefined) {
-    scoreFields.originalScore = reviewInfo.score;
+    scoreFields.aggregatorStars = reviewInfo.score;
     scoreFields.scoreSource = 'lbo-star-rating';
-    scoreFields.scorePriority = 'P0';
   }
 
   const result = createOrMergeReviewFile(showId, {

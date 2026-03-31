@@ -412,10 +412,9 @@ function writeReviewFiles(reviews, showId) {
     if (review.url && !data.url) data.url = review.url;
     if (review.excerpt) data.theStageExcerpt = review.excerpt;
 
-    // Star rating → P0 score
-    if (review.stars && !data.originalScore) {
-      data.originalScore = `${review.stars}/${review.starsOutOf}`;
-      data.originalScoreNormalized = Math.round((review.stars / review.starsOutOf) * 100);
+    // Star rating from roundup — aggregator score, store as metadata only
+    if (review.stars && !data.aggregatorStars) {
+      data.aggregatorStars = `${review.stars}/${review.starsOutOf}`;
       data.scoreSource = 'thestage-roundup-star-rating';
     }
 
