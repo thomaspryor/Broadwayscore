@@ -1049,7 +1049,17 @@
     "chinglish-2011/ny1--roma-torre.json",
     "chinglish-2011/backstage--erik-haagensen.json",
     "relatively-speaking-2011/scheckontheater--frank-scheck.json",
-    "relatively-speaking-2011/variety--charles-isherwood.json"
+    "relatively-speaking-2011/variety--charles-isherwood.json",
+    "relatively-speaking-2011/new-jersey-newsroom--michael-sommers.json",
+    "relatively-speaking-2011/backstage--david-sheward.json",
+    "the-mountaintop-2011/latimes--charles-mcnulty-bway.json",
+    "the-mountaintop-2011/northjerseycom--robert-feldberg.json",
+    "the-mountaintop-2011/backstage--david-sheward.json",
+    "the-mountaintop-2011/yonkers-tribune--john-simon.json",
+    "man-and-boy-2011/northjerseycom--robert-feldberg.json",
+    "man-and-boy-2011/backstage--david-sheward.json",
+    "man-and-boy-2011/yonkers-tribune--john-simon.json",
+    "follies-2011/philadelphia-inquirer--howard-shapiro.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1582,7 +1592,10 @@
       "data/review-texts/other-desert-cities-2011/latimes--charles-mcnulty-bway.json",
       "data/review-texts/other-desert-cities-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/other-desert-cities-2011/usatoday--elysa-garder.json",
-      "data/review-texts/chinglish-2011/ny1--roma-torre.json"
+      "data/review-texts/chinglish-2011/ny1--roma-torre.json",
+      "data/review-texts/the-mountaintop-2011/latimes--charles-mcnulty-bway.json",
+      "data/review-texts/the-mountaintop-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/man-and-boy-2011/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1633,7 +1646,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "relatively-speaking-2011/variety--charles-isherwood.json",
+  "lastProcessed": "follies-2011/philadelphia-inquirer--howard-shapiro.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -2086,6 +2099,28 @@
       "t": "2026-03-31T20:10:46.704Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-03-31T20:15:34.404Z",
+      "event": "bb-session",
+      "session": "4c93c0c4",
+      "url": "https://www.northjersey.com/arts_entertainment/131843148__Mountaintop__provides_"
+    },
+    {
+      "t": "2026-03-31T20:15:36.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T20:16:47.560Z",
+      "event": "bb-session",
+      "session": "5b7ee143",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/131437703_Father_exploits"
+    },
+    {
+      "t": "2026-03-31T20:16:48.715Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
