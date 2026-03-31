@@ -168,6 +168,76 @@ function extractBWWScore(html, text) {
 }
 
 /**
+ * Extract score from Theatre Weekly review
+ * Format: Image filename (e.g., "New-5star-350x71.png")
+ * Title attribute: "Five Star Review from Theatre Weekly"
+ */
+function extractTheatreWeeklyScore(html, text) {
+  if (!html) return null;
+  // Image filename: New-Nstar-
+  const match = html.match(/(?:(?:data-(?:lazy-)?)?src(?:set)?)=["'][^"']*?New-(\d)star/i);
+  if (match) {
+    const stars = parseInt(match[1]);
+    if (stars >= 1 && stars <= 5) {
+      return {
+        originalScore: `${stars}/5 stars`,
+        normalizedScore: starsToNumeric(stars, 5),
+        source: 'theatre-weekly-star-image',
+      };
+    }
+  }
+  // Fallback: title attribute "Five Star Review", "Four Star Review", etc.
+  const wordMap = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+  const titleMatch = html.match(/title=["'](\w+)\s+Star\s+Review/i);
+  if (titleMatch) {
+    const stars = wordMap[titleMatch[1].toLowerCase()];
+    if (stars) {
+      return {
+        originalScore: `${stars}/5 stars`,
+        normalizedScore: starsToNumeric(stars, 5),
+        source: 'theatre-weekly-star-image',
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * Extract score from Radio Times review
+ * Format: Page JSON has "starRatingValue":"N" or "ratingValue":"N"
+ * Also has SVG sprites with #star-fill / #star-empty
+ */
+function extractRadioTimesScore(html, text) {
+  if (!html) return null;
+  // Page JSON data: "starRatingValue":"5" or "ratingValue":"5"
+  const jsonMatch = html.match(/"starRatingValue"\s*:\s*"?(\d(?:\.\d)?)"?/);
+  if (jsonMatch) {
+    const stars = parseFloat(jsonMatch[1]);
+    if (stars >= 1 && stars <= 5) {
+      return {
+        originalScore: `${stars}/5 stars`,
+        normalizedScore: starsToNumeric(stars, 5),
+        source: 'radiotimes-page-json',
+      };
+    }
+  }
+  // Fallback: count SVG star-fill references
+  const fills = (html.match(/#star-fill/g) || []).length;
+  const halfs = (html.match(/#star-half/g) || []).length;
+  if (fills > 0 || halfs > 0) {
+    const total = fills + halfs * 0.5;
+    if (total >= 1 && total <= 5) {
+      return {
+        originalScore: `${total}/5 stars`,
+        normalizedScore: starsToNumeric(total, 5),
+        source: 'radiotimes-svg-stars',
+      };
+    }
+  }
+  return null;
+}
+
+/**
  * Extract score from Entertainment Weekly review
  * Format: Letter grades (A+, A, A-, B+, etc.)
  */
@@ -795,10 +865,15 @@ const OUTLET_EXTRACTORS = {
   'all-that-dazzles-uk': extractUKStarRating,
   'everything-theatre': extractUKStarRating,
   'everything-theatre-uk': extractUKStarRating,
-  'theatre-weekly': extractUKStarRating,
+  'theatre-weekly': extractTheatreWeeklyScore,
   'theatre-bee-uk': extractUKStarRating,
+  'radio-times': extractRadioTimesScore,
+  'radiotimes': extractRadioTimesScore,
   'timeout-london': extractTimeOutScore,
   'i-newspaper': extractUKStarRating,
+  'i-paper': extractUKStarRating,
+  'the-express': extractUKStarRating,
+  'express': extractUKStarRating,
   'cityam': extractUKStarRating,
   'the-recs': extractUKStarRating,
   'lost-in-theatreland': extractUKStarRating,
@@ -996,6 +1071,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'timeout-star-widget', 'timeout-svg-stars',
   'lbo-star-rating', 'express-star-count', 'standard-star-count', 'dailymail-star-count',
   'text-pattern-verified', 'bww-star-image',
+  'theatre-weekly-star-image', 'radiotimes-page-json', 'radiotimes-svg-stars',
 ]);
 
 module.exports = {
@@ -1012,6 +1088,8 @@ module.exports = {
   extractUKStarRating,
   extractUSATodayScore,
   extractBWWScore,
+  extractTheatreWeeklyScore,
+  extractRadioTimesScore,
   extractNYTCriticsPick,
   extractTheaterManiaMustSee,
   LETTER_GRADES,
