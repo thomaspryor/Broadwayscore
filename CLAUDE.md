@@ -94,7 +94,6 @@ When asked "is everything ready for opening night?", check the AUTOMATION CHAIN,
 ### Scoring
 Composite = tier-weighted average. T1 (NYT, Vulture, Variety): 1.0 | T2 (TheaterMania, NY Post): 0.75 | T3 (blogs): 0.35
 **Score display:** `compositeScore` = critic-only (browse, homepage). `blendedScore` = 50/50 critic+audience (Tony predictions).
-**Star rating trust:** Only outlet-own star ratings get P0 priority. Aggregator ratings (ShowScore, WET, theatre.reviews) are metadata only — never `originalScore`. When adding a new score extractor, add its `scoreSource` tag to `OUTLET_VERIFIED_SOURCES` in `scripts/lib/score-extractors.js` or it defaults to untrusted.
 
 ### Data Structure
 `data/` — `shows.json` (source of truth), `reviews.json` (derived via rebuild), `review-texts/{show-id}/` (private repo §11).
