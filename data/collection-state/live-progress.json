@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-03-31T10:58:19.666Z",
-  "processed": 24,
-  "failed": 14,
-  "successRate": "63.2%",
+  "updatedAt": "2026-03-31T11:00:40.440Z",
+  "processed": 33,
+  "failed": 15,
+  "successRate": "68.8%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 20,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "archiveToday": 3,
+    "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -69,6 +69,17 @@
       "t": "2026-03-31T10:57:03.179Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-31T10:58:37.038Z",
+      "event": "bb-session",
+      "session": "c3ec8c29",
+      "url": "https://www.amny.com/entertainment/review-dog-day-afternoon/"
+    },
+    {
+      "t": "2026-03-31T10:58:38.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

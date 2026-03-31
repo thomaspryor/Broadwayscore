@@ -23,7 +23,16 @@
     "dog-day-afternoon-2026/new-york-sun--unknown.json",
     "dog-day-afternoon-2026/theatermania--unknown.json",
     "dog-day-afternoon-2026/thewrap--unknown.json",
-    "dog-day-afternoon-2026/timeout--unknown.json"
+    "dog-day-afternoon-2026/timeout--unknown.json",
+    "dog-day-afternoon-2026/theatrely--unknown.json",
+    "dog-day-afternoon-2026/amny--unknown.json",
+    "dog-day-afternoon-2026/chicagotribune--unknown.json",
+    "dog-day-afternoon-2026/nysr--unknown.json",
+    "dog-day-afternoon-2026/playbill--unknown.json",
+    "alice-in-wonderland-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
+    "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json",
+    "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -39,7 +48,8 @@
     "jackals-off-broadway-2026/hollywood-reporter--thr-staff.json",
     "indian-princesses-off-broadway-2025/theatermania--linda-buchwald.json",
     "jackals-off-broadway-2026/times-uk--anne-treneman.json",
-    "inter-alia-west-end-2026/thestage--sam-marlowe.json"
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "dog-day-afternoon-2026/usatoday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -56,7 +66,14 @@
       "dog-day-afternoon-2026/ew--unknown.json",
       "dog-day-afternoon-2026/new-york-sun--unknown.json",
       "dog-day-afternoon-2026/theatermania--unknown.json",
-      "dog-day-afternoon-2026/timeout--unknown.json"
+      "dog-day-afternoon-2026/timeout--unknown.json",
+      "dog-day-afternoon-2026/theatrely--unknown.json",
+      "dog-day-afternoon-2026/chicagotribune--unknown.json",
+      "dog-day-afternoon-2026/nysr--unknown.json",
+      "dog-day-afternoon-2026/playbill--unknown.json",
+      "alice-in-wonderland-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
+      "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json"
     ],
     "amp": [],
     "browserbase": [
@@ -69,7 +86,9 @@
       "data/review-texts/dog-day-afternoon-2026/variety--unknown.json",
       "dog-day-afternoon-2026/variety--unknown.json",
       "data/review-texts/dog-day-afternoon-2026/deadline--unknown.json",
-      "dog-day-afternoon-2026/deadline--unknown.json"
+      "dog-day-afternoon-2026/deadline--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/amny--unknown.json",
+      "dog-day-afternoon-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -82,14 +101,16 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/ai-yah-goy-vey-off-broadway-2026/talkinbroadway--james-wilson.json",
-      "data/review-texts/ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json"
+      "data/review-texts/ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/usatoday--unknown.json"
     ],
     "archive": [
-      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+      "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json"
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "dog-day-afternoon-2026/timeout--unknown.json",
+  "lastProcessed": "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -145,6 +166,17 @@
       "t": "2026-03-31T10:57:03.179Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-03-31T10:58:37.038Z",
+      "event": "bb-session",
+      "session": "c3ec8c29",
+      "url": "https://www.amny.com/entertainment/review-dog-day-afternoon/"
+    },
+    {
+      "t": "2026-03-31T10:58:38.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
