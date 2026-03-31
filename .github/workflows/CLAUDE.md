@@ -16,6 +16,20 @@ All new workflows MUST include the `notify-failure` composite action (`.github/a
 ```
 For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. Currently 100/100 workflows have notifications.
 
+## Playwright Setup
+
+All workflows that use Playwright MUST use the shared composite action instead of inline `npx playwright install`:
+```yaml
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+```
+This caches `~/.cache/ms-playwright` across runs (~15s saved per workflow). For non-chromium browsers:
+```yaml
+        with:
+          browsers: 'chromium webkit'
+```
+Default is `chromium` only. Never use inline `npx playwright install` — the CI lint will eventually enforce this.
+
 ## Push Retry
 
 All push-to-remote steps MUST use the shared script instead of inline retry loops:
