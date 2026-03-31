@@ -257,20 +257,17 @@ function isMultiProduction(newShow, existing) {
   // and differ by >2 years, they are historical entries (e.g., Death of a Salesman 1975 vs 2026).
   // But same venue overrides this — two shows at the same venue = same production.
   if (existing.status === 'open' || existing.status === 'previews') {
-    // Same venue = definitively the same production, never a revival
-    const newVenueNorm = newShow.venue ? normalizeVenueName(newShow.venue) : '';
-    const existVenueNorm = existing.venue ? normalizeVenueName(existing.venue) : '';
-    if (newVenueNorm && existVenueNorm && newVenueNorm === existVenueNorm) {
-      return false; // Same venue + open/previews = same production
-    }
-    // Only trust year difference from actual openingDates, not ID suffixes
-    // ID suffixes (e.g., -2021) are often TodayTix artifacts, not production years
+    // Only trust year difference from actual openingDates, not ID suffixes.
+    // ID suffixes (e.g., -2021) are often TodayTix artifacts, not production years.
     const newYearFromDate = newShow.openingDate ? new Date(newShow.openingDate).getFullYear() : null;
     const existYearFromDate = existing.openingDate ? new Date(existing.openingDate).getFullYear() : null;
     if (newYearFromDate && existYearFromDate && Math.abs(newYearFromDate - existYearFromDate) > 2) {
       return true; // Historical entry vs current production (verified by actual dates)
     }
-    return false; // Same/close year + open show = same production
+    // No reliable date evidence for different production. Same venue makes it
+    // even more certain this is the same production (e.g., TodayTix re-listing
+    // Harry Potter at Lyric Theatre with a different slug).
+    return false; // Same/close year or missing dates + open show = same production
   }
 
   if (newYear && existingYear) {
