@@ -504,13 +504,19 @@ export function getBrowseList(slug: string): BrowseList | undefined {
       return bScore! - aScore!;
     });
   } else if (config.sort === 'opening-date') {
-    filteredShows = filteredShows.sort((a, b) =>
-      new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime()
-    );
+    filteredShows = filteredShows.sort((a, b) => {
+      if (!a.openingDate && !b.openingDate) return 0;
+      if (!a.openingDate) return 1;
+      if (!b.openingDate) return -1;
+      return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+    });
   } else if (config.sort === 'opening-date-asc') {
-    filteredShows = filteredShows.sort((a, b) =>
-      new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime()
-    );
+    filteredShows = filteredShows.sort((a, b) => {
+      if (!a.openingDate && !b.openingDate) return 0;
+      if (!a.openingDate) return 1;
+      if (!b.openingDate) return -1;
+      return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
+    });
   } else if (config.sort === 'closing-date') {
     filteredShows = filteredShows.sort((a, b) => {
       if (!a.closingDate) return 1;

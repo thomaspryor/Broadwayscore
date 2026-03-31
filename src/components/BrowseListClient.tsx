@@ -111,8 +111,15 @@ export default function BrowseListClient({
         case 'alpha':
           return a.title.localeCompare(b.title);
         case 'newest':
+          // Shows without openingDate sort to the end
+          if (!a.openingDate && !b.openingDate) return 0;
+          if (!a.openingDate) return 1;
+          if (!b.openingDate) return -1;
           return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
         case 'oldest':
+          if (!a.openingDate && !b.openingDate) return 0;
+          if (!a.openingDate) return 1;
+          if (!b.openingDate) return -1;
           return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
         case 'closing':
           // Shows with closing dates first (sorted by soonest), then others
