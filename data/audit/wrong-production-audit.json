@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T12:28:24.018Z",
+  "timestamp": "2026-03-31T12:36:29.416Z",
   "stats": {
     "totalReviews": 32124,
-    "alreadyFlagged": 11884,
+    "alreadyFlagged": 11915,
     "dateGuardCatches": 14,
     "directorMismatch": 925,
-    "tvFilmSignals": 3314,
-    "londonSignals": 964,
+    "tvFilmSignals": 3312,
+    "londonSignals": 955,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 5948
+    "noPublishDate": 5933
   },
   "findings": [
     {
@@ -11942,24 +11942,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "publishDate": null,
-      "url": "https://www.londonboxoffice.co.uk/news/post/dear-england-prince-edward-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -52963,25 +52945,6 @@
       ]
     },
     {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 79,
-      "publishDate": "2021-07-27",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-philanthropist-2009",
       "file": "chicagotribune--chris-jones-bway.json",
       "publishDate": "2009-04-26",
@@ -61379,20 +61342,6 @@
       ]
     },
     {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "file": "thestage--sam-marlowe.json",
-      "score": 73,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "assassins-2004",
       "file": "ap--michael-kuchwara.json",
       "publishDate": "2004-05-30",
@@ -63362,34 +63311,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"minetta lane\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "file": "independent--jessie-thomspon.json",
-      "score": 65,
-      "publishDate": "2026-02-24",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 85,
-      "publishDate": "2026-02-24",
-      "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -71409,34 +71330,6 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "file": "daily-mail--georgina-brown.json",
-      "score": 83,
-      "publishDate": "2024-07-26",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "guardian--arifa-akbar.json",
-      "score": 81,
-      "publishDate": "2025-01-19",
-      "url": "https://www.theguardian.com/stage/2024/oct/09/the-other-place-review-national-theatre-alexander-zeldin-antigone",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 57,
       "publishDate": "2025-01-15",
@@ -71521,20 +71414,6 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "file": "thestage--matt-hemley.json",
-      "score": 81,
-      "publishDate": "2024-12-14",
-      "url": "https://www.thestage.co.uk/reviews/oliver-review-chichester-festival-theatre-matthew-bourne-with-simon-lipkin-shanay-holmes-aaron-sidwell-billy-jenkins",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
       "file": "thestage--sam-marlowe.json",
       "score": 82,
       "publishDate": "January 15th, 2025",
@@ -71544,20 +71423,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "times-uk--clive-davis.json",
-      "score": 78,
-      "publishDate": "2024-07-25",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-other-place-review-emma-darcy-tobias-menzies-2v6gqtnzd?msockid=2e09c7d8797965060ae6d67178066487",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
