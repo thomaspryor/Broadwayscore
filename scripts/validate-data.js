@@ -1775,6 +1775,73 @@ function validateP0ScoreCoverage() {
  *
  * Skips flagged files (wrongProduction, wrongShow, isRoundupArticle, etc.) for URL checks.
  */
+/**
+ * Detect unflagged tour/regional reviews attributed to Broadway productions.
+ * Scans review-text source files for regional BWW URLs and local paper tour indicators
+ * that don't have wrongProduction set. Warns if >30% of a show's reviews are regional.
+ */
+function validateTourReviewContamination() {
+  info('Checking for unflagged tour/regional review contamination...');
+
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  if (!fs.existsSync(reviewTextsDir)) {
+    info('review-texts directory not found, skipping');
+    return;
+  }
+
+  let isLikelyTourReview;
+  try {
+    isLikelyTourReview = require('./lib/review-guards').isLikelyTourReview;
+  } catch {
+    info('review-guards.js not found, skipping tour contamination check');
+    return;
+  }
+
+  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
+    try { return fs.statSync(path.join(reviewTextsDir, d)).isDirectory() && !d.startsWith('.'); }
+    catch { return false; }
+  });
+
+  let totalUnflagged = 0;
+  const contaminated = [];
+
+  for (const showDir of showDirs) {
+    const showPath = path.join(reviewTextsDir, showDir);
+    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
+    let tourCount = 0;
+    let activeCount = 0;
+
+    for (const f of files) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(showPath, f), 'utf8'));
+        if (data.wrongProduction || data.wrongShow || data.isRoundupArticle) continue;
+        activeCount++;
+        if (isLikelyTourReview(data.url, showDir)) {
+          tourCount++;
+        }
+      } catch { /* skip malformed */ }
+    }
+
+    if (tourCount > 0) {
+      totalUnflagged += tourCount;
+      const pct = activeCount > 0 ? Math.round((tourCount / activeCount) * 100) : 0;
+      if (pct > 30 || tourCount >= 5) {
+        contaminated.push({ show: showDir, tour: tourCount, active: activeCount, pct });
+      }
+    }
+  }
+
+  if (totalUnflagged === 0) {
+    ok('No unflagged tour/regional reviews found');
+  } else if (contaminated.length > 0) {
+    for (const c of contaminated) {
+      warn(`Tour contamination: "${c.show}" has ${c.tour}/${c.active} unflagged tour reviews (${c.pct}%)`);
+    }
+  } else {
+    info(`${totalUnflagged} minor tour reviews detected (below warning thresholds)`);
+  }
+}
+
 function validateReviewTextDuplicates(shows) {
   info('Checking for duplicate review-text files...');
 
@@ -3338,6 +3405,8 @@ function runValidation() {
   validateShowMatchingAliases(shows);
   console.log('');
   validateLotteryRushData(shows);
+  console.log('');
+  validateTourReviewContamination();
   console.log('');
   validateLastUpdatedFormats();
 

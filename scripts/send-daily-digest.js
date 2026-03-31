@@ -100,6 +100,11 @@ function diffSnapshots(prev, curr) {
 
   // Flag suspicious changes: >24 reviews added in a single day is abnormal
   changes.suspiciousChanges = changes.newReviews.filter(r => r.added > 24);
+  // Also flag shows with >10 new reviews — likely tour contamination
+  const spikeShows = changes.newReviews.filter(r => r.added > 10 && r.added <= 24);
+  if (spikeShows.length > 0) {
+    changes.reviewSpikes = spikeShows;
+  }
   // Remove suspicious entries from newReviews so they aren't double-counted
   if (changes.suspiciousChanges.length > 0) {
     changes.newReviews = changes.newReviews.filter(r => r.added <= 24);
@@ -155,10 +160,12 @@ async function main() {
 
   // Build and send email
   const suspiciousCount = (changes.suspiciousChanges || []).length;
+  const spikeCount = (changes.reviewSpikes || []).length;
   const totalChanges = changes.newShows.length + changes.newReviews.length +
     changes.scoreChanges.length + changes.audienceChanges.length + suspiciousCount;
-  const subject = suspiciousCount > 0
-    ? `⚠️ Daily Digest: ${totalChanges} changes (${suspiciousCount} suspicious) on ${today}`
+  const warnings = suspiciousCount + spikeCount;
+  const subject = warnings > 0
+    ? `⚠️ Daily Digest: ${totalChanges} changes (${warnings} warning${warnings !== 1 ? 's' : ''}) on ${today}`
     : `Daily Digest: ${totalChanges} change${totalChanges !== 1 ? 's' : ''} on ${today}`;
   const html = buildDailyDigestHtml(changes, today);
 

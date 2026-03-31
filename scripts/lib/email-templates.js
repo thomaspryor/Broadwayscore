@@ -687,6 +687,18 @@ function buildDailyDigestHtml(changes, date) {
     sections.push(html);
   }
 
+  // Review Spikes (>10 new reviews — possible tour contamination)
+  if (changes.reviewSpikes && changes.reviewSpikes.length > 0) {
+    let html = `<tr><td style="padding:20px 20px 8px;">
+      <p style="margin:0;font-size:11px;font-weight:600;color:#f59e0b;text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">&#9888; Review Spikes (${changes.reviewSpikes.length})</p>
+    </td></tr>`;
+    html += `<tr><td style="padding:4px 20px;font-size:13px;color:#d97706;line-height:1.5;font-family:${FONT};">Shows with &gt;10 new reviews in a single day &mdash; check for tour or wrong-production reviews.</td></tr>`;
+    for (const r of changes.reviewSpikes) {
+      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#d97706;line-height:1.5;font-family:${FONT};border-left:2px solid #f59e0b;">&#8226;&nbsp; ${showLink(r.title, r.slug)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
+    }
+    sections.push(html);
+  }
+
   // New Shows
   if (changes.newShows.length > 0) {
     let html = sectionHeader(`New Shows (${changes.newShows.length})`);
