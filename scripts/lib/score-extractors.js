@@ -21,7 +21,7 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
-const EXTRACTOR_VERSION = 4;  // v4: BWW star image extractor, aggregator downgrade fixes
+const EXTRACTOR_VERSION = 5;  // v5: Daily Mail CSS star extractor (mol-ratings-solid), WOS+DM Playwright routing
 
 /**
  * Clean HTML of scripts, styles, and CSS to avoid false positives

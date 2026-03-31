@@ -32,9 +32,17 @@ const limitArg = args.find(a => a.startsWith('--limit='));
 const delayArg = args.find(a => a.startsWith('--delay='));
 const execute = args.includes('--execute');
 const dryRun = args.includes('--dry-run');
+const replaceAggregator = args.includes('--replace-aggregator');
 const outlet = outletArg ? outletArg.split('=')[1] : null;
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : 5;
 const delay = delayArg ? parseInt(delayArg.split('=')[1]) : 2000;
+
+// Aggregator score sources — not from the outlet itself, lower trust than direct extraction
+const AGGREGATOR_SOURCES = new Set([
+  'westendtheatre-star-rating', 'thestage-roundup-star-rating',
+  'lbo-star-rating', 'stagedoor-star-rating', 'theatre-reviews-star-rating',
+  'show-score-stars', 'show-score-playwright',
+]);
 
 if (!outlet) {
   console.error('Usage: node scripts/recollect-for-scores.js --outlet=timeout [--limit=5] [--execute]');
@@ -202,11 +210,12 @@ async function main() {
       const fp = path.join(REVIEW_DIR, dir, file);
       try {
         const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
-        // Skip if already has a verified score — but re-extract if score came from Show Score
-        // (SS assigns its own stars, wrong ~11% of the time)
+        // Skip if already has a verified outlet score — but re-extract if score came from
+        // Show Score (SS assigns its own stars, wrong ~11% of the time) or aggregators
         const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
         const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
-        if (data.originalScore && !hasUnverifiedSSScore) continue;
+        const hasAggregatorScore = replaceAggregator && data.originalScore && AGGREGATOR_SOURCES.has(data.scoreSource);
+        if (data.originalScore && !hasUnverifiedSSScore && !hasAggregatorScore) continue;
         if (!data.url) continue; // No URL to fetch
         if (data.wrongShow) continue; // Flagged as wrong content
         if (data.wrongProduction) continue; // URL is for a different production
@@ -228,8 +237,10 @@ async function main() {
     }
   }
 
-  const ssTargets = targets.filter(t => t.data.originalScore);
-  console.log(`Found ${targets.length} reviews to process (${targets.length - ssTargets.length} missing score, ${ssTargets.length} replacing SS score)`);
+  const ssTargets = targets.filter(t => t.data.originalScore && !AGGREGATOR_SOURCES.has(t.data.scoreSource));
+  const aggTargets = targets.filter(t => AGGREGATOR_SOURCES.has(t.data.scoreSource));
+  const noScore = targets.length - ssTargets.length - aggTargets.length;
+  console.log(`Found ${targets.length} reviews to process (${noScore} missing score, ${ssTargets.length} replacing SS score, ${aggTargets.length} replacing aggregator score)`);
   const toProcess = targets.slice(0, limit);
   console.log(`Processing ${toProcess.length} of ${targets.length}\n`);
 
