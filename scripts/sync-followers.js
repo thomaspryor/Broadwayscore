@@ -478,6 +478,55 @@ async function main() {
       await syncButtondownContacts(weList, ['west-end'], 'West End', process.env.BUTTONDOWN_API_KEY, generalSubscribers);
     }
   }
+
+  // --- 5. Sync to Resend audience (after both lists are finalized) ---
+  // Resend is used for broadcast sends. Upserts contacts — adding missing, no deletions.
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const resendAudienceId = '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
+
+  if (!DRY_RUN && resendApiKey) {
+    console.log('\n  Syncing subscribers to Resend audience...');
+
+    // Fetch existing Resend contacts
+    const resendExisting = new Set();
+    try {
+      const result = await fetchJSON(`https://api.resend.com/audiences/${resendAudienceId}/contacts`, {
+        'Authorization': `Bearer ${resendApiKey}`,
+      });
+      const contacts = result.data || [];
+      for (const c of contacts) resendExisting.add(c.email.toLowerCase());
+      console.log(`  Found ${resendExisting.size} existing Resend contacts`);
+    } catch (err) {
+      console.error(`  Error fetching Resend contacts: ${err.message}`);
+    }
+
+    // Add missing subscribers (Broadway + WE combined — Resend uses one audience)
+    const allSubscribers = new Set([...subscribersList, ...weList]);
+    const toAdd = [...allSubscribers].filter(e => !resendExisting.has(e.toLowerCase()));
+
+    if (toAdd.length === 0) {
+      console.log('  Resend audience is up to date');
+    } else {
+      console.log(`  Adding ${toAdd.length} new contacts to Resend...`);
+      let resendAdded = 0, resendErrors = 0;
+      for (const email of toAdd) {
+        try {
+          await postJSON(`https://api.resend.com/audiences/${resendAudienceId}/contacts`, {
+            email,
+            unsubscribed: false,
+          }, { 'Authorization': `Bearer ${resendApiKey}` });
+          resendAdded++;
+        } catch (err) {
+          resendErrors++;
+          if (resendErrors <= 3) console.error(`  Error adding ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
+        }
+        await delay(200); // Rate limit
+      }
+      console.log(`  Resend sync: ${resendAdded} added${resendErrors > 0 ? `, ${resendErrors} errors` : ''}`);
+    }
+  } else if (!resendApiKey) {
+    console.log('\n  Skipping Resend sync (no RESEND_API_KEY)');
+  }
 }
 
 main().catch(err => {
