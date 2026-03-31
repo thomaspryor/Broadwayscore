@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-03-31T19:21:17.851Z",
+    "generatedAt": "2026-03-31T19:31:02.596Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32819,
       "inReviewsJson": 16281,
       "skippedExcluded": 9,
-      "withFullText": 18,
+      "withFullText": 17,
       "excerptOnly": 1831,
-      "llmClassified": 17,
+      "llmClassified": 16,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 16,
-      "budgetUsed": 0.0018000000000000006,
-      "llmCalls": 18,
+      "budgetUsed": 0.0017000000000000006,
+      "llmCalls": 17,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14423
+      "skippedAlreadyClassified": 14424
     },
     "calibration": null
   },
@@ -60,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
       "currentScore": 88
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links or search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news or general information.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -180,13 +180,11 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the autobiographical elements and the themes explored in the play, resembling a preview or feature article rather than a review.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "mj-the-musical-west-end-2024/i-paper--fiona-mountford.json"
-  ],
+  "reviewsConfirmed": [],
   "perShowSummary": []
 }
