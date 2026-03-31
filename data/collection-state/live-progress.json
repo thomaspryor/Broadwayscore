@@ -1,20 +1,31 @@
 {
-  "updatedAt": "2026-03-31T07:27:57.036Z",
-  "processed": 178,
-  "failed": 953,
-  "successRate": "15.7%",
+  "updatedAt": "2026-03-31T08:01:36.043Z",
+  "processed": 183,
+  "failed": 998,
+  "successRate": "15.5%",
   "tierBreakdown": {
-    "playwright": 106,
+    "playwright": 107,
     "amp": 0,
     "browserbase": 29,
     "directCookies": 0,
-    "scrapingbee": 24,
+    "scrapingbee": 26,
     "brightdata": 0,
-    "archiveToday": 408,
-    "archive": 35
+    "archiveToday": 439,
+    "archive": 37
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-03-31T02:38:35.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-03-31T02:40:20.526Z",
+      "event": "bb-session",
+      "session": "1437e156",
+      "url": "https://www.stagebiz.com/SBReviews/P/PlayThatGoesWrong/PlayThatGoesWrong.html"
+    },
     {
       "t": "2026-03-31T02:43:08.768Z",
       "event": "bb-session",
@@ -111,17 +122,6 @@
     },
     {
       "t": "2026-03-31T05:00:07.557Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-03-31T07:17:46.785Z",
-      "event": "bb-session",
-      "session": "6faa5c6f",
-      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
-    },
-    {
-      "t": "2026-03-31T07:17:48.038Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
