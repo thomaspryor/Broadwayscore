@@ -1535,8 +1535,9 @@ showDirs.forEach(showId => {
       // BUT allow through if review has a valid score from aggregator data (excerpts + assignedScore)
       if (data.incompleteReason === 'scraper_garbage') {
         const hasAggregatorScore = (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100)
-          || (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null);
-        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt;
+          || (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
+          || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
+        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt;
         if (!hasAggregatorScore && !hasExcerpt) {
           stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
           return;
@@ -2074,10 +2075,11 @@ showDirs.forEach(showId => {
         }
 
         if (data.showNotMentioned === true) {
-          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt;
+          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt;
           // Allow through if review has an aggregator-provided star rating (e.g. from WET roundup)
           // even when scraped text was paywall junk that didn't mention the show
-          const hasOriginalScore = data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null;
+          const hasOriginalScore = (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
+            || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
           if (!hasExcerpt && !hasOriginalScore) {
             stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
             return;
@@ -2437,6 +2439,8 @@ showDirs.forEach(showId => {
         publishDate: normalizePublishDate(data.publishDate),
         originalRating: (source === 'originalScore-priority0' || source === 'originalScore-showscore-downgraded')
           ? data.originalScore || null
+          : source === 'aggregatorStars-fallback'
+          ? data.aggregatorStars || null
           : null,  // Don't display star rating when it wasn't used for scoring
         pullQuote: (() => {
           data._showStatus = showStatusMap[showId];

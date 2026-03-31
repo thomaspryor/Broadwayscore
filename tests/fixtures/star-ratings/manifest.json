@@ -58,5 +58,23 @@
     "url": "https://www.allthatdazzles.co.uk/post/review-the-producers-garrick-theatre",
     "expected": "5/5",
     "source": "atd-emoji-stars"
+  },
+  {
+    "id": "radio-times",
+    "url": "https://www.radiotimes.com/going-out/going-out-reviews/paddington-the-musical-review/",
+    "expected": "5/5",
+    "source": "radiotimes-page-json"
+  },
+  {
+    "id": "NO-STARS-variety",
+    "expected": null,
+    "source": null,
+    "note": "Variety does not use star ratings"
+  },
+  {
+    "id": "NO-STARS-london-theatre",
+    "expected": null,
+    "source": null,
+    "note": "London Theatre does not use star ratings"
   }
 ]

@@ -37,11 +37,14 @@ const outlet = outletArg ? outletArg.split('=')[1] : null;
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : 5;
 const delay = delayArg ? parseInt(delayArg.split('=')[1]) : 2000;
 
-// Aggregator score sources — not from the outlet itself, lower trust than direct extraction
+// Replaceable score sources — aggregators (not outlet's own) + low-reliability extractions
 const AGGREGATOR_SOURCES = new Set([
   'westendtheatre-star-rating', 'thestage-roundup-star-rating',
   'lbo-star-rating', 'stagedoor-star-rating', 'theatre-reviews-star-rating',
   'show-score-stars', 'show-score-playwright',
+  'css-stars',          // Generic CSS extraction — often reads sidebar/wrong element
+  'lbo-css-stars',      // LBO CSS extraction — sometimes wrong element
+  'numeric-stars',      // Generic "X/5" pattern — false positives from pagination
 ]);
 
 if (!outlet) {
