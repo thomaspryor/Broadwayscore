@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-03-31T19:35:45.881Z",
+  "timestamp": "2026-03-31T19:47:36.137Z",
   "stats": {
     "totalReviews": 32111,
-    "alreadyFlagged": 11957,
+    "alreadyFlagged": 11954,
     "dateGuardCatches": 14,
     "directorMismatch": 917,
     "tvFilmSignals": 3306,
-    "londonSignals": 942,
+    "londonSignals": 944,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
     "noPublishDate": 5918
@@ -61838,6 +61838,32 @@
       "file": "independent--alice-saville.json",
       "score": 73,
       "publishDate": "2026-03-04",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/broken-glass-review-young-vic-arthur-miller-b2931621.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "file": "independent--samuel-mathewson.json",
+      "publishDate": "2026-02-27",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/broken-glass-review-young-vic-arthur-miller-b2931621.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "file": "independent--steve-fowler.json",
+      "publishDate": "2026-03-03",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/broken-glass-review-young-vic-arthur-miller-b2931621.html",
       "findings": [
         {
