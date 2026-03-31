@@ -499,7 +499,17 @@
     "to-kill-a-mockingbird-2018/broadwaynews--elizabeth-bradley.json",
     "the-cher-show-2018/broadwaynews--charles-isherwood.json",
     "the-cher-show-2018/broadway-blog--matthew-wexler.json",
-    "the-prom-2018/broadwaynews--elizabeth-bradley.json"
+    "the-prom-2018/broadwaynews--elizabeth-bradley.json",
+    "the-prom-2018/journal-inquirer--tim-leininger.json",
+    "the-new-one-2018/broadwaynews--elizabeth-bradley.json",
+    "king-kong-2018/broadwaynews--charles-isherwood.json",
+    "king-kong-2018/herald-sun--unknown.json",
+    "king-kong-2018/talkinbroadway--matthew-murray.json",
+    "american-son-2018/broadwaynews--charles-isherwood.json",
+    "torch-song-2018/broadwaynews--elizabeth-bradley.json",
+    "torch-song-2018/broadwaynews--matt-windman.json",
+    "torch-song-2018/wsj--terry-teachout.json",
+    "torch-song-2018/off-script-with-dan-dwyer--dan-dwyer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -795,7 +805,14 @@
       "data/review-texts/true-west-2019/broadwaynews--charles-isherwood.json",
       "data/review-texts/choir-boy-2019/broadwaynews--elizabeth-bradley.json",
       "data/review-texts/the-cher-show-2018/broadwaynews--charles-isherwood.json",
-      "data/review-texts/the-cher-show-2018/broadway-blog--matthew-wexler.json"
+      "data/review-texts/the-cher-show-2018/broadway-blog--matthew-wexler.json",
+      "data/review-texts/king-kong-2018/herald-sun--unknown.json",
+      "data/review-texts/king-kong-2018/talkinbroadway--matthew-murray.json",
+      "data/review-texts/american-son-2018/broadwaynews--charles-isherwood.json",
+      "data/review-texts/torch-song-2018/broadwaynews--elizabeth-bradley.json",
+      "data/review-texts/torch-song-2018/broadwaynews--matt-windman.json",
+      "data/review-texts/torch-song-2018/wsj--terry-teachout.json",
+      "data/review-texts/torch-song-2018/off-script-with-dan-dwyer--dan-dwyer.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -826,7 +843,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "the-prom-2018/broadwaynews--elizabeth-bradley.json",
+  "lastProcessed": "torch-song-2018/off-script-with-dan-dwyer--dan-dwyer.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -1109,6 +1126,35 @@
       "event": "bb-session",
       "session": "8e4bbfd9",
       "url": "https://broadway.news/2018/12/03/review-the-cher-show-offers-a-bumpy-ride-throug"
+    },
+    {
+      "t": "2026-03-30T23:59:54.484Z",
+      "event": "bb-session",
+      "session": "fa48d40c",
+      "url": "https://broadway.news/2018/11/04/review-american-son-takes-a-piercing-look-at-ou"
+    },
+    {
+      "t": "2026-03-30T23:59:57.892Z",
+      "event": "bb-session",
+      "session": "1c48535c",
+      "url": "https://broadway.news/2018/11/01/review-a-reincarnated-torch-song-blazes-with-ne"
+    },
+    {
+      "t": "2026-03-31T00:00:00.873Z",
+      "event": "bb-session",
+      "session": "f1e0519b",
+      "url": "https://broadway.news/2018/11/01/review-a-reincarnated-torch-song-blazes-with-ne"
+    },
+    {
+      "t": "2026-03-31T00:00:03.543Z",
+      "event": "bb-session",
+      "session": "92322129",
+      "url": "https://www.wsj.com/articles/torch-song-review-less-radical-still-funny-15411186"
+    },
+    {
+      "t": "2026-03-31T00:00:04.993Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
