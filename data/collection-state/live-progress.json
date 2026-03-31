@@ -1,41 +1,30 @@
 {
-  "updatedAt": "2026-03-31T08:55:20.050Z",
-  "processed": 18,
-  "failed": 13,
-  "successRate": "58.1%",
+  "updatedAt": "2026-03-31T09:05:53.394Z",
+  "processed": 8,
+  "failed": 2,
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 2
+    "archiveToday": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-03-31T08:49:25.146Z",
+      "t": "2026-03-31T09:04:04.178Z",
       "event": "bb-session",
-      "session": "659652ed",
+      "session": "4e6c644c",
       "url": "https://www.amny.com/news/titus-andronicus-theater-review-nyc/"
     },
     {
-      "t": "2026-03-31T08:49:26.520Z",
+      "t": "2026-03-31T09:04:05.189Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
-    },
-    {
-      "t": "2026-03-31T08:54:35.045Z",
-      "event": "bb-session",
-      "session": "3d765526",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-legend-lynn-nottage-liesl-"
-    },
-    {
-      "t": "2026-03-31T08:54:36.358Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
     }
   ]
 }
