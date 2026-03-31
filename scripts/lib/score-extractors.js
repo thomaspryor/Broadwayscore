@@ -168,6 +168,66 @@ function extractBWWScore(html, text) {
 }
 
 /**
+ * Extract score from London Box Office review
+ * Format: CSS class "bstarsN" where N is the star count (1-5)
+ * Pattern: <span class="bstars"><span class="bstars4"></span></span>
+ */
+function extractLBOScore(html, text) {
+  if (!html) return null;
+  // The FIRST bstarsN element is the review's rating (second may be a different review)
+  const match = html.match(/class="bstars(\d)"/);
+  if (match) {
+    const stars = parseInt(match[1]);
+    if (stars >= 1 && stars <= 5) {
+      return {
+        originalScore: `${stars}/5`,
+        normalizedScore: starsToNumeric(stars, 5),
+        source: 'lbo-css-stars',
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * Extract score from All That Dazzles review
+ * Format: Star emoji (⭐️ or ⭐) in meta content/description
+ * Pattern: content="⭐️⭐️⭐️⭐️⭐️ Review text..."
+ */
+function extractAllThatDazzlesScore(html, text) {
+  if (!html) return null;
+  // Look for star emoji in meta content (og:description or description)
+  const metaMatch = html.match(/content="([⭐️🌟★]{1,}[^"]{0,200})"/);
+  if (metaMatch) {
+    // Count star emoji — handle both ⭐️ (star + variation selector) and ⭐
+    const starStr = metaMatch[1];
+    const starCount = (starStr.match(/⭐️|⭐|🌟|★/g) || []).length;
+    if (starCount >= 1 && starCount <= 5) {
+      return {
+        originalScore: `${starCount}/5`,
+        normalizedScore: starsToNumeric(starCount, 5),
+        source: 'atd-emoji-stars',
+      };
+    }
+  }
+  // Also check article text for star emoji at the start
+  if (text) {
+    const textMatch = text.match(/^[⭐️🌟★\s]{2,}/);
+    if (textMatch) {
+      const starCount = (textMatch[0].match(/⭐️|⭐|🌟|★/g) || []).length;
+      if (starCount >= 1 && starCount <= 5) {
+        return {
+          originalScore: `${starCount}/5`,
+          normalizedScore: starsToNumeric(starCount, 5),
+          source: 'atd-emoji-stars',
+        };
+      }
+    }
+  }
+  return null;
+}
+
+/**
  * Extract score from Theatre Weekly review
  * Format: Image filename (e.g., "New-5star-350x71.png")
  * Title attribute: "Five Star Review from Theatre Weekly"
@@ -862,7 +922,10 @@ const OUTLET_EXTRACTORS = {
   'artsdesk': extractUKStarRating,
   'musical-theatre-review': extractUKStarRating,
   'london-theatre': extractUKStarRating,
-  'all-that-dazzles-uk': extractUKStarRating,
+  'all-that-dazzles-uk': extractAllThatDazzlesScore,
+  'all-that-dazzles': extractAllThatDazzlesScore,
+  'london-box-office': extractLBOScore,
+  'lbo': extractLBOScore,
   'everything-theatre': extractUKStarRating,
   'everything-theatre-uk': extractUKStarRating,
   'theatre-weekly': extractTheatreWeeklyScore,
@@ -1072,6 +1135,8 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'lbo-star-rating', 'express-star-count', 'standard-star-count', 'dailymail-star-count',
   'text-pattern-verified', 'bww-star-image',
   'theatre-weekly-star-image', 'radiotimes-page-json', 'radiotimes-svg-stars',
+  'lbo-css-stars', 'atd-emoji-stars',
+  'text-pattern', 'css-stars', 'word-stars', 'star-rating',
 ]);
 
 module.exports = {
@@ -1090,6 +1155,8 @@ module.exports = {
   extractBWWScore,
   extractTheatreWeeklyScore,
   extractRadioTimesScore,
+  extractLBOScore,
+  extractAllThatDazzlesScore,
   extractNYTCriticsPick,
   extractTheaterManiaMustSee,
   LETTER_GRADES,
