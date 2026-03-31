@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T04:25:13.292Z",
+  "timestamp": "2026-03-31T04:37:19.300Z",
   "stats": {
-    "totalReviews": 31955,
-    "alreadyFlagged": 11745,
+    "totalReviews": 31968,
+    "alreadyFlagged": 11779,
     "dateGuardCatches": 14,
-    "directorMismatch": 922,
-    "tvFilmSignals": 3301,
-    "londonSignals": 971,
+    "directorMismatch": 919,
+    "tvFilmSignals": 3306,
+    "londonSignals": 968,
     "offBroadwaySignals": 967,
     "yearMismatch": 64,
-    "noPublishDate": 5991
+    "noPublishDate": 5988
   },
   "findings": [
     {
@@ -11950,25 +11950,6 @@
       ]
     },
     {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "file": "thestage--alistair-smith.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "dear-evan-hansen-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 82,
@@ -13029,7 +13010,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "amny--matt-windman.json",
-      "score": 45,
+      "score": 48,
       "publishDate": "2026-03-30",
       "url": "https://www.amny.com/entertainment/review-dog-day-afternoon/",
       "findings": [
@@ -13037,6 +13018,104 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 65,
+      "publishDate": "2026-03-31",
+      "url": "https://www.chicagotribune.com/2026/03/30/review-dog-day-afternoon-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "ew--dalton-ross.json",
+      "score": 76,
+      "publishDate": "2026-03-31",
+      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173?srsltid=AfmBOoqmhO9gSQmcphyiCxftiIPAc9Ye8R2P3bv6dIx89oP0iFFGQM8f",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 67,
+      "publishDate": "2026-03-31",
+      "url": "https://www.nysun.com/article/dog-day-afternoon-unleashes-on-broadway-with-a-loud-contemporary-bark",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "nysr--roma-torre.json",
+      "score": 72,
+      "publishDate": "2026-03-31",
+      "url": "https://nystagereview.com/2026/03/31/dog-day-afternoon-more-punchlines-than-peril/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "theatrely--emily-wyrwa.json",
+      "score": 66,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "timeout--adam-feldman.json",
+      "score": 38,
+      "publishDate": "2026-03-31",
+      "url": "https://www.timeout.com/newyork/news/broadway-review-a-heist-and-a-play-go-wrong-in-dog-day-afternoon-033126",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"motion picture\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "variety--owen-gleiberman.json",
+      "score": 64,
+      "publishDate": "2026-03-31",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -29072,39 +29151,6 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "file": "nytimes--elisabeth-vincentelli.json",
-      "score": 76,
-      "publishDate": "2025-08-15",
-      "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "telegraph--marianka-swain.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/tickets/london/mamma-mia/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
       "file": "timeout--nina-caplan.json",
       "score": 78,
       "publishDate": "2025-10-01",
@@ -29994,20 +30040,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "nytimes--ben-brantley.json",
-      "score": 92,
-      "publishDate": "2013-04-12",
-      "url": "http://theater.nytimes.com/2013/04/12/theater/reviews/matilda-the-musical-at-shubert-theater.html?pagewanted=all&_r=2&",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
         }
       ]
     },
@@ -43732,20 +43764,6 @@
       "score": 38,
       "publishDate": "April 23, 2018",
       "url": "https://variety.com/2018/legit/reviews/summer-review-donna-summer-musical-broadway-1202782604/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "summerfolk-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 93,
-      "publishDate": "2026-03-18",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/summerfolk-olivier-national-theatre-review-fxg9sjknh",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -77091,20 +77109,6 @@
       "score": 71,
       "publishDate": "2026-03-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-HOLY-ROSENBERGS-Menier-Chocolate-Factory-20260309",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-holy-rosenbergs-west-end-2026",
-      "file": "london-theatre--matt-wolf.json",
-      "score": 83,
-      "publishDate": null,
-      "url": "https://www.londontheatre.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-factory",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
