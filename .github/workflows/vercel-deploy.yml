@@ -171,21 +171,11 @@ jobs:
           wait $PID3 || FAIL=1
           [ $FAIL -eq 0 ] && echo "Smoke test passed — production is live" || exit 1
 
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Content smoke test (Playwright)
-        run: |
-          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
-            npx playwright install chromium --with-deps > /dev/null 2>&1
-          else
-            npx playwright install-deps chromium > /dev/null 2>&1
-          fi
-          npx playwright test --project=chromium tests/e2e/smoke.spec.ts
+        run: npx playwright test --project=chromium tests/e2e/smoke.spec.ts
 
       - name: Dispatch async watermark update
         if: success()

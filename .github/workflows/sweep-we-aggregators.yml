@@ -65,8 +65,8 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      - name: Install Playwright Chromium
-        run: npx playwright install chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Refresh Stagedoor archives (BrowserBase)
         if: contains(inputs.aggregator || 'wet,tr,sd,ts', 'sd') && inputs.shows == ''

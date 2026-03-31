@@ -40,23 +40,31 @@ const showBySlug = {};
 shows.forEach(s => { showById[s.id] = s; if (s.slug) showBySlug[s.slug] = s; });
 
 const { isOfficialBroadwayTheater } = require('./lib/broadway-theaters');
+const { isLondonMarket } = require('./lib/venue-classification');
+
+// Pre-compute market classification per show (isOfficialBroadwayTheater is expensive — O(n) scan per call)
+const broadwayShowIds = new Set();
+const westEndShowIds = new Set();
+shows.forEach(s => {
+  if (s.category && s.category !== 'broadway') {
+    if (isLondonMarket(s.category)) westEndShowIds.add(s.id);
+  } else if (isOfficialBroadwayTheater(s.venue)) {
+    broadwayShowIds.add(s.id);
+  }
+});
 
 function isBroadway(show) {
-  if (!show) return false;
-  if (show.category && show.category !== 'broadway') return false;
-  return isOfficialBroadwayTheater(show.venue);
+  return show ? broadwayShowIds.has(show.id) : false;
 }
 
 function isWestEnd(show) {
-  if (!show) return false;
-  return isLondonMarket(show.category);
+  return show ? westEndShowIds.has(show.id) : false;
 }
 
 // ============================================
 // Outlet tier lookup — from outlet-registry.json (single source of truth)
 // ============================================
 const { getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
-const { isLondonMarket } = require('./lib/venue-classification');
 
 // Thresholds (must match src/config/gold-lists.ts)
 const THRESHOLDS = {
@@ -89,20 +97,24 @@ function getAllSeasons() {
 }
 
 // ============================================
+// Pre-compute reviews grouped by show (avoids re-iterating 14K+ reviews per season)
+// ============================================
+const reviewsByShow = {};
+Object.values(reviewsData.reviews).forEach(r => {
+  if (!r.showId || r.assignedScore == null) return;
+  if (!reviewsByShow[r.showId]) reviewsByShow[r.showId] = [];
+  reviewsByShow[r.showId].push(r);
+});
+
+// ============================================
 // Computation functions
 // ============================================
 
 function computeCriticalGold(season, uncapped = false) {
   const cfg = THRESHOLDS['critical-gold'];
-  const byShow = {};
-  Object.values(reviewsData.reviews).forEach(r => {
-    if (!r.showId || r.assignedScore == null) return;
-    if (!byShow[r.showId]) byShow[r.showId] = [];
-    byShow[r.showId].push(r);
-  });
 
   const results = [];
-  for (const [showId, revs] of Object.entries(byShow)) {
+  for (const [showId, revs] of Object.entries(reviewsByShow)) {
     const show = showById[showId];
     if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (revs.length < cfg.minReviews) continue;
@@ -243,15 +255,9 @@ function computeHotTicketGold(season, uncapped = false) {
 
 function computeCriticalGoldWestEnd(season, uncapped = false) {
   const cfg = THRESHOLDS['critical-gold-west-end'];
-  const byShow = {};
-  Object.values(reviewsData.reviews).forEach(r => {
-    if (!r.showId || r.assignedScore == null) return;
-    if (!byShow[r.showId]) byShow[r.showId] = [];
-    byShow[r.showId].push(r);
-  });
 
   const results = [];
-  for (const [showId, revs] of Object.entries(byShow)) {
+  for (const [showId, revs] of Object.entries(reviewsByShow)) {
     const show = showById[showId];
     if (!show || !isWestEnd(show) || getSeason(show.openingDate) !== season) continue;
     if (revs.length < cfg.minReviews) continue;

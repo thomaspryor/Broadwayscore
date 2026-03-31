@@ -123,8 +123,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright Chromium
-        run: npx playwright install chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Configure git
         run: |
@@ -135,8 +135,8 @@ jobs:
       - name: Stagger start
         run: sleep $(( ${{ matrix.shard }} * 30 ))
 
-      - name: Install Playwright
-        run: npx playwright install chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Run Show Score scraper (shard ${{ matrix.shard }})
         env:

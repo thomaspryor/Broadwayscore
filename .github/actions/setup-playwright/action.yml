@@ -1,0 +1,27 @@
+name: Setup Playwright
+description: Install Playwright browsers with caching. Saves ~15s per workflow run.
+
+inputs:
+  browsers:
+    description: 'Browsers to install (space-separated, e.g., "chromium" or "chromium webkit")'
+    required: false
+    default: 'chromium'
+
+runs:
+  using: composite
+  steps:
+    - name: Cache Playwright browsers
+      id: playwright-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ inputs.browsers }}-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+    - name: Install Playwright browsers
+      shell: bash
+      run: |
+        if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
+          npx playwright install ${{ inputs.browsers }} --with-deps > /dev/null 2>&1
+        else
+          npx playwright install-deps ${{ inputs.browsers }} > /dev/null 2>&1
+        fi

@@ -39,8 +39,8 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - uses: ./.github/actions/setup-node
 
-      - name: Install Playwright browsers
-        run: npx playwright install chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Check if update needed (for Wednesday retry)
         id: check

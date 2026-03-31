@@ -50,6 +50,7 @@ const {
   isProfileUrl,
   normalizeUrl,
   isRegisteredOutlet,
+  AGGREGATOR_SCORE_SOURCES,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
@@ -2396,9 +2397,18 @@ function createReviewFile(showId, reviewData, options = {}) {
     fullText: null,  // Never populate from excerpts — let collect-review-texts.js scrape real fullText
     isFullReview: false,
     dtliExcerpt: cleanText(reviewData.dtliExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null,
-    originalScore: reviewData.originalRating
-      ? parseRating(reviewData.originalRating, normalizedOutletId)
-      : (reviewData.score != null ? reviewData.score : null),
+    // AGGREGATOR SCORE GUARD: Never store aggregator-sourced scores as originalScore.
+    // Aggregator stars are third-party ratings, not the outlet's own score.
+    ...(() => {
+      const isAggregator = AGGREGATOR_SCORE_SOURCES.has(reviewData.scoreSource);
+      const parsedScore = reviewData.originalRating
+        ? parseRating(reviewData.originalRating, normalizedOutletId)
+        : (reviewData.score != null ? reviewData.score : null);
+      if (isAggregator) {
+        return { originalScore: null, aggregatorStars: parsedScore };
+      }
+      return { originalScore: parsedScore };
+    })(),
     scoreSource: reviewData.scoreSource || null,
     assignedScore: null,
     source: reviewData.source || 'gather-reviews',

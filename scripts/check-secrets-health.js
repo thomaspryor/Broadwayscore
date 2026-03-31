@@ -47,6 +47,30 @@ function httpsGet(url, headers = {}) {
   });
 }
 
+function httpsPost(url, body, headers = {}) {
+  return new Promise((resolve) => {
+    const parsed = new URL(url);
+    const options = {
+      hostname: parsed.hostname,
+      path: parsed.pathname + parsed.search,
+      method: 'POST',
+      headers: { ...headers, 'Content-Length': Buffer.byteLength(body) },
+      timeout: 15000,
+    };
+
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => data += chunk);
+      res.on('end', () => resolve({ status: res.statusCode, body: data, headers: res.headers }));
+    });
+
+    req.on('error', (err) => resolve({ status: 0, body: err.message, headers: {} }));
+    req.on('timeout', () => { req.destroy(); resolve({ status: 0, body: 'timeout', headers: {} }); });
+    req.write(body);
+    req.end();
+  });
+}
+
 // --- Checks ---
 
 async function checkAnthropic() {
@@ -147,11 +171,48 @@ async function checkScrapingBee() {
   return { name: 'ScrapingBee', status: 'warn', message: `Unexpected status ${res.status}` };
 }
 
+async function createNewBrightDataZone(token, oldZoneName) {
+  // Generate new zone name: web_unlocker_{n+1}
+  const match = oldZoneName.match(/(\d+)$/);
+  const nextNum = match ? parseInt(match[1]) + 1 : 2;
+  const newZone = `web_unlocker${nextNum}`;
+
+  const body = JSON.stringify({ zone: { name: newZone }, plan: { type: 'unblocker', product: 'unblocker' } });
+  const res = await httpsPost('https://api.brightdata.com/zone', body, {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  });
+
+  if (res.status >= 200 && res.status < 300) {
+    return newZone;
+  }
+  // If duplicate name, try with timestamp suffix
+  if (res.body && res.body.includes('Duplicate')) {
+    const tsZone = `web_unlocker_${Date.now().toString(36)}`;
+    const res2 = await httpsPost('https://api.brightdata.com/zone', JSON.stringify({
+      zone: { name: tsZone }, plan: { type: 'unblocker', product: 'unblocker' }
+    }), { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' });
+    if (res2.status >= 200 && res2.status < 300) return tsZone;
+  }
+  return null;
+}
+
+async function updateGitHubSecret(secretName, value) {
+  const { execSync } = require('child_process');
+  try {
+    execSync(`gh secret set ${secretName} --body "${value}"`, { stdio: 'pipe', timeout: 15000 });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function checkBrightData() {
   const token = process.env.BRIGHTDATA_TOKEN;
   if (!token) return { name: 'Bright Data', status: 'skip', message: 'Token not set' };
 
-  const res = await httpsGet('https://api.brightdata.com/zone?zone=mcp_unlocker', {
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const res = await httpsGet(`https://api.brightdata.com/zone?zone=${zoneName}`, {
     'Authorization': `Bearer ${token}`,
   });
 
@@ -164,10 +225,21 @@ async function checkBrightData() {
 
   try {
     const data = JSON.parse(res.body);
-    if (data.disable) {
-      return { name: 'Bright Data', status: 'fail', message: `mcp_unlocker zone disabled: "${data.disable}" — fix via UI before opening night` };
+    const disableReason = data.plan?.disable || data.disable;
+    if (disableReason) {
+      // Auto-recover: create a new zone and update GitHub secret
+      console.log(`  ⚠ Zone ${zoneName} disabled: "${disableReason}" — attempting auto-recovery...`);
+      const newZone = await createNewBrightDataZone(token, zoneName);
+      if (newZone) {
+        const secretUpdated = await updateGitHubSecret('BRIGHTDATA_ZONE', newZone);
+        if (secretUpdated) {
+          return { name: 'Bright Data', status: 'pass', message: `Zone ${zoneName} was disabled (${disableReason}). Auto-recovered: created ${newZone} and updated BRIGHTDATA_ZONE secret` };
+        }
+        return { name: 'Bright Data', status: 'warn', message: `Created new zone ${newZone} but failed to update GitHub secret — manually set BRIGHTDATA_ZONE=${newZone}` };
+      }
+      return { name: 'Bright Data', status: 'fail', message: `Zone ${zoneName} disabled: "${disableReason}" — auto-recovery failed, create new zone manually at brightdata.com` };
     }
-    return { name: 'Bright Data', status: 'pass', message: 'mcp_unlocker zone active' };
+    return { name: 'Bright Data', status: 'pass', message: `${zoneName} zone active` };
   } catch {
     return { name: 'Bright Data', status: 'warn', message: 'Zone response unparseable' };
   }
