@@ -123,6 +123,29 @@ export default function CheapBroadwayTicketsGuide() {
           </p>
         </div>
 
+        {/* Price Benchmarks */}
+        <div className="card p-4 sm:p-5 mb-8 bg-surface-overlay">
+          <h2 className="font-bold text-white text-sm uppercase tracking-wide mb-3">What Broadway Tickets Actually Cost</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-sm">
+            <div>
+              <div className="text-2xl font-bold text-red-400">$250+</div>
+              <div className="text-gray-400">Premium seats</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-yellow-400">~$180</div>
+              <div className="text-gray-400">Avg. orchestra</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-blue-400">~$100</div>
+              <div className="text-gray-400">Discount codes</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-emerald-400">$30-60</div>
+              <div className="text-gray-400">Lottery / Rush</div>
+            </div>
+          </div>
+        </div>
+
         {/* Table of Contents */}
         <div className="card p-4 sm:p-5 mb-8">
           <h2 className="font-bold text-white text-sm uppercase tracking-wide mb-3">Jump to Section</h2>
@@ -132,6 +155,9 @@ export default function CheapBroadwayTicketsGuide() {
             <li><a href="#tkts" className="text-brand hover:text-brand-hover">TKTS Booth (20-50% off)</a></li>
             <li><a href="#standing-room" className="text-brand hover:text-brand-hover">Standing Room ($30-40)</a></li>
             <li><a href="#discount-codes" className="text-brand hover:text-brand-hover">Discount Codes & Apps</a></li>
+            <li><a href="#official-vendors" className="text-brand hover:text-brand-hover">Know Your Official Vendor</a></li>
+            <li><a href="#insider-tips" className="text-brand hover:text-brand-hover">Insider Tips</a></li>
+            <li><a href="#seasonal" className="text-brand hover:text-brand-hover">Seasonal Deals</a></li>
             <li><a href="#shows" className="text-brand hover:text-brand-hover">Shows with Discount Programs</a></li>
           </ul>
         </div>
@@ -161,7 +187,7 @@ export default function CheapBroadwayTicketsGuide() {
               <h3 className="font-bold text-emerald-400 mb-2">💡 Pro Tips</h3>
               <ul className="text-gray-300 space-y-1 text-sm">
                 <li>• Enter multiple lotteries daily to increase your chances</li>
-                <li>• Weekday matinees have better odds than Saturday nights</li>
+                <li>• Wednesday matinees typically have the best odds (lowest demand)</li>
                 <li>• Some shows allow entering for 1 or 2 tickets—requesting 1 may improve odds</li>
                 <li>• Set calendar reminders so you don&apos;t forget to enter</li>
                 <li>• Currently <strong className="text-white">{lotteryShowCount} shows</strong> offer digital lotteries</li>
@@ -252,7 +278,9 @@ export default function CheapBroadwayTicketsGuide() {
                 <li>• Download the <a href="https://www.tdf.org/nyc/81/TKTS-Background" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-hover">TKTS app</a> to see what&apos;s available before you line up</li>
                 <li>• Arrive right when it opens or after 7pm for shorter waits</li>
                 <li>• Hit shows like Hamilton and Wicked rarely appear—focus on newer productions</li>
-                <li>• Lincoln Center location often has the same shows with shorter lines</li>
+                <li>• Lincoln Center location often has the same shows with much shorter lines</li>
+                <li>• <strong className="text-white">TKTS Fast Pass:</strong> Buy a ticket, then return within 7 days with your stub to skip the line entirely</li>
+                <li>• You can buy next-day matinee tickets at TKTS (not just same-day)</li>
                 <li>• Accepts credit cards but charges a $6 service fee per ticket</li>
               </ul>
             </div>
@@ -305,7 +333,8 @@ export default function CheapBroadwayTicketsGuide() {
                 <h3 className="font-bold text-white mb-2">TodayTix</h3>
                 <p className="text-gray-300 text-sm mb-2">
                   The essential Broadway app. Hosts most digital lotteries, plus flash sales and last-minute discounts.
-                  Free to download—just create an account.
+                  Free to download—just create an account. TodayTix is <strong className="text-white">not a reseller</strong>—tickets
+                  come directly from the venues, so you&apos;re getting legitimate, face-value tickets.
                 </p>
                 <a href="https://www.todaytix.com" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-hover text-sm">
                   Download TodayTix →
@@ -315,8 +344,11 @@ export default function CheapBroadwayTicketsGuide() {
               <div className="card p-4 sm:p-5">
                 <h3 className="font-bold text-white mb-2">Playbill Discounts</h3>
                 <p className="text-gray-300 text-sm mb-2">
-                  Playbill.com maintains a list of current Broadway discount codes.
-                  Shows like Wicked sometimes offer codes for specific performances.
+                  Playbill.com maintains a list of current Broadway discount codes (typically 10-50% off, averaging ~25%).
+                  Codes can be redeemed online, by phone, or at the box office.
+                </p>
+                <p className="text-emerald-400 text-xs mb-2">
+                  💡 Redeem codes at the box office to skip the ~$14/ticket online service fee—you&apos;ll only pay a $2-3 facility charge.
                 </p>
                 <a href="https://www.playbill.com/discounts" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-hover text-sm">
                   Browse Playbill Discounts →
@@ -336,6 +368,169 @@ export default function CheapBroadwayTicketsGuide() {
                 <p className="text-gray-300 text-sm">
                   Members of AAA, AARP, unions, and some credit cards get access to exclusive Broadway discounts.
                   Check your membership benefits before buying full price.
+                </p>
+              </div>
+
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Theatr</h3>
+                <p className="text-gray-300 text-sm">
+                  A peer-to-peer ticket resale app specifically for theatergoers. If someone can&apos;t make a show,
+                  they sell directly to another audience member—often at or below face value. Worth checking for
+                  sold-out performances.
+                </p>
+              </div>
+
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">TDF Membership</h3>
+                <p className="text-gray-300 text-sm">
+                  If you&apos;re a student, educator, non-profit employee, retiree, or theatre professional, TDF membership ($42/year)
+                  gets you tickets for $11-62.50 with minimal handling fees. Seats are assigned by the box office.
+                </p>
+              </div>
+
+              <div className="card p-4 sm:p-5 border border-red-500/20 bg-red-500/5">
+                <h3 className="font-bold text-red-400 mb-2">Avoid: Resale Sites & Craigslist</h3>
+                <p className="text-gray-300 text-sm">
+                  Secondary market sites (StubHub, SeatGeek, VividSeats) often charge well above face value.
+                  Craigslist carries a real risk of counterfeit tickets with no recourse. Always buy through
+                  official channels, TodayTix, or TKTS first.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Official Vendors Section */}
+        <section id="official-vendors" className="mb-10">
+          <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+            <span className="text-2xl">🏛️</span> Know Your Official Vendor
+          </h2>
+          <div className="prose prose-invert max-w-none">
+            <p className="text-gray-300 leading-relaxed mb-4">
+              Every Broadway theatre has one official ticketing vendor. Buying direct from the official vendor
+              means the lowest fees and no risk of inflated resale prices. Here&apos;s who sells what:
+            </p>
+
+            <div className="space-y-4">
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Telecharge <span className="text-gray-500 font-normal text-sm">(20 theatres)</span></h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  The official vendor for all Shubert Organization theatres, the largest group on Broadway.
+                </p>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Ambassador, Belasco, Booth, Broadhurst, Broadway, Circle in the Square, Ethel Barrymore,
+                  Gerald Schoenfeld, Imperial, James Earl Jones, John Golden, Longacre, Lyceum, Majestic,
+                  Music Box, Samuel J. Friedman, Shubert, Vivian Beaumont, Winter Garden, Bernard B. Jacobs
+                </p>
+              </div>
+
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Broadway Direct <span className="text-gray-500 font-normal text-sm">(10 theatres)</span></h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  The official vendor for Nederlander Organization theatres (powered by Ticketmaster).
+                </p>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Gershwin, Lena Horne, Lunt-Fontanne, Marquis, Minskoff, Nederlander, Neil Simon,
+                  New Amsterdam, Palace, Richard Rodgers
+                </p>
+              </div>
+
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">ATG Tickets <span className="text-gray-500 font-normal text-sm">(7 theatres)</span></h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  The official vendor for Jujamcyn theatres.
+                </p>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Al Hirschfeld, August Wilson, Eugene O&apos;Neill, Hudson, Lyric, St. James, Walter Kerr
+                </p>
+              </div>
+
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Other Theatres</h3>
+                <p className="text-gray-300 text-sm">
+                  <strong className="text-white">Roundabout Theatre Company:</strong> Studio 54, Todd Haimes Theatre, Stephen Sondheim Theatre<br/>
+                  <strong className="text-white">Second Stage:</strong> Helen Hayes Theater
+                </p>
+              </div>
+            </div>
+
+            <div className="card p-4 sm:p-5 bg-emerald-500/10 border border-emerald-500/20 mt-4">
+              <h3 className="font-bold text-emerald-400 mb-2">💡 Why This Matters</h3>
+              <p className="text-gray-300 text-sm">
+                When you search for Broadway tickets online, ads for resale sites often appear above the official vendor.
+                Knowing the right vendor for each theatre helps you avoid paying a markup. Playbill.com links always go
+                to the official vendor—it&apos;s a reliable shortcut.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Insider Tips Section */}
+        <section id="insider-tips" className="mb-10">
+          <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+            <span className="text-2xl">🎯</span> Insider Tips
+          </h2>
+          <div className="prose prose-invert max-w-none space-y-4">
+            <div className="card p-4 sm:p-5">
+              <h3 className="font-bold text-white mb-2">House Seat Releases</h3>
+              <p className="text-gray-300 text-sm">
+                Every show holds back &quot;house seats&quot;—prime orchestra seats reserved for producers, cast, and VIPs.
+                Unsold house seats are released to the general public <strong className="text-white">1-3 days before the performance,
+                typically after 5 PM</strong>. This is how &quot;sold out&quot; shows suddenly have excellent seats available.
+                Check the official vendor in the evening a few days before your target date.
+              </p>
+            </div>
+
+            <div className="card p-4 sm:p-5">
+              <h3 className="font-bold text-white mb-2">The Cancellation Line</h3>
+              <p className="text-gray-300 text-sm">
+                A Broadway show isn&apos;t officially sold out until 5 minutes before curtain. People cancel,
+                house seats go unreleased, comps get returned. If you&apos;re willing to wait in the cancellation
+                line at the box office, you can sometimes get last-minute seats to the hottest shows at face value.
+              </p>
+            </div>
+
+            <div className="card p-4 sm:p-5">
+              <h3 className="font-bold text-white mb-2">Dynamic Pricing Drops</h3>
+              <p className="text-gray-300 text-sm">
+                Premium tickets ($250+) that haven&apos;t sold may drop in price as the performance date
+                approaches. The risk: waiting too long means the seat may sell to someone else. Best for
+                midweek performances of shows that aren&apos;t at 100% capacity.
+              </p>
+            </div>
+
+            <div className="card p-4 sm:p-5">
+              <h3 className="font-bold text-white mb-2">Non-Profit Theatre Programs</h3>
+              <p className="text-gray-300 text-sm">
+                Lincoln Center Theater, Roundabout, Manhattan Theatre Club, and Second Stage are all non-profits.
+                They offer deeply discounted tickets ($30 range) for students, under-30/35, and members.
+                If you&apos;re eligible, these are some of the best deals on Broadway.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Seasonal Deals Section */}
+        <section id="seasonal" className="mb-10">
+          <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+            <span className="text-2xl">📅</span> Seasonal Deals
+          </h2>
+          <div className="prose prose-invert max-w-none">
+            <div className="space-y-4">
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">NYC Broadway Week <span className="text-gray-500 font-normal text-sm">(January & September)</span></h3>
+                <p className="text-gray-300 text-sm">
+                  Two-for-one tickets to dozens of shows, run twice a year (mid-January and early September).
+                  Participating shows vary, but it typically includes both long-running hits and newer productions.
+                  Tickets go fast—mark your calendar.
+                </p>
+              </div>
+
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Kids&apos; Night on Broadway <span className="text-gray-500 font-normal text-sm">(February)</span></h3>
+                <p className="text-gray-300 text-sm">
+                  One free ticket for a child (under 18) with each full-price adult ticket. Runs in late February.
+                  Great for family-friendly shows like The Lion King, Aladdin, and Wicked.
                 </p>
               </div>
             </div>

@@ -44,6 +44,7 @@ export interface TicketLink {
   platform: string;     // TodayTix, Telecharge, Official, etc.
   url: string;
   priceFrom?: number;   // Starting price in dollars
+  isOfficial?: boolean; // True = official box office vendor (lowest fees). See theatre-vendor mapping.
 }
 
 export interface CreativeMember {
