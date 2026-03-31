@@ -1009,7 +1009,17 @@
     "death-of-a-salesman-2012/northjerseycom--robert-feldberg.json",
     "wit-2012/ap--mark-kennedy.json",
     "wit-2012/backstage--david-sheward.json",
-    "the-road-to-mecca-2012/ew--melissa-rose-bernardo.json"
+    "the-road-to-mecca-2012/ew--melissa-rose-bernardo.json",
+    "the-road-to-mecca-2012/northjerseycom--robert-feldberg.json",
+    "the-road-to-mecca-2012/village-voice--michael-musto.json",
+    "the-road-to-mecca-2012/theatermania--david-rooney.json",
+    "the-road-to-mecca-2012/backstage--erik-haagensen.json",
+    "lysistrata-jones-2011/ap--mark-kennedy.json",
+    "lysistrata-jones-2011/northjerseycom--robert-feldberg.json",
+    "lysistrata-jones-2011/backstage--david-sheward.json",
+    "on-a-clear-day-you-can-see-forever-2011/ap--mark-kennedy.json",
+    "on-a-clear-day-you-can-see-forever-2011/philadelphia-inquirer--howard-shapiro.json",
+    "on-a-clear-day-you-can-see-forever-2011/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1525,7 +1535,10 @@
       "data/review-texts/end-of-the-rainbow-2012/washpost--peter-marks.json",
       "data/review-texts/end-of-the-rainbow-2012/theatermania--adam-feldman.json",
       "data/review-texts/death-of-a-salesman-2012/usatoday--elysa-gardner.json",
-      "data/review-texts/death-of-a-salesman-2012/theatermania--david-finkle.json"
+      "data/review-texts/death-of-a-salesman-2012/theatermania--david-finkle.json",
+      "data/review-texts/the-road-to-mecca-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-road-to-mecca-2012/theatermania--david-rooney.json",
+      "data/review-texts/lysistrata-jones-2011/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1576,7 +1589,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "the-road-to-mecca-2012/ew--melissa-rose-bernardo.json",
+  "lastProcessed": "on-a-clear-day-you-can-see-forever-2011/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -1974,6 +1987,28 @@
       "t": "2026-03-31T19:49:29.271Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-03-31T19:51:18.580Z",
+      "event": "bb-session",
+      "session": "35262419",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/137548378_Tale_of_isolati"
+    },
+    {
+      "t": "2026-03-31T19:51:20.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T19:55:49.489Z",
+      "event": "bb-session",
+      "session": "26317ad2",
+      "url": "https://www.northjersey.com/arts_entertainment/135641313_Greek_play_s_Broadway_u"
+    },
+    {
+      "t": "2026-03-31T19:55:50.641Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
