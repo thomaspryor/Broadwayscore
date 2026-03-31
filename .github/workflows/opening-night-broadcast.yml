@@ -250,6 +250,7 @@ jobs:
           FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
           FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID }}
           FORMSPREE_WESTEND_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           # BUTTONDOWN_API_KEY intentionally omitted — Buttondown sync is manual only.
           # Automated sync hammers the 100/day API limit. Run sync-followers.js locally when needed.
         run: node scripts/sync-followers.js

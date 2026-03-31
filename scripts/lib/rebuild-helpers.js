@@ -386,16 +386,28 @@ function getBestScore(data, opts = {}) {
       if (parsed !== null) {
         const llm = data.llmScore && data.llmScore.score;
         const llmConf = data.llmScore && data.llmScore.confidence;
+        // LOW reliability = automated CSS/generic extraction that often reads wrong elements.
+        // LLM can override these. Everything else (json-ld, verified star images, letter
+        // grades, unicode stars) is the critic's own published rating — never override.
+        const LOW_RELIABILITY_EXTRACTION = new Set([
+          'css-stars', 'star-class', 'css-rating', 'star-rating',
+          'text-pattern', 'og-description', 'wp-api-title',
+          'numeric-stars',    // Generic "X/5" pattern — false positives from pagination, dates, URLs
+          'lbo-css-stars',    // CSS class extraction — sometimes reads wrong element on page
+        ]);
+        const isHighReliability = !LOW_RELIABILITY_EXTRACTION.has(data.scoreSource);
         if (llm && llmConf !== 'low' && Math.abs(parsed - llm) > 25) {
           const parsedBucket = parsed >= 70 ? 'positive' : parsed <= 40 ? 'negative' : 'mixed';
           const llmBucket = llm >= 70 ? 'positive' : llm <= 40 ? 'negative' : 'mixed';
           if (parsedBucket !== llmBucket) {
             flagForHumanReview(data, 'originalScore-llm-conflict',
-              `originalScore "${data.originalScore}" (=${parsed}, bucket=${parsedBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})`);
-            // When high-confidence LLM with real text disagrees on bucket,
-            // the star extraction is likely wrong (regex matched wrong element,
-            // aggregator misattributed rating, etc.). Prefer LLM in this case.
-            if (llmConf === 'high') {
+              `originalScore "${data.originalScore}" (=${parsed}, bucket=${parsedBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})` +
+              (isHighReliability ? ` [HIGH-reliability: ${data.scoreSource} — kept]` : ' [LOW-reliability — LLM override]'));
+            // Only let LLM override LOW-reliability extractions (css-stars reading
+            // wrong element, generic pattern matches). HIGH-reliability sources
+            // (json-ld, verified star images, letter grades) are the critic's own
+            // published rating and must be kept.
+            if (llmConf === 'high' && !isHighReliability) {
               inc('originalScoreOverriddenByLLM');
               return { score: llm, source: 'llmScore-override-star-conflict' };
             }
@@ -518,6 +530,16 @@ function getBestScore(data, opts = {}) {
   // P5.5: bwwScore fallback
   if (data.bwwScore != null && data.bwwScore >= 1 && data.bwwScore <= 10) {
     return { score: data.bwwScore * 10, source: 'bwwScore-fallback' };
+  }
+
+  // P5.7: aggregatorStars fallback — third-party star ratings from aggregator sites.
+  // Lower priority than LLM/outlet-verified but keeps review in the dataset.
+  if (data.aggregatorStars) {
+    const parsed = parseOriginalScore(data.aggregatorStars, data.outletId);
+    if (parsed !== null) {
+      inc('aggregatorStarsFallback');
+      return { score: parsed, source: 'aggregatorStars-fallback' };
+    }
   }
 
   // P6: Thumb mappings
