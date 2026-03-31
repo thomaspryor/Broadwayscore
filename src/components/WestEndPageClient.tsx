@@ -23,6 +23,8 @@ export interface WestEndShow {
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   isOffWestEnd?: boolean;
+  tags?: string[];
+  ageRecommendation?: string;
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
@@ -237,6 +239,53 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime());
   }, [shows]);
 
+  const bestOffWestEnd = useMemo(() => {
+    return shows
+      .filter(show => show.isOffWestEnd && show.status === 'open' && show.criticScore?.score && weHasEnoughReviews(show))
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
+  const olivierWinners = useMemo(() => {
+    return shows
+      .filter(show => show.status === 'open' && show.tags?.includes('olivier-winner') && show.criticScore?.score && weHasEnoughReviews(show))
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
+  const upcomingShows = useMemo(() => {
+    return shows
+      .filter(show => show.status === 'upcoming' || show.status === 'previews')
+      .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime());
+  }, [shows]);
+
+  const kidsShows = useMemo(() => {
+    return shows
+      .filter(show => {
+        if (show.status !== 'open') return false;
+        const tags = show.tags?.map(t => t.toLowerCase()) || [];
+        const ageRec = show.ageRecommendation?.toLowerCase() || '';
+        // Exclude ages 10+ (not truly kid-friendly)
+        if (ageRec.match(/ages\s*(1[0-9]|[2-9]\d)\+?/)) return false;
+        return tags.includes('family') || ageRec.includes('ages 5') || ageRec.includes('ages 6') || ageRec.includes('ages 7') || ageRec.includes('ages 8') || ageRec.includes('all ages');
+      })
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
+  const dateNightShows = useMemo(() => {
+    return shows
+      .filter(show => {
+        if (show.status !== 'open') return false;
+        const tags = show.tags?.map(t => t.toLowerCase()) || [];
+        return tags.includes('romantic');
+      })
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
+  const jukeboxMusicals = useMemo(() => {
+    return shows
+      .filter(show => show.status === 'open' && show.tags?.includes('jukebox'))
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
   const filteredAndSortedShows = useMemo(() => {
     // fuseResults is null while Fuse.js loads — fall through to normal filtering (avoids empty flash)
     if (searchQuery && fuseResults !== null) {
@@ -337,6 +386,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
           </div>
         </section>
       )}
+
+      {/* Top Plays - Featured Shelf */}
+      <FeaturedRow title="Top Plays" shows={topPlays} />
 
       {/* Search */}
       <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
@@ -513,7 +565,12 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 
       {/* Featured Rows */}
       <div className="mt-8 pt-8 border-t border-white/5">
-        <FeaturedRow title="Top Plays" shows={topPlays} />
+        <FeaturedRow title="Best Off-West End" shows={bestOffWestEnd} />
+        <FeaturedRow title="Olivier Award Winning Shows" shows={olivierWinners} />
+        <FeaturedRow title="Upcoming" shows={upcomingShows} />
+        <FeaturedRow title="Great for Kids" shows={kidsShows} />
+        <FeaturedRow title="Perfect for Date Night" shows={dateNightShows} />
+        <FeaturedRow title="Jukebox Musicals" shows={jukeboxMusicals} />
         <FeaturedRow title="Closing Soon" shows={closingSoonShows} />
       </div>
 
