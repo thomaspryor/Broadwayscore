@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-03-30T08:20:38.974Z",
+  "lastRun": "2026-03-31T08:06:37.786Z",
   "consecutiveErrorDays": 0,
   "results": [
     {
@@ -10,12 +10,12 @@
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "23h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -25,22 +25,22 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "21h old"
     },
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (0h old, workflow 4h ago)"
+      "message": "Data synced (23h old, workflow 23h ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -54,8 +54,8 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Reviews dropped: 17045 vs baseline 17068"
+      "status": "pass",
+      "message": "2416 shows, 141 open, 16840 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -65,32 +65,32 @@
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 4h ago"
+      "message": "Last success 23h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 3h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "warn",
-      "message": "Last success 38d ago (threshold: 10d)"
+      "message": "Last success 39d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "warn",
-      "message": "Last success 15d ago (threshold: 10d)"
+      "message": "Last success 16d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 5h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "99.2% scored (17045/17184)"
+      "message": "99.5% scored (16840/16928)"
     },
     {
       "name": "Cookies: expiration",
@@ -100,17 +100,17 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (23h ago)"
+      "message": "All metrics within thresholds (2d ago)"
     },
     {
       "name": "SEO: health",
       "status": "pass",
-      "message": "Healthy (8d ago)"
+      "message": "Healthy (9d ago)"
     },
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "4h ago, success"
+      "message": "23h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
@@ -120,12 +120,12 @@
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "3h ago, "
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -140,13 +140,13 @@
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (9h ago)"
+      "message": "Last check passed (18h ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "666k credits left (28%) · renews Apr 25 (burn rate unavailable — <5 days into cycle)"
+      "message": "602k credits left (26%) · 334k/day burn · exhausts in ~2d (renews Apr 25)"
     }
   ],
-  "lastCleanStreak": 2
+  "lastCleanStreak": 3
 }
