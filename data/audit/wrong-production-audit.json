@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-31T03:39:37.963Z",
+  "timestamp": "2026-03-31T03:51:09.172Z",
   "stats": {
-    "totalReviews": 31959,
-    "alreadyFlagged": 11684,
+    "totalReviews": 31943,
+    "alreadyFlagged": 11679,
     "dateGuardCatches": 14,
     "directorMismatch": 928,
     "tvFilmSignals": 3304,
-    "londonSignals": 980,
+    "londonSignals": 979,
     "offBroadwaySignals": 969,
     "yearMismatch": 64,
-    "noPublishDate": 6040
+    "noPublishDate": 6034
   },
   "findings": [
     {
@@ -60555,20 +60555,6 @@
       "score": 92,
       "publishDate": "2025-11-23",
       "url": "https://everything-theatre.co.uk/2025/11/review-all-my-sons-wyndhams-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
-      "file": "guardian--arifa-akbar.json",
-      "score": 94,
-      "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2025/nov/22/all-my-sons-review-bryan-cranston-marianne-jean-baptiste-paapa-essiedu-wyndhams-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
