@@ -1029,7 +1029,17 @@
     "seminar-2011/newyorker--john-lahr.json",
     "seminar-2011/theatermania--david-finkle.json",
     "seminar-2011/backstage--david-sheward.json",
-    "private-lives-2011/ap--mark-kennedy.json"
+    "private-lives-2011/ap--mark-kennedy.json",
+    "private-lives-2011/theatermania--david-finkle.json",
+    "private-lives-2011/backstage--erik-haagensen.json",
+    "private-lives-2011/talkinbroadway--matthew-murray.json",
+    "venus-in-fur-2011/ap--mark-kennedy.json",
+    "venus-in-fur-2011/northjerseycom--robert-feldberg.json",
+    "venus-in-fur-2011/new-jersey-newsroom--michael-sommers.json",
+    "godspell-2011/usatoday--elysa-gardner.json",
+    "godspell-2011/backstage--david-sheward.json",
+    "other-desert-cities-2011/ap--mark-kennedy.json",
+    "other-desert-cities-2011/latimes--charles-mcnulty-bway.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1554,7 +1564,12 @@
       "data/review-texts/stick-fly-2011/latimes--charles-mcnulty-bway.json",
       "data/review-texts/bonnie-and-clyde-2011/ap--mark-kennedy.json",
       "data/review-texts/seminar-2011/ew--lisa-schwarzbaum.json",
-      "data/review-texts/seminar-2011/theatermania--david-finkle.json"
+      "data/review-texts/seminar-2011/theatermania--david-finkle.json",
+      "data/review-texts/private-lives-2011/theatermania--david-finkle.json",
+      "data/review-texts/private-lives-2011/talkinbroadway--matthew-murray.json",
+      "data/review-texts/venus-in-fur-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/godspell-2011/usatoday--elysa-gardner.json",
+      "data/review-texts/other-desert-cities-2011/latimes--charles-mcnulty-bway.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1605,7 +1620,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "private-lives-2011/ap--mark-kennedy.json",
+  "lastProcessed": "other-desert-cities-2011/latimes--charles-mcnulty-bway.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -2023,6 +2038,17 @@
     },
     {
       "t": "2026-03-31T19:55:50.641Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T20:06:30.931Z",
+      "event": "bb-session",
+      "session": "7e7af2e8",
+      "url": "https://www.northjersey.com/arts_entertainment/133513823_Mars_and_Venus_collide_"
+    },
+    {
+      "t": "2026-03-31T20:06:32.032Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
