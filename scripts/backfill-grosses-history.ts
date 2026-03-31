@@ -59,8 +59,10 @@ function loadShows(): Map<string, string> {
   const showMap = new Map<string, string>();
 
   // data.shows is an object keyed by index, not an array
+  // Playbill only covers Broadway — skip West End, Off-Broadway, Off-West-End
   for (const show of Object.values(data.shows) as any[]) {
     if (!show.slug || !show.title) continue;
+    if (show.id?.includes('west-end') || show.id?.includes('off-broadway') || show.id?.includes('off-west-end')) continue;
     showMap.set(show.slug, show.slug);
     showMap.set(normalizeTitle(show.title), show.slug);
     const titleSlug = createSlug(show.title);
