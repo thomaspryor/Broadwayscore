@@ -207,7 +207,9 @@
     "sweat-2017/reading-eagle--matt-windman.json",
     "the-price-2017/dailybeast--chris-jones.json",
     "the-price-2017/huffpost--stephen-suskin.json",
-    "the-price-2017/thestage--chris-jones.json"
+    "the-price-2017/thestage--chris-jones.json",
+    "in-transit-2016/dctheatrescene--jonathan-mandell.json",
+    "in-transit-2016/dctheatrescene--lorraine-treanor.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -319,7 +321,15 @@
     "sweat-2017/axscom--kyle-osborne.json",
     "the-price-2017/theater-news-online--brian-scott-lipton.json",
     "come-from-away-2017/newyorker--hilton-als.json",
-    "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json"
+    "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
+    "come-from-away-2017/usatoday--elysa-gardner.json",
+    "the-glass-menagerie-2017/ap--unknown.json",
+    "significant-other-2017/out-magazine--michael-musto.json",
+    "sunday-in-the-park-with-george-2017/out-magazine--michael-musto.json",
+    "the-present-2017/thestage--unknown.json",
+    "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -468,7 +478,9 @@
       "latin-history-for-morons-2017/stage-left--william-wolf.json",
       "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
       "sweat-2017/reading-eagle--matt-windman.json",
-      "the-price-2017/huffpost--stephen-suskin.json"
+      "the-price-2017/huffpost--stephen-suskin.json",
+      "in-transit-2016/dctheatrescene--jonathan-mandell.json",
+      "in-transit-2016/dctheatrescene--lorraine-treanor.json"
     ],
     "amp": [],
     "browserbase": [
@@ -523,7 +535,9 @@
       "data/review-texts/bernhardthamlet-2018/newnownextcom--michael-musto.json",
       "data/review-texts/spongebob-squarepants-2017/wsj--edward-rothstein.json",
       "data/review-texts/the-bands-visit-2017/gay-city-news--christopher-byrne.json",
-      "data/review-texts/prince-of-broadway-2017/vulture--jesse-green.json"
+      "data/review-texts/prince-of-broadway-2017/vulture--jesse-green.json",
+      "data/review-texts/come-from-away-2017/usatoday--elysa-gardner.json",
+      "data/review-texts/the-glass-menagerie-2017/ap--unknown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -564,7 +578,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+  "lastProcessed": "natasha-pierre-and-the-great-comet-of-1812-2016/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -675,6 +689,12 @@
       "t": "2026-03-31T11:51:10.976Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-31T12:00:26.657Z",
+      "event": "bb-session",
+      "session": "de571ff8",
+      "url": "https://bigstory.ap.org/article/review-bways-glass-menagerie-thrilling"
     }
   ]
 }

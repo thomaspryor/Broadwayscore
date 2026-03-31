@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-03-31T11:59:46.346Z",
-  "processed": 208,
-  "failed": 110,
-  "successRate": "65.4%",
+  "updatedAt": "2026-03-31T12:01:10.236Z",
+  "processed": 210,
+  "failed": 118,
+  "successRate": "64.0%",
   "tierBreakdown": {
-    "playwright": 145,
+    "playwright": 147,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 19,
     "brightdata": 0,
-    "archiveToday": 9,
+    "archiveToday": 11,
     "archive": 35
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-03-31T09:18:55.432Z",
-      "event": "bb-session",
-      "session": "61eeca91",
-      "url": "https://www.amny.com/news/titus-andronicus-theater-review-nyc/"
-    },
     {
       "t": "2026-03-31T09:18:56.515Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-03-31T11:51:10.976Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-03-31T12:00:26.657Z",
+      "event": "bb-session",
+      "session": "de571ff8",
+      "url": "https://bigstory.ap.org/article/review-bways-glass-menagerie-thrilling"
     }
   ]
 }
