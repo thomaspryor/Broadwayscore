@@ -959,7 +959,17 @@
     "leap-of-faith-2012/ap--mark-kennedy.json",
     "leap-of-faith-2012/philadelphia-inquirer--howard-shapiro.json",
     "leap-of-faith-2012/usatoday--elysa-gardner.json",
-    "dont-dress-for-dinner-2012/backstage--david-sheward.json"
+    "dont-dress-for-dinner-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/backstage--erik-haagensen.json",
+    "the-columnist-2012/ap--mark-kennedy.json",
+    "the-columnist-2012/philadelphia-inquirer--howard-shapiro.json",
+    "the-columnist-2012/backstage--erik-haagensen.json",
+    "nice-work-if-you-can-get-it-2012/ap--mark-kennedy.json",
+    "nice-work-if-you-can-get-it-2012/usatoday--elysa-gardner.json",
+    "nice-work-if-you-can-get-it-2012/backstage--david-sheward.json",
+    "ghost-the-musical-2012/ap--mark-kennedy.json",
+    "the-lyons-2012/ap--mark-kennedy.json",
+    "the-lyons-2012/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1449,7 +1459,12 @@
       "data/review-texts/bring-it-on-the-musical-2012/talkinbroadway--matthew-murray.json",
       "data/review-texts/harvey-2012/theatermania--david-finkle.json",
       "data/review-texts/harvey-2012/backstage--erik-haagensen.json",
-      "data/review-texts/leap-of-faith-2012/usatoday--elysa-gardner.json"
+      "data/review-texts/leap-of-faith-2012/usatoday--elysa-gardner.json",
+      "data/review-texts/nice-work-if-you-can-get-it-2012/ap--mark-kennedy.json",
+      "data/review-texts/nice-work-if-you-can-get-it-2012/usatoday--elysa-gardner.json",
+      "data/review-texts/ghost-the-musical-2012/ap--mark-kennedy.json",
+      "data/review-texts/the-lyons-2012/ap--mark-kennedy.json",
+      "data/review-texts/the-lyons-2012/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1500,7 +1515,7 @@
     ]
   },
   "startTime": "2026-03-31T09:18:52.624Z",
-  "lastProcessed": "dont-dress-for-dinner-2012/backstage--david-sheward.json",
+  "lastProcessed": "the-lyons-2012/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-03-31T09:18:55.432Z",
@@ -1755,6 +1770,50 @@
       "t": "2026-03-31T19:17:36.011Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-31T19:27:03.046Z",
+      "event": "bb-session",
+      "session": "e6a6def6",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-matthew-brodericks-show"
+    },
+    {
+      "t": "2026-03-31T19:27:04.197Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T19:28:06.928Z",
+      "event": "bb-session",
+      "session": "78e675ab",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-broadway-musical-of-gh"
+    },
+    {
+      "t": "2026-03-31T19:28:08.187Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T19:28:41.364Z",
+      "event": "bb-session",
+      "session": "8ba69006",
+      "url": "https://www.washingtonpost.com/entertainment/review-nicky-silvers-terrific-the-l"
+    },
+    {
+      "t": "2026-03-31T19:28:42.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-03-31T19:29:22.373Z",
+      "event": "bb-session",
+      "session": "09d7932d",
+      "url": "https://www.northjersey.com/arts_entertainment/148629865_Lavin_back_on_Broadway_"
+    },
+    {
+      "t": "2026-03-31T19:29:23.529Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
