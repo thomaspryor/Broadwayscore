@@ -952,10 +952,13 @@ function scoreToThumb(score) {
 // Outlets that use outlet-verified originalScore sources (not ShowScore aggregator data).
 // Used by getBestScore() to decide whether to trust originalScore at P0.5 vs P3b.
 const OUTLET_VERIFIED_SOURCES = new Set([
-  'json-ld', 'meta-itemprop', 'guardian-api', 'wos-star-images', 'stage-star-svg',
-  'telegraph-svg', 'dailymail-rating-img', 'fivestar-widget', 'star-class',
-  'unicode-stars', 'numeric-stars', 'original-star-rating', 'timeout-star-widget',
-  'lbo-star-rating', 'explicit-rating',
+  'json-ld', 'meta-itemprop', 'guardian-api', 'guardian-json-ld', 'guardian-svg-stars',
+  'wos-star-images', 'stage-star-svg',
+  'telegraph-svg', 'telegraph-svg-stars', 'dailymail-rating-img', 'fivestar-widget',
+  'star-class', 'unicode-stars', 'numeric-stars', 'original-star-rating',
+  'timeout-star-widget', 'timeout-svg-stars',
+  'lbo-star-rating', 'express-star-count', 'standard-star-count', 'dailymail-star-count',
+  'text-pattern-verified',
 ]);
 
 module.exports = {

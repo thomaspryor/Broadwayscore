@@ -74,14 +74,6 @@
       "detail": "originalRating \"4/5\" (=80) vs score 42 (source: assignedScore)"
     },
     {
-      "type": "rating-score-mismatch",
-      "severity": "high",
-      "showId": "hercules-west-end-2025",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "originalRating \"3/5\" (=60) vs score 38 (source: human-review)"
-    },
-    {
       "type": "designation-score-mismatch",
       "severity": "medium",
       "showId": "impressionism-2009",
@@ -332,14 +324,6 @@
     {
       "type": "human-override-vs-explicit-grade",
       "severity": "high",
-      "showId": "hercules-west-end-2025",
-      "outlet": "timeout-london",
-      "critic": "Andrzej Lukowski",
-      "detail": "humanReviewScore 38 (negative) overrides explicit \"3/5\" (=60, mixed)"
-    },
-    {
-      "type": "human-override-vs-explicit-grade",
-      "severity": "high",
       "showId": "jekyll-and-hyde-2013",
       "outlet": "ew",
       "critic": "Melissa Rose Bernardo",
@@ -420,20 +404,8 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "im-sorry-prime-minister-west-end-2026",
-      "detail": "8/13 reviews (62%) scored exactly 60"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "oh-mary-west-end-2025",
-      "detail": "8/14 reviews (57%) scored exactly 80"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
       "showId": "paddington-the-musical-west-end-2025",
-      "detail": "10/18 reviews (56%) scored exactly 100"
+      "detail": "9/18 reviews (50%) scored exactly 100"
     }
   ]
 }
