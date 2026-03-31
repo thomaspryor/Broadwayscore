@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-03-31T13:00:02.436Z",
+  "updatedAt": "2026-03-31T13:14:45.609Z",
   "processed": 223,
-  "failed": 245,
-  "successRate": "47.6%",
+  "failed": 255,
+  "successRate": "46.7%",
   "tierBreakdown": {
     "playwright": 153,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 24,
     "brightdata": 0,
-    "archiveToday": 35,
+    "archiveToday": 42,
     "archive": 37
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-03-31T10:56:17.466Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-03-31T10:56:46.574Z",
-      "event": "bb-session",
-      "session": "4a4c8293",
-      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
-    },
     {
       "t": "2026-03-31T10:56:47.846Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-03-31T12:51:54.007Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-03-31T13:03:11.992Z",
+      "event": "bb-session",
+      "session": "bd474145",
+      "url": "https://www.wsj.com/articles/king-charles-iii-review-a-royal-what-if-1446596401"
+    },
+    {
+      "t": "2026-03-31T13:03:13.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
