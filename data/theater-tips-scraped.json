@@ -1,0 +1,362 @@
+{
+  "_meta": {
+    "description": "Scraped restaurant and parking data from NewYorkCityTheatre.com",
+    "source": "newyorkcitytheatre.com",
+    "lastUpdated": "2026-03-24T17:49:25.296Z",
+    "note": "Factual data only (names, addresses, distances). No editorial content."
+  },
+  "theaters": {
+    "Booth Theatre": {
+      "slug": "booththeater",
+      "dining": [
+        {
+          "name": "Broadway Lounge",
+          "cuisine": "American",
+          "distance": "4.40.04 mi",
+          "address": "1535 Broadway",
+          "priceRange": "$$$"
+        },
+        {
+          "name": "Revel & Rye Bar and Restaurant",
+          "cuisine": "American",
+          "distance": "4.20.04 mi",
+          "address": "1535 Broadway",
+          "priceRange": "$$$"
+        },
+        {
+          "name": "Sardi's",
+          "cuisine": "Continental",
+          "distance": "4.60.07 mi",
+          "address": "234 West 44th Street",
+          "priceRange": "$$$"
+        },
+        {
+          "name": "Bubba Gump - New York",
+          "cuisine": "Seafood",
+          "distance": "4.20.07 mi",
+          "address": "1501 Broadway",
+          "priceRange": "$$"
+        },
+        {
+          "name": "Hard Rock Cafe - Times Square",
+          "cuisine": "American",
+          "distance": "4.30.07 mi",
+          "address": "1501 Broadway",
+          "priceRange": "$$"
+        },
+        {
+          "name": "The Brooklyn Deli - Times Square",
+          "cuisine": "Deli",
+          "distance": "4.60.07 mi",
+          "address": "1501 Broadway",
+          "priceRange": "$$"
+        },
+        {
+          "name": "Bond 45",
+          "cuisine": "Italian",
+          "distance": "4.60.08 mi",
+          "address": "221 West 46th Street",
+          "priceRange": "$$$"
+        },
+        {
+          "name": "RA Sushi Bar Restaurant - Times Square, NY",
+          "cuisine": "Japanese",
+          "distance": "4.20.08 mi",
+          "address": "229 West 43rd Street, Unit 221",
+          "priceRange": "$$"
+        },
+        {
+          "name": "Blue Fin - New York",
+          "cuisine": "Seafood",
+          "distance": "4.40.09 mi",
+          "address": "1567 Broadway at 47th Street",
+          "priceRange": "$$$"
+        },
+        {
+          "name": "Dos Caminos - Times Square",
+          "cuisine": "Mexican",
+          "distance": "4.30.10 mi",
+          "address": "1567 Broadway",
+          "priceRange": "$$"
+        },
+        {
+          "name": "LE PARISIEN BAKERY",
+          "cuisine": "French",
+          "distance": "4.20.10 mi",
+          "address": "235 W 46th ST",
+          "priceRange": "$$"
+        },
+        {
+          "name": "Aliada Restaurant",
+          "cuisine": "Greek",
+          "distance": "5.00.10 mi",
+          "address": "29-19 Broadway",
+          "priceRange": "$$"
+        },
+        {
+          "name": "John's Pizzeria",
+          "cuisine": "Pizzeria",
+          "distance": "0.11 mi",
+          "address": "260 W 44th St",
+          "priceRange": "$$"
+        },
+        {
+          "name": "O'Donoghue's Bar & Restaurant",
+          "cuisine": "Irish",
+          "distance": "4.60.11 mi",
+          "address": "156 West 44th Street",
+          "priceRange": "$$"
+        },
+        {
+          "name": "DILLI DILLI",
+          "cuisine": "Indian",
+          "distance": "4.30.11 mi",
+          "address": "250 W 47th St",
+          "priceRange": "$$$"
+        },
+        {
+          "name": "Virgil's Real BBQ - New York City",
+          "cuisine": "Barbecue",
+          "distance": "4.40.11 mi",
+          "address": "152 W 44th Street",
+          "priceRange": "$$"
+        },
+        {
+          "name": "Havana Central Times Square",
+          "cuisine": "Cuban",
+          "distance": "4.50.12 mi",
+          "address": "151 W 46th St",
+          "priceRange": "$$"
+        },
+        {
+          "name": "Glass House Tavern",
+          "cuisine": "Contemporary American",
+          "distance": "4.60.12 mi",
+          "address": "252 West 47th Street",
+          "priceRange": "$$$"
+        },
+        {
+          "name": "PRIME CATCH",
+          "cuisine": "Steakhouse",
+          "distance": "4.20.12 mi",
+          "address": "140 W 46th St",
+          "priceRange": "$$$"
+        },
+        {
+          "name": "Trattoria Trecolori",
+          "cuisine": "Italian",
+          "distance": "4.70.12 mi",
+          "address": "254 W 47th St",
+          "priceRange": "$$$"
+        }
+      ],
+      "parking": [
+        {
+          "name": "Suggestions"
+        },
+        {
+          "name": "Dock Parking - 1540 Broadway Garage LLC",
+          "distance": "0.11 mi",
+          "address": "164 W. 46th St."
+        },
+        {
+          "name": "Icon Parking - Advance Parking LLC Garage",
+          "distance": "0.12 mi",
+          "address": "249-253 W. 43rd St."
+        },
+        {
+          "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+          "distance": "0.14 mi",
+          "address": "257 W. 47th St."
+        },
+        {
+          "name": "MPG Parking - Tower 45 Garage",
+          "distance": "0.14 mi",
+          "address": "120 W. 45th St."
+        },
+        {
+          "name": "(SP+) - Biltmore Theater Garage",
+          "distance": "0.15 mi",
+          "address": "267-271 W. 47th St."
+        },
+        {
+          "name": "Icon-Crowne Plaza Times Square Garage LLC",
+          "distance": "0.16 mi",
+          "address": "231 W. 48th St."
+        },
+        {
+          "name": "Icon Parking - Robo Park LLC Garage",
+          "distance": "0.16 mi",
+          "address": "155 W. 47th St."
+        },
+        {
+          "name": "Edison ParkFast - 307 W. 44th St. Lot",
+          "distance": "0.17 mi",
+          "address": "307 W. 44th St."
+        },
+        {
+          "name": "City Parking - 1133 6th Avenue Garage LLC​",
+          "distance": "0.17 mi",
+          "address": "118 W. 44th St."
+        },
+        {
+          "name": "GMC Parking - Eastway Garage",
+          "distance": "0.22 mi",
+          "address": "225 W. 49th St."
+        },
+        {
+          "name": "iPark -  790 8th Avenue Parking Corp. Garage",
+          "distance": "0.23 mi",
+          "address": "790 8th Ave."
+        },
+        {
+          "name": "LAZ at Edison Parkfast - 332 W. 44th St. Garage",
+          "distance": "0.23 mi",
+          "address": "332 W. 44th St."
+        },
+        {
+          "name": "Icon Parking - Global Parking LLC Garage",
+          "distance": "0.25 mi",
+          "address": "143-145 W. 40th St."
+        },
+        {
+          "name": "Edison ParkFast - 50 W. 44th St. Garage",
+          "distance": "0.26 mi",
+          "address": "50 W. 44th St."
+        },
+        {
+          "name": "iPark - 304 West 49th Parking Corp. Garage",
+          "distance": "0.26 mi",
+          "address": "304 W. 49th St."
+        },
+        {
+          "name": "Icon Parking - 250 W. 50th St. Garage",
+          "distance": "0.26 mi",
+          "address": "250 W. 50th St."
+        },
+        {
+          "name": "City Parking - 1411 Broadway Garage LLC",
+          "distance": "0.26 mi",
+          "address": "136 W. 40th St."
+        },
+        {
+          "name": "MPG Parking - MP West 43 Parking LLC Garage",
+          "distance": "0.27 mi",
+          "address": "360 W. 43rd St."
+        },
+        {
+          "name": "ABM Parking Services - 1633 Broadway Garage",
+          "distance": "0.27 mi",
+          "address": "245 W. 50th St."
+        }
+      ],
+      "scrapedAt": "2026-03-24T17:31:25.141Z"
+    },
+    "Shubert Theatre": {
+      "slug": "shuberttheater",
+      "dining": [],
+      "parking": [
+        {
+          "name": "Suggestions"
+        },
+        {
+          "name": "Icon Parking - Advance Parking LLC Garage",
+          "distance": "0.07 mi",
+          "address": "249-253 W. 43rd St."
+        },
+        {
+          "name": "Edison ParkFast - 307 W. 44th St. Lot",
+          "distance": "0.14 mi",
+          "address": "307 W. 44th St."
+        },
+        {
+          "name": "Dock Parking - 1540 Broadway Garage LLC",
+          "distance": "0.15 mi",
+          "address": "164 W. 46th St."
+        },
+        {
+          "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+          "distance": "0.16 mi",
+          "address": "257 W. 47th St."
+        },
+        {
+          "name": "(SP+) - Biltmore Theater Garage",
+          "distance": "0.16 mi",
+          "address": "267-271 W. 47th St."
+        },
+        {
+          "name": "MPG Parking - Tower 45 Garage",
+          "distance": "0.17 mi",
+          "address": "120 W. 45th St."
+        },
+        {
+          "name": "City Parking - 1133 6th Avenue Garage LLC​",
+          "distance": "0.19 mi",
+          "address": "118 W. 44th St."
+        },
+        {
+          "name": "Icon-Crowne Plaza Times Square Garage LLC",
+          "distance": "0.19 mi",
+          "address": "231 W. 48th St."
+        },
+        {
+          "name": "LAZ at Edison Parkfast - 332 W. 44th St. Garage",
+          "distance": "0.20 mi",
+          "address": "332 W. 44th St."
+        },
+        {
+          "name": "Icon Parking - Robo Park LLC Garage",
+          "distance": "0.21 mi",
+          "address": "155 W. 47th St."
+        },
+        {
+          "name": "Icon Parking - Global Parking LLC Garage",
+          "distance": "0.22 mi",
+          "address": "143-145 W. 40th St."
+        },
+        {
+          "name": "City Parking - 1411 Broadway Garage LLC",
+          "distance": "0.24 mi",
+          "address": "136 W. 40th St."
+        },
+        {
+          "name": "MPG Parking - MP West 43 Parking LLC Garage",
+          "distance": "0.24 mi",
+          "address": "360 W. 43rd St."
+        },
+        {
+          "name": "GMC Parking - Eastway Garage",
+          "distance": "0.25 mi",
+          "address": "225 W. 49th St."
+        },
+        {
+          "name": "iPark -  790 8th Avenue Parking Corp. Garage",
+          "distance": "0.25 mi",
+          "address": "790 8th Ave."
+        },
+        {
+          "name": "iPark - 304 West 49th Parking Corp. Garage",
+          "distance": "0.27 mi",
+          "address": "304 W. 49th St."
+        },
+        {
+          "name": "Edison ParkFast - 50 W. 44th St. Garage",
+          "distance": "0.28 mi",
+          "address": "50 W. 44th St."
+        },
+        {
+          "name": "Icon Parking - 250 W. 50th St. Garage",
+          "distance": "0.29 mi",
+          "address": "250 W. 50th St."
+        },
+        {
+          "name": "ABM Parking Services - 1633 Broadway Garage",
+          "distance": "0.30 mi",
+          "address": "245 W. 50th St."
+        }
+      ],
+      "scrapedAt": "2026-03-24T17:48:32.751Z",
+      "diningError": "All scraping methods failed"
+    }
+  }
+}
