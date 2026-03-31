@@ -298,6 +298,107 @@ export function getRecoupmentTrend(slug: string): RecoupmentTrend {
   return 'steady';
 }
 
+// ============================================
+// Grosses trend functions
+// ============================================
+
+export interface ShowGrossTrend {
+  wow: number | null;
+  yoy: number | null;
+  avgCapacity4wk: number | null;
+}
+
+export interface SeasonGrossTrend {
+  totalWoW: number;
+  avgCapacity: number;
+  showCount: number;
+}
+
+/**
+ * Get gross trend data for a single show: WoW change, YoY change, and 4-week avg capacity.
+ * Reuses the same grossesHistory data and week-key sorting as getRecoupmentTrend.
+ */
+export function getShowGrossTrend(slug: string): ShowGrossTrend {
+  const weekKeys = Object.keys(grossesHistory.weeks).sort();
+  const result: ShowGrossTrend = { wow: null, yoy: null, avgCapacity4wk: null };
+
+  if (weekKeys.length < 2) return result;
+
+  // WoW: compare last two weeks with valid gross data for this show
+  const latestWeek = grossesHistory.weeks[weekKeys[weekKeys.length - 1]]?.[slug];
+  const prevWeek = grossesHistory.weeks[weekKeys[weekKeys.length - 2]]?.[slug];
+
+  if (latestWeek?.gross != null && prevWeek?.gross != null && prevWeek.gross > 0) {
+    result.wow = ((latestWeek.gross - prevWeek.gross) / prevWeek.gross) * 100;
+  }
+
+  // YoY: compare latest week to same week ~52 weeks ago
+  if (weekKeys.length >= 52) {
+    const yoyWeek = grossesHistory.weeks[weekKeys[weekKeys.length - 52]]?.[slug];
+    if (latestWeek?.gross != null && yoyWeek?.gross != null && yoyWeek.gross > 0) {
+      result.yoy = ((latestWeek.gross - yoyWeek.gross) / yoyWeek.gross) * 100;
+    }
+  }
+
+  // avgCapacity4wk: average capacity over last 4 weeks
+  const recentWeeks = weekKeys.slice(-4);
+  const capacities: number[] = [];
+  for (const wk of recentWeeks) {
+    const entry = grossesHistory.weeks[wk]?.[slug];
+    if (entry?.capacity != null) {
+      capacities.push(entry.capacity);
+    }
+  }
+  if (capacities.length > 0) {
+    result.avgCapacity4wk = capacities.reduce((a, b) => a + b, 0) / capacities.length;
+  }
+
+  return result;
+}
+
+/**
+ * Get aggregate gross trend across all currently-running shows.
+ * Returns total WoW gross change (%), average capacity, and count of shows included.
+ */
+export function getSeasonGrossTrend(): SeasonGrossTrend {
+  const weekKeys = Object.keys(grossesHistory.weeks).sort();
+  const fallback: SeasonGrossTrend = { totalWoW: 0, avgCapacity: 0, showCount: 0 };
+
+  if (weekKeys.length < 2) return fallback;
+
+  const latestWeekKey = weekKeys[weekKeys.length - 1];
+  const prevWeekKey = weekKeys[weekKeys.length - 2];
+  const latestData = grossesHistory.weeks[latestWeekKey] || {};
+  const prevData = grossesHistory.weeks[prevWeekKey] || {};
+
+  let totalLatest = 0;
+  let totalPrev = 0;
+  const capacities: number[] = [];
+  const showSlugs = new Set<string>();
+
+  for (const [slug, entry] of Object.entries(latestData)) {
+    if (entry.gross == null) continue;
+    const prev = prevData[slug];
+    if (prev?.gross == null) continue;
+
+    totalLatest += entry.gross;
+    totalPrev += prev.gross;
+    showSlugs.add(slug);
+
+    if (entry.capacity != null) {
+      capacities.push(entry.capacity);
+    }
+  }
+
+  const showCount = showSlugs.size;
+  const totalWoW = totalPrev > 0 ? ((totalLatest - totalPrev) / totalPrev) * 100 : 0;
+  const avgCapacity = capacities.length > 0
+    ? capacities.reduce((a, b) => a + b, 0) / capacities.length
+    : 0;
+
+  return { totalWoW, avgCapacity, showCount };
+}
+
 /**
  * Get shows approaching recoupment (TBD with 40%+ recoupment estimate, not declining)
  */
