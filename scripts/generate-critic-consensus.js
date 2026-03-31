@@ -111,7 +111,7 @@ Write only the concise consensus (max 280 chars), nothing else.`;
     ],
   });
 
-  const consensus = message.content[0].text.trim();
+  let consensus = message.content[0].text.trim();
 
   // Validate length and sentence count
   const sentenceCount = (consensus.match(/[.!?]+/g) || []).length;
@@ -284,7 +284,7 @@ async function main() {
     try {
       // Generate consensus
       console.log(`  🤖 Generating consensus from ${reviews.length} reviews...`);
-      const consensus = await generateConsensus(showTitle, reviews);
+      let consensus = await generateConsensus(showTitle, reviews);
 
       // Layer 5b: Output validation — LLM refusal detection
       const REFUSAL_PATTERNS = [
@@ -301,6 +301,48 @@ async function main() {
         console.warn(`  ⚠️  LLM refusal detected — skipping: "${consensus.slice(0, 80)}..."`);
         errorCount++;
         continue;
+      }
+
+      // Layer 5b: Output validation — sentiment cross-check against review breakdown
+      const breakdown = { positive: 0, mixed: 0, negative: 0 };
+      for (const r of reviews) {
+        if (r.score == null) continue;
+        if (r.score >= 61) breakdown.positive++;
+        else if (r.score >= 40) breakdown.mixed++;
+        else breakdown.negative++;
+      }
+      const totalScored = breakdown.positive + breakdown.mixed + breakdown.negative;
+      const allPositive = totalScored > 0 && breakdown.mixed === 0 && breakdown.negative === 0;
+      const NEGATIVE_KEYWORDS = /\b(divided|split|mixed|dismiss|less compelling|not all|polariz)/i;
+      const HEDGED_NEGATIVE = /\bthough (some|one|a few|critics) (find|note|dismiss|say|argue|feel)\b/i;
+      if (allPositive && (NEGATIVE_KEYWORDS.test(consensus) || HEDGED_NEGATIVE.test(consensus))) {
+        console.warn(`  ⚠️  Sentiment mismatch: all ${totalScored} reviews are positive but text implies criticism — regenerating...`);
+        // Retry once with an explicit instruction about the breakdown
+        const retryPrompt = `You are writing a "Critics' Take" for the Broadway show "${showTitle}".
+
+IMPORTANT: All ${totalScored} reviews are POSITIVE (scores 61-100). Do NOT say critics are "divided", "mixed", or that "some find it less compelling." The consensus is clearly positive.
+
+Based on these ${reviews.length} critic reviews, write a brief summary (1-2 SHORT sentences, maximum 280 characters total) that captures this positive reception. Mention 1-2 specific praised elements if space allows. Be concise, objective, and use present tense.
+
+Reviews:
+${reviews.map((r, i) => `Review ${i + 1} (${r.outlet} - ${r.critic}, score: ${r.score}/100):\n${r.text.slice(0, 500)}...`).join('\n\n')}
+
+Write only the concise consensus (max 280 chars), nothing else.`;
+        const retryMsg = await anthropic.messages.create({
+          model: 'claude-sonnet-4-5-20250929',
+          max_tokens: 150,
+          temperature: 0.5,
+          messages: [{ role: 'user', content: retryPrompt }],
+        });
+        const retryText = retryMsg.content[0].text.trim();
+        if (!NEGATIVE_KEYWORDS.test(retryText) && !HEDGED_NEGATIVE.test(retryText)) {
+          consensus = retryText;
+          console.log(`  ✅ Retry succeeded — sentiment now matches breakdown`);
+        } else {
+          console.warn(`  ⚠️  Retry still has mismatch — using anyway: "${retryText.slice(0, 60)}..."`);
+          consensus = retryText;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
       // Layer 5b: Output validation — length check (> 280 chars = too long)
