@@ -880,7 +880,9 @@
     "indecent-2017/washpost--peter-marks.json",
     "indecent-2017/zeal-nyc--jil-picariello.json",
     "oslo-2017/broadway-blog--samuel-l-leiter.json",
-    "oslo-2017/live-theatre-uk--stephen-collins.json"
+    "oslo-2017/live-theatre-uk--stephen-collins.json",
+    "dog-day-afternoon-2026/wsj--unknown.json",
+    "dog-day-afternoon-2026/usatoday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1358,7 +1360,9 @@
       "data/review-texts/indecent-2017/northjerseycom--robert-feldberg.json",
       "data/review-texts/indecent-2017/washpost--peter-marks.json",
       "data/review-texts/oslo-2017/broadway-blog--samuel-l-leiter.json",
-      "data/review-texts/indecent-2017/zeal-nyc--jil-picariello.json"
+      "data/review-texts/indecent-2017/zeal-nyc--jil-picariello.json",
+      "data/review-texts/dog-day-afternoon-2026/wsj--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/usatoday--unknown.json"
     ],
     "archive": [
       "broken-glass-west-end-2026/independent--steve-fowler.json",
@@ -1398,7 +1402,7 @@
     ]
   },
   "startTime": "2026-03-30T11:26:06.861Z",
-  "lastProcessed": "dog-day-afternoon-2026/nysr--unknown.json",
+  "lastProcessed": "dog-day-afternoon-2026/usatoday--unknown.json",
   "log": [
     {
       "t": "2026-03-30T13:14:52.083Z",
@@ -1923,6 +1927,17 @@
       "t": "2026-03-31T04:13:30.982Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-03-31T05:00:06.190Z",
+      "event": "bb-session",
+      "session": "6369fc4d",
+      "url": "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-bro"
+    },
+    {
+      "t": "2026-03-31T05:00:07.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
