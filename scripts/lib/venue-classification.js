@@ -85,7 +85,7 @@ const BROADWAY_URL_PATTERNS = [
   /newyork\.timeout\.com/i,
   /broadway-review/i,
   /broadway-musical-rev/i,
-  /-broadway-/i,
+  /-broadway[\.\-\/]/i,
   /\/broadway\//i,
   /-on-broadway-/i,
   /opens-on-broadway/i,
