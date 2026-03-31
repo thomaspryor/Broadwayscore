@@ -418,7 +418,9 @@ function createReviewFile(showId, review) {
     source: 'show-score',
     showScoreExcerpt: review.excerpt || null,
     publishDate,
-    originalScore: review.starRating
+    // Aggregator scores go to aggregatorStars, never originalScore
+    originalScore: null,
+    aggregatorStars: review.starRating
       ? (review.starRating > 5 ? `${review.starRating}/100` : `${review.starRating}/5`)
       : null,
     scoreSource: score ? 'show-score-stars' : null,

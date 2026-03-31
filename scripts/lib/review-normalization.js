@@ -24,6 +24,7 @@ const { decodeHtmlEntities } = require('./text-cleaning');
 const AGGREGATOR_SCORE_SOURCES = new Set([
   'theatre-reviews-star-rating', 'westendtheatre-star-rating',
   'show-score-stars', 'stagedoor-star-rating',
+  'lbo-star-rating', 'thestage-roundup-star-rating',
 ]);
 
 // Cache for the outlet registry data
