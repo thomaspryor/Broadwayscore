@@ -109,12 +109,13 @@ for (const show of visibleShows) {
   const showReviews = reviewsByShow[show.id] || [];
   const buzz = audienceBuzz[show.id];
 
-  // Score breakdown (counts by bucket)
+  // Score breakdown — use score thresholds to match badge colors on the site
+  // 65+ = Positive (blue/green/gold badge), 40-64 = Mixed (orange badge), <40 = Negative (red badge)
   const breakdown = { positive: 0, mixed: 0, negative: 0 };
   for (const r of showReviews) {
-    if (r.bucket === 'Positive' || r.bucket === 'Rave') breakdown.positive++;
-    else if (r.bucket === 'Mixed') breakdown.mixed++;
-    else if (r.bucket === 'Negative' || r.bucket === 'Pan') breakdown.negative++;
+    if (r.assignedScore >= 65) breakdown.positive++;
+    else if (r.assignedScore >= 40) breakdown.mixed++;
+    else breakdown.negative++;
   }
 
   // Individual reviews — sorted by tier (T1 first), then score descending

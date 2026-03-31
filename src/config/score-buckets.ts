@@ -195,8 +195,8 @@ export function hasEnoughReviews(reviewCount: number, category?: string, tier1An
 
 export const CRITIC_LABEL_THRESHOLDS = {
   Rave: 83,
-  Positive: 70,
-  Mixed: 51,
+  Positive: 65,
+  Mixed: 40,
   Negative: 0,
 } as const;
 
