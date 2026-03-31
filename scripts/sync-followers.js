@@ -147,7 +147,7 @@ function patchJSON(url, body, headers) { return httpJSON('PATCH', url, body, hea
  * Upserts all active subscribers. Marks removed ones as unsubscribed.
  * Tags are used to distinguish Broadway vs West End subscribers in the single newsletter.
  */
-async function syncButtondownContacts(subscribers, tags, listName, buttondownApiKey) {
+async function syncButtondownContacts(subscribers, tags, listName, buttondownApiKey, protectedEmails) {
   if (!buttondownApiKey) {
     console.log(`  Skipping Buttondown sync for ${listName} (no BUTTONDOWN_API_KEY)`);
     return;
@@ -226,8 +226,10 @@ async function syncButtondownContacts(subscribers, tags, listName, buttondownApi
   }
 
   // Mark removed subscribers as unsubscribed in Buttondown
+  // Skip emails that belong to another market's subscriber list (protectedEmails)
+  const _protected = protectedEmails ? new Set([...protectedEmails].map(e => e.toLowerCase())) : new Set();
   for (const [email, contact] of existingContacts) {
-    if (!subscriberSet.has(email) && contact.type === 'regular') {
+    if (!subscriberSet.has(email) && !_protected.has(email) && contact.type === 'regular') {
       try {
         await patchJSON(`https://api.buttondown.com/v1/subscribers/${contact.id}`, {
           type: 'unsubscribed',
@@ -377,8 +379,8 @@ async function main() {
 
   console.log(`\nSubscriber results: ${subscribersAdded} subscribed, ${subscribersRemoved} unsubscribed, ${generalSubscribers.size} total`);
 
+  const subscribersList = Array.from(generalSubscribers).sort();
   if (!DRY_RUN) {
-    const subscribersList = Array.from(generalSubscribers).sort();
     const subscribersData = {
       _meta: {
         lastSynced: new Date().toISOString(),
@@ -388,9 +390,6 @@ async function main() {
     };
     fs.writeFileSync(SUBSCRIBERS_PATH, JSON.stringify(subscribersData, null, 2));
     console.log(`Saved ${subscribersList.length} subscribers to ${SUBSCRIBERS_PATH}`);
-
-    // Mirror to Buttondown for Broadcasts (no tag needed — Broadway is the default audience)
-    await syncButtondownContacts(subscribersList, [], 'Broadway', process.env.BUTTONDOWN_API_KEY);
   } else {
     console.log(`(Dry run — would save ${generalSubscribers.size} subscribers)`);
   }
@@ -399,8 +398,10 @@ async function main() {
   const weFormId = process.env.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID;
   const weToken = process.env.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY || process.env.FORMSPREE_TOKEN;
 
+  const weSubscribers = new Set();
+  let weList = [];
+
   if (weFormId && weToken) {
-    const weSubscribers = new Set();
     try {
       const existing = JSON.parse(fs.readFileSync(SUBSCRIBERS_WESTEND_PATH, 'utf8'));
       if (existing.subscribers) {
@@ -451,8 +452,8 @@ async function main() {
 
     console.log(`\nWE subscriber results: ${weAdded} subscribed, ${weRemoved} unsubscribed, ${weSubscribers.size} total`);
 
+    weList = Array.from(weSubscribers).sort();
     if (!DRY_RUN) {
-      const weList = Array.from(weSubscribers).sort();
       const weData = {
         _meta: {
           lastSynced: new Date().toISOString(),
@@ -462,14 +463,20 @@ async function main() {
       };
       fs.writeFileSync(SUBSCRIBERS_WESTEND_PATH, JSON.stringify(weData, null, 2));
       console.log(`Saved ${weList.length} WE subscribers to ${SUBSCRIBERS_WESTEND_PATH}`);
-
-      // Mirror to Buttondown with "west-end" tag for audience filtering
-      await syncButtondownContacts(weList, ['west-end'], 'West End', process.env.BUTTONDOWN_API_KEY);
     } else {
       console.log(`(Dry run — would save ${weSubscribers.size} WE subscribers)`);
     }
   } else {
     console.log('\nSkipping West End subscriber sync (env vars not configured)');
+  }
+
+  // --- 4. Sync to Buttondown (after both lists are finalized) ---
+  // Pass the other market's list as protectedEmails to prevent cross-market unsubscribes
+  if (!DRY_RUN) {
+    await syncButtondownContacts(subscribersList, [], 'Broadway', process.env.BUTTONDOWN_API_KEY, weSubscribers);
+    if (weList.length > 0) {
+      await syncButtondownContacts(weList, ['west-end'], 'West End', process.env.BUTTONDOWN_API_KEY, generalSubscribers);
+    }
   }
 }
 
