@@ -109,12 +109,11 @@ for (const show of visibleShows) {
   const showReviews = reviewsByShow[show.id] || [];
   const buzz = audienceBuzz[show.id];
 
-  // Score breakdown — use score thresholds to match badge colors on the site
-  // 65+ = Positive (blue/green/gold badge), 40-64 = Mixed (orange badge), <40 = Negative (red badge)
+  // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Stay Away (<55)
   const breakdown = { positive: 0, mixed: 0, negative: 0 };
   for (const r of showReviews) {
-    if (r.assignedScore >= 65) breakdown.positive++;
-    else if (r.assignedScore >= 40) breakdown.mixed++;
+    if (r.assignedScore >= 75) breakdown.positive++;
+    else if (r.assignedScore >= 55) breakdown.mixed++;
     else breakdown.negative++;
   }
 
