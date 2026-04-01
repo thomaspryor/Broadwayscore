@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-01T09:12:02.396Z",
+  "timestamp": "2026-04-01T09:20:29.726Z",
   "stats": {
-    "totalReviews": 32133,
-    "alreadyFlagged": 11953,
+    "totalReviews": 32136,
+    "alreadyFlagged": 11951,
     "dateGuardCatches": 14,
     "directorMismatch": 837,
-    "tvFilmSignals": 3312,
-    "londonSignals": 948,
+    "tvFilmSignals": 3313,
+    "londonSignals": 949,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
     "noPublishDate": 5915
@@ -26816,6 +26816,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "times-uk--ian-johns.json",
+      "score": 43,
+      "publishDate": "2026-04-01",
+      "url": "https://www.thetimes.com/travel/destinations/europe-travel/france/paris/les-liaisons-dangereuses-playhouse-embankment-w2-mctfwlzlp7c",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -71538,6 +71552,20 @@
       "score": 61,
       "publishDate": "2026-03-12",
       "url": "https://www.theguardian.com/stage/2025/jul/09/noughts-crosses-review-malorie-blackman-racism-regents-park-open-air-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 84,
+      "publishDate": "2026-03-31",
+      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
