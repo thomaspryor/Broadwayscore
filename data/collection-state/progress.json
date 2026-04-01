@@ -951,7 +951,17 @@
     "the-ritz-2007/new-jersey-newsroom--michael-sommers.json",
     "grease-2007/cnn--unknown.json",
     "grease-2007/latimes--charles-mcnulty-bway.json",
-    "grease-2007/northjerseycom--robert-feldberg.json"
+    "grease-2007/northjerseycom--robert-feldberg.json",
+    "xanadu-2007/washpost--peter-marks.json",
+    "xanadu-2007/variety--david-rooney.json",
+    "110-in-the-shade-2007/wsj--terry-teachout.json",
+    "radio-golf-2007/wsj--terry-teachout.json",
+    "radio-golf-2007/talkinbroadway--matthew-murray.json",
+    "lovemusik-2007/latimes--charles-mcnulty-bway.json",
+    "frostnixon-2007/wsj--terry-teachout.json",
+    "the-year-of-magical-thinking-2007/latimes--charles-mcnulty-bway.json",
+    "curtains-2007/wsj--terry-teachout.json",
+    "high-fidelity-2006/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1146,7 +1156,15 @@
       "data/review-texts/the-ritz-2007/playbill--unknown.json",
       "data/review-texts/grease-2007/cnn--unknown.json",
       "data/review-texts/grease-2007/latimes--charles-mcnulty-bway.json",
-      "data/review-texts/grease-2007/northjerseycom--robert-feldberg.json"
+      "data/review-texts/grease-2007/northjerseycom--robert-feldberg.json",
+      "data/review-texts/xanadu-2007/washpost--peter-marks.json",
+      "data/review-texts/110-in-the-shade-2007/wsj--terry-teachout.json",
+      "data/review-texts/radio-golf-2007/wsj--terry-teachout.json",
+      "data/review-texts/radio-golf-2007/talkinbroadway--matthew-murray.json",
+      "data/review-texts/lovemusik-2007/latimes--charles-mcnulty-bway.json",
+      "data/review-texts/frostnixon-2007/wsj--terry-teachout.json",
+      "data/review-texts/the-year-of-magical-thinking-2007/latimes--charles-mcnulty-bway.json",
+      "data/review-texts/curtains-2007/wsj--terry-teachout.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1173,7 +1191,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "grease-2007/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "high-fidelity-2006/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -1368,6 +1386,61 @@
       "t": "2026-04-01T19:22:45.026Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T19:24:50.134Z",
+      "event": "bb-session",
+      "session": "5fd65b9b",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2007/07/10/AR2007071001839"
+    },
+    {
+      "t": "2026-04-01T19:24:51.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T19:25:00.591Z",
+      "event": "bb-session",
+      "session": "fbba1573",
+      "url": "https://www.wsj.com/articles/SB117961869834728582"
+    },
+    {
+      "t": "2026-04-01T19:25:01.904Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T19:26:48.436Z",
+      "event": "bb-session",
+      "session": "7a96abd8",
+      "url": "https://www.wsj.com/articles/SB117792624891234567"
+    },
+    {
+      "t": "2026-04-01T19:26:49.735Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T19:31:27.296Z",
+      "event": "bb-session",
+      "session": "0b8093cd",
+      "url": "https://www.wsj.com/articles/SB117792982125952476"
+    },
+    {
+      "t": "2026-04-01T19:31:28.744Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T19:34:45.385Z",
+      "event": "bb-session",
+      "session": "371ade3b",
+      "url": "https://www.wsj.com/articles/SB117416436541435043"
+    },
+    {
+      "t": "2026-04-01T19:34:46.714Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
