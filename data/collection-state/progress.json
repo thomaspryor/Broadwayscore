@@ -123,7 +123,8 @@
     "company-2006/variety--charles-isherwood.json",
     "bells-are-ringing-2001/new-jersey-newsroom--michael-sommers.json",
     "twelfth-night-1998/ap--mark-kennedy.json",
-    "carrie-1988/timeout--adam-feldman.json"
+    "carrie-1988/timeout--adam-feldman.json",
+    "twelfth-night-1972/ap--mark-kennedy.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1011,7 +1012,16 @@
     "runaways-1978/nytimes--ben-brantley.json",
     "runaways-1978/vulture--jesse-green.json",
     "annie-1977/amny--matt-windman.json",
-    "the-robber-bridegroom-1976/nytimes--ben-brantley.json"
+    "the-robber-bridegroom-1976/nytimes--ben-brantley.json",
+    "the-robber-bridegroom-1976/vulture--jesse-green.json",
+    "the-robber-bridegroom-1976/thewrap--robert-hofler.json",
+    "death-of-a-salesman-1975/ap--mark-kennedy.json",
+    "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json",
+    "the-visit-1973/ap--mark-kennedy.json",
+    "the-merchant-of-venice-1973/backstage--david-sheward.json",
+    "a-little-night-music-1973/backstage--erik-haagensen.json",
+    "an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
+    "heathers-the-musical-2025/ew--kyle-anderson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1087,7 +1097,8 @@
       "the-play-that-goes-wrong-west-end-2021/west-end-wilma--unknown.json",
       "mamma-mia-west-end-2021/musical-theatre-review--unknown.json",
       "mamma-mia-west-end-2021/west-end-wilma--unknown.json",
-      "twelfth-night-1998/ap--mark-kennedy.json"
+      "twelfth-night-1998/ap--mark-kennedy.json",
+      "twelfth-night-1972/ap--mark-kennedy.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1251,7 +1262,11 @@
       "data/review-texts/barnum-1980/thestage--paul-vale.json",
       "data/review-texts/runaways-1978/nytimes--ben-brantley.json",
       "data/review-texts/runaways-1978/vulture--jesse-green.json",
-      "data/review-texts/the-robber-bridegroom-1976/nytimes--ben-brantley.json"
+      "data/review-texts/the-robber-bridegroom-1976/nytimes--ben-brantley.json",
+      "data/review-texts/the-robber-bridegroom-1976/vulture--jesse-green.json",
+      "data/review-texts/the-robber-bridegroom-1976/thewrap--robert-hofler.json",
+      "data/review-texts/the-merchant-of-venice-1973/backstage--david-sheward.json",
+      "data/review-texts/an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1278,7 +1293,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "the-robber-bridegroom-1976/nytimes--ben-brantley.json",
+  "lastProcessed": "heathers-the-musical-2025/ew--kyle-anderson.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -1693,6 +1708,23 @@
       "t": "2026-04-01T20:21:07.589Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-01T20:22:40.319Z",
+      "event": "bb-session",
+      "session": "176b7666",
+      "url": "https://news.google.com/news/url?sr=1&sa=t&ct2=us%2F0_0_s_6_0_t&usg=AFQjCNFS17Ms"
+    },
+    {
+      "t": "2026-04-01T20:26:29.684Z",
+      "event": "bb-session",
+      "session": "77d491ce",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review_"
+    },
+    {
+      "t": "2026-04-01T20:26:31.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
