@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-01T12:17:48.217Z",
+  "updatedAt": "2026-04-01T12:20:19.401Z",
   "processed": 97,
-  "failed": 303,
-  "successRate": "24.3%",
+  "failed": 313,
+  "successRate": "23.7%",
   "tierBreakdown": {
     "playwright": 50,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 21
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -64,6 +64,17 @@
       "event": "bb-session",
       "session": "0ed1cc9b",
       "url": "https://blogs.villagevoice.com/dailymusto/2011/03/how_to_succeed.php"
+    },
+    {
+      "t": "2026-04-01T12:18:25.681Z",
+      "event": "bb-session",
+      "session": "b1bd597b",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-04-01T12:18:27.032Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
