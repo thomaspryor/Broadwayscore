@@ -5,7 +5,14 @@
     "hadestown-west-end-2024/artsdesk--marianka-swain.json",
     "moulin-rouge-the-musical-west-end-2021/standard--tim-bano.json",
     "back-to-the-future-west-end-2021/british-theatre--unknown.json",
-    "les-miserables-west-end-2021/independent--louis-chilton.json"
+    "les-miserables-west-end-2021/independent--louis-chilton.json",
+    "dog-day-afternoon-2026/variety--unknown.json",
+    "dog-day-afternoon-2026/deadline--unknown.json",
+    "dog-day-afternoon-2026/playbill--unknown.json",
+    "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
+    "jajas-african-hair-braiding-west-end-2026/standard--unknown.json",
+    "kinky-boots-the-musical-west-end-2026/independent--alice-saville.json",
+    "kinky-boots-the-musical-west-end-2026/the-express--stefan-kyriazis.json"
   ],
   "failed": [
     "the-producers-west-end-2025/thestage--paul-vale.json",
@@ -24,17 +31,29 @@
     "hamilton-west-end-2021/broadwayworld--marianka-swain.json",
     "hamilton-west-end-2021/times-uk--clive-davis.json",
     "wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
-    "wicked-west-end-2021/west-end-wilma--unknown.json"
+    "wicked-west-end-2021/west-end-wilma--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "jajas-african-hair-braiding-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
       "moulin-rouge-the-musical-west-end-2021/standard--tim-bano.json",
-      "back-to-the-future-west-end-2021/british-theatre--unknown.json"
+      "back-to-the-future-west-end-2021/british-theatre--unknown.json",
+      "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
+      "jajas-african-hair-braiding-west-end-2026/standard--unknown.json",
+      "kinky-boots-the-musical-west-end-2026/independent--alice-saville.json",
+      "kinky-boots-the-musical-west-end-2026/the-express--stefan-kyriazis.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/dog-day-afternoon-2026/variety--unknown.json",
+      "dog-day-afternoon-2026/variety--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/deadline--unknown.json",
+      "dog-day-afternoon-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "oliver-west-end-2024/telegraph--claire-allfree.json"
@@ -51,14 +70,40 @@
       "data/review-texts/hamilton-west-end-2021/guardian--unknown.json",
       "data/review-texts/hamilton-west-end-2021/broadwayworld--marianka-swain.json",
       "data/review-texts/wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
-      "data/review-texts/wicked-west-end-2021/west-end-wilma--unknown.json"
+      "data/review-texts/wicked-west-end-2021/west-end-wilma--unknown.json",
+      "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/jajas-african-hair-braiding-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "hadestown-west-end-2024/artsdesk--marianka-swain.json",
-      "les-miserables-west-end-2021/independent--louis-chilton.json"
+      "les-miserables-west-end-2021/independent--louis-chilton.json",
+      "dog-day-afternoon-2026/playbill--unknown.json"
     ]
   },
   "startTime": "2026-04-01T03:48:30.603Z",
-  "lastProcessed": "wicked-west-end-2021/west-end-wilma--unknown.json",
-  "log": []
+  "lastProcessed": "kinky-boots-the-musical-west-end-2026/the-express--stefan-kyriazis.json",
+  "log": [
+    {
+      "t": "2026-04-01T04:52:05.149Z",
+      "event": "bb-session",
+      "session": "777858e8",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-04-01T04:52:06.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-01T04:52:19.097Z",
+      "event": "bb-session",
+      "session": "29f7964a",
+      "url": "https://deadline.com/2026/03/broadway-chicago-whitney-leavitt-dog-day-afternoon-"
+    },
+    {
+      "t": "2026-04-01T04:52:20.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }

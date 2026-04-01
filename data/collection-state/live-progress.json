@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-04-01T04:02:12.651Z",
-  "processed": 6,
-  "failed": 17,
-  "successRate": "26.1%",
+  "updatedAt": "2026-04-01T04:56:14.163Z",
+  "processed": 13,
+  "failed": 20,
+  "successRate": "39.4%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 2
+    "archiveToday": 13,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-04-01T04:52:05.149Z",
+      "event": "bb-session",
+      "session": "777858e8",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-04-01T04:52:06.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-01T04:52:19.097Z",
+      "event": "bb-session",
+      "session": "29f7964a",
+      "url": "https://deadline.com/2026/03/broadway-chicago-whitney-leavitt-dog-day-afternoon-"
+    },
+    {
+      "t": "2026-04-01T04:52:20.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
