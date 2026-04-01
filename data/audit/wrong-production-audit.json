@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-01T21:21:52.334Z",
+  "timestamp": "2026-04-01T21:59:32.744Z",
   "stats": {
-    "totalReviews": 32172,
+    "totalReviews": 32174,
     "alreadyFlagged": 11981,
     "dateGuardCatches": 13,
     "directorMismatch": 839,
     "tvFilmSignals": 3316,
-    "londonSignals": 960,
+    "londonSignals": 961,
     "offBroadwaySignals": 963,
     "yearMismatch": 64,
     "noPublishDate": 5884
@@ -71727,6 +71727,20 @@
       "score": 61,
       "publishDate": "2026-03-12",
       "url": "https://www.theguardian.com/stage/2025/jul/09/noughts-crosses-review-malorie-blackman-racism-regents-park-open-air-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "nytimes--houman-barekat.json",
+      "score": 77,
+      "publishDate": "2026-03-31",
+      "url": "https://www.nytimes.com/2026/04/01/theater/romeo-and-juliet-sadie-sink-joah-jupe-robert-icke.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
