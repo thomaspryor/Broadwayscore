@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-01T03:50:24.607Z",
+  "timestamp": "2026-04-01T03:59:43.295Z",
   "stats": {
-    "totalReviews": 32109,
+    "totalReviews": 32108,
     "alreadyFlagged": 11929,
     "dateGuardCatches": 14,
-    "directorMismatch": 837,
-    "tvFilmSignals": 3310,
+    "directorMismatch": 838,
+    "tvFilmSignals": 3309,
     "londonSignals": 947,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 5925
+    "noPublishDate": 5924
   },
   "findings": [
     {
@@ -12868,7 +12868,7 @@
     {
       "showId": "dracula-west-end-2025",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 92,
+      "score": 86,
       "publishDate": "2026-02-18",
       "url": "https://theartsdesk.com/theatre/dracula-noel-coward-theatre-review-virtuoso-performance-confirms-cynthia-erivos-star-power",
       "findings": [
@@ -24954,6 +24954,20 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 75,
+      "publishDate": "March 27th, 2026",
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "timeout--unknown.json",
       "publishDate": "2026-03-27",
       "url": "https://www.westendtheatre.com/346848/news/reviews/reviews-of-john-proctor-is-the-villain-london/",
@@ -35707,20 +35721,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
-      "file": "telegraph--tim-robey.json",
-      "score": 79,
-      "publishDate": "2025-12-16",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/paranormal-activity-on-stage/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
