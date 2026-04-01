@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-01T03:29:25.624Z",
+  "timestamp": "2026-04-01T03:41:46.732Z",
   "stats": {
-    "totalReviews": 32107,
-    "alreadyFlagged": 11957,
+    "totalReviews": 32109,
+    "alreadyFlagged": 11929,
     "dateGuardCatches": 14,
-    "directorMismatch": 917,
-    "tvFilmSignals": 3306,
-    "londonSignals": 944,
+    "directorMismatch": 837,
+    "tvFilmSignals": 3310,
+    "londonSignals": 947,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 5914
+    "noPublishDate": 5925
   },
   "findings": [
     {
@@ -5590,119 +5590,15 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
-      "file": "artsdesk--gary-naylor.json",
-      "score": 78,
-      "publishDate": "2021-09-28",
-      "url": "http://theartsdesk.com/theatre/back-future-musical-adelphi-theatre-review-spectacular-west-end-show-delight-fans-old-and-new",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "guardian--arifa-akbar.json",
-      "score": 65,
-      "publishDate": "2021-09-13",
-      "url": "https://www.theguardian.com/stage/2021/sep/13/back-to-the-future-the-musical-review-adelphi-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "i-paper--sam-marlowe.json",
-      "score": 66,
-      "publishDate": "2021-09-13",
-      "url": "https://inews.co.uk/culture/back-to-the-future-the-musical-adelphi-theatre-london-review-an-eye-popping-gen-x-nostalgia-trip-1196192?srsltid=AfmBOooHnp6NYmfVbVw0ZbmDtrny4Jcz0PLmxCnQUhXyxeaMbEaa_wvI",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
       "file": "independent--clarisse-loughrey.json",
       "score": 73,
       "publishDate": "2021-09-14",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/back-to-the-future-musical-review-b1919866.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "london-box-office--miriam-gibson.json",
-      "score": 75,
-      "publishDate": "2022-09-12",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-back-to-the-future-musical",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 80,
-      "publishDate": "2021-09-28",
-      "url": "https://www.londontheatre.co.uk/reviews/back-to-the-future-review-adelphi-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "standard--nick-curtis.json",
-      "score": 82,
-      "publishDate": "2021-09-13",
-      "url": "https://www.standard.co.uk/culture/theatre/back-to-the-future-the-musical-review-b954981.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
         }
       ]
     },
@@ -5714,103 +5610,9 @@
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/back-future-musical-review-cars-star-feelgood-triumph/",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "thestage--tim-bano.json",
-      "score": 67,
-      "publishDate": "2021-09-13",
-      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-theatre-london-john-rando-olly-dobson-alan-silvestri-glen-ballard",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "thestage--unknown.json",
-      "score": 66,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/long-reviews/back-to-the-future-the-musical-adelphi-theatre-london-john-rando-olly-dobson-alan-silvestri-glen-ballard",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "timeout-london--adam-feldman.json",
-      "score": 73,
-      "publishDate": "2026-01-15",
-      "url": "https://www.timeout.com/london/theatre/back-to-the-future-the-musical-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 74,
-      "publishDate": "2026-01-15",
-      "url": "https://www.timeout.com/london/theatre/back-to-the-future-the-musical-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "times-uk--clive-davis.json",
-      "score": 42,
-      "publishDate": "2021-09-13",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/back-to-the-future-the-musical-review-classic-stalls-like-an-old-delorean-njg5tp88x?gaa_at=eafs&gaa_n=AWEtsqf-6wn6DKrFsTE7Z0HLjPVLGSt4d0rpN6dBf0Wmj6QESad0D_05YlQf&gaa_ts=699b8aa1&gaa_sig=RiG1Bk1yTdai4IcIB88Z7pUq3_2X3t1Elw8YXVEc4zNaTHezETr13lhTyYrfR21Pcb_xGzD3pVeBGjXkRQJIkQ%3D%3D",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "variety--david-benedict.json",
-      "score": 78,
-      "publishDate": "2021-09-14",
-      "url": "https://variety.com/2021/legit/reviews/back-to-the-future-musical-review-west-end-1235063882/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
         }
       ]
     },
@@ -7182,6 +6984,11 @@
       "url": "http://www.talkinbroadway.com/world/BookofMormon.html",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw and trey parker\" from the-book-of-mormon-west-end-2024"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
@@ -8337,189 +8144,15 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "artsdesk--david-nice.json",
-      "score": 91,
-      "publishDate": "2021-12-13",
-      "url": "https://theartsdesk.com/theatre/cabaret-kit-kat-club-playhouse-theatre-review-%E2%80%93-polymorphous-prodigious",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
       "score": 76,
       "publishDate": "2021-12-13",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-10302945/At-Eddies-Cabaret-sets-wunderbar-PATRICK-MARMION-reviews-Cabaret.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "guardian--arifa-akbar.json",
-      "score": 81,
-      "publishDate": "2021-12-13",
-      "url": "https://www.theguardian.com/stage/2021/dec/13/cabaret-review-eddie-redmayne-playhouse-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 78,
-      "publishDate": "2021-12-13",
-      "url": "https://inews.co.uk/culture/arts/cabaret-playhouse-theatre-review-eddie-redmayne-jessie-buckley-omari-douglas-is-chilling-dark-stripped-back-1347474",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "independent--alexandra-pollard.json",
-      "score": 93,
-      "publishDate": "2021-12-13",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cabaret-review-jessie-buckley-eddie-redmayne-b1974565.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "london-box-office--miriam-gibson.json",
-      "score": 78,
-      "publishDate": "2022-03-16",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-cabaret-kit-kat-club",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "london-theatre--suzy-evans.json",
-      "score": 88,
-      "publishDate": "2021-12-13",
-      "url": "https://www.londontheatre.co.uk/reviews/cabaret-at-the-kit-kat-club-review-eddie-redmayne-and-jessie-buckley",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "standard--nick-curtis.json",
-      "score": 91,
-      "publishDate": "2021-12-13",
-      "url": "https://www.standard.co.uk/culture/theatre/cabaret-review-eddie-redmayne-jessie-buckley-the-kit-kat-club-b971184.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 94,
-      "publishDate": "2021-12-13",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "thestage--tim-bano.json",
-      "score": 80,
-      "publishDate": "December 13th, 2021",
-      "url": "https://www.thestage.co.uk/long-reviews/cabaret-review-eddie-redmayne-jessie-buckley-kit-kat-club-london-2021-rebecca-frecknall",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 78,
-      "publishDate": "December 13th, 2021",
-      "url": "https://www.timeout.com/london/theatre/cabaret-3",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "times-uk--quentin-letts.json",
-      "score": 76,
-      "publishDate": "2021-12-19",
-      "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rebecca frecknall\" from cabaret-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -11918,6 +11551,25 @@
       ]
     },
     {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "file": "thestage--alistair-smith.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "dear-evan-hansen-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 82,
@@ -13210,6 +12862,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (2x) more than 2024 (0x). 2005 matches production: doubt-2005"
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "artsdesk--rachel-halliburton.json",
+      "score": 92,
+      "publishDate": "2026-02-18",
+      "url": "https://theartsdesk.com/theatre/dracula-noel-coward-theatre-review-virtuoso-performance-confirms-cynthia-erivos-star-power",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -20082,11 +19748,6 @@
       "url": "https://www.dailymail.co.uk/home/event/article-5202903/Hamilton-review-Original-witty-great-tunes.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
@@ -20100,91 +19761,15 @@
     },
     {
       "showId": "hamilton-west-end-2021",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 94,
-      "publishDate": "2017-12-21",
-      "url": "https://www.ft.com/content/9be5e262-e637-11e7-8b99-0191e45377ec",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
       "file": "guardian--michael-billington.json",
       "score": 94,
       "publishDate": "2017-12-23",
       "url": "https://www.theguardian.com/stage/2017/dec/21/hamilton-review-musical-london-victoria-palace-lin-manuel-miranda",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "independent--paul-taylor.json",
-      "score": 87,
-      "publishDate": "2017-12-21",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hamilton-victoria-palace-theatre-london-review-a-magnificent-achievement-thomas-kail-the-book-of-a8122091.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "london-theatre--mark-shenton.json",
-      "score": 92,
-      "publishDate": "2022-01-25",
-      "url": "https://www.londontheatre.co.uk/reviews/review-hamilton-is-here-to-stay-at-the-victoria-palace-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "nytimes--ben-brantley.json",
-      "score": 88,
-      "publishDate": "2018-01-05",
-      "url": "https://www.nytimes.com/2018/01/05/theater/review-hamilton-conquers-london-king-george-slays-too.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -20206,108 +19791,9 @@
       "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 94,
-      "publishDate": "2017-12-22",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/hamilton-west-end-review-believe-every-single-word-hype/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "thestage--tim-bano.json",
-      "score": 94,
-      "publishDate": "2017-12-21",
-      "url": "https://www.thestage.co.uk/reviews/2017/hamilton-review-victoria-palace-lin-manuel-miranda-theatre-london/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "timeout-london--andrzej-lukowsksi.json",
-      "score": 95,
-      "publishDate": "2025-09-29",
-      "url": "https://www.timeout.com/london/theatre/hamilton-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "timeout-london--david-cote.json",
-      "score": 95,
-      "publishDate": "2025-09-29",
-      "url": "https://www.timeout.com/london/theatre/hamilton-tickets-and-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "times-uk--ann-treneman.json",
-      "score": 92,
-      "publishDate": "2017-12-22",
-      "url": "https://www.thetimes.co.uk/edition/news/theatre-review-hamilton-at-victoria-palace-sw1-xdshn0nhs",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-west-end-2021",
-      "file": "variety--marilyn-stasio.json",
-      "score": 78,
-      "publishDate": "2017-12-21",
-      "url": "https://variety.com/2017/legit/reviews/hamilton-review-london-west-end-1202647480/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -23009,6 +22495,20 @@
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 72,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
       "score": 74,
       "publishDate": "2026-02-13",
@@ -24163,6 +23663,20 @@
       "score": 78,
       "publishDate": "2025-12-11",
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 88,
+      "publishDate": "2025-12-12",
+      "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Bridge-Theatre-20251212",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27327,6 +26841,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
         }
       ]
     },
@@ -27346,6 +26865,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
         }
       ]
     },
@@ -27365,6 +26889,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
         }
       ]
     },
@@ -27436,6 +26965,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
         }
       ]
     },
@@ -27455,6 +26989,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
         }
       ]
     },
@@ -27507,6 +27046,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
         }
       ]
     },
@@ -29224,58 +28768,11 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "file": "london-theatre--alan-bird.json",
-      "score": 82,
-      "publishDate": "2022-01-25",
-      "url": "https://www.londontheatre.co.uk/reviews/mamma-mia-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "timeout--nina-caplan.json",
-      "score": 78,
-      "publishDate": "2025-10-01",
-      "url": "https://www.timeout.com/london/theatre/mamma-mia",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "timeout-london--nina-caplan.json",
-      "score": 74,
-      "publishDate": "March 21st, 2017",
-      "url": "https://www.timeout.com/london/theatre/mamma-mia",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
       "file": "variety--matt-wolf.json",
       "score": 56,
       "publishDate": "2015-09-03",
       "url": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -29290,11 +28787,6 @@
       "publishDate": "1999-04-26",
       "url": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -30010,198 +29502,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "artsdesk--carole-woddis.json",
-      "score": 88,
-      "publishDate": "2011-11-25",
-      "url": "https://theartsdesk.com/theatre/matilda-musical-cambridge-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "daily-mail--quentin-letts.json",
-      "score": 87,
-      "publishDate": "2011-11-24",
-      "url": "http://www.dailymail.co.uk/tvshowbiz/reviews/article-2065957/Matilda-musical-review-A-beasty-baddie-stonking-songs--it-all.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 78,
-      "publishDate": "2011-11-24",
-      "url": "https://www.ft.com/content/b34f9d9c-16b0-11e1-be1d-00144feabdc0",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "guardian--emma-brockes.json",
-      "score": 92,
-      "publishDate": "2011-11-27",
-      "url": "https://www.theguardian.com/books/2011/nov/27/matilda-the-musical-roald-dahl",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "guardian--imogen-carter.json",
-      "score": 88,
-      "publishDate": "2011-11-27",
-      "url": "https://www.theguardian.com/books/2011/nov/27/matilda-the-musical-roald-dahl",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "guardian--lyn-gardner.json",
-      "score": 94,
-      "publishDate": "November 25th, 2011",
-      "url": "https://www.theguardian.com/stage/2011/nov/25/matilda-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "london-box-office--danai-g-miliaraki.json",
-      "score": 82,
-      "publishDate": "2024-09-26",
-      "url": "https://www.londonboxoffice.co.uk/news/post/matilda-musical-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "london-theatre--peter-brown.json",
-      "score": 82,
-      "publishDate": "2011-11-24",
-      "url": "https://www.londontheatre.co.uk/reviews/matilda-the-musical-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "standard--henry-hitchings.json",
-      "score": 93,
-      "publishDate": "2011-11-25",
-      "url": "http://www.thisislondon.co.uk/theatre/review-24014294-matilda-the-musical-cambridge-theatre---review.do",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "telegraph--tim-walker.json",
-      "score": 74,
-      "publishDate": "2011-11-25",
-      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/8915418/Matilda-the-Musical-Cambridge-Theatre-Seven-magazine-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "thestage--lisa-martland.json",
-      "score": 89,
-      "publishDate": "2011-11-24",
-      "url": "http://www.thestage.co.uk/reviews/review.php/34349/matilda-the-musical",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "timeout--sam-marlowe.json",
-      "score": 80,
-      "publishDate": "2011-11-24",
-      "url": "https://www.timeout.com/london/theatre/matilda-the-musical-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
-        }
-      ]
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "timeout-london--sam-marlowe.json",
-      "score": 83,
-      "publishDate": "January 1st, 2012",
-      "url": "https://www.timeout.com/london/theatre/matilda-the-musical-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from matilda-the-musical-2013"
         }
       ]
     },
@@ -32397,76 +31697,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "artsdesk--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2022-01-21",
-      "url": "https://theartsdesk.com/theatre/moulin-rouge-musical-piccadilly-theatre-review-spectacular-escapism",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "guardian--kate-wyver.json",
-      "score": 67,
-      "publishDate": "2022-01-20",
-      "url": "https://www.theguardian.com/stage/2022/jan/20/moulin-rouge-the-musical-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "independent--ava-wong-davies.json",
-      "score": 79,
-      "publishDate": "2022-01-21",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/moulin-rouge-musical-review-b1997081.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "london-theatre--suzy-evans.json",
-      "score": 82,
-      "publishDate": "2022-01-20",
-      "url": "https://www.londontheatre.co.uk/reviews/moulin-rouge-the-musical-review-piccadilly-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
-        }
-      ]
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "thestage--tim-bano.json",
-      "score": 41,
-      "publishDate": "2022-01-20",
-      "url": "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadilly-theatre-london-baz-luhrmann-liisi-lafontaine",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
         }
       ]
     },
@@ -35751,175 +34981,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 93,
-      "publishDate": "2023-05-10",
-      "url": "https://www.allthatdazzles.co.uk/post/review-operation-mincemeat-fortune-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "artsdesk--helen-hawkins.json",
-      "score": 89,
-      "publishDate": "2023-05-11",
-      "url": "https://theartsdesk.com/theatre/operation-mincemeat-fortune-theatre-review-high-octane-musical-comedy-hits-big-time",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "broadwayworld--cindy-marcolina.json",
-      "score": 93,
-      "publishDate": "May 10th, 2023",
-      "url": "https://www.broadwayworld.com/westend/article/Review-OPERATION-MINCEMEAT-Fortune-Theatre-20230510",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "broadwayworld--unknown.json",
-      "score": 89,
-      "publishDate": null,
-      "url": "https://stagedoor.com/musicals/13086-operation-mincemeat/critic-reviews",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "everything-theatre--lily-middleton.json",
-      "score": 92,
-      "publishDate": "2023-05-10",
-      "url": "https://everything-theatre.co.uk/2023/05/review-operation-mincemeat-fortune-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 92,
-      "publishDate": "2023-05-11",
-      "url": "https://www.londontheatre.co.uk/reviews/operation-mincemeat-review-fortune-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "lost-in-theatreland--amy-rye.json",
-      "score": 92,
-      "publishDate": "2023-05-10",
-      "url": "https://lostintheatreland.co.uk/operation-mincemeat-review-fortune-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "standard--nick-curtis.json",
-      "score": 82,
-      "publishDate": "2023-05-10",
-      "url": "https://www.standard.co.uk/culture/theatre/operation-mincemeat-fortune-theatre-review-world-war-2-musical-b1079967.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 83,
-      "publishDate": "2023-05-10",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 90,
-      "publishDate": "2023-05-09",
-      "url": "https://theatreweekly.com/review-operation-mincemeat-at-the-fortune-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-05-10",
-      "url": "https://www.timeout.com/london/theatre/operation-mincemeat-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
         }
       ]
     },
@@ -43789,6 +42850,20 @@
       ]
     },
     {
+      "showId": "summerfolk-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 93,
+      "publishDate": "2026-03-18",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/summerfolk-olivier-national-theatre-review-fxg9sjknh",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "sunday-in-the-park-with-george-1984",
       "file": "nydailynews--howard-kissel.json",
       "score": 76,
@@ -50770,11 +49845,6 @@
       "url": "https://www.theguardian.com/stage/2011/jan/04/lion-king-michael-billington-review",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
@@ -50789,11 +49859,6 @@
       "url": "https://www.londonboxoffice.co.uk/news/post/review-disneys-the-lion-king",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
@@ -50807,11 +49872,6 @@
       "publishDate": "2015-09-07",
       "url": "https://www.londonboxoffice.co.uk/news/post/lion-king-review",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -50846,11 +49906,6 @@
       "url": "https://www.londontheatre.co.uk/reviews/the-lion-king",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
@@ -50879,11 +49934,6 @@
       "url": "https://www.standard.co.uk/go/london/theatre/lion-king-is-a-roaring-success-7435263.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
@@ -50911,58 +49961,11 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
-      "file": "timeout--ben-walters.json",
-      "score": 78,
-      "publishDate": "2011-11-04",
-      "url": "https://www.timeout.com/london/theatre/the-lion-king",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "timeout-london--ben-walters.json",
-      "score": 80,
-      "publishDate": "March 15th, 2018",
-      "url": "https://www.timeout.com/london/theatre/the-lion-king",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "timeout-london--unknown.json",
-      "score": 80,
-      "publishDate": "March 15th, 2018",
-      "url": "https://www.timeout.com/london/theatre/the-lion-king",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
       "file": "variety--matt-wolf.json",
       "score": 79,
       "publishDate": "1999-10-25",
       "url": "https://variety.com/1999/legit/reviews/the-lion-king-lyceum-theater-1200459301/",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -58819,34 +57822,6 @@
     },
     {
       "showId": "wicked-west-end-2021",
-      "file": "british-theatre--philip-fisher.json",
-      "score": 79,
-      "publishDate": "2006-09-27",
-      "url": "https://www.britishtheatreguide.info/reviews/wicked-rev",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
-      "file": "guardian--michael-billington.json",
-      "score": 42,
-      "publishDate": "2006-09-28",
-      "url": "https://www.theguardian.com/stage/2006/sep/28/theatre1",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
       "file": "london-box-office--daniel-perks.json",
       "score": 88,
       "publishDate": "2014-09-18",
@@ -58861,72 +57836,15 @@
     },
     {
       "showId": "wicked-west-end-2021",
-      "file": "london-theatre--sophie-thomas.json",
-      "score": 95,
-      "publishDate": "2022-03-10",
-      "url": "https://www.londontheatre.co.uk/reviews/wicked",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
-      "file": "musical-theatre-review--lisa-martland.json",
-      "score": 92,
-      "publishDate": "2006-09-27",
-      "url": "https://musicaltheatrereview.com/wicked-apollo-victoria-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
       "file": "telegraph--charles-spencer.json",
       "score": 74,
       "publishDate": "2009-01-01",
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
-      "file": "telegraph--marianka-swain.json",
-      "score": 100,
-      "publishDate": "2023-10-01",
-      "url": "https://www.telegraph.co.uk/theatre/tickets/london/wicked/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -61214,6 +60132,48 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "score": 65,
+      "publishDate": "2021-09-13",
+      "url": "https://www.theguardian.com/stage/2021/sep/13/back-to-the-future-the-musical-review-adelphi-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "london-box-office--miriam-gibson.json",
+      "score": 75,
+      "publishDate": "2022-09-12",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-back-to-the-future-musical",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 80,
+      "publishDate": "2021-09-28",
+      "url": "https://www.londontheatre.co.uk/reviews/back-to-the-future-review-adelphi-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
       "file": "theatre-bee-uk--theatre-bee-uk.json",
       "score": 92,
       "publishDate": "2022-05-20",
@@ -61223,6 +60183,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "score": 42,
+      "publishDate": "2021-09-13",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/back-to-the-future-the-musical-review-classic-stalls-like-an-old-delorean-njg5tp88x?gaa_at=eafs&gaa_n=AWEtsqf-6wn6DKrFsTE7Z0HLjPVLGSt4d0rpN6dBf0Wmj6QESad0D_05YlQf&gaa_ts=699b8aa1&gaa_sig=RiG1Bk1yTdai4IcIB88Z7pUq3_2X3t1Elw8YXVEc4zNaTHezETr13lhTyYrfR21Pcb_xGzD3pVeBGjXkRQJIkQ%3D%3D",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -62264,6 +61238,48 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "london-theatre--suzy-evans.json",
+      "score": 88,
+      "publishDate": "2021-12-13",
+      "url": "https://www.londontheatre.co.uk/reviews/cabaret-at-the-kit-kat-club-review-eddie-redmayne-and-jessie-buckley",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "thestage--tim-bano.json",
+      "score": 80,
+      "publishDate": "December 13th, 2021",
+      "url": "https://www.thestage.co.uk/long-reviews/cabaret-review-eddie-redmayne-jessie-buckley-kit-kat-club-london-2021-rebecca-frecknall",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "times-uk--quentin-letts.json",
+      "score": 76,
+      "publishDate": "2021-12-19",
+      "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -65953,10 +64969,71 @@
     },
     {
       "showId": "hamilton-west-end-2021",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 92,
+      "publishDate": "2022-01-25",
+      "url": "https://www.londontheatre.co.uk/reviews/review-hamilton-is-here-to-stay-at-the-victoria-palace-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
       "file": "metro--adam-bloodworth.json",
       "score": 86,
       "publishDate": "2017-12-21",
       "url": "http://metro.co.uk/2017/12/21/hamilton-london-review-a-bravely-rule-breaking-new-musical-with-a-near-perfect-score-7172695/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
+      "file": "nytimes--ben-brantley.json",
+      "score": 88,
+      "publishDate": "2018-01-05",
+      "url": "https://www.nytimes.com/2018/01/05/theater/review-hamilton-conquers-london-king-george-slays-too.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
+      "file": "thestage--tim-bano.json",
+      "score": 94,
+      "publishDate": "2017-12-21",
+      "url": "https://www.thestage.co.uk/reviews/2017/hamilton-review-victoria-palace-lin-manuel-miranda-theatre-london/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
+      "file": "variety--marilyn-stasio.json",
+      "score": 78,
+      "publishDate": "2017-12-21",
+      "url": "https://variety.com/2017/legit/reviews/hamilton-review-london-west-end-1202647480/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69400,6 +68477,20 @@
       ]
     },
     {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "telegraph--marianka-swain.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/tickets/london/mamma-mia/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "man-and-boy-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 45,
@@ -69950,6 +69041,34 @@
       "score": 69,
       "publishDate": "2013-04-10",
       "url": "https://villagevoice.com/2013-04-10/theater/the-loud-new-musical-matilda-turns-dahl-into-dull/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "london-theatre--peter-brown.json",
+      "score": 82,
+      "publishDate": "2011-11-24",
+      "url": "https://www.londontheatre.co.uk/reviews/matilda-the-musical-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "telegraph--tim-walker.json",
+      "score": 74,
+      "publishDate": "2011-11-25",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/8915418/Matilda-the-Musical-Cambridge-Theatre-Seven-magazine-review.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71412,10 +70531,52 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 93,
+      "publishDate": "2023-05-10",
+      "url": "https://www.allthatdazzles.co.uk/post/review-operation-mincemeat-fortune-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "guardian--emma-john.json",
       "score": 79,
       "publishDate": "2023-05-10",
       "url": "https://www.theguardian.com/stage/2023/may/10/operation-mincemeat-review-fortune-theatre-london-west-end",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 92,
+      "publishDate": "2023-05-11",
+      "url": "https://www.londontheatre.co.uk/reviews/operation-mincemeat-review-fortune-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "lost-in-theatreland--amy-rye.json",
+      "score": 92,
+      "publishDate": "2023-05-10",
+      "url": "https://lostintheatreland.co.uk/operation-mincemeat-review-fortune-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76844,6 +76005,20 @@
     },
     {
       "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "london-theatre--matt-wolf.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-factory",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 73,
       "publishDate": "2026-03-10",
@@ -80070,6 +79245,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "file": "musical-theatre-review--lisa-martland.json",
+      "score": 92,
+      "publishDate": "2006-09-27",
+      "url": "https://musicaltheatrereview.com/wicked-apollo-victoria-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "file": "telegraph--marianka-swain.json",
+      "score": 100,
+      "publishDate": "2023-10-01",
+      "url": "https://www.telegraph.co.uk/theatre/tickets/london/wicked/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
