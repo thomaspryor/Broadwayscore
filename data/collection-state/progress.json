@@ -524,7 +524,17 @@
     "war-horse-2011/scheckontheater--frank-scheck.json",
     "war-horse-2011/new-jersey-newsroom--michael-sommers.json",
     "war-horse-2011/backstage--erik-haagensen.json",
-    "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json"
+    "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json",
+    "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json",
+    "catch-me-if-you-can-2011/backstage--erik-haagensen.json",
+    "anything-goes-2011/scheckontheater--frank-scheck.json",
+    "anything-goes-2011/talkinbroadway--matthew-murray.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newsday--linda-winer.json",
+    "how-to-succeed-in-business-without-really-trying-2011/theatermania--david-rooney.json",
+    "how-to-succeed-in-business-without-really-trying-2011/village-voice--michael-musto.json",
+    "how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
+    "how-to-succeed-in-business-without-really-trying-2011/new-jersey-newsroom--michael-sommers.json",
+    "how-to-succeed-in-business-without-really-trying-2011/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -656,7 +666,9 @@
       "data/review-texts/on-a-clear-day-you-can-see-forever-2011/philadelphia-inquirer--howard-shapiro.json",
       "data/review-texts/the-normal-heart-2011/scheckontheater--frank-scheck.json",
       "data/review-texts/sister-act-2011/scheckontheater--frank-scheck.json",
-      "data/review-texts/wonderland-2011/northjerseycom--robert-feldberg.json"
+      "data/review-texts/wonderland-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/anything-goes-2011/talkinbroadway--matthew-murray.json",
+      "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json"
     ],
     "archive": [
       "hadestown-west-end-2024/artsdesk--marianka-swain.json",
@@ -684,7 +696,7 @@
     ]
   },
   "startTime": "2026-04-01T03:48:30.603Z",
-  "lastProcessed": "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json",
+  "lastProcessed": "how-to-succeed-in-business-without-really-trying-2011/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -944,6 +956,34 @@
       "t": "2026-04-01T06:43:56.380Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T06:46:51.086Z",
+      "event": "bb-session",
+      "session": "9142ccd8",
+      "url": "https://www.newsday.com/entertainment/theater/daniel-radcliffe-knows-how-to-succ"
+    },
+    {
+      "t": "2026-04-01T06:46:52.520Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-01T06:49:29.328Z",
+      "event": "bb-session",
+      "session": "550e8ccd",
+      "url": "https://blogs.villagevoice.com/dailymusto/2011/03/how_to_succeed.php"
+    },
+    {
+      "t": "2026-04-01T06:50:21.320Z",
+      "event": "bb-session",
+      "session": "bb8c34f6",
+      "url": "https://www.washingtonpost.com/lifestyle/style/theater_reviews_how_to_succeed_an"
+    },
+    {
+      "t": "2026-04-01T06:50:22.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
