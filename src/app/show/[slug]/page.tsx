@@ -42,7 +42,7 @@ import RelatedShows from '@/components/RelatedShows';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
-import TicketLink from '@/components/TicketLink';
+import TicketLink, { sortTicketLinks } from '@/components/TicketLink';
 import { getComparisonsForShow } from '@/config/comparisons';
 import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
 import ShowPageWatchlistButton from '@/components/user/ShowPageWatchlistButton';
@@ -246,6 +246,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const lotteryRush = getLotteryRush(show.id);
   const showSchedule = getShowSchedule(show.id);
   const commercial = getShowCommercial(show.slug);
+  const sortedTicketLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
   const castFile = getShowCastFile(show.id);
   // Pre-compute actor slug map for clickable cast names
@@ -455,16 +456,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         platform="Official Site"
                         url={show.officialUrl}
                         pageType="show"
-                        totalLinks={(show.ticketLinks?.length ?? 0) + 1}
+                        totalLinks={sortedTicketLinks.length + 1}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
                       >
                         <GlobeIcon />
                         Official Site
                       </TicketLink>
                     )}
-                    {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
+                    {sortedTicketLinks.length > 0 && show.status !== 'closed' && sortedTicketLinks.map((link, i) => (
                       <TicketLink
-                        key={i}
+                        key={link.platform}
                         showName={show.title}
                         showId={show.id}
                         showSlug={show.slug}
@@ -475,7 +476,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         url={link.url}
                         pageType="show"
                         linkPosition={i}
-                        totalLinks={show.ticketLinks?.length ?? 0}
+                        totalLinks={sortedTicketLinks.length}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
                       >
                         <TicketIcon />
@@ -744,7 +745,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   platform="Official Site"
                   url={show.officialUrl}
                   pageType="show"
-                  totalLinks={(show.ticketLinks?.length ?? 0) + 1}
+                  totalLinks={sortedTicketLinks.length + 1}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
                 >
                   <GlobeIcon />
@@ -753,9 +754,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               )}
 
               {/* Ticket Links */}
-              {show.ticketLinks && show.ticketLinks.length > 0 && show.status !== 'closed' && show.ticketLinks.map((link, i) => (
+              {sortedTicketLinks.length > 0 && show.status !== 'closed' && sortedTicketLinks.map((link, i) => (
                 <TicketLink
-                  key={i}
+                  key={link.platform}
                   showName={show.title}
                   showId={show.id}
                   showSlug={show.slug}
@@ -766,7 +767,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   url={link.url}
                   pageType="show"
                   linkPosition={i}
-                  totalLinks={show.ticketLinks?.length ?? 0}
+                  totalLinks={sortedTicketLinks.length}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
                 >
                   <TicketIcon />
