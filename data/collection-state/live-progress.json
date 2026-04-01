@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-01T21:09:08.234Z",
+  "updatedAt": "2026-04-01T21:13:44.174Z",
   "processed": 136,
-  "failed": 1130,
+  "failed": 1140,
   "successRate": "10.7%",
   "tierBreakdown": {
     "playwright": 80,
@@ -10,44 +10,11 @@
     "directCookies": 2,
     "scrapingbee": 25,
     "brightdata": 0,
-    "archiveToday": 128,
+    "archiveToday": 131,
     "archive": 24
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-04-01T19:56:24.352Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-01T19:57:53.404Z",
-      "event": "bb-session",
-      "session": "00479e62",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/style/2005/08/16/lennon-a-music"
-    },
-    {
-      "t": "2026-04-01T19:57:54.803Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-04-01T20:02:43.362Z",
-      "event": "bb-session",
-      "session": "3bd64644",
-      "url": "https://www.nytimes.com/2001/04/20/movies/theater-review-frolic-and-detour-on-th"
-    },
-    {
-      "t": "2026-04-01T20:02:44.587Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-01T20:08:53.426Z",
-      "event": "bb-session",
-      "session": "b47220bb",
-      "url": "https://www.northjersey.com/arts_entertainment/127572463__Rent__revival_off-Broa"
-    },
     {
       "t": "2026-04-01T20:08:54.703Z",
       "event": "bb-cookie-inject",
@@ -124,6 +91,39 @@
       "t": "2026-04-01T21:08:51.028Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T21:09:53.611Z",
+      "event": "bb-session",
+      "session": "383ea5a9",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
+    },
+    {
+      "t": "2026-04-01T21:09:55.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T21:11:49.364Z",
+      "event": "bb-session",
+      "session": "020a1389",
+      "url": "https://www.northjersey.com/entertainment/stage/WAITING0430.html"
+    },
+    {
+      "t": "2026-04-01T21:11:50.738Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T21:13:35.703Z",
+      "event": "bb-session",
+      "session": "b8738ad4",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2009/04/27/AR2009042703054"
+    },
+    {
+      "t": "2026-04-01T21:13:37.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }

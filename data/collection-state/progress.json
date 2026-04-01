@@ -1267,7 +1267,17 @@
     "memphis-2009/variety--charles-isherwood.json",
     "oleanna-2009/times-uk--dominic-maxwell.json",
     "a-steady-rain-2009/ap--michael-kuchwara.json",
-    "burn-the-floor-2009/northjerseycom--robert-feldberg.json"
+    "burn-the-floor-2009/northjerseycom--robert-feldberg.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "9-to-5-2009/wsj--unknown.json",
+    "9-to-5-2009/access-atlanta--wendell-brock.json",
+    "waiting-for-godot-2009/ap--michael-kuchwara.json",
+    "waiting-for-godot-2009/northjerseycom--robert-feldberg.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "desire-under-the-elms-2009/washpost--peter-marks.json",
+    "the-philanthropist-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1526,7 +1536,10 @@
       "data/review-texts/the-gruffalo-west-end-west-end-2026/daily-mail--unknown.json",
       "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
       "data/review-texts/a-steady-rain-2009/ap--michael-kuchwara.json",
-      "data/review-texts/burn-the-floor-2009/northjerseycom--robert-feldberg.json"
+      "data/review-texts/burn-the-floor-2009/northjerseycom--robert-feldberg.json",
+      "data/review-texts/9-to-5-2009/wsj--unknown.json",
+      "data/review-texts/waiting-for-godot-2009/northjerseycom--robert-feldberg.json",
+      "data/review-texts/desire-under-the-elms-2009/washpost--peter-marks.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1556,7 +1569,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "burn-the-floor-2009/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "the-philanthropist-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2010,6 +2023,39 @@
       "t": "2026-04-01T21:08:51.028Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T21:09:53.611Z",
+      "event": "bb-session",
+      "session": "383ea5a9",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
+    },
+    {
+      "t": "2026-04-01T21:09:55.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T21:11:49.364Z",
+      "event": "bb-session",
+      "session": "020a1389",
+      "url": "https://www.northjersey.com/entertainment/stage/WAITING0430.html"
+    },
+    {
+      "t": "2026-04-01T21:11:50.738Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T21:13:35.703Z",
+      "event": "bb-session",
+      "session": "b8738ad4",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2009/04/27/AR2009042703054"
+    },
+    {
+      "t": "2026-04-01T21:13:37.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
