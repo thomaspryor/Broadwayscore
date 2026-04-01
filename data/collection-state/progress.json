@@ -118,7 +118,8 @@
     "six-the-musical-west-end-2021/west-end-wilma--unknown.json",
     "the-play-that-goes-wrong-west-end-2021/west-end-wilma--unknown.json",
     "mamma-mia-west-end-2021/musical-theatre-review--unknown.json",
-    "mamma-mia-west-end-2021/west-end-wilma--unknown.json"
+    "mamma-mia-west-end-2021/west-end-wilma--unknown.json",
+    "cymbeline-2007/nytimes--ben-brantley.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -941,7 +942,16 @@
     "the-homecoming-2007/wsj--mark-richardson.json",
     "is-he-dead-2007/ew--thom-geier.json",
     "is-he-dead-2007/washpost--peter-marks.json",
-    "the-farnsworth-invention-2007/wsj--terry-teachout.json"
+    "the-farnsworth-invention-2007/wsj--terry-teachout.json",
+    "the-farnsworth-invention-2007/chicagotribune--chris-jones-bway.json",
+    "young-frankenstein-2007/washpost--peter-marks.json",
+    "a-bronx-tale-2007/zeal-nyc--sheila-kogan.json",
+    "the-ritz-2007/newsday--linda-winer.json",
+    "the-ritz-2007/playbill--unknown.json",
+    "the-ritz-2007/new-jersey-newsroom--michael-sommers.json",
+    "grease-2007/cnn--unknown.json",
+    "grease-2007/latimes--charles-mcnulty-bway.json",
+    "grease-2007/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1025,7 +1035,9 @@
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
       "the-last-five-years-2025/nypost--lou-lumenick.json",
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
-      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/cymbeline-2007/nytimes--ben-brantley.json",
+      "cymbeline-2007/nytimes--ben-brantley.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json"
@@ -1127,7 +1139,14 @@
       "data/review-texts/the-little-mermaid-2008/washpost--peter-marks.json",
       "data/review-texts/the-homecoming-2007/wsj--mark-richardson.json",
       "data/review-texts/is-he-dead-2007/washpost--peter-marks.json",
-      "data/review-texts/the-farnsworth-invention-2007/wsj--terry-teachout.json"
+      "data/review-texts/the-farnsworth-invention-2007/wsj--terry-teachout.json",
+      "data/review-texts/the-farnsworth-invention-2007/chicagotribune--chris-jones-bway.json",
+      "data/review-texts/young-frankenstein-2007/washpost--peter-marks.json",
+      "data/review-texts/a-bronx-tale-2007/zeal-nyc--sheila-kogan.json",
+      "data/review-texts/the-ritz-2007/playbill--unknown.json",
+      "data/review-texts/grease-2007/cnn--unknown.json",
+      "data/review-texts/grease-2007/latimes--charles-mcnulty-bway.json",
+      "data/review-texts/grease-2007/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1154,7 +1173,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "mamma-mia-west-end-2021/west-end-wilma--unknown.json",
+  "lastProcessed": "grease-2007/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -1303,6 +1322,50 @@
     },
     {
       "t": "2026-04-01T13:00:02.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T19:11:33.904Z",
+      "event": "bb-session",
+      "session": "3fd4e665",
+      "url": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html"
+    },
+    {
+      "t": "2026-04-01T19:11:35.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T19:13:27.313Z",
+      "event": "bb-session",
+      "session": "467d18a1",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2007/11/08/AR2007110802466"
+    },
+    {
+      "t": "2026-04-01T19:13:28.623Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T19:16:47.450Z",
+      "event": "bb-session",
+      "session": "ec8bfab2",
+      "url": "https://www.newsday.com/entertainment/theater/the-break-of-noon-by-neil-labute-t"
+    },
+    {
+      "t": "2026-04-01T19:16:48.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-01T19:22:43.719Z",
+      "event": "bb-session",
+      "session": "97c420b9",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/172776551_Broadway_review"
+    },
+    {
+      "t": "2026-04-01T19:22:45.026Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
