@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-01T11:27:36.597Z",
-  "processed": 55,
-  "failed": 65,
-  "successRate": "45.8%",
+  "updatedAt": "2026-04-01T11:28:53.094Z",
+  "processed": 58,
+  "failed": 72,
+  "successRate": "44.6%",
   "tierBreakdown": {
     "playwright": 37,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 11
+    "archive": 12
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -36,6 +36,17 @@
       "t": "2026-04-01T11:24:19.505Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-01T11:28:02.302Z",
+      "event": "bb-session",
+      "session": "06d1528c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-04-01T11:28:03.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

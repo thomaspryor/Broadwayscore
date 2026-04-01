@@ -54,7 +54,10 @@
     "grey-house-2023/slash-film--caroline-cao.json",
     "life-of-pi-2023/newyorker--katy-waldman.json",
     "some-like-it-hot-2022/newyorker--helen-shaw.json",
-    "topdog-underdog-2022/corey-hawkins--jessica-wang.json"
+    "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
+    "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+    "tina-2019/newyorker--michael-schulman.json",
+    "tootsie-2019/latimes--charles-mcnulty.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -121,7 +124,14 @@
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
     "the-kite-runner-2022/thewrap--robert-hofler.json",
     "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
-    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json"
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json",
+    "ink-2019/thestage--naveen-kumar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -169,7 +179,9 @@
       "data/review-texts/mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
       "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
-      "the-last-five-years-2025/nypost--lou-lumenick.json"
+      "the-last-five-years-2025/nypost--lou-lumenick.json",
+      "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -177,7 +189,8 @@
       "bigfoot-off-broadway-2026/timeout--unknown.json",
       "data-off-broadway-2026/timeout--unknown.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/timeout-london--anya-ryan.json",
-      "just-for-us-2023/timeout--adam-feldman.json"
+      "just-for-us-2023/timeout--adam-feldman.json",
+      "tootsie-2019/latimes--charles-mcnulty.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -195,11 +208,12 @@
       "wicked-2003/broadwayworld--david-copney.json",
       "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
-      "some-like-it-hot-2022/newyorker--helen-shaw.json"
+      "some-like-it-hot-2022/newyorker--helen-shaw.json",
+      "tina-2019/newyorker--michael-schulman.json"
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+  "lastProcessed": "tootsie-2019/latimes--charles-mcnulty.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -222,6 +236,17 @@
       "t": "2026-04-01T11:24:19.505Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-01T11:28:02.302Z",
+      "event": "bb-session",
+      "session": "06d1528c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-04-01T11:28:03.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
