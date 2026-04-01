@@ -984,6 +984,40 @@ jobs:
           echo "Dispatching gather-reviews for: ${{ steps.find-gaps.outputs.gap_shows }}"
           gh workflow run gather-reviews.yml -f shows="${{ steps.find-gaps.outputs.gap_shows }}" || echo "Dispatch failed"
 
+  # Auto-trigger opening night readiness check for shows opening tomorrow
+  check-opening-night-readiness:
+    needs: update-shows
+    if: always() && needs.update-shows.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Check for shows opening tomorrow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TOMORROW=$(date -u -d "+1 day" +%Y-%m-%d 2>/dev/null || date -u -v+1d +%Y-%m-%d)
+          echo "Checking for shows opening on $TOMORROW..."
+          SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const opening = shows.filter(s => s.openingDate === '$TOMORROW' && s.status !== 'closed');
+            opening.forEach(s => console.log(s.id + '|' + (s.category || 'broadway')));
+          " 2>/dev/null)
+
+          if [ -z "$SHOWS" ]; then
+            echo "No shows opening tomorrow. Skipping readiness check."
+            exit 0
+          fi
+
+          echo "$SHOWS" | while IFS='|' read -r SHOW_ID MARKET; do
+            echo "Triggering readiness check for: $SHOW_ID (market: $MARKET)"
+            gh workflow run check-opening-night-readiness.yml -f show_id="$SHOW_ID" -f market="$MARKET" || echo "::warning::Failed to trigger readiness check for $SHOW_ID"
+          done
+
   # Alert on consecutive failures
   alert-on-failure:
     needs: update-shows
