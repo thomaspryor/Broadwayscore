@@ -229,6 +229,7 @@ function validateDates(shows) {
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   const today = new Date().toISOString().split('T')[0];
   let issues = 0;
+  let staleStatusFixes = 0;
 
   for (const show of shows) {
     // Format + validity check (catches "TBD", "2026-13-45", non-ISO strings)
@@ -257,7 +258,9 @@ function validateDates(shows) {
     }
 
     if (show.status === 'previews' && show.openingDate && show.openingDate < today) {
-      warn(`Show "${show.title}" still previews but openingDate has passed: ${show.openingDate}`);
+      show.status = 'open';
+      staleStatusFixes++;
+      info(`Auto-fixed "${show.title}": previews → open (openingDate ${show.openingDate} has passed)`);
     }
 
     // Previews with no opening date AND old previewsStartDate = likely stale/bogus entry
@@ -280,7 +283,18 @@ function validateDates(shows) {
     }
   }
 
-  if (issues === 0) {
+  if (staleStatusFixes > 0) {
+    const showsPath = path.join(DATA_DIR, 'shows.json');
+    const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    for (const show of shows) {
+      const match = showsData.shows.find(s => s.id === show.id);
+      if (match) match.status = show.status;
+    }
+    fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2));
+    ok(`Auto-fixed ${staleStatusFixes} stale previews → open`);
+  }
+
+  if (issues === 0 && staleStatusFixes === 0) {
     ok('All dates are valid');
   }
 }
@@ -418,20 +432,33 @@ function validateImageUrls(shows) {
 function validateVenueCategory(shows) {
   info('Cross-checking venue against category...');
   let mismatches = 0;
+  let autoFixed = 0;
 
   for (const show of shows) {
     if (!show.venue || show.venue === 'TBA' || !isLondonMarket(show.category)) continue;
 
     if (show.category === 'off-west-end' && isWestEndVenue(show.venue)) {
-      warn(`"${show.title}" (${show.id}) is at West End venue "${show.venue}" but categorised as off-west-end`);
-      mismatches++;
+      show.category = 'west-end';
+      autoFixed++;
+      info(`Auto-fixed "${show.title}" (${show.id}): off-west-end → west-end (venue: "${show.venue}")`);
     } else if (show.category === 'west-end' && isOffWestEndVenue(show.venue)) {
-      warn(`"${show.title}" (${show.id}) is at off-West End venue "${show.venue}" but categorised as west-end`);
-      mismatches++;
+      show.category = 'off-west-end';
+      autoFixed++;
+      info(`Auto-fixed "${show.title}" (${show.id}): west-end → off-west-end (venue: "${show.venue}")`);
     }
   }
 
-  if (mismatches === 0) {
+  if (autoFixed > 0) {
+    // Write back the fixes
+    const showsPath = path.join(DATA_DIR, 'shows.json');
+    const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    for (const show of shows) {
+      const match = showsData.shows.find(s => s.id === show.id);
+      if (match) match.category = show.category;
+    }
+    fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2));
+    ok(`Auto-fixed ${autoFixed} venue/category mismatches`);
+  } else {
     ok('All London show venues match their category');
   }
 }

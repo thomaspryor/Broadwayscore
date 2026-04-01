@@ -190,9 +190,9 @@ export default function TicketLink({
     }
   };
 
-  // Affiliate partners get a subtle warm accent border to draw the eye
-  const isPartner = platform in AFFILIATE_CONFIG;
-  const resolvedClassName = isPartner
+  // Active affiliates get a subtle warm accent border to draw the eye.
+  // As each platform's affiliate config is enabled, it automatically gets the accent.
+  const resolvedClassName = isAffiliate
     ? (className ?? '').replace(/border-white\/10/g, 'border-amber-500/30 hover:border-amber-500/50') + ' text-gray-200'
     : className ?? '';
 
