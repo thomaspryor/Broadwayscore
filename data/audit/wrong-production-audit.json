@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-01T17:18:18.919Z",
+  "timestamp": "2026-04-01T20:44:47.815Z",
   "stats": {
     "totalReviews": 32170,
-    "alreadyFlagged": 11968,
-    "dateGuardCatches": 14,
+    "alreadyFlagged": 11981,
+    "dateGuardCatches": 13,
     "directorMismatch": 839,
     "tvFilmSignals": 3316,
-    "londonSignals": 957,
+    "londonSignals": 961,
     "offBroadwaySignals": 963,
     "yearMismatch": 64,
-    "noPublishDate": 5906
+    "noPublishDate": 5884
   },
   "findings": [
     {
@@ -11022,25 +11022,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "cymbeline-2007",
-      "file": "nytimes--ben-brantley.json",
-      "score": null,
-      "publishDate": "August 22, 2007",
-      "url": "https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 71d before show (August 22, 2007 vs 2007-11-01)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -40549,6 +40530,20 @@
       ]
     },
     {
+      "showId": "six-the-musical-west-end-2021",
+      "file": "everything-theatre--lily-middleton.json",
+      "score": 86,
+      "publishDate": "2021-11-03",
+      "url": "https://everything-theatre.co.uk/2021/11/review-six-the-musical-vaudeville-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "skeleton-crew-2022",
       "file": "variety--ayanna-prescod.json",
       "score": 82,
@@ -61429,6 +61424,20 @@
       ]
     },
     {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "west-end-wilma--unknown.json",
+      "score": 86,
+      "publishDate": "2025-10-18",
+      "url": "https://westendwilma.com/review-cabaret-musical-london-october-2025/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "caroline-or-change-2004",
       "file": "newsday--linda-winer.json",
       "publishDate": "2004-05-03",
@@ -64726,6 +64735,20 @@
       "score": 82,
       "publishDate": "2024-02-22",
       "url": "https://theartsdesk.com/theatre/hadestown-lyric-theatre-review-soul-stirring-musical-gloriously-revamps-classical-myths",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "file": "everything-theatre--dean-wood.json",
+      "score": 88,
+      "publishDate": "2024-02-24",
+      "url": "https://everything-theatre.co.uk/2024/02/review-hadestown-lyric-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -70773,6 +70796,19 @@
       ]
     },
     {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "west-end-wilma--unknown.json",
+      "publishDate": "2025-07-11",
+      "url": "https://westendwilma.com/review-operation-mincemeat-london-july-2025/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "oslo-2017",
       "file": "cititour--brian-scott-lipton.json",
       "score": 88,
@@ -72220,6 +72256,19 @@
       "score": 89,
       "publishDate": "November 11th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "file": "west-end-wilma--unknown.json",
+      "publishDate": "2026-03-23",
+      "url": "https://westendwilma.com/six-musical-review-london-vaudeville-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

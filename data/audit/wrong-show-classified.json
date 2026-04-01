@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-01T17:13:42.128Z",
+    "generatedAt": "2026-04-01T20:39:53.266Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "bells-are-ringing-2001",
+      "showTitle": "Bells Are Ringing",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Bells Are Ringing\" multiple times and discusses the plot, cast, and creative team of the show, including Kelli O'Hara and Kathleen Marshall."
+    }
+  ]
 }
