@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-01T21:49:31.259Z",
-  "processed": 137,
-  "failed": 1100,
-  "successRate": "11.1%",
+  "updatedAt": "2026-04-01T21:57:28.415Z",
+  "processed": 136,
+  "failed": 1200,
+  "successRate": "10.2%",
   "tierBreakdown": {
-    "playwright": 82,
+    "playwright": 80,
     "amp": 0,
     "browserbase": 10,
     "directCookies": 2,
-    "scrapingbee": 26,
+    "scrapingbee": 25,
     "brightdata": 0,
-    "archiveToday": 133,
+    "archiveToday": 163,
     "archive": 24
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-04-01T20:21:07.589Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-04-01T20:22:40.319Z",
-      "event": "bb-session",
-      "session": "176b7666",
-      "url": "https://news.google.com/news/url?sr=1&sa=t&ct2=us%2F0_0_s_6_0_t&usg=AFQjCNFS17Ms"
-    },
-    {
-      "t": "2026-04-01T20:26:29.684Z",
-      "event": "bb-session",
-      "session": "77d491ce",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review_"
-    },
-    {
-      "t": "2026-04-01T20:26:31.029Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-04-01T21:06:58.354Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-01T21:18:01.912Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-01T21:20:40.885Z",
+      "event": "bb-session",
+      "session": "767f3430",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-reasons-to-be-happy-3-star"
+    },
+    {
+      "t": "2026-04-01T21:20:42.072Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-01T21:21:28.558Z",
+      "event": "bb-session",
+      "session": "98556645",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/211152621_Theater_review_"
+    },
+    {
+      "t": "2026-04-01T21:21:29.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
