@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-01T08:57:51.032Z",
+  "timestamp": "2026-04-01T09:12:02.396Z",
   "stats": {
-    "totalReviews": 32116,
-    "alreadyFlagged": 11935,
+    "totalReviews": 32133,
+    "alreadyFlagged": 11953,
     "dateGuardCatches": 14,
-    "directorMismatch": 838,
-    "tvFilmSignals": 3313,
-    "londonSignals": 949,
+    "directorMismatch": 837,
+    "tvFilmSignals": 3312,
+    "londonSignals": 948,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
-    "noPublishDate": 5923
+    "noPublishDate": 5915
   },
   "findings": [
     {
@@ -26636,30 +26636,6 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2008",
-      "file": "huffpost--steven-suskin.json",
-      "score": 59,
-      "publishDate": null,
-      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-liaisons-whats_b_12721766.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"howard davies\" from les-liaisons-dangereuses-1987"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2008",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 45,
       "publishDate": null,
@@ -26736,20 +26712,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2016",
-      "file": "northjerseycom--robert-feldberg.json",
-      "score": 58,
-      "publishDate": null,
-      "url": "https://www.northjersey.com/arts-and-entertainment/theater/perhaps-just-risky-and-not-so-dangerous-1.1685305",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -26840,6 +26802,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (5x) more than 2016 (0x). 2026 matches production: les-liaisons-dangereuses-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "observer--rex-reed.json",
+      "score": null,
+      "publishDate": "2026-04-01",
+      "url": "http://observer.com/2016/11/les-liaisons-dangereuses-with-liev-schrieber-is-too-tame-to-titillate/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
         }
       ]
     },
@@ -68119,20 +68095,6 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2016",
-      "file": "talkinbroadway--matthew-murray.json",
-      "score": 42,
-      "publishDate": "2016-10-30",
-      "url": "https://www.talkinbroadway.com/page/world/LiaisonsDangereuses2016.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2016",
       "file": "variety--marilyn-stasio.json",
       "score": 63,
       "publishDate": "October 30, 2016",
@@ -71567,6 +71529,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 61,
+      "publishDate": "2026-03-12",
+      "url": "https://www.theguardian.com/stage/2025/jul/09/noughts-crosses-review-malorie-blackman-racism-regents-park-open-air-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
