@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-01T12:21:43.904Z",
+  "timestamp": "2026-04-01T12:34:54.146Z",
   "stats": {
     "totalReviews": 32170,
     "alreadyFlagged": 11962,
     "dateGuardCatches": 14,
     "directorMismatch": 839,
-    "tvFilmSignals": 3313,
-    "londonSignals": 957,
+    "tvFilmSignals": 3315,
+    "londonSignals": 956,
     "offBroadwaySignals": 963,
     "yearMismatch": 64,
     "noPublishDate": 5914
@@ -12993,6 +12993,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "the-telegrap--dominic-cavendish.json",
+      "score": 83,
+      "publishDate": "February 17th, 2026",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -57938,6 +57952,20 @@
       ]
     },
     {
+      "showId": "wicked-west-end-2021",
+      "file": "the-telegrap--charles-spencer.json",
+      "score": 74,
+      "publishDate": "January 1st, 2009",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
       "showId": "wit-2012",
       "file": "nytimes--ben-brantley.json",
       "score": 76,
@@ -70369,6 +70397,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "telegraph--claire-allfree.json",
+      "score": 90,
       "publishDate": "2025-01-14",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
       "findings": [
@@ -76779,20 +76808,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "the-telegrap--david-gritten.json",
-      "score": 88,
-      "publishDate": "October 17th, 2014",
-      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
