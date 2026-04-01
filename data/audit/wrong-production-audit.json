@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-01T10:33:23.682Z",
+  "timestamp": "2026-04-01T10:43:41.117Z",
   "stats": {
     "totalReviews": 32167,
     "alreadyFlagged": 11960,
     "dateGuardCatches": 14,
-    "directorMismatch": 837,
+    "directorMismatch": 838,
     "tvFilmSignals": 3314,
     "londonSignals": 952,
     "offBroadwaySignals": 966,
@@ -26802,6 +26802,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (5x) more than 2016 (0x). 2026 matches production: les-liaisons-dangereuses-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "financialtimes--max-mcguinness.json",
+      "score": 79,
+      "publishDate": "2026-04-01",
+      "url": "https://www.ft.com/content/1629ce74-9f55-11e6-891e-abe238dee8e2",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
         }
       ]
     },
@@ -71596,9 +71610,9 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 84,
-      "publishDate": "2026-04-01",
-      "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-b1277295.html",
+      "score": 81,
+      "publishDate": "2026-03-31",
+      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
