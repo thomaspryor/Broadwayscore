@@ -58,7 +58,10 @@
     "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
     "tina-2019/newyorker--michael-schulman.json",
     "tootsie-2019/latimes--charles-mcnulty.json",
-    "bernhardthamlet-2018/stage-left--william-wolf.json"
+    "bernhardthamlet-2018/stage-left--william-wolf.json",
+    "three-tall-women-2018/theater-life--david-sheward.json",
+    "latin-history-for-morons-2017/stage-left--william-wolf.json",
+    "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -141,7 +144,14 @@
     "the-ferryman-2018/walterthinnes--walter-thinnes.json",
     "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
     "saint-joan-2018/show-buzz-nyc--laura-heller.json",
-    "travesties-2018/washpost--peter-marks.json"
+    "travesties-2018/washpost--peter-marks.json",
+    "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
+    "children-of-a-lesser-god-2018/melindas-malarky--melinda-pressler.json",
+    "three-tall-women-2018/usatoday--charles-isherwood.json",
+    "angels-in-america-2018/theater-news-online--david-cote.json",
+    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+    "spongebob-squarepants-2017/wsj--edward-rothstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -183,7 +193,10 @@
       "the-cottage-2023/theatermania--peter-hempstead.json",
       "grey-house-2023/slash-film--caroline-cao.json",
       "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
-      "bernhardthamlet-2018/stage-left--william-wolf.json"
+      "bernhardthamlet-2018/stage-left--william-wolf.json",
+      "three-tall-women-2018/theater-life--david-sheward.json",
+      "latin-history-for-morons-2017/stage-left--william-wolf.json",
+      "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
     ],
     "amp": [],
     "browserbase": [
@@ -207,7 +220,8 @@
     "archiveToday": [
       "data/review-texts/giant-2026/vulture--sara-holdren.json",
       "data/review-texts/moulin-rouge-2019/billboard--mary-j-dimeglio.json",
-      "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json"
+      "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+      "data/review-texts/spongebob-squarepants-2017/wsj--edward-rothstein.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -225,7 +239,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "travesties-2018/washpost--peter-marks.json",
+  "lastProcessed": "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -259,6 +273,17 @@
       "t": "2026-04-01T11:28:03.510Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-01T11:33:13.053Z",
+      "event": "bb-session",
+      "session": "8e10c924",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-04-01T11:33:14.406Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
