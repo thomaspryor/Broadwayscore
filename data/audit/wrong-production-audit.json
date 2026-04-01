@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-01T11:46:52.191Z",
+  "timestamp": "2026-04-01T11:59:39.896Z",
   "stats": {
     "totalReviews": 32167,
     "alreadyFlagged": 11962,
     "dateGuardCatches": 14,
     "directorMismatch": 839,
-    "tvFilmSignals": 3314,
+    "tvFilmSignals": 3313,
     "londonSignals": 956,
     "offBroadwaySignals": 963,
     "yearMismatch": 64,
@@ -23763,6 +23763,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "musical-theatre-review--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/into-the-woods-bridge-theatre/",
       "findings": [
@@ -52291,19 +52292,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "the-price-2017",
-      "file": "dailybeast--chris-jones.json",
-      "publishDate": "2017-03-16",
-      "url": "http://www.thedailybeast.com/articles/2017/03/16/no-one-eats-an-egg-like-danny-devito-review-of-the-price-on-broadway.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
