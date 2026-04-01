@@ -290,15 +290,15 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from rebuild-reviews'
 
-      - name: Trigger deploy (always — ensures out-of-band data pushes get deployed)
-        if: always()
+      - name: Trigger deploy (only when data changed)
+        if: always() && steps.changes.outputs.has_changes == 'true'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          # Always deploy after rebuild. Vercel deploys are idempotent — if code hasn't
-          # changed, the build is a no-op. The previous dedup logic caused stale data on
-          # the live site during Dog Day Afternoon opening night (2026-03-30) when a deploy
-          # from a stale rebuild blocked deploys from subsequent correct rebuilds.
+          # Only deploy when rebuild produced actual changes. The Dog Day Afternoon stale-data
+          # incident (2026-03-30) was caused by dedup logic blocking deploys — the fix is to
+          # always deploy when there ARE changes, not to deploy when there are none.
+          # Deploying on no-change rebuilds caused 190+ daily deploys during cascade events.
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
 

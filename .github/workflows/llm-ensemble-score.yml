@@ -620,19 +620,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Scoring chain complete. Triggering rebuild and consensus..."
-          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow=rebuild-reviews.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          WAITING=$(gh run list --workflow=rebuild-reviews.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$((RUNNING + QUEUED + WAITING))" -gt 0 ]; then
-            echo "Rebuild already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping trigger."
-          else
-            gh workflow run rebuild-reviews.yml -f reason="Post LLM ensemble scoring chain"
-            echo "Rebuild dispatched."
-          fi
-          # Consensus is now auto-triggered by rebuild workflow when it detects changes.
-          # Previously dispatched here with a race condition (consensus started before rebuild finished).
-          echo "Consensus will be triggered by rebuild when it completes."
+          # NOTE: Rebuild dispatch removed 2026-04-01. LLM scores are written to review-text
+          # files and pushed to private repo. The daily 4 AM rebuild cron picks them up.
+          # For opening nights, the orchestrator/poller handles the fast-path rebuild.
+          # Dispatching rebuild here created a Rebuild→Score→Rebuild cascade (1000+ runs/day).
+          echo "Scoring chain complete. Scores committed to review-texts."
+          echo "Daily rebuild cron (4 AM UTC) will incorporate new scores into reviews.json."
 
       - name: Trigger pull quote extraction (chain complete)
         if: >-

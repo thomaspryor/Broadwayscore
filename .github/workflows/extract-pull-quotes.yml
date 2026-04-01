@@ -147,8 +147,10 @@ jobs:
             exit 0
           fi
 
-          echo "Triggering rebuild..."
-          gh workflow run rebuild-reviews.yml -f reason="Post pull-quote extraction"
+          # NOTE: Rebuild dispatch removed 2026-04-01. Pull quotes are stored in review-text
+          # files and will be picked up by the daily 4 AM rebuild cron. Dispatching rebuild
+          # here created a Rebuild→Score→PullQuotes→Rebuild cascade (1000+ runs/day).
+          echo "Skipping rebuild — daily cron will pick up pull quote changes."
         continue-on-error: true
 
       - name: Notify on failure
