@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-01T06:06:04.678Z",
-  "processed": 82,
-  "failed": 241,
-  "successRate": "25.4%",
+  "updatedAt": "2026-04-01T06:20:31.190Z",
+  "processed": 89,
+  "failed": 284,
+  "successRate": "23.9%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 51,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 12,
+    "scrapingbee": 14,
     "brightdata": 0,
     "archiveToday": 38,
-    "archive": 17
+    "archive": 19
   },
-  "browserbaseSessions": 22,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-01T05:49:47.132Z",
-      "event": "bb-session",
-      "session": "c30f9d79",
-      "url": "https://www.northjersey.com/arts_entertainment/120942159_Grandmother_paints_a_po"
-    },
-    {
-      "t": "2026-04-01T05:49:48.408Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-04-01T05:50:20.712Z",
       "event": "bb-session",
@@ -126,6 +115,17 @@
       "t": "2026-04-01T06:05:39.211Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T06:15:00.448Z",
+      "event": "bb-session",
+      "session": "176ba330",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
+    },
+    {
+      "t": "2026-04-01T06:15:01.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
