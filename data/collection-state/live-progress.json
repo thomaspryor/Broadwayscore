@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-01T05:16:47.917Z",
-  "processed": 57,
-  "failed": 66,
-  "successRate": "46.3%",
+  "updatedAt": "2026-04-01T05:29:38.707Z",
+  "processed": 72,
+  "failed": 101,
+  "successRate": "41.6%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 43,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 10
+    "archiveToday": 18,
+    "archive": 15
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -47,6 +47,28 @@
       "t": "2026-04-01T05:13:00.406Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-01T05:17:36.564Z",
+      "event": "bb-session",
+      "session": "21543b5e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-04-01T05:17:37.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-01T05:23:13.747Z",
+      "event": "bb-session",
+      "session": "e496a518",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-c"
+    },
+    {
+      "t": "2026-04-01T05:23:15.033Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
