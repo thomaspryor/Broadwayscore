@@ -120,7 +120,8 @@
     "mamma-mia-west-end-2021/musical-theatre-review--unknown.json",
     "mamma-mia-west-end-2021/west-end-wilma--unknown.json",
     "cymbeline-2007/nytimes--ben-brantley.json",
-    "company-2006/variety--charles-isherwood.json"
+    "company-2006/variety--charles-isherwood.json",
+    "bells-are-ringing-2001/new-jersey-newsroom--michael-sommers.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -981,7 +982,16 @@
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "jersey-boys-2005/the-journal-news--jacques-le-sourd.json",
     "the-odd-couple-2005/nytimes--ben-brantley.json",
-    "the-odd-couple-2005/wsj--terry-teachout.json"
+    "the-odd-couple-2005/wsj--terry-teachout.json",
+    "latinologues-2005/nytimes--jason-zinoman.json",
+    "lennon-2005/washpost--peter-marks.json",
+    "700-sundays-2004/ap--mark-kennedy.json",
+    "assassins-2004/ap--michael-kuchwara.json",
+    "movin-out-2002/nytimes--ben-brantley.json",
+    "thoroughly-modern-millie-2002/nydailynews--howard-kissel.json",
+    "the-producers-2001/nytimes--ben-brantley.json",
+    "bells-are-ringing-2001/nytimes--ben-brantley.json",
+    "contact-2000/renew-here--simplecirc-inc.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1097,7 +1107,8 @@
       "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
       "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json",
       "wicked-west-end-2021/the-telegrap--charles-spencer.json",
-      "the-lion-king-west-end-2021/the-telegrap--david-gritten.json"
+      "the-lion-king-west-end-2021/the-telegrap--david-gritten.json",
+      "bells-are-ringing-2001/new-jersey-newsroom--michael-sommers.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1199,7 +1210,16 @@
       "data/review-texts/bridge-and-tunnel-2006/nydailynews--joe-dziemianowicz-bway.json",
       "data/review-texts/jersey-boys-2005/the-journal-news--jacques-le-sourd.json",
       "data/review-texts/the-odd-couple-2005/nytimes--ben-brantley.json",
-      "data/review-texts/the-odd-couple-2005/wsj--terry-teachout.json"
+      "data/review-texts/the-odd-couple-2005/wsj--terry-teachout.json",
+      "data/review-texts/latinologues-2005/nytimes--jason-zinoman.json",
+      "data/review-texts/lennon-2005/washpost--peter-marks.json",
+      "data/review-texts/700-sundays-2004/ap--mark-kennedy.json",
+      "data/review-texts/assassins-2004/ap--michael-kuchwara.json",
+      "data/review-texts/movin-out-2002/nytimes--ben-brantley.json",
+      "data/review-texts/thoroughly-modern-millie-2002/nydailynews--howard-kissel.json",
+      "data/review-texts/the-producers-2001/nytimes--ben-brantley.json",
+      "data/review-texts/bells-are-ringing-2001/nytimes--ben-brantley.json",
+      "data/review-texts/contact-2000/renew-here--simplecirc-inc.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1226,7 +1246,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "the-odd-couple-2005/wsj--terry-teachout.json",
+  "lastProcessed": "contact-2000/renew-here--simplecirc-inc.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -1564,6 +1584,39 @@
       "t": "2026-04-01T19:54:29.382Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T19:56:22.984Z",
+      "event": "bb-session",
+      "session": "03b2106b",
+      "url": "https://www.nytimes.com/2005/09/27/theater/reviews/latinologues-plural-voices-of"
+    },
+    {
+      "t": "2026-04-01T19:56:24.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T19:57:53.404Z",
+      "event": "bb-session",
+      "session": "00479e62",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/style/2005/08/16/lennon-a-music"
+    },
+    {
+      "t": "2026-04-01T19:57:54.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T20:02:43.362Z",
+      "event": "bb-session",
+      "session": "3bd64644",
+      "url": "https://www.nytimes.com/2001/04/20/movies/theater-review-frolic-and-detour-on-th"
+    },
+    {
+      "t": "2026-04-01T20:02:44.587Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
