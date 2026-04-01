@@ -330,7 +330,30 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                   {/* Action Links */}
                   {(show.officialUrl || (ticketLinks.length > 0 && show.status === 'open') || (lotteryRush && show.status !== 'closed')) && (
                     <div className="mt-3 pt-1 flex flex-wrap gap-2">
-                      {/* Official Site */}
+                      {/* Ticket Sources (affiliate platforms first) */}
+                      {show.status === 'open' && ticketLinks.map((link, i) => (
+                        <TicketLink
+                          key={link.platform}
+                          showName={show.title}
+                          showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
+                          platform={link.platform}
+                          url={link.url}
+                          pageType="guide"
+                          linkPosition={i}
+                          totalLinks={ticketLinks.length}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                          </svg>
+                          {link.platform}{link.priceFrom ? ` from $${link.priceFrom}` : ''}
+                        </TicketLink>
+                      ))}
+                      {/* Official Site (after ticket platforms) */}
                       {show.officialUrl && (
                         <TicketLink
                           showName={show.title}
@@ -351,29 +374,6 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           Official Site
                         </TicketLink>
                       )}
-                      {/* Ticket Sources */}
-                      {show.status === 'open' && ticketLinks.map((link, i) => (
-                        <TicketLink
-                          key={i}
-                          showName={show.title}
-                          showId={show.id}
-                          showSlug={show.slug}
-                          showStatus={show.status}
-                          showCategory={show.category}
-                          showScore={show.criticScore?.score ?? null}
-                          platform={link.platform}
-                          url={link.url}
-                          pageType="guide"
-                          linkPosition={i}
-                          totalLinks={ticketLinks.length}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
-                        >
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                          </svg>
-                          {link.platform}{link.priceFrom ? ` from $${link.priceFrom}` : ''}
-                        </TicketLink>
-                      ))}
                       {/* Lottery/Rush */}
                       {lotteryRush && show.status !== 'closed' && (
                         <Link
