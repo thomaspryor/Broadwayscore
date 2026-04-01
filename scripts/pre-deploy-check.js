@@ -229,6 +229,27 @@ try {
 }
 
 // ─────────────────────────────────────────────
+// 3. Guide content freshness (warning only — doesn't block deploy)
+// ─────────────────────────────────────────────
+try {
+  const guidePath = path.join(__dirname, '..', 'src', 'app', 'guides', 'cheap-broadway-tickets', 'page.tsx');
+  const guideContent = fs.readFileSync(guidePath, 'utf8');
+  const match = guideContent.match(/lastVerified:\s*['"](\d{4}-\d{2}-\d{2})['"]/);
+  if (match) {
+    const verified = new Date(match[1]);
+    const now = new Date();
+    const monthsStale = (now - verified) / (1000 * 60 * 60 * 24 * 30);
+    if (monthsStale > 6) {
+      console.log(`⚠️  Cheap tickets guide GUIDE_DATA.lastVerified is ${Math.floor(monthsStale)} months old (${match[1]}). Review prices/hours at source.`);
+    } else {
+      ok(`Guide content freshness: verified ${match[1]} (${Math.floor(monthsStale)}mo ago)`);
+    }
+  }
+} catch (e) {
+  // Non-fatal
+}
+
+// ─────────────────────────────────────────────
 // Result
 // ─────────────────────────────────────────────
 console.log('');
