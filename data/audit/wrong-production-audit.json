@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-01T08:34:24.243Z",
+  "timestamp": "2026-04-01T08:48:31.104Z",
   "stats": {
     "totalReviews": 32116,
     "alreadyFlagged": 11935,
     "dateGuardCatches": 14,
     "directorMismatch": 838,
-    "tvFilmSignals": 3312,
+    "tvFilmSignals": 3313,
     "londonSignals": 949,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
@@ -1001,6 +1001,20 @@
       "file": "wsj--terry-teachout.json",
       "score": 93,
       "publishDate": "November 19, 2010",
+      "url": "http://online.wsj.com/article/SB10001424052748703326204575616442412658382.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "a-free-man-of-color-2010",
+      "file": "wsj--unknown.json",
+      "score": 75,
+      "publishDate": "November 18, 2010",
       "url": "http://online.wsj.com/article/SB10001424052748703326204575616442412658382.html",
       "findings": [
         {
