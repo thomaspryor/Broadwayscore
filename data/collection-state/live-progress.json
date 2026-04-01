@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-01T05:05:15.225Z",
-  "processed": 29,
-  "failed": 44,
-  "successRate": "39.7%",
+  "updatedAt": "2026-04-01T05:16:47.917Z",
+  "processed": 57,
+  "failed": 66,
+  "successRate": "46.3%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 15,
-    "archive": 4
+    "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -36,6 +36,17 @@
       "t": "2026-04-01T04:52:20.199Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-01T05:12:59.345Z",
+      "event": "bb-session",
+      "session": "978ae46f",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-04-01T05:13:00.406Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
