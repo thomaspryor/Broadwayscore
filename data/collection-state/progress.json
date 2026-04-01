@@ -1257,7 +1257,17 @@
     "red-2010/washpost--peter-marks.json",
     "come-fly-away-2010/new-jersey-newsroom--michael-sommers.json",
     "come-fly-away-2010/backstage--david-sheward.json",
-    "next-fall-2010/new-jersey-newsroom--michael-sommers.json"
+    "next-fall-2010/new-jersey-newsroom--michael-sommers.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/timeout--david-cote.json",
+    "a-behanding-in-spokane-2010/backstage--david-sheward.json",
+    "time-stands-still-2010/new-jersey-newsroom--michael-sommers.json",
+    "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "memphis-2009/variety--charles-isherwood.json",
+    "oleanna-2009/times-uk--dominic-maxwell.json",
+    "a-steady-rain-2009/ap--michael-kuchwara.json",
+    "burn-the-floor-2009/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1514,7 +1524,9 @@
       "data/review-texts/the-car-man-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-gruffalo-west-end-2026/daily-mail--unknown.json",
       "data/review-texts/the-gruffalo-west-end-west-end-2026/daily-mail--unknown.json",
-      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json"
+      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+      "data/review-texts/a-steady-rain-2009/ap--michael-kuchwara.json",
+      "data/review-texts/burn-the-floor-2009/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1544,7 +1556,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "next-fall-2010/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "burn-the-floor-2009/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -1974,6 +1986,28 @@
     },
     {
       "t": "2026-04-01T20:26:31.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T21:06:58.354Z",
+      "event": "bb-session",
+      "session": "9f1e38bf",
+      "url": "https://www.nytimes.com/aponline/2009/09/29/arts/AP-US-Theater-Review-Steady-Rai"
+    },
+    {
+      "t": "2026-04-01T21:06:59.796Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T21:08:49.782Z",
+      "event": "bb-session",
+      "session": "00c7b827",
+      "url": "https://www.northjersey.com/arts_entertainment/Ballroom_show_turns_out_dance_inf"
+    },
+    {
+      "t": "2026-04-01T21:08:51.028Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }

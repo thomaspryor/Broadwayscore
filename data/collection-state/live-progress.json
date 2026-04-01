@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-01T21:05:32.038Z",
+  "updatedAt": "2026-04-01T21:09:08.234Z",
   "processed": 136,
-  "failed": 1120,
-  "successRate": "10.8%",
+  "failed": 1130,
+  "successRate": "10.7%",
   "tierBreakdown": {
     "playwright": 80,
     "amp": 0,
@@ -10,33 +10,11 @@
     "directCookies": 2,
     "scrapingbee": 25,
     "brightdata": 0,
-    "archiveToday": 126,
+    "archiveToday": 128,
     "archive": 24
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-01T19:51:50.215Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-01T19:54:28.069Z",
-      "event": "bb-session",
-      "session": "c209ada2",
-      "url": "https://www.wsj.com/articles/SB112693598167234567"
-    },
-    {
-      "t": "2026-04-01T19:54:29.382Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-01T19:56:22.984Z",
-      "event": "bb-session",
-      "session": "03b2106b",
-      "url": "https://www.nytimes.com/2005/09/27/theater/reviews/latinologues-plural-voices-of"
-    },
     {
       "t": "2026-04-01T19:56:24.352Z",
       "event": "bb-cookie-inject",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-04-01T20:26:31.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T21:06:58.354Z",
+      "event": "bb-session",
+      "session": "9f1e38bf",
+      "url": "https://www.nytimes.com/aponline/2009/09/29/arts/AP-US-Theater-Review-Steady-Rai"
+    },
+    {
+      "t": "2026-04-01T21:06:59.796Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T21:08:49.782Z",
+      "event": "bb-session",
+      "session": "00c7b827",
+      "url": "https://www.northjersey.com/arts_entertainment/Ballroom_show_turns_out_dance_inf"
+    },
+    {
+      "t": "2026-04-01T21:08:51.028Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
