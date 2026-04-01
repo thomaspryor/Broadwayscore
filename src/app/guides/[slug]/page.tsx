@@ -28,7 +28,8 @@ import { getLotteryRush } from '@/lib/data-lottery';
 import { ScoreBadge, StatusBadge, FormatPill, AudienceChip } from '@/components/show-cards';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import ShowImage from '@/components/ShowImage';
-import TicketLink, { sortTicketLinks } from '@/components/TicketLink';
+import TicketLink from '@/components/TicketLink';
+import { sortTicketLinks } from '@/lib/ticket-utils';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {

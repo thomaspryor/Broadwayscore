@@ -95,30 +95,8 @@ function buildAffiliateUrl(url: string, platform: string, pageType: string): { u
   }
 }
 
-// ─── Ticket link sorting ────────────────────────────────
-// Priority order for ticket platforms. Lower number = shown first.
-// Affiliate-enabled platforms get priority to maximize revenue.
-const TICKET_PLATFORM_PRIORITY: Record<string, number> = {
-  TodayTix: 1,
-  Telecharge: 2,
-  Ticketmaster: 2,
-  StubHub: 3,
-  SeatGeek: 3,
-};
-
-export interface TicketLinkData {
-  platform: string;
-  url: string;
-  priceFrom?: number | null;
-  isOfficial?: boolean;
-}
-
-/** Sort ticket links by platform priority. Stable sort preserves shows.json order for equal priority. */
-export function sortTicketLinks(links: TicketLinkData[]): TicketLinkData[] {
-  return [...links].sort((a, b) => {
-    return (TICKET_PLATFORM_PRIORITY[a.platform] ?? 99) - (TICKET_PLATFORM_PRIORITY[b.platform] ?? 99);
-  });
-}
+// Re-export sorting utilities from shared module (not 'use client' — safe for SSR)
+export { sortTicketLinks, type TicketLinkData } from '@/lib/ticket-utils';
 
 /** Check whether a platform has affiliate tracking enabled */
 export function isAffiliateEnabled(platform: string): boolean {
