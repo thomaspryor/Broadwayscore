@@ -265,10 +265,37 @@ async function main() {
       console.log(`${progress} Fetching: ${t.dir}/${t.file}`);
       console.log(`  URL: ${t.url}`);
 
-      const html = await fetchUrl(t.url);
+      let html = await fetchUrl(t.url);
       console.log(`  HTML: ${html.length} chars`);
 
-      const result = extractScore(html, t.data.fullText || '', outlet);
+      let result = extractScore(html, t.data.fullText || '', outlet);
+
+      // JS-rendering retry: some outlets (Guardian, TimeOut) render star ratings
+      // client-side. If BD returned HTML without scores, retry with Playwright.
+      if (!result && html.length > 10000) {
+        const JS_RENDERED_OUTLETS = new Set([
+          'guardian', 'the-guardian', 'timeout', 'timeout-london',
+          'standard', 'independent', 'i-paper',
+        ]);
+        if (JS_RENDERED_OUTLETS.has(outlet)) {
+          console.log('  Retrying with Playwright (client-rendered stars)...');
+          try {
+            await ensureBrowser();
+            const page = await _context.newPage();
+            try {
+              await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+              await page.waitForTimeout(3000);
+              html = await page.content();
+              console.log(`  Playwright HTML: ${html.length} chars`);
+              result = extractScore(html, t.data.fullText || '', outlet);
+            } finally {
+              await page.close();
+            }
+          } catch (e) {
+            console.log(`  Playwright retry failed: ${e.message}`);
+          }
+        }
+      }
 
       if (result && result.originalScore) {
         extracted++;
