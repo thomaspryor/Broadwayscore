@@ -247,6 +247,15 @@ jobs:
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
 
+          # Check maintenance mode — pause orchestrator during manual corrections
+          # Set: gh variable set ORCHESTRATOR_PAUSED --body true
+          # Clear: gh variable delete ORCHESTRATOR_PAUSED
+          PAUSED=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null || echo "")
+          if [ "$PAUSED" = "true" ]; then
+            echo "::notice::Orchestrator PAUSED for corrections. Exiting. Clear with: gh variable delete ORCHESTRATOR_PAUSED"
+            exit 0
+          fi
+
           # skip_serp=true when SB credits < 15%; auto-clears when credits renew
           SKIP_SERP_FLAG=""
           if [ "$SKIP_SERP" = "true" ]; then
