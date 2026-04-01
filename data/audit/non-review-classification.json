@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-01T11:31:20.201Z",
+    "generatedAt": "2026-04-01T11:40:26.768Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32876,
-      "inReviewsJson": 16324,
+      "inReviewsJson": 16323,
       "skippedExcluded": 12,
-      "withFullText": 31,
+      "withFullText": 18,
       "excerptOnly": 1847,
-      "llmClassified": 30,
+      "llmClassified": 17,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 17,
-      "budgetUsed": 0.0030999999999999986,
-      "llmCalls": 31,
+      "budgetUsed": 0.0018000000000000006,
+      "llmCalls": 18,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14434
+      "skippedAlreadyClassified": 14446
     },
     "calibration": null
   },
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. Based on the available text, it seems to be a news article or advertisement rather than a review of \"Parade.\"",
+      "reasoning": "The article appears to be truncated, but the available text seems to be a news snippet or advertisement for a WSJ subscription, rather than a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play and its setting, but does not offer an evaluation or opinion about its quality. It sets the stage for an evening of terror but doesn't review the production itself.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
       "currentScore": 83
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms, not an actual article or review. It does mention 'Broadway review subscriptions' and 'Musical theatre reviews' but does not contain any review content itself.",
       "currentScore": 42
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or show listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -190,25 +190,11 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events, but it does not offer a critical evaluation or opinion on the quality of the production itself. It also mentions the play's audio recording and Broadway run, ",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play to the audience.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "cabaret-at-the-kit-kat-club-west-end-2021/the-telegrap--dominic-cavendish.json",
-    "hadestown-west-end-2024/artsdesk--marianka-swain.json",
-    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
-    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/guardian--arifa-akbar.json",
-    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/timeout-london--anya-ryan.json",
-    "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
-    "roi-return-on-investment-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "roi-return-on-investment-west-end-2026/artsdesk--gary-naylor.json",
-    "roi-return-on-investment-west-end-2026/guardian--arifa-akbar.json",
-    "roi-return-on-investment-west-end-2026/standard--nick-curtis.json",
-    "roi-return-on-investment-west-end-2026/thestage--dave-fargnoli.json",
-    "six-the-musical-west-end-2021/the-telegrap--marianka-swain.json",
-    "the-play-that-goes-wrong-west-end-2021/the-telegrap--marianka-swain.json"
-  ],
+  "reviewsConfirmed": [],
   "perShowSummary": []
 }
