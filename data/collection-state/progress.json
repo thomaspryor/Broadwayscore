@@ -43,7 +43,14 @@
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
     "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
     "encores-the-wild-party-off-broadway-2026/playbill--unknown.json",
-    "zack-off-broadway-2026/the-interested-bystander--cary-wong.json"
+    "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "data-off-broadway-2026/timeout--unknown.json",
+    "all-out-2025/nytg--gillian-russo.json",
+    "all-out-2025/ew--dalton-ross.json",
+    "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
+    "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+    "the-last-five-years-2025/nypost--lou-lumenick.json",
+    "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
   ],
   "failed": [
     "the-producers-west-end-2025/thestage--paul-vale.json",
@@ -94,7 +101,10 @@
     "book-of-mormon-2011/backstage--david-sheward.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "the-lion-king-1997/timeout--adam-feldman.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json"
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "body-count-off-broadway-2026/rollingstone--christopher-r-weingarten.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/broadwaynews--michael-abourizk.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -128,21 +138,28 @@
       "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
       "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
       "encores-the-wild-party-off-broadway-2026/playbill--unknown.json",
-      "zack-off-broadway-2026/the-interested-bystander--cary-wong.json"
+      "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "all-out-2025/nytg--gillian-russo.json",
+      "all-out-2025/ew--dalton-ross.json",
+      "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+      "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/dog-day-afternoon-2026/variety--unknown.json",
       "dog-day-afternoon-2026/variety--unknown.json",
       "data/review-texts/dog-day-afternoon-2026/deadline--unknown.json",
-      "dog-day-afternoon-2026/deadline--unknown.json"
+      "dog-day-afternoon-2026/deadline--unknown.json",
+      "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
+      "the-last-five-years-2025/nypost--lou-lumenick.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "oliver-west-end-2024/telegraph--claire-allfree.json",
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
       "bigfoot-off-broadway-2026/timeout--unknown.json",
-      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/telegraph--dominic-cavendish.json"
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/telegraph--dominic-cavendish.json",
+      "data-off-broadway-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -170,11 +187,12 @@
       "wicked-2003/broadwayworld--armando-urdiales.json",
       "wicked-2003/broadwayworld--courtney-symes.json",
       "wicked-2003/broadwayworld--emily-short.json",
-      "wicked-2003/broadwayworld--jared-fessler.json"
+      "wicked-2003/broadwayworld--jared-fessler.json",
+      "mamma-mia-2025/nytimes--elizabeth-vincentelli.json"
     ]
   },
   "startTime": "2026-04-01T03:48:30.603Z",
-  "lastProcessed": "zack-off-broadway-2026/the-interested-bystander--cary-wong.json",
+  "lastProcessed": "glengarry-glen-ross-2025/theater-scene--joseph-pisano.json",
   "log": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -197,6 +215,17 @@
       "t": "2026-04-01T04:52:20.199Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-01T05:12:59.345Z",
+      "event": "bb-session",
+      "session": "978ae46f",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-04-01T05:13:00.406Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
