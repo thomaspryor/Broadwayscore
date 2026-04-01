@@ -121,7 +121,9 @@
     "mamma-mia-west-end-2021/west-end-wilma--unknown.json",
     "cymbeline-2007/nytimes--ben-brantley.json",
     "company-2006/variety--charles-isherwood.json",
-    "bells-are-ringing-2001/new-jersey-newsroom--michael-sommers.json"
+    "bells-are-ringing-2001/new-jersey-newsroom--michael-sommers.json",
+    "twelfth-night-1998/ap--mark-kennedy.json",
+    "carrie-1988/timeout--adam-feldman.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -991,7 +993,15 @@
     "thoroughly-modern-millie-2002/nydailynews--howard-kissel.json",
     "the-producers-2001/nytimes--ben-brantley.json",
     "bells-are-ringing-2001/nytimes--ben-brantley.json",
-    "contact-2000/renew-here--simplecirc-inc.json"
+    "contact-2000/renew-here--simplecirc-inc.json",
+    "titanic-1997/nytimes--ben-brantley.json",
+    "rent-1996/northjerseycom--robert-feldberg.json",
+    "la-bete-1991/ny1--roma-torre.json",
+    "the-merchant-of-venice-1989/newsday--linda-winer.json",
+    "city-of-angels-1989/independent--paul-taylor.json",
+    "love-letters-1989/ew--thom-geier.json",
+    "love-letters-1989/ap--mark-kennedy.json",
+    "born-yesterday-1989/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1066,7 +1076,8 @@
       "six-the-musical-west-end-2021/west-end-wilma--unknown.json",
       "the-play-that-goes-wrong-west-end-2021/west-end-wilma--unknown.json",
       "mamma-mia-west-end-2021/musical-theatre-review--unknown.json",
-      "mamma-mia-west-end-2021/west-end-wilma--unknown.json"
+      "mamma-mia-west-end-2021/west-end-wilma--unknown.json",
+      "twelfth-night-1998/ap--mark-kennedy.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1082,7 +1093,8 @@
       "company-2006/variety--charles-isherwood.json"
     ],
     "directCookies": [
-      "god-of-carnage-2009/timeout--david-cote.json"
+      "god-of-carnage-2009/timeout--david-cote.json",
+      "carrie-1988/timeout--adam-feldman.json"
     ],
     "scrapingbee": [
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
@@ -1219,7 +1231,11 @@
       "data/review-texts/thoroughly-modern-millie-2002/nydailynews--howard-kissel.json",
       "data/review-texts/the-producers-2001/nytimes--ben-brantley.json",
       "data/review-texts/bells-are-ringing-2001/nytimes--ben-brantley.json",
-      "data/review-texts/contact-2000/renew-here--simplecirc-inc.json"
+      "data/review-texts/contact-2000/renew-here--simplecirc-inc.json",
+      "data/review-texts/titanic-1997/nytimes--ben-brantley.json",
+      "data/review-texts/rent-1996/northjerseycom--robert-feldberg.json",
+      "data/review-texts/city-of-angels-1989/independent--paul-taylor.json",
+      "data/review-texts/love-letters-1989/ap--mark-kennedy.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1246,7 +1262,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "contact-2000/renew-here--simplecirc-inc.json",
+  "lastProcessed": "carrie-1988/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -1617,6 +1633,28 @@
       "t": "2026-04-01T20:02:44.587Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T20:08:53.426Z",
+      "event": "bb-session",
+      "session": "b47220bb",
+      "url": "https://www.northjersey.com/arts_entertainment/127572463__Rent__revival_off-Broa"
+    },
+    {
+      "t": "2026-04-01T20:08:54.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T20:10:07.356Z",
+      "event": "bb-session",
+      "session": "59a182c2",
+      "url": "https://www.newsday.com/entertainment/theater/al-pacino-s-merchant-of-venice-eve"
+    },
+    {
+      "t": "2026-04-01T20:10:08.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }

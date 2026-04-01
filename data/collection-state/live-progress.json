@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-01T20:06:42.119Z",
-  "processed": 122,
-  "failed": 868,
-  "successRate": "12.3%",
+  "updatedAt": "2026-04-01T20:16:10.361Z",
+  "processed": 124,
+  "failed": 876,
+  "successRate": "12.4%",
   "tierBreakdown": {
-    "playwright": 71,
+    "playwright": 72,
     "amp": 0,
     "browserbase": 10,
-    "directCookies": 1,
+    "directCookies": 2,
     "scrapingbee": 24,
     "brightdata": 0,
-    "archiveToday": 108,
+    "archiveToday": 112,
     "archive": 21
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 22,
   "recentActivity": [
-    {
-      "t": "2026-04-01T19:36:58.973Z",
-      "event": "bb-session",
-      "session": "c101ef6e",
-      "url": "https://www.nypost.com/seven/11172006/entertainment/theater/no_stoppin_this_popp"
-    },
-    {
-      "t": "2026-04-01T19:37:00.288Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-04-01T19:41:07.624Z",
-      "event": "bb-session",
-      "session": "ec2fe777",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/11/14/the-little-dog-laugh"
-    },
-    {
-      "t": "2026-04-01T19:41:09.043Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-01T19:41:34.998Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-01T20:02:44.587Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T20:08:53.426Z",
+      "event": "bb-session",
+      "session": "b47220bb",
+      "url": "https://www.northjersey.com/arts_entertainment/127572463__Rent__revival_off-Broa"
+    },
+    {
+      "t": "2026-04-01T20:08:54.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T20:10:07.356Z",
+      "event": "bb-session",
+      "session": "59a182c2",
+      "url": "https://www.newsday.com/entertainment/theater/al-pacino-s-merchant-of-venice-eve"
+    },
+    {
+      "t": "2026-04-01T20:10:08.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
