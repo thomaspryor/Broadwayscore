@@ -21,10 +21,11 @@ interface AffiliateConfig {
   enabled: boolean;
   // UTM-based (simple param append)
   params?: Record<string, string>;
-  // Impact (TodayTix, Ticketmaster) — wraps URL via Impact tracking domain
-  impactDomain?: string;     // e.g. "todaytix.pxf.io"
-  impactPublisherId?: string;
-  impactCampaignId?: string;
+  // Impact — deep link format: https://{domain}/c/{publisherId}/{campaignId}/{programId}?u={encodedUrl}
+  impactDomain?: string;      // e.g. "ticketmaster.evyy.net"
+  impactPublisherId?: string; // e.g. "6999278"
+  impactCampaignId?: string;  // e.g. "264167"
+  impactProgramId?: string;   // e.g. "4272"
   // Partnerize (StubHub) — wraps URL via Partnerize redirect
   partnerizeDomain?: string;      // e.g. "stubhub.prf.hn"
   partnerizeCampaignRef?: string;
@@ -41,10 +42,11 @@ const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
   },
   Ticketmaster: {
     type: 'impact',
-    impactDomain: '',
-    impactPublisherId: '',
-    impactCampaignId: '',
-    enabled: false,
+    impactDomain: 'ticketmaster.evyy.net',
+    impactPublisherId: '6999278',
+    impactCampaignId: '264167',
+    impactProgramId: '4272',
+    enabled: true,
   },
   StubHub: {
     type: 'partnerize',
@@ -57,7 +59,16 @@ const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
     impactDomain: '',
     impactPublisherId: '',
     impactCampaignId: '',
+    impactProgramId: '',
     enabled: false,
+  },
+  SeatPlan: {
+    type: 'impact',
+    impactDomain: 'seatplan.sjv.io',
+    impactPublisherId: '6999278',
+    impactCampaignId: '2219054',
+    impactProgramId: '28679',
+    enabled: true,
   },
 };
 
@@ -66,10 +77,10 @@ function buildAffiliateUrl(url: string, platform: string, pageType: string): { u
   if (!config?.enabled) return { url, isAffiliate: false };
 
   try {
-    if (config.type === 'impact' && config.impactDomain && config.impactPublisherId && config.impactCampaignId) {
-      // Impact deep link format: https://{domain}/click/camref:{campaignId}/pubref:{publisherId}/destination:{encodedUrl}
+    if (config.type === 'impact' && config.impactDomain && config.impactPublisherId && config.impactCampaignId && config.impactProgramId) {
+      // Impact deep link format: https://{domain}/c/{publisherId}/{campaignId}/{programId}?u={encodedUrl}
       const encodedUrl = encodeURIComponent(url);
-      const affiliateUrl = `https://${config.impactDomain}/click/camref:${config.impactCampaignId}/pubref:${config.impactPublisherId}/destination:${encodedUrl}`;
+      const affiliateUrl = `https://${config.impactDomain}/c/${config.impactPublisherId}/${config.impactCampaignId}/${config.impactProgramId}?u=${encodedUrl}`;
       return { url: affiliateUrl, isAffiliate: true };
     }
 

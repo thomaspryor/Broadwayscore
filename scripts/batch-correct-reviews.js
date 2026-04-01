@@ -145,9 +145,43 @@ for (const cn of criticNames) {
 
 console.log(`\n${'═'.repeat(50)}`);
 console.log(`Modified: ${modified} files${DRY_RUN ? ' (dry run)' : ''}`);
+
+// Auto-commit, push, and trigger rebuild
 if (modified > 0 && !DRY_RUN) {
-  console.log('\nNext steps:');
-  console.log('  1. cd data/review-texts && git add -A && git commit -m "data: Batch corrections"');
-  console.log('  2. git push origin main');
-  console.log('  3. gh workflow run rebuild-reviews.yml -f reason="Batch corrections"');
+  const { execSync } = require('child_process');
+  const reviewTextsDir = REVIEW_TEXTS_DIR;
+
+  try {
+    console.log('\nCommitting and pushing...');
+    execSync('git add -A', { cwd: path.join(reviewTextsDir, '..'), stdio: 'pipe' });
+    execSync(`git commit -m "data: Batch corrections for ${SHOW_ID} (${modified} files)"`, { cwd: path.join(reviewTextsDir, '..'), stdio: 'pipe' });
+
+    // Push with retry (review-texts is a separate repo)
+    let pushed = false;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        execSync('git pull --rebase origin main', { cwd: path.join(reviewTextsDir, '..'), stdio: 'pipe' });
+        execSync('git push origin main', { cwd: path.join(reviewTextsDir, '..'), stdio: 'pipe' });
+        pushed = true;
+        console.log('  ✓ Pushed to review-texts repo');
+        break;
+      } catch (e) {
+        if (attempt < 3) console.log(`  Push attempt ${attempt} failed, retrying...`);
+      }
+    }
+    if (!pushed) console.error('  ✗ Failed to push after 3 attempts');
+
+    // Trigger rebuild
+    try {
+      execSync(`gh workflow run rebuild-reviews.yml -f reason="Batch corrections for ${SHOW_ID}"`, { stdio: 'pipe' });
+      console.log('  ✓ Rebuild triggered');
+    } catch {
+      console.log('  ⚠ Could not trigger rebuild (no gh CLI or no GH_TOKEN). Trigger manually:');
+      console.log('    gh workflow run rebuild-reviews.yml -f reason="Batch corrections"');
+    }
+  } catch (e) {
+    console.error('  ✗ Git error:', e.message);
+    console.log('\n  Manual steps:');
+    console.log(`  cd ${path.join(reviewTextsDir, '..')} && git add -A && git commit -m "data: Batch corrections" && git push`);
+  }
 }

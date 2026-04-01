@@ -11,6 +11,37 @@ import Breadcrumb from '@/components/Breadcrumb';
 
 const currentYear = new Date().getFullYear();
 
+/**
+ * Rot-prone guide data — centralized here so staleness is obvious.
+ * pre-deploy-check.js warns if lastVerified is >6 months old.
+ *
+ * To update: verify each value against its source, then bump lastVerified.
+ */
+export const GUIDE_DATA = {
+  lastVerified: '2026-03-31',
+
+  // Source: Broadway League grosses reports — review annually (Sep)
+  avgOrchestraPrice: 180,
+  premiumPriceFloor: 250,
+  discountCodeAvgPrice: 100,
+  lotteryRushRange: { min: 30, max: 60 },
+  sroRange: { min: 30, max: 40 },
+  onlineServiceFee: 14,
+  boxOfficeFacilityCharge: '2-3',
+
+  // Source: tdf.org — review annually
+  tdfMembershipPrice: 42,
+  tdfTicketRange: { min: 11, max: 62.50 },
+  tktsServiceFee: 6,  // Playbill Mar 2026 says $7 — verify at tdf.org
+
+  // Source: tdf.org/nyc/7/TKTS-Background — review seasonally
+  tktsHours: {
+    timesSquare: { evening: 'Mon-Sat 3pm-8pm, Sun 3pm-7pm', matinee: 'Wed & Sat 10am-2pm, Sun 11am-3pm' },
+    lincolnCenter: 'Tue-Sat 12pm-7pm, Sun 12pm-6pm',
+    brooklyn: 'Tue-Sat 11am-6pm',
+  },
+} as const;
+
 export const metadata: Metadata = {
   title: `How to Get Cheap Broadway Tickets (${currentYear}) | Complete Guide`,
   description: `The ultimate guide to cheap Broadway tickets in ${currentYear}. TKTS booth, digital lotteries, rush tickets, discount codes, and insider tips to see shows for $30-50.`,
@@ -128,19 +159,19 @@ export default function CheapBroadwayTicketsGuide() {
           <h2 className="font-bold text-white text-sm uppercase tracking-wide mb-3">What Broadway Tickets Actually Cost</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-sm">
             <div>
-              <div className="text-2xl font-bold text-red-400">$250+</div>
+              <div className="text-2xl font-bold text-red-400">${GUIDE_DATA.premiumPriceFloor}+</div>
               <div className="text-gray-400">Premium seats</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-yellow-400">~$180</div>
+              <div className="text-2xl font-bold text-yellow-400">~${GUIDE_DATA.avgOrchestraPrice}</div>
               <div className="text-gray-400">Avg. orchestra</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-blue-400">~$100</div>
+              <div className="text-2xl font-bold text-blue-400">~${GUIDE_DATA.discountCodeAvgPrice}</div>
               <div className="text-gray-400">Discount codes</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-emerald-400">$30-60</div>
+              <div className="text-2xl font-bold text-emerald-400">${GUIDE_DATA.lotteryRushRange.min}-{GUIDE_DATA.lotteryRushRange.max}</div>
               <div className="text-gray-400">Lottery / Rush</div>
             </div>
           </div>
@@ -254,19 +285,19 @@ export default function CheapBroadwayTicketsGuide() {
                 <div>
                   <strong className="text-white block">Times Square (Red Steps)</strong>
                   Broadway & 47th St, under the red steps<br/>
-                  <span className="text-gray-400">Evening: Mon-Sat 3pm-8pm, Sun 3pm-7pm</span><br/>
-                  <span className="text-gray-400">Matinee: Wed & Sat 10am-2pm, Sun 11am-3pm</span>
+                  <span className="text-gray-400">Evening: {GUIDE_DATA.tktsHours.timesSquare.evening}</span><br/>
+                  <span className="text-gray-400">Matinee: {GUIDE_DATA.tktsHours.timesSquare.matinee}</span>
                 </div>
                 <div>
                   <strong className="text-white block">Lincoln Center</strong>
                   61 W 62nd St (inside David Rubenstein Atrium)<br/>
-                  <span className="text-gray-400">Tue-Sat 12pm-7pm, Sun 12pm-6pm</span><br/>
+                  <span className="text-gray-400">{GUIDE_DATA.tktsHours.lincolnCenter}</span><br/>
                   <span className="text-emerald-400 text-xs">💡 Usually shorter lines than Times Square</span>
                 </div>
                 <div>
                   <strong className="text-white block">Brooklyn (Downtown)</strong>
                   1 MetroTech Center<br/>
-                  <span className="text-gray-400">Tue-Sat 11am-6pm</span><br/>
+                  <span className="text-gray-400">{GUIDE_DATA.tktsHours.brooklyn}</span><br/>
                   <span className="text-emerald-400 text-xs">💡 Sells next-day matinee tickets too</span>
                 </div>
               </div>
@@ -281,7 +312,7 @@ export default function CheapBroadwayTicketsGuide() {
                 <li>• Lincoln Center location often has the same shows with much shorter lines</li>
                 <li>• <strong className="text-white">TKTS Fast Pass:</strong> Buy a ticket, then return within 7 days with your stub to skip the line entirely</li>
                 <li>• You can buy next-day matinee tickets at TKTS (not just same-day)</li>
-                <li>• Accepts credit cards but charges a $6 service fee per ticket</li>
+                <li>• Accepts credit cards but charges a ${GUIDE_DATA.tktsServiceFee} service fee per ticket</li>
               </ul>
             </div>
           </div>
@@ -294,7 +325,7 @@ export default function CheapBroadwayTicketsGuide() {
           </h2>
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed mb-4">
-              When a show sells out, some theaters release Standing Room Only tickets for $30-40.
+              When a show sells out, some theaters release Standing Room Only tickets for ${GUIDE_DATA.sroRange.min}-{GUIDE_DATA.sroRange.max}.
               You&apos;ll stand at the back of the orchestra during the performance—but for a sold-out hit, it&apos;s worth it.
             </p>
 
@@ -348,7 +379,7 @@ export default function CheapBroadwayTicketsGuide() {
                   Codes can be redeemed online, by phone, or at the box office.
                 </p>
                 <p className="text-emerald-400 text-xs mb-2">
-                  💡 Redeem codes at the box office to skip the ~$14/ticket online service fee—you&apos;ll only pay a $2-3 facility charge.
+                  💡 Redeem codes at the box office to skip the ~${GUIDE_DATA.onlineServiceFee}/ticket online service fee—you&apos;ll only pay a ${GUIDE_DATA.boxOfficeFacilityCharge} facility charge.
                 </p>
                 <a href="https://www.playbill.com/discounts" target="_blank" rel="noopener noreferrer" className="text-brand hover:text-brand-hover text-sm">
                   Browse Playbill Discounts →
@@ -383,8 +414,8 @@ export default function CheapBroadwayTicketsGuide() {
               <div className="card p-4 sm:p-5">
                 <h3 className="font-bold text-white mb-2">TDF Membership</h3>
                 <p className="text-gray-300 text-sm">
-                  If you&apos;re a student, educator, non-profit employee, retiree, or theatre professional, TDF membership ($42/year)
-                  gets you tickets for $11-62.50 with minimal handling fees. Seats are assigned by the box office.
+                  If you&apos;re a student, educator, non-profit employee, retiree, or theatre professional, TDF membership (${GUIDE_DATA.tdfMembershipPrice}/year)
+                  gets you tickets for ${GUIDE_DATA.tdfTicketRange.min}-{GUIDE_DATA.tdfTicketRange.max} with minimal handling fees. Seats are assigned by the box office.
                 </p>
               </div>
 
@@ -493,7 +524,7 @@ export default function CheapBroadwayTicketsGuide() {
             <div className="card p-4 sm:p-5">
               <h3 className="font-bold text-white mb-2">Dynamic Pricing Drops</h3>
               <p className="text-gray-300 text-sm">
-                Premium tickets ($250+) that haven&apos;t sold may drop in price as the performance date
+                Premium tickets (${GUIDE_DATA.premiumPriceFloor}+) that haven&apos;t sold may drop in price as the performance date
                 approaches. The risk: waiting too long means the seat may sell to someone else. Best for
                 midweek performances of shows that aren&apos;t at 100% capacity.
               </p>
