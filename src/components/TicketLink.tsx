@@ -62,6 +62,14 @@ const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
     impactProgramId: '',
     enabled: false,
   },
+  'Vivid Seats': {
+    type: 'impact',
+    impactDomain: 'vivid-seats.pxf.io',
+    impactPublisherId: '6999278',
+    impactCampaignId: '952533',
+    impactProgramId: '12730',
+    enabled: true,
+  },
   SeatPlan: {
     type: 'impact',
     impactDomain: 'seatplan.sjv.io',

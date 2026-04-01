@@ -21,7 +21,7 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
-const EXTRACTOR_VERSION = 5;  // v5: Daily Mail CSS star extractor (mol-ratings-solid), WOS+DM Playwright routing
+const EXTRACTOR_VERSION = 6;  // v6: Guardian class-attribute anchoring (UUID/URL false positives), Radio Times <use>-anchored SVG matching
 
 /**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
@@ -281,9 +281,10 @@ function extractRadioTimesScore(html, text) {
       };
     }
   }
-  // Fallback: count SVG star-fill references
-  const fills = (html.match(/#star-fill/g) || []).length;
-  const halfs = (html.match(/#star-half/g) || []).length;
+  // Fallback: count SVG <use> star-fill references (not bare #star-fill,
+  // which could match CSS rules or inline SVG <defs> if sprites are inlined)
+  const fills = (html.match(/<use[^>]+#star-fill/g) || []).length;
+  const halfs = (html.match(/<use[^>]+#star-half/g) || []).length;
   if (fills > 0 || halfs > 0) {
     const total = fills + halfs * 0.5;
     if (total >= 1 && total <= 5) {
@@ -391,9 +392,12 @@ function extractGuardianScore(html, text) {
     }
   }
 
-  // Guardian uses SVG stars or star rating class
-  const starClassMatch = html.match(/rating-(\d)/i) ||
-                         html.match(/stars-(\d)/i);
+  // Guardian uses SVG stars or star rating class.
+  // Anchor to class= attribute to avoid matching UUIDs (ub-star-rating-1ae3...)
+  // and URL slugs (all-stars-5). Strip <style> blocks first like NY Post fix.
+  const htmlNoStyles = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+  const starClassMatch = htmlNoStyles.match(/class="[^"]*\brating-(\d)\b[^"]*"/i) ||
+                         htmlNoStyles.match(/class="[^"]*\bstars-(\d)\b[^"]*"/i);
   if (starClassMatch) {
     const rating = parseInt(starClassMatch[1]);
     if (rating >= 1 && rating <= 5) {

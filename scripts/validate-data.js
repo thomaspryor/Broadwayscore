@@ -1314,6 +1314,13 @@ function validateReviewsJson() {
     invalidScored.slice(0, 5).forEach(r => warn(`  ${r.showId}/${r.outletId}: score=${r.assignedScore}`));
   }
 
+  // Field consistency: contentTier=complete but no fullText (source files)
+  const completeNoText = reviews.filter(r => r.contentTier === 'complete' && (!r.fullText || !r.fullText.trim()));
+  if (completeNoText.length) {
+    warn(`${completeNoText.length} reviews have contentTier='complete' but no fullText`);
+    completeNoText.slice(0, 5).forEach(r => warn(`  ${r.showId}/${r.outletId}`));
+  }
+
   // needsReview tracking
   const needsReviewCount = reviews.filter(r => r.needsReview).length;
   if (needsReviewCount > 0) {
