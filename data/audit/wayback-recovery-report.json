@@ -1,7 +1,7 @@
 {
-  "totalCandidates": 1,
+  "totalCandidates": 126,
   "cdxFound": 0,
-  "cdxNotFound": 0,
+  "cdxNotFound": 36,
   "recovered": 0,
   "recoveredByTier": {
     "1": 0,
@@ -13,8 +13,13 @@
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
-  "notInArchive": 0,
-  "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "errors": 50,
+  "notInArchive": 36,
+  "domainSkipped": 40,
+  "circuitBrokenDomains": [
+    "vulture.com",
+    "nytimes.com",
+    "hollywoodreporter.com",
+    "washingtonpost.com"
+  ]
 }
