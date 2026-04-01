@@ -314,7 +314,17 @@
     "war-horse-2011/scheckontheater--frank-scheck.json",
     "war-horse-2011/new-jersey-newsroom--michael-sommers.json",
     "war-horse-2011/backstage--erik-haagensen.json",
-    "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json"
+    "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json",
+    "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json",
+    "catch-me-if-you-can-2011/backstage--erik-haagensen.json",
+    "anything-goes-2011/scheckontheater--frank-scheck.json",
+    "anything-goes-2011/talkinbroadway--matthew-murray.json",
+    "how-to-succeed-in-business-without-really-trying-2011/newsday--linda-winer.json",
+    "how-to-succeed-in-business-without-really-trying-2011/theatermania--david-rooney.json",
+    "how-to-succeed-in-business-without-really-trying-2011/village-voice--michael-musto.json",
+    "how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
+    "how-to-succeed-in-business-without-really-trying-2011/new-jersey-newsroom--michael-sommers.json",
+    "how-to-succeed-in-business-without-really-trying-2011/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -431,7 +441,10 @@
       "data/review-texts/sister-act-2011/northjerseycom--robert-feldberg.json",
       "data/review-texts/high-2011/scheckontheater--frank-scheck.json",
       "data/review-texts/wonderland-2011/northjerseycom--robert-feldberg.json",
-      "data/review-texts/war-horse-2011/scheckontheater--frank-scheck.json"
+      "data/review-texts/war-horse-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/anything-goes-2011/scheckontheater--frank-scheck.json",
+      "data/review-texts/anything-goes-2011/talkinbroadway--matthew-murray.json",
+      "data/review-texts/how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json"
     ],
     "archive": [
       "hadestown-west-end-2024/artsdesk--marianka-swain.json",
@@ -454,7 +467,7 @@
     ]
   },
   "startTime": "2026-04-01T03:48:30.603Z",
-  "lastProcessed": "catch-me-if-you-can-2011/scheckontheater--frank-scheck.json",
+  "lastProcessed": "how-to-succeed-in-business-without-really-trying-2011/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -634,6 +647,34 @@
       "event": "bb-session",
       "session": "ece75e8e",
       "url": "https://scheckonthearts.com/blog2.php/2011/04/15/review-ligwar-horsel-ig"
+    },
+    {
+      "t": "2026-04-01T06:02:14.710Z",
+      "event": "bb-session",
+      "session": "34a1d1c9",
+      "url": "https://scheckonthearts.com/blog2.php/2011/04/08/review-liganything-goesl-ig"
+    },
+    {
+      "t": "2026-04-01T06:03:35.205Z",
+      "event": "bb-session",
+      "session": "487c277f",
+      "url": "https://www.newsday.com/entertainment/theater/daniel-radcliffe-knows-how-to-succ"
+    },
+    {
+      "t": "2026-04-01T06:03:36.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-01T06:05:37.850Z",
+      "event": "bb-session",
+      "session": "9ba35951",
+      "url": "https://www.washingtonpost.com/lifestyle/style/theater_reviews_how_to_succeed_an"
+    },
+    {
+      "t": "2026-04-01T06:05:39.211Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
