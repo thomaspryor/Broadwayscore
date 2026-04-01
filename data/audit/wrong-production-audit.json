@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-01T00:03:27.876Z",
+  "timestamp": "2026-04-01T00:14:21.012Z",
   "stats": {
     "totalReviews": 32107,
     "alreadyFlagged": 11957,
     "dateGuardCatches": 14,
     "directorMismatch": 917,
-    "tvFilmSignals": 3305,
+    "tvFilmSignals": 3306,
     "londonSignals": 944,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
@@ -39695,6 +39695,20 @@
       "score": 81,
       "publishDate": "March 4, 2013",
       "url": "https://www.nytimes.com/2013/03/04/theater/reviews/rodgers-hammersteins-cinderella-at-broadway-theater.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "file": "scene--philip-dorian.json",
+      "score": 50,
+      "publishDate": "November 26th, 2019",
+      "url": "https://sceneonstage.com/2019/11/the-prince-is-giving-a-ball-rodgers-and-hammersteins-cinderella-in-nj/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
