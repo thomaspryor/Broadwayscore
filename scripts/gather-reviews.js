@@ -401,9 +401,10 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
   if (typeof fetchPage === 'function') {
     try {
       const fpResult = await fetchPage(searchUrl);
-      if (fpResult && fpResult.html && fpResult.html.length > 2000) {
-        console.log(`    → ${aggregatorName}: fetchPage fallback succeeded (${(fpResult.html.length / 1024).toFixed(0)}KB)`);
-        return { found: true, html: fpResult.html, finalUrl: searchUrl, method: 'fetchPage-fallback' };
+      const fpHtml = fpResult?.content || fpResult?.html || '';
+      if (fpHtml.length > 2000) {
+        console.log(`    → ${aggregatorName}: fetchPage fallback succeeded (${(fpHtml.length / 1024).toFixed(0)}KB)`);
+        return { found: true, html: fpHtml, finalUrl: searchUrl, method: 'fetchPage-fallback' };
       }
     } catch (err) {
       // fetchPage not available or failed — return original result
