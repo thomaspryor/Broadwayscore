@@ -665,8 +665,22 @@ function buildDailyDigestHtml(changes, date) {
     </td></tr>`;
   }
 
-  function showLink(title, slug) {
-    return `<a href="${siteUrl}/show/${slug}" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:2px;">${escapeHtml(title)}</a>`;
+  function extractYear(id) {
+    const m = id && id.match(/-(\d{4})$/);
+    return m ? m[1] : null;
+  }
+
+  function displayTitle(title, item) {
+    let label = title;
+    const isWE = item && item.market === 'west-end';
+    const year = item && extractYear(item.id);
+    const suffix = [isWE ? 'WE' : null, year].filter(Boolean).join(' ');
+    if (suffix) label += ` (${suffix})`;
+    return label;
+  }
+
+  function showLink(title, slug, item) {
+    return `<a href="${siteUrl}/show/${slug}" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:2px;">${escapeHtml(displayTitle(title, item))}</a>`;
   }
 
   function row(content) {
@@ -682,7 +696,7 @@ function buildDailyDigestHtml(changes, date) {
     </td></tr>`;
     html += `<tr><td style="padding:4px 20px;font-size:13px;color:#f97316;line-height:1.5;font-family:${FONT};">Shows with &gt;24 new reviews in a single day &mdash; likely a data ingestion issue or wrong-production batch.</td></tr>`;
     for (const r of changes.suspiciousChanges) {
-      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#f97316;line-height:1.5;font-family:${FONT};border-left:2px solid #ef4444;">&#8226;&nbsp; ${showLink(r.title, r.slug)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
+      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#f97316;line-height:1.5;font-family:${FONT};border-left:2px solid #ef4444;">&#8226;&nbsp; ${showLink(r.title, r.slug, r)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
     }
     sections.push(html);
   }
@@ -694,7 +708,7 @@ function buildDailyDigestHtml(changes, date) {
     </td></tr>`;
     html += `<tr><td style="padding:4px 20px;font-size:13px;color:#d97706;line-height:1.5;font-family:${FONT};">Shows with &gt;10 new reviews in a single day &mdash; check for tour or wrong-production reviews.</td></tr>`;
     for (const r of changes.reviewSpikes) {
-      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#d97706;line-height:1.5;font-family:${FONT};border-left:2px solid #f59e0b;">&#8226;&nbsp; ${showLink(r.title, r.slug)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
+      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#d97706;line-height:1.5;font-family:${FONT};border-left:2px solid #f59e0b;">&#8226;&nbsp; ${showLink(r.title, r.slug, r)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
     }
     sections.push(html);
   }
@@ -705,7 +719,7 @@ function buildDailyDigestHtml(changes, date) {
     for (const s of changes.newShows) {
       const typeLabel = s.type === 'musical' ? 'Musical' : 'Play';
       const statusLabel = s.status === 'previews' ? ' &middot; In Previews' : s.status === 'upcoming' ? ' &middot; Upcoming' : '';
-      html += row(`${showLink(s.title, s.slug)} &mdash; ${typeLabel}${statusLabel}${s.venue ? ` &middot; ${escapeHtml(s.venue)}` : ''}`);
+      html += row(`${showLink(s.title, s.slug, s)} &mdash; ${typeLabel}${statusLabel}${s.venue ? ` &middot; ${escapeHtml(s.venue)}` : ''}`);
     }
     sections.push(html);
   }
@@ -716,7 +730,7 @@ function buildDailyDigestHtml(changes, date) {
     let html = sectionHeader(`New Reviews (${totalAdded} across ${changes.newReviews.length} show${changes.newReviews.length !== 1 ? 's' : ''})`);
     const sorted = [...changes.newReviews].sort((a, b) => b.added - a.added);
     for (const r of sorted) {
-      html += row(`${showLink(r.title, r.slug)} &mdash; +${r.added} review${r.added !== 1 ? 's' : ''} (${r.total} total)`);
+      html += row(`${showLink(r.title, r.slug, r)} &mdash; +${r.added} review${r.added !== 1 ? 's' : ''} (${r.total} total)`);
     }
     sections.push(html);
   }
@@ -730,7 +744,7 @@ function buildDailyDigestHtml(changes, date) {
       const arrow = s.direction === 'up' ? '&#9650;' : s.direction === 'down' ? '&#9660;' : '&#9733;';
       const arrowColor = s.direction === 'up' ? '#22c55e' : s.direction === 'down' ? '#ef4444' : brandColor;
       const fromLabel = s.from != null ? `<span style="color:${fromBg};font-weight:700;">${s.from}</span>` : '<span style="color:#6b7280;">—</span>';
-      html += row(`${showLink(s.title, s.slug)} &mdash; ${fromLabel} <span style="color:${arrowColor};font-size:10px;">${arrow}</span> <span style="color:${toBg};font-weight:700;">${s.to}</span>`);
+      html += row(`${showLink(s.title, s.slug, s)} &mdash; ${fromLabel} <span style="color:${arrowColor};font-size:10px;">${arrow}</span> <span style="color:${toBg};font-weight:700;">${s.to}</span>`);
     }
     sections.push(html);
   }
@@ -740,7 +754,7 @@ function buildDailyDigestHtml(changes, date) {
     let html = sectionHeader(`Audience Grade Changes (${changes.audienceChanges.length})`);
     for (const a of changes.audienceChanges) {
       const fromLabel = a.from || '—';
-      html += row(`${showLink(a.title, a.slug)} &mdash; ${fromLabel} &rarr; <span style="font-weight:700;">${a.to}</span>`);
+      html += row(`${showLink(a.title, a.slug, a)} &mdash; ${fromLabel} &rarr; <span style="font-weight:700;">${a.to}</span>`);
     }
     sections.push(html);
   }

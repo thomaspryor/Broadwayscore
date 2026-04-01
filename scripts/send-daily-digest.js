@@ -40,7 +40,7 @@ function buildSnapshot(mobileData) {
       st: show.st,
       ty: show.ty,
       v: show.v,
-      mk: show.mk ?? 'broadway',
+      mk: show.cat === 'west-end' ? 'west-end' : 'broadway',
     };
   }
   return snapshot;
@@ -54,11 +54,13 @@ function diffSnapshots(prev, curr) {
   for (const [id, currShow] of Object.entries(currShows)) {
     const prevShow = prevShows[id];
 
+    const market = currShow.mk || 'broadway';
+
     // New show
     if (!prevShow) {
       changes.newShows.push({
         id, slug: currShow.s, title: currShow.t, type: currShow.ty, status: currShow.st,
-        venue: currShow.v, market: currShow.mk,
+        venue: currShow.v, market,
       });
       continue;
     }
@@ -69,7 +71,7 @@ function diffSnapshots(prev, curr) {
     if (currRc > prevRc) {
       changes.newReviews.push({
         id, slug: currShow.s, title: currShow.t, added: currRc - prevRc, total: currRc,
-        prevCount: prevRc,
+        prevCount: prevRc, market,
       });
     }
 
@@ -77,23 +79,23 @@ function diffSnapshots(prev, curr) {
     if (currShow.cs != null && prevShow.cs != null && currShow.cs !== prevShow.cs) {
       changes.scoreChanges.push({
         id, slug: currShow.s, title: currShow.t, from: prevShow.cs, to: currShow.cs,
-        direction: currShow.cs > prevShow.cs ? 'up' : 'down',
+        direction: currShow.cs > prevShow.cs ? 'up' : 'down', market,
       });
     } else if (currShow.cs != null && prevShow.cs == null) {
       // First score assigned
       changes.scoreChanges.push({
-        id, slug: currShow.s, title: currShow.t, from: null, to: currShow.cs, direction: 'new',
+        id, slug: currShow.s, title: currShow.t, from: null, to: currShow.cs, direction: 'new', market,
       });
     }
 
     // Audience grade changes
     if (currShow.ag && prevShow.ag && currShow.ag !== prevShow.ag) {
       changes.audienceChanges.push({
-        id, slug: currShow.s, title: currShow.t, from: prevShow.ag, to: currShow.ag,
+        id, slug: currShow.s, title: currShow.t, from: prevShow.ag, to: currShow.ag, market,
       });
     } else if (currShow.ag && !prevShow.ag) {
       changes.audienceChanges.push({
-        id, slug: currShow.s, title: currShow.t, from: null, to: currShow.ag,
+        id, slug: currShow.s, title: currShow.t, from: null, to: currShow.ag, market,
       });
     }
   }
