@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-01T12:47:25.993Z",
-  "processed": 97,
-  "failed": 473,
-  "successRate": "17.0%",
+  "updatedAt": "2026-04-01T12:54:29.617Z",
+  "processed": 98,
+  "failed": 482,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 51,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 11,
+    "archiveToday": 14,
     "archive": 21
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -98,6 +98,28 @@
       "t": "2026-04-01T12:41:08.251Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-04-01T12:49:54.704Z",
+      "event": "bb-session",
+      "session": "713de6b9",
+      "url": "https://variety.com/2013/film/features/twickenham-1200471981/attachment/family-t"
+    },
+    {
+      "t": "2026-04-01T12:49:55.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-01T12:51:35.981Z",
+      "event": "bb-session",
+      "session": "ae9d2f40",
+      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
+    },
+    {
+      "t": "2026-04-01T12:51:37.365Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

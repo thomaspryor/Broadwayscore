@@ -96,7 +96,8 @@
     "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json",
     "wicked-west-end-2021/the-telegrap--charles-spencer.json",
     "the-lion-king-west-end-2021/the-telegrap--david-gritten.json",
-    "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json"
+    "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -571,7 +572,16 @@
     "time-stands-still-2010/backstage--david-sheward.json",
     "time-stands-still-2010/new-jersey-newsroom--michael-sommers.json",
     "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
-    "a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json"
+    "a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
+    "a-little-night-music-2009/ny1--roma-torre.json",
+    "race-2009/nydailynews--joe-dziemianowicz-bway.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "irving-berlins-white-christmas-2009/variety--david-rooney.json",
+    "after-miss-julie-2009/nytimes--ben-brantley.json",
+    "after-miss-julie-2009/nydailynews--joe-dziemianowicz-bway.json",
+    "memphis-2009/variety--charles-isherwood.json",
+    "oleanna-2009/times-uk--dominic-maxwell.json",
+    "the-royal-family-2009/theatermania--david-finkle.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -625,7 +635,8 @@
       "its-only-a-play-2014/timeout--david-cote.json",
       "bullets-over-broadway-2014/timeout--david-cote.json",
       "once-2012/ew--emlyn-travis.json",
-      "les-liaisons-dangereuses-west-end-2026/whatsonstage--alex-wood.json"
+      "les-liaisons-dangereuses-west-end-2026/whatsonstage--alex-wood.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -674,7 +685,10 @@
       "data/review-texts/time-stands-still-2010/newyorker--uncredited.json",
       "data/review-texts/time-stands-still-2010/nytg--tulis-mccall.json",
       "data/review-texts/time-stands-still-2010/backstage--david-sheward.json",
-      "data/review-texts/a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json"
+      "data/review-texts/a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
+      "data/review-texts/race-2009/nydailynews--joe-dziemianowicz-bway.json",
+      "data/review-texts/irving-berlins-white-christmas-2009/variety--david-rooney.json",
+      "data/review-texts/after-miss-julie-2009/nydailynews--joe-dziemianowicz-bway.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -701,7 +715,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "a-view-from-the-bridge-2010/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "the-royal-family-2009/theatermania--david-finkle.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -786,6 +800,28 @@
       "t": "2026-04-01T12:41:08.251Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-04-01T12:49:54.704Z",
+      "event": "bb-session",
+      "session": "713de6b9",
+      "url": "https://variety.com/2013/film/features/twickenham-1200471981/attachment/family-t"
+    },
+    {
+      "t": "2026-04-01T12:49:55.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-01T12:51:35.981Z",
+      "event": "bb-session",
+      "session": "ae9d2f40",
+      "url": "https://www.nytimes.com/2009/10/21/theater/reviews/21julie.html"
+    },
+    {
+      "t": "2026-04-01T12:51:37.365Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
