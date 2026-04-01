@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-01T19:44:55.139Z",
+  "updatedAt": "2026-04-01T19:56:08.673Z",
   "processed": 121,
-  "failed": 849,
-  "successRate": "12.5%",
+  "failed": 859,
+  "successRate": "12.3%",
   "tierBreakdown": {
     "playwright": 71,
     "amp": 0,
@@ -10,44 +10,11 @@
     "directCookies": 1,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 92,
+    "archiveToday": 99,
     "archive": 21
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-04-01T19:24:50.134Z",
-      "event": "bb-session",
-      "session": "5fd65b9b",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2007/07/10/AR2007071001839"
-    },
-    {
-      "t": "2026-04-01T19:24:51.490Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-04-01T19:25:00.591Z",
-      "event": "bb-session",
-      "session": "fbba1573",
-      "url": "https://www.wsj.com/articles/SB117961869834728582"
-    },
-    {
-      "t": "2026-04-01T19:25:01.904Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-01T19:26:48.436Z",
-      "event": "bb-session",
-      "session": "7a96abd8",
-      "url": "https://www.wsj.com/articles/SB117792624891234567"
-    },
-    {
-      "t": "2026-04-01T19:26:49.735Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-01T19:31:27.296Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-04-01T19:43:06.220Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T19:46:56.783Z",
+      "event": "bb-session",
+      "session": "223d488b",
+      "url": "https://www.hollywoodreporter.com/business/business-news/power-players-90s-11904"
+    },
+    {
+      "t": "2026-04-01T19:46:58.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-01T19:51:49.008Z",
+      "event": "bb-session",
+      "session": "6ce2ba6e",
+      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
+    },
+    {
+      "t": "2026-04-01T19:51:50.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T19:54:28.069Z",
+      "event": "bb-session",
+      "session": "c209ada2",
+      "url": "https://www.wsj.com/articles/SB112693598167234567"
+    },
+    {
+      "t": "2026-04-01T19:54:29.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

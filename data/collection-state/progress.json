@@ -971,7 +971,17 @@
     "les-miserables-2006/nytimes--ben-brantley.json",
     "lestat-2006/washpost--peter-marks.json",
     "the-history-boys-2006/talkinbroadway--matthew-murray.json",
-    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json"
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "three-days-of-rain-2006/usatoday--elysa-gardner.json",
+    "festen-2006/nydailynews--joe-dziemianowicz-bway.json",
+    "festen-2006/independent--paul-taylor.json",
+    "ring-of-fire-2006/hollywood-reporter--david-rooney.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "bridge-and-tunnel-2006/nydailynews--joe-dziemianowicz-bway.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "jersey-boys-2005/the-journal-news--jacques-le-sourd.json",
+    "the-odd-couple-2005/nytimes--ben-brantley.json",
+    "the-odd-couple-2005/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1182,7 +1192,14 @@
       "data/review-texts/the-little-dog-laughed-2006/washpost--peter-marks.json",
       "data/review-texts/les-miserables-2006/nytimes--ben-brantley.json",
       "data/review-texts/lestat-2006/washpost--peter-marks.json",
-      "data/review-texts/the-history-boys-2006/talkinbroadway--matthew-murray.json"
+      "data/review-texts/the-history-boys-2006/talkinbroadway--matthew-murray.json",
+      "data/review-texts/three-days-of-rain-2006/usatoday--elysa-gardner.json",
+      "data/review-texts/festen-2006/nydailynews--joe-dziemianowicz-bway.json",
+      "data/review-texts/festen-2006/independent--paul-taylor.json",
+      "data/review-texts/bridge-and-tunnel-2006/nydailynews--joe-dziemianowicz-bway.json",
+      "data/review-texts/jersey-boys-2005/the-journal-news--jacques-le-sourd.json",
+      "data/review-texts/the-odd-couple-2005/nytimes--ben-brantley.json",
+      "data/review-texts/the-odd-couple-2005/wsj--terry-teachout.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1209,7 +1226,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "the-odd-couple-2005/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -1514,6 +1531,39 @@
       "t": "2026-04-01T19:43:06.220Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T19:46:56.783Z",
+      "event": "bb-session",
+      "session": "223d488b",
+      "url": "https://www.hollywoodreporter.com/business/business-news/power-players-90s-11904"
+    },
+    {
+      "t": "2026-04-01T19:46:58.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-01T19:51:49.008Z",
+      "event": "bb-session",
+      "session": "6ce2ba6e",
+      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
+    },
+    {
+      "t": "2026-04-01T19:51:50.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T19:54:28.069Z",
+      "event": "bb-session",
+      "session": "c209ada2",
+      "url": "https://www.wsj.com/articles/SB112693598167234567"
+    },
+    {
+      "t": "2026-04-01T19:54:29.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
