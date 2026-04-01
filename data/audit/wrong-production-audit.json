@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-01T10:24:20.809Z",
+  "timestamp": "2026-04-01T10:33:23.682Z",
   "stats": {
-    "totalReviews": 32145,
-    "alreadyFlagged": 11961,
+    "totalReviews": 32167,
+    "alreadyFlagged": 11960,
     "dateGuardCatches": 14,
     "directorMismatch": 837,
     "tvFilmSignals": 3314,
-    "londonSignals": 950,
+    "londonSignals": 952,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
     "noPublishDate": 5915
@@ -70360,6 +70360,20 @@
       ]
     },
     {
+      "showId": "oliver-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 87,
+      "publishDate": "January 14th, 2025",
+      "url": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "once-2012",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 82,
@@ -76703,6 +76717,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "the-telegrap--david-gritten.json",
+      "score": 88,
+      "publishDate": "October 17th, 2014",
+      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-01T10:24:23.228Z",
+    "lastUpdated": "2026-04-01T10:33:26.113Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 32853,
-    "skippedFiles": 12546,
-    "totalCritics": 1399,
-    "registryCritics": 482,
+    "totalFilesScanned": 32876,
+    "skippedFiles": 12545,
+    "totalCritics": 1401,
+    "registryCritics": 483,
     "flaggedReviews": 38
   },
   "flaggedReviews": [
@@ -1635,7 +1635,7 @@
         "artsdesk",
         "broadwayworld"
       ],
-      "totalReviews": 11
+      "totalReviews": 12
     },
     {
       "critic": "Marianka Swain",
@@ -1644,9 +1644,10 @@
         "london-theatre",
         "telegraph",
         "artsdesk",
-        "broadwayworld"
+        "broadwayworld",
+        "the-telegrap"
       ],
-      "totalReviews": 25
+      "totalReviews": 27
     },
     {
       "critic": "Emlyn Travis",
@@ -1961,6 +1962,17 @@
       "totalReviews": 3
     },
     {
+      "critic": "Anya Ryan",
+      "slug": "anya-ryan",
+      "outlets": [
+        "london-theatre",
+        "timeout-london",
+        "guardian",
+        "timeout"
+      ],
+      "totalReviews": 10
+    },
+    {
       "critic": "Iris Fanger",
       "slug": "iris-fanger",
       "outlets": [
@@ -1989,15 +2001,22 @@
       "totalReviews": 3
     },
     {
-      "critic": "Anya Ryan",
-      "slug": "anya-ryan",
+      "critic": "Charles Spencer",
+      "slug": "charles-spencer",
       "outlets": [
-        "london-theatre",
-        "guardian",
-        "timeout",
-        "timeout-london"
+        "telegraph",
+        "the-telegrap"
       ],
-      "totalReviews": 9
+      "totalReviews": 6
+    },
+    {
+      "critic": "Tim Walker",
+      "slug": "tim-walker",
+      "outlets": [
+        "telegraph",
+        "the-telegrap"
+      ],
+      "totalReviews": 3
     },
     {
       "critic": "Lisa Martland",
