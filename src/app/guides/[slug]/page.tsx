@@ -28,7 +28,7 @@ import { getLotteryRush } from '@/lib/data-lottery';
 import { ScoreBadge, StatusBadge, FormatPill, AudienceChip } from '@/components/show-cards';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import ShowImage from '@/components/ShowImage';
-import TicketLink from '@/components/TicketLink';
+import TicketLink, { sortTicketLinks } from '@/components/TicketLink';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
@@ -244,7 +244,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
           <div className="space-y-4">
             {shows.map((show, index) => {
               const consensus = getCriticConsensus(show.id);
-              const ticketLinks = show.ticketLinks?.filter(Boolean) || [];
+              const ticketLinks = sortTicketLinks(show.ticketLinks?.filter(Boolean) || []);
               const lotteryRush = getLotteryRush(show.id);
               const displayText = consensus || show.synopsis;
               const buzz = getAudienceBuzz(show.id);
