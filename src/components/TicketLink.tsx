@@ -106,6 +106,11 @@ export function isAffiliateEnabled(platform: string): boolean {
   return AFFILIATE_CONFIG[platform]?.enabled ?? false;
 }
 
+/** Check whether a platform is an affiliate partner (configured, even if not yet enabled) */
+export function isAffiliatePartner(platform: string): boolean {
+  return platform in AFFILIATE_CONFIG;
+}
+
 // ─── Component ───────────────────────────────────────────
 
 interface TicketLinkProps {
@@ -185,12 +190,18 @@ export default function TicketLink({
     }
   };
 
+  // Affiliate partners get a subtle warm accent border to draw the eye
+  const isPartner = platform in AFFILIATE_CONFIG;
+  const resolvedClassName = isPartner
+    ? (className ?? '').replace(/border-white\/10/g, 'border-amber-500/30 hover:border-amber-500/50') + ' text-gray-200'
+    : className ?? '';
+
   return (
     <a
       href={affiliateUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={className}
+      className={resolvedClassName}
       onClick={handleClick}
     >
       {children}
