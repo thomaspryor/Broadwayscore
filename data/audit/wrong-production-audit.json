@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-01T14:41:19.725Z",
+  "timestamp": "2026-04-01T14:54:21.973Z",
   "stats": {
-    "totalReviews": 32169,
-    "alreadyFlagged": 11967,
+    "totalReviews": 32170,
+    "alreadyFlagged": 11968,
     "dateGuardCatches": 14,
     "directorMismatch": 839,
-    "tvFilmSignals": 3315,
-    "londonSignals": 956,
+    "tvFilmSignals": 3316,
+    "londonSignals": 957,
     "offBroadwaySignals": 963,
     "yearMismatch": 64,
-    "noPublishDate": 5910
+    "noPublishDate": 5906
   },
   "findings": [
     {
@@ -58021,6 +58021,19 @@
       ]
     },
     {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "file": "west-end-wilma--unknown.json",
+      "publishDate": "2022-10-13",
+      "url": "https://westendwilma.com/review-witness-for-the-prosecution-london-2022/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "wolf-hall-parts-one-and-two-2015",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 25,
@@ -60300,6 +60313,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2021-09-13",
+      "url": "https://theatreweekly.com/review-back-to-the-future-the-musical-at-the-adelphi-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
