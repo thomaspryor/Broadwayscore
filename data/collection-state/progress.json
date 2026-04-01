@@ -80,7 +80,8 @@
     "its-only-a-play-2014/timeout--david-cote.json",
     "bullets-over-broadway-2014/timeout--david-cote.json",
     "the-nance-2013/timeout--adam-feldman.json",
-    "once-2012/ew--emlyn-travis.json"
+    "once-2012/ew--emlyn-travis.json",
+    "born-yesterday-2011/amny--unknown.json"
   ],
   "failed": [
     "the-producers-west-end-2025/thestage--paul-vale.json",
@@ -294,7 +295,16 @@
     "baby-its-you-2011/wsj--terry-teachout.json",
     "the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
     "the-normal-heart-2011/scheckontheater--frank-scheck.json",
-    "baby-its-you-2011/backstage--david-sheward.json"
+    "baby-its-you-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/backstage--unknown.json",
+    "the-house-of-blue-leaves-2011/vulture--scott-brown.json",
+    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+    "born-yesterday-2011/village-voice--michael-musto.json",
+    "jerusalem-2011/backstage--erik-haagensen.json",
+    "sister-act-2011/northjerseycom--robert-feldberg.json",
+    "sister-act-2011/scheckontheater--frank-scheck.json",
+    "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
+    "sister-act-2011/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -406,7 +416,9 @@
       "data/review-texts/the-people-in-the-picture-2011/philadelphia-inquirer--howard-shapiro.json",
       "data/review-texts/the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
       "data/review-texts/baby-its-you-2011/wsj--terry-teachout.json",
-      "data/review-texts/the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json"
+      "data/review-texts/the-normal-heart-2011/san-jose-mercury-news--chuck-barney.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/vulture--scott-brown.json",
+      "data/review-texts/sister-act-2011/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "hadestown-west-end-2024/artsdesk--marianka-swain.json",
@@ -424,11 +436,12 @@
       "spongebob-squarepants-2017/wsj--edward-rothstein.json",
       "prince-of-broadway-2017/vulture--jesse-green.json",
       "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json",
-      "hughie-2016/huffpost--michael-glitz.json"
+      "hughie-2016/huffpost--michael-glitz.json",
+      "born-yesterday-2011/amny--unknown.json"
     ]
   },
   "startTime": "2026-04-01T03:48:30.603Z",
-  "lastProcessed": "baby-its-you-2011/backstage--david-sheward.json",
+  "lastProcessed": "sister-act-2011/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -552,6 +565,39 @@
       "t": "2026-04-01T05:51:50.742Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T05:54:48.832Z",
+      "event": "bb-session",
+      "session": "d041249b",
+      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_a_cramped_and_m.htm"
+    },
+    {
+      "t": "2026-04-01T05:54:49.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-04-01T05:55:30.428Z",
+      "event": "bb-session",
+      "session": "259a221c",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-born-yesterday-3-5-stars-1."
+    },
+    {
+      "t": "2026-04-01T05:55:31.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-01T05:57:43.842Z",
+      "event": "bb-session",
+      "session": "8dd54f9b",
+      "url": "https://www.northjersey.com/arts_entertainment/120339269_Theater_review___Sister"
+    },
+    {
+      "t": "2026-04-01T05:57:44.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
