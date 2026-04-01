@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-01T11:12:44.061Z",
+  "timestamp": "2026-04-01T11:37:14.088Z",
   "stats": {
     "totalReviews": 32167,
-    "alreadyFlagged": 11960,
+    "alreadyFlagged": 11962,
     "dateGuardCatches": 14,
-    "directorMismatch": 838,
+    "directorMismatch": 839,
     "tvFilmSignals": 3314,
-    "londonSignals": 952,
-    "offBroadwaySignals": 966,
+    "londonSignals": 956,
+    "offBroadwaySignals": 963,
     "yearMismatch": 64,
-    "noPublishDate": 5915
+    "noPublishDate": 5914
   },
   "findings": [
     {
@@ -23757,6 +23757,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "musical-theatre-review--unknown.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/into-the-woods-bridge-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -66082,6 +66100,20 @@
       ]
     },
     {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "all-that-dazzles-uk--matthew-plampton.json",
+      "score": 87,
+      "publishDate": "February 13th, 2026",
+      "url": "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "high-2011",
       "file": "timeout--david-cote.json",
       "score": 25,
@@ -71611,8 +71643,8 @@
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 81,
-      "publishDate": "2026-03-31",
-      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
+      "publishDate": "2026-04-01",
+      "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-b1277295.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -72114,6 +72146,20 @@
       "file": "telegraph--marianka-swain.json",
       "score": 90,
       "publishDate": "2023-11-11",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "file": "the-telegrap--marianka-swain.json",
+      "score": 89,
+      "publishDate": "November 11th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
       "findings": [
         {
@@ -77294,6 +77340,20 @@
       ]
     },
     {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "the-telegrap--marianka-swain.json",
+      "score": 82,
+      "publishDate": "November 15th, 2023",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 73,
@@ -79244,46 +79304,7 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--armando-urdiales.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--courtney-symes.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--emily-short.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--jared-fessler.json",
+      "file": "broadwayworld--david-copney.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
