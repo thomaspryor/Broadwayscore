@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-01T04:08:07.200Z",
+  "timestamp": "2026-04-01T04:19:55.530Z",
   "stats": {
     "totalReviews": 32108,
-    "alreadyFlagged": 11929,
+    "alreadyFlagged": 11930,
     "dateGuardCatches": 14,
-    "directorMismatch": 838,
-    "tvFilmSignals": 3309,
-    "londonSignals": 947,
+    "directorMismatch": 837,
+    "tvFilmSignals": 3310,
+    "londonSignals": 949,
     "offBroadwaySignals": 972,
     "yearMismatch": 64,
-    "noPublishDate": 5924
+    "noPublishDate": 5923
   },
   "findings": [
     {
@@ -20876,7 +20876,7 @@
       "showId": "hercules-west-end-2025",
       "file": "broadwayworld--kat-mokrynski.json",
       "score": 66,
-      "publishDate": "2025-07-10",
+      "publishDate": "2025-06-24",
       "url": "https://www.broadwayworld.com/article/Review-DISNEYS-HERCULES-Theatre-Royal-Drury-Lane-20250624",
       "findings": [
         {
@@ -21047,20 +21047,6 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "file": "the-sun--dominic-maxwell.json",
-      "score": 42,
-      "publishDate": "2025-06-28",
-      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "hercules-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 94,
       "publishDate": "2025-06-26",
@@ -21093,6 +21079,20 @@
       "score": 63,
       "publishDate": "2025-06-24",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/hercules-review-mighty-muses-save-disneys-musclebound-musical-wp3rcgnz6",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 42,
+      "publishDate": "2025-06-28",
+      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24921,7 +24921,7 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "guardian--unknown.json",
+      "file": "guardian--arifa-akbar.json",
       "score": 78,
       "publishDate": "2026-03-26",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
@@ -24949,20 +24949,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "thestage--sam-marlowe.json",
-      "score": 75,
-      "publishDate": "March 27th, 2026",
-      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
         }
       ]
     },
@@ -31711,6 +31697,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "standard--tim-bano.json",
+      "score": 76,
+      "publishDate": "2025-11-30",
+      "url": "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -70265,6 +70270,19 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "telegraph--claire-allfree.json",
+      "publishDate": "2025-01-14",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 92,
       "publishDate": "2025-01-15",
@@ -74031,7 +74049,7 @@
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
       "score": 52,
-      "publishDate": "2026-03-11",
+      "publishDate": "2026-03-26",
       "url": "https://www.cityam.com/teeth-n-smiles-review-self-esteem-is-magnetic-in-dated-show/",
       "findings": [
         {
@@ -74043,7 +74061,7 @@
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
-      "file": "musical-theatre-review--unknown.json",
+      "file": "musical-theatre-review--scott-matthewman.json",
       "score": 63,
       "publishDate": "2026-03-25",
       "url": "https://musicaltheatrereview.com/teeth-n-smiles-duke-of-yorks-theatre/",
