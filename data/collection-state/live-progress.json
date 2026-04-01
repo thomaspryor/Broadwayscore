@@ -1,52 +1,131 @@
 {
-  "updatedAt": "2026-04-01T05:16:47.917Z",
-  "processed": 57,
-  "failed": 66,
-  "successRate": "46.3%",
+  "updatedAt": "2026-04-01T06:20:31.190Z",
+  "processed": 89,
+  "failed": 284,
+  "successRate": "23.9%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 51,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 14,
     "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 10
+    "archiveToday": 38,
+    "archive": 19
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-04-01T04:52:05.149Z",
+      "t": "2026-04-01T05:50:20.712Z",
       "event": "bb-session",
-      "session": "777858e8",
-      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+      "session": "6a4e4961",
+      "url": "https://articles.philly.com/2011-04-28/news/29483230_1_schmaltz-bubbie-generatio"
     },
     {
-      "t": "2026-04-01T04:52:06.259Z",
+      "t": "2026-04-01T05:51:49.557Z",
+      "event": "bb-session",
+      "session": "e0b2bf6e",
+      "url": "https://www.wsj.com/articles/SB10001424052748704461304576216˘622142567668"
+    },
+    {
+      "t": "2026-04-01T05:51:50.742Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T05:54:48.832Z",
+      "event": "bb-session",
+      "session": "d041249b",
+      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_a_cramped_and_m.htm"
+    },
+    {
+      "t": "2026-04-01T05:54:49.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "nymag.com"
+    },
+    {
+      "t": "2026-04-01T05:55:30.428Z",
+      "event": "bb-session",
+      "session": "259a221c",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-born-yesterday-3-5-stars-1."
+    },
+    {
+      "t": "2026-04-01T05:55:31.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-01T05:57:43.842Z",
+      "event": "bb-session",
+      "session": "8dd54f9b",
+      "url": "https://www.northjersey.com/arts_entertainment/120339269_Theater_review___Sister"
+    },
+    {
+      "t": "2026-04-01T05:57:44.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T05:59:04.776Z",
+      "event": "bb-session",
+      "session": "f347fe58",
+      "url": "https://scheckonthearts.com/blog2.php/2011/04/20/review-lighighl-ig"
+    },
+    {
+      "t": "2026-04-01T06:00:23.476Z",
+      "event": "bb-session",
+      "session": "b27e292a",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/120045819_Theater_review_"
+    },
+    {
+      "t": "2026-04-01T06:00:24.594Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T06:01:14.773Z",
+      "event": "bb-session",
+      "session": "ece75e8e",
+      "url": "https://scheckonthearts.com/blog2.php/2011/04/15/review-ligwar-horsel-ig"
+    },
+    {
+      "t": "2026-04-01T06:02:14.710Z",
+      "event": "bb-session",
+      "session": "34a1d1c9",
+      "url": "https://scheckonthearts.com/blog2.php/2011/04/08/review-liganything-goesl-ig"
+    },
+    {
+      "t": "2026-04-01T06:03:35.205Z",
+      "event": "bb-session",
+      "session": "487c277f",
+      "url": "https://www.newsday.com/entertainment/theater/daniel-radcliffe-knows-how-to-succ"
+    },
+    {
+      "t": "2026-04-01T06:03:36.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-01T06:05:37.850Z",
+      "event": "bb-session",
+      "session": "9ba35951",
+      "url": "https://www.washingtonpost.com/lifestyle/style/theater_reviews_how_to_succeed_an"
+    },
+    {
+      "t": "2026-04-01T06:05:39.211Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T06:15:00.448Z",
+      "event": "bb-session",
+      "session": "176ba330",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
+    },
+    {
+      "t": "2026-04-01T06:15:01.821Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-01T04:52:19.097Z",
-      "event": "bb-session",
-      "session": "29f7964a",
-      "url": "https://deadline.com/2026/03/broadway-chicago-whitney-leavitt-dog-day-afternoon-"
-    },
-    {
-      "t": "2026-04-01T04:52:20.199Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-01T05:12:59.345Z",
-      "event": "bb-session",
-      "session": "978ae46f",
-      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
-    },
-    {
-      "t": "2026-04-01T05:13:00.406Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
     }
   ]
 }

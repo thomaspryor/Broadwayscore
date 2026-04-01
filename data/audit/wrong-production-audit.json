@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-01T05:19:37.538Z",
+  "timestamp": "2026-04-01T06:12:41.576Z",
   "stats": {
-    "totalReviews": 32108,
-    "alreadyFlagged": 11933,
+    "totalReviews": 32109,
+    "alreadyFlagged": 11934,
     "dateGuardCatches": 14,
     "directorMismatch": 837,
-    "tvFilmSignals": 3310,
+    "tvFilmSignals": 3311,
     "londonSignals": 949,
-    "offBroadwaySignals": 972,
+    "offBroadwaySignals": 966,
     "yearMismatch": 64,
     "noPublishDate": 5922
   },
@@ -52213,6 +52213,19 @@
     },
     {
       "showId": "the-price-2017",
+      "file": "dailybeast--chris-jones.json",
+      "publishDate": "2017-03-16",
+      "url": "http://www.thedailybeast.com/articles/2017/03/16/no-one-eats-an-egg-like-danny-devito-review-of-the-price-on-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-price-2017",
       "file": "dctheatrescene--richard-seff.json",
       "score": 88,
       "publishDate": "2017-03-15",
@@ -79150,19 +79163,6 @@
     },
     {
       "showId": "wicked-2003",
-      "file": "broadwayworld--david-copney.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
       "file": "broadwayworld--emily-short.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
@@ -79177,71 +79177,6 @@
     {
       "showId": "wicked-2003",
       "file": "broadwayworld--jared-fessler.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--katrina-fageol.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--lauren-gienow.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--linda-hodges.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--lynn-beaver.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Wicked",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"joe's pub\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-2003",
-      "file": "broadwayworld--tyler-hinton.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/reviews/Wicked",
       "findings": [
