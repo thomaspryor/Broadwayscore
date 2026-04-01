@@ -81,7 +81,11 @@
     "bullets-over-broadway-2014/timeout--david-cote.json",
     "the-nance-2013/timeout--adam-feldman.json",
     "once-2012/ew--emlyn-travis.json",
-    "born-yesterday-2011/amny--unknown.json"
+    "born-yesterday-2011/amny--unknown.json",
+    "dog-day-afternoon-2026/variety--rebecca-rubin.json",
+    "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+    "jajas-african-hair-braiding-west-end-2026/thestage--unknown.json",
+    "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "failed": [
     "the-producers-west-end-2025/thestage--paul-vale.json",
@@ -324,7 +328,13 @@
     "how-to-succeed-in-business-without-really-trying-2011/village-voice--michael-musto.json",
     "how-to-succeed-in-business-without-really-trying-2011/washpost--peter-marks.json",
     "how-to-succeed-in-business-without-really-trying-2011/new-jersey-newsroom--michael-sommers.json",
-    "how-to-succeed-in-business-without-really-trying-2011/times-uk--clive-davis.json"
+    "how-to-succeed-in-business-without-really-trying-2011/times-uk--clive-davis.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -377,7 +387,9 @@
       "the-elephant-man-2014/financialtimes--financial-times.json",
       "its-only-a-play-2014/timeout--david-cote.json",
       "bullets-over-broadway-2014/timeout--david-cote.json",
-      "once-2012/ew--emlyn-travis.json"
+      "once-2012/ew--emlyn-travis.json",
+      "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
+      "jajas-african-hair-braiding-west-end-2026/thestage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -388,7 +400,9 @@
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
       "the-last-five-years-2025/nypost--lou-lumenick.json",
       "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
-      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/dog-day-afternoon-2026/variety--rebecca-rubin.json",
+      "dog-day-afternoon-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -403,7 +417,8 @@
       "sweat-2017/timeout--david-rooney.json",
       "the-price-2017/dailybeast--chris-jones.json",
       "spring-awakening-2015/njcom--christopher-kelly.json",
-      "the-nance-2013/timeout--adam-feldman.json"
+      "the-nance-2013/timeout--adam-feldman.json",
+      "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -467,7 +482,7 @@
     ]
   },
   "startTime": "2026-04-01T03:48:30.603Z",
-  "lastProcessed": "how-to-succeed-in-business-without-really-trying-2011/times-uk--clive-davis.json",
+  "lastProcessed": "dracula-west-end-2025/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -675,6 +690,17 @@
       "t": "2026-04-01T06:05:39.211Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T06:15:00.448Z",
+      "event": "bb-session",
+      "session": "176ba330",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
+    },
+    {
+      "t": "2026-04-01T06:15:01.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
