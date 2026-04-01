@@ -1,14 +1,22 @@
 name: Lighthouse Post-Deploy Audit
 on:
-  workflow_run:
-    workflows: ["Deploy to Vercel"]
-    types: [completed]
+  # NOTE: workflow_run trigger on "Deploy to Vercel" removed 2026-04-01.
+  # It caused 100+ audits/day during cascade events. Daily cron + code-push
+  # triggers are sufficient for catching regressions.
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'next.config.*'
+      - 'tailwind.config.*'
+      - 'package.json'
+  schedule:
+    - cron: '0 12 * * *'  # Daily at noon UTC — catches overnight data changes
   workflow_dispatch: {}
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
