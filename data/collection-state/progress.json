@@ -56,7 +56,8 @@
     "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
     "grey-house-2023/slash-film--caroline-cao.json",
     "life-of-pi-2023/newyorker--katy-waldman.json",
-    "some-like-it-hot-2022/newyorker--helen-shaw.json"
+    "some-like-it-hot-2022/newyorker--helen-shaw.json",
+    "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
   ],
   "failed": [
     "the-producers-west-end-2025/thestage--paul-vale.json",
@@ -124,7 +125,16 @@
     "topdog-underdog-2022/corey-hawkins--jessica-wang.json",
     "cost-of-living-2022/newyorker--vinson-cunningham.json",
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "the-kite-runner-2022/thewrap--robert-hofler.json"
+    "the-kite-runner-2022/thewrap--robert-hofler.json",
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -174,7 +184,9 @@
       "data/review-texts/dog-day-afternoon-2026/deadline--unknown.json",
       "dog-day-afternoon-2026/deadline--unknown.json",
       "data/review-texts/the-last-five-years-2025/nypost--lou-lumenick.json",
-      "the-last-five-years-2025/nypost--lou-lumenick.json"
+      "the-last-five-years-2025/nypost--lou-lumenick.json",
+      "data/review-texts/thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+      "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -218,7 +230,7 @@
     ]
   },
   "startTime": "2026-04-01T03:48:30.603Z",
-  "lastProcessed": "the-kite-runner-2022/thewrap--robert-hofler.json",
+  "lastProcessed": "a-soldiers-play-2020/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -252,6 +264,17 @@
       "t": "2026-04-01T05:13:00.406Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-01T05:17:36.564Z",
+      "event": "bb-session",
+      "session": "21543b5e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broad"
+    },
+    {
+      "t": "2026-04-01T05:17:37.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
