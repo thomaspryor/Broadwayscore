@@ -26,6 +26,7 @@ interface AffiliateConfig {
   impactPublisherId?: string;
   impactCampaignId?: string;
   // Partnerize (StubHub) — wraps URL via Partnerize redirect
+  partnerizeDomain?: string;      // e.g. "stubhub.prf.hn"
   partnerizeCampaignRef?: string;
 }
 
@@ -47,8 +48,9 @@ const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
   },
   StubHub: {
     type: 'partnerize',
-    partnerizeCampaignRef: '', // from Partnerize dashboard after StubHub approval
-    enabled: false,
+    partnerizeDomain: 'stubhub.prf.hn',
+    partnerizeCampaignRef: '1011l5DmFu',
+    enabled: true,
   },
   SeatGeek: {
     type: 'impact',
@@ -72,9 +74,10 @@ function buildAffiliateUrl(url: string, platform: string, pageType: string): { u
     }
 
     if (config.type === 'partnerize' && config.partnerizeCampaignRef) {
-      // Partnerize deep link format: https://prf.hn/click/camref:{ref}/destination:{encodedUrl}
+      // Partnerize deep link format: https://{domain}/click/camref:{ref}/destination:{encodedUrl}
+      const domain = config.partnerizeDomain || 'prf.hn';
       const encodedUrl = encodeURIComponent(url);
-      const affiliateUrl = `https://prf.hn/click/camref:${config.partnerizeCampaignRef}/destination:${encodedUrl}`;
+      const affiliateUrl = `https://${domain}/click/camref:${config.partnerizeCampaignRef}/destination:${encodedUrl}`;
       return { url: affiliateUrl, isAffiliate: true };
     }
 
