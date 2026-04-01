@@ -59,7 +59,16 @@ const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
     impactDomain: '',
     impactPublisherId: '',
     impactCampaignId: '',
+    impactProgramId: '',
     enabled: false,
+  },
+  SeatPlan: {
+    type: 'impact',
+    impactDomain: 'seatplan.sjv.io',
+    impactPublisherId: '6999278',
+    impactCampaignId: '2219054',
+    impactProgramId: '28679',
+    enabled: true,
   },
 };
 
