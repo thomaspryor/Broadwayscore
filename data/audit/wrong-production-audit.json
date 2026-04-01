@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-01T12:10:09.822Z",
+  "timestamp": "2026-04-01T12:21:43.904Z",
   "stats": {
-    "totalReviews": 32169,
+    "totalReviews": 32170,
     "alreadyFlagged": 11962,
     "dateGuardCatches": 14,
     "directorMismatch": 839,
     "tvFilmSignals": 3313,
-    "londonSignals": 956,
+    "londonSignals": 957,
     "offBroadwaySignals": 963,
     "yearMismatch": 64,
     "noPublishDate": 5914
@@ -68203,6 +68203,20 @@
       ]
     },
     {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "score": null,
+      "publishDate": "2026-04-01",
+      "url": "https://www.whatsonstage.com/news/les-liaisons-dangereuses-with-aidan-turner-lesley-manville-and-monica-barbaro-photos-released_1717106/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "les-miserables-west-end-2021",
       "file": "guardian--unknown.json",
       "score": null,
@@ -71631,8 +71645,8 @@
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 81,
-      "publishDate": "2026-04-01",
-      "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-b1277295.html",
+      "publishDate": "2026-03-31",
+      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
