@@ -399,7 +399,9 @@ function getBestScore(data, opts = {}) {
           'css-stars', 'star-class', 'css-rating', 'star-rating',
           'text-pattern', 'og-description', 'wp-api-title',
           'numeric-stars',    // Generic "X/5" pattern — false positives from pagination, dates, URLs
-          'lbo-css-stars',    // CSS class extraction — sometimes reads wrong element on page
+          // lbo-css-stars promoted to HIGH reliability 2026-04-01:
+          // Investigation confirmed first bstarsN is always the review rating,
+          // second is a sidebar related article. 33/33 recollections matched.
         ]);
         const isHighReliability = !LOW_RELIABILITY_EXTRACTION.has(data.scoreSource);
         if (llm && llmConf !== 'low' && Math.abs(parsed - llm) > 25) {

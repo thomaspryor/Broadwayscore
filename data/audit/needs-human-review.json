@@ -4,7 +4,8 @@
     "totalFlagged": 35,
     "reasons": {
       "possible-tour-fulltext": 31,
-      "venue-url-mismatch": 3,
+      "venue-url-mismatch": 2,
+      "originalScore-llm-conflict": 3,
       "borderline-rave": 1
     }
   },
@@ -192,13 +193,13 @@
       "flaggedAt": "2026-04-01T14:04:50.302Z"
     },
     {
-      "showId": "happy-ending-west-end-2026",
-      "outletId": "all-that-dazzles-uk",
-      "criticName": "Oliver Briggs",
-      "reason": "venue-url-mismatch",
-      "detail": "URL mentions Waterloo East Theatre but show venue is Southwark",
-      "llmScore": 83,
-      "llmBucket": "Rave",
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "outletId": "london-theatre",
+      "criticName": "Matt Wolf",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"5/5 stars\" (=100, bucket=positive) vs LLM 65 (bucket=mixed, conf=medium) [HIGH-reliability: unicode-stars — kept]",
+      "llmScore": 65,
+      "llmBucket": "Mixed",
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": null,
