@@ -17,7 +17,7 @@ const currentYear = new Date().getFullYear();
  *
  * To update: verify each value against its source, then bump lastVerified.
  */
-export const GUIDE_DATA = {
+const GUIDE_DATA = {
   lastVerified: '2026-03-31',
 
   // Source: Broadway League grosses reports — review annually (Sep)
