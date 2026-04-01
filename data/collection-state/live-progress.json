@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-01T05:35:40.594Z",
-  "processed": 80,
-  "failed": 143,
-  "successRate": "35.9%",
+  "updatedAt": "2026-04-01T05:43:53.858Z",
+  "processed": 81,
+  "failed": 192,
+  "successRate": "29.7%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 49,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 0,
-    "archiveToday": 18,
+    "archiveToday": 20,
     "archive": 16
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-04-01T04:52:05.149Z",
@@ -69,6 +69,12 @@
       "t": "2026-04-01T05:23:15.033Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-01T05:36:48.146Z",
+      "event": "bb-session",
+      "session": "0f0bb504",
+      "url": "https://articles.philly.com/2012-09-10/news/33738454_1_warren-carlyle-charlie-ch"
     }
   ]
 }
