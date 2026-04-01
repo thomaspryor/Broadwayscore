@@ -1,88 +1,124 @@
 {
-  "runDate": "2026-04-01T03:51:19.502Z",
+  "runDate": "2026-04-01T04:02:16.827Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "oh-mary-west-end-2025,the-hunger-games-on-stage-west-end-2025,titanique-west-end-2024,john-proctor-is-the-villain-west-end-2026,paranormal-activity-west-end-2025,mj-the-musical-west-end-2024,cabaret-at-the-kit-kat-club-west-end-2021,the-holy-rosenbergs-west-end-2026,broken-glass-west-end-2026,witness-for-the-prosecution-west-end-2022",
+    "showFilter": "hamilton-west-end-2021,wicked-west-end-2021,les-miserables-west-end-2021,moulin-rouge-the-musical-west-end-2021,hadestown-west-end-2024,oliver-west-end-2024,back-to-the-future-west-end-2021,into-the-woods-west-end-2025,the-producers-west-end-2025,six-the-musical-west-end-2021",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 11,
+    "processed": 6,
+    "failed": 17,
     "skipped": 0,
-    "successRate": "15.4%"
+    "successRate": "26.1%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "archiveToday": 11,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 7,
+    "tier1Attempts": 18,
+    "tier1Success": 6,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 12,
     "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier3Attempts": 11,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier3_6Attempts": 11,
+    "tier3_6Success": 11,
+    "tier4Attempts": 5,
     "tier4Success": 0,
-    "totalFailed": 11,
-    "scrapingBeePageCredits": 20,
+    "totalFailed": 17,
+    "scrapingBeePageCredits": 70,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 8,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json",
-    "paranormal-activity-west-end-2025/telegraph--unknown.json"
+    "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
+    "oliver-west-end-2024/telegraph--claire-allfree.json",
+    "hadestown-west-end-2024/artsdesk--marianka-swain.json",
+    "moulin-rouge-the-musical-west-end-2021/standard--tim-bano.json",
+    "back-to-the-future-west-end-2021/british-theatre--unknown.json",
+    "les-miserables-west-end-2021/independent--louis-chilton.json"
   ],
   "failed": [
-    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
-    "the-holy-rosenbergs-west-end-2026/theatre-weekly--unknown.json",
-    "the-holy-rosenbergs-west-end-2026/times-uk--unknown.json",
-    "broken-glass-west-end-2026/times-uk--observes-andrzej-lukowski.json",
-    "oh-mary-west-end-2025/theatrely--emily-wyrwa.json",
-    "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
-    "titanique-west-end-2024/i-paper--fiona-mountford.json",
-    "titanique-west-end-2024/times-uk--clive-davis.json",
-    "witness-for-the-prosecution-west-end-2022/theatre-weekly--unknown.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
-    "mj-the-musical-west-end-2024/broadwayworld--unknown.json"
+    "the-producers-west-end-2025/thestage--paul-vale.json",
+    "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+    "oliver-west-end-2024/the-sun--unknown.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "hadestown-west-end-2024/broadwayworld--cindy-marcolina.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/telegraph--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "back-to-the-future-west-end-2021/guardian--unknown.json",
+    "les-miserables-west-end-2021/broadwayworld--marianka-swain.json",
+    "les-miserables-west-end-2021/whatsonstage--theo-bosanquet.json",
+    "six-the-musical-west-end-2021/guardian--unknown.json",
+    "hamilton-west-end-2021/guardian--unknown.json",
+    "hamilton-west-end-2021/broadwayworld--marianka-swain.json",
+    "hamilton-west-end-2021/times-uk--clive-davis.json",
+    "wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+    "wicked-west-end-2021/west-end-wilma--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "john-proctor-is-the-villain-west-end-2026/thestage--sam-marlowe.json"
+      "into-the-woods-west-end-2025/musical-theatre-review--unknown.json",
+      "moulin-rouge-the-musical-west-end-2021/standard--tim-bano.json",
+      "back-to-the-future-west-end-2021/british-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "paranormal-activity-west-end-2025/telegraph--unknown.json"
+      "oliver-west-end-2024/telegraph--claire-allfree.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/mj-the-musical-west-end-2024/broadwayworld--unknown.json"
+      "data/review-texts/oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+      "data/review-texts/oliver-west-end-2024/the-sun--unknown.json",
+      "data/review-texts/hadestown-west-end-2024/broadwayworld--cindy-marcolina.json",
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/telegraph--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/guardian--unknown.json",
+      "data/review-texts/les-miserables-west-end-2021/broadwayworld--marianka-swain.json",
+      "data/review-texts/six-the-musical-west-end-2021/guardian--unknown.json",
+      "data/review-texts/hamilton-west-end-2021/guardian--unknown.json",
+      "data/review-texts/hamilton-west-end-2021/broadwayworld--marianka-swain.json",
+      "data/review-texts/wicked-west-end-2021/tim-talks-theatre-uk--tim-talks-theatre-uk.json",
+      "data/review-texts/wicked-west-end-2021/west-end-wilma--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "hadestown-west-end-2024/artsdesk--marianka-swain.json",
+      "les-miserables-west-end-2021/independent--louis-chilton.json"
+    ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "oliver-west-end-2024/telegraph--claire-allfree.json",
+      "oldUrl": "https://www.telegraph.co.uk/theatre/what-to-see/the-other-place-national-theatre-review/?msockid=2e09c7d8797965060ae6d67178066487",
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/"
+    },
+    {
+      "reviewId": "moulin-rouge-the-musical-west-end-2021/standard--tim-bano.json",
+      "oldUrl": "https://www.standard.co.uk/culture/theatre/paddington-the-musical-savoy-theatre-review-b1260368.html",
+      "newUrl": "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html"
+    }
+  ]
 }
