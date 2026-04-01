@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-01T05:32:02.386Z",
+  "timestamp": "2026-04-01T06:03:12.061Z",
   "stats": {
-    "totalReviews": 32108,
-    "alreadyFlagged": 11933,
+    "totalReviews": 32109,
+    "alreadyFlagged": 11934,
     "dateGuardCatches": 14,
     "directorMismatch": 837,
-    "tvFilmSignals": 3310,
+    "tvFilmSignals": 3311,
     "londonSignals": 949,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
@@ -52208,6 +52208,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "the-price-2017",
+      "file": "dailybeast--chris-jones.json",
+      "publishDate": "2017-03-16",
+      "url": "http://www.thedailybeast.com/articles/2017/03/16/no-one-eats-an-egg-like-danny-devito-review-of-the-price-on-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
