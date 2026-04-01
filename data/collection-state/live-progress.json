@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-01T20:16:10.361Z",
+  "updatedAt": "2026-04-01T20:22:16.819Z",
   "processed": 124,
-  "failed": 876,
-  "successRate": "12.4%",
+  "failed": 886,
+  "successRate": "12.3%",
   "tierBreakdown": {
     "playwright": 72,
     "amp": 0,
@@ -10,33 +10,11 @@
     "directCookies": 2,
     "scrapingbee": 24,
     "brightdata": 0,
-    "archiveToday": 112,
+    "archiveToday": 118,
     "archive": 21
   },
-  "browserbaseSessions": 22,
+  "browserbaseSessions": 24,
   "recentActivity": [
-    {
-      "t": "2026-04-01T19:41:34.998Z",
-      "event": "bb-session",
-      "session": "c824b708",
-      "url": "https://www.nytimes.com/2006/11/10/theater/reviews/10miser.html"
-    },
-    {
-      "t": "2026-04-01T19:41:36.308Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-01T19:43:04.905Z",
-      "event": "bb-session",
-      "session": "1ca065d6",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/04/19/lestat-sucks/8a5c8f5"
-    },
-    {
-      "t": "2026-04-01T19:43:06.220Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-01T19:46:56.783Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-01T20:10:08.723Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-01T20:18:15.910Z",
+      "event": "bb-session",
+      "session": "81d82d7e",
+      "url": "https://www.nytimes.com/1987/03/13/theater/theater-les-miserables.html"
+    },
+    {
+      "t": "2026-04-01T20:18:17.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T20:21:06.039Z",
+      "event": "bb-session",
+      "session": "62325dfc",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-annie-1-5-stars-1.4202762"
+    },
+    {
+      "t": "2026-04-01T20:21:07.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

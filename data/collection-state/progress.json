@@ -1001,7 +1001,17 @@
     "city-of-angels-1989/independent--paul-taylor.json",
     "love-letters-1989/ew--thom-geier.json",
     "love-letters-1989/ap--mark-kennedy.json",
-    "born-yesterday-1989/backstage--erik-haagensen.json"
+    "born-yesterday-1989/backstage--erik-haagensen.json",
+    "the-phantom-of-the-opera-1988/businessworld--sam-marcelo.json",
+    "the-phantom-of-the-opera-1988/the-philippine-star--rosalinda-orosa.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "les-liaisons-dangereuses-1987/ap--mark-kennedy.json",
+    "les-miserables-1987/nytimes--frank-rich.json",
+    "barnum-1980/thestage--paul-vale.json",
+    "runaways-1978/nytimes--ben-brantley.json",
+    "runaways-1978/vulture--jesse-green.json",
+    "annie-1977/amny--matt-windman.json",
+    "the-robber-bridegroom-1976/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1235,7 +1245,13 @@
       "data/review-texts/titanic-1997/nytimes--ben-brantley.json",
       "data/review-texts/rent-1996/northjerseycom--robert-feldberg.json",
       "data/review-texts/city-of-angels-1989/independent--paul-taylor.json",
-      "data/review-texts/love-letters-1989/ap--mark-kennedy.json"
+      "data/review-texts/love-letters-1989/ap--mark-kennedy.json",
+      "data/review-texts/born-yesterday-1989/backstage--erik-haagensen.json",
+      "data/review-texts/les-miserables-1987/nytimes--frank-rich.json",
+      "data/review-texts/barnum-1980/thestage--paul-vale.json",
+      "data/review-texts/runaways-1978/nytimes--ben-brantley.json",
+      "data/review-texts/runaways-1978/vulture--jesse-green.json",
+      "data/review-texts/the-robber-bridegroom-1976/nytimes--ben-brantley.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1262,7 +1278,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "carrie-1988/timeout--adam-feldman.json",
+  "lastProcessed": "the-robber-bridegroom-1976/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -1655,6 +1671,28 @@
       "t": "2026-04-01T20:10:08.723Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-01T20:18:15.910Z",
+      "event": "bb-session",
+      "session": "81d82d7e",
+      "url": "https://www.nytimes.com/1987/03/13/theater/theater-les-miserables.html"
+    },
+    {
+      "t": "2026-04-01T20:18:17.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T20:21:06.039Z",
+      "event": "bb-session",
+      "session": "62325dfc",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-annie-1-5-stars-1.4202762"
+    },
+    {
+      "t": "2026-04-01T20:21:07.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
