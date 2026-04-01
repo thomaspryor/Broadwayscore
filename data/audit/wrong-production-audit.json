@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-01T06:25:35.215Z",
+  "timestamp": "2026-04-01T06:37:24.010Z",
   "stats": {
     "totalReviews": 32109,
-    "alreadyFlagged": 11934,
+    "alreadyFlagged": 11933,
     "dateGuardCatches": 14,
-    "directorMismatch": 837,
-    "tvFilmSignals": 3311,
+    "directorMismatch": 838,
+    "tvFilmSignals": 3312,
     "londonSignals": 949,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
@@ -12825,6 +12825,20 @@
     },
     {
       "showId": "dog-day-afternoon-2026",
+      "file": "variety--rebecca-rubin.json",
+      "score": null,
+      "publishDate": "2026-03-31",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
       "file": "yale-daily-news--cielo-gazard.json",
       "score": 36,
       "publishDate": "2026-03-27",
@@ -24949,6 +24963,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 75,
+      "publishDate": "March 27th, 2026",
+      "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
         }
       ]
     },
