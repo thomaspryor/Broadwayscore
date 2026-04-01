@@ -1277,7 +1277,17 @@
     "waiting-for-godot-2009/newsday--linda-winer.json",
     "waiting-for-godot-2009/backstage--david-sheward.json",
     "desire-under-the-elms-2009/washpost--peter-marks.json",
-    "the-philanthropist-2009/backstage--david-sheward.json"
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "the-norman-conquests-2009/nytimes--ben-brantley.json",
+    "mary-stuart-2009/ap--michael-kuchwara.json",
+    "mary-stuart-2009/northjerseycom--robert-feldberg.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/ap--michael-kuchwara.json",
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json",
+    "rock-of-ages-2009/nypost--elisabeth-vincentelli.json",
+    "rock-of-ages-2009/backstage--david-sheward.json",
+    "rock-of-ages-2009/ny1--roma-torre.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1539,7 +1549,9 @@
       "data/review-texts/burn-the-floor-2009/northjerseycom--robert-feldberg.json",
       "data/review-texts/9-to-5-2009/wsj--unknown.json",
       "data/review-texts/waiting-for-godot-2009/northjerseycom--robert-feldberg.json",
-      "data/review-texts/desire-under-the-elms-2009/washpost--peter-marks.json"
+      "data/review-texts/desire-under-the-elms-2009/washpost--peter-marks.json",
+      "data/review-texts/the-norman-conquests-2009/nytimes--ben-brantley.json",
+      "data/review-texts/mary-stuart-2009/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1569,7 +1581,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "the-philanthropist-2009/backstage--david-sheward.json",
+  "lastProcessed": "rock-of-ages-2009/ny1--roma-torre.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2056,6 +2068,39 @@
       "t": "2026-04-01T21:13:37.065Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-01T21:14:19.139Z",
+      "event": "bb-session",
+      "session": "3be0a1ca",
+      "url": "https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html"
+    },
+    {
+      "t": "2026-04-01T21:14:20.494Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T21:16:48.367Z",
+      "event": "bb-session",
+      "session": "1b9bae7b",
+      "url": "https://www.northjersey.com/entertainment/stage/43262762.html"
+    },
+    {
+      "t": "2026-04-01T21:16:49.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-01T21:18:00.766Z",
+      "event": "bb-session",
+      "session": "3b3ce439",
+      "url": "https://www.nypost.com/p/entertainment/theater/item_MBTvYsIZDMNveQLhwhykqO;jsess"
+    },
+    {
+      "t": "2026-04-01T21:18:01.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
