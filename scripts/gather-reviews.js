@@ -1454,6 +1454,15 @@ function extractDTLIReviews(html, showId, dtliUrl) {
 }
 
 /**
+ * Check if HTML looks like a real BWW Review Roundup (not the homepage or a redirect).
+ * BWW homepage contains "Review Roundup" in nav links but lacks article-specific markers.
+ */
+function isBWWRoundupContent(html) {
+  return html.includes('Review Roundup') &&
+    (html.includes('BlogPosting') || html.includes('articleBody') || html.includes('Photo Credit:'));
+}
+
+/**
  * Search BroadwayWorld for Review Roundup article
  * Priority: 1) URL override, 2) Valid archive, 3) Live fetch
  */
@@ -1467,7 +1476,7 @@ async function searchBWWRoundup(show, year, options = {}) {
   if (options.overrideUrl) {
     console.log(`    Using runtime URL override: ${options.overrideUrl}`);
     const result = await searchAggregator('BWW', options.overrideUrl);
-    if (result.found && result.html) {
+    if (result.found && result.html && isBWWRoundupContent(result.html)) {
       console.log(`    ✓ Found at: ${options.overrideUrl} (runtime override)`);
       return { url: options.overrideUrl, html: result.html };
     }
@@ -1490,7 +1499,7 @@ async function searchBWWRoundup(show, year, options = {}) {
           }
         }
         const result = await searchAggregator('BWW', overrideUrl);
-        if (result.found && result.html) {
+        if (result.found && result.html && isBWWRoundupContent(result.html)) {
           console.log(`    ✓ Found at: ${overrideUrl} (override)`);
           return { url: overrideUrl, html: result.html };
         }
@@ -1537,7 +1546,7 @@ async function searchBWWRoundup(show, year, options = {}) {
         if (result) return { url: searchResult, html: result.html };
       }
       const result = await searchAggregator('BWW', searchResult);
-      if (result.found && result.html) return { url: searchResult, html: result.html };
+      if (result.found && result.html && isBWWRoundupContent(result.html)) return { url: searchResult, html: result.html };
     }
   } catch (e) {
     console.log('    Google search unavailable, falling back to URL patterns...');
@@ -1603,8 +1612,7 @@ async function searchBWWRoundup(show, year, options = {}) {
 
   for (const url of searchUrls) {
     const result = await searchAggregator('BWW', url);
-    if (result.found && result.html && result.html.includes('Review Roundup') &&
-        (result.html.includes('BlogPosting') || result.html.includes('articleBody') || result.html.includes('Photo Credit:'))) {
+    if (result.found && result.html && isBWWRoundupContent(result.html)) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
