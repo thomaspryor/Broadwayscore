@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-04-01T11:14:12.346Z",
-  "processed": 32,
-  "failed": 38,
-  "successRate": "45.7%",
+  "updatedAt": "2026-04-01T11:27:36.597Z",
+  "processed": 55,
+  "failed": 65,
+  "successRate": "45.8%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 7
+    "archive": 11
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-04-01T11:23:41.855Z",
+      "event": "bb-session",
+      "session": "1821f522",
+      "url": "https://www.nytimes.com/2025/08/15/theater/abba-mamma-mia-broadway.html#:~:text="
+    },
+    {
+      "t": "2026-04-01T11:23:43.289Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-01T11:24:18.268Z",
+      "event": "bb-session",
+      "session": "c30ffb52",
+      "url": "https://nypost.com/2025/04/06/entertainment/the-last-five-years-review-nick-jona"
+    },
+    {
+      "t": "2026-04-01T11:24:19.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    }
+  ]
 }
