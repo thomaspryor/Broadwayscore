@@ -1,86 +1,20 @@
 {
-  "updatedAt": "2026-04-02T05:01:52.161Z",
-  "processed": 171,
-  "failed": 1506,
-  "successRate": "10.2%",
+  "updatedAt": "2026-04-02T05:10:35.412Z",
+  "processed": 178,
+  "failed": 1509,
+  "successRate": "10.6%",
   "tierBreakdown": {
-    "playwright": 106,
+    "playwright": 108,
     "amp": 2,
-    "browserbase": 16,
+    "browserbase": 26,
     "directCookies": 2,
     "scrapingbee": 31,
     "brightdata": 0,
-    "archiveToday": 209,
+    "archiveToday": 210,
     "archive": 24
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-04-01T21:14:19.139Z",
-      "event": "bb-session",
-      "session": "3be0a1ca",
-      "url": "https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html"
-    },
-    {
-      "t": "2026-04-01T21:14:20.494Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-01T21:16:48.367Z",
-      "event": "bb-session",
-      "session": "1b9bae7b",
-      "url": "https://www.northjersey.com/entertainment/stage/43262762.html"
-    },
-    {
-      "t": "2026-04-01T21:16:49.789Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-04-01T21:18:00.766Z",
-      "event": "bb-session",
-      "session": "3b3ce439",
-      "url": "https://www.nypost.com/p/entertainment/theater/item_MBTvYsIZDMNveQLhwhykqO;jsess"
-    },
-    {
-      "t": "2026-04-01T21:18:01.912Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-04-01T21:20:40.885Z",
-      "event": "bb-session",
-      "session": "767f3430",
-      "url": "https://www.amny.com/urbanite-1.812039/theater-review-reasons-to-be-happy-3-star"
-    },
-    {
-      "t": "2026-04-01T21:20:42.072Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-04-01T21:21:28.558Z",
-      "event": "bb-session",
-      "session": "98556645",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/211152621_Theater_review_"
-    },
-    {
-      "t": "2026-04-01T21:21:29.739Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-04-02T04:34:29.889Z",
-      "event": "bb-session",
-      "session": "407c0491",
-      "url": "http://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Fr"
-    },
-    {
-      "t": "2026-04-02T04:34:31.058Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-02T04:39:36.682Z",
       "event": "bb-session",
@@ -122,6 +56,72 @@
     },
     {
       "t": "2026-04-02T04:50:54.098Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-04-02T05:01:56.439Z",
+      "event": "bb-session",
+      "session": "a167bf9b",
+      "url": "https://variety.com/1997/legit/reviews/big-3-1200451674/"
+    },
+    {
+      "t": "2026-04-02T05:01:57.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T05:03:11.398Z",
+      "event": "bb-session",
+      "session": "738cacc7",
+      "url": "https://variety.com/2024/music/concert-reviews/dead-company-sphere-las-vegas-con"
+    },
+    {
+      "t": "2026-04-02T05:03:12.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T05:03:28.556Z",
+      "event": "bb-session",
+      "session": "4cc289f4",
+      "url": "https://deadline.com/2023/09/poor-things-review-yorgos-lanthimos-emma-stone-veni"
+    },
+    {
+      "t": "2026-04-02T05:03:29.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T05:07:03.664Z",
+      "event": "bb-session",
+      "session": "9c807722",
+      "url": "https://www.newsday.com/entertainment/theater/springsteen-on-broadway-review-the"
+    },
+    {
+      "t": "2026-04-02T05:07:04.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-02T05:07:23.482Z",
+      "event": "bb-session",
+      "session": "465b14ea",
+      "url": "https://observer.com/2000/07/its-open-war-on-critics-or-at-least-it-ought-to-be/"
+    },
+    {
+      "t": "2026-04-02T05:07:24.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-02T05:08:03.754Z",
+      "event": "bb-session",
+      "session": "a2aa3f29",
+      "url": "https://www.thewrap.com/ragtime-broadway-review/"
+    },
+    {
+      "t": "2026-04-02T05:08:04.751Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
     }

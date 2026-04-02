@@ -170,7 +170,14 @@
     "summerfolk-west-end-2026/artsdesk--heather-neill.json",
     "summerfolk-west-end-2026/london-theatre--anya-ryan.json",
     "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json",
-    "maltby-and-shires-about-time-off-broadway-2026/nytimes--vincent-canby.json"
+    "maltby-and-shires-about-time-off-broadway-2026/nytimes--vincent-canby.json",
+    "maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json",
+    "maltby-and-shires-about-time-off-broadway-2026/thestage--unknown.json",
+    "bughouse-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "spare-parts-off-broadway-2026/variety--chris-willman.json",
+    "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
+    "spare-parts-off-broadway-2026/newsday--glenn-gamboa.json",
+    "spare-parts-off-broadway-2026/observer--john-heilpern.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1678,7 +1685,10 @@
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
     "music-city-off-broadway-2026/thewrap--steve-pond.json",
     "kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
-    "titus-andronicus-off-broadway-2026/playbill--unknown.json"
+    "titus-andronicus-off-broadway-2026/playbill--unknown.json",
+    "the-holy-rosenbergs-west-end-2026/times-uk--clive-davis.json",
+    "spare-parts-off-broadway-2026/indiewire--sophia-savage.json",
+    "spare-parts-off-broadway-2026/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1788,7 +1798,9 @@
       "kinky-boots-the-musical-west-end-2026/all-that-dazzles-uk--daz-gale.json",
       "summerfolk-west-end-2026/artsdesk--heather-neill.json",
       "summerfolk-west-end-2026/london-theatre--anya-ryan.json",
-      "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json"
+      "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json",
+      "maltby-and-shires-about-time-off-broadway-2026/thestage--unknown.json",
+      "bughouse-off-broadway-2026/the-interested-bystander--cary-wong.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -1810,7 +1822,17 @@
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
       "dog-day-afternoon-2026/deadline--greg-evans.json",
       "data/review-texts/the-adding-machine-off-broadway-2026/deadline--zac-ntim.json",
-      "the-adding-machine-off-broadway-2026/deadline--zac-ntim.json"
+      "the-adding-machine-off-broadway-2026/deadline--zac-ntim.json",
+      "data/review-texts/maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json",
+      "maltby-and-shires-about-time-off-broadway-2026/variety--chris-jones.json",
+      "data/review-texts/spare-parts-off-broadway-2026/variety--chris-willman.json",
+      "spare-parts-off-broadway-2026/variety--chris-willman.json",
+      "data/review-texts/spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
+      "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
+      "data/review-texts/spare-parts-off-broadway-2026/newsday--glenn-gamboa.json",
+      "spare-parts-off-broadway-2026/newsday--glenn-gamboa.json",
+      "data/review-texts/spare-parts-off-broadway-2026/observer--john-heilpern.json",
+      "spare-parts-off-broadway-2026/observer--john-heilpern.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -2059,7 +2081,8 @@
       "data/review-texts/lost-in-del-valle-off-broadway-2026/rollingstone--jonathan-bernstein.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/daily-mail--unknown.json",
       "data/review-texts/music-city-off-broadway-2026/thewrap--steve-pond.json",
-      "data/review-texts/kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json"
+      "data/review-texts/kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
+      "data/review-texts/spare-parts-off-broadway-2026/indiewire--sophia-savage.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2089,7 +2112,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "maltby-and-shires-about-time-off-broadway-2026/nytimes--vincent-canby.json",
+  "lastProcessed": "spare-parts-off-broadway-2026/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2684,6 +2707,72 @@
     },
     {
       "t": "2026-04-02T04:50:54.098Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-04-02T05:01:56.439Z",
+      "event": "bb-session",
+      "session": "a167bf9b",
+      "url": "https://variety.com/1997/legit/reviews/big-3-1200451674/"
+    },
+    {
+      "t": "2026-04-02T05:01:57.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T05:03:11.398Z",
+      "event": "bb-session",
+      "session": "738cacc7",
+      "url": "https://variety.com/2024/music/concert-reviews/dead-company-sphere-las-vegas-con"
+    },
+    {
+      "t": "2026-04-02T05:03:12.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T05:03:28.556Z",
+      "event": "bb-session",
+      "session": "4cc289f4",
+      "url": "https://deadline.com/2023/09/poor-things-review-yorgos-lanthimos-emma-stone-veni"
+    },
+    {
+      "t": "2026-04-02T05:03:29.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T05:07:03.664Z",
+      "event": "bb-session",
+      "session": "9c807722",
+      "url": "https://www.newsday.com/entertainment/theater/springsteen-on-broadway-review-the"
+    },
+    {
+      "t": "2026-04-02T05:07:04.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-02T05:07:23.482Z",
+      "event": "bb-session",
+      "session": "465b14ea",
+      "url": "https://observer.com/2000/07/its-open-war-on-critics-or-at-least-it-ought-to-be/"
+    },
+    {
+      "t": "2026-04-02T05:07:24.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-02T05:08:03.754Z",
+      "event": "bb-session",
+      "session": "a2aa3f29",
+      "url": "https://www.thewrap.com/ragtime-broadway-review/"
+    },
+    {
+      "t": "2026-04-02T05:08:04.751Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
     }
