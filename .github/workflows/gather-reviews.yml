@@ -143,6 +143,7 @@ jobs:
     needs: [prepare, outlet-serp]
     if: always() && needs.prepare.result == 'success'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
       fail-fast: false  # Don't cancel other batches if one fails
