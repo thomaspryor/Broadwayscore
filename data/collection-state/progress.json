@@ -132,7 +132,10 @@
     "living-on-love-2015/albany-times-union--steve-barnes.json",
     "living-on-love-2015/artsfuse--iris-fanger.json",
     "fun-home-2015/washpost--peter-marks.json",
-    "the-king-and-i-2015/stageandcinema--jonas-schwartz.json"
+    "the-king-and-i-2015/stageandcinema--jonas-schwartz.json",
+    "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
+    "gigi-2015/washpost--peter-marks.json",
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -460,7 +463,14 @@
     "fool-for-love-2015/bobs-theater-blog--robert-sholiton.json",
     "something-rotten-2015/ap--mark-kennedy.json",
     "doctor-zhivago-2015/deadline--jeremy-gerard.json",
-    "living-on-love-2015/deadline--jeremy-gerard.json"
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "wolf-hall-parts-one-and-two-2015/ap--mark-kennedy.json",
+    "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+    "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
+    "disgraced-2014/timeout--times-sq.json",
+    "disgraced-2014/forward--jesse-green.json",
+    "holler-if-ya-hear-me-2014/ew--thom-geier.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -524,7 +534,9 @@
       "fool-for-love-2015/huffpost--michael-glitz.json",
       "living-on-love-2015/artsfuse--iris-fanger.json",
       "fun-home-2015/washpost--peter-marks.json",
-      "the-king-and-i-2015/stageandcinema--jonas-schwartz.json"
+      "the-king-and-i-2015/stageandcinema--jonas-schwartz.json",
+      "gigi-2015/washpost--peter-marks.json",
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json"
     ],
     "amp": [],
     "browserbase": [
@@ -540,7 +552,9 @@
       "data/review-texts/misery-2015/hollywood-reporter--david-rooney.json",
       "misery-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/something-rotten-2015/deadline--jeremy-gerard.json",
-      "something-rotten-2015/deadline--jeremy-gerard.json"
+      "something-rotten-2015/deadline--jeremy-gerard.json",
+      "data/review-texts/it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
+      "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -681,7 +695,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "the-king-and-i-2015/stageandcinema--jonas-schwartz.json",
+  "lastProcessed": "holler-if-ya-hear-me-2014/ew--thom-geier.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -814,6 +828,17 @@
       "t": "2026-04-02T19:34:05.533Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T19:36:35.970Z",
+      "event": "bb-session",
+      "session": "42eece1a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/shoulda-been-you-bid-"
+    },
+    {
+      "t": "2026-04-02T19:36:37.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
