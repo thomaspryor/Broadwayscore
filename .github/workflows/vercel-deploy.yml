@@ -45,6 +45,28 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Validate core data JSON
+        run: |
+          # Defense-in-depth: catch conflict markers or corrupt JSON before build.
+          # Prevents cryptic Node crashes (e.g. compute-gold-lists.js require() failing).
+          # Root cause fix is the pre-commit hook on the private data repo.
+          INVALID=0
+          for f in data/*.json; do
+            if [ ! -f "$f" ]; then continue; fi
+            if grep -qE '^(<{7}|={7}|>{7})' "$f" 2>/dev/null; then
+              echo "::error::$f contains merge conflict markers"
+              INVALID=1
+            elif ! node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+              echo "::error::$f is not valid JSON"
+              INVALID=1
+            fi
+          done
+          if [ "$INVALID" -ne 0 ]; then
+            echo "::error::Core data validation failed — check the private data repo for corrupt files"
+            exit 1
+          fi
+          echo "All data/*.json files valid"
+
       - name: Verify Vercel build guard is active
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
