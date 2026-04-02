@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-02T19:12:33.685Z",
-  "processed": 102,
-  "failed": 297,
-  "successRate": "25.6%",
+  "updatedAt": "2026-04-02T19:16:44.539Z",
+  "processed": 108,
+  "failed": 301,
+  "successRate": "26.4%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 47,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingbee": 14,
+    "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 57,
+    "archiveToday": 58,
     "archive": 42
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -91,6 +91,17 @@
       "t": "2026-04-02T19:08:27.394Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T19:16:21.722Z",
+      "event": "bb-session",
+      "session": "d5f60bbf",
+      "url": "http://www.hollywoodreporter.com/review/jim-parsons-an-act-god-798347"
+    },
+    {
+      "t": "2026-04-02T19:16:23.072Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
