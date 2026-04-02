@@ -80,7 +80,8 @@ function parseNumericRating(rating) {
   if (!rating) return null;
   const r = rating.toString().trim();
 
-  const numMatch = r.match(/^(\d+)\s*(?:\/\s*100)?$/);
+  // "90%" or "90" or "90/100"
+  const numMatch = r.match(/^(\d+)\s*(?:%|\/\s*100)?$/);
   if (numMatch) {
     const num = parseInt(numMatch[1]);
     if (num >= 0 && num <= 100) return num;
