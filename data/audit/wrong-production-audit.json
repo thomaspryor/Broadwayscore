@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T10:07:25.869Z",
+  "timestamp": "2026-04-02T10:21:49.426Z",
   "stats": {
-    "totalReviews": 32171,
-    "alreadyFlagged": 11938,
+    "totalReviews": 32199,
+    "alreadyFlagged": 11955,
     "dateGuardCatches": 15,
     "directorMismatch": 844,
     "tvFilmSignals": 3320,
-    "londonSignals": 974,
+    "londonSignals": 976,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
-    "noPublishDate": 5888
+    "noPublishDate": 5882
   },
   "findings": [
     {
@@ -12709,9 +12709,8 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "ew--dalton-ross.json",
-      "score": 75,
       "publishDate": "2026-03-31",
-      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173",
+      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173?srsltid=AfmBOop5gJX6n8mqo6n6aPn9CmJg2Yhu9WPtmA3A0Ur6UCmdt75m3MDv",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -12808,7 +12807,7 @@
       "showId": "dog-day-afternoon-2026",
       "file": "theatrely--juan-a-ramirez.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "March 30, 2026",
       "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
       "findings": [
         {
@@ -61549,7 +61548,7 @@
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "london-theatre--suzy-evans.json",
       "score": 88,
-      "publishDate": "2021-12-13",
+      "publishDate": "December 13th, 2021",
       "url": "https://www.londontheatre.co.uk/reviews/cabaret-at-the-kit-kat-club-review-eddie-redmayne-and-jessie-buckley",
       "findings": [
         {
@@ -62768,6 +62767,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 77,
+      "publishDate": "2026-02-07",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15527745/Dracula-Cynthia-Erivo-reputation-creepy-behaviour-Wicked.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -77158,6 +77171,20 @@
       "score": null,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/1999/oct/21/theatre.artsfeatures",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "the-telegrap--david-gritten.json",
+      "score": null,
+      "publishDate": "October 17th, 2014",
+      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
