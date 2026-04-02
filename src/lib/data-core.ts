@@ -11,7 +11,7 @@ import {
   RawBuzzThread,
 } from './engine';
 
-import type { Director, Theater, TheaterStructuredTips, BestOfCategory, BestOfList, BrowseList } from './data-types';
+import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks, BestOfCategory, BestOfList, BrowseList } from './data-types';
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { getShowCommercial } from './data-commercial';
@@ -331,13 +331,24 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(show.venue, existing);
   }
 
-  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string } }>;
+  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string }; venueScores?: Omit<TheaterVenueScores, 'overall'>; accessibility?: TheaterAccessibility; externalLinks?: TheaterExternalLinks }>;
 
   _theatersCache = Array.from(theaterMap.entries())
     .filter(([name]) => !name.startsWith('_'))
     .map(([name, data]) => {
       const currentShow = data.shows.find(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
       const theaterMeta = meta[name];
+
+      // Compute overall venue score from individual dimensions
+      const rawScores = theaterMeta?.venueScores;
+      let venueScores: TheaterVenueScores | undefined;
+      if (rawScores) {
+        const dims = [rawScores.sightlines, rawScores.sound, rawScores.comfort, rawScores.ambiance, rawScores.facilities].filter((v): v is number => v != null);
+        venueScores = {
+          ...rawScores,
+          overall: dims.length > 0 ? Math.round((dims.reduce((a, b) => a + b, 0) / dims.length) * 10) / 10 : undefined,
+        };
+      }
 
       return {
         name,
@@ -350,6 +361,9 @@ export function getAllTheaters(): Theater[] {
         tips: theaterMeta?.tips,
         structuredTips: theaterMeta?.structuredTips,
         images: theaterMeta?.images,
+        venueScores,
+        accessibility: theaterMeta?.accessibility,
+        externalLinks: theaterMeta?.externalLinks,
         currentShow,
         allShows: data.shows.sort((a, b) => {
           if (!a.openingDate && !b.openingDate) return 0;
@@ -360,6 +374,18 @@ export function getAllTheaters(): Theater[] {
         showCount: data.shows.length,
       };
     }).sort((a, b) => b.showCount - a.showCount);
+
+  // Warn about shows with venues that don't match any theater metadata
+  const theaterSlugs = new Set(_theatersCache.map(t => t.slug));
+  const metaKeys = new Set(Object.keys(meta).filter(k => k !== '_meta'));
+  for (const show of allShows) {
+    if (show.venue && !metaKeys.has(show.venue) && show.category !== 'west-end' && show.category !== 'off-west-end' && show.category !== 'off-broadway') {
+      const venueSlug = slugify(show.venue);
+      if (!theaterSlugs.has(venueSlug)) {
+        console.warn(`[Theater Scorecard] Unmatched theater: "${show.venue}" (show: ${show.id})`);
+      }
+    }
+  }
 
   return _theatersCache;
 }
