@@ -1399,7 +1399,16 @@ function extractDTLIReviews(html, showId, dtliUrl) {
                      reviewHtml.match(/class="[^"]*button-pink[^"]*review-item-button[^"]*"[^>]*href="(https?:\/\/[^"]+)"/i) ||
                      reviewHtml.match(/href="(https?:\/\/[^"]+)"[^>]*>READ THE REVIEW/i);
 
-    if (outletMatch && urlMatch) {
+    if (!outletMatch || !urlMatch) {
+      // Detect poster-review-item inner class mismatch — if the block is a poster variant
+      // but inner classes changed, we'll silently skip it. Log so CI catches it.
+      if (reviewHtml.length > 50) {
+        console.log(`    ⚠️  DTLI review block skipped (no ${!outletMatch ? 'outlet' : 'URL'} match) — inner class names may have changed. Block preview: ${reviewHtml.substring(0, 120)}...`);
+      }
+      continue;
+    }
+
+    {
       const outletName = outletMatch[1].trim();
       const outletId = slugify(outletName);
       const thumb = thumbMatch ? thumbMatch[1].toUpperCase() : null;
