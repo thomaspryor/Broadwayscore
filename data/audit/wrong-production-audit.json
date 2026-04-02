@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-02T09:41:16.340Z",
+  "timestamp": "2026-04-02T10:07:25.869Z",
   "stats": {
-    "totalReviews": 32170,
+    "totalReviews": 32171,
     "alreadyFlagged": 11938,
     "dateGuardCatches": 15,
     "directorMismatch": 844,
     "tvFilmSignals": 3320,
-    "londonSignals": 973,
+    "londonSignals": 974,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
     "noPublishDate": 5888
@@ -25030,6 +25030,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 93,
       "publishDate": "2026-03-27",
       "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216?syn-25a6b1a6=1",
       "findings": [
@@ -68464,6 +68465,20 @@
       "score": 67,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/apr/02/les-liaisons-dangereuses-review-love-is-a-fight-for-power-in-this-bold-staging",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 78,
+      "publishDate": "2026-04-01",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/liaisons-dangereuses-review-national-theatre-aidan-turner-lesley-manville-b2950658.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
