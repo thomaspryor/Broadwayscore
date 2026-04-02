@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-02T10:22:29.350Z",
+  "updatedAt": "2026-04-02T10:27:09.650Z",
   "processed": 2,
-  "failed": 18,
-  "successRate": "10.0%",
+  "failed": 28,
+  "successRate": "6.7%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
@@ -10,9 +10,21 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-02T10:26:13.774Z",
+      "event": "bb-session",
+      "session": "7b056dd3",
+      "url": "https://www.thewrap.com/cabaret-broadway-review-eddie-redmayne-twists-the-emcee-"
+    },
+    {
+      "t": "2026-04-02T10:26:15.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
+    }
+  ]
 }

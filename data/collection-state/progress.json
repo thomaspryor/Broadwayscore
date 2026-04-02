@@ -21,7 +21,17 @@
     "oliver-west-end-2024/the-sun--dominic-maxwell.json",
     "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
-    "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json"
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "operation-mincemeat-west-end-2024/the-telegrap--dominic-cavendish.json",
+    "witness-for-the-prosecution-west-end-2022/broadwayworld--stephi-wild.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout--unknown.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/the-telegrap--dominic-cavendish.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "six-the-musical-west-end-2021/the-telegrap--marianka-swain.json",
+    "hamilton-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -35,11 +45,25 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json"
+      "data/review-texts/shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/timeout--unknown.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-02T10:17:58.679Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
-  "log": []
+  "lastProcessed": "hamilton-west-end-2021/times-uk--clive-davis.json",
+  "log": [
+    {
+      "t": "2026-04-02T10:26:13.774Z",
+      "event": "bb-session",
+      "session": "7b056dd3",
+      "url": "https://www.thewrap.com/cabaret-broadway-review-eddie-redmayne-twists-the-emcee-"
+    },
+    {
+      "t": "2026-04-02T10:26:15.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
+    }
+  ]
 }
