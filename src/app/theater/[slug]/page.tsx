@@ -9,6 +9,8 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from './TheaterDetailClient';
 import TheaterTipsCard from '@/components/TheaterTipsCard';
+import TheaterScorecardCard from '@/components/TheaterScorecardCard';
+import { featureFlags } from '@/config/feature-flags';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
@@ -282,6 +284,17 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
                 })()}
               </div>
             </Link>
+          )}
+
+          {/* Theater Scorecard */}
+          {featureFlags.theaterScorecard && theater.venueScores && (
+            <TheaterScorecardCard
+              venueScores={theater.venueScores}
+              accessibility={theater.accessibility}
+              externalLinks={theater.externalLinks}
+              theaterName={theater.name}
+              theaterSlug={theater.slug}
+            />
           )}
 
           {/* Tips */}

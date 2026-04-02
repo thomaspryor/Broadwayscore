@@ -375,6 +375,18 @@ export function getAllTheaters(): Theater[] {
       };
     }).sort((a, b) => b.showCount - a.showCount);
 
+  // Warn about shows with venues that don't match any theater metadata
+  const theaterSlugs = new Set(_theatersCache.map(t => t.slug));
+  const metaKeys = new Set(Object.keys(meta).filter(k => k !== '_meta'));
+  for (const show of allShows) {
+    if (show.venue && !metaKeys.has(show.venue) && show.category !== 'west-end' && show.category !== 'off-west-end' && show.category !== 'off-broadway') {
+      const venueSlug = slugify(show.venue);
+      if (!theaterSlugs.has(venueSlug)) {
+        console.warn(`[Theater Scorecard] Unmatched theater: "${show.venue}" (show: ${show.id})`);
+      }
+    }
+  }
+
   return _theatersCache;
 }
 
