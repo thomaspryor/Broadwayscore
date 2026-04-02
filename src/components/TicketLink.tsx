@@ -6,7 +6,7 @@ import { track } from '@vercel/analytics';
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
-    posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void };
+    posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void; flush?: () => void };
   }
 }
 
@@ -165,7 +165,10 @@ export default function TicketLink({
     // Vercel Analytics
     track('ticket_click', { show_id: showId, platform, page_type: pageType, is_affiliate: isAffiliate });
 
-    // PostHog — native event with full context (not just autocapture)
+    // PostHog — native event with full context (not just autocapture).
+    // Capture then immediately send via sendBeacon so the event isn't lost
+    // when the click opens a new tab (target="_blank"). Without this,
+    // PostHog batches the event and it may never flush.
     if (window.posthog?.capture) {
       window.posthog.capture('ticket_click', {
         show_id: showId,
@@ -176,6 +179,8 @@ export default function TicketLink({
         link_position: linkPosition,
         total_links: totalLinks,
       });
+      // Force immediate flush — the batch timer won't fire if user doesn't return to tab
+      try { window.posthog.flush?.(); } catch { /* flush not critical */ }
     }
 
     if (typeof window.gtag !== 'function') return;
