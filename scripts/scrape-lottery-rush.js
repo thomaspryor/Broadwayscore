@@ -1170,12 +1170,16 @@ const GENERIC_URLS = [
   'my.socialtoaster.com/st/lottery_select/',
 ];
 
-/** URLs that are platform homepages (not show-specific) — unhelpful for users */
+/** URLs that are platform homepages (not show-specific) — unhelpful for users.
+ *  Exceptions: Telecharge rush portal and LuckySeat are valid destinations
+ *  because their show pages are behind auth/JS and not directly linkable. */
 function isGenericPlatformUrl(url) {
   if (!url) return false;
   const trimmed = url.trim();
-  // Telecharge rush portal is a valid destination (lists all shows)
+  // Telecharge rush portal lists all shows with rush policies
   if (/rush\.telecharge\.com/i.test(trimmed)) return false;
+  // LuckySeat show pages are behind auth/JS — homepage is the entry point
+  if (/luckyseat\.com/i.test(trimmed)) return false;
   // A URL with no path (just domain) is generic and useless
   return /^https?:\/\/[^/]+\/?$/.test(trimmed);
 }
@@ -1202,6 +1206,8 @@ function normalizeUrl(url) {
     const parsed = new URL(url);
     url = parsed.protocol + '//' + parsed.host.toLowerCase() + parsed.pathname + parsed.search + parsed.hash;
   } catch { /* keep as-is if unparseable */ }
+  // Reject generic platform homepages (todaytix.com/, etc.)
+  if (isGenericPlatformUrl(url)) return null;
   return url;
 }
 
@@ -1298,18 +1304,20 @@ function sanitizeData(existing) {
         }
       }
 
-      // Auto-populate URL only for platforms with show-specific URL patterns
+      // Auto-populate URL for platforms where we know the destination
       if (show[field].platform && !show[field].url) {
         const platformLower = show[field].platform.toLowerCase();
-        // Only auto-populate URLs that actually link to the show (not homepages)
         if (platformLower === 'telecharge') {
           show[field].url = 'https://rush.telecharge.com';
           fixes.push(`${showId}.${field}: Auto-populated Telecharge URL`);
         } else if (platformLower === 'broadway direct' && show[field].type === 'digital') {
-          // Broadway Direct has predictable lottery URLs
           const slug = showId.replace(/-\d{4}$/, '').replace(/-broadway$/, '');
           show[field].url = `https://lottery.broadwaydirect.com/show/${slug}/`;
           fixes.push(`${showId}.${field}: Auto-populated Broadway Direct lottery URL`);
+        } else if (platformLower === 'luckyseat') {
+          // LuckySeat show pages are behind auth/JS — homepage is the entry point
+          show[field].url = 'https://www.luckyseat.com';
+          fixes.push(`${showId}.${field}: Auto-populated LuckySeat URL`);
         }
         // TodayTix and LuckySeat URLs are NOT predictable from show names
         // — leave blank rather than linking to a useless homepage
