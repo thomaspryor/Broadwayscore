@@ -145,7 +145,8 @@
     "kinky-boots-2013/variety--marilyn-stasio.json",
     "hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
     "rodgers-hammersteins-cinderella-2013/lets-go-to-the-theater--karen-nowosad.json",
-    "annie-2012/variety--marilyn-stasio.json"
+    "annie-2012/variety--marilyn-stasio.json",
+    "harvey-2012/variety--marilyn-stasio.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -520,7 +521,16 @@
     "scandalous-2012/variety--marilyn-stasio.json",
     "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
     "elf-2012/new-jersey-newsroom--michael-sommers.json",
-    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json"
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+    "chaplin-2012/bloomberg--jeremy-gerard.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
+    "bring-it-on-the-musical-2012/bloomberg--jeremy-gerard.json",
+    "fela-2012/variety--marilyn-stasio.json",
+    "fela-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/variety--marilyn-stasio.json",
+    "dont-dress-for-dinner-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/backstage--erik-haagensen.json",
+    "the-columnist-2012/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -617,7 +627,9 @@
       "data/review-texts/hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
       "hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
       "data/review-texts/annie-2012/variety--marilyn-stasio.json",
-      "annie-2012/variety--marilyn-stasio.json"
+      "annie-2012/variety--marilyn-stasio.json",
+      "data/review-texts/harvey-2012/variety--marilyn-stasio.json",
+      "harvey-2012/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -764,7 +776,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "the-columnist-2012/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -1016,6 +1028,17 @@
     },
     {
       "t": "2026-04-02T19:50:24.493Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T19:51:24.451Z",
+      "event": "bb-session",
+      "session": "311a2446",
+      "url": "https://variety.com/2012/legit/reviews/harvey-1117947755/"
+    },
+    {
+      "t": "2026-04-02T19:51:25.939Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
