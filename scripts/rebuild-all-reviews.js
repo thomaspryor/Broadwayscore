@@ -2931,11 +2931,19 @@ if (consistencyIssues.length > 0) {
 // Long-running shows accumulate multiple critics at the same outlet (e.g., LBO with 3
 // different reviewers over the years), which gives that outlet disproportionate weight
 // in composite scores. Keep the most recent review per outlet.
+// EXCEPTION: Long-run WE shows (showLongRunWE) — different critics at the same outlet
+// over decades are genuinely different reviews and should all count. Only dedup when
+// the critic is the same (true duplicate, not a different critic at the same outlet).
 {
   const beforeCount = allReviews.length;
   const byShowOutlet = new Map();
   for (const review of allReviews) {
-    const key = `${review.showId}|${review.outletId}`;
+    const isLongRun = showLongRunWE.has(review.showId);
+    // For long-run shows, key by outlet+critic so different critics both survive
+    const criticKey = isLongRun ? (review.criticName || 'unknown').toLowerCase().replace(/\s+/g, '') : '';
+    const key = isLongRun
+      ? `${review.showId}|${review.outletId}|${criticKey}`
+      : `${review.showId}|${review.outletId}`;
     if (!byShowOutlet.has(key)) {
       byShowOutlet.set(key, review);
     } else {
