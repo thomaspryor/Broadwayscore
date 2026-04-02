@@ -821,6 +821,8 @@ const crossShowFingerprints = new Map();
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
         if (d.wrongProduction || d.wrongShow) continue;
+        // allowEarlyDate bypasses all date-based flagging
+        if (d.allowEarlyDate) continue;
         // Respect manual clears UNLESS the date mismatch is large (>180 days) —
         // a prior-production review is wrong regardless of manual override
         if (d.wrongProductionManualClear) {
