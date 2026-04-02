@@ -22,7 +22,7 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout
@@ -51,6 +51,10 @@ jobs:
           fi
           if [ -n "${{ inputs.show_filter }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          fi
+          # Cap scheduled runs to ensure completion within timeout (new shows processed first)
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            ARGS="$ARGS --max=200"
           fi
           node scripts/generate-related-shows.js $ARGS
 

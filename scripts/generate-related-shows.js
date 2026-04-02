@@ -9,9 +9,10 @@
  * Provider chain: GPT-4o-mini (primary) → Gemini Flash (fallback)
  *
  * Usage:
- *   node scripts/generate-related-shows.js              # Full run
+ *   node scripts/generate-related-shows.js              # Full run (new + stale)
  *   node scripts/generate-related-shows.js --force       # Regenerate all
  *   node scripts/generate-related-shows.js --show=hamilton  # Single show
+ *   node scripts/generate-related-shows.js --max=200     # Cap at 200 shows (new first)
  *   node scripts/generate-related-shows.js --dry-run     # Print without saving
  */
 
@@ -30,6 +31,7 @@ const args = process.argv.slice(2);
 const force = args.includes('--force');
 const dryRun = args.includes('--dry-run');
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+const maxShows = parseInt(args.find(a => a.startsWith('--max='))?.split('=')[1] || '0', 10) || 0;
 
 // Meta tags to strip from LLM input (not useful for recommendations)
 const META_TAGS = new Set(['lottery', 'rush', 'sro', 'tony-winner', 'new', 'classic', 'limited-run', 'upcoming']);
@@ -106,6 +108,10 @@ for (const s of showsData.shows) {
 
 // ─── Algorithmic pre-filter (matches data-core.ts logic) ───
 // statusFilter: 'open' = open/previews only, 'closed' = closed only, null = all
+function getMarket(show) {
+  return show.category || 'broadway';
+}
+
 function algorithmicCandidates(show, limit = 15, statusFilter = null) {
   const currentCreatives = new Map();
   for (const m of show.creativeTeam || []) {
@@ -114,6 +120,7 @@ function algorithmicCandidates(show, limit = 15, statusFilter = null) {
   const currentTags = new Set((show.tags || []).filter(t => !META_TAGS.has(t)));
   const currentYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 2020;
   const currentScore = scoreMap.get(show.id) ?? null;
+  const currentMarket = getMarket(show);
 
   const getBand = (score) => {
     if (score === null) return -1;
@@ -144,6 +151,7 @@ function algorithmicCandidates(show, limit = 15, statusFilter = null) {
       if (s.id === show.id) return false;
       if (getBaseTitle(s.title) === sourceBase) return false; // Exclude other productions of same show
       if ((reviewCountMap.get(s.id) || 0) < 5) return false;
+      if (getMarket(s) !== currentMarket) return false; // Same market only (matches data-core.ts)
       if (statusFilter === 'open' && !isOpen(s)) return false;
       if (statusFilter === 'closed' && isOpen(s)) return false;
       return true;
@@ -412,7 +420,7 @@ async function main() {
 
   // Skip already-processed unless --force
   const today = new Date().toISOString().split('T')[0];
-  const showsToProcess = force ? eligibleShows : eligibleShows.filter(s => {
+  let showsToProcess = force ? eligibleShows : eligibleShows.filter(s => {
     const existing = existingData.shows[s.id];
     if (!existing) return true;
     // Regenerate if older than 30 days
@@ -420,7 +428,26 @@ async function main() {
     return age > 30;
   });
 
-  console.log(`To process: ${showsToProcess.length} (${eligibleShows.length - showsToProcess.length} skipped)`);
+  // Sort: missing shows first (never processed), then stale shows by age (oldest first)
+  showsToProcess.sort((a, b) => {
+    const aExisting = existingData.shows[a.id];
+    const bExisting = existingData.shows[b.id];
+    const aMissing = !aExisting;
+    const bMissing = !bExisting;
+    if (aMissing !== bMissing) return aMissing ? -1 : 1;
+    if (aMissing && bMissing) return 0;
+    // Both stale — oldest first
+    return new Date(aExisting.lastUpdated) - new Date(bExisting.lastUpdated);
+  });
+
+  // Apply --max cap (missing shows always processed first due to sort)
+  if (maxShows > 0 && showsToProcess.length > maxShows) {
+    console.log(`Capping at --max=${maxShows} (${showsToProcess.length} eligible)`);
+    showsToProcess = showsToProcess.slice(0, maxShows);
+  }
+
+  const missingCount = showsToProcess.filter(s => !existingData.shows[s.id]).length;
+  console.log(`To process: ${showsToProcess.length} (${missingCount} new, ${showsToProcess.length - missingCount} stale)`);
 
   if (showsToProcess.length === 0) {
     console.log('Nothing to do.');

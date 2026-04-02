@@ -514,6 +514,33 @@ jobs:
               console.log('gather-reviews workflow not found, skipping trigger');
             }
 
+      - name: Trigger related shows generation for opened shows
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Generate recommendations for each newly opened show individually
+            // (show_filter accepts a single show slug)
+            const slugs = '${{ steps.filter.outputs.opened_shows }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'generate-related-shows.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_filter: slug
+                  }
+                });
+                console.log(`Triggered related shows generation for: ${slug}`);
+                // Space dispatches to avoid rate limits
+                if (slugs.length > 1) await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Related shows trigger failed for ${slug}:`, e.message);
+              }
+            }
+
       - name: Trigger Reddit sentiment workflow
         if: steps.filter.outputs.opened_shows != ''
         uses: actions/github-script@v7
