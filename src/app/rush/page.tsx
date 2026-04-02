@@ -22,6 +22,13 @@ export const metadata: Metadata = {
     description: 'Same-day rush tickets for Broadway shows. Arrive early at the box office or use digital rush apps for discounted seats.',
     url: `${BASE_URL}/rush`,
     type: 'article',
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Broadway Rush Tickets - Same-Day Deals',
+    description: 'Same-day rush tickets for Broadway shows. Arrive early at the box office or use digital rush apps for discounted seats.',
+    images: [`${BASE_URL}/og/home.png`],
   },
 };
 

@@ -21,6 +21,13 @@ export const metadata: Metadata = {
     description: 'Aggregated CriticScore ratings for West End shows from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
     url: `${BASE_URL}/west-end`,
     type: 'article',
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'West End Scorecard - London Theatre Ratings',
+    description: 'Aggregated CriticScore ratings for West End shows from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
+    images: [`${BASE_URL}/og/home.png`],
   },
 };
 

@@ -22,6 +22,13 @@ export const metadata: Metadata = {
     description: 'Enter digital lotteries for discounted Broadway tickets. Popular shows like Hamilton, Wicked, and The Lion King all offer digital lottery programs.',
     url: `${BASE_URL}/lotteries`,
     type: 'article',
+    images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Broadway Lottery Tickets - Win Cheap Seats',
+    description: 'Enter digital lotteries for discounted Broadway tickets. Popular shows like Hamilton, Wicked, and The Lion King all offer digital lottery programs.',
+    images: [`${BASE_URL}/og/home.png`],
   },
 };
 

@@ -80,12 +80,9 @@ export default function RecentDevelopmentsList({
         })}
       </ul>
       {items.length > maxItems && (
-        <Link
-          href="/biz/changelog"
-          className="text-brand hover:text-brand-hover text-sm mt-3 inline-block"
-        >
-          View full changelog →
-        </Link>
+        <span className="text-gray-500 text-sm mt-3 inline-block">
+          {items.length - maxItems} more update{items.length - maxItems !== 1 ? 's' : ''}
+        </span>
       )}
     </div>
   );
