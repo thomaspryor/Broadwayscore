@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-02T04:50:05.829Z",
-  "processed": 154,
-  "failed": 1503,
-  "successRate": "9.3%",
+  "updatedAt": "2026-04-02T04:55:46.156Z",
+  "processed": 163,
+  "failed": 1504,
+  "successRate": "9.8%",
   "tierBreakdown": {
-    "playwright": 90,
+    "playwright": 99,
     "amp": 2,
     "browserbase": 16,
     "directCookies": 2,
     "scrapingbee": 30,
     "brightdata": 0,
-    "archiveToday": 207,
+    "archiveToday": 208,
     "archive": 24
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-04-01T21:13:35.703Z",
-      "event": "bb-session",
-      "session": "b8738ad4",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2009/04/27/AR2009042703054"
-    },
-    {
-      "t": "2026-04-01T21:13:37.065Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-01T21:14:19.139Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-02T04:48:28.840Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T04:50:52.996Z",
+      "event": "bb-session",
+      "session": "5d4f8ded",
+      "url": "https://www.thewrap.com/below-the-clouds-review-italian-documentary-explores-gor"
+    },
+    {
+      "t": "2026-04-02T04:50:54.098Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
     }
   ]
 }
