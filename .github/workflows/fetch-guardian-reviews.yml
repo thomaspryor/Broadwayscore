@@ -18,6 +18,11 @@ on:
         required: false
         default: false
         type: boolean
+      backfill_ratings:
+        description: 'Re-query API for star ratings on reviews that already have text'
+        required: false
+        default: false
+        type: boolean
 
 # Run weekly to catch any new Guardian reviews
   schedule:
@@ -69,6 +74,10 @@ jobs:
 
           if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
             ARGS="$ARGS --dry-run"
+          fi
+
+          if [ "${{ github.event.inputs.backfill_ratings }}" == "true" ]; then
+            ARGS="$ARGS --backfill-ratings"
           fi
 
           node scripts/fetch-guardian-reviews.js $ARGS
