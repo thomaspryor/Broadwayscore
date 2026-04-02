@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-30T11:03:02.884Z",
+  "lastUpdated": "2026-04-02T02:12:04.659659+00:00",
   "source": "https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003",
   "shows": {
     "and-juliet-2022": {
@@ -30,8 +30,8 @@
     "aladdin-2014": {
       "lottery": {
         "type": "digital",
-        "platform": "AladdinTheMusical.com",
-        "url": "https://aladdinthemusical.com/lottery",
+        "platform": "Broadway Direct",
+        "url": "https://lottery.broadwaydirect.com/show/aladdin/",
         "price": 45,
         "time": "Lottery opens 9 AM day prior to desired performance. Lottery closes 3 PM day the prior to the performance.",
         "instructions": "Entrants must be 18 years of age or older. Tickets are non-transferable."
@@ -517,7 +517,22 @@
         "url": "https://www.todaytix.com/nyc/shows/43904-fallen-angels-on-broadway",
         "price": 53,
         "time": "9 AM"
-      }
+      },
+      "rush": {
+        "type": "general",
+        "price": 45,
+        "location": "Todd Haimes Theatre box office",
+        "time": "10 AM Mon-Sat, 12 PM Sun",
+        "limit": 2
+      },
+      "specialPrograms": [
+        {
+          "name": "HipTix",
+          "price": 30,
+          "platform": "Roundabout",
+          "description": "Ages 18-35, $30 tickets via Roundabout Theatre Company"
+        }
+      ]
     },
     "the-balusters-2026": {
       "special": {
@@ -531,7 +546,15 @@
         "price": 49,
         "platform": "TodayTix",
         "url": "https://www.todaytix.com/nyc/shows/44389-the-balusters-on-broadway"
-      }
+      },
+      "specialPrograms": [
+        {
+          "name": "MTC College Student Ticket Grant",
+          "price": 0,
+          "platform": "MTC",
+          "description": "Free tickets for NYC college students. Sign up at manhattantheatreclub.com"
+        }
+      ]
     },
     "every-brilliant-thing-2026": {
       "rush": {
@@ -641,7 +664,8 @@
       "_lastScrapedFrom": "playbill",
       "_lastScrapedAt": "2026-03-30T11:03:02.829Z",
       "standingRoom": {
-        "price": 40
+        "price": 40,
+        "notes": "Sold-out performances only. Available at box office day of show."
       }
     },
     "giant-2026": {
@@ -663,7 +687,8 @@
       "_lastScrapedFrom": "playbill",
       "_lastScrapedAt": "2026-03-30T11:03:02.829Z",
       "standingRoom": {
-        "price": 49
+        "price": 49,
+        "notes": "Sold-out performances only. Available at box office day of show."
       }
     },
     "titanique-2026": {
@@ -696,7 +721,15 @@
         "price": 35
       },
       "_lastScrapedFrom": "bwayrush",
-      "_lastScrapedAt": "2026-03-30T11:02:05.773Z"
+      "_lastScrapedAt": "2026-03-30T11:02:05.773Z",
+      "specialPrograms": [
+        {
+          "name": "MTC College Student Ticket Grant",
+          "price": 0,
+          "platform": "MTC",
+          "description": "Free tickets for NYC college students. Sign up at manhattantheatreclub.com"
+        }
+      ]
     },
     "the-lost-boys-2026": {
       "lottery": {
@@ -706,7 +739,14 @@
         "price": 45
       },
       "_lastScrapedFrom": "bwayrush",
-      "_lastScrapedAt": "2026-03-30T11:02:05.773Z"
+      "_lastScrapedAt": "2026-03-30T11:02:05.773Z",
+      "rush": {
+        "type": "general",
+        "price": 45,
+        "location": "Palace Theatre box office",
+        "time": "10 AM Tue-Sat, 12 PM Sun",
+        "limit": 2
+      }
     },
     "schmigadoon-2026": {
       "lottery": {
