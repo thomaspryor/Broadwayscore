@@ -31,6 +31,7 @@ const AGGREGATOR_DOMAINS = new Set([
   'lovelondonloveculture.com', 'westendtheatre.com',
   'newyorkcitytheatre.com', 'broadwayacrossamerica.com',
   'broadwayscorecard.com', 'broadway.org.uk', 'londonsbroadwaybuzz.ca',
+  'stagedoor.com', // WE aggregator — critic-reviews pages are not outlet reviews
 ]);
 
 // Reference sites — not reviews
@@ -69,11 +70,21 @@ function isSocialMediaUrl(url) {
  */
 function isBlockedReviewUrl(url) {
   try {
-    const hostname = new URL(url).hostname;
-    return matchesDomainSet(hostname, SOCIAL_DOMAINS)
+    const parsed = new URL(url);
+    const hostname = parsed.hostname;
+    if (matchesDomainSet(hostname, SOCIAL_DOMAINS)
       || matchesDomainSet(hostname, TICKET_DOMAINS)
       || matchesDomainSet(hostname, AGGREGATOR_DOMAINS)
-      || matchesDomainSet(hostname, REFERENCE_DOMAINS);
+      || matchesDomainSet(hostname, REFERENCE_DOMAINS)) return true;
+    // Path-based ticket/listing detection — catches ticket pages on news sites
+    // (e.g., standard.co.uk/go/london/mamma-mia-musical-theatre-tickets-in-london)
+    const lowerPath = parsed.pathname.toLowerCase();
+    if (lowerPath.includes('/tickets/') || lowerPath.includes('/buy-tickets')
+      || lowerPath.includes('/book-tickets') || lowerPath.includes('tickets-in-london')
+      || lowerPath.includes('/going-out/tickets/')) return true;
+    // Malformed URLs (e.g., "http://Here We Are review — ...")
+    if (parsed.hostname.includes(' ') || !parsed.hostname.includes('.')) return true;
+    return false;
   } catch { return false; }
 }
 

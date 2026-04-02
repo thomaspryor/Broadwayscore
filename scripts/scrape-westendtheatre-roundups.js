@@ -522,7 +522,9 @@ async function main() {
 
     // Create review files for each rating
     for (const r of ratings) {
-      const outletId = normalizeOutlet(r.outlet);
+      let outletId = normalizeOutlet(r.outlet);
+      // WET is a WE-only aggregator — bare "Time Out" always means Time Out London, not TONY
+      if (outletId === 'timeout') outletId = 'timeout-london';
       const outletName = getOutletDisplayName(outletId) || r.outlet;
 
       const review = {
@@ -530,7 +532,7 @@ async function main() {
         outletId,
         outlet: outletName,
         criticName: r.critic || null,
-        url: r.reviewUrl || postUrl,
+        url: r.reviewUrl || null, // Don't fall back to WET roundup URL — it's not the outlet's review
         publishDate: postDate,
         westEndTheatreScore: `${r.stars}/5 stars`,
         westEndTheatreExcerpt: r.excerpt || null,

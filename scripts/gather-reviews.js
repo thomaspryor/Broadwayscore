@@ -2516,11 +2516,11 @@ function createReviewFile(showId, reviewData, options = {}) {
   }
 
   // URL/DOMAIN VALIDATION: Reject reviews where URL domain doesn't match the attributed outlet.
-  // This catches aggregator scraping errors where a URL from outlet-A gets attributed to outlet-B.
-  // SERP-discovered reviews: always validate (SERP often misattributes — root cause of 217 phantom reviews).
-  // Other sources: only validate unknown critics (named critics may freelance across domains).
-  // Exemptions: wire services (AP content on abc-news.com), shared-domain outlets (timeout/timeout-london).
-  const shouldValidateDomain = review.source === 'serp-discovery' || normalizedCriticName === 'unknown';
+  // This catches aggregator scraping errors where a URL from outlet-A gets attributed to outlet-B
+  // (e.g., the-sun outletId with thetimes.co.uk URL, or timeout outletId with westendtheatre.com URL).
+  // Validate ALL sources — previously only SERP + unknown critics, but BWW roundups and ShowScore
+  // also misattribute. Wire services and shared-domain outlets are exempted below.
+  const shouldValidateDomain = true;
   if (review.url && shouldValidateDomain) {
     const WIRE_SERVICES = new Set(['ap', 'reuters', 'bloomberg', 'upi']);
     if (!WIRE_SERVICES.has(normalizedOutletId)) {

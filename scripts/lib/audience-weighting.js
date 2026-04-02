@@ -21,11 +21,11 @@ const MIN_REDDIT_ITEMS = 50;
 const REDDIT_RECENCY_YEARS = 3;
 const MAX_SINGLE_SOURCE_WEIGHT = 0.80;
 
-// Reddit scores average ~11 points below ShowScore and ~4 below Mezzanine on the same
-// shows — a systematic scale difference, not a signal difference. This calibration
-// aligns Reddit's scale with the other sources before combining.
-// Analysis: flat +8 minimizes avg gap to SS+Mezz consensus across 74 head-to-head shows.
-const REDDIT_SCORE_CALIBRATION = 8;
+// Reddit scores average ~5 points below Mezzanine (the most neutral source) on the same
+// shows — a systematic scale difference, not a signal difference. Calibrating to
+// Mezzanine rather than ShowScore (which is +15 above Reddit, inflated by self-selection).
+// Analysis: +5 aligns Reddit with Mezzanine across 284 head-to-head shows.
+const REDDIT_SCORE_CALIBRATION = 5;
 const REDDIT_CALIBRATION_CAP = 95;
 
 /**

@@ -2898,6 +2898,36 @@ if (consistencyIssues.length > 0) {
 }
 
 // Build output
+// POST-PROCESSING: Outlet-level dedup — keep only one review per outlet per show.
+// Long-running shows accumulate multiple critics at the same outlet (e.g., LBO with 3
+// different reviewers over the years), which gives that outlet disproportionate weight
+// in composite scores. Keep the most recent review per outlet.
+{
+  const beforeCount = allReviews.length;
+  const byShowOutlet = new Map();
+  for (const review of allReviews) {
+    const key = `${review.showId}|${review.outletId}`;
+    if (!byShowOutlet.has(key)) {
+      byShowOutlet.set(key, review);
+    } else {
+      const existing = byShowOutlet.get(key);
+      const existDate = existing.publishDate || '';
+      const newDate = review.publishDate || '';
+      if (newDate > existDate) {
+        byShowOutlet.set(key, review);
+      }
+    }
+  }
+  const deduped = [...byShowOutlet.values()];
+  const removed = beforeCount - deduped.length;
+  if (removed > 0) {
+    console.log(`\nOutlet-level dedup: removed ${removed} duplicate-outlet reviews (keeping most recent per outlet)`);
+    allReviews.length = 0;
+    allReviews.push(...deduped);
+    stats.skippedMultiCriticOutletDedup = removed;
+  }
+}
+
 const output = {
   _meta: {
     description: "Critic reviews - raw input data",
@@ -2917,6 +2947,7 @@ const output = {
       skippedFabricated: stats.skippedFabricated || 0,
       skippedCrossShowUrl: stats.skippedCrossShowUrl || 0,
       skippedCrossMarket: stats.skippedCrossMarket || 0,
+      skippedMultiCriticOutletDedup: stats.skippedMultiCriticOutletDedup || 0,
       skippedUrlYearStandalone: stats.skippedUrlYearStandalone || 0,
       showScoreDowngradedFallback: stats.showScoreDowngradedFallback || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
