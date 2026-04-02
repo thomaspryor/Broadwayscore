@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-04-02T14:09:00.283Z",
+  "timestamp": "2026-04-02T16:00:18.260Z",
   "stats": {
     "totalReviews": 32203,
-    "alreadyFlagged": 11979,
+    "alreadyFlagged": 11978,
     "dateGuardCatches": 15,
     "directorMismatch": 847,
-    "tvFilmSignals": 3326,
+    "tvFilmSignals": 3330,
     "londonSignals": 978,
     "offBroadwaySignals": 967,
-    "yearMismatch": 64,
+    "yearMismatch": 65,
     "noPublishDate": 5857
   },
   "findings": [
@@ -13057,6 +13057,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "the-telegrap--dominic-cavendish.json",
+      "score": 83,
+      "publishDate": "February 17th, 2026",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -29034,6 +29048,25 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (3x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "variety--owen-gleiberman.json",
+      "score": 78,
+      "publishDate": "August 14, 2025",
+      "url": "https://variety.com/2025/legit/reviews/mamma-mia-review-broadway-2025-1236488886/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
         }
       ]
     },
@@ -50321,6 +50354,25 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "the-telegrap--david-gritten.json",
+      "score": 89,
+      "publishDate": "October 17th, 2014",
+      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "variety--greg-evans.json",
       "score": 92,
       "publishDate": "2020-07-30",
@@ -57976,6 +58028,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "file": "vulture--sara-holdren.json",
+      "score": 86,
+      "publishDate": "2026-03-05",
+      "url": "https://www.vulture.com/article/theater-review-shaw-gregory-what-we-did-before-our-moth-days.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -77312,20 +77378,6 @@
       "score": null,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/1999/oct/21/theatre.artsfeatures",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "the-telegrap--david-gritten.json",
-      "score": 89,
-      "publishDate": "October 17th, 2014",
-      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
