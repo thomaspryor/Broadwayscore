@@ -24,7 +24,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // Reuse existing infrastructure
-const { checkReadiness, getMissingT1T2Outlets } = require('./opening-night-poller');
+const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./opening-night-poller');
 const { getTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -348,10 +348,21 @@ function timeSince(isoDate) {
 function sentimentBar(pos, mix, neg) {
   const total = pos + mix + neg;
   if (total === 0) return '';
-  // Simple inline bar
-  const posChars = Math.max(1, Math.round((pos / total) * 20));
-  const mixChars = Math.max(mix > 0 ? 1 : 0, Math.round((mix / total) * 20));
-  const negChars = Math.max(neg > 0 ? 1 : 0, Math.round((neg / total) * 20));
+  const BAR_WIDTH = 20;
+  let posChars = Math.round((pos / total) * BAR_WIDTH);
+  let mixChars = Math.round((mix / total) * BAR_WIDTH);
+  let negChars = Math.round((neg / total) * BAR_WIDTH);
+  if (pos > 0 && posChars < 1) posChars = 1;
+  if (mix > 0 && mixChars < 1) mixChars = 1;
+  if (neg > 0 && negChars < 1) negChars = 1;
+  // Clamp to BAR_WIDTH total by shrinking the largest segment
+  const sum = posChars + mixChars + negChars;
+  if (sum > BAR_WIDTH) {
+    const overflow = sum - BAR_WIDTH;
+    if (posChars >= mixChars && posChars >= negChars) posChars -= overflow;
+    else if (mixChars >= negChars) mixChars -= overflow;
+    else negChars -= overflow;
+  }
   return `${GREEN}${'█'.repeat(posChars)}${RESET}${YELLOW}${'█'.repeat(mixChars)}${RESET}${RED}${'█'.repeat(negChars)}${RESET} ${GREEN}${pos}P${RESET} ${YELLOW}${mix}M${RESET} ${RED}${neg}N${RESET}`;
 }
 
@@ -441,11 +452,7 @@ function renderDashboard() {
     const missingT1 = missing.filter(m => m.tier === 1);
     const missingT2 = missing.filter(m => m.tier === 2);
 
-    const isWE = isLondonMarket(market);
-    const minReviews = isWE ? 8 : 12;
-    const minT1 = 3;
-    const minT2 = isWE ? 2 : 3;
-    const minHiConf = isWE ? 6 : 8;
+    const { MIN_REVIEWS: minReviews, MIN_T1_REVIEWS: minT1, MIN_T2_REVIEWS: minT2, MIN_HIGH_CONFIDENCE: minHiConf } = getThresholds(market);
 
     console.log(`\n${DIM}${'─'.repeat(60)}${RESET}`);
     console.log(`${BOLD}${show.title}${RESET}  ${DIM}${show.id}${RESET}`);
@@ -482,14 +489,22 @@ function renderDashboard() {
     // Broadcast status
     console.log(`\n  Broadcast: ${broadcastBadge(broadcast.state)}  ${DIM}${broadcast.detail}${RESET}`);
 
-    // Missing T1/T2 outlets
-    if (missingT1.length > 0 || missingT2.length > 0) {
+    // Missing T1/T2 outlets — split core-market vs cross-market
+    const coreMarketMissing = missing.filter(m => !m.isDualMarket);
+    const crossMarketMissing = missing.filter(m => m.isDualMarket);
+
+    if (coreMarketMissing.length > 0 || crossMarketMissing.length > 0) {
       console.log(`\n  Missing outlets:`);
-      if (missingT1.length > 0) {
-        console.log(`    ${RED}T1:${RESET} ${missingT1.map(m => m.name).join(', ')}`);
+      const coreT1 = coreMarketMissing.filter(m => m.tier === 1);
+      const coreT2 = coreMarketMissing.filter(m => m.tier === 2);
+      if (coreT1.length > 0) {
+        console.log(`    ${RED}T1:${RESET} ${coreT1.map(m => m.name).join(', ')}`);
       }
-      if (missingT2.length > 0) {
-        console.log(`    ${YELLOW}T2:${RESET} ${missingT2.map(m => m.name).join(', ')}`);
+      if (coreT2.length > 0) {
+        console.log(`    ${YELLOW}T2:${RESET} ${coreT2.map(m => m.name).join(', ')}`);
+      }
+      if (crossMarketMissing.length > 0) {
+        console.log(`    ${DIM}Cross-market (${crossMarketMissing.length}): ${crossMarketMissing.map(m => m.name).join(', ')}${RESET}`);
       }
     } else {
       console.log(`\n  ${GREEN}All T1/T2 outlets found${RESET}`);
@@ -506,8 +521,8 @@ function renderDashboard() {
       reviews: stats,
       readiness,
       broadcast,
-      missingT1: missingT1.map(m => m.name),
-      missingT2: missingT2.map(m => m.name),
+      missingT1: missingT1.map(m => ({ name: m.name, isDualMarket: m.isDualMarket })),
+      missingT2: missingT2.map(m => ({ name: m.name, isDualMarket: m.isDualMarket })),
     });
   }
 

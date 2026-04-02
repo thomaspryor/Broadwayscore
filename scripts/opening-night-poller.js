@@ -133,7 +133,7 @@ function getMissingT1T2Outlets(showId, market) {
     // Market filter
     if (isLondonMarket(market) && !outlet.isDualMarket && outlet.region !== 'uk') continue;
     if (market === 'broadway' && outlet.region === 'uk' && !outlet.isDualMarket) continue;
-    missing.push({ id: outletId, name: outlet.displayName || outletId, tier: outlet.tier, domain: outlet.domain });
+    missing.push({ id: outletId, name: outlet.displayName || outletId, tier: outlet.tier, domain: outlet.domain, isDualMarket: !!outlet.isDualMarket });
   }
 
   return missing.sort((a, b) => a.tier - b.tier); // T1 first
@@ -1238,4 +1238,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets };
+module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds };
