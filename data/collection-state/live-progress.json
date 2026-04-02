@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-02T19:04:43.822Z",
-  "processed": 90,
-  "failed": 279,
-  "successRate": "24.4%",
+  "updatedAt": "2026-04-02T19:06:40.859Z",
+  "processed": 97,
+  "failed": 282,
+  "successRate": "25.6%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 40,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 13,
     "brightdata": 0,
     "archiveToday": 54,
-    "archive": 37
+    "archive": 41
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -67,6 +67,17 @@
     },
     {
       "t": "2026-04-02T13:57:56.066Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T19:05:36.733Z",
+      "event": "bb-session",
+      "session": "a3b60be1",
+      "url": "https://variety.com/2016/legit/reviews/amelie-a-new-musical-review-1201945368/"
+    },
+    {
+      "t": "2026-04-02T19:05:37.948Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
