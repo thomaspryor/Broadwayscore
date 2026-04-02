@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T03:59:32.900Z",
+  "timestamp": "2026-04-02T04:08:06.712Z",
   "stats": {
-    "totalReviews": 32145,
-    "alreadyFlagged": 11953,
-    "dateGuardCatches": 14,
+    "totalReviews": 32150,
+    "alreadyFlagged": 11950,
+    "dateGuardCatches": 16,
     "directorMismatch": 839,
     "tvFilmSignals": 3314,
     "londonSignals": 961,
     "offBroadwaySignals": 964,
     "yearMismatch": 64,
-    "noPublishDate": 5893
+    "noPublishDate": 5896
   },
   "findings": [
     {
@@ -8173,7 +8173,7 @@
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "telegraph--marianka-swain.json",
-      "score": null,
+      "score": 92,
       "publishDate": "August 19th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-playhouse-theatre-review-maude-apatow/",
       "findings": [
@@ -40521,6 +40521,20 @@
       ]
     },
     {
+      "showId": "six-the-musical-west-end-2021",
+      "file": "guardian--lyn-gardner.json",
+      "score": 73,
+      "publishDate": "2018-01-10",
+      "url": "https://www.theguardian.com/stage/2018/jan/10/six-review-henry-viii-wives-arts-theatre-london",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 371d before show (2018-01-10 vs 2019-01-16)"
+        }
+      ]
+    },
+    {
       "showId": "skeleton-crew-2022",
       "file": "variety--ayanna-prescod.json",
       "score": 82,
@@ -72225,6 +72239,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "file": "thestage--mark-shenton.json",
+      "score": 63,
+      "publishDate": "2018-01-16",
+      "url": "https://www.thestage.co.uk/reviews/six-review-at-arts-theatre-london--raw-talent-and-powerful-voices",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 365d before show (2018-01-16 vs 2019-01-16)"
         }
       ]
     },
