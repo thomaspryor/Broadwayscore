@@ -84,8 +84,7 @@ jobs:
           echo "Running: node scripts/generate-theater-tips.js $ARGS"
           eval node scripts/generate-theater-tips.js $ARGS
 
-      - name: Validate restaurant names (optional)
-        if: ${{ secrets.GOOGLE_PLACES_API_KEY != '' }}
+      - name: Validate restaurant names (optional, needs GOOGLE_PLACES_API_KEY)
         continue-on-error: true
         env:
           GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
