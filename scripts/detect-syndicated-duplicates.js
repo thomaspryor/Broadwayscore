@@ -49,6 +49,17 @@ const KNOWN_SYNDICATION = {
   'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
 };
 
+// --- Known outlet pairs (derived from KNOWN_SYNDICATION) ---
+// Maps "outletA|outletB" (sorted) → { primary, secondary, critic }
+// Used to detect syndication when critic is "Unknown" — we match by outlet pair instead.
+const KNOWN_OUTLET_PAIRS = {};
+for (const [critic, config] of Object.entries(KNOWN_SYNDICATION)) {
+  for (const sec of config.secondary) {
+    const pair = [config.primary, sec].sort().join('|');
+    KNOWN_OUTLET_PAIRS[pair] = { primary: config.primary, secondary: sec, critic };
+  }
+}
+
 // --- AP wire syndication signals ---
 // STRICT: requires strong signals that this IS an AP article, not just quoting one.
 // Many reviews quote AP excerpts in roundup pages — those are NOT syndication.
@@ -223,6 +234,76 @@ for (const [key, revs] of multiOutlet) {
     }
   }
 }
+
+// --- Unknown-critic outlet-pair scan ---
+// When critic is "Unknown", match by known outlet pairs within the same show.
+console.log('\n--- Unknown-Critic Outlet-Pair Scan ---');
+const unknownByShow = {};
+reviews.forEach(r => {
+  if (r.criticName !== 'Unknown') return;
+  if (SHOW_FILTER && r.showId !== SHOW_FILTER) return;
+  if (!unknownByShow[r.showId]) unknownByShow[r.showId] = [];
+  unknownByShow[r.showId].push(r);
+});
+
+let unknownPairsFlagged = 0;
+for (const [showId, showRevs] of Object.entries(unknownByShow)) {
+  const outlets = [...new Set(showRevs.map(r => r.outletId))];
+  // Check all outlet pairs against KNOWN_OUTLET_PAIRS
+  for (let i = 0; i < outlets.length; i++) {
+    for (let j = i + 1; j < outlets.length; j++) {
+      const pair = [outlets[i], outlets[j]].sort().join('|');
+      const known = KNOWN_OUTLET_PAIRS[pair];
+      if (!known) continue;
+
+      // Find source files for both outlets (critic = Unknown)
+      const f1 = findSourceFile(showId, outlets[i], 'Unknown');
+      const f2 = findSourceFile(showId, outlets[j], 'Unknown');
+      if (!f1 || !f2) continue;
+
+      const sim = trigramSimilarity(f1.data.fullText, f2.data.fullText);
+      if (sim < THRESHOLD) continue;
+
+      // Determine primary/secondary from the known pair
+      const primaryOutlet = known.primary;
+      const secondaryOutlet = known.secondary;
+      const primaryFile = outlets[i] === primaryOutlet ? f1 : f2;
+      const secondaryFile = outlets[i] === primaryOutlet ? f2 : f1;
+
+      // Skip if already flagged
+      if (secondaryFile.data.isSyndicatedDuplicate) {
+        alreadyFlagged.push({
+          critic: `Unknown (likely ${known.critic})`, showId, primaryOutlet, secondaryOutlet, similarity: sim
+        });
+        continue;
+      }
+
+      flagged.push({
+        critic: `Unknown (likely ${known.critic})`,
+        showId,
+        primaryOutlet,
+        secondaryOutlet,
+        primaryFile: primaryFile.filename,
+        secondaryFile: secondaryFile.filename,
+        similarity: sim,
+        primaryScore: null,
+        secondaryScore: null,
+        scoreDiff: 0,
+      });
+
+      if (!DRY_RUN) {
+        secondaryFile.data.isSyndicatedDuplicate = true;
+        secondaryFile.data.syndicatedPrimaryFile = `${showId}/${primaryFile.filename}`;
+        secondaryFile.data.syndicationSimilarity = sim;
+        secondaryFile.data._matchedByOutletPair = true;
+        fs.writeFileSync(secondaryFile.path, JSON.stringify(secondaryFile.data, null, 2) + '\n');
+        filesWritten++;
+      }
+      unknownPairsFlagged++;
+    }
+  }
+}
+console.log(`Unknown-critic outlet-pair matches: ${unknownPairsFlagged}`);
 
 // --- AP content scan (catches misattributed AP wire stories) ---
 console.log('\n--- AP Content Scan ---');
@@ -418,7 +499,7 @@ const report = {
     critic,
     primaryOutlet: config.primary,
     secondaryOutlets: config.secondary,
-    count: flagged.filter(f => f.critic.toLowerCase() === critic).length,
+    count: flagged.filter(f => f.critic.toLowerCase() === critic || f.critic.toLowerCase() === `unknown (likely ${critic})`).length,
   })),
   flagged: flagged.sort((a, b) => a.critic.localeCompare(b.critic) || a.showId.localeCompare(b.showId)),
   authorMismatches: mismatches,
