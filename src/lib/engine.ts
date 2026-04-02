@@ -322,7 +322,20 @@ function parseOriginalRating(rating: string): number | null {
 export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | null {
   if (reviews.length === 0) return null;
 
-  const computedReviews: ComputedReview[] = reviews.map(review => {
+  // Outlet-level dedup: keep only one review per outlet (most recent by publishDate).
+  // Long-running shows accumulate multiple critics at the same outlet, which gives
+  // that outlet disproportionate weight in the tier-weighted composite score.
+  const byOutlet = new Map<string, RawReview>();
+  for (const review of reviews) {
+    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
+    const existing = byOutlet.get(outletKey);
+    if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
+      byOutlet.set(outletKey, review);
+    }
+  }
+  const dedupedReviews = Array.from(byOutlet.values());
+
+  const computedReviews: ComputedReview[] = dedupedReviews.map(review => {
     const outletConfig = getOutletConfig(review.outletId, review.outlet);
     const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
     const tier = isTopCritic ? 1 : outletConfig.tier;
@@ -419,7 +432,7 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
   return {
     score: weightedScore,
     weightedScore,
-    reviewCount: reviews.length,
+    reviewCount: dedupedReviews.length,
     tier1Count,
     tier2Count,
     tier3Count,
