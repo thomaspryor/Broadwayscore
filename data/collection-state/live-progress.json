@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-02T09:20:02.188Z",
-  "processed": 13,
-  "failed": 37,
-  "successRate": "26.0%",
+  "updatedAt": "2026-04-02T09:26:58.910Z",
+  "processed": 19,
+  "failed": 41,
+  "successRate": "31.7%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 11,
+    "archiveToday": 13,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-02T09:11:41.725Z",
@@ -36,6 +36,28 @@
       "t": "2026-04-02T09:19:25.372Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T09:20:13.815Z",
+      "event": "bb-session",
+      "session": "b5558804",
+      "url": "http://www.variety.com/review/VE1117947374"
+    },
+    {
+      "t": "2026-04-02T09:20:15.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T09:20:36.923Z",
+      "event": "bb-session",
+      "session": "0da050e6",
+      "url": "https://variety.com/2026/theater/news/john-le-carre-the-spy-who-came-in-from-the"
+    },
+    {
+      "t": "2026-04-02T09:20:38.204Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

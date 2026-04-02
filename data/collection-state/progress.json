@@ -12,7 +12,13 @@
     "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
     "broken-glass-west-end-2026/telegraph--david-thacker.json",
     "operation-mincemeat-west-end-2024/musical-theatre-review--rebecca-sinclair.json",
-    "mamma-mia-west-end-2021/musical-theatre-review--molly-kerrigan.json"
+    "mamma-mia-west-end-2021/musical-theatre-review--molly-kerrigan.json",
+    "maggots-west-end-2026/variety--marilyn-stasio.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/variety--naman-ramachandran.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/thestage--unknown.json",
+    "burlesque-west-end-2026/attitude--gary-grimes.json",
+    "burlesque-west-end-2026/london-theatre--anya-ryan.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/financialtimes--ian-shuttleworth.json",
@@ -51,7 +57,11 @@
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "mamma-mia-west-end-2021/telegraph--dominic-cavendish.json",
     "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
-    "man-and-boy-west-end-2026/wsj--terry-teachout.json"
+    "man-and-boy-west-end-2026/wsj--terry-teachout.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "the-car-man-west-end-2026/thestage--unknown.json",
+    "the-gruffalo-west-end-2026/daily-mail--unknown.json",
+    "the-gruffalo-west-end-west-end-2026/daily-mail--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -66,10 +76,19 @@
       "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
       "broken-glass-west-end-2026/telegraph--david-thacker.json",
       "operation-mincemeat-west-end-2024/musical-theatre-review--rebecca-sinclair.json",
-      "mamma-mia-west-end-2021/musical-theatre-review--molly-kerrigan.json"
+      "mamma-mia-west-end-2021/musical-theatre-review--molly-kerrigan.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/thestage--unknown.json",
+      "burlesque-west-end-2026/attitude--gary-grimes.json",
+      "burlesque-west-end-2026/london-theatre--anya-ryan.json",
+      "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/maggots-west-end-2026/variety--marilyn-stasio.json",
+      "maggots-west-end-2026/variety--marilyn-stasio.json",
+      "data/review-texts/the-spy-who-came-in-from-the-cold-west-end-2025/variety--naman-ramachandran.json",
+      "the-spy-who-came-in-from-the-cold-west-end-2025/variety--naman-ramachandran.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "les-liaisons-dangereuses-west-end-2026/telegraph--unknown.json",
@@ -87,12 +106,14 @@
       "data/review-texts/the-play-that-goes-wrong-west-end-2021/timeout--unknown.json",
       "data/review-texts/the-book-of-mormon-west-end-2024/timeout--unknown.json",
       "data/review-texts/matilda-the-musical-west-end-2021/timeout--unknown.json",
-      "data/review-texts/man-and-boy-west-end-2026/wsj--terry-teachout.json"
+      "data/review-texts/man-and-boy-west-end-2026/wsj--terry-teachout.json",
+      "data/review-texts/the-car-man-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-gruffalo-west-end-west-end-2026/daily-mail--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "man-and-boy-west-end-2026/wsj--terry-teachout.json",
+  "lastProcessed": "the-gruffalo-west-end-west-end-2026/daily-mail--unknown.json",
   "log": [
     {
       "t": "2026-04-02T09:11:41.725Z",
@@ -115,6 +136,28 @@
       "t": "2026-04-02T09:19:25.372Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T09:20:13.815Z",
+      "event": "bb-session",
+      "session": "b5558804",
+      "url": "http://www.variety.com/review/VE1117947374"
+    },
+    {
+      "t": "2026-04-02T09:20:15.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T09:20:36.923Z",
+      "event": "bb-session",
+      "session": "0da050e6",
+      "url": "https://variety.com/2026/theater/news/john-le-carre-the-spy-who-came-in-from-the"
+    },
+    {
+      "t": "2026-04-02T09:20:38.204Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
