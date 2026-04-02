@@ -1055,8 +1055,15 @@ function mergeIntoExisting(existing, scraped, source) {
       'specialLottery', 'under30', 'special', 'studentTickets', 'militaryTickets',
     ];
 
+    // Respect _skipFields: fields manually verified as not applicable for this show
+    const skipFields = new Set(current._skipFields || []);
+
     for (const field of allFields) {
       if (!newData[field]) continue; // Source didn't have this — preserve existing
+      if (skipFields.has(field)) {
+        console.log(`  [Merge] Skipping ${showId}.${field}: in _skipFields`);
+        continue;
+      }
 
       if (!current[field]) {
         // New field for this show
@@ -1077,6 +1084,11 @@ function mergeIntoExisting(existing, scraped, source) {
               }
               if (key === 'price') {
                 const oldPrice = current[field][key];
+                // Skip if price is manually pinned
+                if (current[field]._verifiedPrice === oldPrice && value !== oldPrice) {
+                  console.log(`  [Merge] Skipping ${showId}.${field}.price: pinned at $${oldPrice} (${source} says $${value})`);
+                  continue;
+                }
                 const drift = oldPrice > 0 ? Math.abs(value - oldPrice) / oldPrice : 0;
                 changes.push({
                   showId, type: 'updated', field, key,
