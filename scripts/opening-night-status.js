@@ -83,7 +83,7 @@ function findOpeningShows(shows, lookbackDays, showIdFilter) {
     if (d > now && s.status !== 'previews') return false;
     if (s.status === 'closed') return false;
     return true;
-  }).sort((a, b) => new Date(a.openingDate) - new Date(b.openingDate));
+  }).sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
 }
 
 /**
@@ -198,7 +198,7 @@ function getBroadcastStatus(sentData, showId, market) {
     };
   }
 
-  return { state: 'waiting', detail: 'Not yet broadcast-ready' };
+  return { state: 'waiting', detail: 'Awaiting reviews' };
 }
 
 /**
@@ -433,6 +433,10 @@ function renderDashboard() {
     const readiness = checkReadiness(show.id, market);
     const missing = getMissingT1T2Outlets(show.id, market);
     const broadcast = getBroadcastStatus(sentData, show.id, market);
+    // Fix contradictory text: if readiness gates pass but broadcast hasn't sent
+    if (readiness.ready && broadcast.state === 'waiting') {
+      broadcast.detail = 'Ready — awaiting send';
+    }
 
     const missingT1 = missing.filter(m => m.tier === 1);
     const missingT2 = missing.filter(m => m.tier === 2);
