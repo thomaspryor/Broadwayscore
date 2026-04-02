@@ -2444,7 +2444,7 @@ showDirs.forEach(showId => {
       const review = {
         showId,
         outletId: canonicalOutletId,
-        outlet: getOutletDisplayName(canonicalOutletId) || data.outlet || data.outletId || 'Unknown',
+        outlet: (getOutletDisplayName(canonicalOutletId) || data.outlet || data.outletId || 'Unknown').replace(/\s{2,}/g, ' '),
         assignedScore: score,
         scoreSource: source,
         bucket: scoreToBucket(score),

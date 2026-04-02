@@ -282,7 +282,8 @@ function isRegisteredOutlet(outletName) {
 function normalizeOutlet(outletName) {
   if (!outletName) return 'unknown';
 
-  const lower = outletName.toLowerCase().trim();
+  // Collapse multiple spaces to single space (e.g., "All That Dazzles  (UK)" → "All That Dazzles (UK)")
+  const lower = outletName.toLowerCase().trim().replace(/\s{2,}/g, ' ');
   const withoutThe = lower.replace(/^the\s+/, '');
 
   // First, check the registry alias map (source of truth)
