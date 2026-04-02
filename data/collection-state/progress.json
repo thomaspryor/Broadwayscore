@@ -309,7 +309,15 @@
     "the-book-of-mormon-west-end-2024/financialtimes--sarah-hemming.json",
     "the-book-of-mormon-west-end-2024/i-paper--fiona-mountford.json",
     "the-book-of-mormon-west-end-2024/standard--nick-curtis.json",
-    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json"
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
+    "matilda-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
+    "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json",
+    "matilda-the-musical-west-end-2021/independent--alice-saville.json",
+    "matilda-the-musical-west-end-2021/telegraph--dominic-cavendish.json",
+    "wicked-west-end-2021/variety--charles-isherwood.json",
+    "wicked-west-end-2021/daily-mail--brian-viner.json",
+    "wicked-west-end-2021/financialtimes--alastair-macaulay.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1848,7 +1856,9 @@
     "the-play-that-goes-wrong-west-end-2021/timeout--unknown.json",
     "aladdin-2014/ap--mark-kennedy.json",
     "the-book-of-mormon-west-end-2024/timeout--unknown.json",
-    "matilda-the-musical-west-end-2021/timeout--unknown.json"
+    "matilda-the-musical-west-end-2021/timeout--unknown.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2047,7 +2057,10 @@
       "the-play-that-goes-wrong-west-end-2021/times-uk--clive-davis.json",
       "the-book-of-mormon-west-end-2024/financialtimes--sarah-hemming.json",
       "the-book-of-mormon-west-end-2024/i-paper--fiona-mountford.json",
-      "the-book-of-mormon-west-end-2024/standard--nick-curtis.json"
+      "the-book-of-mormon-west-end-2024/standard--nick-curtis.json",
+      "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json",
+      "matilda-the-musical-west-end-2021/independent--alice-saville.json",
+      "wicked-west-end-2021/financialtimes--alastair-macaulay.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -2105,7 +2118,9 @@
       "data/review-texts/the-outsiders-2024/deadline--pete-hammond.json",
       "the-outsiders-2024/deadline--pete-hammond.json",
       "data/review-texts/hadestown-2019/deadline--greg-evans.json",
-      "hadestown-2019/deadline--greg-evans.json"
+      "hadestown-2019/deadline--greg-evans.json",
+      "data/review-texts/wicked-west-end-2021/variety--charles-isherwood.json",
+      "wicked-west-end-2021/variety--charles-isherwood.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -2170,7 +2185,8 @@
       "harry-potter-2021/nbcnews--unknown.json",
       "hamilton-2015/nbcnews--luke-leifeste.json",
       "the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json",
-      "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json"
+      "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+      "matilda-the-musical-west-end-2021/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2436,11 +2452,14 @@
       "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json",
       "hadestown-2019/vulture--jesse-green.json",
       "six-the-musical-west-end-2021/london-box-office--isabella-james.json",
-      "the-book-of-mormon-west-end-2024/metro--unknown.json"
+      "the-book-of-mormon-west-end-2024/metro--unknown.json",
+      "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
+      "matilda-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
+      "wicked-west-end-2021/daily-mail--brian-viner.json"
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/timeout--unknown.json",
+  "lastProcessed": "wicked-west-end-2021/financialtimes--alastair-macaulay.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -3285,6 +3304,17 @@
       "t": "2026-04-02T06:19:45.942Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T06:30:06.435Z",
+      "event": "bb-session",
+      "session": "290948b7",
+      "url": "https://www.variety.com/review/VE1117922308?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-04-02T06:30:07.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

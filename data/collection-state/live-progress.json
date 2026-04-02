@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-02T06:28:41.997Z",
-  "processed": 310,
-  "failed": 1537,
-  "successRate": "16.8%",
+  "updatedAt": "2026-04-02T06:30:41.298Z",
+  "processed": 318,
+  "failed": 1539,
+  "successRate": "17.1%",
   "tierBreakdown": {
-    "playwright": 195,
+    "playwright": 198,
     "amp": 2,
-    "browserbase": 52,
+    "browserbase": 54,
     "directCookies": 2,
-    "scrapingbee": 59,
+    "scrapingbee": 60,
     "brightdata": 0,
     "archiveToday": 230,
-    "archive": 31
+    "archive": 34
   },
-  "browserbaseSessions": 28,
+  "browserbaseSessions": 29,
   "recentActivity": [
-    {
-      "t": "2026-04-02T05:39:35.290Z",
-      "event": "bb-session",
-      "session": "5f193cdf",
-      "url": "https://variety.com/2026/theater/global/richard-kind-returning-the-producers-lon"
-    },
-    {
-      "t": "2026-04-02T05:39:36.557Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-02T05:40:57.300Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-02T06:19:45.942Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T06:30:06.435Z",
+      "event": "bb-session",
+      "session": "290948b7",
+      "url": "https://www.variety.com/review/VE1117922308?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-04-02T06:30:07.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
