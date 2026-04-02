@@ -508,6 +508,25 @@ function extractCultureSauceScore(html, text) {
  * Extract score from TheReviewsHub
  * Format: percentage rating in class="number rating" element (e.g., 90%)
  */
+/**
+ * Extract score from Afridiziak Theatre News
+ * Format: star rating image filename (e.g., "4-0-star-rating.jpg")
+ */
+function extractAfridiziak(html, text) {
+  const imgMatch = html.match(/(\d)-0-star-rating\.(?:jpg|png|webp)/i);
+  if (imgMatch) {
+    const rating = parseInt(imgMatch[1]);
+    if (rating >= 1 && rating <= 5) {
+      return {
+        originalScore: `${rating}/5 stars`,
+        normalizedScore: starsToNumeric(rating, 5),
+        source: 'afridiziak-star-image'
+      };
+    }
+  }
+  return null;
+}
+
 function extractReviewsHubScore(html, text) {
   const pctMatch = html.match(/class="[^"]*number\s+rating[^"]*"[^>]*>[\s\S]*?(\d{2,3})\s*(?:<[^>]*>)*\s*%/i);
   if (pctMatch) {
@@ -1021,6 +1040,8 @@ const OUTLET_EXTRACTORS = {
   'the-recs': extractUKStarRating,
   'thereviewshub': extractReviewsHubScore,
   'the-reviews-hub': extractReviewsHubScore,
+  'afridiziak-theatre-news': extractAfridiziak,
+  'afridiziak': extractAfridiziak,
   'lost-in-theatreland': extractUKStarRating,
   'digital-journal': extractUKStarRating,
   'rollingstone': noScoreExtractor,    // RS theater reviews don't have star ratings
@@ -1226,7 +1247,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'theatre-weekly-star-image', 'radiotimes-page-json', 'radiotimes-svg-stars',
   'lbo-css-stars', 'atd-emoji-stars',
   'text-pattern', 'css-stars', 'word-stars', 'star-rating',
-  'reviewshub-percentage', 'explicit-rating',
+  'reviewshub-percentage', 'explicit-rating', 'afridiziak-star-image',
 ]);
 
 module.exports = {
