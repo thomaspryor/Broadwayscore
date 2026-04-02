@@ -2126,6 +2126,21 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Default-critic resolution: when critic is unknown/missing and the outlet has a
+      // defaultCritic in the registry (single-author outlets), use it. This must run before
+      // dedup so the resolved critic name participates in deduplication.
+      {
+        const oid = normalizeOutletCanonical(data.outletId || data.outlet);
+        const crit = (data.criticName || '').trim().toLowerCase();
+        if (!crit || crit === 'unknown' || crit === 'unnamed') {
+          const outletEntry = outletRegistry.outlets[oid];
+          if (outletEntry && outletEntry.defaultCritic) {
+            data.criticName = outletEntry.defaultCritic;
+            stats.resolvedDefaultCritic = (stats.resolvedDefaultCritic || 0) + 1;
+          }
+        }
+      }
+
       // Create deduplication key — use canonical normalization to catch merged outlets
       const outletKey = normalizeOutletCanonical(data.outletId || data.outlet);
       const criticKey = normalizeCriticCanonical(data.criticName || 'unknown');
@@ -3140,6 +3155,7 @@ if (stats.dupeRefExcludedRecovered > 0) {
 if (stats.staleContentVerificationCleared > 0) {
   console.log(`  Recovered (stale contentVerification — text fetched after verification): ${stats.staleContentVerificationCleared}`);
 }
+console.log(`  Resolved (default critic from outlet registry): ${stats.resolvedDefaultCritic || 0}`);
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
 console.log(`  Skipped (unknown outlet dedup): ${stats.skippedUnknownOutletDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
