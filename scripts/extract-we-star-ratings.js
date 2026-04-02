@@ -17,6 +17,7 @@ const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'archives', 'reviews');
 const NO_STARS = new Set([
   'times-uk', 'financialtimes', 'variety', 'nytimes', 'nytg', 'observer',
   'washpost', 'latimes', 'hollywoodreporter', 'ap', 'deadline',
+  'british-theatre', 'britishtheatreguide',  // BTG doesn't publish star ratings
 ]);
 
 const LIMIT = parseInt(process.argv.find(a => a.startsWith('--limit='))?.slice(8) || '999');
