@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T08:52:35.644Z",
+  "generatedAt": "2026-04-02T09:41:19.894Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -488,14 +488,14 @@
       "slug": "les-liaisons-dangereuses-west-end",
       "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 61,
+      "liveScore": 57,
       "scoreDrift": null,
       "total": 4,
       "t1": 3,
       "t2": 0,
       "t3": 1,
-      "positive": 2,
-      "mixed": 1,
+      "positive": 1,
+      "mixed": 2,
       "negative": 1,
       "readiness": {
         "ready": false,
@@ -537,6 +537,10 @@
         },
         {
           "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
           "isDualMarket": true
         },
         {
@@ -860,14 +864,14 @@
       "status": "open",
       "slug": "romeo-and-juliet-west-end",
       "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
-      "siteScore": 70,
-      "liveScore": 70,
+      "siteScore": 71,
+      "liveScore": 71,
       "scoreDrift": 0,
-      "total": 13,
-      "t1": 5,
+      "total": 14,
+      "t1": 6,
       "t2": 6,
       "t3": 2,
-      "positive": 8,
+      "positive": 9,
       "mixed": 3,
       "negative": 2,
       "readiness": {
@@ -885,7 +889,12 @@
         "state": "waiting",
         "detail": "Ready — awaiting send"
       },
-      "missingT1": [],
+      "missingT1": [
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
       "missingT2": [
         {
           "name": "New York Theatre Guide",

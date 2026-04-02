@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T08:52:32.084Z",
+  "timestamp": "2026-04-02T09:41:16.340Z",
   "stats": {
-    "totalReviews": 32174,
-    "alreadyFlagged": 11941,
+    "totalReviews": 32170,
+    "alreadyFlagged": 11938,
     "dateGuardCatches": 15,
-    "directorMismatch": 843,
+    "directorMismatch": 844,
     "tvFilmSignals": 3320,
-    "londonSignals": 974,
+    "londonSignals": 973,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
-    "noPublishDate": 5890
+    "noPublishDate": 5888
   },
   "findings": [
     {
@@ -25029,6 +25029,24 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2026-03-27",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 78,
       "publishDate": "2026-03-26",
@@ -27434,6 +27452,7 @@
     {
       "showId": "liberation-2025",
       "file": "latimes--charles-mcnulty.json",
+      "score": 82,
       "publishDate": "2025-11-05",
       "url": "https://www.latimes.com/opinion/story/2025-11-19/wicked-liberation-ms-hollywood-broadway-feminism",
       "findings": [
@@ -29025,6 +29044,7 @@
     {
       "showId": "marjorie-prime-2025",
       "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 79,
       "publishDate": "2025-12-09",
       "url": "https://www.nytimes.com/2025/12/08/theater/marjorie-prime-review-june-squibb.html",
       "findings": [
@@ -56273,6 +56293,7 @@
     {
       "showId": "waiting-for-godot-2025",
       "file": "nypost--entertainment-critic.json",
+      "score": 38,
       "publishDate": "2025-09-29",
       "url": "https://nypost.com/2025/09/28/entertainment/waiting-for-godot-review-rough-keanu-reeves-struggles-in-mediocre-production-of-stage-classic/",
       "findings": [
@@ -68453,37 +68474,10 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "telegraph--unknown.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 91,
       "publishDate": "2026-04-01",
       "url": "https://www.thereviewshub.com/les-liaisons-dangereuses-national-theatre-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "whatsonstage--alex-wood.json",
-      "publishDate": "2026-04-01",
-      "url": "https://www.whatsonstage.com/news/les-liaisons-dangereuses-with-aidan-turner-lesley-manville-and-monica-barbaro-photos-released_1717106/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69067,6 +69061,7 @@
     {
       "showId": "marjorie-prime-2025",
       "file": "nysr--david-finkle.json",
+      "score": 76,
       "publishDate": "2025-12-21",
       "url": "https://nystagereview.com/2025/12/08/marjorie-prime-a-very-real-exploration-of-memory-and-loss-powered-by-ai/",
       "findings": [
