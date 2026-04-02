@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T05:48:55.543Z",
+  "timestamp": "2026-04-02T07:13:10.398Z",
   "stats": {
-    "totalReviews": 32156,
-    "alreadyFlagged": 11948,
-    "dateGuardCatches": 16,
-    "directorMismatch": 841,
-    "tvFilmSignals": 3315,
-    "londonSignals": 967,
-    "offBroadwaySignals": 964,
+    "totalReviews": 32175,
+    "alreadyFlagged": 11951,
+    "dateGuardCatches": 15,
+    "directorMismatch": 843,
+    "tvFilmSignals": 3317,
+    "londonSignals": 971,
+    "offBroadwaySignals": 965,
     "yearMismatch": 64,
-    "noPublishDate": 5895
+    "noPublishDate": 5893
   },
   "findings": [
     {
@@ -5618,9 +5618,22 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 89,
-      "publishDate": "2021-09-13",
+      "file": "telegraph--dzifa-benson.json",
+      "score": 78,
+      "publishDate": "2024-10-03",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/back-future-musical-review-cars-star-feelgood-triumph/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "telegraph--paul-raven.json",
+      "publishDate": "2026-01-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/back-future-musical-review-cars-star-feelgood-triumph/",
       "findings": [
         {
@@ -12780,7 +12793,7 @@
       "showId": "dog-day-afternoon-2026",
       "file": "theatrely--emily-wyrwa.json",
       "score": 64,
-      "publishDate": null,
+      "publishDate": "March 30, 2026",
       "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
       "findings": [
         {
@@ -19723,6 +19736,25 @@
       ]
     },
     {
+      "showId": "hadestown-2019",
+      "file": "vulture--jesse-green.json",
+      "score": 64,
+      "publishDate": "April 18, 2019",
+      "url": "https://www.vulture.com/2016/05/theater-review-hadestown.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
       "showId": "hairspray-2002",
       "file": "hollywood-reporter--david-rooney.json",
       "publishDate": null,
@@ -23739,6 +23771,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "london-box-office--stuart-king.json",
+      "score": 67,
       "publishDate": "2025-12-12",
       "url": "https://www.londonboxoffice.co.uk/news/post/into-the-woods-bridge-theatre-review",
       "findings": [
@@ -23818,6 +23851,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "the-recs--the-recs-it.json",
+      "score": 94,
       "publishDate": "2025-12-11",
       "url": "https://therecs.co.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -38959,7 +38993,7 @@
       "file": "guardian--arifa-akbar.json",
       "score": 73,
       "publishDate": "2026-04-01",
-      "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
+      "url": "https://www.theguardian.com/stage/2023/jun/15/romeo-and-juliet-review-almeida-theatre-london-rebecca-frecknall",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -39040,20 +39074,6 @@
       "score": 45,
       "publishDate": "October 24, 2024",
       "url": "https://www.theguardian.com/stage/2024/oct/24/romeo-juliet-broadway-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 78,
-      "publishDate": "October 24, 2024",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-kit-connor-rachel-zegler-shakespeare-jack-antonoff-1236043115/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -39157,20 +39177,6 @@
       "score": 62,
       "publishDate": "October 24, 2024",
       "url": "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "file": "slantmagazine--dan-rubins.json",
-      "score": 65,
-      "publishDate": null,
-      "url": "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -42785,9 +42791,8 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 86,
-      "publishDate": "2023-12-14",
+      "file": "telegraph--marianka-swain.json",
+      "publishDate": "2025-09-19",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/stranger-things-the-first-shadow-phoenix-theatre-review/",
       "findings": [
         {
@@ -42802,6 +42807,19 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 81,
       "publishDate": "2023-12-15",
+      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "thestage--tom-wicker.json",
+      "publishDate": null,
       "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
       "findings": [
         {
@@ -46063,6 +46081,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "metro--claire-allfree.json",
+      "score": 86,
+      "publishDate": "2013-03-22",
+      "url": "https://metro.co.uk/2013/03/22/the-book-of-mormon-is-helplessly-funny-and-terrifically-entertaining-3554008/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
         }
       ]
     },
@@ -50095,6 +50127,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "variety--greg-evans.json",
+      "score": 92,
+      "publishDate": "2020-07-30",
+      "url": "https://variety.com/1999/legit/reviews/the-lion-king-lyceum-theater-1200459301/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -57988,6 +58034,20 @@
       ]
     },
     {
+      "showId": "wicked-west-end-2021",
+      "file": "variety--charles-isherwood.json",
+      "score": 60,
+      "publishDate": "2020-07-30",
+      "url": "https://www.variety.com/review/VE1117922308?categoryid=33&cs=1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "wit-2012",
       "file": "nytimes--ben-brantley.json",
       "score": 76,
@@ -64758,6 +64818,20 @@
     },
     {
       "showId": "hadestown-2019",
+      "file": "usatoday--brent-hallenbeck.json",
+      "score": null,
+      "publishDate": "2019-06-06",
+      "url": "https://bearswire.usatoday.com/story/entertainment/2019/04/17/how-hadestown-review-broadway-musical-compares-anais-mitchell-vermont-shows/3475650002/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
       "file": "wsj--terry-teachout.json",
       "score": 82,
       "publishDate": "April 24, 2019",
@@ -68323,11 +68397,10 @@
       ]
     },
     {
-      "showId": "les-liaisons-dangereuses-2016",
-      "file": "wnyc--jennifer-vanasco.json",
-      "score": 72,
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "telegraph--unknown.json",
       "publishDate": null,
-      "url": "https://www.wnyc.org/story/review-les-liaisons-seduces-thanks-janet-mcteer/",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -70460,6 +70533,20 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "daily-mail--quentin-letts.json",
+      "score": 72,
+      "publishDate": "2024-07-26",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 57,
       "publishDate": "2025-01-15",
@@ -71861,20 +71948,6 @@
       ]
     },
     {
-      "showId": "romeo-juliet-2024",
-      "file": "vulture--sara-holdren.json",
-      "score": 42,
-      "publishDate": "October 24, 2024",
-      "url": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
       "showId": "saint-joan-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 57,
@@ -72289,20 +72362,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "six-the-musical-west-end-2021",
-      "file": "standard--fiona-mountford.json",
-      "score": 93,
-      "publishDate": "2018-09-05",
-      "url": "https://www.standard.co.uk/culture/theatre/six-the-musical-review-kick-ass-musical-about-henry-viiis-wives-channels-its-inner-beyonce-a3927931.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 133d before show (2018-09-05 vs 2019-01-16)"
         }
       ]
     },
@@ -77408,6 +77467,34 @@
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "telegraph--claire-allfree.json",
+      "score": 74,
+      "publishDate": "2025-12-18",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2025-12-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
       "file": "telegraph--serena-davies.json",
       "score": 77,
       "publishDate": "2021-08-11",
@@ -77706,6 +77793,20 @@
       "score": 92,
       "publishDate": "2025-09-15",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-producers-garrick-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "score": 66,
+      "publishDate": "2025-09-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-producers-garrick-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
