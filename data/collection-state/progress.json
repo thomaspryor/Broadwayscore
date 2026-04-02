@@ -286,7 +286,14 @@
     "the-phantom-of-the-opera-west-end-1986/telegraph--claire-allfree.json",
     "the-phantom-of-the-opera-west-end-1986/telegraph--dominic-cavendish.json",
     "les-miserables-west-end-2021/financialtimes--sarah-hemming.json",
-    "les-miserables-west-end-2021/times-uk--clive-davis.json"
+    "les-miserables-west-end-2021/times-uk--clive-davis.json",
+    "hadestown-2019/deadline--greg-evans.json",
+    "hadestown-2019/vulture--jesse-green.json",
+    "hadestown-2019/usatoday--brent-hallenbeck.json",
+    "six-the-musical-west-end-2021/standard--unknown.json",
+    "six-the-musical-west-end-2021/daily-mail--paul-raven.json",
+    "six-the-musical-west-end-2021/london-box-office--isabella-james.json",
+    "harry-potter-2021/nbcnews--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1818,7 +1825,10 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
     "six-2021/rollingstone--jerry-portwood.json",
     "back-to-the-future-west-end-2021/musical-theatre-review--unknown.json",
-    "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json"
+    "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
+    "hadestown-2019/billboard--rebecca-milzoff.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2002,7 +2012,10 @@
       "the-phantom-of-the-opera-west-end-1986/london-theatre--theo-bosanquet.json",
       "the-phantom-of-the-opera-west-end-1986/standard--nick-curtis.json",
       "les-miserables-west-end-2021/financialtimes--sarah-hemming.json",
-      "les-miserables-west-end-2021/times-uk--clive-davis.json"
+      "les-miserables-west-end-2021/times-uk--clive-davis.json",
+      "hadestown-2019/usatoday--brent-hallenbeck.json",
+      "six-the-musical-west-end-2021/standard--unknown.json",
+      "six-the-musical-west-end-2021/daily-mail--paul-raven.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -2058,7 +2071,9 @@
       "data/review-texts/oh-mary-2024/amny--matt-windman.json",
       "oh-mary-2024/amny--matt-windman.json",
       "data/review-texts/the-outsiders-2024/deadline--pete-hammond.json",
-      "the-outsiders-2024/deadline--pete-hammond.json"
+      "the-outsiders-2024/deadline--pete-hammond.json",
+      "data/review-texts/hadestown-2019/deadline--greg-evans.json",
+      "hadestown-2019/deadline--greg-evans.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -2119,7 +2134,8 @@
       "back-to-the-future-west-end-2021/telegraph--dzifa-benson.json",
       "back-to-the-future-west-end-2021/telegraph--paul-raven.json",
       "the-phantom-of-the-opera-west-end-1986/telegraph--claire-allfree.json",
-      "the-phantom-of-the-opera-west-end-1986/telegraph--dominic-cavendish.json"
+      "the-phantom-of-the-opera-west-end-1986/telegraph--dominic-cavendish.json",
+      "harry-potter-2021/nbcnews--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2348,7 +2364,8 @@
       "data/review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--stephi-wild.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/timeout--unknown.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
-      "data/review-texts/six-2021/rollingstone--jerry-portwood.json"
+      "data/review-texts/six-2021/rollingstone--jerry-portwood.json",
+      "data/review-texts/hadestown-2019/billboard--rebecca-milzoff.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2378,11 +2395,13 @@
       "spare-parts-off-broadway-2026/rollingstone--peter-travers.json",
       "antigone-this-play-i-read-in-high-school-off-broadway-2026/latimes--charles-mcnulty.json",
       "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
-      "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json"
+      "the-phantom-of-the-opera-west-end-1986/timeout-london--andrzej-lukowski.json",
+      "hadestown-2019/vulture--jesse-green.json",
+      "six-the-musical-west-end-2021/london-box-office--isabella-james.json"
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
+  "lastProcessed": "harry-potter-2021/woman-around-town--alix-cohen.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -3216,6 +3235,17 @@
       "t": "2026-04-02T06:06:00.003Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-04-02T06:19:44.744Z",
+      "event": "bb-session",
+      "session": "ea837067",
+      "url": "https://deadline.com/2019/04/hadestown-broadway-review-anais-mitchell-rachel-cha"
+    },
+    {
+      "t": "2026-04-02T06:19:45.942Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
