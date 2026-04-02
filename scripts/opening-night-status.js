@@ -552,7 +552,7 @@ async function sendStatusNotification(data) {
     const broadcastIcon = show.broadcast.state === 'complete' ? ':mega:' : show.broadcast.state === 'overdue' ? ':rotating_light:' : ':clock3:';
 
     const missingStr = show.missingT1.length > 0
-      ? `Missing T1: ${show.missingT1.join(', ')}`
+      ? `Missing T1: ${show.missingT1.map(m => m.name || m).join(', ')}`
       : 'All T1 found';
 
     fields.push({
@@ -648,4 +648,12 @@ async function main() {
   }
 }
 
-main();
+main().then(() => {
+  // Don't exit in watch mode — setInterval keeps the process alive intentionally
+  if (!process.argv.includes('--watch') && !process.argv.some(a => a.startsWith('--watch='))) {
+    process.exit(0);
+  }
+}).catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});

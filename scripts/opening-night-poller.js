@@ -1232,7 +1232,9 @@ async function pollCycle() {
 }
 
 if (require.main === module) {
-  pollCycle().catch(err => {
+  pollCycle().then(() => {
+    process.exit(0);
+  }).catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);
   });

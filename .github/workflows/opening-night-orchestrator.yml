@@ -360,6 +360,21 @@ jobs:
           echo "║  Orchestrator complete: $MAX_ITERATIONS iterations"
           echo "╚══════════════════════════════════════════════════╝"
 
+      - name: Setup Node for status notification
+        if: always() && steps.find.outputs.has_shows == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Send opening night status to Discord
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/opening-night-status.js --notify --lookback=2
+        continue-on-error: true
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

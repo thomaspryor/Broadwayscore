@@ -1,6 +1,9 @@
 name: Generate Theater Tips
 
 on:
+  schedule:
+    # Quarterly: 1st of Jan, Apr, Jul, Oct at 6 AM UTC (1 AM EST)
+    - cron: '0 6 1 1,4,7,10 *'
   workflow_dispatch:
     inputs:
       theater:
@@ -48,11 +51,11 @@ jobs:
         run: npm ci
 
       - name: Setup Playwright
-        if: ${{ inputs.skip_scrape != true }}
+        if: ${{ github.event_name == 'schedule' || inputs.skip_scrape != true }}
         uses: ./.github/actions/setup-playwright
 
       - name: Scrape theater dining & parking data
-        if: ${{ inputs.skip_scrape != true }}
+        if: ${{ github.event_name == 'schedule' || inputs.skip_scrape != true }}
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -81,12 +84,18 @@ jobs:
           echo "Running: node scripts/generate-theater-tips.js $ARGS"
           eval node scripts/generate-theater-tips.js $ARGS
 
+      - name: Validate restaurant names (optional, needs GOOGLE_PLACES_API_KEY)
+        continue-on-error: true
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+        run: node scripts/validate-restaurant-names.js --sample 10
+
       - name: Merge tips into theater metadata
-        if: ${{ inputs.dry_run != true }}
+        if: ${{ github.event_name == 'schedule' || inputs.dry_run != true }}
         run: node scripts/merge-theater-tips.js
 
       - name: Validate data
-        if: ${{ inputs.dry_run != true }}
+        if: ${{ github.event_name == 'schedule' || inputs.dry_run != true }}
         run: node scripts/validate-data.js
 
       - name: Commit and push if changed

@@ -451,7 +451,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <div className="flex items-center gap-2">
                 <div className="flex-1 min-w-0 overflow-x-auto flex-nowrap scrollbar-hide">
                   <div className="flex gap-2 pb-1">
-                    {sortedTicketLinks.length > 0 && show.status !== 'closed' && sortedTicketLinks.map((link, i) => (
+                    {sortedTicketLinks.length > 0 && show.status !== 'closed' && sortedTicketLinks.slice(0, show.officialUrl ? 3 : 4).map((link, i) => (
                       <TicketLink
                         key={link.platform}
                         showName={show.title}
@@ -464,7 +464,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         url={link.url}
                         pageType="show"
                         linkPosition={i}
-                        totalLinks={sortedTicketLinks.length}
+                        totalLinks={Math.min(sortedTicketLinks.length, 4)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
                       >
                         <TicketIcon />
@@ -482,28 +482,17 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         platform="Official Site"
                         url={show.officialUrl}
                         pageType="show"
-                        totalLinks={sortedTicketLinks.length + 1}
+                        totalLinks={Math.min(sortedTicketLinks.length + 1, 4)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
                       >
                         <GlobeIcon />
                         Official Site
                       </TicketLink>
                     )}
-                    {show.trailerUrl && (
-                      <a
-                        href={show.trailerUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
-                      >
-                        <PlayIcon />
-                        Trailer
-                      </a>
-                    )}
                     {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
                       <a
                         href="#discount-tickets"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs leading-none font-medium transition-colors border border-emerald-500/30 whitespace-nowrap flex-shrink-0"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5 whitespace-nowrap flex-shrink-0"
                       >
                         <TicketIcon />
                         {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
@@ -739,8 +728,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           {/* Links row: Tickets, Official Site, Trailer, Lottery/Rush + Watchlist */}
           <div className="flex items-center gap-2 mt-4 flex-nowrap">
             <div className="flex flex-wrap gap-2 min-w-0 flex-1">
-              {/* Ticket Links (affiliate platforms first) */}
-              {sortedTicketLinks.length > 0 && show.status !== 'closed' && sortedTicketLinks.map((link, i) => (
+              {/* Ticket Links (affiliate platforms first, max 4 total with Official Site) */}
+              {sortedTicketLinks.length > 0 && show.status !== 'closed' && sortedTicketLinks.slice(0, show.officialUrl ? 3 : 4).map((link, i) => (
                 <TicketLink
                   key={link.platform}
                   showName={show.title}
@@ -753,7 +742,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   url={link.url}
                   pageType="show"
                   linkPosition={i}
-                  totalLinks={sortedTicketLinks.length}
+                  totalLinks={Math.min(sortedTicketLinks.length, 4)}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
                 >
                   <TicketIcon />
@@ -773,7 +762,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   platform="Official Site"
                   url={show.officialUrl}
                   pageType="show"
-                  totalLinks={sortedTicketLinks.length + 1}
+                  totalLinks={Math.min(sortedTicketLinks.length + 1, 4)}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
                 >
                   <GlobeIcon />
@@ -781,24 +770,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 </TicketLink>
               )}
 
-              {/* Trailer */}
-              {show.trailerUrl && (
-                <a
-                  href={show.trailerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
-                >
-                  <PlayIcon />
-                  Trailer
-                </a>
-              )}
-
-              {/* Lottery/Rush Quick Link */}
+              {/* Lottery/Rush — subdued style, not a revenue link */}
               {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
                 <a
                   href="#discount-tickets"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 hover:text-emerald-300 text-xs leading-none font-medium transition-colors border border-emerald-500/30"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5"
                 >
                   <TicketIcon />
                   {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
