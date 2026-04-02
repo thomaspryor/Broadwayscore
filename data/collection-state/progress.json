@@ -115,7 +115,12 @@
     "bright-star-2016/san-diego-story--welton-jones.json",
     "bright-star-2016/talkinbroadway--bill-eadie.json",
     "eclipsed-2016/ap--jennifer-farrar.json",
-    "noises-off-2016/woman-around-town--alix-cohen.json"
+    "noises-off-2016/woman-around-town--alix-cohen.json",
+    "fiddler-on-the-roof-2015/washpost--peter-marks.json",
+    "the-color-purple-2015/show-showdown--elizabeth-wollman.json",
+    "misery-2015/hollywood-reporter--david-rooney.json",
+    "a-view-from-the-bridge-2015/huffpost--michael-glitz.json",
+    "allegiance-2015/huffpost--michael-glitz.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -430,7 +435,12 @@
     "eclipsed-2016/out-magazine--michael-musto.json",
     "the-humans-2016/wsj--terry-teachout.json",
     "noises-off-2016/bobs-theater-blog--robert-sholiton.json",
-    "fiddler-on-the-roof-2015/bobs-theater-blog--robert-sholiton.json"
+    "fiddler-on-the-roof-2015/bobs-theater-blog--robert-sholiton.json",
+    "fiddler-on-the-roof-2015/out-magazine--michael-musto.json",
+    "school-of-rock-the-musical-2015/theatermania--jesse-green.json",
+    "allegiance-2015/vulture--rebecca-milzoff.json",
+    "allegiance-2015/film-festival-traveler--kevin-filipski.json",
+    "allegiance-2015/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -484,7 +494,11 @@
       "the-encounter-2016/woman-around-town--alix-cohen.json",
       "long-days-journey-into-night-2016/woman-around-town--alix-cohen.json",
       "tuck-everlasting-2016/woman-around-town--alix-cohen.json",
-      "noises-off-2016/woman-around-town--alix-cohen.json"
+      "noises-off-2016/woman-around-town--alix-cohen.json",
+      "fiddler-on-the-roof-2015/washpost--peter-marks.json",
+      "the-color-purple-2015/show-showdown--elizabeth-wollman.json",
+      "a-view-from-the-bridge-2015/huffpost--michael-glitz.json",
+      "allegiance-2015/huffpost--michael-glitz.json"
     ],
     "amp": [],
     "browserbase": [
@@ -496,7 +510,9 @@
       "data/review-texts/amelie-a-new-musical-2017/variety--marilyn-stasio.json",
       "amelie-a-new-musical-2017/variety--marilyn-stasio.json",
       "data/review-texts/an-act-of-god-2016/hollywood-reporter--david-rooney.json",
-      "an-act-of-god-2016/hollywood-reporter--david-rooney.json"
+      "an-act-of-god-2016/hollywood-reporter--david-rooney.json",
+      "data/review-texts/misery-2015/hollywood-reporter--david-rooney.json",
+      "misery-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -576,7 +592,10 @@
       "data/review-texts/in-transit-2016/theater-in-the-now--michael-block.json",
       "data/review-texts/natasha-pierre-and-the-great-comet-of-1812-2016/cultural-weekly--david-sheward.json",
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/theater-in-the-now--michael-block.json",
-      "data/review-texts/long-days-journey-into-night-2016/talkinbroadway--matthew-murray.json"
+      "data/review-texts/long-days-journey-into-night-2016/talkinbroadway--matthew-murray.json",
+      "data/review-texts/allegiance-2015/vulture--rebecca-milzoff.json",
+      "data/review-texts/allegiance-2015/film-festival-traveler--kevin-filipski.json",
+      "data/review-texts/allegiance-2015/playbill--unknown.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -629,7 +648,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "fiddler-on-the-roof-2015/bobs-theater-blog--robert-sholiton.json",
+  "lastProcessed": "allegiance-2015/playbill--unknown.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -729,6 +748,17 @@
       "t": "2026-04-02T19:20:13.960Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T19:22:05.965Z",
+      "event": "bb-session",
+      "session": "16a3e174",
+      "url": "https://www.hollywoodreporter.com/news/general-news/bruce-willis-misery-theater-"
+    },
+    {
+      "t": "2026-04-02T19:22:07.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

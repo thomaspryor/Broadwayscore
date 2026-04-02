@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-02T19:21:18.138Z",
-  "processed": 116,
-  "failed": 313,
-  "successRate": "27.0%",
+  "updatedAt": "2026-04-02T19:30:37.485Z",
+  "processed": 121,
+  "failed": 318,
+  "successRate": "27.6%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 54,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
     "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 59,
+    "archiveToday": 62,
     "archive": 47
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -113,6 +113,17 @@
       "t": "2026-04-02T19:20:13.960Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T19:22:05.965Z",
+      "event": "bb-session",
+      "session": "16a3e174",
+      "url": "https://www.hollywoodreporter.com/news/general-news/bruce-willis-misery-theater-"
+    },
+    {
+      "t": "2026-04-02T19:22:07.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
