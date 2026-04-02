@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T00:50:33.735Z",
+  "timestamp": "2026-04-02T03:19:10.027Z",
   "stats": {
-    "totalReviews": 32161,
-    "alreadyFlagged": 11981,
+    "totalReviews": 32162,
+    "alreadyFlagged": 11983,
     "dateGuardCatches": 13,
-    "directorMismatch": 839,
-    "tvFilmSignals": 3314,
-    "londonSignals": 959,
+    "directorMismatch": 837,
+    "tvFilmSignals": 3313,
+    "londonSignals": 958,
     "offBroadwaySignals": 963,
     "yearMismatch": 64,
-    "noPublishDate": 5885
+    "noPublishDate": 5887
   },
   "findings": [
     {
@@ -26802,48 +26802,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (5x) more than 2016 (0x). 2026 matches production: les-liaisons-dangereuses-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "financialtimes--max-mcguinness.json",
-      "score": 79,
-      "publishDate": "2026-04-01",
-      "url": "https://www.ft.com/content/1629ce74-9f55-11e6-891e-abe238dee8e2",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "observer--rex-reed.json",
-      "score": 41,
-      "publishDate": "2026-04-01",
-      "url": "http://observer.com/2016/11/les-liaisons-dangereuses-with-liev-schrieber-is-too-tame-to-titillate/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "times-uk--ian-johns.json",
-      "score": 41,
-      "publishDate": "2026-04-01",
-      "url": "https://www.thetimes.com/travel/destinations/europe-travel/france/paris/les-liaisons-dangereuses-playhouse-embankment-w2-mctfwlzlp7c",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -68250,20 +68208,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "whatsonstage--alex-wood.json",
-      "score": null,
-      "publishDate": "2026-04-01",
-      "url": "https://www.whatsonstage.com/news/les-liaisons-dangereuses-with-aidan-turner-lesley-manville-and-monica-barbaro-photos-released_1717106/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
