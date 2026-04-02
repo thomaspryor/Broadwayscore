@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-04-02T20:06:03.521Z",
-  "processed": 160,
-  "failed": 469,
-  "successRate": "25.4%",
+  "updatedAt": "2026-04-02T20:07:54.829Z",
+  "processed": 163,
+  "failed": 476,
+  "successRate": "25.5%",
   "tierBreakdown": {
-    "playwright": 65,
-    "amp": 2,
+    "playwright": 66,
+    "amp": 6,
     "browserbase": 34,
     "directCookies": 0,
     "scrapingbee": 16,
@@ -13,30 +13,8 @@
     "archiveToday": 66,
     "archive": 63
   },
-  "browserbaseSessions": 23,
+  "browserbaseSessions": 25,
   "recentActivity": [
-    {
-      "t": "2026-04-02T19:44:49.704Z",
-      "event": "bb-session",
-      "session": "e97b4f0e",
-      "url": "https://online.wsj.com/article/SB10001424127887324030704578426564005246882.html"
-    },
-    {
-      "t": "2026-04-02T19:44:50.919Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-02T19:46:08.116Z",
-      "event": "bb-session",
-      "session": "c78fc594",
-      "url": "http://online.wsj.com/article/SB10001424127887324030704578424561102568592.html"
-    },
-    {
-      "t": "2026-04-02T19:46:09.242Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-02T19:47:55.588Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-04-02T20:05:20.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:06:46.556Z",
+      "event": "bb-session",
+      "session": "7dd5550e",
+      "url": "https://www.variety.com/review/VE1117943995.html"
+    },
+    {
+      "t": "2026-04-02T20:06:48.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:07:25.071Z",
+      "event": "bb-session",
+      "session": "7aa84119",
+      "url": "https://www.variety.com/review/VE1117943962.html"
+    },
+    {
+      "t": "2026-04-02T20:07:26.401Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

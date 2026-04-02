@@ -159,7 +159,10 @@
     "the-normal-heart-2011/usatoday--elysa-gardner.json",
     "high-2011/thewrap--robert-hofler.json",
     "anything-goes-2011/variety--david-rooney.json",
-    "elling-2010/variety--david-rooney.json"
+    "elling-2010/variety--david-rooney.json",
+    "colin-quinn-long-story-short-2010/timeout--david-cote.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
+    "the-scottsboro-boys-2010/variety--steven-suskin.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -630,7 +633,14 @@
     "elling-2010/new-jersey-newsroom--michael-sommers.json",
     "elling-2010/bloomberg--jeremy-gerard.json",
     "a-free-man-of-color-2010/backstage--erik-haagensen.json",
-    "the-merchant-of-venice-2010/variety--charles-isherwood.json"
+    "the-merchant-of-venice-2010/variety--charles-isherwood.json",
+    "the-peewee-herman-show-2010/variety--david-rooney.json",
+    "the-peewee-herman-show-2010/new-jersey-newsroom--michael-sommers.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
+    "the-scottsboro-boys-2010/new-jersey-newsroom--michael-sommers.json",
+    "the-scottsboro-boys-2010/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -699,11 +709,16 @@
       "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json",
       "hedwig-and-the-angry-inch-2014/sfgate--lily-janiak.json",
       "rodgers-hammersteins-cinderella-2013/lets-go-to-the-theater--karen-nowosad.json",
-      "death-of-a-salesman-2012/artsfuse--nancy-grossman.json"
+      "death-of-a-salesman-2012/artsfuse--nancy-grossman.json",
+      "colin-quinn-long-story-short-2010/timeout--david-cote.json"
     ],
     "amp": [
       "data/review-texts/lysistrata-jones-2011/variety--steven-suskin.json",
-      "lysistrata-jones-2011/variety--steven-suskin.json"
+      "lysistrata-jones-2011/variety--steven-suskin.json",
+      "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
+      "women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
+      "data/review-texts/the-scottsboro-boys-2010/variety--steven-suskin.json",
+      "the-scottsboro-boys-2010/variety--steven-suskin.json"
     ],
     "browserbase": [
       "data/review-texts/yoah-off-broadway-2026/variety--pat-saperstein.json",
@@ -896,7 +911,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "the-merchant-of-venice-2010/variety--charles-isherwood.json",
+  "lastProcessed": "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -1203,6 +1218,28 @@
     },
     {
       "t": "2026-04-02T20:05:20.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:06:46.556Z",
+      "event": "bb-session",
+      "session": "7dd5550e",
+      "url": "https://www.variety.com/review/VE1117943995.html"
+    },
+    {
+      "t": "2026-04-02T20:06:48.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:07:25.071Z",
+      "event": "bb-session",
+      "session": "7aa84119",
+      "url": "https://www.variety.com/review/VE1117943962.html"
+    },
+    {
+      "t": "2026-04-02T20:07:26.401Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
