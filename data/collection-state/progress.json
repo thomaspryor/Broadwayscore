@@ -140,7 +140,8 @@
     "violet-2014/hollywood-reporter--david-rooney.json",
     "all-the-way-2014/usatoday--elysa-gardner.json",
     "the-winslow-boy-2013/ew--thom-geier.json",
-    "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json"
+    "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
+    "the-nance-2013/timeout--adam-feldman.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -490,7 +491,16 @@
     "the-winslow-boy-2013/bloomberg--unknown.json",
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
     "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
-    "pippin-2013/new-jersey-newsroom--michael-sommers.json"
+    "pippin-2013/new-jersey-newsroom--michael-sommers.json",
+    "the-trip-to-bountiful-2013/amny--matt-windman.json",
+    "jekyll-and-hyde-2013/amny--matt-windman.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-assembled-parties-2013/wsj--terry-teachout.json",
+    "the-assembled-parties-2013/wsj--tery-teachout.json",
+    "the-nance-2013/wsj--unknown.json",
+    "the-nance-2013/hollywood-reporter--david-rooney.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -598,7 +608,8 @@
       "my-fair-lady-2018/philadelphia-inquirer--toby-zinman.json",
       "hello-dolly-2017/rollingstone--peter-travers.json",
       "come-from-away-2017/san-francisco-chronicle--lilly-janiak.json",
-      "falsettos-2016/newyorker--hilton-als.json"
+      "falsettos-2016/newyorker--hilton-als.json",
+      "the-nance-2013/timeout--adam-feldman.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -663,7 +674,9 @@
       "data/review-texts/long-days-journey-into-night-2016/talkinbroadway--matthew-murray.json",
       "data/review-texts/allegiance-2015/vulture--rebecca-milzoff.json",
       "data/review-texts/allegiance-2015/film-festival-traveler--kevin-filipski.json",
-      "data/review-texts/allegiance-2015/playbill--unknown.json"
+      "data/review-texts/allegiance-2015/playbill--unknown.json",
+      "data/review-texts/the-assembled-parties-2013/wsj--tery-teachout.json",
+      "data/review-texts/the-nance-2013/wsj--unknown.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -723,7 +736,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
+  "lastProcessed": "the-nance-2013/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -900,6 +913,50 @@
       "t": "2026-04-02T19:42:19.691Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-02T19:42:37.820Z",
+      "event": "bb-session",
+      "session": "47571c11",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-trip-to-bountiful-3-sta"
+    },
+    {
+      "t": "2026-04-02T19:42:39.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-02T19:43:22.772Z",
+      "event": "bb-session",
+      "session": "d38e2b32",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-jekyll-hyde-no-stars-1.5101"
+    },
+    {
+      "t": "2026-04-02T19:43:24.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-02T19:44:49.704Z",
+      "event": "bb-session",
+      "session": "e97b4f0e",
+      "url": "https://online.wsj.com/article/SB10001424127887324030704578426564005246882.html"
+    },
+    {
+      "t": "2026-04-02T19:44:50.919Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T19:46:08.116Z",
+      "event": "bb-session",
+      "session": "c78fc594",
+      "url": "http://online.wsj.com/article/SB10001424127887324030704578424561102568592.html"
+    },
+    {
+      "t": "2026-04-02T19:46:09.242Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
