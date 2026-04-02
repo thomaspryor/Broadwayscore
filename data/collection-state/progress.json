@@ -137,7 +137,14 @@
     "moulin-rouge-the-musical-west-end-2021/everything-theatre--neil-johnson.json",
     "the-play-that-goes-wrong-west-end-2021/west-end-wilma--rosie-bambury.json",
     "romeo-and-juliet-west-end-2026/standard--unknown.json",
-    "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json"
+    "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
+    "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
+    "avenue-q-west-end-2026/thestage--paul-vale.json",
+    "lost-in-del-valle-off-broadway-2026/ew--ew-staff.json",
+    "copenhagen-west-end-2026/times-uk--maxie-szalwinska.json",
+    "inter-alia-west-end-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-west-end-2026/variety--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1638,7 +1645,10 @@
     "les-miserables-2006/nytimes--ben-brantley.json",
     "lestat-2006/washpost--peter-marks.json",
     "the-history-boys-2006/talkinbroadway--matthew-murray.json",
-    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json"
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "lost-in-del-valle-off-broadway-2026/rollingstone--jonathan-bernstein.json",
+    "romeo-and-juliet-west-end-2026/daily-mail--unknown.json",
+    "romeo-and-juliet-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1724,9 +1734,17 @@
       "happy-ending-west-end-2026/standard--the-standard.json",
       "kinky-boots-the-musical-west-end-2026/guardian--lyndsey-winship.json",
       "romeo-and-juliet-west-end-2026/standard--unknown.json",
-      "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json"
+      "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json",
+      "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
+      "avenue-q-west-end-2026/thestage--paul-vale.json",
+      "lost-in-del-valle-off-broadway-2026/ew--ew-staff.json",
+      "copenhagen-west-end-2026/times-uk--maxie-szalwinska.json",
+      "inter-alia-west-end-2026/standard--nick-curtis.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
+      "betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json"
+    ],
     "browserbase": [
       "data/review-texts/mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
       "mamma-mia-2025/nytimes--elizabeth-vincentelli.json",
@@ -1737,7 +1755,9 @@
       "data/review-texts/cymbeline-2007/nytimes--ben-brantley.json",
       "cymbeline-2007/nytimes--ben-brantley.json",
       "data/review-texts/company-2006/variety--charles-isherwood.json",
-      "company-2006/variety--charles-isherwood.json"
+      "company-2006/variety--charles-isherwood.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/variety--unknown.json",
+      "romeo-and-juliet-west-end-2026/variety--unknown.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -1976,7 +1996,8 @@
       "data/review-texts/the-little-dog-laughed-2006/washpost--peter-marks.json",
       "data/review-texts/les-miserables-2006/nytimes--ben-brantley.json",
       "data/review-texts/lestat-2006/washpost--peter-marks.json",
-      "data/review-texts/the-history-boys-2006/talkinbroadway--matthew-murray.json"
+      "data/review-texts/the-history-boys-2006/talkinbroadway--matthew-murray.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/rollingstone--jonathan-bernstein.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2006,7 +2027,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2548,6 +2569,28 @@
       "t": "2026-04-01T21:21:29.739Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-02T04:34:29.889Z",
+      "event": "bb-session",
+      "session": "407c0491",
+      "url": "http://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Fr"
+    },
+    {
+      "t": "2026-04-02T04:34:31.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T04:39:36.682Z",
+      "event": "bb-session",
+      "session": "77a0d1a5",
+      "url": "https://variety.com/2026/legit/reviews/romeo-juliet-west-end-review-sadie-sink-n"
+    },
+    {
+      "t": "2026-04-02T04:39:37.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

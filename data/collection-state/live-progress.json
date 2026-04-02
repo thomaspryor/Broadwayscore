@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-02T00:40:45.109Z",
-  "processed": 138,
-  "failed": 1499,
-  "successRate": "8.4%",
+  "updatedAt": "2026-04-02T04:45:51.896Z",
+  "processed": 145,
+  "failed": 1502,
+  "successRate": "8.8%",
   "tierBreakdown": {
-    "playwright": 82,
-    "amp": 0,
-    "browserbase": 10,
+    "playwright": 87,
+    "amp": 2,
+    "browserbase": 12,
     "directCookies": 2,
     "scrapingbee": 25,
     "brightdata": 0,
-    "archiveToday": 205,
+    "archiveToday": 206,
     "archive": 24
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-01T21:06:58.354Z",
-      "event": "bb-session",
-      "session": "9f1e38bf",
-      "url": "https://www.nytimes.com/aponline/2009/09/29/arts/AP-US-Theater-Review-Steady-Rai"
-    },
-    {
-      "t": "2026-04-01T21:06:59.796Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-01T21:08:49.782Z",
-      "event": "bb-session",
-      "session": "00c7b827",
-      "url": "https://www.northjersey.com/arts_entertainment/Ballroom_show_turns_out_dance_inf"
-    },
-    {
-      "t": "2026-04-01T21:08:51.028Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-04-01T21:09:53.611Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-01T21:21:29.739Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-02T04:34:29.889Z",
+      "event": "bb-session",
+      "session": "407c0491",
+      "url": "http://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Fr"
+    },
+    {
+      "t": "2026-04-02T04:34:31.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T04:39:36.682Z",
+      "event": "bb-session",
+      "session": "77a0d1a5",
+      "url": "https://variety.com/2026/legit/reviews/romeo-juliet-west-end-review-sadie-sink-n"
+    },
+    {
+      "t": "2026-04-02T04:39:37.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
