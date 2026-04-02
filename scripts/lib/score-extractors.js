@@ -493,6 +493,25 @@ function extractCultureSauceScore(html, text) {
 }
 
 /**
+ * Extract score from TheReviewsHub
+ * Format: percentage rating in class="number rating" element (e.g., 90%)
+ */
+function extractReviewsHubScore(html, text) {
+  const pctMatch = html.match(/class="[^"]*number\s+rating[^"]*"[^>]*>[\s\S]*?(\d{2,3})\s*(?:<[^>]*>)*\s*%/i);
+  if (pctMatch) {
+    const pct = parseInt(pctMatch[1]);
+    if (pct >= 10 && pct <= 100) {
+      return {
+        originalScore: `${pct}%`,
+        normalizedScore: pct,
+        source: 'reviewshub-percentage'
+      };
+    }
+  }
+  return null;
+}
+
+/**
  * Extract star rating from UK outlets that use /5 star systems.
  * Checks JSON-LD ratingValue, CSS star classes, and text patterns.
  * Used by: WhatsOnStage, The Stage, Telegraph, Evening Standard,
@@ -638,18 +657,20 @@ function extractUKStarRating(html, text) {
     }
   }
 
-  // 4. "Star rating: five stars ★ ★ ★ ★ ★" pattern (Musical Theatre Review)
-  const wordStarMatch = html.match(/star\s*rating[:\s]*<[^>]*>?(one|two|three|four|five)\s*stars?/i) ||
-                        text.match(/star\s*rating[:\s]*(one|two|three|four|five)\s*stars?/i);
-  if (wordStarMatch) {
+  // 4. Spelled-out star ratings: "Five stars!", "Three Stars</p>", "star rating: five stars"
+  {
     const wordMap = { one: 1, two: 2, three: 3, four: 4, five: 5 };
-    const rating = wordMap[wordStarMatch[1].toLowerCase()];
-    if (rating) {
-      return {
-        originalScore: `${rating}/5 stars`,
-        normalizedScore: starsToNumeric(rating, 5),
-        source: 'word-stars'
-      };
+    const wordStarPat = /\b(one|two|three|four|five)\s+stars?\s*(?:[!.,;:\)<]|$)/im;
+    const wsMatch = html.match(wordStarPat) || text.match(wordStarPat);
+    if (wsMatch) {
+      const rating = wordMap[wsMatch[1].toLowerCase()];
+      if (rating) {
+        return {
+          originalScore: `${rating}/5 stars`,
+          normalizedScore: starsToNumeric(rating, 5),
+          source: 'word-stars'
+        };
+      }
     }
   }
 
@@ -795,6 +816,23 @@ function extractGenericStarRating(html, text) {
             source: 'numeric-stars'
           };
         }
+      }
+    }
+  }
+
+  // Spelled-out star ratings: "Five stars!", "Three Stars</p>"
+  {
+    const WORD_TO_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+    const wordStarPat = /\b(one|two|three|four|five)\s+stars?\s*(?:[!.,;:\)<]|$)/im;
+    const wsMatch = text.match(wordStarPat) || html.match(wordStarPat);
+    if (wsMatch) {
+      const rating = WORD_TO_NUM[wsMatch[1].toLowerCase()];
+      if (rating) {
+        return {
+          originalScore: `${rating}/5 stars`,
+          normalizedScore: starsToNumeric(rating, 5),
+          source: 'word-stars'
+        };
       }
     }
   }
@@ -969,6 +1007,8 @@ const OUTLET_EXTRACTORS = {
   'express': extractUKStarRating,
   'cityam': extractUKStarRating,
   'the-recs': extractUKStarRating,
+  'thereviewshub': extractReviewsHubScore,
+  'the-reviews-hub': extractReviewsHubScore,
   'lost-in-theatreland': extractUKStarRating,
   'digital-journal': extractUKStarRating,
   'rollingstone': noScoreExtractor,    // RS theater reviews don't have star ratings
@@ -1058,8 +1098,9 @@ function extractScore(html, text, outletId) {
     const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
     const titleText = [titleMatch?.[1], h1Match?.[1], text].filter(Boolean).join(' ');
 
-    // Try generic star rating - TEXT + title/h1 only
-    const starResult = extractGenericStarRating('', titleText);
+    // Try generic star rating - cleaned HTML + augmented text
+    // cleanedHtml is safe (script/style removed) for word-star and unicode-star patterns
+    const starResult = extractGenericStarRating(cleanedHtml, titleText);
     if (starResult) {
       return { ...starResult, outlet: outletId };
     }

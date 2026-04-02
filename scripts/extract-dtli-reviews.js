@@ -109,8 +109,8 @@ function cleanText(text) {
 function extractReviewsFromDTLI(content, showId) {
   const reviews = [];
 
-  // Split by review-item and parse each
-  const parts = content.split('<div class="review-item">');
+  // Split by review-item and parse each (supports both review-item and poster-review-item)
+  const parts = content.split(/<div class="(?:poster-)?review-item">/);
 
   for (let i = 1; i < parts.length; i++) {
     const part = parts[i];

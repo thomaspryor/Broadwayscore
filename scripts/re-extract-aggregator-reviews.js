@@ -101,8 +101,8 @@ function reExtractDTLI() {
     const urlMatch = html.match(/Archived URL: (.+)/);
     const dtliUrl = urlMatch ? urlMatch[1].trim() : `https://didtheylikeit.com/shows/${showId.replace(/-\d{4}$/, '')}-review/`;
 
-    // Extract reviews using fixed regex (including new-style HTML)
-    const reviewItemRegex = /<div class="review-item">([\s\S]*?)(?=<div class="review-item">|<\/section>|<div class="" id="modal-breakdown")/gi;
+    // Extract reviews using fixed regex (including new-style HTML and poster-review-item)
+    const reviewItemRegex = /<div class="(?:poster-)?review-item">([\s\S]*?)(?=<div class="(?:poster-)?review-item">|<\/section>|<div class="" id="modal-breakdown")/gi;
 
     let match;
     while ((match = reviewItemRegex.exec(html)) !== null) {
