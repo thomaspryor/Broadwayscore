@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T11:04:12.014Z",
+  "timestamp": "2026-04-02T11:32:21.423Z",
   "stats": {
-    "totalReviews": 32200,
-    "alreadyFlagged": 11956,
+    "totalReviews": 32201,
+    "alreadyFlagged": 11957,
     "dateGuardCatches": 15,
     "directorMismatch": 844,
-    "tvFilmSignals": 3322,
+    "tvFilmSignals": 3323,
     "londonSignals": 978,
-    "offBroadwaySignals": 966,
+    "offBroadwaySignals": 967,
     "yearMismatch": 64,
-    "noPublishDate": 5882
+    "noPublishDate": 5876
   },
   "findings": [
     {
@@ -13653,6 +13653,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "eureka-day-2024",
+      "file": "variety--aramide-tinubu.json",
+      "score": 82,
+      "publishDate": "December 19, 2024",
+      "url": "https://variety.com/2024/legit/reviews/eureka-day-review-broadway-1236250966/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -69171,6 +69185,20 @@
       "showId": "marjorie-prime-2025",
       "file": "vulture--sara-holdren.json",
       "score": 89,
+      "publishDate": "December 8, 2025",
+      "url": "https://www.vulture.com/article/return-of-the-replicants-marjorie-prime.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "vulture--vulture-editors.json",
+      "score": null,
       "publishDate": "December 8, 2025",
       "url": "https://www.vulture.com/article/return-of-the-replicants-marjorie-prime.html",
       "findings": [
