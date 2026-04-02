@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-01T23:44:38.688Z",
+  "timestamp": "2026-04-02T00:24:31.555Z",
   "stats": {
-    "totalReviews": 32174,
-    "alreadyFlagged": 11982,
+    "totalReviews": 32160,
+    "alreadyFlagged": 11980,
     "dateGuardCatches": 13,
     "directorMismatch": 839,
-    "tvFilmSignals": 3316,
-    "londonSignals": 961,
+    "tvFilmSignals": 3314,
+    "londonSignals": 959,
     "offBroadwaySignals": 963,
     "yearMismatch": 64,
-    "noPublishDate": 5884
+    "noPublishDate": 5885
   },
   "findings": [
     {
@@ -12974,20 +12974,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
-      "file": "the-telegrap--dominic-cavendish.json",
-      "score": 83,
-      "publishDate": "February 17th, 2026",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -57947,20 +57933,6 @@
       ]
     },
     {
-      "showId": "wicked-west-end-2021",
-      "file": "the-telegrap--charles-spencer.json",
-      "score": 74,
-      "publishDate": "January 1st, 2009",
-      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
       "showId": "wit-2012",
       "file": "nytimes--ben-brantley.json",
       "score": 76,
@@ -72253,20 +72225,6 @@
     },
     {
       "showId": "six-the-musical-west-end-2021",
-      "file": "the-telegrap--marianka-swain.json",
-      "score": 89,
-      "publishDate": "November 11th, 2023",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "six-the-musical-west-end-2021",
       "file": "west-end-wilma--unknown.json",
       "score": 87,
       "publishDate": "2026-03-23",
@@ -77426,20 +77384,6 @@
       "file": "telegraph--marianka-swain.json",
       "score": 85,
       "publishDate": "2023-11-15",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "the-telegrap--marianka-swain.json",
-      "score": 82,
-      "publishDate": "November 15th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
       "findings": [
         {
