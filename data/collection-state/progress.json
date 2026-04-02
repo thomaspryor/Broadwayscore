@@ -157,7 +157,8 @@
     "godspell-2011/wsj--terry-teachout.json",
     "follies-2011/talkinbroadway--matthew-murray.json",
     "the-normal-heart-2011/usatoday--elysa-gardner.json",
-    "high-2011/thewrap--robert-hofler.json"
+    "high-2011/thewrap--robert-hofler.json",
+    "anything-goes-2011/variety--david-rooney.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -600,7 +601,16 @@
     "jerusalem-2011/backstage--erik-haagensen.json",
     "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
     "sister-act-2011/backstage--erik-haagensen.json",
-    "high-2011/backstage--erik-haagensen.json"
+    "high-2011/backstage--erik-haagensen.json",
+    "high-2011/bloomberg--jeremy-gerard.json",
+    "wonderland-2011/nytheatre--jo-ann-rosen.json",
+    "wonderland-2011/vulture--jesse-green.json",
+    "war-horse-2011/new-jersey-newsroom--michael-sommers.json",
+    "war-horse-2011/backstage--erik-haagensen.json",
+    "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json",
+    "catch-me-if-you-can-2011/backstage--erik-haagensen.json",
+    "catch-me-if-you-can-2011/bloomberg--jeremy-gerard.json",
+    "anything-goes-2011/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -705,7 +715,9 @@
       "data/review-texts/harvey-2012/variety--marilyn-stasio.json",
       "harvey-2012/variety--marilyn-stasio.json",
       "data/review-texts/evita-2012/hollywood-reporter--david-rooney.json",
-      "evita-2012/hollywood-reporter--david-rooney.json"
+      "evita-2012/hollywood-reporter--david-rooney.json",
+      "data/review-texts/anything-goes-2011/variety--david-rooney.json",
+      "anything-goes-2011/variety--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -861,7 +873,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "high-2011/backstage--erik-haagensen.json",
+  "lastProcessed": "anything-goes-2011/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -1146,6 +1158,17 @@
     },
     {
       "t": "2026-04-02T19:57:54.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:03:08.065Z",
+      "event": "bb-session",
+      "session": "409154cc",
+      "url": "https://variety.com/2011/legit/reviews/anything-goes-1117944987/"
+    },
+    {
+      "t": "2026-04-02T20:03:09.387Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
