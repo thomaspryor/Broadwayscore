@@ -59,7 +59,8 @@
     "les-liaisons-dangereuses-west-end-2026/nytimes--ben-brantley.json",
     "les-liaisons-dangereuses-west-end-2026/ap--mark-kennedy.json",
     "les-liaisons-dangereuses-west-end-2026/nytimes--ben-brantley.json",
-    "les-liaisons-dangereuses-west-end-2026/nytimes--ben-brantley.json"
+    "les-liaisons-dangereuses-west-end-2026/nytimes--ben-brantley.json",
+    "yoah-off-broadway-2026/variety--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -72,7 +73,8 @@
       "data/review-texts/yoah-off-broadway-2026/variety--pat-saperstein.json",
       "yoah-off-broadway-2026/variety--pat-saperstein.json",
       "data/review-texts/nicole-travolta-is-doing-alright-off-broadway-2026/variety--unknown.json",
-      "nicole-travolta-is-doing-alright-off-broadway-2026/variety--unknown.json"
+      "nicole-travolta-is-doing-alright-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/yoah-off-broadway-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -89,7 +91,7 @@
     "archive": []
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "nicole-travolta-is-doing-alright-off-broadway-2026/variety--unknown.json",
+  "lastProcessed": "yoah-off-broadway-2026/variety--unknown.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -132,6 +134,17 @@
     },
     {
       "t": "2026-04-02T13:30:31.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T13:57:54.499Z",
+      "event": "bb-session",
+      "session": "d65f1be4",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-04-02T13:57:56.066Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
