@@ -135,7 +135,10 @@
     "the-king-and-i-2015/stageandcinema--jonas-schwartz.json",
     "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
     "gigi-2015/washpost--peter-marks.json",
-    "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json"
+    "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json",
+    "hedwig-and-the-angry-inch-2014/sfgate--lily-janiak.json",
+    "violet-2014/hollywood-reporter--david-rooney.json",
+    "all-the-way-2014/usatoday--elysa-gardner.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -470,7 +473,14 @@
     "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
     "disgraced-2014/timeout--times-sq.json",
     "disgraced-2014/forward--jesse-green.json",
-    "holler-if-ya-hear-me-2014/ew--thom-geier.json"
+    "holler-if-ya-hear-me-2014/ew--thom-geier.json",
+    "act-one-2014/timeout--david-cote.json",
+    "ifthen-2014/nypost--elisabeth-vincentelli.json",
+    "ifthen-2014/huffpost--mark-kennedy.json",
+    "rocky-2014/nysr--huffington-poststeven-suskin.json",
+    "all-the-way-2014/ap--mark-kennedy.json",
+    "machinal-2014/timeout--david-cote.json",
+    "macbeth-2013/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -536,7 +546,8 @@
       "fun-home-2015/washpost--peter-marks.json",
       "the-king-and-i-2015/stageandcinema--jonas-schwartz.json",
       "gigi-2015/washpost--peter-marks.json",
-      "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json"
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json",
+      "hedwig-and-the-angry-inch-2014/sfgate--lily-janiak.json"
     ],
     "amp": [],
     "browserbase": [
@@ -554,7 +565,10 @@
       "data/review-texts/something-rotten-2015/deadline--jeremy-gerard.json",
       "something-rotten-2015/deadline--jeremy-gerard.json",
       "data/review-texts/it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
-      "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json"
+      "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
+      "data/review-texts/violet-2014/hollywood-reporter--david-rooney.json",
+      "violet-2014/hollywood-reporter--david-rooney.json",
+      "data/review-texts/ifthen-2014/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -691,11 +705,12 @@
       "amazing-grace-2015/chicago-land-theater-reviews--dan-zeff.json",
       "the-visit-2015/vulture--jesse-green.json",
       "something-rotten-2015/wsj--terry-teachout.json",
-      "living-on-love-2015/albany-times-union--steve-barnes.json"
+      "living-on-love-2015/albany-times-union--steve-barnes.json",
+      "all-the-way-2014/usatoday--elysa-gardner.json"
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "holler-if-ya-hear-me-2014/ew--thom-geier.json",
+  "lastProcessed": "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -839,6 +854,28 @@
       "t": "2026-04-02T19:36:37.290Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-02T19:38:52.529Z",
+      "event": "bb-session",
+      "session": "bb0fb5b5",
+      "url": "https://www.hollywoodreporter.com/news/general-news/sutton-foster-violet-theater"
+    },
+    {
+      "t": "2026-04-02T19:38:54.022Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-02T19:39:15.245Z",
+      "event": "bb-session",
+      "session": "64621dd5",
+      "url": "https://nypost.com/2014/03/30/idina-menzel-carries-new-broadway-musical-ifthen/"
+    },
+    {
+      "t": "2026-04-02T19:39:16.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
