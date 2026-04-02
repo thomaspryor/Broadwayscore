@@ -36,6 +36,7 @@ const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = requir
 const { isRoundupUrl, isVenueMismatch } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
@@ -1487,6 +1488,14 @@ showDirs.forEach(showId => {
       }
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
+        return;
+      }
+
+      // Auto-reject reviews with blocked URLs (ticket pages, aggregators, social media)
+      // This catches URLs that slipped through gather-reviews before the isBlockedReviewUrl guard
+      // was added. Uses the same domain-filters.js shared with gather-reviews.
+      if (data.url && isBlockedReviewUrl(data.url)) {
+        stats.skippedBlockedUrl = (stats.skippedBlockedUrl || 0) + 1;
         return;
       }
 
