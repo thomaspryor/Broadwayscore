@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T12:00:47.036Z",
+  "timestamp": "2026-04-02T12:52:45.946Z",
   "stats": {
     "totalReviews": 32201,
-    "alreadyFlagged": 11957,
+    "alreadyFlagged": 11978,
     "dateGuardCatches": 15,
-    "directorMismatch": 844,
-    "tvFilmSignals": 3323,
+    "directorMismatch": 847,
+    "tvFilmSignals": 3326,
     "londonSignals": 978,
     "offBroadwaySignals": 967,
     "yearMismatch": 64,
-    "noPublishDate": 5876
+    "noPublishDate": 5857
   },
   "findings": [
     {
@@ -5753,6 +5753,19 @@
     },
     {
       "showId": "bad-cinderella-2023",
+      "file": "telegraph--anita-singh.json",
+      "publishDate": "2023-05-11",
+      "url": "https://www.telegraph.co.uk/world-news/2023/05/11/lloyd-webbers-broadway-run-ends-after-bad-cinderella-closes/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "bad-cinderella-2023",
       "file": "theater-life--david-sheward.json",
       "score": 92,
       "publishDate": "2023-04-03",
@@ -7453,6 +7466,20 @@
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "nytg--gillian-russo.json",
+      "score": 79,
+      "publishDate": "2023-12-14",
+      "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-off-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 78,
       "publishDate": "December 13, 2023",
@@ -7471,6 +7498,20 @@
       "score": 84,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/page/world/BuenaVistaSocialClub.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "theatrely--juan-a-ramirez.json",
+      "score": 85,
+      "publishDate": "October 8, 2025",
+      "url": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12229,6 +12270,20 @@
       "showId": "diana-the-musical-2021",
       "file": "deadline--greg-evans.json",
       "score": 30,
+      "publishDate": "November 17, 2021",
+      "url": "https://deadline.com/2021/11/diana-musical-broadway-review-1234874770/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "diana-the-musical-2021",
+      "file": "deadline--pete-hammond.json",
+      "score": 25,
       "publishDate": "November 17, 2021",
       "url": "https://deadline.com/2021/11/diana-musical-broadway-review-1234874770/",
       "findings": [
@@ -25740,6 +25795,20 @@
     },
     {
       "showId": "king-kong-2018",
+      "file": "onstage-blog--tim-leininger.json",
+      "score": 71,
+      "publishDate": "2018-11-19",
+      "url": "https://www.onstageblog.com/reviews/2018/11/19/king-kong-at-the-broadway-theatre-a-review-rebuttal",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "king-kong-2018",
       "file": "stage-left--robert-russo.json",
       "score": 42,
       "publishDate": "2018-12-04",
@@ -34278,6 +34347,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
+      "file": "theater-scene--joel-benjamin.json",
+      "score": 50,
+      "publishDate": "2024-04-10",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/oh-mary/joel-benjamin/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -54197,20 +54285,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "file": "woman-around-town--alix-cohen.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://womanaroundtown.com/sections/playing-around/waverly-gallery-watching-loved-one-slip-away/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
