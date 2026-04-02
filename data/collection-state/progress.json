@@ -177,7 +177,13 @@
     "spare-parts-off-broadway-2026/variety--chris-willman.json",
     "spare-parts-off-broadway-2026/deadline--stephanie-bunbury.json",
     "spare-parts-off-broadway-2026/newsday--glenn-gamboa.json",
-    "spare-parts-off-broadway-2026/observer--john-heilpern.json"
+    "spare-parts-off-broadway-2026/observer--john-heilpern.json",
+    "spare-parts-off-broadway-2026/huffpost--michael-giltz.json",
+    "spare-parts-off-broadway-2026/rollingstone--peter-travers.json",
+    "spare-parts-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "spare-parts-off-broadway-2026/thestage--unknown.json",
+    "the-holy-rosenbergs-west-end-2026/theatre-weekly--greg-stewart.json",
+    "burnout-paradise-off-broadway-2026/la-voce-di-new-york--jk-clarke.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1688,7 +1694,11 @@
     "titus-andronicus-off-broadway-2026/playbill--unknown.json",
     "the-holy-rosenbergs-west-end-2026/times-uk--clive-davis.json",
     "spare-parts-off-broadway-2026/indiewire--sophia-savage.json",
-    "spare-parts-off-broadway-2026/thewrap--robert-hofler.json"
+    "spare-parts-off-broadway-2026/thewrap--robert-hofler.json",
+    "spare-parts-off-broadway-2026/dailybeast--nick-schager.json",
+    "spare-parts-off-broadway-2026/usatoday--kerry-lengel.json",
+    "tru-off-broadway-2026/vulture--sara-holdren.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1800,7 +1810,12 @@
       "summerfolk-west-end-2026/london-theatre--anya-ryan.json",
       "maltby-and-shires-about-time-off-broadway-2026/nytg--juan-michael-porter-ii.json",
       "maltby-and-shires-about-time-off-broadway-2026/thestage--unknown.json",
-      "bughouse-off-broadway-2026/the-interested-bystander--cary-wong.json"
+      "bughouse-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "spare-parts-off-broadway-2026/huffpost--michael-giltz.json",
+      "spare-parts-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "spare-parts-off-broadway-2026/thestage--unknown.json",
+      "the-holy-rosenbergs-west-end-2026/theatre-weekly--greg-stewart.json",
+      "burnout-paradise-off-broadway-2026/la-voce-di-new-york--jk-clarke.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -2082,7 +2097,11 @@
       "data/review-texts/romeo-and-juliet-west-end-2026/daily-mail--unknown.json",
       "data/review-texts/music-city-off-broadway-2026/thewrap--steve-pond.json",
       "data/review-texts/kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
-      "data/review-texts/spare-parts-off-broadway-2026/indiewire--sophia-savage.json"
+      "data/review-texts/spare-parts-off-broadway-2026/indiewire--sophia-savage.json",
+      "data/review-texts/spare-parts-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/spare-parts-off-broadway-2026/dailybeast--nick-schager.json",
+      "data/review-texts/spare-parts-off-broadway-2026/usatoday--kerry-lengel.json",
+      "data/review-texts/tru-off-broadway-2026/vulture--sara-holdren.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2108,11 +2127,12 @@
       "the-lifespan-of-a-fact-2018/vulture--sarah-holdren.json",
       "hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json",
       "moulin-rouge-the-musical-west-end-2021/everything-theatre--neil-johnson.json",
-      "the-play-that-goes-wrong-west-end-2021/west-end-wilma--rosie-bambury.json"
+      "the-play-that-goes-wrong-west-end-2021/west-end-wilma--rosie-bambury.json",
+      "spare-parts-off-broadway-2026/rollingstone--peter-travers.json"
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "spare-parts-off-broadway-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "burnout-paradise-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2775,6 +2795,12 @@
       "t": "2026-04-02T05:08:04.751Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-04-02T05:11:29.019Z",
+      "event": "bb-session",
+      "session": "e3d04f4b",
+      "url": "https://www.thedailybeast.com/obsessed/mercy-review-the-worst-movie-of-2026-is-h"
     }
   ]
 }
