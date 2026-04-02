@@ -483,7 +483,7 @@ async function updateReviewJson(review, text, archivePath, method) {
     ...review.data,
     fullText: text,
     textWordCount: wordCount,
-    textStatus: 'complete',
+    textStatus: 'complete', // will be re-synced by classifyContentTier below
     textFetchedAt: new Date().toISOString(),
     textFetchMethod: method,
     archivePath: archivePath,

@@ -4562,17 +4562,24 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // Reclassify contentTier using canonical 5-tier system
   // This ensures contentTier stays in sync whenever fullText changes
-  if (data.fullText) {
+  // Also runs when fullText is missing — catches stale contentTier=complete on empty files
+  {
     const tierResult = classifyContentTier(data);
     data.contentTier = tierResult.contentTier;
     data.wordCount = tierResult.wordCount;
     data.truncationSignals = tierResult.truncationSignals;
     data.tierReason = tierResult.tierReason;
 
-    // Sync textStatus with contentTier — prevents stale "truncated" blocking pull quote extraction
-    if (data.contentTier === 'complete') {
-      data.textStatus = 'full';
+    // Sync legacy fields with contentTier — rebuild-all-reviews reads textStatus at lines 492/2359
+    const tierToTextStatus = { complete: 'complete', truncated: 'truncated', excerpt: 'incomplete', stub: 'incomplete' };
+    const tierToTextQuality = { complete: 'full', truncated: 'truncated', excerpt: 'excerpt', stub: 'stub' };
+    if (tierToTextStatus[data.contentTier]) {
+      data.textStatus = tierToTextStatus[data.contentTier];
     }
+    if (tierToTextQuality[data.contentTier]) {
+      data.textQuality = tierToTextQuality[data.contentTier];
+    }
+    data.isFullReview = data.contentTier === 'complete';
   }
 
   // Set incompleteReason if content is not complete
