@@ -44,6 +44,8 @@ export default function AnalyticsWrapper() {
         session_recording: { maskAllInputs: false },
         loaded: (ph) => {
           if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
+          // Expose on window so TicketLink and other components can call posthog.capture()
+          (window as unknown as Record<string, unknown>).posthog = ph;
         },
       });
     });
