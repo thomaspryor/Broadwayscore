@@ -1084,10 +1084,18 @@ function mergeIntoExisting(existing, scraped, source) {
               }
               if (key === 'price') {
                 const oldPrice = current[field][key];
-                // Skip if price is manually pinned
+                // Skip if price is manually pinned (with 90-day TTL)
                 if (current[field]._verifiedPrice === oldPrice && value !== oldPrice) {
-                  console.log(`  [Merge] Skipping ${showId}.${field}.price: pinned at $${oldPrice} (${source} says $${value})`);
-                  continue;
+                  const verifiedAt = current[field]._verifiedAt ? new Date(current[field]._verifiedAt) : null;
+                  const daysSinceVerified = verifiedAt ? (Date.now() - verifiedAt.getTime()) / (1000 * 60 * 60 * 24) : 0;
+                  if (daysSinceVerified > 90) {
+                    console.warn(`  ⚠️  [Pin Expired] ${showId}.${field}: pin was set ${Math.round(daysSinceVerified)}d ago — allowing update $${oldPrice} → $${value}`);
+                    delete current[field]._verifiedPrice;
+                    delete current[field]._verifiedAt;
+                  } else {
+                    console.log(`  [Merge] Skipping ${showId}.${field}.price: pinned at $${oldPrice} (${source} says $${value}, pin ${verifiedAt ? Math.round(daysSinceVerified) + 'd old' : 'no expiry date'})`);
+                    continue;
+                  }
                 }
                 const drift = oldPrice > 0 ? Math.abs(value - oldPrice) / oldPrice : 0;
                 changes.push({
