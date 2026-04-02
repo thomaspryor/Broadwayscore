@@ -329,6 +329,15 @@ function renderMissing(missingT1, missingT2, showIdx) {
   return html;
 }
 
+function toggleDetails(id) {
+  const el = document.getElementById(id);
+  if (el.classList.contains('collapsed')) {
+    el.classList.remove('collapsed');
+    el.style.maxHeight = el.scrollHeight + 'px';
+  } else {
+    el.classList.add('collapsed');
+  }
+}
 function toggleMissing(id) {
   const el = document.getElementById(id);
   const chev = document.getElementById('chev-' + id);
@@ -352,6 +361,7 @@ function renderShows(data) {
   if (!filtered.length) { el.innerHTML = '<div class="empty">No shows match current filters.</div>'; return; }
   el.innerHTML = filtered.map((s, idx) => {
     const score = s.siteScore != null ? s.siteScore : s.liveScore;
+    const tier = scoreTier(score);
     const th = s.readiness.thresholds || {};
     const minR = th.minReviews || 12, minT1 = th.minT1 || 3, minT2 = th.minT2 || 3, minH = th.minHiConf || 8;
     function gate(v, req, label) {
@@ -359,22 +369,35 @@ function renderShows(data) {
       return '<div class="gate"><span class="gate-icon ' + (ok?'gate-pass':'gate-fail') + '">' + (ok?'\\u2713':'\\u2717') + '</span>' + label + ': <b>' + v + '</b>/' + req + '</div>';
     }
     const drift = (s.scoreDrift != null && s.scoreDrift !== 0)
-      ? '<div class="drift">Live score: ' + s.liveScore + ' (' + (s.scoreDrift>0?'+':'') + s.scoreDrift + ' drift \\u2014 rebuild needed)</div>'
-      : (s.siteScore == null && s.liveScore != null ? '<div class="drift">Not yet on site \\u2014 rebuild needed</div>' : '');
+      ? '<div class="drift">Live: ' + s.liveScore + ' (' + (s.scoreDrift>0?'+':'') + s.scoreDrift + ' drift)</div>'
+      : (s.siteScore == null && s.liveScore != null ? '<div class="drift">Not yet on site</div>' : '');
+
+    const imgEl = s.thumbnail
+      ? '<img class="card-thumb" src="' + s.thumbnail + '" alt="" loading="lazy">'
+      : '<div class="card-thumb-placeholder">\\u{1F3AD}</div>';
+    const badgeEl = '<div><div class="score-badge score-' + tier + '">' + (score != null ? score : 'TBD') + '</div>'
+      + '<div class="score-sub">' + s.total + ' reviews</div></div>';
+    const showUrl = 'https://broadwayscorecard.com/shows/' + (s.slug || s.id);
+    const detId = 'det-' + idx;
 
     return '<div class="card">' +
-      '<div class="show-header"><span class="show-title">' + esc(s.title) + '</span><span class="market-pill ' + marketClass(s.category) + '">' + marketLabel(s.category) + '</span></div>' +
-      '<div class="show-meta">' + esc(s.type) + ' \\u00b7 ' + s.openingDate + ' \\u00b7 ' + s.status + '</div>' +
-      '<div class="score-row"><span class="score ' + scoreClass(score) + '">' + (score != null ? score : '--') + '</span><span class="score-label">' + (s.siteScore != null ? 'site' : 'live') + ' score \\u00b7 ' + s.total + ' reviews</span></div>' +
+      '<div class="card-top">' +
+        imgEl +
+        '<div class="card-info">' +
+          '<div class="show-title"><a href="' + showUrl + '">' + esc(s.title) + '</a> <span class="market-pill ' + marketClass(s.category) + '">' + marketLabel(s.category) + '</span></div>' +
+          '<div class="show-meta">' + esc(s.type) + ' \\u00b7 ' + s.openingDate + ' \\u00b7 ' + s.status + '</div>' +
+          '<div class="review-summary">' + s.positive + 'P \\u00b7 ' + s.mixed + 'M \\u00b7 ' + s.negative + 'N \\u00b7 T1:' + s.t1 + ' T2:' + s.t2 + ' T3:' + s.t3 + '</div>' +
+          '<div class="broadcast"><span class="bc-badge ' + bcClass(s.broadcast.state) + '">' + bcLabel(s.broadcast.state) + '</span><span>' + esc(s.broadcast.detail) + '</span></div>' +
+        '</div>' +
+        badgeEl +
+      '</div>' +
       drift +
-      '<div class="bar">' + (s.positive + s.mixed + s.negative > 0 ? '<div class="bar-pos" style="flex:' + s.positive + '"></div><div class="bar-mix" style="flex:' + s.mixed + '"></div><div class="bar-neg" style="flex:' + s.negative + '"></div>' : '') + '</div>' +
-      '<div class="bar-legend">' + s.positive + ' positive \\u00b7 ' + s.mixed + ' mixed \\u00b7 ' + s.negative + ' negative</div>' +
-      '<div class="tiers"><span class="tier-badge">T1: ' + s.t1 + '</span><span class="tier-badge">T2: ' + s.t2 + '</span><span class="tier-badge">T3: ' + s.t3 + '</span></div>' +
-      '<div class="gates">' + gate(s.total, minR, 'Total') + gate(s.t1, minT1, 'T1') + gate(s.t2, minT2, 'T2') + gate(s.readiness.highConfidence, minH, 'Hi-Conf') + '</div>' +
-      '<span class="ready-badge ' + (s.readiness.ready ? 'ready-yes' : 'ready-no') + '">' + (s.readiness.ready ? 'BROADCAST READY' : 'Not ready') + '</span>' +
-      (!s.readiness.ready && s.readiness.reasons.length ? '<div class="ready-reasons">' + esc(s.readiness.reasons.join(', ')) + '</div>' : '') +
-      '<div class="broadcast"><span class="bc-badge ' + bcClass(s.broadcast.state) + '">' + bcLabel(s.broadcast.state) + '</span><span>' + esc(s.broadcast.detail) + '</span></div>' +
-      renderMissing(s.missingT1, s.missingT2, idx) +
+      (s.total > 0 ? '<div class="bar"><div class="bar-pos" style="flex:' + s.positive + '"></div><div class="bar-mix" style="flex:' + s.mixed + '"></div><div class="bar-neg" style="flex:' + s.negative + '"></div></div>' : '') +
+      '<span class="details-toggle" onclick="toggleDetails(\\'' + detId + '\\')">' + (s.readiness.ready ? '\\u2705 Broadcast ready' : '\\u23F3 ' + esc(s.readiness.reasons.join(', '))) + ' \\u2014 details</span>' +
+      '<div class="details-body collapsed" id="' + detId + '">' +
+        '<div class="gates" style="margin-top:8px">' + gate(s.total, minR, 'Total') + gate(s.t1, minT1, 'T1') + gate(s.t2, minT2, 'T2') + gate(s.readiness.highConfidence, minH, 'Hi-Conf') + '</div>' +
+        renderMissing(s.missingT1, s.missingT2, idx) +
+      '</div>' +
     '</div>';
   }).join('');
 }
