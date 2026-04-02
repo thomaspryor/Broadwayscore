@@ -1076,10 +1076,15 @@ function mergeIntoExisting(existing, scraped, source) {
                 }
               }
               if (key === 'price') {
+                const oldPrice = current[field][key];
+                const drift = oldPrice > 0 ? Math.abs(value - oldPrice) / oldPrice : 0;
                 changes.push({
                   showId, type: 'updated', field, key,
-                  old: current[field][key], new: value, source,
+                  old: oldPrice, new: value, source,
                 });
+                if (drift > 0.3) {
+                  console.warn(`  ⚠️  [Price Drift] ${showId}.${field}: $${oldPrice} → $${value} (${(drift * 100).toFixed(0)}% change from ${source}) — verify manually`);
+                }
               }
               current[field][key] = value;
               changed = true;
@@ -1153,11 +1158,14 @@ const GENERIC_URLS = [
   'my.socialtoaster.com/st/lottery_select/',
 ];
 
-/** URLs that are platform homepages (not show-specific) — used for merge preference */
+/** URLs that are platform homepages (not show-specific) — unhelpful for users */
 function isGenericPlatformUrl(url) {
   if (!url) return false;
-  // A URL with no path (just domain) is generic
-  return /^https?:\/\/[^/]+\/?$/.test(url.trim());
+  const trimmed = url.trim();
+  // Telecharge rush portal is a valid destination (lists all shows)
+  if (/rush\.telecharge\.com/i.test(trimmed)) return false;
+  // A URL with no path (just domain) is generic and useless
+  return /^https?:\/\/[^/]+\/?$/.test(trimmed);
 }
 
 function isGenericUrl(url) {
@@ -1278,19 +1286,27 @@ function sanitizeData(existing) {
         }
       }
 
-      // Auto-populate URL from known platform when missing
+      // Auto-populate URL only for platforms with show-specific URL patterns
       if (show[field].platform && !show[field].url) {
-        const PLATFORM_URLS = {
-          'telecharge': 'https://rush.telecharge.com',
-          'luckyseat': 'https://www.luckyseat.com',
-          'todaytix': 'https://www.todaytix.com',
-          'broadway direct': 'https://lottery.broadwaydirect.com',
-        };
-        const fallbackUrl = PLATFORM_URLS[show[field].platform.toLowerCase()];
-        if (fallbackUrl) {
-          show[field].url = fallbackUrl;
-          fixes.push(`${showId}.${field}: Auto-populated URL from platform "${show[field].platform}" → ${fallbackUrl}`);
+        const platformLower = show[field].platform.toLowerCase();
+        // Only auto-populate URLs that actually link to the show (not homepages)
+        if (platformLower === 'telecharge') {
+          show[field].url = 'https://rush.telecharge.com';
+          fixes.push(`${showId}.${field}: Auto-populated Telecharge URL`);
+        } else if (platformLower === 'broadway direct' && show[field].type === 'digital') {
+          // Broadway Direct has predictable lottery URLs
+          const slug = showId.replace(/-\d{4}$/, '').replace(/-broadway$/, '');
+          show[field].url = `https://lottery.broadwaydirect.com/show/${slug}/`;
+          fixes.push(`${showId}.${field}: Auto-populated Broadway Direct lottery URL`);
         }
+        // TodayTix and LuckySeat URLs are NOT predictable from show names
+        // — leave blank rather than linking to a useless homepage
+      }
+
+      // Strip generic platform homepage URLs (no show-specific path)
+      if (show[field].url && isGenericPlatformUrl(show[field].url)) {
+        fixes.push(`${showId}.${field}: Removed generic homepage URL "${show[field].url}"`);
+        delete show[field].url;
       }
     }
 

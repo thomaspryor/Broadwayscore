@@ -49,6 +49,24 @@ runs:
         git config user.email "action@github.com"
         git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
 
+        # Validate JSON files before committing (catches conflict markers from stash/rebase)
+        INVALID=0
+        for f in *.json; do
+          if [ -f "$f" ]; then
+            if grep -q '<<<<<<' "$f" 2>/dev/null; then
+              echo "::error::$f contains merge conflict markers — aborting commit"
+              INVALID=1
+            elif ! node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+              echo "::error::$f is not valid JSON — aborting commit"
+              INVALID=1
+            fi
+          fi
+        done
+        if [ "$INVALID" -ne 0 ]; then
+          echo "::error::One or more core data files are invalid. Fix before retrying."
+          exit 1
+        fi
+
         git add -A
 
         if git diff --staged --quiet; then
