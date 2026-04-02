@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-02T05:26:40.510Z",
+  "timestamp": "2026-04-02T05:48:55.543Z",
   "stats": {
-    "totalReviews": 32157,
-    "alreadyFlagged": 11951,
+    "totalReviews": 32156,
+    "alreadyFlagged": 11948,
     "dateGuardCatches": 16,
-    "directorMismatch": 839,
+    "directorMismatch": 841,
     "tvFilmSignals": 3315,
-    "londonSignals": 964,
+    "londonSignals": 967,
     "offBroadwaySignals": 964,
     "yearMismatch": 64,
     "noPublishDate": 5895
@@ -23738,6 +23738,19 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-12-12",
+      "url": "https://www.londonboxoffice.co.uk/news/post/into-the-woods-bridge-theatre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
       "publishDate": "December 12th, 2025",
@@ -23799,6 +23812,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "the-recs--the-recs-it.json",
+      "publishDate": "2025-12-11",
+      "url": "https://therecs.co.uk/into-the-woods-bridge-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -38945,7 +38976,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": null,
+      "score": 66,
       "publishDate": "2026-04-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/romeo-juliet-review-sadie-sink-noah-jupe-hfr8798f2",
       "findings": [
@@ -60987,6 +61018,20 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 44,
+      "publishDate": "2026-03-04",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-broken-glass-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
       "file": "london-theatre--julia-rank.json",
       "score": 69,
       "publishDate": "2026-03-04",
@@ -66987,7 +67032,7 @@
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
       "file": "artsdesk--helen-hawkins.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-03-18",
       "url": "https://theartsdesk.com/theatre/jajas-african-hair-braiding-lyric-hammersmith-review-perky-harlem-set-comedy-serious-undertow",
       "findings": [
@@ -76327,6 +76372,20 @@
       "score": 83,
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-factory",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 79,
+      "publishDate": "2026-03-09",
+      "url": "https://theatreweekly.com/review-the-holy-rosenbergs-at-the-menier-chocolate-factory/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
