@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T16:00:18.260Z",
+  "timestamp": "2026-04-02T16:53:27.395Z",
   "stats": {
     "totalReviews": 32203,
-    "alreadyFlagged": 11978,
+    "alreadyFlagged": 12000,
     "dateGuardCatches": 15,
     "directorMismatch": 847,
-    "tvFilmSignals": 3330,
+    "tvFilmSignals": 3331,
     "londonSignals": 978,
     "offBroadwaySignals": 967,
     "yearMismatch": 65,
-    "noPublishDate": 5857
+    "noPublishDate": 5829
   },
   "findings": [
     {
@@ -993,6 +993,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "file": "towncountry--tyler-coates.json",
+      "score": 84,
+      "publishDate": "2017-04-29",
+      "url": "https://www.townandcountrymag.com/leisure/arts-and-culture/a9577710/dolls-house-part-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"movie theater\""
         }
       ]
     },
@@ -5748,19 +5762,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "bad-cinderella-2023",
-      "file": "telegraph--anita-singh.json",
-      "publishDate": "2023-05-11",
-      "url": "https://www.telegraph.co.uk/world-news/2023/05/11/lloyd-webbers-broadway-run-ends-after-bad-cinderella-closes/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -16687,20 +16688,6 @@
     },
     {
       "showId": "frozen-2018",
-      "file": "woman-around-town--alix-cohen.json",
-      "score": 45,
-      "publishDate": null,
-      "url": "https://womanaroundtown.com/sections/playing-around/frozen-lacks-shimmer/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2018",
       "file": "wsj--terry-teachout.json",
       "score": 35,
       "publishDate": "March 22, 2018",
@@ -20867,6 +20854,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-2017",
+      "file": "rollingstone--peter-travers.json",
+      "score": 92,
+      "publishDate": "2017-04-24",
+      "url": "https://www.rollingstone.com/culture/culture-news/hello-dolly-bette-midler-proves-shes-the-new-queen-of-broadway-196142/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -28755,20 +28756,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "m-butterfly-2017",
-      "file": "woman-around-town--alix-cohen.json",
-      "score": 25,
-      "publishDate": null,
-      "url": "https://www.womanaroundtown.com/sections/playing-around/m-butterfly-reduced-to-its-lowest-common-denominator",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -46412,6 +46399,20 @@
     },
     {
       "showId": "the-boys-in-the-band-2018",
+      "file": "deadline--pete-hammond.json",
+      "score": 85,
+      "publishDate": "May 31, 2018",
+      "url": "https://deadline.com/video/the-boys-in-the-band-review-jim-parsons-netflix/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-boys-in-the-band-2018",
       "file": "newsday--barbara-schuler.json",
       "score": 82,
       "publishDate": null,
@@ -51921,6 +51922,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-parisian-woman-2017",
+      "file": "thestage--mark-shenton.json",
+      "score": 45,
+      "publishDate": "November 30th, 2017",
+      "url": "https://www.thestage.co.uk/reviews/2017/parisian-woman-uma-thurman-review-hudson-theatre-new-york/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
