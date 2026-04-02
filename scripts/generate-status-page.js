@@ -68,7 +68,7 @@ function main() {
     if (d > now) return false; // Only shows that have actually opened
     if (s.status === 'closed') return false;
     return true;
-  }).sort((a, b) => new Date(a.openingDate) - new Date(b.openingDate));
+  }).sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
 
   const shows = openingShows.map(show => {
     const market = isLondonMarket(show.category) ? 'west-end' : 'broadway';
@@ -115,8 +115,13 @@ function main() {
       }
     }
 
+    // Fix contradictory text: if readiness gates pass but broadcast hasn't sent, say "awaiting send"
+    if (readiness.ready && broadcastState === 'waiting') {
+      broadcastDetail = 'Ready — awaiting send';
+    }
+
     return {
-      id: show.id, title: show.title, market, type: show.type || 'show',
+      id: show.id, title: show.title, market, category: show.category || market, type: show.type || 'show',
       openingDate: show.openingDate, status: show.status,
       siteScore, liveScore, scoreDrift: (siteScore != null && liveScore != null) ? liveScore - siteScore : null,
       total: showRevs.length, t1, t2, t3, positive, mixed, negative,
@@ -152,8 +157,16 @@ function generateHTML() {
   body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 16px; max-width: 640px; margin: 0 auto; }
   h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
   .meta { color: var(--dim); font-size: 13px; margin-bottom: 16px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter-btn { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; font-size: 12px; color: var(--dim); cursor: pointer; font-family: inherit; }
+  .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
-  .show-title { font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+  .show-title { font-size: 17px; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+  .market-pill { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+  .market-broadway { background: #2563eb; color: #fff; }
+  .market-off-broadway { background: #7c3aed; color: #fff; }
+  .market-west-end { background: #059669; color: #fff; }
+  .market-off-west-end { background: #0d9488; color: #fff; }
   .show-meta { font-size: 12px; color: var(--dim); margin-bottom: 12px; }
   .score-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
   .score { font-size: 32px; font-weight: 800; line-height: 1; }
@@ -196,6 +209,7 @@ function generateHTML() {
 <body>
 <h1>Opening Night Status</h1>
 <div class="meta" id="updated"></div>
+<div class="filters" id="filters"></div>
 <div id="shows"></div>
 <div class="refresh" id="refresh"></div>
 <div class="footer"><a href="https://broadwayscorecard.com">broadwayscorecard.com</a></div>
@@ -203,14 +217,44 @@ function generateHTML() {
 function scoreClass(s) { return s == null ? 'none' : s >= 75 ? 'positive' : s >= 55 ? 'mixed' : 'negative'; }
 function bcClass(s) { return { complete:'bc-complete', 'preview-sent':'bc-preview', overdue:'bc-overdue' }[s] || 'bc-waiting'; }
 function bcLabel(s) { return { complete:'SENT', 'preview-sent':'PREVIEW', overdue:'OVERDUE' }[s] || 'WAITING'; }
+function marketLabel(c) { return { broadway:'Broadway', 'off-broadway':'Off-Broadway', 'west-end':'West End', 'off-west-end':'Off-West End' }[c] || c; }
+function marketClass(c) { return 'market-' + (c || 'broadway'); }
 
-function render(data) {
+// Filter state (persisted in URL hash)
+let activeFilters = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
+function loadFilters() {
+  const h = location.hash.replace('#','');
+  if (h) { activeFilters = new Set(h.split(',')); }
+}
+function saveFilters() { location.hash = [...activeFilters].join(','); }
+loadFilters();
+
+let _data = null;
+
+function renderFilters(data) {
+  const cats = [...new Set(data.shows.map(s => s.category))];
+  const el = document.getElementById('filters');
+  el.innerHTML = cats.map(c =>
+    '<button class="filter-btn ' + (activeFilters.has(c) ? 'active' : '') + '" data-cat="' + c + '">' + marketLabel(c) + '</button>'
+  ).join('');
+  el.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.onclick = () => {
+      const c = btn.dataset.cat;
+      if (activeFilters.has(c)) activeFilters.delete(c); else activeFilters.add(c);
+      saveFilters();
+      renderShows(data);
+      renderFilters(data);
+    };
+  });
+}
+
+function renderShows(data) {
   document.getElementById('updated').textContent = 'Updated: ' + new Date(data.generatedAt).toLocaleString();
   const el = document.getElementById('shows');
-  if (!data.shows.length) { el.innerHTML = '<div class="empty">No opening nights in the last ' + data.lookbackDays + ' days.</div>'; return; }
-  el.innerHTML = data.shows.map(s => {
+  const filtered = data.shows.filter(s => activeFilters.has(s.category));
+  if (!filtered.length) { el.innerHTML = '<div class="empty">No shows match current filters.</div>'; return; }
+  el.innerHTML = filtered.map(s => {
     const score = s.siteScore ?? s.liveScore;
-    const total = s.positive + s.mixed + s.negative || 1;
     const isWE = s.market === 'west-end' || s.market === 'off-west-end';
     const minR = isWE ? 8 : 12, minT1 = 3, minT2 = isWE ? 2 : 3, minH = isWE ? 6 : 8;
     function gate(v, req, label) {
@@ -218,13 +262,13 @@ function render(data) {
       return '<div class="gate"><span class="gate-icon ' + (ok?'gate-pass':'gate-fail') + '">' + (ok?'\\u2713':'\\u2717') + '</span>' + label + ': <b>' + v + '</b>/' + req + '</div>';
     }
     const drift = (s.scoreDrift != null && s.scoreDrift !== 0)
-      ? '<div class="drift">Live score: ' + s.liveScore + ' (' + (s.scoreDrift>0?'+':'') + s.scoreDrift + ' drift — rebuild needed)</div>'
-      : (s.siteScore == null && s.liveScore != null ? '<div class="drift">Not yet on site — rebuild needed</div>' : '');
+      ? '<div class="drift">Live score: ' + s.liveScore + ' (' + (s.scoreDrift>0?'+':'') + s.scoreDrift + ' drift \\u2014 rebuild needed)</div>'
+      : (s.siteScore == null && s.liveScore != null ? '<div class="drift">Not yet on site \\u2014 rebuild needed</div>' : '');
     const missingT1 = s.missingT1.length ? '<div class="missing"><span class="missing-t1">Missing T1:</span> ' + s.missingT1.join(', ') + '</div>' : '';
     const missingT2 = s.missingT2.length ? '<div class="missing"><span class="missing-t2">Missing T2:</span> ' + s.missingT2.join(', ') + '</div>' : '';
     return '<div class="card">' +
-      '<div class="show-title">' + s.title + '</div>' +
-      '<div class="show-meta">' + s.market + ' \\u00b7 ' + s.type + ' \\u00b7 ' + s.openingDate + ' \\u00b7 ' + s.status + '</div>' +
+      '<div class="show-title">' + s.title + '<span class="market-pill ' + marketClass(s.category) + '">' + marketLabel(s.category) + '</span></div>' +
+      '<div class="show-meta">' + s.type + ' \\u00b7 ' + s.openingDate + ' \\u00b7 ' + s.status + '</div>' +
       '<div class="score-row"><span class="score ' + scoreClass(score) + '">' + (score ?? '--') + '</span><span class="score-label">' + (s.siteScore != null ? 'site' : 'live') + ' score \\u00b7 ' + s.total + ' reviews</span></div>' +
       drift +
       '<div class="bar"><div class="bar-pos" style="flex:' + s.positive + '"></div><div class="bar-mix" style="flex:' + s.mixed + '"></div><div class="bar-neg" style="flex:' + s.negative + '"></div></div>' +
@@ -241,7 +285,7 @@ function render(data) {
 async function fetchAndRender() {
   try {
     const r = await fetch('/opening-night-status.json?t=' + Date.now());
-    if (r.ok) render(await r.json());
+    if (r.ok) { _data = await r.json(); renderFilters(_data); renderShows(_data); }
   } catch(e) { console.error('Failed to fetch status:', e); }
   document.getElementById('refresh').textContent = 'Auto-refresh every 30s \\u00b7 Last check: ' + new Date().toLocaleTimeString();
 }

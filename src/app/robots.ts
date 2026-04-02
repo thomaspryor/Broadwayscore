@@ -15,7 +15,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       // Search engines (ALLOWED — index us, but not BTC co-branded page)
-      { userAgent: 'Googlebot', allow: '/', disallow: '/beat-the-critics' },
+      { userAgent: 'Googlebot', allow: '/', disallow: ['/beat-the-critics', '/status.html', '/opening-night-status.json'] },
       { userAgent: 'Bingbot', allow: '/', disallow: '/beat-the-critics' },
       { userAgent: 'Slurp', allow: '/', disallow: '/beat-the-critics' },
       { userAgent: 'DuckDuckBot', allow: '/', disallow: '/beat-the-critics' },
