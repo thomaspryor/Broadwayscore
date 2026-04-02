@@ -165,7 +165,10 @@
     "the-scottsboro-boys-2010/variety--steven-suskin.json",
     "rain-2010/nytimes--elisabeth-vincentelli.json",
     "rain-2010/minneapolis-star-tribune--unknown.json",
-    "driving-miss-daisy-2010/variety--marilyn-stasio.json"
+    "driving-miss-daisy-2010/variety--marilyn-stasio.json",
+    "bloody-bloody-andrew-jackson-2010/variety--david-rooney.json",
+    "bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
+    "a-life-in-the-theatre-2010/variety--marilyn-stasio.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -650,7 +653,14 @@
     "driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
     "lombardi-2010/new-jersey-newsroom--michael-sommers.json",
     "la-bete-2010/chicagotribune--ben-brantley.json",
-    "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json"
+    "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
+    "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
+    "bloody-bloody-andrew-jackson-2010/new-jersey-newsroom--michael-sommers.json",
+    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
+    "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
+    "a-life-in-the-theatre-2010/new-jersey-newsroom--michael-sommers.json",
+    "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
+    "the-pitmen-painters-2010/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -730,7 +740,11 @@
       "data/review-texts/the-scottsboro-boys-2010/variety--steven-suskin.json",
       "the-scottsboro-boys-2010/variety--steven-suskin.json",
       "data/review-texts/driving-miss-daisy-2010/variety--marilyn-stasio.json",
-      "driving-miss-daisy-2010/variety--marilyn-stasio.json"
+      "driving-miss-daisy-2010/variety--marilyn-stasio.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
+      "bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
+      "data/review-texts/a-life-in-the-theatre-2010/variety--marilyn-stasio.json",
+      "a-life-in-the-theatre-2010/variety--marilyn-stasio.json"
     ],
     "browserbase": [
       "data/review-texts/yoah-off-broadway-2026/variety--pat-saperstein.json",
@@ -766,7 +780,9 @@
       "data/review-texts/anything-goes-2011/variety--david-rooney.json",
       "anything-goes-2011/variety--david-rooney.json",
       "data/review-texts/elling-2010/variety--david-rooney.json",
-      "elling-2010/variety--david-rooney.json"
+      "elling-2010/variety--david-rooney.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/variety--david-rooney.json",
+      "bloody-bloody-andrew-jackson-2010/variety--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -925,7 +941,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
+  "lastProcessed": "the-pitmen-painters-2010/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -1265,6 +1281,39 @@
     },
     {
       "t": "2026-04-02T20:08:58.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:09:35.892Z",
+      "event": "bb-session",
+      "session": "b3256ab4",
+      "url": "https://variety.com/2010/film/markets-festivals/momentum-nabs-shame-safe-1118025"
+    },
+    {
+      "t": "2026-04-02T20:09:37.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:10:08.746Z",
+      "event": "bb-session",
+      "session": "0c23f0a0",
+      "url": "https://www.variety.com/review/VE1117943836.html"
+    },
+    {
+      "t": "2026-04-02T20:10:10.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:10:57.799Z",
+      "event": "bb-session",
+      "session": "3bc65cb9",
+      "url": "https://www.variety.com/index.asp?layout=print_review&amp;reviewid=VE1117943828&"
+    },
+    {
+      "t": "2026-04-02T20:10:59.132Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
