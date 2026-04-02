@@ -821,6 +821,8 @@ const crossShowFingerprints = new Map();
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
         if (d.wrongProduction || d.wrongShow) continue;
+        // allowEarlyDate bypasses all date-based flagging
+        if (d.allowEarlyDate) continue;
         // Respect manual clears UNLESS the date mismatch is large (>180 days) —
         // a prior-production review is wrong regardless of manual override
         if (d.wrongProductionManualClear) {
@@ -2039,10 +2041,11 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Skip roundup articles (multi-show reviews that aren't about this specific show)
-      // Also catch BWW roundup URLs that weren't flagged at collection time
-      if (data.isRoundupArticle === true ||
-          (data.url && /broadwayworld\.com\/article\/.*review-roundup/i.test(data.url))) {
+      // Skip roundup articles — only when explicitly flagged via isRoundupArticle.
+      // NOTE: Do NOT auto-skip based on URL patterns like BWW review-roundup URLs.
+      // Many reviews are SOURCED from roundup pages but have individual critic/outlet
+      // attribution and should count as original reviews.
+      if (data.isRoundupArticle === true) {
         stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
         return;
       }
