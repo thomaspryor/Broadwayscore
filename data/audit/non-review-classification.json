@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-02T10:28:09.083Z",
+    "generatedAt": "2026-04-02T10:41:02.303Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 32922,
-      "inReviewsJson": 15325,
+      "inReviewsJson": 15327,
       "skippedExcluded": 11,
       "withFullText": 20,
       "excerptOnly": 1707,
       "llmClassified": 19,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
+      "nonReviewsFound": 0,
       "uncertainCases": 16,
       "budgetUsed": 0.0020000000000000005,
       "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13587
+      "skippedAlreadyClassified": 13589
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "dracula-west-end-2025/daily-mail--patrick-marmion.json",
-      "showId": "dracula-west-end-2025",
-      "outlet": "Mail",
-      "outletId": "daily-mail",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article discusses the actress Cynthia Erivo's upcoming performance in Dracula, but focuses primarily on the negative press surrounding her previous role in Wicked and the initial cancellation of performances. It does not offer an evaluation of the Dracula production itself.",
-      "currentScore": 60
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -41,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and its historical context, but does not offer an evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -51,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, but it does not contain any evaluative content or opinion about a specific production. It seems to be a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific production.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
       "currentScore": 62
     },
     {
@@ -81,7 +70,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The text discusses how to stage the play, suggesting a feature article rather than a review. The article does not evaluate the quality of the production.",
+      "reasoning": "The article discusses how to stage the play in the post-Me Too era, which is a feature about the play's context rather than a review of a specific production. The text is incomplete, making the classification less certain.",
       "currentScore": 60
     },
     {
@@ -101,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -111,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
       "currentScore": 74
     },
     {
@@ -121,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
       "currentScore": 78
     },
     {
@@ -131,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the premise of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for an evening of terror, suggesting a preview rather than a review.",
+      "reasoning": "The article describes the plot of the play and sets the stage for the audience, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -141,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -151,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the historical significance of the material.",
       "currentScore": 83
     },
     {
@@ -161,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -191,20 +180,15 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece setting the stage for the show.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "dog-day-afternoon-2026/ew--dalton-ross.json",
-    "the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json"
+    "dog-day-afternoon-2026/guardian--jesse-hassenger.json",
+    "dog-day-afternoon-2026/independent--caitlin-hornik.json",
+    "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "dracula-west-end-2025",
-      "currentCount": 11,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
