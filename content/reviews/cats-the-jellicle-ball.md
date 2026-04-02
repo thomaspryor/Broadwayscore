@@ -1,0 +1,19 @@
+---
+title: "Cats: The Jellicle Ball Is a Queer Lion King and I Mean That as the Highest Compliment"
+show: "Cats: The Jellicle Ball"
+showSlug: "cats-the-jellicle-ball-2026"
+venue: "Broadhurst Theatre"
+score: 88
+dateAttended: "2026-03-21"
+publishDate: "2026-03-21"
+---
+
+I still can't believe someone looked at Cats and thought: what if we set this in the world of ballroom? On paper, it's absurd. In practice, it's the most fun I've had in a Broadway theater this year. I first saw The Jellicle Ball during its Off-Broadway run at PAC NYC about a year and a half ago, and it was a joy-filled, unexpected revelation. I knew the second time couldn't replicate that exact magic, but we brought three generations of family who'd never seen it, and watching them experience it for the first time was its own kind of thrill.
+
+We had stage seating, which put us right in the middle of the action. I was worried about sight lines, but this isn't really a show you watch from one angle. Things happen everywhere, performers come right up to you, and missing a brief moment here or there is part of the deal. You feel catered to, not sidelined. The real achievement is what they've done with the Broadhurst itself: transforming a traditional Broadway house into something that captures the immersive energy of the original PAC NYC space. It's not identical, and I'd be curious how it plays from the back of the orchestra or the mezzanine, but from our seats it worked. The runway configuration is inspired, and the effort they put into this conversion deserves real credit.
+
+The production has some new tricks since the Off-Broadway run. Robert "Silk" Mason's Magical Mr. Mistoffelees has a new magic sequence that landed beautifully, and Leiomy Maldonado as the new Macavity has an absolutely magnetic stage presence. (The word my notes use is "rizz," and I stand by it.) I'll admit I was nervous about Andre De Shields. He's a legend, but he's 80, and when we saw him in Tartuffe he leaned heavily on his "bible." Cats asks far less of him in terms of dialogue, and the result is that he gets to just be Andre De Shields, presiding over the ball with the gravity the role deserves. I love how much admiration this show gives to its elders. I was also thrilled to see so many of the original cast return, plus new faces I recognized from Saturday Church at NYTW last year. The outfits remain stunning, the ballroom choreography by Omari Wiles and Arturo Lyons remains electric, and the second act is shorter and far more interesting than the first, which is an unusual and welcome inversion for a musical.
+
+My complaints are the usual Cats complaints, plus a couple of preview-specific ones. The story is still mostly absent, though in this context the confusion becomes part of the fun. Some of the vocals were weak, which meant the big musical moments didn't quite land. And I found the lyrics difficult to follow throughout, likely a combination of sound mixing and diction issues that I hope improve before opening. I also drifted at points, because it's still Cats. But then you look around at the audience losing their minds, and the people-watching becomes its own show. Our guest judges were Kara Young and Ayo Edebiri, both of whom seemed to thrive on stage. It's great to be rowdy in a space where you're usually told to sit still.
+
+We brought my partner's eight-year-old niece, who fell asleep at one point (late Saturday show, can't blame her), but afterward declared she "loved the costumes and the dancing." His mother, who is accepting but doesn't get exposed to much in their small town, claims she enjoyed it, though one performer did approach her mid-number to ask "why are you so scared?!" We later learned she'd been sitting through the whole show with an infected root canal, so Cats may double as a potent pain reliever. You leave the theater thinking: who on earth looked at Cats and thought "ballroom"? Whoever it was, god bless them.
