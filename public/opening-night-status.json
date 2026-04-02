@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T10:07:29.428Z",
+  "generatedAt": "2026-04-02T10:21:52.983Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1014,7 +1014,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1065,6 +1065,10 @@
         }
       ],
       "missingT2": [
+        {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
         {
           "name": "Newsday",
           "isDualMarket": false
