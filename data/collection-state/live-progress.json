@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-02T04:45:51.896Z",
-  "processed": 145,
-  "failed": 1502,
-  "successRate": "8.8%",
+  "updatedAt": "2026-04-02T04:50:05.829Z",
+  "processed": 154,
+  "failed": 1503,
+  "successRate": "9.3%",
   "tierBreakdown": {
-    "playwright": 87,
+    "playwright": 90,
     "amp": 2,
-    "browserbase": 12,
+    "browserbase": 16,
     "directCookies": 2,
-    "scrapingbee": 25,
+    "scrapingbee": 30,
     "brightdata": 0,
-    "archiveToday": 206,
+    "archiveToday": 207,
     "archive": 24
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-01T21:09:53.611Z",
-      "event": "bb-session",
-      "session": "383ea5a9",
-      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
-    },
-    {
-      "t": "2026-04-01T21:09:55.182Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-01T21:11:49.364Z",
-      "event": "bb-session",
-      "session": "020a1389",
-      "url": "https://www.northjersey.com/entertainment/stage/WAITING0430.html"
-    },
-    {
-      "t": "2026-04-01T21:11:50.738Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-04-01T21:13:35.703Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-02T04:39:37.839Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T04:46:16.120Z",
+      "event": "bb-session",
+      "session": "4ed545e1",
+      "url": "https://deadline.com/2026/03/broadway-chicago-whitney-leavitt-dog-day-afternoon-"
+    },
+    {
+      "t": "2026-04-02T04:46:17.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T04:48:27.718Z",
+      "event": "bb-session",
+      "session": "6330ffa9",
+      "url": "https://deadline.com/2025/09/the-smashing-machine-dwayne-johnson-benny-safdie-ve"
+    },
+    {
+      "t": "2026-04-02T04:48:28.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

@@ -144,7 +144,16 @@
     "lost-in-del-valle-off-broadway-2026/ew--ew-staff.json",
     "copenhagen-west-end-2026/times-uk--maxie-szalwinska.json",
     "inter-alia-west-end-2026/standard--nick-curtis.json",
-    "romeo-and-juliet-west-end-2026/variety--unknown.json"
+    "romeo-and-juliet-west-end-2026/variety--unknown.json",
+    "dog-day-afternoon-2026/nytimes--michael-paulson.json",
+    "dog-day-afternoon-2026/deadline--greg-evans.json",
+    "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json",
+    "john-proctor-is-the-villain-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
+    "teeth-n-smiles-west-end-2026/theupcoming--the-editorial-unit.json",
+    "the-adding-machine-off-broadway-2026/latimes--unknown.json",
+    "the-adding-machine-off-broadway-2026/deadline--zac-ntim.json",
+    "giant-2026/newyorker--john-lahr.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1648,7 +1657,8 @@
     "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
     "lost-in-del-valle-off-broadway-2026/rollingstone--jonathan-bernstein.json",
     "romeo-and-juliet-west-end-2026/daily-mail--unknown.json",
-    "romeo-and-juliet-west-end-2026/times-uk--clive-davis.json"
+    "romeo-and-juliet-west-end-2026/times-uk--clive-davis.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1739,7 +1749,10 @@
       "avenue-q-west-end-2026/thestage--paul-vale.json",
       "lost-in-del-valle-off-broadway-2026/ew--ew-staff.json",
       "copenhagen-west-end-2026/times-uk--maxie-szalwinska.json",
-      "inter-alia-west-end-2026/standard--nick-curtis.json"
+      "inter-alia-west-end-2026/standard--nick-curtis.json",
+      "romeo-and-juliet-west-end-2026/times-uk--clive-davis.json",
+      "john-proctor-is-the-villain-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "teeth-n-smiles-west-end-2026/theupcoming--the-editorial-unit.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -1757,7 +1770,11 @@
       "data/review-texts/company-2006/variety--charles-isherwood.json",
       "company-2006/variety--charles-isherwood.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/variety--unknown.json",
-      "romeo-and-juliet-west-end-2026/variety--unknown.json"
+      "romeo-and-juliet-west-end-2026/variety--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
+      "dog-day-afternoon-2026/deadline--greg-evans.json",
+      "data/review-texts/the-adding-machine-off-broadway-2026/deadline--zac-ntim.json",
+      "the-adding-machine-off-broadway-2026/deadline--zac-ntim.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -1788,7 +1805,12 @@
       "wicked-west-end-2021/the-telegrap--charles-spencer.json",
       "the-lion-king-west-end-2021/the-telegrap--david-gritten.json",
       "bells-are-ringing-2001/new-jersey-newsroom--michael-sommers.json",
-      "the-other-place-2026/the-telegrap--claire-allfree.json"
+      "the-other-place-2026/the-telegrap--claire-allfree.json",
+      "dog-day-afternoon-2026/nytimes--michael-paulson.json",
+      "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json",
+      "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
+      "the-adding-machine-off-broadway-2026/latimes--unknown.json",
+      "giant-2026/newyorker--john-lahr.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1997,7 +2019,8 @@
       "data/review-texts/les-miserables-2006/nytimes--ben-brantley.json",
       "data/review-texts/lestat-2006/washpost--peter-marks.json",
       "data/review-texts/the-history-boys-2006/talkinbroadway--matthew-murray.json",
-      "data/review-texts/lost-in-del-valle-off-broadway-2026/rollingstone--jonathan-bernstein.json"
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/rollingstone--jonathan-bernstein.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/daily-mail--unknown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2027,7 +2050,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "giant-2026/newyorker--john-lahr.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2591,6 +2614,28 @@
       "t": "2026-04-02T04:39:37.839Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T04:46:16.120Z",
+      "event": "bb-session",
+      "session": "4ed545e1",
+      "url": "https://deadline.com/2026/03/broadway-chicago-whitney-leavitt-dog-day-afternoon-"
+    },
+    {
+      "t": "2026-04-02T04:46:17.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T04:48:27.718Z",
+      "event": "bb-session",
+      "session": "6330ffa9",
+      "url": "https://deadline.com/2025/09/the-smashing-machine-dwayne-johnson-benny-safdie-ve"
+    },
+    {
+      "t": "2026-04-02T04:48:28.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
