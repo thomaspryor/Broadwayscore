@@ -57,20 +57,31 @@ Analyze the text and produce venue quality ratings on a 1-5 integer scale for th
 Also provide:
 - **summary**: A 1-2 sentence summary of the theater's strengths and weaknesses as a venue (not about any specific show). Be specific and useful to ticket buyers.
 
-If the source text doesn't contain enough information about a dimension, make your best judgment based on:
-- Theater age and renovation history (older unrenovated = likely lower comfort)
-- Theater size (smaller = generally better sightlines, larger = potentially better sound systems)
-- Known reputation of the theater operator
+CALIBRATION GUIDELINES — use the FULL 1-5 range to differentiate theaters:
+- **5** = Exceptional, among the best on Broadway for this dimension. Reserve for theaters that are genuinely outstanding.
+- **4** = Good, above average. Most well-maintained modern/renovated theaters.
+- **3** = Average, typical Broadway theater. Nothing special, nothing bad.
+- **2** = Below average, noticeable issues. Common complaints from theatergoers.
+- **1** = Poor, significant problems. Regular negative feedback.
 
-IMPORTANT: Do NOT rate accessibility features (wheelchair, elevator, hearing loop). Those will be sourced separately from official theater websites.
+REFERENCE ANCHORS (use these to calibrate your scores):
+- Comfort: Marquis Theatre has the BEST legroom on Broadway (wide, modern seats) = 5. Most pre-war theaters have notoriously tight seats = 2-3. Recently renovated theaters = 3-4.
+- Ambiance: New Amsterdam Theatre (stunning Art Nouveau) and Belasco (Tiffany ceiling) = 5. Marquis Theatre (generic modern, no character) = 2. Most theaters = 3-4.
+- Sightlines: Circle in the Square (thrust, intimate) = 5. Very large theaters with deep balconies (Gershwin, Lyric) = 3. Theaters with known obstruction issues = 2.
+- Facilities: Modern theaters with adequate restrooms = 4. Old theaters with notoriously insufficient restrooms = 2. Most theaters = 3.
+- Sound: Lincoln Center's Beaumont (purpose-built) = 5. Theaters with known dead spots or muddy acoustics = 2.
+
+CRITICAL: Do NOT default to safe scores. If a theater has tight legroom, score comfort 2 not 3. If restroom lines are a frequent complaint, score facilities 2 not 3. Differentiate honestly — a score of 4/4/3/5/3 for every theater is useless to ticket buyers.
+
+Do NOT rate accessibility features (wheelchair, elevator, hearing loop). Those will be sourced separately from official theater websites.
 
 Respond with ONLY valid JSON in this exact format:
 {
   "sightlines": 4,
-  "sound": 4,
-  "comfort": 3,
+  "sound": 3,
+  "comfort": 2,
   "ambiance": 5,
-  "facilities": 3,
+  "facilities": 2,
   "summary": "One to two sentences about the venue."
 }`;
 
