@@ -200,6 +200,7 @@ async function fetchShowsFromTodayTix() {
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
+      todaytixId: show.id || null,
     });
   }
 
@@ -217,6 +218,7 @@ async function fetchShowsFromTodayTix() {
       category: 'off-broadway',
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
+      todaytixId: show.id || null,
     });
   }
 
@@ -319,6 +321,7 @@ async function fetchShowsFromTodayTixLondon() {
       ) ? 'off-west-end' : 'west-end',
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
+      todaytixId: show.id || null,
     });
   }
 
@@ -750,6 +753,7 @@ async function fetchSingleVenuePage(venue) {
 
 function cleanVenueTitle(raw) {
   let title = (raw || '').trim()
+    .replace(/#\w+$/g, '')            // Strip URL fragment anchors (e.g., "#schedules")
     .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")
     .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')
     .replace(/&#8211;|[\u2013]/g, '\u2013').replace(/&#8212;|[\u2014]/g, '\u2014')

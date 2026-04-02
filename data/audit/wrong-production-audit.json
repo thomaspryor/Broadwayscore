@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T16:53:27.395Z",
+  "timestamp": "2026-04-02T23:55:34.797Z",
   "stats": {
-    "totalReviews": 32203,
-    "alreadyFlagged": 12000,
+    "totalReviews": 32214,
+    "alreadyFlagged": 12035,
     "dateGuardCatches": 15,
     "directorMismatch": 847,
-    "tvFilmSignals": 3331,
-    "londonSignals": 978,
-    "offBroadwaySignals": 967,
+    "tvFilmSignals": 3335,
+    "londonSignals": 983,
+    "offBroadwaySignals": 970,
     "yearMismatch": 65,
-    "noPublishDate": 5829
+    "noPublishDate": 5799
   },
   "findings": [
     {
@@ -4126,6 +4126,20 @@
       "score": 78,
       "publishDate": "2016-06-07T11:17:26",
       "url": "https://thefrontrowcenter.com/2016/06/an-act-of-god-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "an-act-of-god-2016",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 60,
+      "publishDate": "May 29, 2016",
+      "url": "http://www.hollywoodreporter.com/review/jim-parsons-an-act-god-798347",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -15538,6 +15552,20 @@
     },
     {
       "showId": "follies-2011",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": 95,
+      "publishDate": "September 13, 2011",
+      "url": "https://www.talkinbroadway.com/page/world/Follies.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "follies-2011",
       "file": "village-voice--michael-musto.json",
       "score": 72,
       "publishDate": null,
@@ -22498,6 +22526,20 @@
       "file": "latimes--rebecca-keegan.json",
       "publishDate": "2013-04-24",
       "url": "https://www.latimes.com/entertainment/arts/culture/la-et-cm-sue-mengers-20130424,0,194329.story",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "ill-eat-you-last-a-chat-with-sue-mengers-2013",
+      "file": "nytimes--ben-brantley.json",
+      "score": 80,
+      "publishDate": "April 24, 2013",
+      "url": "http://theater.nytimes.com/2013/04/25/theater/reviews/ill-eat-you-last-starring-bette-midler.html?pagewanted=all&_r=0",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38544,6 +38586,20 @@
       "file": "nytimes--charles-isherwood.json",
       "score": 58,
       "publishDate": "October 14, 2010",
+      "url": "https://www.nytimes.com/2010/10/27/theater/reviews/27rain.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "rain-2010",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 48,
+      "publishDate": "2010-10-27",
       "url": "https://www.nytimes.com/2010/10/27/theater/reviews/27rain.html",
       "findings": [
         {
@@ -59896,6 +59952,25 @@
       ]
     },
     {
+      "showId": "allegiance-2015",
+      "file": "huffpost--michael-glitz.json",
+      "score": 67,
+      "publishDate": "November 15th, 2015",
+      "url": "https://www.huffpost.com/michael-giltz/theater-strong-but-cracke_b_8569994.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "american-buffalo-2022",
       "file": "dailybeast--tim-teeman.json",
       "score": 85,
@@ -68682,6 +68757,34 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "afridiziak-theatre-news--mark-arbouine.json",
+      "score": 80,
+      "publishDate": "2026-04-01",
+      "url": "https://www.afridiziak.com/reviews/les-liaisons-dangereuses/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "city-am--anna-moloney.json",
+      "score": 90,
+      "publishDate": "2026-04-01",
+      "url": "https://www.cityam.com/les-liaisons-dangereuses-review-aiden-turner-is-even-sexier-than-poldark/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "guardian--the-guardian.json",
       "score": 67,
       "publishDate": null,
@@ -68710,6 +68813,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "radio-times--joanna-magill.json",
+      "score": 85,
+      "publishDate": "2026-04-01",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/les-liaisons-dangereuses-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 91,
       "publishDate": "2026-04-01",
@@ -68719,6 +68836,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 65,
+      "publishDate": "2026-04-02",
+      "url": "https://www.thetimes.com/article/24f78977-1a2a-491a-bd9e-ced1dc5821b9",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -74694,6 +74825,19 @@
     },
     {
       "showId": "sweat-2017",
+      "file": "timeout--matt-windman.json",
+      "publishDate": "2017-03-29",
+      "url": "http://www.timeout.com/newyork/theater/sweat-1",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "sweat-2017",
       "file": "variety--matt-windman.json",
       "score": 72,
       "publishDate": null,
@@ -78810,6 +78954,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-visit-2015",
+      "file": "vulture--jesse-green.json",
+      "score": 58,
+      "publishDate": "April 24, 2015",
+      "url": "https://www.vulture.com/2015/04/theater-reviews-the-visit.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
