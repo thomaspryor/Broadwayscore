@@ -79,6 +79,32 @@ export interface TheaterStructuredTips {
   };
 }
 
+export interface TheaterVenueScores {
+  sightlines?: number;  // 1-5
+  sound?: number;       // 1-5
+  comfort?: number;     // 1-5
+  ambiance?: number;    // 1-5
+  facilities?: number;  // 1-5
+  overall?: number;     // computed average of non-null dimensions
+  summary?: string;
+  sources?: string[];
+  lastResearched?: string;
+}
+
+export interface TheaterAccessibility {
+  wheelchair?: boolean;
+  hearingLoop?: boolean;
+  elevator?: boolean;
+  assistiveListening?: boolean;
+  verified?: boolean;
+  notes?: string;
+}
+
+export interface TheaterExternalLinks {
+  seatplan?: string;
+  aviewfrommyseat?: string;
+}
+
 export interface Theater {
   name: string;
   slug: string;
@@ -94,6 +120,9 @@ export interface Theater {
     interior?: string;
     attribution?: string;
   };
+  venueScores?: TheaterVenueScores;
+  accessibility?: TheaterAccessibility;
+  externalLinks?: TheaterExternalLinks;
   currentShow?: ComputedShow;
   allShows: ComputedShow[];
   showCount: number;
