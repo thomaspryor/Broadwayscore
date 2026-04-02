@@ -209,10 +209,15 @@ export default function TicketLink({
     }
   };
 
-  // Active affiliates get a subtle warm accent border to draw the eye.
-  // As each platform's affiliate config is enabled, it automatically gets the accent.
+  // Active affiliates get a warm accent treatment matching the lottery button's visual weight.
+  // Replaces the default dark bg + gray text with amber bg + bright text.
   const resolvedClassName = isAffiliate
-    ? (className ?? '').replace(/border-white\/10/g, 'border-amber-500/30 hover:border-amber-500/50') + ' text-gray-200'
+    ? (className ?? '')
+        .replace(/bg-surface-overlay/g, 'bg-amber-500/15')
+        .replace(/hover:bg-white\/10/g, 'hover:bg-amber-500/25')
+        .replace(/border-white\/10/g, 'border-amber-500/30')
+        .replace(/text-gray-300/g, 'text-amber-300')
+        .replace(/hover:text-white/g, 'hover:text-amber-200')
     : className ?? '';
 
   return (
