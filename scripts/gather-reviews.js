@@ -558,7 +558,7 @@ async function searchDTLI(show) {
     const url = `https://didtheylikeit.com/shows/${mappedSlug}/`;
     console.log(`  Searching Did They Like It (mapped: ${mappedSlug})...`);
     const result = await searchAggregator('DTLI', url);
-    if (result.found && result.html && result.html.includes('<div class="review-item">') &&
+    if (result.found && result.html && result.html.includes('review-item') &&
         quickTitleCheck(result.html, show.title)) {
       console.log(`    ✓ Found via slug map: ${url}`);
       return { url, html: result.html };
@@ -677,7 +677,7 @@ async function searchDTLI(show) {
   for (const slug of uniqueVariations) {
     const url = `https://didtheylikeit.com/shows/${slug}/`;
     const result = await searchAggregator('DTLI', url);
-    if (result.found && result.html && result.html.includes('<div class="review-item">') &&
+    if (result.found && result.html && result.html.includes('review-item') &&
         quickTitleCheck(result.html, show.title)) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
@@ -1365,9 +1365,9 @@ function extractDTLIReviews(html, showId, dtliUrl) {
     console.log(`    ⚠️  DTLI page loaded (${(html.length / 1024).toFixed(0)}KB) but 0 thumb images found — image URL pattern may have changed`);
   }
 
-  // Extract individual reviews from <div class="review-item"> blocks
+  // Extract individual reviews from review-item blocks (class="review-item" or "poster-review-item")
   // Pattern matches each review item block
-  const reviewItemRegex = /<div class="review-item">([\s\S]*?)(?=<div class="review-item">|<\/section>|<div class="" id="modal-breakdown")/gi;
+  const reviewItemRegex = /<div class="(?:poster-)?review-item">([\s\S]*?)(?=<div class="(?:poster-)?review-item">|<\/section>|<div class="" id="modal-breakdown")/gi;
 
   let match;
   while ((match = reviewItemRegex.exec(html)) !== null) {
