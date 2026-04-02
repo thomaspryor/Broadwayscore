@@ -215,7 +215,16 @@
     "all-my-sons-west-end-2025/timeout-london--helen-shaw.json",
     "all-my-sons-west-end-2025/london-box-office--nicky-allpress.json",
     "all-my-sons-west-end-2025/london-box-office--phil-willmott.json",
-    "all-my-sons-west-end-2025/london-box-office--stuart-king.json"
+    "all-my-sons-west-end-2025/london-box-office--stuart-king.json",
+    "the-producers-west-end-2025/variety--ellise-shafer.json",
+    "the-producers-west-end-2025/london-box-office--stuart-king.json",
+    "heathers-the-musical-off-broadway-2025/nytg--amelia-merrill.json",
+    "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+    "just-in-time-2025/people--raven-brunner.json",
+    "just-in-time-2025/playbill--logan-culwell-block.json",
+    "stranger-things-2024/thestage--unknown.json",
+    "operation-mincemeat-2025/deadline--greg-evans.json",
+    "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1738,7 +1747,8 @@
     "deep-azure-globe-west-end-2026/theatre-weekly--unknown.json",
     "deep-azure-globe-west-end-2026/theupcoming--benedetta-mancusi.json",
     "shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json",
-    "chess-2025/billboard--rebecca-milzoff.json"
+    "chess-2025/billboard--rebecca-milzoff.json",
+    "stranger-things-2024/usatoday--ralphie-aversa.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1875,7 +1885,13 @@
       "chess-2025/artsfuse--christopher-caggiano.json",
       "all-my-sons-west-end-2025/london-box-office--nicky-allpress.json",
       "all-my-sons-west-end-2025/london-box-office--phil-willmott.json",
-      "all-my-sons-west-end-2025/london-box-office--stuart-king.json"
+      "all-my-sons-west-end-2025/london-box-office--stuart-king.json",
+      "the-producers-west-end-2025/london-box-office--stuart-king.json",
+      "heathers-the-musical-off-broadway-2025/nytg--amelia-merrill.json",
+      "just-in-time-2025/people--raven-brunner.json",
+      "just-in-time-2025/playbill--logan-culwell-block.json",
+      "stranger-things-2024/thestage--unknown.json",
+      "stranger-things-2024/usatoday--ralphie-aversa.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -1917,7 +1933,13 @@
       "data/review-texts/chess-2025/deadline--unknown.json",
       "chess-2025/deadline--unknown.json",
       "data/review-texts/chess-2025/deadline--greg-evans.json",
-      "chess-2025/deadline--greg-evans.json"
+      "chess-2025/deadline--greg-evans.json",
+      "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
+      "the-producers-west-end-2025/variety--ellise-shafer.json",
+      "data/review-texts/heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+      "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+      "data/review-texts/operation-mincemeat-2025/deadline--greg-evans.json",
+      "operation-mincemeat-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -1961,7 +1983,8 @@
       "deep-azure-globe-west-end-2026/theatre-weekly--unknown.json",
       "you-got-older-off-broadway-2026/thewrap--robert-hofler.json",
       "into-the-woods-west-end-2025/daily-mail--patrick-marmion.json",
-      "all-my-sons-west-end-2025/timeout-london--helen-shaw.json"
+      "all-my-sons-west-end-2025/timeout-london--helen-shaw.json",
+      "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2216,7 +2239,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "all-my-sons-west-end-2025/london-box-office--stuart-king.json",
+  "lastProcessed": "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2951,6 +2974,50 @@
       "t": "2026-04-02T05:37:56.593Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T05:39:35.290Z",
+      "event": "bb-session",
+      "session": "5f193cdf",
+      "url": "https://variety.com/2026/theater/global/richard-kind-returning-the-producers-lon"
+    },
+    {
+      "t": "2026-04-02T05:39:36.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T05:40:57.300Z",
+      "event": "bb-session",
+      "session": "19d1eed0",
+      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
+    },
+    {
+      "t": "2026-04-02T05:40:58.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-02T05:45:05.395Z",
+      "event": "bb-session",
+      "session": "c3a248db",
+      "url": "https://deadline.com/2025/02/operation-mincemeat-broadway-opening-date-123610426"
+    },
+    {
+      "t": "2026-04-02T05:45:06.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T05:45:20.325Z",
+      "event": "bb-session",
+      "session": "59ee78c9",
+      "url": "https://www.hollywoodreporter.com/video/buena-vista-social-club-choreographers-j"
+    },
+    {
+      "t": "2026-04-02T05:45:21.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
