@@ -10,7 +10,8 @@
     "jajas-african-hair-braiding-west-end-2026/theatrely--unknown.json",
     "jajas-african-hair-braiding-west-end-2026/theatrely--emily-wyrwa.json",
     "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
-    "broken-glass-west-end-2026/telegraph--david-thacker.json"
+    "broken-glass-west-end-2026/telegraph--david-thacker.json",
+    "operation-mincemeat-west-end-2024/musical-theatre-review--rebecca-sinclair.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/financialtimes--ian-shuttleworth.json",
@@ -31,7 +32,16 @@
     "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "oliver-west-end-2024/the-sun--dominic-maxwell.json",
-    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json"
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "witness-for-the-prosecution-west-end-2022/broadwayworld--stephi-wild.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout--unknown.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "hamilton-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -44,7 +54,8 @@
       "jajas-african-hair-braiding-west-end-2026/theatrely--unknown.json",
       "jajas-african-hair-braiding-west-end-2026/theatrely--emily-wyrwa.json",
       "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
-      "broken-glass-west-end-2026/telegraph--david-thacker.json"
+      "broken-glass-west-end-2026/telegraph--david-thacker.json",
+      "operation-mincemeat-west-end-2024/musical-theatre-review--rebecca-sinclair.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -58,11 +69,25 @@
       "data/review-texts/kinky-boots-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
       "data/review-texts/dracula-west-end-2025/daily-mail--patrick-marmion.json",
       "data/review-texts/deep-azure-globe-west-end-2026/theupcoming--benedetta-mancusi.json",
-      "data/review-texts/shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json"
+      "data/review-texts/shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json",
+      "data/review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--stephi-wild.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/timeout--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
-  "log": []
+  "lastProcessed": "hamilton-west-end-2021/times-uk--clive-davis.json",
+  "log": [
+    {
+      "t": "2026-04-02T09:11:41.725Z",
+      "event": "bb-session",
+      "session": "69e6f44b",
+      "url": "https://www.thewrap.com/cabaret-broadway-review-eddie-redmayne-twists-the-emcee-"
+    },
+    {
+      "t": "2026-04-02T09:11:42.988Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
+    }
+  ]
 }
