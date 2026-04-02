@@ -261,7 +261,15 @@
     "moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json",
     "moulin-rouge-the-musical-west-end-2021/theupcoming--daisy-grace-greetham.json",
     "moulin-rouge-the-musical-west-end-2021/west-end-best-friend--jamie-flowers.json",
-    "magic-mike-live-west-end-2021/observer--susannah-clapp.json"
+    "magic-mike-live-west-end-2021/observer--susannah-clapp.json",
+    "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json",
+    "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
+    "magic-mike-live-west-end-2021/i-paper--fiona-mountford.json",
+    "magic-mike-live-west-end-2021/independent--alice-saville.json",
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/musical-theatre-review--ian-bowkett.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1788,7 +1796,9 @@
     "stranger-things-2024/usatoday--ralphie-aversa.json",
     "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
     "maybe-happy-ending-2024/billboard--gil-kaufman.json",
-    "witness-for-the-prosecution-west-end-2022/broadwayworld--stephi-wild.json"
+    "witness-for-the-prosecution-west-end-2022/broadwayworld--stephi-wild.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout--unknown.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1957,7 +1967,13 @@
       "moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json",
       "moulin-rouge-the-musical-west-end-2021/theupcoming--daisy-grace-greetham.json",
       "moulin-rouge-the-musical-west-end-2021/west-end-best-friend--jamie-flowers.json",
-      "magic-mike-live-west-end-2021/observer--susannah-clapp.json"
+      "magic-mike-live-west-end-2021/observer--susannah-clapp.json",
+      "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
+      "magic-mike-live-west-end-2021/i-paper--fiona-mountford.json",
+      "magic-mike-live-west-end-2021/independent--alice-saville.json",
+      "magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/musical-theatre-review--ian-bowkett.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -2065,7 +2081,9 @@
       "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json",
       "stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
       "mj-2022/nytimes--michael-paulson.json",
-      "moulin-rouge-the-musical-west-end-2021/independent--isobel-lewis.json"
+      "moulin-rouge-the-musical-west-end-2021/independent--isobel-lewis.json",
+      "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json",
+      "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2291,7 +2309,9 @@
       "data/review-texts/chess-2025/billboard--rebecca-milzoff.json",
       "data/review-texts/buena-vista-social-club-2025/billboard--sigal-ratner-arias.json",
       "data/review-texts/maybe-happy-ending-2024/billboard--gil-kaufman.json",
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--stephi-wild.json"
+      "data/review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--stephi-wild.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/timeout--unknown.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2323,7 +2343,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/observer--susannah-clapp.json",
+  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/financialtimes--sarah-hemming.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -3146,6 +3166,17 @@
       "t": "2026-04-02T05:53:03.264Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T06:05:58.921Z",
+      "event": "bb-session",
+      "session": "dbc8eb49",
+      "url": "https://www.thewrap.com/cabaret-broadway-review-eddie-redmayne-twists-the-emcee-"
+    },
+    {
+      "t": "2026-04-02T06:06:00.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
     }
   ]
 }
