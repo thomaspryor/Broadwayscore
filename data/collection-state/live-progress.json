@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-02T19:40:17.580Z",
-  "processed": 139,
-  "failed": 340,
-  "successRate": "29.0%",
+  "updatedAt": "2026-04-02T19:42:36.981Z",
+  "processed": 141,
+  "failed": 348,
+  "successRate": "28.8%",
   "tierBreakdown": {
     "playwright": 63,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 0,
     "scrapingbee": 15,
     "brightdata": 0,
     "archiveToday": 62,
-    "archive": 53
+    "archive": 54
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-04-02T19:05:36.733Z",
-      "event": "bb-session",
-      "session": "a3b60be1",
-      "url": "https://variety.com/2016/legit/reviews/amelie-a-new-musical-review-1201945368/"
-    },
-    {
-      "t": "2026-04-02T19:05:37.948Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-02T19:08:26.040Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-02T19:39:16.609Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-02T19:42:18.252Z",
+      "event": "bb-session",
+      "session": "97e75e8a",
+      "url": "http://theater.nytimes.com/2013/04/25/theater/reviews/ill-eat-you-last-starring-"
+    },
+    {
+      "t": "2026-04-02T19:42:19.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

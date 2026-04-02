@@ -138,7 +138,9 @@
     "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json",
     "hedwig-and-the-angry-inch-2014/sfgate--lily-janiak.json",
     "violet-2014/hollywood-reporter--david-rooney.json",
-    "all-the-way-2014/usatoday--elysa-gardner.json"
+    "all-the-way-2014/usatoday--elysa-gardner.json",
+    "the-winslow-boy-2013/ew--thom-geier.json",
+    "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -480,7 +482,15 @@
     "rocky-2014/nysr--huffington-poststeven-suskin.json",
     "all-the-way-2014/ap--mark-kennedy.json",
     "machinal-2014/timeout--david-cote.json",
-    "macbeth-2013/new-jersey-newsroom--michael-sommers.json"
+    "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/bloomberg--jeremy-gerard.json",
+    "a-time-to-kill-2013/ew--thom-geier.json",
+    "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
+    "the-winslow-boy-2013/bloomberg--unknown.json",
+    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "pippin-2013/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -568,7 +578,9 @@
       "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
       "data/review-texts/violet-2014/hollywood-reporter--david-rooney.json",
       "violet-2014/hollywood-reporter--david-rooney.json",
-      "data/review-texts/ifthen-2014/nypost--elisabeth-vincentelli.json"
+      "data/review-texts/ifthen-2014/nypost--elisabeth-vincentelli.json",
+      "data/review-texts/ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
+      "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -706,11 +718,12 @@
       "the-visit-2015/vulture--jesse-green.json",
       "something-rotten-2015/wsj--terry-teachout.json",
       "living-on-love-2015/albany-times-union--steve-barnes.json",
-      "all-the-way-2014/usatoday--elysa-gardner.json"
+      "all-the-way-2014/usatoday--elysa-gardner.json",
+      "the-winslow-boy-2013/ew--thom-geier.json"
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -876,6 +889,17 @@
       "t": "2026-04-02T19:39:16.609Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-02T19:42:18.252Z",
+      "event": "bb-session",
+      "session": "97e75e8a",
+      "url": "http://theater.nytimes.com/2013/04/25/theater/reviews/ill-eat-you-last-starring-"
+    },
+    {
+      "t": "2026-04-02T19:42:19.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
