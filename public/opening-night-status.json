@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T07:13:13.963Z",
+  "generatedAt": "2026-04-02T08:52:35.644Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -488,24 +488,23 @@
       "slug": "les-liaisons-dangereuses-west-end",
       "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 61,
       "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
+      "total": 4,
+      "t1": 3,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "t3": 1,
+      "positive": 2,
+      "mixed": 1,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
-          "T1:0/3",
+          "4/8 total",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -527,10 +526,6 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -538,6 +533,10 @@
       "missingT2": [
         {
           "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
           "isDualMarket": true
         },
         {
@@ -874,7 +873,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 12,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,

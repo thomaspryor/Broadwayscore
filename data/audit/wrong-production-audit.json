@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T07:13:10.398Z",
+  "timestamp": "2026-04-02T08:52:32.084Z",
   "stats": {
-    "totalReviews": 32175,
-    "alreadyFlagged": 11951,
+    "totalReviews": 32174,
+    "alreadyFlagged": 11941,
     "dateGuardCatches": 15,
     "directorMismatch": 843,
-    "tvFilmSignals": 3317,
-    "londonSignals": 971,
-    "offBroadwaySignals": 965,
+    "tvFilmSignals": 3320,
+    "londonSignals": 974,
+    "offBroadwaySignals": 966,
     "yearMismatch": 64,
-    "noPublishDate": 5893
+    "noPublishDate": 5890
   },
   "findings": [
     {
@@ -5633,6 +5633,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "telegraph--paul-raven.json",
+      "score": 90,
       "publishDate": "2026-01-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/back-future-musical-review-cars-star-feelgood-triumph/",
       "findings": [
@@ -26885,6 +26886,20 @@
       ]
     },
     {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "times-uk--ian-johns.json",
+      "score": 41,
+      "publishDate": "2026-04-01",
+      "url": "https://www.thetimes.com/travel/destinations/europe-travel/france/paris/les-liaisons-dangereuses-gvd35d6nfr5",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
       "showId": "les-miserables-2006",
       "file": "nydailynews--unknown.json",
       "score": 67,
@@ -27413,6 +27428,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "liberation-2025",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2025-11-05",
+      "url": "https://www.latimes.com/opinion/story/2025-11-19/wicked-liberation-ms-hollywood-broadway-feminism",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -28997,8 +29025,7 @@
     {
       "showId": "marjorie-prime-2025",
       "file": "nytimes--elisabeth-vincentelli.json",
-      "score": 82,
-      "publishDate": "December 8, 2025",
+      "publishDate": "2025-12-09",
       "url": "https://www.nytimes.com/2025/12/08/theater/marjorie-prime-review-june-squibb.html",
       "findings": [
         {
@@ -42819,6 +42846,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "thestage--tom-wicker.json",
+      "score": 81,
       "publishDate": null,
       "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
       "findings": [
@@ -56244,6 +56272,19 @@
     },
     {
       "showId": "waiting-for-godot-2025",
+      "file": "nypost--entertainment-critic.json",
+      "publishDate": "2025-09-29",
+      "url": "https://nypost.com/2025/09/28/entertainment/waiting-for-godot-review-rough-keanu-reeves-struggles-in-mediocre-production-of-stage-classic/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "waiting-for-godot-2025",
       "file": "nypost--johnny-oleksinski.json",
       "score": 48,
       "publishDate": "September 28, 2025",
@@ -64819,7 +64860,7 @@
     {
       "showId": "hadestown-2019",
       "file": "usatoday--brent-hallenbeck.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2019-06-06",
       "url": "https://bearswire.usatoday.com/story/entertainment/2019/04/17/how-hadestown-review-broadway-musical-compares-anais-mitchell-vermont-shows/3475650002/",
       "findings": [
@@ -68398,7 +68439,22 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "guardian--the-guardian.json",
+      "score": 67,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/apr/02/les-liaisons-dangereuses-review-love-is-a-fight-for-power-in-this-bold-staging",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "telegraph--unknown.json",
+      "score": 81,
       "publishDate": null,
       "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
       "findings": [
@@ -68406,6 +68462,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "thereviewshub--the-reviews-hub-london.json",
+      "score": 91,
+      "publishDate": "2026-04-01",
+      "url": "https://www.thereviewshub.com/les-liaisons-dangereuses-national-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2026-04-01",
+      "url": "https://www.whatsonstage.com/news/les-liaisons-dangereuses-with-aidan-turner-lesley-manville-and-monica-barbaro-photos-released_1717106/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -68973,6 +69056,19 @@
       "score": 92,
       "publishDate": "December 8, 2025",
       "url": "https://www.thedailybeast.com/obsessed/june-squibb-96-delivers-acting-tour-de-force-in-marjorie-prime/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "nysr--david-finkle.json",
+      "publishDate": "2025-12-21",
+      "url": "https://nystagereview.com/2025/12/08/marjorie-prime-a-very-real-exploration-of-memory-and-loss-powered-by-ai/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -77482,7 +77578,7 @@
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
       "file": "telegraph--dominic-cavendish.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2025-12-12",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
       "findings": [
