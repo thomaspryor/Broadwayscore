@@ -141,7 +141,9 @@
     "all-the-way-2014/usatoday--elysa-gardner.json",
     "the-winslow-boy-2013/ew--thom-geier.json",
     "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
-    "the-nance-2013/timeout--adam-feldman.json"
+    "the-nance-2013/timeout--adam-feldman.json",
+    "kinky-boots-2013/variety--marilyn-stasio.json",
+    "hands-on-a-hardbody-2013/variety--marilyn-stasio.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -500,7 +502,15 @@
     "the-assembled-parties-2013/wsj--tery-teachout.json",
     "the-nance-2013/wsj--unknown.json",
     "the-nance-2013/hollywood-reporter--david-rooney.json",
-    "the-nance-2013/new-jersey-newsroom--michael-sommers.json"
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "hands-on-a-hardbody-2013/newsday--linda-winer.json",
+    "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
+    "breakfast-at-tiffanys-2013/usatoday--elysa-gardner.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -590,7 +600,11 @@
       "violet-2014/hollywood-reporter--david-rooney.json",
       "data/review-texts/ifthen-2014/nypost--elisabeth-vincentelli.json",
       "data/review-texts/ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
-      "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json"
+      "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
+      "data/review-texts/kinky-boots-2013/variety--marilyn-stasio.json",
+      "kinky-boots-2013/variety--marilyn-stasio.json",
+      "data/review-texts/hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
+      "hands-on-a-hardbody-2013/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -676,7 +690,8 @@
       "data/review-texts/allegiance-2015/film-festival-traveler--kevin-filipski.json",
       "data/review-texts/allegiance-2015/playbill--unknown.json",
       "data/review-texts/the-assembled-parties-2013/wsj--tery-teachout.json",
-      "data/review-texts/the-nance-2013/wsj--unknown.json"
+      "data/review-texts/the-nance-2013/wsj--unknown.json",
+      "data/review-texts/breakfast-at-tiffanys-2013/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -736,7 +751,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "the-nance-2013/timeout--adam-feldman.json",
+  "lastProcessed": "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -957,6 +972,28 @@
       "t": "2026-04-02T19:46:09.242Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T19:47:55.588Z",
+      "event": "bb-session",
+      "session": "333bc9b8",
+      "url": "https://variety.com/2013/legit/reviews/legit-review-kinky-boots-1200333293/"
+    },
+    {
+      "t": "2026-04-02T19:47:56.947Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T19:48:20.226Z",
+      "event": "bb-session",
+      "session": "ae30bc2f",
+      "url": "https://variety.com/2013/legit/reviews/legit-review-hands-on-a-hardbody-12003271"
+    },
+    {
+      "t": "2026-04-02T19:48:21.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-02T19:47:34.494Z",
-  "processed": 142,
-  "failed": 357,
-  "successRate": "28.5%",
+  "updatedAt": "2026-04-02T19:49:17.306Z",
+  "processed": 144,
+  "failed": 365,
+  "successRate": "28.3%",
   "tierBreakdown": {
     "playwright": 63,
     "amp": 0,
-    "browserbase": 20,
+    "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 0,
-    "archiveToday": 64,
+    "archiveToday": 65,
     "archive": 54
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-04-02T19:33:48.595Z",
-      "event": "bb-session",
-      "session": "f25dd6ea",
-      "url": "http://deadline.com/2015/04/something-rotten-brilliant-broadway-musical-review-1"
-    },
-    {
-      "t": "2026-04-02T19:33:50.024Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-02T19:34:04.159Z",
-      "event": "bb-session",
-      "session": "1cc388ac",
-      "url": "http://www.wsj.com/articles/something-rotten-review-throw-out-your-shakespeare-1"
-    },
-    {
-      "t": "2026-04-02T19:34:05.533Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-02T19:36:35.970Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-02T19:46:09.242Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-02T19:47:55.588Z",
+      "event": "bb-session",
+      "session": "333bc9b8",
+      "url": "https://variety.com/2013/legit/reviews/legit-review-kinky-boots-1200333293/"
+    },
+    {
+      "t": "2026-04-02T19:47:56.947Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T19:48:20.226Z",
+      "event": "bb-session",
+      "session": "ae30bc2f",
+      "url": "https://variety.com/2013/legit/reviews/legit-review-hands-on-a-hardbody-12003271"
+    },
+    {
+      "t": "2026-04-02T19:48:21.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
