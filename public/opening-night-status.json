@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T03:19:13.593Z",
+  "generatedAt": "2026-04-02T03:30:13.488Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -10,6 +10,8 @@
       "type": "musical",
       "openingDate": "2026-04-02",
       "status": "upcoming",
+      "slug": "i-was-a-teenage-shedevil-west-end",
+      "thumbnail": "/images/shows/i-was-a-teenage-shedevil-west-end-2026/thumbnail.webp",
       "siteScore": null,
       "liveScore": null,
       "scoreDrift": null,
@@ -97,6 +99,8 @@
       "type": "play",
       "openingDate": "2026-04-02",
       "status": "previews",
+      "slug": "the-authenticator-west-end",
+      "thumbnail": "/images/shows/the-authenticator-west-end-2026/thumbnail.webp",
       "siteScore": null,
       "liveScore": null,
       "scoreDrift": null,
@@ -184,6 +188,8 @@
       "type": "special",
       "openingDate": "2026-04-02",
       "status": "upcoming",
+      "slug": "yoah-off-broadway",
+      "thumbnail": "/images/shows/yoah-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
       "liveScore": null,
       "scoreDrift": null,
@@ -483,6 +489,8 @@
       "type": "play",
       "openingDate": "2026-04-01",
       "status": "open",
+      "slug": "les-liaisons-dangereuses-west-end",
+      "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
       "siteScore": null,
       "liveScore": null,
       "scoreDrift": null,
@@ -501,26 +509,65 @@
           "T2:0/2",
           "hi-conf:0/6"
         ],
-        "highConfidence": 0
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
       },
       "broadcast": {
         "state": "waiting",
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        "The New York Times",
-        "Variety",
-        "The Guardian",
-        "The Telegraph",
-        "The Times (UK)",
-        "Daily Mail"
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
       ],
       "missingT2": [
-        "New York Theatre Guide",
-        "Financial Times",
-        "WhatsOnStage",
-        "The Independent",
-        "The Stage"
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
       ]
     },
     {
@@ -531,6 +578,8 @@
       "type": "play",
       "openingDate": "2026-04-01",
       "status": "upcoming",
+      "slug": "nicole-travolta-is-doing-alright-off-broadway",
+      "thumbnail": "/images/shows/nicole-travolta-is-doing-alright-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
       "liveScore": null,
       "scoreDrift": null,
@@ -830,6 +879,8 @@
       "type": "play",
       "openingDate": "2026-03-31",
       "status": "open",
+      "slug": "romeo-and-juliet-west-end",
+      "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
       "siteScore": 75,
       "liveScore": 75,
       "scoreDrift": 0,
@@ -843,7 +894,13 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 10
+        "highConfidence": 10,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
       },
       "broadcast": {
         "state": "waiting",
@@ -882,6 +939,8 @@
       "type": "play",
       "openingDate": "2026-03-31",
       "status": "upcoming",
+      "slug": "gabbys-dollhouse-live-off-west-end",
+      "thumbnail": "/images/shows/gabbys-dollhouse-live-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
       "liveScore": null,
       "scoreDrift": null,
@@ -969,20 +1028,28 @@
       "type": "play",
       "openingDate": "2026-03-30",
       "status": "open",
+      "slug": "dog-day-afternoon",
+      "thumbnail": "/images/shows/dog-day-afternoon-2026/thumbnail.webp",
       "siteScore": 56,
       "liveScore": 56,
       "scoreDrift": 0,
-      "total": 22,
+      "total": 21,
       "t1": 6,
-      "t2": 13,
+      "t2": 12,
       "t3": 3,
       "positive": 4,
-      "mixed": 10,
+      "mixed": 9,
       "negative": 8,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 22
+        "highConfidence": 21,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
       },
       "broadcast": {
         "state": "complete",

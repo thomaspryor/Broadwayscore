@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T03:19:10.027Z",
+  "timestamp": "2026-04-02T03:30:09.937Z",
   "stats": {
-    "totalReviews": 32162,
-    "alreadyFlagged": 11983,
+    "totalReviews": 32149,
+    "alreadyFlagged": 11966,
     "dateGuardCatches": 13,
     "directorMismatch": 837,
     "tvFilmSignals": 3313,
-    "londonSignals": 958,
-    "offBroadwaySignals": 963,
+    "londonSignals": 959,
+    "offBroadwaySignals": 964,
     "yearMismatch": 64,
-    "noPublishDate": 5887
+    "noPublishDate": 5890
   },
   "findings": [
     {
@@ -70139,6 +70139,20 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
+      "file": "nytg--austin-fimmano.json",
+      "score": 89,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
       "file": "timeout--paul-raven.json",
       "score": 61,
       "publishDate": "2025-12-19",
@@ -77152,6 +77166,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "nytg--diep-tran.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/everything-you-need-to-know-about-the-phantom-of-the-opera-on-broadway",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
