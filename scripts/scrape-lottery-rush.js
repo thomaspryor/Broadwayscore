@@ -1457,6 +1457,95 @@ function printSummary(changes) {
   }
 }
 
+// ==================== TodayTix URL Resolution ====================
+
+/**
+ * For any TodayTix-platform entry missing a show-specific URL,
+ * query the TodayTix public API to resolve the show's ID and build a URL.
+ * TodayTix ID-based URLs (e.g., /nyc/shows/44515) auto-redirect to the
+ * full slug URL (e.g., /nyc/shows/44515-dog-day-afternoon).
+ */
+async function resolveTodayTixUrls(existing) {
+  const TODAYTIX_FIELDS = ['digitalRush', 'lottery', 'rush'];
+  const toResolve = [];
+
+  for (const [showId, show] of Object.entries(existing.shows)) {
+    for (const field of TODAYTIX_FIELDS) {
+      const entry = show[field];
+      if (!entry) continue;
+      if (entry.platform?.toLowerCase() !== 'todaytix') continue;
+      if (entry.url && !isGenericPlatformUrl(entry.url)) continue; // Already has specific URL
+      // Find show title for API query
+      const matchedShow = allShows.find(s => s.id === showId);
+      if (matchedShow) {
+        toResolve.push({ showId, field, title: matchedShow.title });
+      }
+    }
+  }
+
+  if (toResolve.length === 0) return;
+
+  console.log(`\n[TodayTix] Resolving ${toResolve.length} missing URLs...`);
+
+  for (const { showId, field, title } of toResolve) {
+    try {
+      const url = `https://api.todaytix.com/api/v2/shows?query=${encodeURIComponent(title)}&location=1&limit=3`;
+      const resp = await fetch(url);
+      if (!resp.ok) {
+        console.warn(`  [TodayTix] API error for "${title}": ${resp.status}`);
+        continue;
+      }
+      const data = await resp.json();
+      const results = data.data || [];
+
+      // Find best match: exact title match (case-insensitive)
+      const match = results.find(r =>
+        r.displayName?.toLowerCase() === title.toLowerCase()
+      ) || results[0]; // Fallback to first result
+
+      if (match && match.id) {
+        const todaytixUrl = `https://www.todaytix.com/nyc/shows/${match.id}`;
+        existing.shows[showId][field].url = todaytixUrl;
+        console.log(`  ✓ ${showId}.${field}: ${todaytixUrl} (matched "${match.displayName}")`);
+      } else {
+        console.log(`  ✗ ${showId}.${field}: no TodayTix match for "${title}"`);
+      }
+
+      // Rate limit: 200ms between requests
+      await new Promise(r => setTimeout(r, 200));
+    } catch (e) {
+      console.warn(`  [TodayTix] Failed for "${title}": ${e.message}`);
+    }
+  }
+}
+
+// ==================== Cross-Source Price Comparison ====================
+
+/**
+ * After merging, report any price discrepancies between sources.
+ * This catches cases where bwayrush and Playbill disagree.
+ */
+function printPriceComparisonReport(allChanges) {
+  const priceChanges = allChanges.filter(c => c.type === 'updated' && c.key === 'price');
+  if (priceChanges.length === 0) return;
+
+  console.log('\n[Price Comparison] Source disagreements:');
+  let conflicts = 0;
+
+  for (const change of priceChanges) {
+    const pctChange = change.old > 0 ? ((change.new - change.old) / change.old * 100).toFixed(0) : '∞';
+    const marker = Math.abs(parseFloat(pctChange)) > 20 ? '⚠️' : '  ';
+    console.log(`  ${marker} ${change.showId}.${change.field}: $${change.old} → $${change.new} (${pctChange}%, from ${change.source})`);
+    if (Math.abs(parseFloat(pctChange)) > 20) conflicts++;
+  }
+
+  if (conflicts > 0) {
+    console.log(`  → ${conflicts} significant discrepancies (>20%). Consider pinning verified prices with _verifiedPrice.`);
+  } else {
+    console.log(`  → All price changes are minor adjustments.`);
+  }
+}
+
 // ==================== Main ====================
 
 async function main() {
@@ -1498,6 +1587,12 @@ async function main() {
   // Clean closed shows
   const closedChanges = cleanClosedShows(existing);
   allChanges.push(...closedChanges);
+
+  // Resolve TodayTix URLs via API for entries missing show-specific links
+  await resolveTodayTixUrls(existing);
+
+  // Cross-source price comparison report
+  printPriceComparisonReport(allChanges);
 
   // Update top-level metadata
   existing.lastUpdated = new Date().toISOString();
