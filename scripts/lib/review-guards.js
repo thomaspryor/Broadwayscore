@@ -232,9 +232,20 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'WestEndTheatre.com aggregator roundup page' };
   }
 
+  // LBO review roundups (aggregate other critics, not original reviews)
+  if (/londonboxoffice\.co\.uk\/.*review-roundup/i.test(url)) {
+    return { isRoundup: true, reason: 'LBO review roundup page' };
+  }
+
   // Generic roundup URL patterns
   if (/review-round-?ups?\b/i.test(url) || /reviews-round-?up\b/i.test(url)) {
     return { isRoundup: true, reason: 'URL contains roundup pattern' };
+  }
+  if (/round-?up.*review/i.test(url)) {
+    return { isRoundup: true, reason: 'URL contains roundup-review pattern' };
+  }
+  if (/what-the-critics-said\b|what-critics-think\b|critics-say\b/i.test(url)) {
+    return { isRoundup: true, reason: 'URL contains critics-said/think pattern' };
   }
 
   return { isRoundup: false };

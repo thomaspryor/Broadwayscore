@@ -43,7 +43,7 @@ jobs:
           INVALID=0
           for f in data/*.json; do
             if [ ! -f "$f" ]; then continue; fi
-            if grep -qE '^(<{7}|={7}|>{7})' "$f" 2>/dev/null; then
+            if grep -qE '(<{7}|={7}|>{7})' "$f" 2>/dev/null; then
               echo "::error::$f contains merge conflict markers"
               INVALID=1
             elif ! node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then

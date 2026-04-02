@@ -1046,6 +1046,9 @@ const OUTLET_EXTRACTORS = {
   'digital-journal': extractUKStarRating,
   'rollingstone': noScoreExtractor,    // RS theater reviews don't have star ratings
   'rolling-stone': noScoreExtractor,
+  'british-theatre': noScoreExtractor, // BTG doesn't publish star ratings
+  'britishtheatreguide': noScoreExtractor,
+  'rolling-stone': noScoreExtractor,
   'theater-life': extractUKStarRating,
   'jks-theatre-scene': extractGenericLetterGrade,
 

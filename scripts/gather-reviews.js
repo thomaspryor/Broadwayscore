@@ -212,12 +212,21 @@ function detectCrossShowUrlMismatch(showId, url) {
     const idSlug = showId.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
     if (idSlug.length >= 8 && urlPath.includes(idSlug)) return null;
 
+    // Normalize connectors (and/&/+) so "romeo-and-juliet" ≈ "romeo-juliet"
+    const stripConnectors = s => s.replace(/-(?:and|the)-/g, '-');
+    const idSlugNorm = stripConnectors(idSlug);
+    // Also match if URL contains the connector-stripped slug (e.g., URL has "romeo-juliet" for "romeo-and-juliet")
+    if (idSlugNorm !== idSlug && idSlugNorm.length >= 8 && urlPath.includes(idSlugNorm)) return null;
+
     // Check if URL contains a different show's slug
     for (const other of index) {
       if (other.id === showId) continue;
       // Skip shows that share a base title with this show (same slug or prefix relationship)
       const otherIdSlug = other.id.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
       if (otherIdSlug === idSlug) continue;
+      // Skip if connector-normalized slugs match (e.g., "romeo-and-juliet" ≈ "romeo-juliet")
+      const otherIdSlugNorm = stripConnectors(otherIdSlug);
+      if (otherIdSlugNorm === idSlugNorm) continue;
       // Skip if one show's slug is a prefix of the other (e.g., "kinky-boots" vs "kinky-boots-the-musical")
       if (thisShow.slug.startsWith(other.slug) || other.slug.startsWith(thisShow.slug)) continue;
       if (idSlug.startsWith(otherIdSlug) || otherIdSlug.startsWith(idSlug)) continue;
@@ -3782,7 +3791,9 @@ async function main() {
 
 // Allow importing as a module (for opening-night-poller.js) without running CLI
 if (require.main === module) {
-  main().catch(err => {
+  main().then(() => {
+    process.exit(0);
+  }).catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);
   });
