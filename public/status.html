@@ -82,6 +82,13 @@
   .missing-t2 { color: var(--yellow); }
   .missing-cross { color: var(--dim); font-style: italic; }
   .all-found { font-size: 11px; color: var(--green); margin-top: 4px; }
+  .section-header { font-size: 15px; font-weight: 700; color: var(--dim); margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .card-upcoming { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; opacity: 0.85; }
+  .card-upcoming .card-top { display: flex; gap: 10px; align-items: center; }
+  .card-upcoming .card-thumb, .card-upcoming .card-thumb-placeholder { width: 48px; height: 48px; border-radius: 6px; }
+  .card-upcoming .show-title { font-size: 14px; }
+  .card-upcoming .show-meta { font-size: 11px; margin-bottom: 0; }
+  .days-pill { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: #1e3a5f; color: var(--cyan); flex-shrink: 0; white-space: nowrap; }
   .empty { text-align: center; color: var(--dim); padding: 40px 0; }
   .refresh { font-size: 11px; color: var(--dim); text-align: center; margin-top: 8px; }
   .footer { text-align: center; margin-top: 16px; }
@@ -101,6 +108,7 @@
 <div class="meta" id="updated" role="status" aria-live="polite"></div>
 <div class="filters" id="filters" role="group" aria-label="Market filters"></div>
 <div id="shows" role="main"></div>
+<div id="upcoming"></div>
 <div class="refresh" id="refresh" role="status" aria-live="polite"></div>
 <div class="footer"><a href="https://broadwayscorecard.com">broadwayscorecard.com</a></div>
 <script>
@@ -251,10 +259,34 @@ function renderShows(data) {
   }).join('');
 }
 
+function renderUpcoming(data) {
+  const el = document.getElementById('upcoming');
+  const list = (data.upcoming || []).filter(s => activeFilters.has(s.category));
+  if (!list.length) { el.innerHTML = ''; return; }
+  el.innerHTML = '<div class="section-header">Opening Soon</div>' +
+    list.map(s => {
+      const imgEl = s.thumbnail
+        ? '<img class="card-thumb" src="' + s.thumbnail + '" alt="" loading="lazy">'
+        : '<div class="card-thumb-placeholder">\u{1F3AD}</div>';
+      const showUrl = 'https://broadwayscorecard.com/shows/' + (s.slug || s.id);
+      const dayLabel = s.daysUntil === 1 ? 'tomorrow' : 'in ' + s.daysUntil + ' days';
+      return '<div class="card-upcoming">' +
+        '<div class="card-top">' +
+          imgEl +
+          '<div class="card-info" style="flex:1;min-width:0">' +
+            '<div class="show-title"><a href="' + showUrl + '">' + esc(s.title) + '</a> <span class="market-pill ' + marketClass(s.category) + '">' + marketLabel(s.category) + '</span></div>' +
+            '<div class="show-meta">' + esc(s.type) + ' \u00b7 ' + s.openingDate + ' \u00b7 ' + s.status + '</div>' +
+          '</div>' +
+          '<span class="days-pill">' + dayLabel + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+}
+
 async function fetchAndRender() {
   try {
     const r = await fetch('/opening-night-status.json?t=' + Date.now());
-    if (r.ok) { _data = await r.json(); renderFilters(_data); renderShows(_data); }
+    if (r.ok) { _data = await r.json(); renderFilters(_data); renderShows(_data); renderUpcoming(_data); }
   } catch(e) { console.error('Failed to fetch status:', e); }
   document.getElementById('refresh').textContent = 'Auto-refresh every 30s \u00b7 Last check: ' + new Date().toLocaleTimeString();
 }

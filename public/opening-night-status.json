@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T03:39:37.287Z",
+  "generatedAt": "2026-04-02T03:45:12.042Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -492,24 +492,23 @@
       "slug": "les-liaisons-dangereuses-west-end",
       "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 51,
       "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
+      "total": 3,
+      "t1": 1,
+      "t2": 2,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
-      "negative": 0,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "3/8 total",
+          "T1:1/3",
+          "hi-conf:3/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -881,20 +880,20 @@
       "status": "open",
       "slug": "romeo-and-juliet-west-end",
       "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
-      "siteScore": 75,
-      "liveScore": 75,
-      "scoreDrift": 0,
-      "total": 10,
+      "siteScore": null,
+      "liveScore": 74,
+      "scoreDrift": null,
+      "total": 11,
       "t1": 3,
-      "t2": 4,
+      "t2": 5,
       "t3": 3,
       "positive": 7,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1030,20 +1029,20 @@
       "status": "open",
       "slug": "dog-day-afternoon",
       "thumbnail": "/images/shows/dog-day-afternoon-2026/thumbnail.webp",
-      "siteScore": 56,
-      "liveScore": 56,
+      "siteScore": 57,
+      "liveScore": 57,
       "scoreDrift": 0,
-      "total": 21,
+      "total": 23,
       "t1": 6,
-      "t2": 12,
+      "t2": 14,
       "t3": 3,
       "positive": 4,
-      "mixed": 9,
+      "mixed": 11,
       "negative": 8,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 23,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1053,7 +1052,7 @@
       },
       "broadcast": {
         "state": "complete",
-        "detail": "Sent 3/31/2026, 10:27:32 PM"
+        "detail": "Sent 3/31/2026, 6:27:32 PM"
       },
       "missingT1": [
         {
@@ -1231,6 +1230,176 @@
           "isDualMarket": true
         }
       ]
+    }
+  ],
+  "upcoming": [
+    {
+      "id": "scorched-earth-off-broadway-2026",
+      "title": "Scorched Earth",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "special",
+      "openingDate": "2026-04-03",
+      "status": "previews",
+      "slug": "scorched-earth-off-broadway",
+      "thumbnail": "/images/shows/scorched-earth-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 1
+    },
+    {
+      "id": "the-pushover-by-john-patrick-shanley-off-broadway-2026",
+      "title": "The Pushover by John Patrick Shanley",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-03",
+      "status": "upcoming",
+      "slug": "the-pushover-by-john-patrick-shanley-off-broadway",
+      "thumbnail": "/images/shows/the-pushover-by-john-patrick-shanley-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 1
+    },
+    {
+      "id": "heart-wall-west-end-2026",
+      "title": "HEART WALL",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-04-04",
+      "status": "upcoming",
+      "slug": "heart-wall-west-end",
+      "thumbnail": "/images/shows/heart-wall-west-end-2026/thumbnail.webp",
+      "daysUntil": 2
+    },
+    {
+      "id": "becky-shaw-2026",
+      "title": "Becky Shaw",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-04-06",
+      "status": "previews",
+      "slug": "becky-shaw",
+      "thumbnail": "/images/shows/becky-shaw-2026/thumbnail.webp",
+      "daysUntil": 4
+    },
+    {
+      "id": "innocence-off-broadway-2026",
+      "title": "Innocence",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-06",
+      "status": "previews",
+      "slug": "innocence-off-broadway",
+      "thumbnail": "/images/shows/innocence-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 4
+    },
+    {
+      "id": "cats-the-jellicle-ball-2026",
+      "title": "CATS: The Jellicle Ball",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "musical",
+      "openingDate": "2026-04-07",
+      "status": "previews",
+      "slug": "cats-the-jellicle-ball",
+      "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
+      "daysUntil": 5
+    },
+    {
+      "id": "the-listening-off-broadway-2026",
+      "title": "THE LISTENING",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-07",
+      "status": "previews",
+      "slug": "the-listening-off-broadway",
+      "thumbnail": "/images/shows/the-listening-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 5
+    },
+    {
+      "id": "midnight-in-the-toyshop-west-end-2026",
+      "title": "Midnight in the Toyshop",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "musical",
+      "openingDate": "2026-04-07",
+      "status": "upcoming",
+      "slug": "midnight-in-the-toyshop-west-end",
+      "thumbnail": "/images/shows/midnight-in-the-toyshop-west-end-2026/thumbnail.webp",
+      "daysUntil": 5
+    },
+    {
+      "id": "the-boy-at-the-back-of-the-class-west-end-2026",
+      "title": "The Boy At The Back Of The Class",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-04-07",
+      "status": "upcoming",
+      "slug": "the-boy-at-the-back-of-the-class-west-end",
+      "thumbnail": "/images/shows/the-boy-at-the-back-of-the-class-west-end-2026/thumbnail.webp",
+      "daysUntil": 5
+    },
+    {
+      "id": "copenhagen-west-end-2026",
+      "title": "Copenhagen",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-04-07",
+      "status": "previews",
+      "slug": "copenhagen-west-end",
+      "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
+      "daysUntil": 5
+    },
+    {
+      "id": "inter-alia-west-end-2026",
+      "title": "Inter Alia",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-04-07",
+      "status": "previews",
+      "slug": "inter-alia-west-end-2026",
+      "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
+      "daysUntil": 5
+    },
+    {
+      "id": "death-of-a-salesman-2026",
+      "title": "Death of a Salesman",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-04-09",
+      "status": "previews",
+      "slug": "death-of-a-salesman",
+      "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
+      "daysUntil": 7
+    },
+    {
+      "id": "lost-in-del-valle-off-broadway-2026",
+      "title": "Lost in Del Valle",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-09",
+      "status": "previews",
+      "slug": "lost-in-del-valle-off-broadway",
+      "thumbnail": "/images/shows/lost-in-del-valle-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7
+    },
+    {
+      "id": "flyby-off-west-end-2026",
+      "title": "FLYBY",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-04-09",
+      "status": "upcoming",
+      "slug": "flyby-off-west-end",
+      "thumbnail": "/images/shows/flyby-off-west-end-2026/thumbnail.webp",
+      "daysUntil": 7
     }
   ]
 }
