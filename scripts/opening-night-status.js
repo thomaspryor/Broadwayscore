@@ -648,4 +648,12 @@ async function main() {
   }
 }
 
-main();
+main().then(() => {
+  // Don't exit in watch mode — setInterval keeps the process alive intentionally
+  if (!process.argv.includes('--watch') && !process.argv.some(a => a.startsWith('--watch='))) {
+    process.exit(0);
+  }
+}).catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});
