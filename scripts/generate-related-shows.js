@@ -109,7 +109,11 @@ for (const s of showsData.shows) {
 // ─── Algorithmic pre-filter (matches data-core.ts logic) ───
 // statusFilter: 'open' = open/previews only, 'closed' = closed only, null = all
 function getMarket(show) {
-  return show.category || 'broadway';
+  const cat = show.category || 'broadway';
+  // Group by city: Broadway + Off-Broadway = "nyc", West End + Off-West End = "london"
+  if (cat === 'broadway' || cat === 'off-broadway') return 'nyc';
+  if (cat === 'west-end' || cat === 'off-west-end') return 'london';
+  return cat;
 }
 
 function algorithmicCandidates(show, limit = 15, statusFilter = null) {

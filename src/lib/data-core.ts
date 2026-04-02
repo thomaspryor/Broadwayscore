@@ -601,13 +601,20 @@ export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
-    const showMarket = show.category || 'broadway';
+    const showCity = getCity(show.category);
     return entry.relatedIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show) && (s.category || 'broadway') === showMarket)
+      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show) && getCity(s.category) === showCity)
       .slice(0, limit);
   }
   return getRelatedShowsAlgorithmic(show, limit);
+}
+
+function getCity(category: string | undefined): string {
+  const cat = category || 'broadway';
+  if (cat === 'broadway' || cat === 'off-broadway') return 'nyc';
+  if (cat === 'west-end' || cat === 'off-west-end') return 'london';
+  return cat;
 }
 
 export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow[] {
@@ -616,10 +623,10 @@ export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
-    const showMarket = show.category || 'broadway';
+    const showCity = getCity(show.category);
     return entry.relatedOpenIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show) && (s.category || 'broadway') === showMarket)
+      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show) && getCity(s.category) === showCity)
       .slice(0, limit);
   }
   // Fallback: filter algorithmic results to open/previews/upcoming
@@ -634,10 +641,10 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
     const allShows = getAllShows();
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
-    const showMarket = show.category || 'broadway';
+    const showCity = getCity(show.category);
     return entry.relatedClosedIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show) && (s.category || 'broadway') === showMarket)
+      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show) && getCity(s.category) === showCity)
       .slice(0, limit);
   }
   // Fallback: filter algorithmic results to closed
@@ -702,9 +709,9 @@ function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6): ComputedShow
     return 2;
   };
 
-  const showCategory = show.category || 'broadway';
+  const showCity = getCity(show.category);
   const scored = allShows
-    .filter(s => !isSameShow(s, show) && (s.criticScore?.reviewCount ?? 0) >= 5 && (s.category || 'broadway') === showCategory)
+    .filter(s => !isSameShow(s, show) && (s.criticScore?.reviewCount ?? 0) >= 5 && getCity(s.category) === showCity)
     .map(candidate => {
       let score = 0;
 
