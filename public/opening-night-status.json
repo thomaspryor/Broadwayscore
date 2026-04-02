@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T11:04:15.669Z",
+  "generatedAt": "2026-04-02T11:32:24.968Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -494,20 +494,19 @@
       "siteScore": 65,
       "liveScore": 65,
       "scoreDrift": 0,
-      "total": 6,
+      "total": 7,
       "t1": 4,
-      "t2": 1,
+      "t2": 2,
       "t3": 1,
       "positive": 3,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
-          "T2:1/2"
+          "7/8 total"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -540,10 +539,6 @@
         },
         {
           "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ]
