@@ -16,7 +16,7 @@ const DIMENSIONS: { key: keyof Pick<TheaterVenueScores, 'sightlines' | 'sound' |
   { key: 'sound', label: 'Sound', icon: <SoundIcon /> },
   { key: 'comfort', label: 'Comfort', icon: <ComfortIcon /> },
   { key: 'ambiance', label: 'Ambiance', icon: <SparkleIcon /> },
-  { key: 'facilities', label: 'Facilities', icon: <FacilitiesIcon /> },
+  { key: 'facilities', label: 'Restrooms', icon: <FacilitiesIcon /> },
 ];
 
 function getScoreColor(score: number): string {
@@ -29,6 +29,14 @@ function getScoreTextColor(score: number): string {
   if (score >= 4) return 'text-emerald-400';
   if (score >= 3) return 'text-amber-400';
   return 'text-red-400';
+}
+
+function getScoreLabel(score: number): string {
+  if (score >= 5) return 'Excellent';
+  if (score >= 4) return 'Good';
+  if (score >= 3) return 'Average';
+  if (score >= 2) return 'Below Avg';
+  return 'Poor';
 }
 
 // Icons
@@ -111,6 +119,7 @@ function ScoreBar({ score, label, icon }: { score: number; label: string; icon: 
         />
       </div>
       <span className={`text-xs font-semibold w-5 text-right ${getScoreTextColor(score)}`}>{score}</span>
+      <span className="text-[9px] text-gray-500 w-14 text-right hidden sm:inline">{getScoreLabel(score)}</span>
     </div>
   );
 }
@@ -148,7 +157,7 @@ export default function TheaterScorecardCard({
             }`}>
               {overall.toFixed(1)}
             </div>
-            <span className="text-[9px] text-gray-500 mt-0.5">/ 5</span>
+            <span className="text-[9px] text-gray-500 mt-0.5">{getScoreLabel(Math.round(overall))}</span>
           </div>
         )}
       </div>
