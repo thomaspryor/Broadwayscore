@@ -98,30 +98,32 @@ for (const showDir of fs.readdirSync(BASE)) {
     }
 
     // --- 2. isFullReview vs contentTier ---
-    if (data.isFullReview === true && data.contentTier && data.contentTier !== 'complete') {
-      issues.isFullReview_stale.push({ file: rel, contentTier: data.contentTier });
-      if (FIX) { data.isFullReview = false; modified = true; }
-    }
-    // Also sync the reverse: isFullReview=false but contentTier=complete
-    if (data.isFullReview === false && data.contentTier === 'complete') {
-      issues.isFullReview_stale.push({ file: rel, contentTier: 'complete', note: 'should be true' });
-      if (FIX) { data.isFullReview = true; modified = true; }
+    // Sync isFullReview to contentTier (handles both wrong values AND missing values)
+    if (data.contentTier) {
+      const expectedIfr = data.contentTier === 'complete';
+      if (data.isFullReview !== expectedIfr) {
+        issues.isFullReview_stale.push({ file: rel, contentTier: data.contentTier, isFullReview: data.isFullReview });
+        if (FIX) { data.isFullReview = expectedIfr; modified = true; }
+      }
     }
 
     // --- 3. textStatus vs contentTier ---
-    if (data.textStatus && data.contentTier) {
+    // Rebuild reads textStatus at lines 492 and 2359 — must be set correctly.
+    // Handles both wrong values AND missing values.
+    if (data.contentTier) {
       const expected = TIER_TO_TEXTSTATUS[data.contentTier];
       if (expected && data.textStatus !== expected) {
-        issues.textStatus_mismatch.push({ file: rel, textStatus: data.textStatus, contentTier: data.contentTier });
+        issues.textStatus_mismatch.push({ file: rel, textStatus: data.textStatus || '(missing)', contentTier: data.contentTier });
         if (FIX) { data.textStatus = expected; modified = true; }
       }
     }
 
     // --- 4. textQuality vs contentTier ---
-    if (data.textQuality && data.contentTier) {
+    // Handles both wrong values AND missing values.
+    if (data.contentTier) {
       const expected = TIER_TO_TEXTQUALITY[data.contentTier];
       if (expected && data.textQuality !== expected) {
-        issues.textQuality_mismatch.push({ file: rel, textQuality: data.textQuality, contentTier: data.contentTier });
+        issues.textQuality_mismatch.push({ file: rel, textQuality: data.textQuality || '(missing)', contentTier: data.contentTier });
         if (FIX) { data.textQuality = expected; modified = true; }
       }
     }

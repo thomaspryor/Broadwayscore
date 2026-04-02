@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions } from '@/lib/data-core';
+import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
@@ -49,6 +49,7 @@ import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
 import ShowPageWatchlistButton from '@/components/user/ShowPageWatchlistButton';
 import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import TheaterScorecardCard from '@/components/TheaterScorecardCard';
 
 export const revalidate = 86400;
 
@@ -232,6 +233,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const showSchema = generateShowSchema(show, lastUpdated || undefined, performers);
   const isWestEnd = isLondonMarket(show.category);
   const isOffBroadway = show.category === 'off-broadway';
+
+  // Theater scorecard lookup (Broadway only)
+  const theater = !isWestEnd && !isOffBroadway && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL },
     { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
@@ -1124,6 +1129,17 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             category={show.category}
             actorSlugs={castActorSlugs}
             tonyMap={getShowCastTonyMap(show.id)}
+          />
+        )}
+
+        {/* Theater Scorecard (Broadway only) */}
+        {featureFlags.theaterScorecard && theater?.venueScores && (
+          <TheaterScorecardCard
+            venueScores={theater.venueScores}
+            accessibility={theater.accessibility}
+            externalLinks={theater.externalLinks}
+            theaterName={theater.name}
+            theaterSlug={theater.slug}
           />
         )}
 
