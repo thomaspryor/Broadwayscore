@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-02T19:18:52.098Z",
-  "processed": 111,
-  "failed": 308,
-  "successRate": "26.5%",
+  "updatedAt": "2026-04-02T19:21:18.138Z",
+  "processed": 116,
+  "failed": 313,
+  "successRate": "27.0%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 50,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 15,
     "brightdata": 0,
     "archiveToday": 59,
-    "archive": 43
+    "archive": 47
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -102,6 +102,17 @@
       "t": "2026-04-02T19:16:23.072Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-02T19:20:12.366Z",
+      "event": "bb-session",
+      "session": "988db063",
+      "url": "http://www.wsj.com/articles/the-humans-review-dated-drama-kitchen-sink-and-all-1"
+    },
+    {
+      "t": "2026-04-02T19:20:13.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
