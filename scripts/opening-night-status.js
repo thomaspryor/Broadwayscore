@@ -35,6 +35,7 @@ const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 const SCORING_PROGRESS_PATH = path.join(DATA_DIR, 'collection-state', 'scoring-progress.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
+const SITE_SHOWS_DIR = path.join(__dirname, '..', 'public', 'data', 'shows');
 
 // CLI args
 const SHOW_ID = (process.argv.find(a => a.startsWith('--show=')) || '').replace('--show=', '');
@@ -83,10 +84,28 @@ function findOpeningShows(shows, lookbackDays, showIdFilter) {
 }
 
 /**
- * Get review stats for a show from reviews.json
+ * Get the pre-built site data for a show (what's actually live on broadwayscorecard.com).
+ * Uses minified keys: cs=compositeScore, rc=reviewCount, bd=bucketDistribution
+ */
+function getSiteScore(showId) {
+  const sitePath = path.join(SITE_SHOWS_DIR, `${showId}.json`);
+  const data = loadJSON(sitePath);
+  if (!data || data.cs == null) return null;
+  return {
+    score: data.cs,
+    reviewCount: data.rc,
+    positive: data.bd?.positive || 0,
+    mixed: data.bd?.mixed || 0,
+    negative: data.bd?.negative || 0,
+  };
+}
+
+/**
+ * Get review stats for a show from reviews.json (live data, may be ahead of site).
+ * Uses assignedScore > 0 to match checkReadiness() in the poller.
  */
 function getShowReviewStats(reviewsArr, showId, outletRegistry) {
-  const showRevs = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
+  const showRevs = reviewsArr.filter(r => r.showId === showId && r.assignedScore > 0);
   const outlets = outletRegistry.outlets || outletRegistry;
 
   let t1 = 0, t2 = 0, t3 = 0;
@@ -106,14 +125,23 @@ function getShowReviewStats(reviewsArr, showId, outletRegistry) {
     outletsSeen.add(r.outletId);
   }
 
-  // Compute the live critic score using the shared formula
+  // Live-computed score (may differ from site if rebuild hasn't run)
   const scoreResult = computeCriticScore(showRevs, outlets);
+
+  // Site score (what's actually on broadwayscorecard.com)
+  const siteData = getSiteScore(showId);
+
+  const liveScore = scoreResult ? Math.round(scoreResult.s) : null;
+  const siteScore = siteData?.score ?? null;
 
   return {
     total: showRevs.length,
     t1, t2, t3,
     positive, mixed, negative,
-    score: scoreResult ? Math.round(scoreResult.s) : null,
+    score: siteScore ?? liveScore, // Prefer site score — that's what users see
+    liveScore,                      // Live-computed from reviews.json
+    siteScore,                      // From pre-built file (matches site)
+    scoreDrift: (siteScore != null && liveScore != null) ? liveScore - siteScore : null,
     outletsSeen: [...outletsSeen],
   };
 }
@@ -245,8 +273,8 @@ function getWorkflowStatus() {
  */
 function isOrchestratorPaused() {
   try {
-    execSync('gh variable get ORCHESTRATOR_PAUSED', { timeout: 10000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
-    return true;
+    const val = execSync('gh variable get ORCHESTRATOR_PAUSED', { timeout: 10000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim();
+    return val !== '' && val !== 'false' && val !== '0';
   } catch {
     return false;
   }
@@ -406,7 +434,6 @@ function renderDashboard() {
     const missingT1 = missing.filter(m => m.tier === 1);
     const missingT2 = missing.filter(m => m.tier === 2);
 
-    const thresholds = show.id; // just used to trigger getThresholds in readiness
     const isWE = isLondonMarket(market);
     const minReviews = isWE ? 8 : 12;
     const minT1 = 3;
@@ -417,8 +444,16 @@ function renderDashboard() {
     console.log(`${BOLD}${show.title}${RESET}  ${DIM}${show.id}${RESET}`);
     console.log(`  ${DIM}${market} · ${show.type || 'show'} · opened ${show.openingDate} · status: ${show.status}${RESET}`);
 
-    // Score + review count
-    console.log(`\n  Score: ${scoreColor(stats.score)}  ${DIM}(${stats.total} reviews)${RESET}`);
+    // Score + review count (site score is primary, flag drift)
+    const scoreLabel = stats.siteScore != null ? 'Site score' : 'Live score';
+    let driftNote = '';
+    if (stats.scoreDrift != null && stats.scoreDrift !== 0) {
+      const dir = stats.scoreDrift > 0 ? '+' : '';
+      driftNote = `  ${YELLOW}(live: ${stats.liveScore}, ${dir}${stats.scoreDrift} drift — rebuild needed)${RESET}`;
+    } else if (stats.siteScore == null && stats.liveScore != null) {
+      driftNote = `  ${DIM}(not yet on site — rebuild needed)${RESET}`;
+    }
+    console.log(`\n  ${scoreLabel}: ${scoreColor(stats.score)}  ${DIM}(${stats.total} reviews)${RESET}${driftNote}`);
     console.log(`  ${sentimentBar(stats.positive, stats.mixed, stats.negative)}`);
 
     // Tier breakdown
@@ -458,7 +493,9 @@ function renderDashboard() {
       title: show.title,
       market,
       openingDate: show.openingDate,
-      score: stats.score,
+      siteScore: stats.siteScore,
+      liveScore: stats.liveScore,
+      scoreDrift: stats.scoreDrift,
       reviews: stats,
       readiness,
       broadcast,
