@@ -33,21 +33,23 @@ export default function AnalyticsWrapper() {
   // Runs unconditionally on mount — independent of the Vercel Analytics va-disable flag.
   useEffect(() => {
     import('posthog-js').then(({ default: posthog }) => {
-      if (posthog.__loaded) return; // guard against React Strict Mode double-invoke
-      posthog.init(POSTHOG_KEY, {
-        api_host: 'https://us.i.posthog.com',
-        autocapture: true,
-        capture_pageview: true,
-        capture_pageleave: true,
-        enable_heatmaps: true,
-        person_profiles: 'always',
-        session_recording: { maskAllInputs: false },
-        loaded: (ph) => {
-          if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
-          // Expose on window so TicketLink and other components can call posthog.capture()
-          (window as unknown as Record<string, unknown>).posthog = ph;
-        },
-      });
+      if (!posthog.__loaded) {
+        posthog.init(POSTHOG_KEY, {
+          api_host: 'https://us.i.posthog.com',
+          autocapture: true,
+          capture_pageview: true,
+          capture_pageleave: true,
+          enable_heatmaps: true,
+          person_profiles: 'always',
+          session_recording: { maskAllInputs: false },
+          loaded: (ph) => {
+            if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
+          },
+        });
+      }
+      // Always expose on window — even if already loaded from a prior render.
+      // TicketLink and other components use window.posthog.capture() for native events.
+      (window as unknown as Record<string, unknown>).posthog = posthog;
     });
   }, []);
 
