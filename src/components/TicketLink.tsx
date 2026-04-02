@@ -6,7 +6,7 @@ import { track } from '@vercel/analytics';
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
-    posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void; flush?: () => void };
+    posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void; flush?: () => void; get_distinct_id?: () => string };
   }
 }
 
@@ -165,23 +165,26 @@ export default function TicketLink({
     // Vercel Analytics
     track('ticket_click', { show_id: showId, platform, page_type: pageType, is_affiliate: isAffiliate });
 
-    // PostHog — native event with full context (not just autocapture).
-    // Capture then immediately send via sendBeacon so the event isn't lost
-    // when the click opens a new tab (target="_blank"). Without this,
-    // PostHog batches the event and it may never flush.
-    if (window.posthog?.capture) {
-      window.posthog.capture('ticket_click', {
-        show_id: showId,
-        show_name: showName,
-        platform,
-        page_type: pageType,
-        is_affiliate: isAffiliate,
-        link_position: linkPosition,
-        total_links: totalLinks,
-      });
-      // Force immediate flush — the batch timer won't fire if user doesn't return to tab
-      try { window.posthog.flush?.(); } catch { /* flush not critical */ }
-    }
+    // PostHog — send via sendBeacon for guaranteed delivery.
+    // PostHog SDK batches capture() on a 30s timer. With target="_blank", the page
+    // doesn't unload and the batch never flushes. sendBeacon fires immediately and
+    // survives tab focus changes.
+    try {
+      const phKey = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
+      const distinctId = window.posthog?.get_distinct_id?.() ?? 'anonymous';
+      navigator.sendBeacon('https://us.i.posthog.com/capture/', JSON.stringify({
+        api_key: phKey,
+        event: 'ticket_click',
+        properties: {
+          distinct_id: distinctId,
+          $current_url: window.location.href,
+          show_id: showId, show_name: showName, platform,
+          page_type: pageType, is_affiliate: isAffiliate,
+          link_position: linkPosition, total_links: totalLinks,
+        },
+        timestamp: new Date().toISOString(),
+      }));
+    } catch { /* tracking not critical */ }
 
     if (typeof window.gtag !== 'function') return;
 
