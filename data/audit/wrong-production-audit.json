@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T05:03:06.177Z",
+  "timestamp": "2026-04-02T05:26:40.510Z",
   "stats": {
-    "totalReviews": 32156,
+    "totalReviews": 32157,
     "alreadyFlagged": 11951,
     "dateGuardCatches": 16,
     "directorMismatch": 839,
-    "tvFilmSignals": 3314,
-    "londonSignals": 961,
+    "tvFilmSignals": 3315,
+    "londonSignals": 964,
     "offBroadwaySignals": 964,
     "yearMismatch": 64,
-    "noPublishDate": 5897
+    "noPublishDate": 5895
   },
   "findings": [
     {
@@ -38943,6 +38943,25 @@
       ]
     },
     {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2026-04-01",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/romeo-juliet-review-sadie-sink-noah-jupe-hfr8798f2",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "romeo-juliet-2024",
       "file": "cititour--brian-scott-lipton.json",
       "score": 82,
@@ -66966,6 +66985,20 @@
       ]
     },
     {
+      "showId": "jajas-african-hair-braiding-west-end-2026",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 80,
+      "publishDate": "2026-03-18",
+      "url": "https://theartsdesk.com/theatre/jajas-african-hair-braiding-lyric-hammersmith-review-perky-harlem-set-comedy-serious-undertow",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "jerusalem-2011",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 92,
@@ -73567,6 +73600,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "file": "artsdesk--heather-neill.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.theartsdesk.com/theatre/summerfolk-national-theatre-review-gorkys-self-deluding-intelligentsia-under-sharp-comic-scrutiny",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
