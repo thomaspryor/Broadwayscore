@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-02T10:21:49.426Z",
+  "timestamp": "2026-04-02T10:35:09.003Z",
   "stats": {
-    "totalReviews": 32199,
+    "totalReviews": 32200,
     "alreadyFlagged": 11955,
     "dateGuardCatches": 15,
     "directorMismatch": 844,
-    "tvFilmSignals": 3320,
-    "londonSignals": 976,
+    "tvFilmSignals": 3322,
+    "londonSignals": 978,
     "offBroadwaySignals": 966,
     "yearMismatch": 64,
     "noPublishDate": 5882
@@ -12709,6 +12709,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "ew--dalton-ross.json",
+      "score": 77,
       "publishDate": "2026-03-31",
       "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173?srsltid=AfmBOop5gJX6n8mqo6n6aPn9CmJg2Yhu9WPtmA3A0Ur6UCmdt75m3MDv",
       "findings": [
@@ -26905,6 +26906,25 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "standard--henry-hitchings.json",
+      "score": 78,
+      "publishDate": "For a previous production",
+      "url": "https://www.standard.co.uk/culture/theatre/les-liaisons-dangereuses-at-the-national-theatre-review-b1277452.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "times-uk--ian-johns.json",
       "score": 41,
       "publishDate": "2026-04-01",
@@ -26914,6 +26934,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "2026-04-01",
+      "url": "https://www.whatsonstage.com/news/les-liaisons-dangereuses-with-aidan-turner-lesley-manville-and-monica-barbaro-at-the-national-theatre-review_1717243/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -77182,7 +77221,7 @@
     {
       "showId": "the-lion-king-west-end-2021",
       "file": "the-telegrap--david-gritten.json",
-      "score": null,
+      "score": 89,
       "publishDate": "October 17th, 2014",
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
