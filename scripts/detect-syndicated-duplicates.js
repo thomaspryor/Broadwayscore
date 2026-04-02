@@ -56,7 +56,11 @@ const KNOWN_OUTLET_PAIRS = {};
 for (const [critic, config] of Object.entries(KNOWN_SYNDICATION)) {
   for (const sec of config.secondary) {
     const pair = [config.primary, sec].sort().join('|');
-    KNOWN_OUTLET_PAIRS[pair] = { primary: config.primary, secondary: sec, critic };
+    if (!KNOWN_OUTLET_PAIRS[pair]) {
+      KNOWN_OUTLET_PAIRS[pair] = { primary: config.primary, secondary: sec, critics: [critic] };
+    } else {
+      KNOWN_OUTLET_PAIRS[pair].critics.push(critic);
+    }
   }
 }
 
@@ -273,13 +277,13 @@ for (const [showId, showRevs] of Object.entries(unknownByShow)) {
       // Skip if already flagged
       if (secondaryFile.data.isSyndicatedDuplicate) {
         alreadyFlagged.push({
-          critic: `Unknown (likely ${known.critic})`, showId, primaryOutlet, secondaryOutlet, similarity: sim
+          critic: `Unknown (likely ${known.critics.join(' or ')})`, showId, primaryOutlet, secondaryOutlet, similarity: sim
         });
         continue;
       }
 
       flagged.push({
-        critic: `Unknown (likely ${known.critic})`,
+        critic: `Unknown (likely ${known.critics.join(' or ')})`,
         showId,
         primaryOutlet,
         secondaryOutlet,
