@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-02T10:31:57.346Z",
+  "updatedAt": "2026-04-02T10:34:55.552Z",
   "processed": 2,
-  "failed": 38,
-  "successRate": "5.0%",
+  "failed": 46,
+  "successRate": "4.2%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 6,
+    "archiveToday": 7,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -25,6 +25,17 @@
       "t": "2026-04-02T10:26:15.001Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-04-02T10:33:13.729Z",
+      "event": "bb-session",
+      "session": "c5edfb00",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621821098951518.html"
+    },
+    {
+      "t": "2026-04-02T10:33:14.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -41,7 +41,15 @@
     "the-book-of-mormon-west-end-2024/timeout--unknown.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "matilda-the-musical-west-end-2021/timeout--unknown.json",
-    "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json"
+    "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json",
+    "wicked-west-end-2021/the-telegrap--charles-spencer.json",
+    "the-lion-king-west-end-2021/the-telegrap--david-gritten.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "mamma-mia-west-end-2021/telegraph--dominic-cavendish.json",
+    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
+    "man-and-boy-west-end-2026/wsj--terry-teachout.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "the-phantom-of-the-opera-off-west-end-2021/thestage--aleks-sierz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -60,12 +68,13 @@
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/thewrap--robert-hofler.json",
       "data/review-texts/the-play-that-goes-wrong-west-end-2021/timeout--unknown.json",
       "data/review-texts/the-book-of-mormon-west-end-2024/timeout--unknown.json",
-      "data/review-texts/matilda-the-musical-west-end-2021/timeout--unknown.json"
+      "data/review-texts/matilda-the-musical-west-end-2021/timeout--unknown.json",
+      "data/review-texts/man-and-boy-west-end-2026/wsj--terry-teachout.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-02T10:17:58.679Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json",
+  "lastProcessed": "the-phantom-of-the-opera-off-west-end-2021/thestage--aleks-sierz.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -77,6 +86,17 @@
       "t": "2026-04-02T10:26:15.001Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-04-02T10:33:13.729Z",
+      "event": "bb-session",
+      "session": "c5edfb00",
+      "url": "http://online.wsj.com/article/SB10001424052970203633104576621821098951518.html"
+    },
+    {
+      "t": "2026-04-02T10:33:14.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
