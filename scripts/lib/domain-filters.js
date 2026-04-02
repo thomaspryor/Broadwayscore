@@ -25,7 +25,8 @@ const TICKET_DOMAINS = new Set([
 
 // Aggregator/listing sites — not direct review sources
 const AGGREGATOR_DOMAINS = new Set([
-  'show-score.com', 'showscore.com', 'broadwayworld.com', 'playbill.com',
+  'show-score.com', 'showscore.com', 'playbill.com',
+  // NOTE: broadwayworld.com NOT here — BWW publishes original reviews; roundups use isRoundupArticle flag
   'ibdb.com', 'broadway.com', 'broadway.org',
   'newyorktheatreguide.com', 'newyorktheaterguide.com',
   'lovelondonloveculture.com', 'westendtheatre.com',
