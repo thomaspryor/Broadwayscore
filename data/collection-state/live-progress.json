@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-02T06:32:54.616Z",
-  "processed": 327,
+  "updatedAt": "2026-04-02T06:35:32.607Z",
+  "processed": 337,
   "failed": 1540,
-  "successRate": "17.5%",
+  "successRate": "18.0%",
   "tierBreakdown": {
-    "playwright": 201,
+    "playwright": 207,
     "amp": 2,
-    "browserbase": 54,
+    "browserbase": 56,
     "directCookies": 2,
-    "scrapingbee": 62,
+    "scrapingbee": 63,
     "brightdata": 0,
     "archiveToday": 230,
-    "archive": 38
+    "archive": 40
   },
-  "browserbaseSessions": 29,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-04-02T05:40:57.300Z",
-      "event": "bb-session",
-      "session": "19d1eed0",
-      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
-    },
-    {
-      "t": "2026-04-02T05:40:58.490Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-02T05:45:05.395Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-02T06:30:07.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T06:33:18.076Z",
+      "event": "bb-session",
+      "session": "0c5d8dcd",
+      "url": "https://variety.com/1999/legit/reviews/the-lion-king-lyceum-theater-1200459301/"
+    },
+    {
+      "t": "2026-04-02T06:33:19.473Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

@@ -326,7 +326,17 @@
     "wicked-2003/awards-watch--sophia-ciminello.json",
     "wicked-2003/broadwayworld--marriage-matinee.json",
     "wicked-2003/cbr--caralynn-matassa.json",
-    "wicked-2003/fresh-fiction--courtney-howard.json"
+    "wicked-2003/fresh-fiction--courtney-howard.json",
+    "wicked-2003/inverse--lyvie-scott.json",
+    "wicked-2003/joysauce--siddhant-adlakha.json",
+    "the-lion-king-west-end-2021/variety--greg-evans.json",
+    "the-lion-king-west-end-2021/daily-mail--patrick-marmion.json",
+    "the-lion-king-west-end-2021/i-paper--rachel-halliburton.json",
+    "the-lion-king-west-end-2021/standard--nick-curtis.json",
+    "the-lion-king-west-end-2021/theupcoming--connor-campbell.json",
+    "mamma-mia-west-end-2021/musical-theatre-review--molly-kerrigan.json",
+    "mamma-mia-west-end-2021/financialtimes--sarah-hemming.json",
+    "mamma-mia-west-end-2021/i-paper--fiona-mountford.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -2073,7 +2083,13 @@
       "wicked-west-end-2021/financialtimes--alastair-macaulay.json",
       "wicked-west-end-2021/standard--india-block.json",
       "wicked-west-end-2021/times-uk--paul-raven.json",
-      "wicked-2003/fresh-fiction--courtney-howard.json"
+      "wicked-2003/fresh-fiction--courtney-howard.json",
+      "the-lion-king-west-end-2021/i-paper--rachel-halliburton.json",
+      "the-lion-king-west-end-2021/standard--nick-curtis.json",
+      "the-lion-king-west-end-2021/theupcoming--connor-campbell.json",
+      "mamma-mia-west-end-2021/musical-theatre-review--molly-kerrigan.json",
+      "mamma-mia-west-end-2021/financialtimes--sarah-hemming.json",
+      "mamma-mia-west-end-2021/i-paper--fiona-mountford.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -2133,7 +2149,9 @@
       "data/review-texts/hadestown-2019/deadline--greg-evans.json",
       "hadestown-2019/deadline--greg-evans.json",
       "data/review-texts/wicked-west-end-2021/variety--charles-isherwood.json",
-      "wicked-west-end-2021/variety--charles-isherwood.json"
+      "wicked-west-end-2021/variety--charles-isherwood.json",
+      "data/review-texts/the-lion-king-west-end-2021/variety--greg-evans.json",
+      "the-lion-king-west-end-2021/variety--greg-evans.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -2201,7 +2219,8 @@
       "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
       "matilda-the-musical-west-end-2021/telegraph--dominic-cavendish.json",
       "wicked-west-end-2021/telegraph--robbie-collin.json",
-      "wicked-west-end-2021/times-uk--kevin-maher.json"
+      "wicked-west-end-2021/times-uk--kevin-maher.json",
+      "the-lion-king-west-end-2021/daily-mail--patrick-marmion.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2474,11 +2493,13 @@
       "wicked-2003/about-entertainment--chris-caggiano.json",
       "wicked-2003/awards-watch--sophia-ciminello.json",
       "wicked-2003/broadwayworld--marriage-matinee.json",
-      "wicked-2003/cbr--caralynn-matassa.json"
+      "wicked-2003/cbr--caralynn-matassa.json",
+      "wicked-2003/inverse--lyvie-scott.json",
+      "wicked-2003/joysauce--siddhant-adlakha.json"
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "wicked-2003/fresh-fiction--courtney-howard.json",
+  "lastProcessed": "mamma-mia-west-end-2021/i-paper--fiona-mountford.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -3332,6 +3353,17 @@
     },
     {
       "t": "2026-04-02T06:30:07.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T06:33:18.076Z",
+      "event": "bb-session",
+      "session": "0c5d8dcd",
+      "url": "https://variety.com/1999/legit/reviews/the-lion-king-lyceum-theater-1200459301/"
+    },
+    {
+      "t": "2026-04-02T06:33:19.473Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
