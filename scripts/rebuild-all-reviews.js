@@ -612,6 +612,7 @@ const showClosingDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
 const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway')
+const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
@@ -620,6 +621,18 @@ for (const s of showsData.shows) {
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
   showCategoryMap[s.id] = s.category || 'broadway';
+  // Long-run WE shows: openingDate before 2015 AND London market.
+  // These have decades of valid reviews; the 90-day pre-opening guard shouldn't apply.
+  // Also catches shows where the ID year is significantly earlier than the stored openingDate
+  // (e.g., phantom-west-end-1986 has openingDate 2021 due to COVID reopening).
+  if (isLondonMarket(s.category) && s.openingDate) {
+    const openYear = new Date(s.openingDate).getFullYear();
+    const idYearMatch = s.id.match(/(\d{4})$/);
+    const idYear = idYearMatch ? parseInt(idYearMatch[1]) : null;
+    if (openYear < 2015 || (idYear && idYear < 2015 && openYear - idYear > 5)) {
+      showLongRunWE.add(s.id);
+    }
+  }
   showCreativeTeamIndex[s.id] = new Set();
   if (s.creativeTeam) {
     for (const m of s.creativeTeam) {
@@ -800,6 +813,9 @@ const crossShowFingerprints = new Map();
   for (const sid of showDirs) {
     const showEarliest = showDateMap[sid];
     if (!showEarliest) continue;
+    // Long-run WE shows (opened before 2015) — skip pre-opening guard.
+    // A 2004 Stage review of Phantom is perfectly valid for a show running since 1986.
+    if (showLongRunWE.has(sid)) continue;
     const sDir = path.join(reviewTextsDir, sid);
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
@@ -1737,8 +1753,9 @@ showDirs.forEach(showId => {
       // Broadway: 14-day grace period (preview coverage).
       // Off-Broadway/West End: 90-day grace period — matches the pre-opening guard threshold.
       // A review >90 days before the show opened is almost certainly a different production.
+      // Long-run WE shows (opened before 2015): skip this guard entirely — decades of valid reviews.
       // Reviews with allowEarlyDate: true bypass all date checks.
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate) {
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !showLongRunWE.has(showId)) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
