@@ -99,7 +99,9 @@
     "sweat-2017/wnyc--jennifer-vanasco.json",
     "the-price-2017/thestage--chris-jones.json",
     "the-price-2017/woman-around-town--alix-cohen.json",
-    "come-from-away-2017/san-francisco-chronicle--lilly-janiak.json"
+    "come-from-away-2017/san-francisco-chronicle--lilly-janiak.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/artsfuse--jess-viator.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/slantmagazine--henry-stewart.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -390,7 +392,15 @@
     "come-from-away-2017/newyorker--hilton-als.json",
     "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
     "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
-    "significant-other-2017/out-magazine--michael-musto.json"
+    "significant-other-2017/out-magazine--michael-musto.json",
+    "sunday-in-the-park-with-george-2017/out-magazine--michael-musto.json",
+    "jitney-2017/wsj--edward-rothstein.json",
+    "the-present-2017/thestage--unknown.json",
+    "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+    "in-transit-2016/theater-news-online--brian-scott-lipton.json",
+    "in-transit-2016/theater-in-the-now--michael-block.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/cultural-weekly--david-sheward.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -435,7 +445,9 @@
       "war-paint-2017/huffpost--michael-glitz.json",
       "war-paint-2017/woman-around-town--alix-cohen.json",
       "sweat-2017/wnyc--jennifer-vanasco.json",
-      "the-price-2017/woman-around-town--alix-cohen.json"
+      "the-price-2017/woman-around-town--alix-cohen.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/artsfuse--jess-viator.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/slantmagazine--henry-stewart.json"
     ],
     "amp": [],
     "browserbase": [
@@ -519,7 +531,10 @@
       "data/review-texts/the-bands-visit-2017/talkinbroadway--michael-portantiere.json",
       "data/review-texts/charlie-and-the-chocolate-factory-2017/theater-in-the-now--michael-block.json",
       "data/review-texts/hello-dolly-2017/theater-in-the-now--michael-block.json",
-      "data/review-texts/oslo-2017/abc-news--unknown.json"
+      "data/review-texts/oslo-2017/abc-news--unknown.json",
+      "data/review-texts/jitney-2017/wsj--edward-rothstein.json",
+      "data/review-texts/in-transit-2016/theater-in-the-now--michael-block.json",
+      "data/review-texts/natasha-pierre-and-the-great-comet-of-1812-2016/cultural-weekly--david-sheward.json"
     ],
     "archive": [
       "dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -567,7 +582,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "significant-other-2017/out-magazine--michael-musto.json",
+  "lastProcessed": "natasha-pierre-and-the-great-comet-of-1812-2016/slantmagazine--henry-stewart.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -634,6 +649,17 @@
       "t": "2026-04-02T19:05:37.948Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T19:08:26.040Z",
+      "event": "bb-session",
+      "session": "fd34f567",
+      "url": "http://www.wsj.com/articles/jitney-review-august-wilsons-authenticity-1484868767"
+    },
+    {
+      "t": "2026-04-02T19:08:27.394Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
