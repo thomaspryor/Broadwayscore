@@ -1,25 +1,14 @@
 {
   "_meta": {
-    "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-02T16:13:44.090Z",
-    "sources": [
-      "broadway-show-tickets.com",
-      "broadwayworld.com",
-      "IBDB",
-      "Wikipedia",
-      "newyorkcitytheatre.com"
-    ]
+    "description": "LLM-generated structured theater tips from scraped data",
+    "model": "gemini-2.0-flash",
+    "lastUpdated": "2026-04-02T16:13:43.993Z"
   },
-  "Al Hirschfeld Theatre": {
-    "capacity": 1424,
-    "tips": "Great sightlines from the mezzanine. The theater was beautifully renovated in 2003 and named after the legendary caricaturist.",
-    "yearBuilt": 1924,
-    "operator": "ATG Entertainment",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:08:18.115Z",
+  "theaters": {
+    "Al Hirschfeld Theatre": {
       "seating": {
         "bestSeats": "The mezzanine offers great sightlines of the stage. This theater is well-maintained and comfortable.",
-        "accessibility": "Orchestra-only wheelchair access. Infrared headsets and audio induction neck loops available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -115,50 +104,14 @@
         "nearestSubway": "The 49th Street subway station (N, Q, R, W lines) is the closest.",
         "exitStrategy": "Exiting onto 45th Street provides easy access to taxis and the subway.",
         "restrooms": "Restrooms are available in the theater, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:08:18.115Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/6/64/Al_Hirschfeld_Theatre_-_Moulin_Rouge_%2848296061427%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Al Hirschfeld Theatre offers generally good sightlines, though some seats have minor obstructions. The sound quality is above average, enhancing the theatrical experience. However, the seating is cramped, especially for taller patrons, which detracts from comfort. The theater's ambiance is rich with historical character, though restroom lines can be long during intermission.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/al-hirschfeld-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Al+Hirschfeld+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Orchestra-only wheelchair access. Infrared headsets and audio induction neck loops available."
-    }
-  },
-  "Ambassador Theatre": {
-    "capacity": 1108,
-    "tips": "An intimate house for its size. Rear mezzanine can feel distant — stick to the front mezz or orchestra for the best experience.",
-    "yearBuilt": 1921,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:08:25.286Z",
+    "Ambassador Theatre": {
       "seating": {
         "bestSeats": "The Ambassador Theatre is an intimate house for its size. Stick to the front mezzanine or orchestra for the best experience.",
-        "avoidSeats": "Rear mezzanine seats can feel distant.",
-        "accessibility": "7 wheelchair spaces in Orchestra. Side entrance step-free. Infrared assistive listening devices."
+        "avoidSeats": "Rear mezzanine seats can feel distant."
       },
       "parking": {
         "nearestGarages": [
@@ -254,50 +207,14 @@
         "nearestSubway": "The closest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines after the show.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:08:25.286Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Ambassador_Theater_nite_2023_jeh.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 3,
-      "facilities": 2,
-      "summary": "The Ambassador Theatre offers generally good sightlines, especially from central seats, but suffers from tight seating and limited legroom. Its ambiance is typical of older Broadway theaters, and facilities like restrooms can be crowded during intermissions.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/ambassador-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Ambassador+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "7 wheelchair spaces in Orchestra. Side entrance step-free. Infrared assistive listening devices."
-    }
-  },
-  "August Wilson Theatre": {
-    "capacity": 1239,
-    "tips": "Formerly the Virginia Theatre. Good sightlines throughout, though the balcony overhang can cut off set pieces in the last few orchestra rows.",
-    "yearBuilt": 1925,
-    "operator": "ATG Entertainment",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:04.619Z",
+    "August Wilson Theatre": {
       "seating": {
         "bestSeats": "Good sightlines throughout the theater. Aim for the front or center orchestra for the most immersive experience.",
-        "avoidSeats": "The balcony overhang can obstruct the top of the stage in the last few rows of the orchestra.",
-        "accessibility": "Stair lift to orchestra; elevator between orchestra and mezzanine. Infrared headsets available."
+        "avoidSeats": "The balcony overhang can obstruct the top of the stage in the last few rows of the orchestra."
       },
       "parking": {
         "nearestGarages": [
@@ -391,50 +308,16 @@
       "logistics": {
         "entrance": "The main entrance is located on West 52nd Street.",
         "nearestSubway": "The 50th Street subway station (1, C, E lines) is the closest.",
-        "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines, or use the side streets to avoid the immediate crowds."
-      }
+        "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines, or use the side streets to avoid the immediate crowds.",
+        "restrooms": null
+      },
+      "lastUpdated": "2026-04-02T16:09:04.619Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/6/65/W_52_St_Nov_2021_16.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 3,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The August Wilson Theatre offers good sightlines from most seats, although the rake isn't steep, which can cause issues if seated behind taller patrons. The theater has average comfort with decent legroom but tight seats. Its Italian-inspired design and cozy feel enhance the ambiance, making it a pleasant venue overall. Facilities are adequate, with standard amenities and helpful staff.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/august-wilson-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/August+Wilson+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Stair lift to orchestra; elevator between orchestra and mezzanine. Infrared headsets available."
-    }
-  },
-  "Belasco Theatre": {
-    "capacity": 1018,
-    "tips": "One of the most beautiful Broadway theaters with stunning Tiffany ceiling lights. The mezzanine offers excellent views at a lower price.",
-    "yearBuilt": 1907,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:11.785Z",
+    "Belasco Theatre": {
       "seating": {
         "bestSeats": "The mezzanine offers excellent views of the stage and the theater's stunning Tiffany ceiling lights at a lower price point.",
-        "accessibility": "8 wheelchair locations in Orchestra. Induction loops for t-coil hearing aids. Infrared devices available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -530,49 +413,14 @@
         "nearestSubway": "The nearest subway station is 42nd Street–Bryant Park, served by the B, D, F, and M lines.",
         "exitStrategy": "Exiting onto 44th Street provides easy access to taxis and the subway.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:09:11.785Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Belasco_Theatre_%2852302749285%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 3,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 5,
-      "facilities": 3,
-      "summary": "The Belasco Theatre offers stunning ambiance with its historic Tiffany lamps and stained-glass ceiling, but suffers from tight legroom typical of older venues. While sound quality is generally good, sightlines can be inconsistent, especially from side orchestra seats.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/belasco-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Belasco+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "8 wheelchair locations in Orchestra. Induction loops for t-coil hearing aids. Infrared devices available."
-    }
-  },
-  "Bernard B. Jacobs Theatre": {
-    "capacity": 1112,
-    "tips": "A well-designed midsize house. Front mezzanine seats are among the best values on Broadway with excellent overhead perspective.",
-    "yearBuilt": 1927,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:18.773Z",
+    "Bernard B. Jacobs Theatre": {
       "seating": {
         "bestSeats": "Front mezzanine seats offer an excellent overhead perspective and are considered a great value.",
-        "accessibility": "7 wheelchair spaces in Orchestra. Copper induction loop available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -654,49 +502,14 @@
         "nearestSubway": "The closest subway stations are Times Square-42nd Street (1/2/3/N/Q/R/W) and 49th Street (N/R/W).",
         "exitStrategy": "Exiting towards 8th Avenue can provide quicker access to taxis and ride-sharing services.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:09:18.773Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Jacobs_Theater_-_The_Ferryman_%2848193412316%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 2,
-      "summary": "The Bernard B. Jacobs Theatre offers excellent sightlines from most seats, though comfort is compromised by tight legroom, especially in the mezzanine. The theater's ambiance is enhanced by its historic architecture and unique murals, but restroom facilities are limited, leading to long lines during intermission.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Bernard+B.+Jacobs+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "7 wheelchair spaces in Orchestra. Copper induction loop available."
-    }
-  },
-  "Booth Theatre": {
-    "capacity": 766,
-    "tips": "One of Broadway's most intimate venues — every seat feels close. A favorite for plays. Built in 1913 and shares a wall with the Shubert.",
-    "yearBuilt": 1913,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:25.751Z",
+    "Booth Theatre": {
       "seating": {
         "bestSeats": "The Booth is a smaller theater, so most seats offer good views. Center orchestra seats provide the most immersive experience.",
-        "accessibility": "6 wheelchair spaces in Orchestra. Not completely wheelchair accessible. Infrared devices available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -792,49 +605,14 @@
         "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, N, Q, R, W lines) is the closest.",
         "exitStrategy": "Head west toward Eighth Avenue for easier access to taxis and subway lines, or use ride-sharing apps.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:09:25.751Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/0/00/Booth_Theatre_%2848295953591%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 3,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Booth Theatre offers good sightlines with a well-raked mezzanine and clear views from most seats, though legroom can be tight. The theater's elegant, European-inspired design adds to its charm, while sound quality is consistently praised. Facilities are average, with typical restroom and concession offerings.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/booth-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Booth+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "6 wheelchair spaces in Orchestra. Not completely wheelchair accessible. Infrared devices available."
-    }
-  },
-  "Broadhurst Theatre": {
-    "capacity": 1156,
-    "tips": "Solid sightlines from most seats. The theater is slightly wider than average, which helps with views from the sides.",
-    "yearBuilt": 1917,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:33.723Z",
+    "Broadhurst Theatre": {
       "seating": {
         "bestSeats": "The Broadhurst generally offers solid sightlines throughout. Being slightly wider than average, even seats on the sides provide good views.",
-        "accessibility": "6 wheelchair spaces in Orchestra. No steps from sidewalk. Infrared devices available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -930,49 +708,14 @@
         "nearestSubway": "The 42nd Street–Times Square station is the closest, serving the 1, 2, 3, 7, N, Q, R, W, and S lines.",
         "exitStrategy": "Exiting towards 8th Avenue can sometimes be less congested than heading east towards Times Square.",
         "restrooms": "Restrooms are available, but can get crowded during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:09:33.723Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Broadhurst_Theater_-_Frankie_and_Johnny_in_the_Clair_de_Lune_%2848193410426%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 3,
-      "sound": 3,
-      "comfort": 1,
-      "ambiance": 3,
-      "facilities": 2,
-      "summary": "One of Broadway's least comfortable theaters, with notoriously tight legroom and narrow seats. The lack of rake means tall patrons in front block your view. Restrooms are in the basement, creating long intermission lines. For legroom, target Row A or N in Orchestra.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/broadhurst-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Broadhurst+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "6 wheelchair spaces in Orchestra. No steps from sidewalk. Infrared devices available."
-    }
-  },
-  "Broadway Theatre": {
-    "capacity": 1761,
-    "tips": "One of the largest Broadway houses. Despite the size, the orchestra has a good rake for sightlines. Front mezzanine is excellent.",
-    "yearBuilt": 1924,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:40.484Z",
+    "Broadway Theatre": {
       "seating": {
         "bestSeats": "The orchestra has a good rake for sightlines, and the front mezzanine is excellent. Consider seats in these areas for optimal viewing.",
-        "accessibility": "7 wheelchair spaces in Orchestra. Infrared devices available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -1066,53 +809,16 @@
       "logistics": {
         "entrance": "The main entrance is located on Broadway.",
         "nearestSubway": "The 50th Street subway station (1, C, E lines) is the closest.",
-        "exitStrategy": "Exiting onto Broadway provides easy access to taxis and the subway."
-      }
+        "exitStrategy": "Exiting onto Broadway provides easy access to taxis and the subway.",
+        "restrooms": null
+      },
+      "lastUpdated": "2026-04-02T16:09:40.484Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/0/0d/King_Kong_at_the_Broadway_Theater_%2848047447453%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Broadway Theatre offers good sightlines and a rich ambiance with its Renaissance-inspired décor, making it a suitable venue for large-scale musicals. However, the comfort level is below average due to tight seating, and while facilities are adequate, refreshments can be expensive.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/broadway-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Broadway+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "7 wheelchair spaces in Orchestra. Infrared devices available."
-    }
-  },
-  "Lena Horne Theatre": {
-    "capacity": 1069,
-    "formerNames": [
-      "Brooks Atkinson Theatre"
-    ],
-    "tips": "Formerly Brooks Atkinson Theatre, renamed in 2022 to honor the legendary Lena Horne. Intimate feel with good sightlines from most seats.",
-    "yearBuilt": 1926,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:47.645Z",
+    "Lena Horne Theatre": {
       "seating": {
         "bestSeats": "The Lena Horne Theatre is known for its intimate feel and good sightlines throughout. Aim for seats in the center orchestra for the most immersive experience.",
-        "accessibility": "Step-free entry and Orchestra. 5 wheelchair seats. No elevators."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -1208,49 +914,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Exiting onto 47th Street provides easy access to taxis and the subway.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:09:47.645Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/a/a0/W_47_St_Nov_2022_08.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Lena Horne Theatre offers good sightlines from most seats, with clear views even from the rear mezzanine. The sound quality is well-balanced across the theater. However, the seating is quite tight, especially for taller patrons, which affects comfort. The theater's ambiance is enhanced by its historic architecture and restored interior, providing a charming atmosphere.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/lena-horne-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Lena+Horne+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Step-free entry and Orchestra. 5 wheelchair seats. No elevators."
-    }
-  },
-  "Circle in the Square Theatre": {
-    "capacity": 776,
-    "tips": "Broadway's only theater-in-the-round — unique and immersive. No seat is more than a few rows from the stage. A truly special experience.",
-    "yearBuilt": 1972,
-    "operator": "Independent",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:54.304Z",
+    "Circle in the Square Theatre": {
       "seating": {
         "bestSeats": "Given the theater-in-the-round setup, aim for seats closer to the stage for an immersive experience. Seats in the center sections generally offer the most balanced views.",
-        "accessibility": "Elevator accessible through adjoining building. Loop technology and neck induction systems available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -1346,49 +1017,14 @@
         "nearestSubway": "The 50th Street subway station (1, C, E lines) is the closest.",
         "exitStrategy": "After the show, head east towards 6th Avenue for easier access to subway lines or taxis.",
         "restrooms": "Restrooms are available within the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:09:54.304Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/d/df/Circle_In_The_Square.jpeg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 5,
-      "sound": 4,
-      "comfort": 4,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "Broadway's only thrust-stage theater offers an unmatched intimate experience — no seat is more than a few rows from the action. Sightlines are excellent from every angle, though some seats face actors' backs during certain scenes.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/circle-in-the-square-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Circle+in+the+Square+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator accessible through adjoining building. Loop technology and neck induction systems available."
-    }
-  },
-  "Ethel Barrymore Theatre": {
-    "capacity": 1058,
-    "tips": "A classic Shubert house with great acoustics. Center orchestra offers the best experience. Named after the legendary actress.",
-    "yearBuilt": 1928,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:00.313Z",
+    "Ethel Barrymore Theatre": {
       "seating": {
         "bestSeats": "Center orchestra seats provide the optimal viewing and listening experience at the Ethel Barrymore Theatre.",
-        "accessibility": "5 wheelchair spaces in Orchestra. No steps from sidewalk. Infrared devices available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -1484,48 +1120,14 @@
         "nearestSubway": "The nearest subway station is 49th Street, served by the N, R, and W lines.",
         "exitStrategy": "Exiting towards 8th Avenue can provide quicker access to taxis and ride-sharing services.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:10:00.313Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/1/17/Barrymore_Theatre_%2852302264853%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 3,
-      "ambiance": 3,
-      "facilities": 2,
-      "summary": "The Ethel Barrymore Theatre offers good sightlines with a well-raked mezzanine and minimal obstructions, though some box seats have limited views. Sound quality is average, with some reports of less than ideal acoustics. Comfort is typical for a Broadway theater, with decent legroom in some areas. However, facilities are lacking, with only one restroom on the lower level leading to potential congestion.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Ethel+Barrymore+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "5 wheelchair spaces in Orchestra. No steps from sidewalk. Infrared devices available."
-    }
-  },
-  "Eugene O'Neill Theatre": {
-    "capacity": 1108,
-    "tips": "Wide stage and good acoustics. The front mezzanine center is a sweet spot. Home to many Tony-winning productions over the years.",
-    "yearBuilt": 1925,
-    "operator": "ATG Entertainment",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:07.290Z",
+    "Eugene O'Neill Theatre": {
       "seating": {
         "bestSeats": "The front mezzanine center offers an excellent view of the wide stage. The acoustics in the theater are generally very good.",
-        "accessibility": "No elevators. All accessible seating on Orchestra level. Infrared headsets and audio induction neck loops."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -1619,50 +1221,16 @@
       "logistics": {
         "entrance": "The main entrance is located on West 49th Street.",
         "nearestSubway": "The 50th Street subway station (lines 1, 2) is the closest.",
-        "exitStrategy": "Exiting towards 8th Avenue can provide easier access to taxis and subway lines."
-      }
+        "exitStrategy": "Exiting towards 8th Avenue can provide easier access to taxis and subway lines.",
+        "restrooms": null
+      },
+      "lastUpdated": "2026-04-02T16:10:07.290Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/4/47/Eugene_O%27Neill_Theatre_-_Book_of_Mormon_%2848295951286%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 3,
-      "sound": 4,
-      "comfort": 3,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Eugene O'Neill Theatre offers decent sightlines, though some seats may have minor obstructions due to the shallow rake. Sound quality is generally good, ensuring an enjoyable auditory experience. While the comfort level is typical for Broadway, with standard legroom and seat width, the theater's ambiance is enhanced by its elegant Georgian design. Facilities are adequate, with bars and merchandise available on both levels, though restroom capacity may be limited during peak times.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/eugene-oneill-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Eugene+O'Neill+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "No elevators. All accessible seating on Orchestra level. Infrared headsets and audio induction neck loops."
-    }
-  },
-  "Gerald Schoenfeld Theatre": {
-    "capacity": 1080,
-    "tips": "Excellent sightlines from the mezzanine. The theater underwent a major renovation in 2018 with improved accessibility and comfort.",
-    "yearBuilt": 1917,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:14.074Z",
+    "Gerald Schoenfeld Theatre": {
       "seating": {
         "bestSeats": "The mezzanine offers excellent sightlines throughout the theater.",
-        "accessibility": "7 wheelchair spaces in Orchestra. Infrared devices available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -1758,49 +1326,14 @@
         "nearestSubway": "The 42nd Street–Times Square station is the closest, serving the 1, 2, 3, 7, N, Q, R, W, and S lines.",
         "exitStrategy": "Exiting onto the street after the show can be crowded. Head west towards 8th Avenue for slightly less congestion, or use the subway.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:10:14.074Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Schoenfeld_Theater_-_Come_From_Away_%2848193460457%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Gerald Schoenfeld Theatre offers good sightlines with minimal obstructions, although some side seats may have partial views. The sound quality is generally strong, enhancing the theatrical experience. However, the seating is tight, which can affect comfort, particularly for taller patrons. The theater's ambiance is charming with its historic character, and while facilities are adequate, expect some lines at the bar and restrooms.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/gerald-schoenfeld-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Gerald+Schoenfeld+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "7 wheelchair spaces in Orchestra. Infrared devices available."
-    }
-  },
-  "Gershwin Theatre": {
-    "capacity": 1933,
-    "tips": "The largest Broadway theater — home to Wicked for two decades. Even rear mezzanine seats have decent views due to the steep rake. Arrive early for the lobby experience.",
-    "yearBuilt": 1972,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:20.826Z",
+    "Gershwin Theatre": {
       "seating": {
         "bestSeats": "The Gershwin's steep rake means even rear mezzanine seats offer good views. Center orchestra provides the most immersive experience.",
-        "accessibility": "First Broadway theater with hearing loop (2013). Elevator to Orchestra and Mezzanine. 12 wheelchair spaces."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -1896,101 +1429,38 @@
         "nearestSubway": "50th Street station (1, C, E lines) is the closest subway stop.",
         "exitStrategy": "Exiting towards 8th Avenue provides the most direct access to taxis and subway lines.",
         "restrooms": "Restrooms are located on multiple levels, but can get crowded during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:10:20.826Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Gershwin2022.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 3,
-      "sound": 3,
-      "comfort": 3,
-      "ambiance": 3,
-      "facilities": 3,
-      "summary": "Broadway's largest theater (1,933 seats) delivers spectacle but the sheer size means rear orchestra and mezzanine seats feel very far from the stage. Sound systems compensate for the distance but intimacy is sacrificed. Legroom is average despite the theater's scale.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/gershwin-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Gershwin+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "First Broadway theater with hearing loop (2013). Elevator to Orchestra and Mezzanine. 12 wheelchair spaces."
-    }
-  },
-  "Harold and Miriam Steinberg Center for Theatre": {
-    "capacity": 299,
-    "tips": "Part of the Roundabout Theatre Company complex. An intimate off-Broadway-sized space that occasionally hosts Broadway-eligible productions.",
-    "yearBuilt": 2003,
-    "operator": "Roundabout Theatre Company",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:24.634Z",
+    "Harold and Miriam Steinberg Center for Theatre": {
       "seating": {
         "bestSeats": "The theater is small, so most seats offer a good view. Aim for the center sections for the most balanced perspective.",
-        "accessibility": "Accessible by elevator only. Assistive listening devices available."
+        "avoidSeats": null
       },
       "parking": {
+        "nearestGarages": [],
         "streetParking": "Street parking in this area is extremely limited and difficult to find, especially during show times.",
         "tip": "Consider booking parking in advance at a nearby garage to save time and reduce stress."
+      },
+      "dining": {
+        "preShow": [],
+        "postShow": [],
+        "quickBite": []
       },
       "logistics": {
         "entrance": "The main entrance is on 46th Street.",
         "nearestSubway": "The nearest subway station is Times Square-42nd Street (1/2/3/7/N/Q/R/W/S lines).",
         "exitStrategy": "Exiting onto 46th Street provides easy access to taxis and the subway.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:10:24.634Z",
+      "hasScrapedData": false
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Roundabout_Theatre_Company_%2854077164893%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 3,
-      "sound": 3,
-      "comfort": 3,
-      "ambiance": 3,
-      "facilities": 3,
-      "summary": "An intimate 299-seat black box space at Roundabout, offering an unusually close actor-audience experience unlike any other Broadway house. Sightlines and sound vary by configuration since staging changes per production. Comfort is adequate but unremarkable.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Harold+and+Miriam+Steinberg+Center+for+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Accessible by elevator only. Assistive listening devices available."
-    }
-  },
-  "Helen Hayes Theater": {
-    "capacity": 597,
-    "tips": "Broadway's smallest theater — incredibly intimate. Every seat is close. Named after the First Lady of American Theater.",
-    "yearBuilt": 1912,
-    "operator": "Second Stage Theater",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:31.679Z",
+    "Helen Hayes Theater": {
       "seating": {
         "bestSeats": "Given the small size of the Helen Hayes Theater, most seats offer excellent views. Center orchestra seats provide the most immersive experience.",
-        "accessibility": "Elevator from lower lobby to Mezzanine. LOOP system for t-coils and cochlear implants."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -2086,48 +1556,14 @@
         "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, 7, N, Q, R, W, S lines) is the closest subway stop.",
         "exitStrategy": "Exiting onto 44th Street provides easy access to taxis and the subway. Consider walking a block or two further from Times Square for easier transportation.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:10:31.679Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Hayes_Theater_%2851495253685%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 4,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "One of Broadway's smallest houses (597 seats) and one of its newest, built in 2015 as Second Stage's permanent home. The intimate scale means excellent sightlines from nearly every seat, though the modern design prioritizes function over grandeur.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Helen+Hayes+Theater/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator from lower lobby to Mezzanine. LOOP system for t-coils and cochlear implants."
-    }
-  },
-  "Hudson Theatre": {
-    "capacity": 970,
-    "tips": "One of Broadway's oldest theaters (1903), beautifully restored in 2017. Ornate interior with excellent acoustics. The orchestra has great legroom.",
-    "yearBuilt": 1903,
-    "operator": "ATG Entertainment",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:39.137Z",
+    "Hudson Theatre": {
       "seating": {
         "bestSeats": "The orchestra section offers great legroom and excellent acoustics. Center orchestra seats provide the most immersive experience.",
-        "accessibility": "Elevator to Dress Circle. No elevator to Balcony. Assisted listening devices at coat check."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -2223,49 +1659,14 @@
         "nearestSubway": "The nearest subway station is Times Square-42nd Street, accessible via the 1, 2, 3, 7, N, Q, R, W, and S lines.",
         "exitStrategy": "Head west on 44th Street to avoid the heaviest crowds in Times Square, or use the subway at Times Square-42nd Street.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:10:39.137Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Hudson_Theatre_%2852302264678%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 4,
-      "ambiance": 5,
-      "facilities": 3,
-      "summary": "A beautifully restored 1903 gem — one of the most gorgeous small theaters on Broadway. The 2017 renovation delivered some of the widest and most comfortable seats in the Theater District, with excellent sightlines from the intimate 970-seat house.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/hudson-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Hudson+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator to Dress Circle. No elevator to Balcony. Assisted listening devices at coat check."
-    }
-  },
-  "Imperial Theatre": {
-    "capacity": 1439,
-    "tips": "A premier musical house with a wide stage and excellent acoustics. Center orchestra rows D-L are considered some of the best seats on Broadway.",
-    "yearBuilt": 1923,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:46.539Z",
+    "Imperial Theatre": {
       "seating": {
         "bestSeats": "Center orchestra rows D-L are considered some of the best seats on Broadway due to the theater's wide stage and excellent acoustics.",
-        "accessibility": "5 wheelchair locations in Orchestra. No steps from sidewalk. Infrared devices available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -2361,50 +1762,14 @@
         "nearestSubway": "The nearest subway station is 42nd Street–Times Square, served by the 1, 2, 3, 7, N, Q, R, W, and S lines.",
         "exitStrategy": "Exiting onto 45th Street provides easy access to taxis and the subway.",
         "restrooms": "Restrooms are available inside the theater, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:10:46.539Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/e/e9/W_45_St_Oct_2021_100.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 3,
-      "ambiance": 4,
-      "facilities": 2,
-      "summary": "The Imperial Theatre offers good sightlines with minimal obstructions and solid sound quality, though some seats may miss minor stage action. While the ambiance is enhanced by its historic architectural design, comfort is average with decent legroom. Facilities are lacking, with long restroom lines being a common issue.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/imperial-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Imperial+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "5 wheelchair locations in Orchestra. No steps from sidewalk. Infrared devices available."
-    }
-  },
-  "James Earl Jones Theatre": {
-    "capacity": 1057,
-    "tips": "Formerly the Cort Theatre, renovated and renamed in 2022. Now one of Broadway's most modern and accessible theaters with all-new seating.",
-    "yearBuilt": 1912,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:54.008Z",
+    "James Earl Jones Theatre": {
       "seating": {
         "bestSeats": "The James Earl Jones Theatre has been renovated with all-new seating, so most seats offer good views. Aim for the center Orchestra or front Mezzanine for optimal sightlines.",
-        "avoidSeats": "Seats at the far sides of the balcony may have partially obstructed views.",
-        "accessibility": "Elevator to Mezzanine, Balcony, and lower level restrooms. 7 wheelchair spaces across all levels."
+        "avoidSeats": "Seats at the far sides of the balcony may have partially obstructed views."
       },
       "parking": {
         "nearestGarages": [
@@ -2500,50 +1865,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Exiting onto 48th Street provides easy access to taxis and the subway.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:10:54.008Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/1/1b/JamesEarlJonesTheatre.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 3,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 5,
-      "facilities": 4,
-      "summary": "A beautifully restored theater with a stunning Tiffany-inspired interior. The 2021 renovation transformed restroom facilities from among Broadway's worst to a model for the industry, with modern bathrooms on every public level.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/james-earl-jones-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/James+Earl+Jones+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator to Mezzanine, Balcony, and lower level restrooms. 7 wheelchair spaces across all levels."
-    }
-  },
-  "John Golden Theatre": {
-    "capacity": 805,
-    "tips": "A small, intimate venue ideal for plays. The mezzanine is steep but offers surprisingly good views. Limited legroom in the orchestra.",
-    "yearBuilt": 1927,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:01.378Z",
+    "John Golden Theatre": {
       "seating": {
         "bestSeats": "The mezzanine offers surprisingly good views despite its steepness. Center orchestra seats provide the most direct view of the stage.",
-        "avoidSeats": "Legroom can be limited in the orchestra section, so those needing more space might prefer an aisle seat or mezzanine.",
-        "accessibility": "5 wheelchair spaces in Orchestra. No wheelchair-accessible restroom (use adjacent Schoenfeld)."
+        "avoidSeats": "Legroom can be limited in the orchestra section, so those needing more space might prefer an aisle seat or mezzanine."
       },
       "parking": {
         "nearestGarages": [
@@ -2639,49 +1968,14 @@
         "nearestSubway": "The nearest subway stations are the 49th Street station (N, R, W lines) and the 42nd Street-Times Square station (1, 2, 3, 7, A, C, E, N, Q, R, W lines).",
         "exitStrategy": "Exiting onto 45th Street provides easy access to taxis and subway lines. Head west for less crowded subway access.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:11:01.378Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/1/16/Stereophonic_Marquee_April_2024.png",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 2,
-      "ambiance": 3,
-      "facilities": 3,
-      "summary": "The John Golden Theatre offers good sightlines from most seats, though sound quality can vary, especially under the mezzanine. Seating comfort is typical of older theaters with tight legroom, but the venue maintains a pleasant ambiance overall. Facilities are adequate, though not exceptional.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/John+Golden+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "5 wheelchair spaces in Orchestra. No wheelchair-accessible restroom (use adjacent Schoenfeld)."
-    }
-  },
-  "Longacre Theatre": {
-    "capacity": 1077,
-    "tips": "A classic theater with a beautiful proscenium arch. Center orchestra is best. The balcony overhang can affect views in rear orchestra rows.",
-    "yearBuilt": 1913,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:08.509Z",
+    "Longacre Theatre": {
       "seating": {
         "bestSeats": "Center orchestra seats provide the optimal viewing experience. The proscenium arch is a beautiful feature of this classic theater.",
-        "avoidSeats": "The balcony overhang can obstruct views from the rear orchestra rows.",
-        "accessibility": "Small restroom-only elevator (may not accommodate all wheelchairs). 3 wheelchair spaces in Orchestra."
+        "avoidSeats": "The balcony overhang can obstruct views from the rear orchestra rows."
       },
       "parking": {
         "nearestGarages": [
@@ -2777,49 +2071,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Exiting onto 48th Street provides the most direct access to taxis and subway lines.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:11:08.509Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/5/5f/The_Longacre_Theatre_-_The_Prom_%2848193461707%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 3,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Longacre Theatre offers good sightlines with minimal obstructions, even from the balcony, and the sound quality is consistently praised. While the seating is a bit narrow, it provides average comfort for most patrons. The theater's ambiance is enhanced by its elegant Beaux Arts interior, and facilities are typical for a Broadway venue, with some lines at intermission but generally manageable.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/longacre-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Longacre+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Small restroom-only elevator (may not accommodate all wheelchairs). 3 wheelchair spaces in Orchestra."
-    }
-  },
-  "Lunt-Fontanne Theatre": {
-    "capacity": 1509,
-    "tips": "A grand theater with an ornate interior. Originally opened with a retractable roof. Good sightlines from the front mezzanine.",
-    "yearBuilt": 1910,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:15.217Z",
+    "Lunt-Fontanne Theatre": {
       "seating": {
         "bestSeats": "The front mezzanine offers excellent sightlines in this grand theater.",
-        "accessibility": "Step-free to lobby and Orchestra. Copper induction loop available. 5 wheelchair spaces."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -2915,50 +2174,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Exiting onto 46th Street provides easy access to taxis and the subway.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:11:15.217Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/0/09/Lunt-Fontanne_Theatre_-_Dave_Chappelle_%2848296060697%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "A handsome Art Deco house with a distinctive celestial ceiling and wide auditorium. Sightlines are good from center seats but the wide layout means far-side seats lose some stage width. Notoriously narrow seats make comfort a challenge for longer shows.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/lunt-fontanne-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Lunt-Fontanne+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Step-free to lobby and Orchestra. Copper induction loop available. 5 wheelchair spaces."
-    }
-  },
-  "Lyceum Theatre": {
-    "capacity": 950,
-    "tips": "The oldest continuously operating Broadway theater (1903) and a New York City landmark. Stunning Beaux-Arts architecture. Intimate and charming.",
-    "yearBuilt": 1903,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:22.962Z",
+    "Lyceum Theatre": {
       "seating": {
         "bestSeats": "The Lyceum is an intimate theater, so most seats offer good views. Center orchestra seats provide the most direct view of the stage.",
-        "avoidSeats": "Seats in the rear of the balcony may feel distant. Side orchestra seats can sometimes have partially obstructed views.",
-        "accessibility": "4 wheelchair spaces in Orchestra. No elevator. Infrared devices available."
+        "avoidSeats": "Seats in the rear of the balcony may feel distant. Side orchestra seats can sometimes have partially obstructed views."
       },
       "parking": {
         "nearestGarages": [
@@ -3054,50 +2277,14 @@
         "nearestSubway": "The nearest subway station is Times Square-42nd Street, served by the 1, 2, 3, 7, N, Q, R, W, and S lines.",
         "exitStrategy": "Exiting onto 45th Street, you can easily grab a taxi or head towards Times Square for subway access.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:11:22.962Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Lyceum_Theatre_%2848295950156%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 2,
-      "ambiance": 5,
-      "facilities": 2,
-      "summary": "The Lyceum Theatre offers good sightlines and a charming Beaux Arts ambiance, but suffers from cramped seating and small restrooms. Ideal for intimate dramas, but patrons should be prepared for less comfort during their visit.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/lyceum-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Lyceum+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "4 wheelchair spaces in Orchestra. No elevator. Infrared devices available."
-    }
-  },
-  "Lyric Theatre": {
-    "capacity": 1930,
-    "tips": "One of Broadway's newest and largest theaters, created by combining two older venues. The theater can be reconfigured for different productions.",
-    "yearBuilt": 1998,
-    "operator": "ATG Entertainment",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:30.775Z",
+    "Lyric Theatre": {
       "seating": {
         "bestSeats": "The Lyric is a large theater, so aim for seats in the center orchestra for the best views. Mezzanine seats can also offer a good perspective, especially in the front rows.",
-        "avoidSeats": "Seats far to the side in the balcony or rear orchestra may have obstructed views. Check the seating chart carefully when purchasing tickets.",
-        "accessibility": "42nd St entrance at street level with elevator to Orchestra and Dress Circle. No elevator to Balcony."
+        "avoidSeats": "Seats far to the side in the balcony or rear orchestra may have obstructed views. Check the seating chart carefully when purchasing tickets."
       },
       "parking": {
         "nearestGarages": [
@@ -3193,49 +2380,14 @@
         "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, 7, N, Q, R, W, S lines) is the closest subway stop.",
         "exitStrategy": "Exiting towards 7th or 8th Avenue provides the most options for transportation and avoiding crowds.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:11:30.775Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Lyric_Theatre_Broadway-Harry_Potter.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 3,
-      "ambiance": 3,
-      "facilities": 3,
-      "summary": "The Lyric Theatre offers good sightlines and sound quality, making it a solid choice for visually and acoustically demanding productions. While the comfort is average, with decent legroom and seat padding, the theater's ambiance combines old-school glamor with modern touches. Facilities are typical for Broadway, with adequate concessions and restrooms.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/lyric-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Lyric+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "42nd St entrance at street level with elevator to Orchestra and Dress Circle. No elevator to Balcony."
-    }
-  },
-  "Majestic Theatre": {
-    "capacity": 1645,
-    "tips": "Home of The Phantom of the Opera for 35 years. A grand musical theater with excellent acoustics. Center orchestra rows E-M are ideal.",
-    "yearBuilt": 1927,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:40.328Z",
+    "Majestic Theatre": {
       "seating": {
         "bestSeats": "Center orchestra rows E-M offer an ideal viewing experience at the Majestic Theatre.",
-        "accessibility": "4 wheelchair locations in Orchestra. No steps to rows AA-H. Infrared devices available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -3331,49 +2483,14 @@
         "nearestSubway": "The 42nd Street–Times Square subway station (1, 2, 3, 7, N, Q, R, W lines) is the closest.",
         "exitStrategy": "Head west on 44th Street to avoid the heaviest crowds after the show, or use the subway.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:11:40.328Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Majestic_Theatre_-_NYC_%2852302522949%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 2,
-      "ambiance": 3,
-      "facilities": 2,
-      "summary": "The Majestic Theatre offers generally good sightlines, especially from the orchestra and mezzanine, though some seats have obstructions. Sound quality is average, but comfort is compromised by tight legroom and narrow seats. The theater's ambiance is enhanced by its historic architecture, though facilities like restrooms can be insufficient during intermissions.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/majestic-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Majestic+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "4 wheelchair locations in Orchestra. No steps to rows AA-H. Infrared devices available."
-    }
-  },
-  "Marquis Theatre": {
-    "capacity": 1611,
-    "tips": "Located inside the Marriott Marquis hotel — enter through the lobby and take the escalators up. Modern theater with comfortable seating and no obstructed views.",
-    "yearBuilt": 1986,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:48.007Z",
+    "Marquis Theatre": {
       "seating": {
         "bestSeats": "Orchestra seats offer the most immersive experience. Mezzanine seats provide a good overall view of the stage.",
-        "accessibility": "Elevator via Marriott Marquis hotel. 10 wheelchair spaces. No elevator to Mezzanine."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -3469,50 +2586,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Exiting onto Broadway can be crowded. Consider using the hotel's side exits to 45th or 46th Street for a slightly less congested departure.",
         "restrooms": "Restrooms are located inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:11:48.007Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/en/4/4b/Marquis_Theatre_marquee_Oct_2016_day.jpeg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 5,
-      "ambiance": 1,
-      "facilities": 4,
-      "summary": "The Marquis Theatre offers excellent comfort with spacious seating and good sightlines from most areas, although the ambiance is somewhat lacking due to its modern, hotel-integrated design. Facilities are well-equipped with ample restrooms and concessions, making it a convenient choice for theatergoers.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/marquis-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Marquis+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator via Marriott Marquis hotel. 10 wheelchair spaces. No elevator to Mezzanine."
-    }
-  },
-  "Minskoff Theatre": {
-    "capacity": 1710,
-    "tips": "A large modern theater in the heart of Times Square. Home to The Lion King since 2006. Front mezzanine has exceptional views of the full stage.",
-    "yearBuilt": 1973,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:55.480Z",
+    "Minskoff Theatre": {
       "seating": {
         "bestSeats": "The front mezzanine offers exceptional, full-stage views. Center orchestra seats also provide excellent sightlines.",
-        "avoidSeats": "Seats at the rear of the balcony may feel distant from the stage.",
-        "accessibility": "Dedicated elevator to Orchestra and Mezzanine. 12 wheelchair spaces in Orchestra, 2 in Mezzanine. Hearing loop installed."
+        "avoidSeats": "Seats at the rear of the balcony may feel distant from the stage."
       },
       "parking": {
         "nearestGarages": [
@@ -3608,50 +2689,14 @@
         "nearestSubway": "The 49th Street subway station (N, Q, R, W lines) is the closest.",
         "exitStrategy": "Exiting towards 7th Avenue provides access to taxis and subway lines. Consider pre-booking a taxi or rideshare to avoid delays.",
         "restrooms": "Restrooms are available on multiple levels of the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:11:55.480Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/0/08/Minskoff_Theatre_NYC_2007.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 3,
-      "ambiance": 3,
-      "facilities": 3,
-      "summary": "A modern, well-equipped theater with clean sightlines from most sections. The contemporary design lacks the ornate character of older Broadway houses but delivers reliable sound and adequate comfort. Home to The Lion King since 2006.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/minskoff-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Minskoff+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Dedicated elevator to Orchestra and Mezzanine. 12 wheelchair spaces in Orchestra, 2 in Mezzanine. Hearing loop installed."
-    }
-  },
-  "Music Box Theatre": {
-    "capacity": 1009,
-    "tips": "Built by Irving Berlin in 1921 and one of the most beautiful theaters on Broadway. Excellent acoustics. A favorite venue for both plays and musicals.",
-    "yearBuilt": 1921,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:03.664Z",
+    "Music Box Theatre": {
       "seating": {
         "bestSeats": "The Music Box Theatre is a smaller venue, so most seats offer good views. Center orchestra seats provide the optimal experience.",
-        "avoidSeats": "Balcony seats may feel distant for some viewers. Check the specific seating chart for any obstructed views before booking.",
-        "accessibility": "5 wheelchair spaces in Orchestra. No steps from sidewalk. Infrared devices available."
+        "avoidSeats": "Balcony seats may feel distant for some viewers. Check the specific seating chart for any obstructed views before booking."
       },
       "parking": {
         "nearestGarages": [
@@ -3740,50 +2785,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines after the show.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:12:03.664Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/4/41/Music_Box_Theater_-_Front_%2848193460267%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 3,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Music Box Theatre offers excellent sightlines from most seats, making it ideal for intimate dramas, though sound quality can vary. The theater's charming Georgian-inspired design adds to its ambiance, while comfort and facilities are average for a Broadway venue.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/music-box-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Music+Box+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "5 wheelchair spaces in Orchestra. No steps from sidewalk. Infrared devices available."
-    }
-  },
-  "Nederlander Theatre": {
-    "capacity": 1232,
-    "tips": "Good sightlines from most seats. The mezzanine has a nice rake. Watch out for limited legroom in some orchestra sections.",
-    "yearBuilt": 1921,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:11.265Z",
+    "Nederlander Theatre": {
       "seating": {
         "bestSeats": "Good sightlines are generally available throughout the theater, especially in the mezzanine due to its rake. Orchestra seats offer an intimate experience.",
-        "avoidSeats": "Some orchestra seats may have limited legroom, so taller patrons should consider seats in the rear orchestra or mezzanine.",
-        "accessibility": "Step-free main entrance to Orchestra. 6 wheelchair spaces. Personal induction loop devices available."
+        "avoidSeats": "Some orchestra seats may have limited legroom, so taller patrons should consider seats in the rear orchestra or mezzanine."
       },
       "parking": {
         "nearestGarages": [
@@ -3879,49 +2888,14 @@
         "nearestSubway": "The nearest subway station is Times Square-42nd Street (1, 2, 3, 7, N, Q, R, W, S, A, C, E lines).",
         "exitStrategy": "Exiting towards 7th or 8th Avenue provides the quickest access to taxis and subway lines.",
         "restrooms": "Restrooms are available, but can get crowded during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:12:11.265Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/6/63/Nederlander_Theatre_-_Pretty_Woman_%2848295956906%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 3,
-      "sound": 3,
-      "comfort": 2,
-      "ambiance": 3,
-      "facilities": 3,
-      "summary": "An older theater in need of renovation, with virtually no rake in the orchestra — a tall person seated in front will block your view. First mezzanine row has a horizontal safety bar that partially obstructs sightlines. Legroom is tight throughout.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/nederlander-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Nederlander+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Step-free main entrance to Orchestra. 6 wheelchair spaces. Personal induction loop devices available."
-    }
-  },
-  "Neil Simon Theatre": {
-    "capacity": 1445,
-    "tips": "A large house with a wide orchestra. Front mezzanine center seats offer the best overall view. The theater has hosted many long-running hits.",
-    "yearBuilt": 1927,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:18.200Z",
+    "Neil Simon Theatre": {
       "seating": {
         "bestSeats": "The front mezzanine center seats offer the best overall view in this large theater. The wide orchestra can make some side seats feel distant.",
-        "accessibility": "7 wheelchair spaces in Orchestra. Step-free from street to Orchestra. No elevator."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -4017,49 +2991,14 @@
         "nearestSubway": "The 50th Street subway station (1, C, E lines) is a short walk from the theater.",
         "exitStrategy": "Exiting onto 52nd Street provides easy access to taxis and the subway. Consider walking a block further from Times Square for easier transportation.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:12:18.200Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/2/28/Neil_Simon_Theatre_%2848269598196%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Neil Simon Theatre offers good sightlines with minimal obstructions, although comfort is compromised by tight legroom and narrow seats. The ambiance is appealing with its classic architectural charm, and facilities are average, with typical restroom and concession offerings.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/neil-simon-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Neil+Simon+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "7 wheelchair spaces in Orchestra. Step-free from street to Orchestra. No elevator."
-    }
-  },
-  "New Amsterdam Theatre": {
-    "capacity": 1702,
-    "tips": "Disney's flagship Broadway theater, spectacularly restored in 1997. Art Nouveau interior is worth seeing on its own. Excellent sightlines from the orchestra.",
-    "yearBuilt": 1903,
-    "operator": "Disney Theatrical Group",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:26.286Z",
+    "New Amsterdam Theatre": {
       "seating": {
         "bestSeats": "The orchestra section provides excellent sightlines, allowing you to fully appreciate the stage and the Art Nouveau details of the theater.",
-        "accessibility": "Elevator to Mezzanine and Balcony. Assistive listening, handheld captions, audio description available."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -4155,50 +3094,14 @@
         "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, 7, N, Q, R, W lines) is the closest.",
         "exitStrategy": "Exiting towards 7th Avenue provides the most direct access to the subway and taxi stands.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:12:26.286Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/9/94/New_Amsterdam_Theatre.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 5,
-      "facilities": 3,
-      "summary": "The New Amsterdam Theatre boasts stunning Art Nouveau architecture and generally good sightlines, making it a visually impressive venue. However, the comfort is lacking due to tight legroom and minimal seat padding, and while facilities are adequate, congestion during entry and exit can be an issue.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/new-amsterdam-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/New+Amsterdam+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator to Mezzanine and Balcony. Assistive listening, handheld captions, audio description available."
-    }
-  },
-  "Palace Theatre": {
-    "capacity": 1648,
-    "tips": "Famously raised 30 feet in the air during the TSX Broadway development. Recently renovated with modern amenities while preserving its historic character.",
-    "yearBuilt": 1913,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:34.568Z",
+    "Palace Theatre": {
       "seating": {
         "bestSeats": "Orchestra seats provide the most immersive experience in this grand, renovated theater. Mezzanine seats also offer excellent views.",
-        "avoidSeats": "Balcony seats may feel distant due to the theater's height; check seat views before booking.",
-        "accessibility": "Elevator to all levels. Wheelchair, aisle transfer, and companion seating on all levels."
+        "avoidSeats": "Balcony seats may feel distant due to the theater's height; check seat views before booking."
       },
       "parking": {
         "nearestGarages": [
@@ -4294,49 +3197,14 @@
         "nearestSubway": "The 47-50 Streets - Rockefeller Center station (B, D, F, M) is the closest subway stop.",
         "exitStrategy": "Exiting onto Broadway provides easy access to taxis and the subway. Consider walking a block or two further from Times Square for easier transportation.",
         "restrooms": "Restrooms are available within the theater; expect potential queues during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:12:34.568Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Palace_Theatre_Jun_2025_01.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 5,
-      "ambiance": 4,
-      "facilities": 4,
-      "summary": "Spectacularly renovated in a $100M+ project that literally raised the theater 30 feet. The restoration preserved its opulent 1913 interior while upgrading acoustics, seating comfort, and best-in-class restrooms on every level — widely considered the best facilities on Broadway.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/palace-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Palace+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator to all levels. Wheelchair, aisle transfer, and companion seating on all levels."
-    }
-  },
-  "Richard Rodgers Theatre": {
-    "capacity": 1319,
-    "tips": "Home of Hamilton since 2015. Good sightlines throughout. The front mezzanine is especially popular for a full view of the staging.",
-    "yearBuilt": 1925,
-    "operator": "Nederlander Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:42.524Z",
+    "Richard Rodgers Theatre": {
       "seating": {
         "bestSeats": "The front mezzanine is popular for its full view of the stage. Orchestra seats also offer excellent sightlines.",
-        "accessibility": "Stair lift to orchestra; elevator to mezzanine. Inductive hearing loop installed."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -4432,49 +3300,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines after the show.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:12:42.524Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Rodgers_Theater_-_Hamilton_%2848193460677%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 2,
-      "summary": "The Richard Rodgers offers strong sightlines from most orchestra and front mezzanine seats, with good acoustics for musicals. However, legroom is notably tight throughout, especially in the orchestra, and rear mezzanine seats feel distant from the stage.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/richard-rodgers-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Richard+Rodgers+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Stair lift to orchestra; elevator to mezzanine. Inductive hearing loop installed."
-    }
-  },
-  "Samuel J. Friedman Theatre": {
-    "capacity": 650,
-    "tips": "One of Broadway's smallest and most intimate theaters. Home to Manhattan Theatre Club productions. Every seat feels connected to the stage.",
-    "yearBuilt": 1925,
-    "operator": "Manhattan Theatre Club",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:50.043Z",
+    "Samuel J. Friedman Theatre": {
       "seating": {
         "bestSeats": "The Samuel J. Friedman Theatre is an intimate space, so most seats offer a good view. Center orchestra seats provide the optimal perspective.",
-        "accessibility": "Elevator to all levels. Built-in induction loop for t-coil hearing aids."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -4570,50 +3403,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines after the show.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:12:50.043Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/a/ac/W_47_St_Nov_2021_109.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 4,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Samuel J. Friedman Theatre offers good sightlines with minimal obstructions and a well-raked mezzanine, ensuring a clear view from most seats. The sound quality is consistently praised, and the seating is comfortable with decent legroom. The theater's ambiance is enhanced by its elegant design following renovation, though facilities like restrooms are average, leading to some congestion during intermissions.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/samuel-j-friedman-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Samuel+J.+Friedman+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator to all levels. Built-in induction loop for t-coil hearing aids."
-    }
-  },
-  "Shubert Theatre": {
-    "capacity": 1460,
-    "tips": "The flagship of the Shubert Organization, located on Shubert Alley. Home to A Chorus Line for 15 years. Classic Broadway experience with great acoustics.",
-    "yearBuilt": 1913,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:54.836Z",
+    "Shubert Theatre": {
       "seating": {
         "bestSeats": "Orchestra seats offer the best views, especially in the center sections. Mezzanine seats can also provide a good vantage point.",
-        "avoidSeats": "Seats far to the side in the balcony may have obstructed views.",
-        "accessibility": "7 wheelchair spaces in Orchestra. No wheelchair-accessible restrooms (available across street)."
+        "avoidSeats": "Seats far to the side in the balcony may have obstructed views."
       },
       "parking": {
         "nearestGarages": [
@@ -4633,54 +3430,24 @@
         "streetParking": "Street parking is extremely limited in this area.",
         "tip": "Consider booking your parking spot in advance online for potentially lower rates and guaranteed availability."
       },
+      "dining": {
+        "preShow": [],
+        "postShow": [],
+        "quickBite": []
+      },
       "logistics": {
         "entrance": "The main entrance is located on Shubert Alley.",
         "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, 7, N, Q, R, W lines) is the closest subway stop.",
         "exitStrategy": "Exiting onto Shubert Alley allows for a less crowded departure than exiting directly onto 44th Street. Head east for subway access or west for ride-sharing options.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:12:54.836Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Shubert_Theatre_%28Broadway%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 3,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Shubert Theatre offers good sightlines with minimal obstructions, though some seats may require leaning forward for a full view. The sound quality is generally consistent and clear. While legroom is limited in some areas, the theater's historic charm and central location add to its appeal. Facilities are average, with typical lines at restrooms and concessions.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/shubert-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Shubert+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "7 wheelchair spaces in Orchestra. No wheelchair-accessible restrooms (available across street)."
-    }
-  },
-  "St. James Theatre": {
-    "capacity": 1710,
-    "tips": "One of Broadway's grand musical houses. Has hosted many legendary premieres. The orchestra has excellent sightlines; front mezz is also great.",
-    "yearBuilt": 1927,
-    "operator": "ATG Entertainment",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:02.260Z",
+    "St. James Theatre": {
       "seating": {
         "bestSeats": "The orchestra section offers excellent sightlines. The front mezzanine is also a great option.",
-        "accessibility": "No steps from sidewalk to Orchestra. No elevator. Mezzanine up 29 steps, Balcony up 76 steps."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -4776,50 +3543,14 @@
         "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, N, Q, R, W lines) is the closest subway stop.",
         "exitStrategy": "Head west on 44th Street to avoid the heaviest crowds in Times Square, or use the subway.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:13:02.260Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/5/59/St_James_Theatre_-_Frozen_%2848296062327%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 5,
-      "facilities": 3,
-      "summary": "The St. James Theatre offers good sightlines for most seats, though the lack of a solid rake can be an issue if someone tall sits in front of you. The sound quality is generally good, but the tight legroom can be uncomfortable for taller patrons. The theater's ambiance is enhanced by its historic and grand interior, while facilities are average with standard amenities.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/st-james-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/St.+James+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "No steps from sidewalk to Orchestra. No elevator. Mezzanine up 29 steps, Balcony up 76 steps."
-    }
-  },
-  "Stephen Sondheim Theatre": {
-    "capacity": 1055,
-    "tips": "Renamed in 2010 to honor the legendary composer-lyricist. A well-designed midsize house. Good for both musicals and plays.",
-    "yearBuilt": 1918,
-    "operator": "Roundabout Theatre Company",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:10.523Z",
+    "Stephen Sondheim Theatre": {
       "seating": {
         "bestSeats": "The Stephen Sondheim Theatre is a well-designed midsize house, offering excellent views from most locations. Center orchestra seats provide the most immersive experience.",
-        "avoidSeats": "Seats in the rear of the balcony may feel distant. Check the seating chart for obstructed views before booking.",
-        "accessibility": "Elevator to all levels. 3 hearing loops. 100 Sennheiser hearing devices. 12 wheelchair seats."
+        "avoidSeats": "Seats in the rear of the balcony may feel distant. Check the seating chart for obstructed views before booking."
       },
       "parking": {
         "nearestGarages": [
@@ -4915,50 +3646,14 @@
         "nearestSubway": "The 42nd Street–Bryant Park/Fifth Avenue station is the closest, served by the B, D, F, and M lines.",
         "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and ride-sharing services, or use the subway at 42nd Street.",
         "restrooms": "Restrooms are available in the lobby and mezzanine levels."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:13:10.523Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Anything_Goes_at_Stephen_Sondheim_Theatre.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 4,
-      "ambiance": 4,
-      "facilities": 4,
-      "summary": "A Roundabout Theatre Company house with excellent sightlines and good sound. Post-renovation seating is comfortable with decent legroom. Standout facilities include 30 women's restroom stalls — triple the building code requirement — virtually eliminating intermission lines.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/stephen-sondheim-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Stephen+Sondheim+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevator to all levels. 3 hearing loops. 100 Sennheiser hearing devices. 12 wheelchair seats."
-    }
-  },
-  "Studio 54": {
-    "capacity": 1004,
-    "tips": "The legendary nightclub turned Broadway theater. Operated by Roundabout Theatre Company. Retains some of its famous nightclub atmosphere in the design.",
-    "yearBuilt": 1927,
-    "operator": "Roundabout Theatre Company",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:17.800Z",
+    "Studio 54": {
       "seating": {
         "bestSeats": "The theater is relatively small, so most seats offer a good view. Center orchestra seats provide the most immersive experience.",
-        "avoidSeats": "Seats at the far sides of the balcony may have slightly obstructed views.",
-        "accessibility": "No elevator to Mezzanine. 10 induction loops. 81 assistive listening devices. Orchestra wheelchair seating."
+        "avoidSeats": "Seats at the far sides of the balcony may have slightly obstructed views."
       },
       "parking": {
         "nearestGarages": [
@@ -5054,48 +3749,14 @@
         "nearestSubway": "The 50 St subway station (lines 1, 2) and 7 Av station (lines B, D, E) are nearby.",
         "exitStrategy": "Exiting onto 54th Street provides easy access to taxis and subway lines.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:13:17.800Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Studio_54_%2848269674087%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 3,
-      "comfort": 1,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The legendary former nightclub retains a distinctive atmosphere even in its theatrical configuration. However, comfort is among the worst on Broadway — the rear mezzanine is extremely steep with limited guardrails and tight legroom throughout both levels.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Studio+54/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "No elevator to Mezzanine. 10 induction loops. 81 assistive listening devices. Orchestra wheelchair seating."
-    }
-  },
-  "Todd Haimes Theatre": {
-    "capacity": 740,
-    "tips": "Formerly Stage II at Second Stage Theater, renamed in 2023. One of Broadway's smaller houses, offering an intimate experience for new works.",
-    "yearBuilt": 1918,
-    "operator": "Roundabout Theatre Company",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:24.679Z",
+    "Todd Haimes Theatre": {
       "seating": {
         "bestSeats": "The Todd Haimes Theatre is a smaller venue, so most seats offer a good view. Center orchestra seats provide the most immersive experience.",
-        "accessibility": "Elevators to all levels. 53 assistive listening devices. 11 wheelchair seats across Orchestra and Balcony."
+        "avoidSeats": null
       },
       "parking": {
         "nearestGarages": [
@@ -5191,104 +3852,38 @@
         "nearestSubway": "The nearest subway station is Times Square-42nd Street (1, 2, 3, 7, N, Q, R, W, S, A, C, E lines).",
         "exitStrategy": "Exiting towards 8th Avenue provides access to multiple subway lines and taxi stands.",
         "restrooms": "Restrooms are available inside the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:13:24.679Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/1/15/ToddHaimesTheatre-byPhilipRomano.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 4,
-      "ambiance": 4,
-      "facilities": 4,
-      "summary": "Completed a major renovation in early 2026 with all seats replaced, legroom expanded, new restrooms, and elevator access to all levels. One of Broadway's most accessible and comfortable houses thanks to the recent upgrades.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/todd-haimes-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Todd+Haimes+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Elevators to all levels. 53 assistive listening devices. 11 wheelchair seats across Orchestra and Balcony."
-    }
-  },
-  "Vivian Beaumont Theater": {
-    "capacity": 1080,
-    "tips": "Located in Lincoln Center — one of Broadway's few theaters outside the Theater District. Thrust stage creates an immersive experience. Excellent sightlines.",
-    "yearBuilt": 1965,
-    "operator": "Lincoln Center Theater",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:28.461Z",
+    "Vivian Beaumont Theater": {
       "seating": {
         "bestSeats": "The thrust stage offers excellent sightlines from most seats, providing an intimate viewing experience. Center orchestra seats provide the most direct view.",
-        "avoidSeats": "Seats far to the side may offer a slightly obstructed view of certain stage areas.",
-        "accessibility": "Orchestra accessible via elevator. Induction hearing loop for t-coil. Loge NOT accessible (stairs only)."
+        "avoidSeats": "Seats far to the side may offer a slightly obstructed view of certain stage areas."
       },
       "parking": {
+        "nearestGarages": [],
         "streetParking": "Street parking in the Lincoln Center area is extremely limited and difficult to find, especially during performance hours.",
         "tip": "Consider reserving parking in advance, as the area can get very busy, especially during Lincoln Center events."
+      },
+      "dining": {
+        "preShow": [],
+        "postShow": [],
+        "quickBite": []
       },
       "logistics": {
         "entrance": "The main entrance faces Lincoln Center Plaza.",
         "nearestSubway": "The 1 train at 66th Street - Lincoln Center Station is the closest subway stop.",
         "exitStrategy": "Exiting towards the subway is efficient, but allow extra time due to crowds, especially after popular shows. Consider walking a few blocks east for easier taxi access.",
         "restrooms": "Restrooms are available within the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:13:28.461Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/b/be/My_Fair_Lady_at_the_Lincoln_Center_Theatre_%2848047493287%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 5,
-      "sound": 5,
-      "comfort": 3,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Vivian Beaumont Theater offers exceptional sightlines and sound quality due to its unique thrust stage design, ensuring a great view and auditory experience from nearly every seat. While the ambiance is enhanced by its location within the Lincoln Center, the comfort level is average with some reports of tight seating, and facilities are typical for a Broadway venue.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/vivian-beaumont-theater/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Vivian+Beaumont+Theater/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": true,
-      "hearingLoop": true,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "Orchestra accessible via elevator. Induction hearing loop for t-coil. Loge NOT accessible (stairs only)."
-    }
-  },
-  "Walter Kerr Theatre": {
-    "capacity": 975,
-    "tips": "A beautiful theater with excellent sightlines and acoustics. The intimate size makes it ideal for both plays and smaller musicals.",
-    "yearBuilt": 1921,
-    "operator": "ATG Entertainment",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:35.151Z",
+    "Walter Kerr Theatre": {
       "seating": {
         "bestSeats": "The Walter Kerr is a smaller theater, so most seats offer good views. Center orchestra seats provide the most immersive experience.",
-        "avoidSeats": "Seats at the rear of the balcony may feel distant.",
-        "accessibility": "No elevators. All accessible seating on Orchestra level. Infrared headsets and audio induction neck loops."
+        "avoidSeats": "Seats at the rear of the balcony may feel distant."
       },
       "parking": {
         "nearestGarages": [
@@ -5384,50 +3979,14 @@
         "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
         "exitStrategy": "Exiting onto 48th Street provides easy access to taxis and the subway.",
         "restrooms": "Restrooms are available within the theater."
-      }
+      },
+      "lastUpdated": "2026-04-02T16:13:35.151Z",
+      "hasScrapedData": true
     },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/6/61/Walter_Kerr_Theatre_-_Hadestown_%2848295952136%29.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 4,
-      "sound": 4,
-      "comfort": 2,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Walter Kerr Theatre offers excellent sightlines and sound quality, making it a great venue for intimate productions. However, the comfort level is below average due to limited legroom and seat width, though the theater's Italian Renaissance-inspired decor adds to its charm.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/walter-kerr-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Walter+Kerr+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "No elevators. All accessible seating on Orchestra level. Infrared headsets and audio induction neck loops."
-    }
-  },
-  "Winter Garden Theatre": {
-    "capacity": 1526,
-    "tips": "A grand theater with a distinctive wide auditorium. Home to Cats for 18 years. Recently renovated with improved comfort and accessibility.",
-    "yearBuilt": 1911,
-    "operator": "Shubert Organization",
-    "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:42.491Z",
+    "Winter Garden Theatre": {
       "seating": {
         "bestSeats": "The Winter Garden is a wide theater, so aim for seats closer to the center for optimal viewing. Seats in the front mezzanine can offer a good overall view.",
-        "avoidSeats": "Seats far to the side may have partially obstructed views of the stage. Check the seating chart when purchasing tickets.",
-        "accessibility": "20 wheelchair spaces (largest of Shubert theaters). 16 aisle transfer seats. Infrared devices available."
+        "avoidSeats": "Seats far to the side may have partially obstructed views of the stage. Check the seating chart when purchasing tickets."
       },
       "parking": {
         "nearestGarages": [
@@ -5523,37 +4082,9 @@
         "nearestSubway": "The 50th Street subway station (1, 2 lines) is the closest.",
         "exitStrategy": "Exiting onto Broadway provides easy access to taxis and the subway. Consider walking a block or two further from the theater to find less crowded transportation options.",
         "restrooms": "Restrooms are available, but lines can form during intermission."
-      }
-    },
-    "images": {
-      "exterior": "https://upload.wikimedia.org/wikipedia/commons/1/10/Back_To_the_Future-_The_Musical_at_the_Winter_Garden_Theatre%2C_August_2023%2C_night.jpg",
-      "attribution": "Wikimedia Commons, CC BY-SA 4.0"
-    },
-    "venueScores": {
-      "sightlines": 3,
-      "sound": 4,
-      "comfort": 5,
-      "ambiance": 4,
-      "facilities": 3,
-      "summary": "The Winter Garden Theatre offers excellent legroom and spacious seating, making it one of the most comfortable venues on Broadway. Sightlines are generally good, though some side seats may have partial obstructions. The theater's ambiance is enhanced by its historical charm and garden-themed decor, while facilities are average with some potential for lines at restrooms.",
-      "sources": [
-        "seatplan",
-        "avfms",
-        "reddit"
-      ],
-      "lastResearched": "2026-04-02"
-    },
-    "externalLinks": {
-      "seatplan": "https://seatplan.com/new-york/winter-garden-theatre/",
-      "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Winter+Garden+Theatre/"
-    },
-    "accessibility": {
-      "wheelchair": true,
-      "elevator": false,
-      "hearingLoop": false,
-      "assistiveListening": true,
-      "verified": true,
-      "notes": "20 wheelchair spaces (largest of Shubert theaters). 16 aisle transfer seats. Infrared devices available."
+      },
+      "lastUpdated": "2026-04-02T16:13:42.491Z",
+      "hasScrapedData": true
     }
   }
 }
