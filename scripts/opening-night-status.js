@@ -16,6 +16,7 @@
  *   node scripts/opening-night-status.js --watch=60         # Refresh every 60s
  *   node scripts/opening-night-status.js --lookback=4       # 4-day lookback (default: 3)
  *   node scripts/opening-night-status.js --json             # Machine-readable output
+ *   node scripts/opening-night-status.js --notify           # Send Discord + email summary
  */
 
 const fs = require('fs');
@@ -27,6 +28,7 @@ const { checkReadiness, getMissingT1T2Outlets } = require('./opening-night-polle
 const { getTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { sendAlert } = require('./lib/discord-notify');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -46,6 +48,7 @@ const WATCH_INTERVAL = WATCH_ARG
   ? (WATCH_ARG.includes('=') ? parseInt(WATCH_ARG.split('=')[1], 10) : 30)
   : 0;
 const JSON_OUTPUT = process.argv.includes('--json');
+const NOTIFY = process.argv.includes('--notify');
 
 // ── Helpers ──
 
@@ -510,9 +513,82 @@ function renderDashboard() {
   return { shows: showResults, workflows, paused };
 }
 
+// ── Notifications ──
+
+/**
+ * Build a Discord embed summary for opening night status.
+ * Sent via --notify flag or triggered by CI on state changes.
+ */
+async function sendStatusNotification(data) {
+  if (!data.shows.length) return;
+
+  const fields = [];
+  for (const show of data.shows) {
+    const score = show.siteScore ?? show.liveScore;
+    const scoreStr = score != null ? `**${score}**/100` : 'no score yet';
+    const driftStr = show.scoreDrift && show.scoreDrift !== 0 ? ` (drift: ${show.scoreDrift > 0 ? '+' : ''}${show.scoreDrift})` : '';
+    const reviewStr = `${show.reviews.total} reviews (T1:${show.reviews.t1} T2:${show.reviews.t2} T3:${show.reviews.t3})`;
+
+    const readyIcon = show.readiness.ready ? ':white_check_mark:' : ':hourglass:';
+    const broadcastIcon = show.broadcast.state === 'complete' ? ':mega:' : show.broadcast.state === 'overdue' ? ':rotating_light:' : ':clock3:';
+
+    const missingStr = show.missingT1.length > 0
+      ? `Missing T1: ${show.missingT1.join(', ')}`
+      : 'All T1 found';
+
+    fields.push({
+      name: `${show.title} (${show.market})`,
+      value: [
+        `Score: ${scoreStr}${driftStr}`,
+        reviewStr,
+        `${readyIcon} ${show.readiness.ready ? 'Broadcast ready' : `Not ready: ${show.readiness.reasons.join(', ')}`}`,
+        `${broadcastIcon} ${show.broadcast.detail}`,
+        missingStr,
+      ].join('\n'),
+      inline: false,
+    });
+  }
+
+  // Pipeline summary
+  if (data.workflows?.orchestrator) {
+    const o = data.workflows.orchestrator;
+    const pipelineStr = [
+      data.paused ? ':pause_button: PAUSED' : null,
+      `Orchestrator: ${o.status}`,
+      data.workflows.deploy ? `Deploy: ${data.workflows.deploy.status}` : null,
+    ].filter(Boolean).join(' · ');
+
+    fields.push({ name: 'Pipeline', value: pipelineStr, inline: false });
+  }
+
+  // Determine severity
+  const hasFailure = data.workflows?.deploy?.status === 'failure' || data.paused;
+  const hasOverdue = data.shows.some(s => s.broadcast.state === 'overdue');
+  const allComplete = data.shows.every(s => s.broadcast.state === 'complete');
+  const severity = hasOverdue || hasFailure ? 'error'
+    : allComplete ? 'success'
+    : data.shows.some(s => s.readiness.ready) ? 'warning'
+    : 'info';
+
+  const title = allComplete
+    ? `Opening Night Complete — ${data.shows.map(s => s.title).join(', ')}`
+    : `Opening Night Status — ${data.shows.length} show(s)`;
+
+  await sendAlert({
+    title,
+    description: `Status as of ${new Date().toLocaleString()}`,
+    severity,
+    fields,
+    url: 'https://broadwayscorecard.com',
+    email: hasOverdue || hasFailure, // Email only on problems
+  });
+
+  console.log(`Discord notification sent (severity: ${severity})`);
+}
+
 // ── Entry ──
 
-function main() {
+async function main() {
   if (JSON_OUTPUT) {
     // Suppress console.log during render, capture data
     const origLog = console.log;
@@ -523,6 +599,19 @@ function main() {
     console.log = origLog;
     console.error = origError;
     process.stdout.write(JSON.stringify(data, null, 2) + '\n');
+    return;
+  }
+
+  if (NOTIFY) {
+    // Silent render to get data, then send notification
+    const origLog = console.log;
+    const origError = console.error;
+    console.log = () => {};
+    console.error = () => {};
+    const data = renderDashboard();
+    console.log = origLog;
+    console.error = origError;
+    await sendStatusNotification(data);
     return;
   }
 

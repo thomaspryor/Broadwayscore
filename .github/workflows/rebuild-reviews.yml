@@ -202,6 +202,10 @@ jobs:
         run: node scripts/generate-mobile-show-details.js
         continue-on-error: true
 
+      - name: Generate opening night status page
+        run: node scripts/generate-status-page.js
+        continue-on-error: true
+
       - name: Get new review count
         id: after
         run: |
@@ -252,6 +256,7 @@ jobs:
           # Core data files pushed to private repo by push-core-data action
           # Stage all audit files modified by rebuild (not just critic-outlet-affinity)
           git add data/audit/*.json 2>/dev/null || true
+          git add public/opening-night-status.json public/status.html 2>/dev/null || true
           # Reset any unstaged tracked files (e.g. core data overwritten by checkout-core-data)
           git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
 
