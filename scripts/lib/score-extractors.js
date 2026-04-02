@@ -224,6 +224,18 @@ function extractAllThatDazzlesScore(html, text) {
       }
     }
   }
+  // Check body HTML for emoji star clusters (ATD puts them in <span> tags)
+  const bodyMatch = html.match(/((?:⭐️?|🌟|★){2,5})/);
+  if (bodyMatch) {
+    const starCount = (bodyMatch[1].match(/⭐️|⭐|🌟|★/g) || []).length;
+    if (starCount >= 1 && starCount <= 5) {
+      return {
+        originalScore: `${starCount}/5`,
+        normalizedScore: starsToNumeric(starCount, 5),
+        source: 'atd-emoji-stars',
+      };
+    }
+  }
   return null;
 }
 
@@ -1214,6 +1226,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'theatre-weekly-star-image', 'radiotimes-page-json', 'radiotimes-svg-stars',
   'lbo-css-stars', 'atd-emoji-stars',
   'text-pattern', 'css-stars', 'word-stars', 'star-rating',
+  'reviewshub-percentage', 'explicit-rating',
 ]);
 
 module.exports = {
