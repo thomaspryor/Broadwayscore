@@ -1921,7 +1921,14 @@ function isValidAuthorName(name) {
 
 function cleanAuthorName(name) {
   let cleaned = name.trim();
+  // Strip any residual HTML tags (e.g., "Lisa Martland<br>")
+  cleaned = cleaned.replace(/<[^>]+>/g, '').trim();
+  // Strip HTML entities
+  cleaned = cleaned.replace(/&[a-z]+;/gi, '').trim();
   cleaned = cleaned.replace(/^By\s+/i, '');
+  // Strip sentence-start prefixes that leak into critic names from text extraction
+  // (e.g., "Although Dominic Cavendish", "For Chris Omaweng", "Only Andrzej Lukowski")
+  cleaned = cleaned.replace(/^(?:Although|For|Only|When|While|Since|Because|But|And|With|From|Despite|Unlike|After|Before|During|Reviews?)\s+/i, '');
   // Strip wire service suffixes (AP, Associated, Associated Press, Reuters)
   cleaned = cleaned.replace(/\s+(?:Associated(?:\s+Press)?|AP|Reuters|UPI)\s*$/i, '').trim();
   cleaned = cleaned.replace(/[,;|]+$/, '').trim();

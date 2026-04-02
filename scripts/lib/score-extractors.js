@@ -777,7 +777,10 @@ function extractGenericStarRating(html, text) {
     if (match) {
       if (match[1].includes('★') || match[1].includes('☆')) {
         const filled = (match[1].match(/★/g) || []).length;
-        const total = match[1].length;
+        const hasEmpty = match[1].includes('☆');
+        // If both filled and empty stars shown, total = filled + empty
+        // If only filled stars (no ☆), assume /5 scale (standard for theatre reviews)
+        const total = hasEmpty ? match[1].length : 5;
         return {
           originalScore: `${filled}/${total} stars`,
           normalizedScore: starsToNumeric(filled, total),
@@ -1049,8 +1052,14 @@ function extractScore(html, text, outletId) {
   // Generic extractors: ONLY use text (not HTML) to avoid CSS false positives
   // Only run these for outlets NOT in the explicit list
   if (!OUTLET_EXTRACTORS[outletId]) {
-    // Try generic star rating - TEXT ONLY
-    const starResult = extractGenericStarRating('', text);
+    // Extract title/h1 text from HTML — many niche outlets put star ratings there
+    // Title text is safe from CSS/JS false positives
+    const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+    const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
+    const titleText = [titleMatch?.[1], h1Match?.[1], text].filter(Boolean).join(' ');
+
+    // Try generic star rating - TEXT + title/h1 only
+    const starResult = extractGenericStarRating('', titleText);
     if (starResult) {
       return { ...starResult, outlet: outletId };
     }
