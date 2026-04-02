@@ -147,7 +147,9 @@
     "rodgers-hammersteins-cinderella-2013/lets-go-to-the-theater--karen-nowosad.json",
     "annie-2012/variety--marilyn-stasio.json",
     "harvey-2012/variety--marilyn-stasio.json",
-    "the-lyons-2012/wsj--terry-teachout.json"
+    "the-lyons-2012/wsj--terry-teachout.json",
+    "evita-2012/hollywood-reporter--david-rooney.json",
+    "newsies-the-musical-2012/broadway-baby--katerina-partolina-schwartz.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -540,7 +542,15 @@
     "clybourne-park-2012/times-uk--clive-davis.json",
     "peter-and-the-starcatcher-2012/new-jersey-newsroom--michael-sommers.json",
     "magicbird-2012/new-jersey-newsroom--michael-sommers.json",
-    "magicbird-2012/backstage--suzy-evans.json"
+    "magicbird-2012/backstage--suzy-evans.json",
+    "evita-2012/variety--marilyn-stasio.json",
+    "end-of-the-rainbow-2012/variety--marilyn-stasio.json",
+    "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
+    "end-of-the-rainbow-2012/backstage--david-sheward.json",
+    "newsies-the-musical-2012/new-jersey-newsroom--michael-sommers.json",
+    "newsies-the-musical-2012/matinee-radio--jamie-griffiths.json",
+    "jesus-christ-superstar-2012/backstage--david-sheward.json",
+    "once-2012/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -639,7 +649,9 @@
       "data/review-texts/annie-2012/variety--marilyn-stasio.json",
       "annie-2012/variety--marilyn-stasio.json",
       "data/review-texts/harvey-2012/variety--marilyn-stasio.json",
-      "harvey-2012/variety--marilyn-stasio.json"
+      "harvey-2012/variety--marilyn-stasio.json",
+      "data/review-texts/evita-2012/hollywood-reporter--david-rooney.json",
+      "evita-2012/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -783,11 +795,12 @@
       "living-on-love-2015/albany-times-union--steve-barnes.json",
       "all-the-way-2014/usatoday--elysa-gardner.json",
       "the-winslow-boy-2013/ew--thom-geier.json",
-      "the-lyons-2012/wsj--terry-teachout.json"
+      "the-lyons-2012/wsj--terry-teachout.json",
+      "newsies-the-musical-2012/broadway-baby--katerina-partolina-schwartz.json"
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "magicbird-2012/backstage--suzy-evans.json",
+  "lastProcessed": "once-2012/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -1052,6 +1065,17 @@
       "t": "2026-04-02T19:51:25.939Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T19:53:10.349Z",
+      "event": "bb-session",
+      "session": "a55baaff",
+      "url": "https://www.hollywoodreporter.com/news/general-news/evita-theater-review-ricky-m"
+    },
+    {
+      "t": "2026-04-02T19:53:11.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

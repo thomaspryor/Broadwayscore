@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-02T19:53:08.719Z",
-  "processed": 148,
-  "failed": 391,
-  "successRate": "27.5%",
+  "updatedAt": "2026-04-02T19:57:06.368Z",
+  "processed": 150,
+  "failed": 399,
+  "successRate": "27.3%",
   "tierBreakdown": {
     "playwright": 64,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 65,
-    "archive": 55
+    "archive": 56
   },
-  "browserbaseSessions": 19,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-04-02T19:39:15.245Z",
-      "event": "bb-session",
-      "session": "64621dd5",
-      "url": "https://nypost.com/2014/03/30/idina-menzel-carries-new-broadway-musical-ifthen/"
-    },
-    {
-      "t": "2026-04-02T19:39:16.609Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
     {
       "t": "2026-04-02T19:42:18.252Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-02T19:51:25.939Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T19:53:10.349Z",
+      "event": "bb-session",
+      "session": "a55baaff",
+      "url": "https://www.hollywoodreporter.com/news/general-news/evita-theater-review-ricky-m"
+    },
+    {
+      "t": "2026-04-02T19:53:11.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
