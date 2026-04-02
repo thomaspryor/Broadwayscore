@@ -102,14 +102,21 @@ async function callGemini(systemPrompt, userPrompt) {
 
 const SYSTEM_PROMPT = `You are a helpful assistant that generates structured theater tips for Broadway theatergoers. You output valid JSON only.
 
-RULES:
-- For restaurants and garages: ONLY use names from the provided scraped data. Never invent restaurant or garage names.
-- For seating, logistics, and subway info: use your knowledge of NYC theater locations.
-- Keep all text concise (1-2 sentences max per field).
-- walkMinutes should be estimated from the distance in miles (0.05 mi ≈ 1 min walk).
-- For dining categories: "preShow" = within 0.15 mi and good for a sit-down meal, "quickBite" = casual/fast, "postShow" = good atmosphere for after the show.
-- Select the top 3-5 most relevant options for each category (not all scraped results).
-- For garages: select the 3 nearest.`;
+GROUNDING RULES (strictly enforced):
+- For restaurants and garages: ONLY use names that appear EXACTLY in the "scraped data" section below. Never invent, guess, or recall restaurant or garage names from memory.
+- Use scraped distance values to estimate walkMinutes (0.05 mi ≈ 1 min walk). If the scraped data includes a distance, use that — do not estimate from memory.
+- For seating and logistics: use your knowledge of NYC theater locations ONLY for subway info, entrance info, and exit strategy.
+
+ACCESSIBILITY: Do NOT generate accessibility information. The "accessibility" field will be injected from verified data. Omit it entirely from your response.
+
+DIVERSITY RULES (critical — prevents lazy padding):
+- Prioritize restaurants that are CLOSEST to this specific theater (lowest distance in scraped data).
+- Avoid generic Times Square restaurants unless they are genuinely among the 5 closest to THIS theater.
+- Each dining category (preShow, postShow, quickBite) should have 3-5 restaurants, preferring variety in cuisine types.
+- For garages: select the 3 nearest by distance.
+
+CONCISENESS: Keep all text to 1-2 sentences max per field.
+DINING CATEGORIES: "preShow" = sit-down meal nearby, "quickBite" = casual/fast/grab-and-go, "postShow" = good atmosphere for after the show.`;
 
 function buildPrompt(theaterName, metadata, scraped) {
   const theaterInfo = [
@@ -121,12 +128,22 @@ function buildPrompt(theaterName, metadata, scraped) {
     metadata.tips ? `Current tips: ${metadata.tips}` : null,
   ].filter(Boolean).join('\n');
 
-  const diningData = scraped?.dining?.length > 0
-    ? `Nearby restaurants (scraped from NYC Theatre Guide):\n${JSON.stringify(scraped.dining.slice(0, 20), null, 2)}`
+  // Sort dining by distance so LLM sees closest first
+  const sortedDining = (scraped?.dining || [])
+    .slice(0, 20)
+    .sort((a, b) => parseFloat(a.distance || '99') - parseFloat(b.distance || '99'));
+
+  const diningData = sortedDining.length > 0
+    ? `Nearby restaurants (scraped from NYC Theatre Guide, sorted by distance from this theater):\n${JSON.stringify(sortedDining, null, 2)}`
     : 'No restaurant data available.';
 
-  const parkingData = scraped?.parking?.length > 0
-    ? `Nearby parking garages (scraped from NYC Theatre Guide):\n${JSON.stringify(scraped.parking.slice(0, 20), null, 2)}`
+  // Sort parking by distance
+  const sortedParking = (scraped?.parking || [])
+    .slice(0, 20)
+    .sort((a, b) => parseFloat(a.distance || '99') - parseFloat(b.distance || '99'));
+
+  const parkingData = sortedParking.length > 0
+    ? `Nearby parking garages (scraped from NYC Theatre Guide, sorted by distance):\n${JSON.stringify(sortedParking, null, 2)}`
     : 'No parking data available.';
 
   return `Generate structured tips for this Broadway theater.
@@ -137,12 +154,11 @@ ${diningData}
 
 ${parkingData}
 
-Return a JSON object with this exact structure:
+Return a JSON object with this exact structure (do NOT include an "accessibility" field — it will be injected separately from verified data):
 {
   "seating": {
     "bestSeats": "string — where to sit for the best experience",
-    "avoidSeats": "string — seats to avoid and why (or null if none)",
-    "accessibility": "string — wheelchair access, elevator info (or null if unknown)"
+    "avoidSeats": "string — seats to avoid and why (or null if none)"
   },
   "parking": {
     "nearestGarages": [
@@ -170,7 +186,10 @@ Return a JSON object with this exact structure:
   }
 }
 
-IMPORTANT: Use ONLY restaurant and garage names from the scraped data above. Do not invent names.`;
+IMPORTANT:
+- Use ONLY restaurant and garage names from the scraped data above. Do not invent names.
+- Prefer restaurants with SMALL distances — those are closest to THIS specific theater.
+- Vary cuisine types across categories. Do not repeat the same restaurant in multiple categories.`;
 }
 
 // ============================================
@@ -221,6 +240,7 @@ async function main() {
   console.log(`\nGenerating tips for ${entries.length} theater(s)...\n`);
 
   let generated = 0, skipped = 0, errors = 0;
+  const crossTheaterRestaurantCounts = {};
 
   for (const theaterName of entries) {
     // Skip if already generated (unless filtering)
@@ -280,6 +300,38 @@ async function main() {
         });
       }
 
+      // Validate: no restaurant should appear in multiple categories
+      if (tips.dining) {
+        const usedNames = new Set();
+        for (const category of ['preShow', 'postShow', 'quickBite']) {
+          if (tips.dining[category]) {
+            tips.dining[category] = tips.dining[category].filter(r => {
+              if (usedNames.has(r.name)) {
+                console.log(`  ⚠️  Dropped duplicate "${r.name}" from ${category}`);
+                return false;
+              }
+              usedNames.add(r.name);
+              return true;
+            });
+          }
+        }
+      }
+
+      // Strip any LLM-generated accessibility (we inject from verified data)
+      if (tips.seating?.accessibility) {
+        console.log(`  ⚠️  Stripped LLM-generated accessibility text`);
+        delete tips.seating.accessibility;
+      }
+
+      // Track restaurant usage for cross-theater dedup audit
+      if (tips.dining) {
+        for (const category of ['preShow', 'postShow', 'quickBite']) {
+          for (const r of (tips.dining[category] || [])) {
+            crossTheaterRestaurantCounts[r.name] = (crossTheaterRestaurantCounts[r.name] || 0) + 1;
+          }
+        }
+      }
+
       drafts[theaterName] = {
         ...tips,
         lastUpdated: new Date().toISOString(),
@@ -305,9 +357,24 @@ async function main() {
 
   saveDraft(drafts);
 
+  // Cross-theater restaurant diversity audit
+  const totalTheaters = Object.keys(drafts).length;
+  const overusedThreshold = Math.ceil(totalTheaters * 0.5); // >50% = overused
+  const overused = Object.entries(crossTheaterRestaurantCounts)
+    .filter(([, count]) => count > overusedThreshold)
+    .sort((a, b) => b[1] - a[1]);
+
+  if (overused.length > 0) {
+    console.log(`\n⚠️  DIVERSITY WARNING: ${overused.length} restaurant(s) appear in >${overusedThreshold} theaters (>50%):`);
+    for (const [name, count] of overused) {
+      console.log(`  ${count}x ${name}`);
+    }
+    console.log('These may indicate lazy LLM padding. Review before merging.');
+  }
+
   console.log(`\n${'='.repeat(50)}`);
   console.log(`Done! Generated: ${generated}, Skipped: ${skipped}, Errors: ${errors}`);
-  console.log(`Total: ${Object.keys(drafts).length} theater tips`);
+  console.log(`Total: ${totalTheaters} theater tips`);
   console.log(`Output: ${OUTPUT_FILE}`);
 }
 
