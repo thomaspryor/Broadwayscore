@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-02T03:30:09.937Z",
+  "timestamp": "2026-04-02T03:39:33.727Z",
   "stats": {
     "totalReviews": 32149,
-    "alreadyFlagged": 11966,
-    "dateGuardCatches": 13,
-    "directorMismatch": 837,
-    "tvFilmSignals": 3313,
-    "londonSignals": 959,
+    "alreadyFlagged": 11953,
+    "dateGuardCatches": 14,
+    "directorMismatch": 839,
+    "tvFilmSignals": 3314,
+    "londonSignals": 961,
     "offBroadwaySignals": 964,
     "yearMismatch": 64,
-    "noPublishDate": 5890
+    "noPublishDate": 5899
   },
   "findings": [
     {
@@ -8167,6 +8167,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "telegraph--marianka-swain.json",
+      "score": null,
+      "publishDate": "August 19th, 2023",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-playhouse-theatre-review-maude-apatow/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -27195,6 +27209,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "standard--nick-curtis.json",
+      "score": 81,
+      "publishDate": "2020-01-17",
+      "url": "https://www.standard.co.uk/culture/theatre/les-miserables-review-revamped-musical-opens-at-londons-sondheim-theatre-with-added-grit-a4336836.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
         }
       ]
     },
@@ -72169,6 +72202,20 @@
     },
     {
       "showId": "six-the-musical-west-end-2021",
+      "file": "standard--fiona-mountford.json",
+      "score": 93,
+      "publishDate": "2018-09-05",
+      "url": "https://www.standard.co.uk/culture/theatre/six-the-musical-review-kick-ass-musical-about-henry-viiis-wives-channels-its-inner-beyonce-a3927931.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 133d before show (2018-09-05 vs 2019-01-16)"
+        }
+      ]
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
       "file": "telegraph--marianka-swain.json",
       "score": 90,
       "publishDate": "2023-11-11",
@@ -76807,6 +76854,20 @@
       ]
     },
     {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/1999/oct/21/theatre.artsfeatures",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-little-foxes-2017",
       "file": "nbcny--robert-kahn.json",
       "score": 82,
@@ -76915,6 +76976,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "file": "guardian--guardian-staff.json",
+      "score": 62,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/1952/nov/24/theatre.artsfeatures",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
