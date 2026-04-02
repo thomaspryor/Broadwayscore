@@ -2041,10 +2041,11 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Skip roundup articles (multi-show reviews that aren't about this specific show)
-      // Also catch BWW roundup URLs that weren't flagged at collection time
-      if (data.isRoundupArticle === true ||
-          (data.url && /broadwayworld\.com\/article\/.*review-roundup/i.test(data.url))) {
+      // Skip roundup articles — only when explicitly flagged via isRoundupArticle.
+      // NOTE: Do NOT auto-skip based on URL patterns like BWW review-roundup URLs.
+      // Many reviews are SOURCED from roundup pages but have individual critic/outlet
+      // attribution and should count as original reviews.
+      if (data.isRoundupArticle === true) {
         stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
         return;
       }

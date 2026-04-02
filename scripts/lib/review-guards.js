@@ -237,16 +237,11 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'LBO review roundup page' };
   }
 
-  // Generic roundup URL patterns
-  if (/review-round-?ups?\b/i.test(url) || /reviews-round-?up\b/i.test(url)) {
-    return { isRoundup: true, reason: 'URL contains roundup pattern' };
-  }
-  if (/round-?up.*review/i.test(url)) {
-    return { isRoundup: true, reason: 'URL contains roundup-review pattern' };
-  }
-  if (/what-the-critics-said\b|what-critics-think\b|critics-say\b/i.test(url)) {
-    return { isRoundup: true, reason: 'URL contains critics-said/think pattern' };
-  }
+  // NOTE: Do NOT add generic roundup URL patterns (e.g. /review-roundup/ in BWW URLs).
+  // Many legitimate individual critic reviews are SOURCED from roundup pages —
+  // the URL points to the roundup where the review was discovered, but the review
+  // itself has specific critic/outlet attribution and should count as an original review.
+  // Only flag site-specific patterns where the roundup PAGE is being treated as a review.
 
   return { isRoundup: false };
 }
