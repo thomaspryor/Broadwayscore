@@ -224,7 +224,16 @@
     "just-in-time-2025/playbill--logan-culwell-block.json",
     "stranger-things-2024/thestage--unknown.json",
     "operation-mincemeat-2025/deadline--greg-evans.json",
-    "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
+    "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
+    "my-neighbour-totoro-west-end-2025/musical-theatre-review--ian-bowkett.json",
+    "my-neighbour-totoro-west-end-2025/buy-tickets-from-the-theatre-here--unknown.json",
+    "my-neighbour-totoro-west-end-2025/financialtimes--luke-dillon.json",
+    "titanique-west-end-2024/variety--rebecca-rubin.json",
+    "oliver-west-end-2024/thestage--dave-fargnoli.json",
+    "oliver-west-end-2024/portsmouth-news--james-george.json",
+    "oliver-west-end-2024/daily-mail--quentin-letts.json",
+    "oliver-west-end-2024/standard--henry-hitchings.json",
+    "oliver-west-end-2024/west-sussex-gazette--gary-shipton.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1748,7 +1757,8 @@
     "deep-azure-globe-west-end-2026/theupcoming--benedetta-mancusi.json",
     "shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json",
     "chess-2025/billboard--rebecca-milzoff.json",
-    "stranger-things-2024/usatoday--ralphie-aversa.json"
+    "stranger-things-2024/usatoday--ralphie-aversa.json",
+    "buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1891,7 +1901,14 @@
       "just-in-time-2025/people--raven-brunner.json",
       "just-in-time-2025/playbill--logan-culwell-block.json",
       "stranger-things-2024/thestage--unknown.json",
-      "stranger-things-2024/usatoday--ralphie-aversa.json"
+      "stranger-things-2024/usatoday--ralphie-aversa.json",
+      "my-neighbour-totoro-west-end-2025/musical-theatre-review--ian-bowkett.json",
+      "my-neighbour-totoro-west-end-2025/buy-tickets-from-the-theatre-here--unknown.json",
+      "my-neighbour-totoro-west-end-2025/financialtimes--luke-dillon.json",
+      "oliver-west-end-2024/thestage--dave-fargnoli.json",
+      "oliver-west-end-2024/portsmouth-news--james-george.json",
+      "oliver-west-end-2024/standard--henry-hitchings.json",
+      "oliver-west-end-2024/west-sussex-gazette--gary-shipton.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -1939,7 +1956,9 @@
       "data/review-texts/heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
       "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
       "data/review-texts/operation-mincemeat-2025/deadline--greg-evans.json",
-      "operation-mincemeat-2025/deadline--greg-evans.json"
+      "operation-mincemeat-2025/deadline--greg-evans.json",
+      "data/review-texts/titanique-west-end-2024/variety--rebecca-rubin.json",
+      "titanique-west-end-2024/variety--rebecca-rubin.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -1984,7 +2003,8 @@
       "you-got-older-off-broadway-2026/thewrap--robert-hofler.json",
       "into-the-woods-west-end-2025/daily-mail--patrick-marmion.json",
       "all-my-sons-west-end-2025/timeout-london--helen-shaw.json",
-      "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json"
+      "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
+      "oliver-west-end-2024/daily-mail--quentin-letts.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2207,7 +2227,8 @@
       "data/review-texts/dracula-west-end-2025/daily-mail--patrick-marmion.json",
       "data/review-texts/deep-azure-globe-west-end-2026/theupcoming--benedetta-mancusi.json",
       "data/review-texts/shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json",
-      "data/review-texts/chess-2025/billboard--rebecca-milzoff.json"
+      "data/review-texts/chess-2025/billboard--rebecca-milzoff.json",
+      "data/review-texts/buena-vista-social-club-2025/billboard--sigal-ratner-arias.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2239,7 +2260,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "buena-vista-social-club-2025/hollywood-reporter--caitlin-huston.json",
+  "lastProcessed": "oliver-west-end-2024/west-sussex-gazette--gary-shipton.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -3018,6 +3039,17 @@
       "t": "2026-04-02T05:45:21.471Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-02T05:47:15.617Z",
+      "event": "bb-session",
+      "session": "0dd9b6be",
+      "url": "https://variety.com/2024/legit/features/marla-mindelle-off-broadway-big-gay-jamb"
+    },
+    {
+      "t": "2026-04-02T05:47:16.802Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
