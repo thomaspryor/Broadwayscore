@@ -14,7 +14,7 @@ const reviewTextsDir = 'data/review-texts';
 
 function extractDtliReviews(htmlContent, showId) {
   const reviews = [];
-  const parts = htmlContent.split('<div class="review-item">');
+  const parts = htmlContent.split(/<div class="(?:poster-)?review-item">/);
 
   for (let i = 1; i < parts.length; i++) {
     const part = parts[i];

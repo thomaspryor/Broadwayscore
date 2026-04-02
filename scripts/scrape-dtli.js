@@ -270,8 +270,8 @@ function extractDTLIReviews(html, showId, dtliUrl) {
   console.log(`    Summary: ${summary.up} UP, ${summary.meh} MEH, ${summary.down} DOWN`);
 
   // Extract individual reviews
-  // Each review is in a <div class="review-item"> block
-  const reviewItemRegex = /<div class="review-item">([\s\S]*?)<\/div>\s*(?=<div class="review-item">|<\/section>|<div class="" id="modal-breakdown")/gi;
+  // Each review is in a review-item block (class="review-item" or "poster-review-item")
+  const reviewItemRegex = /<div class="(?:poster-)?review-item">([\s\S]*?)<\/div>\s*(?=<div class="(?:poster-)?review-item">|<\/section>|<div class="" id="modal-breakdown")/gi;
 
   let match;
   while ((match = reviewItemRegex.exec(html)) !== null) {
