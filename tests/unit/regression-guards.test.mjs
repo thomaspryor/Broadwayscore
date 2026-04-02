@@ -60,14 +60,14 @@ const CRITICAL_PATTERNS = [
   // when ID naming conventions changed. category field is the canonical source.
   {
     file: 'scripts/compute-gold-lists.js',
-    pattern: "isLondonMarket(show.category)",
+    pattern: "isLondonMarket(s.category)",
     description:
-      'Must use isLondonMarket(show.category) for WE detection, not ID string matching. ' +
+      'Must use isLondonMarket(s.category) for WE detection, not ID string matching. ' +
       'ID-based detection breaks when naming conventions change.',
   },
   {
     file: 'scripts/compute-gold-lists.js',
-    pattern: "show.category && show.category !== 'broadway'",
+    pattern: "s.category && s.category !== 'broadway'",
     description:
       'isBroadway() must exclude non-Broadway categories via category field, not ID matching.',
   },

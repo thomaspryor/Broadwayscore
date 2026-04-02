@@ -11,8 +11,9 @@ on:
         description: 'Market (auto-detected from show data if omitted)'
         required: false
         type: choice
+        default: auto
         options:
-          - ''
+          - auto
           - broadway
           - west-end
 
@@ -54,7 +55,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           MARKET_FLAG=""
-          if [ -n "${{ inputs.market }}" ]; then
+          if [ -n "${{ inputs.market }}" ] && [ "${{ inputs.market }}" != "auto" ]; then
             MARKET_FLAG="--market=${{ inputs.market }}"
           fi
           node scripts/check-opening-night-readiness.js --show=${{ inputs.show_id }} $MARKET_FLAG
