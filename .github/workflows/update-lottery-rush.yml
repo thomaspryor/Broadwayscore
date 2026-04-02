@@ -2,8 +2,9 @@ name: Update Lottery/Rush Data
 
 on:
   schedule:
-    # Run every Monday at 10 AM UTC (5 AM EST)
-    - cron: '0 10 * * 1'
+    # Run Monday + Thursday at 10 AM UTC (5 AM EST)
+    # Twice-weekly catches mid-week policy changes (new shows launch Tue-Wed)
+    - cron: '0 10 * * 1,4'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
