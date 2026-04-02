@@ -378,7 +378,12 @@
     "art-2025/deadline--natalie-oganesyan.json",
     "art-2025/nypost--entertainment-critic.json",
     "art-2025/artsfuse--martin-copenhaver.json",
-    "art-2025/latimes--rosy-alvarez.json"
+    "art-2025/latimes--rosy-alvarez.json",
+    "les-liaisons-dangereuses-west-end-2026/thereviewshub--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/financialtimes--ian-shuttleworth.json",
+    "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
+    "les-liaisons-dangereuses-west-end-2026/times-uk--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1938,7 +1943,8 @@
     "queen-versailles-2025/vulture--jackson-mchenry.json",
     "waiting-for-godot-2025/nytimes--elisabeth-vincentelli.json",
     "waiting-for-godot-2025/nypost--entertainment-critic.json",
-    "art-2025/rollingstone--tim-chan.json"
+    "art-2025/rollingstone--tim-chan.json",
+    "les-liaisons-dangereuses-west-end-2026/telegraph--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2172,7 +2178,11 @@
       "punch-2025/timeout--morgan-carter.json",
       "punch-2025/dailybeast--meg-masseron.json",
       "waiting-for-godot-2025/thestage--unknown.json",
-      "art-2025/artsfuse--martin-copenhaver.json"
+      "art-2025/artsfuse--martin-copenhaver.json",
+      "les-liaisons-dangereuses-west-end-2026/thereviewshub--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
+      "les-liaisons-dangereuses-west-end-2026/times-uk--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -2238,7 +2248,9 @@
       "data/review-texts/wicked-west-end-2021/variety--charles-isherwood.json",
       "wicked-west-end-2021/variety--charles-isherwood.json",
       "data/review-texts/the-lion-king-west-end-2021/variety--greg-evans.json",
-      "the-lion-king-west-end-2021/variety--greg-evans.json"
+      "the-lion-king-west-end-2021/variety--greg-evans.json",
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/financialtimes--ian-shuttleworth.json",
+      "les-liaisons-dangereuses-west-end-2026/financialtimes--ian-shuttleworth.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -2617,7 +2629,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "art-2025/rollingstone--tim-chan.json",
+  "lastProcessed": "les-liaisons-dangereuses-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -3484,6 +3496,17 @@
       "t": "2026-04-02T06:33:19.473Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T08:41:24.632Z",
+      "event": "bb-session",
+      "session": "461f3b02",
+      "url": "https://next.ft.com/content/bea77fa8-a57b-11e5-97e1-a754d5d9538c"
+    },
+    {
+      "t": "2026-04-02T08:41:25.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-02T07:27:45.345Z",
-  "processed": 379,
-  "failed": 1558,
-  "successRate": "19.6%",
+  "updatedAt": "2026-04-02T08:42:14.919Z",
+  "processed": 384,
+  "failed": 1559,
+  "successRate": "19.8%",
   "tierBreakdown": {
-    "playwright": 230,
+    "playwright": 234,
     "amp": 6,
-    "browserbase": 56,
+    "browserbase": 58,
     "directCookies": 4,
     "scrapingbee": 76,
     "brightdata": 0,
     "archiveToday": 242,
     "archive": 44
   },
-  "browserbaseSessions": 30,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-02T05:45:05.395Z",
-      "event": "bb-session",
-      "session": "c3a248db",
-      "url": "https://deadline.com/2025/02/operation-mincemeat-broadway-opening-date-123610426"
-    },
-    {
-      "t": "2026-04-02T05:45:06.672Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-04-02T05:45:20.325Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-02T06:33:19.473Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T08:41:24.632Z",
+      "event": "bb-session",
+      "session": "461f3b02",
+      "url": "https://next.ft.com/content/bea77fa8-a57b-11e5-97e1-a754d5d9538c"
+    },
+    {
+      "t": "2026-04-02T08:41:25.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
