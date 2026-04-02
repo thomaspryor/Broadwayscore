@@ -206,7 +206,16 @@
     "into-the-woods-west-end-2025/london-box-office--stuart-king.json",
     "into-the-woods-west-end-2025/the-recs--the-recs-it.json",
     "into-the-woods-west-end-2025/theupcoming--benedetta-mancusi.json",
-    "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json"
+    "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+    "two-strangers-bway-2025/variety--peter-debruge.json",
+    "two-strangers-bway-2025/playbill--margaret-hall.json",
+    "chess-2025/deadline--unknown.json",
+    "chess-2025/deadline--greg-evans.json",
+    "chess-2025/artsfuse--christopher-caggiano.json",
+    "all-my-sons-west-end-2025/timeout-london--helen-shaw.json",
+    "all-my-sons-west-end-2025/london-box-office--nicky-allpress.json",
+    "all-my-sons-west-end-2025/london-box-office--phil-willmott.json",
+    "all-my-sons-west-end-2025/london-box-office--stuart-king.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1728,7 +1737,8 @@
     "dracula-west-end-2025/daily-mail--patrick-marmion.json",
     "deep-azure-globe-west-end-2026/theatre-weekly--unknown.json",
     "deep-azure-globe-west-end-2026/theupcoming--benedetta-mancusi.json",
-    "shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json"
+    "shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json",
+    "chess-2025/billboard--rebecca-milzoff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1860,7 +1870,12 @@
       "into-the-woods-west-end-2025/london-box-office--stuart-king.json",
       "into-the-woods-west-end-2025/the-recs--the-recs-it.json",
       "into-the-woods-west-end-2025/theupcoming--benedetta-mancusi.json",
-      "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json"
+      "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+      "two-strangers-bway-2025/playbill--margaret-hall.json",
+      "chess-2025/artsfuse--christopher-caggiano.json",
+      "all-my-sons-west-end-2025/london-box-office--nicky-allpress.json",
+      "all-my-sons-west-end-2025/london-box-office--phil-willmott.json",
+      "all-my-sons-west-end-2025/london-box-office--stuart-king.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--andrew-hampp.json",
@@ -1896,7 +1911,13 @@
       "data/review-texts/pied-a-terre-off-broadway-2026/variety--peter-debruge.json",
       "pied-a-terre-off-broadway-2026/variety--peter-debruge.json",
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
-      "oh-mary-west-end-2025/variety--unknown.json"
+      "oh-mary-west-end-2025/variety--unknown.json",
+      "data/review-texts/two-strangers-bway-2025/variety--peter-debruge.json",
+      "two-strangers-bway-2025/variety--peter-debruge.json",
+      "data/review-texts/chess-2025/deadline--unknown.json",
+      "chess-2025/deadline--unknown.json",
+      "data/review-texts/chess-2025/deadline--greg-evans.json",
+      "chess-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -1939,7 +1960,8 @@
       "silver-manhattan-off-broadway-2026/nytimes--rhoda-feng.json",
       "deep-azure-globe-west-end-2026/theatre-weekly--unknown.json",
       "you-got-older-off-broadway-2026/thewrap--robert-hofler.json",
-      "into-the-woods-west-end-2025/daily-mail--patrick-marmion.json"
+      "into-the-woods-west-end-2025/daily-mail--patrick-marmion.json",
+      "all-my-sons-west-end-2025/timeout-london--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -2161,7 +2183,8 @@
       "data/review-texts/antigone-this-play-i-read-in-high-school-off-broadway-2026/newyorker--shauna-lyon.json",
       "data/review-texts/dracula-west-end-2025/daily-mail--patrick-marmion.json",
       "data/review-texts/deep-azure-globe-west-end-2026/theupcoming--benedetta-mancusi.json",
-      "data/review-texts/shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json"
+      "data/review-texts/shadowlands-west-end-2026/usatoday--darrah-cloud-and-david-simpatico.json",
+      "data/review-texts/chess-2025/billboard--rebecca-milzoff.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2193,7 +2216,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/standard--nick-curtis.json",
+  "lastProcessed": "all-my-sons-west-end-2025/london-box-office--stuart-king.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2895,6 +2918,39 @@
       "t": "2026-04-02T05:34:10.192Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T05:37:08.644Z",
+      "event": "bb-session",
+      "session": "b4562a64",
+      "url": "https://variety.com/lists/best-comedy-movies-all-time/"
+    },
+    {
+      "t": "2026-04-02T05:37:09.732Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T05:37:35.662Z",
+      "event": "bb-session",
+      "session": "d243e165",
+      "url": "https://deadline.com/2026/03/lea-michele-broadway-chess-final-day-1236761240/"
+    },
+    {
+      "t": "2026-04-02T05:37:36.828Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-02T05:37:55.527Z",
+      "event": "bb-session",
+      "session": "f3de14eb",
+      "url": "https://deadline.com/2026/03/lea-michele-broadway-chess-final-day-1236761240/"
+    },
+    {
+      "t": "2026-04-02T05:37:56.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
