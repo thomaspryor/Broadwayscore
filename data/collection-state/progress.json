@@ -162,7 +162,10 @@
     "elling-2010/variety--david-rooney.json",
     "colin-quinn-long-story-short-2010/timeout--david-cote.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
-    "the-scottsboro-boys-2010/variety--steven-suskin.json"
+    "the-scottsboro-boys-2010/variety--steven-suskin.json",
+    "rain-2010/nytimes--elisabeth-vincentelli.json",
+    "rain-2010/minneapolis-star-tribune--unknown.json",
+    "driving-miss-daisy-2010/variety--marilyn-stasio.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -640,7 +643,14 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
     "the-scottsboro-boys-2010/new-jersey-newsroom--michael-sommers.json",
-    "the-scottsboro-boys-2010/backstage--erik-haagensen.json"
+    "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
+    "the-scottsboro-boys-2010/time--richard-zoglin.json",
+    "driving-miss-daisy-2010/nytheatre--martin-denton.json",
+    "driving-miss-daisy-2010/variety--charles-isherwood.json",
+    "driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
+    "lombardi-2010/new-jersey-newsroom--michael-sommers.json",
+    "la-bete-2010/chicagotribune--ben-brantley.json",
+    "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -718,7 +728,9 @@
       "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
       "women-on-the-verge-of-a-nervous-breakdown-2010/variety--steven-suskin.json",
       "data/review-texts/the-scottsboro-boys-2010/variety--steven-suskin.json",
-      "the-scottsboro-boys-2010/variety--steven-suskin.json"
+      "the-scottsboro-boys-2010/variety--steven-suskin.json",
+      "data/review-texts/driving-miss-daisy-2010/variety--marilyn-stasio.json",
+      "driving-miss-daisy-2010/variety--marilyn-stasio.json"
     ],
     "browserbase": [
       "data/review-texts/yoah-off-broadway-2026/variety--pat-saperstein.json",
@@ -907,11 +919,13 @@
       "godspell-2011/wsj--terry-teachout.json",
       "follies-2011/talkinbroadway--matthew-murray.json",
       "the-normal-heart-2011/usatoday--elysa-gardner.json",
-      "high-2011/thewrap--robert-hofler.json"
+      "high-2011/thewrap--robert-hofler.json",
+      "rain-2010/nytimes--elisabeth-vincentelli.json",
+      "rain-2010/minneapolis-star-tribune--unknown.json"
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -1240,6 +1254,17 @@
     },
     {
       "t": "2026-04-02T20:07:26.401Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T20:08:57.099Z",
+      "event": "bb-session",
+      "session": "66f9a14a",
+      "url": "https://www.variety.com/review/VE1117943921.html"
+    },
+    {
+      "t": "2026-04-02T20:08:58.457Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
