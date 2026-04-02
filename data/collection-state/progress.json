@@ -137,7 +137,8 @@
     "moulin-rouge-the-musical-west-end-2021/everything-theatre--neil-johnson.json",
     "the-play-that-goes-wrong-west-end-2021/west-end-wilma--rosie-bambury.json",
     "romeo-and-juliet-west-end-2026/standard--unknown.json",
-    "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json"
+    "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json",
+    "yoah-off-broadway-2026/variety--unknown.json"
   ],
   "failed": [
     "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
@@ -1737,7 +1738,9 @@
       "data/review-texts/cymbeline-2007/nytimes--ben-brantley.json",
       "cymbeline-2007/nytimes--ben-brantley.json",
       "data/review-texts/company-2006/variety--charles-isherwood.json",
-      "company-2006/variety--charles-isherwood.json"
+      "company-2006/variety--charles-isherwood.json",
+      "data/review-texts/yoah-off-broadway-2026/variety--unknown.json",
+      "yoah-off-broadway-2026/variety--unknown.json"
     ],
     "directCookies": [
       "god-of-carnage-2009/timeout--david-cote.json",
@@ -2006,7 +2009,7 @@
     ]
   },
   "startTime": "2026-04-01T09:22:35.722Z",
-  "lastProcessed": "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json",
+  "lastProcessed": "yoah-off-broadway-2026/variety--unknown.json",
   "log": [
     {
       "t": "2026-04-01T11:23:41.855Z",
@@ -2548,6 +2551,17 @@
       "t": "2026-04-01T21:21:29.739Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-02T04:52:16.054Z",
+      "event": "bb-session",
+      "session": "f3e1b2f0",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-04-02T04:52:17.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
