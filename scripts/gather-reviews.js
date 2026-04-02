@@ -3791,7 +3791,9 @@ async function main() {
 
 // Allow importing as a module (for opening-night-poller.js) without running CLI
 if (require.main === module) {
-  main().catch(err => {
+  main().then(() => {
+    process.exit(0);
+  }).catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);
   });
