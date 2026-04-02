@@ -143,7 +143,9 @@
     "ill-eat-you-last-a-chat-with-sue-mengers-2013/nytimes--ben-brantley.json",
     "the-nance-2013/timeout--adam-feldman.json",
     "kinky-boots-2013/variety--marilyn-stasio.json",
-    "hands-on-a-hardbody-2013/variety--marilyn-stasio.json"
+    "hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
+    "rodgers-hammersteins-cinderella-2013/lets-go-to-the-theater--karen-nowosad.json",
+    "annie-2012/variety--marilyn-stasio.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -510,7 +512,15 @@
     "hands-on-a-hardbody-2013/newsday--linda-winer.json",
     "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
     "breakfast-at-tiffanys-2013/usatoday--elysa-gardner.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json"
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "picnic-2013/bloomberg--jeremy-gerard.json",
+    "the-anarchist-2012/variety--marilyn-stasio.json",
+    "dead-accounts-2012/variety--marilyn-stasio.json",
+    "scandalous-2012/variety--marilyn-stasio.json",
+    "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -577,7 +587,8 @@
       "the-king-and-i-2015/stageandcinema--jonas-schwartz.json",
       "gigi-2015/washpost--peter-marks.json",
       "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json",
-      "hedwig-and-the-angry-inch-2014/sfgate--lily-janiak.json"
+      "hedwig-and-the-angry-inch-2014/sfgate--lily-janiak.json",
+      "rodgers-hammersteins-cinderella-2013/lets-go-to-the-theater--karen-nowosad.json"
     ],
     "amp": [],
     "browserbase": [
@@ -604,7 +615,9 @@
       "data/review-texts/kinky-boots-2013/variety--marilyn-stasio.json",
       "kinky-boots-2013/variety--marilyn-stasio.json",
       "data/review-texts/hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
-      "hands-on-a-hardbody-2013/variety--marilyn-stasio.json"
+      "hands-on-a-hardbody-2013/variety--marilyn-stasio.json",
+      "data/review-texts/annie-2012/variety--marilyn-stasio.json",
+      "annie-2012/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -751,7 +764,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -992,6 +1005,17 @@
     },
     {
       "t": "2026-04-02T19:48:21.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-02T19:50:23.159Z",
+      "event": "bb-session",
+      "session": "fe0a2f33",
+      "url": "https://variety.com/2012/legit/reviews/annie-1117948712/"
+    },
+    {
+      "t": "2026-04-02T19:50:24.493Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
