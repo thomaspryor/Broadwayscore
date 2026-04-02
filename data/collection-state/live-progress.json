@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-02T19:57:06.368Z",
-  "processed": 150,
-  "failed": 399,
-  "successRate": "27.3%",
+  "updatedAt": "2026-04-02T19:58:35.414Z",
+  "processed": 153,
+  "failed": 406,
+  "successRate": "27.4%",
   "tierBreakdown": {
-    "playwright": 64,
-    "amp": 0,
+    "playwright": 65,
+    "amp": 2,
     "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 65,
-    "archive": 56
+    "archive": 58
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 21,
   "recentActivity": [
-    {
-      "t": "2026-04-02T19:42:18.252Z",
-      "event": "bb-session",
-      "session": "97e75e8a",
-      "url": "http://theater.nytimes.com/2013/04/25/theater/reviews/ill-eat-you-last-starring-"
-    },
-    {
-      "t": "2026-04-02T19:42:19.691Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-02T19:42:37.820Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-02T19:53:11.727Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-02T19:57:52.808Z",
+      "event": "bb-session",
+      "session": "425b42d4",
+      "url": "https://variety.com/subscribe.asp?screen=haas&intcmp=PRC%7CI1ATST2"
+    },
+    {
+      "t": "2026-04-02T19:57:54.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

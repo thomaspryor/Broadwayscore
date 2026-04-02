@@ -149,7 +149,10 @@
     "harvey-2012/variety--marilyn-stasio.json",
     "the-lyons-2012/wsj--terry-teachout.json",
     "evita-2012/hollywood-reporter--david-rooney.json",
-    "newsies-the-musical-2012/broadway-baby--katerina-partolina-schwartz.json"
+    "newsies-the-musical-2012/broadway-baby--katerina-partolina-schwartz.json",
+    "death-of-a-salesman-2012/artsfuse--nancy-grossman.json",
+    "lysistrata-jones-2011/variety--steven-suskin.json",
+    "on-a-clear-day-you-can-see-forever-2011/dailybeast--tim-teeman.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -550,7 +553,14 @@
     "newsies-the-musical-2012/new-jersey-newsroom--michael-sommers.json",
     "newsies-the-musical-2012/matinee-radio--jamie-griffiths.json",
     "jesus-christ-superstar-2012/backstage--david-sheward.json",
-    "once-2012/backstage--david-sheward.json"
+    "once-2012/backstage--david-sheward.json",
+    "death-of-a-salesman-2012/new-jersey-newsroom--michael-sommers.json",
+    "death-of-a-salesman-2012/northjerseycom--robert-feldberg.json",
+    "wit-2012/ap--mark-kennedy.json",
+    "wit-2012/backstage--david-sheward.json",
+    "the-road-to-mecca-2012/backstage--erik-haagensen.json",
+    "lysistrata-jones-2011/backstage--david-sheward.json",
+    "on-a-clear-day-you-can-see-forever-2011/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -618,9 +628,13 @@
       "gigi-2015/washpost--peter-marks.json",
       "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json",
       "hedwig-and-the-angry-inch-2014/sfgate--lily-janiak.json",
-      "rodgers-hammersteins-cinderella-2013/lets-go-to-the-theater--karen-nowosad.json"
+      "rodgers-hammersteins-cinderella-2013/lets-go-to-the-theater--karen-nowosad.json",
+      "death-of-a-salesman-2012/artsfuse--nancy-grossman.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/lysistrata-jones-2011/variety--steven-suskin.json",
+      "lysistrata-jones-2011/variety--steven-suskin.json"
+    ],
     "browserbase": [
       "data/review-texts/yoah-off-broadway-2026/variety--pat-saperstein.json",
       "yoah-off-broadway-2026/variety--pat-saperstein.json",
@@ -796,11 +810,13 @@
       "all-the-way-2014/usatoday--elysa-gardner.json",
       "the-winslow-boy-2013/ew--thom-geier.json",
       "the-lyons-2012/wsj--terry-teachout.json",
-      "newsies-the-musical-2012/broadway-baby--katerina-partolina-schwartz.json"
+      "newsies-the-musical-2012/broadway-baby--katerina-partolina-schwartz.json",
+      "newsies-the-musical-2012/matinee-radio--jamie-griffiths.json",
+      "on-a-clear-day-you-can-see-forever-2011/dailybeast--tim-teeman.json"
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "once-2012/backstage--david-sheward.json",
+  "lastProcessed": "on-a-clear-day-you-can-see-forever-2011/dailybeast--tim-teeman.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -1076,6 +1092,17 @@
       "t": "2026-04-02T19:53:11.727Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-02T19:57:52.808Z",
+      "event": "bb-session",
+      "session": "425b42d4",
+      "url": "https://variety.com/subscribe.asp?screen=haas&intcmp=PRC%7CI1ATST2"
+    },
+    {
+      "t": "2026-04-02T19:57:54.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
