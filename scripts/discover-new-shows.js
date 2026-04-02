@@ -200,6 +200,7 @@ async function fetchShowsFromTodayTix() {
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
+      todaytixId: show.id || null,
     });
   }
 
@@ -217,6 +218,7 @@ async function fetchShowsFromTodayTix() {
       category: 'off-broadway',
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
+      todaytixId: show.id || null,
     });
   }
 
@@ -319,6 +321,7 @@ async function fetchShowsFromTodayTixLondon() {
       ) ? 'off-west-end' : 'west-end',
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
+      todaytixId: show.id || null,
     });
   }
 
