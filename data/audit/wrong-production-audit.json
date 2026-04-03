@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T09:17:52.099Z",
+  "timestamp": "2026-04-03T09:32:26.287Z",
   "stats": {
-    "totalReviews": 27650,
+    "totalReviews": 27649,
     "alreadyFlagged": 7455,
     "dateGuardCatches": 15,
     "directorMismatch": 858,
     "tvFilmSignals": 3335,
-    "londonSignals": 990,
+    "londonSignals": 991,
     "offBroadwaySignals": 970,
     "yearMismatch": 65,
     "noPublishDate": 5799
@@ -72525,6 +72525,20 @@
       "score": 77,
       "publishDate": "2026-03-31",
       "url": "https://www.nytimes.com/2026/04/01/theater/romeo-and-juliet-sadie-sink-joah-jupe-robert-icke.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 72,
+      "publishDate": "2026-03-31",
+      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
