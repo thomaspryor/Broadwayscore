@@ -1,0 +1,108 @@
+name: Ingest Review URLs
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID (e.g., dog-day-afternoon-2026)'
+        required: true
+        type: string
+      urls:
+        description: 'Review URLs, one per line. Optional: append outlet ID after space.'
+        required: true
+        type: string
+      no_fetch:
+        description: 'Skip text fetching (create stub files for later collection)'
+        required: false
+        type: boolean
+        default: false
+      no_rebuild:
+        description: 'Skip triggering scoring/rebuild/deploy'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: ingest-urls-${{ inputs.show_id }}
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Write URL file
+        run: |
+          cat > /tmp/ingest-urls.txt << 'URLS_EOF'
+          ${{ inputs.urls }}
+          URLS_EOF
+          # Clean up leading whitespace from YAML heredoc
+          sed -i 's/^[[:space:]]*//' /tmp/ingest-urls.txt
+          echo "URLs to ingest:"
+          cat /tmp/ingest-urls.txt
+          echo "---"
+          LINES=$(grep -cv '^\s*$\|^\s*#' /tmp/ingest-urls.txt || echo "0")
+          echo "Non-empty, non-comment lines: $LINES"
+
+      - name: Run ingestion
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FLAGS=""
+          if [ "${{ inputs.no_fetch }}" = "true" ]; then
+            FLAGS="$FLAGS --no-fetch"
+          fi
+          if [ "${{ inputs.no_rebuild }}" = "true" ]; then
+            FLAGS="$FLAGS --no-rebuild"
+          fi
+
+          node scripts/ingest-urls.js \
+            --show="${{ inputs.show_id }}" \
+            --urls=/tmp/ingest-urls.txt \
+            --verbose \
+            $FLAGS
+
+      - name: Commit new review files
+        run: |
+          cd data/review-texts
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "data: Ingest URLs for ${{ inputs.show_id }}"
+            bash ../../scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'URL Ingestion Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
