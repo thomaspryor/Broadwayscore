@@ -164,7 +164,33 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
       )
     : null;
 
-  const schemas = [breadcrumbSchema, itemListSchema, faqSchema].filter(Boolean);
+  // Event schema for upcoming shows — helps Google surface opening dates
+  const eventSchemas = params.slug === 'upcoming-broadway-shows' && shows.length > 0
+    ? shows.filter(s => s.openingDate).map(show => ({
+        '@context': 'https://schema.org',
+        '@type': 'TheaterEvent',
+        name: show.title,
+        startDate: show.openingDate,
+        endDate: show.closingDate || undefined,
+        url: `${BASE_URL}/show/${show.slug}`,
+        location: show.venue ? {
+          '@type': 'PerformingArtsTheater',
+          name: show.venue,
+          address: show.theaterAddress || undefined,
+        } : undefined,
+        description: show.synopsis || undefined,
+        image: show.images?.hero || undefined,
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        offers: show.ticketLinks?.[0] ? {
+          '@type': 'Offer',
+          url: show.ticketLinks[0].url,
+          availability: 'https://schema.org/InStock',
+        } : undefined,
+      }))
+    : [];
+
+  const schemas = [breadcrumbSchema, itemListSchema, faqSchema, ...eventSchemas].filter(Boolean);
 
   // Year page links
   const yearPages = config.yearPages || [];

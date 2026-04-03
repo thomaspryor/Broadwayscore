@@ -115,11 +115,28 @@ export default function CheapBroadwayTicketsGuide() {
     ],
   };
 
+  // HowTo Schema — structured guide for Google rich results
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Get Cheap Broadway Tickets in ${currentYear}`,
+    description: `Step-by-step guide to finding affordable Broadway tickets, from $30 lotteries to TKTS discounts.`,
+    totalTime: 'PT15M',
+    estimatedCost: { '@type': 'MonetaryAmount', currency: 'USD', value: `${GUIDE_DATA.lotteryRushRange.min}-${GUIDE_DATA.avgOrchestraPrice}` },
+    step: [
+      { '@type': 'HowToStep', name: 'Enter digital lotteries', text: `Enter daily lotteries via TodayTix or show-specific apps for $${GUIDE_DATA.lotteryRushRange.min}-${GUIDE_DATA.lotteryRushRange.max} orchestra seats. Currently ${lotteryShowCount} shows offer lotteries.` },
+      { '@type': 'HowToStep', name: 'Try rush tickets', text: `Visit the box office when it opens (usually 10am) for same-day rush tickets at $${GUIDE_DATA.lotteryRushRange.min}-${GUIDE_DATA.lotteryRushRange.max}. ${rushShowCount} shows currently offer rush.` },
+      { '@type': 'HowToStep', name: 'Visit TKTS booth', text: `Buy same-day tickets at 20-50% off at TKTS in Times Square (${GUIDE_DATA.tktsHours.timesSquare.evening}). Service fee: $${GUIDE_DATA.tktsServiceFee}.` },
+      { '@type': 'HowToStep', name: 'Use discount codes', text: `Check BroadwayBox and Playbill for discount codes averaging $${GUIDE_DATA.discountCodeAvgPrice} per ticket.` },
+      { '@type': 'HowToStep', name: 'Buy at the box office', text: `Skip online service fees ($${GUIDE_DATA.onlineServiceFee}) by buying directly at the theater box office.` },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, faqSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, faqSchema, howToSchema]) }}
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
