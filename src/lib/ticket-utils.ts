@@ -1,15 +1,17 @@
 // ─── Ticket link sorting ────────────────────────────────
 // Priority order for ticket platforms. Lower number = shown first.
 // Affiliate-enabled platforms get priority to maximize revenue.
+// Affiliate-enabled platforms rank higher to maximize revenue.
+// TodayTix drops to tier 2 until its Impact approval comes through.
 const TICKET_PLATFORM_PRIORITY: Record<string, number> = {
-  TodayTix: 1,
+  Ticketmaster: 1,
+  SeatPlan: 1,
+  'Vivid Seats': 1,
+  StubHub: 1,
+  TodayTix: 2,
   Telecharge: 2,
-  Ticketmaster: 2,
-  StubHub: 3,
   SeatGeek: 3,
-  'Vivid Seats': 3,
   'London Theatre Direct': 3,
-  SeatPlan: 3,
 };
 
 export interface TicketLinkData {

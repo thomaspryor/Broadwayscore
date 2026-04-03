@@ -33,11 +33,19 @@ function getScoreTextColor(score: number): string {
 }
 
 function getScoreLabel(score: number): string {
-  if (score >= 5) return 'Excellent';
+  if (score >= 5) return 'Outstanding';
   if (score >= 4) return 'Good';
-  if (score >= 3) return 'Average';
-  if (score >= 2) return 'Below Avg';
-  return 'Poor';
+  if (score >= 3) return 'Passable';
+  if (score >= 2) return 'Poor';
+  return 'Bad';
+}
+
+function getVenueDesignation(overall: number): { label: string; color: string } {
+  if (overall >= 4.5) return { label: 'Exceptional Venue', color: 'text-emerald-400' };
+  if (overall >= 3.8) return { label: 'Great Venue', color: 'text-emerald-400' };
+  if (overall >= 3.0) return { label: 'Typical Venue', color: 'text-amber-400' };
+  if (overall >= 2.5) return { label: 'Below Average', color: 'text-red-400' };
+  return { label: 'Rough Venue', color: 'text-red-400' };
 }
 
 // Icons
@@ -145,18 +153,14 @@ export default function TheaterScorecardCard({
             {theaterName}
           </Link>
         </div>
-        {overall != null && (
-          <div className="flex flex-col items-center flex-shrink-0 ml-3">
-            <div className={`w-11 h-11 rounded-lg flex items-center justify-center font-bold text-lg ${
-              overall >= 4 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
-              overall >= 3 ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-              'bg-red-500/20 text-red-400 border border-red-500/30'
-            }`}>
-              {overall.toFixed(1)}
-            </div>
-            <span className="text-[9px] text-gray-500 mt-0.5">{getScoreLabel(Math.round(overall))}</span>
-          </div>
-        )}
+        {overall != null && (() => {
+          const designation = getVenueDesignation(overall);
+          return (
+            <span className={`text-xs font-semibold ${designation.color} flex-shrink-0 ml-3`}>
+              {designation.label.toUpperCase()}
+            </span>
+          );
+        })()}
       </div>
 
       {/* Summary */}
