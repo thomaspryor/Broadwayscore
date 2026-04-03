@@ -74,6 +74,8 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
         run: |
           ARGS=""
           if [ -n "${{ inputs.show_id }}" ]; then

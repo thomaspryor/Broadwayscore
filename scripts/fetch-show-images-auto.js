@@ -351,6 +351,142 @@ function extractBroadwayOrgImages(html, showTitle) {
   return result;
 }
 
+// ---- Mezzanine (theaterdiary.com) image source ----
+// Direct Parse API call — production-specific poster art, no scraping needed.
+// 33,000+ productions with art. Uses MEZZANINE_APP_ID + MEZZANINE_SESSION_TOKEN.
+
+let mezzanineCache = null; // Lazy-loaded: { productions: [...], byNormTitle: Map }
+
+function normalizeMezzTitle(s) {
+  return s.toLowerCase()
+    .replace(/['\u2018\u2019\u201C\u201D!:,.;\-\u2013\u2014&+()]/g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/^the\s+/, '')
+    .trim();
+}
+
+async function loadMezzanineProductions() {
+  if (mezzanineCache) return mezzanineCache;
+
+  const APP_ID = process.env.MEZZANINE_APP_ID;
+  const SESSION_TOKEN = process.env.MEZZANINE_SESSION_TOKEN;
+  if (!APP_ID || !SESSION_TOKEN) {
+    console.log('   ✗ Mezzanine credentials not set (MEZZANINE_APP_ID / MEZZANINE_SESSION_TOKEN)');
+    mezzanineCache = { productions: [], byNormTitle: new Map() };
+    return mezzanineCache;
+  }
+
+  console.log('   Loading Mezzanine production catalog...');
+  const all = [];
+  let skip = 0;
+  const batchSize = 1000;
+
+  while (true) {
+    const body = JSON.stringify({
+      limit: batchSize,
+      skip,
+      where: { art: { '$exists': true } },
+      include: 'show,theater',
+      keys: 'art,show.name,theater.name,theater.isBroadway,openedAt,firstPreview,ratingsCount',
+      _method: 'GET'
+    });
+
+    const data = await new Promise((resolve, reject) => {
+      const req = https.request({
+        hostname: 'api.theaterdiary.com',
+        path: '/parse/classes/Production',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-Parse-Application-Id': APP_ID,
+          'X-Parse-Session-Token': SESSION_TOKEN,
+          'Content-Length': Buffer.byteLength(body)
+        }
+      }, res => {
+        let d = '';
+        res.on('data', c => d += c);
+        res.on('end', () => {
+          try { resolve(JSON.parse(d)); }
+          catch (e) { reject(new Error('Mezzanine parse error')); }
+        });
+      });
+      req.on('error', reject);
+      req.write(body);
+      req.end();
+    });
+
+    if (!data.results || data.results.length === 0) break;
+    all.push(...data.results);
+    skip += data.results.length;
+    if (data.results.length < batchSize) break;
+  }
+
+  // Index by normalized title for fast lookup
+  const byNormTitle = new Map();
+  for (const p of all) {
+    const name = p.show?.name || '';
+    if (!name || !p.art?.url) continue;
+    const norm = normalizeMezzTitle(name);
+    if (!byNormTitle.has(norm)) byNormTitle.set(norm, []);
+    byNormTitle.get(norm).push(p);
+  }
+
+  console.log(`   Loaded ${all.length} Mezzanine productions with art (${byNormTitle.size} unique titles)`);
+  mezzanineCache = { productions: all, byNormTitle };
+  return mezzanineCache;
+}
+
+async function fetchFromMezzanine(show) {
+  const { byNormTitle } = await loadMezzanineProductions();
+  if (byNormTitle.size === 0) return null;
+
+  const normTitle = normalizeMezzTitle(show.title);
+  const candidates = byNormTitle.get(normTitle);
+  if (!candidates || candidates.length === 0) return null;
+
+  // Pick the best match by year proximity
+  const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : 0;
+  let best = null;
+  let bestDist = Infinity;
+
+  for (const p of candidates) {
+    const dateStr = p.openedAt || p.firstPreview || '';
+    const mYear = dateStr ? parseInt(String(dateStr).substring(0, 4)) : 0;
+    const dist = showYear && mYear ? Math.abs(showYear - mYear) : 999;
+
+    // Prefer Broadway-flagged, then closest year, then highest ratings
+    const isBway = p.theater?.isBroadway === true;
+    if (!best ||
+        (isBway && !best._isBway) ||
+        (isBway === best._isBway && dist < bestDist) ||
+        (isBway === best._isBway && dist === bestDist && (p.ratingsCount || 0) > (best.ratingsCount || 0))) {
+      best = p;
+      best._isBway = isBway;
+      bestDist = dist;
+    }
+  }
+
+  if (!best || !best.art?.url) return null;
+
+  // Reject if year distance > 2 AND there are multiple candidates (likely wrong production).
+  // Single candidate with exact title match is accepted regardless of year (common for shows
+  // where Mezzanine has no date, e.g., old Broadway productions with a single listing).
+  if (candidates.length > 1 && bestDist > 2 && showYear) {
+    console.log(`   ✗ Mezzanine: ${candidates.length} candidates, best is ${bestDist} years off — skipping`);
+    return null;
+  }
+
+  const artUrl = best.art.url;
+  const theater = best.theater?.name || 'unknown venue';
+  console.log(`   ✓ Mezzanine: found poster art (${theater}, ${bestDist <= 2 ? 'year match' : 'no year'})`);
+
+  return {
+    thumbnail: artUrl,
+    poster: artUrl,
+    hero: null,
+  };
+}
+
 let ibdbImageCache = null;
 
 // Fetch show images from IBDB page (which embeds broadway.org CDN images)
@@ -1607,6 +1743,23 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // When --verify is active, collect candidates from all tiers and pick the best
   // instead of returning on first success. This prefers promotional art over production stills.
   const candidates = [];
+
+  // Step 1.5: Try Mezzanine (theaterdiary.com) — direct API, production-specific, free
+  // NEEDS VERIFICATION — user-uploaded poster photos, quality varies
+  const mezzImages = await fetchFromMezzanine(show);
+  if (mezzImages && (mezzImages.thumbnail || mezzImages.poster)) {
+    const candidate = await verifyAndCollect(mezzImages, show, 'Mezzanine', verifyCtx);
+    if (candidate) {
+      candidates.push(candidate);
+      if (candidate.verifyResult?.imageType === 'promotional_art' &&
+          candidate.verifyResult?.confidence === 'high') {
+        console.log(`   ★ Promotional art found at high confidence — using this`);
+        return candidate.images;
+      }
+      if (!verifyCtx) return candidate.images;
+    }
+    if (verifyCtx && !candidate) console.log(`   Falling through to TodayTix scrape...`);
+  }
 
   // Step 2: Try TodayTix page scrape if we have an ID
   // NEEDS VERIFICATION — scraped images may be from wrong show/production
