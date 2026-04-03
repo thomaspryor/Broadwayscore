@@ -55,7 +55,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     introFallback: 'Broadway is currently home to {count} productions spanning musicals, plays, revivals, and world premieres. Our rankings combine scores from top critics including The New York Times, Vulture, and Variety to identify the very best shows playing right now.',
     filter: (show) => show.status === 'open' && (show.criticScore?.score ?? 0) > 0 && (show.criticScore?.reviewCount ?? 0) >= 5,
     sort: 'score',
-    relatedGuides: ['best-broadway-musicals', 'best-broadway-plays', 'best-new-broadway-shows'],
+    relatedGuides: ['best-broadway-musicals', 'best-broadway-plays', 'best-new-broadway-shows', 'cheap-broadway-tickets'],
     relatedBrowse: ['tony-winners-on-broadway', 'broadway-shows-for-tourists'],
     yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026],
   },
@@ -83,7 +83,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     introFallback: 'Broadway plays offer powerful dramatic experiences. These {count} productions are the highest-rated plays currently running, from gripping dramas to sharp comedies.',
     filter: (show) => show.status === 'open' && show.type === 'play' && (show.criticScore?.score ?? 0) > 0 && (show.criticScore?.reviewCount ?? 0) >= 5,
     sort: 'score',
-    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'broadway-shows-closing-soon'],
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'broadway-shows-closing-soon', 'cheap-broadway-tickets'],
     relatedBrowse: ['best-broadway-dramas', 'best-broadway-comedies'],
     yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026],
   },
@@ -107,7 +107,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
              ageRec.includes('all ages');
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'broadway-shows-for-parents'],
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'broadway-shows-for-parents', 'cheap-broadway-tickets'],
     relatedBrowse: ['broadway-shows-for-kids', 'first-time-broadway', 'short-broadway-shows'],
   },
 
@@ -128,7 +128,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
       return openDate >= seasonStart;
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-shows', 'broadway-shows-closing-soon'],
+    relatedGuides: ['best-broadway-shows', 'broadway-shows-closing-soon', 'cheap-broadway-tickets'],
     relatedBrowse: ['new-broadway-shows-2025', 'upcoming-broadway-shows'],
   },
 
@@ -164,7 +164,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
       return diffDays > 0 && diffDays <= 60;
     },
     sort: 'closing-date',
-    relatedGuides: ['best-broadway-shows', 'best-new-broadway-shows'],
+    relatedGuides: ['best-broadway-shows', 'best-new-broadway-shows', 'cheap-broadway-tickets'],
     relatedBrowse: ['broadway-shows-closing-soon', 'new-broadway-shows-2025'],
   },
 
@@ -255,7 +255,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     },
     sort: 'score',
     limit: 15,
-    relatedGuides: ['best-broadway-shows-for-kids', 'best-broadway-musicals'],
+    relatedGuides: ['best-broadway-shows-for-kids', 'best-broadway-musicals', 'cheap-broadway-tickets'],
     relatedBrowse: ['broadway-shows-for-kids', 'broadway-shows-for-tourists'],
   },
 
@@ -277,7 +277,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     },
     sort: 'score',
     limit: 15,
-    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals'],
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'cheap-broadway-tickets'],
     relatedBrowse: ['broadway-shows-for-date-night'],
   },
 
@@ -300,7 +300,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
              (show.type === 'musical' && (show.criticScore?.score ?? 0) >= 75);
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'best-broadway-revivals'],
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'best-broadway-revivals', 'cheap-broadway-tickets'],
     relatedBrowse: ['tony-winners-on-broadway', 'broadway-shows-for-tourists'],
   },
 
@@ -336,7 +336,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
       return tags.includes('jukebox') || tags.includes('jukebox-musical');
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-musicals', 'best-broadway-shows'],
+    relatedGuides: ['best-broadway-musicals', 'best-broadway-shows', 'cheap-broadway-tickets'],
     relatedBrowse: ['jukebox-musicals-on-broadway'],
   },
 
@@ -353,7 +353,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
       return tags.includes('revival');
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-shows', 'highest-rated-broadway-shows'],
+    relatedGuides: ['best-broadway-shows', 'highest-rated-broadway-shows', 'cheap-broadway-tickets'],
     relatedBrowse: ['best-broadway-revivals'],
   },
 
@@ -376,7 +376,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
              (show.type === 'musical' && (show.criticScore?.score ?? 0) >= 70 && !ageRec.includes('ages 4') && !ageRec.includes('ages 5'));
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-shows-for-kids', 'best-broadway-musicals', 'best-broadway-shows'],
+    relatedGuides: ['best-broadway-shows-for-kids', 'best-broadway-musicals', 'best-broadway-shows-for-first-timers', 'cheap-broadway-tickets'],
     relatedBrowse: ['broadway-shows-for-teens', 'broadway-shows-for-kids'],
   },
 
@@ -398,7 +398,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     },
     sort: 'score',
     limit: 15,
-    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'cheap-broadway-tickets'],
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'cheap-broadway-tickets', 'best-broadway-shows-for-teens'],
     relatedBrowse: ['first-time-broadway', 'broadway-shows-for-tourists'],
   },
 
@@ -416,7 +416,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
       return tags.includes('film-adaptation');
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-musicals', 'best-broadway-shows'],
+    relatedGuides: ['best-broadway-musicals', 'best-broadway-shows', 'cheap-broadway-tickets'],
     relatedBrowse: ['broadway-shows-based-on-movies', 'broadway-shows-based-on-books'],
   },
 
@@ -433,7 +433,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
       return tags.includes('based-on-true-story') || tags.includes('biography') || tags.includes('historical');
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-plays', 'best-broadway-shows'],
+    relatedGuides: ['best-broadway-plays', 'best-broadway-shows', 'cheap-broadway-tickets'],
     relatedBrowse: ['broadway-shows-based-on-true-stories', 'best-broadway-dramas'],
   },
 
@@ -449,7 +449,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
       return true;
     },
     sort: 'opening-date',
-    relatedGuides: ['best-new-broadway-shows', 'best-broadway-shows', 'broadway-shows-closing-soon'],
+    relatedGuides: ['best-new-broadway-shows', 'best-broadway-shows', 'broadway-shows-closing-soon', 'cheap-broadway-tickets'],
     relatedBrowse: ['upcoming-broadway-shows', 'new-broadway-shows-2026'],
   },
 
@@ -473,7 +473,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
       return totalMins > 0 && totalMins <= 120;
     },
     sort: 'score',
-    relatedGuides: ['best-broadway-shows', 'best-broadway-shows-for-kids'],
+    relatedGuides: ['best-broadway-shows', 'best-broadway-shows-for-kids', 'cheap-broadway-tickets'],
     relatedBrowse: ['short-broadway-shows', 'broadway-shows-for-tourists'],
   },
 };
