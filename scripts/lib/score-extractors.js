@@ -1250,7 +1250,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'theatre-weekly-star-image', 'radiotimes-page-json', 'radiotimes-svg-stars',
   'lbo-css-stars', 'atd-emoji-stars',
   'text-pattern', 'css-stars', 'word-stars', 'star-rating',
-  'reviewshub-percentage', 'explicit-rating', 'afridiziak-star-image',
+  'reviewshub-percentage', 'explicit-rating', 'afridiziak-star-image', 'manual-verified',
 ]);
 
 module.exports = {
