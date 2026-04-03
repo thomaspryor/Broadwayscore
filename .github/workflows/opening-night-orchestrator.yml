@@ -186,9 +186,13 @@ jobs:
           if [ "$MAX" -gt 0 ]; then
             PCT_REMAINING=$(( (MAX - USED) * 100 / MAX ))
             echo "SB credits: $((MAX - USED)) remaining (${PCT_REMAINING}% of $MAX)"
-            if [ "$PCT_REMAINING" -lt 15 ]; then
+            # Only disable SERP at absolute floor (1% = ~23K credits).
+            # Opening night SERP costs ~1,800 credits total — worth it.
+            # The 15% threshold was too aggressive; non-essential scrapers are
+            # now disabled separately when credits are low.
+            if [ "$PCT_REMAINING" -lt 1 ]; then
               echo "skip_serp=true" >> $GITHUB_OUTPUT
-              echo "⚠️  SB credits < 15% — SERP disabled for all poller dispatches this run"
+              echo "⚠️  SB credits < 1% — SERP disabled (absolute floor)"
             else
               echo "skip_serp=false" >> $GITHUB_OUTPUT
               echo "✓ SB credits healthy (${PCT_REMAINING}%) — SERP enabled"
