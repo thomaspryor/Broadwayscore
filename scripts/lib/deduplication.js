@@ -261,16 +261,24 @@ function isMultiProduction(newShow, existing) {
   // and differ by >2 years, they are historical entries (e.g., Death of a Salesman 1975 vs 2026).
   // But same venue overrides this — two shows at the same venue = same production.
   if (existing.status === 'open' || existing.status === 'previews') {
-    // Only trust year difference from actual openingDates, not ID suffixes.
+    // Same venue + open show = same production, regardless of year gap.
+    // Long-running shows (Wicked, Lion King, Phantom) get TodayTix startDates
+    // that differ from their original openingDate by 5-25+ years.
+    const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
+    const newVenueNorm = newShow.venue ? stripDash(normalizeVenueName(newShow.venue)) : '';
+    const existVenueNorm = existing.venue ? stripDash(normalizeVenueName(existing.venue)) : '';
+    if (newVenueNorm && existVenueNorm && newVenueNorm === existVenueNorm) {
+      return false; // Same venue + still running = same production
+    }
+
+    // Different or unknown venues: trust year difference from actual openingDates only.
     // ID suffixes (e.g., -2021) are often TodayTix artifacts, not production years.
     const newYearFromDate = newShow.openingDate ? new Date(newShow.openingDate).getFullYear() : null;
     const existYearFromDate = existing.openingDate ? new Date(existing.openingDate).getFullYear() : null;
     if (newYearFromDate && existYearFromDate && Math.abs(newYearFromDate - existYearFromDate) > 2) {
       return true; // Historical entry vs current production (verified by actual dates)
     }
-    // No reliable date evidence for different production. Same venue makes it
-    // even more certain this is the same production (e.g., TodayTix re-listing
-    // Harry Potter at Lyric Theatre with a different slug).
+    // No reliable date evidence for different production.
     return false; // Same/close year or missing dates + open show = same production
   }
 
