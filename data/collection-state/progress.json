@@ -121,7 +121,11 @@
     "patriots-2024/deadline--greg-evans.json",
     "mj-the-musical-west-end-2024/standard--nick-curtis.json",
     "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
-    "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json"
+    "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json",
+    "purlie-victorious-2023/broadwaynews--brittani-samuel.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "summer-1976-2023/variety--frank-rizzo.json",
+    "good-night-oscar-2023/nydailynews--chris-jones.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -202,7 +206,13 @@
     "the-hills-of-california-2024/times-uk--clive-davis.json",
     "stereophonic-2024/usatoday--charles-isherwood.json",
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
-    "spamalot-2023/wsj--charles-isherwood.json"
+    "spamalot-2023/wsj--charles-isherwood.json",
+    "purlie-victorious-2023/cititour--brian-scott-lipton.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "the-sign-in-sidney-brusteins-window-2023/talkinbroadway--howard-miller.json",
+    "good-night-oscar-2023/vulture--jackson-mchenry.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "camelot-2023/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -305,7 +315,9 @@
       "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
       "uncle-vanya-2024/deadline--greg-evans.json",
       "data/review-texts/patriots-2024/deadline--greg-evans.json",
-      "patriots-2024/deadline--greg-evans.json"
+      "patriots-2024/deadline--greg-evans.json",
+      "data/review-texts/summer-1976-2023/variety--frank-rizzo.json",
+      "summer-1976-2023/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -330,7 +342,10 @@
       "the-picture-of-dorian-gray-2025/broadwaynews--brittani-samuel.json",
       "othello-2025/broadwaynews--brittani-samuel.json",
       "yellow-face-2024/broadwaynews--brittani-samuel.json",
-      "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json"
+      "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json",
+      "purlie-victorious-2023/broadwaynews--brittani-samuel.json",
+      "just-for-us-2023/timeout--adam-feldman.json",
+      "good-night-oscar-2023/nydailynews--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -345,7 +360,10 @@
       "data/review-texts/the-monsters-off-broadway-2026/vulture--jackson-mchenry.json",
       "data/review-texts/beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/swept-away-2024/nydailynews--chris-jones.json",
-      "data/review-texts/spamalot-2023/wsj--charles-isherwood.json"
+      "data/review-texts/spamalot-2023/wsj--charles-isherwood.json",
+      "data/review-texts/purlie-victorious-2023/cititour--brian-scott-lipton.json",
+      "data/review-texts/the-sign-in-sidney-brusteins-window-2023/talkinbroadway--howard-miller.json",
+      "data/review-texts/good-night-oscar-2023/vulture--jackson-mchenry.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -373,7 +391,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json",
+  "lastProcessed": "camelot-2023/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -572,6 +590,17 @@
       "t": "2026-04-03T12:03:20.939Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-03T12:10:31.259Z",
+      "event": "bb-session",
+      "session": "36cf8216",
+      "url": "https://variety.com/2023/legit/reviews/summer-1976-review-laura-linney-broadway-"
+    },
+    {
+      "t": "2026-04-03T12:10:32.449Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
