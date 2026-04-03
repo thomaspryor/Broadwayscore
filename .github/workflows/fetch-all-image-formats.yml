@@ -31,6 +31,11 @@ on:
         required: false
         default: true
         type: boolean
+      include_closed:
+        description: 'Include closed/historical shows (needed for backfill)'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
 
@@ -83,7 +88,11 @@ jobs:
           if [ "${{ inputs.verify }}" != "false" ]; then
             VERIFY_FLAG="--verify"
           fi
-          node scripts/fetch-show-images-auto.js $ARGS --concurrency=$CONCURRENCY $VERIFY_FLAG --max-runtime=150
+          INCLUDE_CLOSED=""
+          if [ "${{ inputs.include_closed }}" == "true" ]; then
+            INCLUDE_CLOSED="--include-closed"
+          fi
+          node scripts/fetch-show-images-auto.js $ARGS $INCLUDE_CLOSED --concurrency=$CONCURRENCY $VERIFY_FLAG --max-runtime=150
 
       - name: Archive images locally
         if: always()

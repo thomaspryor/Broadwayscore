@@ -52,7 +52,7 @@ const {
   isRegisteredOutlet,
   AGGREGATOR_SCORE_SOURCES,
 } = require('./lib/review-normalization');
-const { verifyProduction, quickDateCheck } = require('./lib/production-verifier');
+const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
@@ -2184,7 +2184,8 @@ function createReviewFile(showId, reviewData, options = {}) {
   // Always run venue verification (cheap text scan). Date-based verification only when dates look suspicious.
   {
     const reviewText = reviewData.excerpt || reviewData.fullText;
-    const dateOk = quickDateCheck(showId, reviewData.url, reviewData.publishDate);
+    const showData = getShowData(showId);
+    const dateOk = quickDateCheck(showId, reviewData.url, reviewData.publishDate, showData?.openingDate);
     // Always run full verification if we have text (venue detection catches London reviews
     // even when dates are missing/valid — e.g., shows that played both London and NYC)
     if (!dateOk || reviewText) {
