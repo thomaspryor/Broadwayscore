@@ -187,7 +187,9 @@
     "the-play-that-goes-wrong-west-end-2021/the-telegrap--marianka-swain.json",
     "the-play-that-goes-wrong-west-end-2021/the-telegrap--tim-walker.json",
     "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
-    "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json"
+    "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json",
+    "yoah-off-broadway-2026/variety--unknown.json",
+    "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--unknown.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/standard--henry-hitchings.json",
@@ -859,7 +861,11 @@
       "elling-2010/variety--david-rooney.json",
       "data/review-texts/bloody-bloody-andrew-jackson-2010/variety--david-rooney.json",
       "bloody-bloody-andrew-jackson-2010/variety--david-rooney.json",
-      "data/review-texts/yoah-off-broadway-2026/variety--unknown.json"
+      "data/review-texts/yoah-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/yoah-off-broadway-2026/variety--unknown.json",
+      "yoah-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--unknown.json",
+      "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1030,7 +1036,7 @@
     ]
   },
   "startTime": "2026-04-02T08:51:27.845Z",
-  "lastProcessed": "book-of-mormon-2011/ap--mark-kennedy.json",
+  "lastProcessed": "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--unknown.json",
   "log": [
     {
       "t": "2026-04-02T10:26:13.774Z",
@@ -1414,6 +1420,28 @@
     },
     {
       "t": "2026-04-03T00:02:29.059Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T03:52:53.722Z",
+      "event": "bb-session",
+      "session": "99e5869d",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-04-03T03:52:54.886Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T03:53:06.629Z",
+      "event": "bb-session",
+      "session": "94df3ff0",
+      "url": "https://variety.com/2026/legit/news/jessie-jones-dead-actress-playwright-1236704"
+    },
+    {
+      "t": "2026-04-03T03:53:07.498Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
