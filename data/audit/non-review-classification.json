@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-03T22:31:44.278Z",
+    "generatedAt": "2026-04-03T23:14:18.099Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 29662,
-      "inReviewsJson": 15780,
+      "totalFiles": 29664,
+      "inReviewsJson": 15779,
       "skippedExcluded": 5,
-      "withFullText": 142,
+      "withFullText": 98,
       "excerptOnly": 1834,
       "llmClassified": 50,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
-      "uncertainCases": 6,
+      "nonReviewsFound": 0,
+      "uncertainCases": 12,
       "budgetUsed": 0.005,
       "llmCalls": 50,
       "rateLimitHits": 0,
       "errors": 0,
-      "skippedAlreadyClassified": 13799
+      "skippedAlreadyClassified": 13842
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "moulin-rouge-the-musical-west-end-2021/british-theatre--robert-tanitch.json",
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "outlet": "British Theatre Guide",
-      "outletId": "british-theatre",
-      "contentType": "preview",
-      "confidence": "high",
-      "reasoning": "The article describes the plot, setting, and creative team of the musical but does not offer an evaluation or opinion on the quality of the production.",
-      "currentScore": 75
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -41,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The text describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items about other shows.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -51,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences'.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of theater-related keywords and links, not a review or any other specific article type. It seems to be a directory or listing, so I'm classifying it as news with low confidence.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -93,59 +82,108 @@
       "confidence": "low",
       "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
+    },
+    {
+      "file": "once-on-this-island-2017/talkinbroadway--matthew-murray.json",
+      "showId": "once-on-this-island-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "currentScore": 89
+    },
+    {
+      "file": "one-man-two-guvnors-2012/faster-times--jonathan-mandell.json",
+      "showId": "one-man-two-guvnors-2012",
+      "outlet": "Faster Times",
+      "outletId": "faster-times",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "currentScore": 74
+    },
+    {
+      "file": "parade-2023/wsj--terry-teachout.json",
+      "showId": "parade-2023",
+      "outlet": "The Wall Street Journal",
+      "outletId": "wsj",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "currentScore": 78
+    },
+    {
+      "file": "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
+      "showId": "paranormal-activity-west-end-2025",
+      "outlet": "The Telegraph",
+      "outletId": "telegraph",
+      "contentType": "preview",
+      "confidence": "medium",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "currentScore": 80
+    },
+    {
+      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
+      "showId": "pippin-2013",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "currentScore": 80
+    },
+    {
+      "file": "prince-of-broadway-2017/stagebuddy--ariana-rudes.json",
+      "showId": "prince-of-broadway-2017",
+      "outlet": "Stage Buddy",
+      "outletId": "stagebuddy",
+      "contentType": "feature",
+      "confidence": "medium",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's not solely a review.",
+      "currentScore": 83
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "clydes-2021/frontmezzjunkies--unknown.json",
-    "company-2021/frontmezzjunkies--unknown.json",
-    "death-of-a-salesman-2022/frontmezzjunkies--unknown.json",
-    "death-of-a-salesman-2022/stageandcinema--dmitry-zvonkov.json",
-    "grey-house-2023/frontmezzjunkies--unknown.json",
-    "head-over-heels-2018/nypost--johnny-oleksinski.json",
-    "head-over-heels-2018/nyt-theater--unknown.json",
-    "is-this-a-room-2021/theatermania--unknown.json",
-    "john-proctor-is-the-villain-west-end-2026/everything-theatre--molly-g.json",
-    "john-proctor-is-the-villain-west-end-2026/londontheatre1--chris-omaweng.json",
-    "john-proctor-is-the-villain-west-end-2026/observer--katherine-cowles.json",
-    "john-proctor-is-the-villain-west-end-2026/thereviewshub--scott-matthewman.json",
-    "kimberly-akimbo-2022/frontmezzjunkies--unknown.json",
-    "kimberly-akimbo-2022/nysr--bob-verini.json",
-    "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
-    "left-on-tenth-2024/frontmezzjunkies--unknown.json",
-    "left-on-tenth-2024/theatermania--rachel-graham.json",
-    "left-on-tenth-2024/theatrely--joey-sims.json",
-    "les-liaisons-dangereuses-west-end-2026/broadwayworld--aliya-al-hassan.json",
-    "les-liaisons-dangereuses-west-end-2026/financialtimes--sarah-hemming.json",
-    "les-liaisons-dangereuses-west-end-2026/guardian--arifa-akbar.json",
-    "les-liaisons-dangereuses-west-end-2026/london-theatre--marianka-swain.json",
-    "les-liaisons-dangereuses-west-end-2026/thestage--sam-marlowe.json",
-    "linda-vista-2019/artsfuse--arts-fuse-editor.json",
-    "linda-vista-2019/broadway-blog--matthew-wexler.json",
-    "linda-vista-2019/broadwaynews--charles-isherwood.json",
-    "linda-vista-2019/cititour--brian-scott-lipton.json",
-    "linda-vista-2019/frontmezzjunkies--steven-ross.json",
-    "linda-vista-2019/nyt-theater--jonathan-mandell.json",
-    "linda-vista-2019/theater-scene--victor-gluck.json",
-    "linda-vista-2019/theatermania--zachary-stewart.json",
-    "linda-vista-2019/theatre-reviews-limited--david-roberts.json",
-    "moulin-rouge-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
-    "moulin-rouge-the-musical-west-end-2021/financialtimes--sarah-hemming.json",
-    "moulin-rouge-the-musical-west-end-2021/i-paper--sam-marlowe.json",
-    "moulin-rouge-the-musical-west-end-2021/londontheatre1--chris-omaweng.json",
-    "moulin-rouge-the-musical-west-end-2021/observer--susannah-clapp.json",
-    "moulin-rouge-the-musical-west-end-2021/theatre-weekly--greg-stewart.json",
-    "moulin-rouge-the-musical-west-end-2021/thereviewshub--richard-maguire.json",
-    "oh-mary-west-end-2025/daily-mail--robert-gore-langton.json",
-    "oh-mary-west-end-2025/londontheatre1--joseph-dunitz.json",
-    "oh-mary-west-end-2025/observer--katherine-cowles.json",
-    "oh-mary-west-end-2025/thereviewshub--richard-maguire.json"
+    "oliver-west-end-2024/broadwayworld--aliya-al-hassan.json",
+    "oliver-west-end-2024/daily-mail--patrick-marmion.json",
+    "operation-mincemeat-west-end-2024/british-theatre--sandra-giorgetti.json",
+    "operation-mincemeat-west-end-2024/daily-mail--neil-armstrong.json",
+    "operation-mincemeat-west-end-2024/express-uk--neil-norman.json",
+    "operation-mincemeat-west-end-2024/financialtimes--sarah-hemming.json",
+    "operation-mincemeat-west-end-2024/i-paper--fiona-mountford.json",
+    "operation-mincemeat-west-end-2024/londontheatre1--terry-eastham.json",
+    "operation-mincemeat-west-end-2024/observer--susannah-clapp.json",
+    "operation-mincemeat-west-end-2024/thereviewshub--christine-stanton.json",
+    "paddington-the-musical-west-end-2025/daily-mail--robert-gore-langton.json",
+    "paddington-the-musical-west-end-2025/everything-theatre--mary-pollard.json",
+    "paddington-the-musical-west-end-2025/guardian--arifa-akbar.json",
+    "paddington-the-musical-west-end-2025/londontheatre1--chris-omaweng.json",
+    "paddington-the-musical-west-end-2025/whatsonstage--sarah-crompton.json",
+    "paranormal-activity-west-end-2025/londontheatre1--chris-omaweng.json",
+    "paranormal-activity-west-end-2025/thereviewshub--dan-english.json",
+    "roi-return-on-investment-west-end-2026/british-theatre--howard-loxton.json",
+    "roi-return-on-investment-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "roi-return-on-investment-west-end-2026/everything-theatre--owen-thomas-james.json",
+    "roi-return-on-investment-west-end-2026/financialtimes--sarah-hemming.json",
+    "roi-return-on-investment-west-end-2026/londontheatre1--chris-omaweng.json",
+    "roi-return-on-investment-west-end-2026/thereviewshub--john-cutler.json",
+    "roi-return-on-investment-west-end-2026/times-uk--clive-davis.json",
+    "romeo-and-juliet-west-end-2026/observer--susannah-clapp.json",
+    "shadowlands-west-end-2026/british-theatre--howard-loxton.json",
+    "shadowlands-west-end-2026/daily-mail--robert-gore-langton.json",
+    "shadowlands-west-end-2026/everything-theatre--lucy-boardman.json",
+    "shadowlands-west-end-2026/londontheatre1--john-groves.json",
+    "shadowlands-west-end-2026/theatre-weekly--greg-stewart.json",
+    "shadowlands-west-end-2026/thereviewshub--scott-matthewman.json",
+    "showstopper-the-improvised-musical-west-end-2023/standard--bruce-dessau.json",
+    "starlight-express-west-end-2024/british-theatre--howard-loxton.json",
+    "starlight-express-west-end-2024/daily-mail--robert-gore-langton.json",
+    "starlight-express-west-end-2024/thereviewshub--stephen-bates.json",
+    "stranger-things-the-first-shadow-west-end-2023/british-theatre--howard-loxton.json",
+    "stranger-things-the-first-shadow-west-end-2023/daily-mail--robert-gore-langton.json",
+    "stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "currentCount": 19,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
