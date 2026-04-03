@@ -99,11 +99,11 @@ function main() {
           existing.data.url = review.url;
           changed = true;
         }
-        if (!existing.data.originalScore && review.starRating != null) {
+        if (!existing.data.aggregatorStars && !existing.data.originalScore && review.starRating != null) {
           if (review.starRating > 5) {
-            existing.data.originalScore = `${review.starRating}/100`;
+            existing.data.aggregatorStars = `${review.starRating}/100`;
           } else {
-            existing.data.originalScore = `${review.starRating}/${review.starMax || 5}`;
+            existing.data.aggregatorStars = `${review.starRating}/${review.starMax || 5}`;
           }
           existing.data.scoreSource = 'show-score-stars';
           changed = true;
@@ -125,14 +125,14 @@ function main() {
       const filename = generateReviewFilename(resolvedOutlet, review.author || 'unknown');
       const filePath = path.join(showDir, filename);
 
-      // Convert star rating to originalScore string (e.g. "4/5" or "85/100")
-      let originalScore = null;
+      // Convert star rating to aggregatorStars (Show Score stars are aggregator data, not outlet-direct)
+      let aggregatorStars = null;
       let scoreSource = null;
       if (review.starRating != null) {
         if (review.starRating > 5) {
-          originalScore = `${review.starRating}/100`;
+          aggregatorStars = `${review.starRating}/100`;
         } else {
-          originalScore = `${review.starRating}/${review.starMax || 5}`;
+          aggregatorStars = `${review.starRating}/${review.starMax || 5}`;
         }
         scoreSource = 'show-score-stars';
       }
@@ -148,7 +148,8 @@ function main() {
         isFullReview: false,
         showScoreExcerpt: review.excerpt || null,
         showScoreUrl: data.showScoreUrl,
-        originalScore,
+        originalScore: null,
+        aggregatorStars,
         scoreSource,
         assignedScore: null,
         source: 'show-score',
