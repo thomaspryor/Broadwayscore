@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-03T11:16:40.840Z",
-  "processed": 54,
-  "failed": 37,
-  "successRate": "59.3%",
+  "updatedAt": "2026-04-03T11:21:27.083Z",
+  "processed": 57,
+  "failed": 44,
+  "successRate": "56.4%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 33,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 14
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -80,6 +80,17 @@
       "t": "2026-04-03T11:12:46.391Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T11:16:42.052Z",
+      "event": "bb-session",
+      "session": "89d2207e",
+      "url": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191"
+    },
+    {
+      "t": "2026-04-03T11:16:43.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

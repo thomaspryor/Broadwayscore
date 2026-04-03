@@ -53,7 +53,10 @@
     "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json",
     "les-miserables-west-end-2021/times-uk--clive-davis.json",
     "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
-    "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
+    "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+    "hadestown-2019/variety--marilyn-stasio.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
+    "the-play-that-goes-wrong-west-end-2021/guardian--kate-kellaway.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -92,7 +95,14 @@
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "six-the-musical-west-end-2021/nytimes--jesse-green.json",
+    "six-the-musical-west-end-2021/the-telegrap--marianka-swain.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "hamilton-west-end-2021/times-uk--clive-davis.json",
+    "hamilton-2015/chicagotribune--chris-jones.json",
+    "the-play-that-goes-wrong-west-end-2021/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -127,7 +137,9 @@
       "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json",
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "the-phantom-of-the-opera-west-end-1986/whatsonstage--alun-hood.json",
-      "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json"
+      "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json",
+      "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
+      "the-play-that-goes-wrong-west-end-2021/guardian--kate-kellaway.json"
     ],
     "amp": [],
     "browserbase": [
@@ -138,7 +150,9 @@
       "data/review-texts/the-great-gatsby-2024/nypost--johnny-oleksinski.json",
       "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
       "data/review-texts/the-outsiders-2024/deadline--greg-evans.json",
-      "the-outsiders-2024/deadline--greg-evans.json"
+      "the-outsiders-2024/deadline--greg-evans.json",
+      "data/review-texts/hadestown-2019/variety--marilyn-stasio.json",
+      "hadestown-2019/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -156,7 +170,8 @@
       "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json",
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
       "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json",
-      "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json"
+      "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json",
+      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -176,7 +191,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -243,6 +258,17 @@
       "t": "2026-04-03T11:12:46.391Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T11:16:42.052Z",
+      "event": "bb-session",
+      "session": "89d2207e",
+      "url": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191"
+    },
+    {
+      "t": "2026-04-03T11:16:43.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
