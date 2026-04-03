@@ -38,7 +38,15 @@
     "titanique-west-end-2024/whatsonstage--sarah-crompton.json",
     "oliver-west-end-2024/standard--nick-curtis.json",
     "the-devil-wears-prada-west-end-2024/timeout-london--andrzej-lukowski.json",
-    "the-devil-wears-prada-west-end-2024/standard--martin-robinson.json"
+    "the-devil-wears-prada-west-end-2024/standard--martin-robinson.json",
+    "death-becomes-her-2024/vulture--jackson-mchenry.json",
+    "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/theatrely--nolan-boggess.json",
+    "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+    "the-outsiders-2024/deadline--greg-evans.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -72,7 +80,9 @@
     "titanique-west-end-2024/standard--nick-curtis.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "oliver-west-end-2024/the-sun--dominic-maxwell.json",
-    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json"
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -100,14 +110,23 @@
       "titanique-west-end-2024/whatsonstage--sarah-crompton.json",
       "oliver-west-end-2024/standard--nick-curtis.json",
       "the-devil-wears-prada-west-end-2024/timeout-london--andrzej-lukowski.json",
-      "the-devil-wears-prada-west-end-2024/standard--martin-robinson.json"
+      "the-devil-wears-prada-west-end-2024/standard--martin-robinson.json",
+      "maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/theatrely--nolan-boggess.json",
+      "starlight-express-west-end-2024/whatsonstage--sarah-crompton.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/scorched-earth-off-broadway-2026/variety--unknown.json",
       "data/review-texts/yoah-off-broadway-2026/variety--unknown.json",
       "data/review-texts/nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
-      "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json"
+      "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+      "the-great-gatsby-2024/nypost--johnny-oleksinski.json",
+      "data/review-texts/the-outsiders-2024/deadline--greg-evans.json",
+      "the-outsiders-2024/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -123,7 +142,8 @@
     "archiveToday": [
       "data/review-texts/dracula-west-end-2025/thestage--sam-marlowe.json",
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
-      "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json"
+      "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json",
+      "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -134,11 +154,12 @@
       "chess-2025/playbill--logan-culwell-block.json",
       "hercules-west-end-2025/thestage--sam-marlowe.json",
       "heathers-the-musical-off-broadway-2025/vulture--jackson-mchenry.json",
-      "just-in-time-2025/billboard--rebecca-milzoff.json"
+      "just-in-time-2025/billboard--rebecca-milzoff.json",
+      "death-becomes-her-2024/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+  "lastProcessed": "hadestown-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -172,6 +193,39 @@
       "t": "2026-04-03T09:13:36.896Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T11:10:19.645Z",
+      "event": "bb-session",
+      "session": "be6422e6",
+      "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren"
+    },
+    {
+      "t": "2026-04-03T11:10:20.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-04-03T11:12:24.436Z",
+      "event": "bb-session",
+      "session": "a7bd6bc6",
+      "url": "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical"
+    },
+    {
+      "t": "2026-04-03T11:12:25.713Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-03T11:12:45.052Z",
+      "event": "bb-session",
+      "session": "a68e2329",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-04-03T11:12:46.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
