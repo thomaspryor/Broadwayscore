@@ -134,7 +134,9 @@
     "aint-no-mo-2022/broadwaynews--brittani-samuel.json",
     "death-of-a-salesman-2022/ew--unknown.json",
     "death-of-a-salesman-2022/nydailynews--chris-jones.json",
-    "death-of-a-salesman-2022/washpost--peter-marks.json"
+    "death-of-a-salesman-2022/washpost--peter-marks.json",
+    "a-strange-loop-2022/ap--mark-kennedy.json",
+    "take-me-out-2022/nypost--johnny-oleksinski.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -232,7 +234,15 @@
     "the-piano-lesson-2022/vulture--jackson-mchenry.json",
     "death-of-a-salesman-2022/broadwaynews--brittani-samuel.json",
     "cost-of-living-2022/newyorker--vinson-cunningham.json",
-    "into-the-woods-2022/thewrap--thom-geier.json"
+    "into-the-woods-2022/thewrap--thom-geier.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "the-kite-runner-2022/thewrap--robert-hofler.json",
+    "girl-from-the-north-country-2022/theater-news-online--david-cote.json",
+    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
+    "beetlejuice-2022/pittsburgh-city-paper--jordana-rosenfeld.json",
+    "plaza-suite-2022/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -307,9 +317,13 @@
       "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json",
       "aint-no-mo-2022/broadwaynews--brittani-samuel.json",
       "death-of-a-salesman-2022/broadwaynews--brittani-samuel.json",
-      "death-of-a-salesman-2022/washpost--peter-marks.json"
+      "death-of-a-salesman-2022/washpost--peter-marks.json",
+      "a-strange-loop-2022/ap--mark-kennedy.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
+      "take-me-out-2022/nypost--johnny-oleksinski.json"
+    ],
     "browserbase": [
       "data/review-texts/scorched-earth-off-broadway-2026/variety--unknown.json",
       "data/review-texts/yoah-off-broadway-2026/variety--unknown.json",
@@ -397,7 +411,8 @@
       "data/review-texts/good-night-oscar-2023/vulture--jackson-mchenry.json",
       "data/review-texts/camelot-2023/vulture--jackson-mchenry.json",
       "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
-      "data/review-texts/the-piano-lesson-2022/vulture--jackson-mchenry.json"
+      "data/review-texts/the-piano-lesson-2022/vulture--jackson-mchenry.json",
+      "data/review-texts/into-the-woods-2022/thewrap--thom-geier.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -428,7 +443,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "into-the-woods-2022/thewrap--thom-geier.json",
+  "lastProcessed": "plaza-suite-2022/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -682,6 +697,17 @@
       "t": "2026-04-03T12:33:25.829Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-04-03T12:37:10.992Z",
+      "event": "bb-session",
+      "session": "4b21f7a4",
+      "url": "https://nypost.com/2022/04/04/broadways-take-me-out-is-an-explosive-funny-baseba"
+    },
+    {
+      "t": "2026-04-03T12:37:12.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

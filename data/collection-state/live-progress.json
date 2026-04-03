@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-03T12:35:57.876Z",
-  "processed": 135,
-  "failed": 96,
-  "successRate": "58.4%",
+  "updatedAt": "2026-04-03T12:40:26.338Z",
+  "processed": 137,
+  "failed": 104,
+  "successRate": "56.8%",
   "tierBreakdown": {
-    "playwright": 71,
-    "amp": 0,
+    "playwright": 72,
+    "amp": 2,
     "browserbase": 36,
     "directCookies": 0,
     "scrapingbee": 27,
     "brightdata": 0,
-    "archiveToday": 18,
+    "archiveToday": 19,
     "archive": 25
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 21,
   "recentActivity": [
-    {
-      "t": "2026-04-03T11:58:52.138Z",
-      "event": "bb-session",
-      "session": "fe44fa87",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sunset-blvd-broadway-review-nic"
-    },
-    {
-      "t": "2026-04-03T11:58:53.412Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-04-03T12:02:01.943Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-03T12:33:25.829Z",
       "event": "bb-cookie-inject",
       "domain": "thewrap.com"
+    },
+    {
+      "t": "2026-04-03T12:37:10.992Z",
+      "event": "bb-session",
+      "session": "4b21f7a4",
+      "url": "https://nypost.com/2022/04/04/broadways-take-me-out-is-an-explosive-funny-baseba"
+    },
+    {
+      "t": "2026-04-03T12:37:12.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
