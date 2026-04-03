@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T21:12:15.759Z",
+  "timestamp": "2026-04-03T21:26:52.369Z",
   "stats": {
-    "totalReviews": 29045,
-    "alreadyFlagged": 8127,
+    "totalReviews": 29283,
+    "alreadyFlagged": 8209,
     "dateGuardCatches": 13,
-    "directorMismatch": 885,
-    "tvFilmSignals": 3365,
-    "londonSignals": 1013,
+    "directorMismatch": 894,
+    "tvFilmSignals": 3386,
+    "londonSignals": 1033,
     "offBroadwaySignals": 976,
     "yearMismatch": 65,
     "noPublishDate": 5662
@@ -3346,6 +3346,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2025-11-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -13180,6 +13193,19 @@
     },
     {
       "showId": "dracula-west-end-2025",
+      "file": "observer--katherine-cowles.json",
+      "publishDate": "2026-02-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 84,
       "publishDate": "2026-02-19",
@@ -13948,6 +13974,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "publishDate": "2026-02-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -24202,10 +24241,49 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2025-12-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 88,
       "publishDate": "2025-12-12",
       "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Bridge-Theatre-20251212",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "daily-mail--mark-cook.json",
+      "publishDate": "2025-12-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "financialtimes--tim-bano.json",
+      "publishDate": "2025-12-12",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24315,6 +24393,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2025-12-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
         }
       ]
     },
@@ -25554,6 +25645,19 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "everything-theatre--molly-g.json",
+      "publishDate": "2026-03-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 85,
       "publishDate": "2026-03-26",
@@ -25601,6 +25705,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "observer--katherine-cowles.json",
+      "publishDate": "2026-04-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
         }
       ]
     },
@@ -35965,6 +36082,19 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2023-05-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "nytimes--alexis-soloski.json",
       "score": 86,
       "publishDate": "2023-05-09",
@@ -36396,6 +36526,19 @@
     },
     {
       "showId": "paddington-the-musical-west-end-2025",
+      "file": "everything-theatre--mary-pollard.json",
+      "publishDate": "2025-12-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
       "file": "nytimes--claire-moses.json",
       "score": null,
       "publishDate": "October 30, 2025",
@@ -36686,6 +36829,19 @@
       "score": 66,
       "publishDate": "2025-12-17",
       "url": "https://www.londontheatre.co.uk/reviews/paranormal-activity-review-ambassadors-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2025-12-16",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -39923,6 +40079,32 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
+      "file": "british-theatre--anita-marguerite-butler.json",
+      "publishDate": "2026-04-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2026-04-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 73,
       "publishDate": "2026-04-01",
@@ -40658,6 +40840,32 @@
       "score": 77,
       "publishDate": "2026-02-14",
       "url": "https://www.londonboxoffice.co.uk/news/post/shadowlands-aldwych-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "file": "londontheatre1--john-groves.json",
+      "publishDate": "2026-02-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2026-02-13",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -43672,10 +43880,36 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2023-12-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "everything-theatre--xi-ye.json",
       "score": 83,
       "publishDate": "2023-12-16",
       "url": "https://everything-theatre.co.uk/2023/12/review-stranger-things-the-first-shadow-phoenix-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": "2023-12-15",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43760,6 +43994,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "thereviewshub--john-cutler.json",
+      "publishDate": "2023-12-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -46755,6 +47007,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2026-04-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -50253,6 +50518,45 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "artsdesk--demetrios-matheou.json",
+      "publishDate": "2025-11-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2025-11-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2025-11-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 66,
       "publishDate": "2025-11-13",
@@ -50295,6 +50599,19 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "observer--katherine-cowles.json",
+      "publishDate": "2025-11-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "telegraph--claire-allfree.json",
       "score": 42,
       "publishDate": "2025-11-13",
@@ -50323,6 +50640,19 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "thereviewshub--scott-matthewman.json",
+      "publishDate": "2025-11-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "thestage--holly-omahony.json",
       "score": 78,
       "publishDate": "2025-11-13",
@@ -50346,6 +50676,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2025-11-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -53580,6 +53923,19 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2025-09-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 92,
       "publishDate": "2025-09-16",
@@ -55938,6 +56294,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tye blue\" from titanique-2026"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2025-01-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"motion picture\""
         }
       ]
     },
@@ -59208,6 +59577,19 @@
     },
     {
       "showId": "wicked-west-end-2021",
+      "file": "times-uk--patrick-kidd.json",
+      "publishDate": "2025-11-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-west-end-2021",
       "file": "variety--charles-isherwood.json",
       "score": 60,
       "publishDate": "2020-07-30",
@@ -62242,6 +62624,19 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2026-03-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 78,
       "publishDate": "2026-03-04",
@@ -62330,6 +62725,19 @@
       "score": 74,
       "publishDate": "2026-03-06",
       "url": "https://www.nytimes.com/2026/03/06/theater/jordan-fein-broken-glass.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2026-03-04",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -63940,6 +64348,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2026-02-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -66155,6 +66576,19 @@
       "score": 79,
       "publishDate": "2024-02-26",
       "url": "https://www.ft.com/content/44054524-0af1-49ee-9983-4e963f73a5a9",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-02-26",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69759,6 +70193,19 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": "2026-04-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "city-am--anna-moloney.json",
       "score": 90,
       "publishDate": "2026-04-01",
@@ -69833,6 +70280,19 @@
       "score": 85,
       "publishDate": "2026-04-01",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/les-liaisons-dangereuses-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "thereviewshub--maryam-philpott.json",
+      "publishDate": "2026-04-02",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71270,10 +71730,36 @@
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2022-01-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
       "score": 72,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2022-01-20",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71867,6 +72353,19 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
+      "file": "observer--katherine-cowles.json",
+      "publishDate": "2026-01-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
       "file": "timeout--paul-raven.json",
       "score": 61,
       "publishDate": "2025-12-19",
@@ -72044,6 +72543,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": "2025-01-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -73450,20 +73962,6 @@
       ]
     },
     {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": null,
-      "publishDate": "2026-03-31",
-      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "romeo-juliet-2024",
       "file": "latimes--charles-mcnulty.json",
       "score": 77,
@@ -73762,6 +74260,19 @@
       "score": 76,
       "publishDate": "February 14, 2026",
       "url": "https://www.dailymail.co.uk/tv/article-15559075/PATRICK-MARMION-review-Shadowlands-London-Aldwych-Theatre-Hugh-Bonneville.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "file": "everything-theatre--lucy-boardman.json",
+      "publishDate": "2026-02-16",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -74376,6 +74887,19 @@
       "score": 88,
       "publishDate": "2024-06-30",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/starlight-express-troubadour-wembley-park-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "starlight-express-west-end-2024",
+      "file": "telegraph--the-telegraph.json",
+      "publishDate": "2024-06-30",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75313,6 +75837,19 @@
       "score": 78,
       "publishDate": "2026-03-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-SUMMERFOLK-starring-Sophie-Rundle-National-Theatre-20260318",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2026-03-20",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76302,6 +76839,19 @@
     },
     {
       "showId": "the-authenticator-west-end-2026",
+      "file": "broadwayworld--franco-milazzo.json",
+      "publishDate": "2026-04-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
       "file": "west-end-best-friend--alexandra-tullah.json",
       "score": 78,
       "publishDate": "2026-04-02",
@@ -76311,6 +76861,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "whatsonstage--aliya-al-hassan.json",
+      "publishDate": "2026-04-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -77432,6 +77995,19 @@
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "thereviewshub--sonny-waheed.json",
+      "publishDate": "2024-12-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
       "file": "whatsonstage--miriam-sallon.json",
       "score": 42,
       "publishDate": "2024-12-06",
@@ -78109,6 +78685,19 @@
     },
     {
       "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2026-03-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
       "score": 83,
       "publishDate": null,
@@ -78146,6 +78735,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2026-03-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -79540,6 +80142,19 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "thereviewshub--sonny-waheed.json",
+      "publishDate": "2025-09-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
       "score": 68,
       "publishDate": "2025-09-16",
@@ -80084,6 +80699,19 @@
       ]
     },
     {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2026-02-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-velocity-of-autumn-2014",
       "file": "huffpost--steven-suskin.json",
       "score": 54,
@@ -80547,6 +81175,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": "2025-01-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

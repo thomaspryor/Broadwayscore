@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-03T21:12:18.000Z",
+    "lastUpdated": "2026-04-03T21:26:54.612Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 29475,
-    "skippedFiles": 8222,
-    "totalCritics": 1445,
-    "registryCritics": 489,
+    "totalFilesScanned": 29713,
+    "skippedFiles": 8304,
+    "totalCritics": 1471,
+    "registryCritics": 500,
     "flaggedReviews": 38
   },
   "flaggedReviews": [
@@ -382,7 +382,7 @@
       "outletShare": 5,
       "primaryOutlet": "whatsonstage",
       "primaryShare": 95,
-      "totalReviews": 19
+      "totalReviews": 22
     },
     {
       "critic": "Patrick Ryan",
@@ -1242,13 +1242,13 @@
       "critic": "Matt Wolf",
       "slug": "matt-wolf",
       "outlets": [
-        "telegraph",
         "london-theatre",
+        "telegraph",
         "artsdesk",
         "nytimes",
         "variety"
       ],
-      "totalReviews": 37
+      "totalReviews": 38
     },
     {
       "critic": "Jesse Oxfeld",
@@ -1402,7 +1402,7 @@
         "standard",
         "telegraph"
       ],
-      "totalReviews": 26
+      "totalReviews": 29
     },
     {
       "critic": "Sam Marlowe",
@@ -1414,7 +1414,7 @@
         "timeout",
         "london-theatre"
       ],
-      "totalReviews": 21
+      "totalReviews": 24
     },
     {
       "critic": "Tim Bano",
@@ -1427,7 +1427,7 @@
         "times-uk",
         "independent"
       ],
-      "totalReviews": 22
+      "totalReviews": 23
     },
     {
       "critic": "Kevin Filipski",
@@ -1588,13 +1588,23 @@
       "totalReviews": 7
     },
     {
+      "critic": "Aliya Al-Hassan",
+      "slug": "aliya-al-hassan",
+      "outlets": [
+        "broadwayworld",
+        "london-theatre",
+        "whatsonstage"
+      ],
+      "totalReviews": 18
+    },
+    {
       "critic": "Theo Bosanquet",
       "slug": "theo-bosanquet",
       "outlets": [
         "whatsonstage",
         "london-theatre"
       ],
-      "totalReviews": 7
+      "totalReviews": 8
     },
     {
       "critic": "Paul Raven",
@@ -1652,7 +1662,17 @@
         "broadwayworld",
         "artsdesk"
       ],
-      "totalReviews": 28
+      "totalReviews": 29
+    },
+    {
+      "critic": "Neil Norman",
+      "slug": "neil-norman",
+      "outlets": [
+        "the-express",
+        "express-uk",
+        "the-sun"
+      ],
+      "totalReviews": 7
     },
     {
       "critic": "Emlyn Travis",
@@ -1755,7 +1775,7 @@
         "artsdesk",
         "hollywood-reporter"
       ],
-      "totalReviews": 5
+      "totalReviews": 6
     },
     {
       "critic": "Holly Williams",
@@ -1806,7 +1826,7 @@
         "guardian",
         "timeout"
       ],
-      "totalReviews": 11
+      "totalReviews": 12
     },
     {
       "critic": "Toby Zinman",
@@ -1818,15 +1838,6 @@
         "inquirer"
       ],
       "totalReviews": 17
-    },
-    {
-      "critic": "Chris Omaweng",
-      "slug": "chris-omaweng",
-      "outlets": [
-        "londontheatre1",
-        "london-theatre"
-      ],
-      "totalReviews": 6
     },
     {
       "critic": "Bobby McGuire",
@@ -2003,6 +2014,15 @@
       "outlets": [
         "oscar-e-moore",
         "talk-entertainment"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Neil Armstrong",
+      "slug": "neil-armstrong",
+      "outlets": [
+        "daily-mail",
+        "bbc-news"
       ],
       "totalReviews": 3
     },
