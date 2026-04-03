@@ -24,6 +24,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const SITE_SHOWS_DIR = path.join(PUBLIC_DIR, 'data', 'shows');
+const TIMELINE_DIR = path.join(DATA_DIR, 'opening-night-timeline');
 
 const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
 const LOOKBACK_DAYS = LOOKBACK_ARG ? parseInt(LOOKBACK_ARG.split('=')[1], 10) : 3;
@@ -160,6 +161,45 @@ function main() {
     };
   });
 
+  // ── Timeline: append-only JSONL per show ──
+  if (!fs.existsSync(TIMELINE_DIR)) fs.mkdirSync(TIMELINE_DIR, { recursive: true });
+  for (const s of shows) {
+    if (s.total === 0) continue; // Skip shows with no reviews yet
+    const entry = {
+      t: now.toISOString(),
+      rc: s.total, s: s.siteScore ?? s.liveScore,
+      t1: s.t1, t2: s.t2, t3: s.t3,
+      p: s.positive, m: s.mixed, n: s.negative,
+      bc: s.broadcast.state,
+    };
+    const tlPath = path.join(TIMELINE_DIR, `${s.id}.jsonl`);
+    // Deduplicate: skip if the last entry has the same review count + score
+    let skip = false;
+    if (fs.existsSync(tlPath)) {
+      const lines = fs.readFileSync(tlPath, 'utf8').trim().split('\n');
+      if (lines.length > 0) {
+        try {
+          const last = JSON.parse(lines[lines.length - 1]);
+          if (last.rc === entry.rc && last.s === entry.s) skip = true;
+        } catch {}
+      }
+    }
+    if (!skip) {
+      fs.appendFileSync(tlPath, JSON.stringify(entry) + '\n');
+    }
+  }
+
+  // Read timelines for shows that have them
+  for (const s of shows) {
+    const tlPath = path.join(TIMELINE_DIR, `${s.id}.jsonl`);
+    if (fs.existsSync(tlPath)) {
+      try {
+        const lines = fs.readFileSync(tlPath, 'utf8').trim().split('\n');
+        s.timeline = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      } catch {}
+    }
+  }
+
   const statusData = { generatedAt: now.toISOString(), lookbackDays: LOOKBACK_DAYS, shows, upcoming };
 
   // Write JSON
@@ -263,6 +303,9 @@ function generateHTML() {
   .card-upcoming .show-title { font-size: 14px; }
   .card-upcoming .show-meta { font-size: 11px; margin-bottom: 0; }
   .days-pill { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: #1e3a5f; color: var(--cyan); flex-shrink: 0; white-space: nowrap; }
+  .sparkline { margin: 6px 0 4px; }
+  .sparkline canvas { width: 100%; height: 36px; border-radius: 4px; }
+  .sparkline-label { font-size: 10px; color: var(--dim); display: flex; justify-content: space-between; }
   .empty { text-align: center; color: var(--dim); padding: 40px 0; }
   .refresh { font-size: 11px; color: var(--dim); text-align: center; margin-top: 8px; }
   .footer { text-align: center; margin-top: 16px; }
@@ -360,6 +403,60 @@ function renderMissing(missingT1, missingT2, showIdx) {
   return html;
 }
 
+function drawSparklines() {
+  document.querySelectorAll('[data-sparkline]').forEach(el => {
+    const data = JSON.parse(el.dataset.sparkline);
+    if (data.length < 2) { el.style.display = 'none'; return; }
+    const canvas = el.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.offsetWidth * dpr;
+    const h = canvas.offsetHeight * dpr;
+    canvas.width = w; canvas.height = h;
+    ctx.scale(dpr, dpr);
+    const cw = canvas.offsetWidth, ch = canvas.offsetHeight;
+
+    const scores = data.map(d => d.s).filter(s => s != null);
+    const counts = data.map(d => d.rc);
+    if (scores.length < 2) { el.style.display = 'none'; return; }
+
+    const minS = Math.min(...scores) - 3, maxS = Math.max(...scores) + 3;
+    const pad = 2;
+
+    // Score line
+    ctx.beginPath();
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].s == null) continue;
+      const x = pad + (i / (data.length - 1)) * (cw - pad * 2);
+      const y = pad + (1 - (data[i].s - minS) / (maxS - minS)) * (ch - pad * 2);
+      if (i === 0 || data[i-1]?.s == null) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Review count as filled area (subtle)
+    const maxC = Math.max(...counts);
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(59,130,246,0.1)';
+    for (let i = 0; i < data.length; i++) {
+      const x = pad + (i / (data.length - 1)) * (cw - pad * 2);
+      const y = ch - pad - (data[i].rc / maxC) * (ch - pad * 2) * 0.5;
+      if (i === 0) { ctx.moveTo(x, ch); ctx.lineTo(x, y); } else ctx.lineTo(x, y);
+    }
+    ctx.lineTo(pad + cw - pad * 2, ch); ctx.closePath(); ctx.fill();
+
+    // Dots for broadcast events
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].bc === 'complete' && (i === 0 || data[i-1].bc !== 'complete')) {
+        const x = pad + (i / (data.length - 1)) * (cw - pad * 2);
+        const y = pad + (1 - (data[i].s - minS) / (maxS - minS)) * (ch - pad * 2);
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#22c55e'; ctx.fill();
+      }
+    }
+  });
+}
+
 function toggleDetails(id) {
   const el = document.getElementById(id);
   if (el.classList.contains('collapsed')) {
@@ -424,6 +521,7 @@ function renderShows(data) {
       '</div>' +
       drift +
       (s.total > 0 ? '<div class="bar"><div class="bar-pos" style="flex:' + s.positive + '"></div><div class="bar-mix" style="flex:' + s.mixed + '"></div><div class="bar-neg" style="flex:' + s.negative + '"></div></div>' : '') +
+      (s.timeline && s.timeline.length >= 2 ? '<div class="sparkline" data-sparkline=\\'' + JSON.stringify(s.timeline).replace(/'/g, '&#39;') + '\\'><canvas></canvas><div class="sparkline-label"><span>' + s.timeline.length + ' snapshots</span><span>' + new Date(s.timeline[0].t).toLocaleDateString() + ' \\u2192 ' + new Date(s.timeline[s.timeline.length-1].t).toLocaleDateString() + '</span></div></div>' : '') +
       '<span class="details-toggle" onclick="toggleDetails(\\'' + detId + '\\')">' + (s.readiness.ready ? '\\u2705 Broadcast ready' : '\\u23F3 ' + esc(s.readiness.reasons.join(', '))) + ' \\u2014 details</span>' +
       '<div class="details-body collapsed" id="' + detId + '">' +
         '<div class="gates" style="margin-top:8px">' + gate(s.total, minR, 'Total') + gate(s.t1, minT1, 'T1') + gate(s.t2, minT2, 'T2') + gate(s.readiness.highConfidence, minH, 'Hi-Conf') + '</div>' +
@@ -460,7 +558,7 @@ function renderUpcoming(data) {
 async function fetchAndRender() {
   try {
     const r = await fetch('/opening-night-status.json?t=' + Date.now());
-    if (r.ok) { _data = await r.json(); renderFilters(_data); renderShows(_data); renderUpcoming(_data); }
+    if (r.ok) { _data = await r.json(); renderFilters(_data); renderShows(_data); renderUpcoming(_data); drawSparklines(); }
   } catch(e) { console.error('Failed to fetch status:', e); }
   document.getElementById('refresh').textContent = 'Auto-refresh every 30s \\u00b7 Last check: ' + new Date().toLocaleTimeString();
 }

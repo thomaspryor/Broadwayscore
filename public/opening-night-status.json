@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T03:36:40.058Z",
+  "generatedAt": "2026-04-03T03:49:22.314Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1089,20 +1089,25 @@
       "status": "open",
       "slug": "les-liaisons-dangereuses-west-end",
       "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
-      "siteScore": 70,
-      "liveScore": 70,
-      "scoreDrift": 0,
-      "total": 11,
-      "t1": 4,
-      "t2": 3,
-      "t3": 4,
-      "positive": 6,
-      "mixed": 5,
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 11,
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1112,7 +1117,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
         {
@@ -1450,20 +1455,20 @@
       "status": "open",
       "slug": "romeo-and-juliet-west-end",
       "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
-      "siteScore": 71,
-      "liveScore": 71,
-      "scoreDrift": 0,
-      "total": 14,
-      "t1": 5,
-      "t2": 7,
+      "siteScore": null,
+      "liveScore": 75,
+      "scoreDrift": null,
+      "total": 9,
+      "t1": 3,
+      "t2": 4,
       "t3": 2,
-      "positive": 9,
-      "mixed": 3,
-      "negative": 2,
+      "positive": 6,
+      "mixed": 2,
+      "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1480,6 +1485,20 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-03T03:47:53.743Z",
+          "rc": 9,
+          "s": 75,
+          "t1": 3,
+          "t2": 4,
+          "t3": 2,
+          "p": 6,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },

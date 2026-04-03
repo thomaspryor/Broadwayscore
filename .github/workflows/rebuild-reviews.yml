@@ -257,6 +257,7 @@ jobs:
           # Stage all audit files modified by rebuild (not just critic-outlet-affinity)
           git add data/audit/*.json 2>/dev/null || true
           git add public/opening-night-status.json public/status.html 2>/dev/null || true
+          git add data/opening-night-timeline/*.jsonl 2>/dev/null || true
           # Reset any unstaged tracked files (e.g. core data overwritten by checkout-core-data)
           git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
 
