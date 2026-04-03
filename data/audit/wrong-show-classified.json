@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-03T07:24:49.881Z",
+    "generatedAt": "2026-04-03T08:39:36.424Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "showTitle": "Romeo and Juliet",
+      "file": "theatrely--juan-a-ramirez.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Romeo + Juliet\", the director Sam Gold, and the actors Kit Connor and Rachel Zegler, confirming it's about the specified show."
+    }
+  ]
 }
