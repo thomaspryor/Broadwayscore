@@ -5027,8 +5027,10 @@ function findReviewsToProcess() {
             || data.contentTier === 'truncated' || data.contentTier === 'needs-rescrape';
           // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
           const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
+          // Re-collect if existing fullText is garbage (cookie consent, GDPR banners, etc.)
+          const hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
-          if (!isTruncated && !needsUrlDiscovery && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
+          if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
             continue;
           }
           // Guard: never re-fetch a review that has an assigned score + reasonable text, even if it

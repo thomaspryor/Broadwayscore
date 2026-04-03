@@ -60,6 +60,22 @@ const LEGAL_PAGE_PATTERNS = [
 ];
 
 /**
+ * Patterns that indicate cookie consent / GDPR banners (not review content).
+ * These can be very long (10K+) and contain generic words like "show" and "performance"
+ * that fool theater-keyword checks.
+ * @type {RegExp[]}
+ */
+const COOKIE_CONSENT_PATTERNS = [
+  /your\s+consent\s+will\s+be\s+valid/i,
+  /legitimate\s+interest/i,
+  /data\s+protection\s+(regulation|officer|authority)/i,
+  /consent\s+management\s+platform/i,
+  /manage\s+(your\s+)?cookie\s+(preferences|settings|consent)/i,
+  /we\s+use\s+cookies.*\b(consent|opt[\s-]?out|preferences)\b/is,
+  /GDPR/,
+];
+
+/**
  * Patterns that indicate 404/error pages
  * @type {RegExp[]}
  */
@@ -180,6 +196,23 @@ function detectPaywall(text) {
 function detectLegalPage(text) {
   for (const pattern of LEGAL_PAGE_PATTERNS) {
     const match = text.match(pattern);
+    if (match) {
+      return { detected: true, match: match[0] };
+    }
+  }
+  return { detected: false, match: null };
+}
+
+/**
+ * Check if text is a cookie consent / GDPR banner
+ * @param {string} text - Text to check
+ * @returns {{ detected: boolean, match: string | null }}
+ */
+function detectCookieConsent(text) {
+  // Check the first 500 chars — consent banners are always at the front
+  const front = text.substring(0, 500);
+  for (const pattern of COOKIE_CONSENT_PATTERNS) {
+    const match = front.match(pattern);
     if (match) {
       return { detected: true, match: match[0] };
     }
@@ -663,6 +696,13 @@ function isGarbageContent(text) {
   // If the pattern is trailing junk on an otherwise valid review, cleanText() will
   // handle it — don't reject the entire review.
   const hasSubstantialReviewContent = trimmed.length >= 500 && _countTheaterKeywords(trimmed) >= 3;
+
+  // Check for cookie consent / GDPR banner — always garbage, even with theater keywords
+  // (consent text contains generic words like "show", "performance" that fool keyword checks)
+  const cookieConsent = detectCookieConsent(text);
+  if (cookieConsent.detected) {
+    return { isGarbage: true, reason: `Cookie consent/GDPR banner: "${cookieConsent.match}"` };
+  }
 
   // Check for ad blocker message
   const adBlocker = detectAdBlocker(text);

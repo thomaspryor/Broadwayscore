@@ -561,12 +561,22 @@ jobs:
           browsers: 'chromium webkit'
 
       - name: Run visual regression tests
-        run: npx playwright test tests/e2e/visual-regression.spec.ts --project=chromium --project=mobile ${{ github.event.inputs.update_snapshots == 'true' && '--update-snapshots' || '' }}
+        id: visual-test
+        run: |
+          # On main: always update baselines. The live site is the source of truth —
+          # changes already passed visual QA before deploy (CLAUDE.md §5).
+          # Baseline diffs are visible in the git commit for async review.
+          UPDATE_FLAG=""
+          if [ "${{ github.event.inputs.update_snapshots }}" == "true" ] || [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            UPDATE_FLAG="--update-snapshots"
+            echo "Auto-updating baselines (running on main)"
+          fi
+          npx playwright test tests/e2e/visual-regression.spec.ts --project=chromium --project=mobile $UPDATE_FLAG
         env:
           TEST_BASE_URL: https://broadwayscorecard.com
 
       - name: Commit updated snapshots
-        if: always() && github.event.inputs.update_snapshots == 'true'
+        if: always() && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
