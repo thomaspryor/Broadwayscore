@@ -9,6 +9,7 @@ import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/l
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
+import path from 'path';
 import HomePageClient from '@/components/HomePageClient';
 import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
@@ -90,11 +91,6 @@ export default function HomePage() {
     .map(serializeShow);
 
   // Pre-compute ALL featured rows server-side to avoid 700+ item iterations on client hydration
-  const bestNewPlaysShows = allShows
-    .filter(s => s.type === 'play' && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && s.criticScore?.score)
-    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-    .map(serializeShow);
-
   const tonyWinnersShows = allShows
     .filter(s => s.status === 'open' && s.tags?.some(t => t.toLowerCase() === 'tony-winner'))
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
@@ -144,15 +140,70 @@ export default function HomePage() {
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .map(serializeShow);
 
+  // --- New shelves: Previews, Lotteries, Rush, Box Office, Sold Out, West End ---
+
+  // In Previews — sorted by opening date (soonest first)
+  const inPreviewsList = allShows
+    .filter(s => s.status === 'previews')
+    .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime())
+    .map(serializeShow);
+
+  // Lottery/Rush data
+  const lotteryRushData = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'data/lottery-rush.json'), 'utf8')
+  );
+  const lrShows = lotteryRushData.shows || {};
+
+  // Broadway Lotteries — open BW shows with lottery, sorted by score
+  const lotteryShowsList = allShows
+    .filter(s => s.status === 'open' && lrShows[s.id]?.lottery)
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
+  // Rush Tickets — open BW shows with rush or digital rush, sorted by score
+  const rushShowsList = allShows
+    .filter(s => s.status === 'open' && (lrShows[s.id]?.rush || lrShows[s.id]?.digitalRush))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
+  // Box Office data
+  const grossesData = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'data/grosses.json'), 'utf8')
+  );
+  const grossesShows = grossesData.shows || {};
+
+  // Top Box Office This Week — sorted by weekly gross (highest first)
+  const topBoxOfficeList = allShows
+    .filter(s => s.status === 'open' && grossesShows[s.slug]?.thisWeek?.gross)
+    .sort((a, b) => (grossesShows[b.slug].thisWeek.gross || 0) - (grossesShows[a.slug].thisWeek.gross || 0))
+    .map(serializeShow);
+
+  // Most Sold Out — sorted by capacity % (highest first)
+  const mostSoldOutList = allShows
+    .filter(s => s.status === 'open' && grossesShows[s.slug]?.thisWeek?.capacity)
+    .sort((a, b) => (grossesShows[b.slug].thisWeek.capacity || 0) - (grossesShows[a.slug].thisWeek.capacity || 0))
+    .map(serializeShow);
+
+  // Best of the West End — open WE shows with scores, sorted by score
+  const bestWestEndList = weShows
+    .filter(s => s.status === 'open' && s.criticScore?.score)
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
   const featuredRows: FeaturedRowData[] = [
-    { title: 'Best Recent Plays', shows: bestNewPlaysShows, viewAllHref: '/browse/best-recent-plays' },
-    { title: 'Upcoming', shows: upcomingShows.map(serializeShow), viewAllHref: '/browse/upcoming-broadway-shows' },
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
+    { title: 'In Previews', shows: inPreviewsList, viewAllHref: '/browse/upcoming-broadway-shows' },
+    { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
+    { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
+    { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },
+    { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
+    { title: 'Upcoming', shows: upcomingShows.map(serializeShow), viewAllHref: '/browse/upcoming-broadway-shows' },
+    { title: 'Best of the West End', shows: bestWestEndList, viewAllHref: '/west-end' },
     { title: 'Tony Winning Shows', shows: tonyWinnersShows, viewAllHref: '/browse/tony-winners-on-broadway' },
     { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
     { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/browse/broadway-shows-for-kids' },
-    { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/browse/broadway-shows-closing-soon' },
     { title: 'Jukebox Musicals', shows: jukeboxMusicalsList, viewAllHref: '/browse/jukebox-musicals-on-broadway' },
+    { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/browse/broadway-shows-closing-soon' },
   ];
 
   const featuredPosterUrls = bestRecentShows
