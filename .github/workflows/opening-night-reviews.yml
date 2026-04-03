@@ -164,10 +164,14 @@ jobs:
             exit 0
           fi
           echo "Triggering gather-reviews for shows ≤3 days old: $GATHER_SHOWS"
+          # Use aggregators-only mode at midnight (5 AM UTC) — SERP hasn't indexed
+          # opening night reviews yet. The orchestrator's poller handles SERP with
+          # its own per-iteration deferral logic.
           gh workflow run gather-reviews.yml \
             -f shows="$GATHER_SHOWS" \
             -f parallel_jobs=1 \
-            -f max_tier=3
+            -f max_tier=3 \
+            -f aggregators_only=true
           echo "Gather reviews triggered for: $GATHER_SHOWS"
 
       - name: Trigger Reddit sentiment for recently opened shows

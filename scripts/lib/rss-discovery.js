@@ -54,6 +54,10 @@ const ENTERTAINMENT_FEEDS = [
   { url: 'https://www.nbcnewyork.com/entertainment/?rss=y', outletId: 'nbcny', name: 'NBC New York', needsFilter: true },
   { url: 'https://www.huffpost.com/section/entertainment/feed', outletId: 'huffpost', name: 'HuffPost Entertainment', needsFilter: true },
   { url: 'https://www.slantmagazine.com/feed/', outletId: 'slantmagazine', name: 'Slant Magazine', needsFilter: true },
+  // Added April 2026 — verified working, expand non-SERP coverage for opening nights
+  { url: 'https://nypost.com/entertainment/feed/', outletId: 'nypost', name: 'NY Post Entertainment', needsFilter: true },
+  { url: 'https://www.indiewire.com/feed/', outletId: 'indiewire', name: 'IndieWire', needsFilter: true },
+  { url: 'https://www.rollingstone.com/tv-movies/feed/', outletId: 'rollingstone', name: 'Rolling Stone', needsFilter: true },
 ];
 
 const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...ENTERTAINMENT_FEEDS];
