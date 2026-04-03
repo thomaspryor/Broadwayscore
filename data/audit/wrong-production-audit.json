@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T16:29:36.616Z",
+  "timestamp": "2026-04-03T17:26:09.240Z",
   "stats": {
-    "totalReviews": 28968,
-    "alreadyFlagged": 8042,
+    "totalReviews": 29001,
+    "alreadyFlagged": 8057,
     "dateGuardCatches": 13,
-    "directorMismatch": 884,
+    "directorMismatch": 882,
     "tvFilmSignals": 3348,
-    "londonSignals": 999,
+    "londonSignals": 998,
     "offBroadwaySignals": 975,
     "yearMismatch": 65,
-    "noPublishDate": 5672
+    "noPublishDate": 5690
   },
   "findings": [
     {
@@ -35998,7 +35998,7 @@
     {
       "showId": "our-town-1988",
       "file": "lighting-and-sound-america--david-barbour.json",
-      "score": null,
+      "score": 61,
       "publishDate": "1988-12-04",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=KVQEXP",
       "findings": [
@@ -43442,25 +43442,6 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": null,
-      "publishDate": "2023-12-14",
-      "url": "https://www.ft.com/content/a24490ce-d894-447a-9c55-6ef1d9d8b7ce",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--arifa-akbar.json",
       "score": 91,
       "publishDate": "2023-12-14",
@@ -43572,20 +43553,6 @@
       "score": 81,
       "publishDate": null,
       "url": "https://www.thestage.co.uk/reviews/the-land-of-the-living-review-national-theatre-london-stephen-daldry-juliet-stevenson",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout--tim-bano.json",
-      "score": null,
-      "publishDate": "2023-12-14",
-      "url": "https://www.timeout.com/london/theatre/the-land-of-the-living-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48484,7 +48451,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 42,
       "publishDate": "2024-12-06",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-devil-wears-prada-dominion-theatre-review/",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-devil-wears-prada-dominion-theatre-review/?msockid=2e09c7d8797965060ae6d67178066487",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -65961,7 +65928,7 @@
       "file": "whatsonstage--sarah-crompton.json",
       "score": 82,
       "publishDate": "2024-02-21",
-      "url": "https://www.whatsonstage.com/news/hadestown-west-end-review-the-road-to-hell-is-paved-with-exultation_1577857/",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -68232,7 +68199,7 @@
     {
       "showId": "jerusalem-2011",
       "file": "variety--unknown.json",
-      "score": null,
+      "score": 74,
       "publishDate": "April 21, 2011",
       "url": "http://www.variety.com/review/VE1117945063",
       "findings": [
@@ -69919,20 +69886,6 @@
       "score": 58,
       "publishDate": "August 14, 2025",
       "url": "https://www.vulture.com/article/theater-review-mamma-mia-broadway-revival-abba.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": null,
-      "publishDate": "1999-04-06",
-      "url": "https://www.ft.com/content/9da2a948-bb09-4c48-9cf3-969d00f35e62",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71744,10 +71697,24 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "guardian--arifa-akbar.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2024/oct/09/the-other-place-review-national-theatre-alexander-zeldin-antigone",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 57,
       "publishDate": "2025-01-15",
-      "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332",
+      "url": "https://inews.co.uk/culture/arts/the-other-place-national-theatre-review-3315187?srsltid=AfmBOooGzJseZXWQ2FXnnQfa6C6h06DFbevdDD6uX_K4jyekHkFYrIZa",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71789,7 +71756,7 @@
       "file": "telegraph--claire-allfree.json",
       "score": 90,
       "publishDate": "2025-01-14",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-other-place-national-theatre-review/?msockid=2e09c7d8797965060ae6d67178066487",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71828,10 +71795,24 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "whatsonstage--gareth-carr.json",
+      "score": null,
+      "publishDate": "2024-12-14",
+      "url": "https://www.whatsonstage.com/news/oliver-at-chichester-festival-theatre-review-revival-glorious-revival_1616946/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 87,
       "publishDate": "January 14th, 2025",
-      "url": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/",
+      "url": "https://www.whatsonstage.com/news/the-other-place-at-the-national-theatre-review-emma-darcy-and-tobias-menzies-in-an-astonishing-take-on-antigone_1637832/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -78723,20 +78704,6 @@
       "score": 69,
       "publishDate": "2021-08-21",
       "url": "https://www.britishtheatre.com/posts/review-the-phantom-of-the-opera-her-majestys-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": null,
-      "publishDate": "2021-08-10",
-      "url": "https://www.ft.com/content/9da2a948-bb09-4c48-9cf3-969d00f35e62",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
