@@ -1040,7 +1040,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             schedule={showSchedule}
             currentMonday={getScheduleCurrentMonday()}
             showStatus={show.status}
-            todayTixUrl={show.ticketLinks?.find(l => l.platform === 'TodayTix')?.url}
+            ticketLinks={sortedTicketLinks}
             showName={show.title}
             showId={show.id}
             showSlug={show.slug}
