@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import type { TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks } from '@/lib/data-types';
+import { featureFlags } from '@/config/feature-flags';
 
 interface TheaterScorecardCardProps {
   venueScores: TheaterVenueScores;
@@ -97,29 +98,22 @@ function ExternalLinkIcon() {
   );
 }
 
-function ScoreBar({ score, label, icon }: { score: number; label: string; icon: JSX.Element }) {
-  const pct = (score / 5) * 100;
+function ScoreDots({ score, label, icon }: { score: number; label: string; icon: JSX.Element }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2" role="meter" aria-valuenow={score} aria-valuemin={1} aria-valuemax={5} aria-label={`${label}: ${score} out of 5`}>
       <div className="flex items-center gap-1.5 w-24 sm:w-28 flex-shrink-0">
         <span className={getScoreTextColor(score)}>{icon}</span>
         <span className="text-xs text-gray-400">{label}</span>
       </div>
-      <div
-        className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden"
-        role="meter"
-        aria-valuenow={score}
-        aria-valuemin={1}
-        aria-valuemax={5}
-        aria-label={`${label}: ${score} out of 5`}
-      >
-        <div
-          className={`h-full rounded-full transition-all ${getScoreColor(score)}`}
-          style={{ width: `${pct}%` }}
-        />
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map(i => (
+          <div
+            key={i}
+            className={`w-5 h-5 sm:w-[22px] sm:h-[22px] rounded ${i <= score ? getScoreColor(score) : 'bg-white/[0.06]'}`}
+          />
+        ))}
       </div>
-      <span className={`text-xs font-semibold w-5 text-right ${getScoreTextColor(score)}`}>{score}</span>
-      <span className="text-[9px] text-gray-500 w-14 text-right hidden sm:inline">{getScoreLabel(score)}</span>
+      <span className={`text-xs font-medium text-gray-500 ml-1`}>{score}/5</span>
     </div>
   );
 }
@@ -131,6 +125,9 @@ export default function TheaterScorecardCard({
   theaterName,
   theaterSlug,
 }: TheaterScorecardCardProps) {
+  // Feature flag check must live here (client component) — not in the SSR parent
+  if (!featureFlags.theaterScorecard) return null;
+
   // Don't render if no scores
   if (!venueScores.sightlines && !venueScores.sound && !venueScores.comfort && !venueScores.ambiance && !venueScores.facilities) {
     return null;
@@ -167,12 +164,12 @@ export default function TheaterScorecardCard({
         <p className="text-sm text-gray-300 leading-relaxed mb-4">{venueScores.summary}</p>
       )}
 
-      {/* Score bars */}
-      <div className="space-y-2 mb-4">
+      {/* Score pips */}
+      <div className="space-y-2.5 mb-4">
         {DIMENSIONS.map(({ key, label, icon }) => {
           const score = venueScores[key];
           if (score == null) return null;
-          return <ScoreBar key={key} score={score} label={label} icon={icon} />;
+          return <ScoreDots key={key} score={score} label={label} icon={icon} />;
         })}
       </div>
 
