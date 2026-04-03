@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T21:26:52.369Z",
+  "timestamp": "2026-04-03T21:51:13.526Z",
   "stats": {
-    "totalReviews": 29283,
-    "alreadyFlagged": 8209,
+    "totalReviews": 29275,
+    "alreadyFlagged": 8220,
     "dateGuardCatches": 13,
-    "directorMismatch": 894,
-    "tvFilmSignals": 3386,
-    "londonSignals": 1033,
+    "directorMismatch": 902,
+    "tvFilmSignals": 3388,
+    "londonSignals": 1034,
     "offBroadwaySignals": 976,
     "yearMismatch": 65,
     "noPublishDate": 5662
@@ -3352,6 +3352,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
+      "score": 78,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -5435,6 +5436,20 @@
       "score": 82,
       "publishDate": null,
       "url": "https://cititour.com/NYC_Broadway/Art/1321",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "art-2025",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 59,
+      "publishDate": "2025-09-16",
+      "url": "https://frontmezzjunkies.com/2025/11/17/art-on-broadway/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -11668,6 +11683,20 @@
     },
     {
       "showId": "dead-outlaw-2025",
+      "file": "nyt-theater--unknown.json",
+      "score": 59,
+      "publishDate": "2025-04-27",
+      "url": "https://newyorktheater.me/2025/04/27/dead-outlaw-opens-on-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-2025",
       "file": "one-minute-critic--matthew-wexler.json",
       "score": 92,
       "publishDate": null,
@@ -13194,6 +13223,7 @@
     {
       "showId": "dracula-west-end-2025",
       "file": "observer--katherine-cowles.json",
+      "score": 64,
       "publishDate": "2026-02-20",
       "url": null,
       "findings": [
@@ -13980,6 +14010,7 @@
     {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "thestage--sam-marlowe.json",
+      "score": 72,
       "publishDate": "2026-02-25",
       "url": null,
       "findings": [
@@ -19614,9 +19645,23 @@
     {
       "showId": "gypsy-2024",
       "file": "broadwaynews--brittani-samuel.json",
-      "score": 70,
-      "publishDate": "December 20, 2024",
-      "url": "https://www.broadwaynews.com/the-broadway-review-a-gypsy-completely-beholden-to-its-beaming-star/?utm_source=sniply&amp;utm_campaign=sniply&amp;utm_medium=sniply",
+      "score": 78,
+      "publishDate": "2024-12-19",
+      "url": "https://www.broadwaynews.com/the-broadway-review-a-gypsy-completely-beholden-to-its-beaming-star/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 87,
+      "publishDate": "2024-12-19",
+      "url": "https://www.chicagotribune.com/2024/12/19/review-gypsy-on-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19692,6 +19737,20 @@
       "score": 87,
       "publishDate": "2025-01-10T13:32:22",
       "url": "https://thefrontrowcenter.com/2025/01/gypsy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 75,
+      "publishDate": "2024-12-19",
+      "url": "https://frontmezzjunkies.com/2025/01/12/broadway-gypsy/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19783,9 +19842,9 @@
     {
       "showId": "gypsy-2024",
       "file": "nypost--johnny-oleksinski.json",
-      "score": 35,
-      "publishDate": "December 20, 2024",
-      "url": "https://nypost.com/2024/12/20/entertainment/gypsy-review-audra-mcdonalds-broadway-revival-is-a-bad-letdown/",
+      "score": 43,
+      "publishDate": "2024-12-19",
+      "url": "https://nypost.com/2024/12/20/entertainment/gypsy-review-audra-mcdonalds-broadway-revival-is-a-bad-letdown/?utm_campaign=nypost&utm_medium=social&utm_source=twitter",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19861,6 +19920,20 @@
       "score": 82,
       "publishDate": "2025-01-01",
       "url": "https://pagesonstages.com/2025/01/01/gypsy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
+      "file": "stageandcinema--paola-bellu.json",
+      "score": 89,
+      "publishDate": "2024-12-19",
+      "url": "https://stageandcinema.com/2024/12/20/broadway-gypsy-audra-mcdonald/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24242,6 +24315,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "british-theatre--howard-loxton.json",
+      "score": 84,
       "publishDate": "2025-12-14",
       "url": null,
       "findings": [
@@ -24269,6 +24343,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "daily-mail--mark-cook.json",
+      "score": 76,
       "publishDate": "2025-12-21",
       "url": null,
       "findings": [
@@ -24282,6 +24357,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "financialtimes--tim-bano.json",
+      "score": 86,
       "publishDate": "2025-12-12",
       "url": null,
       "findings": [
@@ -24399,6 +24475,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "observer--susannah-clapp.json",
+      "score": 93,
       "publishDate": "2025-12-19",
       "url": null,
       "findings": [
@@ -25186,6 +25263,20 @@
     },
     {
       "showId": "job-2024",
+      "file": "stageandcinema--paola-bellu.json",
+      "score": 85,
+      "publishDate": "2024-07-30",
+      "url": "https://stageandcinema.com/2024/07/30/review-job-hayes-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "job-2024",
       "file": "wsj--terry-teachout.json",
       "score": 45,
       "publishDate": null,
@@ -25646,6 +25737,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "everything-theatre--molly-g.json",
+      "score": 86,
       "publishDate": "2026-03-31",
       "url": null,
       "findings": [
@@ -25711,6 +25803,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "observer--katherine-cowles.json",
+      "score": 87,
       "publishDate": "2026-04-02",
       "url": null,
       "findings": [
@@ -28078,6 +28171,30 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/les-miserables-sondheim-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -36083,6 +36200,7 @@
     {
       "showId": "operation-mincemeat-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
+      "score": 86,
       "publishDate": "2023-05-10",
       "url": null,
       "findings": [
@@ -36527,6 +36645,7 @@
     {
       "showId": "paddington-the-musical-west-end-2025",
       "file": "everything-theatre--mary-pollard.json",
+      "score": 78,
       "publishDate": "2025-12-03",
       "url": null,
       "findings": [
@@ -36840,6 +36959,7 @@
     {
       "showId": "paranormal-activity-west-end-2025",
       "file": "london-theatre--matt-wolf.json",
+      "score": 66,
       "publishDate": "2025-12-16",
       "url": null,
       "findings": [
@@ -40851,6 +40971,7 @@
     {
       "showId": "shadowlands-west-end-2026",
       "file": "londontheatre1--john-groves.json",
+      "score": 86,
       "publishDate": "2026-02-15",
       "url": null,
       "findings": [
@@ -40864,6 +40985,7 @@
     {
       "showId": "shadowlands-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 78,
       "publishDate": "2026-02-13",
       "url": null,
       "findings": [
@@ -43881,6 +44003,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "daily-mail--robert-gore-langton.json",
+      "score": 90,
       "publishDate": "2023-12-24",
       "url": null,
       "findings": [
@@ -43908,6 +44031,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "express-uk--neil-norman.json",
+      "score": 85,
       "publishDate": "2023-12-15",
       "url": null,
       "findings": [
@@ -44000,6 +44124,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "thereviewshub--john-cutler.json",
+      "score": 75,
       "publishDate": "2023-12-16",
       "url": null,
       "findings": [
@@ -47013,6 +47138,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
+      "score": 75,
       "publishDate": "2026-04-03",
       "url": null,
       "findings": [
@@ -47194,6 +47320,25 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "file": "artsdesk--unknown.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "http://www.theartsdesk.com/theatre/book-mormon-prince-wales-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "file": "financialtimes--ian-shuttleworth.json",
       "score": 74,
       "publishDate": "2013-03-24",
@@ -47336,6 +47481,20 @@
       "score": 86,
       "publishDate": "2013-03-22",
       "url": "https://metro.co.uk/2013/03/22/the-book-of-mormon-is-helplessly-funny-and-terrifically-entertaining-3554008/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 76,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/the-book-of-mormon-2/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -50519,6 +50678,7 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "artsdesk--demetrios-matheou.json",
+      "score": 67,
       "publishDate": "2025-11-13",
       "url": null,
       "findings": [
@@ -50532,6 +50692,7 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 48,
       "publishDate": "2025-11-12",
       "url": null,
       "findings": [
@@ -50545,6 +50706,7 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
+      "score": 43,
       "publishDate": "2025-11-16",
       "url": null,
       "findings": [
@@ -50600,6 +50762,7 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "observer--katherine-cowles.json",
+      "score": 57,
       "publishDate": "2025-11-14",
       "url": null,
       "findings": [
@@ -50641,6 +50804,7 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "thereviewshub--scott-matthewman.json",
+      "score": 64,
       "publishDate": "2025-11-13",
       "url": null,
       "findings": [
@@ -50682,6 +50846,7 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "whatsonstage--alex-wood.json",
+      "score": 72,
       "publishDate": "2025-11-12",
       "url": null,
       "findings": [
@@ -53924,6 +54089,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "londontheatre1--chris-omaweng.json",
+      "score": 85,
       "publishDate": "2025-09-16",
       "url": null,
       "findings": [
@@ -56300,6 +56466,7 @@
     {
       "showId": "titanique-west-end-2024",
       "file": "londontheatre1--chris-omaweng.json",
+      "score": 81,
       "publishDate": "2025-01-09",
       "url": null,
       "findings": [
@@ -59572,19 +59739,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
-      "file": "times-uk--patrick-kidd.json",
-      "publishDate": "2025-11-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -64354,6 +64508,7 @@
     {
       "showId": "dracula-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 16,
       "publishDate": "2026-02-17",
       "url": null,
       "findings": [
@@ -66587,6 +66742,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 86,
       "publishDate": "2024-02-26",
       "url": null,
       "findings": [
@@ -70194,6 +70350,7 @@
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 84,
       "publishDate": "2026-04-02",
       "url": null,
       "findings": [
@@ -70291,6 +70448,7 @@
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "thereviewshub--maryam-philpott.json",
+      "score": 86,
       "publishDate": "2026-04-02",
       "url": null,
       "findings": [
@@ -71731,6 +71889,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 60,
       "publishDate": "2022-01-21",
       "url": null,
       "findings": [
@@ -71758,6 +71917,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 72,
       "publishDate": "2022-01-20",
       "url": null,
       "findings": [
@@ -72354,6 +72514,7 @@
     {
       "showId": "oh-mary-west-end-2025",
       "file": "observer--katherine-cowles.json",
+      "score": 76,
       "publishDate": "2026-01-08",
       "url": null,
       "findings": [
@@ -72549,6 +72710,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 88,
       "publishDate": "2025-01-15",
       "url": null,
       "findings": [
@@ -74271,6 +74433,7 @@
     {
       "showId": "shadowlands-west-end-2026",
       "file": "everything-theatre--lucy-boardman.json",
+      "score": 87,
       "publishDate": "2026-02-16",
       "url": null,
       "findings": [
@@ -74898,6 +75061,7 @@
     {
       "showId": "starlight-express-west-end-2024",
       "file": "telegraph--the-telegraph.json",
+      "score": 86,
       "publishDate": "2024-06-30",
       "url": null,
       "findings": [
@@ -75848,6 +76012,7 @@
     {
       "showId": "summerfolk-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 63,
       "publishDate": "2026-03-20",
       "url": null,
       "findings": [
@@ -76840,6 +77005,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
+      "score": 76,
       "publishDate": "2026-04-03",
       "url": null,
       "findings": [
@@ -76867,6 +77033,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "whatsonstage--aliya-al-hassan.json",
+      "score": 71,
       "publishDate": "2026-04-03",
       "url": null,
       "findings": [
@@ -77996,6 +78163,7 @@
     {
       "showId": "the-devil-wears-prada-west-end-2024",
       "file": "thereviewshub--sonny-waheed.json",
+      "score": 75,
       "publishDate": "2024-12-06",
       "url": null,
       "findings": [
@@ -78686,6 +78854,7 @@
     {
       "showId": "the-holy-rosenbergs-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 66,
       "publishDate": "2026-03-13",
       "url": null,
       "findings": [
@@ -80143,6 +80312,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "thereviewshub--sonny-waheed.json",
+      "score": 75,
       "publishDate": "2025-09-17",
       "url": null,
       "findings": [
@@ -80701,6 +80871,7 @@
     {
       "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 78,
       "publishDate": "2026-02-12",
       "url": null,
       "findings": [
@@ -81181,6 +81352,7 @@
     {
       "showId": "titanique-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 73,
       "publishDate": "2025-01-10",
       "url": null,
       "findings": [

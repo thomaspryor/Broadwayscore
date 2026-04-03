@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T21:26:56.400Z",
+  "generatedAt": "2026-04-03T21:51:17.611Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -699,22 +699,20 @@
       "status": "open",
       "slug": "the-authenticator-west-end",
       "thumbnail": "/images/shows/the-authenticator-west-end-2026/thumbnail.webp",
-      "siteScore": 62,
-      "liveScore": 62,
+      "siteScore": 67,
+      "liveScore": 67,
       "scoreDrift": 0,
-      "total": 8,
-      "t1": 2,
+      "total": 11,
+      "t1": 3,
       "t2": 3,
-      "t3": 3,
-      "positive": 3,
+      "t3": 5,
+      "positive": 6,
       "mixed": 4,
       "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 8,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -724,7 +722,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -851,6 +849,18 @@
           "t2": 3,
           "t3": 3,
           "p": 3,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T21:51:17.611Z",
+          "rc": 11,
+          "s": 67,
+          "t1": 3,
+          "t2": 3,
+          "t3": 5,
+          "p": 6,
           "m": 4,
           "n": 1,
           "bc": "waiting"
@@ -1167,17 +1177,17 @@
       "siteScore": 75,
       "liveScore": 75,
       "scoreDrift": 0,
-      "total": 13,
-      "t1": 3,
-      "t2": 2,
+      "total": 17,
+      "t1": 4,
+      "t2": 5,
       "t3": 8,
-      "positive": 9,
-      "mixed": 4,
+      "positive": 12,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1303,6 +1313,18 @@
           "t3": 8,
           "p": 9,
           "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T21:51:17.611Z",
+          "rc": 17,
+          "s": 75,
+          "t1": 4,
+          "t2": 5,
+          "t3": 8,
+          "p": 12,
+          "m": 5,
           "n": 0,
           "bc": "waiting"
         }
@@ -1619,20 +1641,20 @@
       "status": "open",
       "slug": "romeo-and-juliet-west-end",
       "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
-      "siteScore": 71,
-      "liveScore": 71,
+      "siteScore": 72,
+      "liveScore": 72,
       "scoreDrift": 0,
-      "total": 19,
+      "total": 20,
       "t1": 6,
-      "t2": 7,
+      "t2": 8,
       "t3": 6,
-      "positive": 12,
+      "positive": 13,
       "mixed": 5,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1684,6 +1706,18 @@
           "t2": 7,
           "t3": 6,
           "p": 12,
+          "m": 5,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T21:51:17.611Z",
+          "rc": 20,
+          "s": 72,
+          "t1": 6,
+          "t2": 8,
+          "t3": 6,
+          "p": 13,
           "m": 5,
           "n": 2,
           "bc": "waiting"
