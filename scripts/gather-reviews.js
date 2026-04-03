@@ -2380,6 +2380,25 @@ function createReviewFile(showId, reviewData, options = {}) {
 
         // Check if same review (by key or URL)
         if (existingKey === reviewKey) {
+          // If existing file is wrongShow/wrongProduction and incoming has a different URL,
+          // replace the existing file instead of merging — the old content is junk.
+          // Preserve aggregator-sourced scores (bwwScore, showScoreRating, dtliThumb) that
+          // came from a legitimate source even though the text content is wrong.
+          if ((existingReview.wrongShow || existingReview.wrongProduction) && reviewData.url
+              && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))) {
+            const preserved = {};
+            for (const key of ['bwwScore', 'bwwExcerpt', 'showScoreRating', 'showScoreExcerpt', 'dtliThumb', 'dtliExcerpt']) {
+              if (existingReview[key] !== undefined) preserved[key] = existingReview[key];
+            }
+            const replacement = { ...reviewData, ...preserved, source: reviewData.source || 'gather-reviews' };
+            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(replacement, null, 2) + '\n');
+            if (existingFile !== filename) {
+              fs.renameSync(path.join(showDir, existingFile), filepath);
+            }
+            console.log(`    ♻ Replaced wrongShow/wrongProd file ${existingFile} with fresh URL`);
+            return true;
+          }
+
           // Same outlet+critic - merge data instead of skipping
           const merged = mergeReviews(existingReview, {
             ...reviewData,
@@ -2397,7 +2416,9 @@ function createReviewFile(showId, reviewData, options = {}) {
         }
 
         // Check URL match — merge instead of skipping to capture new metadata
-        if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)) {
+        // But skip URL match if the existing file is wrongShow — same bad URL shouldn't merge
+        if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)
+            && !existingReview.wrongShow) {
           const merged = mergeReviews(existingReview, {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
