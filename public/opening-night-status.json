@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T04:44:22.361Z",
+  "generatedAt": "2026-04-03T09:44:51.077Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -349,6 +349,10 @@
           "isDualMarket": false
         },
         {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
         },
@@ -696,24 +700,24 @@
       "slug": "the-authenticator-west-end",
       "thumbnail": "/images/shows/the-authenticator-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 60,
       "scoreDrift": null,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "T2:1/2",
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -761,16 +765,26 @@
           "isDualMarket": true
         },
         {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
           "name": "The Independent",
           "isDualMarket": true
         },
         {
           "name": "The Stage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-03T09:44:51.077Z",
+          "rc": 1,
+          "s": 60,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1081,20 +1095,20 @@
       "status": "open",
       "slug": "les-liaisons-dangereuses-west-end",
       "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
-      "siteScore": 70,
-      "liveScore": 70,
+      "siteScore": 72,
+      "liveScore": 72,
       "scoreDrift": 0,
-      "total": 12,
+      "total": 14,
       "t1": 4,
       "t2": 3,
-      "t3": 5,
-      "positive": 7,
+      "t3": 7,
+      "positive": 9,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 12,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1154,6 +1168,30 @@
           "m": 5,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T05:52:27.669Z",
+          "rc": 13,
+          "s": 71,
+          "t1": 4,
+          "t2": 3,
+          "t3": 6,
+          "p": 8,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T08:47:22.070Z",
+          "rc": 14,
+          "s": 72,
+          "t1": 4,
+          "t2": 3,
+          "t3": 7,
+          "p": 9,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1205,6 +1243,10 @@
         {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -1464,20 +1506,20 @@
       "status": "open",
       "slug": "romeo-and-juliet-west-end",
       "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
-      "siteScore": 71,
-      "liveScore": 71,
+      "siteScore": 72,
+      "liveScore": 72,
       "scoreDrift": 0,
-      "total": 14,
-      "t1": 5,
+      "total": 17,
+      "t1": 7,
       "t2": 7,
-      "t3": 2,
-      "positive": 9,
-      "mixed": 3,
+      "t3": 3,
+      "positive": 11,
+      "mixed": 4,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1518,6 +1560,42 @@
           "t3": 2,
           "p": 9,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T08:47:22.070Z",
+          "rc": 17,
+          "s": 72,
+          "t1": 7,
+          "t2": 7,
+          "t3": 3,
+          "p": 11,
+          "m": 4,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T09:32:29.621Z",
+          "rc": 16,
+          "s": 71,
+          "t1": 6,
+          "t2": 7,
+          "t3": 3,
+          "p": 10,
+          "m": 4,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T09:44:51.077Z",
+          "rc": 17,
+          "s": 72,
+          "t1": 7,
+          "t2": 7,
+          "t3": 3,
+          "p": 11,
+          "m": 4,
           "n": 2,
           "bc": "waiting"
         }

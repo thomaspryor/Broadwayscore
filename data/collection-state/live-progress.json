@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-04-03T05:52:48.155Z",
-  "processed": 80,
-  "failed": 220,
-  "successRate": "26.7%",
+  "updatedAt": "2026-04-03T09:57:15.532Z",
+  "processed": 12,
+  "failed": 15,
+  "successRate": "44.4%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 1,
-    "scrapingbee": 6,
+    "browserbase": 4,
+    "directCookies": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 18
+    "archiveToday": 0,
+    "archive": 2
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-04-03T09:12:37.565Z",
+      "event": "bb-session",
+      "session": "86dc9574",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-04-03T09:12:38.652Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T09:13:04.348Z",
+      "event": "bb-session",
+      "session": "befe8bed",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-04-03T09:13:05.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T09:13:35.809Z",
+      "event": "bb-session",
+      "session": "ed3149a4",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-04-03T09:13:36.896Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

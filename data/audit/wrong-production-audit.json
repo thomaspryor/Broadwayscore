@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T04:44:18.987Z",
+  "timestamp": "2026-04-03T09:44:47.646Z",
   "stats": {
-    "totalReviews": 27637,
-    "alreadyFlagged": 7405,
+    "totalReviews": 27651,
+    "alreadyFlagged": 7455,
     "dateGuardCatches": 15,
-    "directorMismatch": 845,
+    "directorMismatch": 858,
     "tvFilmSignals": 3335,
-    "londonSignals": 985,
+    "londonSignals": 991,
     "offBroadwaySignals": 970,
     "yearMismatch": 65,
-    "noPublishDate": 5812
+    "noPublishDate": 5799
   },
   "findings": [
     {
@@ -27060,9 +27060,42 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 80,
+      "publishDate": "2026-04-01",
+      "url": "http://www.broadwayworld.com/article/BWW-Review-Janet-McTeer-and-Liev-Schreiber-Star-In-Visually-Gorgeous-and-Emotionally-Stark-LES-LIAISONS-DANGEREUSES-20161031",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "standard--henry-hitchings.json",
       "score": 78,
       "publishDate": "For a previous production",
+      "url": "http://www.standard.co.uk/goingout/theatre/les-liaisons-dangereuses-theatre-review-dark-tale-is-theatre-at-its-most-seductive-and-sinister-a3140401.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 78,
+      "publishDate": "2026-04-02",
       "url": "https://www.standard.co.uk/culture/theatre/les-liaisons-dangereuses-at-the-national-theatre-review-b1277452.html",
       "findings": [
         {
@@ -27505,6 +27538,30 @@
     },
     {
       "showId": "les-miserables-west-end-2021",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/les-miserables-sondheim-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
       "file": "standard--nick-curtis.json",
       "score": 81,
       "publishDate": "2020-01-17",
@@ -27553,6 +27610,25 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2014 (2x) more than 2020 (0x). 2014 matches production: les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "the-express--neil-norman.json",
+      "score": 85,
+      "publishDate": "2020-01-16",
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -27615,6 +27691,35 @@
       ]
     },
     {
+      "showId": "les-miserables-west-end-2021",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 79,
+      "publishDate": "2020-01-16",
+      "url": "https://www.timeout.com/london/theatre/les-miserables-review-1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        }
+      ]
+    },
+    {
       "showId": "lestat-2006",
       "file": "variety--charles-isherwood.json",
       "score": 25,
@@ -27639,20 +27744,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "liberation-2025",
-      "file": "latimes--charles-mcnulty.json",
-      "score": 82,
-      "publishDate": "2025-11-05",
-      "url": "https://www.latimes.com/opinion/story/2025-11-19/wicked-liberation-ms-hollywood-broadway-feminism",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -29110,20 +29201,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "i-paper--fiona-mountford.json",
-      "score": null,
-      "publishDate": "1999-04-06",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -46241,6 +46318,25 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "file": "artsdesk--unknown.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "http://www.theartsdesk.com/theatre/book-mormon-prince-wales-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "file": "financialtimes--ian-shuttleworth.json",
       "score": 74,
       "publishDate": "2013-03-24",
@@ -46393,6 +46489,34 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 76,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/the-book-of-mormon-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "standard--allis-brennan.json",
+      "score": 95,
+      "publishDate": "2013-03-21",
+      "url": "https://www.standard.co.uk/go/london/theatre/the-book-of-mormon-musical-theatre-tickets-in-london-a3706421.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "file": "telegraph--charles-spencer.json",
       "score": 82,
       "publishDate": "2013-03-22",
@@ -46436,6 +46560,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 80,
+      "publishDate": "2013-03-21",
+      "url": "https://www.timeout.com/london/theatre/the-book-of-mormon-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -68812,6 +68955,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "londontheatre1--john-groves.json",
+      "score": 92,
+      "publishDate": "2026-04-02",
+      "url": "https://www.londontheatre1.com/reviews/les-liaisons-dangereuses-national-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "radio-times--joanna-magill.json",
       "score": 85,
       "publishDate": "2026-04-01",
@@ -72336,6 +72493,20 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
+      "file": "daily-mail--jessica-janes.json",
+      "score": 79,
+      "publishDate": "2026-03-31",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15697515/Robert-Ickes-Romeo-Juliet-adaptation-receives-glowing-reviews.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 61,
       "publishDate": "2026-03-12",
@@ -72359,20 +72530,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": null,
-      "publishDate": "2026-03-31",
-      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -74963,6 +75120,20 @@
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 84,
+      "publishDate": "2026-03-25",
+      "url": "https://www.londonboxoffice.co.uk/news/post/teeth-n-smiles-review-duke-of-york",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
       "file": "musical-theatre-review--scott-matthewman.json",
       "score": 63,
       "publishDate": "2026-03-25",
@@ -75182,6 +75353,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "whatsonstage--aliya-al.json",
+      "score": 68,
+      "publishDate": "2026-04-02",
+      "url": "https://www.whatsonstage.com/news/the-authenticator-at-the-national-theatre-review_1717310/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -75406,20 +75591,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "the-book-of-mormon-west-end-2024",
-      "file": "times-uk--clive-davis.json",
-      "score": null,
-      "publishDate": "2013-03-21",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/marie-and-rosetta-review-a-tribute-to-the-godmother-of-rocknroll-jkml0xmrh",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -77946,6 +78117,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "british-theatre--douglas-mayo.json",
+      "score": 69,
+      "publishDate": "2021-08-21",
+      "url": "https://www.britishtheatre.com/posts/review-the-phantom-of-the-opera-her-majestys-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
