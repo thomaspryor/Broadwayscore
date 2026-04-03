@@ -1,46 +1,46 @@
 {
   "meta": {
-    "generatedAt": "2026-04-03T12:44:09.808Z",
+    "generatedAt": "2026-04-03T13:10:39.923Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 28919,
-      "inReviewsJson": 15490,
+      "totalFiles": 28920,
+      "inReviewsJson": 15485,
       "skippedExcluded": 0,
-      "withFullText": 33,
-      "excerptOnly": 1768,
-      "llmClassified": 32,
+      "withFullText": 36,
+      "excerptOnly": 1751,
+      "llmClassified": 35,
       "heuristicFlagged": 0,
       "nonReviewsFound": 2,
       "uncertainCases": 16,
-      "budgetUsed": 0.0032999999999999982,
-      "llmCalls": 33,
+      "budgetUsed": 0.0035999999999999977,
+      "llmCalls": 36,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13689
+      "skippedAlreadyClassified": 13698
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "illinoise-2024/deadline--greg-evans.json",
-      "showId": "illinoise-2024",
-      "outlet": "Deadline",
-      "outletId": "deadline",
+      "file": "bernhardthamlet-2018/journal-inquirer--tim-leininger.json",
+      "showId": "bernhardthamlet-2018",
+      "outlet": "Journal Inquirer",
+      "outletId": "journal-inquirer",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This is a list of Broadway openings in April, with brief descriptions and links to full reviews. It is not itself a review of Illinoise.",
-      "currentScore": 86
+      "reasoning": "This is a news article aggregating local Connecticut news headlines; it does not contain any review or evaluation of 'Bernhardt/Hamlet'.",
+      "currentScore": 82
     },
     {
-      "file": "mj-the-musical-west-end-2024/standard--nick-curtis.json",
-      "showId": "mj-the-musical-west-end-2024",
-      "outlet": "Evening Standard",
-      "outletId": "standard",
+      "file": "take-me-out-2022/nypost--johnny-oleksinski.json",
+      "showId": "take-me-out-2022",
+      "outlet": "New York Post",
+      "outletId": "nypost",
       "contentType": "feature",
       "confidence": "high",
-      "reasoning": "This article describes an art exhibition and does not contain any review or evaluation of the Broadway show \"MJ The Musical\".",
-      "currentScore": 80
+      "reasoning": "This article is about a home fitness device, not a review of the play \"Take Me Out.\"",
+      "currentScore": 83
     }
   ],
   "uncertainCases": [
@@ -51,7 +51,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -61,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -81,7 +81,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It reads like a preview or introductory piece.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London and awards, but it does not offer a critical evaluation of the production itself. It sets the stage for the show without providing a review.",
       "currentScore": 81
     },
     {
@@ -91,7 +91,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than evaluating a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -101,7 +101,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -111,7 +111,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -131,7 +131,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and contains elements like 'Continue reading your article with a WSJ subscription' and 'America Needs Its Small Banks,' suggesting it's a news feed or aggregator rather than a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no review content present.",
       "currentScore": 78
     },
     {
@@ -141,7 +141,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production. It seems to be setting the stage for a review or providing background information.",
       "currentScore": 80
     },
     {
@@ -161,7 +161,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -171,7 +171,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of search terms or categories related to theater, rather than an actual review or article. It lacks any evaluative content about 'The Assembled Parties' or any other show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -181,7 +181,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -191,7 +191,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. I am classifying it as news due to the mention of Broadway news updates.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -201,36 +201,39 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events. However, it does not offer a critical evaluation or opinion on the quality of the production itself, so it is a preview.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the play's themes and background, making it a preview rather than a review.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
-    "aint-no-mo-2022/broadwaynews--brittani-samuel.json",
-    "cats-the-jellicle-ball-off-broadway-2024/theatermania--zachary-stewart.json",
-    "death-of-a-salesman-2022/broadwaynews--brittani-samuel.json",
-    "elf-2024/deadline--greg-evans.json",
-    "mcneal-2024/vulture--jackson-mchenry.json",
-    "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
-    "parade-2023/nypost--johnny-oleksinski.json",
-    "patriots-2024/deadline--greg-evans.json",
-    "some-like-it-hot-2022/nypost--johnny-oleksinski.json",
-    "summer-1976-2023/variety--frank-rizzo.json",
-    "sunset-boulevard-2024/hollywood-reporter--david-rooney.json",
-    "topdog-underdog-2022/broadwaynews--brittani-samuel.json",
-    "uncle-vanya-2024/deadline--greg-evans.json"
+    "a-strange-loop-2022/ap--mark-kennedy.json",
+    "american-son-2018/newyorker--vinson-cunningham.json",
+    "american-son-2018/variety--marilyn-stasio.json",
+    "beetlejuice-2019/deadline--greg-evans.json",
+    "beetlejuice-2019/nytimes--ben-brantley.json",
+    "beetlejuice-2019/variety--frank-rizzo.json",
+    "company-2021/timeout--adam-feldman.json",
+    "death-of-a-salesman-2022/ew--lester-fabian-brathwaite.json",
+    "death-of-a-salesman-2022/washpost--peter-marks.json",
+    "ink-2019/vulture--sara-holdren.json",
+    "mrs-doubtfire-2021/nypost--johnny-oleksinski.json",
+    "pass-over-2021/nypost--johnny-oleksinski.json",
+    "the-ferryman-2018/newyorker--vinson-cunningham.json",
+    "the-prom-2018/newyorker--alexandra-schwartz.json",
+    "to-kill-a-mockingbird-2018/newyorker--vinson-cunningham.json",
+    "trouble-in-mind-2021/wsj--terry-teachout.json",
+    "west-side-story-2020/nypost--johnny-oleksinski.json"
   ],
   "perShowSummary": [
     {
-      "showId": "illinoise-2024",
-      "currentCount": 21,
+      "showId": "bernhardthamlet-2018",
+      "currentCount": 43,
       "removed": 1
     },
     {
-      "showId": "mj-the-musical-west-end-2024",
-      "currentCount": 13,
+      "showId": "take-me-out-2022",
+      "currentCount": 5,
       "removed": 1
     }
   ]
