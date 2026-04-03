@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-03T21:51:16.092Z",
+    "lastUpdated": "2026-04-03T21:58:38.730Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 29705,
-    "skippedFiles": 8315,
-    "totalCritics": 1470,
-    "registryCritics": 500,
-    "flaggedReviews": 38
+    "totalFilesScanned": 29662,
+    "skippedFiles": 8307,
+    "totalCritics": 1471,
+    "registryCritics": 501,
+    "flaggedReviews": 35
   },
   "flaggedReviews": [
     {
@@ -30,7 +30,7 @@
       "outletShare": 2,
       "primaryOutlet": "latimes",
       "primaryShare": 98,
-      "totalReviews": 133
+      "totalReviews": 132
     },
     {
       "critic": "Charles McNulty",
@@ -41,7 +41,7 @@
       "outletShare": 2,
       "primaryOutlet": "latimes",
       "primaryShare": 98,
-      "totalReviews": 133
+      "totalReviews": 132
     },
     {
       "critic": "Robert Feldberg",
@@ -273,39 +273,6 @@
       "primaryOutlet": "ap",
       "primaryShare": 96,
       "totalReviews": 28
-    },
-    {
-      "critic": "Kathleen Campion",
-      "criticSlug": "kathleen-campion",
-      "outlet": "nytg",
-      "showId": "a-view-from-the-bridge-2015",
-      "file": "nytg--kathleen-campion.json",
-      "outletShare": 9,
-      "primaryOutlet": "front-row-center",
-      "primaryShare": 91,
-      "totalReviews": 34
-    },
-    {
-      "critic": "Kathleen Campion",
-      "criticSlug": "kathleen-campion",
-      "outlet": "nytg",
-      "showId": "an-american-in-paris-2015",
-      "file": "nytg--kathleen-campion.json",
-      "outletShare": 9,
-      "primaryOutlet": "front-row-center",
-      "primaryShare": 91,
-      "totalReviews": 34
-    },
-    {
-      "critic": "Kathleen Campion",
-      "criticSlug": "kathleen-campion",
-      "outlet": "nytg",
-      "showId": "heisenberg-2016",
-      "file": "nytg--kathleen-campion.json",
-      "outletShare": 9,
-      "primaryOutlet": "front-row-center",
-      "primaryShare": 91,
-      "totalReviews": 34
     },
     {
       "critic": "Jonathan Warman",
@@ -566,46 +533,45 @@
         "ny1",
         "london-box-office",
         "backstage",
-        "ew",
         "hollywood-reporter",
         "chicagotribune",
+        "ew",
         "washpost",
         "newsday",
         "broadwayworld",
         "guardian",
         "vulture",
         "west-end-wilma",
-        "stageandcinema",
-        "nypost",
         "billboard",
         "theatre-weekly",
-        "broadwaynews",
         "amny",
         "stagebuddy",
-        "usatoday",
+        "stageandcinema",
         "cititour",
+        "nypost",
         "telegraph",
         "musical-theatre-review",
-        "nysr",
         "all-that-dazzles-uk",
+        "usatoday",
         "rollingstone",
         "artsdesk",
         "londonist",
-        "artsfuse",
         "latimes",
         "deadline",
-        "huffpost",
         "times-uk",
         "bloomberg",
+        "broadwaynews",
         "indiewire",
         "british-theatre",
         "whatsonstage",
         "buy-tickets",
         "london-theatre",
+        "nysr",
         "theatrely",
         "new-york-sun",
         "exeunt-magazine",
         "one-minute-critic",
+        "huffpost",
         "nbcny",
         "theatreandtonic",
         "theater-pizzazz",
@@ -621,7 +587,6 @@
         "ct-now",
         "nycitycenterorg",
         "curtainup",
-        "forward",
         "minneapolis-star-tribune",
         "ricky-martin",
         "financialtimes",
@@ -641,6 +606,7 @@
         "fathomentertainmentcom",
         "the-morning-star",
         "the-sun",
+        "artsfuse",
         "center-on-the-aisle",
         "culturesauce",
         "schoolofrockthemusicalcomtickets",
@@ -661,7 +627,7 @@
         "bamorg",
         "kenny-leon"
       ],
-      "totalReviews": 625
+      "totalReviews": 606
     },
     {
       "critic": "Brittani Samuel",
@@ -1394,16 +1360,6 @@
       "totalReviews": 28
     },
     {
-      "critic": "Fiona Mountford",
-      "slug": "fiona-mountford",
-      "outlets": [
-        "i-paper",
-        "standard",
-        "telegraph"
-      ],
-      "totalReviews": 29
-    },
-    {
       "critic": "Sam Marlowe",
       "slug": "sam-marlowe",
       "outlets": [
@@ -1874,6 +1830,16 @@
         "theatermania"
       ],
       "totalReviews": 3
+    },
+    {
+      "critic": "Fiona Mountford",
+      "slug": "fiona-mountford",
+      "outlets": [
+        "standard",
+        "i-paper",
+        "telegraph"
+      ],
+      "totalReviews": 11
     },
     {
       "critic": "Bill Canacci",

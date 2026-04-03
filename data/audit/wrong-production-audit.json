@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T21:51:13.526Z",
+  "timestamp": "2026-04-03T21:58:36.526Z",
   "stats": {
-    "totalReviews": 29275,
-    "alreadyFlagged": 8220,
+    "totalReviews": 29232,
+    "alreadyFlagged": 8212,
     "dateGuardCatches": 13,
-    "directorMismatch": 902,
-    "tvFilmSignals": 3388,
-    "londonSignals": 1034,
-    "offBroadwaySignals": 976,
-    "yearMismatch": 65,
-    "noPublishDate": 5662
+    "directorMismatch": 901,
+    "tvFilmSignals": 3387,
+    "londonSignals": 1030,
+    "offBroadwaySignals": 977,
+    "yearMismatch": 66,
+    "noPublishDate": 5657
   },
   "findings": [
     {
@@ -10556,6 +10556,20 @@
       ]
     },
     {
+      "showId": "clydes-2021",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 81,
+      "publishDate": "2021-11-23",
+      "url": "https://frontmezzjunkies.com/2021/12/25/second-stage-clydes/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "cold-war-choir-practice-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 60,
@@ -10818,6 +10832,30 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2006 (2x) more than 2021 (0x). 2006 matches production: company-2006"
+        }
+      ]
+    },
+    {
+      "showId": "company-2021",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 87,
+      "publishDate": "2021-12-09",
+      "url": "https://frontmezzjunkies.com/2021/12/28/broadways-gender-swapping-company/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john doyle\" from company-2006"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2006 (4x) more than 2021 (1x). 2006 matches production: company-2006"
         }
       ]
     },
@@ -14341,9 +14379,9 @@
     {
       "showId": "fat-ham-2023",
       "file": "ew--lester-fabian-brathwaite.json",
-      "score": 80,
-      "publishDate": "April 12, 2023",
-      "url": "https://ew.com/theater/theater-reviews/fat-ham-broadway-review/",
+      "score": 79,
+      "publishDate": "2023-04-12",
+      "url": "https://ew.com/theater/theater-reviews/fat-ham-broadway-review/?utm_campaign=entertainmentweekly_entertainmentweekly&utm_content=new&utm_medium=social&utm_source=twitter.com&utm_term=643756e74562d8000159805b",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -19207,6 +19245,20 @@
     },
     {
       "showId": "grey-house-2023",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 77,
+      "publishDate": "2023-06-06",
+      "url": "https://frontmezzjunkies.com/2023/06/14/broadway-grey-house/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "grey-house-2023",
       "file": "josh-at-the-movies--josh-batchelder.json",
       "score": 32,
       "publishDate": "2023-06-05",
@@ -21548,20 +21600,6 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 31,
-      "publishDate": null,
-      "url": "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "hercules-west-end-2025",
       "file": "independent--alice-saville.json",
       "score": 40,
       "publishDate": "2025-06-25",
@@ -21795,20 +21833,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "high-noon-west-end-2025",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 42,
-      "publishDate": "2026-01-10",
-      "url": "https://inews.co.uk/culture/original-high-noon-spectacular-retelling-isnt-that-4160478?srsltid=AfmBOorxBX4DM5-uLwqXhIE3nf7BIwyijkgTCoEDvrYIGxzqnKs-ipwr",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -23628,6 +23652,20 @@
     },
     {
       "showId": "ink-2019",
+      "file": "newsday--barbara-schuler.json",
+      "score": 80,
+      "publishDate": "2019-04-24",
+      "url": "https://www.newsday.com/entertainment/theater/ink-review-1.30153878",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "ink-2019",
       "file": "newyorker--hilton-als.json",
       "score": 64,
       "publishDate": "April 28th, 2019",
@@ -24379,30 +24417,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 79,
-      "publishDate": "2025-12-11",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -32209,20 +32223,6 @@
       "score": 42,
       "publishDate": "2024-03-27",
       "url": "https://www.ft.com/content/8039a7c3-1383-46b7-912a-090681c3afb8",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
-        }
-      ]
-    },
-    {
-      "showId": "mj-the-musical-west-end-2024",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 75,
-      "publishDate": "2024-03-28",
-      "url": "https://inews.co.uk/culture/arts/mj-the-musical-review-myles-frost-2979317?srsltid=AfmBOoqoCj6htKX9bPfkNDphMhgzNoe1AqV5VXIj7cSW0_MtJ2wvb1Ny",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -53984,25 +53984,6 @@
       ]
     },
     {
-      "showId": "the-playboy-of-the-western-world-west-end-2025",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 78,
-      "publishDate": "2025-12-12",
-      "url": "https://inews.co.uk/culture/arts/playboy-of-western-world-treat-play-4099209?srsltid=AfmBOorjG0jVcfl593qhe1k-eWeG3ZxglbnHrysKCE94gKfI_QYhmQYF",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-present-2017",
       "file": "telegraph--diane-snyder.json",
       "score": 82,
@@ -61210,20 +61191,6 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 94,
-      "publishDate": "2025-11-22",
-      "url": "https://inews.co.uk/culture/arts/bryan-cranston-magnificent-all-my-sons-4057691?srsltid=AfmBOorY8JD1IdKV9YK9nuTRlCE8-iYxDrcpYPYIEJS4DjTFrbYetdtE#:~:text=Bryan%20Cranston%20is%20magnificent%20in,powerful%20production%20at%20Wyndham's%20Theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-west-end-2025",
       "file": "independent--alice-saville.json",
       "score": 85,
       "publishDate": "2025-11-27",
@@ -61943,20 +61910,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "arcadia-west-end-2026",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 42,
-      "publishDate": "2026-02-05",
-      "url": "https://inews.co.uk/culture/arts/tom-stoppard-arcadia-left-me-cold-4199216",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -64241,6 +64194,20 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 89,
+      "publishDate": "2022-10-09",
+      "url": "https://frontmezzjunkies.com/2022/10/30/arthur-millers-death-of-a-salesman-revival-on-broadway/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
       "file": "latimes--charles-mcnulty.json",
       "score": 72,
       "publishDate": "October 3, 2022",
@@ -65271,20 +65238,6 @@
       "score": 78,
       "publishDate": "2023-04-12",
       "url": "https://newyorktheater.me/2023/04/12/fat-ham-broadway-review/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "fat-ham-2023",
-      "file": "nyt-theater--unknown.json",
-      "score": 74,
-      "publishDate": "2023-04-12",
-      "url": "https://newyorktheater.me/2023/04/10/white-girl-in-danger-review/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -66750,20 +66703,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 85,
-      "publishDate": "2024-02-22",
-      "url": "https://inews.co.uk/culture/arts/hadestown-review-lyric-theatre-2920484?srsltid=AfmBOooK91xuMFreXC6d-luIlTHmpQjY8J24JXLM4kNqS2t9JywCUCWK",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -69000,6 +68939,20 @@
     },
     {
       "showId": "is-this-a-room-2021",
+      "file": "theatermania--unknown.json",
+      "score": 76,
+      "publishDate": "2021-10-11",
+      "url": "https://www.theatermania.com/news/review-is-this-a-room-dramatizes-a-real-life-encounter-with-the-fbi_92864/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "is-this-a-room-2021",
       "file": "thewrap--robert-hofler.json",
       "score": 62,
       "publishDate": "2021-10-11T20:59:57-04:00",
@@ -69284,6 +69237,20 @@
       "score": 98,
       "publishDate": "November 10, 2022",
       "url": "https://didtheylikeit.com/shows/kimberly-akimbo/the-intimate-kimberly-akimbo-is-the-best-new-broadway-musical-in-years/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "kimberly-akimbo-2022",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 91,
+      "publishDate": "2022-11-10",
+      "url": "https://frontmezzjunkies.com/2022/12/10/broadway-kimberly-akimbo/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -72746,20 +72713,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 57,
-      "publishDate": "2025-01-15",
-      "url": "https://inews.co.uk/culture/arts/the-other-place-national-theatre-review-3315187?srsltid=AfmBOooGzJseZXWQ2FXnnQfa6C6h06DFbevdDD6uX_K4jyekHkFYrIZa",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

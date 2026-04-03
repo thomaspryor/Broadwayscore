@@ -1,48 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-03T21:46:31.921Z",
+    "generatedAt": "2026-04-03T21:54:07.771Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 29714,
-      "inReviewsJson": 15652,
+      "totalFiles": 29662,
+      "inReviewsJson": 15766,
       "skippedExcluded": 5,
-      "withFullText": 35,
-      "excerptOnly": 1842,
-      "llmClassified": 34,
+      "withFullText": 174,
+      "excerptOnly": 1833,
+      "llmClassified": 50,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 2,
-      "uncertainCases": 16,
-      "budgetUsed": 0.003499999999999998,
-      "llmCalls": 35,
+      "nonReviewsFound": 0,
+      "uncertainCases": 4,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
-      "errors": 1,
-      "skippedAlreadyClassified": 13770
+      "errors": 0,
+      "skippedAlreadyClassified": 13754
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "gutenberg-2023/deadline--greg-evans.json",
-      "showId": "gutenberg-2023",
-      "outlet": "Deadline",
-      "outletId": "deadline",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news item about Amplify Pictures becoming a co-producer of Gutenberg! The Musical! and partnering with Folk Productions. It does not contain any evaluation or opinion about the show itself.",
-      "currentScore": 84
-    },
-    {
-      "file": "six-the-musical-west-end-2021/the-sun--benjy-potter.json",
-      "showId": "six-the-musical-west-end-2021",
-      "outlet": "The Sun",
-      "outletId": "the-sun",
-      "contentType": "feature",
-      "confidence": "high",
-      "reasoning": "This article describes the background and development of the musical, its popularity, and the creators' perspective, rather than providing a critical evaluation of the show itself. It's a general interest piece about the show's context and success.",
-      "currentScore": 75
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -51,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -61,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It is likely a list of search terms or categories, possibly related to news or advertising.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -71,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, rather than a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -83,157 +62,56 @@
       "confidence": "medium",
       "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
-    },
-    {
-      "file": "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "outlet": "The Telegraph",
-      "outletId": "telegraph",
-      "contentType": "feature",
-      "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
-      "currentScore": 60
-    },
-    {
-      "file": "liberation-2025/newyorker--helen-shaw.json",
-      "showId": "liberation-2025",
-      "outlet": "The New Yorker",
-      "outletId": "newyorker",
-      "contentType": "other",
-      "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
-      "currentScore": 88
-    },
-    {
-      "file": "once-on-this-island-2017/talkinbroadway--matthew-murray.json",
-      "showId": "once-on-this-island-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
-      "currentScore": 89
-    },
-    {
-      "file": "one-man-two-guvnors-2012/faster-times--jonathan-mandell.json",
-      "showId": "one-man-two-guvnors-2012",
-      "outlet": "Faster Times",
-      "outletId": "faster-times",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
-      "currentScore": 74
-    },
-    {
-      "file": "parade-2023/wsj--terry-teachout.json",
-      "showId": "parade-2023",
-      "outlet": "The Wall Street Journal",
-      "outletId": "wsj",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
-      "currentScore": 78
-    },
-    {
-      "file": "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
-      "showId": "paranormal-activity-west-end-2025",
-      "outlet": "The Telegraph",
-      "outletId": "telegraph",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on its quality.",
-      "currentScore": 80
-    },
-    {
-      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
-      "showId": "pippin-2013",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
-      "currentScore": 80
-    },
-    {
-      "file": "prince-of-broadway-2017/stagebuddy--ariana-rudes.json",
-      "showId": "prince-of-broadway-2017",
-      "outlet": "Stage Buddy",
-      "outletId": "stagebuddy",
-      "contentType": "feature",
-      "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the historical significance and the creative choices made.",
-      "currentScore": 83
-    },
-    {
-      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
-      "showId": "the-assembled-parties-2013",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
-      "currentScore": 42
-    },
-    {
-      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
-      "showId": "the-glass-menagerie-2017",
-      "outlet": "The Front Row Center",
-      "outletId": "front-row-center",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review. There is no evaluative content.",
-      "currentScore": 64
-    },
-    {
-      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
-      "showId": "the-price-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
-      "currentScore": 78
-    },
-    {
-      "file": "yellow-face-2024/joysauce--janvi-sai.json",
-      "showId": "yellow-face-2024",
-      "outlet": "joysauce",
-      "outletId": "joysauce",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions the playwright's connection to the work, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play to the audienc",
-      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "art-2025/dailybeast--tim-teeman.json",
-    "dead-outlaw-2025/timeout--adam-feldman.json",
-    "gutenberg-2023/ew--lester-fabian-brathwaite.json",
-    "gypsy-2024/broadwaynews--brittani-samuel.json",
-    "gypsy-2024/ew--kathryn-vandervalk.json",
-    "gypsy-2024/nypost--johnny-oleksinski.json",
-    "how-to-dance-in-ohio-2023/front-row-center--tulis-mccall.json",
-    "how-to-dance-in-ohio-2023/theatrely--kobi-kassal.json",
-    "just-for-us-2023/exeunt-magazine--cameron-kelsall.json",
-    "just-for-us-2023/theater-pizzazz--alix-cohen.json",
-    "just-for-us-2023/theater-scene--joseph-pisano.json",
-    "liberation-2025/frontmezzjunkies--unknown.json",
-    "liberation-2025/stageandcinema--alex-simmons.json",
-    "liberation-2025/theatrely--kobi-kassal.json",
-    "shadowlands-west-end-2026/broadwayworld--aliya-al-hassan.json",
-    "titanique-west-end-2024/i-paper--fiona-mountford.json"
+    "all-my-sons-west-end-2025/british-theatre--keith-mckenna.json",
+    "all-my-sons-west-end-2025/daily-mail--robert-gore-langton.json",
+    "all-my-sons-west-end-2025/observer--susannah-clapp.json",
+    "all-my-sons-west-end-2025/thereviewshub--maryam-philpott.json",
+    "art-2025/frontmezzjunkies--unknown.json",
+    "broken-glass-west-end-2026/british-theatre--vera-liber.json",
+    "broken-glass-west-end-2026/observer--susannah-clapp.json",
+    "burn-this-2019/nysr--melissa-rose-bernardo.json",
+    "consumed-west-end-2026/british-theatre--keith-mckenna.json",
+    "consumed-west-end-2026/everything-theatre--dave-b.json",
+    "consumed-west-end-2026/londontheatre1--chris-omaweng.json",
+    "consumed-west-end-2026/thereviewshub--dan-english.json",
+    "dead-outlaw-2025/nyt-theater--unknown.json",
+    "death-of-a-salesman-2022/broadwaynews--brittani-samuel.json",
+    "dracula-west-end-2025/daily-mail--robert-gore-langton.json",
+    "dracula-west-end-2025/observer--katherine-cowles.json",
+    "dracula-west-end-2025/theatre-weekly--greg-stewart.json",
+    "evening-all-afternoon-west-end-2026/british-theatre--howard-loxton.json",
+    "evening-all-afternoon-west-end-2026/daily-mail--robert-gore-langton.json",
+    "evening-all-afternoon-west-end-2026/thereviewshub--scott-matthewman.json",
+    "evening-all-afternoon-west-end-2026/thestage--sam-marlowe.json",
+    "fat-ham-2023/broadwaynews--brittani-samuel.json",
+    "fat-ham-2023/ew--lester-fabian-brathwaite.json",
+    "fat-ham-2023/nypost--johnny-oleksinski.json",
+    "gutenberg-2023/frontmezzjunkies--unknown.json",
+    "gutenberg-2023/stageandcinema--paulanne-simmons.json",
+    "gypsy-2024/artsfuse--christopher-caggiano.json",
+    "gypsy-2024/chicagotribune--chris-jones.json",
+    "gypsy-2024/frontmezzjunkies--unknown.json",
+    "gypsy-2024/stageandcinema--paola-bellu.json",
+    "hadestown-west-end-2024/british-theatre--howard-loxton.json",
+    "hadestown-west-end-2024/daily-mail--patrick-marmion.json",
+    "hadestown-west-end-2024/express-uk--stefan-kyriazis.json",
+    "hadestown-west-end-2024/financialtimes--sarah-hemming.json",
+    "hadestown-west-end-2024/observer--susannah-clapp.json",
+    "home-2024/amny--matt-windman.json",
+    "im-sorry-prime-minister-west-end-2026/daily-mail--robert-gore-langton.json",
+    "im-sorry-prime-minister-west-end-2026/theatre-weekly--greg-stewart.json",
+    "im-sorry-prime-minister-west-end-2026/thereviewshub--mike-wells.json",
+    "ink-2019/newsday--barbara-schuler.json",
+    "into-the-woods-west-end-2025/british-theatre--howard-loxton.json",
+    "into-the-woods-west-end-2025/daily-mail--mark-cook.json",
+    "into-the-woods-west-end-2025/financialtimes--tim-bano.json",
+    "into-the-woods-west-end-2025/observer--susannah-clapp.json",
+    "job-2024/nypost--johnny-oleksinski.json",
+    "job-2024/stageandcinema--paola-bellu.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "gutenberg-2023",
-      "currentCount": 25,
-      "removed": 1
-    },
-    {
-      "showId": "six-the-musical-west-end-2021",
-      "currentCount": 16,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
