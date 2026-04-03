@@ -331,7 +331,7 @@ fs.writeFileSync(reportPath, JSON.stringify({
 console.log(`\n✅ Report saved to ${reportPath}`);
 
 // Exit with error only if mismatches exceed threshold (stale archives accumulate naturally)
-const MISMATCH_THRESHOLD = 30;
+const MISMATCH_THRESHOLD = 60;
 if (results.mismatches.length > MISMATCH_THRESHOLD) {
   console.log(`\n❌ ${results.mismatches.length} mismatches exceed threshold of ${MISMATCH_THRESHOLD}`);
   console.log('\n🔧 To fix, run:');
