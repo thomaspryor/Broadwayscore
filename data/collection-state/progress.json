@@ -173,7 +173,8 @@
     "the-piano-lesson-2022/vulture--jackson-mchenry.json",
     "into-the-woods-2022/thewrap--thom-geier.json",
     "plaza-suite-2022/vulture--helen-shaw.json",
-    "the-prom-2018/vulture--sara-holdren.json"
+    "the-prom-2018/vulture--sara-holdren.json",
+    "the-waverly-gallery-2018/variety--marilyn-stasio.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -472,7 +473,16 @@
     "the-cher-show-2018/theater-news-online--jeremy-gerard.json",
     "the-prom-2018/theater-news-online--joe-dziemianowicz.json",
     "the-prom-2018/journal-inquirer--tim-leininger.json",
-    "the-new-one-2018/theaternewsonline--joe-dziemianowicz.json"
+    "the-new-one-2018/theaternewsonline--joe-dziemianowicz.json",
+    "king-kong-2018/philadelphia-inquirer--toby-zinman.json",
+    "king-kong-2018/phindie--kathryn-osenlund.json",
+    "king-kong-2018/rollingstone--jerry-portwood.json",
+    "king-kong-2018/usatoday--david-oliver.json",
+    "torch-song-2018/theater-news-online--jeremy-gerard.json",
+    "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
+    "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
+    "the-ferryman-2018/theater-news-online--jessica-branch.json",
+    "the-ferryman-2018/walterthinnes--walter-thinnes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -610,7 +620,9 @@
       "data/review-texts/beetlejuice-2019/deadline--greg-evans.json",
       "beetlejuice-2019/deadline--greg-evans.json",
       "data/review-texts/american-son-2018/variety--marilyn-stasio.json",
-      "american-son-2018/variety--marilyn-stasio.json"
+      "american-son-2018/variety--marilyn-stasio.json",
+      "data/review-texts/the-waverly-gallery-2018/variety--marilyn-stasio.json",
+      "the-waverly-gallery-2018/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -735,7 +747,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-new-one-2018/theaternewsonline--joe-dziemianowicz.json",
+  "lastProcessed": "the-ferryman-2018/walterthinnes--walter-thinnes.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -1154,6 +1166,17 @@
       "t": "2026-04-03T13:44:51.082Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-03T13:49:37.909Z",
+      "event": "bb-session",
+      "session": "00b8e427",
+      "url": "https://variety.com/2018/legit/reviews/waverly-gallery-review-elaine-may-broadwa"
+    },
+    {
+      "t": "2026-04-03T13:49:39.131Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
