@@ -136,7 +136,10 @@
     "death-of-a-salesman-2022/nydailynews--chris-jones.json",
     "death-of-a-salesman-2022/washpost--peter-marks.json",
     "a-strange-loop-2022/ap--mark-kennedy.json",
-    "take-me-out-2022/nypost--johnny-oleksinski.json"
+    "take-me-out-2022/nypost--johnny-oleksinski.json",
+    "company-2021/timeout--adam-feldman.json",
+    "mrs-doubtfire-2021/nypost--johnny-oleksinski.json",
+    "trouble-in-mind-2021/wsj--terry-teachout.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -242,7 +245,14 @@
     "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
     "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
     "beetlejuice-2022/pittsburgh-city-paper--jordana-rosenfeld.json",
-    "plaza-suite-2022/vulture--helen-shaw.json"
+    "plaza-suite-2022/vulture--helen-shaw.json",
+    "the-music-man-2022/washpost--mark-kennedy.json",
+    "slave-play-2021/theater-news-online--jeremy-gerard.json",
+    "trouble-in-mind-2021/deadline--greg-evans.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/hollywood-reporter--angie-han.json",
+    "is-this-a-room-2021/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -318,7 +328,8 @@
       "aint-no-mo-2022/broadwaynews--brittani-samuel.json",
       "death-of-a-salesman-2022/broadwaynews--brittani-samuel.json",
       "death-of-a-salesman-2022/washpost--peter-marks.json",
-      "a-strange-loop-2022/ap--mark-kennedy.json"
+      "a-strange-loop-2022/ap--mark-kennedy.json",
+      "company-2021/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -360,7 +371,9 @@
       "data/review-texts/some-like-it-hot-2022/nypost--johnny-oleksinski.json",
       "some-like-it-hot-2022/nypost--johnny-oleksinski.json",
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
-      "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json"
+      "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+      "data/review-texts/mrs-doubtfire-2021/nypost--johnny-oleksinski.json",
+      "mrs-doubtfire-2021/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -412,7 +425,9 @@
       "data/review-texts/camelot-2023/vulture--jackson-mchenry.json",
       "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
       "data/review-texts/the-piano-lesson-2022/vulture--jackson-mchenry.json",
-      "data/review-texts/into-the-woods-2022/thewrap--thom-geier.json"
+      "data/review-texts/into-the-woods-2022/thewrap--thom-geier.json",
+      "data/review-texts/plaza-suite-2022/vulture--helen-shaw.json",
+      "data/review-texts/the-music-man-2022/washpost--mark-kennedy.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -439,11 +454,12 @@
       "mcneal-2024/vulture--jackson-mchenry.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
       "some-like-it-hot-2022/newyorker--helen-shaw.json",
-      "death-of-a-salesman-2022/ew--unknown.json"
+      "death-of-a-salesman-2022/ew--unknown.json",
+      "trouble-in-mind-2021/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "plaza-suite-2022/vulture--helen-shaw.json",
+  "lastProcessed": "is-this-a-room-2021/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -708,6 +724,39 @@
       "t": "2026-04-03T12:37:12.343Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-03T12:43:57.459Z",
+      "event": "bb-session",
+      "session": "82d3eead",
+      "url": "https://nypost.com/2021/12/05/https-nypost-com-2018-07-13-documentary-traces-the"
+    },
+    {
+      "t": "2026-04-03T12:43:58.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-03T12:44:01.867Z",
+      "event": "bb-session",
+      "session": "661489bf",
+      "url": "https://www.washingtonpost.com/entertainment/review-hugh-jackman-steals-the-musi"
+    },
+    {
+      "t": "2026-04-03T12:44:03.738Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-03T12:44:29.362Z",
+      "event": "bb-session",
+      "session": "5d6c6146",
+      "url": "https://www.wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-"
+    },
+    {
+      "t": "2026-04-03T12:44:30.667Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
