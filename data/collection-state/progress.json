@@ -79,7 +79,15 @@
     "some-like-it-hot-2022/newyorker--helen-shaw.json",
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
-    "yoah-off-broadway-2026/variety--pat-saperstein.json"
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "i-was-a-teenage-shedevil-west-end-2026/broadwayworld--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/financialtimes--ian-shuttleworth.json",
+    "les-liaisons-dangereuses-west-end-2026/londontheatre1--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-west-end-2026/theatrely--juan-a-ramirez.json",
+    "romeo-and-juliet-west-end-2026/daily-mail--unknown.json",
+    "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json",
+    "romeo-and-juliet-west-end-2026/plays-international--unknown.json"
   ],
   "failed": [
     "nicole-travolta-is-doing-alright-off-broadway-2026/variety--unknown.json",
@@ -301,7 +309,9 @@
     "all-the-way-2014/ap--mark-kennedy.json",
     "machinal-2014/timeout--david-cote.json",
     "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
-    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json"
+    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
+    "les-liaisons-dangereuses-west-end-2026/nytimes--ben-brantley.json",
+    "romeo-and-juliet-west-end-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -360,7 +370,13 @@
       "the-mousetrap-west-end-2021/thestage--dave-fargnoli.json",
       "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
       "all-out-2025/ew--dalton-ross.json",
-      "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
+      "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
+      "i-was-a-teenage-shedevil-west-end-2026/broadwayworld--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/londontheatre1--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/standard--nick-curtis.json",
+      "romeo-and-juliet-west-end-2026/theatrely--juan-a-ramirez.json",
+      "romeo-and-juliet-west-end-2026/london-box-office--phil-willmott.json",
+      "romeo-and-juliet-west-end-2026/plays-international--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -369,7 +385,9 @@
       "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
       "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
       "data/review-texts/yoah-off-broadway-2026/variety--pat-saperstein.json",
-      "yoah-off-broadway-2026/variety--pat-saperstein.json"
+      "yoah-off-broadway-2026/variety--pat-saperstein.json",
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/financialtimes--ian-shuttleworth.json",
+      "les-liaisons-dangereuses-west-end-2026/financialtimes--ian-shuttleworth.json"
     ],
     "directCookies": [
       "the-mousetrap-west-end-2021/nytimes--unknown.json"
@@ -409,11 +427,12 @@
       "the-play-that-goes-wrong-west-end-2021/thestage--mark-shenton.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
       "some-like-it-hot-2022/newyorker--helen-shaw.json",
-      "the-price-2017/thestage--chris-jones.json"
+      "the-price-2017/thestage--chris-jones.json",
+      "romeo-and-juliet-west-end-2026/daily-mail--unknown.json"
     ]
   },
   "startTime": "2026-04-03T05:03:52.695Z",
-  "lastProcessed": "yoah-off-broadway-2026/variety--pat-saperstein.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/plays-international--unknown.json",
   "log": [
     {
       "t": "2026-04-03T05:52:09.575Z",
@@ -447,6 +466,17 @@
       "t": "2026-04-03T05:52:40.333Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T08:29:42.208Z",
+      "event": "bb-session",
+      "session": "ddb83c74",
+      "url": "https://next.ft.com/content/bea77fa8-a57b-11e5-97e1-a754d5d9538c"
+    },
+    {
+      "t": "2026-04-03T08:29:43.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
