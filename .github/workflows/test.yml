@@ -136,6 +136,29 @@ jobs:
           fi
           echo "All scraping workflows have multi-service fallback"
 
+      - name: Check demo feature flags not used in server components
+        continue-on-error: true  # TODO: fix showPageRedesign in page.tsx + userAccounts in test/layout.tsx, then remove
+        run: |
+          # Demo feature flags require window (runtime) and MUST be checked
+          # inside 'use client' components. In server components / SSR pages,
+          # isDemo() returns false and the feature silently disappears.
+          # See: fix 7770e1b567 (theater scorecard invisible on demo).
+          DEMO_FLAGS="theaterScorecard|showPageRedesign|userAccounts|showtimes"
+          VIOLATIONS=""
+          for f in $(grep -rlE "featureFlags\.(${DEMO_FLAGS})" src/ 2>/dev/null || true); do
+            # Check if file has 'use client' directive
+            if ! head -3 "$f" | grep -q "'use client'"; then
+              VIOLATIONS="$VIOLATIONS $f"
+            fi
+          done
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::Demo feature flags used in server components (will always be false during SSR):"
+            echo "::error::$VIOLATIONS"
+            echo "Move the featureFlags check inside a 'use client' component."
+            exit 1
+          fi
+          echo "All demo feature flag checks are in client components"
+
   dependency-audit:
     name: Dependency Audit
     runs-on: ubuntu-latest

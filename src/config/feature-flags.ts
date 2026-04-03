@@ -3,6 +3,11 @@
 // To enable a feature: add its name to the env var in Vercel project settings
 // Example: NEXT_PUBLIC_FEATURES="discountTickets,criticPages,boxOffice"
 // Empty string = all features hidden (launch state)
+//
+// ⚠️  DEMO_FEATURES require `window` — they MUST be checked inside 'use client'
+// components, never in server components or page.tsx files. isDemo() returns false
+// during SSR/static generation, so the flag silently evaluates to false and the
+// feature is invisible. CI enforces this (lint-feature-flags in test.yml).
 
 const enabledFeatures = new Set(
   (process.env.NEXT_PUBLIC_FEATURES || '').split(',').map(s => s.trim()).filter(Boolean)
@@ -10,6 +15,7 @@ const enabledFeatures = new Set(
 
 // Features auto-enabled on demo.broadwayscorecard.com (runtime check).
 // Uses getters so the check runs each time the flag is read (client-side).
+// CI: lint-feature-flags checks these are never referenced in server components.
 const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes', 'theaterScorecard']);
 
 function isDemo(): boolean {
