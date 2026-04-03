@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T21:01:24.508Z",
+  "timestamp": "2026-04-03T21:12:15.759Z",
   "stats": {
-    "totalReviews": 29044,
-    "alreadyFlagged": 8110,
+    "totalReviews": 29045,
+    "alreadyFlagged": 8127,
     "dateGuardCatches": 13,
-    "directorMismatch": 883,
-    "tvFilmSignals": 3363,
-    "londonSignals": 1010,
+    "directorMismatch": 885,
+    "tvFilmSignals": 3365,
+    "londonSignals": 1013,
     "offBroadwaySignals": 976,
     "yearMismatch": 65,
-    "noPublishDate": 5668
+    "noPublishDate": 5662
   },
   "findings": [
     {
@@ -8313,6 +8313,7 @@
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 95,
       "publishDate": "2021-12-13",
       "url": "https://www.allthatdazzles.co.uk/post/review-cabaret-at-the-kit-kat-club",
       "findings": [
@@ -13732,6 +13733,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "equus-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 80,
+      "publishDate": "2026-05-18",
+      "url": "https://www.timeout.com/london/theatre/equus-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thea sharrock\" from equus-2008"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john dexter\" from equus-1974"
         }
       ]
     },
@@ -41138,6 +41158,20 @@
       ]
     },
     {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "file": "timeout--unknown.json",
+      "score": null,
+      "publishDate": "2026-06-24",
+      "url": "https://www.timeout.com/london/theatre/sinatra-the-musical",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
       "showId": "singfeld-a-musical-about-nothing-off-broadway-2023",
       "file": "theater-scene--joseph-pisano.json",
       "score": 62,
@@ -48312,6 +48346,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 61,
+      "publishDate": "2026-08-06",
+      "url": "https://www.whatsonstage.com/news/the-comedy-about-spies-review-mischiefs-cold-war-caper-has-japes-aplenty_1677753/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"film review\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -61541,6 +61594,7 @@
     {
       "showId": "back-to-the-future-west-end-2021",
       "file": "musical-theatre-review--unknown.json",
+      "score": 75,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/back-to-the-future-the-musical-adelphi-theatre/",
       "findings": [
@@ -77060,6 +77114,20 @@
       ]
     },
     {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "timeout-london--tom-wicker.json",
+      "score": 77,
+      "publishDate": "2026-08-06",
+      "url": "https://www.timeout.com/london/theatre/the-comedy-about-spies-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-constant-wife-2005",
       "file": "nytimes--ben-brantley.json",
       "score": 76,
@@ -78797,6 +78865,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2025-11-25",
+      "url": "https://theatreweekly.com/the-mousetrap-announces-75th-anniversary-uk-tour-and-west-end-extension/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
