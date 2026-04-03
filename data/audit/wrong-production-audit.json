@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-03T12:48:40.173Z",
+  "timestamp": "2026-04-03T13:22:24.432Z",
   "stats": {
-    "totalReviews": 28479,
-    "alreadyFlagged": 8028,
+    "totalReviews": 28480,
+    "alreadyFlagged": 8034,
     "dateGuardCatches": 15,
-    "directorMismatch": 870,
-    "tvFilmSignals": 3354,
+    "directorMismatch": 871,
+    "tvFilmSignals": 3355,
     "londonSignals": 1003,
-    "offBroadwaySignals": 971,
+    "offBroadwaySignals": 972,
     "yearMismatch": 65,
     "noPublishDate": 5795
   },
@@ -9307,7 +9307,7 @@
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "newyorker--helen-shaw.json",
-      "score": null,
+      "score": 90,
       "publishDate": "June 27th, 2024",
       "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
       "findings": [
@@ -36513,6 +36513,20 @@
     },
     {
       "showId": "pass-over-2021",
+      "file": "nypost--johnny-oleksinski.json",
+      "score": 74,
+      "publishDate": "August 22, 2021",
+      "url": "https://nypost.com/2021/08/22/pass-over-broadway-review-an-enticing-uneven-play/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "pass-over-2021",
       "file": "nysr--frank-scheck.json",
       "score": 72,
       "publishDate": "2021-08-22T17:50:55",
@@ -58218,6 +58232,11 @@
       "publishDate": "February 20, 2020",
       "url": "https://nypost.com/2020/02/20/west-side-story-broadway-review-radical-revival-is-a-triumph/",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -80103,6 +80122,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-2018",
+      "file": "newyorker--vinson-cunningham.json",
+      "score": 65,
+      "publishDate": "December 18th, 2018",
+      "url": "https://www.newyorker.com/magazine/2018/12/24/black-and-white-in-slave-play-and-to-kill-a-mockingbird",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
