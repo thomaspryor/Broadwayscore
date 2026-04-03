@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-03T13:55:50.901Z",
-  "processed": 176,
-  "failed": 325,
-  "successRate": "35.1%",
+  "updatedAt": "2026-04-03T13:59:56.554Z",
+  "processed": 177,
+  "failed": 334,
+  "successRate": "34.6%",
   "tierBreakdown": {
     "playwright": 80,
     "amp": 2,
-    "browserbase": 50,
+    "browserbase": 52,
     "directCookies": 0,
     "scrapingbee": 38,
     "brightdata": 0,
     "archiveToday": 40,
     "archive": 38
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-04-03T12:49:41.632Z",
-      "event": "bb-session",
-      "session": "369f2c08",
-      "url": "https://www.wsj.com/articles/beetlejuice-review-better-off-dead-11556727155"
-    },
-    {
-      "t": "2026-04-03T12:49:42.844Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-03T12:57:51.116Z",
-      "event": "bb-session",
-      "session": "1831c6d1",
-      "url": "https://variety.com/2018/legit/reviews/american-son-review-kerry-washington-broa"
-    },
-    {
-      "t": "2026-04-03T12:57:52.482Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-03T13:23:51.020Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-03T13:52:57.120Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-03T13:56:30.760Z",
+      "event": "bb-session",
+      "session": "057b78dc",
+      "url": "http://deadline.com/2017/12/broadway-review-once-on-this-island-revival-12022188"
+    },
+    {
+      "t": "2026-04-03T13:56:32.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T13:56:56.722Z",
+      "event": "bb-session",
+      "session": "720da405",
+      "url": "http://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisi"
+    },
+    {
+      "t": "2026-04-03T13:56:58.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
