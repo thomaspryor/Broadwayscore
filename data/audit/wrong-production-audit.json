@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-03T13:22:24.432Z",
+  "timestamp": "2026-04-03T14:49:05.350Z",
   "stats": {
     "totalReviews": 28480,
-    "alreadyFlagged": 8034,
+    "alreadyFlagged": 8045,
     "dateGuardCatches": 15,
-    "directorMismatch": 871,
-    "tvFilmSignals": 3355,
-    "londonSignals": 1003,
-    "offBroadwaySignals": 972,
+    "directorMismatch": 873,
+    "tvFilmSignals": 3361,
+    "londonSignals": 1002,
+    "offBroadwaySignals": 974,
     "yearMismatch": 65,
     "noPublishDate": 5795
   },
@@ -768,6 +768,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "file": "nytimes--ben-brantley.json",
+      "score": 57,
+      "publishDate": "November 20, 2014",
+      "url": "http://www.nytimes.com/2014/11/21/theater/a-delicate-balance-revival-stars-john-lithgow-and-glenn-close.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"gerald gutierrez\" from a-delicate-balance-1996"
         }
       ]
     },
@@ -6211,6 +6225,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "bernhardthamlet-2018",
+      "file": "newnownextcom--michael-musto.json",
+      "score": 73,
+      "publishDate": "October 1st, 2018",
+      "url": "http://www.newnownext.com/rupaul-dragcon-bianca-del-rio-trinity-k-bonet/10/2018/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
         }
       ]
     },
@@ -13218,6 +13246,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "thestage--sam-marlowe.json",
+      "score": 43,
+      "publishDate": "February 17th, 2026",
+      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-williams-cynthia-erivo",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -35329,6 +35371,25 @@
     },
     {
       "showId": "once-on-this-island-2017",
+      "file": "deadline--jeremy-gerard.json",
+      "score": 89,
+      "publishDate": "December 3, 2017",
+      "url": "http://deadline.com/2017/12/broadway-review-once-on-this-island-revival-1202218859/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"graciela daniele\" from once-on-this-island-1990"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "once-on-this-island-2017",
       "file": "journal-inquirer--tim-leininger.json",
       "score": 87,
       "publishDate": null,
@@ -52961,6 +53022,20 @@
       ]
     },
     {
+      "showId": "the-piano-lesson-2022",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 65,
+      "publishDate": "October 13th, 2022",
+      "url": "https://www.vulture.com/2022/10/theater-review-august-wilson-piano-lesson-broadway-jackson-brooks.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
       "showId": "the-picture-of-dorian-gray-2025",
       "file": "deadline--greg-evans.json",
       "score": 72,
@@ -53481,6 +53556,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-prom-2018",
+      "file": "vulture--sara-holdren.json",
+      "score": 85,
+      "publishDate": "November 15th, 2018",
+      "url": "https://www.vulture.com/2018/11/theater-the-prom-where-theater-geeks-belt-without-shame.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -58908,6 +58997,20 @@
     },
     {
       "showId": "wicked-west-end-2021",
+      "file": "the-telegrap--charles-spencer.json",
+      "score": 74,
+      "publishDate": "January 1st, 2009",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-west-end-2021",
       "file": "variety--charles-isherwood.json",
       "score": 60,
       "publishDate": "2020-07-30",
@@ -60514,6 +60617,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "allegiance-2015",
+      "file": "vulture--jesse-green.json",
+      "score": 57,
+      "publishDate": "November 8th, 2015",
+      "url": "http://www.vulture.com/2015/11/theater-reviews-allegiance.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -78247,20 +78364,6 @@
       ]
     },
     {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "the-telegrap--david-gritten.json",
-      "score": 89,
-      "publishDate": "October 17th, 2014",
-      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-little-foxes-2017",
       "file": "nbcny--robert-kahn.json",
       "score": 82,
@@ -78336,6 +78439,20 @@
       "score": 76,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/the-monsters-the-dinosaurs-are-off-broadway-review",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-monsters-off-broadway-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 61,
+      "publishDate": "February 17th, 2026",
+      "url": "https://www.vulture.com/article/theater-review-dinosaurs-monsters-perkins-anyanwu.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
