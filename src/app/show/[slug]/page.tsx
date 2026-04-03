@@ -1109,7 +1109,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         )}
 
         {/* Theater Scorecard (Broadway only) */}
-        {featureFlags.theaterScorecard && theater?.venueScores && (
+        {theater?.venueScores && (
           <TheaterScorecardCard
             venueScores={theater.venueScores}
             accessibility={theater.accessibility}
