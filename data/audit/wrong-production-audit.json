@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T09:44:47.646Z",
+  "timestamp": "2026-04-03T10:11:33.206Z",
   "stats": {
-    "totalReviews": 27651,
-    "alreadyFlagged": 7455,
+    "totalReviews": 28475,
+    "alreadyFlagged": 7996,
     "dateGuardCatches": 15,
-    "directorMismatch": 858,
-    "tvFilmSignals": 3335,
-    "londonSignals": 991,
-    "offBroadwaySignals": 970,
+    "directorMismatch": 862,
+    "tvFilmSignals": 3340,
+    "londonSignals": 994,
+    "offBroadwaySignals": 971,
     "yearMismatch": 65,
-    "noPublishDate": 5799
+    "noPublishDate": 5796
   },
   "findings": [
     {
@@ -1801,6 +1801,20 @@
       ]
     },
     {
+      "showId": "a-thousand-clowns-2001",
+      "file": "nytimes--bruce-weber.json",
+      "score": null,
+      "publishDate": "July 12, 2001",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf931a25754c0a9679c8b63",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "a-time-to-kill-2013",
       "file": "front-row-center--kathleen-campion.json",
       "score": 42,
@@ -2637,6 +2651,20 @@
       "score": 72,
       "publishDate": "March 21, 2014",
       "url": "https://www.theguardian.com/stage/2016/jun/15/aladdin-review-disney-musical-west-end-prince-edward-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "March 20, 2014",
+      "url": "http://www.hollywoodreporter.com/review/aladdin-theater-review-690038",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -11523,6 +11551,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "dead-accounts-2012",
+      "file": "newsday--linda-winer.json",
+      "score": null,
+      "publishDate": "November 29, 2012",
+      "url": "http://www.newsday.com/entertainment/theater/dead-accounts-review-a-slim-sitcom-1.4272049",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -25253,6 +25295,20 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": null,
+      "publishDate": "March 26th, 2026",
+      "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 78,
       "publishDate": "2026-03-27",
@@ -27055,6 +27111,30 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (5x) more than 2016 (0x). 2026 matches production: les-liaisons-dangereuses-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 64,
+      "publishDate": "2026-04-01",
+      "url": "https://www.theartsdesk.com/theatre/les-liaisons-dangereuses-national-theatre-review-liaison-lite",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -29219,20 +29299,6 @@
       ]
     },
     {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "variety--owen-gleiberman.json",
-      "score": 71,
-      "publishDate": "1999-04-26",
-      "url": "https://variety.com/1999/legit/reviews/mamma-mia-1200457147/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
       "showId": "man-and-boy-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 62,
@@ -29869,6 +29935,20 @@
       ]
     },
     {
+      "showId": "master-haroldand-the-boys-2003",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "June 2, 2003",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0a9659c8b63",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
+        }
+      ]
+    },
+    {
       "showId": "matilda-the-musical-2013",
       "file": "financialtimes--brendan-lemon.json",
       "score": 78,
@@ -29968,6 +30048,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "broadwaynews--brittani-samuel.json",
+      "score": null,
+      "publishDate": "November 13, 2024",
+      "url": "https://www.broadwaynews.com/the-broadway-review-maybe-happy-ending-is-assuredly-enchanting/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -51850,6 +51944,20 @@
     },
     {
       "showId": "the-parisian-woman-2017",
+      "file": "deadline--jeremy-gerard.json",
+      "score": null,
+      "publishDate": "November 30, 2017",
+      "url": "http://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-parisian-woman-2017",
       "file": "financialtimes--max-mcguinness.json",
       "score": 65,
       "publishDate": "2017-12-01",
@@ -57817,6 +57925,20 @@
       "score": 88,
       "publishDate": "2020-02-20",
       "url": "https://www.nydailynews.com/2020/02/20/west-side-story-gets-a-whole-new-look-on-broadway-from-director-ivo-van-hove/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
+      "file": "nypost--johnny-oleksinski.json",
+      "score": null,
+      "publishDate": "February 20, 2020",
+      "url": "https://nypost.com/2020/02/20/west-side-story-broadway-review-radical-revival-is-a-triumph/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -66867,6 +66989,20 @@
       ]
     },
     {
+      "showId": "i-am-my-own-wife-2003",
+      "file": "nytimes--bruce-weber.json",
+      "score": null,
+      "publishDate": "December 4, 2003",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9505e5db163df937a35751c1a9659c8b63",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "i-need-that-2023",
       "file": "washpost--peter-marks.json",
       "score": 42,
@@ -72534,6 +72670,20 @@
       ]
     },
     {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "2026-03-31",
+      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "romeo-juliet-2024",
       "file": "latimes--charles-mcnulty.json",
       "score": 77,
@@ -77735,6 +77885,20 @@
       "score": null,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/1999/oct/21/theatre.artsfeatures",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "the-telegrap--david-gritten.json",
+      "score": null,
+      "publishDate": "October 17th, 2014",
+      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
