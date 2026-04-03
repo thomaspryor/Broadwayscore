@@ -34,11 +34,11 @@ interface AffiliateConfig {
 const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
   TodayTix: {
     type: 'impact',
-    // Once approved on Impact: fill in these three values and set enabled: true
-    impactDomain: '',       // e.g. "todaytix.pxf.io"
-    impactPublisherId: '',  // your Impact publisher ID
-    impactCampaignId: '',   // TodayTix campaign ID from Impact dashboard
-    enabled: false,
+    impactDomain: 'todaytix.pxf.io',
+    impactPublisherId: '6999278',
+    impactCampaignId: '1774863',
+    impactProgramId: '20944',
+    enabled: true,
   },
   Ticketmaster: {
     type: 'impact',
