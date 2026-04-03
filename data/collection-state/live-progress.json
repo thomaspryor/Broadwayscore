@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-03T11:21:27.083Z",
-  "processed": 57,
-  "failed": 44,
-  "successRate": "56.4%",
+  "updatedAt": "2026-04-03T11:24:29.152Z",
+  "processed": 62,
+  "failed": 49,
+  "successRate": "55.9%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 35,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 8,
+    "scrapingbee": 10,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 14
+    "archiveToday": 6,
+    "archive": 15
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -91,6 +91,17 @@
       "t": "2026-04-03T11:16:43.290Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T11:22:13.205Z",
+      "event": "bb-session",
+      "session": "957d70b7",
+      "url": "http://www.hollywoodreporter.com/review/aladdin-theater-review-690038"
+    },
+    {
+      "t": "2026-04-03T11:22:14.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

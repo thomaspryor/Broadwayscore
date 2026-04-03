@@ -56,7 +56,12 @@
     "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
     "hadestown-2019/variety--marilyn-stasio.json",
     "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
-    "the-play-that-goes-wrong-west-end-2021/guardian--kate-kellaway.json"
+    "the-play-that-goes-wrong-west-end-2021/guardian--kate-kellaway.json",
+    "the-play-that-goes-wrong-west-end-2021/the-telegrap--marianka-swain.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
+    "aladdin-2014/hollywood-reporter--david-rooney.json",
+    "the-book-of-mormon-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
+    "the-book-of-mormon-west-end-2024/times-uk--clive-davis.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -102,7 +107,12 @@
     "harry-potter-2021/woman-around-town--alix-cohen.json",
     "hamilton-west-end-2021/times-uk--clive-davis.json",
     "hamilton-2015/chicagotribune--chris-jones.json",
-    "the-play-that-goes-wrong-west-end-2021/broadwayworld--unknown.json"
+    "the-play-that-goes-wrong-west-end-2021/broadwayworld--unknown.json",
+    "the-play-that-goes-wrong-west-end-2021/the-telegrap--tim-walker.json",
+    "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/thestage--holly-omahony.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -139,7 +149,9 @@
       "the-phantom-of-the-opera-west-end-1986/whatsonstage--alun-hood.json",
       "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
-      "the-play-that-goes-wrong-west-end-2021/guardian--kate-kellaway.json"
+      "the-play-that-goes-wrong-west-end-2021/guardian--kate-kellaway.json",
+      "the-book-of-mormon-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
+      "the-book-of-mormon-west-end-2024/times-uk--clive-davis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -152,7 +164,9 @@
       "data/review-texts/the-outsiders-2024/deadline--greg-evans.json",
       "the-outsiders-2024/deadline--greg-evans.json",
       "data/review-texts/hadestown-2019/variety--marilyn-stasio.json",
-      "hadestown-2019/variety--marilyn-stasio.json"
+      "hadestown-2019/variety--marilyn-stasio.json",
+      "data/review-texts/aladdin-2014/hollywood-reporter--david-rooney.json",
+      "aladdin-2014/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -163,7 +177,9 @@
       "just-in-time-2025/broadwaynews--brittani-samuel.json",
       "stranger-things-2024/broadwaynews--brittani-samuel.json",
       "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
-      "les-miserables-west-end-2021/times-uk--clive-davis.json"
+      "les-miserables-west-end-2021/times-uk--clive-davis.json",
+      "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
+      "the-play-that-goes-wrong-west-end-2021/broadwayworld--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -171,7 +187,8 @@
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
       "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json",
       "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json",
-      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json"
+      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/thestage--holly-omahony.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -187,11 +204,12 @@
       "mj-2022/ap--mark-kennedy.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/the-telegrap--dominic-cavendish.json",
       "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
-      "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
+      "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+      "the-play-that-goes-wrong-west-end-2021/the-telegrap--marianka-swain.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/broadwayworld--unknown.json",
+  "lastProcessed": "the-book-of-mormon-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -269,6 +287,17 @@
       "t": "2026-04-03T11:16:43.290Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T11:22:13.205Z",
+      "event": "bb-session",
+      "session": "957d70b7",
+      "url": "http://www.hollywoodreporter.com/review/aladdin-theater-review-690038"
+    },
+    {
+      "t": "2026-04-03T11:22:14.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
