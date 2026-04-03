@@ -60,6 +60,22 @@ const LEGAL_PAGE_PATTERNS = [
 ];
 
 /**
+ * Patterns that indicate cookie consent / GDPR banners (not review content).
+ * These can be very long (10K+) and contain generic words like "show" and "performance"
+ * that fool theater-keyword checks.
+ * @type {RegExp[]}
+ */
+const COOKIE_CONSENT_PATTERNS = [
+  /your\s+consent\s+will\s+be\s+valid/i,
+  /legitimate\s+interest/i,
+  /data\s+protection\s+(regulation|officer|authority)/i,
+  /consent\s+management\s+platform/i,
+  /manage\s+(your\s+)?cookie\s+(preferences|settings|consent)/i,
+  /we\s+use\s+cookies.*\b(consent|opt[\s-]?out|preferences)\b/is,
+  /GDPR/,
+];
+
+/**
  * Patterns that indicate 404/error pages
  * @type {RegExp[]}
  */
@@ -74,7 +90,9 @@ const ERROR_PAGE_PATTERNS = [
   /doesn'?t?\s+exist/i,
   /has\s+been\s+(removed|deleted|taken\s+down)/i,
   /content\s+(is\s+)?unavailable/i,
+  /page\s+(is\s+)?unavailable/i,
   /we\s+can'?t\s+find\s+(that|the)\s+(page|article)/i,
+  /oops!?\s+page\s+unavailable/i,
 ];
 
 /**
@@ -180,6 +198,23 @@ function detectPaywall(text) {
 function detectLegalPage(text) {
   for (const pattern of LEGAL_PAGE_PATTERNS) {
     const match = text.match(pattern);
+    if (match) {
+      return { detected: true, match: match[0] };
+    }
+  }
+  return { detected: false, match: null };
+}
+
+/**
+ * Check if text is a cookie consent / GDPR banner
+ * @param {string} text - Text to check
+ * @returns {{ detected: boolean, match: string | null }}
+ */
+function detectCookieConsent(text) {
+  // Check the first 500 chars — consent banners are always at the front
+  const front = text.substring(0, 500);
+  for (const pattern of COOKIE_CONSENT_PATTERNS) {
+    const match = front.match(pattern);
     if (match) {
       return { detected: true, match: match[0] };
     }
@@ -658,11 +693,24 @@ function isGarbageContent(text) {
     return { isGarbage: true, reason: `Content too short (${trimmed.length} chars)` };
   }
 
+  // Mostly whitespace — real reviews have >30% non-whitespace characters
+  const nonWhitespace = trimmed.replace(/\s/g, '').length;
+  if (nonWhitespace < trimmed.length * 0.3 && nonWhitespace < 500) {
+    return { isGarbage: true, reason: `Mostly whitespace (${nonWhitespace} non-ws chars out of ${trimmed.length})` };
+  }
+
   // Position-aware check: for ad blocker, paywall, newsletter, and legal patterns,
   // only flag as garbage if the pattern appears in the FRONT of the text.
   // If the pattern is trailing junk on an otherwise valid review, cleanText() will
   // handle it — don't reject the entire review.
   const hasSubstantialReviewContent = trimmed.length >= 500 && _countTheaterKeywords(trimmed) >= 3;
+
+  // Check for cookie consent / GDPR banner — always garbage, even with theater keywords
+  // (consent text contains generic words like "show", "performance" that fool keyword checks)
+  const cookieConsent = detectCookieConsent(text);
+  if (cookieConsent.detected) {
+    return { isGarbage: true, reason: `Cookie consent/GDPR banner: "${cookieConsent.match}"` };
+  }
 
   // Check for ad blocker message
   const adBlocker = detectAdBlocker(text);
@@ -685,11 +733,13 @@ function isGarbageContent(text) {
   }
 
   // Check for 404/error page
-  // For longer texts (>500 chars), only check the first 300 chars — real reviews
-  // may contain phrases like "has been removed" in legitimate theatrical context
-  const errorCheckText = trimmed.length > 500
-    ? trimmed.substring(0, 300)
-    : text;
+  // For longer texts (>500 chars), only check the first 300 meaningful chars — real reviews
+  // may contain phrases like "has been removed" in legitimate theatrical context.
+  // Collapse whitespace first so leading blank lines don't consume the check window.
+  const collapsedForErrorCheck = trimmed.replace(/\s+/g, ' ');
+  const errorCheckText = collapsedForErrorCheck.length > 500
+    ? collapsedForErrorCheck.substring(0, 300)
+    : collapsedForErrorCheck;
   const errorPage = detectErrorPage(errorCheckText);
   if (errorPage.detected) {
     return { isGarbage: true, reason: `Error/404 page: "${errorPage.match}"` };
