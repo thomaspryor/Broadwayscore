@@ -139,7 +139,10 @@
     "take-me-out-2022/nypost--johnny-oleksinski.json",
     "company-2021/timeout--adam-feldman.json",
     "mrs-doubtfire-2021/nypost--johnny-oleksinski.json",
-    "trouble-in-mind-2021/wsj--terry-teachout.json"
+    "trouble-in-mind-2021/wsj--terry-teachout.json",
+    "pass-over-2021/nypost--johnny-oleksinski.json",
+    "west-side-story-2020/nypost--johnny-oleksinski.json",
+    "a-soldiers-play-2020/nydailynews--chris-jones.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -252,7 +255,14 @@
     "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
     "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
     "is-this-a-room-2021/hollywood-reporter--angie-han.json",
-    "is-this-a-room-2021/washpost--peter-marks.json"
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "west-side-story-2020/theater-news-online--jeremy-gerard.json",
+    "west-side-story-2020/theater-news-online--mervyn-rothstein.json",
+    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+    "a-soldiers-play-2020/theater-news-online--jeremy-gerard.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json",
+    "my-name-is-lucy-barton-2020/theater-news-online--david-cote.json",
+    "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -373,7 +383,11 @@
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
       "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
       "data/review-texts/mrs-doubtfire-2021/nypost--johnny-oleksinski.json",
-      "mrs-doubtfire-2021/nypost--johnny-oleksinski.json"
+      "mrs-doubtfire-2021/nypost--johnny-oleksinski.json",
+      "data/review-texts/pass-over-2021/nypost--johnny-oleksinski.json",
+      "pass-over-2021/nypost--johnny-oleksinski.json",
+      "data/review-texts/west-side-story-2020/nypost--johnny-oleksinski.json",
+      "west-side-story-2020/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -403,7 +417,8 @@
       "just-for-us-2023/timeout--adam-feldman.json",
       "good-night-oscar-2023/nydailynews--chris-jones.json",
       "topdog-underdog-2022/broadwaynews--brittani-samuel.json",
-      "death-of-a-salesman-2022/nydailynews--chris-jones.json"
+      "death-of-a-salesman-2022/nydailynews--chris-jones.json",
+      "a-soldiers-play-2020/nydailynews--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -459,7 +474,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "is-this-a-room-2021/washpost--peter-marks.json",
+  "lastProcessed": "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -757,6 +772,28 @@
       "t": "2026-04-03T12:44:30.667Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-03T12:45:13.890Z",
+      "event": "bb-session",
+      "session": "277cecba",
+      "url": "https://nypost.com/2021/08/22/pass-over-broadway-review-an-enticing-uneven-play/"
+    },
+    {
+      "t": "2026-04-03T12:45:15.277Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-03T12:45:33.450Z",
+      "event": "bb-session",
+      "session": "b39a918d",
+      "url": "https://nypost.com/2020/02/20/west-side-story-broadway-review-radical-revival-is"
+    },
+    {
+      "t": "2026-04-03T12:45:34.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
