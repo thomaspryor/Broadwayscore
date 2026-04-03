@@ -317,28 +317,73 @@ function renderShows(data) {
   }).join('');
 }
 
+function checkIcon(c) {
+  if (!c) return '';
+  return c.pass === true ? (c.warn ? '<span style="color:var(--yellow)">!</span>' : '<span style="color:var(--green)">\u2713</span>')
+    : c.pass === false ? '<span style="color:var(--red)">\u2717</span>'
+    : '<span style="color:var(--dim)">?</span>';
+}
+function renderInfra(data) {
+  const g = data.infrastructure;
+  if (!g) return;
+  const el = document.getElementById('upcoming');
+  const items = [
+    g.orchestratorCron ? checkIcon(g.orchestratorCron) + ' Orchestrator: ' + esc(g.orchestratorCron.detail) : null,
+    g.scrapingBee ? checkIcon(g.scrapingBee) + ' ScrapingBee: ' + esc(g.scrapingBee.detail) : null,
+    g.brightData ? checkIcon(g.brightData) + ' Bright Data: ' + esc(g.brightData.detail) : null,
+  ].filter(Boolean);
+  if (!items.length) return;
+  const infraHtml = '<div class="section-header">Infrastructure</div>' +
+    '<div class="card-upcoming" style="opacity:1"><div style="font-size:12px;line-height:1.8">' +
+    items.join('<br>') + '</div></div>';
+  el.insertAdjacentHTML('afterbegin', infraHtml);
+}
 function renderUpcoming(data) {
   const el = document.getElementById('upcoming');
   const list = (data.upcoming || []).filter(s => activeFilters.has(s.category));
-  if (!list.length) { el.innerHTML = ''; return; }
-  el.innerHTML = '<div class="section-header">Opening Soon</div>' +
-    list.map(s => {
-      const imgEl = s.thumbnail
-        ? '<img class="card-thumb" src="' + s.thumbnail + '" alt="" loading="lazy">'
-        : '<div class="card-thumb-placeholder">\u{1F3AD}</div>';
-      const showUrl = 'https://broadwayscorecard.com/shows/' + (s.slug || s.id);
-      const dayLabel = s.daysUntil === 1 ? 'tomorrow' : 'in ' + s.daysUntil + ' days';
-      return '<div class="card-upcoming">' +
-        '<div class="card-top">' +
-          imgEl +
-          '<div class="card-info" style="flex:1;min-width:0">' +
-            '<div class="show-title"><a href="' + showUrl + '">' + esc(s.title) + '</a> <span class="market-pill ' + marketClass(s.category) + '">' + marketLabel(s.category) + '</span></div>' +
-            '<div class="show-meta">' + esc(s.type) + ' \u00b7 ' + s.openingDate + ' \u00b7 ' + s.status + '</div>' +
-          '</div>' +
-          '<span class="days-pill">' + dayLabel + '</span>' +
+  if (!list.length && !data.infrastructure) { el.innerHTML = ''; return; }
+  let html = list.length ? '<div class="section-header">Opening Soon</div>' : '';
+  html += list.map(s => {
+    const imgEl = s.thumbnail
+      ? '<img class="card-thumb" src="' + s.thumbnail + '" alt="" loading="lazy">'
+      : '<div class="card-thumb-placeholder">\u{1F3AD}</div>';
+    const showUrl = 'https://broadwayscorecard.com/shows/' + (s.slug || s.id);
+    const dayLabel = s.daysUntil === 0 ? 'today' : s.daysUntil === 1 ? 'tomorrow' : 'in ' + s.daysUntil + ' days';
+    // Readiness summary
+    let readinessHtml = '';
+    if (s.readinessSummary) {
+      const sm = s.readinessSummary;
+      if (sm.failures > 0) {
+        readinessHtml = '<div style="font-size:11px;margin-top:4px"><span style="color:var(--red)">\u2717 ' + sm.failures + ' issue' + (sm.failures > 1 ? 's' : '') + '</span>';
+      } else if (sm.warnings > 0) {
+        readinessHtml = '<div style="font-size:11px;margin-top:4px"><span style="color:var(--yellow)">! ' + sm.warnings + ' warning' + (sm.warnings > 1 ? 's' : '') + '</span>';
+      } else {
+        readinessHtml = '<div style="font-size:11px;margin-top:4px"><span style="color:var(--green)">\u2713 Pre-flight OK</span>';
+      }
+      // Show check details inline
+      if (s.readinessChecks) {
+        const details = Object.entries(s.readinessChecks)
+          .filter(([, v]) => v.pass === false || v.warn)
+          .map(([k, v]) => checkIcon(v) + ' ' + k + ': ' + esc(v.detail))
+          .join('<br>');
+        if (details) readinessHtml += '<br>' + details;
+      }
+      readinessHtml += '</div>';
+    }
+    return '<div class="card-upcoming">' +
+      '<div class="card-top">' +
+        imgEl +
+        '<div class="card-info" style="flex:1;min-width:0">' +
+          '<div class="show-title"><a href="' + showUrl + '">' + esc(s.title) + '</a> <span class="market-pill ' + marketClass(s.category) + '">' + marketLabel(s.category) + '</span></div>' +
+          '<div class="show-meta">' + esc(s.type) + ' \u00b7 ' + s.openingDate + ' \u00b7 ' + s.status + '</div>' +
+          readinessHtml +
         '</div>' +
-      '</div>';
-    }).join('');
+        '<span class="days-pill">' + dayLabel + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  el.innerHTML = html;
+  renderInfra(data);
 }
 
 async function fetchAndRender() {
