@@ -114,7 +114,14 @@
     "sunset-boulevard-2024/hollywood-reporter--david-rooney.json",
     "yellow-face-2024/broadwaynews--brittani-samuel.json",
     "mcneal-2024/vulture--jackson-mchenry.json",
-    "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json"
+    "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json",
+    "cats-the-jellicle-ball-off-broadway-2024/theatermania--zachary-stewart.json",
+    "illinoise-2024/deadline--greg-evans.json",
+    "uncle-vanya-2024/deadline--greg-evans.json",
+    "patriots-2024/deadline--greg-evans.json",
+    "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+    "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
+    "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -192,7 +199,10 @@
     "eureka-day-2024/times-uk--clive-davis.json",
     "swept-away-2024/nydailynews--chris-jones.json",
     "romeo-juliet-2024/thestage--nicole-serratore.json",
-    "the-hills-of-california-2024/times-uk--clive-davis.json"
+    "the-hills-of-california-2024/times-uk--clive-davis.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "spamalot-2023/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -260,7 +270,11 @@
       "burlesque-west-end-2026/times-uk--clive-davis.json",
       "the-last-five-years-2025/guardian--adrian-horton.json",
       "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json",
-      "tammy-faye-2024/nydailynews--chris-jones.json"
+      "tammy-faye-2024/nydailynews--chris-jones.json",
+      "cats-the-jellicle-ball-off-broadway-2024/theatermania--zachary-stewart.json",
+      "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+      "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
+      "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json"
     ],
     "amp": [],
     "browserbase": [
@@ -285,7 +299,13 @@
       "data/review-texts/elf-2024/deadline--greg-evans.json",
       "elf-2024/deadline--greg-evans.json",
       "data/review-texts/sunset-boulevard-2024/hollywood-reporter--david-rooney.json",
-      "sunset-boulevard-2024/hollywood-reporter--david-rooney.json"
+      "sunset-boulevard-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/illinoise-2024/deadline--greg-evans.json",
+      "illinoise-2024/deadline--greg-evans.json",
+      "data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
+      "uncle-vanya-2024/deadline--greg-evans.json",
+      "data/review-texts/patriots-2024/deadline--greg-evans.json",
+      "patriots-2024/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -324,7 +344,8 @@
       "data/review-texts/sweetmeats-west-end-2026/thestage--holly-omahony.json",
       "data/review-texts/the-monsters-off-broadway-2026/vulture--jackson-mchenry.json",
       "data/review-texts/beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json",
-      "data/review-texts/swept-away-2024/nydailynews--chris-jones.json"
+      "data/review-texts/swept-away-2024/nydailynews--chris-jones.json",
+      "data/review-texts/spamalot-2023/wsj--charles-isherwood.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -352,7 +373,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json",
+  "lastProcessed": "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -507,6 +528,50 @@
       "t": "2026-04-03T11:58:53.412Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-03T12:02:01.943Z",
+      "event": "bb-session",
+      "session": "9aadb026",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-04-03T12:02:03.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T12:02:16.169Z",
+      "event": "bb-session",
+      "session": "5e18189b",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-04-03T12:02:17.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T12:02:32.223Z",
+      "event": "bb-session",
+      "session": "d3f22195",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-04-03T12:02:33.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T12:03:19.575Z",
+      "event": "bb-session",
+      "session": "8d0b8d62",
+      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-e"
+    },
+    {
+      "t": "2026-04-03T12:03:20.939Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
