@@ -309,7 +309,7 @@ function verifyProduction({ showId, url, publishDate, text, showData, category }
  * Quick check for date mismatch (fast, no text analysis)
  * @returns {boolean} True if dates look OK
  */
-function quickDateCheck(showId, url, publishDate) {
+function quickDateCheck(showId, url, publishDate, openingDate) {
   const yearMatch = showId.match(/-(\d{4})$/);
   if (!yearMatch) return true;
 
@@ -317,7 +317,19 @@ function quickDateCheck(showId, url, publishDate) {
 
   // NOTE: Do NOT check URL patterns for year. URL structure is unreliable.
 
-  // Check publish date year
+  // Tight check: if we have both publishDate and openingDate, reject reviews
+  // published more than 30 days before opening. Catches wrong-production SERP
+  // results (e.g., 2019 review for a 2026 revival) that year-only check misses.
+  if (publishDate && openingDate) {
+    const pubDate = new Date(publishDate);
+    const openDate = new Date(openingDate);
+    if (!isNaN(pubDate.getTime()) && !isNaN(openDate.getTime())) {
+      const daysBefore = (openDate - pubDate) / (1000 * 60 * 60 * 24);
+      if (daysBefore > 30) return false;
+    }
+  }
+
+  // Loose fallback: year-based check when openingDate not available
   if (publishDate) {
     const dateYearMatch = publishDate.match(/\b(20\d{2})\b/);
     if (dateYearMatch) {
