@@ -18,6 +18,11 @@ on:
         required: false
         default: '2'
         type: string
+      aggregators_only:
+        description: 'Skip SERP, use only aggregators + RSS + site-search (for opening night when SERP returns wrong URLs)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -214,8 +219,13 @@ jobs:
           echo "ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:+SET}"
 
           # Check if gather-reviews script exists
+          AGG_ONLY_FLAG=""
+          if [ "${{ inputs.aggregators_only }}" = "true" ]; then
+            AGG_ONLY_FLAG="--aggregators-only"
+            echo "ℹ️ Running in aggregators-only mode (SERP skipped)"
+          fi
           if [ -f scripts/gather-reviews.js ]; then
-            node scripts/gather-reviews.js --shows="$SHOWS"
+            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG
           else
             echo "Note: scripts/gather-reviews.js not found"
             echo "Review data will need to be gathered manually"
