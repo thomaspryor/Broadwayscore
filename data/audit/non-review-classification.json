@@ -1,46 +1,46 @@
 {
   "meta": {
-    "generatedAt": "2026-04-03T17:21:22.637Z",
+    "generatedAt": "2026-04-03T20:27:51.785Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 29434,
-      "inReviewsJson": 15634,
-      "skippedExcluded": 5,
-      "withFullText": 20,
-      "excerptOnly": 1886,
-      "llmClassified": 19,
+      "totalFiles": 29464,
+      "inReviewsJson": 15626,
+      "skippedExcluded": 6,
+      "withFullText": 58,
+      "excerptOnly": 1848,
+      "llmClassified": 49,
       "heuristicFlagged": 0,
       "nonReviewsFound": 2,
-      "uncertainCases": 16,
-      "budgetUsed": 0.0020000000000000005,
-      "llmCalls": 20,
+      "uncertainCases": 13,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13723
+      "skippedAlreadyClassified": 13714
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "death-of-a-salesman-2012/variety--marilyn-stasio.json",
-      "showId": "death-of-a-salesman-2012",
-      "outlet": "Variety",
-      "outletId": "variety",
-      "contentType": "feature",
+      "file": "oliver-west-end-2024/the-express--neil-norman.json",
+      "showId": "oliver-west-end-2024",
+      "outlet": "The Express",
+      "outletId": "the-express",
+      "contentType": "news",
       "confidence": "high",
-      "reasoning": "This is a review of the documentary \"Death Row\" by Werner Herzog, not a review of \"Death of a Salesman.\"",
-      "currentScore": 81
+      "reasoning": "This is a roundup of very brief reviews and news items about various shows; it does not contain a review of \"Oliver!\"",
+      "currentScore": 85
     },
     {
-      "file": "the-boy-from-oz-2003/nytimes--ben-brantley.json",
-      "showId": "the-boy-from-oz-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
+      "file": "stranger-things-the-first-shadow-west-end-2023/standard--nick-curtis.json",
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "outlet": "Evening Standard",
+      "outletId": "standard",
       "contentType": "feature",
       "confidence": "high",
-      "reasoning": "This article discusses the biographical background of Peter Allen and the choices made in portraying his life in \"The Boy From Oz,\" rather than evaluating the quality of the production itself. It's a feature article exploring the show's context.",
-      "currentScore": 43
+      "reasoning": "This article describes various travel destinations and resorts, and does not contain any review or evaluation of the Broadway show \"Stranger Things: The First Shadow\".",
+      "currentScore": 100
     }
   ],
   "uncertainCases": [
@@ -51,7 +51,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production itself. It also includes summaries of other shows, indicating it's a roundup or feature rather than a dedicated review.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items about other shows.",
       "currentScore": 82
     },
     {
@@ -61,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -91,7 +91,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The text discusses how to stage the play, suggesting a feature article rather than a review. The article does not evaluate the quality of the production.",
       "currentScore": 60
     },
     {
@@ -101,7 +101,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -111,7 +111,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -121,7 +121,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -131,7 +131,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. Based on the available text, it seems to be a news article or advertisement rather than a review of \"Parade.\"",
+      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -141,7 +141,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -151,7 +151,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -161,7 +161,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's not solely a review.",
+      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -171,53 +171,56 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
-    },
-    {
-      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
-      "showId": "the-glass-menagerie-2017",
-      "outlet": "The Front Row Center",
-      "outletId": "front-row-center",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article provides production details, cast, and creative team information, resembling a news announcement or listing rather than a critical evaluation.",
-      "currentScore": 64
-    },
-    {
-      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
-      "showId": "the-price-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
-      "currentScore": 78
-    },
-    {
-      "file": "yellow-face-2024/joysauce--janvi-sai.json",
-      "showId": "yellow-face-2024",
-      "outlet": "joysauce",
-      "outletId": "joysauce",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
-      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "annie-2012/newsday--linda-winer.json"
+    "abba-voyage-off-west-end-2026/artsdesk--katie-colombus.json",
+    "abba-voyage-off-west-end-2026/independent--jessie-thompson.json",
+    "abba-voyage-off-west-end-2026/london-theatre--sophie-thomas.json",
+    "abba-voyage-off-west-end-2026/standard--david-smyth.json",
+    "abba-voyage-off-west-end-2026/timeout-london--chiara-wilkinson.json",
+    "consumed-west-end-2026/artsdesk--rachel-halliburton.json",
+    "consumed-west-end-2026/london-theatre--matt-wolf.json",
+    "dog-day-afternoon-2026/ew--dalton-ross.json",
+    "dog-day-afternoon-2026/nypost--johnny-oleksinski.json",
+    "dog-day-afternoon-2026/nysr--frank-scheck.json",
+    "dog-day-afternoon-2026/theatre-reviews-limited--david-roberts.json",
+    "every-brilliant-thing-2026/ew--dalton-ross.json",
+    "every-brilliant-thing-2026/new-york-sun--elysa-gardner.json",
+    "every-brilliant-thing-2026/variety--aramide-tinubu.json",
+    "hadestown-west-end-2024/daily-mail--quentin-letts.json",
+    "heartbreak-hotel-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "into-the-woods-west-end-2025/times-uk--clive-davis.json",
+    "jesa-off-broadway-2026/la-voce-di-new-york--elise-nussbaum.json",
+    "jesa-off-broadway-2026/off-off-online--adrienne-onofri.json",
+    "jesa-off-broadway-2026/theater-scene--victor-gluck.json",
+    "john-proctor-is-the-villain-west-end-2026/financialtimes--sarah-hemming.json",
+    "john-proctor-is-the-villain-west-end-2026/whatsonstage--alun-hood.json",
+    "marie-and-rosetta-west-end-2026/whatsonstage--maygan-forbes.json",
+    "mj-2022/washpost--peter-marks.json",
+    "moulin-rouge-the-musical-west-end-2021/timeout-london--andrzej-lukowski.json",
+    "no-singing-in-the-navy-off-broadway-2026/culturesauce--thom-geier.json",
+    "oh-mary-west-end-2025/financialtimes--sarah-hemming.json",
+    "oliver-west-end-2024/portsmouth-news--james-george.json",
+    "oliver-west-end-2024/west-sussex-gazette--gary-shipton.json",
+    "operation-mincemeat-west-end-2024/whatsonstage--theo-bosanquet.json",
+    "stranger-things-2024/nypost--johnny-oleksinski.json",
+    "stranger-things-2024/timeout--adam-feldman.json",
+    "teeth-n-smiles-west-end-2026/london-box-office--stuart-king.json",
+    "the-devil-wears-prada-west-end-2024/i-paper--fiona-mountford.json"
   ],
   "perShowSummary": [
     {
-      "showId": "death-of-a-salesman-2012",
-      "currentCount": 17,
+      "showId": "oliver-west-end-2024",
+      "currentCount": 16,
       "removed": 1
     },
     {
-      "showId": "the-boy-from-oz-2003",
-      "currentCount": 1,
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "currentCount": 17,
       "removed": 1
     }
   ]

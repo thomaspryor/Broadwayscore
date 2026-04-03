@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T17:26:09.240Z",
+  "timestamp": "2026-04-03T20:32:26.627Z",
   "stats": {
-    "totalReviews": 29001,
-    "alreadyFlagged": 8057,
+    "totalReviews": 29034,
+    "alreadyFlagged": 8088,
     "dateGuardCatches": 13,
-    "directorMismatch": 882,
-    "tvFilmSignals": 3348,
-    "londonSignals": 998,
-    "offBroadwaySignals": 975,
+    "directorMismatch": 883,
+    "tvFilmSignals": 3361,
+    "londonSignals": 1006,
+    "offBroadwaySignals": 976,
     "yearMismatch": 65,
-    "noPublishDate": 5690
+    "noPublishDate": 5676
   },
   "findings": [
     {
@@ -2083,6 +2083,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "file": "london-theatre--sophie-thomas.json",
+      "score": 89,
+      "publishDate": "2022-05-27",
+      "url": "https://www.londontheatre.co.uk/reviews/abba-voyage-review-abba-arena",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"motion picture\""
+        }
+      ]
+    },
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "file": "standard--david-smyth.json",
+      "score": 93,
+      "publishDate": "2022-05-27",
+      "url": "https://www.standard.co.uk/culture/music/abba-voyage-concert-experience-review-london-arena-b1002718.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -12830,6 +12858,34 @@
     },
     {
       "showId": "dog-day-afternoon-2026",
+      "file": "ew--dalton-ross.json",
+      "score": 75,
+      "publishDate": "March 31, 2026",
+      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "mashable--kristy-puchko.json",
+      "score": 47,
+      "publishDate": "2026-03-30",
+      "url": "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 68,
       "publishDate": "2026-03-31",
@@ -12844,10 +12900,66 @@
     },
     {
       "showId": "dog-day-afternoon-2026",
+      "file": "newyorker--emily-nussbaum.json",
+      "score": null,
+      "publishDate": "2026-03-30",
+      "url": "https://www.newyorker.com/magazine/2026/04/13/dog-day-afternoon-theatre-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
       "file": "nydailynews--chris-jones.json",
       "score": 63,
       "publishDate": "2026-03-31",
       "url": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 59,
+      "publishDate": "March 31, 2026",
+      "url": "https://nystagereview.com/2026/03/31/dog-day-afternoon-now-you-too-can-chant-attica-attica/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "nysr--roma-torre.json",
+      "score": 45,
+      "publishDate": "March 31, 2026",
+      "url": "https://nystagereview.com/2026/03/31/dog-day-afternoon-more-punchlines-than-peril/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": null,
+      "publishDate": "2026-03-30",
+      "url": "https://1minutecritic.com/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -13851,9 +13963,9 @@
     {
       "showId": "every-brilliant-thing-2026",
       "file": "ew--dalton-ross.json",
-      "score": 85,
+      "score": 80,
       "publishDate": "2026-03-12",
-      "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829?srsltid=AfmBOorPOLfmHLi3gom-921roRT0qArn-cFbOO0jVdFh-ImuOB-m2bSd",
+      "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -19974,8 +20086,8 @@
       "showId": "hairspray-2002",
       "file": "nytimes--ben-brantley.json",
       "score": 88,
-      "publishDate": "2002-10-17",
-      "url": "https://www.newspapers.com/image/1288895067/",
+      "publishDate": "August 16, 2002",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9F0CE1DA173DF935A2575BC0A9649C8B63",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24085,6 +24197,30 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": null,
+      "publishDate": "2025-12-11",
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "independent--louis-chilton.json",
       "score": 79,
       "publishDate": "2025-12-12",
@@ -24216,6 +24352,20 @@
       "score": 88,
       "publishDate": "2026-01-15",
       "url": "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": 85,
+      "publishDate": "2025-12-11",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b?gaa_at=eafs&gaa_n=AWEtsqewS4asH9dOpBRkGr14r7oO_WtnbyzHzUEcsWYFhhAXS_YX5GrJIDg02txfwB0%3D&gaa_ts=693c087d&gaa_sig=3nLmAA87YjX1jabQUqv9a73Q9XJ2i47cqm-Gj4kj6hGV9VgHN_qv6mjd5C6NrRbDQqD2T46vajJi3ZyxvY-7BQ%3D%3D",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -25372,9 +25522,9 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 93,
-      "publishDate": "2026-03-27",
-      "url": "https://www.ft.com/content/9dba4af9-ccff-4f14-8eba-e2cea2a4d2d7",
+      "score": 85,
+      "publishDate": "2026-03-26",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31759,6 +31909,20 @@
       ]
     },
     {
+      "showId": "mj-2022",
+      "file": "washpost--peter-marks.json",
+      "score": null,
+      "publishDate": "2022-02-01",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/06/06/myles-frost-michael-jackson-mj/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
       "showId": "mj-the-musical-west-end-2024",
       "file": "artsdesk--helen-hawkins.json",
       "score": 73,
@@ -35763,6 +35927,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "nytimes--alexis-soloski.json",
+      "score": null,
+      "publishDate": "2023-05-09",
+      "url": "https://www.nytimes.com/2023/08/09/theater/operation-mincemeat-musical-west-end.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -43461,20 +43644,6 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "i-paper--emily-baker.json",
-      "score": 78,
-      "publishDate": "2023-12-14",
-      "url": "https://inews.co.uk/culture/television/stranger-things-the-first-shadow-review-a-cash-cow-but-a-mesmerising-one-2809768?srsltid=AfmBOor78MzqX-DkMZXopworBCurbv4J3Nb7yOecpOPyrrg7hmQsHf14",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "independent--alice-saville.json",
       "score": 80,
       "publishDate": "2023-12-15",
@@ -43624,20 +43793,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
-      "publishDate": "2023-12-14",
-      "url": "https://www.whatsonstage.com/news/the-land-of-the-living-with-juliet-stevenson-at-the-national-theatre-review_1695391/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
         }
       ]
     },
@@ -48443,6 +48598,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2024-12-06",
+      "url": "https://www.londontheatre1.com/reviews/the-devil-wears-prada-dominion-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"motion picture\""
         }
       ]
     },
@@ -56406,6 +56574,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-broadway-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 50,
+      "publishDate": "2026-03-06",
+      "url": "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -65827,6 +66014,20 @@
     },
     {
       "showId": "hadestown-west-end-2024",
+      "file": "daily-mail--quentin-letts.json",
+      "score": 79,
+      "publishDate": "2024-02-22",
+      "url": "https://www.dailymail.co.uk/debate/article-6386989/Greek-epic-lost-love-hit-myth-QUENTIN-LETTS-reviews-Hadestown-National-Theatre.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
       "file": "everything-theatre--dean-wood.json",
       "score": 88,
       "publishDate": "2024-02-24",
@@ -65887,6 +66088,19 @@
       "score": 83,
       "publishDate": "2024-02-22",
       "url": "https://www.londontheatre.co.uk/reviews/hadestown-review-lyric-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2024-02-22",
+      "url": "https://www.londontheatre1.com/reviews/hadestown-at-the-lyric-theatre-london-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69713,6 +69927,20 @@
       ]
     },
     {
+      "showId": "macbeth-1981",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "1981-01-22",
+      "url": "https://www.thewrap.com/macbeth-broadway-review-daniel-craig-ruth-negga/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
       "showId": "macbeth-2013",
       "file": "ew--leah-greenblatt.json",
       "score": 78,
@@ -70086,6 +70314,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2026",
+      "file": "whatsonstage--maygan-forbes.json",
+      "score": 61,
+      "publishDate": "2026-02-28",
+      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-in-the-west-end-review_1714558/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -71796,7 +72038,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "whatsonstage--gareth-carr.json",
-      "score": null,
+      "score": 85,
       "publishDate": "2024-12-14",
       "url": "https://www.whatsonstage.com/news/oliver-at-chichester-festival-theatre-review-revival-glorious-revival_1616946/",
       "findings": [
@@ -74506,9 +74748,9 @@
     {
       "showId": "stranger-things-2024",
       "file": "nypost--johnny-oleksinski.json",
-      "score": 42,
-      "publishDate": "April 23, 2025",
-      "url": "https://nypost.com/2025/04/23/entertainment/stranger-things-the-first-shadow-review-netflixs-broadway-play-is-an-assault-on-the-senses/",
+      "score": 40,
+      "publishDate": "2025-04-22",
+      "url": "https://nypost.com/2025/04/23/entertainment/stranger-things-the-first-shadow-review-netflixs-broadway-play-is-an-assault-on-the-senses/?utm_medium=social&utm_source=twitter&utm_campaign=nypost",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -74687,9 +74929,9 @@
     {
       "showId": "stranger-things-2024",
       "file": "timeout--adam-feldman.json",
-      "score": 65,
-      "publishDate": "April 22, 2025",
-      "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+      "score": 80,
+      "publishDate": "2025-04-22",
+      "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccarthy",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -76978,6 +77220,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2024-12-06",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-devil-wears-prada-dominion-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "british-theatre--susan-novak.json",
+      "publishDate": "2024-12-09",
+      "url": "https://www.britishtheatre.com/posts/the-devil-wears-prada-musical-divides-critics",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -80141,6 +80409,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "titus-andronicus-off-broadway-2026",
+      "file": "theater-scene--darryl-reilly.json",
+      "score": 78,
+      "publishDate": "2026-03-17",
+      "url": "https://theaterscene.org/2026/03/titus-andronicus/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
