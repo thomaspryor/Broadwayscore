@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T12:19:47.410Z",
+  "timestamp": "2026-04-03T12:48:40.173Z",
   "stats": {
     "totalReviews": 28479,
-    "alreadyFlagged": 8023,
+    "alreadyFlagged": 8028,
     "dateGuardCatches": 15,
-    "directorMismatch": 865,
-    "tvFilmSignals": 3349,
-    "londonSignals": 1001,
+    "directorMismatch": 870,
+    "tvFilmSignals": 3354,
+    "londonSignals": 1003,
     "offBroadwaySignals": 971,
     "yearMismatch": 65,
     "noPublishDate": 5795
@@ -2223,6 +2223,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "aint-no-mo-2022",
+      "file": "broadwaynews--brittani-samuel.json",
+      "score": 86,
+      "publishDate": "December 5, 2022",
+      "url": "https://broadwaynews.com/2022/12/05/time-has-sharpened-aint-no-mo-s-points-and-edges/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -9292,6 +9306,35 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "newyorker--helen-shaw.json",
+      "score": null,
+      "publishDate": "June 27th, 2024",
+      "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "nydailynews--chris-jones.json",
       "score": 83,
       "publishDate": "June 20, 2024",
@@ -9458,6 +9501,25 @@
       "score": 83,
       "publishDate": "August 8th, 2024",
       "url": "https://www.theaterscene.net/musicals/offbway/cats-the-jellicle-ball/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 81,
+      "publishDate": "June 20th, 2024",
+      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24505,6 +24567,20 @@
     },
     {
       "showId": "jajas-african-hair-braiding-2023",
+      "file": "theatrely--juan-a-ramirez.json",
+      "score": 83,
+      "publishDate": "October 3, 2023",
+      "url": "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "jajas-african-hair-braiding-2023",
       "file": "variety--aramide-tinubu.json",
       "score": 76,
       "publishDate": "October 3, 2023",
@@ -30315,6 +30391,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "mcneal-2024",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 43,
+      "publishDate": "September 30, 2024",
+      "url": "https://www.vulture.com/article/theater-review-robert-downey-jr-mcneal.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -44402,6 +44492,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 77,
+      "publishDate": "October 20, 2024",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sunset-blvd-broadway-review-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd-1236038232/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -63204,6 +63313,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "ew--lester-fabian-brathwaite.json",
+      "score": 78,
+      "publishDate": "October 3, 2022",
+      "url": "https://ew.com/theater/death-of-a-salesman-broadway-revival-review-wendell-pierce/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
