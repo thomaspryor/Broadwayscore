@@ -370,6 +370,11 @@ function getBestScore(data, opts = {}) {
     'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
     'artsdesk', 'thestage', 'whatsonstage', 'london-theatre',
     'metro', 'the-sun', 'digital-spy', 'radio-times',
+    // WE outlets with verified star ratings (added 2026-04-03)
+    'london-box-office', 'all-that-dazzles-uk', 'musical-theatre-review',
+    'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',
+    'tim-talks-theatre-uk', 'city-am', 'plays-international',
+    'theatreandtonic', 'the-recs', 'broadwayworld',
   ]);
   const isAggregatorSource = AGGREGATOR_SOURCES.has(data.source);
   const isWestEnd = data._showCategory === 'west-end' || data._showCategory === 'off-west-end';

@@ -63,7 +63,7 @@ const OUTLET_ALIAS_MAP = {
   'talkin-boradway': 'talkinbroadway',
   'new-jersey-news-room': 'new-jersey-newsroom',
   'ny-observer': 'observer',
-  'the-telegraph-uk': 'telegraph', 'the-telegraphy': 'telegraph',
+  'the-telegraph-uk': 'telegraph', 'the-telegraphy': 'telegraph', 'the-telegrap': 'telegraph',
   'huffingtion-post': 'huffpost',
   'blogcriticsorg': 'blogcritics',
   'times-square-chronicles-suzanna-bowling': 'times-square-chronicles',
