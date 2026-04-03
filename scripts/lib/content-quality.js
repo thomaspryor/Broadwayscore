@@ -90,7 +90,9 @@ const ERROR_PAGE_PATTERNS = [
   /doesn'?t?\s+exist/i,
   /has\s+been\s+(removed|deleted|taken\s+down)/i,
   /content\s+(is\s+)?unavailable/i,
+  /page\s+(is\s+)?unavailable/i,
   /we\s+can'?t\s+find\s+(that|the)\s+(page|article)/i,
+  /oops!?\s+page\s+unavailable/i,
 ];
 
 /**
@@ -691,6 +693,12 @@ function isGarbageContent(text) {
     return { isGarbage: true, reason: `Content too short (${trimmed.length} chars)` };
   }
 
+  // Mostly whitespace — real reviews have >30% non-whitespace characters
+  const nonWhitespace = trimmed.replace(/\s/g, '').length;
+  if (nonWhitespace < trimmed.length * 0.3 && nonWhitespace < 500) {
+    return { isGarbage: true, reason: `Mostly whitespace (${nonWhitespace} non-ws chars out of ${trimmed.length})` };
+  }
+
   // Position-aware check: for ad blocker, paywall, newsletter, and legal patterns,
   // only flag as garbage if the pattern appears in the FRONT of the text.
   // If the pattern is trailing junk on an otherwise valid review, cleanText() will
@@ -725,11 +733,13 @@ function isGarbageContent(text) {
   }
 
   // Check for 404/error page
-  // For longer texts (>500 chars), only check the first 300 chars — real reviews
-  // may contain phrases like "has been removed" in legitimate theatrical context
-  const errorCheckText = trimmed.length > 500
-    ? trimmed.substring(0, 300)
-    : text;
+  // For longer texts (>500 chars), only check the first 300 meaningful chars — real reviews
+  // may contain phrases like "has been removed" in legitimate theatrical context.
+  // Collapse whitespace first so leading blank lines don't consume the check window.
+  const collapsedForErrorCheck = trimmed.replace(/\s+/g, ' ');
+  const errorCheckText = collapsedForErrorCheck.length > 500
+    ? collapsedForErrorCheck.substring(0, 300)
+    : collapsedForErrorCheck;
   const errorPage = detectErrorPage(errorCheckText);
   if (errorPage.detected) {
     return { isGarbage: true, reason: `Error/404 page: "${errorPage.match}"` };
