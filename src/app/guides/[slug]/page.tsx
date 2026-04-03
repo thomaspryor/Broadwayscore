@@ -212,6 +212,24 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
               {shows.length} {shows.length === 1 ? 'show' : 'shows'} | Last updated: {metadata.monthYear}
             </p>
           )}
+
+          {/* Methodology blurb — E-E-A-T trust signal */}
+          {shows.length > 0 && (
+            <details className="mt-4 text-sm">
+              <summary className="text-gray-400 hover:text-gray-300 cursor-pointer font-medium transition-colors">
+                How We Rank
+              </summary>
+              <p className="mt-2 text-gray-500 leading-relaxed">
+                Rankings are based on CriticScore, an aggregate of professional reviews from 400+ outlets
+                including The New York Times, Vulture, and Variety. Top-tier outlets carry the most weight
+                in the composite score. Each show needs a minimum number of reviews to qualify. Scores are
+                recalculated weekly.{' '}
+                <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
+                  Learn more about our methodology
+                </Link>.
+              </p>
+            </details>
+          )}
         </div>
 
         {/* Year Page Navigation */}
