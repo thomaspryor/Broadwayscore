@@ -392,7 +392,17 @@
     "the-lion-king-1997/timeout--adam-feldman.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "perfect-crime-off-broadway-1987/woman-around-town--quan-lam.json",
-    "high-noon-west-end-2025/times-uk--clive-davis.json"
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "dead-outlaw-2025/usatoday--patrick-ryan.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "swept-away-2024/nydailynews--chris-jones.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -605,7 +615,9 @@
       "data/review-texts/romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
       "data/review-texts/titanique-west-end-2024/standard--nick-curtis.json",
       "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json",
-      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json"
+      "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
+      "data/review-texts/dead-outlaw-2025/usatoday--patrick-ryan.json",
+      "data/review-texts/swept-away-2024/nydailynews--chris-jones.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -641,7 +653,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "high-noon-west-end-2025/times-uk--clive-davis.json",
+  "lastProcessed": "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -1014,6 +1026,17 @@
     },
     {
       "t": "2026-04-03T13:23:52.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-04-03T13:32:39.465Z",
+      "event": "bb-session",
+      "session": "2f25063d",
+      "url": "https://www.nydailynews.com/2024/11/19/broadway-review-avett-brothers-musical-sw"
+    },
+    {
+      "t": "2026-04-03T13:32:40.664Z",
       "event": "bb-cookie-inject",
       "domain": "nydailynews.com"
     }
