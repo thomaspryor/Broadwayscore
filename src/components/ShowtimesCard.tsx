@@ -3,12 +3,13 @@
 import { useState, useMemo, useEffect } from 'react';
 import type { ShowSchedule, WeekSchedule } from '@/lib/data-types';
 import TicketLink from '@/components/TicketLink';
+import type { TicketLinkData } from '@/lib/ticket-utils';
 
 interface ShowtimesCardProps {
   schedule: ShowSchedule;
   currentMonday: string;
   showStatus: string;
-  todayTixUrl?: string;
+  ticketLinks?: TicketLinkData[];
   showName?: string;
   showId?: string;
   showSlug?: string;
@@ -65,7 +66,7 @@ function getTodayIndex(mondayStr: string, now: Date): number {
   return -1;
 }
 
-export default function ShowtimesCard({ schedule, currentMonday, showStatus, todayTixUrl, showName, showId, showSlug }: ShowtimesCardProps) {
+export default function ShowtimesCard({ schedule, currentMonday, showStatus, ticketLinks, showName, showId, showSlug }: ShowtimesCardProps) {
   // Don't render for closed shows or if no weeks data
   const weekKeys = useMemo(() => Object.keys(schedule.weeks).sort(), [schedule.weeks]);
 
@@ -97,6 +98,10 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
 
   const canPrev = clampedIndex > 0;
   const canNext = clampedIndex < weekKeys.length - 1;
+
+  // Pick the best ticket link (first in sorted array = highest priority)
+  const primaryLink = ticketLinks?.[0];
+  const hasTicketLink = !!primaryLink;
 
   return (
     <section className="card p-5 sm:p-6 mb-6 scroll-mt-20">
@@ -165,14 +170,38 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
               {isToday && (
                 <span className="text-[10px] text-brand/70 uppercase tracking-wider mr-2">today</span>
               )}
-              <span className={`ml-auto text-sm ${isDark ? 'text-gray-600' : 'text-white'}`}>
+              <span className={`ml-auto text-sm ${isDark ? 'text-gray-600' : ''}`}>
                 {isDark ? (
                   <span className="text-gray-600">&mdash;</span>
                 ) : (
                   <>
-                    {day.m && formatTime(day.m)}
+                    {day.m && (hasTicketLink ? (
+                      <TicketLink
+                        showName={showName ?? ''}
+                        showId={showId ?? ''}
+                        showSlug={showSlug}
+                        platform={primaryLink!.platform}
+                        url={primaryLink!.url}
+                        pageType="showtimes"
+                        className="text-brand/90 hover:text-brand underline underline-offset-2 decoration-brand/30 hover:decoration-brand/60 transition-colors"
+                      >
+                        {formatTime(day.m)}
+                      </TicketLink>
+                    ) : <span className="text-white">{formatTime(day.m)}</span>)}
                     {day.m && day.e && <span className="text-gray-500 mx-1.5">&middot;</span>}
-                    {day.e && formatTime(day.e)}
+                    {day.e && (hasTicketLink ? (
+                      <TicketLink
+                        showName={showName ?? ''}
+                        showId={showId ?? ''}
+                        showSlug={showSlug}
+                        platform={primaryLink!.platform}
+                        url={primaryLink!.url}
+                        pageType="showtimes"
+                        className="text-brand/90 hover:text-brand underline underline-offset-2 decoration-brand/30 hover:decoration-brand/60 transition-colors"
+                      >
+                        {formatTime(day.e)}
+                      </TicketLink>
+                    ) : <span className="text-white">{formatTime(day.e)}</span>)}
                   </>
                 )}
               </span>
@@ -183,17 +212,17 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tod
 
       {/* Footer */}
       <div className="mt-3 text-center">
-        {todayTixUrl && (
+        {hasTicketLink && (
           <TicketLink
             showName={showName ?? ''}
             showId={showId ?? ''}
             showSlug={showSlug}
-            platform="TodayTix"
-            url={todayTixUrl}
+            platform={primaryLink!.platform}
+            url={primaryLink!.url}
             pageType="showtimes"
             className="inline-flex items-center gap-1.5 text-brand hover:text-brand/80 text-sm font-medium transition-colors mb-2"
           >
-            Get Tickets on TodayTix
+            Get Tickets on {primaryLink!.platform}
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
