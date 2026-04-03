@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-03T09:32:26.287Z",
+  "timestamp": "2026-04-03T09:44:47.646Z",
   "stats": {
-    "totalReviews": 27649,
+    "totalReviews": 27651,
     "alreadyFlagged": 7455,
     "dateGuardCatches": 15,
     "directorMismatch": 858,
@@ -72534,20 +72534,6 @@
       ]
     },
     {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 72,
-      "publishDate": "2026-03-31",
-      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "romeo-juliet-2024",
       "file": "latimes--charles-mcnulty.json",
       "score": 77,
@@ -75367,6 +75353,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "whatsonstage--aliya-al.json",
+      "score": 68,
+      "publishDate": "2026-04-02",
+      "url": "https://www.whatsonstage.com/news/the-authenticator-at-the-national-theatre-review_1717310/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
