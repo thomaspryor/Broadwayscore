@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T04:30:27.088Z",
+  "timestamp": "2026-04-03T04:44:18.987Z",
   "stats": {
-    "totalReviews": 27629,
-    "alreadyFlagged": 7404,
+    "totalReviews": 27637,
+    "alreadyFlagged": 7405,
     "dateGuardCatches": 15,
     "directorMismatch": 845,
     "tvFilmSignals": 3335,
-    "londonSignals": 984,
+    "londonSignals": 985,
     "offBroadwaySignals": 970,
     "yearMismatch": 65,
     "noPublishDate": 5812
@@ -68788,6 +68788,20 @@
       "score": 78,
       "publishDate": "2026-04-01",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/liaisons-dangereuses-review-national-theatre-aidan-turner-lesley-manville-b2950658.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 81,
+      "publishDate": "2026-04-01",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-les-liaisons-dangereuses-national-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
