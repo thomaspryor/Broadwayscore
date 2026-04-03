@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-02T23:55:34.797Z",
+  "timestamp": "2026-04-03T00:18:06.795Z",
   "stats": {
-    "totalReviews": 32214,
-    "alreadyFlagged": 12035,
+    "totalReviews": 32217,
+    "alreadyFlagged": 12036,
     "dateGuardCatches": 15,
     "directorMismatch": 847,
     "tvFilmSignals": 3335,
-    "londonSignals": 983,
+    "londonSignals": 984,
     "offBroadwaySignals": 970,
     "yearMismatch": 65,
     "noPublishDate": 5799
@@ -39257,7 +39257,7 @@
       "file": "guardian--arifa-akbar.json",
       "score": 73,
       "publishDate": "2026-04-01",
-      "url": "https://www.theguardian.com/stage/2023/jun/15/romeo-and-juliet-review-almeida-theatre-london-rebecca-frecknall",
+      "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -72360,6 +72360,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "2026-03-31",
+      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
