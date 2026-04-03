@@ -352,10 +352,14 @@ function extractBroadwayOrgImages(html, showTitle) {
 }
 
 // ---- Mezzanine (theaterdiary.com) image source ----
-// Direct Parse API call — production-specific poster art, no scraping needed.
-// 33,000+ productions with art. Uses MEZZANINE_APP_ID + MEZZANINE_SESSION_TOKEN.
+// Reads from local cache (data/mezzanine-image-cache.json) first.
+// Falls back to Parse API if cache is missing/stale (>7 days).
+// Also merges poster URLs from diary-shows.json (off-Broadway/regional imports).
 
-let mezzanineCache = null; // Lazy-loaded: { productions: [...], byNormTitle: Map }
+const MEZZ_CACHE_PATH = path.join(__dirname, '../data/mezzanine-image-cache.json');
+const MEZZ_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+let mezzanineCache = null; // Lazy-loaded: { byNormTitle: Map }
 
 function normalizeMezzTitle(s) {
   return s.toLowerCase()
@@ -365,74 +369,132 @@ function normalizeMezzTitle(s) {
     .trim();
 }
 
+function buildMezzIndex(records) {
+  const byNormTitle = new Map();
+  for (const r of records) {
+    if (!r.name || !r.artUrl) continue;
+    const norm = normalizeMezzTitle(r.name);
+    if (!byNormTitle.has(norm)) byNormTitle.set(norm, []);
+    byNormTitle.get(norm).push(r);
+  }
+  return byNormTitle;
+}
+
 async function loadMezzanineProductions() {
   if (mezzanineCache) return mezzanineCache;
 
-  const APP_ID = process.env.MEZZANINE_APP_ID;
-  const SESSION_TOKEN = process.env.MEZZANINE_SESSION_TOKEN;
-  if (!APP_ID || !SESSION_TOKEN) {
-    console.log('   ✗ Mezzanine credentials not set (MEZZANINE_APP_ID / MEZZANINE_SESSION_TOKEN)');
-    mezzanineCache = { productions: [], byNormTitle: new Map() };
-    return mezzanineCache;
-  }
+  // Step 1: Try local cache file
+  let records = [];
+  let cacheAge = Infinity;
+  try {
+    const raw = JSON.parse(fs.readFileSync(MEZZ_CACHE_PATH, 'utf8'));
+    records = raw.records || [];
+    cacheAge = Date.now() - new Date(raw.lastUpdated || 0).getTime();
+  } catch { /* no cache yet */ }
 
-  console.log('   Loading Mezzanine production catalog...');
-  const all = [];
-  let skip = 0;
-  const batchSize = 1000;
+  // Step 2: If cache is stale or missing, refresh from API
+  if (records.length === 0 || cacheAge > MEZZ_CACHE_MAX_AGE_MS) {
+    const APP_ID = process.env.MEZZANINE_APP_ID;
+    const SESSION_TOKEN = process.env.MEZZANINE_SESSION_TOKEN;
 
-  while (true) {
-    const body = JSON.stringify({
-      limit: batchSize,
-      skip,
-      where: { art: { '$exists': true } },
-      include: 'show,theater',
-      keys: 'art,show.name,theater.name,theater.isBroadway,openedAt,firstPreview,ratingsCount',
-      _method: 'GET'
-    });
+    if (APP_ID && SESSION_TOKEN) {
+      console.log('   Refreshing Mezzanine image cache from API...');
+      const apiRecords = [];
+      let skip = 0;
+      const batchSize = 1000;
 
-    const data = await new Promise((resolve, reject) => {
-      const req = https.request({
-        hostname: 'api.theaterdiary.com',
-        path: '/parse/classes/Production',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'X-Parse-Application-Id': APP_ID,
-          'X-Parse-Session-Token': SESSION_TOKEN,
-          'Content-Length': Buffer.byteLength(body)
+      try {
+        while (true) {
+          const body = JSON.stringify({
+            limit: batchSize, skip,
+            where: { art: { '$exists': true } },
+            include: 'show,theater',
+            keys: 'art,show.name,theater.name,theater.isBroadway,openedAt,firstPreview,ratingsCount',
+            _method: 'GET'
+          });
+
+          const data = await new Promise((resolve, reject) => {
+            const req = https.request({
+              hostname: 'api.theaterdiary.com',
+              path: '/parse/classes/Production',
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'X-Parse-Application-Id': APP_ID,
+                'X-Parse-Session-Token': SESSION_TOKEN,
+                'Content-Length': Buffer.byteLength(body)
+              }
+            }, res => {
+              let d = '';
+              res.on('data', c => d += c);
+              res.on('end', () => {
+                try { resolve(JSON.parse(d)); }
+                catch (e) { reject(new Error('Mezzanine parse error')); }
+              });
+            });
+            req.on('error', reject);
+            req.write(body);
+            req.end();
+          });
+
+          if (!data.results || data.results.length === 0) break;
+          for (const p of data.results) {
+            if (!p.show?.name || !p.art?.url) continue;
+            apiRecords.push({
+              name: p.show.name,
+              artUrl: p.art.url,
+              theater: p.theater?.name || null,
+              isBroadway: p.theater?.isBroadway === true,
+              openedAt: p.openedAt || p.firstPreview || null,
+              ratingsCount: p.ratingsCount || 0,
+            });
+          }
+          skip += data.results.length;
+          if (data.results.length < batchSize) break;
         }
-      }, res => {
-        let d = '';
-        res.on('data', c => d += c);
-        res.on('end', () => {
-          try { resolve(JSON.parse(d)); }
-          catch (e) { reject(new Error('Mezzanine parse error')); }
-        });
+
+        if (apiRecords.length > 0) {
+          records = apiRecords;
+          fs.writeFileSync(MEZZ_CACHE_PATH, JSON.stringify({
+            lastUpdated: new Date().toISOString(),
+            recordCount: records.length,
+            records,
+          }, null, 2));
+          console.log(`   Cached ${records.length} Mezzanine productions with art`);
+        }
+      } catch (err) {
+        console.log(`   ⚠ Mezzanine API error: ${err.message} — using ${records.length > 0 ? 'stale cache' : 'diary-shows fallback'}`);
+      }
+    } else if (records.length === 0) {
+      console.log('   Mezzanine credentials not set, no cache available');
+    }
+  } else {
+    console.log(`   Mezzanine cache: ${records.length} productions (${Math.round(cacheAge / 3600000)}h old)`);
+  }
+
+  // Step 3: Merge diary-shows.json poster URLs (off-Broadway/regional shows not in API)
+  try {
+    const diary = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/diary-shows.json'), 'utf8'));
+    const existingNorms = new Set(records.map(r => normalizeMezzTitle(r.name)));
+    let added = 0;
+    for (const s of (diary.shows || [])) {
+      if (!s.posterUrl || !s.title) continue;
+      if (existingNorms.has(normalizeMezzTitle(s.title))) continue;
+      records.push({
+        name: s.title,
+        artUrl: s.posterUrl,
+        theater: s.venue || null,
+        isBroadway: false,
+        openedAt: s.openingDate || null,
+        ratingsCount: s.audienceRatingsCount || 0,
       });
-      req.on('error', reject);
-      req.write(body);
-      req.end();
-    });
+      added++;
+    }
+    if (added > 0) console.log(`   Merged ${added} additional poster URLs from diary-shows.json`);
+  } catch { /* diary-shows not available */ }
 
-    if (!data.results || data.results.length === 0) break;
-    all.push(...data.results);
-    skip += data.results.length;
-    if (data.results.length < batchSize) break;
-  }
-
-  // Index by normalized title for fast lookup
-  const byNormTitle = new Map();
-  for (const p of all) {
-    const name = p.show?.name || '';
-    if (!name || !p.art?.url) continue;
-    const norm = normalizeMezzTitle(name);
-    if (!byNormTitle.has(norm)) byNormTitle.set(norm, []);
-    byNormTitle.get(norm).push(p);
-  }
-
-  console.log(`   Loaded ${all.length} Mezzanine productions with art (${byNormTitle.size} unique titles)`);
-  mezzanineCache = { productions: all, byNormTitle };
+  const byNormTitle = buildMezzIndex(records);
+  mezzanineCache = { byNormTitle };
   return mezzanineCache;
 }
 
@@ -450,23 +512,21 @@ async function fetchFromMezzanine(show) {
   let bestDist = Infinity;
 
   for (const p of candidates) {
-    const dateStr = p.openedAt || p.firstPreview || '';
+    const dateStr = p.openedAt || '';
     const mYear = dateStr ? parseInt(String(dateStr).substring(0, 4)) : 0;
     const dist = showYear && mYear ? Math.abs(showYear - mYear) : 999;
 
     // Prefer Broadway-flagged, then closest year, then highest ratings
-    const isBway = p.theater?.isBroadway === true;
     if (!best ||
-        (isBway && !best._isBway) ||
-        (isBway === best._isBway && dist < bestDist) ||
-        (isBway === best._isBway && dist === bestDist && (p.ratingsCount || 0) > (best.ratingsCount || 0))) {
+        (p.isBroadway && !best.isBroadway) ||
+        (p.isBroadway === best.isBroadway && dist < bestDist) ||
+        (p.isBroadway === best.isBroadway && dist === bestDist && (p.ratingsCount || 0) > (best.ratingsCount || 0))) {
       best = p;
-      best._isBway = isBway;
       bestDist = dist;
     }
   }
 
-  if (!best || !best.art?.url) return null;
+  if (!best || !best.artUrl) return null;
 
   // Reject if year distance > 2 AND there are multiple candidates (likely wrong production).
   // Single candidate with exact title match is accepted regardless of year (common for shows
@@ -476,13 +536,12 @@ async function fetchFromMezzanine(show) {
     return null;
   }
 
-  const artUrl = best.art.url;
-  const theater = best.theater?.name || 'unknown venue';
+  const theater = best.theater || 'unknown venue';
   console.log(`   ✓ Mezzanine: found poster art (${theater}, ${bestDist <= 2 ? 'year match' : 'no year'})`);
 
   return {
-    thumbnail: artUrl,
-    poster: artUrl,
+    thumbnail: best.artUrl,
+    poster: best.artUrl,
     hero: null,
   };
 }
