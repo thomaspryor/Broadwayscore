@@ -758,10 +758,16 @@ describe('getRelatedShows', () => {
     const show = getBroadwayShows().find(s => (s.criticScore?.reviewCount ?? 0) >= 10);
     assert.ok(show);
     const related = getRelatedShows(show);
-    const showMarket = show.category || 'broadway';
+    // Market = city grouping: Broadway + Off-Broadway = "nyc", West End + Off-West End = "london"
+    function getCity(category: string | undefined): string {
+      const cat = category || 'broadway';
+      if (cat === 'broadway' || cat === 'off-broadway') return 'nyc';
+      if (cat === 'west-end' || cat === 'off-west-end') return 'london';
+      return cat;
+    }
+    const showCity = getCity(show.category);
     for (const r of related) {
-      const rMarket = r.category || 'broadway';
-      assert.strictEqual(rMarket, showMarket, `Related show ${r.id} should be in same market`);
+      assert.strictEqual(getCity(r.category), showCity, `Related show ${r.id} should be in same city/market`);
     }
   });
 });
