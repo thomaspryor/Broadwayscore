@@ -442,7 +442,17 @@
     "a-soldiers-play-2020/wsj--terry-teachout.json",
     "my-name-is-lucy-barton-2020/theater-news-online--david-cote.json",
     "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
-    "a-christmas-carol-2019/theater-news-online--jeremy-gerard.json"
+    "a-christmas-carol-2019/theater-news-online--jeremy-gerard.json",
+    "the-sound-inside-2019/theater-news-online--jeremy-gerard.json",
+    "linda-vista-2019/theater-news-online--joe-dziemianowicz.json",
+    "the-great-society-2019/theater-news-online--jeremy-gerard.json",
+    "the-height-of-the-storm-2019/theater-news-online--david-cote.json",
+    "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json",
+    "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json",
+    "betrayal-2019/theater-news-online--robert-cashill.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
+    "beetlejuice-2019/wsj--edward-rothstein.json",
+    "ink-2019/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -661,7 +671,8 @@
       "data/review-texts/spamalot-2023/wsj--charles-isherwood.json",
       "data/review-texts/purlie-victorious-2023/cititour--brian-scott-lipton.json",
       "data/review-texts/good-night-oscar-2023/vulture--jackson-mchenry.json",
-      "data/review-texts/the-music-man-2022/washpost--mark-kennedy.json"
+      "data/review-texts/the-music-man-2022/washpost--mark-kennedy.json",
+      "data/review-texts/beetlejuice-2019/wsj--edward-rothstein.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -703,7 +714,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "a-christmas-carol-2019/theater-news-online--jeremy-gerard.json",
+  "lastProcessed": "ink-2019/theater-news-online--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -1111,6 +1122,17 @@
       "t": "2026-04-03T13:42:34.034Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-03T13:44:49.817Z",
+      "event": "bb-session",
+      "session": "7594c532",
+      "url": "https://www.wsj.com/articles/beetlejuice-review-better-off-dead-11556727155"
+    },
+    {
+      "t": "2026-04-03T13:44:51.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
