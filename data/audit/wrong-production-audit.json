@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T06:06:21.980Z",
+  "timestamp": "2026-04-03T07:32:28.958Z",
   "stats": {
-    "totalReviews": 27637,
-    "alreadyFlagged": 7444,
+    "totalReviews": 27649,
+    "alreadyFlagged": 7450,
     "dateGuardCatches": 15,
     "directorMismatch": 858,
-    "tvFilmSignals": 3335,
+    "tvFilmSignals": 3334,
     "londonSignals": 988,
     "offBroadwaySignals": 970,
     "yearMismatch": 65,
-    "noPublishDate": 5798
+    "noPublishDate": 5805
   },
   "findings": [
     {
@@ -27077,7 +27077,7 @@
       "file": "standard--henry-hitchings.json",
       "score": 78,
       "publishDate": "For a previous production",
-      "url": "https://www.standard.co.uk/culture/theatre/les-liaisons-dangereuses-at-the-national-theatre-review-b1277452.html",
+      "url": "http://www.standard.co.uk/goingout/theatre/les-liaisons-dangereuses-theatre-review-dark-tale-is-theatre-at-its-most-seductive-and-sinister-a3140401.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -27520,6 +27520,7 @@
     {
       "showId": "les-miserables-west-end-2021",
       "file": "musical-theatre-review--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/les-miserables-sondheim-theatre/",
       "findings": [
@@ -27673,7 +27674,7 @@
     {
       "showId": "les-miserables-west-end-2021",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2020-01-16",
       "url": "https://www.timeout.com/london/theatre/les-miserables-review-1",
       "findings": [
@@ -27724,20 +27725,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "liberation-2025",
-      "file": "latimes--charles-mcnulty.json",
-      "score": 82,
-      "publishDate": "2025-11-05",
-      "url": "https://www.latimes.com/opinion/story/2025-11-19/wicked-liberation-ms-hollywood-broadway-feminism",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -39356,7 +39343,7 @@
       "file": "guardian--arifa-akbar.json",
       "score": 73,
       "publishDate": "2026-04-01",
-      "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
+      "url": "https://www.theguardian.com/stage/2023/jun/15/romeo-and-juliet-review-almeida-theatre-london-rebecca-frecknall",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -46313,6 +46300,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "artsdesk--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/book-mormon-prince-wales-theatre",
       "findings": [
@@ -46483,6 +46471,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "musical-theatre-review--unknown.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/the-book-of-mormon-2/",
       "findings": [
@@ -68934,7 +68923,7 @@
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2026-04-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-les-liaisons-dangereuses-national-theatre",
       "findings": [
@@ -78087,6 +78076,7 @@
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
       "file": "british-theatre--douglas-mayo.json",
+      "score": 69,
       "publishDate": "2021-08-21",
       "url": "https://www.britishtheatre.com/posts/review-the-phantom-of-the-opera-her-majestys-theatre-london",
       "findings": [
