@@ -1785,9 +1785,10 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     return null;
   }
 
-  // Guard: skip closed shows that have a newer production with the same title.
-  // TodayTix/SERP only return current production art — using it for older productions
-  // creates duplicate images across revivals (e.g., Ragtime 2009 gets Ragtime 2025's poster).
+  // Guard: for closed shows with a newer production of the same title,
+  // skip TodayTix sources (which return current production art) but still try
+  // production-specific sources like IBDB, ShowScore, Google Images, and Playbill.
+  let skipTodayTix = false;
   if (show.status === 'closed') {
     const baseTitle = show.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
     const newerProduction = allShowsData.shows.find(s => {
@@ -1807,36 +1808,41 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
       return sYear > showYear;
     });
     if (newerProduction) {
-      console.log(`   ⚠ SKIPPING ${show.id} — newer production "${newerProduction.id}" exists (would get duplicate image)`);
-      return null;
+      console.log(`   ⚠ Newer production "${newerProduction.id}" exists — skipping TodayTix, trying IBDB/Google`);
+      skipTodayTix = true;
     }
   }
 
-  // Try matching against TodayTix API data (instant, no HTTP call)
-  const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
+  let apiData = null;
+  let todayTixInfo = null;
 
-  // Cache API-discovered TodayTix ID
-  if (apiData && apiData.id) {
-    todayTixIds.shows[show.id] = { id: apiData.id, slug: null };
-  }
+  if (!skipTodayTix) {
+    // Try matching against TodayTix API data (instant, no HTTP call)
+    apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
 
-  // When re-sourcing bad images, clear the cached TodayTix ID so we re-discover
-  if (badImagesOnly && todayTixIds.shows[show.id]) {
-    console.log(`   Clearing cached TodayTix ID for ${show.id} (re-discovering)`);
-    delete todayTixIds.shows[show.id];
-  }
+    // Cache API-discovered TodayTix ID
+    if (apiData && apiData.id) {
+      todayTixIds.shows[show.id] = { id: apiData.id, slug: null };
+    }
 
-  // If no API match, try page-scrape discovery
-  let todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+    // When re-sourcing bad images, clear the cached TodayTix ID so we re-discover
+    if (badImagesOnly && todayTixIds.shows[show.id]) {
+      console.log(`   Clearing cached TodayTix ID for ${show.id} (re-discovering)`);
+      delete todayTixIds.shows[show.id];
+    }
 
-  if (!todayTixInfo && !apiData) {
-    todayTixInfo = await discoverTodayTixId(show.title);
-    if (todayTixInfo) {
-      todayTixIds.shows[show.id] = todayTixInfo;
+    // If no API match, try page-scrape discovery
+    todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+
+    if (!todayTixInfo && !apiData) {
+      todayTixInfo = await discoverTodayTixId(show.title);
+      if (todayTixInfo) {
+        todayTixIds.shows[show.id] = todayTixInfo;
+      }
     }
   }
 
-  // Fetch images: API data → page scrape → Playbill fallback (with optional LLM verification)
+  // Fetch images: API data → page scrape → IBDB → Google Images → Playbill fallback
   const images = await fetchShowImages(show, todayTixInfo, apiData, verifyCtx);
   return { show, images, apiSourced: !!apiData };
 }
