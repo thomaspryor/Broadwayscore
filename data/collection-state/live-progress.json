@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-03T13:33:27.240Z",
-  "processed": 167,
-  "failed": 234,
-  "successRate": "41.6%",
+  "updatedAt": "2026-04-03T13:40:12.633Z",
+  "processed": 169,
+  "failed": 242,
+  "successRate": "41.1%",
   "tierBreakdown": {
     "playwright": 80,
     "amp": 2,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 38,
     "brightdata": 0,
-    "archiveToday": 33,
-    "archive": 30
+    "archiveToday": 36,
+    "archive": 32
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-03T12:44:01.867Z",
-      "event": "bb-session",
-      "session": "661489bf",
-      "url": "https://www.washingtonpost.com/entertainment/review-hugh-jackman-steals-the-musi"
-    },
-    {
-      "t": "2026-04-03T12:44:03.738Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-03T12:44:29.362Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-03T13:32:40.664Z",
       "event": "bb-cookie-inject",
       "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-04-03T13:33:28.251Z",
+      "event": "bb-session",
+      "session": "39e2b740",
+      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-e"
+    },
+    {
+      "t": "2026-04-03T13:33:29.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

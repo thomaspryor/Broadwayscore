@@ -166,7 +166,9 @@
     "the-mousetrap-west-end-2021/thestage--dave-fargnoli.json",
     "sweetmeats-west-end-2026/thestage--holly-omahony.json",
     "the-monsters-off-broadway-2026/vulture--jackson-mchenry.json",
-    "beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json"
+    "beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json",
+    "the-sign-in-sidney-brusteins-window-2023/talkinbroadway--howard-miller.json",
+    "camelot-2023/vulture--jackson-mchenry.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -402,7 +404,15 @@
     "romeo-juliet-2024/thestage--nicole-serratore.json",
     "the-hills-of-california-2024/times-uk--clive-davis.json",
     "stereophonic-2024/usatoday--charles-isherwood.json",
-    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json"
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "spamalot-2023/wsj--charles-isherwood.json",
+    "purlie-victorious-2023/cititour--brian-scott-lipton.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "good-night-oscar-2023/vulture--jackson-mchenry.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "the-collaboration-2022/hollywood-reporter--angie-han.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -617,7 +627,10 @@
       "data/review-texts/maybe-happy-ending-2024/nydailynews--chris-jones.json",
       "data/review-texts/six-the-musical-west-end-2021/nytimes--jesse-green.json",
       "data/review-texts/dead-outlaw-2025/usatoday--patrick-ryan.json",
-      "data/review-texts/swept-away-2024/nydailynews--chris-jones.json"
+      "data/review-texts/swept-away-2024/nydailynews--chris-jones.json",
+      "data/review-texts/spamalot-2023/wsj--charles-isherwood.json",
+      "data/review-texts/purlie-victorious-2023/cititour--brian-scott-lipton.json",
+      "data/review-texts/good-night-oscar-2023/vulture--jackson-mchenry.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -649,11 +662,13 @@
       "ink-2019/vulture--sara-holdren.json",
       "to-kill-a-mockingbird-2018/newyorker--vinson-cunningham.json",
       "the-prom-2018/newyorker--alexandra-schwartz.json",
-      "the-monsters-off-broadway-2026/vulture--jackson-mchenry.json"
+      "the-monsters-off-broadway-2026/vulture--jackson-mchenry.json",
+      "the-sign-in-sidney-brusteins-window-2023/talkinbroadway--howard-miller.json",
+      "camelot-2023/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "the-collaboration-2022/hollywood-reporter--angie-han.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -1039,6 +1054,17 @@
       "t": "2026-04-03T13:32:40.664Z",
       "event": "bb-cookie-inject",
       "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-04-03T13:33:28.251Z",
+      "event": "bb-session",
+      "session": "39e2b740",
+      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-e"
+    },
+    {
+      "t": "2026-04-03T13:33:29.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
