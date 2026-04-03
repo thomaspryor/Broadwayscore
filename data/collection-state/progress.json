@@ -131,7 +131,10 @@
     "some-like-it-hot-2022/nypost--johnny-oleksinski.json",
     "some-like-it-hot-2022/newyorker--helen-shaw.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
-    "aint-no-mo-2022/broadwaynews--brittani-samuel.json"
+    "aint-no-mo-2022/broadwaynews--brittani-samuel.json",
+    "death-of-a-salesman-2022/ew--unknown.json",
+    "death-of-a-salesman-2022/nydailynews--chris-jones.json",
+    "death-of-a-salesman-2022/washpost--peter-marks.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -222,7 +225,14 @@
     "fat-ham-2023/newyorker--naomi-fry.json",
     "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
     "the-collaboration-2022/hollywood-reporter--angie-han.json",
-    "the-collaboration-2022/hollywood-reporter--david-rooney.json"
+    "the-collaboration-2022/hollywood-reporter--david-rooney.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+    "walking-with-ghosts-2022/dtli--ran-xia.json",
+    "topdog-underdog-2022/broadwaynews--brittani-samuel.json",
+    "the-piano-lesson-2022/vulture--jackson-mchenry.json",
+    "death-of-a-salesman-2022/broadwaynews--brittani-samuel.json",
+    "cost-of-living-2022/newyorker--vinson-cunningham.json",
+    "into-the-woods-2022/thewrap--thom-geier.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -295,7 +305,9 @@
       "mj-the-musical-west-end-2024/standard--nick-curtis.json",
       "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
       "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json",
-      "aint-no-mo-2022/broadwaynews--brittani-samuel.json"
+      "aint-no-mo-2022/broadwaynews--brittani-samuel.json",
+      "death-of-a-salesman-2022/broadwaynews--brittani-samuel.json",
+      "death-of-a-salesman-2022/washpost--peter-marks.json"
     ],
     "amp": [],
     "browserbase": [
@@ -362,7 +374,9 @@
       "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json",
       "purlie-victorious-2023/broadwaynews--brittani-samuel.json",
       "just-for-us-2023/timeout--adam-feldman.json",
-      "good-night-oscar-2023/nydailynews--chris-jones.json"
+      "good-night-oscar-2023/nydailynews--chris-jones.json",
+      "topdog-underdog-2022/broadwaynews--brittani-samuel.json",
+      "death-of-a-salesman-2022/nydailynews--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -381,7 +395,9 @@
       "data/review-texts/purlie-victorious-2023/cititour--brian-scott-lipton.json",
       "data/review-texts/the-sign-in-sidney-brusteins-window-2023/talkinbroadway--howard-miller.json",
       "data/review-texts/good-night-oscar-2023/vulture--jackson-mchenry.json",
-      "data/review-texts/camelot-2023/vulture--jackson-mchenry.json"
+      "data/review-texts/camelot-2023/vulture--jackson-mchenry.json",
+      "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+      "data/review-texts/the-piano-lesson-2022/vulture--jackson-mchenry.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -407,11 +423,12 @@
       "the-last-five-years-2025/nydailynews--chris-jones.json",
       "mcneal-2024/vulture--jackson-mchenry.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
-      "some-like-it-hot-2022/newyorker--helen-shaw.json"
+      "some-like-it-hot-2022/newyorker--helen-shaw.json",
+      "death-of-a-salesman-2022/ew--unknown.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "aint-no-mo-2022/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "into-the-woods-2022/thewrap--thom-geier.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -654,6 +671,17 @@
       "t": "2026-04-03T12:19:10.008Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T12:33:24.521Z",
+      "event": "bb-session",
+      "session": "dc123956",
+      "url": "https://www.thewrap.com/into-the-woods-broadway-review-sondheim-revival/"
+    },
+    {
+      "t": "2026-04-03T12:33:25.829Z",
+      "event": "bb-cookie-inject",
+      "domain": "thewrap.com"
     }
   ]
 }
