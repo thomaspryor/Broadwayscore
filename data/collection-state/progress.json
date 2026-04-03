@@ -125,7 +125,13 @@
     "purlie-victorious-2023/broadwaynews--brittani-samuel.json",
     "just-for-us-2023/timeout--adam-feldman.json",
     "summer-1976-2023/variety--frank-rizzo.json",
-    "good-night-oscar-2023/nydailynews--chris-jones.json"
+    "good-night-oscar-2023/nydailynews--chris-jones.json",
+    "life-of-pi-2023/newyorker--katy-waldman.json",
+    "parade-2023/nypost--johnny-oleksinski.json",
+    "some-like-it-hot-2022/nypost--johnny-oleksinski.json",
+    "some-like-it-hot-2022/newyorker--helen-shaw.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+    "aint-no-mo-2022/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -212,7 +218,11 @@
     "the-sign-in-sidney-brusteins-window-2023/talkinbroadway--howard-miller.json",
     "good-night-oscar-2023/vulture--jackson-mchenry.json",
     "prima-facie-2023/newyorker--naomi-fry.json",
-    "camelot-2023/vulture--jackson-mchenry.json"
+    "camelot-2023/vulture--jackson-mchenry.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "the-collaboration-2022/hollywood-reporter--angie-han.json",
+    "the-collaboration-2022/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -284,7 +294,8 @@
       "cats-the-jellicle-ball-off-broadway-2024/theatermania--zachary-stewart.json",
       "mj-the-musical-west-end-2024/standard--nick-curtis.json",
       "mj-the-musical-west-end-2024/whatsonstage--sarah-crompton.json",
-      "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json"
+      "jajas-african-hair-braiding-2023/theatrely--juan-a-ramirez.json",
+      "aint-no-mo-2022/broadwaynews--brittani-samuel.json"
     ],
     "amp": [],
     "browserbase": [
@@ -317,7 +328,13 @@
       "data/review-texts/patriots-2024/deadline--greg-evans.json",
       "patriots-2024/deadline--greg-evans.json",
       "data/review-texts/summer-1976-2023/variety--frank-rizzo.json",
-      "summer-1976-2023/variety--frank-rizzo.json"
+      "summer-1976-2023/variety--frank-rizzo.json",
+      "data/review-texts/parade-2023/nypost--johnny-oleksinski.json",
+      "parade-2023/nypost--johnny-oleksinski.json",
+      "data/review-texts/some-like-it-hot-2022/nypost--johnny-oleksinski.json",
+      "some-like-it-hot-2022/nypost--johnny-oleksinski.json",
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -363,7 +380,8 @@
       "data/review-texts/spamalot-2023/wsj--charles-isherwood.json",
       "data/review-texts/purlie-victorious-2023/cititour--brian-scott-lipton.json",
       "data/review-texts/the-sign-in-sidney-brusteins-window-2023/talkinbroadway--howard-miller.json",
-      "data/review-texts/good-night-oscar-2023/vulture--jackson-mchenry.json"
+      "data/review-texts/good-night-oscar-2023/vulture--jackson-mchenry.json",
+      "data/review-texts/camelot-2023/vulture--jackson-mchenry.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -387,11 +405,13 @@
       "burlesque-west-end-2026/the-telegrap--claire-allfree.json",
       "floyd-collins-2025/vulture--sara-holdren.json",
       "the-last-five-years-2025/nydailynews--chris-jones.json",
-      "mcneal-2024/vulture--jackson-mchenry.json"
+      "mcneal-2024/vulture--jackson-mchenry.json",
+      "life-of-pi-2023/newyorker--katy-waldman.json",
+      "some-like-it-hot-2022/newyorker--helen-shaw.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "camelot-2023/vulture--jackson-mchenry.json",
+  "lastProcessed": "aint-no-mo-2022/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -601,6 +621,39 @@
       "t": "2026-04-03T12:10:32.449Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T12:17:58.848Z",
+      "event": "bb-session",
+      "session": "681c0fcf",
+      "url": "https://nypost.com/2023/03/16/parade-broadway-review-flawed-musical-gets-heartfe"
+    },
+    {
+      "t": "2026-04-03T12:18:00.177Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-03T12:18:24.741Z",
+      "event": "bb-session",
+      "session": "2caac88f",
+      "url": "https://nypost.com/2022/12/11/some-like-it-hot-broadways-latest-drag-musical-is-"
+    },
+    {
+      "t": "2026-04-03T12:18:26.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-03T12:19:08.786Z",
+      "event": "bb-session",
+      "session": "30b8d221",
+      "url": "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-bro"
+    },
+    {
+      "t": "2026-04-03T12:19:10.008Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
