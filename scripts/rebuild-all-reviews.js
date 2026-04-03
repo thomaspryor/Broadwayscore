@@ -17,6 +17,9 @@
  *      - LLM already sees thumb data in prompt; thumbs boost confidence, not replace score
  * P3.  llmScore.score (low confidence, needs review, or excerpt-only - when no thumb or mixed signals)
  * P4.  assignedScore (if already set and valid, with known source)
+ *      WARNING: assignedScore is an OUTPUT of rebuild, not an INPUT.
+ *      Setting it manually in source files has no effect — rebuild recalculates it.
+ *      To override a score, set humanReviewScore (P0b) instead.
  * P5.  bucket mapping (Rave=90, Positive=82, Mixed=65, Negative=48, Pan=30)
  * P5.5 bwwScore fallback (BWW editorial 1-10 × 10, more granular than thumbs)
  * P6.  dtliThumb or bwwThumb (Up=80, Flat=60, Down=35) - final fallback
