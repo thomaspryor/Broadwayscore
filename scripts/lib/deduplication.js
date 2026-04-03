@@ -264,11 +264,17 @@ function isMultiProduction(newShow, existing) {
     // Same venue + open show = same production, regardless of year gap.
     // Long-running shows (Wicked, Lion King, Phantom) get TodayTix startDates
     // that differ from their original openingDate by 5-25+ years.
-    const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
-    const newVenueNorm = newShow.venue ? stripDash(normalizeVenueName(newShow.venue)) : '';
-    const existVenueNorm = existing.venue ? stripDash(normalizeVenueName(existing.venue)) : '';
-    if (newVenueNorm && existVenueNorm && newVenueNorm === existVenueNorm) {
-      return false; // Same venue + still running = same production
+    // Exception: if the new show is a closed historical entry (e.g., Chess 1988),
+    // it's a legitimate prior production at the same venue, not a re-listing.
+    const newIsClosed = newShow.status === 'closed' ||
+      (newShow.closingDate && new Date(newShow.closingDate) < new Date());
+    if (!newIsClosed) {
+      const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
+      const newVenueNorm = newShow.venue ? stripDash(normalizeVenueName(newShow.venue)) : '';
+      const existVenueNorm = existing.venue ? stripDash(normalizeVenueName(existing.venue)) : '';
+      if (newVenueNorm && existVenueNorm && newVenueNorm === existVenueNorm) {
+        return false; // Same venue + still running + new show not closed = same production
+      }
     }
 
     // Different or unknown venues: trust year difference from actual openingDates only.
