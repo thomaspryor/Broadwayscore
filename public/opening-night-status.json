@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T07:32:32.258Z",
+  "generatedAt": "2026-04-03T08:47:22.070Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1085,20 +1085,20 @@
       "status": "open",
       "slug": "les-liaisons-dangereuses-west-end",
       "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
-      "siteScore": 71,
-      "liveScore": 71,
+      "siteScore": 72,
+      "liveScore": 72,
       "scoreDrift": 0,
-      "total": 13,
+      "total": 14,
       "t1": 4,
       "t2": 3,
-      "t3": 6,
-      "positive": 8,
+      "t3": 7,
+      "positive": 9,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1127,6 +1127,10 @@
       "missingT2": [
         {
           "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
           "isDualMarket": true
         }
       ],
@@ -1163,6 +1167,18 @@
           "t2": 3,
           "t3": 6,
           "p": 8,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T08:47:22.070Z",
+          "rc": 14,
+          "s": 72,
+          "t1": 4,
+          "t2": 3,
+          "t3": 7,
+          "p": 9,
           "m": 5,
           "n": 0,
           "bc": "waiting"
@@ -1476,20 +1492,20 @@
       "status": "open",
       "slug": "romeo-and-juliet-west-end",
       "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
-      "siteScore": 71,
-      "liveScore": 71,
+      "siteScore": 72,
+      "liveScore": 72,
       "scoreDrift": 0,
-      "total": 14,
-      "t1": 5,
+      "total": 17,
+      "t1": 7,
       "t2": 7,
-      "t3": 2,
-      "positive": 9,
-      "mixed": 3,
+      "t3": 3,
+      "positive": 11,
+      "mixed": 4,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1530,6 +1546,18 @@
           "t3": 2,
           "p": 9,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T08:47:22.070Z",
+          "rc": 17,
+          "s": 72,
+          "t1": 7,
+          "t2": 7,
+          "t3": 3,
+          "p": 11,
+          "m": 4,
           "n": 2,
           "bc": "waiting"
         }
