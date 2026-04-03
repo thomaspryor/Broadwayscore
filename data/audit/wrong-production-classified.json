@@ -1,16 +1,33 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-03T15:23:40.745Z",
+    "generatedAt": "2026-04-03T16:24:18.330Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 71,
-    "classified": 0,
+    "total": 72,
+    "classified": 1,
     "wrongProduction": 0,
-    "correctProduction": 0,
+    "correctProduction": 1,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "wicked-2003",
+      "showTitle": "Wicked",
+      "showYear": 2003,
+      "file": "about-entertainment--chris-caggiano.json",
+      "outlet": "about-entertainment",
+      "criticName": "Chris Caggiano",
+      "publishDate": "March 29, 2015",
+      "originalSignals": [
+        "publishDate 2015 is 12 years after original opening 2003"
+      ],
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review discusses the Broadway production of Wicked, mentioning cast members from the 2003 production (Joey McIntyre) and current cast members (Caroline Bowman, Kara Lindsay, Matt Shingledecker, Tom McGowan). The review also mentions the show's long run on Broadway."
+    }
+  ]
 }

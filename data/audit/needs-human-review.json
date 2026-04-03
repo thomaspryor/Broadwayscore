@@ -1,11 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-03T15:36:41.349Z",
-    "totalFlagged": 37,
+    "generatedAt": "2026-04-03T16:29:29.525Z",
+    "totalFlagged": 51,
     "reasons": {
-      "possible-tour-fulltext": 33,
-      "venue-url-mismatch": 2,
-      "borderline-rave": 2
+      "possible-tour-fulltext": 35,
+      "originalScore-llm-conflict": 1,
+      "borderline-rave": 3,
+      "venue-url-mismatch": 12
     }
   },
   "reviews": [
@@ -21,7 +22,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:31.742Z"
+      "flaggedAt": "2026-04-03T16:28:17.095Z"
     },
     {
       "showId": "700-sundays-2013",
@@ -35,7 +36,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:32.195Z"
+      "flaggedAt": "2026-04-03T16:28:17.573Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -49,7 +50,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-04-03T15:35:33.606Z"
+      "flaggedAt": "2026-04-03T16:28:19.054Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -63,7 +64,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-04-03T15:35:35.864Z"
+      "flaggedAt": "2026-04-03T16:28:21.405Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -77,7 +78,77 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:35.940Z"
+      "flaggedAt": "2026-04-03T16:28:21.482Z"
+    },
+    {
+      "showId": "art-2025",
+      "outletId": "la-voce-di-new-york",
+      "criticName": "JK Clarke",
+      "reason": "originalScore-llm-conflict",
+      "detail": "originalScore \"90\" (=90, bucket=positive) vs LLM 37 (bucket=negative, conf=medium) [LOW-reliability — LLM override]",
+      "llmScore": 37,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:28:23.986Z"
+    },
+    {
+      "showId": "art-2025",
+      "outletId": "variety",
+      "criticName": "Daniel D&#8217;Addario",
+      "reason": "borderline-rave",
+      "detail": "LLM=82 (high conf), thumbs/bwwScore suggest rave. Calibration shows 62% of true raves score 78-82.",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:28:24.020Z"
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "outletId": "telegraph",
+      "criticName": "Dzifa Benson",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions Almeida Theatre but show venue is Adelphi Theatre",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:28:24.303Z"
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "outletId": "thestage",
+      "criticName": "Holly O’Mahony",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions Rose Theatre Kingston but show venue is Adelphi Theatre",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:28:24.324Z"
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "outletId": "broadwayworld",
+      "criticName": "Unknown",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions Almeida Theatre but show venue is Adelphi Theatre",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:28:24.341Z"
     },
     {
       "showId": "bright-star-2016",
@@ -91,7 +162,7 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-04-03T15:35:41.255Z"
+      "flaggedAt": "2026-04-03T16:28:27.073Z"
     },
     {
       "showId": "bright-star-2016",
@@ -105,7 +176,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 7,
-      "flaggedAt": "2026-04-03T15:35:41.302Z"
+      "flaggedAt": "2026-04-03T16:28:27.124Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -119,7 +190,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:41.406Z"
+      "flaggedAt": "2026-04-03T16:28:27.229Z"
     },
     {
       "showId": "chicago-1996",
@@ -133,7 +204,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:44.112Z"
+      "flaggedAt": "2026-04-03T16:28:30.104Z"
     },
     {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
@@ -147,7 +218,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:46.620Z"
+      "flaggedAt": "2026-04-03T16:28:32.761Z"
+    },
+    {
+      "showId": "follies-2011",
+      "outletId": "backstage",
+      "criticName": "Erik Haagensen",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: venue: \\bKennedy Center\\b",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-04-03T16:28:36.738Z"
     },
     {
       "showId": "follies-2011",
@@ -161,7 +246,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-04-03T15:35:50.376Z"
+      "flaggedAt": "2026-04-03T16:28:36.743Z"
     },
     {
       "showId": "follies-2011",
@@ -175,7 +260,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-04-03T15:35:50.414Z"
+      "flaggedAt": "2026-04-03T16:28:36.782Z"
     },
     {
       "showId": "funny-girl-2022",
@@ -189,7 +274,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-04-03T15:35:51.476Z"
+      "flaggedAt": "2026-04-03T16:28:37.886Z"
     },
     {
       "showId": "gigi-2015",
@@ -203,7 +288,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:52.144Z"
+      "flaggedAt": "2026-04-03T16:28:38.601Z"
     },
     {
       "showId": "happy-ending-west-end-2026",
@@ -217,7 +302,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:54.853Z"
+      "flaggedAt": "2026-04-03T16:28:41.451Z"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "outletId": "standard",
+      "criticName": "Anya Ryan",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions National Theatre but show venue is Palace Theatre",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:28:42.030Z"
     },
     {
       "showId": "indecent-2017",
@@ -231,7 +330,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:58.884Z"
+      "flaggedAt": "2026-04-03T16:28:45.776Z"
     },
     {
       "showId": "it-walks-around-the-house-at-night-west-end-2026",
@@ -245,7 +344,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:35:59.567Z"
+      "flaggedAt": "2026-04-03T16:28:46.514Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -259,7 +358,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:00.617Z"
+      "flaggedAt": "2026-04-03T16:28:47.602Z"
     },
     {
       "showId": "les-miserables-2014",
@@ -273,7 +372,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:03.756Z"
+      "flaggedAt": "2026-04-03T16:28:50.867Z"
     },
     {
       "showId": "les-miserables-west-end-2021",
@@ -287,7 +386,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:03.879Z"
+      "flaggedAt": "2026-04-03T16:28:50.994Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -301,7 +400,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 9,
-      "flaggedAt": "2026-04-03T15:36:04.397Z"
+      "flaggedAt": "2026-04-03T16:28:51.572Z"
     },
     {
       "showId": "mother-play-2024",
@@ -315,7 +414,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": 8,
-      "flaggedAt": "2026-04-03T15:36:08.815Z"
+      "flaggedAt": "2026-04-03T16:28:56.217Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -329,7 +428,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:09.094Z"
+      "flaggedAt": "2026-04-03T16:28:56.500Z"
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "outletId": "whatsonstage",
+      "criticName": "Sarah Crompton",
+      "reason": "possible-tour-fulltext",
+      "detail": "Tour signal in fullText intro: \\bon tour(?! with)\\b",
+      "llmScore": 82,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:28:56.759Z"
     },
     {
       "showId": "mrs-warrens-profession-2010",
@@ -343,7 +456,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:09.601Z"
+      "flaggedAt": "2026-04-03T16:28:57.016Z"
     },
     {
       "showId": "my-fair-lady-2018",
@@ -357,7 +470,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:09.756Z"
+      "flaggedAt": "2026-04-03T16:28:57.162Z"
     },
     {
       "showId": "noises-off-2016",
@@ -371,7 +484,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-04-03T15:36:10.981Z"
+      "flaggedAt": "2026-04-03T16:28:58.403Z"
     },
     {
       "showId": "present-laughter-2010",
@@ -385,7 +498,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:15.814Z"
+      "flaggedAt": "2026-04-03T16:29:03.324Z"
     },
     {
       "showId": "prince-of-broadway-2017",
@@ -399,7 +512,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:16.504Z"
+      "flaggedAt": "2026-04-03T16:29:04.033Z"
     },
     {
       "showId": "ragtime-2009",
@@ -413,7 +526,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:17.391Z"
+      "flaggedAt": "2026-04-03T16:29:04.940Z"
     },
     {
       "showId": "ragtime-2025",
@@ -427,7 +540,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:17.428Z"
+      "flaggedAt": "2026-04-03T16:29:04.978Z"
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "outletId": "guardian",
+      "criticName": "Arifa Akbar",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions Almeida Theatre but show venue is Harold Pinter Theatre",
+      "llmScore": 73,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:29:06.013Z"
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "outletId": "thestage",
+      "criticName": "Sam Marlowe",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions Almeida Theatre but show venue is Harold Pinter Theatre",
+      "llmScore": 42,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:29:06.037Z"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -441,7 +582,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-04-03T15:36:19.611Z"
+      "flaggedAt": "2026-04-03T16:29:07.198Z"
     },
     {
       "showId": "spamalot-2023",
@@ -455,7 +596,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:21.278Z"
+      "flaggedAt": "2026-04-03T16:29:08.887Z"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "outletId": "telegraph",
+      "criticName": "Marianka Swain",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions National Theatre but show venue is Phoenix Theatre",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:29:10.202Z"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "outletId": "whatsonstage",
+      "criticName": "Sarah Crompton",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions National Theatre but show venue is Phoenix Theatre",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:29:10.217Z"
     },
     {
       "showId": "the-color-purple-2015",
@@ -469,7 +638,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-04-03T15:36:25.839Z"
+      "flaggedAt": "2026-04-03T16:29:13.597Z"
     },
     {
       "showId": "the-gin-game-2015",
@@ -483,7 +652,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-04-03T15:36:27.750Z"
+      "flaggedAt": "2026-04-03T16:29:15.578Z"
     },
     {
       "showId": "the-lightning-thief-2019",
@@ -497,7 +666,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:30.212Z"
+      "flaggedAt": "2026-04-03T16:29:18.097Z"
     },
     {
       "showId": "the-new-one-2018",
@@ -511,7 +680,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:31.544Z"
+      "flaggedAt": "2026-04-03T16:29:19.472Z"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "outletId": "london-theatre",
+      "criticName": "Theo Bosanquet",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions Donmar Warehouse but show venue is His Majesty's Theatre",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:29:20.352Z"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "outletId": "telegraph",
+      "criticName": "Claire Allfree",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions Donmar Warehouse but show venue is His Majesty's Theatre",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-04-03T16:29:20.354Z"
     },
     {
       "showId": "the-waverly-gallery-2018",
@@ -525,7 +722,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-04-03T15:36:35.596Z"
+      "flaggedAt": "2026-04-03T16:29:23.618Z"
     }
   ]
 }

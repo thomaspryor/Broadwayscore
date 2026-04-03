@@ -1,14 +1,29 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-03T15:23:40.636Z",
+    "generatedAt": "2026-04-03T16:24:17.099Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 82,
-    "highConfidence": 11,
-    "mediumConfidence": 71,
+    "totalFlagged": 85,
+    "highConfidence": 13,
+    "mediumConfidence": 72,
     "lowConfidence": 0,
-    "reassignable": 36
+    "reassignable": 38
   },
   "results": [
+    {
+      "showId": "wicked-2003",
+      "showTitle": "Wicked",
+      "showYear": 2003,
+      "file": "about-entertainment--chris-caggiano.json",
+      "outlet": "about-entertainment",
+      "criticName": "Chris Caggiano",
+      "publishDate": "March 29, 2015",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2015 is 12 years after original opening 2003"
+      ],
+      "textSnippet": "While there's a lull in openings of new Broadway shows, I figured it might be fun to check in with some of the biggest hits of past seasons. I loved The Book of Mormon, Matilda, and Wicked the first t"
+    },
     {
       "showId": "wicked-2003",
       "showTitle": "Wicked",
@@ -985,6 +1000,23 @@
       "textSnippet": "Upon walking into the new production of \"Once On This Island,\" which opened on Sunday at the Circle in the Square Theatre, you are greeted by trash, old tee-shirts hanging on the walls, a small pool o"
     },
     {
+      "showId": "into-the-woods-1997",
+      "showTitle": "Into the Woods",
+      "showYear": 1997,
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "outlet": "Lighting & Sound America",
+      "criticName": "David Barbour",
+      "publishDate": "1997-11-09",
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Lear deBessonet, director: Lear deBessonet",
+        "year 2002 in text matches revival into-the-woods-2002",
+        "year 1987 in text matches revival into-the-woods-1987"
+      ],
+      "textSnippet": "   To understand why this Into the Woods is so enchanting, you must first understand what it is not: Do not expect elaborate designs, magical special effects, or fancy directorial concepts. Unlike its"
+    },
+    {
       "showId": "sunday-in-the-park-with-george-1994",
       "showTitle": "Sunday in the Park with George",
       "showYear": 1994,
@@ -998,6 +1030,22 @@
         "revival cast/director match for sunday-in-the-park-with-george-2017: Jake Gyllenhaal, Annaleigh Ashford, Hudson Theatre, director: Sarna Lapine"
       ],
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
+    },
+    {
+      "showId": "into-the-woods-1987",
+      "showTitle": "Into the Woods",
+      "showYear": 1987,
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "outlet": "Lighting & Sound America",
+      "criticName": "David Barbour",
+      "publishDate": "1987-11-05",
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Lear deBessonet, director: Lear deBessonet",
+        "year 2002 in text matches revival into-the-woods-2002"
+      ],
+      "textSnippet": "   To understand why this Into the Woods is so enchanting, you must first understand what it is not: Do not expect elaborate designs, magical special effects, or fancy directorial concepts. Unlike its"
     },
     {
       "showId": "sweeney-todd-1979",
