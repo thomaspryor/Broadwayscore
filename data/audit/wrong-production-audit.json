@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T11:03:57.293Z",
+  "timestamp": "2026-04-03T11:27:40.748Z",
   "stats": {
-    "totalReviews": 28476,
-    "alreadyFlagged": 7999,
+    "totalReviews": 28477,
+    "alreadyFlagged": 8009,
     "dateGuardCatches": 15,
-    "directorMismatch": 862,
-    "tvFilmSignals": 3340,
-    "londonSignals": 994,
+    "directorMismatch": 863,
+    "tvFilmSignals": 3344,
+    "londonSignals": 997,
     "offBroadwaySignals": 971,
     "yearMismatch": 65,
     "noPublishDate": 5795
@@ -13160,6 +13160,20 @@
       ]
     },
     {
+      "showId": "dracula-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 43,
+      "publishDate": "February 17th, 2026",
+      "url": "https://www.whatsonstage.com/news/dracula-in-the-west-end-review-cynthia-erivo-gives-the-show-some-much-needed-bite_1712503/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
       "showId": "dreamgirls-1981",
       "file": "ap--michael-kuchwara.json",
       "publishDate": "1982-06-04",
@@ -24079,6 +24093,20 @@
       ]
     },
     {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 86,
+      "publishDate": "December 12th, 2025",
+      "url": "https://www.whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
       "showId": "is-he-dead-2007",
       "file": "variety--david-rooney.json",
       "score": 78,
@@ -25304,6 +25332,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -34501,6 +34534,20 @@
     },
     {
       "showId": "oh-mary-2024",
+      "file": "theatrely--nolan-boggess.json",
+      "score": 79,
+      "publishDate": "July 11, 2024",
+      "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
       "file": "usatoday--patrick-ryan.json",
       "score": 93,
       "publishDate": "July 11, 2024",
@@ -36291,6 +36338,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": 83,
+      "publishDate": "December 15th, 2025",
+      "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -40212,6 +40273,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 73,
+      "publishDate": "February 14th, 2026",
+      "url": "https://www.whatsonstage.com/news/shadowlands-with-hugh-bonneville-and-maggie-siff-in-the-west-end-review_1712184/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -64932,6 +65007,20 @@
       ]
     },
     {
+      "showId": "giant-2026",
+      "file": "vulture--sara-holdren.json",
+      "score": 79,
+      "publishDate": "March 23, 2026",
+      "url": "https://www.vulture.com/article/theater-review-giant-roald-dahl-john-lithgow-broadway.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "girl-from-the-north-country-2022",
       "file": "amny--matt-windman.json",
       "score": 85,
@@ -66896,6 +66985,20 @@
       "score": 87,
       "publishDate": "February 13th, 2026",
       "url": "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 85,
+      "publishDate": "February 12th, 2026",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
