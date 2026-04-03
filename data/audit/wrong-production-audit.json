@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T07:32:28.958Z",
+  "timestamp": "2026-04-03T08:47:18.738Z",
   "stats": {
     "totalReviews": 27649,
-    "alreadyFlagged": 7450,
+    "alreadyFlagged": 7454,
     "dateGuardCatches": 15,
     "directorMismatch": 858,
-    "tvFilmSignals": 3334,
-    "londonSignals": 988,
+    "tvFilmSignals": 3335,
+    "londonSignals": 990,
     "offBroadwaySignals": 970,
     "yearMismatch": 65,
-    "noPublishDate": 5805
+    "noPublishDate": 5799
   },
   "findings": [
     {
@@ -27093,6 +27093,25 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 78,
+      "publishDate": "2026-04-02",
+      "url": "https://www.standard.co.uk/culture/theatre/les-liaisons-dangereuses-at-the-national-theatre-review-b1277452.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "times-uk--ian-johns.json",
       "score": 41,
       "publishDate": "2026-04-01",
@@ -39343,7 +39362,7 @@
       "file": "guardian--arifa-akbar.json",
       "score": 73,
       "publishDate": "2026-04-01",
-      "url": "https://www.theguardian.com/stage/2023/jun/15/romeo-and-juliet-review-almeida-theatre-london-rebecca-frecknall",
+      "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -68936,6 +68955,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "londontheatre1--john-groves.json",
+      "score": 92,
+      "publishDate": "2026-04-02",
+      "url": "https://www.londontheatre1.com/reviews/les-liaisons-dangereuses-national-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "radio-times--joanna-magill.json",
       "score": 85,
       "publishDate": "2026-04-01",
@@ -72460,6 +72493,20 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
+      "file": "daily-mail--jessica-janes.json",
+      "score": 79,
+      "publishDate": "2026-03-31",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15697515/Robert-Ickes-Romeo-Juliet-adaptation-receives-glowing-reviews.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 61,
       "publishDate": "2026-03-12",
@@ -72483,20 +72530,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": null,
-      "publishDate": "2026-03-31",
-      "url": "https://www.standard.co.uk/culture/theatre/noughts-crosses-regents-park-open-air-theatre-b1237290.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
