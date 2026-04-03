@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T03:49:22.314Z",
+  "generatedAt": "2026-04-03T04:07:43.066Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -832,6 +832,10 @@
           "isDualMarket": false
         },
         {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
         },
@@ -1089,25 +1093,20 @@
       "status": "open",
       "slug": "les-liaisons-dangereuses-west-end",
       "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "siteScore": 70,
+      "liveScore": 70,
+      "scoreDrift": 0,
+      "total": 11,
+      "t1": 4,
+      "t2": 3,
+      "t3": 4,
+      "positive": 6,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
-        ],
-        "highConfidence": 0,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1117,7 +1116,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1141,6 +1140,20 @@
         {
           "name": "Financial Times",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-03T04:07:43.066Z",
+          "rc": 11,
+          "s": 70,
+          "t1": 4,
+          "t2": 3,
+          "t3": 4,
+          "p": 6,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1455,20 +1468,20 @@
       "status": "open",
       "slug": "romeo-and-juliet-west-end",
       "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 75,
-      "scoreDrift": null,
-      "total": 9,
-      "t1": 3,
-      "t2": 4,
+      "siteScore": 71,
+      "liveScore": 71,
+      "scoreDrift": 0,
+      "total": 14,
+      "t1": 5,
+      "t2": 7,
       "t3": 2,
-      "positive": 6,
-      "mixed": 2,
-      "negative": 1,
+      "positive": 9,
+      "mixed": 3,
+      "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 9,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1498,6 +1511,18 @@
           "p": 6,
           "m": 2,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T04:07:43.066Z",
+          "rc": 14,
+          "s": 71,
+          "t1": 5,
+          "t2": 7,
+          "t3": 2,
+          "p": 9,
+          "m": 3,
+          "n": 2,
           "bc": "waiting"
         }
       ]
