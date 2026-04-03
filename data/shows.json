@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-04-02T07:43:11.311Z",
+    "lastUpdated": "2026-04-03T00:15:00.525Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2412
   },
@@ -27,7 +27,8 @@
       "previewsStartDate": "2026-03-27",
       "tags": [
         "upcoming",
-        "lottery"
+        "lottery",
+        "rush"
       ],
       "ticketLinks": [
         {
@@ -145,7 +146,8 @@
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "ibdb"
+      "openingDateSource": "ibdb",
+      "officialUrl": "https://www.lostboysmusical.com/"
     },
     {
       "id": "joe-turners-come-and-gone-2026",
@@ -153,7 +155,7 @@
       "slug": "joe-turners-come-and-gone",
       "venue": "Ethel Barrymore Theatre",
       "openingDate": "2026-04-25",
-      "closingDate": "2026-07-19",
+      "closingDate": "2026-07-26",
       "status": "previews",
       "type": "play",
       "isRevival": true,
@@ -169,7 +171,9 @@
       "previewsStartDate": "2026-03-30",
       "tags": [
         "upcoming",
-        "revival"
+        "revival",
+        "lottery",
+        "rush"
       ],
       "ticketLinks": [
         {
@@ -422,7 +426,9 @@
       "tags": [
         "upcoming",
         "musical",
-        "new"
+        "new",
+        "lottery",
+        "rush"
       ],
       "ticketLinks": [
         {
@@ -551,7 +557,8 @@
       "ageRecommendation": "Ages 12+",
       "previewsStartDate": "2026-03-31",
       "tags": [
-        "upcoming"
+        "upcoming",
+        "rush"
       ],
       "ticketLinks": [
         {
@@ -794,7 +801,8 @@
       "previewsStartDate": "2026-03-27",
       "tags": [
         "upcoming",
-        "revival"
+        "revival",
+        "rush"
       ],
       "ticketLinks": [
         {
@@ -892,7 +900,9 @@
       "previewsStartDate": "2026-03-31",
       "tags": [
         "upcoming",
-        "revival"
+        "revival",
+        "lottery",
+        "rush"
       ],
       "ticketLinks": [
         {
@@ -1796,7 +1806,7 @@
       "slug": "every-brilliant-thing",
       "venue": "Hudson Theatre",
       "openingDate": "2026-03-12",
-      "closingDate": "2026-05-24",
+      "closingDate": "2026-06-28",
       "status": "open",
       "type": "play",
       "isRevival": true,
@@ -1894,12 +1904,6 @@
           "platform": "TodayTix",
           "url": "https://www.todaytix.com/nyc/shows/45086-bug-on-broadway",
           "priceFrom": 59
-        },
-        {
-          "platform": "Telecharge",
-          "url": "https://www.telecharge.com/Broadway/Bug",
-          "priceFrom": 89,
-          "isOfficial": true
         }
       ],
       "cast": [
@@ -1993,12 +1997,6 @@
           "platform": "TodayTix",
           "url": "https://www.todaytix.com/nyc/shows/43819-all-out-comedy-about-ambition-on-broadway",
           "priceFrom": null
-        },
-        {
-          "platform": "Ticketmaster",
-          "url": "https://www.ticketmaster.com/all-out-ny-tickets/artist/3935854",
-          "priceFrom": null,
-          "isOfficial": true
         }
       ],
       "cast": [
@@ -206991,7 +206989,7 @@
       "slug": "dirty-books-off-broadway",
       "venue": "Bated Breath Theater",
       "openingDate": "2025-11-07",
-      "closingDate": "2026-04-30",
+      "closingDate": "2026-06-27",
       "status": "open",
       "type": "play",
       "runtime": "1h 10m",
@@ -211511,7 +211509,7 @@
       "slug": "seagull-true-story-off-broadway",
       "venue": "The Public Theater – LuEsther Hall",
       "openingDate": "2026-03-22",
-      "closingDate": "2026-04-26",
+      "closingDate": "2026-05-03",
       "status": "open",
       "type": "play",
       "runtime": "2h 30m",
@@ -213835,7 +213833,8 @@
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "ibdb"
+      "openingDateSource": "ibdb",
+      "_staleMissingSince": "2026-04-02"
     },
     {
       "id": "messy-millie-off-broadway-2026",
@@ -215125,7 +215124,7 @@
       "intermissions": 0,
       "images": {
         "thumbnail": "/images/shows/jerome-off-broadway-2025/thumbnail.jpg",
-        "poster": null,
+        "poster": "/images/shows/jerome-off-broadway-2025/poster.jpg",
         "hero": null
       },
       "synopsis": "*Jerome* is a new play about an aging gay couple who meets a stranger in their Arizona ghost town.",
@@ -219930,7 +219929,8 @@
       "ibdbRevivalChecked": true,
       "isRevival": true,
       "previewsStartDate": "2025-11-14",
-      "openingDateSource": "todaytix"
+      "openingDateSource": "todaytix",
+      "_staleMissingSince": "2026-04-02"
     },
     {
       "id": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -220233,8 +220233,7 @@
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "unknown",
-      "_staleMissingSince": "2026-03-30"
+      "openingDateSource": "unknown"
     },
     {
       "id": "six-the-musical-west-end-2021",
@@ -220350,8 +220349,7 @@
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "unknown",
-      "_staleMissingSince": "2026-03-30"
+      "openingDateSource": "unknown"
     },
     {
       "id": "wicked-west-end-2021",
@@ -220469,8 +220467,7 @@
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "unknown",
-      "_staleMissingSince": "2026-03-30"
+      "openingDateSource": "unknown"
     },
     {
       "id": "the-producers-west-end-2025",
@@ -222496,7 +222493,7 @@
       "venue": "The Old Vic",
       "openingDate": "2026-04-15",
       "closingDate": "2026-05-23",
-      "status": "upcoming",
+      "status": "previews",
       "type": "play",
       "runtime": "2h 30m",
       "intermissions": null,
@@ -227680,12 +227677,20 @@
         "new"
       ],
       "theaterAddress": null,
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46491-new-owner",
+          "priceFrom": null
+        }
+      ],
       "cast": [],
       "creativeTeam": [],
       "category": "off-broadway",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "todaytixId": 46491,
+      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46491-new-owner"
     },
     {
       "id": "chasing-grace-off-broadway-2026",
@@ -227864,7 +227869,7 @@
       "intermissions": null,
       "images": {
         "thumbnail": "/images/shows/balkan-erotic-epic-off-broadway-2026/thumbnail.jpg",
-        "poster": null,
+        "poster": "/images/shows/balkan-erotic-epic-off-broadway-2026/poster.jpg",
         "hero": null
       },
       "synopsis": "",
@@ -228225,7 +228230,13 @@
         "new"
       ],
       "theaterAddress": null,
-      "ticketLinks": [],
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46618-miracle-on-south-division-street",
+          "priceFrom": null
+        }
+      ],
       "cast": [
         {
           "name": "Andrea Maulella",
@@ -228243,7 +228254,9 @@
       "creativeTeam": [],
       "category": "off-broadway",
       "ibdbRevivalChecked": true,
-      "isRevival": false
+      "isRevival": false,
+      "todaytixId": 46618,
+      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46618-miracle-on-south-division-street"
     },
     {
       "id": "the-fever-greenwich-house-theater-off-broadway-2026",
@@ -228417,7 +228430,7 @@
       "venue": "The Other Palace - Studio",
       "openingDate": "2026-04-02",
       "closingDate": "2026-04-26",
-      "status": "upcoming",
+      "status": "open",
       "type": "musical",
       "runtime": "3h",
       "intermissions": null,
@@ -229621,7 +229634,7 @@
       "venue": "SoHo Playhouse",
       "openingDate": "2026-04-01",
       "closingDate": "2026-05-10",
-      "status": "upcoming",
+      "status": "open",
       "type": "play",
       "isRevival": false,
       "runtime": "1h 10m",
@@ -229856,7 +229869,7 @@
       "category": "west-end",
       "type": "play",
       "venue": "National Theatre (Dorfman)",
-      "status": "previews",
+      "status": "open",
       "previewsStartDate": "2026-03-26",
       "openingDate": "2026-04-02",
       "closingDate": "2026-05-09",
@@ -230598,7 +230611,7 @@
       "venue": "Eventim Apollo",
       "openingDate": "2026-03-31",
       "closingDate": "2026-04-01",
-      "status": "upcoming",
+      "status": "open",
       "type": "play",
       "isRevival": false,
       "runtime": null,
@@ -230976,7 +230989,7 @@
       "venue": "New Victory Theater",
       "openingDate": "2026-04-02",
       "closingDate": "2026-04-19",
-      "status": "upcoming",
+      "status": "open",
       "type": "special",
       "isRevival": false,
       "runtime": "1h 20m",
@@ -232747,7 +232760,7 @@
       "intermissions": null,
       "images": {
         "thumbnail": "/images/shows/voices-from-ukraine-overview-off-west-end-2026/thumbnail.jpg",
-        "poster": null,
+        "poster": "/images/shows/voices-from-ukraine-overview-off-west-end-2026/poster.jpg",
         "hero": null
       },
       "synopsis": "",
@@ -234154,6 +234167,322 @@
       "creativeTeam": [],
       "ibdbRevivalChecked": true,
       "category": "off-west-end"
+    },
+    {
+      "id": "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026",
+      "title": "Yoko's Husband's Killer's Japanese Wife, Gloria",
+      "slug": "yokos-husbands-killers-japanese-wife-gloria-off-broadway",
+      "venue": "Joe's Pub at The Public Theatre",
+      "openingDate": "2026-04-13",
+      "closingDate": "2026-04-14",
+      "status": "upcoming",
+      "type": "special",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "thumbnail": "/images/shows/yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/thumbnail.jpg",
+        "poster": null,
+        "hero": null
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": null,
+      "tags": [
+        "upcoming"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46558-yokos-husbands-killers-japanese-wife-gloria",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "todayTixCategory": "Cabaret",
+      "category": "off-broadway",
+      "todaytixId": 46558,
+      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46558-yokos-husbands-killers-japanese-wife-gloria"
+    },
+    {
+      "id": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "title": "Heated Rivalry: The Unauthorized Musical Parody",
+      "slug": "heated-rivalry-the-unauthorized-musical-parody-off-broadway",
+      "venue": "6th Floor Theater (formerly The McKittrick Hotel)",
+      "openingDate": "2026-05-12",
+      "closingDate": "2026-06-28",
+      "status": "upcoming",
+      "type": "musical",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "hero": "/images/shows/heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/hero.webp",
+        "thumbnail": null,
+        "poster": "/images/shows/heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/poster.webp"
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": null,
+      "tags": [
+        "upcoming"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/nyc/shows/46638-heated-rivalry-the-unauthorized-musical-parody",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "todayTixCategory": "Musicals",
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway",
+      "todaytixId": 46638,
+      "todaytixUrl": "https://www.todaytix.com/nyc/shows/46638-heated-rivalry-the-unauthorized-musical-parody"
+    },
+    {
+      "id": "now-you-see-me-live-west-end-2026",
+      "title": "Now You See Me Live",
+      "slug": "now-you-see-me-live-west-end",
+      "venue": "London Coliseum",
+      "openingDate": null,
+      "closingDate": "2026-09-06",
+      "status": "previews",
+      "type": "special",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "thumbnail": "/images/shows/now-you-see-me-live-west-end-2026/thumbnail.jpg",
+        "poster": "/images/shows/now-you-see-me-live-west-end-2026/poster.jpg",
+        "hero": null
+      },
+      "synopsis": "From the Producers of The Illusionists, and inspired by Lionsgate’s worldwide blockbuster film franchise, comes the London premiere of Now You See Me Live.",
+      "ageRecommendation": null,
+      "previewsStartDate": "2026-07-31",
+      "openingDateSource": null,
+      "tags": [
+        "upcoming"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/london/shows/46633-now-you-see-me",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "todayTixCategory": "Circus and Magic",
+      "category": "west-end",
+      "todaytixId": 46633,
+      "todaytixUrl": "https://www.todaytix.com/london/shows/46633-now-you-see-me"
+    },
+    {
+      "id": "cinderella-west-end-2026",
+      "title": "Cinderella",
+      "slug": "cinderella-west-end",
+      "venue": "TBA",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": true,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "thumbnail": "/images/shows/cinderella-west-end-2026/thumbnail.jpg",
+        "poster": "/images/shows/cinderella-west-end-2026/poster.jpg",
+        "hero": null
+      },
+      "synopsis": "Meet the nature-loving Cinderella, who lives on the edge of an enchanted forest where she once gardened and sang with her mother. After loss and silence settle over her home, she’s left with a sharp-tongued stepmother, two noisy stepsisters, and a house full of chores and shadows. But when a letter arrives, inviting all to a Garden Ball, Cinderella’s journey to find her true self begins – guided by the spirit of her mother and the magic of the forest.",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": null,
+      "tags": [
+        "upcoming",
+        "revival"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/london/shows/45788-my-first-ballet-cinderella",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "west-end",
+      "todaytixId": 45788,
+      "todaytixUrl": "https://www.todaytix.com/london/shows/45788-my-first-ballet-cinderella"
+    },
+    {
+      "id": "into-the-woods-west-end-2026",
+      "title": "Into The Woods",
+      "slug": "into-the-woods-west-end",
+      "venue": "TBA",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "musical",
+      "isRevival": true,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "thumbnail": "/images/shows/into-the-woods-west-end-2026/thumbnail.jpg",
+        "poster": "/images/shows/into-the-woods-west-end-2026/poster.jpg",
+        "hero": null
+      },
+      "synopsis": "The Narrator introduces the main characters in the story. Cinderella wishes to attend a festival held by the king, much to the dismay of her Stepmother and Stepsisters. Jack wishes his cow, Milky White, would give milk, and his Mother wishes that Jack would sell Milky White. A Baker and his Wife wish to have a child, and Little Red Riding Hood wishes for bread to bring to her ill Grandmother.",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": null,
+      "tags": [
+        "upcoming",
+        "revival"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "category": "west-end"
+    },
+    {
+      "id": "the-peculiar-patriot-off-broadway-2026",
+      "title": "The Peculiar Patriot",
+      "slug": "the-peculiar-patriot-off-broadway",
+      "venue": "East Village",
+      "openingDate": "2026-05-05",
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "thumbnail": "/images/shows/the-peculiar-patriot-off-broadway-2026/thumbnail.jpg",
+        "poster": "/images/shows/the-peculiar-patriot-off-broadway-2026/poster.jpg",
+        "hero": null
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": "showscore",
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway"
+    },
+    {
+      "id": "this-is-not-about-me-59e59-theaters-off-broadway-2026",
+      "title": "THIS IS NOT ABOUT ME. (59E59 Theaters)",
+      "slug": "this-is-not-about-me-59e59-theaters-off-broadway",
+      "venue": "Midtown E",
+      "openingDate": "2026-05-13",
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": true,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "thumbnail": "/images/shows/this-is-not-about-me-59e59-theaters-off-broadway-2026/thumbnail.jpg",
+        "poster": null,
+        "hero": null
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": "showscore",
+      "tags": [
+        "upcoming",
+        "revival"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "category": "off-broadway"
+    },
+    {
+      "id": "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026",
+      "title": "Lauder: Scotland's Kilted King of Broadway",
+      "slug": "lauder-scotlands-kilted-king-of-broadway-off-broadway",
+      "venue": "Midtown E",
+      "openingDate": "2026-05-14",
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "thumbnail": "/images/shows/lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/thumbnail.jpg",
+        "poster": "/images/shows/lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/poster.jpg",
+        "hero": null
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": "showscore",
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway"
+    },
+    {
+      "id": "milk-and-honey-amt-theater-off-broadway-2026",
+      "title": "Milk and Honey (AMT Theater)",
+      "slug": "milk-and-honey-amt-theater-off-broadway",
+      "venue": "Midtown W",
+      "openingDate": "2026-04-16",
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {
+        "thumbnail": "/images/shows/milk-and-honey-amt-theater-off-broadway-2026/thumbnail.jpg",
+        "poster": null,
+        "hero": null
+      },
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": "showscore",
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway"
     }
   ]
 }
