@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T04:07:39.792Z",
+  "timestamp": "2026-04-03T04:30:27.088Z",
   "stats": {
-    "totalReviews": 27571,
-    "alreadyFlagged": 7394,
+    "totalReviews": 27629,
+    "alreadyFlagged": 7404,
     "dateGuardCatches": 15,
-    "directorMismatch": 847,
-    "tvFilmSignals": 3336,
+    "directorMismatch": 845,
+    "tvFilmSignals": 3335,
     "londonSignals": 984,
     "offBroadwaySignals": 970,
     "yearMismatch": 65,
-    "noPublishDate": 5793
+    "noPublishDate": 5812
   },
   "findings": [
     {
@@ -27450,7 +27450,7 @@
       "file": "guardian--miriam-gillinson.json",
       "score": 87,
       "publishDate": "2020-01-17",
-      "url": "https://www.theguardian.com/stage/2025/oct/07/les-miserables-musical-critics-reviews-cameron-mackintosh-sondheim-theatre-london",
+      "url": "https://www.theguardian.com/stage/2020/jan/17/les-miserables-review-sondheim-theatre-musical-west-end",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27589,8 +27589,8 @@
       "showId": "les-miserables-west-end-2021",
       "file": "thestage--tim-bano.json",
       "score": 85,
-      "publishDate": "2020-01-17",
-      "url": "https://www.thestage.co.uk/reviews/les-miserables-review-at-sondheim-theatre-london--still-spectacular",
+      "publishDate": "2020-01-17T13:51:39-05:00",
+      "url": "https://www.thestage.co.uk/reviews/2020/les-miserables-cameron-mackintosh-jon-robyns-carrie-hope-fletcher-review-at-the-sondheim-theatre-london/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -29110,6 +29110,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "i-paper--fiona-mountford.json",
+      "score": null,
+      "publishDate": "1999-04-06",
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -50425,25 +50439,6 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
-      "file": "the-telegrap--david-gritten.json",
-      "score": 89,
-      "publishDate": "October 17th, 2014",
-      "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
       "file": "variety--greg-evans.json",
       "score": 92,
       "publishDate": "2020-07-30",
@@ -57608,30 +57603,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2020",
-      "file": "newyorker--alexandra-schwartz-2020-bway.json",
-      "score": 47,
-      "publishDate": "2020-02-21",
-      "url": "https://www.newyorker.com/magazine/2020/03/02/a-grim-take-on-west-side-story",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -75425,6 +75396,20 @@
       ]
     },
     {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2013-03-21",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/marie-and-rosetta-review-a-tribute-to-the-godmother-of-rocknroll-jkml0xmrh",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
       "file": "whatsonstage--michael-davies.json",
       "score": 78,
@@ -77983,7 +77968,7 @@
       "file": "telegraph--claire-allfree.json",
       "score": 74,
       "publishDate": "2025-12-18",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/when-we-are-married-donmar-warehouse-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

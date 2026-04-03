@@ -1,8 +1,14 @@
 {
-  "timestamp": "2026-04-02T03:31:38.920Z",
-  "existingCount": 16862,
-  "newCount": 15840,
-  "lost": 1022,
-  "pctLost": 6.1,
-  "argv": []
+  "timestamp": "2026-04-03T04:30:19.810Z",
+  "regressions": [
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "oldCount": 12,
+      "newCount": 9,
+      "dropped": 3,
+      "scoredOnDisk": 13,
+      "flaggedScored": 7,
+      "reason": "scored files exist but being dropped"
+    }
+  ]
 }

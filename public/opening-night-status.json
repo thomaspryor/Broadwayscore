@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T04:07:43.066Z",
+  "generatedAt": "2026-04-03T04:30:30.454Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "special",
       "openingDate": "2026-04-03",
-      "status": "previews",
+      "status": "open",
       "slug": "scorched-earth-off-broadway",
       "thumbnail": "/images/shows/scorched-earth-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -310,7 +310,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-04-03",
-      "status": "upcoming",
+      "status": "open",
       "slug": "the-pushover-by-john-patrick-shanley-off-broadway",
       "thumbnail": "/images/shows/the-pushover-by-john-patrick-shanley-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1524,95 +1524,6 @@
           "m": 3,
           "n": 2,
           "bc": "waiting"
-        }
-      ]
-    },
-    {
-      "id": "gabbys-dollhouse-live-off-west-end-2026",
-      "title": "Gabby's Dollhouse Live!",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-03-31",
-      "status": "open",
-      "slug": "gabbys-dollhouse-live-off-west-end",
-      "thumbnail": "/images/shows/gabbys-dollhouse-live-off-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ]
     }
