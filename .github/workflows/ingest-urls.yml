@@ -55,11 +55,11 @@ jobs:
 
       - name: Write URL file
         run: |
-          cat > /tmp/ingest-urls.txt << 'URLS_EOF'
-          ${{ inputs.urls }}
-          URLS_EOF
-          # Clean up leading whitespace from YAML heredoc
-          sed -i 's/^[[:space:]]*//' /tmp/ingest-urls.txt
+          # Write URLs to file — GitHub Actions preserves newlines in string inputs
+          # when dispatched via API/CLI. The UI textarea may collapse them to spaces,
+          # so we also split on spaces as a fallback for single-line input.
+          INPUT_URLS="${{ inputs.urls }}"
+          echo "$INPUT_URLS" | tr ' ' '\n' | sed 's/^[[:space:]]*//' | grep -v '^\s*$' > /tmp/ingest-urls.txt
           echo "URLs to ingest:"
           cat /tmp/ingest-urls.txt
           echo "---"
