@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-03T11:28:24.985Z",
-  "processed": 71,
-  "failed": 60,
-  "successRate": "54.2%",
+  "updatedAt": "2026-04-03T11:56:17.951Z",
+  "processed": 109,
+  "failed": 72,
+  "successRate": "60.2%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 63,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 11,
+    "scrapingbee": 20,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 15
+    "archiveToday": 10,
+    "archive": 21
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-04-03T09:12:37.565Z",
-      "event": "bb-session",
-      "session": "86dc9574",
-      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
-    },
-    {
-      "t": "2026-04-03T09:12:38.652Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-03T09:13:04.348Z",
       "event": "bb-session",
@@ -102,6 +91,39 @@
       "t": "2026-04-03T11:22:14.490Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-03T11:49:53.954Z",
+      "event": "bb-session",
+      "session": "cd50f8eb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/glengarry-glen-ross-review-kier"
+    },
+    {
+      "t": "2026-04-03T11:49:55.243Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-03T11:55:24.327Z",
+      "event": "bb-session",
+      "session": "168d4275",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-04-03T11:55:25.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T11:55:39.110Z",
+      "event": "bb-session",
+      "session": "c5503fd6",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-04-03T11:55:40.401Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
