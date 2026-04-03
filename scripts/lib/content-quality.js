@@ -68,11 +68,11 @@ const LEGAL_PAGE_PATTERNS = [
 const COOKIE_CONSENT_PATTERNS = [
   /your\s+consent\s+will\s+be\s+valid/i,
   /legitimate\s+interest/i,
-  /data\s+protection\s+(regulation|officer|authority)/i,
+  /data\s+protection\s+(regulation|authority).*\b(consent|cookie|opt[\s-]?out)\b/is,
   /consent\s+management\s+platform/i,
   /manage\s+(your\s+)?cookie\s+(preferences|settings|consent)/i,
   /we\s+use\s+cookies.*\b(consent|opt[\s-]?out|preferences)\b/is,
-  /GDPR/,
+  /\bGDPR\b.*\b(consent|cookie|opt[\s-]?out|data\s+processing)\b/is,
 ];
 
 /**
