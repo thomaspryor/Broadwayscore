@@ -1374,11 +1374,9 @@ function validateReviewsJson() {
             if (fileData.humanReviewScore !== undefined && (typeof fileData.humanReviewScore !== 'number' || fileData.humanReviewScore < 0 || fileData.humanReviewScore > 100)) {
               warn(`${showDir}/${file}: humanReviewScore should be number 0-100`);
             }
-            // Warn if assignedScore is set without humanReviewScore — assignedScore is
-            // an OUTPUT of rebuild, setting it manually has no effect. Use humanReviewScore instead.
-            if (fileData.assignedScore !== undefined && fileData.humanReviewScore === undefined && !fileData.llmScore) {
-              warn(`${showDir}/${file}: assignedScore set without humanReviewScore or llmScore — assignedScore is rebuild OUTPUT, use humanReviewScore to override`);
-            }
+            // Note: assignedScore is an OUTPUT of rebuild — setting it manually has
+            // no effect. To override a score, use humanReviewScore (P0b priority).
+            // See rebuild-all-reviews.js header comment for the full priority chain.
           } catch (e) {
             // Skip unreadable files
           }

@@ -113,6 +113,13 @@ jobs:
             exit 0
           fi
 
+          # WE reviews publish 12-48h after press night; use longer lookback
+          LOOKBACK=2
+          if [ "$MARKET" = "west-end" ]; then
+            LOOKBACK=4
+          fi
+          echo "lookback=$LOOKBACK" >> $GITHUB_OUTPUT
+
           SHOWS=$(node -e "
             const shows = require('./data/shows.json').shows;
             const now = new Date();
@@ -333,10 +340,10 @@ jobs:
               }
             else
               # Multiple shows — let poller auto-discover
-              gh workflow run opening-night-poller.yml -f lookback_days=1 $POLLER_ARGS || {
+              gh workflow run opening-night-poller.yml -f lookback_days=${{ steps.find.outputs.lookback }} $POLLER_ARGS || {
                 echo "⚠️ Failed to dispatch poller, retrying in 30s..."
                 sleep 30
-                gh workflow run opening-night-poller.yml -f lookback_days=1 $POLLER_ARGS || true
+                gh workflow run opening-night-poller.yml -f lookback_days=${{ steps.find.outputs.lookback }} $POLLER_ARGS || true
               }
             fi
 
