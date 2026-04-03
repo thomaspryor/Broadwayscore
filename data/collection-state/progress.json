@@ -77,9 +77,9 @@
     "just-for-us-2023/timeout--adam-feldman.json",
     "life-of-pi-2023/newyorker--katy-waldman.json",
     "some-like-it-hot-2022/newyorker--helen-shaw.json",
-    "tina-2019/newyorker--michael-schulman.json",
-    "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
-    "the-price-2017/thestage--chris-jones.json"
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json"
   ],
   "failed": [
     "nicole-travolta-is-doing-alright-off-broadway-2026/variety--unknown.json",
@@ -363,7 +363,14 @@
       "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+      "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+      "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+      "data/review-texts/yoah-off-broadway-2026/variety--pat-saperstein.json",
+      "yoah-off-broadway-2026/variety--pat-saperstein.json"
+    ],
     "directCookies": [
       "the-mousetrap-west-end-2021/nytimes--unknown.json"
     ],
@@ -406,6 +413,40 @@
     ]
   },
   "startTime": "2026-04-03T05:03:52.695Z",
-  "lastProcessed": "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
-  "log": []
+  "lastProcessed": "yoah-off-broadway-2026/variety--pat-saperstein.json",
+  "log": [
+    {
+      "t": "2026-04-03T05:52:09.575Z",
+      "event": "bb-session",
+      "session": "9a771992",
+      "url": "https://variety.com/2026/legit/news/jessie-jones-dead-actress-playwright-1236704"
+    },
+    {
+      "t": "2026-04-03T05:52:10.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T05:52:24.596Z",
+      "event": "bb-session",
+      "session": "eb58ac9c",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-04-03T05:52:26.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T05:52:39.188Z",
+      "event": "bb-session",
+      "session": "4dfcaa9d",
+      "url": "https://variety.com/2026/legit/news/jessie-jones-dead-actress-playwright-1236704"
+    },
+    {
+      "t": "2026-04-03T05:52:40.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-04-03T05:52:48.155Z",
+  "updatedAt": "2026-04-03T05:52:50.844Z",
   "processed": 80,
-  "failed": 220,
-  "successRate": "26.7%",
+  "failed": 73,
+  "successRate": "52.3%",
   "tierBreakdown": {
     "playwright": 55,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 6,
     "archive": 18
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-04-03T05:52:09.575Z",
+      "event": "bb-session",
+      "session": "9a771992",
+      "url": "https://variety.com/2026/legit/news/jessie-jones-dead-actress-playwright-1236704"
+    },
+    {
+      "t": "2026-04-03T05:52:10.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T05:52:24.596Z",
+      "event": "bb-session",
+      "session": "eb58ac9c",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-04-03T05:52:26.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T05:52:39.188Z",
+      "event": "bb-session",
+      "session": "4dfcaa9d",
+      "url": "https://variety.com/2026/legit/news/jessie-jones-dead-actress-playwright-1236704"
+    },
+    {
+      "t": "2026-04-03T05:52:40.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
