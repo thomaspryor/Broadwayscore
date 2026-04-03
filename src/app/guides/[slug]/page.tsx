@@ -338,9 +338,9 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     </div>
                   </div>
 
-                  {/* Primary "Get Tickets" CTA — prominent, own row */}
+                  {/* Primary "Get Tickets" CTA — prominent, aligned with show info */}
                   {show.status === 'open' && ticketLinks.length > 0 && (
-                    <div className="mt-3 flex">
+                    <div className="mt-3 flex sm:pl-[160px]">
                       <TicketLink
                         showName={show.title}
                         showId={show.id}
