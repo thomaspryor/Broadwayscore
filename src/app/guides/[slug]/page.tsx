@@ -212,6 +212,24 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
               {shows.length} {shows.length === 1 ? 'show' : 'shows'} | Last updated: {metadata.monthYear}
             </p>
           )}
+
+          {/* Methodology blurb — E-E-A-T trust signal */}
+          {shows.length > 0 && (
+            <details className="mt-4 text-sm">
+              <summary className="text-gray-400 hover:text-gray-300 cursor-pointer font-medium transition-colors">
+                How We Rank
+              </summary>
+              <p className="mt-2 text-gray-500 leading-relaxed">
+                Rankings are based on CriticScore, an aggregate of professional reviews from 400+ outlets
+                including The New York Times, Vulture, and Variety. Top-tier outlets carry the most weight
+                in the composite score. Each show needs a minimum number of reviews to qualify. Scores are
+                recalculated weekly.{' '}
+                <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
+                  Learn more about our methodology
+                </Link>.
+              </p>
+            </details>
+          )}
         </div>
 
         {/* Year Page Navigation */}
@@ -320,18 +338,43 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     </div>
                   </div>
 
+                  {/* Primary "Get Tickets" CTA — prominent, own row */}
+                  {show.status === 'open' && ticketLinks.length > 0 && (
+                    <div className="mt-3 flex">
+                      <TicketLink
+                        showName={show.title}
+                        showId={show.id}
+                        showSlug={show.slug}
+                        showStatus={show.status}
+                        showCategory={show.category}
+                        showScore={show.criticScore?.score ?? null}
+                        platform={ticketLinks[0].platform}
+                        url={ticketLinks[0].url}
+                        pageType="guide"
+                        linkPosition={0}
+                        totalLinks={ticketLinks.length}
+                        className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-lg bg-accent-gold/90 hover:bg-accent-gold text-gray-900 text-sm font-semibold transition-colors min-h-[44px]"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                        </svg>
+                        Get Tickets{ticketLinks[0].priceFrom ? ` from $${ticketLinks[0].priceFrom}` : ''}
+                      </TicketLink>
+                    </div>
+                  )}
+
                   {/* Critic Consensus or Synopsis fallback */}
                   {displayText && (
-                    <p className="text-gray-400 text-sm leading-relaxed mt-3 pt-1">
+                    <p className="text-gray-400 text-sm leading-relaxed mt-3">
                       {displayText}
                     </p>
                   )}
 
-                  {/* Action Links */}
-                  {(show.officialUrl || (ticketLinks.length > 0 && show.status === 'open') || (lotteryRush && show.status !== 'closed')) && (
+                  {/* Secondary Action Links — per-platform comparison + lottery/rush */}
+                  {(show.officialUrl || (ticketLinks.length > 1 && show.status === 'open') || (lotteryRush && show.status !== 'closed')) && (
                     <div className="mt-3 pt-1 flex flex-wrap gap-2">
-                      {/* Ticket Sources (affiliate platforms first) */}
-                      {show.status === 'open' && ticketLinks.map((link, i) => (
+                      {/* Additional ticket platforms (skip first — already shown as primary CTA) */}
+                      {show.status === 'open' && ticketLinks.slice(1).map((link, i) => (
                         <TicketLink
                           key={link.platform}
                           showName={show.title}
@@ -343,9 +386,9 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           platform={link.platform}
                           url={link.url}
                           pageType="guide"
-                          linkPosition={i}
+                          linkPosition={i + 1}
                           totalLinks={ticketLinks.length}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
@@ -353,7 +396,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           {link.platform}{link.priceFrom ? ` from $${link.priceFrom}` : ''}
                         </TicketLink>
                       ))}
-                      {/* Official Site (after ticket platforms) */}
+                      {/* Official Site */}
                       {show.officialUrl && (
                         <TicketLink
                           showName={show.title}
@@ -366,7 +409,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           url={show.officialUrl}
                           pageType="guide"
                           totalLinks={(ticketLinks?.length ?? 0) + 1}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -378,7 +421,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                       {lotteryRush && show.status !== 'closed' && (
                         <Link
                           href={`/show/${show.slug}#discount-tickets`}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 text-xs font-medium transition-colors border border-emerald-500/20 min-h-[44px] sm:min-h-0"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 text-sm font-medium transition-colors border border-emerald-500/20 min-h-[44px] sm:min-h-0"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />

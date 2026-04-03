@@ -458,6 +458,12 @@ export function generateBrowseFAQSchema(
     });
   }
 
+  // Q: How are these shows ranked? (methodology — E-E-A-T signal)
+  faqs.push({
+    question: `How are these shows ranked?`,
+    answer: `Shows are ranked by CriticScore, an aggregate rating based on professional reviews from 400+ outlets including ${outletNames}. Top-tier outlets carry the most weight. Each show needs at least ${getMarketMinReviews(shows[0]?.category)} reviews to qualify for ranking. Scores are updated weekly.`,
+  });
+
   if (faqs.length === 0) return null;
 
   return {

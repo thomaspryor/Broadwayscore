@@ -357,6 +357,102 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     relatedBrowse: ['best-broadway-revivals'],
   },
 
+  // === AUDIENCE SEGMENTS ===
+  'best-broadway-shows-for-teens': {
+    slug: 'best-broadway-shows-for-teens',
+    title: 'Best Broadway Shows for Teens',
+    h1Template: 'Best Broadway Shows for Teenagers ({year})',
+    metaTitleTemplate: 'Best Broadway Shows for Teens {year} | Ages 13+',
+    metaDescriptionTemplate: 'The {count} best Broadway shows for teenagers in {year}. Age-appropriate musicals and plays that teens actually want to see.',
+    introFallback: 'Finding a Broadway show that appeals to teenagers can be tricky — too young and they\'ll roll their eyes, too mature and it\'s awkward. These {count} shows hit the sweet spot for teen audiences.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      if ((show.criticScore?.score ?? 0) <= 0 || (show.criticScore?.reviewCount ?? 0) < 3) return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      const ageRec = show.ageRecommendation?.toLowerCase() || '';
+      // Teen-appropriate: either tagged for teens, or high-scoring musicals that aren't strictly for young kids
+      return ageRec.includes('ages 12') || ageRec.includes('ages 13') || ageRec.includes('ages 14') ||
+             tags.includes('teen') ||
+             (show.type === 'musical' && (show.criticScore?.score ?? 0) >= 70 && !ageRec.includes('ages 4') && !ageRec.includes('ages 5'));
+    },
+    sort: 'score',
+    relatedGuides: ['best-broadway-shows-for-kids', 'best-broadway-musicals', 'best-broadway-shows'],
+    relatedBrowse: ['broadway-shows-for-teens', 'broadway-shows-for-kids'],
+  },
+
+  'best-broadway-shows-for-first-timers': {
+    slug: 'best-broadway-shows-for-first-timers',
+    title: 'Best Broadway Shows for First-Timers',
+    h1Template: 'Best Broadway Shows for First-Timers ({year})',
+    metaTitleTemplate: 'Best Broadway Shows for First-Timers {year} | Where to Start',
+    metaDescriptionTemplate: 'Never been to Broadway? These {count} shows are perfect for your first time. Top-rated, crowd-pleasing productions.',
+    introFallback: 'Your first Broadway show should be unforgettable. These {count} productions are perfect for newcomers — critically acclaimed, visually stunning, and guaranteed to hook you on live theater.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      if ((show.criticScore?.score ?? 0) < 70) return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      // First-timer friendly: iconic, classic, accessible, or highly-rated musicals
+      return tags.includes('iconic') || tags.includes('classic') || tags.includes('accessible') ||
+             tags.includes('disney') || tags.includes('tony-winner') ||
+             (show.type === 'musical' && (show.criticScore?.score ?? 0) >= 80);
+    },
+    sort: 'score',
+    limit: 15,
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals', 'cheap-broadway-tickets'],
+    relatedBrowse: ['first-time-broadway', 'broadway-shows-for-tourists'],
+  },
+
+  // === ADAPTATION GENRES ===
+  'broadway-shows-based-on-movies': {
+    slug: 'broadway-shows-based-on-movies',
+    title: 'Broadway Shows Based on Movies',
+    h1Template: 'Broadway Shows Based on Movies ({year})',
+    metaTitleTemplate: 'Broadway Shows Based on Movies {year} | Screen-to-Stage',
+    metaDescriptionTemplate: '{count} Broadway shows adapted from movies playing in {year}. See your favorite films come to life on stage.',
+    introFallback: 'From animated Disney classics to indie cult films, Hollywood has long inspired Broadway productions. These {count} shows bring beloved movies to the stage with spectacular results.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      return tags.includes('film-adaptation');
+    },
+    sort: 'score',
+    relatedGuides: ['best-broadway-musicals', 'best-broadway-shows'],
+    relatedBrowse: ['broadway-shows-based-on-movies', 'broadway-shows-based-on-books'],
+  },
+
+  'broadway-shows-based-on-true-stories': {
+    slug: 'broadway-shows-based-on-true-stories',
+    title: 'Broadway Shows Based on True Stories',
+    h1Template: 'Broadway Shows Based on True Stories ({year})',
+    metaTitleTemplate: 'Broadway Shows Based on True Stories {year} | Real-Life Dramas',
+    metaDescriptionTemplate: '{count} Broadway shows inspired by true events playing in {year}. Real stories brought to life on stage.',
+    introFallback: 'The most powerful stories are often the ones that really happened. These {count} Broadway productions are based on true events, real people, and remarkable stories that shaped history.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      return tags.includes('based-on-true-story') || tags.includes('biography') || tags.includes('historical');
+    },
+    sort: 'score',
+    relatedGuides: ['best-broadway-plays', 'best-broadway-shows'],
+    relatedBrowse: ['broadway-shows-based-on-true-stories', 'best-broadway-dramas'],
+  },
+
+  'upcoming-broadway-shows': {
+    slug: 'upcoming-broadway-shows',
+    title: 'Upcoming Broadway Shows',
+    h1Template: 'Upcoming Broadway Shows ({season} Season)',
+    metaTitleTemplate: 'Upcoming Broadway Shows {year} | New Shows Coming Soon',
+    metaDescriptionTemplate: '{count} new Broadway shows coming soon in {year}. Preview dates, opening nights, and what to expect.',
+    introFallback: 'Exciting new productions are headed to Broadway. These {count} shows are in previews or about to begin performances — get ahead of the crowd and book early.',
+    filter: (show) => {
+      if (show.status !== 'previews' && show.status !== 'upcoming') return false;
+      return true;
+    },
+    sort: 'opening-date',
+    relatedGuides: ['best-new-broadway-shows', 'best-broadway-shows', 'broadway-shows-closing-soon'],
+    relatedBrowse: ['upcoming-broadway-shows', 'new-broadway-shows-2026'],
+  },
+
   // === SHORT SHOWS ===
   'short-broadway-shows': {
     slug: 'short-broadway-shows',
