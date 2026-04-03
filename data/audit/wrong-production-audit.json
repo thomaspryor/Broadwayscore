@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T20:49:08.787Z",
+  "timestamp": "2026-04-03T21:01:24.508Z",
   "stats": {
-    "totalReviews": 29042,
+    "totalReviews": 29044,
     "alreadyFlagged": 8110,
     "dateGuardCatches": 13,
     "directorMismatch": 883,
     "tvFilmSignals": 3363,
-    "londonSignals": 1009,
+    "londonSignals": 1010,
     "offBroadwaySignals": 976,
     "yearMismatch": 65,
     "noPublishDate": 5668
@@ -41520,6 +41520,7 @@
     {
       "showId": "six-the-musical-west-end-2021",
       "file": "the-sun--benjy-potter.json",
+      "score": 75,
       "publishDate": "2019-06-24",
       "url": "https://www.thesun.co.uk/tvandshowbiz/9364717/musical-six-henry-viii-songs/",
       "findings": [
@@ -53396,7 +53397,7 @@
     {
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": null,
+      "score": 85,
       "publishDate": "For a previous production",
       "url": "http://t2conline.com/she-says-the-play-that-goes-wrong-is-mirth-for-the-soul/",
       "findings": [
@@ -76228,6 +76229,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 79,
+      "publishDate": "2026-04-02",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-authenticator-dorfman-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-04-03T20:44:41.469Z",
+    "generatedAt": "2026-04-03T20:56:45.111Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 29472,
-      "inReviewsJson": 15627,
+      "totalFiles": 29474,
+      "inReviewsJson": 15650,
       "skippedExcluded": 5,
-      "withFullText": 36,
-      "excerptOnly": 1842,
-      "llmClassified": 35,
+      "withFullText": 28,
+      "excerptOnly": 1857,
+      "llmClassified": 27,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 16,
-      "budgetUsed": 0.0035999999999999977,
-      "llmCalls": 36,
+      "budgetUsed": 0.002799999999999999,
+      "llmCalls": 28,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13744
+      "skippedAlreadyClassified": 13760
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "operation-mincemeat-west-end-2024/nytimes--alexis-soloski.json",
+      "showId": "operation-mincemeat-west-end-2024",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "feature",
+      "confidence": "high",
+      "reasoning": "This article discusses the creation and background of the musical 'Operation Mincemeat' and interviews the creators, but it does not offer a critical evaluation of the show itself.",
+      "currentScore": 86
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -30,7 +41,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes summaries of other theater-related news.",
       "currentScore": 82
     },
     {
@@ -40,7 +51,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences'.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, not a review of a specific production. It seems to be a general interest article about the play's context.",
       "currentScore": 60
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered, so it is not a review.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is displaying subscription prompts. Based on the available text, it seems to be a news article or a link to a news article, rather than a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and is advertising a WSJ subscription. There is no evaluative content about the show 'Parade'.",
       "currentScore": 78
     },
     {
@@ -130,7 +141,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -140,7 +151,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -160,7 +171,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review that offers an evaluation.",
       "currentScore": 64
     },
     {
@@ -170,7 +181,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -180,31 +191,28 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "dog-day-afternoon-2026/mashable--kristy-puchko.json",
-    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
-    "hadestown-west-end-2024/city-am--adam-bloodworth.json",
-    "hadestown-west-end-2024/londontheatre1--chris-omaweng.json",
-    "into-the-woods-west-end-2025/i-paper--fiona-mountford.json",
-    "moulin-rouge-the-musical-west-end-2021/west-end-best-friend--jamie-flowers.json",
-    "no-singing-in-the-navy-off-broadway-2026/one-minute-critic--emily-chackerian.json",
-    "starlight-express-west-end-2024/all-that-dazzles-uk--all-that-dazzles.json",
-    "starlight-express-west-end-2024/londontheatre1--terry-eastham.json",
-    "the-devil-wears-prada-west-end-2024/all-that-dazzles-uk--all-that-dazzles.json",
-    "the-devil-wears-prada-west-end-2024/londontheatre1--chris-omaweng.json",
-    "the-play-that-goes-wrong-off-broadway-2019/huffpost--michael-glitz.json",
-    "the-play-that-goes-wrong-off-broadway-2019/theater-life--david-sheward.json",
-    "titus-andronicus-off-broadway-2026/culturesauce--thom-geier.json",
-    "titus-andronicus-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
-    "titus-andronicus-off-broadway-2026/theater-scene--darryl-reilly.json",
-    "tru-off-broadway-2026/theatermania--zachary-stewart.json",
-    "witness-for-the-prosecution-west-end-2022/guardian--michael-billington.json",
-    "witness-for-the-prosecution-west-end-2022/london-theatre--will-longman.json"
+    "back-to-the-future-west-end-2021/musical-theatre-review--unknown.json",
+    "back-to-the-future-west-end-2021/the-express--neil-norman.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/all-that-dazzles-uk--all-that-dazzles.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/londontheatre1--chris-omaweng.json",
+    "dog-day-afternoon-2026/newyorker--emily-nussbaum.json",
+    "every-brilliant-thing-2026/frontmezzjunkies--unknown.json",
+    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/broadwayworld--debbie-gilpin.json",
+    "heartbreak-hotel-off-broadway-2026/stageandcinema--gregory-fletcher.json",
+    "the-authenticator-west-end-2026/all-that-dazzles-uk--daz-gale.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "currentCount": 16,
+      "removed": 1
+    }
+  ]
 }
