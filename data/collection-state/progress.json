@@ -108,7 +108,13 @@
     "othello-2025/broadwaynews--brittani-samuel.json",
     "purpose-2025/deadline--greg-evans.json",
     "redwood-2025/deadline--greg-evans.json",
-    "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json"
+    "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "elf-2024/deadline--greg-evans.json",
+    "tammy-faye-2024/nydailynews--chris-jones.json",
+    "sunset-boulevard-2024/hollywood-reporter--david-rooney.json",
+    "yellow-face-2024/broadwaynews--brittani-samuel.json",
+    "mcneal-2024/vulture--jackson-mchenry.json",
+    "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -182,7 +188,11 @@
     "art-2025/broadwaynews--michael-abourizk.json",
     "dead-outlaw-2025/usatoday--patrick-ryan.json",
     "redwood-2025/gmanetwork--stuart-santiago.json",
-    "redwood-2025/juiceph--wanggo-gallaga.json"
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "swept-away-2024/nydailynews--chris-jones.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -249,7 +259,8 @@
       "burlesque-west-end-2026/standard--nick-curtis.json",
       "burlesque-west-end-2026/times-uk--clive-davis.json",
       "the-last-five-years-2025/guardian--adrian-horton.json",
-      "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json"
+      "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json",
+      "tammy-faye-2024/nydailynews--chris-jones.json"
     ],
     "amp": [],
     "browserbase": [
@@ -270,7 +281,11 @@
       "data/review-texts/purpose-2025/deadline--greg-evans.json",
       "purpose-2025/deadline--greg-evans.json",
       "data/review-texts/redwood-2025/deadline--greg-evans.json",
-      "redwood-2025/deadline--greg-evans.json"
+      "redwood-2025/deadline--greg-evans.json",
+      "data/review-texts/elf-2024/deadline--greg-evans.json",
+      "elf-2024/deadline--greg-evans.json",
+      "data/review-texts/sunset-boulevard-2024/hollywood-reporter--david-rooney.json",
+      "sunset-boulevard-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -293,7 +308,9 @@
       "stephen-sondheims-old-friends-2025/broadwaynews--brittani-samuel.json",
       "glengarry-glen-ross-2025/broadwaynews--brittani-samuel.json",
       "the-picture-of-dorian-gray-2025/broadwaynews--brittani-samuel.json",
-      "othello-2025/broadwaynews--brittani-samuel.json"
+      "othello-2025/broadwaynews--brittani-samuel.json",
+      "yellow-face-2024/broadwaynews--brittani-samuel.json",
+      "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -306,7 +323,8 @@
       "data/review-texts/the-mousetrap-west-end-2021/thestage--dave-fargnoli.json",
       "data/review-texts/sweetmeats-west-end-2026/thestage--holly-omahony.json",
       "data/review-texts/the-monsters-off-broadway-2026/vulture--jackson-mchenry.json",
-      "data/review-texts/beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json"
+      "data/review-texts/beautiful-little-fool-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/swept-away-2024/nydailynews--chris-jones.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -329,11 +347,12 @@
       "waiting-for-godot-2025/newyorker--helen-shaw.json",
       "burlesque-west-end-2026/the-telegrap--claire-allfree.json",
       "floyd-collins-2025/vulture--sara-holdren.json",
-      "the-last-five-years-2025/nydailynews--chris-jones.json"
+      "the-last-five-years-2025/nydailynews--chris-jones.json",
+      "mcneal-2024/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json",
+  "lastProcessed": "cats-the-jellicle-ball-off-broadway-2024/newyorker--helen-shaw.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -455,6 +474,39 @@
       "t": "2026-04-03T11:55:40.401Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T11:57:21.732Z",
+      "event": "bb-session",
+      "session": "e4cb66c7",
+      "url": "https://www.nydailynews.com/2024/11/19/broadway-review-avett-brothers-musical-sw"
+    },
+    {
+      "t": "2026-04-03T11:57:23.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "nydailynews.com"
+    },
+    {
+      "t": "2026-04-03T11:57:47.580Z",
+      "event": "bb-session",
+      "session": "177a323c",
+      "url": "https://deadline.com/2024/11/elf-the-musical-broadway-review-ho-ho-etc-123617802"
+    },
+    {
+      "t": "2026-04-03T11:57:48.814Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-03T11:58:52.138Z",
+      "event": "bb-session",
+      "session": "fe44fa87",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sunset-blvd-broadway-review-nic"
+    },
+    {
+      "t": "2026-04-03T11:58:53.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
