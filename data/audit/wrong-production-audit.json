@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-03T14:49:05.350Z",
+  "timestamp": "2026-04-03T15:27:55.814Z",
   "stats": {
-    "totalReviews": 28480,
-    "alreadyFlagged": 8045,
+    "totalReviews": 28355,
+    "alreadyFlagged": 7905,
     "dateGuardCatches": 15,
     "directorMismatch": 873,
-    "tvFilmSignals": 3361,
-    "londonSignals": 1002,
+    "tvFilmSignals": 3358,
+    "londonSignals": 1000,
     "offBroadwaySignals": 974,
     "yearMismatch": 65,
-    "noPublishDate": 5795
+    "noPublishDate": 5832
   },
   "findings": [
     {
@@ -13232,20 +13232,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
-      "file": "the-telegrap--dominic-cavendish.json",
-      "score": 83,
-      "publishDate": "February 17th, 2026",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -51001,20 +50987,6 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
-      "file": "variety--greg-evans.json",
-      "score": 92,
-      "publishDate": "2020-07-30",
-      "url": "https://variety.com/1999/legit/reviews/the-lion-king-lyceum-theater-1200459301/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
       "file": "variety--matt-wolf.json",
       "score": 79,
       "publishDate": "1999-10-25",
@@ -58986,20 +58958,6 @@
       "file": "telegraph--charles-spencer.json",
       "score": 74,
       "publishDate": "2009-01-01",
-      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
-      "file": "the-telegrap--charles-spencer.json",
-      "score": 74,
-      "publishDate": "January 1st, 2009",
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
       "findings": [
         {
@@ -78812,20 +78770,6 @@
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 78,
-      "publishDate": "2025-12-12",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
       "file": "telegraph--serena-davies.json",
       "score": 77,
       "publishDate": "2021-08-11",
@@ -78983,20 +78927,6 @@
       "file": "telegraph--marianka-swain.json",
       "score": 85,
       "publishDate": "2023-11-15",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "the-telegrap--marianka-swain.json",
-      "score": 82,
-      "publishDate": "November 15th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
       "findings": [
         {
