@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T11:27:40.748Z",
+  "timestamp": "2026-04-03T11:51:11.445Z",
   "stats": {
-    "totalReviews": 28477,
-    "alreadyFlagged": 8009,
+    "totalReviews": 28479,
+    "alreadyFlagged": 8011,
     "dateGuardCatches": 15,
-    "directorMismatch": 863,
-    "tvFilmSignals": 3344,
-    "londonSignals": 997,
+    "directorMismatch": 865,
+    "tvFilmSignals": 3347,
+    "londonSignals": 1000,
     "offBroadwaySignals": 971,
     "yearMismatch": 65,
     "noPublishDate": 5795
@@ -7010,6 +7010,20 @@
       "score": 45,
       "publishDate": "December 1, 2011",
       "url": "https://www.nytimes.com/2011/12/02/theater/reviews/bonnie-clyde-with-laura-osnes-and-jeremy-jordan-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "ew--lisa-schwarzbaum.json",
+      "score": 88,
+      "publishDate": "March 24th, 2011",
+      "url": "http://www.ew.com/article/2011/03/24/book-mormon",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -27833,6 +27847,30 @@
       ]
     },
     {
+      "showId": "les-miserables-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "score": 60,
+      "publishDate": "2020-01-16",
+      "url": "https://www.thetimes.co.uk/article/les-miserables-review-overlong-and-clunky-but-there-was-much-to-admire-in-the-performances-r6w7lmhj5",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "lestat-2006",
       "file": "variety--charles-isherwood.json",
       "score": 25,
@@ -30053,6 +30091,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "file": "financialtimes--brendan-lemon.json",
+      "score": 82,
+      "publishDate": "April 11, 2013",
+      "url": "http://www.ft.com/cms/s/2/2a8bf774-a298-11e2-9b70-00144feabdc0.html#axzz2QCLPV482",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -52992,6 +53044,20 @@
       ]
     },
     {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "broadwayworld--kat-mokrynski.json",
+      "score": 81,
+      "publishDate": "2014-09-18",
+      "url": "https://www.broadwayworld.com/westend/article/Review-CHRISTMAS-CAROL-GOES-WRONG-Apollo-Theatre-20251216",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
       "score": 78,
@@ -75611,6 +75677,20 @@
     },
     {
       "showId": "the-authenticator-west-end-2026",
+      "file": "west-end-best-friend--alexandra-tullah.json",
+      "score": null,
+      "publishDate": "2026-04-02",
+      "url": "https://www.westendbestfriend.co.uk/news/review-the-authenticator-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
       "file": "whatsonstage--aliya-al.json",
       "score": 68,
       "publishDate": "2026-04-02",
@@ -78616,6 +78696,20 @@
       "file": "telegraph--marianka-swain.json",
       "score": 85,
       "publishDate": "2023-11-15",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "the-telegrap--marianka-swain.json",
+      "score": 82,
+      "publishDate": "November 15th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
       "findings": [
         {
