@@ -1,36 +1,36 @@
 {
   "meta": {
-    "generatedAt": "2026-04-03T00:13:10.798Z",
+    "generatedAt": "2026-04-03T03:30:41.305Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 32939,
-      "inReviewsJson": 15277,
+      "totalFiles": 32938,
+      "inReviewsJson": 15276,
       "skippedExcluded": 11,
-      "withFullText": 18,
-      "excerptOnly": 1617,
-      "llmClassified": 17,
+      "withFullText": 29,
+      "excerptOnly": 1606,
+      "llmClassified": 28,
       "heuristicFlagged": 0,
       "nonReviewsFound": 1,
-      "uncertainCases": 16,
-      "budgetUsed": 0.0018000000000000006,
-      "llmCalls": 18,
+      "uncertainCases": 17,
+      "budgetUsed": 0.002899999999999999,
+      "llmCalls": 29,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13631
+      "skippedAlreadyClassified": 13630
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "romeo-and-juliet-west-end-2026/standard--nick-curtis.json",
-      "showId": "romeo-and-juliet-west-end-2026",
-      "outlet": "Evening Standard",
-      "outletId": "standard",
-      "contentType": "review",
+      "file": "three-tall-women-2018/philadelphia-inquirer--toby-zinman.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "The Philadelphia Inquirer",
+      "outletId": "philadelphia-inquirer",
+      "contentType": "interview",
       "confidence": "high",
-      "reasoning": "The article is a review of \"Rhinoceros\" at the Almeida Theatre, not \"Romeo and Juliet\".",
-      "currentScore": 80
+      "reasoning": "This is a Q&A interview with Laurie Metcalf about her roles in 'Three Tall Women,' 'Roseanne,' and 'Lady Bird.'",
+      "currentScore": 90
     }
   ],
   "uncertainCases": [
@@ -51,7 +51,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -61,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific show. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -71,7 +71,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It reads like a preview or introductory piece.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London and awards, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -81,7 +81,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play in the post-Me Too era, which is a feature about the play's context rather than a review. The text is incomplete, making the confidence low.",
       "currentScore": 60
     },
     {
@@ -91,7 +91,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered, so it is not a review.",
       "currentScore": 88
     },
     {
@@ -111,7 +111,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -121,7 +121,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and is displaying subscription prompts. Based on the available text, it seems to be a news article or a link to a news article, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -131,7 +131,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on its quality.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -151,8 +151,18 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
+      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
+    },
+    {
+      "file": "six-the-musical-west-end-2021/the-telegrap--marianka-swain.json",
+      "showId": "six-the-musical-west-end-2021",
+      "outlet": "The Telegrap",
+      "outletId": "the-telegrap",
+      "contentType": "feature",
+      "confidence": "medium",
+      "reasoning": "The article describes the history and success of \"SIX the Musical,\" rather than evaluating the quality of a specific production. It provides background information and context, fitting the description of a feature article.",
+      "currentScore": 88
     },
     {
       "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
@@ -161,7 +171,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -171,7 +181,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -181,7 +191,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -191,16 +201,27 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion about the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "breakfast-at-tiffanys-2013/usatoday--elysa-gardner.json",
+    "gutenberg-2023/variety--aramide-tinubu.json",
+    "hangmen-2022/dailybeast--tim-teeman.json",
+    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/the-telegrap--dominic-cavendish.json",
+    "matilda-the-musical-west-end-2021/the-telegrap--charles-spencer.json",
+    "romeo-and-juliet-west-end-2026/financialtimes--sarah-hemming.json",
+    "showstopper-the-improvised-musical-west-end-2023/the-telegrap--dominic-cavendish.json",
+    "the-play-that-goes-wrong-west-end-2021/the-telegrap--marianka-swain.json",
+    "the-play-that-goes-wrong-west-end-2021/the-telegrap--tim-walker.json",
+    "titanique-west-end-2024/the-telegrap--dominic-cavendish.json"
+  ],
   "perShowSummary": [
     {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "currentCount": 14,
+      "showId": "three-tall-women-2018",
+      "currentCount": 61,
       "removed": 1
     }
   ]
