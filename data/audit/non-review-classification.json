@@ -1,35 +1,55 @@
 {
   "meta": {
-    "generatedAt": "2026-04-03T11:46:48.082Z",
+    "generatedAt": "2026-04-03T12:15:24.540Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 28919,
-      "inReviewsJson": 15503,
+      "inReviewsJson": 15502,
       "skippedExcluded": 0,
-      "withFullText": 28,
-      "excerptOnly": 1810,
-      "llmClassified": 27,
-      "heuristicFlagged": 5,
-      "nonReviewsFound": 1,
+      "withFullText": 46,
+      "excerptOnly": 1785,
+      "llmClassified": 45,
+      "heuristicFlagged": 3,
+      "nonReviewsFound": 3,
       "uncertainCases": 16,
-      "budgetUsed": 0.002799999999999999,
-      "llmCalls": 28,
+      "budgetUsed": 0.004599999999999999,
+      "llmCalls": 46,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13665
+      "skippedAlreadyClassified": 13671
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "the-lion-king-west-end-2021/telegraph--claire-allfree.json",
-      "showId": "the-lion-king-west-end-2021",
-      "outlet": "The Telegraph",
-      "outletId": "telegraph",
+      "file": "burlesque-west-end-2026/standard--nick-curtis.json",
+      "showId": "burlesque-west-end-2026",
+      "outlet": "Evening Standard",
+      "outletId": "standard",
+      "contentType": "feature",
+      "confidence": "high",
+      "reasoning": "This article is a travel feature about a resort in Zanzibar, not a review of the Broadway show \"Burlesque.\" It describes the resort's amenities and location.",
+      "currentScore": 60
+    },
+    {
+      "file": "high-noon-west-end-2025/standard--nick-curtis.json",
+      "showId": "high-noon-west-end-2025",
+      "outlet": "Evening Standard",
+      "outletId": "standard",
+      "contentType": "feature",
+      "confidence": "high",
+      "reasoning": "This article is a travel feature, with no mention of the target show, 'High Noon'.",
+      "currentScore": 60
+    },
+    {
+      "file": "the-playboy-of-the-western-world-west-end-2025/standard--nick-curtis.json",
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "outlet": "Evening Standard",
+      "outletId": "standard",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This article is about 'The Hot Wing King' and seems to be a news article or brief review, but it does not mention 'The Lion King'.",
+      "reasoning": "This article is a news piece about upcoming National Theatre Live cinema shows, including \"The Playboy of the Western World.\" It describes the event and quotes actors, but does not evaluate the production itself.",
       "currentScore": 60
     }
   ],
@@ -41,7 +61,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer an evaluation or opinion on the quality of the production. It also includes unrelated theater news, suggesting it's a general feature rather than a review.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -51,7 +71,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article or review. It lacks any evaluative content about 'Fences' or any other show.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like Fences.",
       "currentScore": 82
     },
     {
@@ -61,7 +81,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific production.",
       "currentScore": 62
     },
     {
@@ -71,7 +91,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It sets the stage for the show without providing a review.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -81,7 +101,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, not a review of a specific production. It seems to be a feature article offering advice or commentary.",
       "currentScore": 60
     },
     {
@@ -91,7 +111,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there's no indication of a review within this excerpt.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -101,7 +121,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -111,7 +131,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -121,7 +141,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
+      "reasoning": "The article appears to be truncated and is advertising a WSJ subscription. There is no evaluative content about the show 'Parade'.",
       "currentScore": 78
     },
     {
@@ -131,7 +151,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
       "currentScore": 80
     },
     {
@@ -141,7 +161,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -151,7 +171,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's not solely a review.",
       "currentScore": 83
     },
     {
@@ -171,7 +191,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -191,7 +211,7 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events. However, it does not offer a critical evaluation or opinion on the quality of the production itself.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
@@ -219,28 +239,6 @@
       "confidence": "heuristic-only"
     },
     {
-      "file": "purpose-2025/deadline--greg-evans.json",
-      "showId": "purpose-2025",
-      "outlet": "Deadline",
-      "outletId": "deadline",
-      "heuristics": [
-        "urlNonReviewKeyword"
-      ],
-      "currentScore": 73,
-      "confidence": "heuristic-only"
-    },
-    {
-      "file": "redwood-2025/deadline--greg-evans.json",
-      "showId": "redwood-2025",
-      "outlet": "Deadline",
-      "outletId": "deadline",
-      "heuristics": [
-        "urlNonReviewKeyword"
-      ],
-      "currentScore": 66,
-      "confidence": "heuristic-only"
-    },
-    {
       "file": "uncle-vanya-2024/deadline--greg-evans.json",
       "showId": "uncle-vanya-2024",
       "outlet": "Deadline",
@@ -253,21 +251,47 @@
     }
   ],
   "reviewsConfirmed": [
-    "aladdin-2014/hollywood-reporter--david-rooney.json",
-    "book-of-mormon-2011/ew--lisa-schwarzbaum.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/the-telegrap--dominic-cavendish.json",
-    "hadestown-2019/variety--marilyn-stasio.json",
-    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/whatsonstage--sarah-crompton.json",
-    "matilda-the-musical-west-end-2021/financialtimes--brendan-lemon.json",
-    "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
-    "mj-2022/ap--mark-kennedy.json",
-    "the-play-that-goes-wrong-west-end-2021/guardian--kate-kellaway.json",
-    "the-play-that-goes-wrong-west-end-2021/the-telegrap--marianka-swain.json"
+    "beautiful-little-fool-west-end-2026/whatsonstage--alun-hood.json",
+    "burlesque-west-end-2026/independent--alice-saville.json",
+    "burlesque-west-end-2026/the-telegrap--claire-allfree.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "floyd-collins-2025/vulture--sara-holdren.json",
+    "glengarry-glen-ross-2025/hollywood-reporter--david-rooney.json",
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "les-miserables-west-end-2021/times-uk--clive-davis.json",
+    "maggots-west-end-2026/whatsonstage--sarah-crompton.json",
+    "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
+    "man-and-boy-west-end-2026/whatsonstage--sarah-crompton.json",
+    "marcel-on-the-train-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "pirates-the-penzance-musical-2025/broadwaynews--brittani-samuel.json",
+    "purpose-2025/deadline--greg-evans.json",
+    "redwood-2025/deadline--greg-evans.json",
+    "sweetmeats-west-end-2026/whatsonstage--rachel-agyekum.json",
+    "the-authenticator-west-end-2026/standard--nick-curtis.json",
+    "the-authenticator-west-end-2026/west-end-best-friend--alexandra-tullah.json",
+    "the-last-five-years-2025/guardian--adrian-horton.json",
+    "the-last-five-years-2025/nydailynews--chris-jones.json",
+    "the-play-that-goes-wrong-west-end-2021/broadwayworld--kat-mokrynski.json",
+    "the-playboy-of-the-western-world-west-end-2025/whatsonstage--alun-hood.json",
+    "the-tragedy-of-coriolanus-off-broadway-2026/theater-pizzazz--jk-clarke.json",
+    "the-waterfall-off-broadway-2026/theatermania--rachel-graham.json",
+    "waiting-for-godot-2025/newyorker--helen-shaw.json"
   ],
   "perShowSummary": [
     {
-      "showId": "the-lion-king-west-end-2021",
-      "currentCount": 9,
+      "showId": "burlesque-west-end-2026",
+      "currentCount": 13,
+      "removed": 1
+    },
+    {
+      "showId": "high-noon-west-end-2025",
+      "currentCount": 12,
+      "removed": 1
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "currentCount": 10,
       "removed": 1
     }
   ]

@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-03T11:51:11.445Z",
+  "timestamp": "2026-04-03T12:19:47.410Z",
   "stats": {
     "totalReviews": 28479,
-    "alreadyFlagged": 8011,
+    "alreadyFlagged": 8023,
     "dateGuardCatches": 15,
     "directorMismatch": 865,
-    "tvFilmSignals": 3347,
-    "londonSignals": 1000,
+    "tvFilmSignals": 3349,
+    "londonSignals": 1001,
     "offBroadwaySignals": 971,
     "yearMismatch": 65,
     "noPublishDate": 5795
@@ -50153,6 +50153,20 @@
     },
     {
       "showId": "the-last-five-years-2025",
+      "file": "guardian--adrian-horton.json",
+      "score": 79,
+      "publishDate": "April 6, 2025",
+      "url": "https://www.theguardian.com/stage/2025/apr/06/the-last-five-years-review-nick-jonas-adrienne-warren",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-last-five-years-2025",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
       "score": 65,
       "publishDate": "2025-04-14",
@@ -54763,6 +54777,20 @@
       "score": 78,
       "publishDate": "February 24th, 2026",
       "url": "https://www.theaterscene.net/plays/offbway-plays/the-waterfall/victor-gluck/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-waterfall-off-broadway-2026",
+      "file": "theatermania--rachel-graham.json",
+      "score": 71,
+      "publishDate": "February 15th, 2026",
+      "url": "https://www.theatermania.com/news/review-the-waterfall-a-haitian-american-mother-daughter-drama_1824358/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -75678,7 +75706,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "west-end-best-friend--alexandra-tullah.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2026-04-02",
       "url": "https://www.westendbestfriend.co.uk/news/review-the-authenticator-national-theatre",
       "findings": [
@@ -78767,6 +78795,20 @@
       "score": 63,
       "publishDate": "2025-12-12",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-playboy-of-the-western-world-review-an-assured-turn-from-nicola-coughlan-xxvqkw6hr?gaa_at=eafs&gaa_n=AWEtsqdD7NRKY2DjPPLTBUiSrWL9J3zEDTesWo0Mk774P-xwcpq46lJxtUeD3CrxB2E%3D&gaa_ts=693c27ec&gaa_sig=4_S7ItVVSJytpyXYpF_nD9PVetsX3Ekj_kuYxEEROg0UCL5rDSsuVfpZ9u9EvrFOekVgShWnZDQL3QY8awuBBQ%3D%3D",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 65,
+      "publishDate": "December 12th, 2025",
+      "url": "https://www.whatsonstage.com/news/the-playboy-of-the-western-world-at-the-national-theatre-review_1706313/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
