@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T10:11:36.558Z",
+  "generatedAt": "2026-04-03T10:34:52.792Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -700,19 +700,19 @@
       "slug": "the-authenticator-west-end",
       "thumbnail": "/images/shows/the-authenticator-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 60,
+      "liveScore": 64,
       "scoreDrift": null,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 1,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:1/6"
@@ -782,6 +782,18 @@
           "t2": 1,
           "t3": 0,
           "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-03T10:34:52.792Z",
+          "rc": 2,
+          "s": 64,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
           "m": 1,
           "n": 0,
           "bc": "waiting"

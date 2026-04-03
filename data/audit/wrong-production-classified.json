@@ -1,115 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-03T10:06:32.644Z",
+    "generatedAt": "2026-04-03T10:30:24.514Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 71,
-    "classified": 6,
+    "classified": 0,
     "wrongProduction": 0,
-    "correctProduction": 6,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "a-day-in-the-death-of-joe-egg-2003",
-      "showTitle": "A Day in the Death of Joe Egg",
-      "showYear": 2003,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "April 4, 2003",
-      "originalSignals": [
-        "revival text signals: revival, new revival",
-        "modern references: hamilton"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review explicitly mentions the Roundabout Theater Company's new revival, which matches the 2003 production filed."
-    },
-    {
-      "showId": "the-elephant-man-2002",
-      "showTitle": "The Elephant Man",
-      "showYear": 2002,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "April 15, 2002",
-      "originalSignals": [
-        "year 1979 in text matches revival the-elephant-man-1979"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review explicitly mentions the 'revival' that opened at the Royale Theater, and the publish date is in 2002, matching the filed production."
-    },
-    {
-      "showId": "ma-raineys-black-bottom-2003",
-      "showTitle": "Ma Rainey's Black Bottom",
-      "showYear": 2003,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "February 7, 2003",
-      "originalSignals": [
-        "revival text signals: revival, new revival",
-        "year 1984 in text matches revival ma-raineys-black-bottom-1984"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review explicitly refers to the production as a \"new revival\" and mentions the Royale Theater, Charles S. Dutton, and Whoopi Goldberg, all associated with the 2003 production. The publication date also aligns with the opening of the 2003 production."
-    },
-    {
-      "showId": "the-crucible-2002",
-      "showTitle": "The Crucible",
-      "showYear": 2002,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "March 8, 2002",
-      "originalSignals": [
-        "revival text signals: revival, revived"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions the cast (Liam Neeson and Laura Linney) and director (Richard Eyre) of the 2002 production, and the Virginia Theater, where it opened. The review was also published on March 8, 2002, close to the opening of the filed production."
-    },
-    {
-      "showId": "mornings-at-seven-2002",
-      "showTitle": "Morning's at Seven",
-      "showYear": 2002,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "April 22, 2002",
-      "originalSignals": [
-        "revival text signals: revival, new revival"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review explicitly mentions the \"new revival at the Lyceum Theater,\" which aligns with the 2002 production."
-    },
-    {
-      "showId": "master-haroldand-the-boys-2003",
-      "showTitle": "\"MASTER HAROLD\"…and the boys",
-      "showYear": 2003,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "June 2, 2003",
-      "originalSignals": [
-        "year 1982 in text matches revival master-haroldand-the-boys-1982"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses Danny Glover returning to Broadway in the same play he debuted in 1982, and the review was published in 2003, the opening year of the filed production."
-    }
-  ]
+  "results": []
 }
