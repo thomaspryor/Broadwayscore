@@ -528,10 +528,14 @@ async function fetchFromMezzanine(show) {
 
   if (!best || !best.artUrl) return null;
 
-  // Reject if year distance > 2 AND there are multiple candidates (likely wrong production).
-  // Single candidate with exact title match is accepted regardless of year (common for shows
-  // where Mezzanine has no date, e.g., old Broadway productions with a single listing).
-  if (candidates.length > 1 && bestDist > 2 && showYear) {
+  // Reject if year distance > 2 AND at least one candidate HAS a date (so we know the best
+  // match is genuinely wrong, not just missing date data). When no candidates have dates,
+  // trust the Broadway-flagged / highest-rated one — Gemini verification catches wrong images.
+  const anyHasDate = candidates.some(p => {
+    const d = p.openedAt || '';
+    return d && parseInt(String(d).substring(0, 4)) > 1900;
+  });
+  if (candidates.length > 1 && bestDist > 2 && showYear && anyHasDate) {
     console.log(`   ✗ Mezzanine: ${candidates.length} candidates, best is ${bestDist} years off — skipping`);
     return null;
   }
