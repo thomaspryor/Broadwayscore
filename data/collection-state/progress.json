@@ -174,7 +174,8 @@
     "into-the-woods-2022/thewrap--thom-geier.json",
     "plaza-suite-2022/vulture--helen-shaw.json",
     "the-prom-2018/vulture--sara-holdren.json",
-    "the-waverly-gallery-2018/variety--marilyn-stasio.json"
+    "the-waverly-gallery-2018/variety--marilyn-stasio.json",
+    "bernhardthamlet-2018/newnownextcom--michael-musto.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -482,7 +483,16 @@
     "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
     "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
     "the-ferryman-2018/theater-news-online--jessica-branch.json",
-    "the-ferryman-2018/walterthinnes--walter-thinnes.json"
+    "the-ferryman-2018/walterthinnes--walter-thinnes.json",
+    "the-nap-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--joe-dziemianowicz.json",
+    "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json",
+    "gettin-the-band-back-together-2018/wsj--terry-teachout.json",
+    "gettin-the-band-back-together-2018/theater-news-online--jeremy-gerard.json",
+    "gettin-the-band-back-together-2018/theater-news-online--joe-dziemianowicz.json",
+    "head-over-heels-2018/usatoday--charles-isherwood.json",
+    "straight-white-men-2018/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -704,7 +714,9 @@
       "data/review-texts/purlie-victorious-2023/cititour--brian-scott-lipton.json",
       "data/review-texts/good-night-oscar-2023/vulture--jackson-mchenry.json",
       "data/review-texts/the-music-man-2022/washpost--mark-kennedy.json",
-      "data/review-texts/beetlejuice-2019/wsj--edward-rothstein.json"
+      "data/review-texts/beetlejuice-2019/wsj--edward-rothstein.json",
+      "data/review-texts/gettin-the-band-back-together-2018/wsj--terry-teachout.json",
+      "data/review-texts/straight-white-men-2018/wsj--terry-teachout.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -743,11 +755,12 @@
       "the-piano-lesson-2022/vulture--jackson-mchenry.json",
       "into-the-woods-2022/thewrap--thom-geier.json",
       "plaza-suite-2022/vulture--helen-shaw.json",
-      "the-prom-2018/vulture--sara-holdren.json"
+      "the-prom-2018/vulture--sara-holdren.json",
+      "bernhardthamlet-2018/newnownextcom--michael-musto.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-ferryman-2018/walterthinnes--walter-thinnes.json",
+  "lastProcessed": "straight-white-men-2018/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -1177,6 +1190,28 @@
       "t": "2026-04-03T13:49:39.131Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-03T13:50:50.901Z",
+      "event": "bb-session",
+      "session": "578424aa",
+      "url": "https://www.wsj.com/articles/pretty-woman-review-super-safe-sex-on-broadway-1534"
+    },
+    {
+      "t": "2026-04-03T13:50:52.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-03T13:52:55.949Z",
+      "event": "bb-session",
+      "session": "123d7c9d",
+      "url": "https://www.wsj.com/articles/straight-white-men-and-head-over-heels-reviews-all-"
+    },
+    {
+      "t": "2026-04-03T13:52:57.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
