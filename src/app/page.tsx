@@ -142,17 +142,20 @@ export default function HomePage() {
 
   // --- New shelves: Previews, Lotteries, Rush, Box Office, Sold Out, West End ---
 
-  // In Previews — sorted by opening date (soonest first)
+  // In Previews — sorted by opening date (soonest first), null dates last
   const inPreviewsList = allShows
     .filter(s => s.status === 'previews')
-    .sort((a, b) => new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime())
+    .sort((a, b) => (new Date(a.openingDate || '2099-01-01').getTime()) - (new Date(b.openingDate || '2099-01-01').getTime()))
     .map(serializeShow);
 
-  // Lottery/Rush data
-  const lotteryRushData = JSON.parse(
-    fs.readFileSync(path.join(process.cwd(), 'data/lottery-rush.json'), 'utf8')
-  );
-  const lrShows = lotteryRushData.shows || {};
+  // Lottery/Rush data (fallback to empty if file missing)
+  let lrShows: Record<string, { lottery?: unknown; rush?: unknown; digitalRush?: unknown }> = {};
+  try {
+    const lotteryRushData = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'data/lottery-rush.json'), 'utf8')
+    );
+    lrShows = lotteryRushData.shows || {};
+  } catch { /* lottery-rush.json missing — shelves will be empty */ }
 
   // Broadway Lotteries — open BW shows with lottery, sorted by score
   const lotteryShowsList = allShows
@@ -166,22 +169,25 @@ export default function HomePage() {
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .map(serializeShow);
 
-  // Box Office data
-  const grossesData = JSON.parse(
-    fs.readFileSync(path.join(process.cwd(), 'data/grosses.json'), 'utf8')
-  );
-  const grossesShows = grossesData.shows || {};
+  // Box Office data (fallback to empty if file missing)
+  let grossesShows: Record<string, { thisWeek?: { gross?: number; capacity?: number } }> = {};
+  try {
+    const grossesData = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'data/grosses.json'), 'utf8')
+    );
+    grossesShows = grossesData.shows || {};
+  } catch { /* grosses.json missing — shelves will be empty */ }
 
   // Top Box Office This Week — sorted by weekly gross (highest first)
   const topBoxOfficeList = allShows
     .filter(s => s.status === 'open' && grossesShows[s.slug]?.thisWeek?.gross)
-    .sort((a, b) => (grossesShows[b.slug].thisWeek.gross || 0) - (grossesShows[a.slug].thisWeek.gross || 0))
+    .sort((a, b) => (grossesShows[b.slug]?.thisWeek?.gross || 0) - (grossesShows[a.slug]?.thisWeek?.gross || 0))
     .map(serializeShow);
 
   // Most Sold Out — sorted by capacity % (highest first)
   const mostSoldOutList = allShows
     .filter(s => s.status === 'open' && grossesShows[s.slug]?.thisWeek?.capacity)
-    .sort((a, b) => (grossesShows[b.slug].thisWeek.capacity || 0) - (grossesShows[a.slug].thisWeek.capacity || 0))
+    .sort((a, b) => (grossesShows[b.slug]?.thisWeek?.capacity || 0) - (grossesShows[a.slug]?.thisWeek?.capacity || 0))
     .map(serializeShow);
 
   // Best of the West End — open WE shows with scores, sorted by score
