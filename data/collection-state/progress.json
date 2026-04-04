@@ -347,7 +347,9 @@
     "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
     "escape-to-margaritaville-2018/rollingstone--david-browne.json",
     "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
-    "jitney-2017/usatoday--robert-feldberg.json"
+    "jitney-2017/usatoday--robert-feldberg.json",
+    "spring-awakening-2015/broadstreetreview--judy-weightman.json",
+    "spring-awakening-2015/broadway-blog--matthew-wexler.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1714,7 +1716,15 @@
     "fiddler-on-the-roof-2015/bobs-theater-blog--robert-sholiton.json",
     "fiddler-on-the-roof-2015/out-magazine--michael-musto.json",
     "school-of-rock-the-musical-2015/theatermania--jesse-green.json",
-    "on-your-feet-2015/bobs-theater-blog--robert-sholiton.json"
+    "on-your-feet-2015/bobs-theater-blog--robert-sholiton.json",
+    "therese-raquin-2015/timeout--adam-feldman.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json",
+    "fool-for-love-2015/bobs-theater-blog--robert-sholiton.json",
+    "spring-awakening-2015/wsj--terry-teachout.json",
+    "spring-awakening-2015/wsj--unknown.json",
+    "spring-awakening-2015/talkinbroadway--matthew-murray.json",
+    "spring-awakening-2015/theater-in-the-now--michael-block.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2169,7 +2179,11 @@
       "data/review-texts/gutenberg-2023/billboard--ashley-iasimone.json",
       "data/review-texts/head-over-heels-2018/off-script-with-dan-dwyer--dan-dwyer.json",
       "data/review-texts/the-children-2017/chicagotribune--chris-jones-bway.json",
-      "data/review-texts/charlie-and-the-chocolate-factory-2017/wsj--unknown.json"
+      "data/review-texts/charlie-and-the-chocolate-factory-2017/wsj--unknown.json",
+      "data/review-texts/spring-awakening-2015/wsj--terry-teachout.json",
+      "data/review-texts/spring-awakening-2015/wsj--unknown.json",
+      "data/review-texts/spring-awakening-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/spring-awakening-2015/theater-in-the-now--michael-block.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2268,11 +2282,13 @@
       "gypsy-2024/billboard--paul-grein.json",
       "head-over-heels-2018/rollingstone--jerry-portwood.json",
       "escape-to-margaritaville-2018/rollingstone--david-browne.json",
-      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "spring-awakening-2015/broadstreetreview--judy-weightman.json",
+      "spring-awakening-2015/broadway-blog--matthew-wexler.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "on-your-feet-2015/bobs-theater-blog--robert-sholiton.json",
+  "lastProcessed": "spring-awakening-2015/theater-in-the-now--michael-block.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2865,6 +2881,28 @@
     },
     {
       "t": "2026-04-04T04:44:44.822Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T04:51:17.361Z",
+      "event": "bb-session",
+      "session": "d11817c6",
+      "url": "http://www.wsj.com/articles/spring-awakening-review-handfuls-of-poetry-144373457"
+    },
+    {
+      "t": "2026-04-04T04:51:18.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T04:53:06.997Z",
+      "event": "bb-session",
+      "session": "c0d4a37d",
+      "url": "https://www.wsj.com/articles/spring-awakening-reimagined-and-a-new-season-of-dan"
+    },
+    {
+      "t": "2026-04-04T04:53:08.484Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
