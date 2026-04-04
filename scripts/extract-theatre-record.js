@@ -504,21 +504,33 @@ function getTargetShows() {
 }
 
 // WE venue name patterns that indicate the right production
+// ONLY includes unambiguous London venues — names like "playhouse", "palace",
+// "lyceum", "cambridge", "phoenix" exist in Edinburgh/regional cities
 const LONDON_VENUES = [
-  'west end', 'london', 'palace', 'victoria palace', 'lyceum', 'apollo',
+  'west end', 'london', 'victoria palace', 'apollo victoria',
   'savoy', 'dominion', 'drury lane', 'gielgud', 'wyndham', 'garrick',
   'noel coward', 'harold pinter', 'duke of york', 'criterion', 'novello',
-  'adelphi', 'cambridge', 'phoenix', 'prince edward', 'prince of wales',
-  'sondheim', 'gillian lynne', 'troubadour', 'kit kat club', 'playhouse',
+  'adelphi', 'prince edward', 'prince of wales',
+  'sondheim', 'gillian lynne', 'troubadour', 'kit kat club',
   "st martin", "her majesty", "his majesty", 'old vic', 'young vic',
   'national theatre', 'donmar', 'almeida', 'dorfman', 'olivier', 'lyttelton',
   'barbican', 'sadler', 'ambassadors', 'piccadilly', 'vaudeville',
-  'fortune', 'duchess', 'trafalgar', 'theatre royal',
+  'fortune', 'duchess', 'trafalgar',
+];
+
+// Cities that indicate NOT London (used to reject ambiguous venue names)
+const NON_LONDON_CITIES = [
+  'edinburgh', 'bristol', 'birmingham', 'manchester', 'leeds', 'cardiff',
+  'glasgow', 'sheffield', 'nottingham', 'southampton', 'brighton', 'bath',
+  'chichester', 'oxford', 'salford', 'milton keynes', 'newcastle',
+  'liverpool', 'plymouth', 'norwich', 'canterbury',
 ];
 
 function isLondonVenue(venueText) {
   if (!venueText) return false;
   const lower = venueText.toLowerCase();
+  // Reject if a non-London city is mentioned
+  if (NON_LONDON_CITIES.some(city => lower.includes(city))) return false;
   return LONDON_VENUES.some(v => lower.includes(v));
 }
 
