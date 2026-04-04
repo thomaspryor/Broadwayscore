@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-04T14:57:54.460Z",
+  "timestamp": "2026-04-04T15:05:21.203Z",
   "stats": {
-    "totalReviews": 29321,
-    "alreadyFlagged": 8345,
+    "totalReviews": 29343,
+    "alreadyFlagged": 8341,
     "dateGuardCatches": 13,
     "directorMismatch": 928,
-    "tvFilmSignals": 3411,
-    "londonSignals": 1055,
+    "tvFilmSignals": 3414,
+    "londonSignals": 1056,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
     "noPublishDate": 5624
@@ -23478,6 +23478,20 @@
     },
     {
       "showId": "im-sorry-prime-minister-west-end-2026",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 76,
+      "publishDate": "2026-02-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "timeout-london--tom-wicker.json",
       "score": 70,
       "publishDate": "2026-02-13",
@@ -45015,6 +45029,20 @@
     },
     {
       "showId": "summerfolk-west-end-2026",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 79,
+      "publishDate": "2026-03-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 93,
       "publishDate": "2026-03-18",
@@ -51466,6 +51494,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 24,
+      "publishDate": "2025-11-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -73670,6 +73712,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2025-01-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
