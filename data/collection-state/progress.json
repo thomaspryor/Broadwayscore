@@ -369,7 +369,8 @@
     "lysistrata-jones-2011/variety--steven-suskin.json",
     "on-a-clear-day-you-can-see-forever-2011/dailybeast--tim-teeman.json",
     "seminar-2011/newyorker--john-lahr.json",
-    "godspell-2011/wsj--terry-teachout.json"
+    "godspell-2011/wsj--terry-teachout.json",
+    "the-normal-heart-2011/ap--mark-kennedy.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1854,7 +1855,16 @@
     "relatively-speaking-2011/new-jersey-newsroom--michael-sommers.json",
     "relatively-speaking-2011/backstage--david-sheward.json",
     "the-mountaintop-2011/new-jersey-newsroom--michael-sommers.json",
-    "the-mountaintop-2011/backstage--david-sheward.json"
+    "the-mountaintop-2011/backstage--david-sheward.json",
+    "the-mountaintop-2011/yonkers-tribune--john-simon.json",
+    "man-and-boy-2011/backstage--david-sheward.json",
+    "man-and-boy-2011/yonkers-tribune--john-simon.json",
+    "follies-2011/wsj--unknown.json",
+    "follies-2011/ap--mark-kennedy.json",
+    "master-class-2011/backstage--erik-haagensen.json",
+    "the-people-in-the-picture-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/newsday--unknown.json",
+    "the-normal-heart-2011/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2025,7 +2035,8 @@
       "clybourne-park-2012/theatermania--unknown.json",
       "once-2012/ew--unknown.json",
       "once-2012/theatermania--unknown.json",
-      "once-2012/artsfuse--unknown.json"
+      "once-2012/artsfuse--unknown.json",
+      "the-normal-heart-2011/ap--mark-kennedy.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -2346,7 +2357,9 @@
       "data/review-texts/death-of-a-salesman-2012/indiewire--unknown.json",
       "data/review-texts/death-of-a-salesman-2012/curtainup--unknown.json",
       "data/review-texts/death-of-a-salesman-2012/forbes--roger-friedman.json",
-      "data/review-texts/death-of-a-salesman-2012/talkinbroadway--unknown.json"
+      "data/review-texts/death-of-a-salesman-2012/talkinbroadway--unknown.json",
+      "data/review-texts/follies-2011/wsj--unknown.json",
+      "data/review-texts/follies-2011/ap--mark-kennedy.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2457,7 +2470,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-mountaintop-2011/backstage--david-sheward.json",
+  "lastProcessed": "the-normal-heart-2011/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -3162,6 +3175,28 @@
       "t": "2026-04-04T05:26:56.596Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-04T05:30:21.287Z",
+      "event": "bb-session",
+      "session": "1562b532",
+      "url": "https://www.wsj.com/articles/SB10001424053111904583204576542453370742790?gaa_at="
+    },
+    {
+      "t": "2026-04-04T05:30:22.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T05:33:17.474Z",
+      "event": "bb-session",
+      "session": "bd26fcfb",
+      "url": "http://www.newsday.com/entertainment/theater/the-normal-heart-still-beats-today-"
+    },
+    {
+      "t": "2026-04-04T05:33:19.077Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
