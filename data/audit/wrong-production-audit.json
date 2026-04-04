@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T09:49:38.278Z",
+  "timestamp": "2026-04-04T10:32:47.141Z",
   "stats": {
-    "totalReviews": 29227,
-    "alreadyFlagged": 8268,
+    "totalReviews": 29327,
+    "alreadyFlagged": 8349,
     "dateGuardCatches": 13,
-    "directorMismatch": 924,
-    "tvFilmSignals": 3409,
-    "londonSignals": 1050,
-    "offBroadwaySignals": 985,
+    "directorMismatch": 926,
+    "tvFilmSignals": 3410,
+    "londonSignals": 1054,
+    "offBroadwaySignals": 984,
     "yearMismatch": 71,
-    "noPublishDate": 5629
+    "noPublishDate": 5624
   },
   "findings": [
     {
@@ -13435,7 +13435,7 @@
       "showId": "dracula-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
       "score": 85,
-      "publishDate": "2026-02-17",
+      "publishDate": "February 17th, 2026",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/dracula-noel-coward-theatre-review/",
       "findings": [
         {
@@ -14195,7 +14195,7 @@
       "file": "thestage--sam-marlowe.json",
       "score": 72,
       "publishDate": "2026-02-25",
-      "url": null,
+      "url": "https://www.thestage.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse-london",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24726,6 +24726,29 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "independent--louis-chilton.json",
       "score": 79,
       "publishDate": "2025-12-12",
@@ -26168,6 +26191,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "timeout--unknown.json",
+      "score": null,
       "publishDate": "2026-03-27",
       "url": "https://www.westendtheatre.com/346848/news/reviews/reviews-of-john-proctor-is-the-villain-london/",
       "findings": [
@@ -32400,7 +32424,7 @@
       "showId": "miss-saigon-1991",
       "file": "amny--matt-windman.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "March 23, 2017",
       "url": "http://www.amny.com/entertainment/miss-saigon-review-show-more-relevant-today-than-1991-broadway-premiere-1.13309464",
       "findings": [
         {
@@ -37094,6 +37118,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "pacific-overtures-1976",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "1976-01-11",
+      "url": "https://movies2.nytimes.com/books/98/07/19/specials/sondheim-pacific.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"amon miyamoto\" from pacific-overtures-2004"
         }
       ]
     },
@@ -44074,8 +44112,8 @@
       "showId": "spring-awakening-2015",
       "file": "variety--peter-debruge.json",
       "score": 83,
-      "publishDate": null,
-      "url": "https://variety.com/2015/legit/reviews/spring-awakening-review-deaf-west-broadway-1201603519/",
+      "publishDate": "September 27th, 2015",
+      "url": "http://variety.com/2015/legit/reviews/spring-awakening-review-deaf-west-broadway-1201603519/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52304,7 +52342,7 @@
       "showId": "the-lion-king-west-end-2021",
       "file": "telegraph--david-gritten.json",
       "score": 82,
-      "publishDate": "2014-10-17",
+      "publishDate": "October 17th, 2014",
       "url": "https://www.telegraph.co.uk/culture/theatre/11161597/How-the-Lion-King-came-to-reign.html",
       "findings": [
         {
@@ -60375,7 +60413,7 @@
       "showId": "wicked-west-end-2021",
       "file": "telegraph--charles-spencer.json",
       "score": 74,
-      "publishDate": "2009-01-01",
+      "publishDate": "January 1st, 2009",
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/7017887/Wicked-at-the-Apollo-Theatre-review.html",
       "findings": [
         {
@@ -61862,6 +61900,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2025-11-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -67519,6 +67570,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2024-02-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -73310,20 +73374,6 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
-      "file": "nytg--austin-fimmano.json",
-      "score": 89,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
       "file": "observer--katherine-cowles.json",
       "score": 76,
       "publishDate": "2026-01-08",
@@ -73594,6 +73644,20 @@
       "score": 90,
       "publishDate": "2025-01-14",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-other-place-national-theatre-review/?msockid=2e09c7d8797965060ae6d67178066487",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 92,
+      "publishDate": "January 14th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75426,7 +75490,7 @@
       "showId": "six-the-musical-west-end-2021",
       "file": "telegraph--marianka-swain.json",
       "score": 90,
-      "publishDate": "2023-11-11",
+      "publishDate": "November 11th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/six-the-musical-vaudeville-theatre-review-henry-viii/",
       "findings": [
         {
@@ -81023,7 +81087,7 @@
       "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "telegraph--marianka-swain.json",
       "score": 85,
-      "publishDate": "2023-11-15",
+      "publishDate": "November 15th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-play-that-goes-wrong-duchess-theatre-review/",
       "findings": [
         {
