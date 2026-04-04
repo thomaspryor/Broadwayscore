@@ -1,23 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-04T08:15:02.254Z",
+    "generatedAt": "2026-04-04T08:48:48.213Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
     "total": 1,
     "classified": 1,
-    "wrongShow": 1,
-    "correct": 0,
+    "wrongShow": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
-    "applied": 1
+    "applied": 0
   },
   "results": [
     {
-      "showId": "reasons-to-be-pretty-2009",
-      "showTitle": "Reasons To Be Pretty",
-      "file": "ew--melissa-rose-bernardo.json",
-      "verdict": "WRONG_SHOW",
+      "showId": "the-year-of-magical-thinking-2007",
+      "showTitle": "The Year of Magical Thinking",
+      "file": "theatrely--amanda-marie-miller.json",
+      "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review is about 'Reasons to Be Happy', a sequel to 'Reasons to Be Pretty', and discusses the characters and plot of the sequel, not the original play."
+      "reasoning": "The review explicitly mentions \"The Year of Magical Thinking\", Joan Didion, and a Broadway adaptation starring Vanessa Redgrave. It also discusses the themes and setting of the play."
     }
   ]
 }

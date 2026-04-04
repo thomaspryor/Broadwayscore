@@ -1,36 +1,56 @@
 {
   "meta": {
-    "generatedAt": "2026-04-04T08:14:58.023Z",
+    "generatedAt": "2026-04-04T08:48:43.880Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 29658,
-      "inReviewsJson": 15791,
+      "totalFiles": 29656,
+      "inReviewsJson": 15780,
       "skippedExcluded": 5,
-      "withFullText": 32,
-      "excerptOnly": 1732,
-      "llmClassified": 31,
+      "withFullText": 26,
+      "excerptOnly": 1722,
+      "llmClassified": 25,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
+      "nonReviewsFound": 3,
       "uncertainCases": 16,
-      "budgetUsed": 0.0031999999999999984,
-      "llmCalls": 32,
+      "budgetUsed": 0.0025999999999999994,
+      "llmCalls": 26,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14022
+      "skippedAlreadyClassified": 14027
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "in-the-heights-2008/theatermania--unknown.json",
-      "showId": "in-the-heights-2008",
-      "outlet": "TheaterMania",
-      "outletId": "theatermania",
-      "contentType": "news",
+      "file": "a-bronx-tale-2007/woman-around-town--alix-cohen.json",
+      "showId": "a-bronx-tale-2007",
+      "outlet": "Woman Around Town",
+      "outletId": "woman-around-town",
+      "contentType": "feature",
       "confidence": "high",
-      "reasoning": "This article provides casting and performance date information, which is typical of a news item. It does not contain any evaluation or opinion about the quality of 'In the Heights'.",
-      "currentScore": 88
+      "reasoning": "This article is about wellness and skincare, not a review of the Broadway show \"A Bronx Tale.\"",
+      "currentScore": 61
+    },
+    {
+      "file": "romeo-and-juliet-west-end-2026/city-am--adam-bloodworth.json",
+      "showId": "romeo-and-juliet-west-end-2026",
+      "outlet": "City A.M.",
+      "outletId": "city-am",
+      "contentType": "feature",
+      "confidence": "high",
+      "reasoning": "This article is about online casino bonuses and free spins, not a review of the play \"Romeo and Juliet\".",
+      "currentScore": 80
+    },
+    {
+      "file": "the-authenticator-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "showId": "the-authenticator-west-end-2026",
+      "outlet": "Time Out London",
+      "outletId": "timeout-london",
+      "contentType": "preview",
+      "confidence": "high",
+      "reasoning": "The article describes the plot and themes of the play, but does not offer an evaluation or recommendation. It sets up the premise and introduces the characters without providing a critical opinion.",
+      "currentScore": 60
     }
   ],
   "uncertainCases": [
@@ -41,7 +61,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -61,7 +81,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -91,7 +111,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -121,7 +141,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and contains elements of a news website, such as subscription prompts and time stamps. It does not contain any evaluative content about the show 'Parade'.",
+      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no evaluative content about the show 'Parade'.",
       "currentScore": 78
     },
     {
@@ -131,7 +151,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer a critical evaluation or opinion on its quality. It sets the stage for an evening of terror but doesn't review the production.",
+      "reasoning": "The article describes the play's premise and setting the stage for an evening of terror, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
       "currentScore": 80
     },
     {
@@ -151,7 +171,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the historical significance and the creative choices made.",
       "currentScore": 83
     },
     {
@@ -171,7 +191,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more indicative of a news item or show listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -181,7 +201,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's likely a dynamically generated page or search result.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -191,31 +211,33 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a descriptive preview or feature piece.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a verdict or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "arcadia-2011/variety--marilyn-stasio.json",
-    "exit-the-king-2009/hollywood-reporter--stephen-dalton.json",
-    "god-of-carnage-2009/nypost--elisabeth-vincentelli.json",
-    "god-of-carnage-2009/variety--charles-isherwood.json",
-    "jerusalem-2011/telegraph--dominic-cavendish.json",
-    "reasons-to-be-pretty-2009/ew--melissa-rose-bernardo.json",
-    "shrek-the-musical-2008/daily-mail--quentin-letts.json",
-    "south-pacific-2008/asheville-movies--edward-arnaudin.json",
-    "south-pacific-2008/hendersonville-lightning--olivia-stuller.json",
-    "speedtheplow-2008/variety--david-rooney.json",
-    "the-little-mermaid-2008/ew--maureen-lee-lenker.json",
-    "the-normal-heart-2011/newsday--updated-april.json",
-    "the-scottsboro-boys-2010/hollywood-reporter--david-rooney.json",
-    "time-stands-still-2010/new-jersey-newsroom--michael-sommers.json"
+    "cymbeline-2007/nbcny--robert-kahn.json",
+    "mary-poppins-2006/broadwayworld--michael-dale.json",
+    "romeo-and-juliet-west-end-2026/artsdesk--matt-wolf.json",
+    "romeo-and-juliet-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+    "the-year-of-magical-thinking-2007/theatrely--amanda-marie-miller.json"
   ],
   "perShowSummary": [
     {
-      "showId": "in-the-heights-2008",
-      "currentCount": 10,
+      "showId": "a-bronx-tale-2007",
+      "currentCount": 13,
+      "removed": 1
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "currentCount": 20,
+      "removed": 1
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "currentCount": 11,
       "removed": 1
     }
   ]

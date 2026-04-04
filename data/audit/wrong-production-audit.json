@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T08:19:47.057Z",
+  "timestamp": "2026-04-04T08:53:28.623Z",
   "stats": {
-    "totalReviews": 29228,
-    "alreadyFlagged": 8254,
+    "totalReviews": 29226,
+    "alreadyFlagged": 8268,
     "dateGuardCatches": 13,
-    "directorMismatch": 923,
+    "directorMismatch": 924,
     "tvFilmSignals": 3409,
-    "londonSignals": 1046,
+    "londonSignals": 1049,
     "offBroadwaySignals": 985,
     "yearMismatch": 71,
-    "noPublishDate": 5643
+    "noPublishDate": 5629
   },
   "findings": [
     {
@@ -321,20 +321,6 @@
       "score": 68,
       "publishDate": null,
       "url": "https://slleiter.blogspot.com/2016/12/114-review-bronx-tale-seen-december-8.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "a-bronx-tale-2007",
-      "file": "woman-around-town--alix-cohen.json",
-      "score": 52,
-      "publishDate": null,
-      "url": "https://www.womanaroundtown.com/sections/playing-around/a-bronx-tale-could-have-been-so-much-more",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -1208,7 +1194,7 @@
     {
       "showId": "a-little-night-music-2009",
       "file": "theatermania--unknown.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2009-12-13",
       "url": "https://www.theatermania.com/news/a-little-night-music_23441/",
       "findings": [
@@ -28157,6 +28143,25 @@
       ]
     },
     {
+      "showId": "les-miserables-2006",
+      "file": "talkinbroadway--unknown.json",
+      "score": 60,
+      "publishDate": "2006-11-09",
+      "url": "https://www.talkinbroadway.com/page/world/LesMiz2006.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "les-miserables-2014",
       "file": "front-row-center--tulis-mccall.json",
       "score": 45,
@@ -30734,6 +30739,20 @@
       "score": 78,
       "publishDate": null,
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-poppins-2006",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 85,
+      "publishDate": "2006-11-24",
+      "url": "https://www.broadwayworld.com/article/Mary-Poppins-A-Lark-A-Spree-20061124",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -77824,6 +77843,20 @@
     },
     {
       "showId": "the-authenticator-west-end-2026",
+      "file": "london-theatre--holly-omahony.json",
+      "score": 63,
+      "publishDate": "2026-04-02",
+      "url": "https://www.londontheatre.co.uk/reviews/the-authenticator-review-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
       "file": "west-end-best-friend--alexandra-tullah.json",
       "score": 78,
       "publishDate": "2026-04-02",
@@ -80796,6 +80829,20 @@
       "score": 85,
       "publishDate": "2021-08-12",
       "url": "https://www.standard.co.uk/culture/theatre/phantom-of-the-opera-west-end-review-her-majestys-theatre-london-b950370.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "telegraph--claire-allfree.json",
+      "score": null,
+      "publishDate": "2021-08-10",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
