@@ -373,7 +373,9 @@
     "the-normal-heart-2011/ap--mark-kennedy.json",
     "the-house-of-blue-leaves-2011/hollywood-reporter--unknown.json",
     "the-house-of-blue-leaves-2011/nytimes--unknown.json",
-    "jerusalem-2011/independent--alice-saville.json"
+    "jerusalem-2011/independent--alice-saville.json",
+    "wonderland-2011/variety--unknown.json",
+    "catch-me-if-you-can-2011/nypost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1884,7 +1886,15 @@
     "jerusalem-2011/telegraph--dominic-cavendish.json",
     "jerusalem-2011/backstage--erik-haagensen.json",
     "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
-    "sister-act-2011/backstage--erik-haagensen.json"
+    "sister-act-2011/backstage--erik-haagensen.json",
+    "high-2011/backstage--erik-haagensen.json",
+    "high-2011/bloomberg--jeremy-gerard.json",
+    "wonderland-2011/nydailynews--joe-dziamonowicz.json",
+    "wonderland-2011/nytheatre--jo-ann-rosen.json",
+    "wonderland-2011/vulture--jesse-green.json",
+    "war-horse-2011/new-jersey-newsroom--michael-sommers.json",
+    "war-horse-2011/backstage--erik-haagensen.json",
+    "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2150,7 +2160,11 @@
       "data/review-texts/the-house-of-blue-leaves-2011/hollywood-reporter--unknown.json",
       "the-house-of-blue-leaves-2011/hollywood-reporter--unknown.json",
       "data/review-texts/the-house-of-blue-leaves-2011/nytimes--unknown.json",
-      "the-house-of-blue-leaves-2011/nytimes--unknown.json"
+      "the-house-of-blue-leaves-2011/nytimes--unknown.json",
+      "data/review-texts/wonderland-2011/variety--unknown.json",
+      "wonderland-2011/variety--unknown.json",
+      "data/review-texts/catch-me-if-you-can-2011/nypost--elisabeth-vincentelli.json",
+      "catch-me-if-you-can-2011/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "jitney-2017/usatoday--unknown.json"
@@ -2498,7 +2512,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "sister-act-2011/backstage--erik-haagensen.json",
+  "lastProcessed": "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -3280,6 +3294,28 @@
       "t": "2026-04-04T05:39:54.317Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T05:42:34.686Z",
+      "event": "bb-session",
+      "session": "a1e74984",
+      "url": "http://www.variety.com/review/VE1117945030?categoryid=33&amp;cs=1&amp;cmpid=RSS|"
+    },
+    {
+      "t": "2026-04-04T05:42:35.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-04T05:43:48.180Z",
+      "event": "bb-session",
+      "session": "6a8142e8",
+      "url": "http://www.nypost.com/p/entertainment/theater/clumsy_catch_fumbles_FQOWJPY1ebs4R"
+    },
+    {
+      "t": "2026-04-04T05:43:49.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
