@@ -1,13 +1,31 @@
 {
-  "timestamp": "2026-04-03T16:29:29.298Z",
+  "timestamp": "2026-04-04T02:17:54.505Z",
   "regressions": [
     {
-      "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
-      "oldCount": 22,
-      "newCount": 19,
+      "showId": "frankie-and-johnny-in-the-clair-de-lune-2002",
+      "oldCount": 4,
+      "newCount": 0,
+      "dropped": 4,
+      "scoredOnDisk": 4,
+      "flaggedScored": 5,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "hello-dolly-1995",
+      "oldCount": 4,
+      "newCount": 0,
+      "dropped": 4,
+      "scoredOnDisk": 5,
+      "flaggedScored": 9,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "macbeth-1981",
+      "oldCount": 7,
+      "newCount": 4,
       "dropped": 3,
-      "scoredOnDisk": 22,
-      "flaggedScored": 6,
+      "scoredOnDisk": 8,
+      "flaggedScored": 2,
       "reason": "scored files exist but being dropped"
     }
   ]
