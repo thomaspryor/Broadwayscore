@@ -10,6 +10,8 @@
  *   node scripts/extract-theatre-record.js --open-we          # All open WE shows
  *   node scripts/extract-theatre-record.js --open-we --dry-run
  *   node scripts/extract-theatre-record.js --long-running      # Open WE, opened before 2025
+ *   node scripts/extract-theatre-record.js --browse-we         # Browse /listings/current-west-end (preferred for WE)
+ *   node scripts/extract-theatre-record.js --browse-london     # Browse /listings/current-london (Off-WE)
  */
 
 const fs = require('fs');
@@ -354,6 +356,8 @@ const dryRun = args.includes('--dry-run');
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const openWE = args.includes('--open-we');
 const longRunning = args.includes('--long-running');
+const browseWE = args.includes('--browse-we');
+const browseLondon = args.includes('--browse-london');
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10) || 0;
 
 // Theatre Record credentials
@@ -482,9 +486,12 @@ function getTargetShows() {
       s.status === 'open' &&
       s.openingDate && new Date(s.openingDate) < new Date('2025-01-01')
     );
-  } else if (openWE) {
+  } else if (browseWE || browseLondon || openWE) {
+    const categories = browseLondon
+      ? ['off-west-end']
+      : ['west-end', 'off-west-end'];
     shows = shows.filter(s =>
-      (s.category === 'west-end' || s.category === 'off-west-end') &&
+      categories.includes(s.category) &&
       (s.status === 'open' || s.status === 'previews')
     );
   }
@@ -513,6 +520,70 @@ function isLondonVenue(venueText) {
   if (!venueText) return false;
   const lower = venueText.toLowerCase();
   return LONDON_VENUES.some(v => lower.includes(v));
+}
+
+// Normalize a title for comparison
+function normalizeTitle(t) {
+  return t.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/^the\s+/, '')
+    .replace(/\s*\(the\)\s*$/, '') // TR uses "Lion King (The)" format
+    .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+// Scrape TR /listings/current-west-end or /listings/current-london
+async function scrapeTRListingPage(page, listingUrl) {
+  console.log(`Scraping listing: ${listingUrl}`);
+  await page.goto(listingUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
+  await page.waitForTimeout(2000);
+
+  const entries = await page.evaluate(() => {
+    const results = [];
+    const articles = document.querySelectorAll('section.articles article');
+    articles.forEach(article => {
+      const h2 = article.querySelector('h2');
+      const h3 = article.querySelector('h3');
+      if (!h2) return;
+      const title = h2.textContent.trim();
+      const venue = h3 ? h3.textContent.trim() : '';
+      const opensFeat = article.querySelector('#feat-opens-press-night span, [id*="opens"] span');
+      const opens = opensFeat ? opensFeat.textContent.trim() : '';
+      results.push({ title, venue, opens });
+    });
+    return results;
+  });
+
+  // Deduplicate — TR often has two entries per show (old + detailed)
+  const byTitle = new Map();
+  for (const entry of entries) {
+    const norm = normalizeTitle(entry.title);
+    const existing = byTitle.get(norm);
+    if (!existing || (entry.opens && !existing.opens)) {
+      byTitle.set(norm, entry);
+    }
+  }
+  const dedupedEntries = [...byTitle.values()];
+  console.log(`  Found ${entries.length} entries (${dedupedEntries.length} unique) on listing page`);
+  return dedupedEntries;
+}
+
+// Match TR listing entries to our shows.json
+function matchListingToShows(listings, targetShows) {
+  const matched = [];
+  const unmatched = [];
+  const listingByNormTitle = new Map();
+  for (const entry of listings) {
+    listingByNormTitle.set(normalizeTitle(entry.title), entry);
+  }
+  for (const show of targetShows) {
+    const listing = listingByNormTitle.get(normalizeTitle(show.title));
+    if (listing) {
+      matched.push({ show, listing });
+    } else {
+      unmatched.push(show);
+    }
+  }
+  return { matched, unmatched };
 }
 
 async function main() {
@@ -561,33 +632,20 @@ async function main() {
   let totalSkipped = 0;
   let totalShows = 0;
 
-  for (const show of targets) {
-    console.log(`\n--- ${show.title} (${show.id}) ---`);
-
-    // Search Theatre Record
-    const searchTitle = show.title
-      .replace(/['']/g, "'")
-      .replace(/&/g, 'and');
-    const searchUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + searchTitle + '"')}&title=on&order=newest`;
-
-    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
-    await page.waitForTimeout(1000);
-
-    // Find production results
-    const results = await page.evaluate(() => {
+  // ─── Shared: extract search result entries from current page ───
+  async function extractSearchResults(pg) {
+    return pg.evaluate(() => {
       const articles = document.querySelectorAll('article');
       const r = [];
       articles.forEach(a => {
         const h2 = a.querySelector('h2');
         const venue = a.querySelector('h3');
-        // Find any link inside the article — could be /archive/ or production page
         const links = a.querySelectorAll('a');
         let link = null;
         for (const l of links) {
           if (l.href && l.href.includes('/archive/')) { link = l; break; }
         }
         if (!link) {
-          // Try any link that's not a search link
           for (const l of links) {
             if (l.href && !l.href.includes('/search')) { link = l; break; }
           }
@@ -602,106 +660,22 @@ async function main() {
       });
       return r;
     });
+  }
 
-    // If no results or no London venue match, retry with location filter
-    if (results.length === 0 || !results.find(r => isLondonVenue(r.venue))) {
-      // Retry search with location filter enabled
-      const retryUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + searchTitle + '"')}&title=on&location=on&order=newest`;
-      await page.goto(retryUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
-      await page.waitForTimeout(1000);
-
-      const retryResults = await page.evaluate(() => {
-        const articles = document.querySelectorAll('article');
-        const r = [];
-        articles.forEach(a => {
-          const h2 = a.querySelector('h2');
-          const venue = a.querySelector('h3');
-          const links = a.querySelectorAll('a');
-          let link = null;
-          for (const l of links) {
-            if (l.href && l.href.includes('/archive/')) { link = l; break; }
-          }
-          if (!link) {
-            for (const l of links) {
-              if (l.href && !l.href.includes('/search')) { link = l; break; }
-            }
-          }
-          if (!h2 || !link) return;
-          r.push({
-            title: h2.textContent.trim(),
-            venue: venue?.textContent?.trim() || '',
-            link: link.href,
-            linkText: link.textContent.trim()
-          });
-        });
-        return r;
-      });
-
-      // Merge results, preferring London venues
-      const seen = new Set(results.map(r => r.link));
-      for (const r of retryResults) {
-        if (!seen.has(r.link)) { results.push(r); seen.add(r.link); }
-      }
-    }
-
-    if (results.length === 0) {
-      console.log('  No results found on Theatre Record');
-      continue;
-    }
-
-    // Filter to results that match our show title
-    // Strict: normalized titles must be equal (no substring matching)
-    const normalizeTitle = t => t.toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents
-      .replace(/^the\s+/, '').replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
-    const ourTitle = normalizeTitle(show.title);
-    const titleMatches = results.filter(r => {
-      const trTitle = normalizeTitle(r.title);
-      return trTitle === ourTitle;
-    });
-
-    if (titleMatches.length === 0) {
-      console.log(`  No title match. TR results: ${results.map(r => `"${r.title}" @ ${r.venue}`).join('; ')}`);
-      continue;
-    }
-
-    // Among title matches, find the London/WE production
-    let bestResult = titleMatches.find(r => isLondonVenue(r.venue));
-    if (!bestResult) {
-      // Try matching by our show's venue
-      const showVenue = show.venue?.toLowerCase() || '';
-      if (showVenue) {
-        bestResult = titleMatches.find(r =>
-          r.venue.toLowerCase().includes(showVenue) ||
-          showVenue.includes(r.venue.toLowerCase().replace(/,.*/, '').trim())
-        );
-      }
-      if (!bestResult) bestResult = titleMatches[0]; // Take first title match
-      if (!bestResult) continue;
-    }
-
-    console.log(`  Found: ${bestResult.title} @ ${bestResult.venue}`);
-    console.log(`  Link: ${bestResult.link} (${bestResult.linkText})`);
-
-    // Check if it's a PDF or HTML page
-    // HTML pages: /archive/2026/4/37536-the-authenticator or contain "reviews" in linkText
-    // PDF pages: /archive/volume/37/page/1340 or /archive/issue/483
-    const isPDF = (bestResult.link.includes('/volume/') || bestResult.link.includes('/issue/'))
-      && !bestResult.linkText.includes('reviews');
-
+  // ─── Shared: extract reviews from a production page link ───
+  async function processShowFromLink(show, productionLink) {
+    const isPDF = productionLink.includes('/volume/') || productionLink.includes('/issue/');
     let reviews;
 
     if (isPDF) {
-      // ─── PDF extraction path (pre-2022 issues) ───
       console.log('  PDF format — downloading and extracting...');
-      reviews = await extractReviewsFromPDF(page, context, bestResult.link, show);
+      reviews = await extractReviewsFromPDF(page, context, productionLink, show);
     } else {
-      // ─── HTML extraction path (post-2022) ───
       try {
-        await page.goto(bestResult.link, { waitUntil: 'domcontentloaded', timeout: 20000 });
+        await page.goto(productionLink, { waitUntil: 'domcontentloaded', timeout: 20000 });
       } catch (e) {
         console.log(`  Failed to load page: ${e.message}`);
-        continue;
+        return { newCount: 0, skippedCount: 0 };
       }
       await page.waitForTimeout(2000);
 
@@ -729,21 +703,18 @@ async function main() {
     }
 
     console.log(`  Found ${reviews.length} reviews`);
-    totalShows++;
 
-    // Ensure review-texts directory exists
     const showDir = path.join(REVIEW_TEXTS_DIR, show.id);
     if (!dryRun && !fs.existsSync(showDir)) {
       fs.mkdirSync(showDir, { recursive: true });
     }
 
-    let newForShow = 0;
-    for (const review of reviews) {
-      if (!review.fullText || review.fullText.length < 100) {
-        continue; // too short
-      }
+    let newCount = 0;
+    let skippedCount = 0;
 
-      // Skip Theatre Record's own editorial summary
+    for (const review of reviews) {
+      if (!review.fullText || review.fullText.length < 100) continue;
+
       if (review.outlet.toLowerCase().includes('theatre record') ||
           review.outlet.toLowerCase().includes('summary') ||
           review.outlet.toLowerCase().includes('editor')) {
@@ -755,24 +726,20 @@ async function main() {
       const filename = makeFilename(outletId, review.critic);
       const filepath = path.join(showDir, filename);
 
-      // Skip if file already exists
       if (fs.existsSync(filepath)) {
-        totalSkipped++;
+        skippedCount++;
         continue;
       }
 
       // ─── Production validation guards ───
-      const text = review.fullText.toLowerCase();
       const pubDate = parseDate(review.date);
       const showEarliestDate = show.previewsStartDate || show.openingDate;
       let skipReason = null;
 
-      // Guard 1: Wrong production by date (review >90 days before show)
       if (isLikelyWrongProduction(pubDate, showEarliestDate, 90)) {
         skipReason = `wrong-production-date (review ${pubDate} vs show ${showEarliestDate})`;
       }
 
-      // Guard 2: Tour/regional detection in review text
       if (!skipReason) {
         const tourPatterns = [
           /\breview(?:ed)?\s+at\s+(?:the\s+)?(?:lowry|playhouse|hippodrome|opera house|new theatre|grand theatre|leeds|birmingham|manchester|bristol|cardiff|glasgow|edinburgh|sheffield|nottingham|southampton|brighton|bath|chichester|oxford|cambridge|salford|milton keynes)/i,
@@ -789,9 +756,6 @@ async function main() {
         }
       }
 
-      // Guard 3: Panto/wrong-show detection
-      // Only flag as panto if it appears multiple times or in the first 200 chars
-      // (passing mentions of panto in December reviews are normal)
       if (!skipReason) {
         const pantoMatches = (review.fullText.match(/\bpanto(?:s|mime)?\b/gi) || []).length;
         const pantoInOpening = /\bpanto(?:s|mime)?\b/i.test(review.fullText.slice(0, 200));
@@ -800,7 +764,6 @@ async function main() {
         }
       }
 
-      // Guard 4: Film/TV review detection
       if (!skipReason) {
         const filmSignals = [/\b(?:in cinemas|on screen|film adaptation|movie version|streaming on)\b/i];
         for (const pat of filmSignals) {
@@ -813,7 +776,7 @@ async function main() {
 
       if (skipReason) {
         console.log(`    SKIP: ${filename} — ${skipReason}`);
-        totalSkipped++;
+        skippedCount++;
         continue;
       }
 
@@ -822,14 +785,14 @@ async function main() {
         outletId,
         outlet: outletDisplay,
         criticName: review.critic || 'Unknown',
-        url: null, // Theatre Record doesn't provide original URLs
+        url: null,
         publishDate: parseDate(review.date) || show.openingDate || null,
         fullText: review.fullText,
         isFullReview: true,
         contentTier: 'complete',
         contentTierReason: 'Full review text from Theatre Record',
         source: 'theatre-record',
-        theatreRecordUrl: bestResult.link,
+        theatreRecordUrl: productionLink,
         addedAt: new Date().toISOString(),
         textWordCount: review.fullText.split(/\s+/).length
       };
@@ -840,16 +803,143 @@ async function main() {
         fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
         console.log(`    SAVED: ${filename} (${reviewData.textWordCount} words)`);
       }
-      newForShow++;
-      totalNew++;
+      newCount++;
     }
 
-    if (newForShow === 0 && reviews.length > 0) {
+    if (newCount === 0 && reviews.length > 0) {
       console.log('  All reviews already exist');
     }
+    return { newCount, skippedCount };
+  }
 
-    // Rate limit
-    await page.waitForTimeout(2000);
+  // ─── Shared: search TR for a show, pick best result, extract ───
+  async function searchAndProcessShow(show, hintVenue) {
+    const searchTitle = show.title
+      .replace(/['']/g, "'")
+      .replace(/&/g, 'and');
+    const searchUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + searchTitle + '"')}&title=on&order=newest`;
+
+    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForTimeout(1000);
+
+    const results = await extractSearchResults(page);
+
+    // If no results or no London venue, retry with location filter
+    if (results.length === 0 || !results.find(r => isLondonVenue(r.venue))) {
+      const retryUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + searchTitle + '"')}&title=on&location=on&order=newest`;
+      await page.goto(retryUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await page.waitForTimeout(1000);
+
+      const retryResults = await extractSearchResults(page);
+      const seen = new Set(results.map(r => r.link));
+      for (const r of retryResults) {
+        if (!seen.has(r.link)) { results.push(r); seen.add(r.link); }
+      }
+    }
+
+    if (results.length === 0) {
+      console.log('  No results found on Theatre Record');
+      return null;
+    }
+
+    const ourTitle = normalizeTitle(show.title);
+    const titleMatches = results.filter(r => normalizeTitle(r.title) === ourTitle);
+
+    if (titleMatches.length === 0) {
+      console.log(`  No title match. TR results: ${results.map(r => `"${r.title}" @ ${r.venue}`).join('; ')}`);
+      return null;
+    }
+
+    // Pick best result — use hint venue from listing if available
+    let bestResult = null;
+    if (hintVenue) {
+      const hintName = hintVenue.replace(/,\s*London$/i, '').trim().toLowerCase();
+      bestResult = titleMatches.find(r => {
+        const rv = r.venue.toLowerCase().replace(/,.*/, '').trim();
+        return rv.includes(hintName) || hintName.includes(rv) ||
+               normalizeTitle(rv) === normalizeTitle(hintName);
+      });
+    }
+    if (!bestResult) bestResult = titleMatches.find(r => isLondonVenue(r.venue));
+    if (!bestResult) {
+      const showVenue = show.venue?.toLowerCase() || '';
+      if (showVenue) {
+        bestResult = titleMatches.find(r =>
+          r.venue.toLowerCase().includes(showVenue) ||
+          showVenue.includes(r.venue.toLowerCase().replace(/,.*/, '').trim())
+        );
+      }
+    }
+    if (!bestResult) bestResult = titleMatches[0];
+
+    console.log(`  Found: ${bestResult.title} @ ${bestResult.venue}`);
+    console.log(`  Link: ${bestResult.link}`);
+
+    return processShowFromLink(show, bestResult.link);
+  }
+
+  // ─── Main processing loop ───
+  if (browseWE || browseLondon) {
+    const listingUrl = browseLondon
+      ? 'https://www.theatrerecord.com/listings/current-london'
+      : 'https://www.theatrerecord.com/listings/current-west-end';
+
+    const listings = await scrapeTRListingPage(page, listingUrl);
+
+    if (listings.length === 0) {
+      console.log('WARNING: No entries on listings page — page structure may have changed.');
+      console.log('Falling back to search mode for all shows...\n');
+    }
+
+    const { matched, unmatched } = listings.length > 0
+      ? matchListingToShows(listings, targets)
+      : { matched: [], unmatched: targets };
+
+    console.log(`\nMatched ${matched.length} shows via listing page`);
+    if (unmatched.length > 0) {
+      console.log(`Unmatched: ${unmatched.length} shows (will fall back to search)`);
+    }
+    console.log('');
+
+    // Process matched shows — search with venue hint from listing
+    for (const { show, listing } of matched) {
+      console.log(`\n--- ${show.title} (${show.id}) ---`);
+      console.log(`  Listing: "${listing.title}" @ ${listing.venue}`);
+      const result = await searchAndProcessShow(show, listing.venue);
+      if (result) {
+        totalNew += result.newCount;
+        totalSkipped += result.skippedCount;
+        if (result.newCount > 0 || result.skippedCount > 0) totalShows++;
+      }
+      await page.waitForTimeout(2000);
+    }
+
+    // Fall back to plain search for unmatched shows
+    if (unmatched.length > 0) {
+      console.log(`\n\n=== Falling back to search for ${unmatched.length} unmatched shows ===`);
+      for (const show of unmatched) {
+        console.log(`\n--- ${show.title} (${show.id}) ---`);
+        const result = await searchAndProcessShow(show);
+        if (result) {
+          totalNew += result.newCount;
+          totalSkipped += result.skippedCount;
+          if (result.newCount > 0 || result.skippedCount > 0) totalShows++;
+        }
+        await page.waitForTimeout(2000);
+      }
+    }
+  } else {
+    // ─── Original search mode ───
+    for (const show of targets) {
+      console.log(`\n--- ${show.title} (${show.id}) ---`);
+      const result = await searchAndProcessShow(show);
+      if (result) {
+        totalNew += result.newCount;
+        totalSkipped += result.skippedCount;
+        if (result.newCount > 0 || result.skippedCount > 0) totalShows++;
+      }
+      await page.waitForTimeout(2000);
+    }
   }
 
   await browser.close();
