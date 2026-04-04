@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-04-04T03:33:08.536Z",
+    "generatedAt": "2026-04-04T03:57:17.999Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 29664,
-      "inReviewsJson": 15791,
+      "totalFiles": 29663,
+      "inReviewsJson": 15797,
       "skippedExcluded": 5,
-      "withFullText": 44,
-      "excerptOnly": 1785,
-      "llmClassified": 43,
+      "withFullText": 25,
+      "excerptOnly": 1783,
+      "llmClassified": 24,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 16,
-      "budgetUsed": 0.0043999999999999985,
-      "llmCalls": 44,
+      "budgetUsed": 0.0024999999999999996,
+      "llmCalls": 25,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13957
+      "skippedAlreadyClassified": 13984
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "john-lithgow-stories-by-heart-2018/journal-inquirer--tim-leininger.json",
+      "showId": "john-lithgow-stories-by-heart-2018",
+      "outlet": "Journal Inquirer",
+      "outletId": "journal-inquirer",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a news aggregation page with various local Connecticut news headlines and summaries. It does not contain a review of \"John Lithgow: Stories By Heart\" or any other theatrical production.",
+      "currentScore": 75
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -30,7 +41,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production itself. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -40,7 +51,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It mentions \"Broadway review subscriptions\" but does not contain any review content itself.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production like \"Funny Girl.\"",
       "currentScore": 62
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no review content present.",
+      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
       "currentScore": 78
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the premise of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for an 'evening of terror' but doesn't review the production.",
       "currentScore": 80
     },
     {
@@ -130,7 +141,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -140,7 +151,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the historical significance of the material.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms, not an article. There is no evaluative content about 'The Assembled Parties'.",
       "currentScore": 42
     },
     {
@@ -160,7 +171,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review that evaluates the show's quality.",
+      "reasoning": "The article provides production details, cast, and creative team information, resembling a news announcement or listing rather than a review with critical evaluation.",
       "currentScore": 64
     },
     {
@@ -170,7 +181,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news/listings.",
       "currentScore": 78
     },
     {
@@ -180,39 +191,25 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it lacks a judgment or recommendation, so it is a preview.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It focuses on the play's themes and background rather than providing a review.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "a-little-night-music-2009/talkinbroadway--unknown.json",
-    "angels-in-america-2018/nyt-theater--unknown.json",
-    "bridge-and-tunnel-2006/theatermania--unknown.json",
-    "clybourne-park-2012/vulture--unknown.json",
-    "follies-2011/stageandcinema--unknown.json",
-    "follies-2011/talkinbroadway--unknown.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2002/talkinbroadway--unknown.json",
-    "frozen-2004/talkinbroadway--unknown.json",
-    "hairspray-2002/talkinbroadway--unknown.json",
-    "hairspray-2002/theatermania--unknown.json",
-    "jesus-christ-superstar-2000/variety--unknown.json",
-    "linda-vista-2019/talkinbroadway--howard-miller.json",
-    "lucky-guy-2013/nyt-theater--unknown.json",
-    "martin-short-fame-becomes-me-2006/theatermania--unknown.json",
-    "spring-awakening-2015/haineshisway--rob-stevens.json",
-    "the-boy-from-oz-2003/talkinbroadway--unknown.json",
-    "the-caretaker-2003/talkinbroadway--unknown.json",
-    "the-caretaker-2003/theatermania--unknown.json",
-    "the-country-house-2014/nyt-theater--unknown.json",
-    "the-diary-of-anne-frank-1997/variety--unknown.json",
-    "the-light-in-the-piazza-2005/talkinbroadway--unknown.json",
-    "the-lyons-2012/vulture--unknown.json",
-    "the-price-2017/paste-magazine--molly-horan.json",
-    "true-west-2000/variety--unknown.json",
-    "whos-afraid-of-virginia-woolf-2012/variety--unknown.json",
-    "whos-afraid-of-virginia-woolf-2012/vulture--unknown.json",
-    "wonderland-2011/talkinbroadway--unknown.json"
+    "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
+    "charlie-and-the-chocolate-factory-2017/stageandcinema--tony-frankel.json",
+    "death-of-a-salesman-2022/dailybeast--tim-teeman.json",
+    "john-lithgow-stories-by-heart-2018/stageandcinema--paul-birchall.json",
+    "just-for-us-2023/queerty--matthew-wexler.json",
+    "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
+    "the-price-2017/huffpost--michael-glitz.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "john-lithgow-stories-by-heart-2018",
+      "currentCount": 46,
+      "removed": 1
+    }
+  ]
 }
