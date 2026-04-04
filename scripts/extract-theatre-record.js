@@ -22,7 +22,7 @@ const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-gu
 // Parses reviews from pdftotext output. Reviews follow pattern:
 // OUTLET NAME (ALL CAPS) → date line → critic name → review text
 // Date formats: "18 May 2021" (post-2019) or "21.12.17" (pre-2019)
-const DATE_LONG = /^\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$/;
+const DATE_LONG = /^\d{1,2}\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{4}$/;
 const DATE_SHORT = /^\d{1,2}\.\d{2}\.\d{2,4}$/;
 const isDateLine = (line) => DATE_LONG.test(line) || DATE_SHORT.test(line);
 
@@ -96,9 +96,26 @@ function parsePdfReviews(text, showTitle) {
 
     // Method B: Production metadata block (works for -raw mode)
     // Pattern: ALL CAPS title → "by AUTHOR" or venue+date-range within 5 lines
+    // EXCLUDE known outlet names (they look like production titles but aren't)
+    const KNOWN_OUTLETS_UPPER = new Set([
+      'THE GUARDIAN', 'THE TELEGRAPH', 'THE TIMES', 'THE STAGE', 'DAILY MAIL',
+      'EVENING STANDARD', 'THE STANDARD', 'FINANCIAL TIMES', 'THE INDEPENDENT',
+      'THE OBSERVER', 'SUNDAY TIMES', 'THE SUNDAY TIMES', 'DAILY TELEGRAPH',
+      'DAILY EXPRESS', 'THE SPECTATOR', 'TIME OUT', 'TIME OUT LONDON',
+      'THE JEWISH CHRONICLE', 'JEWISH CHRONICLE', 'TRIBUNE', 'METRO',
+      'MAIL ON SUNDAY', 'SUNDAY TELEGRAPH', 'BBC NEWS', 'VARIETY',
+      'THE NEW YORK TIMES', 'NEW YORK TIMES', 'WHATSONSTAGE',
+      'THEREVIEWSHUB.COM', 'THE REVIEWS HUB', 'THEATRECAT', 'LONDON THEATRE',
+      'LONDONTHEATRE1', 'EVERYTHING THEATRE', 'BRITISH THEATRE GUIDE',
+      'BROADWAYWORLD', 'MUSICAL THEATRE REVIEW', 'THEATRE WEEKLY',
+      'THE ARTS DESK', 'THE SCOTSMAN', 'THE LIST', 'RADIO TIMES',
+      'DIGITAL SPY', 'THE SUN', 'THE MIRROR', 'THE EXPRESS', 'CULTURE WHISPER',
+      'THE I', 'I NEWS', 'LONDONIST', 'CITY A.M.',
+    ]);
+
     if (trimmed === trimmed.toUpperCase() && trimmed.length > 3 && /^[A-Z]/.test(trimmed) &&
         trimmed !== 'Reviews' && trimmed !== 'Index' && !trimmed.includes(titleUpper) &&
-        !isDateLine(trimmed)) {
+        !isDateLine(trimmed) && !KNOWN_OUTLETS_UPPER.has(trimmed)) {
       // Check if next few lines look like production metadata (not a review)
       const nextLines = [];
       for (let k = 1; k <= 5 && j + k < lines.length; k++) {

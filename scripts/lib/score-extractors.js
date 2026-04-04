@@ -1050,6 +1050,11 @@ const OUTLET_EXTRACTORS = {
   'britishtheatreguide': noScoreExtractor,
   'rolling-stone': noScoreExtractor,
   'theater-life': extractUKStarRating,
+  'londontheatre1': extractUKStarRating,
+  'sunday-times': extractUKStarRating,
+  'the-scotsman': extractUKStarRating,
+  'the-sun': extractUKStarRating,
+  'express-uk': extractUKStarRating,
   'jks-theatre-scene': extractGenericLetterGrade,
 
   // One Minute Critic — star ratings ("X out of 5 stars")

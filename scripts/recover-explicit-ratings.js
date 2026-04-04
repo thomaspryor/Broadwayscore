@@ -14,8 +14,10 @@
  *   node scripts/recover-explicit-ratings.js --phase=1          # Local only
  *   node scripts/recover-explicit-ratings.js --phase=2          # APIs only
  *   node scripts/recover-explicit-ratings.js --phase=3          # Scrape URLs
- *   node scripts/recover-explicit-ratings.js --phase=1,2        # Local + API
+ *   node scripts/recover-explicit-ratings.js --phase=0,1,2,3    # Full pipeline with URL discovery
+ *   node scripts/recover-explicit-ratings.js --phase=0,3        # Discover URLs then scrape
  *   node scripts/recover-explicit-ratings.js --outlet=guardian   # Single outlet
+ *   node scripts/recover-explicit-ratings.js --source=theatre-record # Filter by source
  *   node scripts/recover-explicit-ratings.js --limit=10          # Limit per outlet
  *
  * Environment Variables:
@@ -41,6 +43,7 @@ const PHASES = (() => {
   return p ? p.split('=')[1].split(',').map(Number) : [1, 2, 3];
 })();
 const OUTLET_FILTER = args.find(a => a.startsWith('--outlet='))?.split('=')[1] || '';
+const SOURCE_FILTER = args.find(a => a.startsWith('--source='))?.split('=')[1] || '';
 const LIMIT = (() => {
   const l = args.find(a => a.startsWith('--limit='));
   return l ? parseInt(l.split('=')[1]) : 0;
@@ -106,6 +109,17 @@ const RATED_OUTLETS = new Map([
   ['rollingstone', { format: 'stars/5', api: null }],
   ['digital-journal', { format: 'mixed', api: null }],
   ['jks-theatre-scene', { format: 'letter-grade', api: null }],
+
+  // UK outlets added for Theatre Record coverage
+  ['thereviewshub', { format: 'percentage', api: null }],
+  ['londontheatre1', { format: 'stars/5', api: null }],
+  ['broadwayworld', { format: 'stars/5', api: null }],
+  ['sunday-times', { format: 'stars/5', api: null }],
+  ['i-paper', { format: 'stars/5', api: null }],
+  ['express-uk', { format: 'stars/5', api: null }],
+  ['standard', { format: 'stars/5', api: null }],
+  ['the-scotsman', { format: 'stars/5', api: null }],
+  ['the-sun', { format: 'stars/5', api: null }],
 ]);
 
 // ---------------------------------------------------------------------------
@@ -118,6 +132,7 @@ const REVIEW_DIR = path.join(__dirname, '../data/review-texts');
 // ---------------------------------------------------------------------------
 const stats = {
   totalMissing: 0,
+  phase0UrlsFound: 0,
   phase1Recovered: 0,
   phase2Recovered: 0,
   phase3Recovered: 0,
@@ -126,6 +141,69 @@ const stats = {
   byOutlet: {},
   errors: 0,
 };
+
+// ---------------------------------------------------------------------------
+// Phase 0: URL discovery for reviews without URLs (e.g., Theatre Record)
+// ---------------------------------------------------------------------------
+async function phase0DiscoverUrls(reviews) {
+  const noUrl = reviews.filter(r => !r.data.url);
+  if (noUrl.length === 0) return reviews;
+
+  console.log(`\n═══ PHASE 0: URL Discovery (${noUrl.length} reviews without URLs) ═══\n`);
+
+  let discoverCorrectUrl;
+  try {
+    ({ discoverCorrectUrl } = require('./lib/url-discovery'));
+  } catch (err) {
+    console.log('  URL discovery module not available:', err.message);
+    return reviews;
+  }
+
+  const sbKey = process.env.SCRAPINGBEE_API_KEY || '';
+  const bdKey = process.env.BRIGHTDATA_TOKEN || '';
+  if (!sbKey && !bdKey) {
+    console.log('  No SERP keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN). Skipping.');
+    return reviews;
+  }
+
+  const toProcess = LIMIT > 0 ? noUrl.slice(0, LIMIT) : noUrl;
+  let found = 0;
+
+  for (let i = 0; i < toProcess.length; i++) {
+    const review = toProcess[i];
+    try {
+      console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${review.data.outletId} / ${review.data.criticName || 'Unknown'}`);
+
+      const result = await discoverCorrectUrl(review.data, sbKey, {
+        brightDataKey: bdKey,
+        log: (msg) => console.log(`    ${msg.trim()}`),
+      });
+
+      if (result && result !== '__SERP_UNAVAILABLE__') {
+        found++;
+        stats.phase0UrlsFound++;
+        console.log(`    ✓ Found URL: ${result.substring(0, 80)}`);
+
+        if (!DRY_RUN) {
+          review.data.url = result;
+          review.data.urlSource = 'serp-recovery';
+          fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+        }
+      } else {
+        console.log(`    ✗ No URL found`);
+      }
+    } catch (err) {
+      console.log(`    ✗ Error: ${err.message}`);
+      stats.errors++;
+    }
+
+    // Rate limit between SERP queries
+    if (i < toProcess.length - 1) await sleep(3000);
+  }
+
+  console.log(`\n  Phase 0 result: ${found} URLs discovered for ${toProcess.length} reviews`);
+  return reviews;
+}
 
 // ---------------------------------------------------------------------------
 // Phase 1: Local extraction
@@ -614,6 +692,7 @@ function findMissingRatings() {
         if (!RATED_OUTLETS.has(outletId)) continue;
 
         if (OUTLET_FILTER && outletId !== OUTLET_FILTER) continue;
+        if (SOURCE_FILTER && data.source !== SOURCE_FILTER) continue;
 
         reviews.push({ showId, file, filePath, data });
       } catch {}
@@ -633,6 +712,7 @@ async function main() {
   if (DRY_RUN) console.log('*** DRY RUN — no files will be modified ***');
   console.log(`Phases: ${PHASES.join(', ')}`);
   if (OUTLET_FILTER) console.log(`Outlet filter: ${OUTLET_FILTER}`);
+  if (SOURCE_FILTER) console.log(`Source filter: ${SOURCE_FILTER}`);
   if (LIMIT) console.log(`Limit per phase: ${LIMIT}`);
 
   // Find all reviews missing ratings
@@ -653,6 +733,11 @@ async function main() {
     console.log(`  ${outlet.padEnd(25)} ${String(count).padEnd(6)} (${info?.format || '?'}${info?.api ? `, API: ${info.api}` : ''})`);
   }
   if (sorted.length > 20) console.log(`  ... and ${sorted.length - 20} more outlets`);
+
+  // Phase 0: URL discovery (for reviews without URLs, e.g. Theatre Record)
+  if (PHASES.includes(0)) {
+    reviews = await phase0DiscoverUrls(reviews);
+  }
 
   // Phase 1: Local extraction
   if (PHASES.includes(1)) {
@@ -675,6 +760,7 @@ async function main() {
   console.log('RECOVERY SUMMARY');
   console.log('═'.repeat(60));
   console.log(`Total missing ratings found: ${stats.totalMissing}`);
+  if (stats.phase0UrlsFound) console.log(`Phase 0 (URL discovery):     ${stats.phase0UrlsFound} URLs found`);
   console.log(`Phase 1 (local text):        ${stats.phase1Recovered}`);
   console.log(`Phase 2 (free APIs):         ${stats.phase2Recovered}`);
   console.log(`Phase 3 (URL scraping):      ${stats.phase3Recovered} (${stats.phase3Scraped} scraped, ${stats.phase3ScrapeFailed} failed)`);
