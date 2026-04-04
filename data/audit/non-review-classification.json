@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-04T17:48:18.696Z",
+    "generatedAt": "2026-04-04T17:56:15.822Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 29837,
-      "inReviewsJson": 15821,
+      "totalFiles": 29821,
+      "inReviewsJson": 15836,
       "skippedExcluded": 5,
-      "withFullText": 18,
+      "withFullText": 35,
       "excerptOnly": 1730,
-      "llmClassified": 17,
+      "llmClassified": 34,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 16,
-      "budgetUsed": 0.0018000000000000006,
-      "llmCalls": 18,
+      "budgetUsed": 0.003499999999999998,
+      "llmCalls": 35,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14068
+      "skippedAlreadyClassified": 14066
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion on the quality of the production itself. The truncated portion contains unrelated news items.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting a directory or advertisement rather than a review of a specific show like Fences.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and contains elements of a news website, such as subscription prompts and time stamps. Without the full text, it's difficult to determine the exact content type, but it does not appear to be a review.",
       "currentScore": 78
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on its quality. It seems to be setting the stage for a review or providing background information before a review.",
+      "reasoning": "The article describes the play's premise and setting the stage for the audience, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on its quality. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news or listings.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -180,13 +180,30 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events. However, it does not offer a critical evaluation or opinion on the quality of the production itself.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "moulin-rouge-the-musical-west-end-2021/standard--nick-curtis.json"
+    "back-to-the-future-west-end-2021/daily-mail--holly-williams.json",
+    "back-to-the-future-west-end-2021/the-spectator-uk--lloyd-evans.json",
+    "les-miserables-west-end-2021/british-theatre--philip-fisher.json",
+    "les-miserables-west-end-2021/daily-mail--robert-gore-langton.json",
+    "les-miserables-west-end-2021/metro--claire-allfree.json",
+    "les-miserables-west-end-2021/times-uk--quentin-letts.json",
+    "mamma-mia-west-end-2021/daily-mail--andrew-pierce.json",
+    "mamma-mia-west-end-2021/daily-mail--holly-williams.json",
+    "mamma-mia-west-end-2021/guardian--matt-charlton.json",
+    "mamma-mia-west-end-2021/telegraph--alice-vincent.json",
+    "mamma-mia-west-end-2021/timeout-london--andrzej-lukowski.json",
+    "mamma-mia-west-end-2021/times-uk--dominic-maxwell.json",
+    "the-lion-king-west-end-2021/the-scotsman--joyce-mcmillan.json",
+    "the-phantom-of-the-opera-west-end-1986/the-sun--stefan-kyriazis.json",
+    "the-phantom-of-the-opera-west-end-1986/thereviewshub--scott-matthewman.json",
+    "the-phantom-of-the-opera-west-end-1986/thestage--tim-bano.json",
+    "the-phantom-of-the-opera-west-end-1986/times-uk--quentin-letts.json",
+    "the-play-that-goes-wrong-west-end-2021/thestage--natasha-tripney.json"
   ],
   "perShowSummary": []
 }
