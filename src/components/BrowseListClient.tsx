@@ -199,6 +199,7 @@ export default function BrowseListClient({
               scoreMode={scoreMode}
               showPerformances={hasPerformanceData}
               showLowReviewCount
+              showTicketLink
             />
           ))}
         </div>

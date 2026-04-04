@@ -32,6 +32,7 @@ export interface ShowCardShow {
   // Market-specific optional fields
   isOffWestEnd?: boolean; // West End only
   performances?: number; // Browse only
+  ticketLinks?: { platform: string; url: string; priceFrom?: number | null }[];
 }
 
 export type ScoreModeParam = 'critics' | 'audience';

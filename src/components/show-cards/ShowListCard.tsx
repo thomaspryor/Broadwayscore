@@ -10,6 +10,8 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix } from '@/lib/date-utils';
 import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import TicketLink from '@/components/TicketLink';
+import { sortTicketLinks } from '@/lib/ticket-utils';
 import type { ShowCardShow, ScoreModeParam } from './types';
 
 export interface ShowListCardProps {
@@ -31,6 +33,7 @@ export interface ShowListCardProps {
   showFormatPill?: boolean;
   /** Show closed-show info when mixing open/closed statuses (browse) */
   isMixedStatus?: boolean;
+  showTicketLink?: boolean;
 }
 
 function RankBadge({ rank }: { rank: number }) {
@@ -58,10 +61,16 @@ const ShowListCard = memo(function ShowListCard({
   showCategoryBadge = false,
   showFormatPill = true,
   isMixedStatus = false,
+  showTicketLink = false,
 }: ShowListCardProps) {
   const isRevival = show.isRevival === true;
   const category = show.category ?? 'broadway';
   const isCompact = variant === 'compact';
+
+  // Ticket link for CTA
+  const sortedLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
+  const primaryTicket = sortedLinks[0];
+  const canShowTicket = showTicketLink && primaryTicket && (show.status === 'open' || show.status === 'previews');
   const marketLabel = getMarketLabel(category);
   const durationSuffix = getDurationSuffix(category);
 
@@ -326,23 +335,50 @@ const ShowListCard = memo(function ShowListCard({
     </span>
   ) : null;
 
+  // --- Ticket CTA (desktop only, below card) ---
+  const ticketCta = canShowTicket ? (
+    <div className="hidden sm:flex gap-2 px-4 pb-2 -mt-1">
+      <TicketLink
+        showName={show.title}
+        showId={show.id}
+        showSlug={show.slug}
+        showStatus={show.status}
+        showCategory={show.category}
+        platform={primaryTicket.platform}
+        url={primaryTicket.url}
+        pageType="browse"
+        linkPosition={0}
+        totalLinks={sortedLinks.length}
+        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-[11px] font-medium transition-colors border border-white/10"
+      >
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+        </svg>
+        Get Tickets
+      </TicketLink>
+    </div>
+  ) : null;
+
   // --- Assemble card ---
   if (isCompact && rank != null) {
     // Browse variant with rank badge: rank outside the link
     return (
-      <div className="flex items-center gap-3">
-        <div className="hidden sm:block">
-          <RankBadge rank={rank} />
+      <div>
+        <div className="flex items-center gap-3">
+          <div className="hidden sm:block">
+            <RankBadge rank={rank} />
+          </div>
+          <Link
+            href={`/show/${show.slug}`}
+            className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
+          >
+            {thumbnail}
+            {infoContent}
+            {reviewYearNote}
+            {scoreSection}
+          </Link>
         </div>
-        <Link
-          href={`/show/${show.slug}`}
-          className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
-        >
-          {thumbnail}
-          {infoContent}
-          {reviewYearNote}
-          {scoreSection}
-        </Link>
+        {ticketCta}
       </div>
     );
   }
