@@ -10,7 +10,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'todaytix-showtimes.json');
@@ -20,17 +19,10 @@ const LIMIT = (() => {
   return idx !== -1 ? parseInt(process.argv[idx + 1], 10) : Infinity;
 })();
 
-function fetchJson(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try { resolve(JSON.parse(data)); }
-        catch (e) { reject(new Error(`Failed to parse JSON from ${url}`)); }
-      });
-    }).on('error', reject);
-  });
+async function fetchJson(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status} from ${url}`);
+  return resp.json();
 }
 
 async function fetchShowtimes(todaytixId) {
