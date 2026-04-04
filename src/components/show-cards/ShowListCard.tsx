@@ -33,6 +33,7 @@ export interface ShowListCardProps {
   showFormatPill?: boolean;
   /** Show closed-show info when mixing open/closed statuses (browse) */
   isMixedStatus?: boolean;
+  /** Show ticket CTA below the card */
   showTicketLink?: boolean;
 }
 
@@ -67,7 +68,11 @@ const ShowListCard = memo(function ShowListCard({
   const category = show.category ?? 'broadway';
   const isCompact = variant === 'compact';
 
+<<<<<<< Updated upstream
   // Ticket link for CTA
+=======
+  // Ticket link for CTA (sorted, first link = highest priority affiliate)
+>>>>>>> Stashed changes
   const sortedLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const primaryTicket = sortedLinks[0];
   const canShowTicket = showTicketLink && primaryTicket && (show.status === 'open' || show.status === 'previews');
@@ -335,7 +340,11 @@ const ShowListCard = memo(function ShowListCard({
     </span>
   ) : null;
 
+<<<<<<< Updated upstream
   // --- Ticket CTA (desktop only, below card) ---
+=======
+  // --- Ticket CTA (shown below card on desktop, hidden on mobile) ---
+>>>>>>> Stashed changes
   const ticketCta = canShowTicket ? (
     <div className="hidden sm:flex gap-2 px-4 pb-2 -mt-1">
       <TicketLink
@@ -386,33 +395,39 @@ const ShowListCard = memo(function ShowListCard({
   if (isCompact) {
     // Browse variant without rank
     return (
+      <div>
+        <Link
+          href={`/show/${show.slug}`}
+          className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-w-0"
+        >
+          {thumbnail}
+          {infoContent}
+          {reviewYearNote}
+          {scoreSection}
+        </Link>
+        {ticketCta}
+      </div>
+    );
+  }
+
+  // Default variant (Home, OB, WE)
+  return (
+    <div>
       <Link
         href={`/show/${show.slug}`}
-        className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-w-0"
+        prefetch={false}
+        role="listitem"
+        data-testid="show-card"
+        className="group card-interactive flex items-center gap-4 px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+        style={{ animationDelay: `${index * 30}ms` }}
       >
         {thumbnail}
         {infoContent}
         {reviewYearNote}
         {scoreSection}
       </Link>
-    );
-  }
-
-  // Default variant (Home, OB, WE)
-  return (
-    <Link
-      href={`/show/${show.slug}`}
-      prefetch={false}
-      role="listitem"
-      data-testid="show-card"
-      className="group card-interactive flex items-center gap-4 px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-      style={{ animationDelay: `${index * 30}ms` }}
-    >
-      {thumbnail}
-      {infoContent}
-      {reviewYearNote}
-      {scoreSection}
-    </Link>
+      {ticketCta}
+    </div>
   );
 });
 
