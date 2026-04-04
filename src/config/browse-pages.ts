@@ -33,11 +33,17 @@ export interface BrowsePageConfig {
 // Helper to parse runtime string to minutes
 function parseRuntime(runtime?: string): number {
   if (!runtime) return 0;
-  const match = runtime.match(/(\d+)h\s*(\d+)?m?/);
-  if (!match) return 0;
-  const hours = parseInt(match[1] || '0');
-  const minutes = parseInt(match[2] || '0');
-  return hours * 60 + minutes;
+  // Handle hour+minute format: "2h 30m", "1h", "2h30m"
+  const hMatch = runtime.match(/(\d+)h\s*(\d+)?m?/);
+  if (hMatch) {
+    const hours = parseInt(hMatch[1] || '0');
+    const minutes = parseInt(hMatch[2] || '0');
+    return hours * 60 + minutes;
+  }
+  // Handle minute-only format: "45m"
+  const mMatch = runtime.match(/(\d+)m/);
+  if (mMatch) return parseInt(mMatch[1]);
+  return 0;
 }
 
 // Current year for meta titles — evaluated at build time (static export).
