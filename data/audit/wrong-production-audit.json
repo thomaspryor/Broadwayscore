@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-04T12:34:37.832Z",
+  "timestamp": "2026-04-04T13:19:45.914Z",
   "stats": {
     "totalReviews": 29327,
     "alreadyFlagged": 8350,
@@ -7,7 +7,7 @@
     "directorMismatch": 928,
     "tvFilmSignals": 3411,
     "londonSignals": 1055,
-    "offBroadwaySignals": 984,
+    "offBroadwaySignals": 985,
     "yearMismatch": 72,
     "noPublishDate": 5624
   },
@@ -73833,6 +73833,20 @@
       "score": 92,
       "publishDate": "2012-03-18T19:59:36-04:00",
       "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-article-1.1040927",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "once-2012",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 85,
+      "publishDate": "2012-03-18T19:59:36-04:00",
+      "url": "http://www.nypost.com/p/entertainment/theater/it_dublin_your_pleasure_vL439sUtKFZeIHiGkjTNsM",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
