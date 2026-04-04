@@ -272,7 +272,14 @@
     "art-2025/forward--olivia-haynie.json",
     "dead-outlaw-2025/amny--matt-windman.json",
     "gypsy-2024/billboard--unknown.json",
-    "gypsy-2024/rollingstone--larisha-paul.json"
+    "gypsy-2024/rollingstone--larisha-paul.json",
+    "job-2024/deadline--greg-evans.json",
+    "home-2024/variety--lexi-carson.json",
+    "home-2024/artsfuse--steve-provizer.json",
+    "the-whos-tommy-2024/billboard--unknown.json",
+    "the-whos-tommy-2024/playbill--unknown.json",
+    "the-whos-tommy-2024/rollingstone--unknown.json",
+    "the-whos-tommy-2024/washpost--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1084,7 +1091,10 @@
     "redwood-2025/gmanetwork--stuart-santiago.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
     "eureka-day-2024/times-uk--clive-davis.json",
-    "romeo-juliet-2024/thestage--nicole-serratore.json"
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1217,7 +1227,10 @@
       "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
       "arcadia-west-end-2026/standard--nick-curtis.json",
       "art-2025/ew--shania-russell.json",
-      "art-2025/forward--olivia-haynie.json"
+      "art-2025/forward--olivia-haynie.json",
+      "home-2024/artsfuse--steve-provizer.json",
+      "the-whos-tommy-2024/playbill--unknown.json",
+      "the-whos-tommy-2024/washpost--unknown.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -1287,7 +1300,11 @@
       "data/review-texts/abba-voyage-off-west-end-2026/variety--mark-sutherland.json",
       "abba-voyage-off-west-end-2026/variety--mark-sutherland.json",
       "data/review-texts/dead-outlaw-2025/amny--matt-windman.json",
-      "dead-outlaw-2025/amny--matt-windman.json"
+      "dead-outlaw-2025/amny--matt-windman.json",
+      "data/review-texts/job-2024/deadline--greg-evans.json",
+      "job-2024/deadline--greg-evans.json",
+      "data/review-texts/home-2024/variety--lexi-carson.json",
+      "home-2024/variety--lexi-carson.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1502,11 +1519,13 @@
       "the-mousetrap-west-end-2021/metro-uk--unknown.json",
       "art-2025/indiewire--unknown.json",
       "gypsy-2024/billboard--unknown.json",
-      "gypsy-2024/rollingstone--larisha-paul.json"
+      "gypsy-2024/rollingstone--larisha-paul.json",
+      "the-whos-tommy-2024/billboard--unknown.json",
+      "the-whos-tommy-2024/rollingstone--unknown.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "romeo-juliet-2024/thestage--nicole-serratore.json",
+  "lastProcessed": "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2068,6 +2087,28 @@
       "t": "2026-04-04T01:42:58.064Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-04T01:43:47.965Z",
+      "event": "bb-session",
+      "session": "ca502bfa",
+      "url": "https://deadline.com/2024/09/broadway-job-ticket-initiative-1236097441/"
+    },
+    {
+      "t": "2026-04-04T01:43:49.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-04T01:44:01.689Z",
+      "event": "bb-session",
+      "session": "50fa8338",
+      "url": "https://variety.com/2024/scene/news/broadway-home-opening-1236025088/"
+    },
+    {
+      "t": "2026-04-04T01:44:02.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
