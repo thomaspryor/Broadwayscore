@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-04T06:53:32.340Z",
-  "processed": 346,
-  "failed": 1197,
-  "successRate": "22.4%",
+  "updatedAt": "2026-04-04T06:56:42.914Z",
+  "processed": 347,
+  "failed": 1206,
+  "successRate": "22.3%",
   "tierBreakdown": {
     "playwright": 163,
     "amp": 6,
@@ -10,22 +10,11 @@
     "directCookies": 1,
     "scrapingbee": 67,
     "brightdata": 0,
-    "archiveToday": 143,
-    "archive": 93
+    "archiveToday": 145,
+    "archive": 94
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-04T00:58:22.647Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-04T00:58:41.214Z",
-      "event": "bb-session",
-      "session": "3d0c2cd5",
-      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
-    },
     {
       "t": "2026-04-04T00:58:42.621Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-04T06:40:57.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T06:53:38.845Z",
+      "event": "bb-session",
+      "session": "b2b84697",
+      "url": "https://www.wsj.com/articles/SB10001424053111904583204576542453370742790?gaa_at="
+    },
+    {
+      "t": "2026-04-04T06:53:40.052Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

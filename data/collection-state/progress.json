@@ -345,7 +345,8 @@
     "the-lyons-2012/theatermania--dan-bacalzo.json",
     "clybourne-park-2012/theatermania--dan-bacalzo.json",
     "once-2012/ew--aubry-darminio.json",
-    "once-2012/artsfuse--steve-elman.json"
+    "once-2012/artsfuse--steve-elman.json",
+    "the-normal-heart-2011/newsday--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1544,7 +1545,16 @@
     "relatively-speaking-2011/backstage--david-sheward.json",
     "the-mountaintop-2011/new-jersey-newsroom--michael-sommers.json",
     "the-mountaintop-2011/backstage--david-sheward.json",
-    "the-mountaintop-2011/yonkers-tribune--john-simon.json"
+    "the-mountaintop-2011/yonkers-tribune--john-simon.json",
+    "man-and-boy-2011/backstage--david-sheward.json",
+    "man-and-boy-2011/yonkers-tribune--john-simon.json",
+    "follies-2011/wsj--unknown.json",
+    "follies-2011/ap--mark-kennedy.json",
+    "master-class-2011/backstage--erik-haagensen.json",
+    "the-people-in-the-picture-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/wsj--unknown.json",
+    "baby-its-you-2011/variety--david-rooney.json",
+    "baby-its-you-2011/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2006,7 +2016,9 @@
       "data/review-texts/death-of-a-salesman-2012/indiewire--unknown.json",
       "data/review-texts/death-of-a-salesman-2012/curtainup--unknown.json",
       "data/review-texts/death-of-a-salesman-2012/forbes--roger-friedman.json",
-      "data/review-texts/death-of-a-salesman-2012/talkinbroadway--unknown.json"
+      "data/review-texts/death-of-a-salesman-2012/talkinbroadway--unknown.json",
+      "data/review-texts/follies-2011/wsj--unknown.json",
+      "data/review-texts/follies-2011/ap--mark-kennedy.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2101,11 +2113,12 @@
       "the-price-2017/huffpost--michael-glitz.json",
       "spring-awakening-2015/about-entertainment--chris-caggiano.json",
       "gutenberg-2023/billboard--ashley-iasimone.json",
-      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "the-normal-heart-2011/newsday--unknown.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-mountaintop-2011/yonkers-tribune--john-simon.json",
+  "lastProcessed": "baby-its-you-2011/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2715,6 +2728,17 @@
     },
     {
       "t": "2026-04-04T06:40:57.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T06:53:38.845Z",
+      "event": "bb-session",
+      "session": "b2b84697",
+      "url": "https://www.wsj.com/articles/SB10001424053111904583204576542453370742790?gaa_at="
+    },
+    {
+      "t": "2026-04-04T06:53:40.052Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
