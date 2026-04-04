@@ -46,7 +46,7 @@ on:
         type: boolean
 
 concurrency:
-  group: collect-outlet-reviews-${{ github.event.inputs.shows || github.event.inputs.market || 'weekly' }}
+  group: collect-outlet-reviews-${{ github.event.inputs.market || 'manual' }}
   cancel-in-progress: false
 
 jobs:
