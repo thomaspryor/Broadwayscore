@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-04T05:25:18.027Z",
-  "processed": 365,
-  "failed": 1458,
+  "updatedAt": "2026-04-04T05:27:23.605Z",
+  "processed": 367,
+  "failed": 1466,
   "successRate": "20.0%",
   "tierBreakdown": {
     "playwright": 167,
     "amp": 6,
-    "browserbase": 77,
+    "browserbase": 79,
     "directCookies": 1,
-    "scrapingbee": 67,
+    "scrapingbee": 68,
     "brightdata": 0,
-    "archiveToday": 154,
+    "archiveToday": 155,
     "archive": 103
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-04-04T04:44:43.536Z",
-      "event": "bb-session",
-      "session": "446690dc",
-      "url": "https://www.wsj.com/articles/charlie-and-the-chocolate-factory-review-empty-calo"
-    },
-    {
-      "t": "2026-04-04T04:44:44.822Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-04T04:51:17.361Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-04T05:21:00.964Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-04T05:26:55.231Z",
+      "event": "bb-session",
+      "session": "5fdce6e5",
+      "url": "http://www.variety.com/review/VE1117946753?refCatId=33"
+    },
+    {
+      "t": "2026-04-04T05:26:56.596Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
