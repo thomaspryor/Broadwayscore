@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-04T22:17:27.889Z",
+  "timestamp": "2026-04-04T23:00:14.262Z",
   "stats": {
     "totalReviews": 29442,
-    "alreadyFlagged": 8358,
+    "alreadyFlagged": 8366,
     "dateGuardCatches": 13,
-    "directorMismatch": 940,
-    "tvFilmSignals": 3427,
+    "directorMismatch": 936,
+    "tvFilmSignals": 3426,
     "londonSignals": 1060,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
@@ -9618,25 +9618,6 @@
       "score": 81,
       "publishDate": "June 20th, 2024",
       "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "timeout--adam-feldman.json",
-      "score": 84,
-      "publishDate": "November 16, 2025",
-      "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31274,20 +31255,6 @@
       ]
     },
     {
-      "showId": "matilda-the-musical-west-end-2021",
-      "file": "financialtimes--brendan-lemon.json",
-      "score": 82,
-      "publishDate": "April 11, 2013",
-      "url": "http://www.ft.com/cms/s/2/2a8bf774-a298-11e2-9b70-00144feabdc0.html#axzz2QCLPV482",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
       "showId": "mauritius-2007",
       "file": "nytimes--ben-brantley.json",
       "score": 65,
@@ -32587,20 +32554,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "miss-saigon-1991",
-      "file": "amny--matt-windman.json",
-      "score": 80,
-      "publishDate": "March 23, 2017",
-      "url": "http://www.amny.com/entertainment/miss-saigon-review-show-more-relevant-today-than-1991-broadway-premiere-1.13309464",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"laurence connor\" from miss-saigon-2017"
         }
       ]
     },
@@ -44993,19 +44946,6 @@
       "score": 68,
       "publishDate": "2023-12-19",
       "url": "https://playsinternational.org.uk/stranger-things-the-first-shadow-phoenix-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "telegraph--marianka-swain.json",
-      "publishDate": "2025-09-19",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-land-of-the-living-review-national-theatre/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
