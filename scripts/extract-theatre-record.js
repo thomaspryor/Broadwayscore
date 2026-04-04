@@ -221,9 +221,27 @@ function parseRawPdfReviews(text, showTitle) {
   }
 
   // Filter: keep only reviews that mention our show title
+  // For short/common titles (Wicked, Six, Cats, Rent, Oliver, Chess), require
+  // the title to appear as a standalone word near review-specific context
+  const isCommonWord = titleLower.length <= 7 && /^[a-z]+$/.test(titleLower);
+
   const matched = allReviews.filter(r => {
     const textLower = r.fullText.toLowerCase();
-    // Must mention the show title or most of its significant words
+
+    if (isCommonWord) {
+      // For short common-word titles: require title as standalone word AND
+      // at least one show-specific signal (venue, author, character name, "musical", "play")
+      const titleRegex = new RegExp(`\\b${titleLower}\\b`, 'i');
+      const titleCount = (textLower.match(titleRegex) || []).length;
+      if (titleCount < 2) return false; // Must appear at least twice
+      // Also check for theatrical context near the title
+      const firstMention = textLower.indexOf(titleLower);
+      const context = textLower.slice(Math.max(0, firstMention - 100), firstMention + 200);
+      const hasTheatreContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph/i.test(context);
+      return hasTheatreContext;
+    }
+
+    // For multi-word titles: full title match or 70% of significant words
     if (textLower.includes(titleLower)) return true;
     const wordsFound = titleWords.filter(w => textLower.includes(w));
     return wordsFound.length >= Math.ceil(titleWords.length * 0.7);
