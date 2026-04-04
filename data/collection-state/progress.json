@@ -1,17 +1,7 @@
 {
-  "processed": [
-    "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
-    "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
-    "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
-    "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
-    "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
-    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-    "the-phantom-of-the-opera-off-west-end-2021/guardian--michael-billington.json",
-    "the-phantom-of-the-opera-off-west-end-2021/timeout-london--andrzej-lukowski.json",
-    "the-phantom-of-the-opera-west-end-2021/guardian--michael-billington.json",
-    "the-phantom-of-the-opera-west-end-2021/timeout-london--andrzej-lukowski.json"
-  ],
+  "processed": [],
   "failed": [
+    "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
     "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
@@ -20,58 +10,23 @@
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
     "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
-    "titanique-west-end-2024/times-uk--clive-davis.json",
-    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
-    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
-    "hadestown-west-end-2024/times-uk--clive-davis.json",
-    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
-    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
-    "hamilton-west-end-2021/times-uk--clive-davis.json",
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-    "the-lion-king-west-end-2021/thestage--unknown.json",
-    "high-noon-west-end-2025/times-uk--clive-davis.json"
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
-      "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
-      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "the-phantom-of-the-opera-off-west-end-2021/guardian--michael-billington.json",
-      "the-phantom-of-the-opera-west-end-2021/guardian--michael-billington.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
-      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
+      "data/review-texts/the-authenticator-west-end-2026/broadwayworld--team-bww.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json"
     ],
-    "archive": [
-      "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
-      "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
-      "the-phantom-of-the-opera-off-west-end-2021/timeout-london--andrzej-lukowski.json",
-      "the-phantom-of-the-opera-west-end-2021/timeout-london--andrzej-lukowski.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-04-04T17:34:12.150Z",
-  "lastProcessed": "the-phantom-of-the-opera-west-end-2021/timeout-london--andrzej-lukowski.json",
-  "log": [
-    {
-      "t": "2026-04-04T17:41:26.467Z",
-      "event": "bb-session",
-      "session": "0439f333",
-      "url": "https://artsbeat.blogs.nytimes.com/2011/11/25/no-ending-spoiled-or-otherwise-in-"
-    },
-    {
-      "t": "2026-04-04T17:41:28.189Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-04-04T17:55:46.341Z",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
+  "log": []
 }
