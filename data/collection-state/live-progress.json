@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-04T06:37:27.384Z",
-  "processed": 343,
-  "failed": 1170,
+  "updatedAt": "2026-04-04T06:50:49.631Z",
+  "processed": 346,
+  "failed": 1177,
   "successRate": "22.7%",
   "tierBreakdown": {
-    "playwright": 160,
+    "playwright": 163,
     "amp": 6,
-    "browserbase": 66,
+    "browserbase": 67,
     "directCookies": 1,
     "scrapingbee": 67,
     "brightdata": 0,
-    "archiveToday": 137,
+    "archiveToday": 142,
     "archive": 93
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-04T00:54:35.580Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-04T00:56:26.817Z",
-      "event": "bb-session",
-      "session": "8723e234",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
-    },
-    {
-      "t": "2026-04-04T00:56:28.135Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-04T00:58:21.339Z",
-      "event": "bb-session",
-      "session": "591dec73",
-      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
-    },
     {
       "t": "2026-04-04T00:58:22.647Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "event": "bb-session",
       "session": "e70683cc",
       "url": "https://www.newspapers.com/image/249102280/"
+    },
+    {
+      "t": "2026-04-04T06:40:40.081Z",
+      "event": "bb-session",
+      "session": "05234721",
+      "url": "http://www.nypost.com/p/entertainment/theater/it_dublin_your_pleasure_vL439sUtKF"
+    },
+    {
+      "t": "2026-04-04T06:40:41.239Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-04T06:40:56.626Z",
+      "event": "bb-session",
+      "session": "6045250e",
+      "url": "https://www.wsj.com/articles/SB10001424052702304356604577339810852417898?gaa_at="
+    },
+    {
+      "t": "2026-04-04T06:40:57.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

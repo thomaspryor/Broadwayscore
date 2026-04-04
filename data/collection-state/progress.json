@@ -342,7 +342,10 @@
     "spring-awakening-2015/towleroad--naveen-kumar.json",
     "gutenberg-2023/billboard--ashley-iasimone.json",
     "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
-    "the-lyons-2012/theatermania--dan-bacalzo.json"
+    "the-lyons-2012/theatermania--dan-bacalzo.json",
+    "clybourne-park-2012/theatermania--dan-bacalzo.json",
+    "once-2012/ew--aubry-darminio.json",
+    "once-2012/artsfuse--steve-elman.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1514,7 +1517,14 @@
     "of-mice-and-men-2014/ap--mark-kennedy.json",
     "all-the-way-2014/ap--unknown.json",
     "no-mans-land-2013/ew--thom-geier.json",
-    "no-mans-land-2013/usatoday--elysa-gardner.json"
+    "no-mans-land-2013/usatoday--elysa-gardner.json",
+    "clybourne-park-2012/backstage--unknown.json",
+    "once-2012/nypost--elisabeth-vincentelli.json",
+    "once-2012/wsj--unknown.json",
+    "once-2012/theatermania--dan-bacalzo.json",
+    "death-of-a-salesman-2012/indiewire--unknown.json",
+    "death-of-a-salesman-2012/curtainup--unknown.json",
+    "death-of-a-salesman-2012/forbes--roger-friedman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1678,7 +1688,10 @@
       "spring-awakening-2015/stagezine--scott-harrah.json",
       "spring-awakening-2015/theatres-leiter-side--samuel-l-leiter.json",
       "spring-awakening-2015/towleroad--naveen-kumar.json",
-      "the-lyons-2012/theatermania--dan-bacalzo.json"
+      "the-lyons-2012/theatermania--dan-bacalzo.json",
+      "clybourne-park-2012/theatermania--dan-bacalzo.json",
+      "once-2012/ew--aubry-darminio.json",
+      "once-2012/artsfuse--steve-elman.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -1754,7 +1767,8 @@
       "data/review-texts/job-2024/deadline--greg-evans.json",
       "job-2024/deadline--greg-evans.json",
       "data/review-texts/home-2024/variety--lexi-carson.json",
-      "home-2024/variety--lexi-carson.json"
+      "home-2024/variety--lexi-carson.json",
+      "data/review-texts/once-2012/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "jitney-2017/usatoday--unknown.json"
@@ -1966,7 +1980,12 @@
       "data/review-texts/the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
       "data/review-texts/on-the-town-2014/chicagotribune--chris-jones-bway.json",
       "data/review-texts/violet-2014/ap--mark-kennedy.json",
-      "data/review-texts/no-mans-land-2013/usatoday--elysa-gardner.json"
+      "data/review-texts/no-mans-land-2013/usatoday--elysa-gardner.json",
+      "data/review-texts/clybourne-park-2012/backstage--unknown.json",
+      "data/review-texts/once-2012/wsj--unknown.json",
+      "data/review-texts/death-of-a-salesman-2012/indiewire--unknown.json",
+      "data/review-texts/death-of-a-salesman-2012/curtainup--unknown.json",
+      "data/review-texts/death-of-a-salesman-2012/forbes--roger-friedman.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2065,7 +2084,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-lyons-2012/theatermania--dan-bacalzo.json",
+  "lastProcessed": "death-of-a-salesman-2012/forbes--roger-friedman.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2655,6 +2674,28 @@
       "event": "bb-session",
       "session": "e70683cc",
       "url": "https://www.newspapers.com/image/249102280/"
+    },
+    {
+      "t": "2026-04-04T06:40:40.081Z",
+      "event": "bb-session",
+      "session": "05234721",
+      "url": "http://www.nypost.com/p/entertainment/theater/it_dublin_your_pleasure_vL439sUtKF"
+    },
+    {
+      "t": "2026-04-04T06:40:41.239Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-04T06:40:56.626Z",
+      "event": "bb-session",
+      "session": "6045250e",
+      "url": "https://www.wsj.com/articles/SB10001424052702304356604577339810852417898?gaa_at="
+    },
+    {
+      "t": "2026-04-04T06:40:57.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
