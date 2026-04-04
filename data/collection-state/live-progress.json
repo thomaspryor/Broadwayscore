@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-04T00:57:23.523Z",
-  "processed": 219,
-  "failed": 744,
-  "successRate": "22.7%",
+  "updatedAt": "2026-04-04T00:58:35.003Z",
+  "processed": 220,
+  "failed": 753,
+  "successRate": "22.6%",
   "tierBreakdown": {
     "playwright": 99,
     "amp": 4,
-    "browserbase": 54,
+    "browserbase": 56,
     "directCookies": 0,
     "scrapingbee": 49,
     "brightdata": 0,
-    "archiveToday": 71,
+    "archiveToday": 72,
     "archive": 49
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-03T13:33:28.251Z",
-      "event": "bb-session",
-      "session": "39e2b740",
-      "url": "https://www.wsj.com/articles/spamalot-review-king-arthur-monty-python-broadway-e"
-    },
-    {
-      "t": "2026-04-03T13:33:29.521Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-03T13:42:32.924Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-04T00:56:28.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T00:58:21.339Z",
+      "event": "bb-session",
+      "session": "591dec73",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-04-04T00:58:22.647Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
