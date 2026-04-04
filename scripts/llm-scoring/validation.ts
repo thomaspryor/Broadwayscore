@@ -73,7 +73,7 @@ function calculateLLMThumbsDistribution(
   showId: string
 ): ThumbsDistribution {
   const showReviews = reviews.filter(r =>
-    r.showId === showId || r.showId.replace(/-\d{4}$/, '') === showId.replace(/-\d{4}$/, '')
+    r.showId && (r.showId === showId || r.showId.replace(/-\d{4}$/, '') === showId.replace(/-\d{4}$/, ''))
   );
 
   const distribution: ThumbsDistribution = { up: 0, flat: 0, down: 0, total: 0 };
@@ -107,7 +107,7 @@ function extractAggregatorThumbs(
   showId: string
 ): { dtli: ThumbsDistribution | null; bww: ThumbsDistribution | null } {
   const showReviews = reviews.filter(r =>
-    r.showId === showId || r.showId.replace(/-\d{4}$/, '') === showId.replace(/-\d{4}$/, '')
+    r.showId && (r.showId === showId || r.showId.replace(/-\d{4}$/, '') === showId.replace(/-\d{4}$/, ''))
   );
 
   const dtli: ThumbsDistribution = { up: 0, flat: 0, down: 0, total: 0 };
