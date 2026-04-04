@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-04T01:32:24.002Z",
-  "processed": 264,
-  "failed": 799,
-  "successRate": "24.8%",
+  "updatedAt": "2026-04-04T01:42:15.011Z",
+  "processed": 268,
+  "failed": 805,
+  "successRate": "25.0%",
   "tierBreakdown": {
-    "playwright": 125,
+    "playwright": 127,
     "amp": 4,
     "browserbase": 60,
     "directCookies": 0,
-    "scrapingbee": 58,
+    "scrapingbee": 60,
     "brightdata": 0,
-    "archiveToday": 84,
-    "archive": 56
+    "archiveToday": 88,
+    "archive": 57
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-04-03T13:50:50.901Z",
-      "event": "bb-session",
-      "session": "578424aa",
-      "url": "https://www.wsj.com/articles/pretty-woman-review-super-safe-sex-on-broadway-1534"
-    },
-    {
-      "t": "2026-04-03T13:50:52.053Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-03T13:52:55.949Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-04T01:10:18.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T01:38:22.918Z",
+      "event": "bb-session",
+      "session": "fcd0e853",
+      "url": "https://www.wsj.com/articles/art-review-james-cordens-comic-master-class-on-broa"
+    },
+    {
+      "t": "2026-04-04T01:38:24.436Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

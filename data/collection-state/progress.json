@@ -263,7 +263,11 @@
     "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json",
     "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json",
     "the-comedy-about-spies-west-end-2026/standard--unknown.json",
-    "archduke-west-end-2026/nytimes--unknown.json"
+    "archduke-west-end-2026/nytimes--unknown.json",
+    "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
+    "beetlejuice-west-end-2026/timeout--andrzej-lukowski.json",
+    "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "arcadia-west-end-2026/standard--nick-curtis.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1064,7 +1068,13 @@
     "the-lion-king-1997/timeout--adam-feldman.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "the-mousetrap-west-end-2021/broadwayworld--unknown.json",
-    "the-mousetrap-west-end-2021/manchester-evening-news--steve-howarth.json"
+    "the-mousetrap-west-end-2021/manchester-evening-news--steve-howarth.json",
+    "mother-russia-off-broadway-2026/talkinbroadway--unknown.json",
+    "arcadia-west-end-2026/whatsonstage--sarah-crompton.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "art-2025/indiewire--unknown.json",
+    "art-2025/wsj--unknown.json",
+    "art-2025/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1193,7 +1203,9 @@
       "blood-of-my-blood-west-end-2026/standard--nick-curtis.json",
       "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json",
       "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json",
-      "the-comedy-about-spies-west-end-2026/standard--unknown.json"
+      "the-comedy-about-spies-west-end-2026/standard--unknown.json",
+      "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "arcadia-west-end-2026/standard--nick-curtis.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -1322,7 +1334,9 @@
       "back-to-the-future-west-end-2021/daily-mail--unknown.json",
       "the-phantom-of-the-opera-west-end-1986/telegraph--claire-allfree.json",
       "blood-of-my-blood-west-end-2026/telegraph--dominic-cavendish.json",
-      "archduke-west-end-2026/nytimes--unknown.json"
+      "archduke-west-end-2026/nytimes--unknown.json",
+      "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
+      "beetlejuice-west-end-2026/timeout--andrzej-lukowski.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1409,7 +1423,11 @@
       "data/review-texts/back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/theater-scene--eugene-paul.json",
       "data/review-texts/wicked-2003/time--michael-kuchwara.json",
-      "data/review-texts/the-mousetrap-west-end-2021/broadwayworld--unknown.json"
+      "data/review-texts/the-mousetrap-west-end-2021/broadwayworld--unknown.json",
+      "data/review-texts/mother-russia-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/arcadia-west-end-2026/whatsonstage--sarah-crompton.json",
+      "data/review-texts/art-2025/wsj--unknown.json",
+      "data/review-texts/art-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1467,11 +1485,12 @@
       "magic-mike-live-west-end-2021/daily-mail--patrick-marmion.json",
       "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
       "the-play-that-goes-wrong-off-broadway-2019/susangrangercom--philip-dorian.json",
-      "the-mousetrap-west-end-2021/metro-uk--unknown.json"
+      "the-mousetrap-west-end-2021/metro-uk--unknown.json",
+      "art-2025/indiewire--unknown.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "archduke-west-end-2026/nytimes--unknown.json",
+  "lastProcessed": "art-2025/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2009,6 +2028,17 @@
     },
     {
       "t": "2026-04-04T01:10:18.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T01:38:22.918Z",
+      "event": "bb-session",
+      "session": "fcd0e853",
+      "url": "https://www.wsj.com/articles/art-review-james-cordens-comic-master-class-on-broa"
+    },
+    {
+      "t": "2026-04-04T01:38:24.436Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
