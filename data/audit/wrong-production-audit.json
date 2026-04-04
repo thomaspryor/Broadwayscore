@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T20:19:37.710Z",
+  "timestamp": "2026-04-04T20:48:52.193Z",
   "stats": {
-    "totalReviews": 29414,
-    "alreadyFlagged": 8336,
+    "totalReviews": 29431,
+    "alreadyFlagged": 8354,
     "dateGuardCatches": 13,
     "directorMismatch": 938,
-    "tvFilmSignals": 3424,
-    "londonSignals": 1060,
+    "tvFilmSignals": 3421,
+    "londonSignals": 1058,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
-    "noPublishDate": 5625
+    "noPublishDate": 5638
   },
   "findings": [
     {
@@ -5753,20 +5753,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 81,
-      "publishDate": "2021-09-13",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-9987385/PATRICK-MARMION-reviews-Future-stage-show.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -14223,20 +14209,6 @@
       "file": "timeout-london--andrzej-lukowksi.json",
       "score": 78,
       "publishDate": "2026-02-25",
-      "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "evening-all-afternoon-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 76,
-      "publishDate": "February 25th, 2026",
       "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
       "findings": [
         {
@@ -30456,20 +30428,6 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "file": "i-paper--fiona-mountford.json",
-      "score": null,
-      "publishDate": "1999-04-06",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
       "file": "variety--matt-wolf.json",
       "score": 56,
       "publishDate": "2015-09-03",
@@ -41676,6 +41634,7 @@
     {
       "showId": "shadowlands-west-end-2026",
       "file": "telegraph--unknown.json",
+      "score": 73,
       "publishDate": "2026-02-15",
       "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
       "findings": [
@@ -51733,8 +51692,8 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "whatsonstage--alex-wood.json",
-      "score": 72,
-      "publishDate": "2025-11-12",
+      "score": null,
+      "publishDate": "2025-11-28",
       "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
       "findings": [
         {
@@ -63175,20 +63134,6 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
-      "file": "london-theatre--matt-wolf.json",
-      "score": null,
-      "publishDate": "2021-09-13",
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=9979",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
       "file": "musical-theatre-review--unknown.json",
       "score": 75,
       "publishDate": null,
@@ -63240,20 +63185,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "whatsonstage--rachel-agyekum.json",
-      "score": null,
-      "publishDate": "2021-09-13",
-      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
