@@ -255,8 +255,8 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
         )}
         <p className="text-gray-600 text-[11px]">
           via{' '}
-          <a href="https://bwayrush.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 underline underline-offset-2">
-            bwayrush.com
+          <a href={todaytixShowtimes ? 'https://www.todaytix.com/' : 'https://bwayrush.com/'} target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 underline underline-offset-2">
+            {todaytixShowtimes ? 'TodayTix' : 'bwayrush.com'}
           </a>
         </p>
       </div>
