@@ -30,7 +30,11 @@
     "death-of-a-salesman-2022/ew--fabian-brathwiate.json",
     "diana-the-musical-2021/billboard--abbey-white.json",
     "tina-2019/newyorker--michael-schulman.json",
-    "burn-this-2019/nyt-theater--unknown.json"
+    "burn-this-2019/nyt-theater--unknown.json",
+    "angels-in-america-2018/broadwaynews--charles-isherwood.json",
+    "angels-in-america-2018/woman-around-town--alix-cohen.json",
+    "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
+    "escape-to-margaritaville-2018/deadline--greg-evans.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -192,7 +196,13 @@
     "children-of-a-lesser-god-2018/gotham-playgoer--robert-sholiton.json",
     "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
     "children-of-a-lesser-god-2018/melindas-malarky--melinda-pressler.json",
-    "three-tall-women-2018/theater-news-online--david-cote.json"
+    "three-tall-women-2018/theater-news-online--david-cote.json",
+    "three-tall-women-2018/usatoday--charles-isherwood.json",
+    "lobby-hero-2018/theater-news-online--brian-scott-lipton.json",
+    "angels-in-america-2018/theater-news-online--david-cote.json",
+    "frozen-2018/usatoday--elysa-gardner.json",
+    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -206,12 +216,17 @@
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
       "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
       "all-out-2025/ew--dalton-ross.json",
-      "burn-this-2019/nyt-theater--unknown.json"
+      "burn-this-2019/nyt-theater--unknown.json",
+      "angels-in-america-2018/broadwaynews--charles-isherwood.json",
+      "angels-in-america-2018/woman-around-town--alix-cohen.json",
+      "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
-      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json"
+      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "data/review-texts/escape-to-margaritaville-2018/deadline--greg-evans.json",
+      "escape-to-margaritaville-2018/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -246,7 +261,7 @@
     ]
   },
   "startTime": "2026-04-04T09:07:31.919Z",
-  "lastProcessed": "three-tall-women-2018/theater-news-online--david-cote.json",
+  "lastProcessed": "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
   "log": [
     {
       "t": "2026-04-04T09:11:50.527Z",
@@ -258,6 +273,17 @@
       "t": "2026-04-04T09:11:51.862Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-04T11:54:01.861Z",
+      "event": "bb-session",
+      "session": "1f016641",
+      "url": "https://deadline.com/2018/05/jimmy-buffett-musical-closing-date-escape-to-margar"
+    },
+    {
+      "t": "2026-04-04T11:54:05.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
