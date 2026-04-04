@@ -245,7 +245,9 @@ function parseRawPdfReviews(text, showTitle) {
   // Strategy: exact phrase match OR significant-word overlap with theatre context.
   const titleEscaped = titleLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const titleRegex = new RegExp(`\\b${titleEscaped}\\b`, 'gi');
-  const significantWords = titleLower.split(/\s+/).filter(w => w.length > 3 && !['the', 'and', 'for', 'from', 'with'].includes(w));
+  const significantWords = titleLower.split(/\s+/)
+    .map(w => w.replace(/[^a-z0-9]/g, ''))
+    .filter(w => w.length > 3 && !['the', 'and', 'for', 'from', 'with'].includes(w));
 
   const matched = allReviews.filter(r => {
     const textLower = r.fullText.toLowerCase();
@@ -264,15 +266,22 @@ function parseRawPdfReviews(text, showTitle) {
     if (significantWords.length >= 2) {
       const wordsFound = significantWords.filter(w => textLower.includes(w));
       if (wordsFound.length >= Math.ceil(significantWords.length * 0.7) && wordsFound.length >= 2) {
-        // Must also have theatre context somewhere in the text
-        const hasContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph|opening|premiere/i.test(textLower);
-        if (hasContext) return true;
+        // Reject if all title words only appear in the last 30% (wrong-show contamination)
+        const firstWordIdx = Math.min(...wordsFound.map(w => textLower.indexOf(w)));
+        if (firstWordIdx > textLower.length * 0.7) { /* skip — title only at tail */ }
+        else {
+          const hasContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph|opening|premiere/i.test(textLower);
+          if (hasContext) return true;
+        }
       }
     }
 
     // Path 3: 1 exact mention + strong theatre context (for very long titles)
     if (exactMentions >= 1 && significantWords.length >= 2) {
       const firstIdx = textLower.search(titleRegex);
+      // Reject if the show title only appears in the last 30% of the text
+      // — this means the first 70% is about a different show (wrong-show contamination)
+      if (firstIdx > textLower.length * 0.7) return false;
       const context = textLower.slice(Math.max(0, firstIdx - 100), firstIdx + 200);
       const strongContext = /musical|play|production|stage|cast|director|opening night|premiere/i.test(context);
       if (strongContext) return true;
@@ -281,8 +290,25 @@ function parseRawPdfReviews(text, showTitle) {
     return false;
   });
 
+  // Post-filter: reject reviews where the first 300 chars are about a different production
+  // (multi-column PDFs concatenate adjacent shows' text)
+  const cleaned = matched.filter(r => {
+    const first300 = r.fullText.substring(0, 300).toLowerCase();
+    // Check if the title words appear in the first 300 chars
+    const titleInOpening = significantWords.length > 0
+      ? significantWords.some(w => first300.includes(w))
+      : new RegExp(`\\b${titleEscaped}\\b`, 'i').test(first300);
+    if (titleInOpening) return true;
+    // If title isn't in first 300 chars, the review is likely about a different show
+    // (multi-column contamination from adjacent productions in the same PDF page)
+    return false;
+    // Allow if title words appear in the first 50% of text
+    const firstHalf = r.fullText.substring(0, Math.floor(r.fullText.length * 0.5)).toLowerCase();
+    return significantWords.some(w => firstHalf.includes(w));
+  });
+
   // Convert outlet names to Title Case
-  return matched.map(r => ({
+  return cleaned.map(r => ({
     outlet: r.outlet.split(/[\s.]+/)
       .map(w => w.charAt(0) + w.slice(1).toLowerCase())
       .join(' ')
