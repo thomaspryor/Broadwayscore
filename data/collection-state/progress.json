@@ -370,7 +370,9 @@
     "on-a-clear-day-you-can-see-forever-2011/dailybeast--tim-teeman.json",
     "seminar-2011/newyorker--john-lahr.json",
     "godspell-2011/wsj--terry-teachout.json",
-    "the-normal-heart-2011/ap--mark-kennedy.json"
+    "the-normal-heart-2011/ap--mark-kennedy.json",
+    "the-house-of-blue-leaves-2011/hollywood-reporter--unknown.json",
+    "the-house-of-blue-leaves-2011/nytimes--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1864,7 +1866,15 @@
     "master-class-2011/backstage--erik-haagensen.json",
     "the-people-in-the-picture-2011/backstage--david-sheward.json",
     "the-normal-heart-2011/newsday--unknown.json",
-    "the-normal-heart-2011/wsj--unknown.json"
+    "the-normal-heart-2011/wsj--unknown.json",
+    "baby-its-you-2011/variety--david-rooney.json",
+    "baby-its-you-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/backstage--unknown.json",
+    "the-normal-heart-2011/bloomberg--jeremy-gerard.json",
+    "the-house-of-blue-leaves-2011/nydailynews--joe-dziemianowicz.json",
+    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+    "the-house-of-blue-leaves-2011/new-jersey-newsroom--michael-sommers.json",
+    "born-yesterday-2011/newsday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2125,7 +2135,11 @@
       "data/review-texts/death-of-a-salesman-2012/nypost--elisabeth-vincentelli.json",
       "death-of-a-salesman-2012/nypost--elisabeth-vincentelli.json",
       "data/review-texts/lysistrata-jones-2011/variety--steven-suskin.json",
-      "lysistrata-jones-2011/variety--steven-suskin.json"
+      "lysistrata-jones-2011/variety--steven-suskin.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/hollywood-reporter--unknown.json",
+      "the-house-of-blue-leaves-2011/hollywood-reporter--unknown.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/nytimes--unknown.json",
+      "the-house-of-blue-leaves-2011/nytimes--unknown.json"
     ],
     "directCookies": [
       "jitney-2017/usatoday--unknown.json"
@@ -2470,7 +2484,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-normal-heart-2011/ap--mark-kennedy.json",
+  "lastProcessed": "born-yesterday-2011/newsday--unknown.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -3195,6 +3209,39 @@
     },
     {
       "t": "2026-04-04T05:33:19.077Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-04T05:34:34.659Z",
+      "event": "bb-session",
+      "session": "21260e8f",
+      "url": "http://www.hollywoodreporter.com/review/house-blue-leaves-theater-review-181866"
+    },
+    {
+      "t": "2026-04-04T05:34:35.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T05:34:50.127Z",
+      "event": "bb-session",
+      "session": "06e263e6",
+      "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-w"
+    },
+    {
+      "t": "2026-04-04T05:34:51.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-04T05:36:05.528Z",
+      "event": "bb-session",
+      "session": "6fc11c86",
+      "url": "http://www.newsday.com/entertainment/theater/born-yesterday-revival-has-stellar-"
+    },
+    {
+      "t": "2026-04-04T05:36:06.801Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
     }
