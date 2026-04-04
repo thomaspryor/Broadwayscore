@@ -4,7 +4,12 @@
     "the-authenticator-west-end-2026/times-uk--clive-davis.json",
     "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
     "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
-    "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json"
+    "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
+    "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+    "the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
+    "the-phantom-of-the-opera-west-end-2021/thestage--aleks-sierz.json"
   ],
   "failed": [
     "les-liaisons-dangereuses-west-end-2026/nytimes--ben-brantley.json",
@@ -21,27 +26,54 @@
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "hamilton-west-end-2021/times-uk--clive-davis.json",
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/whatsonstage--rachel-agyekum.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-authenticator-west-end-2026/times-uk--clive-davis.json",
       "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
-      "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json"
+      "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "archduke-west-end-2026/nytimes--juan-a-ramirez.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-book-of-mormon-west-end-2024/whatsonstage--rachel-agyekum.json"
+    ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
-      "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json"
+      "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
+      "the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
+      "the-phantom-of-the-opera-west-end-2021/thestage--aleks-sierz.json"
     ]
   },
   "startTime": "2026-04-04T08:51:46.954Z",
-  "lastProcessed": "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
-  "log": []
+  "lastProcessed": "the-phantom-of-the-opera-west-end-2021/thestage--aleks-sierz.json",
+  "log": [
+    {
+      "t": "2026-04-04T08:55:21.038Z",
+      "event": "bb-session",
+      "session": "9f3cca65",
+      "url": "https://artsbeat.blogs.nytimes.com/2011/11/25/no-ending-spoiled-or-otherwise-in-"
+    },
+    {
+      "t": "2026-04-04T08:55:22.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
