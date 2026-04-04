@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-04-04T08:37:47.117Z",
-  "processed": 14,
-  "failed": 16,
-  "successRate": "46.7%",
+  "updatedAt": "2026-04-04T08:42:05.222Z",
+  "processed": 21,
+  "failed": 19,
+  "successRate": "52.5%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 12,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-04T08:41:06.909Z",
+      "event": "bb-session",
+      "session": "c365cb22",
+      "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
+    },
+    {
+      "t": "2026-04-04T08:41:08.253Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

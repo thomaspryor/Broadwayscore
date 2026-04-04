@@ -13,7 +13,14 @@
     "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
     "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
     "the-phantom-of-the-opera-west-end-1986/telegraph--claire-allfree.json",
-    "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json"
+    "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
+    "the-book-of-mormon-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
+    "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+    "the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json",
+    "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
+    "the-gruffalo-west-end-2026/timeout-london--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -31,7 +38,10 @@
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "hamilton-west-end-2021/times-uk--clive-davis.json",
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json"
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/whatsonstage--rachel-agyekum.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -43,16 +53,27 @@
       "romeo-and-juliet-west-end-2026/city-am--adam-bloodworth.json",
       "romeo-and-juliet-west-end-2026/standard--unknown.json",
       "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
-      "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json"
+      "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
+      "the-book-of-mormon-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
+      "the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+      "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/archduke-west-end-2026/nytimes--juan-a-ramirez.json",
+      "archduke-west-end-2026/nytimes--juan-a-ramirez.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
+      "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "the-gruffalo-west-end-2026/timeout-london--unknown.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-book-of-mormon-west-end-2024/whatsonstage--rachel-agyekum.json"
+    ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
       "romeo-and-juliet-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -62,6 +83,18 @@
     ]
   },
   "startTime": "2026-04-04T08:33:03.795Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "the-gruffalo-west-end-2026/timeout-london--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-04T08:41:06.909Z",
+      "event": "bb-session",
+      "session": "c365cb22",
+      "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
+    },
+    {
+      "t": "2026-04-04T08:41:08.253Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
