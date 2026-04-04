@@ -623,30 +623,37 @@ async function main() {
     process.exit(1);
   }
 
-  // Launch browser
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
-  });
-  const page = await context.newPage();
+  // Browser state — mutable so we can recover from crashes
+  let browser, context, page;
 
-  // Login
-  console.log('Logging in to Theatre Record...');
-  await page.goto('https://www.theatrerecord.com/login');
-  await page.getByRole('textbox', { name: 'Email' }).fill(TR_EMAIL);
-  await page.getByRole('textbox', { name: 'Password' }).fill(TR_PASSWORD);
-  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
-  await page.waitForTimeout(3000);
+  async function launchAndLogin() {
+    if (browser) {
+      try { await browser.close(); } catch (_) {}
+    }
+    browser = await chromium.launch({ headless: true });
+    context = await browser.newContext({
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+    });
+    page = await context.newPage();
 
-  // Verify login
-  const loggedIn = await page.locator('text=Sign Out').count() > 0 ||
-                   await page.locator('img[alt="Account"]').count() > 0;
-  if (!loggedIn) {
-    console.error('Login failed!');
-    await browser.close();
-    process.exit(1);
+    console.log('Logging in to Theatre Record...');
+    await page.goto('https://www.theatrerecord.com/login');
+    await page.getByRole('textbox', { name: 'Email' }).fill(TR_EMAIL);
+    await page.getByRole('textbox', { name: 'Password' }).fill(TR_PASSWORD);
+    await page.getByRole('button', { name: 'Sign In', exact: true }).click();
+    await page.waitForTimeout(3000);
+
+    const loggedIn = await page.locator('text=Sign Out').count() > 0 ||
+                     await page.locator('img[alt="Account"]').count() > 0;
+    if (!loggedIn) {
+      console.error('Login failed!');
+      await browser.close();
+      process.exit(1);
+    }
+    console.log('Login successful.\n');
   }
-  console.log('Login successful.\n');
+
+  await launchAndLogin();
 
   let totalNew = 0;
   let totalSkipped = 0;
@@ -941,17 +948,35 @@ async function main() {
     }
     console.log('');
 
+    // Helper: process a show with browser crash recovery
+    async function processWithRecovery(show, hintVenue) {
+      try {
+        const result = await searchAndProcessShow(show, hintVenue);
+        if (result) {
+          totalNew += result.newCount;
+          totalSkipped += result.skippedCount;
+          if (result.newCount > 0 || result.skippedCount > 0) totalShows++;
+        }
+        await page.waitForTimeout(2000);
+      } catch (err) {
+        const isBrowserDead = err.message?.includes('Target page, context or browser has been closed') ||
+                              err.message?.includes('browser has been closed') ||
+                              err.message?.includes('Navigation failed') ||
+                              err.message?.includes('ERR_ABORTED');
+        if (isBrowserDead) {
+          console.log(`  Browser crashed — relaunching...`);
+          await launchAndLogin();
+        } else {
+          console.log(`  Error: ${err.message}`);
+        }
+      }
+    }
+
     // Process matched shows — search with venue hint from listing
     for (const { show, listing } of matched) {
       console.log(`\n--- ${show.title} (${show.id}) ---`);
       console.log(`  Listing: "${listing.title}" @ ${listing.venue}`);
-      const result = await searchAndProcessShow(show, listing.venue);
-      if (result) {
-        totalNew += result.newCount;
-        totalSkipped += result.skippedCount;
-        if (result.newCount > 0 || result.skippedCount > 0) totalShows++;
-      }
-      await page.waitForTimeout(2000);
+      await processWithRecovery(show, listing.venue);
     }
 
     // Fall back to plain search for unmatched shows
@@ -959,6 +984,14 @@ async function main() {
       console.log(`\n\n=== Falling back to search for ${unmatched.length} unmatched shows ===`);
       for (const show of unmatched) {
         console.log(`\n--- ${show.title} (${show.id}) ---`);
+        await processWithRecovery(show);
+      }
+    }
+  } else {
+    // ─── Original search mode ───
+    for (const show of targets) {
+      console.log(`\n--- ${show.title} (${show.id}) ---`);
+      try {
         const result = await searchAndProcessShow(show);
         if (result) {
           totalNew += result.newCount;
@@ -966,19 +999,14 @@ async function main() {
           if (result.newCount > 0 || result.skippedCount > 0) totalShows++;
         }
         await page.waitForTimeout(2000);
+      } catch (err) {
+        if (err.message?.includes('browser has been closed') || err.message?.includes('ERR_ABORTED')) {
+          console.log(`  Browser crashed — relaunching...`);
+          await launchAndLogin();
+        } else {
+          console.log(`  Error: ${err.message}`);
+        }
       }
-    }
-  } else {
-    // ─── Original search mode ───
-    for (const show of targets) {
-      console.log(`\n--- ${show.title} (${show.id}) ---`);
-      const result = await searchAndProcessShow(show);
-      if (result) {
-        totalNew += result.newCount;
-        totalSkipped += result.skippedCount;
-        if (result.newCount > 0 || result.skippedCount > 0) totalShows++;
-      }
-      await page.waitForTimeout(2000);
     }
   }
 
