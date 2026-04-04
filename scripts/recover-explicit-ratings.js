@@ -18,7 +18,7 @@
  *   node scripts/recover-explicit-ratings.js --phase=0,3        # Discover URLs then scrape
  *   node scripts/recover-explicit-ratings.js --outlet=guardian   # Single outlet
  *   node scripts/recover-explicit-ratings.js --source=theatre-record # Filter by source
- *   node scripts/recover-explicit-ratings.js --limit=10          # Limit per phase
+ *   node scripts/recover-explicit-ratings.js --limit=10          # Limit per outlet
  *
  * Environment Variables:
  *   GUARDIAN_API_KEY - For Guardian API (Phase 2)
