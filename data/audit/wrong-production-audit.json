@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T19:05:21.416Z",
+  "timestamp": "2026-04-04T19:44:04.378Z",
   "stats": {
-    "totalReviews": 29387,
-    "alreadyFlagged": 8369,
+    "totalReviews": 29400,
+    "alreadyFlagged": 8317,
     "dateGuardCatches": 13,
-    "directorMismatch": 936,
-    "tvFilmSignals": 3415,
-    "londonSignals": 1056,
+    "directorMismatch": 938,
+    "tvFilmSignals": 3429,
+    "londonSignals": 1061,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
-    "noPublishDate": 5624
+    "noPublishDate": 5625
   },
   "findings": [
     {
@@ -13480,6 +13480,20 @@
     },
     {
       "showId": "dracula-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 62,
+      "publishDate": "2026-02-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 43,
       "publishDate": "February 17th, 2026",
@@ -24872,6 +24886,24 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "publishDate": "2026-01-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "the-recs--the-recs-it.json",
       "score": 94,
       "publishDate": "2025-12-11",
@@ -24886,6 +24918,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "theatrecat--libby-purves.json",
+      "score": 89,
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -28849,6 +28895,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2020-01-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -44295,6 +44354,20 @@
     },
     {
       "showId": "starlight-express-west-end-2024",
+      "file": "hampstead-highgate-express--bridget-galton.json",
+      "score": 78,
+      "publishDate": "2024-07-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "starlight-express-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 43,
       "publishDate": "2024-06-30",
@@ -44792,6 +44865,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "hampstead-highgate-express--bridget-galton.json",
+      "score": 84,
+      "publishDate": "2023-12-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
         }
       ]
     },
@@ -51505,6 +51592,20 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "hampstead-highgate-express--bridget-galton.json",
+      "score": 72,
+      "publishDate": "2025-11-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "independent--alice-saville.json",
       "score": 66,
       "publishDate": "2025-11-13",
@@ -52403,6 +52504,32 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "daily-mail--michael-coveney.json",
+      "publishDate": "1999-10-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "financialtimes--sarahhemming.json",
+      "publishDate": "1999-10-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "guardian--michael-billington.json",
       "score": 82,
       "publishDate": "2011-01-04",
@@ -52525,9 +52652,61 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "the-express--robert-gore-langton.json",
+      "publishDate": "1999-10-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "the-scotsman--joyce-mcmillan.json",
       "score": 78,
       "publishDate": "2019-12-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "timeout-london--jane-edwardes.json",
+      "publishDate": "1999-10-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "times-uk--benedict-nightingale.json",
+      "publishDate": "1999-10-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "times-uk--johnpeter.json",
+      "publishDate": "1999-10-24",
       "url": null,
       "findings": [
         {
@@ -54795,6 +54974,19 @@
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "artsdesk--matt-wolf.json",
+      "publishDate": "2020-12-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "broadwayworld--kat-mokrynski.json",
       "score": 81,
       "publishDate": "2014-09-18",
@@ -54804,6 +54996,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2020-12-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2020-12-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -68208,6 +68426,20 @@
     },
     {
       "showId": "hamilton-west-end-2021",
+      "file": "times-uk--christopher-hart.json",
+      "score": 77,
+      "publishDate": "2017-12-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
       "file": "variety--marilyn-stasio.json",
       "score": 78,
       "publishDate": "2017-12-21",
@@ -73895,6 +74127,19 @@
       "score": 82,
       "publishDate": "January 15th, 2025",
       "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2025-01-19",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80035,6 +80280,20 @@
     },
     {
       "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "score": 76,
+      "publishDate": "2026-03-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 79,
       "publishDate": "2026-03-09",
@@ -80650,6 +80909,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "independent--paultaylor.json",
+      "publishDate": "1999-10-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },

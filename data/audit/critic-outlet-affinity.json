@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-04T19:05:23.741Z",
+    "lastUpdated": "2026-04-04T19:44:06.701Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 29821,
-    "skippedFiles": 8464,
-    "totalCritics": 1477,
-    "registryCritics": 504,
-    "flaggedReviews": 35
+    "totalFilesScanned": 29834,
+    "skippedFiles": 8412,
+    "totalCritics": 1499,
+    "registryCritics": 508,
+    "flaggedReviews": 36
   },
   "flaggedReviews": [
     {
@@ -341,6 +341,17 @@
       "totalReviews": 23
     },
     {
+      "critic": "Robert Gore-Langton",
+      "criticSlug": "robert-gore-langton",
+      "outlet": "the-express",
+      "showId": "the-lion-king-west-end-2021",
+      "file": "the-express--robert-gore-langton.json",
+      "outletShare": 6,
+      "primaryOutlet": "daily-mail",
+      "primaryShare": 94,
+      "totalReviews": 18
+    },
+    {
       "critic": "Sarah Crompton",
       "criticSlug": "sarah-crompton",
       "outlet": "telegraph",
@@ -349,7 +360,7 @@
       "outletShare": 4,
       "primaryOutlet": "whatsonstage",
       "primaryShare": 96,
-      "totalReviews": 23
+      "totalReviews": 24
     },
     {
       "critic": "Patrick Ryan",
@@ -561,6 +572,7 @@
         "telegraph",
         "musical-theatre-review",
         "stageandcinema",
+        "london-theatre",
         "londonist",
         "usatoday",
         "all-that-dazzles-uk",
@@ -568,7 +580,6 @@
         "british-theatre",
         "whatsonstage",
         "buy-tickets",
-        "london-theatre",
         "deadline",
         "nysr",
         "theatrely",
@@ -631,7 +642,7 @@
         "bamorg",
         "kenny-leon"
       ],
-      "totalReviews": 567
+      "totalReviews": 569
     },
     {
       "critic": "Brittani Samuel",
@@ -1207,7 +1218,7 @@
         "nytimes",
         "variety"
       ],
-      "totalReviews": 39
+      "totalReviews": 40
     },
     {
       "critic": "Jesse Oxfeld",
@@ -1826,7 +1837,7 @@
         "times-uk",
         "daily-mail"
       ],
-      "totalReviews": 8
+      "totalReviews": 9
     },
     {
       "critic": "Bobby McGuire",
@@ -1999,6 +2010,15 @@
       "totalReviews": 3
     },
     {
+      "critic": "Terry Eastham",
+      "slug": "terry-eastham",
+      "outlets": [
+        "londontheatre1",
+        "london-theatre"
+      ],
+      "totalReviews": 5
+    },
+    {
       "critic": "Lisa Martland",
       "slug": "lisa-martland",
       "outlets": [
@@ -2013,6 +2033,15 @@
       "outlets": [
         "oscar-e-moore",
         "talk-entertainment"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Michael Coveney",
+      "slug": "michael-coveney",
+      "outlets": [
+        "whatsonstage",
+        "daily-mail"
       ],
       "totalReviews": 3
     },

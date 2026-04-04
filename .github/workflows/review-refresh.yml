@@ -320,8 +320,8 @@ jobs:
             echo "TR credentials not configured — skipping Theatre Record extraction"
             exit 0
           fi
-          echo "Extracting reviews from Theatre Record (open WE shows)..."
-          node scripts/extract-theatre-record.js --open-we
+          echo "Extracting reviews from Theatre Record (browse WE listing)..."
+          node scripts/extract-theatre-record.js --browse-we
 
       - name: Cleanup phantom outlet duplicates
         run: node scripts/cleanup-phantom-outlets.js --apply
