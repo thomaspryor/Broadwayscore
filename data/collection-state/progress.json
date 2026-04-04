@@ -216,7 +216,9 @@
     "romeo-and-juliet-west-end-2026/broadwayworld--cindy-marcolina.json",
     "romeo-and-juliet-west-end-2026/city-am--adam-bloodworth.json",
     "romeo-and-juliet-west-end-2026/london-theatre--unknown.json",
-    "les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json"
+    "les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/the-interested-bystander--cary-wong.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -954,7 +956,15 @@
     "les-liaisons-dangereuses-west-end-2026/nytimes--ben-brantley.json",
     "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
     "les-liaisons-dangereuses-west-end-2026/nytimes--ben-brantley.json",
-    "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json"
+    "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "titus-andronicus-off-broadway-2026/wsj--unknown.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1056,7 +1066,8 @@
       "romeo-and-juliet-west-end-2026/artsdesk--matt-wolf.json",
       "romeo-and-juliet-west-end-2026/city-am--adam-bloodworth.json",
       "romeo-and-juliet-west-end-2026/london-theatre--unknown.json",
-      "les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json"
+      "les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json",
+      "every-brilliant-thing-2026/the-interested-bystander--cary-wong.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -1116,7 +1127,9 @@
       "data/review-texts/the-waverly-gallery-2018/variety--marilyn-stasio.json",
       "the-waverly-gallery-2018/variety--marilyn-stasio.json",
       "data/review-texts/once-on-this-island-2017/deadline--jeremy-gerard.json",
-      "once-on-this-island-2017/deadline--jeremy-gerard.json"
+      "once-on-this-island-2017/deadline--jeremy-gerard.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1239,7 +1252,10 @@
       "data/review-texts/a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
       "data/review-texts/les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json",
       "data/review-texts/les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json",
-      "data/review-texts/les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json"
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/titus-andronicus-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/usatoday--patrick-ryan.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1294,7 +1310,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
+  "lastProcessed": "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -1768,6 +1784,28 @@
       "t": "2026-04-03T13:56:58.050Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-04T00:54:34.223Z",
+      "event": "bb-session",
+      "session": "fbea2ab8",
+      "url": "https://www.wsj.com/articles/titus-andronicus-review-patrick-page-in-the-bards-b"
+    },
+    {
+      "t": "2026-04-04T00:54:35.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T00:56:26.817Z",
+      "event": "bb-session",
+      "session": "8723e234",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-04-04T00:56:28.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
