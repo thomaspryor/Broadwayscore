@@ -1,6 +1,7 @@
 {
   "processed": [
-    "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json"
+    "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
   ],
   "failed": [
     "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -21,11 +22,15 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
     "hamilton-west-end-2021/times-uk--clive-davis.json",
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json"
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -41,6 +46,6 @@
     ]
   },
   "startTime": "2026-04-04T17:55:46.341Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+  "lastProcessed": "high-noon-west-end-2025/times-uk--clive-davis.json",
   "log": []
 }
