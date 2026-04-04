@@ -76,6 +76,7 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
           MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
+          THEATR_REFRESH_TOKEN: ${{ secrets.THEATR_REFRESH_TOKEN }}
         run: |
           ARGS=""
           if [ -n "${{ inputs.show_id }}" ]; then

@@ -1824,6 +1824,23 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     if (verifyCtx && !candidate) console.log(`   Falling through to TodayTix scrape...`);
   }
 
+  // Step 1.75: Try Theatr — all 3 image formats including hero (landscape banner)
+  // NEEDS VERIFICATION — current shows only, ~200 Broadway/OB
+  const theatrImages = await fetchFromTheatr(show);
+  if (theatrImages && (theatrImages.thumbnail || theatrImages.poster)) {
+    const candidate = await verifyAndCollect(theatrImages, show, 'Theatr', verifyCtx);
+    if (candidate) {
+      candidates.push(candidate);
+      if (candidate.verifyResult?.imageType === 'promotional_art' &&
+          candidate.verifyResult?.confidence === 'high') {
+        console.log(`   ★ Promotional art found at high confidence — using this`);
+        return candidate.images;
+      }
+      if (!verifyCtx) return candidate.images;
+    }
+    if (verifyCtx && !candidate) console.log(`   Falling through to TodayTix scrape...`);
+  }
+
   // Step 2: Try TodayTix page scrape if we have an ID
   // NEEDS VERIFICATION — scraped images may be from wrong show/production
   if (todayTixInfo && todayTixInfo.id) {
