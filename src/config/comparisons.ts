@@ -2,6 +2,80 @@
 // Defines popular show comparisons for programmatic SEO pages
 // Format: "show-a-slug--vs--show-b-slug"
 
+// Categories for hub page display
+export interface ComparisonCategory {
+  label: string;
+  description: string;
+  pairs: [string, string][];
+}
+
+export const COMPARISON_CATEGORIES: ComparisonCategory[] = [
+  {
+    label: 'Most Popular Matchups',
+    description: 'The comparisons Broadway fans search for most',
+    pairs: [
+      ['hamilton', 'wicked'],
+      ['the-lion-king', 'aladdin'],
+      ['the-lion-king', 'wicked'],
+      ['hamilton', 'the-lion-king'],
+      ['wicked', 'aladdin'],
+      ['hamilton', 'moulin-rouge'],
+    ],
+  },
+  {
+    label: 'Current Hits',
+    description: 'Compare the hottest shows playing now',
+    pairs: [
+      ['operation-mincemeat', 'six'],
+      ['operation-mincemeat', 'hadestown'],
+      ['buena-vista-social-club', 'moulin-rouge'],
+      ['buena-vista-social-club', 'hadestown'],
+      ['ragtime', 'hamilton'],
+      ['chess', 'six'],
+      ['schmigadoon', 'six'],
+      ['schmigadoon', 'and-juliet'],
+      ['titanique', 'six'],
+      ['cats-the-jellicle-ball', 'the-lion-king'],
+      ['death-becomes-her', 'chicago'],
+      ['maybe-happy-ending', 'hadestown'],
+      ['the-great-gatsby', 'moulin-rouge'],
+      ['hells-kitchen', 'mj'],
+      ['hells-kitchen', 'six'],
+    ],
+  },
+  {
+    label: 'Family Shows',
+    description: 'Finding the right show for kids and families',
+    pairs: [
+      ['the-lion-king', 'harry-potter'],
+      ['aladdin', 'harry-potter'],
+      ['wicked', 'harry-potter'],
+      ['aladdin', 'six'],
+      ['the-lion-king', 'beetlejuice-2019'],
+      ['aladdin', 'beetlejuice-2019'],
+      ['the-lion-king', 'mj'],
+      ['aladdin', 'mj'],
+    ],
+  },
+  {
+    label: 'Musicals Head-to-Head',
+    description: 'The great musical debates',
+    pairs: [
+      ['hadestown', 'moulin-rouge'],
+      ['hadestown', 'wicked'],
+      ['hadestown', 'hamilton'],
+      ['book-of-mormon', 'hamilton'],
+      ['book-of-mormon', 'wicked'],
+      ['six', 'hadestown'],
+      ['mj', 'hadestown'],
+      ['mj', 'moulin-rouge'],
+      ['and-juliet', 'mj'],
+      ['and-juliet', 'moulin-rouge'],
+    ],
+  },
+];
+
+// Flat list for static generation (includes all pairs from categories + uncategorized)
 // Popular comparison pairs (manually curated for high search volume)
 // These generate static pages at /compare/[showA]-vs-[showB]
 export const COMPARISON_PAIRS: [string, string][] = [
