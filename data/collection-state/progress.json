@@ -349,7 +349,8 @@
     "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
     "jitney-2017/usatoday--robert-feldberg.json",
     "spring-awakening-2015/broadstreetreview--judy-weightman.json",
-    "spring-awakening-2015/broadway-blog--matthew-wexler.json"
+    "spring-awakening-2015/broadway-blog--matthew-wexler.json",
+    "lucky-guy-2013/nypost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1764,7 +1765,16 @@
     "the-assembled-parties-2013/wsj--terry-teachout.json",
     "the-nance-2013/hollywood-reporter--david-rooney.json",
     "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
-    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json"
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "hands-on-a-hardbody-2013/newsday--linda-winer.json",
+    "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "picnic-2013/bloomberg--jeremy-gerard.json",
+    "the-anarchist-2012/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2005,7 +2015,9 @@
       "data/review-texts/job-2024/deadline--greg-evans.json",
       "job-2024/deadline--greg-evans.json",
       "data/review-texts/home-2024/variety--lexi-carson.json",
-      "home-2024/variety--lexi-carson.json"
+      "home-2024/variety--lexi-carson.json",
+      "data/review-texts/lucky-guy-2013/nypost--elisabeth-vincentelli.json",
+      "lucky-guy-2013/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "jitney-2017/usatoday--unknown.json"
@@ -2334,7 +2346,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "the-anarchist-2012/variety--marilyn-stasio.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2951,6 +2963,17 @@
       "t": "2026-04-04T04:53:08.484Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T05:08:09.126Z",
+      "event": "bb-session",
+      "session": "c933730c",
+      "url": "http://www.nypost.com/p/entertainment/theater/hanks_for_the_memories_v5e6Th8RtEA"
+    },
+    {
+      "t": "2026-04-04T05:08:10.778Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
