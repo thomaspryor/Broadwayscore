@@ -4,12 +4,14 @@ import { useState, useMemo, useEffect } from 'react';
 import type { ShowSchedule, WeekSchedule } from '@/lib/data-types';
 import TicketLink from '@/components/TicketLink';
 import type { TicketLinkData } from '@/lib/ticket-utils';
+import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 
 interface ShowtimesCardProps {
   schedule: ShowSchedule;
   currentMonday: string;
   showStatus: string;
   ticketLinks?: TicketLinkData[];
+  todaytixShowtimes?: TodayTixShowtimeData;
   showName?: string;
   showId?: string;
   showSlug?: string;
@@ -56,6 +58,16 @@ function getWeekLabel(mondayStr: string, currentMonday: string): string {
   return `Week of ${formatWeekRange(target)}`;
 }
 
+/** Convert YYYYMMDD monday + day index (0=Mon) to YYYY-MM-DD */
+function getMondayPlusDayDate(mondayKey: string, dayIndex: number): string {
+  const d = parseMonday(mondayKey);
+  d.setDate(d.getDate() + dayIndex);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 /** Get today's day index (0=Mon, 6=Sun) or -1 if not in this week */
 function getTodayIndex(mondayStr: string, now: Date): number {
   const monday = parseMonday(mondayStr);
@@ -66,7 +78,7 @@ function getTodayIndex(mondayStr: string, now: Date): number {
   return -1;
 }
 
-export default function ShowtimesCard({ schedule, currentMonday, showStatus, ticketLinks, showName, showId, showSlug }: ShowtimesCardProps) {
+export default function ShowtimesCard({ schedule, currentMonday, showStatus, ticketLinks, todaytixShowtimes, showName, showId, showSlug }: ShowtimesCardProps) {
   // Don't render for closed shows or if no weeks data
   const weekKeys = useMemo(() => Object.keys(schedule.weeks).sort(), [schedule.weeks]);
 
@@ -102,6 +114,19 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
   // Pick the best ticket link (first in sorted array = highest priority)
   const primaryLink = ticketLinks?.[0];
   const hasTicketLink = !!primaryLink;
+  const isTodayTixPrimary = primaryLink?.platform === 'TodayTix' && !!todaytixShowtimes;
+
+  /** Build a deep-link URL for a specific time slot, or fall back to the generic ticket page */
+  function getTicketUrl(dayIndex: number, slot: 'm' | 'e'): string | undefined {
+    if (!hasTicketLink) return undefined;
+    if (!isTodayTixPrimary) return primaryLink!.url;
+    const dateStr = getMondayPlusDayDate(selectedMonday, dayIndex);
+    const showtimeId = todaytixShowtimes!.showtimes[dateStr]?.[slot];
+    if (showtimeId) {
+      return `https://www.todaytix.com/booking/seating-plan?showId=${todaytixShowtimes!.todaytixId}&showtimeId=${showtimeId}`;
+    }
+    return primaryLink!.url;
+  }
 
   return (
     <section className="card p-5 sm:p-6 mb-6 scroll-mt-20">
@@ -181,7 +206,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
                         showId={showId ?? ''}
                         showSlug={showSlug}
                         platform={primaryLink!.platform}
-                        url={primaryLink!.url}
+                        url={getTicketUrl(i, 'm')!}
                         pageType="showtimes"
                         className="text-brand/90 hover:text-brand underline underline-offset-2 decoration-brand/30 hover:decoration-brand/60 transition-colors"
                       >
@@ -195,7 +220,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
                         showId={showId ?? ''}
                         showSlug={showSlug}
                         platform={primaryLink!.platform}
-                        url={primaryLink!.url}
+                        url={getTicketUrl(i, 'e')!}
                         pageType="showtimes"
                         className="text-brand/90 hover:text-brand underline underline-offset-2 decoration-brand/30 hover:decoration-brand/60 transition-colors"
                       >
