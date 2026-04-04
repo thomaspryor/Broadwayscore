@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T07:15:04.898Z",
+  "timestamp": "2026-04-04T08:19:47.057Z",
   "stats": {
-    "totalReviews": 29230,
-    "alreadyFlagged": 8236,
+    "totalReviews": 29228,
+    "alreadyFlagged": 8254,
     "dateGuardCatches": 13,
     "directorMismatch": 923,
-    "tvFilmSignals": 3408,
-    "londonSignals": 1045,
+    "tvFilmSignals": 3409,
+    "londonSignals": 1046,
     "offBroadwaySignals": 985,
     "yearMismatch": 71,
-    "noPublishDate": 5650
+    "noPublishDate": 5643
   },
   "findings": [
     {
@@ -1202,6 +1202,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from a-little-night-music-1973"
+        }
+      ]
+    },
+    {
+      "showId": "a-little-night-music-2009",
+      "file": "theatermania--unknown.json",
+      "score": null,
+      "publishDate": "2009-12-13",
+      "url": "https://www.theatermania.com/news/a-little-night-music_23441/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -69820,6 +69834,20 @@
     },
     {
       "showId": "jerusalem-2011",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 95,
+      "publishDate": "2011-04-21",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/jerusalem-apollo-theatre-review-mark-rylance-still-rules-kingdom/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-2011",
       "file": "theatermania--charles-isherwood.json",
       "score": 88,
       "publishDate": "April 22, 2011",
@@ -81352,8 +81380,8 @@
     {
       "showId": "the-scottsboro-boys-2010",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 82,
-      "publishDate": "2010-11-01T08:01:16-04:00",
+      "score": 81,
+      "publishDate": "October 31, 2010",
       "url": "http://www.hollywoodreporter.com/review/scottsboro-boys-33946",
       "findings": [
         {

@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-04T07:10:33.750Z",
+    "generatedAt": "2026-04-04T08:15:02.254Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
-    "wrongShow": 0,
+    "total": 1,
+    "classified": 1,
+    "wrongShow": 1,
     "correct": 0,
     "uncertain": 0,
     "errors": 0,
-    "applied": 0
+    "applied": 1
   },
-  "results": []
+  "results": [
+    {
+      "showId": "reasons-to-be-pretty-2009",
+      "showTitle": "Reasons To Be Pretty",
+      "file": "ew--melissa-rose-bernardo.json",
+      "verdict": "WRONG_SHOW",
+      "confidence": "high",
+      "reasoning": "The review is about 'Reasons to Be Happy', a sequel to 'Reasons to Be Pretty', and discusses the characters and plot of the sequel, not the original play."
+    }
+  ]
 }
