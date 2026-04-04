@@ -1,7 +1,96 @@
 {
-  "generatedAt": "2026-04-03T23:55:35.369Z",
+  "generatedAt": "2026-04-04T00:07:09.652Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "heart-wall-west-end-2026",
+      "title": "HEART WALL",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-04-04",
+      "status": "upcoming",
+      "slug": "heart-wall-west-end",
+      "thumbnail": "/images/shows/heart-wall-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "scorched-earth-off-broadway-2026",
       "title": "Scorched Earth",
@@ -1174,20 +1263,20 @@
       "status": "open",
       "slug": "les-liaisons-dangereuses-west-end",
       "thumbnail": "/images/shows/les-liaisons-dangereuses-west-end-2026/thumbnail.webp",
-      "siteScore": 75,
-      "liveScore": 75,
+      "siteScore": 76,
+      "liveScore": 76,
       "scoreDrift": 0,
-      "total": 17,
+      "total": 18,
       "t1": 4,
-      "t2": 5,
+      "t2": 6,
       "t3": 8,
-      "positive": 12,
+      "positive": 13,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1324,6 +1413,18 @@
           "t2": 5,
           "t3": 8,
           "p": 12,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-04T00:07:09.652Z",
+          "rc": 18,
+          "s": 76,
+          "t1": 4,
+          "t2": 6,
+          "t3": 8,
+          "p": 13,
           "m": 5,
           "n": 0,
           "bc": "waiting"
@@ -1630,127 +1731,9 @@
           "isDualMarket": true
         }
       ]
-    },
-    {
-      "id": "romeo-and-juliet-west-end-2026",
-      "title": "Romeo and Juliet",
-      "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-03-31",
-      "status": "open",
-      "slug": "romeo-and-juliet-west-end",
-      "thumbnail": "/images/shows/romeo-and-juliet-west-end-2026/thumbnail.webp",
-      "siteScore": 72,
-      "liveScore": 72,
-      "scoreDrift": 0,
-      "total": 20,
-      "t1": 6,
-      "t2": 8,
-      "t3": 6,
-      "positive": 13,
-      "mixed": 5,
-      "negative": 2,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 20,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
-      },
-      "missingT1": [],
-      "missingT2": [
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-04-03T03:47:53.743Z",
-          "rc": 9,
-          "s": 75,
-          "t1": 3,
-          "t2": 4,
-          "t3": 2,
-          "p": 6,
-          "m": 2,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-04-03T14:49:08.836Z",
-          "rc": 16,
-          "s": 71,
-          "t1": 6,
-          "t2": 7,
-          "t3": 3,
-          "p": 10,
-          "m": 4,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-04-03T20:49:12.306Z",
-          "rc": 19,
-          "s": 71,
-          "t1": 6,
-          "t2": 7,
-          "t3": 6,
-          "p": 12,
-          "m": 5,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-04-03T21:51:17.611Z",
-          "rc": 20,
-          "s": 72,
-          "t1": 6,
-          "t2": 8,
-          "t3": 6,
-          "p": 13,
-          "m": 5,
-          "n": 2,
-          "bc": "waiting"
-        }
-      ]
     }
   ],
   "upcoming": [
-    {
-      "id": "heart-wall-west-end-2026",
-      "title": "HEART WALL",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-04-04",
-      "status": "upcoming",
-      "slug": "heart-wall-west-end",
-      "thumbnail": "/images/shows/heart-wall-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
     {
       "id": "becky-shaw-2026",
       "title": "Becky Shaw",
@@ -1761,7 +1744,7 @@
       "status": "previews",
       "slug": "becky-shaw",
       "thumbnail": "/images/shows/becky-shaw-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1800,7 +1783,7 @@
       "status": "previews",
       "slug": "innocence-off-broadway",
       "thumbnail": "/images/shows/innocence-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1839,7 +1822,7 @@
       "status": "previews",
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1878,7 +1861,7 @@
       "status": "previews",
       "slug": "the-listening-off-broadway",
       "thumbnail": "/images/shows/the-listening-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1917,7 +1900,7 @@
       "status": "upcoming",
       "slug": "midnight-in-the-toyshop-west-end",
       "thumbnail": "/images/shows/midnight-in-the-toyshop-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1942,7 +1925,7 @@
       "status": "upcoming",
       "slug": "the-boy-at-the-back-of-the-class-west-end",
       "thumbnail": "/images/shows/the-boy-at-the-back-of-the-class-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1967,7 +1950,7 @@
       "status": "previews",
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1992,7 +1975,7 @@
       "status": "previews",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2017,7 +2000,7 @@
       "status": "previews",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2056,7 +2039,7 @@
       "status": "previews",
       "slug": "lost-in-del-valle-off-broadway",
       "thumbnail": "/images/shows/lost-in-del-valle-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2095,7 +2078,7 @@
       "status": "upcoming",
       "slug": "flyby-off-west-end",
       "thumbnail": "/images/shows/flyby-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
