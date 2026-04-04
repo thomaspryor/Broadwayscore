@@ -180,6 +180,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
       performances: grosses?.allTime?.performances ?? undefined,
       reviewYearNote: show.reviewYearNote ?? undefined,
+      ticketLinks: show.ticketLinks,
     };
   });
 

@@ -115,6 +115,7 @@ export default function BestOfPage({ params }: { params: { category: string } })
       audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
       audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
       reviewYearNote: show.reviewYearNote ?? undefined,
+      ticketLinks: show.ticketLinks,
     };
   });
 
