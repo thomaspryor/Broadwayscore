@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T20:48:52.193Z",
+  "timestamp": "2026-04-04T21:05:31.881Z",
   "stats": {
-    "totalReviews": 29431,
-    "alreadyFlagged": 8354,
+    "totalReviews": 29438,
+    "alreadyFlagged": 8345,
     "dateGuardCatches": 13,
     "directorMismatch": 938,
-    "tvFilmSignals": 3421,
-    "londonSignals": 1058,
+    "tvFilmSignals": 3423,
+    "londonSignals": 1057,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
-    "noPublishDate": 5638
+    "noPublishDate": 5639
   },
   "findings": [
     {
@@ -14209,6 +14209,20 @@
       "file": "timeout-london--andrzej-lukowksi.json",
       "score": 78,
       "publishDate": "2026-02-25",
+      "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 88,
+      "publishDate": "2026-02-23",
       "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
       "findings": [
         {
@@ -30423,6 +30437,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "i-paper--fiona-mountford.json",
+      "score": null,
+      "publishDate": "1999-04-06",
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -51692,8 +51720,8 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "whatsonstage--alex-wood.json",
-      "score": null,
-      "publishDate": "2025-11-28",
+      "score": 72,
+      "publishDate": "2025-11-12",
       "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
       "findings": [
         {
@@ -65585,7 +65613,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 77,
       "publishDate": "2026-02-07",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15527745/Dracula-Cynthia-Erivo-reputation-creepy-behaviour-Wicked.html",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15568819/PATRICK-MARMION-review-Superstar-Cynthia-wickedly-good-Dracula.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73912,7 +73940,7 @@
       "file": "i-paper--fiona-mountford.json",
       "score": 49,
       "publishDate": "2025-01-15",
-      "url": null,
+      "url": "https://inews.co.uk/culture/arts/the-other-place-national-theatre-review-3315187?srsltid=AfmBOooGzJseZXWQ2FXnnQfa6C6h06DFbevdDD6uX_K4jyekHkFYrIZa",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73968,7 +73996,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 92,
       "publishDate": "January 14th, 2025",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73997,19 +74025,6 @@
       "score": 82,
       "publishDate": "January 15th, 2025",
       "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "times-uk--dominic-maxwell.json",
-      "publishDate": "2025-01-19",
-      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80194,7 +80209,7 @@
       "showId": "the-holy-rosenbergs-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "publishDate": "2026-03-10",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-holy-rosenbergs-review-menier-chocolate-factory-l3nc85g2r",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81272,7 +81287,7 @@
       "file": "telegraph--claire-allfree.json",
       "score": 78,
       "publishDate": "2021-08-10",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/when-we-are-married-donmar-warehouse-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
