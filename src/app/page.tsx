@@ -208,6 +208,15 @@ export default function HomePage() {
     .sort((a, b) => (grossesShows[b.slug]?.thisWeek?.capacity || 0) - (grossesShows[a.slug]?.thisWeek?.capacity || 0))
     .map(s => ({ ...serializeShow(s), subtitle: `${Math.round(grossesShows[s.slug]!.thisWeek!.capacity!)}% capacity`, subtitleColor: 'text-gray-400' }));
 
+  // Shows Starting Soon — upcoming (not yet in previews), sorted by previewsStartDate
+  const startingSoonList = allShows
+    .filter(s => s.status === 'upcoming' && (s.previewsStartDate || s.openingDate))
+    .sort((a, b) => new Date(a.previewsStartDate || a.openingDate).getTime() - new Date(b.previewsStartDate || b.openingDate).getTime())
+    .map(s => {
+      const startDate = s.previewsStartDate || s.openingDate;
+      return { ...serializeShow(s), subtitle: startDate ? `Starts ${shortDate(startDate)}` : undefined, subtitleColor: 'text-gray-400' };
+    });
+
   // Best of the West End — open WE shows with scores, sorted by score
   const bestWestEndList = weShows
     .filter(s => s.status === 'open' && s.criticScore?.score)
@@ -221,7 +230,7 @@ export default function HomePage() {
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
     { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },
     { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
-    { title: 'Upcoming', shows: upcomingShows.map(s => ({ ...serializeShow(s), subtitle: s.openingDate ? `Opens ${shortDate(s.openingDate)}` : undefined, subtitleColor: 'text-gray-400' })), viewAllHref: '/browse/upcoming-broadway-shows' },
+    { title: 'Shows Starting Soon', shows: startingSoonList, viewAllHref: '/browse/upcoming-broadway-shows' },
     { title: 'Best of the West End', shows: bestWestEndList, viewAllHref: '/west-end' },
     { title: 'Tony Winning Shows', shows: tonyWinnersShows, viewAllHref: '/browse/tony-winners-on-broadway' },
     { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
