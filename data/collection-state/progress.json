@@ -359,7 +359,12 @@
     "clybourne-park-2012/theatermania--unknown.json",
     "clybourne-park-2012/stageandcinema--unknown.json",
     "evita-2012/ap--mark-kennedy.json",
-    "once-2012/ew--unknown.json"
+    "once-2012/ew--unknown.json",
+    "once-2012/theatermania--unknown.json",
+    "once-2012/artsfuse--unknown.json",
+    "death-of-a-salesman-2012/hollywood-reporter--unknown.json",
+    "death-of-a-salesman-2012/vulture--unknown.json",
+    "death-of-a-salesman-2012/nypost--elisabeth-vincentelli.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1814,7 +1819,12 @@
     "end-of-the-rainbow-2012/backstage--david-sheward.json",
     "newsies-the-musical-2012/new-jersey-newsroom--michael-sommers.json",
     "jesus-christ-superstar-2012/backstage--david-sheward.json",
-    "once-2012/nypost--elisabeth-vincentelli.json"
+    "once-2012/nypost--elisabeth-vincentelli.json",
+    "once-2012/wsj--unknown.json",
+    "once-2012/backstage--david-sheward.json",
+    "death-of-a-salesman-2012/indiewire--unknown.json",
+    "death-of-a-salesman-2012/curtainup--unknown.json",
+    "death-of-a-salesman-2012/forbes--roger-friedman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1983,7 +1993,9 @@
       "whos-afraid-of-virginia-woolf-2012/nyt-theater--unknown.json",
       "the-lyons-2012/theatermania--unknown.json",
       "clybourne-park-2012/theatermania--unknown.json",
-      "once-2012/ew--unknown.json"
+      "once-2012/ew--unknown.json",
+      "once-2012/theatermania--unknown.json",
+      "once-2012/artsfuse--unknown.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -2066,7 +2078,11 @@
       "a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2012/hollywood-reporter--unknown.json",
       "whos-afraid-of-virginia-woolf-2012/hollywood-reporter--unknown.json",
-      "data/review-texts/once-2012/nypost--elisabeth-vincentelli.json"
+      "data/review-texts/once-2012/nypost--elisabeth-vincentelli.json",
+      "data/review-texts/death-of-a-salesman-2012/hollywood-reporter--unknown.json",
+      "death-of-a-salesman-2012/hollywood-reporter--unknown.json",
+      "data/review-texts/death-of-a-salesman-2012/nypost--elisabeth-vincentelli.json",
+      "death-of-a-salesman-2012/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "jitney-2017/usatoday--unknown.json"
@@ -2291,7 +2307,11 @@
       "data/review-texts/no-mans-land-2013/usatoday--elysa-gardner.json",
       "data/review-texts/no-mans-land-2013/broadwayworld--michael-dale.json",
       "data/review-texts/a-gentlemans-guide-to-love-and-murder-2013/talkinbroadway--matthew-murray.json",
-      "data/review-texts/clybourne-park-2012/backstage--unknown.json"
+      "data/review-texts/clybourne-park-2012/backstage--unknown.json",
+      "data/review-texts/once-2012/wsj--unknown.json",
+      "data/review-texts/death-of-a-salesman-2012/indiewire--unknown.json",
+      "data/review-texts/death-of-a-salesman-2012/curtainup--unknown.json",
+      "data/review-texts/death-of-a-salesman-2012/forbes--roger-friedman.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2395,11 +2415,12 @@
       "spring-awakening-2015/broadway-blog--matthew-wexler.json",
       "the-lyons-2012/wsj--terry-teachout.json",
       "clybourne-park-2012/stageandcinema--unknown.json",
-      "evita-2012/ap--mark-kennedy.json"
+      "evita-2012/ap--mark-kennedy.json",
+      "death-of-a-salesman-2012/vulture--unknown.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "once-2012/nypost--elisabeth-vincentelli.json",
+  "lastProcessed": "death-of-a-salesman-2012/forbes--roger-friedman.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -3058,6 +3079,39 @@
     },
     {
       "t": "2026-04-04T05:15:26.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-04T05:15:49.111Z",
+      "event": "bb-session",
+      "session": "d4983d8b",
+      "url": "https://www.wsj.com/articles/SB10001424052702304356604577339810852417898?gaa_at="
+    },
+    {
+      "t": "2026-04-04T05:15:50.468Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T05:17:36.821Z",
+      "event": "bb-session",
+      "session": "c739ef4c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-a-salesman-theater-review"
+    },
+    {
+      "t": "2026-04-04T05:17:38.285Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T05:20:59.693Z",
+      "event": "bb-session",
+      "session": "4aba823d",
+      "url": "http://www.nypost.com/p/entertainment/theater/attention_must_be_paid_to_age_kQdt"
+    },
+    {
+      "t": "2026-04-04T05:21:00.964Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }

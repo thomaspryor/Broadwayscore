@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-04T05:15:42.013Z",
-  "processed": 360,
-  "failed": 1453,
-  "successRate": "19.9%",
+  "updatedAt": "2026-04-04T05:25:18.027Z",
+  "processed": 365,
+  "failed": 1458,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 165,
+    "playwright": 167,
     "amp": 6,
-    "browserbase": 73,
+    "browserbase": 77,
     "directCookies": 1,
     "scrapingbee": 67,
     "brightdata": 0,
-    "archiveToday": 150,
-    "archive": 102
+    "archiveToday": 154,
+    "archive": 103
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-04-04T01:42:56.851Z",
-      "event": "bb-session",
-      "session": "a2af5f21",
-      "url": "https://www.amny.com/entertainment/broadway/ambroadway-dead-outlaw-cancels-appea"
-    },
-    {
-      "t": "2026-04-04T01:42:58.064Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-04-04T01:43:47.965Z",
-      "event": "bb-session",
-      "session": "ca502bfa",
-      "url": "https://deadline.com/2024/09/broadway-job-ticket-initiative-1236097441/"
-    },
-    {
-      "t": "2026-04-04T01:43:49.303Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-04T01:44:01.689Z",
-      "event": "bb-session",
-      "session": "50fa8338",
-      "url": "https://variety.com/2024/scene/news/broadway-home-opening-1236025088/"
-    },
-    {
-      "t": "2026-04-04T01:44:02.914Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-04T04:44:43.536Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-04-04T05:15:26.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-04T05:15:49.111Z",
+      "event": "bb-session",
+      "session": "d4983d8b",
+      "url": "https://www.wsj.com/articles/SB10001424052702304356604577339810852417898?gaa_at="
+    },
+    {
+      "t": "2026-04-04T05:15:50.468Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T05:17:36.821Z",
+      "event": "bb-session",
+      "session": "c739ef4c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-a-salesman-theater-review"
+    },
+    {
+      "t": "2026-04-04T05:17:38.285Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T05:20:59.693Z",
+      "event": "bb-session",
+      "session": "4aba823d",
+      "url": "http://www.nypost.com/p/entertainment/theater/attention_must_be_paid_to_age_kQdt"
+    },
+    {
+      "t": "2026-04-04T05:21:00.964Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
     }
