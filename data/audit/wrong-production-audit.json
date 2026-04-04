@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T05:27:56.730Z",
+  "timestamp": "2026-04-04T05:37:23.470Z",
   "stats": {
-    "totalReviews": 29233,
-    "alreadyFlagged": 8226,
+    "totalReviews": 29232,
+    "alreadyFlagged": 8228,
     "dateGuardCatches": 13,
-    "directorMismatch": 923,
-    "tvFilmSignals": 3406,
+    "directorMismatch": 924,
+    "tvFilmSignals": 3408,
     "londonSignals": 1045,
-    "offBroadwaySignals": 984,
+    "offBroadwaySignals": 985,
     "yearMismatch": 71,
-    "noPublishDate": 5652
+    "noPublishDate": 5650
   },
   "findings": [
     {
@@ -12197,6 +12197,20 @@
     },
     {
       "showId": "death-of-a-salesman-2012",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 70,
+      "publishDate": "2012-03-15T20:42:51-04:00",
+      "url": "http://www.nypost.com/p/entertainment/theater/attention_must_be_paid_to_age_kQdtu7z9RSuwwtO9pKNtPO?utm_medium=rss&amp;utm_content=Theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
       "file": "nytimes--jesse-green.json",
       "score": 62,
       "publishDate": "March 15, 2012",
@@ -12253,6 +12267,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "vulture--scott-brown.json",
+      "score": 84,
+      "publishDate": "2012-03-15T20:42:51-04:00",
+      "url": "https://www.vulture.com/2012/03/mike-nichols-new-death-of-a-salesman-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -41354,6 +41382,20 @@
       ]
     },
     {
+      "showId": "seminar-2011",
+      "file": "newyorker--john-lahr.json",
+      "score": 52,
+      "publishDate": "December 5, 2011",
+      "url": "https://www.newyorker.com/culture/culture-desk/the-writing-seminar-from-hell-inspired-by-david-milch",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "shadowlands-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 43,
@@ -60070,7 +60112,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2012-10-13",
       "url": "https://www.hollywoodreporter.com/news/general-news/tracy-letts-shines-whos-afraid-378872/",
       "findings": [
@@ -60126,7 +60168,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "nyt-theater--unknown.json",
-      "score": null,
+      "score": 86,
       "publishDate": "2012-10-13",
       "url": "https://newyorktheater.me/2012/09/22/whos-afraid-of-whos-afraid-of-virginia-woolf-on-broadway/",
       "findings": [
@@ -66922,6 +66964,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "wsj--terry-teachout.json",
+      "score": 87,
+      "publishDate": "November 11, 2011",
+      "url": "http://online.wsj.com/article/SB10001424052970204224604577030051331149034.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
