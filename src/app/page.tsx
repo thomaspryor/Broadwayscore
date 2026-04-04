@@ -117,6 +117,8 @@ export default function HomePage() {
     .map(serializeShow);
 
   const now = new Date();
+  const shortDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
   const closingSoonShowsList = allShows
     .filter(s => {
       if (s.status !== 'open' || !s.closingDate) return false;
@@ -125,7 +127,7 @@ export default function HomePage() {
       return diffDays > 0 && diffDays <= 60;
     })
     .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime())
-    .map(serializeShow);
+    .map(s => ({ ...serializeShow(s), subtitle: `Closes ${shortDate(s.closingDate!)}`, subtitleColor: 'text-amber-400' }));
 
   const jukeboxMusicalsList = allShows
     .filter(s => s.status === 'open' && s.tags?.some(t => t.toLowerCase() === 'jukebox'))
@@ -146,7 +148,7 @@ export default function HomePage() {
   const inPreviewsList = allShows
     .filter(s => s.status === 'previews')
     .sort((a, b) => (new Date(a.openingDate || '2099-01-01').getTime()) - (new Date(b.openingDate || '2099-01-01').getTime()))
-    .map(serializeShow);
+    .map(s => ({ ...serializeShow(s), subtitle: s.openingDate ? `Opens ${shortDate(s.openingDate)}` : undefined, subtitleColor: 'text-gray-400' }));
 
   // Lottery/Rush data (fallback to empty if file missing)
   let lrShows: Record<string, { lottery?: { price?: number }; specialLottery?: { price?: number }; rush?: { price?: number }; digitalRush?: { price?: number } }> = {};
@@ -194,16 +196,17 @@ export default function HomePage() {
   } catch { /* grosses.json missing — shelves will be empty */ }
 
   // Top Box Office This Week — sorted by weekly gross (highest first)
+  const formatGross = (n: number) => n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(1)}M` : `$${Math.round(n / 1_000)}K`;
   const topBoxOfficeList = allShows
     .filter(s => s.status === 'open' && grossesShows[s.slug]?.thisWeek?.gross)
     .sort((a, b) => (grossesShows[b.slug]?.thisWeek?.gross || 0) - (grossesShows[a.slug]?.thisWeek?.gross || 0))
-    .map(serializeShow);
+    .map(s => ({ ...serializeShow(s), subtitle: formatGross(grossesShows[s.slug]!.thisWeek!.gross!), subtitleColor: 'text-gray-400' }));
 
   // Most Sold Out — sorted by capacity % (highest first)
   const mostSoldOutList = allShows
     .filter(s => s.status === 'open' && grossesShows[s.slug]?.thisWeek?.capacity)
     .sort((a, b) => (grossesShows[b.slug]?.thisWeek?.capacity || 0) - (grossesShows[a.slug]?.thisWeek?.capacity || 0))
-    .map(serializeShow);
+    .map(s => ({ ...serializeShow(s), subtitle: `${Math.round(grossesShows[s.slug]!.thisWeek!.capacity!)}% capacity`, subtitleColor: 'text-gray-400' }));
 
   // Best of the West End — open WE shows with scores, sorted by score
   const bestWestEndList = weShows
@@ -218,7 +221,7 @@ export default function HomePage() {
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
     { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },
     { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
-    { title: 'Upcoming', shows: upcomingShows.map(serializeShow), viewAllHref: '/browse/upcoming-broadway-shows' },
+    { title: 'Upcoming', shows: upcomingShows.map(s => ({ ...serializeShow(s), subtitle: s.openingDate ? `Opens ${shortDate(s.openingDate)}` : undefined, subtitleColor: 'text-gray-400' })), viewAllHref: '/browse/upcoming-broadway-shows' },
     { title: 'Best of the West End', shows: bestWestEndList, viewAllHref: '/west-end' },
     { title: 'Tony Winning Shows', shows: tonyWinnersShows, viewAllHref: '/browse/tony-winners-on-broadway' },
     { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
