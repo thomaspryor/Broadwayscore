@@ -68,11 +68,7 @@ const ShowListCard = memo(function ShowListCard({
   const category = show.category ?? 'broadway';
   const isCompact = variant === 'compact';
 
-<<<<<<< Updated upstream
-  // Ticket link for CTA
-=======
   // Ticket link for CTA (sorted, first link = highest priority affiliate)
->>>>>>> Stashed changes
   const sortedLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const primaryTicket = sortedLinks[0];
   const canShowTicket = showTicketLink && primaryTicket && (show.status === 'open' || show.status === 'previews');
@@ -340,11 +336,7 @@ const ShowListCard = memo(function ShowListCard({
     </span>
   ) : null;
 
-<<<<<<< Updated upstream
-  // --- Ticket CTA (desktop only, below card) ---
-=======
   // --- Ticket CTA (shown below card on desktop, hidden on mobile) ---
->>>>>>> Stashed changes
   const ticketCta = canShowTicket ? (
     <div className="hidden sm:flex gap-2 px-4 pb-2 -mt-1">
       <TicketLink

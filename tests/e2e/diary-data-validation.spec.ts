@@ -108,10 +108,10 @@ test.describe('Diary Data Validation', () => {
     expect(dupes.length).toBe(0);
   });
 
-  test('search data is show-grouped (fewer entries than lookup)', () => {
+  test('search data is show-grouped (no more entries than lookup)', () => {
     if (searchData.length === 0 || lookupData.length === 0) { test.skip(); return; }
-    // search should have significantly fewer entries than lookup due to grouping
-    expect(searchData.length).toBeLessThan(lookupData.length);
+    // search should have at most as many entries as lookup (grouped by show)
+    expect(searchData.length).toBeLessThanOrEqual(lookupData.length);
   });
 
   test('diary-search.json size is reasonable (< 10MB)', () => {

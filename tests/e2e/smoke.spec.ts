@@ -89,9 +89,9 @@ test.describe('Post-deploy smoke tests', () => {
   test('west end page renders WE shows', async ({ page }) => {
     await page.goto('/west-end');
 
-    // Page loads
-    const heading = page.locator('h1');
-    await expect(heading).toBeVisible({ timeout: 15000 });
+    // Page loads — h1 is hidden on mobile (hidden sm:block), so check tagline instead
+    const tagline = page.getByText('Every show. Every review. One score.').first();
+    await expect(tagline).toBeVisible({ timeout: 15000 });
 
     // Has show content
     const showLinks = page.locator('a[href^="/show/"]');
