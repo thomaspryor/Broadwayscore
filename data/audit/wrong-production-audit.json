@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-04-04T11:43:08.811Z",
+  "timestamp": "2026-04-04T12:26:32.697Z",
   "stats": {
     "totalReviews": 29327,
     "alreadyFlagged": 8350,
     "dateGuardCatches": 13,
-    "directorMismatch": 926,
-    "tvFilmSignals": 3410,
-    "londonSignals": 1054,
+    "directorMismatch": 928,
+    "tvFilmSignals": 3411,
+    "londonSignals": 1055,
     "offBroadwaySignals": 984,
-    "yearMismatch": 71,
+    "yearMismatch": 72,
     "noPublishDate": 5624
   },
   "findings": [
@@ -35146,6 +35146,20 @@
     },
     {
       "showId": "no-mans-land-2013",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 71,
+      "publishDate": "November 24, 2013",
+      "url": "http://www.broadwayworld.com/article/Review-Ambiguity-Abounds-in-WAITING-FOR-GODOT-NO-MANS-LAND-20131124",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "no-mans-land-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
       "publishDate": "November 6, 2013",
@@ -43994,6 +44008,20 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "dc-metro-theater-arts--richard-seff.json",
+      "score": 81,
+      "publishDate": "September 27th, 2015",
+      "url": "http://dcmetrotheaterarts.com/2015/09/27/spring-awakening-at-the-brooks-atkinson-theatre-in-nyc/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 82,
       "publishDate": "September 27, 2015",
@@ -44045,6 +44073,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "file": "huffpost--steven-suskin.json",
+      "score": 67,
+      "publishDate": "September 27th, 2015",
+      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-a-touch-of-spr_b_8205104.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2006 (4x) more than 2015 (2x). 2006 matches production: spring-awakening-2006"
         }
       ]
     },
@@ -65016,6 +65063,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "ew--fabian-brathwiate.json",
+      "score": 71,
+      "publishDate": "October 3, 2022",
+      "url": "https://ew.com/theater/death-of-a-salesman-broadway-revival-review-wendell-pierce/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
