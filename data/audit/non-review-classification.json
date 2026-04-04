@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-04T19:39:29.932Z",
+    "generatedAt": "2026-04-04T20:15:05.971Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 29893,
-      "inReviewsJson": 15837,
+      "totalFiles": 29906,
+      "inReviewsJson": 15862,
       "skippedExcluded": 3,
-      "withFullText": 18,
-      "excerptOnly": 1730,
-      "llmClassified": 17,
+      "withFullText": 48,
+      "excerptOnly": 1727,
+      "llmClassified": 47,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 16,
-      "budgetUsed": 0.0018000000000000006,
-      "llmCalls": 18,
+      "budgetUsed": 0.0048,
+      "llmCalls": 48,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14086
+      "skippedAlreadyClassified": 14084
     },
     "calibration": null
   },
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting a directory or advertisement rather than a review of a specific show like Fences.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of theater-related keywords and links, suggesting a news or directory-type page rather than a review of \"Funny Girl.\"",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there's no evaluative content about it in this excerpt.",
       "currentScore": 88
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and not a review of 'Parade'. It mentions 'America Needs Its Small Banks' and a WSJ subscription.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news item or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer a critical evaluation or opinion on its quality. It sets the stage for an evening of terror but doesn't review the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer a critical evaluation or recommendation. It also includes an interview excerpt, further suggesting it's not solely a review.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production itself. It focuses on the show's concept and the historical context of the songs.",
       "currentScore": 83
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show. It does not contain any evaluative content.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -180,13 +180,43 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion about the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it lacks a judgment or recommendation.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It focuses on the play's themes and background rather than providing a review.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "oliver-west-end-2024/guardian--arifa-akbar.json"
+    "all-my-sons-west-end-2025/theatrecat--libby-purves.json",
+    "broken-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "broken-glass-west-end-2026/theatrecat--libby-purves.json",
+    "consumed-west-end-2026/hampstead-highgate-express--david-winskill.json",
+    "death-of-a-salesman-2012/backstage--erik-haagensen.json",
+    "dracula-west-end-2025/the-jewish-chronicle--john-nathan.json",
+    "dracula-west-end-2025/times-uk--dominic-maxwell.json",
+    "hamilton-west-end-2021/timeout-london--andrzej-lukowski.json",
+    "hamilton-west-end-2021/times-uk--christopher-hart.json",
+    "im-sorry-prime-minister-west-end-2026/theatrecat--libby-purves.json",
+    "into-the-woods-west-end-2025/theatrecat--libby-purves.json",
+    "matilda-the-musical-west-end-2021/the-scotsman--joyce-mcmillan.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--quentin-letts.json",
+    "oh-mary-west-end-2025/theatrecat--libby-purves.json",
+    "oliver-west-end-2024/the-jewish-chronicle--john-nathan.json",
+    "operation-mincemeat-west-end-2024/hampstead-highgate-express--david-winskill.json",
+    "operation-mincemeat-west-end-2024/theatrecat--libby-purves.json",
+    "paddington-the-musical-west-end-2025/theatrecat--libby-purves.json",
+    "starlight-express-west-end-2024/hampstead-highgate-express--bridget-galton.json",
+    "stranger-things-the-first-shadow-west-end-2023/hampstead-highgate-express--bridget-galton.json",
+    "summerfolk-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "summerfolk-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-authenticator-west-end-2026/theatrecat--libby-purves.json",
+    "the-devil-wears-prada-west-end-2024/theatrecat--libby-purves.json",
+    "the-holy-rosenbergs-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "the-holy-rosenbergs-west-end-2026/theatrecat--libby-purves.json",
+    "the-hunger-games-on-stage-west-end-2025/hampstead-highgate-express--bridget-galton.json",
+    "the-hunger-games-on-stage-west-end-2025/the-jewish-chronicle--john-nathan.json",
+    "the-producers-west-end-2025/the-jewish-chronicle--john-nathan.json",
+    "titanique-west-end-2024/theatrecat--libby-purves.json",
+    "wicked-west-end-2021/times-uk--clifford-bishop.json"
   ],
   "perShowSummary": []
 }

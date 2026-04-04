@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-04T19:44:04.378Z",
+  "timestamp": "2026-04-04T20:19:37.710Z",
   "stats": {
-    "totalReviews": 29400,
-    "alreadyFlagged": 8317,
+    "totalReviews": 29414,
+    "alreadyFlagged": 8336,
     "dateGuardCatches": 13,
     "directorMismatch": 938,
-    "tvFilmSignals": 3429,
-    "londonSignals": 1061,
+    "tvFilmSignals": 3424,
+    "londonSignals": 1060,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
     "noPublishDate": 5625
@@ -24757,7 +24757,7 @@
       "file": "i-paper--fiona-mountford.json",
       "score": 83,
       "publishDate": "2025-12-12",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOoqMmrp6-73Caq_84s6fdiMnpO2APkbFZ9NbXRTwqTslXDutQcsh",
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28899,19 +28899,6 @@
       ]
     },
     {
-      "showId": "les-miserables-west-end-2021",
-      "file": "whatsonstage--alex-wood.json",
-      "publishDate": "2020-01-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
       "showId": "lestat-2006",
       "file": "variety--charles-isherwood.json",
       "score": 25,
@@ -30464,6 +30451,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "i-paper--fiona-mountford.json",
+      "score": null,
+      "publishDate": "1999-04-06",
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -41674,22 +41675,7 @@
     },
     {
       "showId": "shadowlands-west-end-2026",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 78,
-      "publishDate": "2026-02-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "shadowlands-west-end-2026",
-      "file": "timeout--paul-raven.json",
-      "score": 68,
+      "file": "telegraph--unknown.json",
       "publishDate": "2026-02-15",
       "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
       "findings": [
@@ -41702,6 +41688,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 78,
+      "publishDate": "2026-02-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -45060,7 +45060,7 @@
       "file": "whatsonstage--sarah-crompton.json",
       "score": 77,
       "publishDate": "2023-12-14",
-      "url": "https://www.whatsonstage.com/news/did-stranger-things-the-first-shadow-put-the-super-in-supernatural_1558706/",
+      "url": "https://www.whatsonstage.com/news/the-land-of-the-living-with-juliet-stevenson-at-the-national-theatre-review_1695391/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51553,7 +51553,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 48,
       "publishDate": "2025-11-12",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tv/article-15285901/PATRICK-MARMION-Hunger-Games-Troubadour-Canary-Wharf-Theatre-blockbusters.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -51735,7 +51735,7 @@
       "file": "whatsonstage--alex-wood.json",
       "score": 72,
       "publishDate": "2025-11-12",
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -52505,6 +52505,7 @@
     {
       "showId": "the-lion-king-west-end-2021",
       "file": "daily-mail--michael-coveney.json",
+      "score": 86,
       "publishDate": "1999-10-22",
       "url": null,
       "findings": [
@@ -52512,19 +52513,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "financialtimes--sarahhemming.json",
-      "publishDate": "1999-10-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -52653,6 +52641,7 @@
     {
       "showId": "the-lion-king-west-end-2021",
       "file": "the-express--robert-gore-langton.json",
+      "score": 80,
       "publishDate": "1999-10-20",
       "url": null,
       "findings": [
@@ -52680,6 +52669,7 @@
     {
       "showId": "the-lion-king-west-end-2021",
       "file": "timeout-london--jane-edwardes.json",
+      "score": 76,
       "publishDate": "1999-10-27",
       "url": null,
       "findings": [
@@ -52692,20 +52682,8 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
-      "file": "times-uk--benedict-nightingale.json",
-      "publishDate": "1999-10-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
       "file": "times-uk--johnpeter.json",
+      "score": 94,
       "publishDate": "1999-10-24",
       "url": null,
       "findings": [
@@ -54974,19 +54952,6 @@
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "artsdesk--matt-wolf.json",
-      "publishDate": "2020-12-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "broadwayworld--kat-mokrynski.json",
       "score": 81,
       "publishDate": "2014-09-18",
@@ -54996,32 +54961,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "london-theatre--unknown.json",
-      "publishDate": "2020-12-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": "2020-12-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -63309,7 +63248,7 @@
       "file": "whatsonstage--rachel-agyekum.json",
       "score": null,
       "publishDate": "2021-09-13",
-      "url": "https://www.whatsonstage.com/news/back-to-the-future-releases-the-day-that-changed-musical-theatre-history-west-end-video_54814/",
+      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -66232,7 +66171,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 83,
       "publishDate": "2026-02-25",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/evening-all-afternoon-review-qftb62m62?gaa_at=eafs&gaa_n=AWEtsqeWxTxXfZ6C7Wb19hBoPmEfDhoN0xBdDBd5cbgKQySLE1mVsnb_05As&gaa_ts=69b8b0f0&gaa_sig=6Q4kZmQOf4xyLB1gN_WNsoiStn5KkQCCqdbgmJU0nEf3b2gpaLyxyGxIkJ21Wf3SFbi5PtDhVF8XHiaZz-xbFQ%3D%3D",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/evening-all-afternoon-review-qftb62m62",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -68415,7 +68354,7 @@
       "file": "thestage--tim-bano.json",
       "score": 94,
       "publishDate": "2017-12-21",
-      "url": "https://www.thestage.co.uk/reviews/2017/hamilton-review-victoria-palace-lin-manuel-miranda-theatre-london/",
+      "url": "https://www.thestage.co.uk/reviews/hamilton-review-at-victoria-palace-theatre-london--world-shattering",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -75789,19 +75728,6 @@
     },
     {
       "showId": "shadowlands-west-end-2026",
-      "file": "telegraph--unknown.json",
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/tickets/london/shadowlands/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "shadowlands-west-end-2026",
       "file": "thestage--holly-omahony.json",
       "score": 73,
       "publishDate": "February 13th, 2026",
@@ -78375,6 +78301,19 @@
     },
     {
       "showId": "the-authenticator-west-end-2026",
+      "file": "broadwayworld--team-bww.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/The-Authenticator-335807.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 63,
       "publishDate": "2026-04-02",
@@ -80909,19 +80848,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "independent--paultaylor.json",
-      "publishDate": "1999-10-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
