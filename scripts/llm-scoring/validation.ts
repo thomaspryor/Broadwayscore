@@ -225,8 +225,8 @@ export function runValidation(verbose: boolean = false): AggregatorValidation[] 
   const reviews = loadReviews();
   const llmReviews = loadLLMScoredReviews();
 
-  // Get unique show IDs from LLM reviews
-  const showIds = [...new Set(llmReviews.map(r => r.showId))];
+  // Get unique show IDs from LLM reviews (filter out undefined)
+  const showIds = [...new Set(llmReviews.map(r => r.showId).filter(Boolean))];
 
   if (verbose) {
     console.log(`Shows with LLM scores: ${showIds.length}`);

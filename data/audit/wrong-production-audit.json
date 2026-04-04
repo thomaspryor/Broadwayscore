@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T02:46:08.168Z",
+  "timestamp": "2026-04-04T03:37:50.372Z",
   "stats": {
-    "totalReviews": 29235,
-    "alreadyFlagged": 8216,
+    "totalReviews": 29234,
+    "alreadyFlagged": 8217,
     "dateGuardCatches": 13,
-    "directorMismatch": 919,
-    "tvFilmSignals": 3403,
-    "londonSignals": 1041,
+    "directorMismatch": 920,
+    "tvFilmSignals": 3404,
+    "londonSignals": 1045,
     "offBroadwaySignals": 982,
     "yearMismatch": 69,
-    "noPublishDate": 5656
+    "noPublishDate": 5653
   },
   "findings": [
     {
@@ -5739,6 +5739,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": null,
+      "publishDate": "2021-09-13",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-9987385/PATRICK-MARMION-reviews-Future-stage-show.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -12494,20 +12508,6 @@
       "score": 35,
       "publishDate": "November 17, 2021",
       "url": "https://www.amny.com/entertainment/broadway/review-diana-embodies-the-definition-of-a-why-musical/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "diana-the-musical-2021",
-      "file": "billboard--abbey-white.json",
-      "score": null,
-      "publishDate": "2021-11-17",
-      "url": "https://www.billboard.com/music/music-news/diana-the-musical-closing-broadway-1235008395/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -44662,6 +44662,30 @@
       ]
     },
     {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "2023-12-14",
+      "url": "https://www.whatsonstage.com/news/did-stranger-things-the-first-shadow-put-the-super-in-supernatural_1558706/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "suffs-2024",
       "file": "ap--unknown.json",
       "publishDate": null,
@@ -62673,6 +62697,20 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": null,
+      "publishDate": "2021-09-13",
+      "url": "https://www.whatsonstage.com/news/back-to-the-future-releases-the-day-that-changed-musical-theatre-history-west-end-video_54814/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 80,
       "publishDate": "2021-09-13",
@@ -64719,6 +64757,20 @@
       "score": 81,
       "publishDate": "October 3, 2022",
       "url": "https://www.amny.com/entertainment/broadway/review-death-of-a-salesman-2022/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "dailybeast--tim-teeman.json",
+      "score": 77,
+      "publishDate": "2022-10-09T20:43:26-04:00",
+      "url": "https://www.thedailybeast.com/sharon-d-clarke-shines-in-death-of-a-salesman-on-broadway",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80221,6 +80273,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "file": "metro-uk--tori-brazier.json",
+      "publishDate": "2022-11-25",
+      "url": "https://metro.co.uk/2022/11/25/the-mousetraps-backstage-secrets-as-it-celebrates-70th-anniversary-17818536/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
