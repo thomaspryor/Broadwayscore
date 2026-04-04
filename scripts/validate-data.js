@@ -3544,6 +3544,8 @@ function runValidation() {
   validateAggregatorScoreContamination();
   console.log('');
   validateLastUpdatedFormats();
+  console.log('');
+  validateTodayTixShowtimes(shows);
 
   // Summary
   console.log('');
@@ -3709,6 +3711,67 @@ function validateLotteryRushData(shows) {
 
   if (issues === 0 && missingUrls === 0) {
     ok('No duplicate lottery/rush entries or missing URLs detected');
+  }
+}
+
+function validateTodayTixShowtimes(shows) {
+  console.log('--- TodayTix Showtimes ---');
+  const ttPath = path.join(__dirname, '..', 'data', 'todaytix-showtimes.json');
+  if (!fs.existsSync(ttPath)) {
+    warn('todaytix-showtimes.json does not exist (deep links disabled)');
+    return;
+  }
+
+  let ttData;
+  try {
+    ttData = JSON.parse(fs.readFileSync(ttPath, 'utf8'));
+  } catch (e) {
+    error('todaytix-showtimes.json is not valid JSON');
+    return;
+  }
+
+  if (!ttData.shows || typeof ttData.shows !== 'object') {
+    error('todaytix-showtimes.json missing "shows" object');
+    return;
+  }
+
+  const showCount = Object.keys(ttData.shows).length;
+  const openWithTTId = shows.filter(s => (s.status === 'open' || s.status === 'previews') && s.todaytixId).length;
+
+  // Staleness check
+  if (ttData.lastUpdated) {
+    const age = (Date.now() - new Date(ttData.lastUpdated).getTime()) / (1000 * 60 * 60);
+    if (age > 48) {
+      warn(`todaytix-showtimes.json is ${Math.round(age)}h old (last updated: ${ttData.lastUpdated})`);
+    }
+  }
+
+  // Coverage check
+  if (showCount === 0) {
+    warn('todaytix-showtimes.json has 0 shows');
+  } else if (showCount < openWithTTId * 0.5) {
+    warn(`todaytix-showtimes.json has ${showCount} shows but ${openWithTTId} open shows have todaytixId (< 50% coverage)`);
+  }
+
+  // Structural check: all showtime IDs must be positive integers
+  let badIds = 0;
+  for (const [showId, entry] of Object.entries(ttData.shows)) {
+    if (!entry.todaytixId || typeof entry.todaytixId !== 'number') {
+      error(`todaytix-showtimes.json "${showId}": missing or invalid todaytixId`);
+      badIds++;
+    }
+    for (const [date, slots] of Object.entries(entry.showtimes || {})) {
+      for (const [slot, id] of Object.entries(slots)) {
+        if (typeof id !== 'number' || id <= 0) {
+          error(`todaytix-showtimes.json "${showId}" ${date}.${slot}: invalid showtime ID ${id}`);
+          badIds++;
+        }
+      }
+    }
+  }
+
+  if (badIds === 0) {
+    ok(`${showCount} shows with valid showtime IDs (${openWithTTId} eligible)`);
   }
 }
 

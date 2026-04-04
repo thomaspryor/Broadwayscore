@@ -120,6 +120,13 @@ async function main() {
 
   console.log(`\nFetched showtimes for ${fetched}/${toProcess.length} shows`);
 
+  // Safety guard: abort if we fetched dramatically fewer shows than expected
+  // (prevents silent data loss from API outage)
+  if (LIMIT === Infinity && fetched < toProcess.length * 0.5) {
+    console.error(`ERROR: Only fetched ${fetched}/${toProcess.length} shows (< 50%). TodayTix API may be down. Aborting to preserve existing data.`);
+    process.exit(1);
+  }
+
   if (DRY_RUN) {
     console.log('\n[DRY RUN] Would write to', OUTPUT_PATH);
     console.log('Sample:', JSON.stringify(Object.entries(result.shows).slice(0, 2), null, 2));
@@ -129,15 +136,34 @@ async function main() {
   }
 
   // Generate schedule entries for shows not already covered by bwayrush
-  generateSchedules(scheduleData);
+  // Also clean up closed shows from TodayTix-sourced schedules
+  const openShowIds = new Set(openShows.map(s => s.id));
+  generateSchedules(scheduleData, openShowIds);
 }
 
 /**
  * Build show-schedules.json entries from TodayTix data.
  * Only adds shows NOT already in the file (bwayrush data takes priority).
+ * Also removes TodayTix-sourced shows that are no longer open.
  */
-function generateSchedules(scheduleData) {
+function generateSchedules(scheduleData, openShowIds) {
   const schedules = JSON.parse(fs.readFileSync(SCHEDULES_PATH, 'utf8'));
+
+  // Clean up closed shows from TodayTix-sourced schedules
+  // (bwayrush shows are managed by the bwayrush scraper, don't touch them)
+  const bwayrushShows = new Set(Object.keys(scheduleData).length === 0 ? [] :
+    Object.keys(schedules.shows).filter(id => !scheduleData[id] && schedules.shows[id]));
+  let removed = 0;
+  for (const showId of Object.keys(schedules.shows)) {
+    // Skip bwayrush-sourced shows (they were in schedules before TodayTix)
+    if (!showId.includes('west-end') && !showId.includes('off-broadway') && !showId.includes('off-west-end')) continue;
+    if (!openShowIds.has(showId)) {
+      delete schedules.shows[showId];
+      removed++;
+    }
+  }
+  if (removed > 0) console.log(`Schedules: removed ${removed} closed WE/OB shows`);
+
   const existingCount = Object.keys(schedules.shows).length;
   let added = 0;
 
