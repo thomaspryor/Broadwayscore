@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-04T04:16:39.746Z",
+    "generatedAt": "2026-04-04T05:13:21.870Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 29663,
-      "inReviewsJson": 15795,
+      "inReviewsJson": 15793,
       "skippedExcluded": 5,
-      "withFullText": 31,
-      "excerptOnly": 1769,
-      "llmClassified": 30,
+      "withFullText": 20,
+      "excerptOnly": 1767,
+      "llmClassified": 19,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
-      "uncertainCases": 17,
-      "budgetUsed": 0.0030999999999999986,
-      "llmCalls": 31,
+      "nonReviewsFound": 0,
+      "uncertainCases": 16,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 13990
+      "skippedAlreadyClassified": 14001
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "the-gin-game-2015/nytg--megan-lohne.json",
-      "showId": "the-gin-game-2015",
-      "outlet": "New York Theatre Guide",
-      "outletId": "nytg",
-      "contentType": "feature",
-      "confidence": "high",
-      "reasoning": "This article is about jewelry stores in New York, and the truncated portion discusses the musical \"Finding Neverland\", not \"The Gin Game\". It does not contain any evaluative statements about \"The Gin Game\".",
-      "currentScore": 85
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -51,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -71,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It sets the stage for the show without providing a review.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London and awards, but it does not offer a critical evaluation of the production itself. It sets the stage for the show without providing a review.",
       "currentScore": 81
     },
     {
@@ -91,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. While 'Liberation' is mentioned, there is no evaluative content about the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -121,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and contains elements of a news website, such as subscription prompts and time stamps. Without the full text, it's difficult to determine the exact content type, but it does not appear to be a review.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -131,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
       "currentScore": 80
     },
     {
@@ -151,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
       "currentScore": 83
     },
     {
@@ -165,23 +154,13 @@
       "currentScore": 42
     },
     {
-      "file": "the-gin-game-2015/american-theater-web--andy-propst.json",
-      "showId": "the-gin-game-2015",
-      "outlet": "American Theater Web",
-      "outletId": "american-theater-web",
-      "contentType": "feature",
-      "confidence": "low",
-      "reasoning": "This article appears to be a general discussion about acting and theater, not a review of \"The Gin Game.\"",
-      "currentScore": 81
-    },
-    {
       "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
       "showId": "the-glass-menagerie-2017",
       "outlet": "The Front Row Center",
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article provides production details and cast information, resembling a news announcement or listing rather than a review with critical evaluation.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -201,30 +180,15 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it does not provide a review or recommendation.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it lacks a clear verdict or assessment of its artistic merit.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "spring-awakening-2015/about-entertainment--chris-caggiano.json",
-    "spring-awakening-2015/blogcritics--jon-sobel.json",
-    "spring-awakening-2015/cititour--brian-scott-lipton.json",
-    "spring-awakening-2015/financialtimes--brendan-lemon.json",
-    "spring-awakening-2015/newsday--linda-winer.json",
-    "spring-awakening-2015/reflections-in-the-light--lauren-yarger.json",
-    "spring-awakening-2015/stagebuddy--jose-solis.json",
-    "spring-awakening-2015/stagezine--scott-harrah.json",
-    "spring-awakening-2015/the-three-tomatoes--valerie-samaldone.json",
-    "spring-awakening-2015/theatermania--zachary-stewart.json",
-    "spring-awakening-2015/towleroad--naveen-kumar.json",
-    "the-gin-game-2015/huffpost--david-finkle.json"
+    "spring-awakening-2015/broadstreetreview--judy-weightman.json",
+    "spring-awakening-2015/broadway-blog--matthew-wexler.json",
+    "the-price-2017/nyt-theater--unknown.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "the-gin-game-2015",
-      "currentCount": 38,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }

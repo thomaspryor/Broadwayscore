@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-04T04:21:16.495Z",
+    "lastUpdated": "2026-04-04T05:18:30.527Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
     "totalFilesScanned": 29663,
-    "skippedFiles": 8322,
+    "skippedFiles": 8321,
     "totalCritics": 1475,
     "registryCritics": 503,
-    "flaggedReviews": 36
+    "flaggedReviews": 35
   },
   "flaggedReviews": [
     {
@@ -42,17 +42,6 @@
       "primaryOutlet": "latimes",
       "primaryShare": 98,
       "totalReviews": 132
-    },
-    {
-      "critic": "Robert Feldberg",
-      "criticSlug": "robert-feldberg",
-      "outlet": "njcom",
-      "showId": "guys-and-dolls-2009",
-      "file": "njcom--robert-feldberg.json",
-      "outletShare": 1,
-      "primaryOutlet": "northjerseycom",
-      "primaryShare": 99,
-      "totalReviews": 182
     },
     {
       "critic": "Leah Greenblatt",
@@ -494,6 +483,16 @@
         "journaltimes"
       ],
       "totalReviews": 127
+    },
+    {
+      "critic": "Robert Feldberg",
+      "slug": "robert-feldberg",
+      "outlets": [
+        "northjerseycom",
+        "njcom",
+        "usatoday"
+      ],
+      "totalReviews": 183
     },
     {
       "critic": "Elisabeth Vincentelli",
