@@ -357,7 +357,9 @@
     "the-lyons-2012/theatermania--unknown.json",
     "the-lyons-2012/wsj--terry-teachout.json",
     "clybourne-park-2012/theatermania--unknown.json",
-    "clybourne-park-2012/stageandcinema--unknown.json"
+    "clybourne-park-2012/stageandcinema--unknown.json",
+    "evita-2012/ap--mark-kennedy.json",
+    "once-2012/ew--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1804,7 +1806,15 @@
     "clybourne-park-2012/new-jersey-newsroom--michael-sommers.json",
     "clybourne-park-2012/times-uk--clive-davis.json",
     "peter-and-the-starcatcher-2012/new-jersey-newsroom--michael-sommers.json",
-    "magicbird-2012/new-jersey-newsroom--michael-sommers.json"
+    "magicbird-2012/new-jersey-newsroom--michael-sommers.json",
+    "magicbird-2012/backstage--suzy-evans.json",
+    "evita-2012/variety--marilyn-stasio.json",
+    "end-of-the-rainbow-2012/variety--marilyn-stasio.json",
+    "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
+    "end-of-the-rainbow-2012/backstage--david-sheward.json",
+    "newsies-the-musical-2012/new-jersey-newsroom--michael-sommers.json",
+    "jesus-christ-superstar-2012/backstage--david-sheward.json",
+    "once-2012/nypost--elisabeth-vincentelli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1972,7 +1982,8 @@
       "jitney-2017/usatoday--robert-feldberg.json",
       "whos-afraid-of-virginia-woolf-2012/nyt-theater--unknown.json",
       "the-lyons-2012/theatermania--unknown.json",
-      "clybourne-park-2012/theatermania--unknown.json"
+      "clybourne-park-2012/theatermania--unknown.json",
+      "once-2012/ew--unknown.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -2054,7 +2065,8 @@
       "data/review-texts/a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
       "a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2012/hollywood-reporter--unknown.json",
-      "whos-afraid-of-virginia-woolf-2012/hollywood-reporter--unknown.json"
+      "whos-afraid-of-virginia-woolf-2012/hollywood-reporter--unknown.json",
+      "data/review-texts/once-2012/nypost--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "jitney-2017/usatoday--unknown.json"
@@ -2382,11 +2394,12 @@
       "spring-awakening-2015/broadstreetreview--judy-weightman.json",
       "spring-awakening-2015/broadway-blog--matthew-wexler.json",
       "the-lyons-2012/wsj--terry-teachout.json",
-      "clybourne-park-2012/stageandcinema--unknown.json"
+      "clybourne-park-2012/stageandcinema--unknown.json",
+      "evita-2012/ap--mark-kennedy.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "magicbird-2012/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "once-2012/nypost--elisabeth-vincentelli.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -3036,6 +3049,17 @@
       "t": "2026-04-04T05:09:34.335Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T05:15:24.994Z",
+      "event": "bb-session",
+      "session": "105e9f79",
+      "url": "http://www.nypost.com/p/entertainment/theater/it_dublin_your_pleasure_vL439sUtKF"
+    },
+    {
+      "t": "2026-04-04T05:15:26.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

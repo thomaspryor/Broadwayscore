@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-04T05:14:31.428Z",
-  "processed": 358,
-  "failed": 1445,
+  "updatedAt": "2026-04-04T05:15:42.013Z",
+  "processed": 360,
+  "failed": 1453,
   "successRate": "19.9%",
   "tierBreakdown": {
-    "playwright": 164,
+    "playwright": 165,
     "amp": 6,
-    "browserbase": 72,
+    "browserbase": 73,
     "directCookies": 1,
     "scrapingbee": 67,
     "brightdata": 0,
     "archiveToday": 150,
-    "archive": 101
+    "archive": 102
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-04-04T01:38:22.918Z",
-      "event": "bb-session",
-      "session": "fcd0e853",
-      "url": "https://www.wsj.com/articles/art-review-james-cordens-comic-master-class-on-broa"
-    },
-    {
-      "t": "2026-04-04T01:38:24.436Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-04T01:42:56.851Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-04T05:09:34.335Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T05:15:24.994Z",
+      "event": "bb-session",
+      "session": "105e9f79",
+      "url": "http://www.nypost.com/p/entertainment/theater/it_dublin_your_pleasure_vL439sUtKF"
+    },
+    {
+      "t": "2026-04-04T05:15:26.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
