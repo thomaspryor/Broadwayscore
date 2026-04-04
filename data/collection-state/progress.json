@@ -372,7 +372,8 @@
     "godspell-2011/wsj--terry-teachout.json",
     "the-normal-heart-2011/ap--mark-kennedy.json",
     "the-house-of-blue-leaves-2011/hollywood-reporter--unknown.json",
-    "the-house-of-blue-leaves-2011/nytimes--unknown.json"
+    "the-house-of-blue-leaves-2011/nytimes--unknown.json",
+    "jerusalem-2011/independent--alice-saville.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1874,7 +1875,16 @@
     "the-house-of-blue-leaves-2011/nydailynews--joe-dziemianowicz.json",
     "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
     "the-house-of-blue-leaves-2011/new-jersey-newsroom--michael-sommers.json",
-    "born-yesterday-2011/newsday--unknown.json"
+    "born-yesterday-2011/newsday--unknown.json",
+    "born-yesterday-2011/nydailynews--joe-dziemianowicz.json",
+    "born-yesterday-2011/wsj--unknown.json",
+    "born-yesterday-2011/ap--mark-kennedy.json",
+    "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json",
+    "jerusalem-2011/wsj--unknown.json",
+    "jerusalem-2011/telegraph--dominic-cavendish.json",
+    "jerusalem-2011/backstage--erik-haagensen.json",
+    "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
+    "sister-act-2011/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2046,7 +2056,8 @@
       "once-2012/ew--unknown.json",
       "once-2012/theatermania--unknown.json",
       "once-2012/artsfuse--unknown.json",
-      "the-normal-heart-2011/ap--mark-kennedy.json"
+      "the-normal-heart-2011/ap--mark-kennedy.json",
+      "jerusalem-2011/independent--alice-saville.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -2373,7 +2384,10 @@
       "data/review-texts/death-of-a-salesman-2012/forbes--roger-friedman.json",
       "data/review-texts/death-of-a-salesman-2012/talkinbroadway--unknown.json",
       "data/review-texts/follies-2011/wsj--unknown.json",
-      "data/review-texts/follies-2011/ap--mark-kennedy.json"
+      "data/review-texts/follies-2011/ap--mark-kennedy.json",
+      "data/review-texts/born-yesterday-2011/wsj--unknown.json",
+      "data/review-texts/born-yesterday-2011/ap--mark-kennedy.json",
+      "data/review-texts/jerusalem-2011/wsj--unknown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2484,7 +2498,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "born-yesterday-2011/newsday--unknown.json",
+  "lastProcessed": "sister-act-2011/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -3244,6 +3258,28 @@
       "t": "2026-04-04T05:36:06.801Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-04T05:37:28.600Z",
+      "event": "bb-session",
+      "session": "cd5644e9",
+      "url": "https://www.wsj.com/articles/SB10001424052748704559904576230590370976156?gaa_at="
+    },
+    {
+      "t": "2026-04-04T05:37:29.920Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T05:39:53.033Z",
+      "event": "bb-session",
+      "session": "d9ae06e2",
+      "url": "https://www.wsj.com/articles/SB10001424052702304520804576345833761027232"
+    },
+    {
+      "t": "2026-04-04T05:39:54.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
