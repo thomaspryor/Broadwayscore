@@ -1,0 +1,39 @@
+name: Fetch Theatr Token
+on:
+  workflow_dispatch:
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Refresh and save token
+        env:
+          THEATR_REFRESH_TOKEN: ${{ secrets.THEATR_REFRESH_TOKEN }}
+        run: |
+          node -e "
+          const https = require('https');
+          const fs = require('fs');
+          const body = JSON.stringify({ refreshToken: process.env.THEATR_REFRESH_TOKEN });
+          const req = https.request({
+            hostname: 'appapi.theatr-app.com', path: '/v1/auth/access-tokens', method: 'POST',
+            headers: { 'content-type': 'application/json', 'user-agent': 'Theatr/184 CFNetwork/3860.400.51 Darwin/25.3.0', 'content-length': Buffer.byteLength(body) }
+          }, res => {
+            let d = '';
+            res.on('data', c => d += c);
+            res.on('end', () => {
+              const data = JSON.parse(d);
+              if (!data.success) { console.log('FAILED:', data.message); process.exit(1); }
+              fs.writeFileSync('theatr-token.txt', data.content.refreshToken);
+              console.log('Token saved');
+            });
+          });
+          req.write(body); req.end();
+          "
+      - uses: actions/upload-artifact@v4
+        with:
+          name: theatr-token
+          path: theatr-token.txt
+          retention-days: 1
