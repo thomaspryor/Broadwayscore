@@ -131,6 +131,28 @@ export const COMPARISON_PAIRS: [string, string][] = [
   ['the-lion-king', 'beetlejuice-2019'],
   ['aladdin', 'beetlejuice-2019'],
   ['aladdin', 'mean-girls-2018'],
+
+  // === 2025-2026 SEASON: NEW SHOWS ===
+  ['operation-mincemeat', 'six'],
+  ['operation-mincemeat', 'hadestown'],
+  ['buena-vista-social-club', 'moulin-rouge'],
+  ['buena-vista-social-club', 'hadestown'],
+  ['ragtime', 'hamilton'],
+  ['ragtime', 'hadestown'],
+  ['chess', 'six'],
+  ['chess', 'hamilton'],
+  ['two-strangers', 'maybe-happy-ending'],
+  ['schmigadoon', 'six'],
+  ['schmigadoon', 'and-juliet'],
+  ['titanique', 'six'],
+  ['titanique', 'and-juliet'],
+  ['cats-the-jellicle-ball', 'the-lion-king'],
+  ['cats-the-jellicle-ball', 'six'],
+  ['beaches', 'moulin-rouge'],
+  ['the-rocky-horror-show', 'beetlejuice-2019'],
+  ['the-lost-boys', 'death-becomes-her'],
+  ['death-of-a-salesman', 'the-great-gatsby'],
+  ['giant', 'the-outsiders'],
 ];
 
 // Generate all comparison slugs for static generation
