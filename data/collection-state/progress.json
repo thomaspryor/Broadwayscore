@@ -2,7 +2,9 @@
   "processed": [
     "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
     "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
-    "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json"
+    "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
+    "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -21,20 +23,29 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
     "hamilton-west-end-2021/times-uk--clive-davis.json",
-    "the-book-of-mormon-west-end-2024/thestage--unknown.json"
+    "the-book-of-mormon-west-end-2024/thestage--unknown.json",
+    "the-book-of-mormon-west-end-2024/whatsonstage--rachel-agyekum.json",
+    "the-lion-king-west-end-2021/thestage--unknown.json",
+    "the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json"
+      "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json"
+      "data/review-texts/back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
+      "data/review-texts/the-book-of-mormon-west-end-2024/whatsonstage--rachel-agyekum.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -42,6 +53,18 @@
     ]
   },
   "startTime": "2026-04-04T09:07:31.919Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "high-noon-west-end-2025/times-uk--clive-davis.json",
+  "log": [
+    {
+      "t": "2026-04-04T09:11:50.527Z",
+      "event": "bb-session",
+      "session": "bfd55b51",
+      "url": "https://artsbeat.blogs.nytimes.com/2011/11/25/no-ending-spoiled-or-otherwise-in-"
+    },
+    {
+      "t": "2026-04-04T09:11:51.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
