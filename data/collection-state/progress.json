@@ -1664,7 +1664,17 @@
     "junk-2017/theater-news-online--david-cote.json",
     "prince-of-broadway-2017/theater-news-online--david-cote.json",
     "the-terms-of-my-surrender-2017/theater-news-online--david-cote.json",
-    "marvins-room-2017/thewrap--thom-geier.json"
+    "marvins-room-2017/thewrap--thom-geier.json",
+    "marvins-room-2017/wsj--terry-teachout.json",
+    "marvins-room-2017/stageandcinema--dmitry-zvonkov.json",
+    "marvins-room-2017/theater-life--paulanne-simmons.json",
+    "marvins-room-2017/thestage--nicole-serratore.json",
+    "1984-2017/chicagotribune--chris-jones-bway.json",
+    "a-dolls-house-part-2-2017/out-magazine--michael-musto.json",
+    "bandstand-2017/theater-news-online--brian-scott-lipton.json",
+    "bandstand-2017/li-herald--elyse-trevers.json",
+    "six-degrees-of-separation-2017/bobs-theater-blog--robert-sholiton.json",
+    "charlie-and-the-chocolate-factory-2017/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2117,7 +2127,8 @@
       "data/review-texts/the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
       "data/review-texts/gutenberg-2023/billboard--ashley-iasimone.json",
       "data/review-texts/head-over-heels-2018/off-script-with-dan-dwyer--dan-dwyer.json",
-      "data/review-texts/the-children-2017/chicagotribune--chris-jones-bway.json"
+      "data/review-texts/the-children-2017/chicagotribune--chris-jones-bway.json",
+      "data/review-texts/charlie-and-the-chocolate-factory-2017/wsj--unknown.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -2219,7 +2230,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "marvins-room-2017/thewrap--thom-geier.json",
+  "lastProcessed": "charlie-and-the-chocolate-factory-2017/wsj--unknown.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2803,6 +2814,17 @@
       "t": "2026-04-04T01:44:02.914Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-04T04:44:43.536Z",
+      "event": "bb-session",
+      "session": "446690dc",
+      "url": "https://www.wsj.com/articles/charlie-and-the-chocolate-factory-review-empty-calo"
+    },
+    {
+      "t": "2026-04-04T04:44:44.822Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
