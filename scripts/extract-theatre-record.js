@@ -116,7 +116,9 @@ function parsePdfReviews(text, showTitle) {
           i++;
         }
 
-        const fullText = textLines.map(l => l.trim()).filter(l => l).join('\n');
+        let fullText = textLines.map(l => l.trim()).filter(l => l).join('\n');
+        // Clean PDF artifacts
+        fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
         if (fullText.length > 50) {
           // Convert outlet name to Title Case
           const outletTitle = outlet.split(/[\s.]+/)
@@ -243,6 +245,9 @@ const TR_OUTLET_MAP = {
   'Mail on Sunday': 'daily-mail',
   'The Sunday Times': 'sunday-times',
   'Sunday Telegraph': 'sunday-telegraph',
+  'The Scotsman': 'the-scotsman',
+  'Hampstead & Highgate Express': 'hampstead-highgate-express',
+  'The Spectator': 'the-spectator-uk',
   'London Box Office': 'london-box-office',
   'BBC News': 'bbc-news',
   'Culture Whisper': 'culture-whisper',
