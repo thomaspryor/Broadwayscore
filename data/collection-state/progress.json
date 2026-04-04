@@ -1,6 +1,9 @@
 {
   "processed": [
-    "the-authenticator-west-end-2026/broadwayworld--team-bww.json"
+    "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
+    "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
+    "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
+    "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json"
   ],
   "failed": [
     "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
@@ -11,11 +14,21 @@
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
     "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
-    "titanique-west-end-2024/times-uk--clive-davis.json"
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "hamilton-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
+      "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -25,10 +38,11 @@
       "data/review-texts/romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json"
     ],
     "archive": [
-      "the-authenticator-west-end-2026/broadwayworld--team-bww.json"
+      "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
+      "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json"
     ]
   },
   "startTime": "2026-04-04T17:34:12.150Z",
-  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
+  "lastProcessed": "hamilton-west-end-2021/times-uk--clive-davis.json",
   "log": []
 }
