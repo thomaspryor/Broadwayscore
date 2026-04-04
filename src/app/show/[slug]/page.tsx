@@ -1032,9 +1032,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           ) : null
         )}
 
-        {/* Showtimes — Broadway only */}
+        {/* Showtimes — all markets (Broadway via bwayrush, WE/OB via TodayTix) */}
         <div id="showtimes" className="scroll-mt-20" />
-        {!isWestEnd && !isOffBroadway && showSchedule &&
+        {showSchedule &&
           (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
           <ShowtimesCard
             schedule={showSchedule}

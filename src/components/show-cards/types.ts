@@ -27,6 +27,7 @@ export interface ShowCardShow {
   audienceCombinedScore: number | null;
   audienceGrade: AudienceGrade | null;
   category?: string; // undefined for legacy Broadway shows — defaults to 'broadway'
+  subtitle?: string; // e.g. "$10 lottery" — shown below title on shelf cards
   // Market-specific optional fields
   isOffWestEnd?: boolean; // West End only
   performances?: number; // Browse only

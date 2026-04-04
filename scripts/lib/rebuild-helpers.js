@@ -377,7 +377,7 @@ function getBestScore(data, opts = {}) {
     'theatreandtonic', 'the-recs', 'broadwayworld',
     // Additional WE star outlets discovered during SERP expansion
     'londontheatre1', 'everything-theatre', 'thereviewshub',
-    'shy-strange-manic', 'express-uk',
+    'shy-strange-manic', 'express-uk', 'theatre-weekly',
   ]);
   const isAggregatorSource = AGGREGATOR_SOURCES.has(data.source);
   const isWestEnd = data._showCategory === 'west-end' || data._showCategory === 'off-west-end';

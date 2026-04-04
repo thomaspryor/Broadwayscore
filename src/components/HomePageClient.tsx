@@ -37,6 +37,7 @@ export interface HomepageShow {
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   category?: string;
+  subtitle?: string;
 }
 
 interface HomePageClientProps {

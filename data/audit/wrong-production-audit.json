@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T04:03:01.456Z",
+  "timestamp": "2026-04-04T06:37:26.140Z",
   "stats": {
-    "totalReviews": 29233,
-    "alreadyFlagged": 8223,
+    "totalReviews": 29229,
+    "alreadyFlagged": 8235,
     "dateGuardCatches": 13,
-    "directorMismatch": 920,
-    "tvFilmSignals": 3404,
+    "directorMismatch": 923,
+    "tvFilmSignals": 3408,
     "londonSignals": 1045,
-    "offBroadwaySignals": 982,
-    "yearMismatch": 69,
-    "noPublishDate": 5652
+    "offBroadwaySignals": 985,
+    "yearMismatch": 71,
+    "noPublishDate": 5650
   },
   "findings": [
     {
@@ -707,6 +707,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 80,
+      "publishDate": "November 19, 2012",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-story-musical-theater-393180",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -12183,6 +12197,20 @@
     },
     {
       "showId": "death-of-a-salesman-2012",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 70,
+      "publishDate": "2012-03-15T20:42:51-04:00",
+      "url": "http://www.nypost.com/p/entertainment/theater/attention_must_be_paid_to_age_kQdtu7z9RSuwwtO9pKNtPO?utm_medium=rss&amp;utm_content=Theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
       "file": "nytimes--jesse-green.json",
       "score": 62,
       "publishDate": "March 15, 2012",
@@ -12239,6 +12267,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "vulture--scott-brown.json",
+      "score": 84,
+      "publishDate": "2012-03-15T20:42:51-04:00",
+      "url": "https://www.vulture.com/2012/03/mike-nichols-new-death-of-a-salesman-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -15908,20 +15950,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "follies-2011",
-      "file": "backstage--erik-haagensen.json",
-      "score": 63,
-      "publishDate": "September 12, 2011",
-      "url": "http://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i9ec87ea310027fdad394a07eda6e83d4",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince and michael bennett\" from follies-1971"
         }
       ]
     },
@@ -29636,6 +29664,20 @@
     },
     {
       "showId": "lucky-guy-2013",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 80,
+      "publishDate": "2013-04-01T20:14:30-04:00",
+      "url": "http://www.nypost.com/p/entertainment/theater/hanks_for_the_memories_v5e6Th8RtEA7WHRO5SOjxK",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "lucky-guy-2013",
       "file": "variety--marilyn-stasio.json",
       "score": 78,
       "publishDate": "April 2, 2013",
@@ -41326,6 +41368,20 @@
       ]
     },
     {
+      "showId": "seminar-2011",
+      "file": "newyorker--john-lahr.json",
+      "score": 52,
+      "publishDate": "December 5, 2011",
+      "url": "https://www.newyorker.com/culture/culture-desk/the-writing-seminar-from-hell-inspired-by-david-milch",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "shadowlands-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 43,
@@ -43824,6 +43880,34 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "about-entertainment--chris-caggiano.json",
+      "score": 79,
+      "publishDate": "2015-09-27",
+      "url": "http://theater.about.com/od/reviewsandrecommendations/fl/Review-Spring-Awakening-Revival-on-Broadway.htm",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": 47,
+      "publishDate": "2015-09-27",
+      "url": "http://broadwayandme.blogspot.com/2015/10/feeling-chilly-about-spring-awakening.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2006 (2x) more than 2015 (0x). 2006 matches production: spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "curtainup--elyse-sommer.json",
       "score": 85,
       "publishDate": "2015-09-27",
@@ -43889,6 +43973,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "file": "stagezine--scott-harrah.json",
+      "score": 67,
+      "publishDate": "2015-09-27",
+      "url": "http://www.stagezine.com/spring-awakening-returns-to-broadway/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2006 (3x) more than 2015 (2x). 2006 matches production: spring-awakening-2006"
         }
       ]
     },
@@ -50998,9 +51096,9 @@
     {
       "showId": "the-house-of-blue-leaves-2011",
       "file": "nytimes--ben-brantley.json",
-      "score": 38,
-      "publishDate": "2011-04-25T20:28:06-04:00",
-      "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html",
+      "score": 45,
+      "publishDate": "April 25, 2011",
+      "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html?adxnnl=1&amp;ref=theater&amp;adxnnlx=1303784480-tY77evBC2AGZ/4XBamyPLg",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -59999,6 +60097,20 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 89,
+      "publishDate": "2012-10-13",
+      "url": "https://www.hollywoodreporter.com/news/general-news/tracy-letts-shines-whos-afraid-378872/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "newsday--linda-winer-bway.json",
       "score": 92,
       "publishDate": "2012-10-15",
@@ -60031,6 +60143,20 @@
       "score": 85,
       "publishDate": "2012-10-16",
       "url": "https://www.newspapers.com/image/575154843/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "nyt-theater--unknown.json",
+      "score": 86,
+      "publishDate": "2012-10-13",
+      "url": "https://newyorktheater.me/2012/09/22/whos-afraid-of-whos-afraid-of-virginia-woolf-on-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -64375,6 +64501,20 @@
     },
     {
       "showId": "clybourne-park-2012",
+      "file": "stageandcinema--thomas-antoinne.json",
+      "score": 41,
+      "publishDate": "2012-04-19",
+      "url": "https://stageandcinema.com/2012/04/20/clybourne-park-walter-kerr/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "clybourne-park-2012",
       "file": "standard--nick-curtis.json",
       "score": 80,
       "publishDate": "March 25th, 2022",
@@ -64384,6 +64524,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "clybourne-park-2012",
+      "file": "theatermania--dan-bacalzo.json",
+      "score": null,
+      "publishDate": "2012-04-19",
+      "url": "https://www.theatermania.com/news/broadway-opening-clybourne-park-at-the-walter-kerr-theatre_55039/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -66796,6 +66950,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "wsj--terry-teachout.json",
+      "score": 87,
+      "publishDate": "November 11, 2011",
+      "url": "http://online.wsj.com/article/SB10001424052970204224604577030051331149034.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
