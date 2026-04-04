@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-04T09:24:10.366Z",
+  "timestamp": "2026-04-04T09:49:38.278Z",
   "stats": {
-    "totalReviews": 29226,
+    "totalReviews": 29227,
     "alreadyFlagged": 8268,
     "dateGuardCatches": 13,
     "directorMismatch": 924,
     "tvFilmSignals": 3409,
-    "londonSignals": 1049,
+    "londonSignals": 1050,
     "offBroadwaySignals": 985,
     "yearMismatch": 71,
     "noPublishDate": 5629
@@ -77866,6 +77866,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "west-end-wilma--unknown.json",
+      "score": 89,
+      "publishDate": "2026-04-02",
+      "url": "https://westendwilma.com/review-the-authenticator-national-theatre-april-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
