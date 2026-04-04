@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-04T21:33:32.044Z",
+  "timestamp": "2026-04-04T21:46:40.945Z",
   "stats": {
-    "totalReviews": 29448,
-    "alreadyFlagged": 8355,
+    "totalReviews": 29442,
+    "alreadyFlagged": 8358,
     "dateGuardCatches": 13,
-    "directorMismatch": 938,
-    "tvFilmSignals": 3423,
-    "londonSignals": 1056,
+    "directorMismatch": 940,
+    "tvFilmSignals": 3427,
+    "londonSignals": 1060,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
-    "noPublishDate": 5639
+    "noPublishDate": 5629
   },
   "findings": [
     {
@@ -13321,6 +13321,20 @@
     },
     {
       "showId": "dracula-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 68,
+      "publishDate": "2026-02-17",
+      "url": "https://www.allthatdazzles.co.uk/post/review-dracula-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
       "file": "artsdesk--rachel-halliburton.json",
       "score": 86,
       "publishDate": "2026-02-18",
@@ -13433,6 +13447,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "telegraph--paul-raven.json",
+      "score": 69,
+      "publishDate": "2026-02-17",
+      "url": "https://www.westendtheatre.com/340316/news/reviews/reviews-of-dracula-starring-cynthia-erivo/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -36134,6 +36167,25 @@
       ]
     },
     {
+      "showId": "oliver-west-end-2024",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": 83,
+      "publishDate": "2024-12-14",
+      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"film review\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "on-a-clear-day-you-can-see-forever-2011",
       "file": "variety--steven-suskin.json",
       "score": null,
@@ -44725,6 +44777,25 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 80,
+      "publishDate": "2023-12-16",
+      "url": "https://www.allthatdazzles.co.uk/post/review-stranger-things-the-first-shadow-phoenix-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "artsdesk--mert-dilek.json",
       "score": 88,
       "publishDate": "2023-12-15",
@@ -44913,6 +44984,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "plays-international--unknown.json",
+      "score": 68,
+      "publishDate": "2023-12-19",
+      "url": "https://playsinternational.org.uk/stranger-things-the-first-shadow-phoenix-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
         }
       ]
     },
@@ -62340,6 +62425,20 @@
       ]
     },
     {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 81,
+      "publishDate": "2025-11-14",
+      "url": "https://www.whatsonstage.com/news/all-my-sons-west-end-review-bryan-cranston-in-an-explosive-production_1703544/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "all-the-way-2014",
       "file": "theatermania--jesse-green.json",
       "score": 83,
@@ -63152,6 +63251,20 @@
       "score": 80,
       "publishDate": "2021-09-28",
       "url": "https://www.londontheatre.co.uk/reviews/back-to-the-future-review-adelphi-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "london-theatre--matt-wolf.json",
+      "score": null,
+      "publishDate": "2021-09-13",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=9979",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73938,9 +74051,9 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
-      "score": 49,
-      "publishDate": "2025-01-15",
-      "url": "https://inews.co.uk/culture/arts/the-other-place-national-theatre-review-3315187?srsltid=AfmBOooGzJseZXWQ2FXnnQfa6C6h06DFbevdDD6uX_K4jyekHkFYrIZa",
+      "score": 64,
+      "publishDate": "2024-12-14",
+      "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
