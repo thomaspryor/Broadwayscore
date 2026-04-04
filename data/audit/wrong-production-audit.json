@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-04T05:37:23.470Z",
+  "timestamp": "2026-04-04T06:30:14.586Z",
   "stats": {
-    "totalReviews": 29232,
-    "alreadyFlagged": 8228,
+    "totalReviews": 29229,
+    "alreadyFlagged": 8235,
     "dateGuardCatches": 13,
-    "directorMismatch": 924,
+    "directorMismatch": 923,
     "tvFilmSignals": 3408,
     "londonSignals": 1045,
     "offBroadwaySignals": 985,
@@ -15950,20 +15950,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "follies-2011",
-      "file": "backstage--erik-haagensen.json",
-      "score": 63,
-      "publishDate": "September 12, 2011",
-      "url": "http://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i9ec87ea310027fdad394a07eda6e83d4",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince and michael bennett\" from follies-1971"
         }
       ]
     },
@@ -51110,9 +51096,9 @@
     {
       "showId": "the-house-of-blue-leaves-2011",
       "file": "nytimes--ben-brantley.json",
-      "score": 38,
-      "publishDate": "2011-04-25T20:28:06-04:00",
-      "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html",
+      "score": 45,
+      "publishDate": "April 25, 2011",
+      "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html?adxnnl=1&amp;ref=theater&amp;adxnnlx=1303784480-tY77evBC2AGZ/4XBamyPLg",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -64516,7 +64502,7 @@
     {
       "showId": "clybourne-park-2012",
       "file": "stageandcinema--thomas-antoinne.json",
-      "score": null,
+      "score": 41,
       "publishDate": "2012-04-19",
       "url": "https://stageandcinema.com/2012/04/20/clybourne-park-walter-kerr/",
       "findings": [
