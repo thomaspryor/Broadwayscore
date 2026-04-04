@@ -141,6 +141,7 @@ function httpJSON(method, url, body, headers) {
 
 function postJSON(url, body, headers) { return httpJSON('POST', url, body, headers); }
 function patchJSON(url, body, headers) { return httpJSON('PATCH', url, body, headers); }
+const delay = (ms) => new Promise(r => setTimeout(r, ms));
 
 /**
  * Sync a subscriber list into Buttondown.
@@ -179,7 +180,6 @@ async function syncButtondownContacts(subscribers, tags, listName, buttondownApi
 
   const subscriberSet = new Set(subscribers.map(e => e.toLowerCase()));
   let created = 0, activated = 0, unsubscribed = 0, errors = 0;
-  const delay = (ms) => new Promise(r => setTimeout(r, ms));
 
   // Upsert active subscribers
   for (const email of subscribers) {

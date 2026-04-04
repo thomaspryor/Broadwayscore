@@ -25,7 +25,7 @@ const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-gu
 // OUTLET NAME (ALL CAPS) → date line → critic name → review text
 // Date formats: "18 May 2021" (post-2019) or "21.12.17" (pre-2019)
 const DATE_LONG = /^\d{1,2}\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{4}$/;
-const DATE_SHORT = /^\d{1,2}\.\d{2}\.\d{2,4}$/;
+const DATE_SHORT = /^\d{1,2}\.\d{1,2}\.\d{2,4}$/;
 const isDateLine = (line) => DATE_LONG.test(line) || DATE_SHORT.test(line);
 
 function parseShortDate(dateStr) {
@@ -241,20 +241,44 @@ function parseRawPdfReviews(text, showTitle) {
 
   // Filter: keep only reviews that are actually ABOUT our show
   // Raw mode extracts every review from the PDF — most are for other shows.
-  // Require: title appears 2+ times as phrase/word AND near theatre context
+  // Multi-column PDFs break words across lines, so full-phrase matching is unreliable.
+  // Strategy: exact phrase match OR significant-word overlap with theatre context.
   const titleEscaped = titleLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const titleRegex = new RegExp(`\\b${titleEscaped}\\b`, 'gi');
+  const significantWords = titleLower.split(/\s+/).filter(w => w.length > 3 && !['the', 'and', 'for', 'from', 'with'].includes(w));
 
   const matched = allReviews.filter(r => {
     const textLower = r.fullText.toLowerCase();
-    const mentions = (textLower.match(titleRegex) || []).length;
-    if (mentions < 2) return false;
+    const exactMentions = (textLower.match(titleRegex) || []).length;
 
-    // Check theatre context near the first mention
-    const firstIdx = textLower.search(titleRegex);
-    const context = textLower.slice(Math.max(0, firstIdx - 150), firstIdx + 300);
-    const hasContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph|review|opening|premiere|perform/i.test(context);
-    return hasContext;
+    // Path 1: 2+ exact phrase mentions (original strict check)
+    if (exactMentions >= 2) {
+      const firstIdx = textLower.search(titleRegex);
+      const context = textLower.slice(Math.max(0, firstIdx - 150), firstIdx + 300);
+      const hasContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph|review|opening|premiere|perform/i.test(context);
+      if (hasContext) return true;
+    }
+
+    // Path 2: For multi-word titles, check significant word overlap
+    // Multi-column PDFs often break "Book of Mormon" across lines
+    if (significantWords.length >= 2) {
+      const wordsFound = significantWords.filter(w => textLower.includes(w));
+      if (wordsFound.length >= Math.ceil(significantWords.length * 0.7) && wordsFound.length >= 2) {
+        // Must also have theatre context somewhere in the text
+        const hasContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph|opening|premiere/i.test(textLower);
+        if (hasContext) return true;
+      }
+    }
+
+    // Path 3: 1 exact mention + strong theatre context (for very long titles)
+    if (exactMentions >= 1 && significantWords.length >= 2) {
+      const firstIdx = textLower.search(titleRegex);
+      const context = textLower.slice(Math.max(0, firstIdx - 100), firstIdx + 200);
+      const strongContext = /musical|play|production|stage|cast|director|opening night|premiere/i.test(context);
+      if (strongContext) return true;
+    }
+
+    return false;
   });
 
   // Convert outlet names to Title Case
@@ -376,13 +400,12 @@ const TR_OUTLET_MAP = {
   'BroadwayWorld': 'broadwayworld',
   'London Theatre': 'london-theatre',
   'LondonTheatre1': 'londontheatre1',
-  'The Reviews Hub': 'reviews-hub',
+  'The Reviews Hub': 'thereviewshub',
   'theatreCat': 'theatrecat',
   'Theatre Weekly': 'theatre-weekly',
   'Musical Theatre Review': 'musical-theatre-review',
   'Everything Theatre': 'everything-theatre',
   'West End Wilma': 'west-end-wilma',
-  'The Spectator': 'spectator',
   'Radio Times': 'radio-times',
   'Metro': 'metro',
   'City A.M.': 'city-am',
@@ -413,6 +436,22 @@ const TR_OUTLET_MAP = {
   'British Theatre Guide': 'british-theatre',
   'Gay Times': 'gay-times',
   'Attitude': 'attitude',
+  'Sunday Express': 'express-uk',
+  'The Sunday Express': 'express-uk',
+  'i news': 'i-paper',
+  'The i Paper': 'i-paper',
+  'i newspaper': 'i-paper',
+  'The Jewish Chronicle': 'the-jewish-chronicle',
+  'Jewish Chronicle': 'the-jewish-chronicle',
+  'The Herald': 'the-herald',
+  'Herald': 'herald',
+  'The List': 'the-list',
+  "What's On": 'whatsonstage',
+  "What'son": 'whatsonstage',
+  "What's On Stage": 'whatsonstage',
+  'Sunday Times': 'sunday-times',
+  'Tribune': 'tribune',
+  'The Mirror': 'mirror',
 };
 
 // Load data
@@ -544,7 +583,11 @@ function titlesMatch(a, b) {
     .replace(/\s*[-–—:]\s*the\s+(musical|play|show|revue|opera|concert|experience)$/i, '')
     .replace(/\s+the\s+(musical|play|show|revue|opera|concert|experience)$/i, '')
     .trim();
-  return stripSuffix(na) === stripSuffix(nb) || na.startsWith(nb) || nb.startsWith(na);
+  if (stripSuffix(na) === stripSuffix(nb)) return true;
+  // Allow prefix match only if the shorter is ≥60% of the longer
+  // (catches "Matilda" vs "Matilda - The Musical" but not "Wicked" vs "Wicked Witches")
+  const [shorter, longer] = na.length <= nb.length ? [na, nb] : [nb, na];
+  return longer.startsWith(shorter) && shorter.length >= longer.length * 0.6;
 }
 
 // Scrape TR /listings/current-west-end or /listings/current-london
