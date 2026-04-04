@@ -173,14 +173,25 @@ function generateSchedules(scheduleData) {
     added++;
   }
 
+  // Update currentMonday to keep staleness check accurate
+  const now = new Date();
+  const dow = now.getDay();
+  const mondayOffset = dow === 0 ? -6 : 1 - dow;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + mondayOffset);
+  const currentMonday = monday.getFullYear().toString() +
+    String(monday.getMonth() + 1).padStart(2, '0') +
+    String(monday.getDate()).padStart(2, '0');
+  schedules.currentMonday = currentMonday;
+
+  schedules.lastUpdated = new Date().toISOString();
+  if (!DRY_RUN) {
+    fs.writeFileSync(SCHEDULES_PATH, JSON.stringify(schedules, null, 2) + '\n');
+  }
   if (added > 0) {
-    schedules.lastUpdated = new Date().toISOString();
-    if (!DRY_RUN) {
-      fs.writeFileSync(SCHEDULES_PATH, JSON.stringify(schedules, null, 2) + '\n');
-    }
     console.log(`Schedules: added ${added} shows (${existingCount} bwayrush + ${added} TodayTix = ${existingCount + added} total)`);
   } else {
-    console.log('Schedules: no new shows to add');
+    console.log(`Schedules: currentMonday updated to ${currentMonday}, no new shows`);
   }
 }
 

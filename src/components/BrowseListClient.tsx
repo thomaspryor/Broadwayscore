@@ -23,6 +23,7 @@ export interface BrowseShow {
   performances?: number;
   reviewYearNote?: string;
   category?: string;
+  ticketLinks?: { platform: string; url: string; priceFrom?: number | null }[];
 }
 
 type ScoreMode = 'critics' | 'audience';
