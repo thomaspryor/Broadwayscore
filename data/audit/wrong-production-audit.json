@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-04T00:26:48.955Z",
+  "timestamp": "2026-04-04T01:22:31.120Z",
   "stats": {
     "totalReviews": 29236,
-    "alreadyFlagged": 8211,
+    "alreadyFlagged": 8208,
     "dateGuardCatches": 13,
     "directorMismatch": 901,
-    "tvFilmSignals": 3387,
+    "tvFilmSignals": 3388,
     "londonSignals": 1030,
     "offBroadwaySignals": 977,
     "yearMismatch": 66,
@@ -2111,6 +2111,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "file": "telegraph--neil-mccormick.json",
+      "score": 80,
+      "publishDate": "2022-05-27",
+      "url": "https://www.telegraph.co.uk/music/what-to-listen-to/abba-voyage-review-mind-blowing-celebration-greatest-pop-music/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
