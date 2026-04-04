@@ -3,6 +3,7 @@
 
 import type { ShowSchedule } from './data-types';
 import scheduleData from '../../data/show-schedules.json';
+import showtimeIdsData from '../../data/todaytix-showtimes.json';
 
 interface ScheduleFile {
   lastUpdated: string;
@@ -32,5 +33,27 @@ export function getScheduleCurrentMonday(): string {
  */
 export function getScheduleLastUpdated(): string {
   return schedules.lastUpdated;
+}
+
+// ─── TodayTix showtime IDs (for deep links) ─────────────
+
+export interface TodayTixShowtimeData {
+  todaytixId: number;
+  showtimes: Record<string, { m?: number; e?: number }>;
+}
+
+interface ShowtimeIdsFile {
+  lastUpdated: string;
+  shows: Record<string, TodayTixShowtimeData>;
+}
+
+const showtimeIds = showtimeIdsData as unknown as ShowtimeIdsFile;
+
+/**
+ * Get TodayTix showtime IDs for a specific show.
+ * Called in the server component (page.tsx) and passed as a prop to ShowtimesCard.
+ */
+export function getShowShowtimeIds(showId: string): TodayTixShowtimeData | undefined {
+  return showtimeIds.shows[showId];
 }
 

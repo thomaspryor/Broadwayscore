@@ -367,9 +367,17 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     </div>
                   </div>
 
-                  {/* Primary "Get Tickets" CTA — prominent, aligned with show info */}
+                  {/* Critic Consensus or Synopsis fallback */}
+                  {displayText && (
+                    <p className="text-gray-400 text-sm leading-relaxed mt-3">
+                      {displayText}
+                    </p>
+                  )}
+
+                  {/* Ticket links — single row at bottom. "Get Tickets" first, others visible on desktop only */}
                   {show.status === 'open' && ticketLinks.length > 0 && (
-                    <div className="mt-3 flex sm:pl-[160px]">
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {/* Primary CTA — always visible */}
                       <TicketLink
                         showName={show.title}
                         showId={show.id}
@@ -382,92 +390,69 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                         pageType="guide"
                         linkPosition={0}
                         totalLinks={ticketLinks.length}
-                        className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-lg bg-accent-gold hover:bg-accent-gold/80 text-gray-900 text-sm font-bold transition-colors min-h-[44px] shadow-sm shadow-accent-gold/20"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                         </svg>
                         Get Tickets{ticketLinks[0].priceFrom ? ` from $${ticketLinks[0].priceFrom}` : ''}
                       </TicketLink>
+                      {/* Other platforms — desktop only */}
+                      {ticketLinks.slice(1, 4).map((link, i) => (
+                        <TicketLink
+                          key={link.platform}
+                          showName={show.title}
+                          showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
+                          platform={link.platform}
+                          url={link.url}
+                          pageType="guide"
+                          linkPosition={i + 1}
+                          totalLinks={ticketLinks.length}
+                          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                          </svg>
+                          {link.platform}
+                        </TicketLink>
+                      ))}
+                      {show.officialUrl && (
+                        <TicketLink
+                          showName={show.title}
+                          showId={show.id}
+                          showSlug={show.slug}
+                          showStatus={show.status}
+                          showCategory={show.category}
+                          showScore={show.criticScore?.score ?? null}
+                          platform="Official Site"
+                          url={show.officialUrl}
+                          pageType="guide"
+                          totalLinks={(ticketLinks?.length ?? 0) + 1}
+                          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                          Official Site
+                        </TicketLink>
+                      )}
+                      {/* Lottery/Rush — subdued, end of row */}
+                      {lotteryRush && (
+                        <Link
+                          href={`/show/${show.slug}#discount-tickets`}
+                          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs font-medium transition-colors border border-white/5"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                          </svg>
+                          {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                        </Link>
+                      )}
                     </div>
-                  )}
-
-                  {/* Critic Consensus or Synopsis fallback */}
-                  {displayText && (
-                    <p className="text-gray-400 text-sm leading-relaxed mt-3">
-                      {displayText}
-                    </p>
-                  )}
-
-                  {/* Lottery/Rush — always visible (not collapsed) */}
-                  {lotteryRush && show.status !== 'closed' && (
-                    <div className="mt-2 flex">
-                      <Link
-                        href={`/show/${show.slug}#discount-tickets`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-sm font-medium transition-colors border border-white/5 min-h-[44px] sm:min-h-0"
-                      >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                        </svg>
-                        {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
-                      </Link>
-                    </div>
-                  )}
-
-                  {/* Secondary ticket options — collapsed to reduce card height */}
-                  {(show.officialUrl || (ticketLinks.length > 1 && show.status === 'open')) && (
-                    <details className="mt-2 group/tickets">
-                      <summary className="text-gray-500 hover:text-gray-400 text-xs cursor-pointer transition-colors list-none [&::-webkit-details-marker]:hidden inline-flex items-center gap-1">
-                        <svg className="w-3 h-3 transition-transform group-open/tickets:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                        More ticket options
-                      </summary>
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {show.status === 'open' && ticketLinks.slice(1).map((link, i) => (
-                          <TicketLink
-                            key={link.platform}
-                            showName={show.title}
-                            showId={show.id}
-                            showSlug={show.slug}
-                            showStatus={show.status}
-                            showCategory={show.category}
-                            showScore={show.criticScore?.score ?? null}
-                            platform={link.platform}
-                            url={link.url}
-                            pageType="guide"
-                            linkPosition={i + 1}
-                            totalLinks={ticketLinks.length}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
-                          >
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                            </svg>
-                            {link.platform}{link.priceFrom ? ` from $${link.priceFrom}` : ''}
-                          </TicketLink>
-                        ))}
-                        {show.officialUrl && (
-                          <TicketLink
-                            showName={show.title}
-                            showId={show.id}
-                            showSlug={show.slug}
-                            showStatus={show.status}
-                            showCategory={show.category}
-                            showScore={show.criticScore?.score ?? null}
-                            platform="Official Site"
-                            url={show.officialUrl}
-                            pageType="guide"
-                            totalLinks={(ticketLinks?.length ?? 0) + 1}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
-                          >
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                            </svg>
-                            Official Site
-                          </TicketLink>
-                        )}
-                      </div>
-                    </details>
                   )}
                 </div>
               );

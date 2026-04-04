@@ -112,7 +112,7 @@ function urlLooksLikeReview(url, showTitle) {
   const lower = url.toLowerCase();
   // Reject non-article URLs
   if (lower.includes('/tag/') || lower.includes('/author/') || lower.includes('/category/')) return false;
-  if (lower.includes('/search') || lower.includes('/page/')) return false;
+  if (lower.includes('/search') || lower.includes('/page/') || lower.includes('/obituar')) return false;
   if (lower.includes('ticket') && !lower.includes('review')) return false;
 
   // Check if URL contains words from show title
@@ -128,7 +128,12 @@ function urlLooksLikeReview(url, showTitle) {
     return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_])', 'i').test(haystack);
   };
   const matchCount = titleWords.filter(w => wordMatch(lower, w)).length;
-  return matchCount >= Math.ceil(titleWords.length * 0.5);
+  // Short titles (1-3 words) need ALL words to match — prevents "Shaw" in "Becky Shaw"
+  // matching Fiona Shaw, George Bernard Shaw, etc. Longer titles can afford partial matches.
+  const minMatch = titleWords.length <= 3
+    ? titleWords.length
+    : Math.ceil(titleWords.length * 0.5);
+  return matchCount >= minMatch;
 }
 
 /**
