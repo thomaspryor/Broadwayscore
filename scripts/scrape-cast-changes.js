@@ -24,6 +24,7 @@
  *   node scripts/scrape-cast-changes.js --dry-run                # Preview only
  *   node scripts/scrape-cast-changes.js --verbose                # Verbose logging
  *   node scripts/scrape-cast-changes.js --high-freq-only         # Only high-rotation shows
+ *   node scripts/scrape-cast-changes.js --force                  # Bypass stability guards
  */
 
 const fs = require('fs');
@@ -48,6 +49,7 @@ const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
 const highFreqOnly = args.includes('--high-freq-only');
+const forceRun = args.includes('--force');
 
 // API keys
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -1103,7 +1105,9 @@ function backupExisting() {
 }
 
 /**
- * Guard: abort if show IDs changed too dramatically
+ * Guard: abort if show IDs changed too dramatically.
+ * Threshold scales with data staleness — if the file hasn't been updated
+ * in weeks, more new shows are expected and the guard relaxes accordingly.
  */
 function validateShowStability(original, updated) {
   const oldIds = new Set(Object.keys(original.shows || {}));
@@ -1112,15 +1116,34 @@ function validateShowStability(original, updated) {
   const added = [...newIds].filter(id => !oldIds.has(id));
   const removed = [...oldIds].filter(id => !newIds.has(id));
 
-  if (added.length > 10 || removed.length > 5) {
-    console.error(`\n[Guard] ABORT: Too many show ID changes (${added.length} added, ${removed.length} removed)`);
-    if (added.length > 0) console.error(`  Added: ${added.join(', ')}`);
-    if (removed.length > 0) console.error(`  Removed: ${removed.join(', ')}`);
-    process.exit(1);
+  // Scale add threshold by staleness: base 10, +5 per week stale, max 50
+  const lastUpdated = original.lastUpdated;
+  let staleDays = 0;
+  if (lastUpdated) {
+    staleDays = Math.floor((Date.now() - new Date(lastUpdated).getTime()) / (1000 * 60 * 60 * 24));
+  }
+  const staleWeeks = Math.floor(staleDays / 7);
+  const addThreshold = Math.min(10 + staleWeeks * 5, 50);
+  const removeThreshold = 5;
+
+  if (staleDays > 14 && verbose) {
+    console.log(`[Guard] Data is ${staleDays} days stale — add threshold raised to ${addThreshold}`);
+  }
+
+  if (added.length > addThreshold || removed.length > removeThreshold) {
+    if (forceRun) {
+      console.warn(`\n[Guard] WARNING: Show ID changes exceed threshold (${added.length} added, ${removed.length} removed) — proceeding due to --force`);
+    } else {
+      console.error(`\n[Guard] ABORT: Too many show ID changes (${added.length} added, ${removed.length} removed, threshold: ${addThreshold})`);
+      if (added.length > 0) console.error(`  Added: ${added.join(', ')}`);
+      if (removed.length > 0) console.error(`  Removed: ${removed.join(', ')}`);
+      console.error('  Hint: Use --force to bypass, or run with --shows=<id> for a single show');
+      process.exit(1);
+    }
   }
 
   if (verbose && (added.length > 0 || removed.length > 0)) {
-    console.log(`[Guard] Show ID changes: +${added.length} -${removed.length} (within limits)`);
+    console.log(`[Guard] Show ID changes: +${added.length} -${removed.length} (threshold: ${addThreshold})`);
   }
 }
 
@@ -1139,15 +1162,23 @@ function validateCastMemberStability(original, updated) {
     const dropped = origCount - newCount;
 
     if (dropped > 3) {
-      console.error(`[Guard] ABORT: ${showId} lost ${dropped} cast members in one run (${origCount} → ${newCount})`);
-      process.exit(1);
+      if (forceRun) {
+        console.warn(`[Guard] WARNING: ${showId} lost ${dropped} cast members (${origCount} → ${newCount}) — proceeding due to --force`);
+      } else {
+        console.error(`[Guard] ABORT: ${showId} lost ${dropped} cast members in one run (${origCount} → ${newCount})`);
+        process.exit(1);
+      }
     }
     if (dropped > 0) totalDropped += dropped;
   }
 
   if (totalDropped > 15) {
-    console.error(`[Guard] ABORT: Total cast member drop of ${totalDropped} exceeds threshold of 15`);
-    process.exit(1);
+    if (forceRun) {
+      console.warn(`[Guard] WARNING: Total cast member drop of ${totalDropped} exceeds threshold — proceeding due to --force`);
+    } else {
+      console.error(`[Guard] ABORT: Total cast member drop of ${totalDropped} exceeds threshold of 15`);
+      process.exit(1);
+    }
   }
 
   if (verbose && totalDropped > 0) {
