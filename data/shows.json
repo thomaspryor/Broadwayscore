@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-04-04T02:18:23.308Z",
+    "lastUpdated": "2026-04-04T08:29:41.470Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2412
   },
@@ -206534,7 +206534,8 @@
       "todayTixCategory": "Comedy Shows",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "ibdb"
+      "openingDateSource": "ibdb",
+      "_staleMissingSince": "2026-04-04"
     },
     {
       "id": "the-reservoir-off-broadway-2026",
@@ -214120,7 +214121,8 @@
       "isRevival": true,
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
-      "openingDateSource": "ibdb"
+      "openingDateSource": "ibdb",
+      "_staleMissingSince": "2026-04-04"
     },
     {
       "id": "la-ternura-off-broadway-2025",
@@ -214233,7 +214235,8 @@
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "ibdb"
+      "openingDateSource": "ibdb",
+      "_staleMissingSince": "2026-04-04"
     },
     {
       "id": "the-monsters-off-broadway-2026",
@@ -214749,8 +214752,7 @@
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "ibdb",
-      "_staleMissingSince": "2026-04-03"
+      "openingDateSource": "ibdb"
     },
     {
       "id": "messy-millie-off-broadway-2026",
@@ -222968,7 +222970,7 @@
       "venue": "Bush Theatre",
       "openingDate": "2026-04-04",
       "closingDate": "2026-05-16",
-      "status": "upcoming",
+      "status": "open",
       "type": "play",
       "runtime": null,
       "intermissions": null,
@@ -223474,7 +223476,8 @@
       "isRevival": true,
       "todaytixId": 45812,
       "todaytixUrl": "https://www.todaytix.com/london/shows/45812-one-flew-over-the-cuckoos-nest",
-      "openingDateSource": "theatremonkey"
+      "openingDateSource": "theatremonkey",
+      "_staleMissingSince": "2026-04-04"
     },
     {
       "id": "deep-azure-globe-west-end-2026",
@@ -230107,7 +230110,8 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/44026-sexual-misconduct-of-the-middle-classes",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "openingDateSource": "ibdb"
+      "openingDateSource": "ibdb",
+      "_staleMissingSince": "2026-04-04"
     },
     {
       "id": "happy-ending-west-end-2026",
@@ -235662,6 +235666,118 @@
           "role": "Music & Lyrics"
         }
       ],
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway"
+    },
+    {
+      "id": "can-i-be-frank-off-broadway-2026",
+      "title": "Can I Be Frank?",
+      "slug": "can-i-be-frank-off-broadway",
+      "venue": "Soho/Tribeca",
+      "openingDate": "2026-05-21",
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": "showscore",
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway"
+    },
+    {
+      "id": "youth-in-flames-off-broadway-2026",
+      "title": "Youth in Flames",
+      "slug": "youth-in-flames-off-broadway",
+      "venue": "Midtown E",
+      "openingDate": "2026-06-10",
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": "showscore",
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway"
+    },
+    {
+      "id": "catch-of-the-day-off-broadway-2026",
+      "title": "Catch of the Day",
+      "slug": "catch-of-the-day-off-broadway",
+      "venue": "Midtown E",
+      "openingDate": "2026-06-10",
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": "showscore",
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-broadway"
+    },
+    {
+      "id": "david-copperfield-59e59-theaters-off-broadway-2026",
+      "title": "David Copperfield (59E59 Theaters)",
+      "slug": "david-copperfield-59e59-theaters-off-broadway",
+      "venue": "Midtown E",
+      "openingDate": "2026-05-29",
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": "showscore",
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
       "ibdbRevivalChecked": true,
       "category": "off-broadway"
     }
