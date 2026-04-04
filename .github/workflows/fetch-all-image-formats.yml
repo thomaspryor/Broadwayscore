@@ -97,6 +97,17 @@ jobs:
           fi
           node scripts/fetch-show-images-auto.js $ARGS $INCLUDE_CLOSED --concurrency=$CONCURRENCY $VERIFY_FLAG --max-runtime=150
 
+      - name: Persist rotated Theatr token
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f data/theatr-refresh-token.tmp ]; then
+            echo "Updating THEATR_REFRESH_TOKEN secret with rotated token..."
+            gh secret set THEATR_REFRESH_TOKEN < data/theatr-refresh-token.tmp
+            rm data/theatr-refresh-token.tmp
+          fi
+
       - name: Archive images locally
         if: always()
         run: |
