@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
+const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
 
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
@@ -278,12 +279,15 @@ async function main() {
       continue;
     }
 
-    // Filter to results that match our show title (prevent "Wicked" matching "Wicked Witches")
-    const normalizeTitle = t => t.toLowerCase().replace(/[^a-z0-9]/g, '');
+    // Filter to results that match our show title
+    // Strict: normalized titles must be equal (no substring matching)
+    const normalizeTitle = t => t.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents
+      .replace(/^the\s+/, '').replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
     const ourTitle = normalizeTitle(show.title);
     const titleMatches = results.filter(r => {
       const trTitle = normalizeTitle(r.title);
-      return trTitle === ourTitle || trTitle.startsWith(ourTitle) || ourTitle.startsWith(trTitle);
+      return trTitle === ourTitle;
     });
 
     if (titleMatches.length === 0) {
@@ -384,6 +388,56 @@ async function main() {
 
       // Skip if file already exists
       if (fs.existsSync(filepath)) {
+        totalSkipped++;
+        continue;
+      }
+
+      // ─── Production validation guards ───
+      const text = review.fullText.toLowerCase();
+      const pubDate = parseDate(review.date);
+      const showEarliestDate = show.previewsStartDate || show.openingDate;
+      let skipReason = null;
+
+      // Guard 1: Wrong production by date (review >90 days before show)
+      if (isLikelyWrongProduction(pubDate, showEarliestDate, 90)) {
+        skipReason = `wrong-production-date (review ${pubDate} vs show ${showEarliestDate})`;
+      }
+
+      // Guard 2: Tour/regional detection in review text
+      if (!skipReason) {
+        const tourPatterns = [
+          /\breview(?:ed)?\s+at\s+(?:the\s+)?(?:lowry|playhouse|hippodrome|opera house|new theatre|grand theatre|leeds|birmingham|manchester|bristol|cardiff|glasgow|edinburgh|sheffield|nottingham|southampton|brighton|bath|chichester|oxford|cambridge|salford|milton keynes)/i,
+          /\btouring\s+(?:production|company|cast|show)\b/i,
+          /\buk\s+tour\b/i,
+          /\bnational\s+tour\b/i,
+          /\bcurrent(?:ly)?\s+(?:on\s+)?tour\b/i,
+        ];
+        for (const pat of tourPatterns) {
+          if (pat.test(review.fullText)) {
+            skipReason = `tour-review (${pat.source.slice(0, 40)})`;
+            break;
+          }
+        }
+      }
+
+      // Guard 3: Panto/wrong-show detection
+      if (!skipReason && /\bpanto(?:s|mime)?\b/i.test(review.fullText)) {
+        skipReason = 'panto (not the WE production)';
+      }
+
+      // Guard 4: Film/TV review detection
+      if (!skipReason) {
+        const filmSignals = [/\b(?:in cinemas|on screen|film adaptation|movie version|streaming on)\b/i];
+        for (const pat of filmSignals) {
+          if (pat.test(review.fullText)) {
+            skipReason = `film/TV review (${pat.source.slice(0, 40)})`;
+            break;
+          }
+        }
+      }
+
+      if (skipReason) {
+        console.log(`    SKIP: ${filename} — ${skipReason}`);
         totalSkipped++;
         continue;
       }
