@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-04T17:40:46.820Z",
+  "timestamp": "2026-04-04T17:52:47.464Z",
   "stats": {
     "totalReviews": 29387,
-    "alreadyFlagged": 8351,
+    "alreadyFlagged": 8369,
     "dateGuardCatches": 13,
     "directorMismatch": 936,
-    "tvFilmSignals": 3421,
-    "londonSignals": 1057,
+    "tvFilmSignals": 3415,
+    "londonSignals": 1056,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
     "noPublishDate": 5624
@@ -28461,6 +28461,7 @@
     {
       "showId": "les-miserables-west-end-2021",
       "file": "british-theatre--philip-fisher.json",
+      "score": 87,
       "publishDate": "2020-01-17",
       "url": null,
       "findings": [
@@ -28493,6 +28494,7 @@
     {
       "showId": "les-miserables-west-end-2021",
       "file": "daily-mail--robert-gore-langton.json",
+      "score": 86,
       "publishDate": "2020-01-25",
       "url": null,
       "findings": [
@@ -28603,6 +28605,7 @@
     {
       "showId": "les-miserables-west-end-2021",
       "file": "metro--claire-allfree.json",
+      "score": 76,
       "publishDate": "2020-01-20",
       "url": null,
       "findings": [
@@ -28838,6 +28841,7 @@
     {
       "showId": "les-miserables-west-end-2021",
       "file": "times-uk--quentin-letts.json",
+      "score": 83,
       "publishDate": "2020-01-26",
       "url": null,
       "findings": [
@@ -28845,19 +28849,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-west-end-2021",
-      "file": "whatsonstage--alex-wood.json",
-      "publishDate": "2020-01-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -52535,6 +52526,7 @@
     {
       "showId": "the-lion-king-west-end-2021",
       "file": "the-scotsman--joyce-mcmillan.json",
+      "score": 78,
       "publishDate": "2019-12-13",
       "url": null,
       "findings": [
@@ -54803,19 +54795,6 @@
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "artsdesk--matt-wolf.json",
-      "publishDate": "2020-12-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "broadwayworld--kat-mokrynski.json",
       "score": 81,
       "publishDate": "2014-09-18",
@@ -54825,58 +54804,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "express-uk--george-simpson.json",
-      "publishDate": "2020-12-16",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "guardian--arifa-akbar.json",
-      "publishDate": "2020-12-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "london-theatre--unknown.json",
-      "publishDate": "2020-12-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": "2020-12-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -80723,19 +80650,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "metro--claire-allfree.json",
-      "publishDate": "2019-09-11",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
