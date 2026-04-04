@@ -375,6 +375,9 @@ function getBestScore(data, opts = {}) {
     'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',
     'tim-talks-theatre-uk', 'city-am', 'plays-international',
     'theatreandtonic', 'the-recs', 'broadwayworld',
+    // Additional WE star outlets discovered during SERP expansion
+    'londontheatre1', 'everything-theatre', 'thereviewshub',
+    'shy-strange-manic', 'express-uk',
   ]);
   const isAggregatorSource = AGGREGATOR_SOURCES.has(data.source);
   const isWestEnd = data._showCategory === 'west-end' || data._showCategory === 'off-west-end';
