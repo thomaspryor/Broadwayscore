@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-04T00:58:35.003Z",
-  "processed": 220,
-  "failed": 753,
-  "successRate": "22.6%",
+  "updatedAt": "2026-04-04T01:01:32.250Z",
+  "processed": 225,
+  "failed": 758,
+  "successRate": "22.9%",
   "tierBreakdown": {
-    "playwright": 99,
+    "playwright": 102,
     "amp": 4,
-    "browserbase": 56,
+    "browserbase": 58,
     "directCookies": 0,
     "scrapingbee": 49,
     "brightdata": 0,
-    "archiveToday": 72,
-    "archive": 49
+    "archiveToday": 73,
+    "archive": 50
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-03T13:42:32.924Z",
-      "event": "bb-session",
-      "session": "5a3b888a",
-      "url": "https://www.washingtonpost.com/entertainment/review-hugh-jackman-steals-the-musi"
-    },
-    {
-      "t": "2026-04-03T13:42:34.034Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-03T13:44:49.817Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-04T00:58:22.647Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T00:58:41.214Z",
+      "event": "bb-session",
+      "session": "3d0c2cd5",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-04-04T00:58:42.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

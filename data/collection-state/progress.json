@@ -219,7 +219,12 @@
     "les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json",
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
     "every-brilliant-thing-2026/the-interested-bystander--cary-wong.json",
-    "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+    "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+    "my-neighbour-totoro-west-end-2025/buy-tickets-from-the-theatre-here--unknown.json",
+    "oliver-west-end-2024/thestage--holly-omahony.json",
+    "the-devil-wears-prada-west-end-2024/british-theatre--susan-novak.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -974,7 +979,12 @@
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
     "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
     "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
-    "ragtime-2025/bloomberg--chris-rovzar.json"
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "oliver-west-end-2024/whatsonstage--gareth-carr.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1077,7 +1087,10 @@
       "romeo-and-juliet-west-end-2026/city-am--adam-bloodworth.json",
       "romeo-and-juliet-west-end-2026/london-theatre--unknown.json",
       "les-liaisons-dangereuses-west-end-2026/whatsonstage--sarah-crompton.json",
-      "every-brilliant-thing-2026/the-interested-bystander--cary-wong.json"
+      "every-brilliant-thing-2026/the-interested-bystander--cary-wong.json",
+      "my-neighbour-totoro-west-end-2025/buy-tickets-from-the-theatre-here--unknown.json",
+      "oliver-west-end-2024/thestage--holly-omahony.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -1141,7 +1154,9 @@
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
-      "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+      "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1268,7 +1283,8 @@
       "data/review-texts/romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
       "data/review-texts/titus-andronicus-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/usatoday--patrick-ryan.json",
-      "data/review-texts/all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json"
+      "data/review-texts/all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+      "data/review-texts/oliver-west-end-2024/whatsonstage--gareth-carr.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1319,11 +1335,12 @@
       "dead-accounts-2012/newsday--linda-winer.json",
       "annie-2012/newsday--linda-winer.json",
       "harvey-2012/ew--thom-geier.json",
-      "romeo-and-juliet-west-end-2026/broadwayworld--cindy-marcolina.json"
+      "romeo-and-juliet-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "the-devil-wears-prada-west-end-2024/british-theatre--susan-novak.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+  "lastProcessed": "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -1830,6 +1847,17 @@
       "t": "2026-04-04T00:58:22.647Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T00:58:41.214Z",
+      "event": "bb-session",
+      "session": "3d0c2cd5",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-04-04T00:58:42.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
