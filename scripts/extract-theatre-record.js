@@ -239,31 +239,22 @@ function parseRawPdfReviews(text, showTitle) {
     i++;
   }
 
-  // Filter: keep only reviews that mention our show title
-  // For short/common titles (Wicked, Six, Cats, Rent, Oliver, Chess), require
-  // the title to appear as a standalone word near review-specific context
-  const isCommonWord = titleLower.length <= 7 && /^[a-z]+$/.test(titleLower);
+  // Filter: keep only reviews that are actually ABOUT our show
+  // Raw mode extracts every review from the PDF — most are for other shows.
+  // Require: title appears 2+ times as phrase/word AND near theatre context
+  const titleEscaped = titleLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const titleRegex = new RegExp(`\\b${titleEscaped}\\b`, 'gi');
 
   const matched = allReviews.filter(r => {
     const textLower = r.fullText.toLowerCase();
+    const mentions = (textLower.match(titleRegex) || []).length;
+    if (mentions < 2) return false;
 
-    if (isCommonWord) {
-      // For short common-word titles: require title as standalone word AND
-      // at least one show-specific signal (venue, author, character name, "musical", "play")
-      const titleRegex = new RegExp(`\\b${titleLower}\\b`, 'i');
-      const titleCount = (textLower.match(titleRegex) || []).length;
-      if (titleCount < 2) return false; // Must appear at least twice
-      // Also check for theatrical context near the title
-      const firstMention = textLower.indexOf(titleLower);
-      const context = textLower.slice(Math.max(0, firstMention - 100), firstMention + 200);
-      const hasTheatreContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph/i.test(context);
-      return hasTheatreContext;
-    }
-
-    // For multi-word titles: full title match or 70% of significant words
-    if (textLower.includes(titleLower)) return true;
-    const wordsFound = titleWords.filter(w => textLower.includes(w));
-    return wordsFound.length >= Math.ceil(titleWords.length * 0.7);
+    // Check theatre context near the first mention
+    const firstIdx = textLower.search(titleRegex);
+    const context = textLower.slice(Math.max(0, firstIdx - 150), firstIdx + 300);
+    const hasContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph|review|opening|premiere|perform/i.test(context);
+    return hasContext;
   });
 
   // Convert outlet names to Title Case
