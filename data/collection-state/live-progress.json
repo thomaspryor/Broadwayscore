@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-04T01:03:31.566Z",
-  "processed": 231,
-  "failed": 762,
-  "successRate": "23.3%",
+  "updatedAt": "2026-04-04T01:08:58.020Z",
+  "processed": 236,
+  "failed": 767,
+  "successRate": "23.5%",
   "tierBreakdown": {
-    "playwright": 105,
+    "playwright": 106,
     "amp": 4,
-    "browserbase": 58,
+    "browserbase": 60,
     "directCookies": 0,
-    "scrapingbee": 51,
+    "scrapingbee": 53,
     "brightdata": 0,
-    "archiveToday": 73,
-    "archive": 51
+    "archiveToday": 74,
+    "archive": 52
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-04-03T13:44:49.817Z",
-      "event": "bb-session",
-      "session": "7594c532",
-      "url": "https://www.wsj.com/articles/beetlejuice-review-better-off-dead-11556727155"
-    },
-    {
-      "t": "2026-04-03T13:44:51.082Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-03T13:49:37.909Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-04T00:58:42.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-04T01:04:40.668Z",
+      "event": "bb-session",
+      "session": "0d641ddd",
+      "url": "https://variety.com/2022/music/concert-reviews/abba-voyage-cgi-concert-review-12"
+    },
+    {
+      "t": "2026-04-04T01:04:42.018Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

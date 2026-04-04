@@ -230,7 +230,12 @@
     "hadestown-west-end-2024/nytg--gillian-russo.json",
     "hadestown-west-end-2024/telegraph--paul-raven.json",
     "hadestown-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
-    "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json"
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+    "abba-voyage-off-west-end-2026/telegraph--neil-mccormick.json",
+    "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
+    "abba-voyage-off-west-end-2026/variety--mark-sutherland.json",
+    "mj-2022/chicagotribune--chris-jones.json",
+    "moulin-rouge-the-musical-west-end-2021/nytg--gillian-russo.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -994,7 +999,12 @@
     "hadestown-west-end-2024/all-that-dazzles-uk--unknown.json",
     "hadestown-west-end-2024/british-theatre--unknown.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
-    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "magic-mike-live-west-end-2021/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1103,7 +1113,8 @@
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "starlight-express-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
       "hadestown-west-end-2024/nytg--gillian-russo.json",
-      "hadestown-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json"
+      "hadestown-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
+      "moulin-rouge-the-musical-west-end-2021/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -1169,7 +1180,9 @@
       "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
       "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
-      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
+      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/abba-voyage-off-west-end-2026/variety--mark-sutherland.json",
+      "abba-voyage-off-west-end-2026/variety--mark-sutherland.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1223,7 +1236,9 @@
       "purlie-victorious-2023/cititour--brian-scott-lipton.json",
       "no-mans-land-2013/broadwayworld--michael-dale.json",
       "hadestown-west-end-2024/telegraph--paul-raven.json",
-      "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json"
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
+      "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
+      "mj-2022/chicagotribune--chris-jones.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1299,7 +1314,8 @@
       "data/review-texts/titus-andronicus-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/usatoday--patrick-ryan.json",
       "data/review-texts/all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
-      "data/review-texts/oliver-west-end-2024/whatsonstage--gareth-carr.json"
+      "data/review-texts/oliver-west-end-2024/whatsonstage--gareth-carr.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json"
     ],
     "archive": [
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
@@ -1352,11 +1368,12 @@
       "harvey-2012/ew--thom-geier.json",
       "romeo-and-juliet-west-end-2026/broadwayworld--cindy-marcolina.json",
       "the-devil-wears-prada-west-end-2024/british-theatre--susan-novak.json",
-      "starlight-express-west-end-2024/british-theatre--susan-novak.json"
+      "starlight-express-west-end-2024/british-theatre--susan-novak.json",
+      "abba-voyage-off-west-end-2026/telegraph--neil-mccormick.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+  "lastProcessed": "magic-mike-live-west-end-2021/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -1872,6 +1889,17 @@
     },
     {
       "t": "2026-04-04T00:58:42.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-04T01:04:40.668Z",
+      "event": "bb-session",
+      "session": "0d641ddd",
+      "url": "https://variety.com/2022/music/concert-reviews/abba-voyage-cgi-concert-review-12"
+    },
+    {
+      "t": "2026-04-04T01:04:42.018Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
