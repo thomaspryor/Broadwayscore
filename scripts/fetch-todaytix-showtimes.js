@@ -75,16 +75,36 @@ async function main() {
     const entry = { todaytixId: show.todaytixId, showtimes: {} };
     const showSchedule = {}; // date → { m: time, e: time }
 
+    // Group showtimes by date first, then classify
+    const byDate = {};
     for (const st of showtimes) {
-      const date = st.localDate; // YYYY-MM-DD
+      const date = st.localDate;
       if (!date) continue;
-      const slot = classifySlot(st);
-      if (!entry.showtimes[date]) entry.showtimes[date] = {};
-      if (!showSchedule[date]) showSchedule[date] = {};
-      // Take the first showtime per slot (avoid duplicates)
-      if (!entry.showtimes[date][slot]) {
+      if (!byDate[date]) byDate[date] = [];
+      byDate[date].push(st);
+    }
+
+    for (const [date, dayShowtimes] of Object.entries(byDate)) {
+      entry.showtimes[date] = {};
+      showSchedule[date] = {};
+
+      if (dayShowtimes.length === 1) {
+        // Single show: use daypart or time-based classification
+        const st = dayShowtimes[0];
+        const slot = classifySlot(st);
         entry.showtimes[date][slot] = st.id;
         showSchedule[date][slot] = st.localTime || null;
+      } else {
+        // Multiple shows: earliest = matinee, latest = evening
+        dayShowtimes.sort((a, b) => (a.localTime || '').localeCompare(b.localTime || ''));
+        const earliest = dayShowtimes[0];
+        const latest = dayShowtimes[dayShowtimes.length - 1];
+        entry.showtimes[date].m = earliest.id;
+        showSchedule[date].m = earliest.localTime || null;
+        if (latest !== earliest) {
+          entry.showtimes[date].e = latest.id;
+          showSchedule[date].e = latest.localTime || null;
+        }
       }
     }
 
