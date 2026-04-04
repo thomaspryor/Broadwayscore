@@ -21,7 +21,18 @@ const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-gu
 // ─── PDF review parser ───
 // Parses reviews from pdftotext output. Reviews follow pattern:
 // OUTLET NAME (ALL CAPS) → date line → critic name → review text
-const DATE_PATTERN = /^\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$/;
+// Date formats: "18 May 2021" (post-2019) or "21.12.17" (pre-2019)
+const DATE_LONG = /^\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$/;
+const DATE_SHORT = /^\d{1,2}\.\d{2}\.\d{2,4}$/;
+const isDateLine = (line) => DATE_LONG.test(line) || DATE_SHORT.test(line);
+
+function parseShortDate(dateStr) {
+  // "21.12.17" → "2017-12-21", "15.03.99" → "1999-03-15"
+  const [d, m, y] = dateStr.split('.');
+  const yearNum = parseInt(y, 10);
+  const fullYear = yearNum >= 80 ? 1900 + yearNum : (yearNum > 30 ? 1900 + yearNum : 2000 + yearNum);
+  return `${fullYear}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+}
 
 function parsePdfReviews(text, showTitle) {
   const lines = text.split('\n');
@@ -58,7 +69,7 @@ function parsePdfReviews(text, showTitle) {
         const line = lines[k].trim();
         if (line === line.toUpperCase() && line.length > 3 && /^[A-Z]/.test(line)) {
           const nextLine = (lines[k + 1] || '').trim();
-          if (DATE_PATTERN.test(nextLine)) {
+          if (isDateLine(nextLine)) {
             reviewsStart = k;
             break;
           }
@@ -70,16 +81,37 @@ function parsePdfReviews(text, showTitle) {
 
   if (reviewsStart === -1) return [];
 
-  // Step 2: Find end boundary — next production (heavily indented ALL CAPS title)
+  // Step 2: Find end boundary — next production
   for (let j = reviewsStart; j < lines.length; j++) {
     const raw = lines[j];
     const trimmed = raw.trim();
-    // Next production: indented 20+ spaces, ALL CAPS, not our title, not "Index", not "Reviews"
+
+    // Method A: Indented ALL CAPS title (works for -layout mode)
     if (raw.match(/^\s{20,}/) && trimmed.length > 3 && trimmed === trimmed.toUpperCase() &&
         /^[A-Z]/.test(trimmed) && trimmed !== 'Reviews' && trimmed !== 'Index' &&
         !trimmed.includes(titleUpper)) {
       reviewsEnd = j;
       break;
+    }
+
+    // Method B: Production metadata block (works for -raw mode)
+    // Pattern: ALL CAPS title → "by AUTHOR" or venue+date-range within 5 lines
+    if (trimmed === trimmed.toUpperCase() && trimmed.length > 3 && /^[A-Z]/.test(trimmed) &&
+        trimmed !== 'Reviews' && trimmed !== 'Index' && !trimmed.includes(titleUpper) &&
+        !isDateLine(trimmed)) {
+      // Check if next few lines look like production metadata (not a review)
+      const nextLines = [];
+      for (let k = 1; k <= 5 && j + k < lines.length; k++) {
+        nextLines.push(lines[j + k].trim());
+      }
+      const hasVenueDateRange = nextLines.some(l => /\d{1,2}\s+\w+\s+\d{4}\s*[–—-]\s*\d{1,2}\s+\w+\s+\d{4}/.test(l));
+      const hasByAuthor = nextLines.some(l => /^(?:by |Revival |European |World |New |Musical |A play |A comedy |A drama )/i.test(l));
+      const hasVenue = nextLines.some(l => /Theatre|Playhouse|Palace|Lyceum|Apollo|Donmar|Almeida|Old Vic|National|Barbican/i.test(l));
+
+      if ((hasVenueDateRange || hasByAuthor) && hasVenue) {
+        reviewsEnd = j;
+        break;
+      }
     }
   }
 
@@ -92,7 +124,7 @@ function parsePdfReviews(text, showTitle) {
     if (line === line.toUpperCase() && line.length > 3 && /^[A-Z]/.test(line) &&
         !line.includes('Cast & Creative') && line !== titleUpper && line !== 'THE ' + titleUpper) {
       const nextLine = (lines[i + 1] || '').trim();
-      if (DATE_PATTERN.test(nextLine)) {
+      if (isDateLine(nextLine)) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
@@ -108,7 +140,7 @@ function parsePdfReviews(text, showTitle) {
           const next = (lines[i + 1] || '').trim();
 
           // Stop at next outlet (ALL CAPS + date)
-          if (curr === curr.toUpperCase() && curr.length > 3 && /^[A-Z]/.test(curr) && DATE_PATTERN.test(next)) {
+          if (curr === curr.toUpperCase() && curr.length > 3 && /^[A-Z]/.test(curr) && isDateLine(next)) {
             break;
           }
 
@@ -143,6 +175,73 @@ function parsePdfReviews(text, showTitle) {
   return reviews;
 }
 
+// For multi-column pre-2019 PDFs: extract ALL reviews, filter by show title mention
+function parseRawPdfReviews(text, showTitle) {
+  const lines = text.split('\n');
+  const allReviews = [];
+  const titleLower = showTitle.toLowerCase();
+  // Also match with common title variations
+  const titleWords = titleLower.split(/\s+/).filter(w => w.length > 3);
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i].trim();
+
+    // Detect outlet: ALL CAPS line followed by a date
+    if (line === line.toUpperCase() && line.length > 3 && /^[A-Z]/.test(line) &&
+        !line.includes('Cast & Creative') && line !== 'HAMILTON' && line !== 'Index' && line !== 'Reviews') {
+      const nextLine = (lines[i + 1] || '').trim();
+      if (isDateLine(nextLine)) {
+        const outlet = line;
+        const date = nextLine;
+        const critic = (lines[i + 2] || '').trim();
+        i += 3;
+        while (i < lines.length && lines[i].trim() === '') i++;
+
+        const textLines = [];
+        while (i < lines.length) {
+          const curr = lines[i].trim();
+          const next = (lines[i + 1] || '').trim();
+          if (curr === curr.toUpperCase() && curr.length > 3 && /^[A-Z]/.test(curr) && isDateLine(next)) break;
+          textLines.push(lines[i]);
+          i++;
+        }
+
+        let fullText = textLines.map(l => l.trim()).filter(l => l).join('\n');
+        fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
+
+        if (fullText.length > 200 && fullText.length < 15000) {
+          // Cap at 15K chars — longer means multiple reviews concatenated
+          allReviews.push({ outlet, date, critic, fullText });
+        }
+        continue;
+      }
+    }
+    i++;
+  }
+
+  // Filter: keep only reviews that mention our show title
+  const matched = allReviews.filter(r => {
+    const textLower = r.fullText.toLowerCase();
+    // Must mention the show title or most of its significant words
+    if (textLower.includes(titleLower)) return true;
+    const wordsFound = titleWords.filter(w => textLower.includes(w));
+    return wordsFound.length >= Math.ceil(titleWords.length * 0.7);
+  });
+
+  // Convert outlet names to Title Case
+  return matched.map(r => ({
+    outlet: r.outlet.split(/[\s.]+/)
+      .map(w => w.charAt(0) + w.slice(1).toLowerCase())
+      .join(' ')
+      .replace(/\.Com$/i, '.com')
+      .replace(/Thereviewshub\.com/i, 'The Reviews Hub'),
+    date: r.date,
+    critic: r.critic || null,
+    fullText: r.fullText
+  }));
+}
+
 async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   // Get session cookie from Playwright context
   const cookies = await context.cookies();
@@ -171,7 +270,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     return [];
   }
 
-  // Extract text with pdftotext
+  // Try -layout first (works for 2019+ single-column PDFs with indentation boundaries)
   let text;
   try {
     text = execSync(`pdftotext -layout "${tmpFile}" -`, { maxBuffer: 10 * 1024 * 1024 }).toString();
@@ -181,11 +280,30 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     return [];
   }
 
-  // Clean up
-  fs.unlinkSync(tmpFile);
+  let reviews = parsePdfReviews(text, show.title);
+  if (reviews.length > 0) {
+    console.log(`  Extracted ${reviews.length} reviews (-layout mode)`);
+    fs.unlinkSync(tmpFile);
+    return reviews;
+  }
 
-  // Parse reviews from extracted text
-  const reviews = parsePdfReviews(text, show.title);
+  // Fallback: -raw mode for multi-column pre-2019 PDFs
+  // Raw mode can't reliably detect production boundaries, so we extract ALL
+  // outlet+date+critic+text blocks and filter to reviews that mention our show
+  try {
+    text = execSync(`pdftotext -raw "${tmpFile}" -`, { maxBuffer: 10 * 1024 * 1024 }).toString();
+  } catch (e) {
+    console.log(`  pdftotext -raw failed: ${e.message}`);
+    fs.unlinkSync(tmpFile);
+    return [];
+  }
+
+  reviews = parseRawPdfReviews(text, show.title);
+  if (reviews.length > 0) {
+    console.log(`  Extracted ${reviews.length} reviews (-raw mode, title-matched)`);
+  }
+
+  fs.unlinkSync(tmpFile);
   return reviews;
 }
 
@@ -302,8 +420,9 @@ function makeFilename(outletId, criticName) {
 }
 
 function parseDate(dateStr) {
-  // "03 April 2026" → "2026-04-03"
+  // "03 April 2026" → "2026-04-03" or "21.12.17" → "2017-12-21"
   if (!dateStr) return null;
+  if (DATE_SHORT.test(dateStr)) return parseShortDate(dateStr);
   const d = new Date(dateStr);
   if (isNaN(d)) return null;
   return d.toISOString().split('T')[0];
@@ -636,8 +755,14 @@ async function main() {
       }
 
       // Guard 3: Panto/wrong-show detection
-      if (!skipReason && /\bpanto(?:s|mime)?\b/i.test(review.fullText)) {
-        skipReason = 'panto (not the WE production)';
+      // Only flag as panto if it appears multiple times or in the first 200 chars
+      // (passing mentions of panto in December reviews are normal)
+      if (!skipReason) {
+        const pantoMatches = (review.fullText.match(/\bpanto(?:s|mime)?\b/gi) || []).length;
+        const pantoInOpening = /\bpanto(?:s|mime)?\b/i.test(review.fullText.slice(0, 200));
+        if (pantoMatches >= 3 || pantoInOpening) {
+          skipReason = 'panto (not the WE production)';
+        }
       }
 
       // Guard 4: Film/TV review detection
