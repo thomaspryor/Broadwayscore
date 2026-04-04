@@ -350,7 +350,10 @@
     "jitney-2017/usatoday--robert-feldberg.json",
     "spring-awakening-2015/broadstreetreview--judy-weightman.json",
     "spring-awakening-2015/broadway-blog--matthew-wexler.json",
-    "lucky-guy-2013/nypost--elisabeth-vincentelli.json"
+    "lucky-guy-2013/nypost--elisabeth-vincentelli.json",
+    "a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
+    "whos-afraid-of-virginia-woolf-2012/hollywood-reporter--unknown.json",
+    "whos-afraid-of-virginia-woolf-2012/nyt-theater--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1774,7 +1777,14 @@
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
     "ann-2013/bloomberg--jeremy-gerard.json",
     "picnic-2013/bloomberg--jeremy-gerard.json",
-    "the-anarchist-2012/variety--marilyn-stasio.json"
+    "the-anarchist-2012/variety--marilyn-stasio.json",
+    "dead-accounts-2012/variety--marilyn-stasio.json",
+    "scandalous-2012/variety--marilyn-stasio.json",
+    "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+    "chaplin-2012/bloomberg--jeremy-gerard.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1939,7 +1949,8 @@
       "spring-awakening-2015/theatres-leiter-side--samuel-l-leiter.json",
       "spring-awakening-2015/towleroad--naveen-kumar.json",
       "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
-      "jitney-2017/usatoday--robert-feldberg.json"
+      "jitney-2017/usatoday--robert-feldberg.json",
+      "whos-afraid-of-virginia-woolf-2012/nyt-theater--unknown.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -2017,7 +2028,11 @@
       "data/review-texts/home-2024/variety--lexi-carson.json",
       "home-2024/variety--lexi-carson.json",
       "data/review-texts/lucky-guy-2013/nypost--elisabeth-vincentelli.json",
-      "lucky-guy-2013/nypost--elisabeth-vincentelli.json"
+      "lucky-guy-2013/nypost--elisabeth-vincentelli.json",
+      "data/review-texts/a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
+      "a-christmas-story-the-musical-2012/hollywood-reporter--david-rooney.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2012/hollywood-reporter--unknown.json",
+      "whos-afraid-of-virginia-woolf-2012/hollywood-reporter--unknown.json"
     ],
     "directCookies": [
       "jitney-2017/usatoday--unknown.json"
@@ -2346,7 +2361,7 @@
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "the-anarchist-2012/variety--marilyn-stasio.json",
+  "lastProcessed": "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2974,6 +2989,28 @@
       "t": "2026-04-04T05:08:10.778Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-04T05:09:00.877Z",
+      "event": "bb-session",
+      "session": "33f35d2f",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-story-musical-theater-393180"
+    },
+    {
+      "t": "2026-04-04T05:09:02.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-04T05:09:33.015Z",
+      "event": "bb-session",
+      "session": "48289cdc",
+      "url": "https://www.hollywoodreporter.com/news/general-news/tracy-letts-shines-whos-afra"
+    },
+    {
+      "t": "2026-04-04T05:09:34.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
