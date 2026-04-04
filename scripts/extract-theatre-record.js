@@ -876,20 +876,25 @@ async function main() {
       if (!skipReason) {
         const reviewLower = review.fullText.toLowerCase();
         const showTitleLower = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
-        const showWords = showTitleLower.split(/\s+/).filter(w => w.length > 3 && !['the', 'and', 'for', 'from', 'with', 'musical'].includes(w));
+        const showWords = showTitleLower.split(/\s+/).filter(w => w.length > 3 && !['the', 'and', 'for', 'from', 'with'].includes(w));
+        // Also keep shorter core words (e.g., "six" from "SIX the Musical") for fallback
+        const coreWords = showTitleLower.split(/\s+/).filter(w => w.length >= 2 && !['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at', 'in', 'on', 'of', 'to'].includes(w));
 
-        // Count how many times the show title or its significant words appear
+        // Count title/word mentions
         const titleRegex = new RegExp(`\\b${showTitleLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
         const titleMentions = (reviewLower.match(titleRegex) || []).length;
-        const wordMentions = showWords.reduce((sum, w) => {
-          const re = new RegExp(`\\b${w}\\b`, 'gi');
-          return sum + (reviewLower.match(re) || []).length;
-        }, 0);
+        const wordMentions = showWords.length > 0
+          ? Math.max(...showWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
+          : 0;
+        // For short titles (SIX, Cats, Rent), check core word mentions
+        const coreMentions = showWords.length === 0 && coreWords.length > 0
+          ? Math.max(...coreWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
+          : 0;
 
-        // Require at least 2 mentions for single-word titles (higher false-positive risk)
-        // For multi-word titles, 1 mention is enough (less likely to be coincidental)
-        const mentions = Math.max(titleMentions, wordMentions);
-        const minMentions = showWords.length <= 1 ? 2 : 1;
+        const mentions = Math.max(titleMentions, wordMentions, coreMentions);
+        // Single-word or very short titles need 2+ mentions (common words cause false positives)
+        // Multi-word titles with distinctive words need only 1
+        const minMentions = showWords.length >= 2 ? 1 : 2;
         if (mentions < minMentions) {
           skipReason = `wrong-show (only ${mentions} title mention(s) in review)`;
         }
