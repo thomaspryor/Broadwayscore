@@ -28,6 +28,7 @@ export interface ShowCardShow {
   audienceGrade: AudienceGrade | null;
   category?: string; // undefined for legacy Broadway shows — defaults to 'broadway'
   subtitle?: string; // e.g. "$10 lottery" — shown below title on shelf cards
+  subtitleColor?: string; // Tailwind text color class (default: emerald-400)
   // Market-specific optional fields
   isOffWestEnd?: boolean; // West End only
   performances?: number; // Browse only
