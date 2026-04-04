@@ -550,6 +550,152 @@ async function fetchFromMezzanine(show) {
   };
 }
 
+// ---- Theatr (theatr-app.com) image source ----
+// JWT-authenticated API with all 3 image formats including hero (landscape banner).
+// ~200 current Broadway/OB shows. Cached locally with 1-day TTL.
+
+const THEATR_CACHE_PATH = path.join(__dirname, '../data/theatr-image-cache.json');
+const THEATR_CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 1 day
+const THEATR_USER_AGENT = 'Theatr/184 CFNetwork/3860.400.51 Darwin/25.3.0';
+
+let theatrCache = null;
+
+function theatrHttps(url, opts = {}) {
+  return new Promise((resolve, reject) => {
+    const u = new URL(url);
+    const body = opts.body ? JSON.stringify(opts.body) : null;
+    const req = https.request({
+      hostname: u.hostname, path: u.pathname + u.search,
+      method: opts.method || 'GET',
+      headers: {
+        'content-type': 'application/json', 'accept': '*/*',
+        'user-agent': THEATR_USER_AGENT,
+        ...opts.headers,
+        ...(body ? { 'content-length': Buffer.byteLength(body) } : {})
+      }
+    }, res => {
+      let d = '';
+      res.on('data', c => d += c);
+      res.on('end', () => {
+        try { resolve(JSON.parse(d)); }
+        catch (e) { reject(new Error('Theatr parse error: ' + d.substring(0, 100))); }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Theatr timeout')); });
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
+async function loadTheatrShows() {
+  if (theatrCache) return theatrCache;
+
+  let records = [];
+  let cacheAge = Infinity;
+  try {
+    const raw = JSON.parse(fs.readFileSync(THEATR_CACHE_PATH, 'utf8'));
+    records = raw.records || [];
+    cacheAge = Date.now() - new Date(raw.lastUpdated || 0).getTime();
+  } catch { /* no cache */ }
+
+  if (records.length === 0 || cacheAge > THEATR_CACHE_MAX_AGE_MS) {
+    const refreshToken = process.env.THEATR_REFRESH_TOKEN;
+    if (!refreshToken || refreshToken === 'needs-refresh') {
+      if (records.length > 0) {
+        console.log(`   Theatr: using stale cache (${records.length} shows, ${Math.round(cacheAge / 3600000)}h old)`);
+      } else {
+        console.log('   ✗ Theatr: no token and no cache');
+        theatrCache = { byNormTitle: new Map() };
+        return theatrCache;
+      }
+    } else {
+      try {
+        console.log('   Refreshing Theatr image cache from API...');
+        const auth = await theatrHttps('https://appapi.theatr-app.com/v1/auth/access-tokens', {
+          method: 'POST', body: { refreshToken }
+        });
+        if (!auth.success) throw new Error('Auth failed: ' + (auth.message || 'unknown'));
+
+        if (auth.content.refreshToken) {
+          const tokenPath = path.join(__dirname, '../data/theatr-refresh-token.tmp');
+          fs.writeFileSync(tokenPath, auth.content.refreshToken);
+        }
+
+        const shows = await theatrHttps('https://appapi.theatr-app.com/shows/query', {
+          method: 'POST',
+          headers: { authorization: 'Bearer ' + auth.content.accessToken },
+          body: {
+            filters: [{ field: 'genreCategory', op: '==', value: 'Theatre' }],
+            orderBy: [{ field: 'totalWatchedUsers', direction: 'desc' }],
+            pageSize: 9999,
+          }
+        });
+
+        if (shows.success && shows.content.records.length > 0) {
+          records = shows.content.records
+            .filter(r => r.imageUrl || r.verticalPosterUrl || r.bannerImageUrl)
+            .map(r => ({
+              name: r.name,
+              imageUrl: r.imageUrl || null,
+              posterUrl: r.verticalPosterUrl || null,
+              heroUrl: r.bannerImageUrl || null,
+              eventCategory: r.eventCategory || null,
+              venue: r.venue || null,
+            }));
+
+          fs.writeFileSync(THEATR_CACHE_PATH, JSON.stringify({
+            lastUpdated: new Date().toISOString(),
+            recordCount: records.length,
+            records,
+          }, null, 2));
+          console.log(`   Cached ${records.length} Theatr shows with images`);
+        }
+      } catch (err) {
+        console.log(`   ⚠ Theatr API error: ${err.message} — using ${records.length > 0 ? 'stale cache' : 'no data'}`);
+      }
+    }
+  } else {
+    console.log(`   Theatr cache: ${records.length} shows (${Math.round(cacheAge / 3600000)}h old)`);
+  }
+
+  const byNormTitle = new Map();
+  for (const r of records) {
+    if (!r.name) continue;
+    const norm = normalizeMezzTitle(r.name);
+    if (!byNormTitle.has(norm)) byNormTitle.set(norm, []);
+    byNormTitle.get(norm).push(r);
+  }
+
+  theatrCache = { byNormTitle };
+  return theatrCache;
+}
+
+async function fetchFromTheatr(show) {
+  const { byNormTitle } = await loadTheatrShows();
+  if (byNormTitle.size === 0) return null;
+
+  const normTitle = normalizeMezzTitle(show.title);
+  const candidates = byNormTitle.get(normTitle);
+  if (!candidates || candidates.length === 0) return null;
+
+  const best = candidates.find(c => c.eventCategory === 'Broadway') || candidates[0];
+  const hasImages = best.imageUrl || best.posterUrl || best.heroUrl;
+  if (!hasImages) return null;
+
+  console.log(`   ✓ Theatr: found images (${[
+    best.imageUrl && 'square',
+    best.posterUrl && 'poster',
+    best.heroUrl && 'hero',
+  ].filter(Boolean).join(' + ')})`);
+
+  return {
+    thumbnail: best.imageUrl || null,
+    poster: best.posterUrl || null,
+    hero: best.heroUrl || null,
+  };
+}
+
 let ibdbImageCache = null;
 
 // Fetch show images from IBDB page (which embeds broadway.org CDN images)
@@ -2411,6 +2557,8 @@ async function main() {
   // FILL-HEROES MODE: Find shows with poster/thumbnail but no hero, fill from Theatr/TodayTix
   const fillHeroes = args.includes('--fill-heroes');
   if (fillHeroes) {
+    // Include all statuses — hero gaps exist across all eras
+    shows = showsData.shows;
     shows = shows.filter(s => {
       if (!s.images) return false;
       const hasThumbOrPoster = s.images.thumbnail || s.images.poster;
