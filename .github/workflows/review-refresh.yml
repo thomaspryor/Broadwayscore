@@ -70,6 +70,9 @@ jobs:
       - name: Setup Playwright
         uses: ./.github/actions/setup-playwright
 
+      - name: Install PDF tools
+        run: sudo apt-get install -y poppler-utils
+
       - name: Determine if awards season
         id: season
         run: |
@@ -305,6 +308,20 @@ jobs:
       - name: Convert Show Score data to review-text stubs
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
         run: node scripts/convert-show-score-to-review-texts.js
+
+      - name: Extract Theatre Record reviews (WE shows)
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        continue-on-error: true
+        env:
+          TR_EMAIL: ${{ secrets.TR_EMAIL }}
+          TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
+        run: |
+          if [ -z "$TR_EMAIL" ] || [ -z "$TR_PASSWORD" ]; then
+            echo "TR credentials not configured — skipping Theatre Record extraction"
+            exit 0
+          fi
+          echo "Extracting reviews from Theatre Record (open WE shows)..."
+          node scripts/extract-theatre-record.js --open-we
 
       - name: Cleanup phantom outlet duplicates
         run: node scripts/cleanup-phantom-outlets.js --apply

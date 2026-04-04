@@ -149,7 +149,7 @@ export default function HomePage() {
     .map(serializeShow);
 
   // Lottery/Rush data (fallback to empty if file missing)
-  let lrShows: Record<string, { lottery?: unknown; rush?: unknown; digitalRush?: unknown }> = {};
+  let lrShows: Record<string, { lottery?: { price?: number }; specialLottery?: { price?: number }; rush?: { price?: number }; digitalRush?: { price?: number } }> = {};
   try {
     const lotteryRushData = JSON.parse(
       fs.readFileSync(path.join(process.cwd(), 'data/lottery-rush.json'), 'utf8')
@@ -157,17 +157,32 @@ export default function HomePage() {
     lrShows = lotteryRushData.shows || {};
   } catch { /* lottery-rush.json missing — shelves will be empty */ }
 
+  function lotterySubtitle(showId: string): string | undefined {
+    const lr = lrShows[showId];
+    if (!lr) return undefined;
+    const price = lr.specialLottery?.price ?? lr.lottery?.price;
+    return price ? `$${Math.round(price)} lottery` : undefined;
+  }
+
+  function rushSubtitle(showId: string): string | undefined {
+    const lr = lrShows[showId];
+    if (!lr) return undefined;
+    const prices = [lr.rush?.price, lr.digitalRush?.price].filter((p): p is number => p != null);
+    const price = prices.length ? Math.min(...prices) : undefined;
+    return price ? `$${Math.round(price)} rush` : undefined;
+  }
+
   // Broadway Lotteries — open BW shows with lottery, sorted by score
   const lotteryShowsList = allShows
     .filter(s => s.status === 'open' && lrShows[s.id]?.lottery)
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-    .map(serializeShow);
+    .map(s => ({ ...serializeShow(s), subtitle: lotterySubtitle(s.id) }));
 
   // Rush Tickets — open BW shows with rush or digital rush, sorted by score
   const rushShowsList = allShows
     .filter(s => s.status === 'open' && (lrShows[s.id]?.rush || lrShows[s.id]?.digitalRush))
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-    .map(serializeShow);
+    .map(s => ({ ...serializeShow(s), subtitle: rushSubtitle(s.id) }));
 
   // Box Office data (fallback to empty if file missing)
   let grossesShows: Record<string, { thisWeek?: { gross?: number; capacity?: number } }> = {};
