@@ -1,0 +1,65 @@
+name: Fetch TodayTix Showtimes
+
+on:
+  schedule:
+    # Daily at 6 AM UTC (1 AM EST)
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
+
+# Public TodayTix API — no scraping secrets needed.
+# Exempt from BD/SB lint rule (direct REST API, not web scraping).
+
+concurrency:
+  group: fetch-todaytix-showtimes
+  cancel-in-progress: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch TodayTix showtime IDs
+        run: node scripts/fetch-todaytix-showtimes.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/todaytix-showtimes.json; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/todaytix-showtimes.json
+          git commit -m "data: Update TodayTix showtime IDs [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Dispatch deploy
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fetch TodayTix Showtimes Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
