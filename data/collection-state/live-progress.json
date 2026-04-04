@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-04T01:42:15.011Z",
-  "processed": 268,
-  "failed": 805,
-  "successRate": "25.0%",
+  "updatedAt": "2026-04-04T01:43:40.860Z",
+  "processed": 273,
+  "failed": 810,
+  "successRate": "25.2%",
   "tierBreakdown": {
-    "playwright": 127,
+    "playwright": 129,
     "amp": 4,
-    "browserbase": 60,
+    "browserbase": 62,
     "directCookies": 0,
     "scrapingbee": 60,
     "brightdata": 0,
     "archiveToday": 88,
-    "archive": 57
+    "archive": 59
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-04-03T13:52:55.949Z",
-      "event": "bb-session",
-      "session": "123d7c9d",
-      "url": "https://www.wsj.com/articles/straight-white-men-and-head-over-heels-reviews-all-"
-    },
-    {
-      "t": "2026-04-03T13:52:57.120Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-03T13:56:30.760Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-04T01:38:24.436Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T01:42:56.851Z",
+      "event": "bb-session",
+      "session": "a2af5f21",
+      "url": "https://www.amny.com/entertainment/broadway/ambroadway-dead-outlaw-cancels-appea"
+    },
+    {
+      "t": "2026-04-04T01:42:58.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

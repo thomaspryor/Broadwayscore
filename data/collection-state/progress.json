@@ -267,7 +267,12 @@
     "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
     "beetlejuice-west-end-2026/timeout--andrzej-lukowski.json",
     "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
-    "arcadia-west-end-2026/standard--nick-curtis.json"
+    "arcadia-west-end-2026/standard--nick-curtis.json",
+    "art-2025/ew--shania-russell.json",
+    "art-2025/forward--olivia-haynie.json",
+    "dead-outlaw-2025/amny--matt-windman.json",
+    "gypsy-2024/billboard--unknown.json",
+    "gypsy-2024/rollingstone--larisha-paul.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--unknown.json",
@@ -1074,7 +1079,12 @@
     "high-noon-west-end-2025/times-uk--clive-davis.json",
     "art-2025/indiewire--unknown.json",
     "art-2025/wsj--unknown.json",
-    "art-2025/talkinbroadway--unknown.json"
+    "art-2025/talkinbroadway--unknown.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1205,7 +1215,9 @@
       "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json",
       "the-comedy-about-spies-west-end-2026/standard--unknown.json",
       "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
-      "arcadia-west-end-2026/standard--nick-curtis.json"
+      "arcadia-west-end-2026/standard--nick-curtis.json",
+      "art-2025/ew--shania-russell.json",
+      "art-2025/forward--olivia-haynie.json"
     ],
     "amp": [
       "data/review-texts/take-me-out-2022/nypost--johnny-oleksinski.json",
@@ -1273,7 +1285,9 @@
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
       "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
       "data/review-texts/abba-voyage-off-west-end-2026/variety--mark-sutherland.json",
-      "abba-voyage-off-west-end-2026/variety--mark-sutherland.json"
+      "abba-voyage-off-west-end-2026/variety--mark-sutherland.json",
+      "data/review-texts/dead-outlaw-2025/amny--matt-windman.json",
+      "dead-outlaw-2025/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1486,11 +1500,13 @@
       "back-to-the-future-west-end-2021/whatsonstage--sarah-crompton.json",
       "the-play-that-goes-wrong-off-broadway-2019/susangrangercom--philip-dorian.json",
       "the-mousetrap-west-end-2021/metro-uk--unknown.json",
-      "art-2025/indiewire--unknown.json"
+      "art-2025/indiewire--unknown.json",
+      "gypsy-2024/billboard--unknown.json",
+      "gypsy-2024/rollingstone--larisha-paul.json"
     ]
   },
   "startTime": "2026-04-03T09:12:36.616Z",
-  "lastProcessed": "art-2025/talkinbroadway--unknown.json",
+  "lastProcessed": "romeo-juliet-2024/thestage--nicole-serratore.json",
   "log": [
     {
       "t": "2026-04-03T09:12:37.565Z",
@@ -2041,6 +2057,17 @@
       "t": "2026-04-04T01:38:24.436Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T01:42:56.851Z",
+      "event": "bb-session",
+      "session": "a2af5f21",
+      "url": "https://www.amny.com/entertainment/broadway/ambroadway-dead-outlaw-cancels-appea"
+    },
+    {
+      "t": "2026-04-04T01:42:58.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
