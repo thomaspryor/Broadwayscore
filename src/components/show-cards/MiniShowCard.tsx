@@ -71,6 +71,9 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
       <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
         {show.title}
       </h3>
+      {show.subtitle && (
+        <p className="text-[11px] text-emerald-400 font-medium mt-0.5 leading-tight">{show.subtitle}</p>
+      )}
     </Link>
   );
 });

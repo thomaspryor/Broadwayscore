@@ -14,8 +14,178 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
+
+// ─── PDF review parser ───
+// Parses reviews from pdftotext output. Reviews follow pattern:
+// OUTLET NAME (ALL CAPS) → date line → critic name → review text
+const DATE_PATTERN = /^\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$/;
+
+function parsePdfReviews(text, showTitle) {
+  const lines = text.split('\n');
+  const reviews = [];
+
+  const titleUpper = showTitle.toUpperCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+  // Step 1: Find the reviews section for THIS production
+  // Pattern: "Reviews" right-aligned, then show title, then first outlet+date
+  let reviewsStart = -1;
+  let reviewsEnd = lines.length;
+
+  for (let j = 0; j < lines.length; j++) {
+    const trimmed = lines[j].trim()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (trimmed === titleUpper || trimmed === 'THE ' + titleUpper) {
+      // Check if preceded by "Reviews" marker (within 5 lines)
+      for (let k = Math.max(0, j - 5); k < j; k++) {
+        if (lines[k].trim() === 'Reviews') {
+          reviewsStart = j + 1;
+          break;
+        }
+      }
+      if (reviewsStart > -1) break;
+    }
+  }
+
+  // Fallback: find first outlet+date pattern after "Reviews" text
+  if (reviewsStart === -1) {
+    for (let j = 0; j < lines.length; j++) {
+      if (lines[j].trim() !== 'Reviews') continue;
+      for (let k = j + 1; k < Math.min(j + 10, lines.length); k++) {
+        const line = lines[k].trim();
+        if (line === line.toUpperCase() && line.length > 3 && /^[A-Z]/.test(line)) {
+          const nextLine = (lines[k + 1] || '').trim();
+          if (DATE_PATTERN.test(nextLine)) {
+            reviewsStart = k;
+            break;
+          }
+        }
+      }
+      if (reviewsStart > -1) break;
+    }
+  }
+
+  if (reviewsStart === -1) return [];
+
+  // Step 2: Find end boundary — next production (heavily indented ALL CAPS title)
+  for (let j = reviewsStart; j < lines.length; j++) {
+    const raw = lines[j];
+    const trimmed = raw.trim();
+    // Next production: indented 20+ spaces, ALL CAPS, not our title, not "Index", not "Reviews"
+    if (raw.match(/^\s{20,}/) && trimmed.length > 3 && trimmed === trimmed.toUpperCase() &&
+        /^[A-Z]/.test(trimmed) && trimmed !== 'Reviews' && trimmed !== 'Index' &&
+        !trimmed.includes(titleUpper)) {
+      reviewsEnd = j;
+      break;
+    }
+  }
+
+  // Step 3: Parse reviews within the bounded section
+  let i = reviewsStart;
+  while (i < reviewsEnd) {
+    const line = lines[i].trim();
+
+    // Detect outlet: ALL CAPS line followed by a date
+    if (line === line.toUpperCase() && line.length > 3 && /^[A-Z]/.test(line) &&
+        !line.includes('Cast & Creative') && line !== titleUpper && line !== 'THE ' + titleUpper) {
+      const nextLine = (lines[i + 1] || '').trim();
+      if (DATE_PATTERN.test(nextLine)) {
+        const outlet = line;
+        const date = nextLine;
+        const critic = (lines[i + 2] || '').trim();
+        i += 3;
+
+        // Skip blank line after critic name
+        while (i < reviewsEnd && lines[i].trim() === '') i++;
+
+        // Collect review text until next outlet or section boundary
+        const textLines = [];
+        while (i < reviewsEnd) {
+          const curr = lines[i].trim();
+          const next = (lines[i + 1] || '').trim();
+
+          // Stop at next outlet (ALL CAPS + date)
+          if (curr === curr.toUpperCase() && curr.length > 3 && /^[A-Z]/.test(curr) && DATE_PATTERN.test(next)) {
+            break;
+          }
+
+          textLines.push(lines[i]);
+          i++;
+        }
+
+        const fullText = textLines.map(l => l.trim()).filter(l => l).join('\n');
+        if (fullText.length > 50) {
+          // Convert outlet name to Title Case
+          const outletTitle = outlet.split(/[\s.]+/)
+            .map(w => w.charAt(0) + w.slice(1).toLowerCase())
+            .join(' ')
+            .replace(/\.Com$/i, '.com')
+            .replace(/Thereviewshub\.com/i, 'The Reviews Hub');
+
+          reviews.push({
+            outlet: outletTitle,
+            date,
+            critic: critic || null,
+            fullText
+          });
+        }
+        continue;
+      }
+    }
+    i++;
+  }
+
+  return reviews;
+}
+
+async function extractReviewsFromPDF(page, context, pdfUrl, show) {
+  // Get session cookie from Playwright context
+  const cookies = await context.cookies();
+  const phpSession = cookies.find(c => c.name === 'PHPSESSID');
+  if (!phpSession) {
+    console.log('  No PHPSESSID cookie — cannot download PDF');
+    return [];
+  }
+
+  // Download PDF to temp file
+  const tmpFile = path.join('/tmp', `tr-${show.id}.pdf`);
+  try {
+    // Resolve any redirects first — /archive/volume/ redirects to /archive/issue/
+    const resolvedUrl = pdfUrl.replace(/#.*$/, ''); // Strip fragment
+    execSync(`curl -s -L -o "${tmpFile}" -b "PHPSESSID=${phpSession.value}" "${resolvedUrl}"`, { timeout: 30000 });
+  } catch (e) {
+    console.log(`  PDF download failed: ${e.message}`);
+    return [];
+  }
+
+  // Verify it's actually a PDF
+  const fileType = execSync(`file "${tmpFile}"`).toString();
+  if (!fileType.includes('PDF')) {
+    console.log(`  Downloaded file is not a PDF: ${fileType.trim()}`);
+    fs.unlinkSync(tmpFile);
+    return [];
+  }
+
+  // Extract text with pdftotext
+  let text;
+  try {
+    text = execSync(`pdftotext -layout "${tmpFile}" -`, { maxBuffer: 10 * 1024 * 1024 }).toString();
+  } catch (e) {
+    console.log(`  pdftotext failed: ${e.message}`);
+    fs.unlinkSync(tmpFile);
+    return [];
+  }
+
+  // Clean up
+  fs.unlinkSync(tmpFile);
+
+  // Parse reviews from extracted text
+  const reviews = parsePdfReviews(text, show.title);
+  return reviews;
+}
 
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
@@ -274,6 +444,47 @@ async function main() {
       return r;
     });
 
+    // If no results or no London venue match, retry with location filter
+    if (results.length === 0 || !results.find(r => isLondonVenue(r.venue))) {
+      // Retry search with location filter enabled
+      const retryUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + searchTitle + '"')}&title=on&location=on&order=newest`;
+      await page.goto(retryUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await page.waitForTimeout(1000);
+
+      const retryResults = await page.evaluate(() => {
+        const articles = document.querySelectorAll('article');
+        const r = [];
+        articles.forEach(a => {
+          const h2 = a.querySelector('h2');
+          const venue = a.querySelector('h3');
+          const links = a.querySelectorAll('a');
+          let link = null;
+          for (const l of links) {
+            if (l.href && l.href.includes('/archive/')) { link = l; break; }
+          }
+          if (!link) {
+            for (const l of links) {
+              if (l.href && !l.href.includes('/search')) { link = l; break; }
+            }
+          }
+          if (!h2 || !link) return;
+          r.push({
+            title: h2.textContent.trim(),
+            venue: venue?.textContent?.trim() || '',
+            link: link.href,
+            linkText: link.textContent.trim()
+          });
+        });
+        return r;
+      });
+
+      // Merge results, preferring London venues
+      const seen = new Set(results.map(r => r.link));
+      for (const r of retryResults) {
+        if (!seen.has(r.link)) { results.push(r); seen.add(r.link); }
+      }
+    }
+
     if (results.length === 0) {
       console.log('  No results found on Theatre Record');
       continue;
@@ -319,45 +530,44 @@ async function main() {
     const isPDF = (bestResult.link.includes('/volume/') || bestResult.link.includes('/issue/'))
       && !bestResult.linkText.includes('reviews');
 
+    let reviews;
+
     if (isPDF) {
-      console.log('  ⚠ PDF format (pre-2022) — skipping for now (HTML extraction only)');
-      continue;
-    }
+      // ─── PDF extraction path (pre-2022 issues) ───
+      console.log('  PDF format — downloading and extracting...');
+      reviews = await extractReviewsFromPDF(page, context, bestResult.link, show);
+    } else {
+      // ─── HTML extraction path (post-2022) ───
+      try {
+        await page.goto(bestResult.link, { waitUntil: 'domcontentloaded', timeout: 20000 });
+      } catch (e) {
+        console.log(`  Failed to load page: ${e.message}`);
+        continue;
+      }
+      await page.waitForTimeout(2000);
 
-    // Navigate to production page
-    try {
-      await page.goto(bestResult.link, { waitUntil: 'domcontentloaded', timeout: 20000 });
-    } catch (e) {
-      console.log(`  Failed to load page: ${e.message}`);
-      continue;
-    }
-    await page.waitForTimeout(2000);
-
-    // Extract reviews — text is in the DOM even when collapsed (hidden via CSS)
-    // No need to click "See full review" — just read all <p> tags inside each article
-    const reviews = await page.evaluate(() => {
-      const articles = document.querySelectorAll('main article');
-      const result = [];
-      articles.forEach((a, i) => {
-        if (i === 0) return; // skip production info
-        const h2 = a.querySelector('h2');
-        if (!h2) return;
-        const meta = h2.nextElementSibling;
-        // Get ALL paragraphs including hidden ones
-        const paras = [...a.querySelectorAll('p')];
-        const fullText = paras.map(p => p.textContent.trim()).filter(t => t).join('\n\n');
-        const criticLink = meta ? meta.querySelector('a') : null;
-        const dateText = meta ? meta.textContent.replace(/\s*by\s.*/, '').trim() : '';
-
-        result.push({
-          outlet: h2.textContent.trim(),
-          critic: criticLink ? criticLink.textContent.trim() : null,
-          date: dateText,
-          fullText
+      reviews = await page.evaluate(() => {
+        const articles = document.querySelectorAll('main article');
+        const result = [];
+        articles.forEach((a, i) => {
+          if (i === 0) return;
+          const h2 = a.querySelector('h2');
+          if (!h2) return;
+          const meta = h2.nextElementSibling;
+          const paras = [...a.querySelectorAll('p')];
+          const fullText = paras.map(p => p.textContent.trim()).filter(t => t).join('\n\n');
+          const criticLink = meta ? meta.querySelector('a') : null;
+          const dateText = meta ? meta.textContent.replace(/\s*by\s.*/, '').trim() : '';
+          result.push({
+            outlet: h2.textContent.trim(),
+            critic: criticLink ? criticLink.textContent.trim() : null,
+            date: dateText,
+            fullText
+          });
         });
+        return result;
       });
-      return result;
-    });
+    }
 
     console.log(`  Found ${reviews.length} reviews`);
     totalShows++;

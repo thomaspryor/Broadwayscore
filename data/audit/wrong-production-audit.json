@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-04-04T04:03:01.456Z",
+  "timestamp": "2026-04-04T04:21:14.225Z",
   "stats": {
     "totalReviews": 29233,
-    "alreadyFlagged": 8223,
+    "alreadyFlagged": 8227,
     "dateGuardCatches": 13,
-    "directorMismatch": 920,
+    "directorMismatch": 921,
     "tvFilmSignals": 3404,
     "londonSignals": 1045,
     "offBroadwaySignals": 982,
-    "yearMismatch": 69,
+    "yearMismatch": 71,
     "noPublishDate": 5652
   },
   "findings": [
@@ -43824,6 +43824,34 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "about-entertainment--chris-caggiano.json",
+      "score": 79,
+      "publishDate": "2015-09-27",
+      "url": "http://theater.about.com/od/reviewsandrecommendations/fl/Review-Spring-Awakening-Revival-on-Broadway.htm",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": 47,
+      "publishDate": "2015-09-27",
+      "url": "http://broadwayandme.blogspot.com/2015/10/feeling-chilly-about-spring-awakening.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2006 (2x) more than 2015 (0x). 2006 matches production: spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "curtainup--elyse-sommer.json",
       "score": 85,
       "publishDate": "2015-09-27",
@@ -43889,6 +43917,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "file": "stagezine--scott-harrah.json",
+      "score": 67,
+      "publishDate": "2015-09-27",
+      "url": "http://www.stagezine.com/spring-awakening-returns-to-broadway/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2006 (3x) more than 2015 (2x). 2006 matches production: spring-awakening-2006"
         }
       ]
     },

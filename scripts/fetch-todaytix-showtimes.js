@@ -13,6 +13,7 @@ const path = require('path');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'todaytix-showtimes.json');
+const SCHEDULES_PATH = path.join(__dirname, '..', 'data', 'show-schedules.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIMIT = (() => {
   const idx = process.argv.indexOf('--limit');
@@ -59,6 +60,8 @@ async function main() {
   if (LIMIT < Infinity) console.log(`Limiting to ${LIMIT} shows`);
 
   const result = { lastUpdated: new Date().toISOString(), shows: {} };
+  // Also collect time data for schedule generation (date → { m: "HH:mm", e: "HH:mm" })
+  const scheduleData = {};
   const toProcess = openShows.slice(0, LIMIT);
   let fetched = 0;
 
@@ -70,20 +73,24 @@ async function main() {
     }
 
     const entry = { todaytixId: show.todaytixId, showtimes: {} };
+    const showSchedule = {}; // date → { m: time, e: time }
 
     for (const st of showtimes) {
       const date = st.localDate; // YYYY-MM-DD
       if (!date) continue;
       const slot = classifySlot(st);
       if (!entry.showtimes[date]) entry.showtimes[date] = {};
+      if (!showSchedule[date]) showSchedule[date] = {};
       // Take the first showtime per slot (avoid duplicates)
       if (!entry.showtimes[date][slot]) {
         entry.showtimes[date][slot] = st.id;
+        showSchedule[date][slot] = st.localTime || null;
       }
     }
 
     const dateCount = Object.keys(entry.showtimes).length;
     result.shows[show.id] = entry;
+    scheduleData[show.id] = showSchedule;
     fetched++;
     console.log(`  ${show.title}: ${showtimes.length} showtimes across ${dateCount} dates`);
 
@@ -99,6 +106,61 @@ async function main() {
   } else {
     fs.writeFileSync(OUTPUT_PATH, JSON.stringify(result, null, 2) + '\n');
     console.log(`Wrote ${OUTPUT_PATH} (${(fs.statSync(OUTPUT_PATH).size / 1024).toFixed(1)}KB)`);
+  }
+
+  // Generate schedule entries for shows not already covered by bwayrush
+  generateSchedules(scheduleData);
+}
+
+/**
+ * Build show-schedules.json entries from TodayTix data.
+ * Only adds shows NOT already in the file (bwayrush data takes priority).
+ */
+function generateSchedules(scheduleData) {
+  const schedules = JSON.parse(fs.readFileSync(SCHEDULES_PATH, 'utf8'));
+  const existingCount = Object.keys(schedules.shows).length;
+  let added = 0;
+
+  for (const [showId, dateMap] of Object.entries(scheduleData)) {
+    if (schedules.shows[showId]) continue; // bwayrush already has it
+
+    const dates = Object.keys(dateMap).sort();
+    if (dates.length === 0) continue;
+
+    // Group dates into Mon-Sun weeks
+    const weeks = {};
+    for (const dateStr of dates) {
+      const d = new Date(dateStr + 'T12:00:00');
+      const dow = d.getDay(); // 0=Sun
+      const mondayOffset = dow === 0 ? -6 : 1 - dow;
+      const monday = new Date(d);
+      monday.setDate(d.getDate() + mondayOffset);
+      const key = monday.getFullYear().toString() +
+        String(monday.getMonth() + 1).padStart(2, '0') +
+        String(monday.getDate()).padStart(2, '0');
+
+      if (!weeks[key]) {
+        weeks[key] = Array.from({ length: 7 }, () => ({ m: null, e: null }));
+      }
+
+      const dayIdx = dow === 0 ? 6 : dow - 1;
+      const slots = dateMap[dateStr];
+      if (slots.m) weeks[key][dayIdx].m = slots.m;
+      if (slots.e) weeks[key][dayIdx].e = slots.e;
+    }
+
+    schedules.shows[showId] = { weeks };
+    added++;
+  }
+
+  if (added > 0) {
+    schedules.lastUpdated = new Date().toISOString();
+    if (!DRY_RUN) {
+      fs.writeFileSync(SCHEDULES_PATH, JSON.stringify(schedules, null, 2) + '\n');
+    }
+    console.log(`Schedules: added ${added} shows (${existingCount} bwayrush + ${added} TodayTix = ${existingCount + added} total)`);
+  } else {
+    console.log('Schedules: no new shows to add');
   }
 }
 
