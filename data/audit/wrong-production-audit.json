@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-04T17:32:28.756Z",
+  "timestamp": "2026-04-04T17:40:46.820Z",
   "stats": {
-    "totalReviews": 29343,
-    "alreadyFlagged": 8345,
+    "totalReviews": 29387,
+    "alreadyFlagged": 8351,
     "dateGuardCatches": 13,
-    "directorMismatch": 928,
-    "tvFilmSignals": 3414,
-    "londonSignals": 1056,
+    "directorMismatch": 936,
+    "tvFilmSignals": 3421,
+    "londonSignals": 1057,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
     "noPublishDate": 5624
@@ -24743,7 +24743,7 @@
       "file": "i-paper--fiona-mountford.json",
       "score": 83,
       "publishDate": "2025-12-12",
-      "url": null,
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOoqMmrp6-73Caq_84s6fdiMnpO2APkbFZ9NbXRTwqTslXDutQcsh",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26114,7 +26114,7 @@
       "file": "everything-theatre--molly-g.json",
       "score": 86,
       "publishDate": "2026-03-31",
-      "url": null,
+      "url": "https://everything-theatre.co.uk/2026/03/review-john-proctor-is-the-villain-royal-court/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28460,10 +28460,41 @@
     },
     {
       "showId": "les-miserables-west-end-2021",
+      "file": "british-theatre--philip-fisher.json",
+      "publishDate": "2020-01-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
       "score": 93,
       "publishDate": "2020-01-17",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-7897433/The-mighty-Mis-revolutionary-PATRICK-MARMION-reviews-Les-Miserables.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2020-01-25",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28566,6 +28597,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "metro--claire-allfree.json",
+      "publishDate": "2020-01-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
         }
       ]
     },
@@ -28773,6 +28832,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "times-uk--quentin-letts.json",
+      "publishDate": "2020-01-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2020-01-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -52449,6 +52534,19 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "the-scotsman--joyce-mcmillan.json",
+      "publishDate": "2019-12-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "variety--matt-wolf.json",
       "score": 79,
       "publishDate": "1999-10-25",
@@ -54705,6 +54803,19 @@
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "artsdesk--matt-wolf.json",
+      "publishDate": "2020-12-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "broadwayworld--kat-mokrynski.json",
       "score": 81,
       "publishDate": "2014-09-18",
@@ -54714,6 +54825,58 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "express-uk--george-simpson.json",
+      "publishDate": "2020-12-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2020-12-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2020-12-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2020-12-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -61998,7 +62161,7 @@
       "file": "i-paper--fiona-mountford.json",
       "score": 94,
       "publishDate": "2025-11-22",
-      "url": null,
+      "url": "https://inews.co.uk/culture/arts/bryan-cranston-magnificent-all-my-sons-4057691?srsltid=AfmBOooerBV6NjHgrHNlYoPbG0rjuYdilQo9H50DYzD2_qENi1dSsI7v",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -63732,7 +63895,7 @@
       "showId": "broken-glass-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "publishDate": "2026-03-04",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/broken-glass-theatre-review-llvjbwntg",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -65421,7 +65584,7 @@
       "file": "theatre-weekly--greg-stewart.json",
       "score": 16,
       "publishDate": "2026-02-17",
-      "url": null,
+      "url": "https://theatreweekly.com/review-dracula-at-noel-coward-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -67669,7 +67832,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 86,
       "publishDate": "2024-02-26",
-      "url": null,
+      "url": "https://www.ft.com/content/44054524-0af1-49ee-9983-4e963f73a5a9?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -67682,7 +67845,7 @@
       "showId": "hadestown-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "publishDate": "2024-02-22",
-      "url": null,
+      "url": "https://inews.co.uk/culture/arts/hadestown-review-lyric-theatre-2920484?srsltid=AfmBOoqty6mX7tY4_B7Nu93D7LPH_W9dHiyP9n0hGQpsMutb5pgqjqpw",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71318,7 +71481,7 @@
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 84,
       "publishDate": "2026-04-02",
-      "url": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-LES-LIASIONS-DANGEREUSES-Starring-Lesley-Manville-Aiden-Turner-20260402",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71416,7 +71579,7 @@
       "file": "thereviewshub--maryam-philpott.json",
       "score": 86,
       "publishDate": "2026-04-02",
-      "url": null,
+      "url": "https://www.thereviewshub.com/les-liaisons-dangereuses-national-theatre-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73678,7 +73841,7 @@
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 88,
       "publishDate": "2025-01-15",
-      "url": null,
+      "url": "https://www.broadwayworld.com/shows/Oliver!-335212.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80560,6 +80723,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "metro--claire-allfree.json",
+      "publishDate": "2019-09-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
