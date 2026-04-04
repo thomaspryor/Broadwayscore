@@ -239,31 +239,22 @@ function parseRawPdfReviews(text, showTitle) {
     i++;
   }
 
-  // Filter: keep only reviews that mention our show title
-  // For short/common titles (Wicked, Six, Cats, Rent, Oliver, Chess), require
-  // the title to appear as a standalone word near review-specific context
-  const isCommonWord = titleLower.length <= 7 && /^[a-z]+$/.test(titleLower);
+  // Filter: keep only reviews that are actually ABOUT our show
+  // Raw mode extracts every review from the PDF — most are for other shows.
+  // Require: title appears 2+ times as phrase/word AND near theatre context
+  const titleEscaped = titleLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const titleRegex = new RegExp(`\\b${titleEscaped}\\b`, 'gi');
 
   const matched = allReviews.filter(r => {
     const textLower = r.fullText.toLowerCase();
+    const mentions = (textLower.match(titleRegex) || []).length;
+    if (mentions < 2) return false;
 
-    if (isCommonWord) {
-      // For short common-word titles: require title as standalone word AND
-      // at least one show-specific signal (venue, author, character name, "musical", "play")
-      const titleRegex = new RegExp(`\\b${titleLower}\\b`, 'i');
-      const titleCount = (textLower.match(titleRegex) || []).length;
-      if (titleCount < 2) return false; // Must appear at least twice
-      // Also check for theatrical context near the title
-      const firstMention = textLower.indexOf(titleLower);
-      const context = textLower.slice(Math.max(0, firstMention - 100), firstMention + 200);
-      const hasTheatreContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph/i.test(context);
-      return hasTheatreContext;
-    }
-
-    // For multi-word titles: full title match or 70% of significant words
-    if (textLower.includes(titleLower)) return true;
-    const wordsFound = titleWords.filter(w => textLower.includes(w));
-    return wordsFound.length >= Math.ceil(titleWords.length * 0.7);
+    // Check theatre context near the first mention
+    const firstIdx = textLower.search(titleRegex);
+    const context = textLower.slice(Math.max(0, firstIdx - 150), firstIdx + 300);
+    const hasContext = /musical|play|production|stage|theatre|theater|curtain|cast|director|choreograph|review|opening|premiere|perform/i.test(context);
+    return hasContext;
   });
 
   // Convert outlet names to Title Case
@@ -543,6 +534,19 @@ function normalizeTitle(t) {
     .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
 }
 
+// Check if two titles match — exact first, then strip common suffixes
+function titlesMatch(a, b) {
+  const na = normalizeTitle(a);
+  const nb = normalizeTitle(b);
+  if (na === nb) return true;
+  // Strip common suffixes: "the Musical", "the Play", "- The Musical", etc.
+  const stripSuffix = s => s
+    .replace(/\s*[-–—:]\s*the\s+(musical|play|show|revue|opera|concert|experience)$/i, '')
+    .replace(/\s+the\s+(musical|play|show|revue|opera|concert|experience)$/i, '')
+    .trim();
+  return stripSuffix(na) === stripSuffix(nb) || na.startsWith(nb) || nb.startsWith(na);
+}
+
 // Scrape TR /listings/current-west-end or /listings/current-london
 async function scrapeTRListingPage(page, listingUrl) {
   console.log(`Scraping listing: ${listingUrl}`);
@@ -588,7 +592,11 @@ function matchListingToShows(listings, targetShows) {
     listingByNormTitle.set(normalizeTitle(entry.title), entry);
   }
   for (const show of targetShows) {
-    const listing = listingByNormTitle.get(normalizeTitle(show.title));
+    // Exact match first, then fuzzy
+    let listing = listingByNormTitle.get(normalizeTitle(show.title));
+    if (!listing) {
+      listing = listings.find(e => titlesMatch(e.title, show.title));
+    }
     if (listing) {
       matched.push({ show, listing });
     } else {
@@ -824,17 +832,21 @@ async function main() {
     return { newCount, skippedCount };
   }
 
+  // ─── Shared: search TR, collect results, merge deduped ───
+  async function searchTR(title) {
+    const searchUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + title + '"')}&title=on&order=newest`;
+    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForTimeout(1000);
+    return extractSearchResults(page);
+  }
+
   // ─── Shared: search TR for a show, pick best result, extract ───
   async function searchAndProcessShow(show, hintVenue) {
     const searchTitle = show.title
       .replace(/['']/g, "'")
       .replace(/&/g, 'and');
-    const searchUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + searchTitle + '"')}&title=on&order=newest`;
 
-    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
-    await page.waitForTimeout(1000);
-
-    const results = await extractSearchResults(page);
+    let results = await searchTR(searchTitle);
 
     // If no results or no London venue, retry with location filter
     if (results.length === 0 || !results.find(r => isLondonVenue(r.venue))) {
@@ -849,13 +861,29 @@ async function main() {
       }
     }
 
+    let titleMatches = results.filter(r => titlesMatch(r.title, show.title));
+
+    // If no title match, try stripping "the Musical/Play/etc." suffix
+    if (titleMatches.length === 0) {
+      const shorter = searchTitle
+        .replace(/\s*[-–—:]\s*the\s+(musical|play|show|revue)$/i, '')
+        .replace(/\s+the\s+(musical|play|show|revue)$/i, '')
+        .trim();
+      if (shorter !== searchTitle && shorter.length >= 3) {
+        console.log(`  Retrying search with shorter title: "${shorter}"`);
+        const moreResults = await searchTR(shorter);
+        const seen = new Set(results.map(r => r.link));
+        for (const r of moreResults) {
+          if (!seen.has(r.link)) { results.push(r); seen.add(r.link); }
+        }
+        titleMatches = results.filter(r => titlesMatch(r.title, show.title));
+      }
+    }
+
     if (results.length === 0) {
       console.log('  No results found on Theatre Record');
       return null;
     }
-
-    const ourTitle = normalizeTitle(show.title);
-    const titleMatches = results.filter(r => normalizeTitle(r.title) === ourTitle);
 
     if (titleMatches.length === 0) {
       console.log(`  No title match. TR results: ${results.map(r => `"${r.title}" @ ${r.venue}`).join('; ')}`);
