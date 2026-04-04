@@ -491,6 +491,17 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Performance:** ~20 sec/show (vs ~5 min/show previously). 100 gap shows in ~7 min with 5 parallel jobs.
 - **Parallel-safe:** Matrix strategy with round-robin distribution, 30s stagger, 5-retry push with rebase, fail-fast: false, pre-commit JSON validation, atomic file writes
 
+## `fetch-todaytix-showtimes.yml`
+- **Runs:** Daily at 6 AM UTC (1 AM EST), or manually
+- **Does:** Fetches performance-level showtime IDs from TodayTix public API for all open shows with `todaytixId`. Also generates `show-schedules.json` entries for WE/OB shows (Broadway uses bwayrush). Cleans up closed WE/OB shows from schedules.
+- **Script:** `scripts/fetch-todaytix-showtimes.js`
+- **No secrets needed** (public TodayTix API)
+- **Data files:** `data/todaytix-showtimes.json` (deep-link IDs), `data/show-schedules.json` (weekly schedule grid)
+- **Safety guard:** Aborts if <50% of shows return data (prevents silent data loss from API outage)
+- **Monitored by:** `check-cron-health.yml` (36h max gap)
+- **Validated by:** `validate-data.js` (staleness, coverage, structural integrity)
+- **CLI:** `node scripts/fetch-todaytix-showtimes.js [--dry-run] [--limit N]`
+
 ## `fix-todaytix-links.yml`
 - **Runs:** Weekly on Mondays at 10 AM EST (3 PM UTC), or manually
 - **Does:** Checks all TodayTix URLs in shows.json via HEAD requests. Detects 404s and wrong-show redirects (ID recycling) by comparing page `<title>`. Auto-fixes broken links using TodayTix public API (`api.todaytix.com/api/v2/shows?query=NAME&location=1`). Removes stale links for closed shows. Commits fixes directly.
