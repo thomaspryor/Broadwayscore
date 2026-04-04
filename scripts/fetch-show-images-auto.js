@@ -2408,6 +2408,55 @@ async function main() {
     console.log(`Filtering to show: ${showFilter}`);
   }
 
+  // FILL-HEROES MODE: Find shows with poster/thumbnail but no hero, fill from Theatr/TodayTix
+  const fillHeroes = args.includes('--fill-heroes');
+  if (fillHeroes) {
+    shows = shows.filter(s => {
+      if (!s.images) return false;
+      const hasThumbOrPoster = s.images.thumbnail || s.images.poster;
+      const hasHero = s.images.hero;
+      return hasThumbOrPoster && !hasHero;
+    });
+    console.log(`Fill-heroes mode: ${shows.length} shows have poster/thumbnail but no hero`);
+
+    // Quick pass: try Theatr and TodayTix API only (both are instant API lookups)
+    let filled = 0;
+
+    // Pre-load Theatr cache
+    await loadTheatrShows();
+    console.log('');
+
+    for (const show of shows) {
+      // Try Theatr first (has bannerImageUrl)
+      const theatrImages = await fetchFromTheatr(show);
+      if (theatrImages?.hero) {
+        if (!show.images) show.images = {};
+        show.images.hero = theatrImages.hero;
+        filled++;
+        continue;
+      }
+
+      // Try TodayTix API match
+      const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
+      if (apiData) {
+        const hero = apiData.hero || apiData.headerImage || null;
+        if (hero && !/coming.?soon/i.test(hero) && !/NORAM/i.test(hero)) {
+          if (!show.images) show.images = {};
+          show.images.hero = hero.includes('?') ? hero : hero + '?fm=webp&q=90';
+          filled++;
+        }
+      }
+    }
+
+    console.log(`\nFilled ${filled} hero images out of ${shows.length} candidates`);
+    fs.writeFileSync(SHOWS_JSON_PATH, JSON.stringify(showsData, null, 2) + '\n');
+    console.log('💾 shows.json saved');
+
+    // Archive the new hero images
+    console.log('\nRun archive-show-images.js to download hero images locally.\n');
+    process.exit(0);
+  }
+
   if (onlyMissing) {
     // Exclude closed shows by default — there are 2000+ and most will never
     // have images online. Without this, --missing takes 3+ hours instead of ~25 min.
