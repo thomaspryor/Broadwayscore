@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-04T01:08:58.020Z",
-  "processed": 236,
-  "failed": 767,
-  "successRate": "23.5%",
+  "updatedAt": "2026-04-04T01:18:38.132Z",
+  "processed": 239,
+  "failed": 774,
+  "successRate": "23.6%",
   "tierBreakdown": {
-    "playwright": 106,
+    "playwright": 107,
     "amp": 4,
     "browserbase": 60,
     "directCookies": 0,
-    "scrapingbee": 53,
+    "scrapingbee": 54,
     "brightdata": 0,
-    "archiveToday": 74,
-    "archive": 52
+    "archiveToday": 78,
+    "archive": 53
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-04-03T13:49:37.909Z",
-      "event": "bb-session",
-      "session": "00b8e427",
-      "url": "https://variety.com/2018/legit/reviews/waverly-gallery-review-elaine-may-broadwa"
-    },
-    {
-      "t": "2026-04-03T13:49:39.131Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-03T13:50:50.901Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-04T01:04:42.018Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-04T01:10:17.150Z",
+      "event": "bb-session",
+      "session": "42a04091",
+      "url": "https://www.wsj.com/arts-culture/television/schmigadoon-review-musical-comedy-as"
+    },
+    {
+      "t": "2026-04-04T01:10:18.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
