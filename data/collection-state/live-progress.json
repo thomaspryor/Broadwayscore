@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-04T12:01:09.186Z",
-  "processed": 37,
-  "failed": 224,
-  "successRate": "14.2%",
+  "updatedAt": "2026-04-04T12:06:51.572Z",
+  "processed": 39,
+  "failed": 232,
+  "successRate": "14.4%",
   "tierBreakdown": {
     "playwright": 14,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 4,
-    "archive": 14
+    "archiveToday": 9,
+    "archive": 16
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-04T09:11:50.527Z",
@@ -36,6 +36,28 @@
       "t": "2026-04-04T11:54:05.156Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-04T12:01:13.655Z",
+      "event": "bb-session",
+      "session": "0a4a7302",
+      "url": "http://www.wsj.com/articles/spring-awakening-review-handfuls-of-poetry-144373457"
+    },
+    {
+      "t": "2026-04-04T12:01:15.085Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T12:02:06.490Z",
+      "event": "bb-session",
+      "session": "79cadf4e",
+      "url": "https://www.wsj.com/articles/spring-awakening-reimagined-and-a-new-season-of-dan"
+    },
+    {
+      "t": "2026-04-04T12:02:08.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -36,7 +36,9 @@
     "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
     "escape-to-margaritaville-2018/deadline--greg-evans.json",
     "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
-    "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+    "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+    "spring-awakening-2015/dc-metro-theater-arts--richard-seff.json",
+    "spring-awakening-2015/huffpost--steven-suskin.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -262,7 +264,15 @@
     "on-your-feet-2015/bobs-theater-blog--robert-sholiton.json",
     "therese-raquin-2015/timeout--adam-feldman.json",
     "the-gin-game-2015/vulture--jesse-green.json",
-    "the-gin-game-2015/ap--mark-kennedy.json"
+    "the-gin-game-2015/ap--mark-kennedy.json",
+    "fool-for-love-2015/bobs-theater-blog--robert-sholiton.json",
+    "spring-awakening-2015/wsj--terry-teachout.json",
+    "spring-awakening-2015/wsj--unknown.json",
+    "spring-awakening-2015/talkinbroadway--matthew-murray.json",
+    "spring-awakening-2015/theater-in-the-now--michael-block.json",
+    "spring-awakening-2015/theater-scene--deirdre-donovan.json",
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "doctor-zhivago-2015/deadline--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -304,7 +314,12 @@
       "data/review-texts/back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
       "data/review-texts/the-book-of-mormon-west-end-2024/whatsonstage--rachel-agyekum.json",
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
-      "data/review-texts/the-price-2017/thestage--chris-jones.json"
+      "data/review-texts/the-price-2017/thestage--chris-jones.json",
+      "data/review-texts/spring-awakening-2015/wsj--terry-teachout.json",
+      "data/review-texts/spring-awakening-2015/wsj--unknown.json",
+      "data/review-texts/spring-awakening-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/spring-awakening-2015/theater-in-the-now--michael-block.json",
+      "data/review-texts/spring-awakening-2015/theater-scene--deirdre-donovan.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -320,11 +335,13 @@
       "the-mousetrap-west-end-2021/broadwayworld--cary-ginell.json",
       "death-of-a-salesman-2022/ew--fabian-brathwiate.json",
       "diana-the-musical-2021/billboard--abbey-white.json",
-      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "spring-awakening-2015/dc-metro-theater-arts--richard-seff.json",
+      "spring-awakening-2015/huffpost--steven-suskin.json"
     ]
   },
   "startTime": "2026-04-04T09:07:31.919Z",
-  "lastProcessed": "the-gin-game-2015/ap--mark-kennedy.json",
+  "lastProcessed": "doctor-zhivago-2015/deadline--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-04T09:11:50.527Z",
@@ -347,6 +364,28 @@
       "t": "2026-04-04T11:54:05.156Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-04T12:01:13.655Z",
+      "event": "bb-session",
+      "session": "0a4a7302",
+      "url": "http://www.wsj.com/articles/spring-awakening-review-handfuls-of-poetry-144373457"
+    },
+    {
+      "t": "2026-04-04T12:01:15.085Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-04T12:02:06.490Z",
+      "event": "bb-session",
+      "session": "79cadf4e",
+      "url": "https://www.wsj.com/articles/spring-awakening-reimagined-and-a-new-season-of-dan"
+    },
+    {
+      "t": "2026-04-04T12:02:08.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
