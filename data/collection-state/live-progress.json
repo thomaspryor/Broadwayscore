@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-04-04T21:19:32.525Z",
-  "processed": 54,
-  "failed": 872,
-  "successRate": "5.8%",
+  "updatedAt": "2026-04-04T21:27:25.797Z",
+  "processed": 25,
+  "failed": 12,
+  "successRate": "67.6%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 11,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 16
+    "archiveToday": 7,
+    "archive": 7
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-04T21:15:51.426Z",
+      "event": "bb-session",
+      "session": "07bbe8cc",
+      "url": "https://variety.com/2026/film/reviews/dracula-review-caleb-landry-jones-luc-bess"
+    },
+    {
+      "t": "2026-04-04T21:15:52.581Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
