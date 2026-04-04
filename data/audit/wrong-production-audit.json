@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-04T04:21:14.225Z",
+  "timestamp": "2026-04-04T05:27:56.730Z",
   "stats": {
     "totalReviews": 29233,
-    "alreadyFlagged": 8227,
+    "alreadyFlagged": 8226,
     "dateGuardCatches": 13,
-    "directorMismatch": 921,
-    "tvFilmSignals": 3404,
+    "directorMismatch": 923,
+    "tvFilmSignals": 3406,
     "londonSignals": 1045,
-    "offBroadwaySignals": 982,
+    "offBroadwaySignals": 984,
     "yearMismatch": 71,
     "noPublishDate": 5652
   },
@@ -707,6 +707,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 80,
+      "publishDate": "November 19, 2012",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-story-musical-theater-393180",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -29626,6 +29640,20 @@
       "score": 72,
       "publishDate": null,
       "url": "https://www.latimes.com/entertainment/arts/culture/la-et-0402-lucky-guy-review-20130402,0,34347.story",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "lucky-guy-2013",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 80,
+      "publishDate": "2013-04-01T20:14:30-04:00",
+      "url": "http://www.nypost.com/p/entertainment/theater/hanks_for_the_memories_v5e6Th8RtEA7WHRO5SOjxK",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -60041,6 +60069,20 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "2012-10-13",
+      "url": "https://www.hollywoodreporter.com/news/general-news/tracy-letts-shines-whos-afraid-378872/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "newsday--linda-winer-bway.json",
       "score": 92,
       "publishDate": "2012-10-15",
@@ -60073,6 +60115,20 @@
       "score": 85,
       "publishDate": "2012-10-16",
       "url": "https://www.newspapers.com/image/575154843/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "nyt-theater--unknown.json",
+      "score": null,
+      "publishDate": "2012-10-13",
+      "url": "https://newyorktheater.me/2012/09/22/whos-afraid-of-whos-afraid-of-virginia-woolf-on-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -64417,6 +64473,20 @@
     },
     {
       "showId": "clybourne-park-2012",
+      "file": "stageandcinema--thomas-antoinne.json",
+      "score": null,
+      "publishDate": "2012-04-19",
+      "url": "https://stageandcinema.com/2012/04/20/clybourne-park-walter-kerr/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "clybourne-park-2012",
       "file": "standard--nick-curtis.json",
       "score": 80,
       "publishDate": "March 25th, 2022",
@@ -64426,6 +64496,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "clybourne-park-2012",
+      "file": "theatermania--dan-bacalzo.json",
+      "score": null,
+      "publishDate": "2012-04-19",
+      "url": "https://www.theatermania.com/news/broadway-opening-clybourne-park-at-the-walter-kerr-theatre_55039/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
