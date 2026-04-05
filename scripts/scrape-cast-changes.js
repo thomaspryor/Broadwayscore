@@ -355,7 +355,7 @@ function isTourArticle(text) {
 /**
  * Search for and extract cast change events from Playbill + BroadwayWorld articles
  */
-async function scrapeArticles(targetShows) {
+async function scrapeArticles(targetShows, { onShowComplete } = {}) {
   console.log('\n--- Source 1: Article Scraper (Playbill + BroadwayWorld) ---');
 
   if (!SCRAPINGBEE_KEY) {
@@ -370,6 +370,7 @@ async function scrapeArticles(targetShows) {
   const results = {};
   const startTime = Date.now();
   const seenUrls = new Set();
+  let showsProcessed = 0;
 
   // Process high-freq shows first
   const sortedShows = [...targetShows].sort((a, b) => {
@@ -488,6 +489,12 @@ async function scrapeArticles(targetShows) {
       }
 
       await sleep(2000); // Rate limit between page fetches
+    }
+
+    // Checkpoint every 10 shows to preserve progress
+    showsProcessed++;
+    if (onShowComplete && showsProcessed % 10 === 0) {
+      onShowComplete(results, showsProcessed);
     }
   }
 
@@ -1283,7 +1290,27 @@ function cleanExpiredEvents(existing) {
   return changes;
 }
 
-// ==================== Backup & Safety ====================
+// ==================== Checkpoint & Backup ====================
+
+/**
+ * Checkpoint: save current state to disk so progress isn't lost on crash.
+ * Called after each source completes and every N shows within long sources.
+ * Safe to call repeatedly — always writes the latest state.
+ */
+let _checkpointData = null; // Set by main() before scraping starts
+let _checkpointCount = 0;
+
+function setCheckpointData(existing) {
+  _checkpointData = existing;
+}
+
+function checkpoint(reason) {
+  if (dryRun || !_checkpointData) return;
+  _checkpointData.lastUpdated = TODAY;
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(_checkpointData, null, 2) + '\n');
+  _checkpointCount++;
+  console.log(`[Checkpoint #${_checkpointCount}] Saved — ${reason}`);
+}
 
 function backupExisting() {
   if (!fs.existsSync(OUTPUT_PATH)) return;
@@ -1511,36 +1538,53 @@ async function main() {
 
   const allChanges = [];
 
+  // Enable checkpointing — saves progress after each source so crashes don't lose data
+  setCheckpointData(existing);
+
   // Step 4: Clean expired events (idempotent via appliedAt)
   const cleanupChanges = cleanExpiredEvents(existing);
   allChanges.push(...cleanupChanges);
   if (cleanupChanges.length > 0) {
     console.log(`[Cleanup] Applied ${cleanupChanges.length} expired event changes`);
+    checkpoint('after cleanup');
   }
 
-  // Step 5: Scrape sources
+  // Step 5: Scrape sources (checkpoint after each to preserve progress)
   if (sourceFilter === 'all' || sourceFilter === 'articles') {
-    const articleEvents = await scrapeArticles(targetShows);
+    const articleEvents = await scrapeArticles(targetShows, {
+      onShowComplete: (partialResults, count) => {
+        // Merge partial results and checkpoint every 10 shows
+        const partialChanges = mergeEvents(existing, partialResults, 'articles');
+        // Clear merged results to avoid double-counting
+        for (const key of Object.keys(partialResults)) delete partialResults[key];
+        allChanges.push(...partialChanges);
+        if (partialChanges.length > 0) checkpoint(`after ${count} shows (articles)`);
+      },
+    });
     const changes = mergeEvents(existing, articleEvents, 'articles');
     allChanges.push(...changes);
+    if (changes.length > 0 || allChanges.length > 0) checkpoint('after articles complete');
   }
 
   if (sourceFilter === 'all' || sourceFilter === 'official-sites') {
     const officialEvents = await scrapeOfficialSites(targetShows, existing);
     const changes = mergeEvents(existing, officialEvents, 'official-sites');
     allChanges.push(...changes);
+    if (changes.length > 0) checkpoint('after official-sites');
   }
 
   if (sourceFilter === 'all' || sourceFilter === 'playbill-cast') {
     const playbillEvents = await scrapePlaybillCast(targetShows, existing);
     const changes = mergeEvents(existing, playbillEvents, 'playbill-cast');
     allChanges.push(...changes);
+    if (changes.length > 0) checkpoint('after playbill-cast');
   }
 
   if (sourceFilter === 'all' || sourceFilter === 'reddit') {
     const redditEvents = await scrapeReddit(targetShows);
     const changes = mergeEvents(existing, redditEvents, 'reddit');
     allChanges.push(...changes);
+    if (changes.length > 0) checkpoint('after reddit');
   }
 
   // Step 6: Clean closed shows
