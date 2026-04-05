@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-05T00:30:45.062Z",
+  "timestamp": "2026-04-05T00:58:02.972Z",
   "stats": {
     "totalReviews": 29454,
-    "alreadyFlagged": 8366,
+    "alreadyFlagged": 8367,
     "dateGuardCatches": 13,
-    "directorMismatch": 936,
-    "tvFilmSignals": 3426,
-    "londonSignals": 1060,
-    "offBroadwaySignals": 985,
+    "directorMismatch": 941,
+    "tvFilmSignals": 3431,
+    "londonSignals": 1063,
+    "offBroadwaySignals": 986,
     "yearMismatch": 72,
     "noPublishDate": 5641
   },
@@ -739,6 +739,19 @@
       ]
     },
     {
+      "showId": "a-delicate-balance-1996",
+      "file": "nytimes--mel-gussow.json",
+      "publishDate": null,
+      "url": "https://www.nytimes.com/1996/05/27/theater/for-rosemary-harris-a-delicate-balance-of-her-art-and-life.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "a-delicate-balance-2014",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 88,
@@ -1174,6 +1187,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "a-little-night-music-2009",
+      "file": "nytimes--ben-brantley.json",
+      "score": 82,
+      "publishDate": "December 14, 2009",
+      "url": "http://theater.nytimes.com/2009/12/14/theater/reviews/14little.html?ref=theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from a-little-night-music-1973"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -14206,6 +14238,24 @@
     },
     {
       "showId": "evening-all-afternoon-west-end-2026",
+      "file": "south-london--unknown.json",
+      "publishDate": null,
+      "url": "https://southlondon.co.uk/lifestyle/review-evening-all-afternoon-at-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
       "file": "thestage--sam-marlowe.json",
       "score": 72,
       "publishDate": "2026-02-25",
@@ -16481,6 +16531,20 @@
           "severity": "HIGH",
           "detail": "Mentions director \"michael grandage\" from frozen-2018"
         },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "frozen-2004",
+      "file": "village-voice--michael-feingold.json",
+      "score": 24,
+      "publishDate": "2004-05-04",
+      "url": "https://www.villagevoice.com/2018/03/27/disneys-frozen-leaves-an-icy-imprint-on-broadway/",
+      "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -21520,6 +21584,20 @@
     },
     {
       "showId": "hello-dolly-1978",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 80,
+      "publishDate": "1978-03-05",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=VVT67U",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-1978",
       "file": "off-script-with-dan-dwyer--dan-dwyer.json",
       "score": 80,
       "publishDate": "1978-03-05",
@@ -21534,10 +21612,10 @@
     },
     {
       "showId": "hello-dolly-1978",
-      "file": "the-clyde-fitch-report--david-finkle.json",
-      "score": null,
+      "file": "out-magazine--michael-musto.json",
+      "score": 83,
       "publishDate": "1978-03-05",
-      "url": "http://www.clydefitchreport.com/2017/04/hello-dolly-broadway-bette-midler/",
+      "url": "http://www.out.com/michael-musto/2017/4/24/bianca-del-rio-id-let-trump-touch-my-psy",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21548,10 +21626,10 @@
     },
     {
       "showId": "hello-dolly-1978",
-      "file": "theater-life--david-sheward.json",
-      "score": 86,
+      "file": "the-clyde-fitch-report--david-finkle.json",
+      "score": null,
       "publishDate": "1978-03-05",
-      "url": "http://theaterlife.com/groundhog-day-hello-dolly/",
+      "url": "http://www.clydefitchreport.com/2017/04/hello-dolly-broadway-bette-midler/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24154,6 +24232,20 @@
     },
     {
       "showId": "into-the-woods-1987",
+      "file": "theatermania--hayley-levitt.json",
+      "score": 87,
+      "publishDate": "1987-11-05",
+      "url": "https://www.theatermania.com/broadway/reviews/review-into-the-woods-delivers-perfection_94015.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-1987",
       "file": "washpost--peter-marks.json",
       "score": 81,
       "publishDate": "1987-11-05",
@@ -24172,6 +24264,34 @@
       "score": 87,
       "publishDate": "1997-11-09",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-3Y77JU",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-1997",
+      "file": "nysr--david-finkle.json",
+      "score": 47,
+      "publishDate": "1997-11-09",
+      "url": "http://nystagereview.com/2022/07/10/into-the-woods-the-beloved-sondheim-lapine-musical-in-full-bloom/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-1997",
+      "file": "washpost--peter-marks.json",
+      "score": 81,
+      "publishDate": "1997-11-09",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/07/29/into-the-woods-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51757,6 +51877,20 @@
       ]
     },
     {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "whatsonstage--unknown.json",
+      "score": 77,
+      "publishDate": "2025-11-28",
+      "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
       "showId": "the-iceman-cometh-2018",
       "file": "theater-scene--ron-cohen.json",
       "score": 88,
@@ -63989,6 +64123,32 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
+      "file": "the-upcoming-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theupcoming.co.uk/2026/03/04/broken-glass-at-the-young-vic-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": null,
+      "url": "https://theatreweekly.com/production-photos-released-for-broken-glass-at-the-young-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "publishDate": "2026-03-04",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/broken-glass-theatre-review-llvjbwntg",
@@ -66413,6 +66573,20 @@
       "score": 79,
       "publishDate": "April 19th, 2023",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review-1235391595/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "fat-ham-2023",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 45,
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-9GCXGL",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",

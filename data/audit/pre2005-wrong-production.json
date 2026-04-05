@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-05T00:26:07.370Z",
+    "generatedAt": "2026-04-05T00:52:32.183Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 100,
-    "highConfidence": 22,
-    "mediumConfidence": 78,
+    "totalFlagged": 107,
+    "highConfidence": 25,
+    "mediumConfidence": 82,
     "lowConfidence": 0,
-    "reassignable": 49
+    "reassignable": 53
   },
   "results": [
     {
@@ -1066,6 +1066,55 @@
       "textSnippet": "Thanks for contacting us. Weve received your submission.\n\nSara Bareilles and Brian D'Arcy James play the Baker's Wife and the Baker in \"Into The Woods\" on Broadway. \n Evan Zimmerman \n \n \n \n \n \n \n\nThe "
     },
     {
+      "showId": "into-the-woods-1997",
+      "showTitle": "Into the Woods",
+      "showYear": 1997,
+      "file": "nysr--david-finkle.json",
+      "outlet": "New York Stage Review",
+      "criticName": "David Finkle",
+      "publishDate": "1997-11-09",
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Sara Bareilles, St. James Theatre, Lear deBessonet, director: Lear deBessonet",
+        "year 1986 in text matches revival into-the-woods-1987",
+        "year 2022 in text matches revival into-the-woods-2022"
+      ],
+      "textSnippet": "The fabulously clever Stephen Sondheim-James Lapine Into the Woods, first seen in 1986, is so damn clever that it raises a question answered farther down in this enthusiastically positive review. The "
+    },
+    {
+      "showId": "into-the-woods-1997",
+      "showTitle": "Into the Woods",
+      "showYear": 1997,
+      "file": "washpost--peter-marks.json",
+      "outlet": "The Washington Post",
+      "criticName": "Peter Marks",
+      "publishDate": "1997-11-09",
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Sara Bareilles, St. James Theatre, Lear deBessonet, director: Lear deBessonet",
+        "year 1987 in text matches revival into-the-woods-1987"
+      ],
+      "textSnippet": "Listen8 minComment on this storyCommentGift ArticleShareNEW YORK — As the band strikes up and the singers open their throats in the hit Broadway revival of “Into the Woods,” the audience realizes it i"
+    },
+    {
+      "showId": "a-delicate-balance-1996",
+      "showTitle": "A Delicate Balance",
+      "showYear": 1996,
+      "file": "nytimes--mel-gussow.json",
+      "outlet": "The New York Times",
+      "criticName": "Mel Gussow",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, revived",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Sitting gracefully on a couch, with her silvery hair swept neatly back from her forehead, Rosemary Harris is a portrait of carefully measured repose. But as she moves into her opening speech in \"A Del"
+    },
+    {
       "showId": "sunday-in-the-park-with-george-1994",
       "showTitle": "Sunday in the Park with George",
       "showYear": 1994,
@@ -1095,6 +1144,22 @@
         "year 2002 in text matches revival into-the-woods-2002"
       ],
       "textSnippet": "   To understand why this Into the Woods is so enchanting, you must first understand what it is not: Do not expect elaborate designs, magical special effects, or fancy directorial concepts. Unlike its"
+    },
+    {
+      "showId": "into-the-woods-1987",
+      "showTitle": "Into the Woods",
+      "showYear": 1987,
+      "file": "theatermania--hayley-levitt.json",
+      "outlet": "TheaterMania",
+      "criticName": "Hayley Levitt",
+      "publishDate": "1987-11-05",
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Sara Bareilles, Brian d'Arcy James, St. James Theatre, Lear deBessonet, director: Lear deBessonet",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "Who would have thought back in 1987 that in 35 years we'd be giving fairy tale characters entrance applause fit for rock stars? The enthusiasm may be getting an assist from Broadway's critical mass of"
     },
     {
       "showId": "into-the-woods-1987",
@@ -1154,7 +1219,7 @@
       "signals": [
         "publishDate 1981 matches revival macbeth-1982 (opened 1982)"
       ],
-      "textSnippet": "   \"Despite the star power of Daniel Craig and Ruth Negga, the overthought production that opened on Thursday at the Longacre Theater seems unsure of its welcome, as if a classic that has enjoyed near"
+      "textSnippet": "To put it simply, there can be no ''Macbeth'' without Macbeth. Such is the sad case with the Lincoln Center Theater Company's production of the play, which opened Thursday night. The evening is by no "
     },
     {
       "showId": "macbeth-1981",
@@ -1287,6 +1352,53 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Josh Groban and Annaleigh Ashford | Photo: Matthew Murphy & Evan Zimmerman At long last, a full-scale production of Sweeney Todd returns to Broadway, allowing Stephen Sondheim’s gorgeous music and lyr"
+    },
+    {
+      "showId": "dracula-1977",
+      "showTitle": "Dracula",
+      "showYear": 1977,
+      "file": "nytimes--unknown.json",
+      "outlet": "The New York Times",
+      "criticName": "Unknown",
+      "publishDate": "1977-10-20",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, revived, new production",
+        "modern references: hamilton"
+      ],
+      "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
+    },
+    {
+      "showId": "hello-dolly-1978",
+      "showTitle": "Hello, Dolly!",
+      "showYear": 1978,
+      "file": "out-magazine--michael-musto.json",
+      "outlet": "Out Magazine",
+      "criticName": "Michael Musto",
+      "publishDate": "1978-03-05",
+      "confidence": "medium",
+      "suggestedShowId": "hello-dolly-1975",
+      "signals": [
+        "revival text signals: revival, new revival",
+        "year 1975 in text matches revival hello-dolly-1975"
+      ],
+      "textSnippet": "Music\n\nNon-Binary Rapper M(x)BLOUSE Wrestles with Self-Love on Debut EP\n\n \n\n \nNews & Opinion\n\nYouTube is Still Restricting LGBTQ Content\n\n \n\n \nMovies\n\nSusan Sarandon Debates Gender Identity & Sexualit"
+    },
+    {
+      "showId": "hello-dolly-1978",
+      "showTitle": "Hello, Dolly!",
+      "showYear": 1978,
+      "file": "theater-life--david-sheward.json",
+      "outlet": "Theater Life",
+      "criticName": "David Sheward",
+      "publishDate": "1978-03-05",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new production"
+      ],
+      "textSnippet": "The future and past of musical theater are being triumphantly celebrated this week on Broadway with two exhilarating new productions. Groundhog Day, based on the 1993 film comedy starring Bill Murray,"
     },
     {
       "showId": "pacific-overtures-2004",
