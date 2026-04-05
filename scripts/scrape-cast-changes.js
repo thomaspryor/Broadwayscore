@@ -60,8 +60,8 @@ const HIGH_FREQ_SHOWS = new Set([
   'chicago-1996', 'six-2021', 'hadestown-2019', 'the-great-gatsby-2024',
 ]);
 
-// Time budget (in ms) — article scraping gets 15 minutes max
-const ARTICLE_TIME_BUDGET = 15 * 60 * 1000;
+// Time budget (in ms) — article scraping gets 45 minutes to cover all open shows
+const ARTICLE_TIME_BUDGET = 45 * 60 * 1000;
 const TOTAL_START_TIME = Date.now();
 
 // Today's date string

@@ -2,8 +2,8 @@ name: Update Cast Changes
 
 on:
   schedule:
-    # Run every Wednesday at 9 AM UTC (4 AM EST)
-    - cron: '0 9 * * 3'
+    # Run Wednesday + Saturday at 9 AM UTC (4 AM EST)
+    - cron: '0 9 * * 3,6'
   workflow_dispatch:
     inputs:
       source:
@@ -29,7 +29,7 @@ on:
 jobs:
   update-cast-changes:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 75
 
     steps:
       - name: Checkout repository
