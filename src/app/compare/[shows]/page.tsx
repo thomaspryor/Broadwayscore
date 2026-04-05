@@ -9,6 +9,8 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge, StatusBadge, FormatPill } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
+import TicketLink from '@/components/TicketLink';
+import { sortTicketLinks } from '@/lib/ticket-utils';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
@@ -193,6 +195,30 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                 status={showA.status}
               />
             </div>
+            {showA.status !== 'closed' && showA.ticketLinks?.length ? (() => {
+              const sorted = sortTicketLinks(showA.ticketLinks);
+              return (
+                <div className="mt-3">
+                  <TicketLink
+                    showName={showA.title}
+                    showId={showA.id}
+                    showSlug={showA.slug}
+                    showStatus={showA.status}
+                    platform={sorted[0].platform}
+                    url={sorted[0].url}
+                    pageType="comparison"
+                    linkPosition={0}
+                    totalLinks={sorted.length}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                    </svg>
+                    Get Tickets
+                  </TicketLink>
+                </div>
+              );
+            })() : null}
           </div>
 
           {/* Show B */}
@@ -230,6 +256,30 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                 status={showB.status}
               />
             </div>
+            {showB.status !== 'closed' && showB.ticketLinks?.length ? (() => {
+              const sorted = sortTicketLinks(showB.ticketLinks);
+              return (
+                <div className="mt-3">
+                  <TicketLink
+                    showName={showB.title}
+                    showId={showB.id}
+                    showSlug={showB.slug}
+                    showStatus={showB.status}
+                    platform={sorted[0].platform}
+                    url={sorted[0].url}
+                    pageType="comparison"
+                    linkPosition={0}
+                    totalLinks={sorted.length}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                    </svg>
+                    Get Tickets
+                  </TicketLink>
+                </div>
+              );
+            })() : null}
           </div>
         </div>
 
