@@ -265,10 +265,28 @@ async function main() {
       console.log(`${progress} Fetching: ${t.dir}/${t.file}`);
       console.log(`  URL: ${t.url}`);
 
-      let html = await fetchUrl(t.url);
-      console.log(`  HTML: ${html.length} chars`);
+      // Check existing archives first (avoids paywall/JS-rendering issues)
+      let html = '';
+      let result = null;
+      const archiveDir = path.join(__dirname, '..', 'data', 'archives', 'reviews', t.dir);
+      const archiveGlob = path.join(archiveDir, `${outlet}--${t.file.split('--')[1].replace('.json', '')}*.html`);
+      const existingArchives = require('glob').sync(archiveGlob);
+      if (existingArchives.length > 0) {
+        // Try most recent archive first
+        const archiveFile = existingArchives.sort().pop();
+        const archiveHtml = require('fs').readFileSync(archiveFile, 'utf8');
+        result = extractScore(archiveHtml, t.data.fullText || '', outlet);
+        if (result && result.originalScore) {
+          html = archiveHtml;
+          console.log(`  ARCHIVE HIT: ${path.basename(archiveFile)} → ${result.originalScore} [${result.source}]`);
+        }
+      }
 
-      let result = extractScore(html, t.data.fullText || '', outlet);
+      if (!result) {
+        html = await fetchUrl(t.url);
+        console.log(`  HTML: ${html.length} chars`);
+        result = extractScore(html, t.data.fullText || '', outlet);
+      }
 
       // JS-rendering retry: some outlets (Guardian, TimeOut) render star ratings
       // client-side. If BD returned HTML without scores, retry with Playwright.

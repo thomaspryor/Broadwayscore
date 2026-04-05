@@ -6,6 +6,7 @@ import { getLotteryRush } from '@/lib/data-lottery';
 import { getCriticConsensus } from '@/lib/data-guides';
 import { getAllComparisonSlugs, parseComparisonSlug, isValidComparison } from '@/config/comparisons';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { isLondonMarket } from '@/lib/market-utils';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge, StatusBadge, FormatPill } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
@@ -54,7 +55,8 @@ function getTicketPriceRange(show: ReturnType<typeof getShowBySlug>): string {
   const prices = show.ticketLinks.filter(l => l.priceFrom).map(l => l.priceFrom!);
   if (!prices.length) return 'Varies';
   const min = Math.min(...prices);
-  return `From $${min}`;
+  const sym = isLondonMarket(show.category) ? '£' : '$';
+  return `From ${sym}${min}`;
 }
 
 // Comparison row component
