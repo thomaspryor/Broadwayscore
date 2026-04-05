@@ -39,6 +39,8 @@ interface WestEndPageClientProps {
   totalShows: number;
   totalReviews: number;
   scoredShows: number;
+  lotteryShows?: WestEndShow[];
+  rushShows?: WestEndShow[];
 }
 
 // URL parameter values
@@ -110,7 +112,7 @@ function FeaturedRow({ title, subtitle, shows }: { title: string; subtitle?: str
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [] }: WestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -600,6 +602,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
         <FeaturedRow title="Top Plays" subtitle="Ranked by critical consensus" shows={topPlays} />
         <FeaturedRow title="Best Off-West End" subtitle="Top-rated shows outside the West End proper" shows={bestOffWestEnd} />
         <FeaturedRow title="Olivier Award Winning Shows" subtitle="Current productions that have won Olivier Awards" shows={olivierWinners} />
+        <FeaturedRow title="West End Lotteries" subtitle="Enter for a chance at discounted tickets" shows={lotteryShows} />
+        <FeaturedRow title="Rush Tickets Available" subtitle="Same-day discount tickets — first come, first served" shows={rushShows} />
         <FeaturedRow title="In Previews" subtitle="Open now — reviews still coming in" shows={inPreviewsShows} />
         <FeaturedRow title="Opening Soon" subtitle="Starting in the next 60 days" shows={upcomingSoon} />
         <FeaturedRow title="Coming Up Later" subtitle="Announced productions further out" shows={upcomingLater} />
