@@ -55,7 +55,8 @@
     "hamilton-west-end-2021/thestage--holly-omahony.json",
     "hamilton-west-end-2021/thestage--paul-vale.json",
     "hamilton-west-end-2021/whatsonstage--rachel-agyekum.json",
-    "mamma-mia-west-end-2021/broadwayworld--unknown.json"
+    "mamma-mia-west-end-2021/broadwayworld--unknown.json",
+    "new-york-new-york-2023/hollywood-reporter--angie-han.json"
   ],
   "failed": [
     "the-holy-rosenbergs-west-end-2026/theatre-weekly--unknown.json",
@@ -104,7 +105,16 @@
     "harmony-2023/usatoday--david-rooney.json",
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
     "here-lies-love-2023/observer--jesse-green.json",
-    "grey-house-2023/stageandcinema--simi-horwitz.json"
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
+    "camelot-2023/washpost--peter-marks.json",
+    "shucked-2023/washpost--peter-marks.json",
+    "bob-fosses-dancin-2023/variety--peter-marks.json",
+    "bob-fosses-dancin-2023/timeout--adam-feldman.json",
+    "parade-2023/observer--jesse-green.json",
+    "parade-2023/talkinbroadway--matthew-murray.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "some-like-it-hot-2022/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -158,7 +168,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/dracula-west-end-2025/variety--unknown.json",
-      "dracula-west-end-2025/variety--unknown.json"
+      "dracula-west-end-2025/variety--unknown.json",
+      "data/review-texts/new-york-new-york-2023/hollywood-reporter--angie-han.json",
+      "new-york-new-york-2023/hollywood-reporter--angie-han.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -178,7 +190,12 @@
       "data/review-texts/swept-away-2024/theatrely--david-ng.json",
       "data/review-texts/swept-away-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/tammy-faye-2024/washpost--peter-marks.json",
-      "data/review-texts/yellow-face-2024/theatrely--juan-a-ramirez.json"
+      "data/review-texts/yellow-face-2024/theatrely--juan-a-ramirez.json",
+      "data/review-texts/camelot-2023/washpost--peter-marks.json",
+      "data/review-texts/shucked-2023/washpost--peter-marks.json",
+      "data/review-texts/bob-fosses-dancin-2023/timeout--adam-feldman.json",
+      "data/review-texts/parade-2023/talkinbroadway--matthew-murray.json",
+      "data/review-texts/some-like-it-hot-2022/usatoday--charles-isherwood.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -194,7 +211,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "grey-house-2023/stageandcinema--simi-horwitz.json",
+  "lastProcessed": "some-like-it-hot-2022/usatoday--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -250,6 +267,61 @@
       "t": "2026-04-05T02:19:45.490Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:22:08.157Z",
+      "event": "bb-session",
+      "session": "61fd1da8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-revi"
+    },
+    {
+      "t": "2026-04-05T02:22:09.337Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:23:18.267Z",
+      "event": "bb-session",
+      "session": "207338e2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-new-york-new-y"
+    },
+    {
+      "t": "2026-04-05T02:23:19.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:24:00.792Z",
+      "event": "bb-session",
+      "session": "422016ee",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/04/14/camelot-broadway-review/"
+    },
+    {
+      "t": "2026-04-05T02:24:02.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:24:25.849Z",
+      "event": "bb-session",
+      "session": "cd9bbadf",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/04/05/shucked-broadway-review/"
+    },
+    {
+      "t": "2026-04-05T02:24:27.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:24:36.139Z",
+      "event": "bb-session",
+      "session": "86f71d0a",
+      "url": "https://variety.com/2023/legit/reviews/bob-fosses-dancin-broadway-review-1235564"
+    },
+    {
+      "t": "2026-04-05T02:24:37.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

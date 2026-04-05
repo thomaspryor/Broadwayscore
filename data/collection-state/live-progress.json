@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-05T02:22:07.227Z",
-  "processed": 56,
-  "failed": 47,
-  "successRate": "54.4%",
+  "updatedAt": "2026-04-05T02:28:23.814Z",
+  "processed": 57,
+  "failed": 56,
+  "successRate": "50.4%",
   "tierBreakdown": {
     "playwright": 45,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 15,
+    "archiveToday": 20,
     "archive": 10
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -69,6 +69,61 @@
       "t": "2026-04-05T02:19:45.490Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:22:08.157Z",
+      "event": "bb-session",
+      "session": "61fd1da8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/new-york-new-york-broadway-revi"
+    },
+    {
+      "t": "2026-04-05T02:22:09.337Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:23:18.267Z",
+      "event": "bb-session",
+      "session": "207338e2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-new-york-new-y"
+    },
+    {
+      "t": "2026-04-05T02:23:19.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:24:00.792Z",
+      "event": "bb-session",
+      "session": "422016ee",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/04/14/camelot-broadway-review/"
+    },
+    {
+      "t": "2026-04-05T02:24:02.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:24:25.849Z",
+      "event": "bb-session",
+      "session": "cd9bbadf",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/04/05/shucked-broadway-review/"
+    },
+    {
+      "t": "2026-04-05T02:24:27.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:24:36.139Z",
+      "event": "bb-session",
+      "session": "86f71d0a",
+      "url": "https://variety.com/2023/legit/reviews/bob-fosses-dancin-broadway-review-1235564"
+    },
+    {
+      "t": "2026-04-05T02:24:37.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
