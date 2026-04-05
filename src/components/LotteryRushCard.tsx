@@ -258,6 +258,7 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
           </div>
         )}
       </div>
+      <p className="text-[10px] text-gray-600 mt-3">Some links may earn us a commission at no extra cost to you.</p>
     </section>
   );
 }

@@ -50,6 +50,7 @@ const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups')
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { fetchPage, fetchJSON } = require('./lib/scraper');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -484,7 +485,7 @@ async function runAggregators(show) {
       // Fallback: WP API search when URL construction misses
       if (!trHtml) {
         try {
-          const searchTitle = show.title.replace(/['"']/g, '');
+          const searchTitle = cleanSearchTitle(show.title);
           const wpApiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
           const posts = await fetchJSON(wpApiUrl);
           if (posts && Array.isArray(posts)) {
@@ -566,7 +567,7 @@ async function runAggregators(show) {
     try {
       console.log('  Checking WestEndTheatre.com (WP API)...');
       const cheerioWet = require('cheerio');
-      const searchTitle = show.title.replace(/['"'\u2018\u2019]/g, '');
+      const searchTitle = cleanSearchTitle(show.title);
       const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
 
       // Use fetchJSON for proxy-routed WP API call (avoids TLS blocking in CI)

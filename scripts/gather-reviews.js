@@ -63,6 +63,7 @@ const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-dis
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
 let chromium, playwright;
@@ -3014,7 +3015,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
       // WET live fetch: WP API search with date filter
       try {
-        const searchTitle = show.title.replace(/['"]/g, '');
+        const searchTitle = cleanSearchTitle(show.title);
         let apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=5&search=${encodeURIComponent(searchTitle)}`;
         if (dateFloor) apiUrl += `&after=${dateFloor}`;
 
@@ -3097,7 +3098,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
       // TR live fetch: also WordPress — same WP API pattern
       try {
-        const searchTitle = show.title.replace(/['"]/g, '');
+        const searchTitle = cleanSearchTitle(show.title);
         let apiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
         if (dateFloor) apiUrl += `&after=${dateFloor}`;
 
