@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-04-03T21:26:45.305Z",
+    "lastUpdated": "2026-04-05T17:15:55.193Z",
     "version": "2.0.0"
   },
   "outlets": {
@@ -9221,7 +9221,12 @@
     "the-scotsman": {
       "displayName": "The Scotsman",
       "region": "london",
-      "domain": "scotsman.com"
+      "domain": "scotsman.com",
+      "aliases": [
+        "the-scotsman",
+        "the scotsman",
+        "scotsman"
+      ]
     },
     "hampstead-highgate-express": {
       "displayName": "Hampstead & Highgate Express",
