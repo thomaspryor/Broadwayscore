@@ -174,7 +174,17 @@
     "beetlejuice-2019/stageandcinema--juan-a-ramirez.json",
     "tootsie-2019/washpost--peter-marks.json",
     "gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
-    "what-the-constitution-means-to-me-2019/vulture--jesse-green.json"
+    "what-the-constitution-means-to-me-2019/vulture--jesse-green.json",
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "what-the-constitution-means-to-me-2019/washpost--peter-marks.json",
+    "aint-too-proud-2019/vulture--jesse-green.json",
+    "kiss-me-kate-2019/usatoday--david-rooney.json",
+    "kiss-me-kate-2019/usatoday--elysa-gardner.json",
+    "kiss-me-kate-2019/washpost--peter-marks.json",
+    "true-west-2019/vulture--jesse-green.json",
+    "to-kill-a-mockingbird-2018/vulture--jesse-green.json",
+    "king-kong-2018/usatoday--charles-isherwood.json",
+    "king-kong-2018/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -294,7 +304,14 @@
       "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
       "data/review-texts/tootsie-2019/washpost--peter-marks.json",
       "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
-      "data/review-texts/what-the-constitution-means-to-me-2019/vulture--jesse-green.json"
+      "data/review-texts/what-the-constitution-means-to-me-2019/vulture--jesse-green.json",
+      "data/review-texts/what-the-constitution-means-to-me-2019/washpost--peter-marks.json",
+      "data/review-texts/aint-too-proud-2019/vulture--jesse-green.json",
+      "data/review-texts/kiss-me-kate-2019/washpost--peter-marks.json",
+      "data/review-texts/true-west-2019/vulture--jesse-green.json",
+      "data/review-texts/to-kill-a-mockingbird-2018/vulture--jesse-green.json",
+      "data/review-texts/king-kong-2018/usatoday--charles-isherwood.json",
+      "data/review-texts/king-kong-2018/washpost--peter-marks.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -310,7 +327,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "what-the-constitution-means-to-me-2019/vulture--jesse-green.json",
+  "lastProcessed": "king-kong-2018/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -606,6 +623,39 @@
     },
     {
       "t": "2026-04-05T03:04:35.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T03:06:02.941Z",
+      "event": "bb-session",
+      "session": "e52e820a",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/what-the-constitution"
+    },
+    {
+      "t": "2026-04-05T03:06:04.028Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T03:07:35.742Z",
+      "event": "bb-session",
+      "session": "d1184005",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/kiss-me-kate-gets-a-g"
+    },
+    {
+      "t": "2026-04-05T03:07:36.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T03:10:04.760Z",
+      "event": "bb-session",
+      "session": "54c4c71b",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/king-kong-review-a-mo"
+    },
+    {
+      "t": "2026-04-05T03:10:05.927Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
