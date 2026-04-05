@@ -119,6 +119,9 @@ export default function TicketLink({
         .replace(/border-white\/10/g, 'border-accent-gold')
         .replace(/text-gray-300/g, 'text-gray-900')
         .replace(/hover:text-white/g, 'hover:text-gray-900')
+        .replace(/py-1\.5/g, 'py-2.5')
+        .replace(/px-3/g, 'px-5')
+        .replace(/text-xs/g, 'text-sm')
         + ' font-bold shadow-sm shadow-accent-gold/20'
     : isAffiliate
     ? (className ?? '')

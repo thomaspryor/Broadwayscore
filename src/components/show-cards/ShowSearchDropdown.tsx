@@ -101,9 +101,17 @@ export default function ShowSearchDropdown({
                     }`}>
                       {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
                     </span>
-                    <span className="truncate">
-                      {[show.venue, show.od?.slice(0, 4)].filter(Boolean).join(' \u00b7 ')}
+                    <span className={`px-1 py-0.5 rounded font-medium ${
+                      show.category === 'west-end' ? 'bg-purple-500/20 text-purple-400' :
+                      show.category === 'off-west-end' ? 'bg-purple-500/20 text-purple-400' :
+                      show.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
+                      'bg-blue-500/20 text-blue-400'
+                    }`}>
+                      {show.category === 'west-end' ? 'West End' :
+                       show.category === 'off-west-end' ? 'Off-West End' :
+                       show.category === 'off-broadway' ? 'Off-Bway' : 'Broadway'}
                     </span>
+                    {show.od && <span className="text-gray-500">{show.od.slice(0, 4)}</span>}
                   </div>
                 </div>
                 <div className="flex-shrink-0 text-[10px] text-gray-500">

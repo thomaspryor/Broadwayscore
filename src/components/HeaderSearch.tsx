@@ -247,15 +247,16 @@ export default function HeaderSearch() {
                        show.status === 'upcoming' ? 'Upcoming' :
                        show.status === 'announced' ? 'Announced' : 'Closed'}
                     </span>
-                    {show.category === 'west-end' && (
-                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-500/20 text-teal-400">West End</span>
-                    )}
-                    {show.category === 'off-west-end' && (
-                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-violet-500/20 text-violet-400">Off-West End</span>
-                    )}
-                    {show.category === 'off-broadway' && (
-                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-500/20 text-indigo-400">Off-Bway</span>
-                    )}
+                    <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                      show.category === 'west-end' ? 'bg-teal-500/20 text-teal-400' :
+                      show.category === 'off-west-end' ? 'bg-violet-500/20 text-violet-400' :
+                      show.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
+                      'bg-blue-500/20 text-blue-400'
+                    }`}>
+                      {show.category === 'west-end' ? 'West End' :
+                       show.category === 'off-west-end' ? 'Off-West End' :
+                       show.category === 'off-broadway' ? 'Off-Bway' : 'Broadway'}
+                    </span>
                     {show.venue && <span className="truncate">{show.venue}</span>}
                   </div>
                 </div>

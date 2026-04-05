@@ -4,6 +4,7 @@ import { Fragment, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge } from '@/components/show-cards';
 import { ensureHttps } from '@/lib/url-utils';
+import { buildAffiliateUrl } from '@/lib/affiliate-utils';
 
 type SortDirection = 'asc' | 'desc';
 type SortColumn = 'show' | 'lottery' | 'rush' | 'sro' | 'score';
@@ -70,7 +71,7 @@ function ExternalLinkIcon() {
   );
 }
 
-function PriceCell({ price, url, color, bgColor }: { price: number; url?: string; color: string; bgColor: string }) {
+function PriceCell({ price, url, platform, color, bgColor }: { price: number; url?: string; platform?: string; color: string; bgColor: string }) {
   const badge = (
     <span className={`inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md sm:rounded-lg border text-xs sm:text-sm font-semibold ${bgColor} ${color}`}>
       ${price}
@@ -79,7 +80,7 @@ function PriceCell({ price, url, color, bgColor }: { price: number; url?: string
   );
 
   if (url) {
-    const href = ensureHttps(url);
+    const href = buildAffiliateUrl(ensureHttps(url)!, platform || '', 'discount-tickets').url;
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className="hover:brightness-125 transition-all">
         {badge}
@@ -130,7 +131,7 @@ function DetailPanel({ row }: { row: DiscountShowRow }) {
               )}
               {row.lottery.url && (
                 <a
-                  href={ensureHttps(row.lottery.url)}
+                  href={buildAffiliateUrl(ensureHttps(row.lottery.url)!, row.lottery.platform || '', 'lottery').url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
@@ -163,7 +164,7 @@ function DetailPanel({ row }: { row: DiscountShowRow }) {
               )}
               {row.rush.url && (
                 <a
-                  href={ensureHttps(row.rush.url)}
+                  href={buildAffiliateUrl(ensureHttps(row.rush.url)!, row.rush.platform || '', 'rush').url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium text-xs mt-2 transition-colors"
@@ -328,6 +329,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         <PriceCell
                           price={row.lottery.price}
                           url={row.lottery.url || undefined}
+                          platform={row.lottery.platform || undefined}
                           color="text-purple-300"
                           bgColor="bg-purple-500/15 border-purple-500/30"
                         />
@@ -340,6 +342,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         <PriceCell
                           price={row.rush.price}
                           url={row.rush.url || undefined}
+                          platform={row.rush.platform || undefined}
                           color="text-emerald-300"
                           bgColor="bg-emerald-500/15 border-emerald-500/30"
                         />

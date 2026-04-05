@@ -41,6 +41,10 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: node scripts/fix-platform-ticket-links.js
 
+      - name: Enrich SeatPlan links (West End)
+        run: node scripts/enrich-seatplan-links.js
+        continue-on-error: true
+
       - name: Enrich missing official site URLs (Broadway)
         id: official
         env:

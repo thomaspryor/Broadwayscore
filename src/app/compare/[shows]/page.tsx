@@ -338,11 +338,11 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
               return (
                 <div key={show.id} className="text-center">
                   <Link href={`/show/${show.slug}`} className="block">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-2">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-2">
                       <ShowImage
                         sources={[
+                          show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
                           show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
-                          show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
                         ]}
                         alt={show.title}
                         className="w-full h-full object-cover"
@@ -383,7 +383,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
                     >
                       <TicketIcon />
-                      <span className="text-gray-300">Get Tickets</span>{minPrice ? <span className="text-white font-semibold">from {i === 0 ? currencyA : currencyB}{minPrice}</span> : null}
+                      Get Tickets{minPrice ? <> from <span className="font-semibold">{i === 0 ? currencyA : currencyB}{minPrice}</span></> : null}
                     </TicketLink>
                   )}
                 </div>
@@ -641,6 +641,42 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                   valueB={<CreativeLink member={directorB} roleSlug="directors" />}
                 />
               )}
+            </>
+          )}
+
+          {/* Get Tickets CTA at bottom */}
+          {(sortedLinksA.length > 0 || sortedLinksB.length > 0) && (
+            <>
+              <SectionLabel>Get Tickets</SectionLabel>
+              <div className="grid grid-cols-[80px_1fr_1fr] sm:grid-cols-[100px_1fr_1fr] gap-2 py-3">
+                <div />
+                <div className="text-center">
+                  {sortedLinksA.length > 0 && showA.status !== 'closed' && (
+                    <TicketLink
+                      showName={showA.title} showId={showA.id} showSlug={showA.slug} showStatus={showA.status}
+                      platform={sortedLinksA[0].platform} url={sortedLinksA[0].url}
+                      pageType="comparison" linkPosition={0} totalLinks={sortedLinksA.length}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand/90 hover:bg-brand text-black text-sm font-semibold transition-colors"
+                    >
+                      <TicketIcon />
+                      {showA.title}{minPriceA ? <> from {currencyA}{minPriceA}</> : null}
+                    </TicketLink>
+                  )}
+                </div>
+                <div className="text-center">
+                  {sortedLinksB.length > 0 && showB.status !== 'closed' && (
+                    <TicketLink
+                      showName={showB.title} showId={showB.id} showSlug={showB.slug} showStatus={showB.status}
+                      platform={sortedLinksB[0].platform} url={sortedLinksB[0].url}
+                      pageType="comparison" linkPosition={0} totalLinks={sortedLinksB.length}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand/90 hover:bg-brand text-black text-sm font-semibold transition-colors"
+                    >
+                      <TicketIcon />
+                      {showB.title}{minPriceB ? <> from {currencyB}{minPriceB}</> : null}
+                    </TicketLink>
+                  )}
+                </div>
+              </div>
             </>
           )}
         </div>
