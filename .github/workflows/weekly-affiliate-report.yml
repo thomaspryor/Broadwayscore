@@ -1,0 +1,59 @@
+name: Weekly Affiliate Report
+
+on:
+  schedule:
+    # Every Monday at 9 AM ET (1 PM UTC)
+    - cron: '0 13 * * 1'
+  workflow_dispatch: {}
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate affiliate report
+        id: report
+        env:
+          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
+          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
+          PARTNERIZE_APP_KEY: ${{ secrets.PARTNERIZE_APP_KEY }}
+          PARTNERIZE_API_KEY: ${{ secrets.PARTNERIZE_API_KEY }}
+          PARTNERIZE_PUBLISHER_ID: ${{ secrets.PARTNERIZE_PUBLISHER_ID }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+        run: |
+          node scripts/affiliate-report.js --days 7 > /tmp/report.txt 2>&1
+          echo "report<<REPORT_EOF" >> $GITHUB_OUTPUT
+          cat /tmp/report.txt >> $GITHUB_OUTPUT
+          echo "REPORT_EOF" >> $GITHUB_OUTPUT
+          cat /tmp/report.txt
+
+      - name: Send email via Resend
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          SUBJECT="Affiliate Report — Week of $(date -u +'%B %d, %Y')"
+          # Use jq to safely build JSON with the report text
+          jq -n \
+            --arg from "Broadway Scorecard <notifications@broadwayscorecard.com>" \
+            --arg to "thomas.pryor@gmail.com" \
+            --arg subject "$SUBJECT" \
+            --arg text "$(cat /tmp/report.txt)" \
+            '{from: $from, to: $to, subject: $subject, text: $text}' \
+          | curl -s -X POST "https://api.resend.com/emails" \
+            -H "Authorization: Bearer $RESEND_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d @- | jq '{id: .id, error: .error}'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Affiliate Report Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
