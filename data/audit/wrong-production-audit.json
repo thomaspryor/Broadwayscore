@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-05T00:58:02.972Z",
+  "timestamp": "2026-04-05T01:15:29.462Z",
   "stats": {
     "totalReviews": 29454,
     "alreadyFlagged": 8367,
     "dateGuardCatches": 13,
     "directorMismatch": 941,
-    "tvFilmSignals": 3431,
-    "londonSignals": 1063,
+    "tvFilmSignals": 3430,
+    "londonSignals": 1062,
     "offBroadwaySignals": 986,
     "yearMismatch": 72,
     "noPublishDate": 5641
@@ -51877,20 +51877,6 @@
       ]
     },
     {
-      "showId": "the-hunger-games-on-stage-west-end-2025",
-      "file": "whatsonstage--unknown.json",
-      "score": 77,
-      "publishDate": "2025-11-28",
-      "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
       "showId": "the-iceman-cometh-2018",
       "file": "theater-scene--ron-cohen.json",
       "score": 88,
@@ -64124,21 +64110,9 @@
     {
       "showId": "broken-glass-west-end-2026",
       "file": "the-upcoming-uk--unknown.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.theupcoming.co.uk/2026/03/04/broken-glass-at-the-young-vic-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "broken-glass-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": null,
-      "url": "https://theatreweekly.com/production-photos-released-for-broken-glass-at-the-young-vic/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

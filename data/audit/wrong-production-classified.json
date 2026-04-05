@@ -1,84 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-05T00:52:33.423Z",
+    "generatedAt": "2026-04-05T01:10:08.409Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 82,
-    "classified": 4,
-    "wrongProduction": 1,
-    "correctProduction": 2,
-    "uncertain": 1,
+    "total": 81,
+    "classified": 0,
+    "wrongProduction": 0,
+    "correctProduction": 0,
+    "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 1,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "dracula-1977",
-      "showTitle": "Dracula",
-      "showYear": 1977,
-      "file": "nytimes--unknown.json",
-      "outlet": "The New York Times",
-      "criticName": "Unknown",
-      "publishDate": "1977-10-20",
-      "originalSignals": [
-        "revival text signals: revival, revived, new production",
-        "modern references: hamilton"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions the Martin Beck Theater, Edward Gorey's set and costume design, Dennis Rosa as director, and Frank Langella as Dracula, all associated with the 1977 Broadway production."
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "showTitle": "Hello, Dolly!",
-      "showYear": 1978,
-      "file": "out-magazine--michael-musto.json",
-      "outlet": "Out Magazine",
-      "criticName": "Michael Musto",
-      "publishDate": "1978-03-05",
-      "originalSignals": [
-        "revival text signals: revival, new revival",
-        "year 1975 in text matches revival hello-dolly-1975"
-      ],
-      "verdict": "UNCERTAIN",
-      "confidence": "low",
-      "targetShowId": null,
-      "reasoning": "The review is a collection of short reviews of various entertainment events. There is a mention of Bette Midler, but it is in passing and does not confirm that the review is about Hello, Dolly!."
-    },
-    {
-      "showId": "a-delicate-balance-1996",
-      "showTitle": "A Delicate Balance",
-      "showYear": 1996,
-      "file": "nytimes--mel-gussow.json",
-      "outlet": "The New York Times",
-      "criticName": "Mel Gussow",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, revived",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions Rosemary Harris, George Grizzard, Elaine Stritch, and Gerald Gutierrez, who were all involved in the 1996 Broadway production of 'A Delicate Balance'. It also mentions the Plymouth Theater, where the 1996 production played."
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "showTitle": "Hello, Dolly!",
-      "showYear": 1978,
-      "file": "theater-life--david-sheward.json",
-      "outlet": "Theater Life",
-      "criticName": "David Sheward",
-      "publishDate": "1978-03-05",
-      "originalSignals": [
-        "revival text signals: revival, new production"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "hello-dolly-2017",
-      "reasoning": "The review mentions Bette Midler, David Hyde-Pierce, Gavin Creel, Kate Baldwin, and Beanie Feldstein, who were all in the 2017 production. The review also mentions the Shubert Theatre, which was the venue for the 2017 production. The review also mentions Groundhog Day, which opened in April 2017, in"
-    }
-  ]
+  "results": []
 }
