@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-05T18:10:37.724Z",
+  "timestamp": "2026-04-05T18:42:20.480Z",
   "stats": {
-    "totalReviews": 34166,
-    "alreadyFlagged": 13093,
+    "totalReviews": 34278,
+    "alreadyFlagged": 13099,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
-    "tvFilmSignals": 3436,
-    "londonSignals": 1087,
+    "tvFilmSignals": 3438,
+    "londonSignals": 1096,
     "offBroadwaySignals": 979,
     "yearMismatch": 72,
     "noPublishDate": 5535
@@ -5596,6 +5596,7 @@
     {
       "showId": "august-osage-county-2007",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 81,
       "publishDate": "2008-11-28",
       "url": null,
       "findings": [
@@ -7487,6 +7488,7 @@
     {
       "showId": "brighton-beach-memoirs-1983",
       "file": "guardian--michael-billington.json",
+      "score": 66,
       "publishDate": "1986-02-27",
       "url": null,
       "findings": [
@@ -22170,6 +22172,7 @@
     {
       "showId": "high-noon-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 63,
       "publishDate": "2026-01-16",
       "url": null,
       "findings": [
@@ -22183,6 +22186,7 @@
     {
       "showId": "high-noon-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
+      "score": 36,
       "publishDate": "2026-01-10",
       "url": null,
       "findings": [
@@ -22210,6 +22214,7 @@
     {
       "showId": "high-noon-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 63,
       "publishDate": "2026-01-17",
       "url": null,
       "findings": [
@@ -51142,6 +51147,20 @@
       ]
     },
     {
+      "showId": "the-harder-they-come-off-west-end-2026",
+      "file": "artsdesk--gary-naylor.json",
+      "score": 90,
+      "publishDate": "2025-09-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "the-heidi-chronicles-2015",
       "file": "ap--jennifer-farrar.json",
       "score": 78,
@@ -55034,6 +55053,7 @@
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
+      "score": 78,
       "publishDate": "2025-12-12",
       "url": null,
       "findings": [
@@ -55052,6 +55072,7 @@
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 65,
       "publishDate": "2026-01-08",
       "url": null,
       "findings": [
@@ -56151,12 +56172,26 @@
       "showId": "the-tempest-globe-west-end-2026",
       "file": "standard--nick-curtis.json",
       "publishDate": null,
-      "url": "https://www.standard.co.uk/culture/theatre/the-tempest-review-shakespeare-globe-b1268906.html",
+      "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": null,
+      "publishDate": "2026-01-29",
+      "url": "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -61647,6 +61682,34 @@
       ]
     },
     {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "theatre-weekly--nicola-barrett.json",
+      "score": 86,
+      "publishDate": "2022-06-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "thereviewshub--maryam-philpott.json",
+      "score": 72,
+      "publishDate": "2022-06-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "a-little-night-music-2009",
       "file": "ny1--roma-torre.json",
       "score": 88,
@@ -62715,6 +62778,7 @@
     {
       "showId": "an-enemy-of-the-people-2024",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 34,
       "publishDate": "2024-02-22",
       "url": null,
       "findings": [
@@ -62742,6 +62806,7 @@
     {
       "showId": "an-enemy-of-the-people-2024",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 72,
       "publishDate": "2024-02-20",
       "url": null,
       "findings": [
@@ -62755,6 +62820,7 @@
     {
       "showId": "an-enemy-of-the-people-2024",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 76,
       "publishDate": "2024-02-25",
       "url": null,
       "findings": [
@@ -63948,6 +64014,7 @@
     {
       "showId": "brighton-beach-memoirs-1983",
       "file": "listener--jim-hiley.json",
+      "score": 63,
       "publishDate": "1986-03-06",
       "url": null,
       "findings": [
@@ -64924,6 +64991,62 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "independent--holly-williams.json",
+      "score": 59,
+      "publishDate": "2016-02-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 35,
+      "publishDate": "2016-03-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "thestage--natasha-tripney.json",
+      "score": 73,
+      "publishDate": "2016-02-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "times-uk--ann-treneman.json",
+      "score": 62,
+      "publishDate": "2016-02-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -67025,6 +67148,7 @@
     {
       "showId": "fosse-1999",
       "file": "news-oftheworld--bill-hagerty.json",
+      "score": 76,
       "publishDate": "2000-02-13",
       "url": null,
       "findings": [
@@ -69502,7 +69626,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 85,
       "publishDate": "February 12th, 2026",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/hamlet-review-rsc-titanic-w5txscljv",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -70339,6 +70463,20 @@
       "score": 81,
       "publishDate": "2026-03-18",
       "url": "https://theartsdesk.com/theatre/jajas-african-hair-braiding-lyric-hammersmith-review-perky-harlem-set-comedy-serious-undertow",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jeezus-off-west-end-2026",
+      "file": "whatsonstage--alexander-cohen.json",
+      "score": 86,
+      "publishDate": "2025-08-19",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80131,6 +80269,20 @@
       ]
     },
     {
+      "showId": "the-harder-they-come-off-west-end-2026",
+      "file": "thereviewshub--richard-maguire.json",
+      "score": 66,
+      "publishDate": "2025-09-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-height-of-the-storm-2019",
       "file": "nytimes--ben-brantley.json",
       "score": null,
@@ -81420,6 +81572,7 @@
     {
       "showId": "the-phantom-of-the-opera-1988",
       "file": "telegraph--serena-davies.json",
+      "score": 78,
       "publishDate": "2021-08-11",
       "url": null,
       "findings": [
@@ -81657,6 +81810,7 @@
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 77,
       "publishDate": "2025-12-13",
       "url": null,
       "findings": [
@@ -82299,6 +82453,7 @@
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
       "file": "british-theatre--mary-beer.json",
+      "score": 43,
       "publishDate": "2025-12-07",
       "url": null,
       "findings": [
@@ -83560,6 +83715,20 @@
       ]
     },
     {
+      "showId": "welcome-to-pemfort-off-west-end-2026",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 78,
+      "publishDate": "2026-03-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "broadwayworld--michael-dale.json",
       "score": 85,
@@ -83841,6 +84010,7 @@
     {
       "showId": "woman-in-mind-west-end-2025",
       "file": "british-theatre--vera-liber.json",
+      "score": 75,
       "publishDate": "2026-01-07",
       "url": null,
       "findings": [
@@ -83868,6 +84038,7 @@
     {
       "showId": "woman-in-mind-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
+      "score": 78,
       "publishDate": "2026-01-11",
       "url": null,
       "findings": [
@@ -83909,6 +84080,7 @@
     {
       "showId": "woman-in-mind-west-end-2025",
       "file": "thereviewshub--maryam-philpott.json",
+      "score": 58,
       "publishDate": "2026-01-07",
       "url": null,
       "findings": [
@@ -83922,6 +84094,7 @@
     {
       "showId": "woman-in-mind-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 61,
       "publishDate": "2026-01-10",
       "url": null,
       "findings": [
