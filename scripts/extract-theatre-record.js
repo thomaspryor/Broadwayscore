@@ -648,8 +648,9 @@ function titlesMatch(a, b) {
   const sna = stripPrefix(stripSuffix(na));
   const snb = stripPrefix(stripSuffix(nb));
   const [shorter, longer] = sna.length <= snb.length ? [sna, snb] : [snb, sna];
-  if (shorter.length >= 4 && shorter.length >= longer.length * 0.5) {
-    if (longer.startsWith(shorter) || longer.endsWith(shorter) || longer.includes(shorter)) return true;
+  // Only allow if shorter is ≥70% of longer (stricter to prevent "wicked" → "wicked lady")
+  if (shorter.length >= 4 && shorter.length >= longer.length * 0.7) {
+    if (longer.startsWith(shorter) || longer.endsWith(shorter)) return true;
   }
   return false;
 }
