@@ -72,6 +72,7 @@ jobs:
           node scripts/scrape-cast-changes.js $ARGS
 
       - name: Check for changes
+        if: always()
         id: check_changes
         run: |
           if [[ -n $(git status --porcelain data/cast-changes.json data/audit/cast-changes-diff.json) ]]; then
