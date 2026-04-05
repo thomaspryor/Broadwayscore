@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-04-05T17:21:53.945Z",
+    "lastUpdated": "2026-04-05T17:56:30.659Z",
     "version": "2.0.0"
   },
   "outlets": {
@@ -921,7 +921,8 @@
         "the-huffington-pos",
         "huffingtion-post",
         "huffpo",
-        "huffington-post"
+        "huffington-post",
+        "the-huffington-post"
       ],
       "domain": "huffpost.com",
       "accessModel": "free",
@@ -1159,7 +1160,8 @@
         "the-telegraphy",
         "uk-daily-telegraph",
         "The Daily Telegraph",
-        "the-telegrap"
+        "the-telegrap",
+        "dailytelegraph"
       ],
       "domain": "telegraph.co.uk",
       "region": "london",
@@ -1870,7 +1872,10 @@
         "whats on stage",
         "whats-on-stage",
         "whatonstage",
-        "whatson"
+        "whatson",
+        "what-son",
+        "what-s-on",
+        "for-whatsonstage"
       ],
       "domain": "whatsonstage.com",
       "region": "london",
@@ -4962,7 +4967,9 @@
       "displayName": "Express  (UK)",
       "tier": 3,
       "aliases": [
-        "express-uk"
+        "express-uk",
+        "sundayexpress",
+        "dailyexpress"
       ],
       "region": "london",
       "accessModel": "free",
@@ -6768,7 +6775,9 @@
       "displayName": "The Herald",
       "tier": 3,
       "aliases": [
-        "the-herald"
+        "the-herald",
+        "sundayherald",
+        "sunday-herald"
       ],
       "accessModel": "defunct",
       "region": "london"
@@ -7652,7 +7661,8 @@
         "times-uk",
         "The Times",
         "The Sunday Times",
-        "sunday-times"
+        "sunday-times",
+        "sundaytimes"
       ],
       "domain": "thetimes.co.uk",
       "region": "london",
@@ -9234,54 +9244,69 @@
         "the-scotsman",
         "the scotsman",
         "scotsman"
-      ]
+      ],
+      "tier": 3
     },
     "hampstead-highgate-express": {
       "displayName": "Hampstead & Highgate Express",
       "region": "london",
-      "domain": "hamhigh.co.uk"
+      "domain": "hamhigh.co.uk",
+      "tier": 3
     },
     "oxfordshire-guardian": {
       "displayName": "Oxfordshire Guardian",
-      "region": "london"
+      "region": "london",
+      "tier": 3
     },
     "herald": {
       "displayName": "The Herald (Glasgow)",
       "region": "london",
-      "domain": "heraldscotland.com"
+      "domain": "heraldscotland.com",
+      "tier": 3
     },
     "the-list": {
       "displayName": "The List",
       "region": "london",
-      "domain": "list.co.uk"
+      "domain": "list.co.uk",
+      "tier": 3
     },
     "sierz-co-uk": {
       "displayName": "Aleks Sierz",
       "region": "london",
-      "domain": "sierz.co.uk"
+      "domain": "sierz.co.uk",
+      "tier": 3
     },
     "tribune": {
       "displayName": "Tribune Magazine",
-      "region": "london"
+      "region": "london",
+      "tier": 3
     },
     "sunday-telegraph": {
       "displayName": "Sunday Telegraph",
       "region": "london",
-      "domain": "telegraph.co.uk"
+      "domain": "telegraph.co.uk",
+      "tier": 3,
+      "aliases": [
+        "sunday-telegraph",
+        "sundaytelegraph"
+      ]
     },
     "jewish-chronicle": {
       "displayName": "Jewish Chronicle",
       "region": "london",
-      "domain": "thejc.com"
+      "domain": "thejc.com",
+      "tier": 3
     },
     "sunday-express": {
       "displayName": "Sunday Express",
       "region": "london",
-      "domain": "express.co.uk"
+      "domain": "express.co.uk",
+      "tier": 3
     },
     "cambridge": {
       "displayName": "Cambridge",
-      "region": "london"
+      "region": "london",
+      "tier": 3
     }
   },
   "_aliasIndex": {
