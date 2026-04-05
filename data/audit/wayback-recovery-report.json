@@ -1,23 +1,31 @@
 {
-  "totalCandidates": 32,
-  "cdxFound": 0,
-  "cdxNotFound": 15,
-  "recovered": 0,
+  "totalCandidates": 24,
+  "cdxFound": 12,
+  "cdxNotFound": 7,
+  "recovered": 10,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 0
+    "3": 10
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "independent.co.uk": 1,
+    "whatsonstage.com": 3,
+    "culturesauce.com": 1,
+    "newyorktheatreguide.com": 1,
+    "inews.co.uk": 1,
+    "asherworldturns.com": 1,
+    "theatreweekly.com": 1,
+    "theaterscene.net": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 10,
-  "notInArchive": 15,
-  "domainSkipped": 7,
+  "errors": 5,
+  "notInArchive": 7,
+  "domainSkipped": 0,
   "circuitBrokenDomains": [
-    "washingtonpost.com",
-    "nytimes.com"
+    "thestage.co.uk"
   ]
 }
