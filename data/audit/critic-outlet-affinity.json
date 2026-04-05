@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-05T18:10:40.141Z",
+    "lastUpdated": "2026-04-05T18:42:22.856Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 34493,
-    "skippedFiles": 13313,
-    "totalCritics": 1520,
-    "registryCritics": 520,
-    "flaggedReviews": 36
+    "totalFilesScanned": 34605,
+    "skippedFiles": 13319,
+    "totalCritics": 1532,
+    "registryCritics": 525,
+    "flaggedReviews": 37
   },
   "flaggedReviews": [
     {
@@ -231,6 +231,17 @@
       "totalReviews": 35
     },
     {
+      "critic": "Sarah Crompton",
+      "criticSlug": "sarah-crompton",
+      "outlet": "telegraph",
+      "showId": "glengarry-glen-ross-2012",
+      "file": "telegraph--sarah-crompton.json",
+      "outletShare": 3,
+      "primaryOutlet": "whatsonstage",
+      "primaryShare": 97,
+      "totalReviews": 34
+    },
+    {
       "critic": "Steven Ross",
       "criticSlug": "steven-ross",
       "outlet": "outbuzz",
@@ -352,17 +363,6 @@
       "totalReviews": 28
     },
     {
-      "critic": "Sarah Crompton",
-      "criticSlug": "sarah-crompton",
-      "outlet": "telegraph",
-      "showId": "glengarry-glen-ross-2012",
-      "file": "telegraph--sarah-crompton.json",
-      "outletShare": 3,
-      "primaryOutlet": "whatsonstage",
-      "primaryShare": 97,
-      "totalReviews": 30
-    },
-    {
       "critic": "Patrick Ryan",
       "criticSlug": "patrick-ryan",
       "outlet": "shelby-star",
@@ -383,6 +383,17 @@
       "primaryOutlet": "exeunt-magazine",
       "primaryShare": 94,
       "totalReviews": 17
+    },
+    {
+      "critic": "Arifa Akbar",
+      "criticSlug": "arifa-akbar",
+      "outlet": "city-am",
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "city-am--arifa-akbar.json",
+      "outletShare": 2,
+      "primaryOutlet": "guardian",
+      "primaryShare": 98,
+      "totalReviews": 41
     },
     {
       "critic": "Amelia Merrill",
@@ -546,8 +557,8 @@
         "frontmezzjunkies",
         "nytimes",
         "thestage",
-        "playbill",
         "timeout",
+        "playbill",
         "nytg",
         "variety",
         "nydailynews",
@@ -561,11 +572,11 @@
         "theatre-weekly",
         "telegraph",
         "plays-international",
+        "artsdesk",
         "amny",
         "vulture",
         "guardian",
         "hollywood-reporter",
-        "artsdesk",
         "broadwayworld",
         "musical-theatre-review",
         "stagebuddy",
@@ -573,14 +584,17 @@
         "ew",
         "nypost",
         "stageandcinema",
+        "whatsonstage",
         "londonist",
         "usatoday",
         "all-that-dazzles-uk",
+        "timeout-london",
+        "times-uk",
         "bloomberg",
         "british-theatre",
-        "whatsonstage",
         "buy-tickets",
         "london-theatre",
+        "i-paper",
         "nysr",
         "theatrely",
         "new-york-sun",
@@ -589,10 +603,8 @@
         "one-minute-critic",
         "huffpost",
         "nbcny",
-        "times-uk",
         "theatreandtonic",
         "theater-pizzazz",
-        "timeout-london",
         "dctheatrescene",
         "stannswarehouseorg",
         "american-theater-web",
@@ -612,7 +624,6 @@
         "billboard",
         "seattlereporg",
         "parterre-box",
-        "i-paper",
         "3news",
         "aussie-theatre",
         "herald-sun",
@@ -641,7 +652,7 @@
         "bamorg",
         "kenny-leon"
       ],
-      "totalReviews": 550
+      "totalReviews": 557
     },
     {
       "critic": "Brittani Samuel",
@@ -1139,6 +1150,59 @@
       "totalReviews": 107
     },
     {
+      "critic": "Matt Wolf",
+      "slug": "matt-wolf",
+      "outlets": [
+        "london-theatre",
+        "telegraph",
+        "artsdesk",
+        "nytimes",
+        "variety"
+      ],
+      "totalReviews": 40
+    },
+    {
+      "critic": "Sam Marlowe",
+      "slug": "sam-marlowe",
+      "outlets": [
+        "thestage",
+        "i-paper",
+        "times-uk",
+        "timeout",
+        "london-theatre"
+      ],
+      "totalReviews": 29
+    },
+    {
+      "critic": "Jessie Thompson",
+      "slug": "jessie-thompson",
+      "outlets": [
+        "standard",
+        "independent"
+      ],
+      "totalReviews": 6
+    },
+    {
+      "critic": "Marianka Swain",
+      "slug": "marianka-swain",
+      "outlets": [
+        "london-theatre",
+        "telegraph",
+        "broadwayworld",
+        "artsdesk"
+      ],
+      "totalReviews": 30
+    },
+    {
+      "critic": "Quentin Letts",
+      "slug": "quentin-letts",
+      "outlets": [
+        "times-uk",
+        "daily-mail"
+      ],
+      "totalReviews": 13
+    },
+    {
       "critic": "Matthew Wexler",
       "slug": "matthew-wexler",
       "outlets": [
@@ -1194,18 +1258,6 @@
         "bobs-theater-blog"
       ],
       "totalReviews": 50
-    },
-    {
-      "critic": "Matt Wolf",
-      "slug": "matt-wolf",
-      "outlets": [
-        "london-theatre",
-        "telegraph",
-        "artsdesk",
-        "nytimes",
-        "variety"
-      ],
-      "totalReviews": 38
     },
     {
       "critic": "Simon Saltzman",
@@ -1368,19 +1420,7 @@
         "standard",
         "telegraph"
       ],
-      "totalReviews": 27
-    },
-    {
-      "critic": "Sam Marlowe",
-      "slug": "sam-marlowe",
-      "outlets": [
-        "thestage",
-        "i-paper",
-        "times-uk",
-        "timeout",
-        "london-theatre"
-      ],
-      "totalReviews": 26
+      "totalReviews": 29
     },
     {
       "critic": "Tim Bano",
@@ -1592,7 +1632,7 @@
         "whatsonstage",
         "london-theatre"
       ],
-      "totalReviews": 9
+      "totalReviews": 10
     },
     {
       "critic": "Paul Raven",
@@ -1640,29 +1680,18 @@
         "artsdesk",
         "broadwayworld"
       ],
-      "totalReviews": 13
+      "totalReviews": 15
     },
     {
       "critic": "Holly Williams",
       "slug": "holly-williams",
       "outlets": [
         "daily-mail",
-        "telegraph",
         "independent",
+        "telegraph",
         "timeout-london"
       ],
-      "totalReviews": 5
-    },
-    {
-      "critic": "Marianka Swain",
-      "slug": "marianka-swain",
-      "outlets": [
-        "london-theatre",
-        "telegraph",
-        "broadwayworld",
-        "artsdesk"
-      ],
-      "totalReviews": 27
+      "totalReviews": 6
     },
     {
       "critic": "Holly O’Mahony",
@@ -1671,7 +1700,7 @@
         "thestage",
         "london-theatre"
       ],
-      "totalReviews": 19
+      "totalReviews": 20
     },
     {
       "critic": "Emlyn Travis",
@@ -1828,15 +1857,6 @@
       "totalReviews": 17
     },
     {
-      "critic": "Quentin Letts",
-      "slug": "quentin-letts",
-      "outlets": [
-        "times-uk",
-        "daily-mail"
-      ],
-      "totalReviews": 12
-    },
-    {
       "critic": "Bobby McGuire",
       "slug": "bobby-mcguire",
       "outlets": [
@@ -1921,7 +1941,7 @@
         "exeunt-magazine",
         "timeout"
       ],
-      "totalReviews": 12
+      "totalReviews": 13
     },
     {
       "critic": "Michael Coveney",
@@ -1985,7 +2005,7 @@
         "the-express",
         "the-sun"
       ],
-      "totalReviews": 9
+      "totalReviews": 10
     },
     {
       "critic": "A.A. Cristi",
@@ -2005,7 +2025,7 @@
         "guardian",
         "timeout"
       ],
-      "totalReviews": 12
+      "totalReviews": 13
     },
     {
       "critic": "Iris Fanger",
@@ -2079,6 +2099,15 @@
         "stagebizcom",
         "nytg",
         "stagebiz"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Sonny Waheed",
+      "slug": "sonny-waheed",
+      "outlets": [
+        "thereviewshub",
+        "whatsonstage"
       ],
       "totalReviews": 3
     }
