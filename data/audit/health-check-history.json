@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-04-04T07:46:56.892Z",
-  "consecutiveErrorDays": 0,
+  "lastRun": "2026-04-05T07:54:11.075Z",
+  "consecutiveErrorDays": 1,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -10,12 +10,12 @@
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "5h old"
+      "message": "23h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -25,22 +25,22 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "9d old"
+      "message": "10d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "3h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "3d old"
     },
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (5h old, workflow 23h ago)"
+      "message": "Data synced (23h old, workflow 23h ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -55,7 +55,7 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2423 shows, 149 open, 17141 reviews (all at or above baseline)"
+      "message": "2427 shows, 148 open, 17201 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -70,27 +70,27 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 10h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 4d ago"
+      "message": "Last success 5d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "warn",
-      "message": "Last success 20d ago (threshold: 10d)"
+      "message": "Last success 21d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
-      "status": "warn",
-      "message": "Last success 5d ago (threshold: 2d)"
+      "status": "pass",
+      "message": "Last success 12h ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "99.4% scored (17141/17253)"
+      "message": "99.5% scored (17201/17283)"
     },
     {
       "name": "Cookies: expiration",
@@ -100,12 +100,12 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (6d ago)"
+      "message": "All metrics within thresholds (7d ago)"
     },
     {
       "name": "SEO: health",
-      "status": "pass",
-      "message": "Healthy (13d ago)"
+      "status": "warn",
+      "message": "Last SEO check 14d ago (>14d)"
     },
     {
       "name": "Cron: Update Show Status",
@@ -120,17 +120,17 @@
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "3h ago, "
+      "message": "1h ago, "
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Opening Night Broadcast",
@@ -140,13 +140,13 @@
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (2d ago)"
+      "message": "Last check passed (3d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
-      "status": "warn",
-      "message": "129k credits left (6%) · 241k/day burn · exhausts in ~1d (renews Apr 25)"
+      "status": "error",
+      "message": "41k credits left (2%) · 226k/day burn · exhausts in ~0d (renews Apr 25)"
     }
   ],
-  "lastCleanStreak": 3
+  "lastCleanStreak": 0
 }
