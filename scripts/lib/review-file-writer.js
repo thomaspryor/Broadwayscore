@@ -24,6 +24,7 @@ const {
   generateReviewFilename,
   findExistingReviewFile,
   isJunkOutlet,
+  isSuspiciousOutletId,
   maybeUpgradeUrl,
   getOutletDisplayName,
   resolveOutletFromUrl,
@@ -81,6 +82,12 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // --- Guard: junk outlet ---
   if (isJunkOutlet(outletId) || isJunkOutlet(input.outlet)) {
     return { action: 'skipped', reason: 'junk-outlet' };
+  }
+
+  // --- Guard: sentence-fragment outlet IDs ---
+  if (isSuspiciousOutletId(outletId)) {
+    console.warn(`  ⚠️  Skipping suspicious outlet ID: "${outletId}" (likely sentence fragment from roundup parsing)`);
+    return { action: 'skipped', reason: 'suspicious-outlet-id' };
   }
 
   // --- Guard: domain validation ---

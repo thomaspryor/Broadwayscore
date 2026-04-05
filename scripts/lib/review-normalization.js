@@ -400,6 +400,17 @@ function generateReviewFilename(outlet, critic) {
 }
 
 /**
+ * Check if an outlet ID looks like a sentence fragment rather than a real outlet.
+ * Real outlets are typically under 40 chars with ≤4 hyphens.
+ * Sentence fragments like "its-a-brave-writer-who-would-contrive-this-show" are much longer.
+ */
+function isSuspiciousOutletId(outletId) {
+  if (!outletId) return true;
+  const hyphenCount = (outletId.match(/-/g) || []).length;
+  return outletId.length > 50 || hyphenCount > 6;
+}
+
+/**
  * Generate a unique review key for deduplication.
  * This is used to identify the same review across different sources.
  */
@@ -1279,6 +1290,7 @@ module.exports = {
   clearDomainCache,
   getOutletAliases,
   isProfileUrl,
+  isSuspiciousOutletId,
   CRITIC_ALIASES,
   AGGREGATOR_SCORE_SOURCES,
 };
