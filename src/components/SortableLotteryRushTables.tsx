@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
 import { ensureHttps } from '@/lib/url-utils';
+import { buildAffiliateUrl } from '@/lib/affiliate-utils';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -235,9 +236,10 @@ export function LotteryTable({ data }: LotteryTableProps) {
                   <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
                     {(() => {
                       const platform = lottery?.platform || special?.platform;
-                      const url = ensureHttps(lottery?.url || special?.url);
+                      const rawUrl = ensureHttps(lottery?.url || special?.url);
                       if (!platform) return <span className="text-gray-500">—</span>;
-                      if (url) {
+                      if (rawUrl) {
+                        const url = buildAffiliateUrl(rawUrl, platform || '', 'lottery').url;
                         return (
                           <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium transition-colors">
                             {platform}<ExternalLinkIcon />
@@ -289,7 +291,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                               )}
                               {lottery.url && (
                                 <a
-                                  href={ensureHttps(lottery.url)}
+                                  href={buildAffiliateUrl(ensureHttps(lottery.url)!, lottery.platform || '', 'lottery').url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
@@ -312,7 +314,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                               )}
                               {special.url && (
                                 <a
-                                  href={ensureHttps(special.url)}
+                                  href={buildAffiliateUrl(ensureHttps(special.url)!, special.platform || '', 'lottery').url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
@@ -706,18 +708,20 @@ export function RushTable({ data }: RushTableProps) {
                   <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
                     <div className="flex flex-wrap gap-1 items-center">
                       {rush && (() => {
-                        const url = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
+                        const rawUrl = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
                         const label = rush.platform || 'Box Office';
-                        if (url) {
+                        if (rawUrl) {
+                          const url = rush.url ? buildAffiliateUrl(rawUrl, rush.platform || '', 'rush').url : rawUrl;
                           return <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a>;
                         }
                         return <span className="text-emerald-400">{label}</span>;
                       })()}
                       {digital && (() => {
-                        const url = ensureHttps(digital.url);
+                        const rawUrl = ensureHttps(digital.url);
                         const label = digital.platform || 'Digital';
                         const prefix = rush ? ' + ' : '';
-                        if (url) {
+                        if (rawUrl) {
+                          const url = buildAffiliateUrl(rawUrl, digital.platform || '', 'rush').url;
                           return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a></>;
                         }
                         return <span className="text-blue-400">{prefix}{label}</span>;
@@ -769,8 +773,9 @@ export function RushTable({ data }: RushTableProps) {
                                 <p className="text-gray-400 text-xs leading-relaxed">{rush.instructions}</p>
                               )}
                               {(() => {
-                                const url = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
-                                if (url) {
+                                const rawUrl = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
+                                if (rawUrl) {
+                                  const url = rush.url ? buildAffiliateUrl(rawUrl, rush.platform || '', 'rush').url : rawUrl;
                                   return (
                                     <a
                                       href={url}
@@ -808,7 +813,7 @@ export function RushTable({ data }: RushTableProps) {
                               )}
                               {digital.url && (
                                 <a
-                                  href={ensureHttps(digital.url)}
+                                  href={buildAffiliateUrl(ensureHttps(digital.url)!, digital.platform || '', 'rush').url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium text-xs mt-2 transition-colors"
@@ -840,7 +845,7 @@ export function RushTable({ data }: RushTableProps) {
                               )}
                               {student.url && (
                                 <a
-                                  href={ensureHttps(student.url)}
+                                  href={buildAffiliateUrl(ensureHttps(student.url)!, student.platform || '', 'rush').url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-medium text-xs mt-2 transition-colors"
