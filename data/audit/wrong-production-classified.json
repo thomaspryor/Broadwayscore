@@ -1,16 +1,49 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-05T16:01:05.472Z",
+    "generatedAt": "2026-04-05T17:13:20.163Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 76,
-    "classified": 0,
-    "wrongProduction": 0,
+    "total": 77,
+    "classified": 2,
+    "wrongProduction": 2,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 2,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
+      "file": "times-uk--clive-davis.json",
+      "outlet": "The Times (UK)",
+      "criticName": "Clive Davis",
+      "publishDate": "2019-09-16",
+      "originalSignals": [
+        "publishDate 2019 is 22 years after original opening 1997"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is for \"The King of Hell's Palace\", not \"The Lion King\". The review mentions the playwright, director, and actors of \"The King of Hell's Palace\"."
+    },
+    {
+      "showId": "chicago-1996",
+      "showTitle": "Chicago",
+      "showYear": 1996,
+      "file": "times-uk--benedict-nightingale.json",
+      "outlet": "The Times (UK)",
+      "criticName": "Benedict Nightingale",
+      "publishDate": "1997-11-19",
+      "originalSignals": [
+        "modern references: masks"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review is from a UK publication in 1997 and mentions the Adelphi Theatre, which is in London. This indicates it is a review of the West End production, not the Broadway production that opened in 1996."
+    }
+  ]
 }

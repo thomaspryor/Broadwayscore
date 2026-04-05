@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T16:05:20.778Z",
+  "timestamp": "2026-04-05T17:18:27.730Z",
   "stats": {
-    "totalReviews": 29517,
-    "alreadyFlagged": 8474,
+    "totalReviews": 33654,
+    "alreadyFlagged": 12675,
     "dateGuardCatches": 13,
-    "directorMismatch": 936,
-    "tvFilmSignals": 3435,
-    "londonSignals": 1076,
-    "offBroadwaySignals": 983,
-    "yearMismatch": 72,
-    "noPublishDate": 5612
+    "directorMismatch": 931,
+    "tvFilmSignals": 3430,
+    "londonSignals": 1075,
+    "offBroadwaySignals": 979,
+    "yearMismatch": 73,
+    "noPublishDate": 5535
   },
   "findings": [
     {
@@ -2237,20 +2237,6 @@
     },
     {
       "showId": "act-one-2014",
-      "file": "its-a-brave-writer-who-would-contrive-this-show--moss-hart.json",
-      "score": 48,
-      "publishDate": "2014-04-18",
-      "url": "https://variety.com/2014/legit/reviews/broadway-review-act-one-starring-tony-shalhoub-1201159101/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "act-one-2014",
       "file": "usatoday--elysa-gardner.json",
       "score": 76,
       "publishDate": "April 18, 2014",
@@ -2909,9 +2895,9 @@
     {
       "showId": "aladdin-2014",
       "file": "nysr--elysa-gardner.json",
-      "score": 82,
-      "publishDate": "September 19, 2018",
-      "url": "http://nystagereview.com/2018/09/19/aladdin-four-years-on-a-fairy-tale-for-a-whole-new-world/",
+      "score": 78,
+      "publishDate": "2018-09-19T17:30:05",
+      "url": "https://nystagereview.com/2018/09/19/aladdin-four-years-on-a-fairy-tale-for-a-whole-new-world/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -4458,7 +4444,7 @@
     {
       "showId": "an-ark-off-broadway-2026",
       "file": "theater-life--barry-gordin.json",
-      "score": 43,
+      "score": 42,
       "publishDate": "2026-01-22T14:22:40",
       "url": "https://theaterlife.com/an-ark/",
       "findings": [
@@ -4593,7 +4579,7 @@
     {
       "showId": "an-enemy-of-the-people-2024",
       "file": "nysr--frank-scheck.json",
-      "score": 25,
+      "score": 43,
       "publishDate": "2024-03-18T21:54:59",
       "url": "https://nystagereview.com/2024/03/18/an-enemy-of-the-people-ibsens-classic-trivialized-with-gimmickry-and-ice-cubes/",
       "findings": [
@@ -5604,6 +5590,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "august-osage-county-2007",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2008-11-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -6982,20 +6981,6 @@
     },
     {
       "showId": "blackout-songs-off-broadway-2026",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 64,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=61E8ZR",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "blackout-songs-off-broadway-2026",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 44,
       "publishDate": "2026-01-28",
@@ -7500,6 +7485,19 @@
       ]
     },
     {
+      "showId": "brighton-beach-memoirs-1983",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "1986-02-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "brighton-beach-memoirs-2009",
       "file": "nydailynews--joe-dziemianowicz-bway.json",
       "publishDate": "2009-10-27",
@@ -7704,6 +7702,20 @@
       "score": 84,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/page/world/BuenaVistaSocialClub.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "theater-life--barry-gordin.json",
+      "score": 92,
+      "publishDate": "2023-12-23T09:35:37",
+      "url": "https://theaterlife.com/buena-vista-social-club-3/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -9694,20 +9706,6 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "file": "broadway-blog--samuel-l-leiter.json",
-      "score": 75,
-      "publishDate": "2017-04-23",
-      "url": "http://thebroadwayblog.com/?s=charlie+and+the",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "charlie-and-the-chocolate-factory-2017",
       "file": "broadwayselect--peter-filichia.json",
       "score": 25,
       "publishDate": "May 1, 2017",
@@ -9980,15 +9978,20 @@
     },
     {
       "showId": "chess-2025",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 66,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": 78,
+      "publishDate": "2025-11-16T23:00:27",
+      "url": "https://nystagereview.com/2025/11/16/chess-thank-you-for-the-music/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from chess-1988"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         },
         {
           "type": "LONDON_SIGNAL",
@@ -10064,6 +10067,19 @@
       "score": 88,
       "publishDate": "November 20, 1996",
       "url": "http://www.curtainup.com/chicago.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from chicago-1975"
+        }
+      ]
+    },
+    {
+      "showId": "chicago-1996",
+      "file": "daily-mail--michael-covene.json",
+      "publishDate": "1997-11-21",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -10195,16 +10211,20 @@
       ]
     },
     {
-      "showId": "chicken-and-biscuits-2021",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 45,
-      "publishDate": "October 12th, 2021",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=R0VJDJ",
+      "showId": "chicago-1996",
+      "file": "what-son--neil-smith.json",
+      "publishDate": "1997-11-26",
+      "url": null,
       "findings": [
         {
-          "type": "TV_FILM_SIGNAL",
+          "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
+          "detail": "Mentions director \"bob fosse\" from chicago-1975"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -11538,20 +11558,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
-        }
-      ]
-    },
-    {
-      "showId": "data-off-broadway-2026",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-S00S8D",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -15965,20 +15971,6 @@
     },
     {
       "showId": "floyd-collins-2025",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 64,
-      "publishDate": "April 30th, 2025",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=14RBAE",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "floyd-collins-2025",
       "file": "variety--christian-lewis.json",
       "score": 62,
       "publishDate": "April 21, 2025",
@@ -16171,20 +16163,6 @@
       "score": 85,
       "publishDate": "2002-08-08",
       "url": "https://www.culturalweekly.com/making-missing-connections-frankie-johnny-long-lost-happy-talk/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arin arbus\" from frankie-and-johnny-in-the-clair-de-lune-2019"
-        }
-      ]
-    },
-    {
-      "showId": "frankie-and-johnny-in-the-clair-de-lune-2002",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 81,
-      "publishDate": "2002-08-08",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=8UEJY3",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18094,20 +18072,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2005",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 76,
-      "publishDate": "2005-05-01",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=DIHUXF",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         }
       ]
     },
@@ -20957,9 +20921,9 @@
     {
       "showId": "harry-potter-2021",
       "file": "nysr--elysa-gardner.json",
-      "score": 82,
-      "publishDate": "April 22, 2018",
-      "url": "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-a-magic-man-tested/",
+      "score": 81,
+      "publishDate": "2018-04-22T21:18:32",
+      "url": "https://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-a-magic-man-tested/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -20977,8 +20941,8 @@
       "showId": "harry-potter-2021",
       "file": "nysr--steven-suskin.json",
       "score": 85,
-      "publishDate": "2018-04-22T20:11:20-04:00",
-      "url": "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
+      "publishDate": "2018-04-22T21:19:18",
+      "url": "https://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -21369,7 +21333,7 @@
     {
       "showId": "heathers-the-musical-off-broadway-2025",
       "file": "theater-life--barry-gordin.json",
-      "score": 62,
+      "score": 63,
       "publishDate": "2025-07-12T12:50:29",
       "url": "https://theaterlife.com/heathers-the-musical-2/",
       "findings": [
@@ -21582,38 +21546,10 @@
     },
     {
       "showId": "hello-dolly-1978",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 80,
-      "publishDate": "1978-03-05",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=VVT67U",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1978",
       "file": "off-script-with-dan-dwyer--dan-dwyer.json",
       "score": 80,
       "publishDate": "1978-03-05",
       "url": "https://dandwyeroffscript.tumblr.com/post/159828271846/hello-dolly",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "file": "out-magazine--michael-musto.json",
-      "score": 83,
-      "publishDate": "1978-03-05",
-      "url": "http://www.out.com/michael-musto/2017/4/24/bianca-del-rio-id-let-trump-touch-my-psy",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21835,6 +21771,19 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2025-06-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "broadwayworld--kat-mokrynski.json",
       "score": 66,
       "publishDate": "2025-06-24",
@@ -21863,10 +21812,36 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2025-06-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "digital-spy--ian-sandwell.json",
       "score": 66,
       "publishDate": "2025-07-10",
       "url": "https://www.digitalspy.com/movies/a65152308/hercules-review-buy-tickets/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "everything-theatre--gabriel-wilding.json",
+      "publishDate": "2025-06-26",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -21910,6 +21885,19 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "hampstead-highgate-express--bridget-galton.json",
+      "publishDate": "2025-06-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "independent--alice-saville.json",
       "score": 40,
       "publishDate": "2025-06-25",
@@ -21942,6 +21930,19 @@
       "score": 54,
       "publishDate": "June 25, 2025",
       "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2025-06-28",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -22054,6 +22055,19 @@
       "score": 49,
       "publishDate": "2025-06-24",
       "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-1236439211/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2025-06-24",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24113,20 +24127,6 @@
     },
     {
       "showId": "into-the-woods-1987",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 86,
-      "publishDate": "1987-11-05",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-3Y77JU",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-1987",
       "file": "theatermania--hayley-levitt.json",
       "score": 87,
       "publishDate": "1987-11-05",
@@ -25405,6 +25405,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "jajas-african-hair-braiding-west-end-2026",
+      "file": "broadwayworld--mica-blackwell.json",
+      "publishDate": "2026-03-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2026 (0x). 2023 matches production: jajas-african-hair-braiding-2023"
         }
       ]
     },
@@ -27099,6 +27112,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-off-broadway-2026",
+      "file": "front-row-center--brittany-crowell.json",
+      "score": 77,
+      "publishDate": "2022-09-13T14:56:33",
+      "url": "https://thefrontrowcenter.com/2022/09/kinky-boots/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
         }
       ]
     },
@@ -36145,25 +36172,6 @@
       ]
     },
     {
-      "showId": "oliver-west-end-2024",
-      "file": "whatsonstage--rachel-agyekum.json",
-      "score": 83,
-      "publishDate": "2024-12-14",
-      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"film review\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "on-a-clear-day-you-can-see-forever-2011",
       "file": "variety--steven-suskin.json",
       "score": null,
@@ -36846,7 +36854,7 @@
     {
       "showId": "operation-mincemeat-2025",
       "file": "theater-life--barry-gordin.json",
-      "score": 92,
+      "score": 87,
       "publishDate": "2025-03-25T08:30:00",
       "url": "https://theaterlife.com/operation-mincemeat-2/",
       "findings": [
@@ -37139,20 +37147,6 @@
       ]
     },
     {
-      "showId": "our-town-1988",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 61,
-      "publishDate": "1988-12-04",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=KVQEXP",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"kenny leon\" from our-town-2024"
-        }
-      ]
-    },
-    {
       "showId": "our-town-2024",
       "file": "cititour--brian-scott-lipton.json",
       "score": 58,
@@ -37188,8 +37182,8 @@
     {
       "showId": "our-town-2024",
       "file": "nysr--david-finkle.json",
-      "score": 82,
-      "publishDate": "October 10, 2024",
+      "score": 81,
+      "publishDate": "2024-10-10T22:57:48",
       "url": "https://nystagereview.com/2024/10/10/our-town-kenny-leon-smartly-repopulates-thornton-wilder-for-2024/",
       "findings": [
         {
@@ -37202,8 +37196,8 @@
     {
       "showId": "our-town-2024",
       "file": "nysr--steven-suskin.json",
-      "score": 62,
-      "publishDate": "October 10, 2024",
+      "score": 65,
+      "publishDate": "2024-10-10T22:58:29",
       "url": "https://nystagereview.com/2024/10/10/our-town-thornton-wilders-classic-in-functional-but-less-than-gripping-revival/",
       "findings": [
         {
@@ -37932,8 +37926,8 @@
     {
       "showId": "patriots-2024",
       "file": "nysr--david-finkle.json",
-      "score": 82,
-      "publishDate": "April 22, 2024",
+      "score": 85,
+      "publishDate": "2024-04-22T17:24:18",
       "url": "https://nystagereview.com/2024/04/22/patriots-a-startling-autocrat-oligarch-expose/",
       "findings": [
         {
@@ -38908,20 +38902,6 @@
       "score": 83,
       "publishDate": null,
       "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
-      "file": "huffpost--michael-glitz.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.huffpost.com/entry/kevin-kline-soars-am%C3%A9lie-bores-casablanca-in_us_58eaf070e4b00dd8e016ed74",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -40166,8 +40146,8 @@
     {
       "showId": "ragtime-2025",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 92,
-      "publishDate": "October 16, 2025",
+      "score": 93,
+      "publishDate": "2025-10-16T23:01:49",
       "url": "https://nystagereview.com/2025/10/16/ragtime-breaking-our-hearts-opening-a-door/",
       "findings": [
         {
@@ -42365,20 +42345,6 @@
     },
     {
       "showId": "six-2021",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 75,
-      "publishDate": "October 9, 2021",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WBRPD6",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "six-2021",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 63,
       "publishDate": "2021-10-07",
@@ -44441,25 +44407,6 @@
     },
     {
       "showId": "stephen-sondheims-old-friends-2025",
-      "file": "in-act-two-of-merrily-we-roll-along--charley-kringas.json",
-      "score": 69,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-STEPHEN-SONDHEIMS-OLD-FRIENDS-Opens-On-Broadway-20250408",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "stephen-sondheims-old-friends-2025",
       "file": "vulture--jackson-mchenry.json",
       "score": 63,
       "publishDate": "April 8, 2025",
@@ -44544,20 +44491,6 @@
       "score": 89,
       "publishDate": "2023-10-29T22:30:03",
       "url": "https://thefrontrowcenter.com/2023/10/stereophonic/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stereophonic-off-broadway-2023",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 85,
-      "publishDate": "October 30, 2023",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6T6KMR",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -49247,20 +49180,6 @@
     },
     {
       "showId": "the-collaboration-2022",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 40,
-      "publishDate": "January 11th, 2023",
-      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-BJK3TX&fbclid=IwAR1Bh28qpbbWwW40veh7idXI3AYKuF_joJ7yVfDeWSzFRRD1_KApgbKCeEw",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-collaboration-2022",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 76,
       "publishDate": null,
@@ -49769,6 +49688,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cottage-2023",
+      "file": "theater-life--barry-gordin.json",
+      "score": 59,
+      "publishDate": "2023-07-30T10:35:30",
+      "url": "https://theaterlife.com/the-cottage-1-2-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -53917,7 +53850,7 @@
     {
       "showId": "the-outsiders-2024",
       "file": "theater-life--barry-gordin.json",
-      "score": 62,
+      "score": 66,
       "publishDate": "2024-04-18T09:18:48",
       "url": "https://theaterlife.com/the-outsiders-2/",
       "findings": [
@@ -55944,7 +55877,7 @@
     {
       "showId": "the-shark-is-broken-2023",
       "file": "theater-life--barry-gordin.json",
-      "score": 58,
+      "score": 65,
       "publishDate": "2023-08-14T19:21:00",
       "url": "https://theaterlife.com/the-shark-is-broken/",
       "findings": [
@@ -56682,20 +56615,6 @@
       ]
     },
     {
-      "showId": "the-unknown-off-broadway-2026",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=H17N28",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
       "showId": "the-velocity-of-autumn-2014",
       "file": "newsday--linda-winer.json",
       "score": 42,
@@ -57383,25 +57302,6 @@
       "publishDate": null,
       "url": "https://www.wsj.com/articles/tina-review-another-jukebox-musical-rolls-on-the-river-of-broadway-11573182000?gaa_at=eafs&gaa_n=AWEtsqdpk1Ay_n1S_F_k0hi8FJ3SLjHulKlgULDmshObifUKB5oKboUkt8zV&gaa_ts=698b9708&gaa_sig=wokVTmusAdFgBII6uR2nuMliWecVRfWmrff7-QmL70v_-otiF9Sn-PibVayyYhfEiuZGLEVDa2jlaMfXORIKOg%3D%3D",
       "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "titanique-off-broadway-2022",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 44,
-      "publishDate": "June 28th, 2022",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=HFY1K1",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tye blue\" from titanique-2026"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -58993,20 +58893,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbomax\""
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-2025",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 45,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-A5160S",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -61360,20 +61246,6 @@
       ]
     },
     {
-      "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 37,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-K09246",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
       "showId": "1984-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 65,
@@ -61637,20 +61509,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "a-dolls-house-2023",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 35,
-      "publishDate": null,
-      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=5FYBTJ",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
@@ -63337,20 +63195,6 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
-      "file": "london-theatre--matt-wolf.json",
-      "score": null,
-      "publishDate": "2021-09-13",
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=9979",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
       "file": "musical-theatre-review--unknown.json",
       "score": 75,
       "publishDate": null,
@@ -63402,20 +63246,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "file": "whatsonstage--rachel-agyekum.json",
-      "score": null,
-      "publishDate": "2021-09-13",
-      "url": "https://www.whatsonstage.com/news/back-to-the-future-releases-the-day-that-changed-musical-theatre-history-west-end-video_54814/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -63999,6 +63829,19 @@
       ]
     },
     {
+      "showId": "brighton-beach-memoirs-1983",
+      "file": "listener--jim-hiley.json",
+      "publishDate": "1986-03-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "bring-it-on-the-musical-2012",
       "file": "variety--marilyn-stasio.json",
       "score": 69,
@@ -64322,7 +64165,7 @@
     {
       "showId": "bug-2026",
       "file": "theater-life--barry-gordin.json",
-      "score": 63,
+      "score": 64,
       "publishDate": "2026-01-17T10:22:38",
       "url": "https://theaterlife.com/bug-2/",
       "findings": [
@@ -64814,20 +64657,6 @@
       "score": 64,
       "publishDate": "November 16, 2025",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michele-aaron-tveit-abba-musical-1236427952/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "chess-2025",
-      "file": "nysr--melissa-rose-bernardo.json",
-      "score": 82,
-      "publishDate": "November 16, 2025",
-      "url": "https://nystagereview.com/2025/11/16/chess-thank-you-for-the-music/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -65395,7 +65224,7 @@
     {
       "showId": "days-of-wine-and-roses-2024",
       "file": "theater-life--barry-gordin.json",
-      "score": 58,
+      "score": 74,
       "publishDate": "2024-02-04T09:21:28",
       "url": "https://theaterlife.com/days-of-wine-and-roses-2/",
       "findings": [
@@ -65815,6 +65644,7 @@
     {
       "showId": "dracula-west-end-2025",
       "file": "bbc-news--yasmin-rufo.json",
+      "score": 61,
       "publishDate": "2026-02-18",
       "url": "https://www.bbc.com/news/articles/cqxd4r4xzx1o",
       "findings": [
@@ -66386,6 +66216,20 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 88,
+      "publishDate": "2026-03-12T22:59:32",
+      "url": "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-performs-magic-of-an-emotional-kind/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 87,
       "publishDate": "2026-03-18",
@@ -66577,20 +66421,6 @@
       "score": 79,
       "publishDate": "April 19th, 2023",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review-1235391595/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "fat-ham-2023",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 45,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-9GCXGL",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -66965,20 +66795,6 @@
     },
     {
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 86,
-      "publishDate": "April 29th, 2022",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=J455BH",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 68,
       "publishDate": "April 20, 2022",
@@ -67100,6 +66916,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "fosse-1999",
+      "file": "news-oftheworld--bill-hagerty.json",
+      "publishDate": "2000-02-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -67880,8 +67709,8 @@
     {
       "showId": "hadestown-2019",
       "file": "nysr--elysa-gardner.json",
-      "score": 82,
-      "publishDate": "April 17, 2019",
+      "score": 78,
+      "publishDate": "2019-04-17T20:51:45",
       "url": "https://nystagereview.com/2019/04/17/hadestown-anais-mitchells-myths-and-hymns-from-way-downtown/",
       "findings": [
         {
@@ -67895,7 +67724,7 @@
       "showId": "hadestown-2019",
       "file": "nysr--michael-sommers.json",
       "score": 76,
-      "publishDate": "April 17, 2019",
+      "publishDate": "2019-04-17T20:50:51",
       "url": "https://nystagereview.com/2019/04/17/hadestown-red-hot-and-bluesy-score-fuels-a-trip-to-hell-and-back/",
       "findings": [
         {
@@ -68397,7 +68226,7 @@
     {
       "showId": "hamilton-2015",
       "file": "theater-life--eric-march.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2015-08-12T13:08:00",
       "url": "https://theaterlife.com/hamilton-2/",
       "findings": [
@@ -70614,7 +70443,7 @@
     {
       "showId": "just-for-us-2023",
       "file": "theater-life--barry-gordin.json",
-      "score": 72,
+      "score": 77,
       "publishDate": "2023-06-26T07:53:14",
       "url": "https://theaterlife.com/just-for-us/",
       "findings": [
@@ -70729,20 +70558,6 @@
       "score": 92,
       "publishDate": "2022-11-10T21:18:09-05:00",
       "url": "https://www.nytimes.com/2022/11/10/theater/kimberly-akimbo-review.html?smtyp=cur&amp;smid=tw-nytimesarts",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "kimberly-akimbo-2022",
-      "file": "talkinbroadway--howard-miller.json",
-      "score": 92,
-      "publishDate": "2022-11-10T21:18:09-05:00",
-      "url": "https://www.talkinbroadway.com/page/world/index.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -72688,20 +72503,6 @@
     },
     {
       "showId": "mary-jane-2024",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 82,
-      "publishDate": "May 1, 2024",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=GN41RJ",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "mary-jane-2024",
       "file": "nydailynews--chris-jones.json",
       "score": 82,
       "publishDate": "April 23, 2024",
@@ -72731,7 +72532,7 @@
     {
       "showId": "mary-jane-2024",
       "file": "theater-life--barry-gordin.json",
-      "score": 88,
+      "score": 91,
       "publishDate": "2024-04-27T21:25:45",
       "url": "https://theaterlife.com/mary-jane-2/",
       "findings": [
@@ -73833,8 +73634,8 @@
     {
       "showId": "oh-mary-2024",
       "file": "nysr--bob-verini.json",
-      "score": 80,
-      "publishDate": "July 11, 2024",
+      "score": 78,
+      "publishDate": "2024-07-11T20:56:05",
       "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
       "findings": [
         {
@@ -75148,7 +74949,7 @@
     {
       "showId": "punch-2025",
       "file": "theater-life--barry-gordin.json",
-      "score": 95,
+      "score": 93,
       "publishDate": "2025-09-30T16:19:30",
       "url": "https://theaterlife.com/punch-3/",
       "findings": [
@@ -76031,7 +75832,7 @@
     {
       "showId": "six-2021",
       "file": "theater-life--barry-gordin.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2021-10-28T11:19:45",
       "url": "https://theaterlife.com/six/",
       "findings": [
@@ -76659,6 +76460,20 @@
     },
     {
       "showId": "stereophonic-2024",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": 91,
+      "publishDate": "2024-04-19T23:55:25",
+      "url": "https://nystagereview.com/2024/04/19/stereophonic-were-with-the-band/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-2024",
       "file": "nytg--allison-considine.json",
       "score": 79,
       "publishDate": "April 19, 2024",
@@ -76677,6 +76492,20 @@
       "score": 95,
       "publishDate": "April 19, 2024",
       "url": "https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "theater-life--barry-gordin.json",
+      "score": 68,
+      "publishDate": "2024-04-23T16:45:00",
+      "url": "https://theaterlife.com/stereophonic/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -76986,20 +76815,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 38,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=IQL7U1",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -78690,20 +78505,6 @@
       "score": 88,
       "publishDate": null,
       "url": "https://dandwyeroffscript.tumblr.com/post/167879055146/the-bands-visit",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "the-bands-visit-2017",
-      "file": "susangrangercom--susan-granger.json",
-      "score": 80,
-      "publishDate": "2017-11-29",
-      "url": "https://www.susangranger.com/?p=10339",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -80884,20 +80685,6 @@
     },
     {
       "showId": "the-lehman-trilogy-2021",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 73,
-      "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=R1AFRH",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lehman-trilogy-2021",
       "file": "nysr--steven-suskin.json",
       "score": 95,
       "publishDate": "2021-10-14T21:20:17",
@@ -81523,6 +81310,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "file": "telegraph--serena-davies.json",
+      "publishDate": "2021-08-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
