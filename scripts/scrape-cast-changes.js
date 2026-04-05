@@ -1148,9 +1148,20 @@ function validateShowStability(original, updated) {
 }
 
 /**
- * Guard: abort if currentCast members drop too much
+ * Guard: abort if currentCast members drop too much.
+ * Skipped when data is >30 days stale (baselines are meaningless after that long).
  */
 function validateCastMemberStability(original, updated) {
+  // Skip entirely if data is very stale — baselines are meaningless
+  const lastUpdated = original.lastUpdated;
+  if (lastUpdated) {
+    const staleDays = Math.floor((Date.now() - new Date(lastUpdated).getTime()) / (1000 * 60 * 60 * 24));
+    if (staleDays > 30) {
+      if (verbose) console.log(`[Guard] Skipping cast member stability check — data is ${staleDays} days stale (baselines unreliable)`);
+      return;
+    }
+  }
+
   let totalDropped = 0;
 
   for (const [showId, showData] of Object.entries(updated.shows || {})) {
