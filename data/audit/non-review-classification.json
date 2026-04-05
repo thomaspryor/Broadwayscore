@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-05T05:27:48.470Z",
+    "generatedAt": "2026-04-05T05:46:41.057Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 29885,
-      "inReviewsJson": 15882,
-      "skippedExcluded": 10,
-      "withFullText": 21,
-      "excerptOnly": 1704,
-      "llmClassified": 20,
+      "inReviewsJson": 15868,
+      "skippedExcluded": 3,
+      "withFullText": 46,
+      "excerptOnly": 1703,
+      "llmClassified": 45,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 16,
-      "budgetUsed": 0.0021000000000000003,
-      "llmCalls": 21,
+      "budgetUsed": 0.004599999999999999,
+      "llmCalls": 46,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14147
+      "skippedAlreadyClassified": 14116
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like Fences.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, rather than a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" which suggests a news or directory type of content.",
       "currentScore": 62
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
       "currentScore": 74
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly from the Wall Street Journal, based on the subscription prompt. It does not contain any evaluative content about the show 'Parade'.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production. It seems to be setting the scene for a review, but is not one itself.",
+      "reasoning": "The article describes the play's premise but does not offer an evaluation or opinion on its quality. It sets the stage for an 'evening of terror' but doesn't review the execution.",
       "currentScore": 80
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on its quality. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of search terms or categories related to theater, rather than a review of a specific show. It lacks any evaluative content.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review that offers an evaluation.",
       "currentScore": 64
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's likely a dynamically generated page or search result.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
       "currentScore": 78
     },
     {
@@ -180,16 +180,41 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "evening-all-afternoon-west-end-2026/south-london--michael-holland.json",
-    "hamilton-west-end-2021/bbc-news--neil-smith.json",
-    "operation-mincemeat-west-end-2024/independent--greg-callus.json",
-    "the-holy-rosenbergs-west-end-2026/british-theatre--susan-novak.json"
+    "act-one-2014/its-a-brave-writer-who-would-contrive-this-show--moss-hart.json",
+    "all-my-sons-2019/nytimes--jesse-green.json",
+    "allegiance-2015/nytimes--charles-isherwood.json",
+    "almost-famous-2022/vulture--jackson-mchenry.json",
+    "an-american-in-paris-2015/deadline--jeremy-gerard.json",
+    "an-american-in-paris-2015/timeout--david-cote.json",
+    "angels-in-america-2018/variety--marilyn-stasio.json",
+    "back-to-the-future-west-end-2021/standard--simone-noakes.json",
+    "betrayal-2019/vulture--sara-holdren.json",
+    "born-yesterday-2011/hollywood-reporter--unknown.json",
+    "broken-glass-west-end-2026/independent--samuel-mathewson.json",
+    "cult-of-love-2024/guardian--jesse-hassenger.json",
+    "death-of-a-salesman-2022/ew--fabian-brathwiate.json",
+    "dog-day-afternoon-2026/theatrely--emily-wyrwa.json",
+    "hedwig-and-the-angry-inch-2014/timeout--david-cote.json",
+    "here-lies-love-2023/theatermania--adam-feldman.json",
+    "in-transit-2016/lighting-and-sound-america--david-barbour.json",
+    "liberation-2025/nytimes--laura-collins-hughes.json",
+    "marjorie-prime-2025/nysr--david-finkle.json",
+    "moulin-rouge-the-musical-west-end-2021/thestage--sam-marlowe.json",
+    "oedipus-2025/nysr--michael-sommers.json",
+    "ragtime-2025/nytimes--elisabeth-vincentelli.json",
+    "skylight-2015/timeout--david-cote.json",
+    "the-anarchist-2012/vulture--jesse-green.json",
+    "the-authenticator-west-end-2026/thereviewshub--scott-matthewman.json",
+    "the-music-man-2022/hollywood-reporter--frank-scheck.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/daily-mail--robert-gore-langton.json",
+    "topdog-underdog-2022/culturesauce--thom-geier.json",
+    "yellow-face-2024/washpost--naveen-kumar.json"
   ],
   "perShowSummary": []
 }
