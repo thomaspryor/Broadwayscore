@@ -154,7 +154,17 @@
     "flying-over-sunset-2021/hollywood-reporter--david-rooney.json",
     "company-2021/theatrely--david-gordon.json",
     "diana-the-musical-2021/talkinbroadway--matthew-murray.json",
-    "diana-the-musical-2021/usatoday--charles-isherwood.json"
+    "diana-the-musical-2021/usatoday--charles-isherwood.json",
+    "dana-h-2021/hollywood-reporter--angie-han.json",
+    "waitress-2021/vulture--helen-shaw.json",
+    "pass-over-2021/indiewire--david-ehrlich.json",
+    "grand-horizons-2020/washpost--peter-marks.json",
+    "a-soldiers-play-2020/vulture--jesse-green.json",
+    "the-inheritance-2019/usatoday--charles-isherwood.json",
+    "the-sound-inside-2019/washpost--peter-marks.json",
+    "linda-vista-2019/variety--aramide-tinubu.json",
+    "linda-vista-2019/variety--marilyn-stasio.json",
+    "linda-vista-2019/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -263,7 +273,11 @@
       "data/review-texts/skeleton-crew-2022/usatoday--charles-isherwood.json",
       "data/review-texts/company-2021/theatrely--david-gordon.json",
       "data/review-texts/diana-the-musical-2021/talkinbroadway--matthew-murray.json",
-      "data/review-texts/diana-the-musical-2021/usatoday--charles-isherwood.json"
+      "data/review-texts/diana-the-musical-2021/usatoday--charles-isherwood.json",
+      "data/review-texts/grand-horizons-2020/washpost--peter-marks.json",
+      "data/review-texts/a-soldiers-play-2020/vulture--jesse-green.json",
+      "data/review-texts/the-sound-inside-2019/washpost--peter-marks.json",
+      "data/review-texts/linda-vista-2019/vulture--jesse-green.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -279,7 +293,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "diana-the-musical-2021/usatoday--charles-isherwood.json",
+  "lastProcessed": "linda-vista-2019/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -500,6 +514,50 @@
       "t": "2026-04-05T02:51:22.466Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:54:30.662Z",
+      "event": "bb-session",
+      "session": "bdf1e280",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dana-h-theater-review-123504401"
+    },
+    {
+      "t": "2026-04-05T02:54:32.016Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:56:55.664Z",
+      "event": "bb-session",
+      "session": "6fc17d49",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/grand-horizons-review"
+    },
+    {
+      "t": "2026-04-05T02:56:57.128Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:58:11.284Z",
+      "event": "bb-session",
+      "session": "9f925514",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-sound-inside-revi"
+    },
+    {
+      "t": "2026-04-05T02:58:12.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:58:21.161Z",
+      "event": "bb-session",
+      "session": "61072b42",
+      "url": "https://variety.com/2019/legit/reviews/linda-vista-review-tracy-letts-1203380423"
+    },
+    {
+      "t": "2026-04-05T02:58:22.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
