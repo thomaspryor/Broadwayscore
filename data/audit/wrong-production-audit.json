@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-05T19:49:49.428Z",
+  "timestamp": "2026-04-05T20:05:20.591Z",
   "stats": {
-    "totalReviews": 34288,
-    "alreadyFlagged": 13109,
+    "totalReviews": 34300,
+    "alreadyFlagged": 13112,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
     "tvFilmSignals": 3440,
-    "londonSignals": 1097,
+    "londonSignals": 1098,
     "offBroadwaySignals": 980,
     "yearMismatch": 72,
     "noPublishDate": 5543
@@ -65556,6 +65556,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 83,
+      "publishDate": "2026-02-24",
+      "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre#:~:text=A%20beautiful%20production%20about%20the,would%20be%20very%20well%20deserved.",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
