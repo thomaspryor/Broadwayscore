@@ -44,6 +44,7 @@ const PHASES = (() => {
 })();
 const OUTLET_FILTER = args.find(a => a.startsWith('--outlet='))?.split('=')[1] || '';
 const SOURCE_FILTER = args.find(a => a.startsWith('--source='))?.split('=')[1] || '';
+const MARKET_FILTER = args.find(a => a.startsWith('--market='))?.split('=')[1] || '';
 const LIMIT = (() => {
   const l = args.find(a => a.startsWith('--limit='));
   return l ? parseInt(l.split('=')[1]) : 0;
@@ -673,9 +674,14 @@ function trackOutlet(outletId, phase) {
 function findMissingRatings() {
   const reviews = [];
 
-  const shows = fs.readdirSync(REVIEW_DIR).filter(d => {
+  let shows = fs.readdirSync(REVIEW_DIR).filter(d => {
     try { return fs.statSync(path.join(REVIEW_DIR, d)).isDirectory(); } catch { return false; }
   });
+
+  // Market filter: restrict to shows matching a market keyword (e.g., 'west-end')
+  if (MARKET_FILTER) {
+    shows = shows.filter(d => d.includes(MARKET_FILTER));
+  }
 
   for (const showId of shows) {
     const showDir = path.join(REVIEW_DIR, showId);
@@ -713,6 +719,7 @@ async function main() {
   console.log(`Phases: ${PHASES.join(', ')}`);
   if (OUTLET_FILTER) console.log(`Outlet filter: ${OUTLET_FILTER}`);
   if (SOURCE_FILTER) console.log(`Source filter: ${SOURCE_FILTER}`);
+  if (MARKET_FILTER) console.log(`Market filter: ${MARKET_FILTER}`);
   if (LIMIT) console.log(`Limit per phase: ${LIMIT}`);
 
   // Find all reviews missing ratings

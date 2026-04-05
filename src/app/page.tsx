@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
-import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { serializeShowForClient } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -38,29 +38,7 @@ export const metadata: Metadata = {
 };
 
 function serializeShow(show: ComputedShow): HomepageShow {
-  const buzz = getAudienceBuzz(show.id);
-  return {
-    id: show.id,
-    slug: show.slug,
-    title: show.title,
-    venue: show.venue,
-    openingDate: show.openingDate,
-    closingDate: show.closingDate ?? undefined,
-    status: show.status,
-    type: show.type,
-    isRevival: show.isRevival ?? undefined,
-    tags: show.tags,
-    ageRecommendation: show.ageRecommendation ?? undefined,
-    creativeTeam: show.creativeTeam,
-    reviewYearNote: show.reviewYearNote ?? undefined,
-    images: show.images,
-    criticScore: show.criticScore
-      ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount, tier1Count: show.criticScore.tier1Count, tier2Count: show.criticScore.tier2Count }
-      : undefined,
-    audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
-    audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
-    category: show.category,
-  };
+  return serializeShowForClient(show);
 }
 
 export default function HomePage() {

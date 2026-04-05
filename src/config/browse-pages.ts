@@ -1017,7 +1017,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     title: 'Broadway Show Runtimes',
     h1: 'Broadway Show Runtimes — Complete Guide',
     metaTitle: `Broadway Show Runtimes — How Long Is Every Show? (${CURRENT_YEAR})`,
-    metaDescription: 'How long is every Broadway show? Complete runtimes for all current productions, sorted shortest to longest. Plan your evening with exact show lengths.',
+    metaDescription: 'Find out how long every Broadway show is. Complete runtimes sorted shortest to longest — plan around dinner, babysitters, or just your attention span.',
     intro: 'How long is every Broadway show currently playing? This page lists the runtime for every open production on Broadway, sorted from shortest to longest. Whether you\'re planning around dinner reservations, babysitter schedules, or just prefer a shorter show, this guide helps you find exactly the right fit. Runtimes include intermission where applicable. Shows marked with an intermission count give you a sense of pacing — a 2.5-hour show with one intermission feels very different from a straight-through production.',
     filter: (show) => {
       if (show.status !== 'open') return false;
@@ -1036,8 +1036,8 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     title: 'Broadway Age Guide',
     h1: 'Broadway Age Guide — What\'s Appropriate for Your Kids?',
     metaTitle: `Broadway Age Guide — Age Recommendations for Every Show (${CURRENT_YEAR})`,
-    metaDescription: 'Is this Broadway show appropriate for your child? Age recommendations for every current production, sorted by minimum age. Find the right show for your family.',
-    intro: 'Wondering if a Broadway show is appropriate for your kids? This guide lists age recommendations for every current Broadway production, sorted from youngest-appropriate to most mature. These recommendations come from official show guidance and reflect content considerations including language, themes, violence, and sexual content. When in doubt, err on the side of the higher age recommendation — a child who\'s too young for a show won\'t enjoy it, and neither will you.',
+    metaDescription: 'Check if a Broadway show is right for your child. Age recommendations for every current production, sorted by minimum age — find the perfect family-friendly show.',
+    intro: 'Wondering if a Broadway show is appropriate for your kids? This guide lists age recommendations for every current Broadway production, sorted from youngest-appropriate to most mature. You\'ll find shows suitable for children as young as 4 (family-friendly musicals like Disney productions) through shows recommended for ages 16+ (mature themes, strong language). These recommendations come from official show guidance and reflect content including language, themes, violence, and sexual content. When in doubt, err on the side of the higher age recommendation — a child who\'s too young for a show won\'t enjoy it, and neither will you.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       return !!show.ageRecommendation;

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBestOfList, getAllBestOfCategories } from '@/lib/data-core';
 import type { BestOfCategory } from '@/lib/data-types';
-import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 import BrowseListClient from '@/components/BrowseListClient';
@@ -96,28 +96,7 @@ export default function BestOfPage({ params }: { params: { category: string } })
   const isMixedStatus = statuses.size > 1;
 
   // Serialize shows with audience data
-  const serializedShows: BrowseShow[] = list.shows.map(show => {
-    const buzz = getAudienceBuzz(show.id);
-    return {
-      id: show.id,
-      slug: show.slug,
-      title: show.title,
-      venue: show.venue,
-      openingDate: show.openingDate,
-      closingDate: show.closingDate ?? undefined,
-      status: show.status,
-      type: show.type,
-      isRevival: show.isRevival ?? undefined,
-      images: show.images,
-      criticScore: show.criticScore
-        ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount, tier1Count: show.criticScore.tier1Count, tier2Count: show.criticScore.tier2Count }
-        : undefined,
-      audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
-      audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
-      reviewYearNote: show.reviewYearNote ?? undefined,
-      ticketLinks: show.ticketLinks,
-    };
-  });
+  const serializedShows: BrowseShow[] = list.shows.map(show => serializeShowForClient(show));
 
   // Best-of: no sort/filter (curated), but audience toggle makes sense
   // Exception: critic-specific lists shouldn't have audience toggle

@@ -8,7 +8,7 @@ const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
   title: `Off-Broadway vs Broadway: What's the Difference? (${currentYear}) | Guide`,
-  description: `What is Off-Broadway? Learn the real difference between Broadway and Off-Broadway — theater size, ticket prices, locations, and what to expect. Everything you need to choose the right show.`,
+  description: `Discover the real difference between Broadway and Off-Broadway — theater size, ticket prices, locations, and what to expect. Find which is right for your next NYC theater outing.`,
   alternates: { canonical: `${BASE_URL}/guides/off-broadway-vs-broadway` },
   openGraph: {
     title: `Off-Broadway vs Broadway: What's the Difference? (${currentYear})`,
@@ -246,11 +246,19 @@ export default function OffBroadwayVsBroadwayGuide() {
               </ul>
             </div>
 
-            <p className="text-gray-300 leading-relaxed text-sm">
+            <p className="text-gray-300 leading-relaxed text-sm mb-4">
               This geographic spread is part of the appeal. Seeing an Off-Broadway show often means
               exploring a different neighborhood, grabbing dinner somewhere you wouldn{'\u2019'}t otherwise
               visit, and experiencing a side of New York beyond the Theater District.
             </p>
+
+            <div className="bg-brand/10 border border-brand/20 rounded-lg p-4">
+              <p className="text-sm text-gray-300">
+                <strong className="text-white">See it on a map:</strong>{' '}
+                Our <Link href="/broadway-theaters-map" className="text-brand hover:text-brand-hover underline">interactive Broadway theater map</Link> shows
+                the exact location of every Broadway theater in the Theater District.
+              </p>
+            </div>
           </div>
         </section>
 

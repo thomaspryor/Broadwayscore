@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBrowseList, getAllBrowseSlugs } from '@/lib/data-core';
 import { getShowGrosses } from '@/lib/data-grosses';
-import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { GUIDE_PAGES } from '@/config/guide-pages';
@@ -158,30 +158,10 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
   // Serialize shows with audience data for client
   const serializedShows: BrowseShow[] = shows.map(show => {
-    const buzz = getAudienceBuzz(show.id);
     const grosses = hasPerformanceData ? getShowGrosses(show.slug) : null;
-    return {
-      id: show.id,
-      slug: show.slug,
-      title: show.title,
-      venue: show.venue,
-      openingDate: show.openingDate,
-      closingDate: show.closingDate ?? undefined,
-      status: show.status,
-      type: show.type,
-      isRevival: show.isRevival ?? undefined,
-      category: show.category,
-      runtime: show.runtime ?? undefined,
-      images: show.images,
-      criticScore: show.criticScore
-        ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount, tier1Count: show.criticScore.tier1Count, tier2Count: show.criticScore.tier2Count }
-        : undefined,
-      audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
-      audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
+    return serializeShowForClient(show, {
       performances: grosses?.allTime?.performances ?? undefined,
-      reviewYearNote: show.reviewYearNote ?? undefined,
-      ticketLinks: show.ticketLinks,
-    };
+    });
   });
 
   // Determine available sorts and filters for this page

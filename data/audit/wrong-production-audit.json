@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T01:15:29.462Z",
+  "timestamp": "2026-04-05T05:51:20.301Z",
   "stats": {
-    "totalReviews": 29454,
-    "alreadyFlagged": 8367,
+    "totalReviews": 29451,
+    "alreadyFlagged": 8394,
     "dateGuardCatches": 13,
-    "directorMismatch": 941,
-    "tvFilmSignals": 3430,
-    "londonSignals": 1062,
+    "directorMismatch": 934,
+    "tvFilmSignals": 3432,
+    "londonSignals": 1066,
     "offBroadwaySignals": 986,
     "yearMismatch": 72,
-    "noPublishDate": 5641
+    "noPublishDate": 5620
   },
   "findings": [
     {
@@ -4842,7 +4842,7 @@
       "showId": "anastasia-2017",
       "file": "variety--frank-rizzo.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "April 25, 2017",
       "url": "http://variety.com/2017/legit/reviews/anastasia-review-broadway-musical-1202393569/",
       "findings": [
         {
@@ -13390,6 +13390,25 @@
     },
     {
       "showId": "dracula-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 74,
+      "publishDate": "2026-02-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-dracula-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 62,
       "publishDate": "February 18, 2026",
@@ -14238,8 +14257,9 @@
     },
     {
       "showId": "evening-all-afternoon-west-end-2026",
-      "file": "south-london--unknown.json",
-      "publishDate": null,
+      "file": "south-london--michael-holland.json",
+      "score": 76,
+      "publishDate": "2026-02-26",
       "url": "https://southlondon.co.uk/lifestyle/review-evening-all-afternoon-at-donmar-warehouse/",
       "findings": [
         {
@@ -14273,20 +14293,6 @@
       "file": "timeout-london--andrzej-lukowksi.json",
       "score": 78,
       "publishDate": "2026-02-25",
-      "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "evening-all-afternoon-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 88,
-      "publishDate": "2026-02-23",
       "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
       "findings": [
         {
@@ -18105,20 +18111,6 @@
       ]
     },
     {
-      "showId": "glengarry-glen-ross-1984",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 74,
-      "publishDate": "1984-03-25",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=DIHUXF",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
       "showId": "glengarry-glen-ross-2005",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 76,
@@ -20696,6 +20688,25 @@
       ]
     },
     {
+      "showId": "hamilton-west-end-2021",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": 84,
+      "publishDate": "2017-12-21",
+      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"film review\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "hamlet-2009",
       "file": "theater-life--eric-march.json",
       "score": 42,
@@ -21625,67 +21636,11 @@
       ]
     },
     {
-      "showId": "hello-dolly-1978",
-      "file": "the-clyde-fitch-report--david-finkle.json",
-      "score": null,
-      "publishDate": "1978-03-05",
-      "url": "http://www.clydefitchreport.com/2017/04/hello-dolly-broadway-bette-midler/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1995",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 80,
-      "publishDate": "1995-10-19",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=VVT67U",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
       "showId": "hello-dolly-1995",
       "file": "newsday--barbara-schuler.json",
       "score": 81,
       "publishDate": "1995-10-19",
       "url": "https://www.newsday.com/entertainment/theater/bernadette-peters-hello-dolly-1.16901309",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1995",
-      "file": "off-script-with-dan-dwyer--dan-dwyer.json",
-      "score": 79,
-      "publishDate": "1995-10-19",
-      "url": "https://dandwyeroffscript.tumblr.com/post/159828271846/hello-dolly",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1995",
-      "file": "the-clyde-fitch-report--david-finkle.json",
-      "score": null,
-      "publishDate": "1995-10-19",
-      "url": "http://www.clydefitchreport.com/2017/04/hello-dolly-broadway-bette-midler/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24260,38 +24215,10 @@
     },
     {
       "showId": "into-the-woods-1997",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 87,
-      "publishDate": "1997-11-09",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-3Y77JU",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-1997",
       "file": "nysr--david-finkle.json",
       "score": 47,
       "publishDate": "1997-11-09",
       "url": "http://nystagereview.com/2022/07/10/into-the-woods-the-beloved-sondheim-lapine-musical-in-full-bloom/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-1997",
-      "file": "washpost--peter-marks.json",
-      "score": 81,
-      "publishDate": "1997-11-09",
-      "url": "https://www.washingtonpost.com/theater-dance/2022/07/29/into-the-woods-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24470,20 +24397,6 @@
       "score": 88,
       "publishDate": "July 10, 2022",
       "url": "https://www.nydailynews.com/2022/07/10/theater-review-broadway-revival-of-sondheims-into-the-woods-still-makes-for-a-powerful-journey/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
-      "file": "nysr--david-finkle.json",
-      "score": 77,
-      "publishDate": "2022-07-10T20:24:09",
-      "url": "https://nystagereview.com/2022/07/10/into-the-woods-the-beloved-sondheim-lapine-musical-in-full-bloom/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24790,6 +24703,25 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 61,
+      "publishDate": "2025-12-12",
+      "url": "https://www.allthatdazzles.co.uk/post/review-into-the-woods-bridge-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
       "score": 78,
       "publishDate": "2025-12-11",
@@ -24968,6 +24900,20 @@
       "score": 93,
       "publishDate": "2025-12-19",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "plays-international--unknown.json",
+      "score": 80,
+      "publishDate": "2025-12-15",
+      "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48229,7 +48175,7 @@
       "showId": "the-bands-visit-2017",
       "file": "times-uk--jordan-hoffman.json",
       "score": 86,
-      "publishDate": null,
+      "publishDate": "November 9th, 2017",
       "url": "https://www.timesofisrael.com/broadway-welcomes-israeli-cinema-with-acclaimed-production-of-the-bands-visit/",
       "findings": [
         {
@@ -50696,20 +50642,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-gin-game-1977",
-      "file": "huffpost--david-finkle.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-james-earl_b_8298932.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"leonard foglia\" from the-gin-game-2015"
         }
       ]
     },
@@ -62416,6 +62348,20 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 88,
+      "publishDate": "2025-11-24",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-all-my-sons-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
       "score": 80,
       "publishDate": "2025-11-22",
@@ -64109,21 +64055,8 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
-      "file": "the-upcoming-uk--unknown.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.theupcoming.co.uk/2026/03/04/broken-glass-at-the-young-vic-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "broken-glass-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 62,
       "publishDate": "2026-03-04",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/broken-glass-theatre-review-llvjbwntg",
       "findings": [
@@ -71766,7 +71699,7 @@
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "guardian--the-guardian.json",
       "score": 67,
-      "publishDate": null,
+      "publishDate": "2026-04-02",
       "url": "https://www.theguardian.com/stage/2026/apr/02/les-liaisons-dangereuses-review-love-is-a-fight-for-power-in-this-bold-staging",
       "findings": [
         {
@@ -74562,6 +74495,20 @@
       "score": 92,
       "publishDate": "2023-05-10",
       "url": "https://lostintheatreland.co.uk/operation-mincemeat-review-fortune-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "the-express--stefan-kyriazis.json",
+      "score": 92,
+      "publishDate": "2023-05-11",
+      "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80301,6 +80248,20 @@
       "score": null,
       "publishDate": "September 26, 2024",
       "url": "https://variety.com/2024/legit/reviews/the-hills-of-california-review-broadway-sam-mendes-jez-butterworth-1236159482/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "british-theatre--susan-novak.json",
+      "score": 88,
+      "publishDate": "2026-04-04",
+      "url": "https://www.britishtheatre.com/posts/the-holy-rosenbergs-review-menier-chocolate-factory-2026",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

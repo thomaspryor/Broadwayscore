@@ -126,7 +126,21 @@ export default function ComparePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'Broadway Show Comparisons',
+          description: 'Compare Broadway shows side by side with CriticScore ratings, runtime, and ticket prices.',
+          numberOfItems: COMPARISON_PAIRS.length,
+          itemListElement: categories.flatMap(cat =>
+            cat.comparisons.slice(0, 6).map((c, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: `${c.showA.title} vs ${c.showB.title}`,
+              url: `${BASE_URL}/compare/${c.slug}`,
+            }))
+          ),
+        }]) }}
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">

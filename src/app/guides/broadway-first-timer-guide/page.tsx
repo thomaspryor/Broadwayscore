@@ -8,7 +8,7 @@ const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
   title: `Going to Broadway for the First Time (${currentYear}) | Complete Beginner Guide`,
-  description: `Everything you need to know before your first Broadway show in ${currentYear}. When to arrive, what to expect, theater etiquette, practical tips, and how to plan the perfect night out.`,
+  description: `Plan your first Broadway show in ${currentYear} with confidence. Discover when to arrive, what to expect, theater etiquette, and insider tips for the perfect night out.`,
   alternates: { canonical: `${BASE_URL}/guides/broadway-first-timer-guide` },
   openGraph: {
     title: `Your First Broadway Show: The Complete Guide (${currentYear})`,
@@ -71,7 +71,19 @@ export default function BroadwayFirstTimerGuide() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, faqSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, faqSchema, {
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: `How to Plan Your First Broadway Show (${currentYear})`,
+          description: 'A step-by-step guide to planning and enjoying your first Broadway show, from buying tickets to the stage door.',
+          step: [
+            { '@type': 'HowToStep', name: 'Choose Your Show', text: `There are currently ${openShowCount} shows playing on Broadway. Start with a highly-rated musical for your first time — they tend to be the most accessible and crowd-pleasing.` },
+            { '@type': 'HowToStep', name: 'Buy Tickets', text: 'Book online 2-4 weeks ahead for the best selection. Weekday evenings (Tuesday-Thursday) are cheapest. Consider lotteries and rush tickets for deals under $40.' },
+            { '@type': 'HowToStep', name: 'Arrive Early', text: 'Get to the theater 30 minutes before curtain. Pick up Will Call tickets, pass through security, and find your seat. Use the restroom before the show — intermission lines are long.' },
+            { '@type': 'HowToStep', name: 'Enjoy the Show', text: 'Silence your phone, avoid unwrapping candy, and don\'t sing along. Clap after musical numbers and at the curtain call. Standing ovations are common but not required.' },
+            { '@type': 'HowToStep', name: 'Visit Stage Door', text: 'After the show, head to the stage door (usually an alley entrance). Actors often come out to sign playbills and take photos. Bring a Sharpie and your Playbill.' },
+          ],
+        }]) }}
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">

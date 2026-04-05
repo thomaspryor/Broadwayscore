@@ -16,6 +16,7 @@ export interface WestEndShow {
   venue: string;
   openingDate: string;
   closingDate?: string;
+  previewsStartDate?: string;
   status: string;
   type: string;
   isRevival?: boolean;
@@ -29,6 +30,8 @@ export interface WestEndShow {
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
   category?: string;
+  subtitle?: string;
+  subtitleColor?: string;
 }
 
 interface WestEndPageClientProps {
@@ -50,6 +53,8 @@ const DEFAULT_STATUS: StatusParam = 'now_playing';
 const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
 const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
+
+const shortDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
 
 function weHasEnoughReviews(show: WestEndShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;
@@ -84,14 +89,17 @@ function ShowCardList({ shows, hideStatus, scoreMode }: { shows: WestEndShow[]; 
 }
 
 // Featured row with horizontal scroll
-function FeaturedRow({ title, shows }: { title: string; shows: WestEndShow[] }) {
+function FeaturedRow({ title, subtitle, shows }: { title: string; subtitle?: string; shows: WestEndShow[] }) {
   if (shows.length <= 3) return null;
 
   return (
     <section className="mb-6">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-1">
         <h2 className="text-base font-bold text-white">{title}</h2>
       </div>
+      {subtitle && (
+        <p className="text-xs text-gray-500 mb-2">{subtitle}</p>
+      )}
       <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
         {shows.map((show) => (
           <MiniShowCard key={show.id} show={show} />
@@ -236,7 +244,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
         const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         return diffDays > 0 && diffDays <= 90 && weHasEnoughReviews(show);
       })
-      .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime());
+      .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime())
+      .map(s => ({ ...s, subtitle: `Closes ${shortDate(s.closingDate!)}`, subtitleColor: 'text-amber-400' }));
   }, [shows]);
 
   const bestOffWestEnd = useMemo(() => {
@@ -251,16 +260,32 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
-  const upcomingShows = useMemo(() => {
+  const inPreviewsShows = useMemo(() => {
     return shows
-      .filter(show => show.status === 'upcoming' || show.status === 'previews')
-      .sort((a, b) => {
-        if (!a.openingDate && !b.openingDate) return 0;
-        if (!a.openingDate) return 1;
-        if (!b.openingDate) return -1;
-        return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
-      })
-      .slice(0, 20);
+      .filter(show => show.status === 'previews')
+      .sort((a, b) => new Date(a.openingDate || '2099-01-01').getTime() - new Date(b.openingDate || '2099-01-01').getTime())
+      .map(s => ({ ...s, subtitle: s.openingDate ? `Opens ${shortDate(s.openingDate)}` : undefined, subtitleColor: 'text-gray-400' }));
+  }, [shows]);
+
+  const { upcomingSoon, upcomingLater } = useMemo(() => {
+    const now = new Date();
+    const cutoff = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days
+    const upcoming = shows
+      .filter(show => show.status === 'upcoming' && (show.previewsStartDate || show.openingDate))
+      .sort((a, b) => new Date(a.previewsStartDate || a.openingDate).getTime() - new Date(b.previewsStartDate || b.openingDate).getTime())
+      .map(s => {
+        const startDate = s.previewsStartDate || s.openingDate;
+        return { ...s, subtitle: startDate ? `Starts ${shortDate(startDate)}` : undefined, subtitleColor: 'text-gray-400' };
+      });
+    const soon = upcoming.filter(s => {
+      const d = new Date(s.previewsStartDate || s.openingDate);
+      return d <= cutoff;
+    });
+    const later = upcoming.filter(s => {
+      const d = new Date(s.previewsStartDate || s.openingDate);
+      return d > cutoff;
+    });
+    return { upcomingSoon: soon, upcomingLater: later };
   }, [shows]);
 
   const kidsShows = useMemo(() => {
@@ -385,9 +410,10 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       {/* Top Musicals - Featured Shelf */}
       {topMusicals.length > 0 && (
         <section className="mb-4 sm:mb-6">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-1">
             <h2 className="text-base font-bold text-white">Top Musicals</h2>
           </div>
+          <p className="text-xs text-gray-500 mb-2">Ranked by critical consensus</p>
           <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
             {topMusicals.map((show, index) => (
               <MiniShowCard key={show.id} show={show} priority={index < 2} />
@@ -571,14 +597,16 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
 
       {/* Featured Rows */}
       <div className="mt-8 pt-8 border-t border-white/5">
-        <FeaturedRow title="Top Plays" shows={topPlays} />
-        <FeaturedRow title="Best Off-West End" shows={bestOffWestEnd} />
-        <FeaturedRow title="Olivier Award Winning Shows" shows={olivierWinners} />
-        <FeaturedRow title="Upcoming" shows={upcomingShows} />
-        <FeaturedRow title="Great for Kids" shows={kidsShows} />
-        <FeaturedRow title="Perfect for Date Night" shows={dateNightShows} />
-        <FeaturedRow title="Jukebox Musicals" shows={jukeboxMusicals} />
-        <FeaturedRow title="Closing Soon" shows={closingSoonShows} />
+        <FeaturedRow title="Top Plays" subtitle="Ranked by critical consensus" shows={topPlays} />
+        <FeaturedRow title="Best Off-West End" subtitle="Top-rated shows outside the West End proper" shows={bestOffWestEnd} />
+        <FeaturedRow title="Olivier Award Winning Shows" subtitle="Current productions that have won Olivier Awards" shows={olivierWinners} />
+        <FeaturedRow title="In Previews" subtitle="Open now — reviews still coming in" shows={inPreviewsShows} />
+        <FeaturedRow title="Opening Soon" subtitle="Starting in the next 60 days" shows={upcomingSoon} />
+        <FeaturedRow title="Coming Up Later" subtitle="Announced productions further out" shows={upcomingLater} />
+        <FeaturedRow title="Great for Kids" subtitle="Family-friendly shows for younger audiences" shows={kidsShows} />
+        <FeaturedRow title="Perfect for Date Night" subtitle="Romantic shows to see with someone special" shows={dateNightShows} />
+        <FeaturedRow title="Jukebox Musicals" subtitle="Shows built around classic pop and rock catalogues" shows={jukeboxMusicals} />
+        <FeaturedRow title="Closing Soon" subtitle="Last chance — these shows end within 90 days" shows={closingSoonShows} />
       </div>
 
       {/* Off-West End cross-promo link */}
