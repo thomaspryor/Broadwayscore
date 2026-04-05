@@ -338,7 +338,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
               return (
                 <div key={show.id} className="text-center">
                   <Link href={`/show/${show.slug}`} className="block">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-2">
+                    <div className="w-20 sm:w-24 aspect-[2/3] mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-2">
                       <ShowImage
                         sources={[
                           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
@@ -353,10 +353,6 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                       {show.title}
                     </h2>
                   </Link>
-                  <div className="flex flex-col items-center gap-1 mb-2">
-                    <StatusBadge status={show.status} />
-                    <FormatPill type={show.type} />
-                  </div>
                   <div className="flex flex-col items-center mb-3">
                     <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} />
                     {(() => {
@@ -442,6 +438,13 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
             valueA={showA.openingDate && showA.status !== 'closed' ? <Link href="/browse/longest-running-broadway-shows" className="text-gray-300 hover:text-brand transition-colors">{getRunningDuration(showA.openingDate)}</Link> : showA.status === 'closed' ? 'Closed' : 'TBD'}
             valueB={showB.openingDate && showB.status !== 'closed' ? <Link href="/browse/longest-running-broadway-shows" className="text-gray-300 hover:text-brand transition-colors">{getRunningDuration(showB.openingDate)}</Link> : showB.status === 'closed' ? 'Closed' : 'TBD'}
           />
+          {(showA.closingDate || showB.closingDate) && (
+            <Row
+              label="Closed"
+              valueA={showA.closingDate ? formatDate(showA.closingDate) : '—'}
+              valueB={showB.closingDate ? formatDate(showB.closingDate) : '—'}
+            />
+          )}
 
           {/* ── AWARDS ── */}
           {(awardsA?.tony || awardsB?.tony) && (
