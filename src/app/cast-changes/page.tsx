@@ -167,7 +167,7 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
                   <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                     {event.name && <span className="text-white font-semibold text-sm">{event.name}</span>}
                     <span className={`text-xs font-medium ${config.colorClass}`}>{config.label}</span>
-                    {event.role && <span className="text-gray-500 text-xs">as {event.role}</span>}
+                    {event.role && event.role !== 'Unknown' && <span className="text-gray-500 text-xs">as {event.role}</span>}
                   </div>
                   <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400">
                     {event.date && (
@@ -183,7 +183,7 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
                   {event.note && <p className="mt-0.5 text-xs text-gray-400">{event.note}</p>}
                   {event.sourceUrl && (
                     <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer"
-                      className={`inline-flex items-center gap-1 mt-1 text-xs ${config.colorClass} hover:brightness-125 transition-all`}>
+                      className={`inline-flex items-center gap-1 mt-1 py-1 px-1 -ml-1 text-xs ${config.colorClass} hover:brightness-125 transition-all`}>
                       Source <ExternalLinkIcon />
                     </a>
                   )}

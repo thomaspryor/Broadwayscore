@@ -154,7 +154,7 @@ function CastEventRow({ event }: { event: CastEvent }) {
               <span className="text-white font-semibold text-sm">{event.name}</span>
             ) : null}
             <span className={`text-xs font-medium ${config.colorClass}`}>{config.label}</span>
-            {event.role && (
+            {event.role && event.role !== 'Unknown' && (
               <span className="text-gray-500 text-xs">as {event.role}</span>
             )}
           </div>
@@ -183,7 +183,7 @@ function CastEventRow({ event }: { event: CastEvent }) {
               href={event.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex items-center gap-1 mt-1.5 text-xs ${config.colorClass} hover:brightness-125 transition-all`}
+              className={`inline-flex items-center gap-1 mt-1.5 py-1 px-1 -ml-1 text-xs ${config.colorClass} hover:brightness-125 transition-all`}
             >
               Source
               <ExternalLinkIcon />

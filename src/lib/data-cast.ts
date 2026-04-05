@@ -33,6 +33,12 @@ export function getCastChanges(showId: string): ShowCastChanges | undefined {
       const sevenDaysAgo = new Date(now);
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
       if (eventDate < sevenDaysAgo) return false;
+    } else if (event.addedDate) {
+      // Events with no date expire after 60 days based on when they were added
+      const addedDate = new Date(event.addedDate);
+      const sixtyDaysAgo = new Date(now);
+      sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+      if (addedDate < sixtyDaysAgo) return false;
     }
 
     return true;
