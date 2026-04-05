@@ -23,6 +23,7 @@ import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
+import { getCurrencySymbol } from '@/lib/market-utils';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -470,7 +471,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5 whitespace-nowrap flex-shrink-0"
                       >
                         <TicketIcon />
-                        {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                        {lotteryRush.lottery ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
                       </a>
                     )}
                   </div>
@@ -724,7 +725,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5"
                 >
                   <TicketIcon />
-                  {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                  {lotteryRush.lottery ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
                 </a>
               )}
             </div>
