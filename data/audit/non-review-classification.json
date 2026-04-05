@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-05T19:44:52.832Z",
+    "generatedAt": "2026-04-05T20:00:32.738Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 34615,
-      "inReviewsJson": 15963,
+      "totalFiles": 34627,
+      "inReviewsJson": 15962,
       "skippedExcluded": 5,
-      "withFullText": 66,
+      "withFullText": 32,
       "excerptOnly": 1597,
-      "llmClassified": 49,
+      "llmClassified": 31,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 15,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "uncertainCases": 16,
+      "budgetUsed": 0.0031999999999999984,
+      "llmCalls": 32,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14295
+      "skippedAlreadyClassified": 14328
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer an evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items about other shows.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" which suggests a news or directory type of content.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production like \"Funny Girl.\"",
       "currentScore": 62
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article offering advice or commentary.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it's a news item or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on its quality.",
+      "reasoning": "The article describes the plot of the play and sets the stage for the audience, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
       "currentScore": 83
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of search terms or categories related to theater, rather than a review of a specific show. It lacks any evaluative content.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -172,44 +172,35 @@
       "confidence": "low",
       "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
+    },
+    {
+      "file": "yellow-face-2024/joysauce--janvi-sai.json",
+      "showId": "yellow-face-2024",
+      "outlet": "joysauce",
+      "outletId": "joysauce",
+      "contentType": "preview",
+      "confidence": "medium",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play.",
+      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "the-old-ladies-off-west-end-2026/londontheatre1--john-groves.json",
-    "the-phantom-of-the-opera-1988/guardian--lyndsey-winship.json",
-    "the-phantom-of-the-opera-1988/telegraph--serena-davies.json",
-    "the-phantom-of-the-opera-1988/thestage--tim-bano.json",
-    "the-phantom-of-the-opera-1988/times-uk--quentin-letts.json",
-    "the-phantom-of-the-opera-1988/whatsonstage--alun-hood.json",
-    "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json",
-    "the-play-that-goes-wrong-off-broadway-2019/thestage--natasha-tripney.json",
-    "the-playboy-of-the-western-world-west-end-2025/artsdesk--aleks-sierz.json",
-    "the-playboy-of-the-western-world-west-end-2025/british-theatre--vera-liber.json",
-    "the-playboy-of-the-western-world-west-end-2025/broadwayworld--cindy-marcolina.json",
-    "the-playboy-of-the-western-world-west-end-2025/daily-mail--robert-gore-langton.json",
-    "the-playboy-of-the-western-world-west-end-2025/financialtimes--sarah-hemming.json",
-    "the-playboy-of-the-western-world-west-end-2025/i-paper--fiona-mountford.json",
-    "the-playboy-of-the-western-world-west-end-2025/londontheatre1--mary-beer.json",
-    "the-playboy-of-the-western-world-west-end-2025/the-spectator-uk--lloyd-evans.json",
-    "the-playboy-of-the-western-world-west-end-2025/thereviewshub--maryam-philpott.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/british-theatre--mary-beer.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/daily-mail--patrick-marmion.json",
-    "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json",
-    "the-tempest-globe-west-end-2026/artsdesk--rachel-halliburton.json",
-    "the-tempest-globe-west-end-2026/daily-mail--patrick-marmion.json",
-    "the-tempest-globe-west-end-2026/financialtimes--sarah-hemming.json",
-    "the-tempest-globe-west-end-2026/guardian--arifa-akbar.json",
-    "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
-    "the-uncontainable-nausea-of-alec-baldwin-off-west-end-2026/everything-theatre--daisy-hills.json",
-    "the-uncontainable-nausea-of-alec-baldwin-off-west-end-2026/guardian--kate-wyver.json",
-    "the-uncontainable-nausea-of-alec-baldwin-off-west-end-2026/thestage--tom-wicker.json",
-    "trouble-in-mind-2021/daily-mail--georgina-brown.json",
-    "trouble-in-mind-2021/financialtimes--sarah-hemming.json",
-    "trouble-in-mind-2021/whatsonstage--alun-hood.json",
-    "trouble-struggle-bubble-and-squeak-off-broadway-2026/guardian--mark-fisher.json",
-    "welcome-to-pemfort-off-west-end-2026/artsdesk--aleks-sierz.json",
-    "welcome-to-pemfort-off-west-end-2026/everything-theatre--dave-b.json"
+    "welcome-to-pemfort-off-west-end-2026/guardian--kate-wyver.json",
+    "welcome-to-pemfort-off-west-end-2026/the-spectator-uk--lloyd-evans.json",
+    "welcome-to-pemfort-off-west-end-2026/thereviewshub--dan-english.json",
+    "welcome-to-pemfort-off-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "welcome-to-pemfort-off-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "wicked-2003/independent--paul-taylor.json",
+    "wicked-2003/sarasota-herald-tribune--mattwolf.json",
+    "wicked-2003/times-uk--clifford-bishop.json",
+    "wicked-west-end-2021/metro--siobhan-murphy.json",
+    "woman-in-mind-west-end-2025/british-theatre--vera-liber.json",
+    "woman-in-mind-west-end-2025/daily-mail--robert-gore-langton.json",
+    "woman-in-mind-west-end-2025/i-paper--fiona-mountford.json",
+    "woman-in-mind-west-end-2025/the-spectator-uk--lloyd-evans.json",
+    "woman-in-mind-west-end-2025/thereviewshub--maryam-philpott.json",
+    "woman-in-mind-west-end-2025/times-uk--dominic-maxwell.json"
   ],
   "perShowSummary": []
 }
