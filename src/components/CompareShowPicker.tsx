@@ -10,6 +10,7 @@ interface Show {
   status: string;
   images?: { thumbnail?: string };
   category?: string;
+  year?: string;
 }
 
 function ShowInput({
@@ -59,11 +60,14 @@ function ShowInput({
                 <img src={show.images.thumbnail} alt="" className="w-8 h-8 rounded object-cover flex-shrink-0" />
               )}
               <div className="min-w-0">
-                <div className="text-sm text-white truncate">{show.title}</div>
+                <div className="text-sm text-white truncate">
+                  {show.title}
+                  {show.year && <span className="text-gray-500 ml-1">({show.year})</span>}
+                </div>
                 <div className="text-[11px] text-gray-500 capitalize">
                   {show.status}
                   {show.category && show.category !== 'broadway' && (
-                    <span className="ml-1.5 text-gray-600">
+                    <span className="ml-1.5 text-gray-400">
                       · {show.category === 'west-end' ? 'West End' : show.category === 'off-broadway' ? 'Off-Broadway' : show.category === 'off-west-end' ? 'Off-West End' : show.category}
                     </span>
                   )}
