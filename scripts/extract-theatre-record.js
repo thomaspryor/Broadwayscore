@@ -604,16 +604,48 @@ function titlesMatch(a, b) {
   const na = normalizeTitle(a);
   const nb = normalizeTitle(b);
   if (na === nb) return true;
-  // Strip common suffixes: "the Musical", "the Play", "- The Musical", etc.
+  // Strip common suffixes/qualifiers that differ between our DB and TR
   const stripSuffix = s => s
-    .replace(/\s*[-–—:]\s*the\s+(musical|play|show|revue|opera|concert|experience)$/i, '')
-    .replace(/\s+the\s+(musical|play|show|revue|opera|concert|experience)$/i, '')
+    .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue|opera|concert|experience)$/i, '')
+    .replace(/\s+(the\s+)?(musical|play|show|revue|opera|concert|experience)$/i, '')
+    .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '') // ": Both Parts"
+    .replace(/\s+at\s+the\s+.+$/i, '') // "at the Kit Kat Club"
+    .replace(/\s+live$/i, '') // "Magic Mike Live"
     .trim();
   if (stripSuffix(na) === stripSuffix(nb)) return true;
   // Allow prefix match only if the shorter is ≥60% of the longer
   // (catches "Matilda" vs "Matilda - The Musical" but not "Wicked" vs "Wicked Witches")
   const [shorter, longer] = na.length <= nb.length ? [na, nb] : [nb, na];
   return longer.startsWith(shorter) && shorter.length >= longer.length * 0.6;
+}
+
+// Scrape TR /west-end or /london for featured shows with direct archive links
+async function scrapeTRFeaturedShows(page, marketPath) {
+  const url = `https://www.theatrerecord.com${marketPath}`;
+  console.log(`Scraping featured shows: ${url}`);
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
+  await page.waitForTimeout(2000);
+
+  return page.evaluate(() => {
+    const results = [];
+    // "Top Picks" featured cards have h1 titles + "Continue reading..." links
+    document.querySelectorAll('.feature, .features > div').forEach(el => {
+      const h1 = el.querySelector('h1');
+      const link = el.querySelector('a[href*="/archive/"]');
+      if (h1 && link) {
+        results.push({ title: h1.textContent.trim(), link: link.href });
+      }
+    });
+    // "Recent Openings" articles with "See cast, creatives, and N reviews" links
+    document.querySelectorAll('section.articles article').forEach(article => {
+      const h2 = article.querySelector('h2');
+      const link = article.querySelector('a[href*="/archive/"]');
+      if (h2 && link) {
+        results.push({ title: h2.textContent.trim(), link: link.href });
+      }
+    });
+    return results;
+  });
 }
 
 // Scrape TR /listings/current-west-end or /listings/current-london
@@ -972,8 +1004,11 @@ async function main() {
     // If no title match, try stripping "the Musical/Play/etc." suffix
     if (titleMatches.length === 0) {
       const shorter = searchTitle
-        .replace(/\s*[-–—:]\s*the\s+(musical|play|show|revue)$/i, '')
-        .replace(/\s+the\s+(musical|play|show|revue)$/i, '')
+        .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue)$/i, '')
+        .replace(/\s+(the\s+)?(musical|play|show|revue)$/i, '')
+        .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
+        .replace(/\s+at\s+the\s+.+$/i, '')
+        .replace(/\s+live$/i, '')
         .trim();
       if (shorter !== searchTitle && shorter.length >= 3) {
         console.log(`  Retrying search with shorter title: "${shorter}"`);
@@ -1032,6 +1067,17 @@ async function main() {
 
     const listings = await scrapeTRListingPage(page, listingUrl);
 
+    // Also scrape featured shows from /west-end or /london for direct archive links
+    const marketPath = browseLondon ? '/london' : '/west-end';
+    const featured = await scrapeTRFeaturedShows(page, marketPath);
+    console.log(`  Found ${featured.length} featured shows with direct links`);
+
+    // Build a map of featured show links by normalized title
+    const featuredByTitle = new Map();
+    for (const f of featured) {
+      featuredByTitle.set(normalizeTitle(f.title), f.link);
+    }
+
     if (listings.length === 0) {
       console.log('WARNING: No entries on listings page — page structure may have changed.');
       console.log('Falling back to search mode for all shows...\n');
@@ -1041,9 +1087,30 @@ async function main() {
       ? matchListingToShows(listings, targets)
       : { matched: [], unmatched: targets };
 
+    // Check if any unmatched shows have direct featured links
+    const featuredMatched = [];
+    const trulyUnmatched = [];
+    for (const show of unmatched) {
+      // Check exact and fuzzy title match against featured shows
+      let directLink = featuredByTitle.get(normalizeTitle(show.title));
+      if (!directLink) {
+        for (const [normTitle, link] of featuredByTitle) {
+          if (titlesMatch(show.title, normTitle)) { directLink = link; break; }
+        }
+      }
+      if (directLink) {
+        featuredMatched.push({ show, link: directLink });
+      } else {
+        trulyUnmatched.push(show);
+      }
+    }
+
     console.log(`\nMatched ${matched.length} shows via listing page`);
-    if (unmatched.length > 0) {
-      console.log(`Unmatched: ${unmatched.length} shows (will fall back to search)`);
+    if (featuredMatched.length > 0) {
+      console.log(`Matched ${featuredMatched.length} shows via featured/recent openings`);
+    }
+    if (trulyUnmatched.length > 0) {
+      console.log(`Unmatched: ${trulyUnmatched.length} shows (will fall back to search)`);
     }
     console.log('');
 
@@ -1078,10 +1145,32 @@ async function main() {
       await processWithRecovery(show, listing.venue);
     }
 
-    // Fall back to plain search for unmatched shows
-    if (unmatched.length > 0) {
-      console.log(`\n\n=== Falling back to search for ${unmatched.length} unmatched shows ===`);
-      for (const show of unmatched) {
+    // Process featured matches (direct archive links, no search needed)
+    for (const { show, link } of featuredMatched) {
+      console.log(`\n--- ${show.title} (${show.id}) ---`);
+      console.log(`  Featured link: ${link}`);
+      try {
+        const result = await processShowFromLink(show, link);
+        if (result) {
+          totalNew += result.newCount;
+          totalSkipped += result.skippedCount;
+          if (result.newCount > 0 || result.skippedCount > 0) totalShows++;
+        }
+        await page.waitForTimeout(2000);
+      } catch (err) {
+        if (err.message?.includes('browser has been closed') || err.message?.includes('ERR_ABORTED')) {
+          console.log(`  Browser crashed — relaunching...`);
+          await launchAndLogin();
+        } else {
+          console.log(`  Error: ${err.message}`);
+        }
+      }
+    }
+
+    // Fall back to plain search for truly unmatched shows
+    if (trulyUnmatched.length > 0) {
+      console.log(`\n\n=== Falling back to search for ${trulyUnmatched.length} unmatched shows ===`);
+      for (const show of trulyUnmatched) {
         console.log(`\n--- ${show.title} (${show.id}) ---`);
         await processWithRecovery(show);
       }
