@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-04-05T15:44:48.718Z",
+  "runDate": "2026-04-05T16:40:47.374Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 14,
+    "failed": 1,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -21,71 +21,49 @@
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 2,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 14,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 13,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "hadestown-west-end-2024/times-uk--clive-davis.json",
-    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
-    "eureka-day-2024/times-uk--clive-davis.json",
-    "the-hills-of-california-2024/times-uk--clive-davis.json",
-    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
-    "clybourne-park-2012/times-uk--clive-davis.json",
-    "la-cage-aux-folles-2010/times-uk--clive-davis.json",
-    "oleanna-2009/times-uk--dominic-maxwell.json",
-    "blithe-spirit-2009/times-uk--clive-davis.json",
-    "billy-elliot-the-musical-2008/times-uk--dominic-maxwell.json",
-    "the-little-mermaid-2008/times-uk--kevin-maher.json",
-    "high-fidelity-2006/times-uk--clive-davis.json",
-    "how-to-succeed-in-business-without-really-trying-1995/times-uk--clive-davis.json",
-    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
+    "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
-      "the-other-place-2026/telegraph--claire-allfree.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
-      "oldUrl": "https://www.telegraph.co.uk/theatre/what-to-see/the-curious-case-of-benjamin-button-review/",
-      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/"
-    }
-  ]
+  "urlDiscoveries": []
 }
