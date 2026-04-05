@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T01:15:29.462Z",
+  "timestamp": "2026-04-05T04:51:37.317Z",
   "stats": {
-    "totalReviews": 29454,
-    "alreadyFlagged": 8367,
+    "totalReviews": 29450,
+    "alreadyFlagged": 8378,
     "dateGuardCatches": 13,
-    "directorMismatch": 941,
-    "tvFilmSignals": 3430,
-    "londonSignals": 1062,
+    "directorMismatch": 943,
+    "tvFilmSignals": 3432,
+    "londonSignals": 1066,
     "offBroadwaySignals": 986,
     "yearMismatch": 72,
-    "noPublishDate": 5641
+    "noPublishDate": 5624
   },
   "findings": [
     {
@@ -13390,6 +13390,24 @@
     },
     {
       "showId": "dracula-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "publishDate": "2026-02-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-dracula-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 62,
       "publishDate": "February 18, 2026",
@@ -14238,8 +14256,8 @@
     },
     {
       "showId": "evening-all-afternoon-west-end-2026",
-      "file": "south-london--unknown.json",
-      "publishDate": null,
+      "file": "south-london--michael-holland.json",
+      "publishDate": "2026-02-26",
       "url": "https://southlondon.co.uk/lifestyle/review-evening-all-afternoon-at-donmar-warehouse/",
       "findings": [
         {
@@ -14273,20 +14291,6 @@
       "file": "timeout-london--andrzej-lukowksi.json",
       "score": 78,
       "publishDate": "2026-02-25",
-      "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "evening-all-afternoon-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 88,
-      "publishDate": "2026-02-23",
       "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
       "findings": [
         {
@@ -20696,6 +20700,25 @@
       ]
     },
     {
+      "showId": "hamilton-west-end-2021",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": 84,
+      "publishDate": "2017-12-21",
+      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"film review\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "hamlet-2009",
       "file": "theater-life--eric-march.json",
       "score": 42,
@@ -24790,6 +24813,24 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2025-12-12",
+      "url": "https://www.allthatdazzles.co.uk/post/review-into-the-woods-bridge-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
       "score": 78,
       "publishDate": "2025-12-11",
@@ -24968,6 +25009,19 @@
       "score": 93,
       "publishDate": "2025-12-19",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2025-12-15",
+      "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62416,6 +62470,19 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "publishDate": "2025-11-24",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-all-my-sons-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
       "score": 80,
       "publishDate": "2025-11-22",
@@ -64099,20 +64166,6 @@
       "score": 74,
       "publishDate": "2026-03-06",
       "url": "https://www.nytimes.com/2026/03/06/theater/jordan-fein-broken-glass.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "broken-glass-west-end-2026",
-      "file": "the-upcoming-uk--unknown.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.theupcoming.co.uk/2026/03/04/broken-glass-at-the-young-vic-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -74572,6 +74625,19 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "the-express--stefan-kyriazis.json",
+      "publishDate": "2023-05-11",
+      "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "west-end-wilma--unknown.json",
       "score": 79,
       "publishDate": "2025-07-11",
@@ -80301,6 +80367,19 @@
       "score": null,
       "publishDate": "September 26, 2024",
       "url": "https://variety.com/2024/legit/reviews/the-hills-of-california-review-broadway-sam-mendes-jez-butterworth-1236159482/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "file": "british-theatre--susan-novak.json",
+      "publishDate": "2026-04-04",
+      "url": "https://www.britishtheatre.com/posts/the-holy-rosenbergs-review-menier-chocolate-factory-2026",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
