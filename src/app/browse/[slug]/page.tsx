@@ -164,6 +164,11 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
     });
   });
 
+  // Compute section group labels (server-side, since sectionGroup uses ComputedShow)
+  const sectionLabels = config.sectionGroup
+    ? shows.map(show => config.sectionGroup!(show))
+    : undefined;
+
   // Determine available sorts and filters for this page
   const availableSorts = getAvailableSorts(config);
   const showTypeFilter = isMixedType;
@@ -227,6 +232,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
           availableSorts={availableSorts}
           showTypeFilter={showTypeFilter}
           showScoreToggle={showScoreToggle}
+          sectionLabels={sectionLabels}
         />
 
         {/* Related Categories */}

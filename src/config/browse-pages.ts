@@ -28,6 +28,10 @@ export interface BrowsePageConfig {
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
   source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'; // Data source (default: broadway)
+  /** Optional function to group shows into sections with H2 headings.
+   *  Returns a label for each show — shows with the same label are grouped together.
+   *  Only applies when using the default/custom sort (client re-sorts lose groupings). */
+  sectionGroup?: (show: ComputedShow) => string;
 }
 
 // Helper to parse runtime string to minutes
@@ -1028,6 +1032,13 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
         return parseRuntime(a.runtime) - parseRuntime(b.runtime);
       });
     },
+    sectionGroup: (show) => {
+      const mins = parseRuntime(show.runtime);
+      if (mins <= 90) return 'Under 1.5 Hours';
+      if (mins <= 120) return '1.5 to 2 Hours';
+      if (mins <= 150) return '2 to 2.5 Hours';
+      return 'Over 2.5 Hours';
+    },
     relatedPages: ['short-broadway-shows', 'broadway-shows-under-2-hours', 'broadway-shows-no-intermission', 'long-broadway-shows'],
   },
 
@@ -1049,6 +1060,13 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
         if (aAge !== bAge) return aAge - bAge;
         return (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0);
       });
+    },
+    sectionGroup: (show) => {
+      const age = parseInt(show.ageRecommendation?.match(/\d+/)?.[0] || '0');
+      if (age <= 6) return 'Young Children (Ages 4-6)';
+      if (age <= 10) return 'Kids (Ages 7-10)';
+      if (age <= 13) return 'Tweens & Teens (Ages 11-13)';
+      return 'Mature Audiences (Ages 14+)';
     },
     relatedPages: ['broadway-shows-for-kids', 'first-time-broadway', 'broadway-shows-for-teens', 'short-broadway-shows'],
   },

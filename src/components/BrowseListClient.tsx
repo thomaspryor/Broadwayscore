@@ -44,6 +44,9 @@ interface BrowseListClientProps {
   showScoreToggle: boolean;
   /** Optional subtitle shown on same line as toggle (e.g. "Last updated: Feb 2026") */
   subtitle?: string;
+  /** Optional per-show section labels computed server-side. Shows with the same
+   *  label are grouped under an H2 heading. Only displayed when using default sort. */
+  sectionLabels?: string[];
 }
 
 
@@ -68,6 +71,7 @@ export default function BrowseListClient({
   showTypeFilter,
   showScoreToggle,
   subtitle,
+  sectionLabels,
 }: BrowseListClientProps) {
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
   const [sort, setSort] = useState<SortOption>(
@@ -188,21 +192,38 @@ export default function BrowseListClient({
       {/* Show List */}
       {filteredAndSorted.length > 0 ? (
         <div className="space-y-3">
-          {filteredAndSorted.map((show, index) => (
-            <ShowListCard
-              key={show.id}
-              show={show}
-              index={index}
-              variant="compact"
-              rank={showRanks ? index + 1 : undefined}
-              showFormatPill={isMixedType && typeFilter === 'all'}
-              isMixedStatus={isMixedStatus}
-              scoreMode={scoreMode}
-              showPerformances={hasPerformanceData}
-              showLowReviewCount
-              showTicketLink
-            />
-          ))}
+          {filteredAndSorted.map((show, index) => {
+            // Section headings: only show when using default sort and labels exist
+            const isDefaultSort = sort === 'custom' || sort === 'score';
+            const originalIndex = initialShows.indexOf(show);
+            const label = sectionLabels && isDefaultSort ? sectionLabels[originalIndex] : undefined;
+            const prevShow = index > 0 ? filteredAndSorted[index - 1] : null;
+            const prevOriginalIndex = prevShow ? initialShows.indexOf(prevShow) : -1;
+            const prevLabel = prevShow && sectionLabels && isDefaultSort ? sectionLabels[prevOriginalIndex] : undefined;
+            const showSectionHeader = label && label !== prevLabel;
+
+            return (
+              <div key={show.id}>
+                {showSectionHeader && (
+                  <h2 className={`text-lg font-bold text-white ${index > 0 ? 'mt-6 mb-3' : 'mb-3'}`}>
+                    {label}
+                  </h2>
+                )}
+                <ShowListCard
+                  show={show}
+                  index={index}
+                  variant="compact"
+                  rank={showRanks ? index + 1 : undefined}
+                  showFormatPill={isMixedType && typeFilter === 'all'}
+                  isMixedStatus={isMixedStatus}
+                  scoreMode={scoreMode}
+                  showPerformances={hasPerformanceData}
+                  showLowReviewCount
+                  showTicketLink
+                />
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div className="card p-6 sm:p-8 text-center">
