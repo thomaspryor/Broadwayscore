@@ -57,7 +57,8 @@
     "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
     "romeo-juliet-2024/hollywood-reporter--david-rooney.json",
     "romeo-juliet-2024/theatrely--juan-a-ramirez.json",
-    "just-for-us-2023/theater-life--barry-gordin.json"
+    "just-for-us-2023/theater-life--barry-gordin.json",
+    "take-me-out-2003/nytimes--ben-brantley.json"
   ],
   "failed": [
     "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
@@ -151,7 +152,17 @@
     "ragtime-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/usatoday--elysa-gardner.json",
-    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json"
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -206,7 +217,9 @@
       "data/review-texts/purpose-2025/deadline--greg-evans.json",
       "purpose-2025/deadline--greg-evans.json",
       "data/review-texts/romeo-juliet-2024/hollywood-reporter--david-rooney.json",
-      "romeo-juliet-2024/hollywood-reporter--david-rooney.json"
+      "romeo-juliet-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/take-me-out-2003/nytimes--ben-brantley.json",
+      "take-me-out-2003/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -236,7 +249,7 @@
     ]
   },
   "startTime": "2026-04-05T15:43:24.902Z",
-  "lastProcessed": "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "take-me-out-2003/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-05T15:47:13.945Z",
@@ -298,6 +311,17 @@
       "t": "2026-04-05T18:54:40.178Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T19:01:30.048Z",
+      "event": "bb-session",
+      "session": "e8461b74",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c04e3d9123cf93ba15751c0"
+    },
+    {
+      "t": "2026-04-05T19:01:31.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
