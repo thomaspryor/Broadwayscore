@@ -19,10 +19,6 @@
     "playwright",
     "scrapingbee"
   ],
-  "avclub.com": [
-    "brightdata",
-    "scrapingbee"
-  ],
   "backstage.com": [
     "direct-cookies"
   ],
@@ -32,17 +28,16 @@
     "scrapingbee"
   ],
   "billboard.com": [
-    "playwright",
-    "scrapingbee"
+    "archive-first"
   ],
   "blogs.villagevoice.com": [
     "archive-today",
     "brightdata",
+    "playwright",
     "scrapingbee"
   ],
   "bloomberg.com": [
     "archive-cdx",
-    "browserbase",
     "direct-cookies"
   ],
   "bostonglobe.com": [
@@ -54,7 +49,8 @@
     "scrapingbee"
   ],
   "broadwayselect.com": [
-    "brightdata"
+    "brightdata",
+    "scrapingbee"
   ],
   "bronx.ny1.com": [
     "playwright"
@@ -103,13 +99,13 @@
     "brightdata",
     "scrapingbee"
   ],
+  "ew.com": [
+    "amp-variant"
+  ],
   "examiner.com": [
     "brightdata",
     "playwright",
     "scrapingbee"
-  ],
-  "fastcompany.com": [
-    "playwright"
   ],
   "hosted.ap.org": [
     "brightdata",
@@ -125,9 +121,6 @@
   "independent.com": [
     "playwright"
   ],
-  "indiewire.com": [
-    "browserbase"
-  ],
   "inquirer.com": [
     "scrapingbee"
   ],
@@ -137,14 +130,20 @@
   "limelight-arts.com.au": [
     "playwright"
   ],
+  "limelightmagazine.com.au": [
+    "playwright"
+  ],
   "londonboxoffice.co.uk": [
-    "brightdata"
+    "archive-cdx"
   ],
   "londontheatre.co.uk": [
     "scrapingbee"
   ],
   "medium.com": [
     "scrapingbee"
+  ],
+  "metro.co.uk": [
+    "playwright"
   ],
   "nationalreview.com": [
     "archive-first"
@@ -153,23 +152,25 @@
     "brightdata"
   ],
   "newnownext.com": [
-    "brightdata"
-  ],
-  "news.yahoo.com": [
-    "archive-cdx",
-    "archive-first"
+    "brightdata",
+    "playwright"
   ],
   "newsday.com": [
     "amp-variant"
   ],
   "newsvine.com": [
     "brightdata",
+    "playwright",
+    "scrapingbee"
+  ],
+  "newyorker.com": [
     "playwright"
   ],
   "newyorktheatreguide.com": [
     "brightdata"
   ],
   "northjersey.com": [
+    "direct-cookies",
     "scrapingbee"
   ],
   "nytimes.com": [
@@ -187,15 +188,9 @@
     "playwright",
     "scrapingbee"
   ],
-  "out.com": [
-    "scrapingbee"
-  ],
   "peconicpublicbroadcasting.org": [
     "brightdata",
     "scrapingbee"
-  ],
-  "perezhilton.com": [
-    "playwright"
   ],
   "playstosee.com": [
     "playwright"
@@ -209,24 +204,11 @@
   "reuters.com": [
     "playwright"
   ],
-  "rogerebert.com": [
-    "playwright",
-    "scrapingbee"
-  ],
   "sceneonstage.com": [
     "playwright"
   ],
   "scheckonthearts.com": [
     "brightdata",
-    "playwright",
-    "scrapingbee"
-  ],
-  "seattlepi.com": [
-    "brightdata",
-    "playwright",
-    "scrapingbee"
-  ],
-  "seattletimes.com": [
     "playwright",
     "scrapingbee"
   ],
@@ -239,12 +221,9 @@
   "showbiz411.com": [
     "scrapingbee"
   ],
-  "showshowdown.blogspot.com": [
-    "archive-cdx",
-    "archive-first"
-  ],
   "slantmagazine.com": [
-    "brightdata"
+    "brightdata",
+    "scrapingbee"
   ],
   "stagebiz.com": [
     "brightdata",
@@ -275,18 +254,10 @@
     "playwright",
     "scrapingbee"
   ],
-  "theater.about.com": [
-    "brightdata",
-    "playwright",
-    "scrapingbee"
-  ],
   "theater.nytimes.com": [
-    "brightdata",
     "direct-cookies"
   ],
   "theater2.nytimes.com": [
-    "archive-cdx",
-    "archive-first",
     "playwright"
   ],
   "theatermania.com": [
@@ -312,7 +283,8 @@
     "playwright"
   ],
   "theepochtimes.com": [
-    "brightdata"
+    "brightdata",
+    "scrapingbee"
   ],
   "theglobeandmail.com": [
     "scrapingbee"
@@ -330,18 +302,12 @@
   "thestar.com": [
     "playwright"
   ],
-  "thetimes.com": [
-    "archive-first"
+  "thewrap.com": [
+    "browserbase"
   ],
   "timesunion.com": [
     "playwright",
     "scrapingbee"
-  ],
-  "usatoday.com": [
-    "browserbase"
-  ],
-  "vanityfair.com": [
-    "playwright"
   ],
   "villagevoice.com": [
     "scrapingbee"
@@ -361,15 +327,16 @@
     "scrapingbee"
   ],
   "whatsonstage.com": [
-    "archive-cdx",
-    "scrapingbee"
+    "archive-cdx"
   ],
   "wnyc.org": [
     "archive-first"
   ],
-  "wral.com": [
-    "brightdata",
-    "playwright",
-    "scrapingbee"
+  "womanaroundtown.com": [
+    "archive-cdx",
+    "archive-first"
+  ],
+  "wsj.com": [
+    "playwright"
   ]
 }
