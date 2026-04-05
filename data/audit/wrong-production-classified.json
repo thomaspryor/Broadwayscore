@@ -1,33 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-05T09:26:05.940Z",
+    "generatedAt": "2026-04-05T09:42:23.945Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 77,
-    "classified": 1,
-    "wrongProduction": 1,
+    "total": 76,
+    "classified": 0,
+    "wrongProduction": 0,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 1,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "hello-dolly-1995",
-      "showTitle": "Hello, Dolly!",
-      "showYear": 1995,
-      "file": "theater-life--david-sheward.json",
-      "outlet": "Theater Life",
-      "criticName": "David Sheward",
-      "publishDate": "1995-10-19",
-      "originalSignals": [
-        "revival text signals: revival, new production"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "hello-dolly-2017",
-      "reasoning": "The review mentions Bette Midler and David Hyde-Pierce, who starred in the 2017 revival, not the 1995 production. It also mentions the Shubert Theatre, where the 2017 production played."
-    }
-  ]
+  "results": []
 }

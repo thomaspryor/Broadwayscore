@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T09:31:29.123Z",
+  "timestamp": "2026-04-05T09:48:16.808Z",
   "stats": {
-    "totalReviews": 29457,
-    "alreadyFlagged": 8460,
+    "totalReviews": 29454,
+    "alreadyFlagged": 8461,
     "dateGuardCatches": 13,
     "directorMismatch": 933,
-    "tvFilmSignals": 3435,
+    "tvFilmSignals": 3434,
     "londonSignals": 1070,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
-    "noPublishDate": 5616
+    "noPublishDate": 5613
   },
   "findings": [
     {
@@ -16584,20 +16584,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2004",
-      "file": "village-voice--michael-feingold.json",
-      "score": 24,
-      "publishDate": "2004-05-04",
-      "url": "https://www.villagevoice.com/2018/03/27/disneys-frozen-leaves-an-icy-imprint-on-broadway/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -78401,9 +78387,9 @@
     },
     {
       "showId": "the-authenticator-west-end-2026",
-      "file": "guardian--unknown.json",
+      "file": "guardian--arifa-akbar.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2026-04-03",
       "url": "https://www.theguardian.com/stage/2026/apr/03/the-authenticator-review-dorfman-theatre-london",
       "findings": [
         {
