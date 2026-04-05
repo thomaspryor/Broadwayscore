@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T08:17:46.317Z",
+  "timestamp": "2026-04-05T08:48:21.379Z",
   "stats": {
-    "totalReviews": 29456,
-    "alreadyFlagged": 8396,
+    "totalReviews": 29457,
+    "alreadyFlagged": 8418,
     "dateGuardCatches": 13,
     "directorMismatch": 934,
-    "tvFilmSignals": 3432,
-    "londonSignals": 1068,
-    "offBroadwaySignals": 986,
+    "tvFilmSignals": 3434,
+    "londonSignals": 1069,
+    "offBroadwaySignals": 985,
     "yearMismatch": 72,
-    "noPublishDate": 5620
+    "noPublishDate": 5619
   },
   "findings": [
     {
@@ -14706,14 +14706,19 @@
     {
       "showId": "festen-2006",
       "file": "nytimes--ben-brantley.json",
-      "score": 29,
-      "publishDate": "April 10, 2006",
-      "url": "http://theater.nytimes.com/2006/04/10/theater/reviews/10fest.html?pagewanted=1&amp;adxnnl=1&amp;adxnnlx=1305666540-SKmWd4y9msy5ziGPWDoWNQ",
+      "score": null,
+      "publishDate": "2006-04-09",
+      "url": "https://www.nytimes.com/2006/04/10/theater/reviews/haunting-memories-of-daddy-dearest-in-festen.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -16541,6 +16546,39 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "frozen-2004",
+      "file": "nypost--johnny-oleksinski.json",
+      "score": 42,
+      "publishDate": "2004-05-04",
+      "url": "https://nypost.com/2018/03/22/broadway-has-robbed-frozen-of-its-heart-and-fun/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from frozen-2018"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "frozen-2004",
+      "file": "nytimes--wilborn-hampton.json",
+      "score": null,
+      "publishDate": "May 5, 2004",
+      "url": "https://www.nytimes.com/2004/05/05/theater/getting-inside-a-nightmare-the-stars-of-frozen-on-fire-ice-and-ordinary-people.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -31228,20 +31266,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "master-haroldand-the-boys-2003",
-      "file": "nytimes--ben-brantley.json",
-      "score": null,
-      "publishDate": "June 2, 2003",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0a9659c8b63",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
         }
       ]
     },
@@ -69563,20 +69587,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "i-am-my-own-wife-2003",
-      "file": "nytimes--bruce-weber.json",
-      "score": 75,
-      "publishDate": "December 4, 2003",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9505e5db163df937a35751c1a9659c8b63",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
