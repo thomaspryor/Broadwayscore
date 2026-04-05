@@ -32,6 +32,7 @@ const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { isScoreable } = require('./lib/is-scoreable');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
+const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 // ---------------------------------------------------------------------------
@@ -572,7 +573,12 @@ async function phase3ScrapeURLs(reviews) {
         if (html) console.log(`    → Archive.org: ${html.length} chars`);
       }
 
-      // Fall back to scraper for non-paywall or if archive failed
+      // Try direct HTTP with subscriber cookies (free, no API credits)
+      if (!html) {
+        html = await httpGetWithCookies(url);
+      }
+
+      // Fall back to scraper for non-paywall or if archive/cookies failed
       if (!html && scraper) {
         const result = await scraper.fetchPage(url);
         if (result && result.content) {
@@ -668,6 +674,39 @@ function httpGet(url, maxRedirects = 5) {
       });
     }).on('error', reject).on('timeout', () => reject(new Error('timeout')));
   });
+}
+
+/**
+ * Fetch URL with subscriber cookies (free, no API credits).
+ * Returns HTML string or null if cookies unavailable/fetch fails.
+ */
+async function httpGetWithCookies(url) {
+  const cookieHeader = buildCookieHeaderForUrl(url);
+  if (!cookieHeader) return null;
+
+  try {
+    const hostname = new URL(url).hostname;
+    const resp = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Cookie': cookieHeader,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer': `https://${hostname}/`,
+      },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(30000),
+    });
+    if (resp.status !== 200) return null;
+    const html = await resp.text();
+    if (html && html.length > 1000) {
+      console.log(`    → Direct+cookies: ${html.length} chars`);
+      return html;
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 function sleep(ms) {
@@ -803,6 +842,15 @@ async function main() {
 
   if (DRY_RUN) {
     console.log('\n*** DRY RUN — no files were modified ***');
+  }
+
+  // Write JSON report for CI consumption
+  const reportPath = path.join(__dirname, '../data/audit/recover-ratings-report.json');
+  try {
+    fs.writeFileSync(reportPath, JSON.stringify(stats, null, 2));
+    console.log(`\nReport written to: ${reportPath}`);
+  } catch (err) {
+    console.log(`\nCould not write report: ${err.message}`);
   }
 }
 
