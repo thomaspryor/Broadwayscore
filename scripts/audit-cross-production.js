@@ -35,6 +35,39 @@ const multiProd = Object.entries(byTitle)
 
 console.log(`Scanning ${multiProd.length} multi-production shows...\n`);
 
+// Known WE-market URL patterns and outlet name fragments
+const WE_URL_PATTERNS = [
+  /timeout\.com\/london/i,
+  /theguardian\.com\/stage/i,
+  /westendwilma/i,
+  /everything-theatre/i,
+  /theatrecat/i,
+  /londontheatre1/i,
+  /whatsonstage/i,
+  /thestage\.co\.uk/i,
+  /broadwayworld\.com\/westend/i,
+  /london-theatre/i,
+  /theatre\.reviews/i,
+  /stagedoor\.com/i,  // Stagedoor covers both, but filed-under market wins
+];
+
+const WE_OUTLET_FRAGMENTS = [
+  'west-end-wilma', 'everything-theatre', 'theatrecat', 'londontheatre',
+  'whatsonstage', 'london-theatre', 'the-stage', 'timeout-london',
+];
+
+function isWEShow(showId) {
+  return showId.includes('west-end');
+}
+
+function isLikelyWEReview(review, outletFilename) {
+  const url = (review.url || '').toLowerCase();
+  if (WE_URL_PATTERNS.some(p => p.test(url))) return true;
+  const outletPart = outletFilename.split('--')[0].toLowerCase();
+  if (WE_OUTLET_FRAGMENTS.some(f => outletPart.includes(f))) return true;
+  return false;
+}
+
 function parseDate(dateStr) {
   if (!dateStr) return null;
   const d = new Date(dateStr);
@@ -110,6 +143,11 @@ for (const group of multiProd) {
         // AND is within 180 days of other's opening (to catch legitimate reviews)
         // AND is more than 365 days from own opening
         if (distToOther < distToOwn && distToOwn > 365 && distToOther < 180) {
+          // Market-awareness: skip if this is a WE review correctly filed under a WE show
+          // (the "closer" production is in a different market)
+          if (isWEShow(prod.id) && !isWEShow(other.id) && isLikelyWEReview(review, file)) {
+            continue;
+          }
           totalWrongProd++;
           const issue = {
             file: `${prod.id}/${file}`,
