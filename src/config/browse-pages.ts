@@ -447,11 +447,11 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'best-recent-shows': {
     slug: 'best-recent-shows',
-    title: 'Best Recent Broadway Shows',
-    h1: 'Best Recent Broadway Shows',
-    metaTitle: `Best Recent Broadway Shows (${CURRENT_YEAR}) — Musicals & Plays Ranked by Critics`,
-    metaDescription: 'The highest-rated musicals and plays that opened on Broadway in the past year. See which new shows are must-sees right now.',
-    intro: 'These are the best new shows that have opened on Broadway in the past 12 months — musicals and plays alike. From world premieres to acclaimed transfers, these recent arrivals represent the cutting edge of Broadway. See what\'s exciting audiences and earning critical acclaim right now.',
+    title: 'New Broadway Shows This Season',
+    h1: 'New Broadway Shows This Season',
+    metaTitle: `New Broadway Shows ${CURRENT_YEAR} — This Season's Openings Ranked`,
+    metaDescription: 'Every new show that opened on Broadway this season — musicals and plays ranked by critic reviews. Find the best new productions playing right now.',
+    intro: 'Every new show that has opened on Broadway in the past 12 months — musicals and plays alike, ranked by aggregated critic reviews. From world premieres to acclaimed transfers, these recent arrivals represent the cutting edge of Broadway. See what\'s exciting audiences and earning critical acclaim right now.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       if (show.type !== 'musical' && show.type !== 'play') return false;
@@ -462,16 +462,16 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return openDate >= twelveMonthsAgo;
     },
     sort: 'score',
-    relatedPages: ['best-broadway-musicals', 'best-recent-plays', 'new-broadway-shows-2025', 'tony-winners-on-broadway'],
+    relatedPages: ['best-recent-musicals', 'best-recent-plays', 'new-broadway-shows-2025', 'tony-winners-on-broadway', 'broadway-show-runtimes'],
   },
 
   'best-recent-musicals': {
     slug: 'best-recent-musicals',
-    title: 'Best Recent Broadway Musicals',
-    h1: 'Best Recent Broadway Musicals',
-    metaTitle: `Best Recent Broadway Musicals (${CURRENT_YEAR})`,
-    metaDescription: 'The highest-rated musicals that opened on Broadway in the past year. Fresh productions setting the new standard for musical theater.',
-    intro: 'These are the best new musicals that have opened on Broadway in the past 12 months. Fresh off their opening nights, these productions represent the cutting edge of musical theater. From world premieres to acclaimed transfers, these recent arrivals are making their mark on the Great White Way. See what\'s exciting audiences and critics right now.',
+    title: 'New Broadway Musicals This Season',
+    h1: 'New Broadway Musicals This Season',
+    metaTitle: `New Broadway Musicals ${CURRENT_YEAR} — This Season's Openings Ranked`,
+    metaDescription: 'Every new musical that opened on Broadway this season, ranked by critic reviews. See which fresh productions are worth your time and money right now.',
+    intro: 'Every new musical that has opened on Broadway in the past 12 months, ranked by aggregated critic reviews. These are the freshest productions on the Great White Way — from world premieres to acclaimed transfers making their Broadway debut. Whether you want to catch the next Hamilton before it becomes impossible to get tickets, or you\'re looking for the best new show to see this week, start here.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       if (show.type !== 'musical') return false;
@@ -487,11 +487,11 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'best-recent-plays': {
     slug: 'best-recent-plays',
-    title: 'Best Recent Broadway Plays',
-    h1: 'Best Recent Broadway Plays',
-    metaTitle: `Best Recent Broadway Plays (${CURRENT_YEAR})`,
-    metaDescription: 'The highest-rated plays that opened on Broadway in the past year. Fresh productions pushing the boundaries of dramatic theater.',
-    intro: 'These are the best new plays that have opened on Broadway in the past 12 months. From powerful dramas to sharp comedies, these recent productions showcase the best of contemporary playwriting and performance. See what\'s captivating audiences and earning critical acclaim right now.',
+    title: 'New Broadway Plays This Season',
+    h1: 'New Broadway Plays This Season',
+    metaTitle: `New Broadway Plays ${CURRENT_YEAR} — This Season's Openings Ranked`,
+    metaDescription: 'Every new play that opened on Broadway this season, ranked by critic reviews. Dramas, comedies, and revivals making their mark right now.',
+    intro: 'Every new play that has opened on Broadway in the past 12 months, ranked by aggregated critic reviews. From powerful dramas to sharp comedies, these recent productions showcase the best of contemporary playwriting and performance. See what\'s captivating audiences and earning critical acclaim right now.',
     filter: (show) => {
       if (show.status !== 'open') return false;
       if (show.type !== 'play') return false;
@@ -1039,7 +1039,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       if (mins <= 150) return '2 to 2.5 Hours';
       return 'Over 2.5 Hours';
     },
-    relatedPages: ['short-broadway-shows', 'broadway-shows-under-2-hours', 'broadway-shows-no-intermission', 'long-broadway-shows'],
+    relatedPages: ['short-broadway-shows', 'broadway-shows-under-2-hours', 'broadway-shows-no-intermission', 'long-broadway-shows', 'broadway-age-guide', 'broadway-shows-for-kids'],
   },
 
   'broadway-age-guide': {
@@ -1068,7 +1068,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       if (age <= 13) return 'Tweens & Teens (Ages 11-13)';
       return 'Mature Audiences (Ages 14+)';
     },
-    relatedPages: ['broadway-shows-for-kids', 'first-time-broadway', 'broadway-shows-for-teens', 'short-broadway-shows'],
+    relatedPages: ['broadway-shows-for-kids', 'first-time-broadway', 'broadway-shows-for-teens', 'broadway-show-runtimes', 'broadway-shows-for-date-night'],
   },
 
   // Season browse pages (generated programmatically)

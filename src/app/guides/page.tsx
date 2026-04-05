@@ -96,6 +96,55 @@ export default function GuidesIndexPage() {
           ))}
         </div>
 
+        {/* Browse Pages */}
+        <div className="mt-10 pt-8 border-t border-white/5">
+          <h2 className="text-xl font-bold text-white mb-4">Browse by Category</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { href: '/browse/best-recent-shows', label: 'New Shows' },
+              { href: '/browse/best-recent-musicals', label: 'New Musicals' },
+              { href: '/browse/best-recent-plays', label: 'New Plays' },
+              { href: '/browse/broadway-show-runtimes', label: 'Show Runtimes' },
+              { href: '/browse/broadway-age-guide', label: 'Age Guide' },
+              { href: '/browse/broadway-ticket-prices', label: 'Ticket Prices' },
+              { href: '/browse/most-divisive-broadway-shows', label: 'Most Divisive' },
+              { href: '/browse/longest-running-broadway-shows', label: 'Longest-Running' },
+              { href: '/browse/broadway-shows-closing-soon', label: 'Closing Soon' },
+              { href: '/browse/best-broadway-show-right-now', label: '#1 Show Right Now' },
+            ].map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="px-4 py-2.5 sm:py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors min-h-[44px] sm:min-h-0 flex items-center"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Static Guides */}
+        <div className="mt-8 pt-6 border-t border-white/5">
+          <h2 className="text-xl font-bold text-white mb-4">Planning Guides</h2>
+          <div className="grid gap-3">
+            {[
+              { href: '/guides/what-to-wear-to-broadway', title: 'What to Wear to Broadway', desc: 'Dress code tips for every occasion' },
+              { href: '/guides/broadway-first-timer-guide', title: 'First-Timer Guide', desc: 'Everything you need to know for your first show' },
+              { href: '/guides/off-broadway-vs-broadway', title: 'Off-Broadway vs Broadway', desc: 'What\'s the difference and which is right for you?' },
+              { href: '/guides/cheap-broadway-tickets', title: 'How to Get Cheap Tickets', desc: 'Lotteries, rush tickets, TKTS, and more' },
+            ].map(({ href, title, desc }) => (
+              <Link
+                key={href}
+                href={href}
+                className="card p-4 hover:bg-surface-raised transition-colors group"
+              >
+                <h3 className="font-bold text-white text-sm group-hover:text-brand transition-colors">{title}</h3>
+                <p className="text-gray-400 text-xs mt-1">{desc}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Methodology Link */}
         <div className="mt-8 text-sm text-gray-500 border-t border-white/5 pt-6">
           <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">

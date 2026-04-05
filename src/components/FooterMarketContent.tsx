@@ -67,15 +67,19 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/browse/best-broadway-revivals" className="hover:text-white transition-colors">Revivals</Link></li>
               <li><Link href="/browse/tony-winners-on-broadway" className="hover:text-white transition-colors">Tony Winning Shows</Link></li>
               <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
+              <li><Link href="/browse/best-recent-musicals" className="hover:text-white transition-colors">New Musicals</Link></li>
+              <li><Link href="/browse/longest-running-broadway-shows" className="hover:text-white transition-colors">Longest-Running</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Audience</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href="/browse/broadway-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
+              <li><Link href="/browse/broadway-age-guide" className="hover:text-white transition-colors">Age Guide</Link></li>
               <li><Link href="/browse/broadway-shows-for-date-night" className="hover:text-white transition-colors">Date Night</Link></li>
               <li><Link href="/browse/broadway-shows-for-tourists" className="hover:text-white transition-colors">For Tourists</Link></li>
               <li><Link href="/browse/first-time-broadway" className="hover:text-white transition-colors">First-Timers</Link></li>
+              <li><Link href="/browse/broadway-show-runtimes" className="hover:text-white transition-colors">Show Runtimes</Link></li>
               {!featureFlags.discountTickets && (
                 <li><Link href="/browse/broadway-shows-closing-soon" className="hover:text-white transition-colors">Closing Soon</Link></li>
               )}
