@@ -114,7 +114,17 @@
     "parade-2023/talkinbroadway--matthew-murray.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "the-collaboration-2022/times-uk--jesse-green.json",
-    "some-like-it-hot-2022/usatoday--charles-isherwood.json"
+    "some-like-it-hot-2022/usatoday--charles-isherwood.json",
+    "some-like-it-hot-2022/washpost--peter-marks.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "ohio-state-murders-2022/talkinbroadway--matthew-murray.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "aint-no-mo-2022/observer--rex-reed.json",
+    "aint-no-mo-2022/usatoday--charles-isherwood.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "kpop-2022/usatoday--charles-isherwood.json",
+    "a-christmas-carol-2022/washpost--peter-marks.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -195,7 +205,13 @@
       "data/review-texts/shucked-2023/washpost--peter-marks.json",
       "data/review-texts/bob-fosses-dancin-2023/timeout--adam-feldman.json",
       "data/review-texts/parade-2023/talkinbroadway--matthew-murray.json",
-      "data/review-texts/some-like-it-hot-2022/usatoday--charles-isherwood.json"
+      "data/review-texts/some-like-it-hot-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/some-like-it-hot-2022/washpost--peter-marks.json",
+      "data/review-texts/ohio-state-murders-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/aint-no-mo-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/kpop-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/a-christmas-carol-2022/washpost--peter-marks.json",
+      "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -211,7 +227,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "some-like-it-hot-2022/usatoday--charles-isherwood.json",
+  "lastProcessed": "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -322,6 +338,39 @@
       "t": "2026-04-05T02:24:37.496Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-05T02:28:56.301Z",
+      "event": "bb-session",
+      "session": "4148f183",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/12/some-like-it-hot-broadwa"
+    },
+    {
+      "t": "2026-04-05T02:28:57.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:30:58.070Z",
+      "event": "bb-session",
+      "session": "5e4413f8",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/11/christmas-carol-broadway"
+    },
+    {
+      "t": "2026-04-05T02:30:59.204Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:31:34.830Z",
+      "event": "bb-session",
+      "session": "add8d48d",
+      "url": "https://www.nytimes.com/2022/11/14/theater/mike-birbiglia-the-old-man-and-the-po"
+    },
+    {
+      "t": "2026-04-05T02:31:36.038Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
