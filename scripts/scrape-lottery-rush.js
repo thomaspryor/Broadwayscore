@@ -1663,21 +1663,23 @@ async function resolveTodayTixUrls(existing) {
       if (!entry) continue;
       if (entry.platform?.toLowerCase() !== 'todaytix') continue;
       if (entry.url && !isGenericPlatformUrl(entry.url)) continue; // Already has specific URL
-      // Find show title for API query
-      const matchedShow = allShows.find(s => s.id === showId);
+      // Find show title — check both Broadway and WE show lists
+      const matchedShow = allLoadedShows.find(s => s.id === showId);
       if (matchedShow) {
-        toResolve.push({ showId, field, title: matchedShow.title });
+        const isWE = matchedShow.category === 'west-end' || matchedShow.category === 'off-west-end';
+        toResolve.push({ showId, field, title: matchedShow.title, location: isWE ? 2 : 1, region: isWE ? 'london' : 'nyc' });
       }
     }
   }
 
-  if (toResolve.length === 0) return;
+  if (toResolve.length === 0) return 0;
 
   console.log(`\n[TodayTix] Resolving ${toResolve.length} missing URLs...`);
+  let resolved = 0;
 
-  for (const { showId, field, title } of toResolve) {
+  for (const { showId, field, title, location, region } of toResolve) {
     try {
-      const url = `https://api.todaytix.com/api/v2/shows?query=${encodeURIComponent(cleanSearchTitle(title))}&location=1&limit=3`;
+      const url = `https://api.todaytix.com/api/v2/shows?query=${encodeURIComponent(cleanSearchTitle(title))}&location=${location}&limit=3`;
       const resp = await fetch(url);
       if (!resp.ok) {
         console.warn(`  [TodayTix] API error for "${title}": ${resp.status}`);
@@ -1692,8 +1694,9 @@ async function resolveTodayTixUrls(existing) {
       ) || results[0]; // Fallback to first result
 
       if (match && match.id) {
-        const todaytixUrl = `https://www.todaytix.com/nyc/shows/${match.id}`;
+        const todaytixUrl = `https://www.todaytix.com/${region}/shows/${match.id}`;
         existing.shows[showId][field].url = todaytixUrl;
+        resolved++;
         console.log(`  ✓ ${showId}.${field}: ${todaytixUrl} (matched "${match.displayName}")`);
       } else {
         console.log(`  ✗ ${showId}.${field}: no TodayTix match for "${title}"`);
@@ -1705,6 +1708,7 @@ async function resolveTodayTixUrls(existing) {
       console.warn(`  [TodayTix] Failed for "${title}": ${e.message}`);
     }
   }
+  return resolved;
 }
 
 // ==================== Cross-Source Price Comparison ====================
@@ -1785,7 +1789,8 @@ async function main() {
   allChanges.push(...closedChanges);
 
   // Resolve TodayTix URLs via API for entries missing show-specific links
-  await resolveTodayTixUrls(existing);
+  const urlsResolved = await resolveTodayTixUrls(existing);
+  if (urlsResolved > 0) allChanges.push({ type: 'urls', count: urlsResolved });
 
   // Cross-source price comparison report
   printPriceComparisonReport(allChanges);
