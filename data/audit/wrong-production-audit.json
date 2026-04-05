@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-05T23:48:28.216Z",
+  "timestamp": "2026-04-05T23:56:32.649Z",
   "stats": {
     "totalReviews": 34337,
     "alreadyFlagged": 13127,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
-    "tvFilmSignals": 3441,
-    "londonSignals": 1098,
-    "offBroadwaySignals": 980,
+    "tvFilmSignals": 3443,
+    "londonSignals": 1100,
+    "offBroadwaySignals": 981,
     "yearMismatch": 72,
     "noPublishDate": 5570
   },
@@ -22128,6 +22128,25 @@
       ]
     },
     {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "score": 75,
+      "publishDate": "2026-02-11",
+      "url": "https://www.whatsonstage.com/news/here-we-are-at-the-national-theatre-review-sondheims-final-musical-is-mystifying-and-magical_1676732/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"film review\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "high-2011",
       "file": "nytimes--ben-brantley.json",
       "score": 62,
@@ -44187,6 +44206,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "file": "as-her-world-turns--erica-meyer.json",
+      "score": 86,
+      "publishDate": "2015-09-27",
+      "url": "http://www.asherworldturns.com/theater-recap-fall-2015/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -69068,6 +69106,20 @@
       "score": 89,
       "publishDate": "2025-07-13",
       "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "culturesauce--unknown.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
