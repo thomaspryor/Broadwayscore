@@ -10,7 +10,6 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix } from '@/lib/date-utils';
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
-import TicketLink from '@/components/TicketLink';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import type { ShowCardShow, ScoreModeParam } from './types';
 
@@ -102,6 +101,33 @@ const ShowListCard = memo(function ShowListCard({
   const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
   const badgeSize = isCompact ? 'md' as const : 'lg' as const;
 
+  // --- Ticket CTA (inline text, desktop only) ---
+  // Rendered inside the card's <Link> — uses span+onClick+stopPropagation
+  // since nested <a> tags are invalid HTML.
+  const ticketCta = canShowTicket ? (
+    <span
+      role="link"
+      tabIndex={0}
+      className="hidden sm:inline-flex items-center gap-1 text-amber-400/80 hover:text-amber-300 cursor-pointer text-[11px] font-medium"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          navigator.sendBeacon('https://us.i.posthog.com/capture/', JSON.stringify({
+            api_key: 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7',
+            event: 'ticket_click',
+            properties: { distinct_id: 'browse-click', show_id: show.id, show_name: show.title, platform: primaryTicket.platform, page_type: 'browse', is_affiliate: true, link_position: 0 },
+            timestamp: new Date().toISOString(),
+          }));
+        } catch { /* not critical */ }
+        window.open(primaryTicket.url, '_blank', 'noopener');
+      }}
+      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); window.open(primaryTicket.url, '_blank', 'noopener'); } }}
+    >
+      {primaryTicket.priceFrom ? `· From ${isLondonMarket(category) ? '£' : '$'}${primaryTicket.priceFrom} ↗` : '· Tickets ↗'}
+    </span>
+  ) : null;
+
   // --- Info section content differs between default and compact ---
   const infoContent = isCompact ? (
     // Compact variant (Browse): different date formatting, performances support
@@ -144,6 +170,7 @@ const ShowListCard = memo(function ShowListCard({
             })()}
           </span>
         )}
+        {ticketCta}
       </div>
     </div>
   ) : (
@@ -336,50 +363,25 @@ const ShowListCard = memo(function ShowListCard({
     </span>
   ) : null;
 
-  // --- Ticket CTA (shown below card on desktop, hidden on mobile) ---
-  const ticketCta = canShowTicket ? (
-    <div className="hidden sm:flex gap-2 px-4 pb-2 -mt-1">
-      <TicketLink
-        showName={show.title}
-        showId={show.id}
-        showSlug={show.slug}
-        showStatus={show.status}
-        showCategory={show.category}
-        platform={primaryTicket.platform}
-        url={primaryTicket.url}
-        pageType="browse"
-        linkPosition={0}
-        totalLinks={sortedLinks.length}
-        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-[11px] font-medium transition-colors border border-white/10"
-      >
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-        </svg>
-        {primaryTicket.priceFrom ? `From ${isLondonMarket(category) ? '£' : '$'}${primaryTicket.priceFrom}` : 'Get Tickets'}
-      </TicketLink>
-    </div>
-  ) : null;
+
 
   // --- Assemble card ---
   if (isCompact && rank != null) {
     // Browse variant with rank badge: rank outside the link
     return (
-      <div>
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:block">
-            <RankBadge rank={rank} />
-          </div>
-          <Link
-            href={`/show/${show.slug}`}
-            className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
-          >
-            {thumbnail}
-            {infoContent}
-            {reviewYearNote}
-            {scoreSection}
-          </Link>
+      <div className="flex items-center gap-3">
+        <div className="hidden sm:block">
+          <RankBadge rank={rank} />
         </div>
-        {ticketCta}
+        <Link
+          href={`/show/${show.slug}`}
+          className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
+        >
+          {thumbnail}
+          {infoContent}
+          {reviewYearNote}
+          {scoreSection}
+        </Link>
       </div>
     );
   }
@@ -387,39 +389,33 @@ const ShowListCard = memo(function ShowListCard({
   if (isCompact) {
     // Browse variant without rank
     return (
-      <div>
-        <Link
-          href={`/show/${show.slug}`}
-          className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-w-0"
-        >
-          {thumbnail}
-          {infoContent}
-          {reviewYearNote}
-          {scoreSection}
-        </Link>
-        {ticketCta}
-      </div>
-    );
-  }
-
-  // Default variant (Home, OB, WE)
-  return (
-    <div>
       <Link
         href={`/show/${show.slug}`}
-        prefetch={false}
-        role="listitem"
-        data-testid="show-card"
-        className="group card-interactive flex items-center gap-4 px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-        style={{ animationDelay: `${index * 30}ms` }}
+        className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-w-0"
       >
         {thumbnail}
         {infoContent}
         {reviewYearNote}
         {scoreSection}
       </Link>
-      {ticketCta}
-    </div>
+    );
+  }
+
+  // Default variant (Home, OB, WE)
+  return (
+    <Link
+      href={`/show/${show.slug}`}
+      prefetch={false}
+      role="listitem"
+      data-testid="show-card"
+      className="group card-interactive flex items-center gap-4 px-5 py-3 animate-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+      style={{ animationDelay: `${index * 30}ms` }}
+    >
+      {thumbnail}
+      {infoContent}
+      {reviewYearNote}
+      {scoreSection}
+    </Link>
   );
 });
 
