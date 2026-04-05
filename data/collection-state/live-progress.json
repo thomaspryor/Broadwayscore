@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-05T19:01:29.147Z",
-  "processed": 58,
+  "updatedAt": "2026-04-05T19:01:45.288Z",
+  "processed": 59,
   "failed": 102,
-  "successRate": "36.3%",
+  "successRate": "36.6%",
   "tierBreakdown": {
     "playwright": 36,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 2,
     "archive": 10
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-05T15:47:13.945Z",
@@ -75,6 +75,17 @@
       "t": "2026-04-05T18:54:40.178Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T19:01:30.048Z",
+      "event": "bb-session",
+      "session": "e8461b74",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c04e3d9123cf93ba15751c0"
+    },
+    {
+      "t": "2026-04-05T19:01:31.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
