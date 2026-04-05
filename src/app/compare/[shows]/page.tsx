@@ -8,7 +8,7 @@ import { getAudienceBuzz } from '@/lib/data-audience';
 import { getAudienceGrade, getAudienceGradeClasses } from '@/lib/audience-grade-utils';
 import { getShowAwards } from '@/lib/data-awards';
 import { getShowGrosses } from '@/lib/data-grosses';
-import { getAllComparisonSlugs, parseComparisonSlug, isValidComparison } from '@/config/comparisons';
+import { getAllComparisonSlugs, parseComparisonSlug } from '@/config/comparisons';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/market-utils';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -154,8 +154,6 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
   const showA = getShowBySlug(parsed.showA);
   const showB = getShowBySlug(parsed.showB);
   if (!showA || !showB) notFound();
-
-  if (!isValidComparison(parsed.showA, parsed.showB)) notFound();
 
   // Data fetching
   const lotteryRushA = getLotteryRush(showA.id);

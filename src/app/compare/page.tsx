@@ -6,6 +6,7 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import Breadcrumb from '@/components/Breadcrumb';
+import CompareShowPicker from '@/components/CompareShowPicker';
 
 export const metadata: Metadata = {
   title: 'Broadway Show Comparisons - Which Show Should You See?',
@@ -160,6 +161,9 @@ export default function ComparePage() {
             and lottery availability side by side to find the perfect show for you.
           </p>
         </div>
+
+        {/* Interactive picker */}
+        <CompareShowPicker />
 
         {/* Categorized Comparisons */}
         {categories.map((category) => (
