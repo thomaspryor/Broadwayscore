@@ -279,12 +279,28 @@ function parseRawPdfReviews(text, showTitle) {
     // Path 3: 1 exact mention + strong theatre context (for very long titles)
     if (exactMentions >= 1 && significantWords.length >= 2) {
       const firstIdx = textLower.search(titleRegex);
-      // Reject if the show title only appears in the last 30% of the text
-      // — this means the first 70% is about a different show (wrong-show contamination)
       if (firstIdx > textLower.length * 0.7) return false;
       const context = textLower.slice(Math.max(0, firstIdx - 100), firstIdx + 200);
       const strongContext = /musical|play|production|stage|cast|director|opening night|premiere/i.test(context);
       if (strongContext) return true;
+    }
+
+    // Path 4: Short/common-word titles (SIX, Cats, Rent)
+    // Use the shortest distinctive word even if ≤3 chars, require 3+ standalone mentions
+    const coreWord = titleLower.split(/\s+/)
+      .map(w => w.replace(/[^a-z0-9]/g, ''))
+      .filter(w => w.length >= 2 && !['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at', 'in', 'on', 'of', 'to'].includes(w))
+      .sort((a, b) => a.length - b.length)[0];
+    if (coreWord && coreWord.length <= 4) {
+      const coreRegex = new RegExp(`\\b${coreWord}\\b`, 'gi');
+      const coreMentions = (textLower.match(coreRegex) || []).length;
+      if (coreMentions >= 3) {
+        const firstIdx = textLower.search(coreRegex);
+        if (firstIdx <= textLower.length * 0.3) {
+          const hasContext = /musical|play|production|stage|theatre|theater|cast|director|choreograph|opening|premiere|west end|broadway/i.test(textLower);
+          if (hasContext) return true;
+        }
+      }
     }
 
     return false;
@@ -361,11 +377,11 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   let reviews = parsePdfReviews(text, show.title);
   if (reviews.length > 0) {
     console.log(`  Extracted ${reviews.length} reviews (-layout mode)`);
-    fs.unlinkSync(tmpFile);
-    return reviews;
+    // Don't return yet — also try raw mode as it may find more reviews
+    // (layout mode can grab wrong articles from multi-column PDFs)
   }
 
-  // Fallback: -raw mode for multi-column pre-2019 PDFs
+  // Also try -raw mode — may find additional reviews via title filtering
   // Raw mode can't reliably detect production boundaries, so we extract ALL
   // outlet+date+critic+text blocks and filter to reviews that mention our show
   try {
@@ -376,9 +392,17 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     return [];
   }
 
-  reviews = parseRawPdfReviews(text, show.title);
-  if (reviews.length > 0) {
-    console.log(`  Extracted ${reviews.length} reviews (-raw mode, title-matched)`);
+  const rawReviews = parseRawPdfReviews(text, show.title);
+  if (rawReviews.length > 0) {
+    console.log(`  Extracted ${rawReviews.length} reviews (-raw mode, title-matched)`);
+    // Merge with layout reviews, avoiding duplicates (same outlet+critic)
+    const seen = new Set(reviews.map(r => `${r.outlet}|${r.critic}`));
+    for (const r of rawReviews) {
+      if (!seen.has(`${r.outlet}|${r.critic}`)) {
+        reviews.push(r);
+        seen.add(`${r.outlet}|${r.critic}`);
+      }
+    }
   }
 
   fs.unlinkSync(tmpFile);
@@ -594,29 +618,38 @@ function isLondonVenue(venueText) {
 function normalizeTitle(t) {
   return t.toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, 'and')           // & → and before stripping punctuation
     .replace(/^the\s+/, '')
     .replace(/\s*\(the\)\s*$/, '') // TR uses "Lion King (The)" format
     .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
 }
 
-// Check if two titles match — exact first, then strip common suffixes
+// Check if two titles match — exact first, then strip suffixes/prefixes
 function titlesMatch(a, b) {
   const na = normalizeTitle(a);
   const nb = normalizeTitle(b);
   if (na === nb) return true;
-  // Strip common suffixes/qualifiers that differ between our DB and TR
   const stripSuffix = s => s
     .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue|opera|concert|experience)$/i, '')
     .replace(/\s+(the\s+)?(musical|play|show|revue|opera|concert|experience)$/i, '')
-    .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '') // ": Both Parts"
-    .replace(/\s+at\s+the\s+.+$/i, '') // "at the Kit Kat Club"
-    .replace(/\s+live$/i, '') // "Magic Mike Live"
+    .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
+    .replace(/\s+at\s+the\s+.+$/i, '')
+    .replace(/\s+live$/i, '')
     .trim();
   if (stripSuffix(na) === stripSuffix(nb)) return true;
-  // Allow prefix match only if the shorter is ≥60% of the longer
-  // (catches "Matilda" vs "Matilda - The Musical" but not "Wicked" vs "Wicked Witches")
-  const [shorter, longer] = na.length <= nb.length ? [na, nb] : [nb, na];
-  return longer.startsWith(shorter) && shorter.length >= longer.length * 0.6;
+  // Strip common prefixes: "Disney's", "Roald Dahl's", etc.
+  const stripPrefix = s => s
+    .replace(/^(?:disneys|roald dahls|shakespeares|agatha christies)\s+/i, '')
+    .trim();
+  if (stripPrefix(stripSuffix(na)) === stripPrefix(stripSuffix(nb))) return true;
+  // Allow contains match if the shorter is ≥50% of the longer and ≥4 chars
+  const sna = stripPrefix(stripSuffix(na));
+  const snb = stripPrefix(stripSuffix(nb));
+  const [shorter, longer] = sna.length <= snb.length ? [sna, snb] : [snb, sna];
+  if (shorter.length >= 4 && shorter.length >= longer.length * 0.5) {
+    if (longer.startsWith(shorter) || longer.endsWith(shorter) || longer.includes(shorter)) return true;
+  }
+  return false;
 }
 
 // Scrape TR /west-end or /london for featured shows with direct archive links
@@ -918,8 +951,8 @@ async function main() {
         const wordMentions = showWords.length > 0
           ? Math.max(...showWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
           : 0;
-        // For short titles (SIX, Cats, Rent), check core word mentions
-        const coreMentions = showWords.length === 0 && coreWords.length > 0
+        // Always check core words as fallback (catches SIX, Cats, Rent where significantWords is insufficient)
+        const coreMentions = coreWords.length > 0
           ? Math.max(...coreWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
           : 0;
 
