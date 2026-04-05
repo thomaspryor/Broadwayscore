@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-05T18:54:37.965Z",
-  "processed": 55,
-  "failed": 25,
-  "successRate": "68.8%",
+  "updatedAt": "2026-04-05T18:55:40.362Z",
+  "processed": 57,
+  "failed": 33,
+  "successRate": "63.3%",
   "tierBreakdown": {
     "playwright": 35,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 2,
     "archive": 10
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-05T15:47:13.945Z",
@@ -64,6 +64,17 @@
       "t": "2026-04-05T18:54:12.269Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-05T18:54:38.862Z",
+      "event": "bb-session",
+      "session": "a7aa0000",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review"
+    },
+    {
+      "t": "2026-04-05T18:54:40.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

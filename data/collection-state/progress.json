@@ -54,7 +54,9 @@
     "hadestown-2019/theater-life--barry-gordin.json",
     "call-me-izzy-2025/theater-life--barry-gordin.json",
     "purpose-2025/deadline--greg-evans.json",
-    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
+    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+    "romeo-juliet-2024/hollywood-reporter--david-rooney.json",
+    "romeo-juliet-2024/theatrely--juan-a-ramirez.json"
   ],
   "failed": [
     "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
@@ -81,7 +83,15 @@
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "high-noon-west-end-2025/times-uk--clive-davis.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
-    "tammy-faye-2024/stageandcinema--mike-mineo.json"
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "once-upon-a-mattress-2024/timeout--adam-feldman.json",
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -133,7 +143,9 @@
       "data/review-texts/heathers-the-musical-off-broadway-2025/amny--unknown.json",
       "heathers-the-musical-off-broadway-2025/amny--unknown.json",
       "data/review-texts/purpose-2025/deadline--greg-evans.json",
-      "purpose-2025/deadline--greg-evans.json"
+      "purpose-2025/deadline--greg-evans.json",
+      "data/review-texts/romeo-juliet-2024/hollywood-reporter--david-rooney.json",
+      "romeo-juliet-2024/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -141,7 +153,8 @@
       "dracula-west-end-2025/city-am--adam-bloodworth.json",
       "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
-      "heathers-the-musical-off-broadway-2025/nytimes--unknown.json"
+      "heathers-the-musical-off-broadway-2025/nytimes--unknown.json",
+      "romeo-juliet-2024/theatrely--juan-a-ramirez.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -162,7 +175,7 @@
     ]
   },
   "startTime": "2026-04-05T15:43:24.902Z",
-  "lastProcessed": "tammy-faye-2024/stageandcinema--mike-mineo.json",
+  "lastProcessed": "the-wiz-2024/indiewire--sarah-shachat.json",
   "log": [
     {
       "t": "2026-04-05T15:47:13.945Z",
@@ -213,6 +226,17 @@
       "t": "2026-04-05T18:54:12.269Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-05T18:54:38.862Z",
+      "event": "bb-session",
+      "session": "a7aa0000",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review"
+    },
+    {
+      "t": "2026-04-05T18:54:40.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
