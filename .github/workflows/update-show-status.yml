@@ -113,6 +113,14 @@ jobs:
         run: node scripts/enrich-ticket-prices.js
         continue-on-error: true
 
+      - name: Refresh StubHub prices (scraping — temporary until API access)
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/enrich-stubhub-prices.js
+        continue-on-error: true
+        timeout-minutes: 15
+
       - name: Enrich shows with Telecharge/Ticketmaster links
         if: ${{ inputs.skip_discovery != 'true' }}
         env:
