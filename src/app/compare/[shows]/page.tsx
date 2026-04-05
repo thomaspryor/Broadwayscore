@@ -158,47 +158,49 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
           </p>
         </div>
 
-        {/* Side-by-side show cards */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
-          {/* Show A */}
-          <div className="card p-4 text-center">
-            <Link href={`/show/${showA.slug}`} className="block">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-3">
-                <ShowImage
-                  sources={[
-                    showA.images?.thumbnail ? getOptimizedImageUrl(showA.images.thumbnail, 'thumbnail') : null,
-                    showA.images?.poster ? getOptimizedImageUrl(showA.images.poster, 'thumbnail') : null,
-                  ]}
-                  alt={showA.title}
-                  className="w-full h-full object-cover"
-                  fallback={
-                    <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                      <span className="text-3xl text-gray-500">🎭</span>
-                    </div>
-                  }
+        {/* Unified comparison card */}
+        <div className="card p-4 sm:p-6 mb-8">
+          {/* Show headers */}
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
+            <div />
+            {/* Show A header */}
+            <div className="text-center">
+              <Link href={`/show/${showA.slug}`} className="block">
+                <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-2">
+                  <ShowImage
+                    sources={[
+                      showA.images?.thumbnail ? getOptimizedImageUrl(showA.images.thumbnail, 'thumbnail') : null,
+                      showA.images?.poster ? getOptimizedImageUrl(showA.images.poster, 'thumbnail') : null,
+                    ]}
+                    alt={showA.title}
+                    className="w-full h-full object-cover"
+                    fallback={
+                      <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                        <span className="text-2xl text-gray-500">🎭</span>
+                      </div>
+                    }
+                  />
+                </div>
+                <h2 className="font-bold text-white text-sm sm:text-base hover:text-brand transition-colors mb-1.5">
+                  {showA.title}
+                </h2>
+              </Link>
+              <div className="flex justify-center gap-1 mb-2 flex-wrap">
+                <StatusBadge status={showA.status} />
+                <FormatPill type={showA.type} />
+              </div>
+              <div className="flex justify-center mb-2">
+                <ScoreBadge
+                  score={scoreA}
+                  size="lg"
+                  showCrown
+                  reviewCount={showA.criticScore?.reviewCount}
+                  status={showA.status}
                 />
               </div>
-              <h2 className="font-bold text-white text-base sm:text-lg hover:text-brand transition-colors mb-2">
-                {showA.title}
-              </h2>
-            </Link>
-            <div className="flex justify-center gap-1.5 mb-3">
-              <StatusBadge status={showA.status} />
-              <FormatPill type={showA.type} />
-            </div>
-            <div className="flex justify-center">
-              <ScoreBadge
-                score={scoreA}
-                size="lg"
-                showCrown
-                reviewCount={showA.criticScore?.reviewCount}
-                status={showA.status}
-              />
-            </div>
-            {showA.status !== 'closed' && showA.ticketLinks?.length ? (() => {
-              const sorted = sortTicketLinks(showA.ticketLinks);
-              return (
-                <div className="mt-3">
+              {showA.status !== 'closed' && showA.ticketLinks?.length ? (() => {
+                const sorted = sortTicketLinks(showA.ticketLinks);
+                return (
                   <TicketLink
                     showName={showA.title}
                     showId={showA.id}
@@ -216,50 +218,47 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                     </svg>
                     Get Tickets
                   </TicketLink>
+                );
+              })() : null}
+            </div>
+            {/* Show B header */}
+            <div className="text-center">
+              <Link href={`/show/${showB.slug}`} className="block">
+                <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-2">
+                  <ShowImage
+                    sources={[
+                      showB.images?.thumbnail ? getOptimizedImageUrl(showB.images.thumbnail, 'thumbnail') : null,
+                      showB.images?.poster ? getOptimizedImageUrl(showB.images.poster, 'thumbnail') : null,
+                    ]}
+                    alt={showB.title}
+                    className="w-full h-full object-cover"
+                    fallback={
+                      <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
+                        <span className="text-2xl text-gray-500">🎭</span>
+                      </div>
+                    }
+                  />
                 </div>
-              );
-            })() : null}
-          </div>
-
-          {/* Show B */}
-          <div className="card p-4 text-center">
-            <Link href={`/show/${showB.slug}`} className="block">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-3">
-                <ShowImage
-                  sources={[
-                    showB.images?.thumbnail ? getOptimizedImageUrl(showB.images.thumbnail, 'thumbnail') : null,
-                    showB.images?.poster ? getOptimizedImageUrl(showB.images.poster, 'thumbnail') : null,
-                  ]}
-                  alt={showB.title}
-                  className="w-full h-full object-cover"
-                  fallback={
-                    <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                      <span className="text-3xl text-gray-500">🎭</span>
-                    </div>
-                  }
+                <h2 className="font-bold text-white text-sm sm:text-base hover:text-brand transition-colors mb-1.5">
+                  {showB.title}
+                </h2>
+              </Link>
+              <div className="flex justify-center gap-1 mb-2 flex-wrap">
+                <StatusBadge status={showB.status} />
+                <FormatPill type={showB.type} />
+              </div>
+              <div className="flex justify-center mb-2">
+                <ScoreBadge
+                  score={scoreB}
+                  size="lg"
+                  showCrown
+                  reviewCount={showB.criticScore?.reviewCount}
+                  status={showB.status}
                 />
               </div>
-              <h2 className="font-bold text-white text-base sm:text-lg hover:text-brand transition-colors mb-2">
-                {showB.title}
-              </h2>
-            </Link>
-            <div className="flex justify-center gap-1.5 mb-3">
-              <StatusBadge status={showB.status} />
-              <FormatPill type={showB.type} />
-            </div>
-            <div className="flex justify-center">
-              <ScoreBadge
-                score={scoreB}
-                size="lg"
-                showCrown
-                reviewCount={showB.criticScore?.reviewCount}
-                status={showB.status}
-              />
-            </div>
-            {showB.status !== 'closed' && showB.ticketLinks?.length ? (() => {
-              const sorted = sortTicketLinks(showB.ticketLinks);
-              return (
-                <div className="mt-3">
+              {showB.status !== 'closed' && showB.ticketLinks?.length ? (() => {
+                const sorted = sortTicketLinks(showB.ticketLinks);
+                return (
                   <TicketLink
                     showName={showB.title}
                     showId={showB.id}
@@ -277,22 +276,13 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                     </svg>
                     Get Tickets
                   </TicketLink>
-                </div>
-              );
-            })() : null}
+                );
+              })() : null}
+            </div>
           </div>
-        </div>
 
-        {/* Comparison Table */}
-        <div className="card p-4 sm:p-6 mb-8">
-          <h2 className="font-bold text-white text-lg mb-4">Side-by-Side Comparison</h2>
-
-          {/* Header row */}
-          <div className="grid grid-cols-3 gap-4 pb-3 border-b border-white/10 mb-2">
-            <div className="text-gray-500 text-sm font-medium"></div>
-            <div className="text-center font-semibold text-white text-sm truncate">{showA.title}</div>
-            <div className="text-center font-semibold text-white text-sm truncate">{showB.title}</div>
-          </div>
+          {/* Divider */}
+          <div className="border-t border-white/10 pt-4">
 
           <ComparisonRow
             label="CriticScore"
@@ -350,6 +340,8 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
             valueA={showA.ageRecommendation || 'Not specified'}
             valueB={showB.ageRecommendation || 'Not specified'}
           />
+
+          </div>
         </div>
 
         {/* Critic Consensus */}
