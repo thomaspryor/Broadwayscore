@@ -184,7 +184,17 @@
     "true-west-2019/vulture--jesse-green.json",
     "to-kill-a-mockingbird-2018/vulture--jesse-green.json",
     "king-kong-2018/usatoday--charles-isherwood.json",
-    "king-kong-2018/washpost--peter-marks.json"
+    "king-kong-2018/washpost--peter-marks.json",
+    "american-son-2018/washpost--peter-marks.json",
+    "the-waverly-gallery-2018/nytimes--jesse-green.json",
+    "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
+    "the-nap-2018/nypost--johnny-oleksinski.json",
+    "pretty-woman-the-musical-2018/washpost--peter-marks.json",
+    "straight-white-men-2018/washpost--peter-marks.json",
+    "saint-joan-2018/washpost--peter-marks.json",
+    "travesties-2018/vulture--jesse-green.json",
+    "summer-2018/nytimes--jesse-green.json",
+    "summer-2018/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -311,7 +321,15 @@
       "data/review-texts/true-west-2019/vulture--jesse-green.json",
       "data/review-texts/to-kill-a-mockingbird-2018/vulture--jesse-green.json",
       "data/review-texts/king-kong-2018/usatoday--charles-isherwood.json",
-      "data/review-texts/king-kong-2018/washpost--peter-marks.json"
+      "data/review-texts/king-kong-2018/washpost--peter-marks.json",
+      "data/review-texts/american-son-2018/washpost--peter-marks.json",
+      "data/review-texts/the-waverly-gallery-2018/nytimes--jesse-green.json",
+      "data/review-texts/pretty-woman-the-musical-2018/washpost--peter-marks.json",
+      "data/review-texts/straight-white-men-2018/washpost--peter-marks.json",
+      "data/review-texts/saint-joan-2018/washpost--peter-marks.json",
+      "data/review-texts/travesties-2018/vulture--jesse-green.json",
+      "data/review-texts/summer-2018/nytimes--jesse-green.json",
+      "data/review-texts/summer-2018/vulture--jesse-green.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -327,7 +345,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "king-kong-2018/washpost--peter-marks.json",
+  "lastProcessed": "summer-2018/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -656,6 +674,17 @@
     },
     {
       "t": "2026-04-05T03:10:05.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T03:10:43.018Z",
+      "event": "bb-session",
+      "session": "4daaba18",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/american-son-review-k"
+    },
+    {
+      "t": "2026-04-05T03:10:44.142Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
