@@ -57,7 +57,14 @@ function ShowInput({
               )}
               <div className="min-w-0">
                 <div className="text-sm text-white truncate">{show.title}</div>
-                <div className="text-[11px] text-gray-500 capitalize">{show.status}</div>
+                <div className="text-[11px] text-gray-500 capitalize">
+                  {show.status}
+                  {show.category && show.category !== 'broadway' && (
+                    <span className="ml-1.5 text-gray-600">
+                      · {show.category === 'west-end' ? 'West End' : show.category === 'off-broadway' ? 'Off-Broadway' : show.category === 'off-west-end' ? 'Off-West End' : show.category}
+                    </span>
+                  )}
+                </div>
               </div>
             </button>
           ))}
@@ -112,9 +119,16 @@ export default function CompareShowPicker() {
 
   const search = (q: string, exclude?: string): Show[] => {
     if (!fuseRef.current || q.length < 2) return [];
-    return fuseRef.current.search(q, { limit: 8 })
+    return fuseRef.current.search(q, { limit: 16 })
       .map(r => r.item)
-      .filter(s => s.slug !== exclude);
+      .filter(s => s.slug !== exclude)
+      // Broadway first, then others — most users are comparing Broadway shows
+      .sort((a, b) => {
+        const aIsBway = !a.category || a.category === 'broadway' ? 0 : 1;
+        const bIsBway = !b.category || b.category === 'broadway' ? 0 : 1;
+        return aIsBway - bIsBway;
+      })
+      .slice(0, 8);
   };
 
   // Re-compute when dataReady changes (forces re-render after Fuse loads)
