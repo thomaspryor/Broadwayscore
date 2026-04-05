@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T20:49:15.368Z",
+  "timestamp": "2026-04-05T21:13:25.967Z",
   "stats": {
-    "totalReviews": 34305,
-    "alreadyFlagged": 13120,
+    "totalReviews": 34337,
+    "alreadyFlagged": 13126,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
     "tvFilmSignals": 3441,
-    "londonSignals": 1097,
+    "londonSignals": 1096,
     "offBroadwaySignals": 980,
     "yearMismatch": 72,
-    "noPublishDate": 5548
+    "noPublishDate": 5575
   },
   "findings": [
     {
@@ -65075,20 +65075,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "cleansed-off-west-end-2026",
-      "file": "thestage--natasha-tripney.json",
-      "score": 74,
-      "publishDate": "2016-02-25",
-      "url": "https://www.thestage.co.uk/opinion/natasha-tripney-can-we-all-stop-banging-on-about-the-violence-in-cleansed",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
