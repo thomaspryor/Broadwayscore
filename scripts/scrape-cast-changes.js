@@ -729,6 +729,205 @@ function diffCast(baseline, scraped, showId, sourceUrl) {
   return events;
 }
 
+// ==================== Source 4: Playbill Cast Pages ====================
+
+/**
+ * Scrape Playbill production pages for current cast.
+ * Playbill pages have clearly labeled tabs: "Cast <span>Current</span>",
+ * "Cast <span>Opening Night</span>", "Production Credits".
+ * We extract /person/ links from the Current Cast tab only.
+ */
+async function scrapePlaybillCast(targetShows, existing) {
+  console.log('\n--- Source 4: Playbill Cast Pages ---');
+
+  // Load Playbill URLs
+  const playbillUrlsPath = path.join(__dirname, '../data/playbill-urls.json');
+  let playbillUrls = {};
+  try {
+    const data = JSON.parse(fs.readFileSync(playbillUrlsPath, 'utf8'));
+    playbillUrls = data.shows || {};
+  } catch {
+    console.log('[Skip] No playbill-urls.json found. Run discover-playbill-urls.js first.');
+    return {};
+  }
+
+  // Filter to Broadway-only shows with Playbill URLs
+  const eligible = targetShows.filter(s => {
+    if (s.category) return false; // Broadway shows have no category
+    return !!playbillUrls[s.id];
+  });
+
+  console.log(`[Playbill] ${eligible.length} Broadway shows with Playbill URLs`);
+
+  const results = {};
+  let fetchPage;
+  try {
+    fetchPage = require('./lib/scraper').fetchPage;
+  } catch (e) {
+    console.log(`[Skip] Could not load fetchPage: ${e.message}`);
+    // Fallback to ScrapingBee direct if fetchPage unavailable (e.g., missing env vars)
+    fetchPage = async (url) => {
+      const html = await fetchViaScrapingBee(url, { renderJs: false });
+      return { content: html };
+    };
+  }
+
+  for (const show of eligible) {
+    const playbillUrl = playbillUrls[show.id];
+    if (verbose) console.log(`\n  [Playbill] ${show.title}`);
+
+    try {
+      // Fetch page
+      const result = await fetchPage(playbillUrl, { renderJs: false });
+      if (!result || !result.content || result.content.length < 500) {
+        if (verbose) console.log(`    Page too short or empty`);
+        continue;
+      }
+
+      const html = result.content;
+
+      // Extract current cast from the "Cast Current" tab
+      const castMembers = extractPlaybillCurrentCast(html);
+      if (castMembers.length === 0) {
+        if (verbose) console.log(`    No cast members extracted`);
+        continue;
+      }
+
+      if (verbose) console.log(`    Extracted ${castMembers.length} cast members`);
+
+      // Initialize baseline for shows with no existing data
+      if (!existing.shows[show.id] || !existing.shows[show.id].currentCast || existing.shows[show.id].currentCast.length === 0) {
+        // First time seeing this show — set baseline, don't generate events
+        if (castMembers.length >= 3) { // Minimum threshold to trust the data
+          existing.shows[show.id] = existing.shows[show.id] || { currentCast: [], upcoming: [] };
+          existing.shows[show.id].currentCast = castMembers.map(name => ({
+            name,
+            role: 'Unknown', // Playbill doesn't always show roles inline
+            since: TODAY,
+          }));
+          if (verbose) console.log(`    Set baseline: ${castMembers.length} cast members (no events generated)`);
+          stats.eventsAdded += 0; // No events — just baseline
+        } else {
+          if (verbose) console.log(`    Too few cast members (${castMembers.length}) — skipping baseline`);
+        }
+        continue;
+      }
+
+      // Diff against existing baseline
+      const baseline = existing.shows[show.id].currentCast;
+      const scrapedCast = castMembers.map(name => ({ name, role: 'Unknown' }));
+      const diffs = diffCastPlaybill(baseline, scrapedCast, show.id, playbillUrl);
+
+      if (diffs.length > 0) {
+        results[show.id] = diffs;
+        if (verbose) console.log(`    ${diffs.length} changes detected`);
+      } else {
+        if (verbose) console.log(`    No changes from baseline`);
+      }
+    } catch (e) {
+      if (verbose) console.log(`    Error: ${e.message}`);
+      stats.errors.push(`Playbill ${show.id}: ${e.message}`);
+    }
+
+    await sleep(2000); // Rate limit between page fetches
+  }
+
+  const totalEvents = Object.values(results).reduce((s, arr) => s + arr.length, 0);
+  console.log(`[Playbill] Checked ${eligible.length} shows, found ${totalEvents} changes`);
+  return results;
+}
+
+/**
+ * Extract current cast names from Playbill production page HTML.
+ * Looks for the "Cast Current" tab and extracts /person/ link title attributes.
+ */
+function extractPlaybillCurrentCast(html) {
+  const lines = html.split('\n');
+
+  // Find "Cast Current" tab start and end
+  let castStart = -1;
+  let castEnd = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].includes('Cast') && lines[i].includes('Current') && lines[i].includes('data-nav-title')) {
+      castStart = i;
+    } else if (castStart >= 0 && castEnd < 0 && i > castStart && lines[i].includes('data-nav-title')) {
+      castEnd = i;
+      break;
+    }
+  }
+
+  if (castStart < 0) {
+    // Fallback: no tab structure, try extracting all /person/ links with bsp-list-promo-title
+    if (verbose) console.log(`    No "Cast Current" tab found — using fallback`);
+    const names = new Set();
+    const re = /\/person\/[^"]*"[^>]*title="([^"]+)"/g;
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      const name = m[1].replace(/\s*\(.*\)$/, '').trim(); // Remove "(Performer, Writer)" suffix
+      if (name && name.length > 1 && !name.includes('View All')) {
+        names.add(name);
+      }
+    }
+    return [...names];
+  }
+
+  // Extract from the Current Cast section only
+  const section = lines.slice(castStart, castEnd).join('\n');
+  const names = new Set();
+  const re = /\/person\/[^"]*"[^>]*title="([^"]+)"/g;
+  let m;
+  while ((m = re.exec(section)) !== null) {
+    const name = m[1].replace(/\s*\(.*\)$/, '').trim();
+    if (name && name.length > 1 && !name.includes('View All')) {
+      names.add(name);
+    }
+  }
+
+  return [...names];
+}
+
+/**
+ * Diff baseline cast against Playbill-scraped cast.
+ * Same logic as diffCast() but with playbill-specific sourceType.
+ */
+function diffCastPlaybill(baseline, scraped, showId, sourceUrl) {
+  const events = [];
+  const normalName = n => n.toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
+
+  const baselineNames = new Set(baseline.map(c => normalName(c.name)));
+  const scrapedNames = new Set(scraped.map(c => normalName(c.name)));
+
+  for (const member of baseline) {
+    if (!scrapedNames.has(normalName(member.name))) {
+      events.push({
+        type: 'departure',
+        name: member.name,
+        role: member.role || 'Unknown',
+        note: '[AUTO-FLAGGED] Not found on Playbill current cast — verify',
+        sourceUrl,
+        sourceType: 'playbill-cast',
+        addedDate: TODAY,
+      });
+    }
+  }
+
+  for (const member of scraped) {
+    if (!baselineNames.has(normalName(member.name))) {
+      events.push({
+        type: 'arrival',
+        name: member.name,
+        role: member.role || 'Unknown',
+        note: '[AUTO-FLAGGED] Found on Playbill current cast but not in baseline — verify',
+        sourceUrl,
+        sourceType: 'playbill-cast',
+        addedDate: TODAY,
+      });
+    }
+  }
+
+  return events;
+}
+
 // ==================== Source 3: Reddit Monitoring ====================
 
 /**
@@ -1321,6 +1520,12 @@ async function main() {
   if (sourceFilter === 'all' || sourceFilter === 'official-sites') {
     const officialEvents = await scrapeOfficialSites(targetShows, existing);
     const changes = mergeEvents(existing, officialEvents, 'official-sites');
+    allChanges.push(...changes);
+  }
+
+  if (sourceFilter === 'all' || sourceFilter === 'playbill-cast') {
+    const playbillEvents = await scrapePlaybillCast(targetShows, existing);
+    const changes = mergeEvents(existing, playbillEvents, 'playbill-cast');
     allChanges.push(...changes);
   }
 
