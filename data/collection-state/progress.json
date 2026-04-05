@@ -45,7 +45,16 @@
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--unknown.json",
     "the-tempest-globe-west-end-2026/timeout--andrzej-lukowski.json",
     "the-tempest-globe-west-end-2026/the-express--neil-norman.json",
-    "the-tempest-globe-west-end-2026/thestage--sam-marlowe.json"
+    "the-tempest-globe-west-end-2026/thestage--sam-marlowe.json",
+    "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "heathers-the-musical-off-broadway-2025/nytimes--unknown.json",
+    "heathers-the-musical-off-broadway-2025/amny--unknown.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/timeout--andrzej-lukowski.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--unknown.json",
+    "hadestown-2019/theater-life--barry-gordin.json",
+    "call-me-izzy-2025/theater-life--barry-gordin.json",
+    "purpose-2025/deadline--greg-evans.json",
+    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
   ],
   "failed": [
     "romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
@@ -71,7 +80,8 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "high-noon-west-end-2025/times-uk--clive-davis.json",
-    "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json"
+    "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -106,7 +116,11 @@
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/thestage--sam-marlowe.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/thestage--unknown.json",
       "the-tempest-globe-west-end-2026/timeout--andrzej-lukowski.json",
-      "the-tempest-globe-west-end-2026/thestage--sam-marlowe.json"
+      "the-tempest-globe-west-end-2026/thestage--sam-marlowe.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/timeout--andrzej-lukowski.json",
+      "hadestown-2019/theater-life--barry-gordin.json",
+      "call-me-izzy-2025/theater-life--barry-gordin.json",
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
     ],
     "amp": [],
     "browserbase": [
@@ -115,14 +129,19 @@
       "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
       "the-producers-west-end-2025/variety--ellise-shafer.json",
       "data/review-texts/the-tempest-globe-west-end-2026/the-express--neil-norman.json",
-      "the-tempest-globe-west-end-2026/the-express--neil-norman.json"
+      "the-tempest-globe-west-end-2026/the-express--neil-norman.json",
+      "data/review-texts/heathers-the-musical-off-broadway-2025/amny--unknown.json",
+      "heathers-the-musical-off-broadway-2025/amny--unknown.json",
+      "data/review-texts/purpose-2025/deadline--greg-evans.json",
+      "purpose-2025/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
       "dracula-west-end-2025/city-am--adam-bloodworth.json",
       "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json",
-      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json"
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
+      "heathers-the-musical-off-broadway-2025/nytimes--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -137,11 +156,13 @@
       "les-miserables-west-end-2021/londontheatre1--london-theatre-1.json",
       "hamilton-west-end-2021/whatsonstage--sarah-crompton.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--michael-davies.json",
-      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--unknown.json"
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--unknown.json",
+      "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--unknown.json"
     ]
   },
   "startTime": "2026-04-05T15:43:24.902Z",
-  "lastProcessed": "the-tempest-globe-west-end-2026/thestage--sam-marlowe.json",
+  "lastProcessed": "tammy-faye-2024/stageandcinema--mike-mineo.json",
   "log": [
     {
       "t": "2026-04-05T15:47:13.945Z",
@@ -170,6 +191,28 @@
       "event": "bb-session",
       "session": "efb5f64b",
       "url": "https://www.express.co.uk/entertainment/theatre/2016337/jonathan-bailey-richard-"
+    },
+    {
+      "t": "2026-04-05T18:53:19.222Z",
+      "event": "bb-session",
+      "session": "ec34c90d",
+      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broa"
+    },
+    {
+      "t": "2026-04-05T18:53:20.955Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-05T18:54:10.889Z",
+      "event": "bb-session",
+      "session": "add0a3a4",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-04-05T18:54:12.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

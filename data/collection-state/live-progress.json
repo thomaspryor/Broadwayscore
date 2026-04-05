@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-05T18:52:35.284Z",
-  "processed": 46,
-  "failed": 24,
-  "successRate": "65.7%",
+  "updatedAt": "2026-04-05T18:54:37.965Z",
+  "processed": 55,
+  "failed": 25,
+  "successRate": "68.8%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 35,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 8
+    "archive": 10
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-05T15:47:13.945Z",
@@ -42,6 +42,28 @@
       "event": "bb-session",
       "session": "efb5f64b",
       "url": "https://www.express.co.uk/entertainment/theatre/2016337/jonathan-bailey-richard-"
+    },
+    {
+      "t": "2026-04-05T18:53:19.222Z",
+      "event": "bb-session",
+      "session": "ec34c90d",
+      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broa"
+    },
+    {
+      "t": "2026-04-05T18:53:20.955Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-05T18:54:10.889Z",
+      "event": "bb-session",
+      "session": "add0a3a4",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-04-05T18:54:12.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
