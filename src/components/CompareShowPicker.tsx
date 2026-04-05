@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useDeferredValue } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type Fuse from 'fuse.js';
 
@@ -29,10 +29,8 @@ function ShowInput({
   showResults: boolean;
   onFocus: () => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-
   return (
-    <div ref={ref} className="relative flex-1">
+    <div className="relative flex-1">
       <label className="block text-xs text-gray-400 font-medium mb-1">{label}</label>
       <input
         type="text"
@@ -41,6 +39,7 @@ function ShowInput({
         onFocus={onFocus}
         placeholder="Type a show name..."
         className="w-full px-3 py-2.5 rounded-lg bg-surface-overlay border border-white/10 text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
+        autoComplete="off"
       />
       {showResults && results.length > 0 && (
         <div className="absolute z-50 top-full mt-1 w-full bg-surface-raised border border-white/10 rounded-lg shadow-xl max-h-60 overflow-y-auto">
@@ -48,10 +47,12 @@ function ShowInput({
             <button
               key={show.slug}
               type="button"
+              onMouseDown={e => e.preventDefault()}
               onClick={() => onSelect(show)}
               className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors flex items-center gap-2"
             >
               {show.images?.thumbnail && (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={show.images.thumbnail} alt="" className="w-8 h-8 rounded object-cover flex-shrink-0" />
               )}
               <div className="min-w-0">
@@ -70,11 +71,10 @@ export default function CompareShowPicker() {
   const router = useRouter();
   const fuseRef = useRef<Fuse<Show> | null>(null);
   const fetchedRef = useRef(false);
+  const [dataReady, setDataReady] = useState(false);
 
   const [queryA, setQueryA] = useState('');
   const [queryB, setQueryB] = useState('');
-  const deferredA = useDeferredValue(queryA);
-  const deferredB = useDeferredValue(queryB);
   const [selectedA, setSelectedA] = useState<Show | null>(null);
   const [selectedB, setSelectedB] = useState<Show | null>(null);
   const [focusedField, setFocusedField] = useState<'a' | 'b' | null>(null);
@@ -94,7 +94,20 @@ export default function CompareShowPicker() {
         threshold: 0.35,
         ignoreLocation: true,
       });
+      setDataReady(true);
     } catch { /* silent */ }
+  }, []);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-compare-picker]')) {
+        setFocusedField(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, []);
 
   const search = (q: string, exclude?: string): Show[] => {
@@ -104,8 +117,9 @@ export default function CompareShowPicker() {
       .filter(s => s.slug !== exclude);
   };
 
-  const resultsA = search(deferredA, selectedB?.slug);
-  const resultsB = search(deferredB, selectedA?.slug);
+  // Re-compute when dataReady changes (forces re-render after Fuse loads)
+  const resultsA = dataReady ? search(queryA, selectedB?.slug) : [];
+  const resultsB = dataReady ? search(queryB, selectedA?.slug) : [];
 
   const handleSelectA = (show: Show) => {
     setSelectedA(show);
@@ -127,7 +141,7 @@ export default function CompareShowPicker() {
   };
 
   return (
-    <div className="card p-4 sm:p-6 mb-8">
+    <div className="card p-4 sm:p-6 mb-8" data-compare-picker>
       <h2 className="font-bold text-white text-lg mb-1">Compare Any Two Shows</h2>
       <p className="text-gray-400 text-sm mb-4">Pick two shows to see a detailed side-by-side comparison.</p>
 
@@ -138,7 +152,7 @@ export default function CompareShowPicker() {
           onChange={q => { setQueryA(q); setSelectedA(null); }}
           onSelect={handleSelectA}
           results={resultsA}
-          showResults={focusedField === 'a' && !selectedA && deferredA.length >= 2}
+          showResults={focusedField === 'a' && !selectedA && queryA.length >= 2}
           onFocus={() => setFocusedField('a')}
         />
 
@@ -152,7 +166,7 @@ export default function CompareShowPicker() {
           onChange={q => { setQueryB(q); setSelectedB(null); }}
           onSelect={handleSelectB}
           results={resultsB}
-          showResults={focusedField === 'b' && !selectedB && deferredB.length >= 2}
+          showResults={focusedField === 'b' && !selectedB && queryB.length >= 2}
           onFocus={() => setFocusedField('b')}
         />
 
