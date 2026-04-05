@@ -134,7 +134,17 @@
     "the-kite-runner-2022/timeout--adam-feldman.json",
     "a-strange-loop-2022/usatoday--elysa-gardner.json",
     "funny-girl-2022/hollywood-reporter--angie-han.json",
-    "funny-girl-2022/usatoday--charles-isherwood.json"
+    "funny-girl-2022/usatoday--charles-isherwood.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/timeout--adam-feldman.json",
+    "how-i-learned-to-drive-2022/washpost--peter-marks.json",
+    "american-buffalo-2022/observer--jesse-green.json",
+    "american-buffalo-2022/usatoday--kelly-lawler.json",
+    "american-buffalo-2022/washpost--peter-marks.json",
+    "birthday-candles-2022/hollywood-reporter--angie-han.json",
+    "birthday-candles-2022/talkinbroadway--matthew-murray.json",
+    "paradise-square-2022/ew--kristen-baldwin.json",
+    "paradise-square-2022/billboard--greg-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -227,7 +237,15 @@
       "data/review-texts/leopoldstadt-2022/timeout--adam-feldman.json",
       "data/review-texts/the-kite-runner-2022/timeout--adam-feldman.json",
       "data/review-texts/a-strange-loop-2022/usatoday--elysa-gardner.json",
-      "data/review-texts/funny-girl-2022/usatoday--charles-isherwood.json"
+      "data/review-texts/funny-girl-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/funny-girl-2022/hollywood-reporter--angie-han.json",
+      "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
+      "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/timeout--adam-feldman.json",
+      "data/review-texts/how-i-learned-to-drive-2022/washpost--peter-marks.json",
+      "data/review-texts/american-buffalo-2022/usatoday--kelly-lawler.json",
+      "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
+      "data/review-texts/birthday-candles-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/paradise-square-2022/billboard--greg-evans.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -243,7 +261,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "funny-girl-2022/usatoday--charles-isherwood.json",
+  "lastProcessed": "paradise-square-2022/billboard--greg-evans.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -396,6 +414,39 @@
     },
     {
       "t": "2026-04-05T02:38:37.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:44:36.451Z",
+      "event": "bb-session",
+      "session": "57570dfa",
+      "url": "https://www.washingtonpost.com/theater_dance/2022/04/20/how-i-learned-to-drive-r"
+    },
+    {
+      "t": "2026-04-05T02:44:37.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:45:37.798Z",
+      "event": "bb-session",
+      "session": "39b0c46c",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-"
+    },
+    {
+      "t": "2026-04-05T02:45:38.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:45:47.780Z",
+      "event": "bb-session",
+      "session": "4ad49156",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/birthday-candles-theater-review"
+    },
+    {
+      "t": "2026-04-05T02:45:48.869Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
