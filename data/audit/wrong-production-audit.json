@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-05T19:24:40.078Z",
+  "timestamp": "2026-04-05T19:38:42.750Z",
   "stats": {
-    "totalReviews": 34286,
-    "alreadyFlagged": 13115,
+    "totalReviews": 34288,
+    "alreadyFlagged": 13109,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
-    "tvFilmSignals": 3439,
+    "tvFilmSignals": 3440,
     "londonSignals": 1097,
     "offBroadwaySignals": 980,
     "yearMismatch": 72,
@@ -56206,6 +56206,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": null,
+      "publishDate": "2026-01-29",
+      "url": "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
