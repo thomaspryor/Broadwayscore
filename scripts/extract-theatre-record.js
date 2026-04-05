@@ -635,6 +635,7 @@ function titlesMatch(a, b) {
     .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
     .replace(/\s+at\s+the\s+.+$/i, '')
     .replace(/\s+live$/i, '')
+    .replace(/\s*[-–—]\s*(?:globe|donmar|almeida|young vic|old vic|national|barbican|soho|bush|royal court|hampstead|menier|arcola)$/i, '')
     .trim();
   if (stripSuffix(na) === stripSuffix(nb)) return true;
   // Strip common prefixes: "Disney's", "Roald Dahl's", etc.
@@ -1008,7 +1009,19 @@ async function main() {
     const searchUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + title + '"')}&title=on&order=newest`;
     await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
     await page.waitForTimeout(1000);
-    return extractSearchResults(page);
+    let results = await extractSearchResults(page);
+
+    // Quoted search with apostrophes/special chars often returns 0 results on TR
+    // Retry without quotes if needed
+    if (results.length === 0 && /[''"'']/.test(title)) {
+      const cleanTitle = title.replace(/[''"'']/g, ' ').replace(/\s+/g, ' ').trim();
+      const retryUrl = `https://www.theatrerecord.com/search?query=${encodeURIComponent(cleanTitle)}&title=on&order=newest`;
+      await page.goto(retryUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await page.waitForTimeout(1000);
+      results = await extractSearchResults(page);
+    }
+
+    return results;
   }
 
   // ─── Shared: search TR for a show, pick best result, extract ───
@@ -1042,6 +1055,7 @@ async function main() {
         .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
         .replace(/\s+at\s+the\s+.+$/i, '')
         .replace(/\s+live$/i, '')
+        .replace(/\s*[-–—]\s*(?:Globe|Donmar|Almeida|Young Vic|Old Vic|National|Barbican|Soho|Bush|Royal Court|Hampstead|Menier|Arcola)$/i, '')
         .trim();
       if (shorter !== searchTitle && shorter.length >= 3) {
         console.log(`  Retrying search with shorter title: "${shorter}"`);
