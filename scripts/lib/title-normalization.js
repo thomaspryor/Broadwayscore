@@ -36,6 +36,18 @@ function normalizeTitle(t) {
     .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
 }
 
+// Known WE venue names for "at the [venue]" stripping
+const AT_THE_VENUES = [
+  'kit\\s+kat\\s+club', 'apollo', 'savoy', 'vaudeville', 'adelphi', 'gielgud',
+  'garrick', 'lyceum', 'palace', 'apollo\\s+victoria', 'noel\\s+coward', 'wyndhams',
+  'criterion', 'phoenix', 'playhouse', 'duke\\s+of\\s+yorks', 'fortune', 'ambassadors',
+  'st\\s+martins', 'novello', 'cambridge', 'gillian\\s+lynne', 'sondheim',
+  'harold\\s+pinter', 'dominion', 'london\\s+coliseum', 'drury\\s+lane',
+  'prince\\s+edward', 'prince\\s+of\\s+wales', 'piccadilly', 'shaftesbury',
+  'theatre\\s+royal', 'hippodrome', 'trafalgar',
+];
+const AT_THE_PATTERN = new RegExp(`\\s+at\\s+the\\s+(${AT_THE_VENUES.join('|')}).*$`, 'i');
+
 /**
  * Strip format/venue suffixes from a normalized title.
  * Used internally by titlesMatch and exported via cleanSearchTitle.
@@ -43,9 +55,12 @@ function normalizeTitle(t) {
 function stripSuffix(s) {
   return s
     .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue|opera|concert|experience)$/i, '')
-    .replace(/\s+(the\s+)?(musical|play|show|revue|opera|concert|experience)$/i, '')
+    // Only strip "the Musical/Play/etc." when preceded by whitespace — not bare "play" at end
+    // e.g. "SIX the Musical" → "SIX" but "Sad Gay AIDS Play" stays unchanged
+    .replace(/\s+the\s+(musical|play|show|revue|opera|concert|experience)$/i, '')
     .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
-    .replace(/\s+at\s+the\s+.+$/i, '')
+    // Only strip "at the [venue]" with known venue names
+    .replace(AT_THE_PATTERN, '')
     .replace(/\s+live$/i, '')
     .replace(new RegExp(`\\s*[-–—]\\s*(?:${VENUE_NAMES.join('|')})$`, 'i'), '')
     .trim();
@@ -95,9 +110,9 @@ function cleanSearchTitle(title) {
     .replace(/&/g, 'and')                    // & → and
     .replace(/\s*\([^)]{5,}\)\s*$/, '')      // Strip trailing parenthetical (venue qualifiers)
     .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue)$/i, '')
-    .replace(/\s+(the\s+)?(musical|play|show|revue)$/i, '')
+    .replace(/\s+the\s+(musical|play|show|revue)$/i, '')
     .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
-    .replace(/\s+at\s+the\s+.+$/i, '')
+    .replace(AT_THE_PATTERN, '')
     .replace(/\s+live$/i, '')
     .replace(new RegExp(`\\s*[-–—]\\s*(?:${VENUE_NAMES.join('|')})$`, 'i'), '')
     .replace(/^(?:Disney's|Roald Dahl's|Shakespeare's|Agatha Christie's)\s+/i, '')

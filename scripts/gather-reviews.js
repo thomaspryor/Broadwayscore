@@ -3555,8 +3555,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
 
           if (!data.lboRoundupExcerpt) {
             data.lboRoundupExcerpt = lboReview.excerpt;
-            if (lboReview.score !== null && lboReview.score !== undefined && !data.originalScore) {
-              data.originalScore = lboReview.score;
+            if (lboReview.score !== null && lboReview.score !== undefined && !data.originalScore && !data.aggregatorStars) {
+              data.aggregatorStars = lboReview.score;
               data.scoreSource = 'lbo-star-rating';
               data.scorePriority = 'P0';
             }
@@ -3589,7 +3589,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
             fullText: null,
             isFullReview: false,
             lboRoundupExcerpt: lboReview.excerpt,
-            score: lboReview.score || null,
+            originalScore: null,
+            aggregatorStars: lboReview.score || null,
             scoreSource: lboReview.score ? 'lbo-star-rating' : null,
             showScoreExcerpt: null,
             contentTier: 'excerpt',

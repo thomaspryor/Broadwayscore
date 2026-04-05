@@ -32,6 +32,7 @@ const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { isScoreable } = require('./lib/is-scoreable');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
+const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -237,10 +238,15 @@ async function phase1ExtractLocal(reviews) {
       stats.phase1Recovered++;
       trackOutlet(review.data.outletId, 'phase1');
 
-      console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]`);
+      const isAggregatorSource = AGGREGATOR_SCORE_SOURCES.has(result.source);
+      console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]${isAggregatorSource ? ' → aggregatorStars' : ''}`);
 
       if (!DRY_RUN) {
-        review.data.originalScore = result.originalScore;
+        if (isAggregatorSource) {
+          review.data.aggregatorStars = result.originalScore;
+        } else {
+          review.data.originalScore = result.originalScore;
+        }
         review.data.originalScoreNormalized = result.normalizedScore;
         review.data.originalScoreSource = result.source;
         review.data.scoreExtractedFrom = 'local-text';
@@ -600,10 +606,15 @@ async function phase3ScrapeURLs(reviews) {
           stats.phase3Recovered++;
           trackOutlet(review.data.outletId, 'phase3');
 
-          console.log(`    ★ ${review.showId}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]`);
+          const isAggSource = AGGREGATOR_SCORE_SOURCES.has(result.source);
+          console.log(`    ★ ${review.showId}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]${isAggSource ? ' → aggregatorStars' : ''}`);
 
           if (!DRY_RUN) {
-            review.data.originalScore = result.originalScore;
+            if (isAggSource) {
+              review.data.aggregatorStars = result.originalScore;
+            } else {
+              review.data.originalScore = result.originalScore;
+            }
             review.data.originalScoreNormalized = result.normalizedScore;
             review.data.originalScoreSource = result.source;
             review.data.scoreExtractedFrom = 'scraped-html';

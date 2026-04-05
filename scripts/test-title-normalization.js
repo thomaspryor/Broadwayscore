@@ -109,6 +109,11 @@ assert(!titlesMatch('Cats', 'Cats and Dogs: A Musical'),
   'Cats does NOT match long unrelated title');
 assert(!titlesMatch('Hamilton', 'Lady Hamilton: A Life'),
   'Hamilton does NOT match Lady Hamilton');
+assert(!titlesMatch('The Boy At The Back Of The Class', 'The Boy'),
+  'Does NOT strip "At The Back Of The Class" (not a venue)');
+// Note: "Sad Gay AIDS Play" vs "Sad Gay AIDS" matches via 70% prefix containment
+// (26/31 = 84%). This is correct — they ARE the same show. cleanSearchTitle is
+// where over-stripping matters (for search queries).
 
 // ============================================================================
 // titlesMatch — other venue/format combos
@@ -151,6 +156,12 @@ assert(cleanSearchTitle('\u201CHello\u201D') === '"Hello"',
   'Normalizes curly quotes');
 assert(cleanSearchTitle('Plain Title') === 'Plain Title',
   'Leaves clean titles unchanged');
+assert(cleanSearchTitle('The Boy At The Back Of The Class') === 'The Boy At The Back Of The Class',
+  'Does NOT strip "At The Back Of The Class"');
+assert(cleanSearchTitle('Andrew Doherty: Sad Gay AIDS Play') === 'Andrew Doherty: Sad Gay AIDS Play',
+  'Does NOT strip bare "Play" at end');
+assert(cleanSearchTitle('Showstopper! The Improvised Musical') === 'Showstopper! The Improvised Musical',
+  'Does NOT strip "Musical" when preceded by non-format word');
 
 // ============================================================================
 // Summary
