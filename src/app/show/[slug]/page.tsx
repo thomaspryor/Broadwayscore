@@ -43,6 +43,7 @@ import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorCl
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
+import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { getComparisonsForShow } from '@/config/comparisons';
 import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
@@ -451,44 +452,18 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               <div className="flex items-center gap-2">
                 <div className="flex-1 min-w-0 overflow-x-auto flex-nowrap scrollbar-hide">
                   <div className="flex gap-2 pb-1">
-                    {sortedTicketLinks.length > 0 && show.status !== 'closed' && sortedTicketLinks.slice(0, show.officialUrl ? 3 : 4).map((link, i) => (
-                      <TicketLink
-                        key={link.platform}
-                        showName={show.title}
-                        showId={show.id}
-                        showSlug={show.slug}
-                        showStatus={show.status}
-                        showCategory={show.category}
-                        showScore={show.criticScore?.score ?? null}
-                        platform={link.platform}
-                        url={link.url}
-                        pageType="show"
-                        linkPosition={i}
-                        totalLinks={Math.min(sortedTicketLinks.length, 4)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
-                      >
-                        <TicketIcon />
-                        {link.platform}{link.priceFrom ? ` from ${isLondonMarket(show.category) ? '£' : '$'}${link.priceFrom}` : ''}
-                      </TicketLink>
-                    ))}
-                    {show.officialUrl && (
-                      <TicketLink
-                        showName={show.title}
-                        showId={show.id}
-                        showSlug={show.slug}
-                        showStatus={show.status}
-                        showCategory={show.category}
-                        showScore={show.criticScore?.score ?? null}
-                        platform="Official Site"
-                        url={show.officialUrl}
-                        pageType="show"
-                        totalLinks={Math.min(sortedTicketLinks.length + 1, 4)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
-                      >
-                        <GlobeIcon />
-                        Official Site
-                      </TicketLink>
-                    )}
+                    <TicketButtonsAB
+                      showName={show.title}
+                      showId={show.id}
+                      showSlug={show.slug}
+                      showStatus={show.status}
+                      showCategory={show.category}
+                      showScore={show.criticScore?.score ?? null}
+                      ticketLinks={sortedTicketLinks}
+                      officialUrl={show.officialUrl}
+                      pageType="show"
+                      buttonClassName="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0"
+                    />
                     {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
                       <a
                         href="#discount-tickets"
@@ -728,47 +703,19 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           {/* Links row: Tickets, Official Site, Trailer, Lottery/Rush + Watchlist */}
           <div className="flex items-center gap-2 mt-4 flex-nowrap">
             <div className="flex flex-wrap gap-2 min-w-0 flex-1">
-              {/* Ticket Links (affiliate platforms first, max 4 total with Official Site) */}
-              {sortedTicketLinks.length > 0 && show.status !== 'closed' && sortedTicketLinks.slice(0, show.officialUrl ? 3 : 4).map((link, i) => (
-                <TicketLink
-                  key={link.platform}
-                  showName={show.title}
-                  showId={show.id}
-                  showSlug={show.slug}
-                  showStatus={show.status}
-                  showCategory={show.category}
-                  showScore={show.criticScore?.score ?? null}
-                  platform={link.platform}
-                  url={link.url}
-                  pageType="show"
-                  linkPosition={i}
-                  totalLinks={Math.min(sortedTicketLinks.length, 4)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
-                >
-                  <TicketIcon />
-                  {link.platform}{link.priceFrom ? ` from ${isLondonMarket(show.category) ? '£' : '$'}${link.priceFrom}` : ''}
-                </TicketLink>
-              ))}
-
-              {/* Official Website (after ticket platforms) */}
-              {show.officialUrl && (
-                <TicketLink
-                  showName={show.title}
-                  showId={show.id}
-                  showSlug={show.slug}
-                  showStatus={show.status}
-                  showCategory={show.category}
-                  showScore={show.criticScore?.score ?? null}
-                  platform="Official Site"
-                  url={show.officialUrl}
-                  pageType="show"
-                  totalLinks={Math.min(sortedTicketLinks.length + 1, 4)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
-                >
-                  <GlobeIcon />
-                  Official Site
-                </TicketLink>
-              )}
+              {/* Ticket Links — A/B tested (which platform gets the filled primary CTA) */}
+              <TicketButtonsAB
+                showName={show.title}
+                showId={show.id}
+                showSlug={show.slug}
+                showStatus={show.status}
+                showCategory={show.category}
+                showScore={show.criticScore?.score ?? null}
+                ticketLinks={sortedTicketLinks}
+                officialUrl={show.officialUrl}
+                pageType="show"
+                buttonClassName="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
+              />
 
               {/* Lottery/Rush — subdued style, not a revenue link */}
               {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (

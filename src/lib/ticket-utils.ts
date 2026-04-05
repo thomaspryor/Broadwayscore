@@ -22,9 +22,17 @@ export interface TicketLinkData {
   isOfficial?: boolean;
 }
 
-/** Sort ticket links by platform priority. Stable sort preserves shows.json order for equal priority. */
-export function sortTicketLinks(links: TicketLinkData[]): TicketLinkData[] {
+/**
+ * Sort ticket links by platform priority. Stable sort preserves shows.json order for equal priority.
+ * @param overrideFirstPlatform — A/B test override: force a specific platform to position 0.
+ *   Only used by TicketButtonsAB on show pages. Other callers omit this param.
+ */
+export function sortTicketLinks(links: TicketLinkData[], overrideFirstPlatform?: string): TicketLinkData[] {
   return [...links].sort((a, b) => {
+    if (overrideFirstPlatform) {
+      if (a.platform === overrideFirstPlatform && b.platform !== overrideFirstPlatform) return -1;
+      if (b.platform === overrideFirstPlatform && a.platform !== overrideFirstPlatform) return 1;
+    }
     return (TICKET_PLATFORM_PRIORITY[a.platform] ?? 99) - (TICKET_PLATFORM_PRIORITY[b.platform] ?? 99);
   });
 }

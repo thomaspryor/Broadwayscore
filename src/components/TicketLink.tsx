@@ -6,7 +6,7 @@ import { track } from '@vercel/analytics';
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
-    posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void; flush?: () => void; get_distinct_id?: () => string };
+    posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void; flush?: () => void; get_distinct_id?: () => string; getFeatureFlag?: (key: string) => string | boolean | undefined };
   }
 }
 
@@ -32,6 +32,8 @@ interface TicketLinkProps {
   pageType: 'show' | 'guide' | 'browse' | 'comparison' | 'showtimes';
   linkPosition?: number;
   totalLinks?: number;
+  /** A/B test variant — tracked in analytics events */
+  abVariant?: string;
   className?: string;
   children: ReactNode;
 }
@@ -40,6 +42,7 @@ export default function TicketLink({
   showName, showId, showSlug, showStatus, showCategory, showScore,
   platform, url, pageType,
   linkPosition = 0, totalLinks = 1,
+  abVariant,
   className, children,
 }: TicketLinkProps) {
   const { url: affiliateUrl, isAffiliate } = useMemo(
@@ -69,6 +72,7 @@ export default function TicketLink({
           show_id: showId, show_name: showName, platform,
           page_type: pageType, is_affiliate: isAffiliate,
           link_position: linkPosition, total_links: totalLinks,
+          ab_variant: abVariant ?? null,
         },
         timestamp: new Date().toISOString(),
       }));
@@ -105,15 +109,24 @@ export default function TicketLink({
     }
   };
 
-  // Active affiliates get a warm accent treatment matching the lottery button's visual weight.
-  // Replaces the default dark bg + gray text with amber bg + bright text.
-  const resolvedClassName = isAffiliate
+  // Primary CTA (position 0, affiliate) gets a filled button — like the iOS app's "Buy Tickets" bar.
+  // Secondary affiliates get a subtle amber accent. Non-affiliates stay gray.
+  const isPrimaryCta = isAffiliate && linkPosition === 0;
+  const resolvedClassName = isPrimaryCta
     ? (className ?? '')
-        .replace(/bg-surface-overlay/g, 'bg-amber-500/15')
-        .replace(/hover:bg-white\/10/g, 'hover:bg-amber-500/25')
-        .replace(/border-white\/10/g, 'border-amber-500/30')
-        .replace(/text-gray-300/g, 'text-amber-300')
-        .replace(/hover:text-white/g, 'hover:text-amber-200')
+        .replace(/bg-surface-overlay/g, 'bg-amber-600')
+        .replace(/hover:bg-white\/10/g, 'hover:bg-amber-500')
+        .replace(/border-white\/10/g, 'border-amber-500')
+        .replace(/text-gray-300/g, 'text-white')
+        .replace(/hover:text-white/g, 'hover:text-white')
+        + ' font-bold shadow-sm shadow-amber-900/30'
+    : isAffiliate
+    ? (className ?? '')
+        .replace(/bg-surface-overlay/g, 'bg-amber-500/10')
+        .replace(/hover:bg-white\/10/g, 'hover:bg-amber-500/20')
+        .replace(/border-white\/10/g, 'border-amber-500/20')
+        .replace(/text-gray-300/g, 'text-amber-400/70')
+        .replace(/hover:text-white/g, 'hover:text-amber-300')
     : className ?? '';
 
   return (
