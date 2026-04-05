@@ -49,7 +49,13 @@
     "operation-mincemeat-west-end-2024/the-express--unknown.json",
     "moulin-rouge-the-musical-west-end-2021/i-paper--fiona-mountford.json",
     "les-miserables-west-end-2021/i-paper--fiona-mountford.json",
-    "les-miserables-west-end-2021/londontheatre1--unknown.json"
+    "les-miserables-west-end-2021/londontheatre1--unknown.json",
+    "hamilton-west-end-2021/bbc-news--unknown.json",
+    "hamilton-west-end-2021/musical-theatre-review--unknown.json",
+    "hamilton-west-end-2021/thestage--holly-omahony.json",
+    "hamilton-west-end-2021/thestage--paul-vale.json",
+    "hamilton-west-end-2021/whatsonstage--rachel-agyekum.json",
+    "mamma-mia-west-end-2021/broadwayworld--unknown.json"
   ],
   "failed": [
     "the-holy-rosenbergs-west-end-2026/theatre-weekly--unknown.json",
@@ -74,7 +80,11 @@
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
     "moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
-    "harry-potter-2021/indiewire--david-ehrlich.json"
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "hamilton-west-end-2021/whatsonstage--sarah-crompton.json",
+    "gypsy-2024/theatrely--zachary-stewart.json",
+    "cult-of-love-2024/nypost--johnny-oleksinski.json",
+    "swept-away-2024/theatrely--david-ng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -118,7 +128,12 @@
       "operation-mincemeat-west-end-2024/the-express--unknown.json",
       "moulin-rouge-the-musical-west-end-2021/i-paper--fiona-mountford.json",
       "les-miserables-west-end-2021/i-paper--fiona-mountford.json",
-      "les-miserables-west-end-2021/londontheatre1--unknown.json"
+      "les-miserables-west-end-2021/londontheatre1--unknown.json",
+      "hamilton-west-end-2021/bbc-news--unknown.json",
+      "hamilton-west-end-2021/musical-theatre-review--unknown.json",
+      "hamilton-west-end-2021/thestage--holly-omahony.json",
+      "hamilton-west-end-2021/thestage--paul-vale.json",
+      "mamma-mia-west-end-2021/broadwayworld--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -137,7 +152,10 @@
       "data/review-texts/back-to-the-future-west-end-2021/whatsonstage--unknown.json",
       "data/review-texts/back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
+      "data/review-texts/hamilton-west-end-2021/whatsonstage--sarah-crompton.json",
+      "data/review-texts/gypsy-2024/theatrely--zachary-stewart.json",
+      "data/review-texts/swept-away-2024/theatrely--david-ng.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -148,11 +166,12 @@
       "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
       "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
-      "oh-mary-west-end-2025/nytimes--unknown.json"
+      "oh-mary-west-end-2025/nytimes--unknown.json",
+      "hamilton-west-end-2021/whatsonstage--rachel-agyekum.json"
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "harry-potter-2021/indiewire--david-ehrlich.json",
+  "lastProcessed": "swept-away-2024/theatrely--david-ng.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -164,6 +183,17 @@
       "t": "2026-04-04T21:15:52.581Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-05T02:12:58.757Z",
+      "event": "bb-session",
+      "session": "aaa90430",
+      "url": "https://nypost.com/2024/12/02/entertainment/cult-of-love-review-lois-smith-shine"
+    },
+    {
+      "t": "2026-04-05T02:12:59.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

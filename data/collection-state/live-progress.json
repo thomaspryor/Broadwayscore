@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-05T02:09:32.667Z",
-  "processed": 50,
-  "failed": 23,
-  "successRate": "68.5%",
+  "updatedAt": "2026-04-05T02:14:52.451Z",
+  "processed": 56,
+  "failed": 27,
+  "successRate": "67.5%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 45,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 9
+    "archiveToday": 12,
+    "archive": 10
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -25,6 +25,17 @@
       "t": "2026-04-04T21:15:52.581Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-05T02:12:58.757Z",
+      "event": "bb-session",
+      "session": "aaa90430",
+      "url": "https://nypost.com/2024/12/02/entertainment/cult-of-love-review-lois-smith-shine"
+    },
+    {
+      "t": "2026-04-05T02:12:59.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
