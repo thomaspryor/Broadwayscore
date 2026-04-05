@@ -21,7 +21,7 @@
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
@@ -33,8 +33,8 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
@@ -72,11 +72,20 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
+      "the-other-place-2026/telegraph--claire-allfree.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
+      "oldUrl": "https://www.telegraph.co.uk/theatre/what-to-see/the-curious-case-of-benjamin-button-review/",
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/"
+    }
+  ]
 }
