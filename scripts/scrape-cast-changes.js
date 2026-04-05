@@ -1310,7 +1310,13 @@ function backupExisting() {
  */
 function validateShowStability(original, updated) {
   const oldIds = new Set(Object.keys(original.shows || {}));
-  const newIds = new Set(Object.keys(updated.shows || {}));
+  // Only count shows with upcoming events as "new" — baseline-only shows
+  // (currentCast set, empty upcoming) are just initialization, not real changes
+  const newIds = new Set(Object.keys(updated.shows || {}).filter(id => {
+    if (oldIds.has(id)) return true; // Existing show — always count
+    const data = updated.shows[id];
+    return data.upcoming && data.upcoming.length > 0; // New show with events
+  }));
 
   const added = [...newIds].filter(id => !oldIds.has(id));
   const removed = [...oldIds].filter(id => !newIds.has(id));
