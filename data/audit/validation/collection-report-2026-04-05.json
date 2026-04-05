@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-04-05T15:43:29.719Z",
+  "runDate": "2026-04-05T15:44:34.071Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 2,
+    "failed": 2,
     "skipped": 0,
     "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
@@ -33,41 +33,50 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "purpose/financialtimes--rhoda-feng.json"
+    "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
+    "the-other-place-2026/telegraph--claire-allfree.json"
   ],
   "failed": [
-    "mack-and-mabel-1974/financialtimes--ian-shuttleworth.json"
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "purpose/financialtimes--rhoda-feng.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
+      "the-other-place-2026/telegraph--claire-allfree.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
+      "oldUrl": "https://www.telegraph.co.uk/theatre/what-to-see/the-curious-case-of-benjamin-button-review/",
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/"
+    }
+  ]
 }
