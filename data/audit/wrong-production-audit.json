@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T18:42:20.480Z",
+  "timestamp": "2026-04-05T19:12:40.962Z",
   "stats": {
-    "totalReviews": 34278,
-    "alreadyFlagged": 13099,
+    "totalReviews": 34284,
+    "alreadyFlagged": 13115,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
-    "tvFilmSignals": 3438,
-    "londonSignals": 1096,
-    "offBroadwaySignals": 979,
+    "tvFilmSignals": 3439,
+    "londonSignals": 1097,
+    "offBroadwaySignals": 980,
     "yearMismatch": 72,
-    "noPublishDate": 5535
+    "noPublishDate": 5541
   },
   "findings": [
     {
@@ -21336,6 +21336,19 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "publishDate": "2025-07-08",
+      "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
       "file": "theater-life--barry-gordin.json",
       "score": 63,
       "publishDate": "2025-07-12T12:50:29",
@@ -41044,6 +41057,20 @@
     },
     {
       "showId": "romeo-juliet-2024",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 80,
+      "publishDate": "October 24, 2024",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-kit-connor-rachel-zegler-shakespeare-jack-antonoff-1236043115/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-juliet-2024",
       "file": "into--christian-lewis.json",
       "score": 86,
       "publishDate": null,
@@ -56182,20 +56209,6 @@
       ]
     },
     {
-      "showId": "the-tempest-globe-west-end-2026",
-      "file": "thestage--sam-marlowe.json",
-      "score": null,
-      "publishDate": "2026-01-29",
-      "url": "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "the-terms-of-my-surrender-2017",
       "file": "broadwaynews--charles-isherwood.json",
       "score": 72,
@@ -63112,6 +63125,20 @@
       ]
     },
     {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 45,
+      "publishDate": "2026-02-26",
+      "url": "https://www.theatrereviews.com/off-broadway-review-antigone-this-play-i-read-in-high-school-at-the-public-theaters-barbaralee-theater-extended-through-saturday-april-4-2026/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
       "showId": "anything-goes-2011",
       "file": "theatre-is-easy--benjamin-coleman.json",
       "score": 81,
@@ -68998,6 +69025,19 @@
       "score": 82,
       "publishDate": "2024-04-22",
       "url": "https://www.chicagotribune.com/2024/04/22/review-the-heart-of-rock-and-roll-on-broadway-is-a-funny-warm-hearted-huey-lewis-jukebox-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "amny--matt-windman.json",
+      "publishDate": "2025-07-13",
+      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
