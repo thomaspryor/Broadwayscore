@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T21:13:25.967Z",
+  "timestamp": "2026-04-05T21:30:06.877Z",
   "stats": {
-    "totalReviews": 34337,
-    "alreadyFlagged": 13126,
+    "totalReviews": 34335,
+    "alreadyFlagged": 13128,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
     "tvFilmSignals": 3441,
-    "londonSignals": 1096,
+    "londonSignals": 1097,
     "offBroadwaySignals": 980,
     "yearMismatch": 72,
-    "noPublishDate": 5575
+    "noPublishDate": 5569
   },
   "findings": [
     {
@@ -71285,6 +71285,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-04-03",
+      "url": "https://www.londonboxoffice.co.uk/news/post/kinky-boots-london-coliseum-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
