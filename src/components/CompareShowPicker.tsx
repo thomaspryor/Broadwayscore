@@ -81,18 +81,17 @@ function ShowInput({
                     }`}>
                       {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
                     </span>
-                    {show.category === 'west-end' && (
-                      <span className="px-1 py-0.5 rounded font-medium bg-purple-500/20 text-purple-400">West End</span>
-                    )}
-                    {show.category === 'off-west-end' && (
-                      <span className="px-1 py-0.5 rounded font-medium bg-purple-500/20 text-purple-400">Off-West End</span>
-                    )}
-                    {show.category === 'off-broadway' && (
-                      <span className="px-1 py-0.5 rounded font-medium bg-indigo-500/20 text-indigo-400">Off-Bway</span>
-                    )}
-                    <span className="truncate text-gray-500">
-                      {[show.venue, year].filter(Boolean).join(' \u00b7 ')}
+                    <span className={`px-1 py-0.5 rounded font-medium ${
+                      show.category === 'west-end' ? 'bg-purple-500/20 text-purple-400' :
+                      show.category === 'off-west-end' ? 'bg-purple-500/20 text-purple-400' :
+                      show.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
+                      'bg-blue-500/20 text-blue-400'
+                    }`}>
+                      {show.category === 'west-end' ? 'West End' :
+                       show.category === 'off-west-end' ? 'Off-West End' :
+                       show.category === 'off-broadway' ? 'Off-Bway' : 'Broadway'}
                     </span>
+                    {year && <span className="text-gray-500">{year}</span>}
                   </div>
                 </div>
               </button>
