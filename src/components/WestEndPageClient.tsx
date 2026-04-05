@@ -16,6 +16,7 @@ export interface WestEndShow {
   venue: string;
   openingDate: string;
   closingDate?: string;
+  previewsStartDate?: string;
   status: string;
   type: string;
   isRevival?: boolean;
@@ -29,6 +30,8 @@ export interface WestEndShow {
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
   category?: string;
+  subtitle?: string;
+  subtitleColor?: string;
 }
 
 interface WestEndPageClientProps {
@@ -50,6 +53,8 @@ const DEFAULT_STATUS: StatusParam = 'now_playing';
 const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
 const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
+
+const shortDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
 
 function weHasEnoughReviews(show: WestEndShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;
@@ -236,7 +241,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
         const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         return diffDays > 0 && diffDays <= 90 && weHasEnoughReviews(show);
       })
-      .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime());
+      .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime())
+      .map(s => ({ ...s, subtitle: `Closes ${shortDate(s.closingDate!)}`, subtitleColor: 'text-amber-400' }));
   }, [shows]);
 
   const bestOffWestEnd = useMemo(() => {
@@ -251,16 +257,21 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
-  const upcomingShows = useMemo(() => {
+  const inPreviewsShows = useMemo(() => {
     return shows
-      .filter(show => show.status === 'upcoming' || show.status === 'previews')
-      .sort((a, b) => {
-        if (!a.openingDate && !b.openingDate) return 0;
-        if (!a.openingDate) return 1;
-        if (!b.openingDate) return -1;
-        return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
-      })
-      .slice(0, 20);
+      .filter(show => show.status === 'previews')
+      .sort((a, b) => new Date(a.openingDate || '2099-01-01').getTime() - new Date(b.openingDate || '2099-01-01').getTime())
+      .map(s => ({ ...s, subtitle: s.openingDate ? `Opens ${shortDate(s.openingDate)}` : undefined, subtitleColor: 'text-gray-400' }));
+  }, [shows]);
+
+  const startingSoonShows = useMemo(() => {
+    return shows
+      .filter(show => show.status === 'upcoming' && (show.previewsStartDate || show.openingDate))
+      .sort((a, b) => new Date(a.previewsStartDate || a.openingDate).getTime() - new Date(b.previewsStartDate || b.openingDate).getTime())
+      .map(s => {
+        const startDate = s.previewsStartDate || s.openingDate;
+        return { ...s, subtitle: startDate ? `Starts ${shortDate(startDate)}` : undefined, subtitleColor: 'text-gray-400' };
+      });
   }, [shows]);
 
   const kidsShows = useMemo(() => {
@@ -574,7 +585,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows }: West
         <FeaturedRow title="Top Plays" shows={topPlays} />
         <FeaturedRow title="Best Off-West End" shows={bestOffWestEnd} />
         <FeaturedRow title="Olivier Award Winning Shows" shows={olivierWinners} />
-        <FeaturedRow title="Upcoming" shows={upcomingShows} />
+        <FeaturedRow title="In Previews" shows={inPreviewsShows} />
+        <FeaturedRow title="Shows Starting Soon" shows={startingSoonShows} />
         <FeaturedRow title="Great for Kids" shows={kidsShows} />
         <FeaturedRow title="Perfect for Date Night" shows={dateNightShows} />
         <FeaturedRow title="Jukebox Musicals" shows={jukeboxMusicals} />

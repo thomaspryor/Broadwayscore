@@ -41,6 +41,7 @@ function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEn
     isOffWestEnd: show.category === 'off-west-end',
     openingDate: show.openingDate,
     closingDate: show.closingDate ?? undefined,
+    previewsStartDate: show.previewsStartDate ?? undefined,
     status: show.status,
     type: show.type,
     isRevival: show.isRevival ?? undefined,
