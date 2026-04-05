@@ -164,7 +164,17 @@
     "the-sound-inside-2019/washpost--peter-marks.json",
     "linda-vista-2019/variety--aramide-tinubu.json",
     "linda-vista-2019/variety--marilyn-stasio.json",
-    "linda-vista-2019/vulture--jesse-green.json"
+    "linda-vista-2019/vulture--jesse-green.json",
+    "linda-vista-2019/usatoday--charles-isherwood.json",
+    "betrayal-2019/usatoday--charles-isherwood.json",
+    "betrayal-2019/washpost--peter-marks.json",
+    "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/guardian--jesse-green.json",
+    "beetlejuice-2019/stageandcinema--juan-a-ramirez.json",
+    "tootsie-2019/washpost--peter-marks.json",
+    "gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
+    "what-the-constitution-means-to-me-2019/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -277,7 +287,14 @@
       "data/review-texts/grand-horizons-2020/washpost--peter-marks.json",
       "data/review-texts/a-soldiers-play-2020/vulture--jesse-green.json",
       "data/review-texts/the-sound-inside-2019/washpost--peter-marks.json",
-      "data/review-texts/linda-vista-2019/vulture--jesse-green.json"
+      "data/review-texts/linda-vista-2019/vulture--jesse-green.json",
+      "data/review-texts/linda-vista-2019/usatoday--charles-isherwood.json",
+      "data/review-texts/betrayal-2019/usatoday--charles-isherwood.json",
+      "data/review-texts/betrayal-2019/washpost--peter-marks.json",
+      "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
+      "data/review-texts/tootsie-2019/washpost--peter-marks.json",
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
+      "data/review-texts/what-the-constitution-means-to-me-2019/vulture--jesse-green.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -293,7 +310,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "linda-vista-2019/vulture--jesse-green.json",
+  "lastProcessed": "what-the-constitution-means-to-me-2019/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -558,6 +575,39 @@
       "t": "2026-04-05T02:58:22.500Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-05T03:01:16.223Z",
+      "event": "bb-session",
+      "session": "d58a983f",
+      "url": "https://www.washingtonpost.com/goingoutguide/theater/betrayal-review-tom-hiddles"
+    },
+    {
+      "t": "2026-04-05T03:01:17.698Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T03:03:55.951Z",
+      "event": "bb-session",
+      "session": "7779b82e",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-tootsie-is-a-c"
+    },
+    {
+      "t": "2026-04-05T03:03:57.080Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T03:04:34.497Z",
+      "event": "bb-session",
+      "session": "d80ed51a",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/gary-a-sequel-to-titu"
+    },
+    {
+      "t": "2026-04-05T03:04:35.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
