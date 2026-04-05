@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T15:23:30.436Z",
+  "timestamp": "2026-04-05T16:05:20.778Z",
   "stats": {
-    "totalReviews": 29519,
-    "alreadyFlagged": 8481,
+    "totalReviews": 29517,
+    "alreadyFlagged": 8474,
     "dateGuardCatches": 13,
     "directorMismatch": 936,
     "tvFilmSignals": 3435,
-    "londonSignals": 1073,
+    "londonSignals": 1076,
     "offBroadwaySignals": 983,
     "yearMismatch": 72,
-    "noPublishDate": 5613
+    "noPublishDate": 5612
   },
   "findings": [
     {
@@ -51812,8 +51812,8 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "whatsonstage--alex-wood.json",
-      "score": 72,
-      "publishDate": "2025-11-12",
+      "score": 77,
+      "publishDate": "2025-11-28",
       "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
       "findings": [
         {
@@ -63295,6 +63295,20 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
+      "file": "guardian--paul-raven.json",
+      "score": 76,
+      "publishDate": "2026-01-23",
+      "url": "https://www.theguardian.com/stage/2021/sep/13/back-to-the-future-the-musical-review-adelphi-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
       "file": "london-box-office--miriam-gibson.json",
       "score": 75,
       "publishDate": "2022-09-12",
@@ -63388,6 +63402,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": null,
+      "publishDate": "2021-09-13",
+      "url": "https://www.whatsonstage.com/news/back-to-the-future-releases-the-day-that-changed-musical-theatre-history-west-end-video_54814/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -65781,6 +65809,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "bbc-news--yasmin-rufo.json",
+      "publishDate": "2026-02-18",
+      "url": "https://www.bbc.com/news/articles/cqxd4r4xzx1o",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
