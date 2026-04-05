@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-04-05T20:44:29.051Z",
+  "runDate": "2026-04-05T21:01:10.170Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 82,
-    "failed": 579,
+    "processed": 75,
+    "failed": 576,
     "skipped": 0,
-    "successRate": "12.4%"
+    "successRate": "11.5%"
   },
   "tierBreakdown": {
-    "playwright": 54,
+    "playwright": 47,
     "amp": 2,
     "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 13
+    "archiveToday": 2,
+    "archive": 12
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 12,
+    "tier1Attempts": 5,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 1,
     "tier2Success": 1,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
     "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 81,
-    "scrapingBeePageCredits": 20,
+    "tier4Success": 0,
+    "totalFailed": 79,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -120,17 +120,10 @@
     "dear-england-new-wimbledon-theatre-west-end-2026/london-theatre--marianka-swain.json",
     "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--ben-dowell.json",
     "dear-england-new-wimbledon-theatre-west-end-2026/whatsonstage--sarah-crompton.json",
-    "the-phantom-of-the-opera-west-end-1986/musical-theatre-review--unknown.json",
-    "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json",
-    "the-minutes-2022/theater-life--david-sheward.json",
-    "beetlejuice-2019/rollingstone--jerry-portwood.json",
-    "the-iceman-cometh-2018/theater-life--david-sheward.json",
-    "brink-off-west-end-2026/guardian--lyn-gardner.json",
-    "cleansed-off-west-end-2026/thestage--natasha-tripney.json",
-    "jeezus-off-west-end-2026/theatre-weekly--greg-stewart.json",
-    "jeezus-off-west-end-2026/thestage--paul-vale.json",
-    "jeezus-off-west-end-2026/whatsonstage--alexander-cohen.json",
-    "kanpur-1857-off-west-end-2026/thestage--fergus-morgan.json",
+    "paddington-the-musical-west-end-2025/independent--unknown.json",
+    "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json",
+    "trainspotting-the-musical-west-end-2026/london-theatre--unknown.json",
+    "trainspotting-the-musical-west-end-2026/whatsonstage--unknown.json",
     "soldiers-of-tomorrow-off-west-end-2026/the-scotsman--joyce-mcmillan.json",
     "soldiers-of-tomorrow-off-west-end-2026/thestage--fergus-morgan.json"
   ],
@@ -633,9 +626,6 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
-    "shadowlands-west-end-2026/broadwayworld--aliya-al-hassan.json",
-    "into-the-woods-west-end-2025/i-paper--unknown.json",
-    "oliver-west-end-2024/broadwayworld--unknown.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
@@ -760,16 +750,9 @@
       "dear-england-new-wimbledon-theatre-west-end-2026/artsdesk--matt-wolf.json",
       "dear-england-new-wimbledon-theatre-west-end-2026/london-theatre--aliya-al-hassan.json",
       "dear-england-new-wimbledon-theatre-west-end-2026/london-theatre--marianka-swain.json",
-      "into-the-woods-west-end-2025/i-paper--unknown.json",
-      "the-phantom-of-the-opera-west-end-1986/musical-theatre-review--unknown.json",
-      "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json",
-      "the-minutes-2022/theater-life--david-sheward.json",
-      "the-iceman-cometh-2018/theater-life--david-sheward.json",
-      "brink-off-west-end-2026/guardian--lyn-gardner.json",
-      "cleansed-off-west-end-2026/thestage--natasha-tripney.json",
-      "jeezus-off-west-end-2026/theatre-weekly--greg-stewart.json",
-      "jeezus-off-west-end-2026/thestage--paul-vale.json",
-      "kanpur-1857-off-west-end-2026/thestage--fergus-morgan.json",
+      "paddington-the-musical-west-end-2025/independent--unknown.json",
+      "trainspotting-the-musical-west-end-2026/london-theatre--unknown.json",
+      "soldiers-of-tomorrow-off-west-end-2026/the-scotsman--joyce-mcmillan.json",
       "soldiers-of-tomorrow-off-west-end-2026/thestage--fergus-morgan.json"
     ],
     "amp": [
@@ -801,13 +784,12 @@
       "heathers-the-musical-off-broadway-2025/nytimes--unknown.json",
       "romeo-juliet-2024/theatrely--juan-a-ramirez.json",
       "dear-england-new-wimbledon-theatre-west-end-2026/times-uk--ben-dowell.json",
-      "jeezus-off-west-end-2026/whatsonstage--alexander-cohen.json"
+      "trainspotting-the-musical-west-end-2026/whatsonstage--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/romeo-and-juliet-west-end-2026/broadwayworld--chloe-rabinowitz.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
-      "data/review-texts/shadowlands-west-end-2026/broadwayworld--aliya-al-hassan.json"
+      "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -821,8 +803,7 @@
       "the-tempest-globe-west-end-2026/whatsonstage--sarah-crompton.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/i-paper--unknown.json",
       "dear-england-new-wimbledon-theatre-west-end-2026/whatsonstage--sarah-crompton.json",
-      "beetlejuice-2019/rollingstone--jerry-portwood.json",
-      "soldiers-of-tomorrow-off-west-end-2026/the-scotsman--joyce-mcmillan.json"
+      "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json"
     ]
   },
   "failuresByOutlet": {},
