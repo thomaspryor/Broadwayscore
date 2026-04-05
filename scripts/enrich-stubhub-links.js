@@ -42,8 +42,13 @@ function normalizeTitle(title) {
  * Search for a show's StubHub performer page via SERP.
  * Only accepts /performer/ URLs (persistent) — rejects /event/ URLs (date-specific, expire).
  */
-async function discoverStubhubUrl(showTitle) {
-  const query = `site:stubhub.com "${showTitle}" broadway tickets`;
+async function discoverStubhubUrl(showTitle, market = 'broadway') {
+  const marketTerm = market === 'broadway' ? 'broadway' : 'london';
+  const cleanTitle = showTitle
+    .replace(/\s*\([^)]{5,}\)\s*$/, '')   // strip parenthetical venue
+    .replace(/\s*[-–—]\s*(?:Globe|Donmar|Almeida)$/i, '') // strip venue suffix
+    .replace(/['']/g, "'");
+  const query = `site:stubhub.com "${cleanTitle}" ${marketTerm} tickets`;
   const results = await serpQuery(query);
 
   if (!results || results.length === 0) {
@@ -81,10 +86,16 @@ async function discoverStubhubUrl(showTitle) {
       if (matchCount < Math.ceil(showWords.length * 0.5)) continue;
     }
 
-    // Also check URL slug contains show name words
-    const urlSlug = url.toLowerCase();
-    const slugMatchCount = showWords.filter(w => urlSlug.includes(w)).length;
+    // Check the show-name portion of the URL slug (before /performer/ and /city/)
+    const slugPart = url.toLowerCase().split('/performer/')[0].split('/').pop() || '';
+    const slugMatchCount = showWords.filter(w => slugPart.includes(w)).length;
     if (showWords.length > 0 && slugMatchCount < Math.ceil(showWords.length * 0.4)) continue;
+
+    // For London shows, prefer /london-city/ URLs; reject obviously wrong cities
+    if (marketTerm === 'london') {
+      const urlLower = url.toLowerCase();
+      if (urlLower.includes('-city/') && !urlLower.includes('london-city/')) continue;
+    }
 
     return url.replace(/^http:/, 'https:');
   }
@@ -117,7 +128,7 @@ async function main() {
     // Open/preview Broadway shows without StubHub link
     candidates = shows.filter(s =>
       (s.status === 'open' || s.status === 'previews') &&
-      (s.category || 'broadway') === 'broadway' &&
+      ['broadway', 'west-end', 'off-west-end', undefined].includes(s.category || undefined) &&
       !(s.ticketLinks || []).some(l => l.platform === 'StubHub')
     );
   }
@@ -134,7 +145,8 @@ async function main() {
   for (const show of candidates) {
     console.log(`${show.id}: "${show.title}"`);
 
-    const url = await discoverStubhubUrl(show.title);
+    const market = (show.category === 'west-end' || show.category === 'off-west-end') ? 'london' : 'broadway';
+    const url = await discoverStubhubUrl(show.title, market);
 
     if (url) {
       console.log(`  Found: ${url}`);
