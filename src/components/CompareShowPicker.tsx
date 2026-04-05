@@ -1,17 +1,25 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import type Fuse from 'fuse.js';
+import { useShowSearch } from '@/hooks/useShowSearch';
 
-interface Show {
+interface SearchShow {
+  id: string;
   title: string;
   slug: string;
   status: string;
+  venue?: string;
+  od?: string;
   images?: { thumbnail?: string };
   category?: string;
   year?: string;
 }
+
+const SEARCH_KEYS = [
+  { name: 'title', weight: 0.8 },
+  { name: 'venue', weight: 0.2 },
+];
 
 function ShowInput({
   label,
@@ -27,8 +35,8 @@ function ShowInput({
   id: string;
   value: string;
   onChange: (q: string) => void;
-  onSelect: (show: Show) => void;
-  results: Show[];
+  onSelect: (show: SearchShow) => void;
+  results: SearchShow[];
   showResults: boolean;
   onFocus: () => void;
 }) {
@@ -46,35 +54,50 @@ function ShowInput({
         autoComplete="off"
       />
       {showResults && results.length > 0 && (
-        <div className="absolute z-50 top-full mt-1 w-full bg-surface-raised border border-white/10 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-          {results.map(show => (
-            <button
-              key={show.slug}
-              type="button"
-              onMouseDown={e => e.preventDefault()}
-              onClick={() => onSelect(show)}
-              className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors flex items-center gap-2"
-            >
-              {show.images?.thumbnail && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={show.images.thumbnail} alt="" className="w-8 h-8 rounded object-cover flex-shrink-0" />
-              )}
-              <div className="min-w-0">
-                <div className="text-sm text-white truncate">
-                  {show.title}
-                  {show.year && <span className="text-gray-500 ml-1">({show.year})</span>}
-                </div>
-                <div className="text-[11px] text-gray-500 capitalize">
-                  {show.status}
-                  {show.category && show.category !== 'broadway' && (
-                    <span className="ml-1.5 text-gray-400">
-                      · {show.category === 'west-end' ? 'West End' : show.category === 'off-broadway' ? 'Off-Broadway' : show.category === 'off-west-end' ? 'Off-West End' : show.category}
+        <div className="absolute z-[80] top-full mt-1 w-full sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl max-h-72 overflow-y-auto">
+          {results.map(show => {
+            const year = show.year || show.od?.slice(0, 4);
+            return (
+              <button
+                key={show.id}
+                type="button"
+                onMouseDown={e => e.preventDefault()}
+                onClick={() => onSelect(show)}
+                className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors flex items-center gap-2.5"
+              >
+                {show.images?.thumbnail ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={show.images.thumbnail} alt="" className="w-9 h-9 rounded object-cover flex-shrink-0" />
+                ) : (
+                  <div className="w-9 h-9 rounded bg-white/10 flex-shrink-0" />
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-white truncate">{show.title}</div>
+                  <div className="text-[10px] text-gray-500 flex items-center gap-1.5">
+                    <span className={`px-1 py-0.5 rounded font-medium ${
+                      show.status === 'open' ? 'bg-green-500/20 text-green-400' :
+                      show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
+                      'bg-gray-500/20 text-gray-400'
+                    }`}>
+                      {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
                     </span>
-                  )}
+                    {show.category === 'west-end' && (
+                      <span className="px-1 py-0.5 rounded font-medium bg-purple-500/20 text-purple-400">West End</span>
+                    )}
+                    {show.category === 'off-west-end' && (
+                      <span className="px-1 py-0.5 rounded font-medium bg-purple-500/20 text-purple-400">Off-West End</span>
+                    )}
+                    {show.category === 'off-broadway' && (
+                      <span className="px-1 py-0.5 rounded font-medium bg-indigo-500/20 text-indigo-400">Off-Bway</span>
+                    )}
+                    <span className="truncate text-gray-500">
+                      {[show.venue, year].filter(Boolean).join(' \u00b7 ')}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
@@ -83,34 +106,14 @@ function ShowInput({
 
 export default function CompareShowPicker() {
   const router = useRouter();
-  const fuseRef = useRef<Fuse<Show> | null>(null);
-  const fetchedRef = useRef(false);
-  const [dataReady, setDataReady] = useState(false);
+  const searchA = useShowSearch<SearchShow>({ keys: SEARCH_KEYS, limit: 12 });
+  const searchB = useShowSearch<SearchShow>({ keys: SEARCH_KEYS, limit: 12 });
 
   const [queryA, setQueryA] = useState('');
   const [queryB, setQueryB] = useState('');
-  const [selectedA, setSelectedA] = useState<Show | null>(null);
-  const [selectedB, setSelectedB] = useState<Show | null>(null);
+  const [selectedA, setSelectedA] = useState<SearchShow | null>(null);
+  const [selectedB, setSelectedB] = useState<SearchShow | null>(null);
   const [focusedField, setFocusedField] = useState<'a' | 'b' | null>(null);
-
-  const ensureData = useCallback(async () => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
-    try {
-      const [res, { default: FuseClass }] = await Promise.all([
-        fetch('/data/search-shows.json'),
-        import('fuse.js/basic') as Promise<{ default: typeof Fuse }>,
-      ]);
-      if (!res.ok) return;
-      const data: Show[] = await res.json();
-      fuseRef.current = new FuseClass(data, {
-        keys: [{ name: 'title', weight: 1.0 }],
-        threshold: 0.35,
-        ignoreLocation: true,
-      });
-      setDataReady(true);
-    } catch { /* silent */ }
-  }, []);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -124,12 +127,10 @@ export default function CompareShowPicker() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const search = (q: string, exclude?: string): Show[] => {
-    if (!fuseRef.current || q.length < 2) return [];
-    return fuseRef.current.search(q, { limit: 16 })
-      .map(r => r.item)
+  // Broadway-first sorting + exclude other selection
+  const sortAndFilter = (results: SearchShow[], exclude?: string): SearchShow[] => {
+    return results
       .filter(s => s.slug !== exclude)
-      // Broadway first, then others — most users are comparing Broadway shows
       .sort((a, b) => {
         const aIsBway = !a.category || a.category === 'broadway' ? 0 : 1;
         const bIsBway = !b.category || b.category === 'broadway' ? 0 : 1;
@@ -138,17 +139,20 @@ export default function CompareShowPicker() {
       .slice(0, 8);
   };
 
-  // Re-compute when dataReady changes (forces re-render after Fuse loads)
-  const resultsA = dataReady ? search(queryA, selectedB?.slug) : [];
-  const resultsB = dataReady ? search(queryB, selectedA?.slug) : [];
+  // Sync queries into the shared hooks
+  useEffect(() => { searchA.setQuery(queryA); }, [queryA]);
+  useEffect(() => { searchB.setQuery(queryB); }, [queryB]);
 
-  const handleSelectA = (show: Show) => {
+  const resultsA = sortAndFilter(searchA.results, selectedB?.slug);
+  const resultsB = sortAndFilter(searchB.results, selectedA?.slug);
+
+  const handleSelectA = (show: SearchShow) => {
     setSelectedA(show);
     setQueryA(show.title);
     setFocusedField(null);
   };
 
-  const handleSelectB = (show: Show) => {
+  const handleSelectB = (show: SearchShow) => {
     setSelectedB(show);
     setQueryB(show.title);
     setFocusedField(null);
@@ -166,7 +170,7 @@ export default function CompareShowPicker() {
       <h2 className="font-bold text-white text-lg mb-1">Compare Any Two Shows</h2>
       <p className="text-gray-400 text-sm mb-4">Pick two shows to see a detailed side-by-side comparison.</p>
 
-      <div className="flex flex-col sm:flex-row gap-3 items-end" onFocus={ensureData}>
+      <div className="flex flex-col sm:flex-row gap-3 items-end" onFocus={() => { searchA.ensureData(); searchB.ensureData(); }}>
         <ShowInput
           label="Show 1"
           id="compare-show-a"
