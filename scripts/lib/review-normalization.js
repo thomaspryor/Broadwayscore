@@ -239,6 +239,7 @@ const CRITIC_ALIASES = {
   'courtney-castellino': ['courtney castellino', 'courtney castelino'],
   'kerensa-cadenas': ['kerensa cadenas', 'kerensa cardenas'],
   'steven-babyak': ['steven babyak', 'steve babyak'],
+  'nilgun-yusuf': ['nilgun yusuf', 'nilg n yusuf', 'nilgün yusuf'],
 };
 
 // Merge auto-discovered aliases from weekly integrity workflow
