@@ -22,7 +22,7 @@ import {
   toAbsoluteUrl,
 } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getMarketLabel } from '@/lib/venue-classification';
+import { getMarketLabel, isLondonMarket } from '@/lib/venue-classification';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { ScoreBadge, StatusBadge, FormatPill, AudienceChip } from '@/components/show-cards';
@@ -395,7 +395,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                         </svg>
-                        Get Tickets{ticketLinks[0].priceFrom ? ` from $${ticketLinks[0].priceFrom}` : ''}
+                        Get Tickets{ticketLinks[0].priceFrom ? ` from ${isLondonMarket(show.category) ? '£' : '$'}${ticketLinks[0].priceFrom}` : ''}
                       </TicketLink>
                       {/* Other platforms — desktop only */}
                       {ticketLinks.slice(1, 4).map((link, i) => (
