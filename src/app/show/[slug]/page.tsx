@@ -872,7 +872,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
             <a href="#box-office" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Box Office</a>
           )}
-          {featureFlags.discountTickets && !isWestEnd && !isOffBroadway && lotteryRush && (
+          {featureFlags.discountTickets && lotteryRush && (
             <a href="#discount-tickets" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Tickets</a>
           )}
           {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (
@@ -1048,16 +1048,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           />
         )}
 
-        {/* Lottery/Rush Tickets — Broadway only */}
+        {/* Lottery/Rush Tickets */}
         <div id="discount-tickets" className="scroll-mt-20" />
-        {featureFlags.discountTickets && !isWestEnd && !isOffBroadway && lotteryRush && (() => {
+        {featureFlags.discountTickets && lotteryRush && (() => {
           // Don't show until previews have started
           if (show.previewsStartDate) {
             const previewsStart = new Date(show.previewsStartDate);
             const today = new Date();
             if (today < previewsStart) return null;
           }
-          return <LotteryRushCard data={lotteryRush} showStatus={show.status} />;
+          return <LotteryRushCard data={lotteryRush} showStatus={show.status} showCategory={show.category} />;
         })()}
 
         {/* Cast Updates - below Lottery/Rush */}

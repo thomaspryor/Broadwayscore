@@ -31,6 +31,11 @@ export function getMarketCurrency(category?: string): 'USD' | 'GBP' {
   return isLondonMarket(category) ? 'GBP' : 'USD';
 }
 
+/** Currency symbol for a market category. */
+export function getCurrencySymbol(category?: string): string {
+  return isLondonMarket(category) ? '£' : '$';
+}
+
 /** Human-readable market label for a category. */
 export function getMarketLabel(category?: string): string {
   switch (category) {

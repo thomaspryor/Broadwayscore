@@ -2,10 +2,13 @@
 
 import type { ShowLotteryRush } from '@/lib/data-types';
 import { ensureHttps } from '@/lib/url-utils';
+import { buildAffiliateUrl } from '@/lib/affiliate-utils';
+import { getCurrencySymbol } from '@/lib/market-utils';
 
 interface LotteryRushCardProps {
   data: ShowLotteryRush;
   showStatus: string;
+  showCategory?: string;
 }
 
 function TicketIcon() {
@@ -51,7 +54,8 @@ function ExternalLinkIcon() {
 
 
 
-export default function LotteryRushCard({ data, showStatus }: LotteryRushCardProps) {
+export default function LotteryRushCard({ data, showStatus, showCategory }: LotteryRushCardProps) {
+  const currency = getCurrencySymbol(showCategory);
   // Don't show for closed shows
   if (showStatus === 'closed') return null;
 
@@ -78,7 +82,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
                 <DiceIcon />
                 <h3 className="font-semibold text-purple-300">Digital Lottery</h3>
               </div>
-              <span className="text-xl font-bold text-white">${data.lottery.price}</span>
+              <span className="text-xl font-bold text-white">{currency}{data.lottery.price}</span>
             </div>
             <div className="space-y-2 text-sm">
               {data.lottery.time && (
@@ -90,7 +94,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               {data.lottery.instructions && <p className="text-gray-400">{data.lottery.instructions}</p>}
               {data.lottery.url && (
                 <a
-                  href={ensureHttps(data.lottery.url)}
+                  href={buildAffiliateUrl(ensureHttps(data.lottery.url)!, data.lottery.platform || '', 'lottery').url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium transition-colors mt-1"
@@ -111,13 +115,13 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
                 <DiceIcon />
                 <h3 className="font-semibold text-amber-300">{data.specialLottery.name}</h3>
               </div>
-              <span className="text-xl font-bold text-white">${data.specialLottery.price}</span>
+              <span className="text-xl font-bold text-white">{currency}{data.specialLottery.price}</span>
             </div>
             <div className="space-y-2 text-sm">
               {data.specialLottery.instructions && <p className="text-gray-400">{data.specialLottery.instructions}</p>}
               {data.specialLottery.url && (
                 <a
-                  href={ensureHttps(data.specialLottery.url)}
+                  href={buildAffiliateUrl(ensureHttps(data.specialLottery.url)!, data.specialLottery.platform || '', 'lottery').url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition-colors mt-1"
@@ -140,7 +144,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
                   {data.rush.type === 'general' ? 'Box Office Rush' : 'Rush Tickets'}
                 </h3>
               </div>
-              <span className="text-xl font-bold text-white">${data.rush.price}</span>
+              <span className="text-xl font-bold text-white">{currency}{data.rush.price}</span>
             </div>
             <div className="space-y-2 text-sm">
               {data.rush.time && (
@@ -158,7 +162,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               {data.rush.instructions && <p className="text-gray-400">{data.rush.instructions}</p>}
               {data.rush.url && (
                 <a
-                  href={ensureHttps(data.rush.url)}
+                  href={buildAffiliateUrl(ensureHttps(data.rush.url)!, data.rush.platform || '', 'rush').url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium transition-colors mt-1"
@@ -179,7 +183,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
                 <TicketIcon />
                 <h3 className="font-semibold text-blue-300">Digital Rush</h3>
               </div>
-              <span className="text-xl font-bold text-white">${data.digitalRush.price}</span>
+              <span className="text-xl font-bold text-white">{currency}{data.digitalRush.price}</span>
             </div>
             <div className="space-y-2 text-sm">
               {data.digitalRush.time && (
@@ -191,7 +195,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
               {data.digitalRush.instructions && <p className="text-gray-400">{data.digitalRush.instructions}</p>}
               {data.digitalRush.url && (
                 <a
-                  href={ensureHttps(data.digitalRush.url)}
+                  href={buildAffiliateUrl(ensureHttps(data.digitalRush.url)!, data.digitalRush.platform || '', 'rush').url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium transition-colors mt-1"
@@ -212,7 +216,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
                 <TicketIcon />
                 <h3 className="font-semibold text-pink-300">Student Rush</h3>
               </div>
-              <span className="text-xl font-bold text-white">${data.studentRush.price}</span>
+              <span className="text-xl font-bold text-white">{currency}{data.studentRush.price}</span>
             </div>
             <div className="space-y-2 text-sm">
               {data.studentRush.time && (
@@ -240,7 +244,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
                 <TicketIcon />
                 <h3 className="font-semibold text-gray-300">Standing Room</h3>
               </div>
-              <span className="text-xl font-bold text-white">${data.standingRoom.price}</span>
+              <span className="text-xl font-bold text-white">{currency}{data.standingRoom.price}</span>
             </div>
             <div className="space-y-2 text-sm">
               {data.standingRoom.time && (
