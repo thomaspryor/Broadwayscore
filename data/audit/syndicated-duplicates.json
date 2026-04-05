@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-05T07:17:35.005Z",
+  "generatedAt": "2026-04-05T08:16:20.570Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 100,
+    "avgScoreDiff": 3
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Charles Isherwood",
+      "showId": "a-little-night-music-2009",
+      "primaryOutlet": "nytimes",
+      "secondaryOutlet": "vulture",
+      "primaryFile": "nytimes--charles-isherwood.json",
+      "secondaryFile": "vulture--charles-isherwood.json",
+      "similarity": 100,
+      "primaryScore": 67,
+      "secondaryScore": 70,
+      "scoreDiff": 3
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "frozen-2018",

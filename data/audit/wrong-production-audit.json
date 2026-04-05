@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T07:19:01.829Z",
+  "timestamp": "2026-04-05T08:17:46.317Z",
   "stats": {
     "totalReviews": 29456,
     "alreadyFlagged": 8396,
     "dateGuardCatches": 13,
     "directorMismatch": 934,
     "tvFilmSignals": 3432,
-    "londonSignals": 1066,
+    "londonSignals": 1068,
     "offBroadwaySignals": 986,
     "yearMismatch": 72,
-    "noPublishDate": 5622
+    "noPublishDate": 5620
   },
   "findings": [
     {
@@ -78395,6 +78395,20 @@
     },
     {
       "showId": "the-authenticator-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/apr/03/the-authenticator-review-dorfman-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 63,
       "publishDate": "2026-04-02",
@@ -78404,6 +78418,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "south-london--michael-holland.json",
+      "publishDate": "2026-04-04",
+      "url": "https://southlondon.co.uk/area/southwark/review-the-authenticator-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
