@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-05T14:31:35.228Z",
+  "timestamp": "2026-04-05T14:40:02.125Z",
   "stats": {
     "totalReviews": 29519,
-    "alreadyFlagged": 8487,
+    "alreadyFlagged": 8481,
     "dateGuardCatches": 13,
     "directorMismatch": 936,
-    "tvFilmSignals": 3434,
+    "tvFilmSignals": 3435,
     "londonSignals": 1073,
     "offBroadwaySignals": 983,
     "yearMismatch": 72,
@@ -60914,6 +60914,20 @@
       "score": 81,
       "publishDate": "2012-03-13T16:11:00",
       "url": "https://theaterlife.com/wit/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "file": "london-box-office--stuart-king.json",
+      "score": 61,
+      "publishDate": "2019-05-16",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-agatha-christies-witness-for-the-prosecution",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
