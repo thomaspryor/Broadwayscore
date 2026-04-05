@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway show metadata - source of truth for all shows",
-    "lastUpdated": "2026-04-04T08:29:41.470Z",
+    "lastUpdated": "2026-04-05T08:32:11.978Z",
     "source": "Manual + Playbill/IBDB cross-reference",
     "totalShows": 2412
   },
@@ -214235,8 +214235,7 @@
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
       "isRevival": false,
-      "openingDateSource": "ibdb",
-      "_staleMissingSince": "2026-04-04"
+      "openingDateSource": "ibdb"
     },
     {
       "id": "the-monsters-off-broadway-2026",
@@ -220755,7 +220754,7 @@
       "venue": "Wyndham's Theatre",
       "openingDate": "2025-11-14",
       "closingDate": null,
-      "status": "open",
+      "status": "closed",
       "type": "play",
       "category": "west-end",
       "tags": [
@@ -220847,8 +220846,7 @@
       "ibdbRevivalChecked": true,
       "isRevival": true,
       "previewsStartDate": "2025-11-14",
-      "openingDateSource": "todaytix",
-      "_staleMissingSince": "2026-04-02"
+      "openingDateSource": "todaytix"
     },
     {
       "id": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -223481,8 +223479,7 @@
       "isRevival": true,
       "todaytixId": 45812,
       "todaytixUrl": "https://www.todaytix.com/london/shows/45812-one-flew-over-the-cuckoos-nest",
-      "openingDateSource": "theatremonkey",
-      "_staleMissingSince": "2026-04-04"
+      "openingDateSource": "theatremonkey"
     },
     {
       "id": "deep-azure-globe-west-end-2026",
@@ -229416,7 +229413,8 @@
       "isRevival": false,
       "todaytixId": 46352,
       "todaytixUrl": "https://www.todaytix.com/london/shows/46352-i-was-a-teenage-she-devil",
-      "openingDateSource": "todaytix"
+      "openingDateSource": "todaytix",
+      "_staleMissingSince": "2026-04-05"
     },
     {
       "id": "dear-england-new-wimbledon-theatre-west-end-2026",
@@ -229661,7 +229659,8 @@
       "ibdbRevivalChecked": true,
       "todaytixId": 46313,
       "todaytixUrl": "https://www.todaytix.com/london/shows/46313-alice-in-wonderland",
-      "openingDateSource": "todaytix"
+      "openingDateSource": "todaytix",
+      "_staleMissingSince": "2026-04-05"
     },
     {
       "id": "a-life-in-four-seasons-west-end-2026",
@@ -230115,8 +230114,7 @@
       "todaytixUrl": "https://www.todaytix.com/nyc/shows/44026-sexual-misconduct-of-the-middle-classes",
       "todayTixCategory": "Plays",
       "ibdbRevivalChecked": true,
-      "openingDateSource": "ibdb",
-      "_staleMissingSince": "2026-04-04"
+      "openingDateSource": "ibdb"
     },
     {
       "id": "happy-ending-west-end-2026",
@@ -230580,7 +230578,7 @@
         "thumbnail": "/images/shows/the-maids-off-broadway-2026/thumbnail.webp",
         "poster": "/images/shows/the-maids-off-broadway-2026/poster.webp"
       },
-      "synopsis": "",
+      "synopsis": "*The Maids* is a riveting drama about two maids who plan the murder of their master.",
       "ageRecommendation": null,
       "previewsStartDate": "2026-05-17",
       "tags": [
@@ -232827,7 +232825,8 @@
       "ibdbRevivalChecked": true,
       "category": "off-west-end",
       "todaytixId": 25118,
-      "todaytixUrl": "https://www.todaytix.com/london/shows/25118-abba-voyage"
+      "todaytixUrl": "https://www.todaytix.com/london/shows/25118-abba-voyage",
+      "_staleMissingSince": "2026-04-05"
     },
     {
       "id": "tango-after-dark-west-end-2026",
@@ -235795,6 +235794,105 @@
       ],
       "ibdbRevivalChecked": true,
       "category": "off-broadway"
+    },
+    {
+      "id": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "slug": "the-cherry-orchard-west-end",
+      "venue": "TBA",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": true,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "The play opens on a May day in the nursery of Lyubov Andreyevna Ranevskaya's home in the provinces of Russia, at the start of the 20th century. Ranevskaya has been living in France since her young son drowned. After she tried to kill herself, Ranevskaya's 17-year-old daughter Anya and Anya's governess Charlotta Ivanovna have brought her home, accompanied by Yasha, Ranevskaya's valet.",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": null,
+      "tags": [
+        "upcoming",
+        "revival"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [],
+      "cast": [],
+      "creativeTeam": [],
+      "category": "west-end"
+    },
+    {
+      "id": "the-oresteia-west-end-2026",
+      "title": "The Oresteia",
+      "slug": "the-oresteia-west-end",
+      "venue": "TBA",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "announced",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "A contemporary family wakes up in a Greek myth and can’t seem to find a way out of their hellish destiny.",
+      "ageRecommendation": null,
+      "previewsStartDate": null,
+      "openingDateSource": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/london/shows/46613-the-oresteia",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "west-end",
+      "todaytixId": 46613,
+      "todaytixUrl": "https://www.todaytix.com/london/shows/46613-the-oresteia"
+    },
+    {
+      "id": "lander-23-off-west-end-2026",
+      "title": "Lander 23",
+      "slug": "lander-23-off-west-end",
+      "venue": "One Cartridge Place",
+      "openingDate": null,
+      "closingDate": null,
+      "status": "previews",
+      "type": "play",
+      "isRevival": false,
+      "runtime": null,
+      "intermissions": null,
+      "images": {},
+      "synopsis": "Punchdrunk presents Lander 23 - a live action video game.",
+      "ageRecommendation": null,
+      "previewsStartDate": "2025-11-05",
+      "openingDateSource": null,
+      "tags": [
+        "upcoming",
+        "new"
+      ],
+      "theaterAddress": null,
+      "ticketLinks": [
+        {
+          "platform": "TodayTix",
+          "url": "https://www.todaytix.com/london/shows/44984-lander-23",
+          "priceFrom": null
+        }
+      ],
+      "cast": [],
+      "creativeTeam": [],
+      "ibdbRevivalChecked": true,
+      "category": "off-west-end",
+      "todaytixId": 44984,
+      "todaytixUrl": "https://www.todaytix.com/london/shows/44984-lander-23"
     }
   ]
 }
