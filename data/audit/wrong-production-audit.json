@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-05T17:18:27.730Z",
+  "timestamp": "2026-04-05T17:38:01.594Z",
   "stats": {
-    "totalReviews": 33654,
-    "alreadyFlagged": 12675,
+    "totalReviews": 34102,
+    "alreadyFlagged": 13068,
     "dateGuardCatches": 13,
     "directorMismatch": 931,
-    "tvFilmSignals": 3430,
-    "londonSignals": 1075,
+    "tvFilmSignals": 3433,
+    "londonSignals": 1081,
     "offBroadwaySignals": 979,
     "yearMismatch": 73,
     "noPublishDate": 5535
@@ -54963,6 +54963,19 @@
     },
     {
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2020-12-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
       "file": "nytg--stanford-friedman.json",
       "score": 84,
       "publishDate": null,
@@ -54986,6 +54999,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2020-12-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -57306,6 +57332,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-off-broadway-2022",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2025-01-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -62636,6 +62675,19 @@
     },
     {
       "showId": "an-enemy-of-the-people-2024",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2024-02-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 74,
       "publishDate": "2024-03-18",
@@ -62645,6 +62697,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2024-02-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2024-02-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -67656,6 +67734,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-02-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -73082,6 +73173,19 @@
       "score": 72,
       "publishDate": null,
       "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-Motown-BerryGordy-2016-387676831.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2022-01-21",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -83007,6 +83111,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "trouble-in-mind-2021",
+      "file": "daily-mail--georgina-brown.json",
+      "publishDate": "2021-12-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
