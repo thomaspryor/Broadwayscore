@@ -1,48 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-05T19:33:42.675Z",
+    "generatedAt": "2026-04-05T19:44:52.832Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 34615,
       "inReviewsJson": 15963,
       "skippedExcluded": 5,
-      "withFullText": 101,
-      "excerptOnly": 1595,
+      "withFullText": 66,
+      "excerptOnly": 1597,
       "llmClassified": 49,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 2,
-      "uncertainCases": 14,
+      "nonReviewsFound": 0,
+      "uncertainCases": 15,
       "budgetUsed": 0.005,
       "llmCalls": 50,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14262
+      "skippedAlreadyClassified": 14295
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
-      "showId": "heathers-the-musical-off-broadway-2025",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "preview",
-      "confidence": "high",
-      "reasoning": "This article is a preview of the upcoming production of \"Heathers: The Musical\" at New World Stages. It discusses the history of the show and the creative team's approach, but does not offer an evaluation or opinion on the current production.",
-      "currentScore": 76
-    },
-    {
-      "file": "soldiers-of-tomorrow-off-west-end-2026/british-theatre--keith-mckenna.json",
-      "showId": "soldiers-of-tomorrow-off-west-end-2026",
-      "outlet": "British Theatre Guide",
-      "outletId": "british-theatre",
-      "contentType": "feature",
-      "confidence": "high",
-      "reasoning": "This article describes the background and themes of the show, focusing on the writer's experiences and motivations, rather than evaluating the production's quality. While it mentions some stage elements, it lacks a critical assessment.",
-      "currentScore": 75
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -51,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer an evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -61,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, but it does not contain any evaluative content about a specific production of \"Fences\" or any other show. It seems to be a list of search terms or categories.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -71,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" which suggests a news or directory type of content.",
       "currentScore": 62
     },
     {
@@ -81,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -91,7 +70,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article offering advice or commentary.",
       "currentScore": 60
     },
     {
@@ -101,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -111,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater and music, rather than a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -121,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -131,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news item or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -141,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on its quality.",
       "currentScore": 80
     },
     {
@@ -171,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms, not an article. There is no evaluative content about 'The Assembled Parties'.",
+      "reasoning": "The text appears to be a collection of search terms or categories related to theater, rather than a review of a specific show. It lacks any evaluative content.",
       "currentScore": 42
     },
     {
@@ -181,56 +160,56 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or show listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
-    "proof-2000/financialtimes--alastair-macaulay.json",
-    "proof-2000/sarasota-herald-tribune--sheridan-morley.json",
-    "proof-2000/times-uk--benedict-nightingale.json",
-    "proof-2000/whatsonstage--oliver-jones.json",
-    "romeo-juliet-2024/hollywood-reporter--david-rooney.json",
-    "six-2021/daily-mail--patrick-marmion.json",
-    "soldiers-of-tomorrow-off-west-end-2026/artsdesk--david-kettle.json",
-    "soldiers-of-tomorrow-off-west-end-2026/everything-theatre--marianna-meloni.json",
-    "soldiers-of-tomorrow-off-west-end-2026/the-scotsman--joyce-mcmillan.json",
-    "soldiers-of-tomorrow-off-west-end-2026/thestage--fergus-morgan.json",
-    "summerfolk-west-end-2026/times-uk--dominic-maxwell.json",
-    "the-drowsy-chaperone-2006/independent--paul-taylor.json",
-    "the-great-gatsby-2024/broadwayworld--aliya-al-hassan.json",
-    "the-great-gatsby-2024/daily-mail--mark-cook.json",
-    "the-great-gatsby-2024/guardian--arifa-akbar.json",
-    "the-great-gatsby-2024/telegraph--claire-allfree.json",
-    "the-great-gatsby-2024/thestage--laurie-yule.json",
-    "the-great-gatsby-2024/times-uk--dominic-maxwell.json",
-    "the-great-gatsby-2024/whatsonstage--alun-hood.json",
-    "the-harder-they-come-off-west-end-2026/artsdesk--gary-naylor.json",
-    "the-harder-they-come-off-west-end-2026/broadwayworld--franco-milazzo.json",
-    "the-harder-they-come-off-west-end-2026/daily-mail--patrick-marmion.json",
-    "the-harder-they-come-off-west-end-2026/guardian--chris-wiegand.json",
-    "the-harder-they-come-off-west-end-2026/thereviewshub--richard-maguire.json",
-    "the-harder-they-come-off-west-end-2026/thestage--paul-vale.json",
-    "the-harder-they-come-off-west-end-2026/timeout-london--anya-ryan.json",
-    "the-harder-they-come-off-west-end-2026/times-uk--clive-davis.json",
-    "the-harder-they-come-off-west-end-2026/whatsonstage--sonny-waheed.json",
-    "the-mousetrap-west-end-2021/times-uk--quentin-letts.json",
-    "the-mystery-of-edwin-drood-1985/guardian--michael-billington.json",
-    "the-old-ladies-off-west-end-2026/everything-theatre--mike-carter.json",
-    "the-old-ladies-off-west-end-2026/guardian--david-jays.json"
+    "the-old-ladies-off-west-end-2026/londontheatre1--john-groves.json",
+    "the-phantom-of-the-opera-1988/guardian--lyndsey-winship.json",
+    "the-phantom-of-the-opera-1988/telegraph--serena-davies.json",
+    "the-phantom-of-the-opera-1988/thestage--tim-bano.json",
+    "the-phantom-of-the-opera-1988/times-uk--quentin-letts.json",
+    "the-phantom-of-the-opera-1988/whatsonstage--alun-hood.json",
+    "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json",
+    "the-play-that-goes-wrong-off-broadway-2019/thestage--natasha-tripney.json",
+    "the-playboy-of-the-western-world-west-end-2025/artsdesk--aleks-sierz.json",
+    "the-playboy-of-the-western-world-west-end-2025/british-theatre--vera-liber.json",
+    "the-playboy-of-the-western-world-west-end-2025/broadwayworld--cindy-marcolina.json",
+    "the-playboy-of-the-western-world-west-end-2025/daily-mail--robert-gore-langton.json",
+    "the-playboy-of-the-western-world-west-end-2025/financialtimes--sarah-hemming.json",
+    "the-playboy-of-the-western-world-west-end-2025/i-paper--fiona-mountford.json",
+    "the-playboy-of-the-western-world-west-end-2025/londontheatre1--mary-beer.json",
+    "the-playboy-of-the-western-world-west-end-2025/the-spectator-uk--lloyd-evans.json",
+    "the-playboy-of-the-western-world-west-end-2025/thereviewshub--maryam-philpott.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/british-theatre--mary-beer.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/daily-mail--patrick-marmion.json",
+    "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json",
+    "the-tempest-globe-west-end-2026/artsdesk--rachel-halliburton.json",
+    "the-tempest-globe-west-end-2026/daily-mail--patrick-marmion.json",
+    "the-tempest-globe-west-end-2026/financialtimes--sarah-hemming.json",
+    "the-tempest-globe-west-end-2026/guardian--arifa-akbar.json",
+    "the-tempest-globe-west-end-2026/whatsonstage--alun-hood.json",
+    "the-uncontainable-nausea-of-alec-baldwin-off-west-end-2026/everything-theatre--daisy-hills.json",
+    "the-uncontainable-nausea-of-alec-baldwin-off-west-end-2026/guardian--kate-wyver.json",
+    "the-uncontainable-nausea-of-alec-baldwin-off-west-end-2026/thestage--tom-wicker.json",
+    "trouble-in-mind-2021/daily-mail--georgina-brown.json",
+    "trouble-in-mind-2021/financialtimes--sarah-hemming.json",
+    "trouble-in-mind-2021/whatsonstage--alun-hood.json",
+    "trouble-struggle-bubble-and-squeak-off-broadway-2026/guardian--mark-fisher.json",
+    "welcome-to-pemfort-off-west-end-2026/artsdesk--aleks-sierz.json",
+    "welcome-to-pemfort-off-west-end-2026/everything-theatre--dave-b.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
-      "currentCount": 26,
-      "removed": 1
-    },
-    {
-      "showId": "soldiers-of-tomorrow-off-west-end-2026",
-      "currentCount": 5,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
