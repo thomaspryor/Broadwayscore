@@ -124,7 +124,17 @@
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
     "kpop-2022/usatoday--charles-isherwood.json",
     "a-christmas-carol-2022/washpost--peter-marks.json",
-    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json"
+    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
+    "kimberly-akimbo-2022/talkinbroadway--matthew-murray.json",
+    "almost-famous-2022/timeout--adam-feldman.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "cost-of-living-2022/talkinbroadway--matthew-murray.json",
+    "leopoldstadt-2022/timeout--adam-feldman.json",
+    "the-kite-runner-2022/timeout--adam-feldman.json",
+    "a-strange-loop-2022/usatoday--elysa-gardner.json",
+    "funny-girl-2022/hollywood-reporter--angie-han.json",
+    "funny-girl-2022/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -211,7 +221,13 @@
       "data/review-texts/aint-no-mo-2022/usatoday--charles-isherwood.json",
       "data/review-texts/kpop-2022/usatoday--charles-isherwood.json",
       "data/review-texts/a-christmas-carol-2022/washpost--peter-marks.json",
-      "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json"
+      "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
+      "data/review-texts/kimberly-akimbo-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/cost-of-living-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/leopoldstadt-2022/timeout--adam-feldman.json",
+      "data/review-texts/the-kite-runner-2022/timeout--adam-feldman.json",
+      "data/review-texts/a-strange-loop-2022/usatoday--elysa-gardner.json",
+      "data/review-texts/funny-girl-2022/usatoday--charles-isherwood.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -227,7 +243,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
+  "lastProcessed": "funny-girl-2022/usatoday--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -371,6 +387,17 @@
       "t": "2026-04-05T02:31:36.038Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-05T02:38:35.952Z",
+      "event": "bb-session",
+      "session": "11f6647f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/funny-girl-broadway-review-bean"
+    },
+    {
+      "t": "2026-04-05T02:38:37.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
