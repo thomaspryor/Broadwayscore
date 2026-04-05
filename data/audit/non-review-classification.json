@@ -1,178 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-05T08:43:16.822Z",
+    "generatedAt": "2026-04-05T08:51:37.156Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 29891,
-      "inReviewsJson": 15869,
+      "inReviewsJson": 15854,
       "skippedExcluded": 3,
-      "withFullText": 35,
+      "withFullText": 20,
       "excerptOnly": 1683,
-      "llmClassified": 34,
+      "llmClassified": 19,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 15,
+      "nonReviewsFound": 0,
       "uncertainCases": 16,
-      "budgetUsed": 0.003499999999999998,
-      "llmCalls": 35,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
       "skippedAlreadyClassified": 14148
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "a-day-in-the-death-of-joe-egg-2003/nytimes--ben-brantley.json",
-      "showId": "a-day-in-the-death-of-joe-egg-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"A Day in the Death of Joe Egg\".",
-      "currentScore": 84
-    },
-    {
-      "file": "a-year-with-frog-and-toad-2003/nytimes--ben-brantley.json",
-      "showId": "a-year-with-frog-and-toad-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"A Year With Frog and Toad\".",
-      "currentScore": 74
-    },
-    {
-      "file": "after-the-fall-2004/nytimes--ben-brantley.json",
-      "showId": "after-the-fall-2004",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a roundup of brief notices about various theater productions and events, not a review specifically of \"After The Fall.\" It covers a range of topics including casting, revivals, and venue updates.",
-      "currentScore": 37
-    },
-    {
-      "file": "bombay-dreams-2004/nytimes--ben-brantley.json",
-      "showId": "bombay-dreams-2004",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"Bombay Dreams\" or any other single show. It contains announcements, casting news, and general updates.",
-      "currentScore": 63
-    },
-    {
-      "file": "enchanted-april-2003/nytimes--ben-brantley.json",
-      "showId": "enchanted-april-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, not a review of 'Enchanted April' or any other single show. It includes casting announcements, updates on revivals, and general theater happenings.",
-      "currentScore": 73
-    },
-    {
-      "file": "henry-iv-2003/nytimes--ben-brantley.json",
-      "showId": "henry-iv-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, but it does not contain a review of \"Henry IV\" or any other specific show. It's more of a listing of current and upcoming theatrical events.",
-      "currentScore": 85
-    },
-    {
-      "file": "i-am-my-own-wife-2003/nytimes--bruce-weber.json",
-      "showId": "i-am-my-own-wife-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"I Am My Own Wife\".",
-      "currentScore": 75
-    },
-    {
-      "file": "little-shop-of-horrors-2003/nytimes--ben-brantley.json",
-      "showId": "little-shop-of-horrors-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a roundup of various theater news and brief mentions of multiple shows, not a review of \"Little Shop of Horrors\".",
-      "currentScore": 63
-    },
-    {
-      "file": "match-2004/nytimes--ben-brantley.json",
-      "showId": "match-2004",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review of 'Match' or any other specific show.",
-      "currentScore": 63
-    },
-    {
-      "file": "night-mother-2004/nytimes--ben-brantley.json",
-      "showId": "night-mother-2004",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a roundup of various theater-related news items and brief mentions of different productions, not a review of 'night, Mother'.",
-      "currentScore": 43
-    },
-    {
-      "file": "sight-unseen-2004/nytimes--ben-brantley.json",
-      "showId": "sight-unseen-2004",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a roundup of various theater-related news and brief mentions of different productions, but it does not contain a review of \"Sight Unseen\" or any other specific show. It's more of a listing of current and upcoming events.",
-      "currentScore": 78
-    },
-    {
-      "file": "the-look-of-love-2003/nytimes--bruce-weber.json",
-      "showId": "the-look-of-love-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, but it does not contain a review of \"The Look of Love.\"",
-      "currentScore": 43
-    },
-    {
-      "file": "the-retreat-from-moscow-2003/nytimes--ben-brantley.json",
-      "showId": "the-retreat-from-moscow-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a roundup of various theater news items, reviews, and features, not a dedicated review of \"The Retreat From Moscow.\" It mentions several different shows and topics.",
-      "currentScore": 30
-    },
-    {
-      "file": "the-violet-hour-2003/nytimes--ben-brantley.json",
-      "showId": "the-violet-hour-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"The Violet Hour\" or any other specific show. It includes casting announcements, upcoming performances, and general theater news.",
-      "currentScore": 67
-    },
-    {
-      "file": "wonderful-town-2003/nytimes--ben-brantley.json",
-      "showId": "wonderful-town-2003",
-      "outlet": "The New York Times",
-      "outletId": "nytimes",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"Wonderful Town\" or any other single show. It includes casting announcements, updates on other shows, and general theater news.",
-      "currentScore": 85
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -181,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion on the quality of the production itself. The truncated portion contains news items about other shows.",
       "currentScore": 82
     },
     {
@@ -191,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -201,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of theater-related keywords and links, suggesting a news or directory-type page rather than a review of \"Funny Girl.\"",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -211,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -221,7 +70,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -231,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -241,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -261,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is advertising a WSJ subscription. There is no evaluative content about the show 'Parade'.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -271,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -281,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -291,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
       "currentScore": 83
     },
     {
@@ -301,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -311,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article provides production details and ticket information, resembling a listing or announcement rather than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -321,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news or a directory.",
       "currentScore": 78
     },
     {
@@ -331,7 +180,7 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It includes background information and promotional details, characteristic of a preview article.",
       "currentScore": 78
     }
   ],
@@ -339,83 +188,7 @@
   "reviewsConfirmed": [
     "democracy-2004/nytimes--ben-brantley.json",
     "equus-2008/chicagotribune--chris-jones.json",
-    "festen-2006/nytimes--ben-brantley.json"
+    "frozen-2004/nytimes--wilborn-hampton.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "a-day-in-the-death-of-joe-egg-2003",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "a-year-with-frog-and-toad-2003",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "after-the-fall-2004",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "bombay-dreams-2004",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "enchanted-april-2003",
-      "currentCount": 2,
-      "removed": 1
-    },
-    {
-      "showId": "henry-iv-2003",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "i-am-my-own-wife-2003",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "little-shop-of-horrors-2003",
-      "currentCount": 2,
-      "removed": 1
-    },
-    {
-      "showId": "match-2004",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "night-mother-2004",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "sight-unseen-2004",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "the-look-of-love-2003",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "the-retreat-from-moscow-2003",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "the-violet-hour-2003",
-      "currentCount": 1,
-      "removed": 1
-    },
-    {
-      "showId": "wonderful-town-2003",
-      "currentCount": 1,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
