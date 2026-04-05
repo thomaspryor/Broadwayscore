@@ -144,7 +144,17 @@
     "birthday-candles-2022/hollywood-reporter--angie-han.json",
     "birthday-candles-2022/talkinbroadway--matthew-murray.json",
     "paradise-square-2022/ew--kristen-baldwin.json",
-    "paradise-square-2022/billboard--greg-evans.json"
+    "paradise-square-2022/billboard--greg-evans.json",
+    "paradise-square-2022/usatoday--matthew-j-palm.json",
+    "paradise-square-2022/washpost--peter-marks.json",
+    "plaza-suite-2022/usatoday--charles-isherwood.json",
+    "the-music-man-2022/rollingstone--jon-blistein.json",
+    "the-music-man-2022/washpost--peter-marks.json",
+    "skeleton-crew-2022/usatoday--charles-isherwood.json",
+    "flying-over-sunset-2021/hollywood-reporter--david-rooney.json",
+    "company-2021/theatrely--david-gordon.json",
+    "diana-the-musical-2021/talkinbroadway--matthew-murray.json",
+    "diana-the-musical-2021/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -245,7 +255,15 @@
       "data/review-texts/american-buffalo-2022/usatoday--kelly-lawler.json",
       "data/review-texts/american-buffalo-2022/washpost--peter-marks.json",
       "data/review-texts/birthday-candles-2022/talkinbroadway--matthew-murray.json",
-      "data/review-texts/paradise-square-2022/billboard--greg-evans.json"
+      "data/review-texts/paradise-square-2022/billboard--greg-evans.json",
+      "data/review-texts/paradise-square-2022/usatoday--matthew-j-palm.json",
+      "data/review-texts/paradise-square-2022/washpost--peter-marks.json",
+      "data/review-texts/plaza-suite-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/the-music-man-2022/washpost--peter-marks.json",
+      "data/review-texts/skeleton-crew-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/company-2021/theatrely--david-gordon.json",
+      "data/review-texts/diana-the-musical-2021/talkinbroadway--matthew-murray.json",
+      "data/review-texts/diana-the-musical-2021/usatoday--charles-isherwood.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -261,7 +279,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "paradise-square-2022/billboard--greg-evans.json",
+  "lastProcessed": "diana-the-musical-2021/usatoday--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -447,6 +465,39 @@
     },
     {
       "t": "2026-04-05T02:45:48.869Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:49:17.234Z",
+      "event": "bb-session",
+      "session": "9f22c74c",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/04/paradise-square-broadway"
+    },
+    {
+      "t": "2026-04-05T02:49:18.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:50:53.535Z",
+      "event": "bb-session",
+      "session": "8db126a6",
+      "url": "https://www.washingtonpost.com/theater_dance/2022/02/11/music-man-broadway-revie"
+    },
+    {
+      "t": "2026-04-05T02:50:54.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:51:21.367Z",
+      "event": "bb-session",
+      "session": "09970505",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/flying-over-sunset-broadway-rev"
+    },
+    {
+      "t": "2026-04-05T02:51:22.466Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
