@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 const https = require('https');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -53,24 +54,14 @@ function cleanWikitext(text) {
 }
 
 function buildSearchTitle(show) {
-  let title = show.title;
-
-  // Strip common suffixes that duplicate Wikipedia disambiguation
-  const suffixes = [' The Musical', ' the Musical', ': The Musical', ': the Musical',
-    ' A Musical', ' A New Musical', ': A Musical', ' – The Musical'];
-  for (const s of suffixes) {
-    if (title.endsWith(s)) {
-      title = title.substring(0, title.length - s.length);
-      break;
-    }
-  }
+  const title = cleanSearchTitle(show.title);
 
   const type = show.type || show.format;
   const variants = [];
 
   if (type === 'musical') {
     variants.push(`${title} (musical)`, title, `${title} (Musical)`);
-  } else if (format === 'play') {
+  } else if (type === 'play') {
     variants.push(`${title} (play)`, title, `${title} (Play)`);
   } else {
     variants.push(title, `${title} (musical)`, `${title} (play)`);

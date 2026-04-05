@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { stripWikiMarkup, hasWikiMarkup, stripLeadingJunk } = require('./lib/wiki-utils');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -51,16 +52,7 @@ async function getPageContent(title) {
 }
 
 function buildSearchTitles(show) {
-  let title = show.title;
-  // Strip common suffixes
-  const suffixes = [' The Musical', ' the Musical', ': The Musical', ': the Musical',
-    ' A Musical', ' A New Musical', ': A Musical', ' – The Musical'];
-  for (const s of suffixes) {
-    if (title.endsWith(s)) {
-      title = title.substring(0, title.length - s.length);
-      break;
-    }
-  }
+  const title = cleanSearchTitle(show.title);
 
   const type = show.type || show.format;
   const variants = [];

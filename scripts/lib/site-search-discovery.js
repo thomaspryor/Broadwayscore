@@ -17,6 +17,7 @@ const http = require('http');
 const { URL } = require('url');
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview } = require('./review-guards');
+const { cleanSearchTitle } = require('./title-normalization');
 
 /**
  * Search endpoint configuration.
@@ -409,6 +410,8 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
   const { verbose = false, skipJs = false, market = 'broadway', openingDate = null } = options;
   const config = SITE_SEARCH_ENDPOINTS[outletId];
   if (!config) return [];
+  // Clean title for search queries (strip suffixes, normalize quotes/ampersands)
+  const searchTitle = cleanSearchTitle(showTitle);
 
   // Skip outlets limited to a different market
   if (config.market && config.market !== market) {
@@ -425,7 +428,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
 
     // Custom fetch+parse path (e.g. Algolia JSON API, WP REST API, section page)
     if (config.fetchAndParse) {
-      const urls = await config.fetchAndParse(showTitle, market, openingDate);
+      const urls = await config.fetchAndParse(searchTitle, market, openingDate);
       const seen = new Set();
       results = [];
       for (const url of urls) {
@@ -440,7 +443,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       // Standard fetch + regex path
       const marketKeyword = getMarketKeyword(market);
       const searchUrl = config.url
-        .replace('{TITLE}', encodeURIComponent(showTitle))
+        .replace('{TITLE}', encodeURIComponent(searchTitle))
         .replace('{MARKET_KEYWORD}', marketKeyword);
 
       let html;

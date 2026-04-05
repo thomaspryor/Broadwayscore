@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -39,7 +40,7 @@ function httpGet(url) {
  * Search Wikipedia for a Broadway show and get the opening extract.
  */
 async function fetchWikipediaSynopsis(show) {
-  const title = show.title;
+  const title = cleanSearchTitle(show.title);
   const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
   const type = show.type === 'musical' ? 'musical' : 'play';
 
