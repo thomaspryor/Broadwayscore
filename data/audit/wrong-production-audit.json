@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-05T10:38:25.517Z",
+  "timestamp": "2026-04-05T11:05:11.089Z",
   "stats": {
     "totalReviews": 29516,
-    "alreadyFlagged": 8482,
+    "alreadyFlagged": 8483,
     "dateGuardCatches": 13,
     "directorMismatch": 935,
-    "tvFilmSignals": 3438,
+    "tvFilmSignals": 3434,
     "londonSignals": 1073,
-    "offBroadwaySignals": 984,
+    "offBroadwaySignals": 983,
     "yearMismatch": 72,
     "noPublishDate": 5613
   },
@@ -8745,20 +8745,6 @@
       ]
     },
     {
-      "showId": "camelot-2023",
-      "file": "variety--frank-rizzo.json",
-      "score": 61,
-      "publishDate": "April 13, 2023",
-      "url": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235582644/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "caroline-or-change-2021",
       "file": "hollywood-reporter--angie-han.json",
       "score": 76,
@@ -13264,20 +13250,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"motion picture\""
-        }
-      ]
-    },
-    {
-      "showId": "dog-day-afternoon-2026",
-      "file": "variety--owen-gleiberman.json",
-      "score": 64,
-      "publishDate": "March 30, 2026",
-      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -27459,20 +27431,6 @@
       ]
     },
     {
-      "showId": "kpop-2022",
-      "file": "variety--ad-amorosi.json",
-      "score": 89,
-      "publishDate": "November 27, 2022",
-      "url": "https://variety.com/2022/legit/reviews/kpop-review-south-broadway-musical-1235442833/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "la-bete-1991",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 72,
@@ -31407,20 +31365,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "file": "variety--christian-lewis.json",
-      "score": 80,
-      "publishDate": "November 12, 2024",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -42087,7 +42031,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -63122,20 +63066,6 @@
       "file": "hollywood-reporter--angie-han.json",
       "score": 78,
       "publishDate": "December 19, 2023",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "appropriate-2023",
-      "file": "hollywood-reporter--lovia-gyarkye.json",
-      "score": 78,
-      "publishDate": "December 19th, 2023",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
       "findings": [
         {

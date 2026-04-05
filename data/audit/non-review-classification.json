@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-04-05T10:33:42.180Z",
+    "generatedAt": "2026-04-05T11:00:31.767Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 30082,
-      "inReviewsJson": 15863,
+      "totalFiles": 30079,
+      "inReviewsJson": 15865,
       "skippedExcluded": 4,
-      "withFullText": 67,
-      "excerptOnly": 1649,
-      "llmClassified": 49,
+      "withFullText": 45,
+      "excerptOnly": 1648,
+      "llmClassified": 44,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
-      "uncertainCases": 14,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "nonReviewsFound": 1,
+      "uncertainCases": 16,
+      "budgetUsed": 0.004499999999999999,
+      "llmCalls": 45,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14143
+      "skippedAlreadyClassified": 14168
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "what-the-constitution-means-to-me-2019/vulture--sara-holdrenirin-carmon.json",
+      "showId": "what-the-constitution-means-to-me-2019",
+      "outlet": "Vulture",
+      "outletId": "vulture",
+      "contentType": "interview",
+      "confidence": "high",
+      "reasoning": "This is a conversation between two writers about the play, not a review offering an evaluation or recommendation.",
+      "currentScore": 84
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -40,7 +51,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -60,7 +71,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it's a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
       "currentScore": 78
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
+      "reasoning": "The article describes the premise of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for an evening of terror but doesn't review the production itself.",
       "currentScore": 80
     },
     {
@@ -140,7 +151,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's not solely a review.",
       "currentScore": 83
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -162,45 +173,63 @@
       "confidence": "low",
       "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "currentScore": 78
+    },
+    {
+      "file": "yellow-face-2024/joysauce--janvi-sai.json",
+      "showId": "yellow-face-2024",
+      "outlet": "joysauce",
+      "outletId": "joysauce",
+      "contentType": "preview",
+      "confidence": "medium",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events. However, it does not offer a critical evaluation or opinion on the quality of the production itself.",
+      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "cabaret-at-the-kit-kat-club-west-end-2021/british-theatre--howard-loxton.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/daily-mail--robert-gore-langton.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/thereviewshub--richard-maguire.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/variety--david-benedict.json",
-    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/daily-mail--quentin-letts.json",
-    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/express-uk--neil-norman.json",
-    "harry-potter-and-the-cursed-child-both-parts-west-end-2021/observer--susannah-clapp.json",
-    "john-proctor-is-the-villain-west-end-2026/daily-mail--robert-gore-langton.json",
-    "kinky-boots-the-musical-west-end-2026/british-theatre--amy-yorston.json",
-    "kinky-boots-the-musical-west-end-2026/londontheatre1--chris-omaweng.json",
-    "kinky-boots-the-musical-west-end-2026/standard--nick-curtis.json",
-    "kinky-boots-the-musical-west-end-2026/the-spectator-uk--lloyd-evans.json",
-    "kinky-boots-the-musical-west-end-2026/thereviewshub--richard-maguire.json",
-    "kinky-boots-the-musical-west-end-2026/thestage--paul-vale.json",
-    "kinky-boots-the-musical-west-end-2026/timeout-london--tom-wicker.json",
-    "kinky-boots-the-musical-west-end-2026/times-uk--clive-davis.json",
-    "kinky-boots-the-musical-west-end-2026/whatsonstage--alun-hood.json",
-    "les-liaisons-dangereuses-west-end-2026/times-uk--dominic-maxwell.json",
-    "romeo-and-juliet-west-end-2026/daily-mail--robert-gore-langton.json",
-    "shucked-2023/variety--frank-rizzo.json",
-    "shucked-2023/vulture--jackson-mchenry.json",
-    "sunday-in-the-park-with-george-2017/timeout--david-cote.json",
-    "tammy-faye-2024/variety--frank-rizzo.json",
-    "teeth-n-smiles-west-end-2026/british-theatre--keith-mckenna.json",
-    "teeth-n-smiles-west-end-2026/daily-mail--robert-gore-langton.json",
-    "teeth-n-smiles-west-end-2026/observer--katherine-cowles.json",
-    "teeth-n-smiles-west-end-2026/the-spectator-uk--lloyd-evans.json",
-    "teeth-n-smiles-west-end-2026/whatsonstage--sarah-crompton.json",
-    "the-book-of-mormon-west-end-2024/standard--henry-hitchings.json",
-    "the-book-of-mormon-west-end-2024/the-spectator-uk--lloyd-evans.json",
-    "the-children-2017/nytimes--jesse-green.json",
-    "the-color-purple-2015/nytimes--ben-brantley.json",
-    "the-last-ship-2014/nytimes--charles-isherwood.json",
-    "the-lion-king-west-end-2021/financialtimes--sarah-hemming.json",
-    "the-lion-king-west-end-2021/the-jewish-chronicle--david-nathan.json"
+    "beetlejuice-2019/nysr--david-finkle.json",
+    "broken-glass-west-end-2026/independent--alice-saville.json",
+    "death-of-a-salesman-2022/nysr--frank-scheck.json",
+    "dog-day-afternoon-2026/variety--owen-gleiberman.json",
+    "liberation-2025/nytimes--elisabeth-vincentelli.json",
+    "linda-vista-2019/nysr--melissa-rose-bernardo.json",
+    "mamma-mia-west-end-2021/timeout-london--nina-caplan.json",
+    "maybe-happy-ending-2024/variety--christian-lewis.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "mj-2022/deadline--greg-evans.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "peter-pan-goes-wrong-2023/nysr--david-finkle.json",
+    "the-outsiders-2024/vulture--sara-holdren.json",
+    "the-skin-of-our-teeth-2022/nytimes--alexis-soloski.json",
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "the-velocity-of-autumn-2014/hollywood-reporter--frank-scheck.json",
+    "the-visit-2015/variety--marilyn-stasio.json",
+    "the-waverly-gallery-2018/variety--marilyn-stasio.json",
+    "to-kill-a-mockingbird-2018/nytimes--jesse-green.json",
+    "topdog-underdog-2022/deadline--greg-evans.json",
+    "topdog-underdog-2022/variety--naveen-kumar.json",
+    "torch-song-2018/variety--marilyn-stasio.json",
+    "west-side-story-2020/vulture--helen-shaw.json",
+    "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+    "wicked-west-end-2021/standard--nicholas-de-jongh.json",
+    "yellow-face-2024/vulture--sara-holdren.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "what-the-constitution-means-to-me-2019",
+      "currentCount": 40,
+      "removed": 1
+    }
+  ]
 }
