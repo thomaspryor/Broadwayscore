@@ -58,6 +58,7 @@ const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 // High-frequency rotation shows (checked more aggressively)
 const HIGH_FREQ_SHOWS = new Set([
   'chicago-1996', 'six-2021', 'hadestown-2019', 'the-great-gatsby-2024',
+  'oh-mary-2024', 'just-in-time-2025',
 ]);
 
 // Time budget (in ms) — article scraping gets 45 minutes to cover all open shows
@@ -336,10 +337,15 @@ function htmlToText(html) {
 // isNotBroadway() imported from ./lib/content-filters
 
 /**
- * Additional tour-specific text checks for cast articles
+ * Additional tour-specific text checks for cast articles.
+ * Only rejects articles that are PRIMARILY about a tour — not articles
+ * that mention tours in passing (e.g., a Broadway cast article that also
+ * mentions "the national tour will begin in September").
+ * Uses title/headline matching, not full-body matching.
  */
 function isTourArticle(text) {
-  const lower = text.toLowerCase();
+  // Only check the first 500 chars (title area) — not the full body
+  const header = text.toLowerCase().slice(0, 500);
   const tourPatterns = [
     /\b(national|north american|u\.?s\.?)\s+tour\b/,
     /\btour\s+(cast|company|production)\b/,
@@ -347,7 +353,7 @@ function isTourArticle(text) {
     /\b(first|second|third)\s+national\s+tour\b/,
     /\btour\s+stop\b/,
   ];
-  return tourPatterns.some(p => p.test(lower));
+  return tourPatterns.some(p => p.test(header));
 }
 
 // ==================== Source 1: Article Scraper ====================
@@ -443,8 +449,8 @@ async function scrapeArticles(targetShows, { onShowComplete } = {}) {
 
     if (verbose) console.log(`    Found ${articleUrls.length} candidate articles`);
 
-    // Fetch and extract from top articles (limit to 5 per show to control cost)
-    const maxArticles = HIGH_FREQ_SHOWS.has(show.id) ? 5 : 3;
+    // Fetch and extract from top articles
+    const maxArticles = HIGH_FREQ_SHOWS.has(show.id) ? 8 : 5;
     for (const article of articleUrls.slice(0, maxArticles)) {
       try {
         // Fetch article HTML
