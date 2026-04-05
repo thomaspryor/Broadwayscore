@@ -621,6 +621,7 @@ function normalizeTitle(t) {
     .replace(/&/g, 'and')           // & → and before stripping punctuation
     .replace(/^the\s+/, '')
     .replace(/\s*\(the\)\s*$/, '') // TR uses "Lion King (The)" format
+    .replace(/\s*\([^)]{5,}\)\s*$/, '') // Strip trailing parenthetical venue qualifiers
     .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
 }
 
@@ -1050,6 +1051,7 @@ async function main() {
     // If no title match, try stripping "the Musical/Play/etc." suffix
     if (titleMatches.length === 0) {
       const shorter = searchTitle
+        .replace(/\s*\([^)]{5,}\)\s*$/, '')  // Strip trailing parenthetical (venue qualifiers)
         .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue)$/i, '')
         .replace(/\s+(the\s+)?(musical|play|show|revue)$/i, '')
         .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
