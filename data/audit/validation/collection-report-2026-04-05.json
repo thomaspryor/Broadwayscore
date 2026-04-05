@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-04-05T15:44:34.071Z",
+  "runDate": "2026-04-05T15:44:48.718Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 2,
+    "processed": 0,
+    "failed": 14,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -39,24 +39,33 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 20,
+    "totalFailed": 14,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 3,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 13,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "john-proctor-is-the-villain-west-end-2026/telegraph--tim-robey.json",
-    "the-other-place-2026/telegraph--claire-allfree.json"
-  ],
+  "processed": [],
   "failed": [
-    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
-    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json",
+    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+    "clybourne-park-2012/times-uk--clive-davis.json",
+    "la-cage-aux-folles-2010/times-uk--clive-davis.json",
+    "oleanna-2009/times-uk--dominic-maxwell.json",
+    "blithe-spirit-2009/times-uk--clive-davis.json",
+    "billy-elliot-the-musical-2008/times-uk--dominic-maxwell.json",
+    "the-little-mermaid-2008/times-uk--kevin-maher.json",
+    "high-fidelity-2006/times-uk--clive-davis.json",
+    "how-to-succeed-in-business-without-really-trying-1995/times-uk--clive-davis.json",
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
   ],
   "tierDetails": {
     "playwright": [],
