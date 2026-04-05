@@ -68,6 +68,14 @@ const searchShows = visibleShows.map(show => {
     entry.category = show.category;
   }
 
+  // Extract year from opening date or show ID for disambiguation
+  if (show.openingDate) {
+    entry.year = show.openingDate.slice(0, 4);
+  } else {
+    const idYear = show.id.match(/(\d{4})$/);
+    if (idYear) entry.year = idYear[1];
+  }
+
   return entry;
 });
 

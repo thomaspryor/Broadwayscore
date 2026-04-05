@@ -12,7 +12,7 @@ import { getAllComparisonSlugs, parseComparisonSlug } from '@/config/comparisons
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/market-utils';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { ScoreBadge, StatusBadge, FormatPill } from '@/components/show-cards';
+import { ScoreBadge, StatusBadge, FormatPill, getScoreTier } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
 import TicketLink from '@/components/TicketLink';
 import { sortTicketLinks } from '@/lib/ticket-utils';
@@ -235,7 +235,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
     return (
       <Link href={`/show/${showSlug}#audience`} className="flex flex-col items-center gap-1 group">
         <div
-          className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg shadow-sm ${grade.grade === 'A+' ? 'audience-top-grade' : ''}`}
+          className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-xl shadow-sm ${grade.grade === 'A+' ? 'audience-top-grade' : ''}`}
           style={grade.grade === 'A+' ? {} : { backgroundColor: grade.color, color: grade.textColor }}
           title={grade.tooltip}
         >
@@ -357,8 +357,17 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                     <StatusBadge status={show.status} />
                     <FormatPill type={show.type} />
                   </div>
-                  <div className="flex justify-center mb-2">
-                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} />
+                  <div className="flex flex-col items-center mb-3">
+                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} />
+                    {(() => {
+                      const tier = score != null ? getScoreTier(Math.round(score), show.category) : null;
+                      return tier ? (
+                        <span className="text-[10px] sm:text-xs font-semibold mt-1" style={{ color: tier.color }}>{tier.label}</span>
+                      ) : null;
+                    })()}
+                    {show.criticScore?.reviewCount ? (
+                      <span className="text-[10px] text-gray-500">{show.criticScore.reviewCount} reviews</span>
+                    ) : null}
                   </div>
                   {show.status !== 'closed' && sorted.length > 0 && (
                     <TicketLink
@@ -374,7 +383,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10"
                     >
                       <TicketIcon />
-                      Get Tickets{minPrice ? <span className="text-white font-semibold">from {currency}{minPrice}</span> : null}
+                      <span className="text-gray-300">Get Tickets</span>{minPrice ? <span className="text-white font-semibold">from {i === 0 ? currencyA : currencyB}{minPrice}</span> : null}
                     </TicketLink>
                   )}
                 </div>
@@ -498,12 +507,12 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
             label="Tickets"
             valueA={sortedLinksA.length > 0 ? (
               <TicketLink showName={showA.title} showId={showA.id} showSlug={showA.slug} showStatus={showA.status} platform={sortedLinksA[0].platform} url={sortedLinksA[0].url} pageType="comparison" linkPosition={0} totalLinks={sortedLinksA.length} className="text-white font-semibold hover:text-brand transition-colors">
-                <span className="text-gray-400 font-normal text-xs">{sortedLinksA[0].platform} from </span>{currencyA}{sortedLinksA[0].priceFrom ?? '—'}
+                <span className="text-gray-300 font-normal text-sm">{sortedLinksA[0].platform} from </span>{currencyA}{sortedLinksA[0].priceFrom ?? '—'}
               </TicketLink>
             ) : '—'}
             valueB={sortedLinksB.length > 0 ? (
               <TicketLink showName={showB.title} showId={showB.id} showSlug={showB.slug} showStatus={showB.status} platform={sortedLinksB[0].platform} url={sortedLinksB[0].url} pageType="comparison" linkPosition={0} totalLinks={sortedLinksB.length} className="text-white font-semibold hover:text-brand transition-colors">
-                <span className="text-gray-400 font-normal text-xs">{sortedLinksB[0].platform} from </span>{currencyB}{sortedLinksB[0].priceFrom ?? '—'}
+                <span className="text-gray-300 font-normal text-sm">{sortedLinksB[0].platform} from </span>{currencyB}{sortedLinksB[0].priceFrom ?? '—'}
               </TicketLink>
             ) : '—'}
           />
