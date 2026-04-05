@@ -1,27 +1,278 @@
 {
   "meta": {
-    "generatedAt": "2026-04-05T09:02:30.748Z",
+    "generatedAt": "2026-04-05T09:14:21.339Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 29891,
-      "inReviewsJson": 15854,
+      "inReviewsJson": 15859,
       "skippedExcluded": 3,
-      "withFullText": 17,
-      "excerptOnly": 1683,
-      "llmClassified": 16,
+      "withFullText": 53,
+      "excerptOnly": 1653,
+      "llmClassified": 49,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
-      "uncertainCases": 16,
-      "budgetUsed": 0.0017000000000000006,
-      "llmCalls": 17,
+      "nonReviewsFound": 25,
+      "uncertainCases": 15,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14151
+      "skippedAlreadyClassified": 14150
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "42nd-street-2001/nytimes--ben-brantley.json",
+      "showId": "42nd-street-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"42nd Street\" or any other single show. It includes casting announcements, event listings, and general theater news.",
+      "currentScore": 61
+    },
+    {
+      "file": "45-seconds-from-broadway-2001/nytimes--ben-brantley.json",
+      "showId": "45-seconds-from-broadway-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a roundup of various theater news and brief mentions of multiple shows, not a review of \"45 Seconds From Broadway\".",
+      "currentScore": 54
+    },
+    {
+      "file": "a-class-act-2001/nytimes--bruce-weber.json",
+      "showId": "a-class-act-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, but it does not contain a review of \"A Class Act\" or any other specific show.",
+      "currentScore": 63
+    },
+    {
+      "file": "amour-2002/nytimes--ben-brantley.json",
+      "showId": "amour-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"Amour\" or any other single show. It includes casting announcements, updates on productions, and general theater news.",
+      "currentScore": 73
+    },
+    {
+      "file": "dance-of-death-2001/nytimes--ben-brantley.json",
+      "showId": "dance-of-death-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, not a review specifically of \"Dance of Death\".",
+      "currentScore": 58
+    },
+    {
+      "file": "dance-of-the-vampires-2002/nytimes--ben-brantley.json",
+      "showId": "dance-of-the-vampires-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions. It does not contain a review of \"Dance of the Vampires\" or any other single show.",
+      "currentScore": 20
+    },
+    {
+      "file": "design-for-living-2001/nytimes--ben-brantley.json",
+      "showId": "design-for-living-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a roundup of various theater news and brief reviews of multiple shows, not a dedicated review of \"Design For Living.\"",
+      "currentScore": 43
+    },
+    {
+      "file": "dinner-at-eight-2002/nytimes--ben-brantley.json",
+      "showId": "dinner-at-eight-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a roundup of various theater news items and brief mentions of different productions, not a review of \"Dinner at Eight\" or any other single show. It includes casting announcements, performance updates, and general theater news.",
+      "currentScore": 62
+    },
+    {
+      "file": "fortunes-fool-2002/nytimes--ben-brantley.json",
+      "showId": "fortunes-fool-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a roundup of various theater news items, reviews, and announcements, not a review of \"Fortune's Fool\" specifically.",
+      "currentScore": 78
+    },
+    {
+      "file": "george-gershwin-alone-2001/nytimes--bruce-weber.json",
+      "showId": "george-gershwin-alone-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, but it does not contain a review of \"George Gershwin Alone\" or any other single show. It's a collection of short updates and announcements.",
+      "currentScore": 68
+    },
+    {
+      "file": "judgment-at-nuremberg-2001/nytimes--bruce-weber.json",
+      "showId": "judgment-at-nuremberg-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a roundup of various theater-related news items and brief mentions of different productions, not a review of 'Judgment at Nuremberg' or any other specific show.",
+      "currentScore": 63
+    },
+    {
+      "file": "king-hedley-ii-2001/nytimes--ben-brantley.json",
+      "showId": "king-hedley-ii-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a roundup of various theater-related news items, reviews of different shows, and general interest pieces. It does not focus specifically on 'King Hedley II' or provide a dedicated review of that production.",
+      "currentScore": 78
+    },
+    {
+      "file": "ma-raineys-black-bottom-2003/nytimes--ben-brantley.json",
+      "showId": "ma-raineys-black-bottom-2003",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, not a review of \"Ma Rainey's Black Bottom\".",
+      "currentScore": 42
+    },
+    {
+      "file": "mornings-at-seven-2002/nytimes--ben-brantley.json",
+      "showId": "mornings-at-seven-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review of \"Morning's at Seven\".",
+      "currentScore": 83
+    },
+    {
+      "file": "one-mo-time-2002/nytimes--bruce-weber.json",
+      "showId": "one-mo-time-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, but it does not contain a review of \"One Mo' Time\" or any other single show. It's more of a listing of current theater events.",
+      "currentScore": 42
+    },
+    {
+      "file": "stones-in-his-pockets-2001/nytimes--ben-brantley.json",
+      "showId": "stones-in-his-pockets-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, but it does not contain a review of \"Stones in His Pockets\" or any other single show. It's more of a listing of theater events and updates.",
+      "currentScore": 73
+    },
+    {
+      "file": "the-adventures-of-tom-sawyer-2001/nytimes--bruce-weber.json",
+      "showId": "the-adventures-of-tom-sawyer-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, not a review specifically of \"The Adventures of Tom Sawyer\".",
+      "currentScore": 43
+    },
+    {
+      "file": "the-crucible-2002/nytimes--ben-brantley.json",
+      "showId": "the-crucible-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review specifically of \"The Crucible\".",
+      "currentScore": 88
+    },
+    {
+      "file": "the-elephant-man-2002/nytimes--ben-brantley.json",
+      "showId": "the-elephant-man-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, not a review of \"The Elephant Man\" or any specific show in detail.",
+      "currentScore": 78
+    },
+    {
+      "file": "the-gathering-2001/nytimes--bruce-weber.json",
+      "showId": "the-gathering-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news and brief mentions of different productions, but it does not contain a review of \"The Gathering\" or any other specific show. It's more of a listing of theatrical events and updates.",
+      "currentScore": 57
+    },
+    {
+      "file": "the-invention-of-love-2001/nytimes--ben-brantley.json",
+      "showId": "the-invention-of-love-2001",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, not a review specifically of \"The Invention of Love\".",
+      "currentScore": 79
+    },
+    {
+      "file": "the-man-who-had-all-the-luck-2002/nytimes--bruce-weber.json",
+      "showId": "the-man-who-had-all-the-luck-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater news and brief mentions of different productions, not a review specifically of \"The Man Who Had All the Luck\".",
+      "currentScore": 79
+    },
+    {
+      "file": "the-mystery-of-charles-dickens-2002/nytimes--ben-brantley.json",
+      "showId": "the-mystery-of-charles-dickens-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, not a review specifically of \"The Mystery of Charles Dickens\".",
+      "currentScore": 73
+    },
+    {
+      "file": "the-smell-of-the-kill-2002/nytimes--bruce-weber.json",
+      "showId": "the-smell-of-the-kill-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various theater-related news items and brief mentions of different productions, but it does not contain a review of \"The Smell of the Kill\" or any other specific show.",
+      "currentScore": 43
+    },
+    {
+      "file": "thoroughly-modern-millie-2002/nytimes--ben-brantley.json",
+      "showId": "thoroughly-modern-millie-2002",
+      "outlet": "The New York Times",
+      "outletId": "nytimes",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a roundup of various theater news items and brief mentions of different productions, not a review of \"Thoroughly Modern Millie\".",
+      "currentScore": 66
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -30,7 +281,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -40,7 +291,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, but it does not contain any evaluative content or opinion about a specific production. It seems to be a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -50,7 +301,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific show. It mentions \"Broadway news updates\" and \"Music album reviews\" which suggests a news or directory type of content.",
       "currentScore": 62
     },
     {
@@ -60,7 +311,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London and awards, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -80,7 +331,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. While 'Liberation' is mentioned, there is no evaluative content to classify it as a review.",
       "currentScore": 88
     },
     {
@@ -100,7 +351,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -110,7 +361,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a snippet from a news article or website, possibly related to the Wall Street Journal, and not a review of the show 'Parade'. It mentions subscription information and headlines, indicating a news-related context.",
+      "reasoning": "The article appears to be truncated and primarily contains CSS styling and subscription prompts. Without the full text, it's difficult to definitively classify, but the presence of 'Continue reading your article with a WSJ subscription' suggests it's behind a paywall and likely a news article or fea",
       "currentScore": 78
     },
     {
@@ -120,7 +371,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production. It seems to be setting the scene for a review, but is not one itself.",
       "currentScore": 80
     },
     {
@@ -140,7 +391,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
       "currentScore": 83
     },
     {
@@ -150,7 +401,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms, not an article. There is no evaluative content about 'The Assembled Parties'.",
       "currentScore": 42
     },
     {
@@ -160,7 +411,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -170,21 +421,147 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news or general information.",
-      "currentScore": 78
-    },
-    {
-      "file": "yellow-face-2024/joysauce--janvi-sai.json",
-      "showId": "yellow-face-2024",
-      "outlet": "joysauce",
-      "outletId": "joysauce",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion about its quality. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a judgment on the acting, direction, or overall effectiveness ",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
-  "perShowSummary": []
+  "reviewsConfirmed": [
+    "a-delicate-balance-1996/huffpost--david-finkle.json",
+    "festen-2006/nytimes--ben-brantley.json",
+    "little-shop-of-horrors-2003/theatermania--unknown.json",
+    "little-women-2005/theatermania--unknown.json",
+    "mamma-mia-2001/jks-theatre-scene--jeff-kready.json",
+    "seagull-true-story-off-broadway-2026/nyt-theater--unknown.json",
+    "seagull-true-story-off-broadway-2026/theatermania--zachary-stewart.json",
+    "the-boy-from-oz-2003/theatermania--unknown.json",
+    "the-light-in-the-piazza-2005/theatermania--unknown.json"
+  ],
+  "perShowSummary": [
+    {
+      "showId": "42nd-street-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "45-seconds-from-broadway-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "a-class-act-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "amour-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "dance-of-death-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "dance-of-the-vampires-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "design-for-living-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "dinner-at-eight-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "fortunes-fool-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "george-gershwin-alone-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "judgment-at-nuremberg-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "king-hedley-ii-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "ma-raineys-black-bottom-2003",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "mornings-at-seven-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "one-mo-time-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "stones-in-his-pockets-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "the-adventures-of-tom-sawyer-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "the-crucible-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "the-elephant-man-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "the-gathering-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "the-invention-of-love-2001",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "the-man-who-had-all-the-luck-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "the-mystery-of-charles-dickens-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "the-smell-of-the-kill-2002",
+      "currentCount": 1,
+      "removed": 1
+    },
+    {
+      "showId": "thoroughly-modern-millie-2002",
+      "currentCount": 2,
+      "removed": 1
+    }
+  ]
 }

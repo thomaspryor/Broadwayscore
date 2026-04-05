@@ -1,16 +1,389 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-05T09:02:33.086Z",
+    "generatedAt": "2026-04-05T09:14:28.381Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 80,
-    "classified": 0,
-    "wrongProduction": 0,
+    "total": 103,
+    "classified": 23,
+    "wrongProduction": 10,
     "correctProduction": 0,
-    "uncertain": 0,
+    "uncertain": 13,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 10,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "dinner-at-eight-2002",
+      "showTitle": "Dinner at Eight",
+      "showYear": 2002,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "December 20, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of unrelated blurbs about various theater productions. There is no mention of 'Dinner at Eight' or any information that would help determine if it is about the 2002 production."
+    },
+    {
+      "showId": "vincent-in-brixton-2003",
+      "showTitle": "Vincent in Brixton",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "March 7, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of unrelated theater news snippets. There is no mention of 'Vincent in Brixton' or any information to determine if it is about the 2003 production."
+    },
+    {
+      "showId": "amour-2002",
+      "showTitle": "Amour",
+      "showYear": 2002,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "October 21, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of unrelated snippets about various theater productions and events. There is no mention of 'Amour' or any information that would indicate it is about the 2002 Broadway production."
+    },
+    {
+      "showId": "dance-of-the-vampires-2002",
+      "showTitle": "Dance of the Vampires",
+      "showYear": 2002,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "December 10, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions and events. It does not appear to be a review of 'Dance of the Vampires' at all."
+    },
+    {
+      "showId": "thou-shalt-not-2001",
+      "showTitle": "Thou Shalt Not",
+      "showYear": 2001,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "October 26, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This is a collection of theater news and reviews, not a review of \"Thou Shalt Not.\" It mentions many different shows and events."
+    },
+    {
+      "showId": "dance-of-death-2001",
+      "showTitle": "Dance of Death",
+      "showYear": 2001,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "October 12, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production",
+        "year 1975 in text matches revival dance-of-death-1974"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of unrelated blurbs about various theater productions and events. There is no mention of the play 'Dance of Death' or any actors/directors associated with the 2001 production."
+    },
+    {
+      "showId": "45-seconds-from-broadway-2001",
+      "showTitle": "45 Seconds From Broadway",
+      "showYear": 2001,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 12, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions and events. It does not appear to be specifically about \"45 Seconds From Broadway\"."
+    },
+    {
+      "showId": "the-smell-of-the-kill-2002",
+      "showTitle": "The Smell of the Kill",
+      "showYear": 2002,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "March 27, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of unrelated blurbs about various theater productions and events. There is no mention of \"The Smell of the Kill\" or any information that would help determine if it is about the 2002 production."
+    },
+    {
+      "showId": "one-mo-time-2002",
+      "showTitle": "One Mo' Time",
+      "showYear": 2002,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "March 7, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions, and does not appear to be about \"One Mo' Time\" at all."
+    },
+    {
+      "showId": "the-mystery-of-charles-dickens-2002",
+      "showTitle": "The Mystery of Charles Dickens",
+      "showYear": 2002,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 26, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This is a collection of theater news, not a review of \"The Mystery of Charles Dickens.\""
+    },
+    {
+      "showId": "the-man-who-had-all-the-luck-2002",
+      "showTitle": "The Man Who Had All the Luck",
+      "showYear": 2002,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "May 2, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "This is a collection of short blurbs about various theater productions, and does not mention \"The Man Who Had All the Luck\" at all."
+    },
+    {
+      "showId": "fortunes-fool-2002",
+      "showTitle": "Fortune's Fool",
+      "showYear": 2002,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 3, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production",
+        "modern references: netflix"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "This appears to be a collection of theater news and reviews, not a review of Fortune's Fool. There is no mention of the play, cast, or venue."
+    },
+    {
+      "showId": "thoroughly-modern-millie-2002",
+      "showTitle": "Thoroughly Modern Millie",
+      "showYear": 2002,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 19, 2002",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theatrical productions, none of which are Thoroughly Modern Millie. The publish date is also far removed from the 2002 opening."
+    },
+    {
+      "showId": "a-class-act-2001",
+      "showTitle": "A Class Act",
+      "showYear": 2001,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "March 12, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions and events, none of which appear to be about 'A Class Act'. The dates mentioned are all in the future (2026), indicating this is a preview of upcoming events."
+    },
+    {
+      "showId": "design-for-living-2001",
+      "showTitle": "Design For Living",
+      "showYear": 2001,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "March 16, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production",
+        "modern references: netflix"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt discusses a variety of different productions, but does not mention 'Design For Living' or any cast/creative members associated with the 2001 production. It's impossible to determine if this is a review of the 2001 production or just a general theater roundup."
+    },
+    {
+      "showId": "stones-in-his-pockets-2001",
+      "showTitle": "Stones in His Pockets",
+      "showYear": 2001,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 2, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "This is a collection of short blurbs about various shows and events. There is no mention of 'Stones in His Pockets' or its cast/creative team."
+    },
+    {
+      "showId": "the-gathering-2001",
+      "showTitle": "The Gathering",
+      "showYear": 2001,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "April 25, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions and events. None of them appear to be about \"The Gathering\" in 2001."
+    },
+    {
+      "showId": "42nd-street-2001",
+      "showTitle": "42nd Street",
+      "showYear": 2001,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "May 3, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of short blurbs about various theater productions and events. There is no mention of \"42nd Street\" or any of its cast/creative team."
+    },
+    {
+      "showId": "the-adventures-of-tom-sawyer-2001",
+      "showTitle": "The Adventures of Tom Sawyer",
+      "showYear": 2001,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "April 27, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This is a collection of short reviews of various shows, none of which are \"The Adventures of Tom Sawyer.\""
+    },
+    {
+      "showId": "the-invention-of-love-2001",
+      "showTitle": "The Invention of Love",
+      "showYear": 2001,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "March 30, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions and events, none of which appear to be about \"The Invention of Love.\""
+    },
+    {
+      "showId": "judgment-at-nuremberg-2001",
+      "showTitle": "Judgment at Nuremberg",
+      "showYear": 2001,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "March 27, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "This is a collection of short blurbs about various theater productions and events. There is no mention of \"Judgment at Nuremberg\" or any details that would allow me to determine if it is about the 2001 production."
+    },
+    {
+      "showId": "king-hedley-ii-2001",
+      "showTitle": "King Hedley II",
+      "showYear": 2001,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "May 2, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production",
+        "modern references: netflix"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "This appears to be a collection of theater news and reviews, not a review of King Hedley II itself. Without more context, it's impossible to determine if it's about the 2001 production."
+    },
+    {
+      "showId": "george-gershwin-alone-2001",
+      "showTitle": "George Gershwin Alone",
+      "showYear": 2001,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "May 1, 2001",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of unrelated blurbs about various theater productions and events. There is no mention of 'George Gershwin Alone' or anything related to it."
+    }
+  ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T09:07:08.225Z",
+  "timestamp": "2026-04-05T09:18:46.401Z",
   "stats": {
     "totalReviews": 29457,
-    "alreadyFlagged": 8419,
+    "alreadyFlagged": 8456,
     "dateGuardCatches": 13,
     "directorMismatch": 934,
     "tvFilmSignals": 3434,
-    "londonSignals": 1069,
+    "londonSignals": 1070,
     "offBroadwaySignals": 985,
     "yearMismatch": 72,
-    "noPublishDate": 5619
+    "noPublishDate": 5618
   },
   "findings": [
     {
@@ -740,8 +740,27 @@
     },
     {
       "showId": "a-delicate-balance-1996",
+      "file": "huffpost--david-finkle.json",
+      "score": 62,
+      "publishDate": "1996-04-21",
+      "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-albees-deli_b_6196430.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-delicate-balance-1996",
       "file": "nytimes--mel-gussow.json",
-      "publishDate": null,
+      "publishDate": "1996-05-27",
       "url": "https://www.nytimes.com/1996/05/27/theater/for-rosemary-harris-a-delicate-balance-of-her-art-and-life.html",
       "findings": [
         {
@@ -1871,20 +1890,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
-      "showId": "a-thousand-clowns-2001",
-      "file": "nytimes--bruce-weber.json",
-      "score": null,
-      "publishDate": "July 12, 2001",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf931a25754c0a9679c8b63",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
