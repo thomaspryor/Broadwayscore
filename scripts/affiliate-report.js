@@ -16,7 +16,7 @@
  *   POSTHOG_PERSONAL_API_KEY, POSTHOG_PROJECT_ID
  */
 
-const https = require('https');
+// Uses native fetch (Node 18+)
 
 const DAYS = (() => {
   const idx = process.argv.indexOf('--days');
@@ -28,27 +28,11 @@ const endDate = new Date();
 const endDateBuffered = new Date(endDate.getTime() + 24 * 60 * 60 * 1000);
 const startDate = new Date(endDate.getTime() - DAYS * 24 * 60 * 60 * 1000);
 const fmt = d => d.toISOString().split('T')[0];
-const fmtISO = d => d.toISOString();
+const fmtISO = d => d.toISOString().replace(/\.\d{3}Z$/, 'Z'); // Impact rejects milliseconds
 
-function fetchJSON(url, headers = {}) {
-  return new Promise((resolve, reject) => {
-    const parsed = new URL(url);
-    const options = {
-      hostname: parsed.hostname,
-      path: parsed.pathname + parsed.search,
-      method: 'GET',
-      headers: { 'Accept': 'application/json', ...headers },
-    };
-    const req = https.request(options, res => {
-      let body = '';
-      res.on('data', chunk => body += chunk);
-      res.on('end', () => {
-        try { resolve(JSON.parse(body)); } catch { resolve({ error: body }); }
-      });
-    });
-    req.on('error', reject);
-    req.end();
-  });
+async function fetchJSON(url, headers = {}) {
+  const res = await fetch(url, { headers: { 'Accept': 'application/json', ...headers } });
+  return res.json();
 }
 
 function fetchBasicAuth(url, user, pass) {
