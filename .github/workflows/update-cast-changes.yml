@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       source:
-        description: 'Source to scrape (articles, reddit, official-sites, all)'
+        description: 'Source to scrape (articles, reddit, official-sites, playbill-cast, all)'
         required: false
         type: choice
         options:
@@ -15,6 +15,7 @@ on:
           - articles
           - reddit
           - official-sites
+          - playbill-cast
         default: all
       shows:
         description: 'Comma-separated show IDs (optional, e.g. just-in-time-2025,wicked-2003)'
