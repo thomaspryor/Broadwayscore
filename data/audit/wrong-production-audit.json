@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T20:41:14.045Z",
+  "timestamp": "2026-04-05T20:49:15.368Z",
   "stats": {
-    "totalReviews": 34306,
-    "alreadyFlagged": 13119,
+    "totalReviews": 34305,
+    "alreadyFlagged": 13120,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
-    "tvFilmSignals": 3440,
+    "tvFilmSignals": 3441,
     "londonSignals": 1097,
     "offBroadwaySignals": 980,
     "yearMismatch": 72,
-    "noPublishDate": 5550
+    "noPublishDate": 5548
   },
   "findings": [
     {
@@ -24812,9 +24812,9 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 83,
+      "score": 79,
       "publishDate": "2025-12-12",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOoqHzfbHfd4PXINRFu6Vr5pErT17MEpN4Jn-rPa5XNAwXD3-cRM8",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51828,6 +51828,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-iceman-cometh-2018",
+      "file": "theater-life--david-sheward.json",
+      "score": 62,
+      "publishDate": "May 5th, 2018",
+      "url": "https://theaterlife.com/the-iceman-cometh-1-2-saint-joan-1-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
