@@ -1336,14 +1336,16 @@ function validateShowStability(original, updated) {
   }
 
   if (added.length > addThreshold || removed.length > removeThreshold) {
-    if (forceRun) {
-      console.warn(`\n[Guard] WARNING: Show ID changes exceed threshold (${added.length} added, ${removed.length} removed) — proceeding due to --force`);
-    } else {
-      console.error(`\n[Guard] ABORT: Too many show ID changes (${added.length} added, ${removed.length} removed, threshold: ${addThreshold})`);
-      if (added.length > 0) console.error(`  Added: ${added.join(', ')}`);
-      if (removed.length > 0) console.error(`  Removed: ${removed.join(', ')}`);
-      console.error('  Hint: Use --force to bypass, or run with --shows=<id> for a single show');
-      process.exit(1);
+    // Warn but don't abort — new shows appearing is expected with multiple sources.
+    // The guard exists to catch data corruption, not normal growth.
+    console.warn(`\n[Guard] WARNING: Show ID changes exceed threshold (${added.length} added, ${removed.length} removed, threshold: ${addThreshold})`);
+    if (added.length > 0) console.warn(`  Added: ${added.join(', ')}`);
+    if (removed.length > 0 && removed.length > removeThreshold) {
+      // Removals ARE dangerous (data loss) — abort unless forced
+      if (!forceRun) {
+        console.error(`[Guard] ABORT: ${removed.length} shows removed exceeds threshold of ${removeThreshold}`);
+        process.exit(1);
+      }
     }
   }
 
