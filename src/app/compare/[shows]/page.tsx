@@ -336,11 +336,23 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                 Choose based on whether you prefer musical numbers or dramatic performances.
               </p>
             )}
+            {showA.runtime && showB.runtime && showA.runtime !== showB.runtime && (
+              <p>
+                <strong className="text-white">Short on time?</strong>{' '}
+                {showA.title} runs {showA.runtime} while {showB.title} runs {showB.runtime}.
+              </p>
+            )}
+            {showA.ageRecommendation && showB.ageRecommendation && showA.ageRecommendation !== showB.ageRecommendation && (
+              <p>
+                <strong className="text-white">Bringing kids?</strong>{' '}
+                {showA.title} is recommended for {showA.ageRecommendation}, while {showB.title} is {showB.ageRecommendation}.
+              </p>
+            )}
             {(lotteryRushA?.lottery || lotteryRushB?.lottery) && (
               <p>
                 <strong className="text-white">Budget-friendly option:</strong>{' '}
                 {lotteryRushA?.lottery && lotteryRushB?.lottery
-                  ? 'Both shows offer lottery tickets—enter both for better chances!'
+                  ? 'Both shows offer lottery tickets — enter both for better chances!'
                   : lotteryRushA?.lottery
                     ? `${showA.title} has a lottery for discounted tickets.`
                     : `${showB.title} has a lottery for discounted tickets.`}

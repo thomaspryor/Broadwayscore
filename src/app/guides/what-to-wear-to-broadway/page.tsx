@@ -7,7 +7,7 @@ const currentYear = new Date().getFullYear();
 
 export const metadata: Metadata = {
   title: `What to Wear to Broadway (${currentYear}) | Broadway Dress Code Guide`,
-  description: `What to wear to a Broadway show in ${currentYear}. There's no official dress code — most people dress smart casual. Tips for every occasion, from tourist trips to opening nights.`,
+  description: `Find out what to wear to a Broadway show in ${currentYear}. No official dress code — smart casual is the sweet spot. Get outfit tips for tourist trips, date nights, and opening nights.`,
   alternates: { canonical: `${BASE_URL}/guides/what-to-wear-to-broadway` },
   openGraph: {
     title: `What to Wear to a Broadway Show (${currentYear})`,
@@ -67,7 +67,18 @@ export default function WhatToWearToBroadwayGuide() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, faqSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, faqSchema, {
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: `How to Dress for a Broadway Show (${currentYear})`,
+          description: 'A simple guide to choosing the right outfit for your Broadway show, from casual matinees to special occasions.',
+          step: [
+            { '@type': 'HowToStep', name: 'Know There Is No Dress Code', text: 'Broadway theaters have no official dress code. You will not be turned away for wearing jeans, and you will not be overdressed in a cocktail dress. Most people land somewhere in the middle.' },
+            { '@type': 'HowToStep', name: 'Default to Smart Casual', text: 'A nice top with dark jeans or slacks, a casual dress, or a blazer over a simple outfit. Comfortable shoes are essential — you will walk to and from the theater.' },
+            { '@type': 'HowToStep', name: 'Dress for the Occasion', text: 'Tourist trip: clean and comfortable. Date night: step it up with a dress or blazer. Opening night: this is the one time to go all out.' },
+            { '@type': 'HowToStep', name: 'Prepare for the Theater', text: 'Theaters are cold — bring a light layer. Check your coat at the theater ($2-3). Wear shoes you can sit in comfortably for 2+ hours.' },
+          ],
+        }]) }}
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
@@ -111,6 +122,7 @@ export default function WhatToWearToBroadwayGuide() {
             <li><a href="#what-to-avoid" className="text-brand hover:text-brand-hover">What to Avoid</a></li>
             <li><a href="#by-occasion" className="text-brand hover:text-brand-hover">By Occasion</a></li>
             <li><a href="#practical-tips" className="text-brand hover:text-brand-hover">Practical Tips</a></li>
+            <li><a href="#by-season" className="text-brand hover:text-brand-hover">Dressing by Season</a></li>
             <li><a href="#kids" className="text-brand hover:text-brand-hover">What About Kids?</a></li>
             <li><a href="#faq" className="text-brand hover:text-brand-hover">FAQ</a></li>
           </ul>
@@ -331,6 +343,52 @@ export default function WhatToWearToBroadwayGuide() {
                   New York weather is unpredictable. In summer, it&apos;s hot and humid outside but freezing
                   inside the theater. In winter, you&apos;ll bundle up for the walk but want to shed layers once seated.
                   Dress in layers you can easily adjust.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Dressing by Season */}
+        <section id="by-season" className="mb-10">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Dressing by Season
+          </h2>
+          <div className="prose prose-invert max-w-none">
+            <p className="text-gray-300 leading-relaxed mb-4">
+              New York City weather varies dramatically throughout the year. Here&apos;s how to dress
+              for each season so you&apos;re comfortable both outside and in the theater.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Spring (March{'\u2013'}May)</h3>
+                <p className="text-gray-300 text-sm">
+                  Unpredictable. Can be 45{'\u00b0'}F or 75{'\u00b0'}F. Layers are essential: a light jacket
+                  or cardigan you can remove once seated. Bring a small umbrella.
+                </p>
+              </div>
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Summer (June{'\u2013'}August)</h3>
+                <p className="text-gray-300 text-sm">
+                  Hot and humid outside, aggressively air-conditioned inside. Wear something
+                  cool for the walk but bring a sweater or wrap for the theater. A tank top
+                  alone will leave you shivering by Act 2.
+                </p>
+              </div>
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Fall (September{'\u2013'}November)</h3>
+                <p className="text-gray-300 text-sm">
+                  The best season for Broadway. Comfortable walking weather, easy to layer. A
+                  blazer or light jacket works perfectly both outside and in the theater.
+                </p>
+              </div>
+              <div className="card p-4 sm:p-5">
+                <h3 className="font-bold text-white mb-2">Winter (December{'\u2013'}February)</h3>
+                <p className="text-gray-300 text-sm">
+                  Bundle up for the walk (it&apos;s cold and windy near Times Square), then check
+                  your heavy coat at the theater ($2{'\u2013'}3). Wear something comfortable
+                  underneath that works once the parka comes off.
                 </p>
               </div>
             </div>
