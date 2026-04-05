@@ -12,7 +12,7 @@ on:
       limit:
         description: 'Max reviews per phase (0 = all)'
         required: false
-        default: '500'
+        default: '0'
       outlet:
         description: 'Filter to specific outlet'
         required: false
@@ -90,8 +90,8 @@ jobs:
         run: |
           ARGS=""
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            # Weekly cron: all phases, limit 500 (~$2/run max, fits in 120-min timeout)
-            ARGS="--phase=0,1,2,3 --limit=500"
+            # Weekly cron: all phases, no limit (timeout is the natural cap, cost ~$2/run max)
+            ARGS="--phase=0,1,2,3"
           else
             PHASES="${{ inputs.phases || '0,1,2,3' }}"
             LIMIT="${{ inputs.limit || '20' }}"
