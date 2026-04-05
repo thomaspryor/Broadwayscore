@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-04-05T17:38:01.594Z",
+  "timestamp": "2026-04-05T18:10:37.724Z",
   "stats": {
-    "totalReviews": 34102,
-    "alreadyFlagged": 13068,
-    "dateGuardCatches": 13,
-    "directorMismatch": 931,
-    "tvFilmSignals": 3433,
-    "londonSignals": 1081,
+    "totalReviews": 34166,
+    "alreadyFlagged": 13093,
+    "dateGuardCatches": 12,
+    "directorMismatch": 930,
+    "tvFilmSignals": 3436,
+    "londonSignals": 1087,
     "offBroadwaySignals": 979,
-    "yearMismatch": 73,
+    "yearMismatch": 72,
     "noPublishDate": 5535
   },
   "findings": [
@@ -10078,6 +10078,7 @@
     {
       "showId": "chicago-1996",
       "file": "daily-mail--michael-covene.json",
+      "score": 84,
       "publishDate": "1997-11-21",
       "url": null,
       "findings": [
@@ -10212,7 +10213,8 @@
     },
     {
       "showId": "chicago-1996",
-      "file": "what-son--neil-smith.json",
+      "file": "whatsonstage--neil-smith.json",
+      "score": 89,
       "publishDate": "1997-11-26",
       "url": null,
       "findings": [
@@ -21772,6 +21774,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "british-theatre--howard-loxton.json",
+      "score": 73,
       "publishDate": "2025-06-26",
       "url": null,
       "findings": [
@@ -21813,6 +21816,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
+      "score": 75,
       "publishDate": "2025-06-29",
       "url": null,
       "findings": [
@@ -21840,6 +21844,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "everything-theatre--gabriel-wilding.json",
+      "score": 67,
       "publishDate": "2025-06-26",
       "url": null,
       "findings": [
@@ -21941,6 +21946,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "observer--susannah-clapp.json",
+      "score": 49,
       "publishDate": "2025-06-28",
       "url": null,
       "findings": [
@@ -22066,6 +22072,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 64,
       "publishDate": "2025-06-24",
       "url": null,
       "findings": [
@@ -22162,6 +22169,32 @@
     },
     {
       "showId": "high-noon-west-end-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2026-01-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "high-noon-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2026-01-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "high-noon-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
       "score": 45,
       "publishDate": "2026-01-11",
@@ -22171,6 +22204,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "high-noon-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2026-01-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -25411,6 +25457,7 @@
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
       "file": "broadwayworld--mica-blackwell.json",
+      "score": 85,
       "publishDate": "2026-03-30",
       "url": null,
       "findings": [
@@ -44210,25 +44257,6 @@
     },
     {
       "showId": "spring-awakening-2015",
-      "file": "huffpost--steven-suskin.json",
-      "score": 67,
-      "publishDate": "September 27th, 2015",
-      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-a-touch-of-spr_b_8205104.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2006 (4x) more than 2015 (2x). 2006 matches production: spring-awakening-2006"
-        }
-      ]
-    },
-    {
-      "showId": "spring-awakening-2015",
       "file": "stagezine--scott-harrah.json",
       "score": 67,
       "publishDate": "2015-09-27",
@@ -54963,19 +54991,6 @@
     },
     {
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "file": "guardian--arifa-akbar.json",
-      "publishDate": "2020-12-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
       "file": "nytg--stanford-friedman.json",
       "score": 84,
       "publishDate": null,
@@ -55003,19 +55018,6 @@
       ]
     },
     {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": "2020-12-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
       "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "broadwayworld--kat-mokrynski.json",
       "score": 81,
@@ -55026,6 +55028,42 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2026-01-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -57338,6 +57376,7 @@
     {
       "showId": "titanique-off-broadway-2022",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 81,
       "publishDate": "2025-01-12",
       "url": null,
       "findings": [
@@ -64466,20 +64505,6 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "times-uk--quentin-letts.json",
-      "score": 76,
-      "publishDate": "2021-12-19",
-      "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "west-end-wilma--west-end-wilma.json",
       "score": 86,
       "publishDate": "2025-10-18",
@@ -67740,6 +67765,7 @@
     {
       "showId": "hadestown-2019",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 86,
       "publishDate": "2024-02-26",
       "url": null,
       "findings": [
@@ -69496,20 +69522,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
-      "showId": "high-noon-west-end-2025",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 43,
-      "publishDate": "2025-10-01",
-      "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/high-noon_1695860/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 77d before show (2025-10-01 vs 2025-12-17)"
         }
       ]
     },
@@ -73184,6 +73196,7 @@
     {
       "showId": "moulin-rouge-2019",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 60,
       "publishDate": "2022-01-21",
       "url": null,
       "findings": [
@@ -74133,19 +74146,6 @@
       "score": 82,
       "publishDate": "January 15th, 2025",
       "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "times-uk--dominic-maxwell.json",
-      "publishDate": "2025-01-19",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81656,6 +81656,19 @@
     },
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2025-12-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 73,
       "publishDate": "2025-12-12",
@@ -82280,6 +82293,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
+      "file": "british-theatre--mary-beer.json",
+      "publishDate": "2025-12-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -83117,6 +83143,7 @@
     {
       "showId": "trouble-in-mind-2021",
       "file": "daily-mail--georgina-brown.json",
+      "score": 88,
       "publishDate": "2021-12-17",
       "url": null,
       "findings": [
@@ -83813,10 +83840,36 @@
     },
     {
       "showId": "woman-in-mind-west-end-2025",
+      "file": "british-theatre--vera-liber.json",
+      "publishDate": "2026-01-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 76,
       "publishDate": "2026-01-07",
       "url": "https://www.broadwayworld.com/westend/article/Review-WOMAN-IN-MIND-Duke-Of-Yorks-Theatre-20260107",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2026-01-11",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -83845,6 +83898,32 @@
       "score": 78,
       "publishDate": "2026-01-07",
       "url": "https://www.westendtheatre.com/330166/news/reviews/west-end-reviews-of-woman-in-mind-starring-sheridan-smith-romesh-ranganathan/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "file": "thereviewshub--maryam-philpott.json",
+      "publishDate": "2026-01-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2026-01-10",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
