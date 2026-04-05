@@ -44,6 +44,11 @@ on:
         required: false
         default: false
         type: boolean
+      no_skip_existing:
+        description: 'Re-search outlets even if a review file exists (for filling missing URLs)'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: collect-outlet-reviews-${{ github.event.inputs.market || 'manual' }}
@@ -148,6 +153,9 @@ jobs:
           ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.no_skip_existing }}" = "true" ]; then
+            ARGS="$ARGS --no-skip-existing"
           fi
           echo "Running: node scripts/collect-outlet-reviews.js $ARGS"
           node scripts/collect-outlet-reviews.js $ARGS
