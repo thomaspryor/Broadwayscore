@@ -614,46 +614,8 @@ function isLondonVenue(venueText) {
   return LONDON_VENUES.some(v => lower.includes(v));
 }
 
-// Normalize a title for comparison
-function normalizeTitle(t) {
-  return t.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/&/g, 'and')           // & → and before stripping punctuation
-    .replace(/^the\s+/, '')
-    .replace(/\s*\(the\)\s*$/, '') // TR uses "Lion King (The)" format
-    .replace(/\s*\([^)]{5,}\)\s*$/, '') // Strip trailing parenthetical venue qualifiers
-    .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
-}
-
-// Check if two titles match — exact first, then strip suffixes/prefixes
-function titlesMatch(a, b) {
-  const na = normalizeTitle(a);
-  const nb = normalizeTitle(b);
-  if (na === nb) return true;
-  const stripSuffix = s => s
-    .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue|opera|concert|experience)$/i, '')
-    .replace(/\s+(the\s+)?(musical|play|show|revue|opera|concert|experience)$/i, '')
-    .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
-    .replace(/\s+at\s+the\s+.+$/i, '')
-    .replace(/\s+live$/i, '')
-    .replace(/\s*[-–—]\s*(?:globe|donmar|almeida|young vic|old vic|national|barbican|soho|bush|royal court|hampstead|menier|arcola)$/i, '')
-    .trim();
-  if (stripSuffix(na) === stripSuffix(nb)) return true;
-  // Strip common prefixes: "Disney's", "Roald Dahl's", etc.
-  const stripPrefix = s => s
-    .replace(/^(?:disneys|roald dahls|shakespeares|agatha christies)\s+/i, '')
-    .trim();
-  if (stripPrefix(stripSuffix(na)) === stripPrefix(stripSuffix(nb))) return true;
-  // Allow contains match if the shorter is ≥50% of the longer and ≥4 chars
-  const sna = stripPrefix(stripSuffix(na));
-  const snb = stripPrefix(stripSuffix(nb));
-  const [shorter, longer] = sna.length <= snb.length ? [sna, snb] : [snb, sna];
-  // Only allow if shorter is ≥70% of longer (stricter to prevent "wicked" → "wicked lady")
-  if (shorter.length >= 4 && shorter.length >= longer.length * 0.7) {
-    if (longer.startsWith(shorter) || longer.endsWith(shorter)) return true;
-  }
-  return false;
-}
+// Title normalization — shared module
+const { normalizeTitle, titlesMatch, cleanSearchTitle } = require('./lib/title-normalization');
 
 // Scrape TR /west-end or /london for featured shows with direct archive links
 async function scrapeTRFeaturedShows(page, marketPath) {
@@ -1028,9 +990,7 @@ async function main() {
 
   // ─── Shared: search TR for a show, pick best result, extract ───
   async function searchAndProcessShow(show, hintVenue) {
-    const searchTitle = show.title
-      .replace(/['']/g, "'")
-      .replace(/&/g, 'and');
+    const searchTitle = cleanSearchTitle(show.title);
 
     let results = await searchTR(searchTitle);
 
@@ -1049,17 +1009,9 @@ async function main() {
 
     let titleMatches = results.filter(r => titlesMatch(r.title, show.title));
 
-    // If no title match, try stripping "the Musical/Play/etc." suffix
+    // If no title match, retry with a cleaned (suffix/prefix-stripped) title
     if (titleMatches.length === 0) {
-      const shorter = searchTitle
-        .replace(/\s*\([^)]{5,}\)\s*$/, '')  // Strip trailing parenthetical (venue qualifiers)
-        .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue)$/i, '')
-        .replace(/\s+(the\s+)?(musical|play|show|revue)$/i, '')
-        .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
-        .replace(/\s+at\s+the\s+.+$/i, '')
-        .replace(/\s+live$/i, '')
-        .replace(/\s*[-–—]\s*(?:Globe|Donmar|Almeida|Young Vic|Old Vic|National|Barbican|Soho|Bush|Royal Court|Hampstead|Menier|Arcola)$/i, '')
-        .trim();
+      const shorter = cleanSearchTitle(searchTitle);
       if (shorter !== searchTitle && shorter.length >= 3) {
         console.log(`  Retrying search with shorter title: "${shorter}"`);
         const moreResults = await searchTR(shorter);
