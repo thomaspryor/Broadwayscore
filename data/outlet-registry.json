@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-04-05T17:56:30.659Z",
+    "lastUpdated": "2026-04-05T18:42:13.091Z",
     "version": "2.0.0"
   },
   "outlets": {
@@ -9307,6 +9307,30 @@
       "displayName": "Cambridge",
       "region": "london",
       "tier": 3
+    },
+    "listener": {
+      "displayName": "Listener",
+      "tier": 3,
+      "aliases": [
+        "listener"
+      ],
+      "domain": null
+    },
+    "punch": {
+      "displayName": "Punch",
+      "tier": 3,
+      "aliases": [
+        "punch"
+      ],
+      "domain": null
+    },
+    "news-oftheworld": {
+      "displayName": "News Oftheworld",
+      "tier": 3,
+      "aliases": [
+        "news-oftheworld"
+      ],
+      "domain": null
     }
   },
   "_aliasIndex": {
