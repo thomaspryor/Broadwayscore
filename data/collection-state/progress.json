@@ -84,7 +84,17 @@
     "hamilton-west-end-2021/whatsonstage--sarah-crompton.json",
     "gypsy-2024/theatrely--zachary-stewart.json",
     "cult-of-love-2024/nypost--johnny-oleksinski.json",
-    "swept-away-2024/theatrely--david-ng.json"
+    "swept-away-2024/theatrely--david-ng.json",
+    "swept-away-2024/talkinbroadway--matthew-murray.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "tammy-faye-2024/washpost--peter-marks.json",
+    "left-on-tenth-2024/hollywood-reporter--anita-gates.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "yellow-face-2024/theatrely--juan-a-ramirez.json",
+    "the-hills-of-california-2024/hollywood-reporter--anita-gates.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "once-upon-a-mattress-2024/timeout--adam-feldman.json",
+    "mary-jane-2024/ew--joey-nolfi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -155,7 +165,10 @@
       "data/review-texts/moulin-rouge-the-musical-west-end-2021/broadwayworld--shelby-tyler.json",
       "data/review-texts/hamilton-west-end-2021/whatsonstage--sarah-crompton.json",
       "data/review-texts/gypsy-2024/theatrely--zachary-stewart.json",
-      "data/review-texts/swept-away-2024/theatrely--david-ng.json"
+      "data/review-texts/swept-away-2024/theatrely--david-ng.json",
+      "data/review-texts/swept-away-2024/talkinbroadway--matthew-murray.json",
+      "data/review-texts/tammy-faye-2024/washpost--peter-marks.json",
+      "data/review-texts/yellow-face-2024/theatrely--juan-a-ramirez.json"
     ],
     "archive": [
       "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
@@ -171,7 +184,7 @@
     ]
   },
   "startTime": "2026-04-04T21:15:30.232Z",
-  "lastProcessed": "swept-away-2024/theatrely--david-ng.json",
+  "lastProcessed": "mary-jane-2024/ew--joey-nolfi.json",
   "log": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -194,6 +207,39 @@
       "t": "2026-04-05T02:12:59.865Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-05T02:17:26.356Z",
+      "event": "bb-session",
+      "session": "50ffaf92",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/15/tammy-faye-broadway-revi"
+    },
+    {
+      "t": "2026-04-05T02:17:27.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:17:37.054Z",
+      "event": "bb-session",
+      "session": "e260dc8f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/left-on-tenth-review-julianna-m"
+    },
+    {
+      "t": "2026-04-05T02:17:38.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:19:44.446Z",
+      "event": "bb-session",
+      "session": "711e6cf9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-hills-of-california-broadwa"
+    },
+    {
+      "t": "2026-04-05T02:19:45.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

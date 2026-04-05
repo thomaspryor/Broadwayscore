@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-05T02:14:52.451Z",
+  "updatedAt": "2026-04-05T02:21:20.330Z",
   "processed": 56,
-  "failed": 27,
-  "successRate": "67.5%",
+  "failed": 37,
+  "successRate": "60.2%",
   "tierBreakdown": {
     "playwright": 45,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 12,
+    "archiveToday": 15,
     "archive": 10
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-04T21:15:51.426Z",
@@ -36,6 +36,39 @@
       "t": "2026-04-05T02:12:59.865Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-05T02:17:26.356Z",
+      "event": "bb-session",
+      "session": "50ffaf92",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/15/tammy-faye-broadway-revi"
+    },
+    {
+      "t": "2026-04-05T02:17:27.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-05T02:17:37.054Z",
+      "event": "bb-session",
+      "session": "e260dc8f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/left-on-tenth-review-julianna-m"
+    },
+    {
+      "t": "2026-04-05T02:17:38.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-05T02:19:44.446Z",
+      "event": "bb-session",
+      "session": "711e6cf9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-hills-of-california-broadwa"
+    },
+    {
+      "t": "2026-04-05T02:19:45.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
