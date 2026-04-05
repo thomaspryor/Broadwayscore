@@ -50,6 +50,7 @@ const {
   isProfileUrl,
   normalizeUrl,
   isRegisteredOutlet,
+  isSuspiciousOutletId,
   AGGREGATOR_SCORE_SOURCES,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
@@ -2154,6 +2155,12 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (isJunkOutlet(normalizedOutletId)) {
     console.log(`    ✗ Skipping ${filename}: junk outlet "${reviewData.outlet || reviewData.outletId}"`);
     return 'junkOutlet';
+  }
+
+  // SENTENCE-FRAGMENT GUARD: Reject outlet IDs that are clearly text excerpts
+  if (isSuspiciousOutletId(normalizedOutletId)) {
+    console.log(`    ✗ Skipping suspicious outlet ID: "${normalizedOutletId}" (likely sentence fragment)`);
+    return 'suspiciousOutlet';
   }
 
   // NON-BROADWAY GUARD: Reject tours, off-Broadway, film/TV, streaming, West End
