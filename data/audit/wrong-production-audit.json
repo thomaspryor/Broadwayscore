@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-05T11:05:11.089Z",
+  "timestamp": "2026-04-05T11:36:28.270Z",
   "stats": {
-    "totalReviews": 29516,
-    "alreadyFlagged": 8483,
+    "totalReviews": 29519,
+    "alreadyFlagged": 8487,
     "dateGuardCatches": 13,
-    "directorMismatch": 935,
+    "directorMismatch": 936,
     "tvFilmSignals": 3434,
     "londonSignals": 1073,
     "offBroadwaySignals": 983,
@@ -2641,20 +2641,6 @@
       ]
     },
     {
-      "showId": "aint-too-proud-2019",
-      "file": "variety--frank-rizzo.json",
-      "score": 73,
-      "publishDate": "March 21, 2019",
-      "url": "https://variety.com/2019/legit/reviews/aint-too-proud-review-temptations-broadway-1203166946/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "aladdin-2014",
       "file": "ap--mark-kennedy.json",
       "score": 78,
@@ -3705,20 +3691,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "allegiance-2015",
-      "file": "variety--marilyn-stasio.json",
-      "score": 61,
-      "publishDate": "November 8th, 2015",
-      "url": "http://variety.com/2015/legit/reviews/allegiance-review-broadway-george-takei-1201636192/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -13021,6 +12993,20 @@
       "score": 20,
       "publishDate": "2015-04-22",
       "url": "https://www.vulture.com/2015/04/theater-review-doctor-zhivago.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "doctor-zhivago-2015",
+      "file": "vulture--jesse-green.json",
+      "score": 18,
+      "publishDate": "April 21, 2015",
+      "url": "http://www.vulture.com/2015/04/theater-review-doctor-zhivago.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -22386,20 +22372,6 @@
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-      "file": "variety--frank-rizzo.json",
-      "score": 82,
-      "publishDate": "October 6th, 2016",
-      "url": "http://variety.com/2016/legit/reviews/holiday-inn-review-broadway-1201880340/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
       "file": "variety--marilyn-stasio.json",
       "score": 82,
       "publishDate": "October 14, 2016",
@@ -24122,25 +24094,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "ink-2019",
-      "file": "variety--frank-rizzo.json",
-      "score": 61,
-      "publishDate": "April 24, 2019",
-      "url": "https://variety.com/2019/legit/reviews/ink-review-broadway-jonny-lee-miller-1203196513/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -32547,6 +32500,20 @@
     },
     {
       "showId": "misery-2015",
+      "file": "nytimes--ben-brantley.json",
+      "score": 43,
+      "publishDate": "November 15, 2015",
+      "url": "http://www.nytimes.com/2015/11/16/theater/review-in-misery-with-bruce-willis-and-laurie-metcalf-the-ghost-of-productions-past.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "misery-2015",
       "file": "showbiz411--roger-friedman.json",
       "score": 25,
       "publishDate": "2015-11-16",
@@ -35438,6 +35405,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
+        }
+      ]
+    },
+    {
+      "showId": "noises-off-2016",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 81,
+      "publishDate": "January 14, 2016",
+      "url": "http://www.nytimes.com/2016/01/15/theater/review-michael-frayns-noises-off-returns-to-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -49554,6 +49535,20 @@
     },
     {
       "showId": "the-color-purple-2015",
+      "file": "nytimes--ben-brantley.json",
+      "score": 91,
+      "publishDate": "December 10, 2015",
+      "url": "http://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"gary griffin\" from the-color-purple-2005"
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-2015",
       "file": "nytimes--charles-isherwood.json",
       "score": 92,
       "publishDate": "December 10, 2015",
@@ -58867,6 +58862,20 @@
       "score": 83,
       "publishDate": "2014-04-21",
       "url": "https://www.huffpost.com/steven-suskin/aisle-view-suttons-violet_b_5183722.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "violet-2014",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 82,
+      "publishDate": "April 20, 2014",
+      "url": "http://www.nytimes.com/2014/04/21/theater/violet-starring-sutton-foster-opens-at-roundabout.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -70243,6 +70252,20 @@
       "showId": "ink-2019",
       "file": "variety--christopher-kelly.json",
       "score": 42,
+      "publishDate": "April 24, 2019",
+      "url": "https://variety.com/2019/legit/reviews/ink-review-broadway-jonny-lee-miller-1203196513/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "ink-2019",
+      "file": "variety--frank-rizzo.json",
+      "score": 61,
       "publishDate": "April 24, 2019",
       "url": "https://variety.com/2019/legit/reviews/ink-review-broadway-jonny-lee-miller-1203196513/",
       "findings": [
