@@ -14,6 +14,7 @@ interface Show {
 
 function ShowInput({
   label,
+  id,
   value,
   onChange,
   onSelect,
@@ -22,6 +23,7 @@ function ShowInput({
   onFocus,
 }: {
   label: string;
+  id: string;
   value: string;
   onChange: (q: string) => void;
   onSelect: (show: Show) => void;
@@ -31,8 +33,9 @@ function ShowInput({
 }) {
   return (
     <div className="relative flex-1">
-      <label className="block text-xs text-gray-400 font-medium mb-1">{label}</label>
+      <label htmlFor={id} className="block text-xs text-gray-400 font-medium mb-1">{label}</label>
       <input
+        id={id}
         type="text"
         value={value}
         onChange={e => onChange(e.target.value)}
@@ -162,6 +165,7 @@ export default function CompareShowPicker() {
       <div className="flex flex-col sm:flex-row gap-3 items-end" onFocus={ensureData}>
         <ShowInput
           label="Show 1"
+          id="compare-show-a"
           value={queryA}
           onChange={q => { setQueryA(q); setSelectedA(null); }}
           onSelect={handleSelectA}
@@ -176,6 +180,7 @@ export default function CompareShowPicker() {
 
         <ShowInput
           label="Show 2"
+          id="compare-show-b"
           value={queryB}
           onChange={q => { setQueryB(q); setSelectedB(null); }}
           onSelect={handleSelectB}

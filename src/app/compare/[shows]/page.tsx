@@ -166,12 +166,15 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
   const awardsB = getShowAwards(showB.id);
   const grossesA = getShowGrosses(showA.slug);
   const grossesB = getShowGrosses(showB.slug);
-  const isLondon = isLondonMarket(showA.category);
-  const currency = isLondon ? '£' : '$';
+  const isLondonA = isLondonMarket(showA.category);
+  const isLondonB = isLondonMarket(showB.category);
+  const currencyA = isLondonA ? '£' : '$';
+  const currencyB = isLondonB ? '£' : '$';
+  const currency = currencyA;
 
   // Theater data (Broadway only — WE theaters don't have pages)
-  const theaterA = !isLondon && showA.venue ? getTheaterBySlug(slugify(showA.venue)) : undefined;
-  const theaterB = !isLondon && showB.venue ? getTheaterBySlug(slugify(showB.venue)) : undefined;
+  const theaterA = !isLondonA && showA.venue ? getTheaterBySlug(slugify(showA.venue)) : undefined;
+  const theaterB = !isLondonB && showB.venue ? getTheaterBySlug(slugify(showB.venue)) : undefined;
 
   const scoreA = showA.criticScore?.score ?? null;
   const scoreB = showB.criticScore?.score ?? null;
