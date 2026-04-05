@@ -12,7 +12,7 @@ on:
       limit:
         description: 'Max reviews per phase (0 = all)'
         required: false
-        default: '50'
+        default: '500'
       outlet:
         description: 'Filter to specific outlet'
         required: false
@@ -42,7 +42,7 @@ jobs:
   recover:
     name: Recover missing star ratings
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 120
 
     steps:
       - name: Checkout repository
@@ -90,8 +90,8 @@ jobs:
         run: |
           ARGS=""
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            # Weekly cron: all phases, limit 50 (fits in 45-min timeout, ~$0.13/week)
-            ARGS="--phase=0,1,2,3 --limit=50"
+            # Weekly cron: all phases, limit 500 (~$2/run max, fits in 120-min timeout)
+            ARGS="--phase=0,1,2,3 --limit=500"
           else
             PHASES="${{ inputs.phases || '0,1,2,3' }}"
             LIMIT="${{ inputs.limit || '20' }}"
