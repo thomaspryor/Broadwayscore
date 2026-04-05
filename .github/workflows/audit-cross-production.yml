@@ -1,0 +1,64 @@
+# Audit cross-production contamination — detect reviews filed under wrong production
+# Runs weekly on Sundays at 6 AM UTC (1 AM EST)
+name: Audit Cross-Production
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    name: Audit cross-production contamination
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run cross-production audit
+        run: node scripts/audit-cross-production.js
+
+      - name: Check for issues
+        run: |
+          ISSUES=$(node -e "const a=require('./data/audit/cross-production-audit.json'); console.log(a.likelyWrongProduction)")
+          echo "Found $ISSUES unflagged wrong-production reviews"
+          if [ "$ISSUES" -gt 0 ]; then
+            echo "::warning::$ISSUES unflagged wrong-production reviews detected — manual review needed"
+          fi
+
+      - name: Commit audit results
+        if: always()
+        run: |
+          cd data/audit
+          if git diff --quiet cross-production-audit.json 2>/dev/null; then
+            echo "No changes to audit file"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add cross-production-audit.json
+            git commit -m "audit: Update cross-production audit results [skip ci]"
+            git push origin main || echo "::warning::Failed to push audit results"
+          fi
