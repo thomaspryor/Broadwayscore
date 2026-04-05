@@ -1,6 +1,8 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import fs from 'fs';
+import path from 'path';
 import { getWestEndShows } from '@/lib/data-core';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
@@ -70,13 +72,39 @@ export default function WestEndPage() {
 
   const schemas = [breadcrumbSchema, itemListSchema];
 
-  // Scored shows + upcoming/previews (upcoming shelf needs unscored shows)
+  // Lottery/Rush data
+  let lrShows: Record<string, { lottery?: { price?: number }; specialLottery?: { price?: number }; rush?: { price?: number }; digitalRush?: { price?: number } }> = {};
+  try {
+    const lrData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/lottery-rush.json'), 'utf8'));
+    lrShows = lrData.shows || {};
+  } catch { /* lottery-rush.json missing */ }
+
+  // Scored shows + upcoming/previews + shows with LR data
   const scoredShows = shows.filter(s => s.criticScore && s.criticScore.reviewCount >= 1);
   const allRelevantShows = shows.filter(s =>
     (s.criticScore && s.criticScore.reviewCount >= 1) ||
-    s.status === 'upcoming' || s.status === 'previews'
+    s.status === 'upcoming' || s.status === 'previews' ||
+    lrShows[s.id]
   );
   const serializedShows = allRelevantShows.map(serializeShow);
+
+  // WE Lottery/Rush shelves
+  const lotteryShowsList = shows
+    .filter(s => (s.status === 'open' || s.status === 'previews') && lrShows[s.id]?.lottery)
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(s => {
+      const price = lrShows[s.id]?.specialLottery?.price ?? lrShows[s.id]?.lottery?.price;
+      return { ...serializeShow(s), subtitle: price ? `£${price} lottery` : undefined, subtitleColor: 'text-emerald-400' };
+    });
+
+  const rushShowsList = shows
+    .filter(s => (s.status === 'open' || s.status === 'previews') && (lrShows[s.id]?.rush || lrShows[s.id]?.digitalRush))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(s => {
+      const prices = [lrShows[s.id]?.rush?.price, lrShows[s.id]?.digitalRush?.price].filter((p): p is number => p != null);
+      const price = prices.length ? Math.min(...prices) : undefined;
+      return { ...serializeShow(s), subtitle: price ? `£${price} rush` : undefined, subtitleColor: 'text-emerald-400' };
+    });
 
   // Count reviews across all scored shows (WE + OWE)
   const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
@@ -94,6 +122,8 @@ export default function WestEndPage() {
           totalShows={scoredShows.length}
           totalReviews={totalReviews}
           scoredShows={scoredShows.length}
+          lotteryShows={lotteryShowsList}
+          rushShows={rushShowsList}
         />
       </Suspense>
     </>

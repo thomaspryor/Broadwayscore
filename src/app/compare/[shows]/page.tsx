@@ -71,7 +71,7 @@ function Row({
   winnerB?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-[100px_1fr_1fr] gap-2 py-2.5 border-b border-white/[0.04] last:border-0 items-center">
+    <div className="grid grid-cols-[80px_1fr_1fr] sm:grid-cols-[100px_1fr_1fr] gap-2 py-2.5 border-b border-white/[0.04] last:border-0 items-center">
       <div className="text-[13px] text-gray-400 font-medium">{label}</div>
       <div className={`text-center text-sm ${winnerA ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
         {valueA}
@@ -326,7 +326,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
         {/* Main comparison card */}
         <div className="card p-4 sm:p-6 mb-6">
           {/* Show headers — same 3-column grid as rows */}
-          <div className="grid grid-cols-[100px_1fr_1fr] gap-2 mb-6">
+          <div className="grid grid-cols-[80px_1fr_1fr] sm:grid-cols-[100px_1fr_1fr] gap-2 mb-6">
             <div />
             {[showA, showB].map((show, i) => {
               const score = i === 0 ? scoreA : scoreB;
@@ -495,12 +495,12 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
             label="Tickets"
             valueA={sortedLinksA.length > 0 ? (
               <TicketLink showName={showA.title} showId={showA.id} showSlug={showA.slug} showStatus={showA.status} platform={sortedLinksA[0].platform} url={sortedLinksA[0].url} pageType="comparison" linkPosition={0} totalLinks={sortedLinksA.length} className="text-white font-semibold hover:text-brand transition-colors">
-                <span className="text-gray-400 font-normal text-xs">{sortedLinksA[0].platform} from </span>{currency}{sortedLinksA[0].priceFrom ?? '—'}
+                <span className="text-gray-400 font-normal text-xs">{sortedLinksA[0].platform} from </span>{currencyA}{sortedLinksA[0].priceFrom ?? '—'}
               </TicketLink>
             ) : '—'}
             valueB={sortedLinksB.length > 0 ? (
               <TicketLink showName={showB.title} showId={showB.id} showSlug={showB.slug} showStatus={showB.status} platform={sortedLinksB[0].platform} url={sortedLinksB[0].url} pageType="comparison" linkPosition={0} totalLinks={sortedLinksB.length} className="text-white font-semibold hover:text-brand transition-colors">
-                <span className="text-gray-400 font-normal text-xs">{sortedLinksB[0].platform} from </span>{currency}{sortedLinksB[0].priceFrom ?? '—'}
+                <span className="text-gray-400 font-normal text-xs">{sortedLinksB[0].platform} from </span>{currencyB}{sortedLinksB[0].priceFrom ?? '—'}
               </TicketLink>
             ) : '—'}
           />
@@ -615,7 +615,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                   valueB={<CreativeLink member={bookB} roleSlug="playwrights" />}
                 />
               )}
-              {showA.type === 'musical' && (musicA || musicB) && (
+              {(showA.type === 'musical' || showB.type === 'musical') && (musicA || musicB) && (
                 <Row
                   label="Music"
                   valueA={<CreativeLink member={musicA} roleSlug="composers" />}
@@ -635,7 +635,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
 
         {/* Critics consensus — same 3-column grid */}
         <div className="card p-4 sm:p-6 mb-6">
-          <div className="grid grid-cols-[100px_1fr_1fr] gap-2">
+          <div className="grid grid-cols-[80px_1fr_1fr] sm:grid-cols-[100px_1fr_1fr] gap-2">
             <div className="text-[13px] text-gray-400 font-medium pt-0.5">Critics Say</div>
             <div>
               <Link href={`/show/${showA.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showA.title}</Link>
@@ -698,8 +698,8 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
               </p>
             )}
             <p className="pt-2 border-t border-white/10">
-              <Link href={`/show/${scoreA !== null && scoreB !== null && scoreA >= scoreB ? showA.slug : showB.slug}`} className="text-brand hover:text-brand-hover font-medium">
-                Learn more about {scoreA !== null && scoreB !== null && scoreA >= scoreB ? showA.title : showB.title} →
+              <Link href={`/show/${scoreWinnerB ? showB.slug : showA.slug}`} className="text-brand hover:text-brand-hover font-medium">
+                Learn more about {scoreWinnerB ? showB.title : showA.title} →
               </Link>
             </p>
           </div>
