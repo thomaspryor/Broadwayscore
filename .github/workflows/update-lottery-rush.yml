@@ -56,10 +56,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/lottery-rush.json data/show-schedules.json
-          git commit -m "chore: Update lottery/rush + schedule data from BwayRush + Playbill
+          git add data/lottery-rush.json data/show-schedules.json data/shows.json
+          git commit -m "chore: Update lottery/rush data from BwayRush + Playbill + Twopenny
 
-          Automated weekly update of Broadway lottery/rush policies and showtimes.
+          Automated weekly update of Broadway + West End lottery/rush policies.
 
           Co-Authored-By: GitHub Action <action@github.com>"
           bash scripts/lib/push-with-retry.sh
@@ -95,4 +95,4 @@ jobs:
             echo "No changes detected - data is already up to date" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Sources: BwayRush.com + Playbill" >> $GITHUB_STEP_SUMMARY
+          echo "Sources: BwayRush.com + Playbill (Broadway) + Twopenny Theatre (West End)" >> $GITHUB_STEP_SUMMARY
