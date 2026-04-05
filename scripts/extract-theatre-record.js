@@ -509,14 +509,17 @@ const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
 const outletRegistry = JSON.parse(fs.readFileSync(OUTLET_REGISTRY, 'utf8'));
 
 function getOutletId(trName) {
-  // Direct map first
+  // Direct map first (case-insensitive)
   if (TR_OUTLET_MAP[trName]) return TR_OUTLET_MAP[trName];
+  const trNameLower = trName.toLowerCase().trim();
+  for (const [key, val] of Object.entries(TR_OUTLET_MAP)) {
+    if (key.toLowerCase() === trNameLower) return val;
+  }
 
   // Try matching against outlet registry aliases
-  const normalized = trName.toLowerCase().trim();
   for (const [id, outlet] of Object.entries(outletRegistry.outlets || {})) {
-    if (outlet.displayName?.toLowerCase() === normalized) return id;
-    if (outlet.aliases?.some(a => a.toLowerCase() === normalized)) return id;
+    if (outlet.displayName?.toLowerCase() === trNameLower) return id;
+    if (outlet.aliases?.some(a => a.toLowerCase() === trNameLower)) return id;
   }
 
   // Slugify as fallback
