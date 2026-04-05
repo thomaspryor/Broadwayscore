@@ -2,9 +2,10 @@
 /**
  * scrape-lottery-rush.js — Robust Lottery/Rush Data System
  *
- * Scrapes lottery/rush data from two sources:
- * 1. BwayRush.com — Current prices (ScrapingBee/Bright Data markdown extraction)
- * 2. Playbill — Detailed policies/instructions (LLM-powered extraction)
+ * Scrapes lottery/rush data from three sources:
+ * 1. BwayRush.com — Broadway current prices (ScrapingBee/Bright Data markdown extraction)
+ * 2. Playbill — Broadway detailed policies/instructions (LLM-powered extraction)
+ * 3. Twopenny Theatre — West End lottery/rush/day seats (LLM-powered extraction)
  *
  * Key design principles:
  * - Incremental merge (never wholesale replace)
@@ -16,6 +17,7 @@
  *   node scripts/scrape-lottery-rush.js                    # Full scrape
  *   node scripts/scrape-lottery-rush.js --source=bwayrush   # Single source
  *   node scripts/scrape-lottery-rush.js --source=playbill   # Single source
+ *   node scripts/scrape-lottery-rush.js --source=twopenny   # West End only
  *   node scripts/scrape-lottery-rush.js --dry-run           # Preview only
  *   node scripts/scrape-lottery-rush.js --verbose           # Verbose logging
  */
@@ -39,19 +41,28 @@ const args = process.argv.slice(2);
 const sourceFilter = args.find(a => a.startsWith('--source='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
+const forceGuard = args.includes('--force');
 
 // API keys
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 
-// Load shows data for matching (Broadway-only — BwayRush/Playbill are Broadway sources)
-const allShows = loadShows().filter(s => !s.category || s.category === 'broadway');
+// Load shows data for matching
+const allLoadedShows = loadShows();
+const allShows = allLoadedShows.filter(s => !s.category || s.category === 'broadway');
+const weShows = allLoadedShows.filter(s => s.category === 'west-end' || s.category === 'off-west-end');
 
 // Override map for titles fuzzy matching can't handle
 const TITLE_OVERRIDES = {
   '& Juliet': 'and-juliet-2022',
   'Titaníque': 'titanique-2026',
+};
+
+const WE_TITLE_OVERRIDES = {
+  'Titaníque': 'titanique-west-end-2024',
+  'Harry Potter and the Cursed Child': 'harry-potter-and-the-cursed-child-both-parts-west-end-2021',
+  'My Neighbour Totoro': 'my-neighbour-totoro-west-end-2025',
 };
 
 // ==================== HTTP Utilities ====================
@@ -214,6 +225,17 @@ function resolveShowId(externalTitle) {
     return { id: match.show.id, confidence: match.confidence };
   }
 
+  return null;
+}
+
+function resolveWeShowId(externalTitle) {
+  if (WE_TITLE_OVERRIDES[externalTitle]) {
+    return { id: WE_TITLE_OVERRIDES[externalTitle], confidence: 'override' };
+  }
+  const match = matchTitleToShow(externalTitle, weShows, { market: 'west-end', prefer: 'open' });
+  if (match && match.confidence === 'high') {
+    return { id: match.show.id, confidence: match.confidence };
+  }
   return null;
 }
 
@@ -975,6 +997,151 @@ function postProcessPlaybillEntry(entry) {
   return entry;
 }
 
+// ==================== Twopenny Theatre (West End) ====================
+
+const TWOPENNY_URL = 'https://twopennytheatre.com/the-best-discounts-for-every-show-in-london/';
+
+async function scrapeTwopenny() {
+  if (!ANTHROPIC_KEY) {
+    console.error('[Twopenny] ANTHROPIC_API_KEY not set — skipping');
+    return {};
+  }
+
+  console.log('\n[Twopenny] Fetching West End lottery/rush data...');
+  const result = await fetchContent(TWOPENNY_URL, { renderJs: false });
+
+  if (!result) {
+    console.error('[Twopenny] Failed to fetch page — skipping');
+    return {};
+  }
+
+  let pageText = result.content;
+  if (result.format === 'html') {
+    pageText = htmlToText(pageText);
+  }
+
+  if (pageText.length < 1000) {
+    console.error(`[Twopenny] Page too short (${pageText.length} chars) — skipping`);
+    return {};
+  }
+
+  console.log(`[Twopenny] Got page (${pageText.length} chars), extracting via LLM...`);
+
+  const extracted = await extractTwopennyWithLLM(pageText);
+  if (!extracted || extracted.length === 0) {
+    console.error('[Twopenny] LLM extraction returned no results — skipping');
+    return {};
+  }
+
+  console.log(`[Twopenny] LLM extracted ${extracted.length} valid shows`);
+  return mapTwopennyToShows(extracted);
+}
+
+async function extractTwopennyWithLLM(pageText) {
+  const prompt = `Extract lottery/rush/day seat data from this London West End theatre discount page.
+
+Return ONLY a JSON array (no markdown fences, no explanation). Each element:
+{
+  "title": "Show Title",
+  "lottery": { "type": "digital", "platform": "...", "price": 25, "time": "...", "instructions": "..." } or null,
+  "rush": { "type": "general|digital", "platform": "...", "price": 30, "time": "...", "instructions": "..." } or null,
+  "digitalRush": { "platform": "...", "price": 30, "time": "...", "instructions": "..." } or null
+}
+
+CRITICAL classification rules for London/West End:
+- LOTTERY = random drawing/selection. Winners are chosen randomly. Uses words like "lottery", "draw", "winners selected".
+- RUSH / DAY SEATS = first-come first-served. No random drawing. Uses words like "rush", "day seats", "released", "available".
+- DIGITAL RUSH = rush tickets available via app (TodayTix). If the platform is TodayTix and tickets are first-come, classify as "digitalRush".
+- GENERAL RUSH = rush tickets from box office or show website.
+- If a show has BOTH a TodayTix rush AND a website rush, include BOTH: TodayTix as "digitalRush" and website as "rush".
+
+Other rules:
+- price must be a number (no £ symbol)
+- platform should be one of: "TodayTix", "show website", "InYouGo", "Disney website", "National Theatre website", or the specific site name
+- Only include fields that actually exist in the text
+- Do not invent data not in the text
+- Do NOT include null-valued fields — omit them entirely
+
+Article:
+${pageText}`;
+
+  try {
+    const response = await httpsRequest('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 8000,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    const parsed = JSON.parse(response);
+    const text = parsed.content?.[0]?.text;
+
+    if (!text) throw new Error('No text in LLM response');
+
+    const jsonMatch = text.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) throw new Error('No JSON array found in LLM response');
+
+    const shows = JSON.parse(jsonMatch[0]);
+    if (!Array.isArray(shows)) throw new Error('LLM response is not an array');
+
+    const valid = shows.filter(entry => {
+      if (!entry.title || typeof entry.title !== 'string') return false;
+      return !!(entry.lottery || entry.rush || entry.digitalRush);
+    });
+
+    console.log(`  [LLM] ${shows.length} extracted, ${valid.length} valid`);
+    return valid;
+
+  } catch (err) {
+    console.error(`[Twopenny] LLM extraction failed: ${err.message}`);
+    return null;
+  }
+}
+
+function mapTwopennyToShows(extracted) {
+  const result = {};
+  const unmatched = [];
+
+  for (const entry of extracted) {
+    // Post-process: TodayTix rush → digitalRush (but keep lotteries as lotteries — WE has TodayTix lotteries)
+    if (entry.rush && entry.rush.platform === 'TodayTix') {
+      entry.digitalRush = entry.rush;
+      entry.digitalRush.type = 'digital';
+      delete entry.rush;
+    }
+
+    const resolved = resolveWeShowId(entry.title);
+    if (!resolved) {
+      unmatched.push(entry.title);
+      continue;
+    }
+
+    const showEntry = {};
+    for (const field of ['lottery', 'rush', 'digitalRush']) {
+      if (entry[field]) showEntry[field] = entry[field];
+    }
+
+    result[resolved.id] = showEntry;
+  }
+
+  if (unmatched.length > 0) {
+    console.log(`\n[Twopenny] ${unmatched.length} unmatched titles:`);
+    unmatched.forEach(t => console.log(`  ? "${t}"`));
+  }
+
+  console.log(`[Twopenny] Mapped ${Object.keys(result).length} shows to WE IDs`);
+  return result;
+}
+
+// ==================== Playbill Show Mapping ====================
+
 function mapPlaybillToShows(extracted) {
   const result = {};
   const unmatched = [];
@@ -1137,10 +1304,14 @@ function validateShowIdStability(original, updated) {
   const removed = [...oldIds].filter(id => !newIds.has(id));
 
   if (added.length > 5 || removed.length > 3) {
-    console.error(`\n[Guard] ABORT: Too many ID changes (${added.length} added, ${removed.length} removed)`);
-    if (added.length > 0) console.error(`  Added: ${added.join(', ')}`);
-    if (removed.length > 0) console.error(`  Removed: ${removed.join(', ')}`);
-    process.exit(1);
+    if (forceGuard) {
+      console.warn(`\n[Guard] WARNING: ${added.length} added, ${removed.length} removed — bypassed with --force`);
+    } else {
+      console.error(`\n[Guard] ABORT: Too many ID changes (${added.length} added, ${removed.length} removed)`);
+      if (added.length > 0) console.error(`  Added: ${added.join(', ')}`);
+      if (removed.length > 0) console.error(`  Removed: ${removed.join(', ')}`);
+      process.exit(1);
+    }
   }
 
   if (verbose && (added.length > 0 || removed.length > 0)) {
@@ -1221,7 +1392,7 @@ function normalizeUrl(url) {
 }
 
 /** Known intentional fractional prices (e.g., Club 2064 = $20.64) */
-const ALLOWED_FRACTIONAL_PRICES = new Set([20.64]);
+const ALLOWED_FRACTIONAL_PRICES = new Set([20.64, 29.5, 37.5]); // WE prices like £29.50, £37.50
 
 /** Validate a price: must be positive, integer (for lottery/rush/SRO), and within range. */
 function validatePrice(price, field, showId) {
@@ -1594,6 +1765,14 @@ async function main() {
     const playbillData = await scrapePlaybill();
     if (Object.keys(playbillData).length > 0) {
       const changes = mergeIntoExisting(existing, playbillData, 'playbill');
+      allChanges.push(...changes);
+    }
+  }
+
+  if (!sourceFilter || sourceFilter === 'twopenny') {
+    const twopennyData = await scrapeTwopenny();
+    if (Object.keys(twopennyData).length > 0) {
+      const changes = mergeIntoExisting(existing, twopennyData, 'twopenny');
       allChanges.push(...changes);
     }
   }

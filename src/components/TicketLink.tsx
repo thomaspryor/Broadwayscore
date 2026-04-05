@@ -109,24 +109,24 @@ export default function TicketLink({
     }
   };
 
-  // Primary CTA (position 0, affiliate) gets a filled button — like the iOS app's "Buy Tickets" bar.
-  // Secondary affiliates get a subtle amber accent. Non-affiliates stay gray.
+  // Primary CTA (position 0, affiliate) gets a filled gold button matching the iOS app.
+  // Secondary affiliates get a subtle warm tint. Non-affiliates stay gray.
   const isPrimaryCta = isAffiliate && linkPosition === 0;
   const resolvedClassName = isPrimaryCta
     ? (className ?? '')
-        .replace(/bg-surface-overlay/g, 'bg-amber-600')
-        .replace(/hover:bg-white\/10/g, 'hover:bg-amber-500')
-        .replace(/border-white\/10/g, 'border-amber-500')
-        .replace(/text-gray-300/g, 'text-white')
-        .replace(/hover:text-white/g, 'hover:text-white')
-        + ' font-bold shadow-sm shadow-amber-900/30'
+        .replace(/bg-surface-overlay/g, 'bg-accent-gold')
+        .replace(/hover:bg-white\/10/g, 'hover:bg-accent-gold/80')
+        .replace(/border-white\/10/g, 'border-accent-gold')
+        .replace(/text-gray-300/g, 'text-gray-900')
+        .replace(/hover:text-white/g, 'hover:text-gray-900')
+        + ' font-bold shadow-sm shadow-accent-gold/20'
     : isAffiliate
     ? (className ?? '')
-        .replace(/bg-surface-overlay/g, 'bg-amber-500/10')
-        .replace(/hover:bg-white\/10/g, 'hover:bg-amber-500/20')
-        .replace(/border-white\/10/g, 'border-amber-500/20')
-        .replace(/text-gray-300/g, 'text-amber-400/70')
-        .replace(/hover:text-white/g, 'hover:text-amber-300')
+        .replace(/bg-surface-overlay/g, 'bg-accent-gold/10')
+        .replace(/hover:bg-white\/10/g, 'hover:bg-accent-gold/20')
+        .replace(/border-white\/10/g, 'border-accent-gold/20')
+        .replace(/text-gray-300/g, 'text-accent-gold/70')
+        .replace(/hover:text-white/g, 'hover:text-accent-gold')
     : className ?? '';
 
   return (
