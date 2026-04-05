@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-05T21:50:34.259Z",
+  "timestamp": "2026-04-05T21:59:02.381Z",
   "stats": {
-    "totalReviews": 34335,
-    "alreadyFlagged": 13128,
+    "totalReviews": 34336,
+    "alreadyFlagged": 13127,
     "dateGuardCatches": 12,
     "directorMismatch": 930,
     "tvFilmSignals": 3441,
-    "londonSignals": 1097,
+    "londonSignals": 1098,
     "offBroadwaySignals": 980,
     "yearMismatch": 72,
-    "noPublishDate": 5569
+    "noPublishDate": 5570
   },
   "findings": [
     {
@@ -51177,7 +51177,6 @@
     {
       "showId": "the-harder-they-come-off-west-end-2026",
       "file": "artsdesk--gary-naylor.json",
-      "score": 90,
       "publishDate": "2025-09-24",
       "url": "http://theartsdesk.com/theatre/harder-they-come-stratford-east-review-still-packs-punch-half-century",
       "findings": [
@@ -65053,7 +65052,6 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "independent--holly-williams.json",
-      "score": 59,
       "publishDate": "2016-02-25",
       "url": "https://www.independent.co.uk/life-style/health-and-families/features/fainting-is-not-funny-the-trials-of-a-theatre-critic-from-cleansed-to-titus-andronicus-a6903936.html",
       "findings": [
@@ -65075,6 +65073,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "thestage--natasha-tripney.json",
+      "publishDate": "2016-02-25",
+      "url": "https://www.thestage.co.uk/opinion/natasha-tripney-can-we-all-stop-banging-on-about-the-violence-in-cleansed",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -70530,7 +70541,6 @@
     {
       "showId": "jeezus-off-west-end-2026",
       "file": "whatsonstage--alexander-cohen.json",
-      "score": 86,
       "publishDate": "2025-08-19",
       "url": "https://www.whatsonstage.com/news/jeezus-at-underbelly-cowgate-edinburgh-fringe-review_1691217/",
       "findings": [
