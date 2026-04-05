@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { matchTitleToShow } = require('./lib/show-matching');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 /**
  * Get ordinal suffix for a number (1st, 2nd, 3rd, 4th, 11th, 12th, 13th, 21st, etc.)
@@ -503,7 +504,7 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
  */
 async function scrapeOfficialTonys(showTitle) {
   // TonyAwards.com has an API-like search
-  const searchUrl = `https://www.tonyawards.com/nominees/?q=${encodeURIComponent(showTitle)}`;
+  const searchUrl = `https://www.tonyawards.com/nominees/?q=${encodeURIComponent(cleanSearchTitle(showTitle))}`;
   // This would need proper scraping setup - placeholder for now
   return null;
 }

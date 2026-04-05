@@ -26,6 +26,7 @@ const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { getTheaterAddress } = require('./lib/venue-addresses');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue } = require('./lib/venue-classification');
@@ -834,7 +835,7 @@ function logWESourceDivergence(todayTixShows, oltShows) {
 // ── TodayTix search for ShowScore candidate validation ──
 
 function searchTodayTixByTitle(title, location = 1) {
-  const query = encodeURIComponent(title);
+  const query = encodeURIComponent(cleanSearchTitle(title));
   const url = `https://api.todaytix.com/api/v2/shows?query=${query}&location=${location}`;
   return new Promise((resolve, reject) => {
     https.get(url, (response) => {

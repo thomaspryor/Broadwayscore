@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 // Load existing data
 const showsPath = path.join(__dirname, '../data/shows.json');
@@ -96,7 +97,7 @@ Generated: ${new Date().toISOString()}
     });
 
     output += `\n**SEC EDGAR Search:**\n`;
-    output += `https://www.sec.gov/cgi-bin/srch-ia?text=${encodeURIComponent(show.title + ' Broadway')}&first=1&last=40\n\n`;
+    output += `https://www.sec.gov/cgi-bin/srch-ia?text=${encodeURIComponent(cleanSearchTitle(show.title) + ' Broadway')}&first=1&last=40\n\n`;
 
     output += `---\n\n`;
   }
@@ -116,7 +117,7 @@ async function main() {
       console.log(`  ${i + 1}. ${q}`);
     });
     console.log('\nSEC EDGAR search:');
-    console.log(`  https://www.sec.gov/cgi-bin/srch-ia?text=${encodeURIComponent(targetShow + ' Broadway')}&first=1&last=40`);
+    console.log(`  https://www.sec.gov/cgi-bin/srch-ia?text=${encodeURIComponent(cleanSearchTitle(targetShow) + ' Broadway')}&first=1&last=40`);
   } else {
     const missing = findMissingData();
 

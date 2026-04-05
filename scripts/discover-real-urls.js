@@ -7,17 +7,18 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 // Outlet search URL patterns
 const OUTLET_SEARCH = {
-  'nystagereview.com': show => `https://nystagereview.com/?s=${encodeURIComponent(show)}`,
-  'timeout.com': show => `https://www.timeout.com/search?q=${encodeURIComponent(show + ' broadway review')}&type=Article`,
-  'newyorktheatreguide.com': show => `https://www.newyorktheatreguide.com/search?q=${encodeURIComponent(show)}`,
-  'theatrely.com': show => `https://www.theatrely.com/?s=${encodeURIComponent(show)}`,
-  'broadwaynews.com': show => `https://www.broadwaynews.com/?s=${encodeURIComponent(show)}`,
-  'hollywoodreporter.com': show => `https://www.hollywoodreporter.com/search/?q=${encodeURIComponent(show + ' broadway review')}`,
-  'chicagotribune.com': show => `https://www.chicagotribune.com/search/?q=${encodeURIComponent(show + ' broadway review')}`,
-  'ew.com': show => `https://ew.com/search/?q=${encodeURIComponent(show + ' broadway')}`,
+  'nystagereview.com': show => `https://nystagereview.com/?s=${encodeURIComponent(cleanSearchTitle(show))}`,
+  'timeout.com': show => `https://www.timeout.com/search?q=${encodeURIComponent(cleanSearchTitle(show) + ' broadway review')}&type=Article`,
+  'newyorktheatreguide.com': show => `https://www.newyorktheatreguide.com/search?q=${encodeURIComponent(cleanSearchTitle(show))}`,
+  'theatrely.com': show => `https://www.theatrely.com/?s=${encodeURIComponent(cleanSearchTitle(show))}`,
+  'broadwaynews.com': show => `https://www.broadwaynews.com/?s=${encodeURIComponent(cleanSearchTitle(show))}`,
+  'hollywoodreporter.com': show => `https://www.hollywoodreporter.com/search/?q=${encodeURIComponent(cleanSearchTitle(show) + ' broadway review')}`,
+  'chicagotribune.com': show => `https://www.chicagotribune.com/search/?q=${encodeURIComponent(cleanSearchTitle(show) + ' broadway review')}`,
+  'ew.com': show => `https://ew.com/search/?q=${encodeURIComponent(cleanSearchTitle(show) + ' broadway')}`,
 };
 
 const CONFIG = {

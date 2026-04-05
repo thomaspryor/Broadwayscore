@@ -26,6 +26,7 @@ const fs = require('fs');
 const { serpQuery } = require('./lib/url-discovery');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 const crypto = require('crypto');
 
@@ -1027,7 +1028,7 @@ async function discoverTodayTixId(showTitle) {
   console.log(`   Searching TodayTix for "${showTitle}"...`);
 
   // Method 1: Direct TodayTix search (works for open shows)
-  const searchUrl = `https://www.todaytix.com/nyc/shows?q=${encodeURIComponent(showTitle)}`;
+  const searchUrl = `https://www.todaytix.com/nyc/shows?q=${encodeURIComponent(cleanSearchTitle(showTitle))}`;
 
   try {
     const html = await fetchPageWithFallback(searchUrl);

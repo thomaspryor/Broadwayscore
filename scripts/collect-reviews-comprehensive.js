@@ -17,6 +17,7 @@
 
 const puppeteer = require('puppeteer');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 const fs = require('fs');
 const path = require('path');
 
@@ -49,7 +50,7 @@ const AGGREGATORS = {
   },
   bww: {
     name: 'BroadwayWorld',
-    urlPattern: (slug, title) => `https://www.broadwayworld.com/article/Review-Roundup-${encodeURIComponent(title.replace(/ /g, '-'))}`
+    urlPattern: (slug, title) => `https://www.broadwayworld.com/article/Review-Roundup-${encodeURIComponent(cleanSearchTitle(title).replace(/ /g, '-'))}`
   }
 };
 
@@ -161,7 +162,7 @@ async function scrapeShowScore(page, showSlug) {
 
 async function scrapeBWW(page, showSlug, showTitle, year) {
   // BWW review roundups have various URL patterns, so we'll search for it
-  const searchUrl = `https://www.google.com/search?q=site:broadwayworld.com+"Review+Roundup"+"${encodeURIComponent(showTitle)}"+${year}`;
+  const searchUrl = `https://www.google.com/search?q=site:broadwayworld.com+"Review+Roundup"+"${encodeURIComponent(cleanSearchTitle(showTitle))}"+${year}`;
 
   console.log(`  BWW: Searching...`);
 
