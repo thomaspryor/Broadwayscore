@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 // Try to load scraper module, fall back to fetch if not available
 let scraper;
@@ -38,18 +39,18 @@ const SOURCES = {
   },
   broadwayDirect: {
     name: 'Broadway Direct',
-    searchUrl: (title) => `https://broadwaydirect.com/?s=${encodeURIComponent(title)}+photos`,
+    searchUrl: (title) => `https://broadwaydirect.com/?s=${encodeURIComponent(cleanSearchTitle(title))}+photos`,
     galleryPattern: /broadwaydirect\.com\/wp-content\/uploads\/\d{4}\/\d{2}\/[^"'\s]+\.jpg/gi,
     forClosedShows: true,
   },
   playbill: {
     name: 'Playbill',
-    searchUrl: (title) => `https://playbill.com/searchpage?q=${encodeURIComponent(title)}&sort=Most+Recent`,
+    searchUrl: (title) => `https://playbill.com/searchpage?q=${encodeURIComponent(cleanSearchTitle(title))}&sort=Most+Recent`,
     forClosedShows: true,
   },
   broadwayWorld: {
     name: 'BroadwayWorld',
-    searchUrl: (title) => `https://www.broadwayworld.com/search/?q=${encodeURIComponent(title)}&searchtype=photos`,
+    searchUrl: (title) => `https://www.broadwayworld.com/search/?q=${encodeURIComponent(cleanSearchTitle(title))}&searchtype=photos`,
     forClosedShows: true,
   },
 };
@@ -79,9 +80,10 @@ async function fetchUrl(url) {
  * Try to find images from Broadway Direct
  */
 async function tryBroadwayDirect(show) {
+  const cleanTitle = cleanSearchTitle(show.title);
   const searchTerms = [
-    `${show.title} broadway photos`,
-    `${show.title} first look`,
+    `${cleanTitle} broadway photos`,
+    `${cleanTitle} first look`,
   ];
 
   for (const term of searchTerms) {
@@ -140,7 +142,7 @@ async function tryBroadwayDirect(show) {
  * Try to find images from Playbill
  */
 async function tryPlaybill(show) {
-  const searchUrl = `https://playbill.com/searchpage?q=${encodeURIComponent(show.title)}&sort=Most+Recent`;
+  const searchUrl = `https://playbill.com/searchpage?q=${encodeURIComponent(cleanSearchTitle(show.title))}&sort=Most+Recent`;
   console.log(`  Trying Playbill search...`);
 
   const html = await fetchUrl(searchUrl);

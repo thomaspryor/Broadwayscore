@@ -24,6 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 // ==================== Configuration ====================
 
@@ -1505,7 +1506,7 @@ async function resolveTodayTixUrls(existing) {
 
   for (const { showId, field, title } of toResolve) {
     try {
-      const url = `https://api.todaytix.com/api/v2/shows?query=${encodeURIComponent(title)}&location=1&limit=3`;
+      const url = `https://api.todaytix.com/api/v2/shows?query=${encodeURIComponent(cleanSearchTitle(title))}&location=1&limit=3`;
       const resp = await fetch(url);
       if (!resp.ok) {
         console.warn(`  [TodayTix] API error for "${title}": ${resp.status}`);

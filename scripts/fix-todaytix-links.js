@@ -19,6 +19,7 @@ const path = require('path');
 const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildTodayTixUrl, normalizeShowName } = require('./lib/url-utils');
+const { cleanSearchTitle } = require('./lib/title-normalization');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -104,7 +105,7 @@ async function getPageTitle(url) {
  * Search TodayTix API for a show by name. Returns { id, slug, displayName } or null.
  */
 async function searchTodayTixApi(showTitle, location = 1) {
-  const query = encodeURIComponent(showTitle);
+  const query = encodeURIComponent(cleanSearchTitle(showTitle));
   const apiUrl = `https://api.todaytix.com/api/v2/shows?query=${query}&location=${location}`;
 
   try {

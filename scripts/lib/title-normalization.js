@@ -90,8 +90,8 @@ function titlesMatch(a, b) {
  */
 function cleanSearchTitle(title) {
   return title
-    .replace(/['']/g, "'")                   // Normalize curly apostrophes
-    .replace(/[""]/g, '"')                   // Normalize curly quotes
+    .replace(/[\u2018\u2019\u0060\u00B4]/g, "'")  // Normalize curly/backtick/acute apostrophes
+    .replace(/[\u201C\u201D]/g, '"')             // Normalize curly quotes
     .replace(/&/g, 'and')                    // & → and
     .replace(/\s*\([^)]{5,}\)\s*$/, '')      // Strip trailing parenthetical (venue qualifiers)
     .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue)$/i, '')
