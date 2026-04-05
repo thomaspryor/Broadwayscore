@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getOffWestEndShows } from '@/lib/data-core';
-import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import OffWestEndPageClient from '@/components/OffWestEndPageClient';
 import type { OffWestEndShow } from '@/components/OffWestEndPageClient';
@@ -27,27 +27,7 @@ export const metadata: Metadata = {
 };
 
 function serializeShow(show: ReturnType<typeof getOffWestEndShows>[number]): OffWestEndShow {
-  const buzz = getAudienceBuzz(show.id);
-  return {
-    id: show.id,
-    slug: show.slug,
-    title: show.title,
-    venue: show.venue,
-    openingDate: show.openingDate,
-    closingDate: show.closingDate ?? undefined,
-    status: show.status,
-    type: show.type,
-    isRevival: show.isRevival ?? undefined,
-    reviewYearNote: show.reviewYearNote ?? undefined,
-    images: show.images,
-    criticScore: show.criticScore
-      ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount, tier1Count: show.criticScore.tier1Count, tier2Count: show.criticScore.tier2Count }
-      : undefined,
-    audienceCombinedScore: buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore : null,
-    audienceGrade: buzz && hasEnoughAudienceReviews(buzz) ? getAudienceGrade(buzz.combinedScore) : null,
-    creativeTeam: show.creativeTeam,
-    category: 'off-west-end',
-  };
+  return serializeShowForClient(show, { category: 'off-west-end' });
 }
 
 export default function OffWestEndPage() {

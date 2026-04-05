@@ -16,8 +16,10 @@ export interface ShowCardShow {
   id: string;
   slug: string;
   title: string;
+  venue: string;
   openingDate: string;
   closingDate?: string;
+  previewsStartDate?: string;
   status: string;
   type: string;
   isRevival?: boolean;
@@ -29,9 +31,13 @@ export interface ShowCardShow {
   category?: string; // undefined for legacy Broadway shows — defaults to 'broadway'
   subtitle?: string; // e.g. "$10 lottery" — shown below title on shelf cards
   subtitleColor?: string; // Tailwind text color class (default: emerald-400)
+  tags?: string[];
+  ageRecommendation?: string;
+  creativeTeam?: Array<{ name: string; role: string }>;
   // Market-specific optional fields
   isOffWestEnd?: boolean; // West End only
   performances?: number; // Browse only
+  runtime?: string; // Browse only
   ticketLinks?: { platform: string; url: string; priceFrom?: number | null }[];
 }
 
