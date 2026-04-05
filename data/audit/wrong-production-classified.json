@@ -1,16 +1,258 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-05T08:12:21.116Z",
+    "generatedAt": "2026-04-05T08:43:24.430Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 81,
-    "classified": 0,
-    "wrongProduction": 0,
-    "correctProduction": 0,
-    "uncertain": 0,
+    "total": 96,
+    "classified": 15,
+    "wrongProduction": 8,
+    "correctProduction": 1,
+    "uncertain": 6,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 8,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "a-year-with-frog-and-toad-2003",
+      "showTitle": "A Year With Frog and Toad",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 14, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This is a collection of short blurbs about various shows, and none of them are about A Year With Frog and Toad. The publish dates are also in 2026, long after the show closed."
+    },
+    {
+      "showId": "enchanted-april-2003",
+      "showTitle": "Enchanted April",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 30, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This is a collection of theater news items from April 2026, and does not appear to be a review of Enchanted April at all."
+    },
+    {
+      "showId": "the-look-of-love-2003",
+      "showTitle": "The Look of Love",
+      "showYear": 2003,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "May 5, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions, and none of them appear to be about \"The Look of Love\". The publish date of 2003 is also not relevant, as the date is for the overall article, not the individual blurbs."
+    },
+    {
+      "showId": "night-mother-2004",
+      "showTitle": "'night, Mother",
+      "showYear": 2004,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 15, 2004",
+      "originalSignals": [
+        "revival text signals: revival, new production, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of short blurbs about various productions. There is no mention of the play 'night, Mother' or its cast/creative team."
+    },
+    {
+      "showId": "after-the-fall-2004",
+      "showTitle": "After The Fall",
+      "showYear": 2004,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "July 30, 2004",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions, none of which appear to be 'After the Fall'. The publish date of 2026 also indicates it is not about the 2004 production."
+    },
+    {
+      "showId": "little-shop-of-horrors-2003",
+      "showTitle": "Little Shop of Horrors",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "October 3, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of short blurbs about various productions. There is no mention of \"Little Shop of Horrors\" or any cast/creative team members associated with the 2003 production."
+    },
+    {
+      "showId": "democracy-2004",
+      "showTitle": "Democracy",
+      "showYear": 2004,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 19, 2004",
+      "originalSignals": [
+        "revival text signals: revival, this production"
+      ],
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review discusses the show as new, opening at the Brooks Atkinson Theater in November 2004, and mentions cast members James Naughton and Richard Thomas. All of this matches the filed production."
+    },
+    {
+      "showId": "the-retreat-from-moscow-2003",
+      "showTitle": "The Retreat From Moscow",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "October 24, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production",
+        "modern references: netflix"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "This is a collection of short blurbs about various productions, and does not seem to be a review of \"The Retreat From Moscow\" at all. However, it is difficult to be certain without more context."
+    },
+    {
+      "showId": "the-violet-hour-2003",
+      "showTitle": "The Violet Hour",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 7, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of theater news and reviews from 2026, and does not discuss the 2003 production of The Violet Hour."
+    },
+    {
+      "showId": "i-am-my-own-wife-2003",
+      "showTitle": "I Am My Own Wife",
+      "showYear": 2003,
+      "file": "nytimes--bruce-weber.json",
+      "outlet": "The New York Times",
+      "criticName": "Bruce Weber",
+      "publishDate": "December 4, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of unrelated blurbs about various theater productions. There is no mention of \"I Am My Own Wife\" or any information to determine if it is about the 2003 production."
+    },
+    {
+      "showId": "wonderful-town-2003",
+      "showTitle": "Wonderful Town",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 24, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions, and does not appear to be about 'Wonderful Town' at all."
+    },
+    {
+      "showId": "match-2004",
+      "showTitle": "Match",
+      "showYear": 2004,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 9, 2004",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions and events. It does not mention the play 'Match' at all, so it cannot be a review of the 2004 Broadway production."
+    },
+    {
+      "showId": "henry-iv-2003",
+      "showTitle": "Henry IV",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "November 21, 2003",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "This is a collection of short blurbs about various productions. There is no mention of Shakespeare or the cast of Henry IV, so it is impossible to determine if it is about the filed production."
+    },
+    {
+      "showId": "bombay-dreams-2004",
+      "showTitle": "Bombay Dreams",
+      "showYear": 2004,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "April 30, 2004",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "This review is a collection of short blurbs about various theater productions and events. It does not focus on Bombay Dreams or its 2004 opening. The content is dated 2026, far from the 2004 opening of Bombay Dreams."
+    },
+    {
+      "showId": "sight-unseen-2004",
+      "showTitle": "Sight Unseen",
+      "showYear": 2004,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "May 26, 2004",
+      "originalSignals": [
+        "revival text signals: revival, current production"
+      ],
+      "verdict": "UNCERTAIN",
+      "confidence": "low",
+      "targetShowId": null,
+      "reasoning": "The review excerpt is a collection of unrelated blurbs about various theater productions and events. There is no mention of 'Sight Unseen' or any information that would help determine if it is about the 2004 production."
+    }
+  ]
 }
