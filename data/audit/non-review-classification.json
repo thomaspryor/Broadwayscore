@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-06T02:53:13.603Z",
+    "generatedAt": "2026-04-06T03:34:08.730Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 34664,
+      "totalFiles": 34662,
       "inReviewsJson": 15975,
       "skippedExcluded": 5,
-      "withFullText": 17,
-      "excerptOnly": 1602,
-      "llmClassified": 16,
+      "withFullText": 20,
+      "excerptOnly": 1600,
+      "llmClassified": 19,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 16,
-      "budgetUsed": 0.0017000000000000006,
-      "llmCalls": 17,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14351
+      "skippedAlreadyClassified": 14350
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, but it does not contain any evaluative content about a specific production of \"Fences\" or any other show. It seems to be a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific show. It mentions \"Broadway news updates\" and \"Music album reviews\" which suggests a news or directory type of content.",
       "currentScore": 62
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature or commentary piece.",
       "currentScore": 60
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show 'Parade'.",
+      "reasoning": "The article appears to be truncated and is displaying subscription prompts. Based on the available text, it seems to be a news article or advertisement related to the Wall Street Journal.",
       "currentScore": 78
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play and its setting up the audience for an evening of terror, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the play and its setting, but does not offer an evaluation or opinion on its quality. It sets the stage for an evening of terror but doesn't review the production itself.",
       "currentScore": 80
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer a critical evaluation or recommendation. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
       "currentScore": 83
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -180,11 +180,15 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It includes background information and promotional details, characteristic of a preview article.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/financialtimes--sarah-hemming.json",
+    "into-the-woods-west-end-2025/i-paper--fiona-mountford.json",
+    "kinky-boots-the-musical-west-end-2026/financialtimes--sarah-hemming.json"
+  ],
   "perShowSummary": []
 }

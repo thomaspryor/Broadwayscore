@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-06T02:57:59.461Z",
+  "timestamp": "2026-04-06T03:38:42.192Z",
   "stats": {
-    "totalReviews": 34337,
-    "alreadyFlagged": 13127,
+    "totalReviews": 34335,
+    "alreadyFlagged": 13157,
     "dateGuardCatches": 12,
-    "directorMismatch": 930,
-    "tvFilmSignals": 3443,
-    "londonSignals": 1100,
+    "directorMismatch": 929,
+    "tvFilmSignals": 3441,
+    "londonSignals": 1101,
     "offBroadwaySignals": 981,
     "yearMismatch": 72,
-    "noPublishDate": 5570
+    "noPublishDate": 5550
   },
   "findings": [
     {
@@ -24825,30 +24825,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 79,
-      "publishDate": "2025-12-12",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOoqHzfbHfd4PXINRFu6Vr5pErT17MEpN4Jn-rPa5XNAwXD3-cRM8",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -56262,20 +56238,6 @@
       ]
     },
     {
-      "showId": "the-tempest-globe-west-end-2026",
-      "file": "thestage--sam-marlowe.json",
-      "score": null,
-      "publishDate": "2026-01-29",
-      "url": "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "the-terms-of-my-surrender-2017",
       "file": "broadwaynews--charles-isherwood.json",
       "score": 72,
@@ -63528,6 +63490,20 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": null,
+      "publishDate": "2021-09-13",
+      "url": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 80,
       "publishDate": "2021-09-13",
@@ -63882,6 +63858,19 @@
       "score": 95,
       "publishDate": "2011-09-18T03:34:00",
       "url": "https://theaterlife.com/billy-elliot/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "billy-elliot-the-musical-west-end-2027",
+      "file": "thestage--dave-fargnoli.json",
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/long-reviews/billy-elliot-the-musical-review-leicester-curve-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
