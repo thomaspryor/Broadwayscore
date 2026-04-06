@@ -321,7 +321,7 @@ jobs:
             exit 0
           fi
           echo "Extracting reviews from Theatre Record (browse WE listing)..."
-          node scripts/extract-theatre-record.js --browse-we
+          node scripts/extract-theatre-record.js --browse-we --no-skip-existing
 
       - name: Cleanup phantom outlet duplicates
         run: node scripts/cleanup-phantom-outlets.js --apply

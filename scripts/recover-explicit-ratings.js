@@ -543,9 +543,16 @@ async function fetchFromArchiveOrg(url) {
 async function phase3ScrapeURLs(reviews) {
   console.log('\n═══ PHASE 3: URL Scraping with Score Extraction ═══\n');
 
-  // Only process reviews with URLs
-  const withUrls = reviews.filter(r => r.data.url);
-  console.log(`  ${withUrls.length} reviews with URLs remaining\n`);
+  // Only process reviews with absolute URLs (relative paths like "/article/..." are broken data
+  // that cause API errors and count against rate limits — skip them here, fix at source)
+  const relativeUrls = reviews.filter(r => r.data.url && !r.data.url.startsWith('http'));
+  if (relativeUrls.length > 0) {
+    console.log(`  ⚠️  Skipping ${relativeUrls.length} reviews with relative URLs (fix at source):`);
+    relativeUrls.slice(0, 5).forEach(r => console.log(`    ${r.showId}: ${r.data.url}`));
+    if (relativeUrls.length > 5) console.log(`    ... and ${relativeUrls.length - 5} more`);
+  }
+  const withUrls = reviews.filter(r => r.data.url && r.data.url.startsWith('http'));
+  console.log(`  ${withUrls.length} reviews with absolute URLs remaining\n`);
 
   if (withUrls.length === 0) return reviews;
 

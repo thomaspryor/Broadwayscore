@@ -424,6 +424,7 @@ const longRunning = args.includes('--long-running');
 const browseWE = args.includes('--browse-we');
 const browseLondon = args.includes('--browse-london');
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10) || 0;
+const noSkipExisting = args.includes('--no-skip-existing');
 
 // Theatre Record credentials
 const TR_EMAIL = process.env.TR_EMAIL || 'thomas.pryor@gmail.com';
@@ -855,7 +856,8 @@ async function main() {
       const filename = makeFilename(outletId, review.critic);
       const filepath = path.join(showDir, filename);
 
-      if (fs.existsSync(filepath)) {
+      const fileExists = fs.existsSync(filepath);
+      if (fileExists && !noSkipExisting) {
         skippedCount++;
         continue;
       }
@@ -956,7 +958,28 @@ async function main() {
         textWordCount: review.fullText.split(/\s+/).length
       };
 
-      if (dryRun) {
+      if (fileExists && noSkipExisting) {
+        // Merge: preserve existing fields (especially url), add TR-specific fields
+        const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+        const merged = { ...existing };
+        // Add TR-sourced data without overwriting outlet-sourced data
+        if (!merged.fullText && reviewData.fullText) merged.fullText = reviewData.fullText;
+        if (!merged.textWordCount && reviewData.textWordCount) merged.textWordCount = reviewData.textWordCount;
+        if (!merged.contentTier || merged.contentTier === 'stub' || merged.contentTier === 'excerpt') {
+          merged.contentTier = reviewData.contentTier;
+          merged.contentTierReason = reviewData.contentTierReason;
+        }
+        merged.theatreRecordUrl = reviewData.theatreRecordUrl;
+        if (!merged.source) merged.source = 'theatre-record';
+        if (merged.source && !merged.sources) merged.sources = [merged.source];
+        if (merged.sources && !merged.sources.includes('theatre-record')) merged.sources.push('theatre-record');
+        if (dryRun) {
+          console.log(`    MERGE: ${filename} (adding TR data to existing review)`);
+        } else {
+          fs.writeFileSync(filepath, JSON.stringify(merged, null, 2));
+          console.log(`    MERGED: ${filename} (preserved url=${!!merged.url}, added TR text=${!!reviewData.fullText})`);
+        }
+      } else if (dryRun) {
         console.log(`    NEW: ${filename} (${review.fullText.length} chars, ${reviewData.textWordCount} words)`);
       } else {
         fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));

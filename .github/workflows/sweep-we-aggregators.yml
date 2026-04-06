@@ -111,6 +111,11 @@ jobs:
           # shellcheck disable=SC2086
           node scripts/sweep-we-aggregators.js $ARGS
 
+      - name: Validate data (aggregator contamination guard)
+        if: always() && inputs.dry_run != true
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
       - name: Commit archives
         if: always() && inputs.dry_run != true
         run: |
