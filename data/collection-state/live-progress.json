@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-04-06T03:23:14.201Z",
-  "processed": 28,
-  "failed": 22,
-  "successRate": "56.0%",
+  "updatedAt": "2026-04-06T03:26:32.671Z",
+  "processed": 37,
+  "failed": 23,
+  "successRate": "61.7%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 3
+    "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-06T03:26:15.132Z",
+      "event": "bb-session",
+      "session": "57692f51",
+      "url": "https://variety.com/2026/theater/global/trainspotting-the-musical-coming-london-"
+    },
+    {
+      "t": "2026-04-06T03:26:16.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
