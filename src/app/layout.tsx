@@ -90,6 +90,7 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="alternate" type="application/rss+xml" title="Broadway Scorecard" href="/rss.xml" />
         {/* Preconnect to image CDN for faster LCP */}
         <link
           rel="preconnect"
