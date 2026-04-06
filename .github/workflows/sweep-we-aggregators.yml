@@ -77,6 +77,11 @@ jobs:
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
         run: node scripts/scrape-stagedoor-critics.js
 
+      - name: Fix existing aggregator contamination (idempotent cleanup)
+        if: inputs.dry_run != true
+        run: node scripts/fix-contaminated-reviews.js
+        continue-on-error: true
+
       - name: Run WE aggregator sweep
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
