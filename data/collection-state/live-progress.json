@@ -1,63 +1,30 @@
 {
-  "updatedAt": "2026-04-06T14:11:49.778Z",
-  "processed": 40,
-  "failed": 1143,
-  "successRate": "3.4%",
+  "updatedAt": "2026-04-06T19:06:57.758Z",
+  "processed": 6,
+  "failed": 4,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 24,
-    "amp": 2,
+    "playwright": 2,
+    "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 11,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 14,
-    "archive": 3
+    "archiveToday": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-04-06T09:51:33.789Z",
+      "t": "2026-04-06T19:06:20.870Z",
       "event": "bb-session",
-      "session": "a24cf7e5",
-      "url": "https://deadline.com/2026/03/broadway-box-office-cats-jellicle-ball-dog-day-afte"
+      "session": "0207dc76",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
     },
     {
-      "t": "2026-04-06T09:51:35.012Z",
+      "t": "2026-04-06T19:06:22.263Z",
       "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-06T09:54:41.366Z",
-      "event": "bb-session",
-      "session": "d28dfe3a",
-      "url": "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inh"
-    },
-    {
-      "t": "2026-04-06T09:54:42.589Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-06T12:51:37.170Z",
-      "event": "bb-session",
-      "session": "a70a931b",
-      "url": "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inh"
-    },
-    {
-      "t": "2026-04-06T12:51:38.373Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-06T13:27:27.700Z",
-      "event": "bb-session",
-      "session": "a8721a75",
-      "url": "https://www.wsj.com/articles/SB10001424053111904583204576542453370742790?gaa_at="
-    },
-    {
-      "t": "2026-04-06T13:27:29.338Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "variety.com"
     }
   ]
 }
