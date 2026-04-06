@@ -1,0 +1,126 @@
+{
+  "runDate": "2026-04-06T03:28:00.504Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 1000,
+    "priority": "all",
+    "showFilter": "much-ado-about-nothing-globe-west-end-2026,as-you-like-it-globe-west-end-2026,loves-labours-lost-globe-west-end-2026,the-karate-kid-the-musical-west-end-2026,trainspotting-the-musical-west-end-2026,a-midsummer-nights-dream-globe-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 22,
+    "failed": 4,
+    "skipped": 0,
+    "successRate": "84.6%"
+  },
+  "tierBreakdown": {
+    "playwright": 12,
+    "amp": 0,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 4,
+    "brightdata": 0,
+    "archiveToday": 3,
+    "archive": 5
+  },
+  "statistics": {
+    "tier1Attempts": 20,
+    "tier1Success": 16,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 7,
+    "tier2Success": 4,
+    "tier3Attempts": 4,
+    "tier3Success": 0,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 40,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "as-you-like-it-globe-west-end-2026/timeout--andrzej-lukowski.json",
+    "as-you-like-it-globe-west-end-2026/i-paper--fiona-mountford.json",
+    "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json",
+    "as-you-like-it-globe-west-end-2026/times-uk--clive-davis.json",
+    "as-you-like-it-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+    "trainspotting-the-musical-west-end-2026/london-theatre--unknown.json",
+    "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+    "loves-labours-lost-globe-west-end-2026/timeout--unknown.json",
+    "much-ado-about-nothing-globe-west-end-2026/timeout--andrzej-lukowski.json",
+    "much-ado-about-nothing-globe-west-end-2026/financialtimes--sarah-hemming.json",
+    "much-ado-about-nothing-globe-west-end-2026/independent--alice-saville.json",
+    "much-ado-about-nothing-globe-west-end-2026/london-theatre--marianka-swain.json",
+    "much-ado-about-nothing-globe-west-end-2026/standard--nick-curtis.json",
+    "much-ado-about-nothing-globe-west-end-2026/times-uk--clive-davis.json",
+    "much-ado-about-nothing-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-karate-kid-the-musical-west-end-2026/st-louis-mag--christine-jackson.json",
+    "the-karate-kid-the-musical-west-end-2026/wbkr--chadwick-benefield.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/timeout--unknown.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/huffpost--unknown.json"
+  ],
+  "failed": [
+    "a-midsummer-nights-dream-globe-west-end-2026/hollywood-reporter--david-rooney.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/nytimes--ben-brantley.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/vulture--jesse-green.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/nydailynews--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "as-you-like-it-globe-west-end-2026/timeout--andrzej-lukowski.json",
+      "as-you-like-it-globe-west-end-2026/i-paper--fiona-mountford.json",
+      "as-you-like-it-globe-west-end-2026/london-theatre--marianka-swain.json",
+      "trainspotting-the-musical-west-end-2026/london-theatre--unknown.json",
+      "much-ado-about-nothing-globe-west-end-2026/timeout--andrzej-lukowski.json",
+      "much-ado-about-nothing-globe-west-end-2026/financialtimes--sarah-hemming.json",
+      "much-ado-about-nothing-globe-west-end-2026/independent--alice-saville.json",
+      "much-ado-about-nothing-globe-west-end-2026/london-theatre--marianka-swain.json",
+      "much-ado-about-nothing-globe-west-end-2026/standard--nick-curtis.json",
+      "the-karate-kid-the-musical-west-end-2026/st-louis-mag--christine-jackson.json",
+      "the-karate-kid-the-musical-west-end-2026/wbkr--chadwick-benefield.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/timeout--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+      "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [
+      "as-you-like-it-globe-west-end-2026/times-uk--clive-davis.json",
+      "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+      "loves-labours-lost-globe-west-end-2026/timeout--unknown.json",
+      "much-ado-about-nothing-globe-west-end-2026/times-uk--clive-davis.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/nytimes--ben-brantley.json",
+      "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/vulture--jesse-green.json"
+    ],
+    "archive": [
+      "as-you-like-it-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+      "much-ado-about-nothing-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/ew--unknown.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/newsday--unknown.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/huffpost--unknown.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
