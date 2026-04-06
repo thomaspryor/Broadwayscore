@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-06T09:55:20.209Z",
+  "timestamp": "2026-04-06T10:43:32.623Z",
   "stats": {
-    "totalReviews": 34329,
-    "alreadyFlagged": 13150,
+    "totalReviews": 34350,
+    "alreadyFlagged": 13157,
     "dateGuardCatches": 12,
     "directorMismatch": 929,
     "tvFilmSignals": 3441,
-    "londonSignals": 1102,
+    "londonSignals": 1104,
     "offBroadwaySignals": 981,
     "yearMismatch": 73,
-    "noPublishDate": 5554
+    "noPublishDate": 5547
   },
   "findings": [
     {
@@ -13084,9 +13084,9 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "ew--dalton-ross.json",
-      "score": 75,
-      "publishDate": "March 31, 2026",
-      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173",
+      "score": null,
+      "publishDate": "2026-03-31",
+      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173?srsltid=AfmBOootdXRFd26Clwu1JK20KHKtHPqMpMQlSl_XSTumsUI7dsJHA9Yv",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -67651,6 +67651,19 @@
     },
     {
       "showId": "giant-2026",
+      "file": "playbill--unknown.json",
+      "publishDate": "2026-03-23",
+      "url": "https://playbill.com/article/reviews-sound-off-on-broadways-giant-starring-john-lithgow",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
       "file": "vulture--sara-holdren.json",
       "score": 79,
       "publishDate": "March 23, 2026",
@@ -74424,6 +74437,19 @@
       "score": 82,
       "publishDate": "January 15th, 2025",
       "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2025-01-19",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
