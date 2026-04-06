@@ -73,10 +73,10 @@ function Row({
   return (
     <div className="grid grid-cols-[80px_1fr_1fr] sm:grid-cols-[100px_1fr_1fr] gap-2 py-2.5 border-b border-white/[0.04] last:border-0 items-center">
       <div className="text-[13px] text-gray-400 font-medium">{label}</div>
-      <div className={`text-center text-sm ${winnerA ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
+      <div className={`text-left sm:text-center text-sm ${winnerA ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
         {valueA}
       </div>
-      <div className={`text-center text-sm ${winnerB ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
+      <div className={`text-left sm:text-center text-sm ${winnerB ? 'text-emerald-400 font-semibold' : 'text-gray-300'}`}>
         {valueB}
       </div>
     </div>
@@ -394,11 +394,6 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
             valueA={gradeA && gradeClassesA ? <AudienceBadge grade={gradeA} classes={gradeClassesA} showSlug={showA.slug} /> : '—'}
             valueB={gradeB && gradeClassesB ? <AudienceBadge grade={gradeB} classes={gradeClassesB} showSlug={showB.slug} /> : '—'}
           />
-          <Row
-            label="Reviews"
-            valueA={<Link href={`/show/${showA.slug}`} className="text-gray-300 hover:text-brand transition-colors">{showA.criticScore?.reviewCount ?? 'N/A'} reviews</Link>}
-            valueB={<Link href={`/show/${showB.slug}`} className="text-gray-300 hover:text-brand transition-colors">{showB.criticScore?.reviewCount ?? 'N/A'} reviews</Link>}
-          />
 
           {/* ── SHOW DETAILS ── */}
           <SectionLabel>Show Details</SectionLabel>
@@ -471,7 +466,7 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
           )}
 
           {/* ── LOGISTICS ── */}
-          <SectionLabel>Logistics</SectionLabel>
+          <SectionLabel>Venue & Schedule</SectionLabel>
           <Row
             label="Runtime"
             valueA={<Link href="/browse/broadway-show-runtimes" className="text-gray-300 hover:text-brand transition-colors">{showA.runtime || 'TBD'}</Link>}
@@ -684,27 +679,8 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
           )}
         </div>
 
-        {/* Critics consensus — same 3-column grid */}
-        <div className="card p-4 sm:p-6 mb-6">
-          <div className="grid grid-cols-[80px_1fr_1fr] sm:grid-cols-[100px_1fr_1fr] gap-2">
-            <div className="text-[13px] text-gray-400 font-medium pt-0.5">Critics Say</div>
-            <div>
-              <Link href={`/show/${showA.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showA.title}</Link>
-              <p className="text-gray-400 text-[13px] leading-relaxed mt-1">
-                {consensusA || showA.synopsis || 'No critic consensus available.'}
-              </p>
-            </div>
-            <div>
-              <Link href={`/show/${showB.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showB.title}</Link>
-              <p className="text-gray-400 text-[13px] leading-relaxed mt-1">
-                {consensusB || showB.synopsis || 'No critic consensus available.'}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Recommendation */}
-        <div className="card p-4 sm:p-6 bg-surface-raised mb-8">
+        {/* Recommendation — above critics for decision-making prominence */}
+        <div className="card p-4 sm:p-6 bg-surface-raised mb-6">
           <h2 className="font-bold text-white text-lg mb-3">Which Show Should You See?</h2>
           <div className="text-gray-300 text-sm space-y-3">
             {scoreA !== null && scoreB !== null && Math.abs(scoreA - scoreB) > 5 && (
@@ -753,6 +729,25 @@ export default function ComparisonPage({ params }: { params: { shows: string } }
                 Learn more about {scoreWinnerB ? showB.title : showA.title} →
               </Link>
             </p>
+          </div>
+        </div>
+
+        {/* Critics consensus */}
+        <div className="card p-4 sm:p-6 mb-6">
+          <div className="grid grid-cols-[80px_1fr_1fr] sm:grid-cols-[100px_1fr_1fr] gap-2">
+            <div className="text-[13px] text-gray-400 font-medium pt-0.5">Critics Say</div>
+            <div>
+              <Link href={`/show/${showA.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showA.title}</Link>
+              <p className="text-gray-400 text-[13px] leading-relaxed mt-1">
+                {consensusA || showA.synopsis || 'No critic consensus available.'}
+              </p>
+            </div>
+            <div>
+              <Link href={`/show/${showB.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showB.title}</Link>
+              <p className="text-gray-400 text-[13px] leading-relaxed mt-1">
+                {consensusB || showB.synopsis || 'No critic consensus available.'}
+              </p>
+            </div>
           </div>
         </div>
 
