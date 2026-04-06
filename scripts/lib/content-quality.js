@@ -1213,6 +1213,19 @@ function hasOpinionLanguage(text) {
  * }}
  */
 function classifyContentTier(review) {
+  // Manual override — mirrors the humanReviewScore pattern.
+  // Set manualContentTier on a review source file during opening night corrections
+  // to prevent rebuild from reclassifying it.
+  const VALID_TIERS = new Set(['complete', 'truncated', 'excerpt', 'stub', 'invalid']);
+  if (review.manualContentTier && VALID_TIERS.has(review.manualContentTier)) {
+    return {
+      contentTier: review.manualContentTier,
+      wordCount: countWords(review.fullText || ''),
+      truncationSignals: [],
+      tierReason: `Manual override (manualContentTier: ${review.manualContentTier})`
+    };
+  }
+
   const fullText = review.fullText || '';
   const wordCount = countWords(fullText);
   const charCount = fullText.length;
