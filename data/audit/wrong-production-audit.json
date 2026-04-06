@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-06T08:06:52.128Z",
+  "timestamp": "2026-04-06T08:30:42.532Z",
   "stats": {
-    "totalReviews": 34325,
-    "alreadyFlagged": 13145,
+    "totalReviews": 34329,
+    "alreadyFlagged": 13150,
     "dateGuardCatches": 12,
     "directorMismatch": 929,
-    "tvFilmSignals": 3442,
-    "londonSignals": 1102,
+    "tvFilmSignals": 3441,
+    "londonSignals": 1101,
     "offBroadwaySignals": 981,
     "yearMismatch": 72,
-    "noPublishDate": 5554
+    "noPublishDate": 5555
   },
   "findings": [
     {
@@ -60965,20 +60965,6 @@
     },
     {
       "showId": "witness-for-the-prosecution-west-end-2022",
-      "file": "artsdesk--unknown.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://stagedoor.com/plays/3615-witness-for-the-prosecution/critic-reviews",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "witness-for-the-prosecution-west-end-2022",
       "file": "london-box-office--stuart-king.json",
       "score": 61,
       "publishDate": "2019-05-16",
@@ -73636,20 +73622,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "observer--unknown.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "https://stagedoor.com/plays/16616-my-neighbour-totoro/critic-reviews",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
