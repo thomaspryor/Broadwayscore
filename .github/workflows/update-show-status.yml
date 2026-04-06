@@ -790,6 +790,24 @@ jobs:
               }
             }
 
+      - name: Discover Playbill URLs for new shows (cast changes tracking)
+        if: steps.filter.outputs.cast_shows != ''
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          for slug in $(echo "${{ steps.filter.outputs.cast_shows }}" | tr ',' '\n'); do
+            echo "Discovering Playbill URL for: $slug"
+            node scripts/discover-playbill-urls.js --show=$slug || echo "::warning::Playbill URL not found for $slug"
+          done
+          # Commit updated playbill-urls.json if changed
+          if ! git diff --quiet data/playbill-urls.json 2>/dev/null; then
+            git add data/playbill-urls.json
+            git commit -m "data: Add Playbill URLs for new shows [skip ci]" || true
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed for playbill-urls"
+          fi
+        continue-on-error: true
+
       - name: Trigger WE outlet-based SERP collection for new WE shows
         if: needs.update-shows.outputs.we_new_count != '' && needs.update-shows.outputs.we_new_count != '0'
         uses: actions/github-script@v7
