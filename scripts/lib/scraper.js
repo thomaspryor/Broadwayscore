@@ -68,7 +68,26 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   'broadway.org',       // Playbill/closing dates — public HTML
   'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
   'dailymail.co.uk',    // Star ratings rendered via client-side JS (rating-star CSS classes)
+  'talkinbroadway.com', // Simple HTML blog — free Playwright works reliably
+  'stagebuddy.com',     // WordPress blog — free Playwright works reliably
 ]);
+
+// --- Domains where ScrapingBee MUST use render_js=true (JS-rendered content) ---
+// Most review pages are static HTML and work fine with render_js=false (1 credit vs 5).
+// Only add domains here where render_js=false returns broken/empty content.
+// NOTE: whatsonstage.com and dailymail.co.uk are already in PLAYWRIGHT_FIRST_DOMAINS,
+// so SB never reaches them — no need to list here.
+const JS_REQUIRED_DOMAINS = new Set([
+  'show-score.com',     // React SPA — requires JS rendering
+  'theatermania.com',   // Dynamic content loading
+]);
+
+function _isJsRequiredDomain(url) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    return JS_REQUIRED_DOMAINS.has(hostname);
+  } catch { return false; }
+}
 
 /**
  * Check if a URL's domain is in the Playwright-first set.
@@ -163,11 +182,15 @@ async function checkScrapingBeeCredits() {
 
 let playwright = null; // Lazy load only if needed
 
+// --- Per-run SB credit budget ---
+const SB_CREDIT_BUDGET = parseInt(process.env.SB_CREDIT_BUDGET || '100', 10);
+
 // --- Per-run cost tracking ---
 const _scraperStats = {
   bdRequests: 0,
   sbRequests: 0,
   sbCredits: 0,
+  sbBudgetExceeded: false,
   pwAttempts: 0,
   pwSuccess: 0,
 };
@@ -236,8 +259,23 @@ async function fetchWithScrapingBee(url, options = {}) {
     return null;
   }
 
+  // Resolve render_js: explicit true/false honored, otherwise domain-aware default.
+  // Most pages are static HTML → render_js=false (1 credit) unless domain needs JS (5 credits).
+  const renderJs = options.renderJs === true ? true :
+                   options.renderJs === false ? false :
+                   _isJsRequiredDomain(url);
+  const creditCost = renderJs ? 5 : 1;
+
+  // Per-run budget guard — skip SB if budget would be exceeded
+  if (_scraperStats.sbCredits + creditCost > SB_CREDIT_BUDGET) {
+    if (!_scraperStats.sbBudgetExceeded) {
+      console.log(`  ⚠️  SB credit budget exhausted (${_scraperStats.sbCredits}/${SB_CREDIT_BUDGET}) — skipping SB for remaining requests`);
+    }
+    _scraperStats.sbBudgetExceeded = true;
+    return null;
+  }
+
   try {
-    const renderJs = options.renderJs !== false;
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
 
     const response = await new Promise((resolve, reject) => {
@@ -255,14 +293,15 @@ async function fetchWithScrapingBee(url, options = {}) {
     });
 
     _scraperStats.sbRequests++;
-    _scraperStats.sbCredits += (options.renderJs !== false ? 5 : 1);
+    _scraperStats.sbCredits += creditCost;
     return {
       content: response,
       format: 'html',
       source: 'scrapingbee'
     };
   } catch (error) {
-    console.error(`⚠️  ScrapingBee failed: ${error.message}`);
+    const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
+    console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}, domain=${hostname}): ${error.message}`);
     return null;
   }
 }
@@ -311,7 +350,7 @@ async function fetchWithPlaywright(url, options = {}) {
  *
  * @param {string} url - URL to fetch
  * @param {object} options - Options
- * @param {boolean} options.renderJs - Whether to render JavaScript (default: true)
+ * @param {boolean} options.renderJs - Whether to render JavaScript (default: false unless domain is in JS_REQUIRED_DOMAINS)
  * @param {boolean} options.preferPlaywright - Skip APIs and go straight to Playwright (e.g. for BroadwayWorld)
  * @returns {Promise<{content: string, format: 'html'|'markdown', source: string}>}
  */
@@ -350,8 +389,8 @@ async function fetchPage(url, options = {}) {
     }
   }
 
-  // Fall back to ScrapingBee (skip if credits exhausted or domain-skipped)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !skips.has('scrapingbee')) {
+  // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, or domain-skipped)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !skips.has('scrapingbee')) {
     console.log('  → Trying ScrapingBee...');
     const result = await fetchWithScrapingBee(url, options);
     if (result) {
@@ -384,7 +423,7 @@ async function cleanup() {
     const parts = [];
     if (s.pwSuccess > 0 || s.pwAttempts > 0) parts.push(`${s.pwSuccess}/${s.pwAttempts} Playwright (free)`);
     if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${(s.bdRequests * 0.001).toFixed(3)})`);
-    if (s.sbRequests > 0) parts.push(`${s.sbRequests} SB (${s.sbCredits} credits)`);
+    if (s.sbRequests > 0) parts.push(`${s.sbRequests} SB (${s.sbCredits} credits${s.sbBudgetExceeded ? ', BUDGET HIT' : ''})`);
     console.log(`[Scraper Summary] ${parts.join(', ')}`);
   }
 
@@ -408,7 +447,7 @@ async function fetchJSON(url, options = {}) {
   const headers = { Accept: 'application/json', ...options.headers };
 
   // Try ScrapingBee first (cheapest: 1 credit with render_js=false)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow) {
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
