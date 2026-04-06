@@ -70,6 +70,7 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   'dailymail.co.uk',    // Star ratings rendered via client-side JS (rating-star CSS classes)
   'talkinbroadway.com', // Simple HTML blog — free Playwright works reliably
   'stagebuddy.com',     // WordPress blog — free Playwright works reliably
+  'londontheatre.co.uk', // React SPA (Material-UI) — BD returns empty, Playwright renders JS
 ]);
 
 // --- Domains where ScrapingBee MUST use render_js=true (JS-rendered content) ---
@@ -80,7 +81,6 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
 const JS_REQUIRED_DOMAINS = new Set([
   'show-score.com',     // React SPA — requires JS rendering
   'theatermania.com',   // Dynamic content loading
-  'londontheatre.co.uk', // React SPA (Material-UI) — BD/SB return empty without JS
 ]);
 
 function _isJsRequiredDomain(url) {
