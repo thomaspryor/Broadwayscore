@@ -238,6 +238,11 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return show.status === 'open' && isClosingWithinDays(show, 60);
     },
     sort: 'closing-date',
+    sectionGroup: (show) => {
+      if (!show.closingDate) return 'Closing Date TBD';
+      const closing = new Date(show.closingDate);
+      return closing.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    },
     relatedPages: ['new-broadway-shows-2025', 'broadway-shows-for-tourists', 'best-broadway-show-right-now'],
   },
 
@@ -529,6 +534,13 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'These shows have earned their place in Broadway history through thousands of performances and years of entertaining audiences. From beloved classics to modern phenomena, these productions represent the staying power of great theater. Their longevity is a testament to timeless storytelling, memorable music, and the countless talented performers who have graced their stages night after night.',
     filter: (show) => show.status === 'open',
     sort: 'performances',
+    sectionGroup: (show) => {
+      const year = new Date(show.openingDate).getFullYear();
+      if (year >= 2020) return 'Opened in the 2020s';
+      if (year >= 2010) return 'Opened in the 2010s';
+      if (year >= 2000) return 'Opened in the 2000s';
+      return 'Opened Before 2000';
+    },
     relatedPages: ['biggest-broadway-flops', 'tony-winners-on-broadway', 'broadway-shows-for-tourists'],
   },
 
@@ -541,6 +553,10 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Get excited for Broadway\'s next wave of productions! These shows are currently in previews or have announced opening dates in the coming months. From world premieres to transfers from Off-Broadway and London, these productions represent the future of Broadway. Many are already selling tickets, so if you\'re planning ahead, here\'s your guide to what\'s coming to the Great White Way.',
     filter: (show) => show.status === 'previews' || show.status === 'upcoming',
     sort: 'opening-date-asc',
+    sectionGroup: (show) => {
+      if (show.status === 'previews') return 'In Previews Now';
+      return 'Coming Soon';
+    },
     relatedPages: ['new-broadway-shows-2025', 'broadway-shows-closing-soon', 'broadway-lottery-shows'],
   },
 
@@ -607,6 +623,10 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return show.status === 'open' && openedInYear(show, 2026);
     },
     sort: 'opening-date',
+    sectionGroup: (show) => {
+      const month = new Date(show.openingDate).toLocaleDateString('en-US', { month: 'long' });
+      return `Opened in ${month}`;
+    },
     relatedPages: ['2025-2026-broadway-season', 'new-broadway-shows-2025', 'upcoming-broadway-shows', 'best-broadway-show-right-now'],
   },
 
@@ -665,6 +685,13 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Every Broadway show we\'ve scored, ranked by aggregated CriticScore ratings from dozens of professional critics and publications. This isn\'t a popularity contest or a list of personal favorites — it\'s a data-driven ranking based on the collective judgment of theater critics across The New York Times, Variety, Vulture, and dozens more. From recent hits to classic revivals, these rankings span decades of Broadway history. Whether you\'re settling a debate or discovering your next obsession, this is the most comprehensive critical ranking of Broadway shows available anywhere.',
     filter: (show) => (show.criticScore?.score ?? 0) > 0,
     sort: 'score',
+    sectionGroup: (show) => {
+      const score = show.criticScore?.score ?? 0;
+      if (score >= 90) return 'Legendary (90+)';
+      if (score >= 80) return 'Must-See (80-89)';
+      if (score >= 70) return 'Highly Rated (70-79)';
+      return 'Worth Seeing (Under 70)';
+    },
     relatedPages: ['best-broadway-shows-1990s', 'best-broadway-shows-2000s', 'best-broadway-musicals', 'best-broadway-plays'],
   },
 
