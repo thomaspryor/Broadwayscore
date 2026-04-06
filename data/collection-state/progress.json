@@ -28,7 +28,8 @@
     "all-out-2025/ew--dalton-ross.json",
     "just-for-us-2023/timeout--adam-feldman.json",
     "life-of-pi-2023/newyorker--katy-waldman.json",
-    "some-like-it-hot-2022/newyorker--helen-shaw.json"
+    "some-like-it-hot-2022/newyorker--helen-shaw.json",
+    "tina-2019/newyorker--michael-schulman.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -101,7 +102,16 @@
     "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
     "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
     "is-this-a-room-2021/hollywood-reporter--angie-han.json",
-    "is-this-a-room-2021/washpost--peter-marks.json"
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "west-side-story-2020/theater-news-online--jeremy-gerard.json",
+    "west-side-story-2020/theater-news-online--mervyn-rothstein.json",
+    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+    "a-soldiers-play-2020/theater-news-online--jeremy-gerard.json",
+    "a-soldiers-play-2020/wsj--terry-teachout.json",
+    "my-name-is-lucy-barton-2020/theater-news-online--david-cote.json",
+    "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
+    "a-christmas-carol-2019/theater-news-online--jeremy-gerard.json",
+    "the-sound-inside-2019/theater-news-online--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -126,7 +136,9 @@
       "data/review-texts/giant-2026/variety--unknown.json",
       "giant-2026/variety--unknown.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "tina-2019/newyorker--michael-schulman.json"
+    ],
     "scrapingbee": [
       "giant-2026/newyorker--unknown.json",
       "titus-andronicus-off-broadway-2026/nytimes--unknown.json",
@@ -149,7 +161,7 @@
     ]
   },
   "startTime": "2026-04-06T19:04:20.363Z",
-  "lastProcessed": "is-this-a-room-2021/washpost--peter-marks.json",
+  "lastProcessed": "the-sound-inside-2019/theater-news-online--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-06T19:06:20.870Z",
@@ -161,6 +173,17 @@
       "t": "2026-04-06T19:06:22.263Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-06T19:21:24.864Z",
+      "event": "bb-session",
+      "session": "989596b2",
+      "url": "https://www.newyorker.com/magazine/2019/10/21/tina-the-tina-turner-musical-comes"
+    },
+    {
+      "t": "2026-04-06T19:21:26.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
