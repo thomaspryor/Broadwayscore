@@ -214,6 +214,12 @@ export default function CastChangesPage() {
       return { show, events: castData.upcoming } as ShowWithCast;
     })
     .filter((item): item is ShowWithCast => item !== null)
+    // Filter out shows in previews where ALL events are arrivals (opening cast, not changes)
+    .filter(item => {
+      if (item.show.status !== 'previews') return true;
+      const hasNonArrival = item.events.some(e => e.type !== 'arrival');
+      return hasNonArrival;
+    })
     .sort((a, b) => {
       // Sort by soonest event date first, shows without dates last
       const getEarliestDate = (events: CastEvent[]) => {
