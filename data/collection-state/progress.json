@@ -9,7 +9,9 @@
     "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
     "pied-a-terre-off-broadway-2026/nytg--unknown.json",
     "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
-    "bigfoot-off-broadway-2026/timeout--unknown.json"
+    "bigfoot-off-broadway-2026/timeout--unknown.json",
+    "the-tempest-globe-west-end-2026/thestage--sam-marlowe.json",
+    "chess-2025/playbill--logan-culwell-block.json"
   ],
   "failed": [
     "a-midsummer-nights-dream-globe-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -21,7 +23,15 @@
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
-    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json"
+    "maltby-and-shires-about-time-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/telegraph--dominic-cavendish.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -30,7 +40,9 @@
       "a-midsummer-nights-dream-globe-west-end-2026/huffpost--unknown.json",
       "a-midsummer-nights-dream-globe-west-end-2026/timeout--unknown.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
-      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "the-tempest-globe-west-end-2026/thestage--sam-marlowe.json",
+      "chess-2025/playbill--logan-culwell-block.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -53,6 +65,18 @@
     ]
   },
   "startTime": "2026-04-06T04:38:28.630Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/timeout--unknown.json",
-  "log": []
+  "lastProcessed": "chess-2025/playbill--logan-culwell-block.json",
+  "log": [
+    {
+      "t": "2026-04-06T04:52:31.674Z",
+      "event": "bb-session",
+      "session": "2cba6860",
+      "url": "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inh"
+    },
+    {
+      "t": "2026-04-06T04:52:32.823Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
