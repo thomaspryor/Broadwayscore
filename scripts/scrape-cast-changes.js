@@ -1199,6 +1199,27 @@ function mergeEvents(existing, newEvents, source) {
         continue;
       }
 
+      // Check for same-person duplicate with different role name
+      // (e.g., "Mary Todd Lincoln" vs "Mary" from different sources)
+      const samePersonDupe = showData.upcoming.find(e =>
+        e.name === event.name &&
+        e.type === event.type &&
+        e.date === event.date &&
+        e.role !== event.role
+      );
+
+      if (samePersonDupe) {
+        // Keep the one with the more specific (longer) role name
+        const existingRole = samePersonDupe.role && samePersonDupe.role !== 'Unknown' ? samePersonDupe.role : '';
+        const newRole = event.role && event.role !== 'Unknown' ? event.role : '';
+        if (newRole.length > existingRole.length) {
+          Object.assign(samePersonDupe, event);
+          changes.push({ showId, type: 'upgraded-role', event, source });
+          stats.eventsUpgraded++;
+        }
+        continue;
+      }
+
       // New event — add it
       showData.upcoming.push(event);
       changes.push({ showId, type: 'added', event, source });

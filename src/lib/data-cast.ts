@@ -44,14 +44,33 @@ export function getCastChanges(showId: string): ShowCastChanges | undefined {
     return true;
   });
 
+  // Deduplicate: same person, same type, same date → keep the one with more specific role
+  const deduped: typeof upcoming = [];
+  for (const event of upcoming) {
+    const dupIndex = deduped.findIndex(
+      e => e.name === event.name && e.type === event.type && e.date === event.date
+    );
+    if (dupIndex === -1) {
+      deduped.push(event);
+    } else {
+      // Keep the one with the more specific (longer, non-"Unknown") role
+      const existing = deduped[dupIndex];
+      const existingRole = existing.role && existing.role !== 'Unknown' ? existing.role : '';
+      const newRole = event.role && event.role !== 'Unknown' ? event.role : '';
+      if (newRole.length > existingRole.length) {
+        deduped[dupIndex] = event;
+      }
+    }
+  }
+
   // Don't return if nothing to show
-  if (upcoming.length === 0 && (!data.currentCast || data.currentCast.length === 0)) {
+  if (deduped.length === 0 && (!data.currentCast || data.currentCast.length === 0)) {
     return undefined;
   }
 
   return {
     currentCast: data.currentCast,
-    upcoming,
+    upcoming: deduped,
   };
 }
 
