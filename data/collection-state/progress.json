@@ -5,7 +5,12 @@
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "loves-labours-lost-globe-west-end-2026/timeout--unknown.json",
     "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-    "much-ado-about-nothing-globe-west-end-2026/timeout--andrzej-lukowski.json"
+    "much-ado-about-nothing-globe-west-end-2026/timeout--andrzej-lukowski.json",
+    "dog-day-afternoon-2026/deadline--unknown.json",
+    "dog-day-afternoon-2026/ew--unknown.json",
+    "dog-day-afternoon-2026/playbill--unknown.json",
+    "giant-2026/playbill--unknown.json",
+    "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -29,17 +34,29 @@
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
     "a-midsummer-nights-dream-globe-west-end-2026/bloomberg--jeremy-gerard.json",
-    "high-noon-west-end-2025/times-uk--clive-davis.json"
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "dog-day-afternoon-2026/independent--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-      "much-ado-about-nothing-globe-west-end-2026/timeout--andrzej-lukowski.json"
+      "much-ado-about-nothing-globe-west-end-2026/timeout--andrzej-lukowski.json",
+      "dog-day-afternoon-2026/ew--unknown.json",
+      "dog-day-afternoon-2026/playbill--unknown.json",
+      "giant-2026/playbill--unknown.json",
+      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/dog-day-afternoon-2026/deadline--unknown.json",
+      "dog-day-afternoon-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "loves-labours-lost-globe-west-end-2026/timeout--unknown.json"
@@ -49,7 +66,8 @@
       "data/review-texts/paranormal-activity-west-end-2025/timeout--unknown.json",
       "data/review-texts/paddington-the-musical-west-end-2025/timeout--unknown.json",
       "data/review-texts/the-producers-west-end-2025/guardian--unknown.json",
-      "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/bloomberg--jeremy-gerard.json"
+      "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/bloomberg--jeremy-gerard.json",
+      "data/review-texts/dog-day-afternoon-2026/independent--unknown.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -57,6 +75,18 @@
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "high-noon-west-end-2025/times-uk--clive-davis.json",
-  "log": []
+  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-06T09:51:33.789Z",
+      "event": "bb-session",
+      "session": "a24cf7e5",
+      "url": "https://deadline.com/2026/03/broadway-box-office-cats-jellicle-ball-dog-day-afte"
+    },
+    {
+      "t": "2026-04-06T09:51:35.012Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
