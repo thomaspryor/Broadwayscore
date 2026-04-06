@@ -25,6 +25,10 @@ on:
         description: 'Filter by source (theatre-record)'
         required: false
         default: ''
+      since:
+        description: 'Only shows opened on/after date (YYYY-MM-DD) + open shows'
+        required: false
+        default: ''
       dry_run:
         description: 'Report only, no file writes'
         required: false
@@ -94,7 +98,7 @@ jobs:
             ARGS="--phase=0,1,2,3"
           else
             PHASES="${{ inputs.phases || '0,1,2,3' }}"
-            LIMIT="${{ inputs.limit || '20' }}"
+            LIMIT="${{ inputs.limit || '0' }}"
             ARGS="--phase=$PHASES --limit=$LIMIT"
             if [ -n "${{ inputs.outlet }}" ]; then
               ARGS="$ARGS --outlet=${{ inputs.outlet }}"
@@ -104,6 +108,9 @@ jobs:
             fi
             if [ -n "${{ inputs.source }}" ]; then
               ARGS="$ARGS --source=${{ inputs.source }}"
+            fi
+            if [ -n "${{ inputs.since }}" ]; then
+              ARGS="$ARGS --since=${{ inputs.since }}"
             fi
             if [ "${{ inputs.dry_run }}" = "true" ]; then
               ARGS="$ARGS --dry-run"

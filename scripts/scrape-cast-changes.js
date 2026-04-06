@@ -1144,6 +1144,11 @@ const SOURCE_PRIORITY = {
  */
 function mergeEvents(existing, newEvents, source) {
   const changes = [];
+  // Load shows data for status checks
+  let showsData;
+  try {
+    showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  } catch { showsData = { shows: [] }; }
 
   for (const [showId, events] of Object.entries(newEvents)) {
     if (!existing.shows[showId]) {
@@ -1154,8 +1159,19 @@ function mergeEvents(existing, newEvents, source) {
     if (!showData.upcoming) showData.upcoming = [];
     if (!showData.currentCast) showData.currentCast = [];
 
+    // Skip arrivals for previews shows with no existing cast baseline —
+    // these are opening cast announcements, not cast changes
+    const show = showsData.shows.find(s => s.id === showId);
+    const isPreviewsNoCast = show && show.status === 'previews' && showData.currentCast.length === 0;
+
     for (const event of events) {
       if (!validateEvent(event)) continue;
+
+      // Opening cast, not a cast change — skip
+      if (isPreviewsNoCast && event.type === 'arrival') {
+        if (verbose) console.log(`  [skip] ${event.name} — opening cast for previews show ${showId}`);
+        continue;
+      }
 
       // Check for exact duplicate
       const exactDupe = showData.upcoming.find(e =>
@@ -1669,6 +1685,37 @@ async function main() {
       }
     }
     return;
+  }
+
+  // Deduplicate currentCast: merge entries for same person where one role is generic/empty
+  const GENERIC_ROLES = new Set(['', 'unknown', 'cast member', 'lead role', 'tba', 'ensemble']);
+  for (const showData of Object.values(existing.shows)) {
+    if (!showData.currentCast || showData.currentCast.length < 2) continue;
+    const result = [];
+    for (const member of showData.currentCast) {
+      const role = (member.role || '').trim();
+      const roleLower = role.toLowerCase();
+      // Find existing entry for same person
+      const existingIdx = result.findIndex(m => m.name === member.name);
+      if (existingIdx === -1) {
+        result.push(member);
+        continue;
+      }
+      const prev = result[existingIdx];
+      const prevRole = (prev.role || '').trim();
+      const prevLower = prevRole.toLowerCase();
+      // If one is generic → keep the specific one
+      // Both generic → keep first, skip this one
+      if (GENERIC_ROLES.has(roleLower) && GENERIC_ROLES.has(prevLower)) continue;
+      if (GENERIC_ROLES.has(roleLower) && !GENERIC_ROLES.has(prevLower)) continue;
+      if (GENERIC_ROLES.has(prevLower) && !GENERIC_ROLES.has(roleLower)) { result[existingIdx] = member; continue; }
+      // If one is a substring of the other → keep the longer one
+      if (prevLower.includes(roleLower)) continue;
+      if (roleLower.includes(prevLower)) { result[existingIdx] = member; continue; }
+      // Both specific and different → keep both (genuine multi-role)
+      result.push(member);
+    }
+    showData.currentCast = result;
   }
 
   backupExisting();
