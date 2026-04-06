@@ -113,6 +113,27 @@ const DOMAIN_TIER_SKIP = (() => {
   } catch { return {}; }
 })();
 
+// --- Domains where ScrapingBee needs premium_proxy + render_js=true ---
+// Two categories: (1) JS-rendered content, (2) paywalled sites that forward subscriber cookies.
+// All other domains use render_js=false with no premium_proxy → 1 credit (was 10).
+const SB_PREMIUM_DOMAINS = new Set([
+  // JS-rendered content
+  'show-score.com',         // React SPA
+  'theatermania.com',       // Dynamic content loading
+  // Cookie-forwarding paywalled outlets (premium_proxy needed for reliable delivery)
+  'wsj.com', 'newyorker.com', 'nytimes.com', 'vulture.com', 'nymag.com',
+  'washingtonpost.com', 'ft.com', 'timeout.com', 'nypost.com', 'nydailynews.com',
+  'deadline.com', 'observer.com', 'hollywoodreporter.com', 'variety.com',
+  'indiewire.com', 'ew.com', 'huffpost.com', 'huffingtonpost.com',
+  'usatoday.com', 'northjersey.com', 'bloomberg.com', 'thestage.co.uk',
+  'backstage.com', 'telegraph.co.uk', 'thetimes.co.uk', 'thetimes.com',
+  'standard.co.uk', 'independent.co.uk', 'chicagotribune.com', 'thewrap.com',
+  'nbcnewyork.com', 'newsday.com',
+]);
+
+// Per-run SB page credit budget — prevents runaway spending
+const SB_PAGE_CREDIT_BUDGET = parseInt(process.env.SB_PAGE_CREDIT_BUDGET || '200', 10);
+
 // Parse CLI arguments
 const args = process.argv.slice(2);
 const CLI = {
@@ -2125,10 +2146,34 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     throw new Error('ScrapingBee not configured');
   }
 
-  stats.tier2Attempts++;
+  // Determine cost tier based on domain
+  const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } })();
+  const needsPremium = SB_PREMIUM_DOMAINS.has(hostname);
 
-  const proxyType = useStealth ? 'stealth_proxy' : 'premium_proxy';
-  const credits = useStealth ? 75 : 10;
+  let proxyType, credits, renderJs, waitMs;
+  if (useStealth) {
+    proxyType = 'stealth_proxy';
+    credits = 75;
+    renderJs = true;
+    waitMs = 5000;
+  } else if (needsPremium) {
+    proxyType = 'premium_proxy';
+    credits = 10;
+    renderJs = true;
+    waitMs = 5000;
+  } else {
+    proxyType = 'standard';
+    credits = 1;
+    renderJs = false;
+    waitMs = 0;  // No wait needed for static HTML
+  }
+
+  // Per-run budget guard
+  if (stats.scrapingBeePageCredits + credits > SB_PAGE_CREDIT_BUDGET) {
+    throw new Error(`SB page credit budget exhausted (${stats.scrapingBeePageCredits}/${SB_PAGE_CREDIT_BUDGET})`);
+  }
+
+  stats.tier2Attempts++;
 
   // Forward subscriber cookies via ScrapingBee's header forwarding
   const cookieHeader = buildCookieHeaderForUrl(url);
@@ -2142,17 +2187,22 @@ async function fetchWithScrapingBee(url, useStealth = false) {
     const params = {
       api_key: CONFIG.scrapingBeeKey,
       url: url,
-      render_js: true,
-      wait: 5000,
+      render_js: renderJs,
       block_ads: true,
       block_resources: false,
     };
 
+    // Only add wait for JS-rendered pages
+    if (waitMs > 0) {
+      params.wait = waitMs;
+    }
+
     if (useStealth) {
       params.stealth_proxy = true;
-    } else {
+    } else if (needsPremium) {
       params.premium_proxy = true;
     }
+    // Standard mode: no proxy param needed (default SB proxy)
 
     // Forward subscriber cookies to the target site
     if (cookieHeader) {
