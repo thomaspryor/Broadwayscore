@@ -43,7 +43,8 @@
     "angels-in-america-2018/broadwaynews--charles-isherwood.json",
     "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
     "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
-    "the-nance-2013/timeout--adam-feldman.json"
+    "the-nance-2013/timeout--adam-feldman.json",
+    "scandalous-2012/variety--marilyn-stasio.json"
   ],
   "failed": [
     "a-midsummer-nights-dream-globe-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -291,7 +292,16 @@
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "hands-on-a-hardbody-2013/newsday--linda-winer.json",
     "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json"
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "picnic-2013/bloomberg--jeremy-gerard.json",
+    "the-anarchist-2012/variety--marilyn-stasio.json",
+    "dead-accounts-2012/variety--marilyn-stasio.json",
+    "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+    "chaplin-2012/bloomberg--jeremy-gerard.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -329,7 +339,9 @@
     ],
     "browserbase": [
       "data/review-texts/heathers-the-musical-off-broadway-2025/hollywood-reporter--unknown.json",
-      "heathers-the-musical-off-broadway-2025/hollywood-reporter--unknown.json"
+      "heathers-the-musical-off-broadway-2025/hollywood-reporter--unknown.json",
+      "data/review-texts/scandalous-2012/variety--marilyn-stasio.json",
+      "scandalous-2012/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -362,7 +374,7 @@
     ]
   },
   "startTime": "2026-04-06T04:38:28.630Z",
-  "lastProcessed": "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-06T04:52:31.674Z",
@@ -385,6 +397,17 @@
       "t": "2026-04-06T04:55:19.933Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-06T05:29:50.416Z",
+      "event": "bb-session",
+      "session": "6b185e71",
+      "url": "https://variety.com/2012/legit/reviews/scandalous-1117948755/"
+    },
+    {
+      "t": "2026-04-06T05:29:51.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
