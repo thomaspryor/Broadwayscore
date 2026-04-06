@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-06T08:30:42.532Z",
+  "timestamp": "2026-04-06T09:25:33.085Z",
   "stats": {
     "totalReviews": 34329,
     "alreadyFlagged": 13150,
     "dateGuardCatches": 12,
     "directorMismatch": 929,
     "tvFilmSignals": 3441,
-    "londonSignals": 1101,
+    "londonSignals": 1102,
     "offBroadwaySignals": 981,
-    "yearMismatch": 72,
-    "noPublishDate": 5555
+    "yearMismatch": 73,
+    "noPublishDate": 5554
   },
   "findings": [
     {
@@ -49064,6 +49064,20 @@
     },
     {
       "showId": "the-cherry-orchard-2016",
+      "file": "njcom--christopher-kelly.json",
+      "score": 35,
+      "publishDate": null,
+      "url": "https://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2016 (0x). 2026 matches production: the-cherry-orchard-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-2016",
       "file": "thewrap--robert-hofler.json",
       "score": 38,
       "publishDate": null,
@@ -78774,6 +78788,20 @@
       "file": "whatsonstage--aliya-al.json",
       "score": 68,
       "publishDate": "2026-04-02",
+      "url": "https://www.whatsonstage.com/news/the-authenticator-at-the-national-theatre-review_1717310/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 74,
+      "publishDate": "2026-04-03",
       "url": "https://www.whatsonstage.com/news/the-authenticator-at-the-national-theatre-review_1717310/",
       "findings": [
         {
