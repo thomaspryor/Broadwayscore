@@ -47,6 +47,7 @@ const PHASES = (() => {
 const OUTLET_FILTER = args.find(a => a.startsWith('--outlet='))?.split('=')[1] || '';
 const SOURCE_FILTER = args.find(a => a.startsWith('--source='))?.split('=')[1] || '';
 const MARKET_FILTER = args.find(a => a.startsWith('--market='))?.split('=')[1] || '';
+const SINCE_FILTER = args.find(a => a.startsWith('--since='))?.split('=')[1] || '';
 const LIMIT = (() => {
   const l = args.find(a => a.startsWith('--limit='));
   return l ? parseInt(l.split('=')[1]) : 0;
@@ -731,6 +732,16 @@ function findMissingRatings() {
   // Market filter: restrict to shows matching a market keyword (e.g., 'west-end')
   if (MARKET_FILTER) {
     shows = shows.filter(d => d.includes(MARKET_FILTER));
+  }
+
+  // Since filter: restrict to shows opened on or after a date (e.g., '2024-07-01')
+  // Also includes all currently open/previews shows regardless of date
+  if (SINCE_FILTER) {
+    const showsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+    const recentIds = new Set(showsJson.shows
+      .filter(s => s.status === 'open' || s.status === 'previews' || (s.openingDate && s.openingDate >= SINCE_FILTER))
+      .map(s => s.id));
+    shows = shows.filter(d => recentIds.has(d));
   }
 
   for (const showId of shows) {
