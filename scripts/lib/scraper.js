@@ -80,6 +80,7 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
 const JS_REQUIRED_DOMAINS = new Set([
   'show-score.com',     // React SPA — requires JS rendering
   'theatermania.com',   // Dynamic content loading
+  'londontheatre.co.uk', // React SPA (Material-UI) — BD/SB return empty without JS
 ]);
 
 function _isJsRequiredDomain(url) {
@@ -183,7 +184,9 @@ async function checkScrapingBeeCredits() {
 let playwright = null; // Lazy load only if needed
 
 // --- Per-run SB credit budget ---
-const SB_CREDIT_BUDGET = parseInt(process.env.SB_CREDIT_BUDGET || '100', 10);
+// Default 250: allows ~250 render_js=false calls or ~50 render_js=true calls.
+// Gather-reviews with 5 shows uses ~30-50 SB fallback calls; opening night ~100.
+const SB_CREDIT_BUDGET = parseInt(process.env.SB_CREDIT_BUDGET || '250', 10);
 
 // --- Per-run cost tracking ---
 const _scraperStats = {
@@ -275,6 +278,10 @@ async function fetchWithScrapingBee(url, options = {}) {
     return null;
   }
 
+  // Count credit spend BEFORE the call — SB charges even for 404/error responses
+  _scraperStats.sbRequests++;
+  _scraperStats.sbCredits += creditCost;
+
   try {
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
 
@@ -292,8 +299,6 @@ async function fetchWithScrapingBee(url, options = {}) {
       }).on('error', reject);
     });
 
-    _scraperStats.sbRequests++;
-    _scraperStats.sbCredits += creditCost;
     return {
       content: response,
       format: 'html',
