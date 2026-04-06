@@ -23,7 +23,30 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet } = require('./lib/review-normalization');
+const { normalizeOutlet, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+
+// Startup assertion — prevent silent no-ops if import breaks
+if (!AGGREGATOR_SCORE_SOURCES || AGGREGATOR_SCORE_SOURCES.size === 0) {
+  throw new Error('AGGREGATOR_SCORE_SOURCES failed to load from review-normalization.js');
+}
+
+// Known aggregator domains — kept near AGGREGATOR_SCORE_SOURCES import for co-maintenance
+const AGGREGATOR_DOMAINS = new Set([
+  'show-score.com', 'showscore.com',
+  'westendtheatre.co.uk',
+  'theatrereviews.wordpress.com', 'theatre.reviews',
+  'didtheylikeit.com',
+  'londonboxoffice.co.uk',
+  'nyctheatre.com',
+  'stagedoor.com',
+]);
+
+// Outlet IDs that ARE aggregators (not contamination if url matches their domain)
+const AGGREGATOR_OUTLET_IDS = new Set([
+  'show-score', 'showscore', 'westendtheatre', 'theatre-reviews',
+  'dtli', 'london-box-office', 'lbo', 'nyc-theatre', 'stagedoor',
+  'playbill-verdict', 'bww-roundup',
+]);
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -217,6 +240,30 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
     }
   } else {
     seenReviews.set(reviewKey, { file: relativePath, url: data.url || null });
+  }
+
+  // Check 5: Aggregator score contamination
+  // 5a: aggregator scoreSource + originalScore = contamination (unless humanReviewScore override)
+  if (AGGREGATOR_SCORE_SOURCES.has(data.scoreSource) && data.originalScore && !data.humanReviewScore) {
+    errors.push({
+      file: relativePath,
+      check: 'aggregator_contamination',
+      message: `Aggregator scoreSource "${data.scoreSource}" with originalScore "${data.originalScore}" — aggregator ratings must not be stored as outlet scores`
+    });
+  }
+
+  // 5b: URL points to aggregator domain but outletId is a different outlet
+  if (data.url) {
+    try {
+      const hostname = new URL(data.url).hostname.replace(/^www\./, '');
+      if (AGGREGATOR_DOMAINS.has(hostname) && !AGGREGATOR_OUTLET_IDS.has(outletId)) {
+        errors.push({
+          file: relativePath,
+          check: 'aggregator_url_mismatch',
+          message: `URL domain "${hostname}" is an aggregator but outletId is "${data.outletId}" — review URL should point to the outlet's own page`
+        });
+      }
+    } catch { /* invalid URL — other checks catch this */ }
   }
 
   return { errors, warnings };
