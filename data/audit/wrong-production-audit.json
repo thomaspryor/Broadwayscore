@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-06T10:56:32.171Z",
+  "timestamp": "2026-04-06T11:14:01.822Z",
   "stats": {
-    "totalReviews": 34350,
-    "alreadyFlagged": 13165,
+    "totalReviews": 34359,
+    "alreadyFlagged": 13170,
     "dateGuardCatches": 12,
     "directorMismatch": 929,
     "tvFilmSignals": 3441,
-    "londonSignals": 1104,
+    "londonSignals": 1105,
     "offBroadwaySignals": 981,
     "yearMismatch": 73,
     "noPublishDate": 5547
@@ -63597,6 +63597,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "file": "hollywood-reporter--ray-bennett.json",
+      "score": 84,
+      "publishDate": "2026-04-06",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/becky-shaw-theater-review-74757/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
