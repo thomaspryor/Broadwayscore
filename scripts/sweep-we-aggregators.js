@@ -231,11 +231,13 @@ function writeReview(review, showId) {
   if (review.source === 'thestage-roundup' && review.excerpt) data.theStageExcerpt = review.excerpt;
   if (review.source === 'stagedoor' && review.excerpt) data.stagedoorExcerpt = review.excerpt;
 
-  // Star rating → P0 score (only if we don't already have one)
-  if (review.stars && !data.originalScore) {
-    data.originalScore = `${review.stars}/${review.starsOutOf || 5}`;
-    data.originalScoreNormalized = Math.round((review.stars / (review.starsOutOf || 5)) * 100);
-    data.scoreSource = review.scoreSource || `${review.source}-star-rating`;
+  // Aggregator star rating → aggregatorStars only (never originalScore).
+  // WE aggregators (WET, TR, SD, TS) provide third-party compilations of outlet scores,
+  // not the outlet's own rating. Storing as originalScore contaminates the outlet's score
+  // with the aggregator's interpretation. Use aggregatorStars as a fallback only.
+  if (review.stars && !data.originalScore && !data.aggregatorStars) {
+    data.aggregatorStars = `${review.stars}/${review.starsOutOf || 5}`;
+    data.scoreSource = data.scoreSource || review.scoreSource || `${review.source}-star-rating`;
   }
 
   if (!DRY_RUN) {

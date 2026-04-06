@@ -3681,14 +3681,19 @@ function validateLotteryRushData(shows) {
     }
   }
 
-  // Check for digital lotteries/rush with platform but no URL
+  // Check for digital lotteries/rush with platform but no URL.
+  // Known platforms (TodayTix, Broadway Direct, etc.) always have a standard URL — error.
+  // Show-specific platforms ("show website", "Hamilton App", etc.) may not have a single URL — warn.
   const KNOWN_PLATFORM_URLS = {
     'telecharge': 'https://rush.telecharge.com',
     'luckyseat': 'https://www.luckyseat.com',
     'todaytix': 'https://www.todaytix.com',
     'broadway direct': 'https://lottery.broadwaydirect.com',
   };
-  let missingUrls = 0;
+  // Platforms that are show-specific or app-based — no standard URL to require
+  const CUSTOM_PLATFORM_PATTERNS = ['show website', 'app', 'website'];
+  let missingUrlErrors = 0;
+  let missingUrlWarnings = 0;
 
   for (const [showId, data] of Object.entries(entries)) {
     if (showId.startsWith('_')) continue;
@@ -3698,18 +3703,30 @@ function validateLotteryRushData(shows) {
     ];
     for (const { name, entry } of types) {
       if (entry && entry.platform && !entry.url) {
-        const knownUrl = KNOWN_PLATFORM_URLS[(entry.platform || '').toLowerCase()];
-        error(`lottery-rush.json "${showId}": ${name} has platform "${entry.platform}" but no url${knownUrl ? ` (expected: ${knownUrl})` : ''}`);
-        missingUrls++;
+        const platformLower = (entry.platform || '').toLowerCase();
+        const knownUrl = KNOWN_PLATFORM_URLS[platformLower];
+        const isCustom = !knownUrl && CUSTOM_PLATFORM_PATTERNS.some(p => platformLower.includes(p));
+        if (knownUrl || !isCustom) {
+          // Known platform or unrecognized platform — error (we should have a URL)
+          error(`lottery-rush.json "${showId}": ${name} has platform "${entry.platform}" but no url${knownUrl ? ` (expected: ${knownUrl})` : ''}`);
+          missingUrlErrors++;
+        } else {
+          // Show-specific or app-based platform — warn (URL may not be discoverable)
+          warn(`lottery-rush.json "${showId}": ${name} has platform "${entry.platform}" but no url — add when URL is known`);
+          missingUrlWarnings++;
+        }
       }
     }
   }
 
-  if (missingUrls > 0) {
-    error(`${missingUrls} lottery/rush entries have platform but no URL — users can't click through`);
+  if (missingUrlErrors > 0) {
+    error(`${missingUrlErrors} lottery/rush entries have platform but no URL — users can't click through`);
+  }
+  if (missingUrlWarnings > 0) {
+    warn(`${missingUrlWarnings} lottery/rush entries have show-specific platform but no URL — add URLs when available`);
   }
 
-  if (issues === 0 && missingUrls === 0) {
+  if (issues === 0 && missingUrlErrors === 0) {
     ok('No duplicate lottery/rush entries or missing URLs detected');
   }
 }
