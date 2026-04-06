@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-06T09:52:59.578Z",
-  "processed": 11,
-  "failed": 27,
-  "successRate": "28.9%",
+  "updatedAt": "2026-04-06T09:55:57.536Z",
+  "processed": 14,
+  "failed": 34,
+  "successRate": "29.2%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 5,
     "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -25,6 +25,17 @@
       "t": "2026-04-06T09:51:35.012Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-06T09:54:41.366Z",
+      "event": "bb-session",
+      "session": "d28dfe3a",
+      "url": "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inh"
+    },
+    {
+      "t": "2026-04-06T09:54:42.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

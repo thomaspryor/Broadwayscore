@@ -10,7 +10,10 @@
     "dog-day-afternoon-2026/ew--unknown.json",
     "dog-day-afternoon-2026/playbill--unknown.json",
     "giant-2026/playbill--unknown.json",
-    "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
+    "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+    "bigfoot-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -39,7 +42,14 @@
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "dog-day-afternoon-2026/independent--unknown.json",
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
-    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json"
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/wsj--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -50,7 +60,8 @@
       "dog-day-afternoon-2026/ew--unknown.json",
       "dog-day-afternoon-2026/playbill--unknown.json",
       "giant-2026/playbill--unknown.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -59,7 +70,9 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "loves-labours-lost-globe-west-end-2026/timeout--unknown.json"
+      "loves-labours-lost-globe-west-end-2026/timeout--unknown.json",
+      "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+      "bigfoot-off-broadway-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -75,7 +88,7 @@
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -87,6 +100,17 @@
       "t": "2026-04-06T09:51:35.012Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-06T09:54:41.366Z",
+      "event": "bb-session",
+      "session": "d28dfe3a",
+      "url": "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inh"
+    },
+    {
+      "t": "2026-04-06T09:54:42.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
