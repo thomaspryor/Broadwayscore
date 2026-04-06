@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-06T21:13:05.955Z",
+  "timestamp": "2026-04-06T22:23:52.627Z",
   "stats": {
-    "totalReviews": 34360,
+    "totalReviews": 34361,
     "alreadyFlagged": 13183,
     "dateGuardCatches": 12,
     "directorMismatch": 929,
     "tvFilmSignals": 3441,
-    "londonSignals": 1105,
+    "londonSignals": 1106,
     "offBroadwaySignals": 981,
     "yearMismatch": 73,
     "noPublishDate": 5546
@@ -78723,6 +78723,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 75,
+      "publishDate": "2026-04-02",
+      "url": "https://www.theartsdesk.com/theatre/authenticator-national-theatre-review-complex-post-colonial-archival-dive",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
