@@ -9,7 +9,7 @@ import ShowImage from '@/components/ShowImage';
 import { ScoreBadge } from '@/components/show-cards';
 
 export const metadata: Metadata = {
-  title: 'Broadway Cast Changes - Upcoming Departures, Arrivals & Stunt Casting',
+  title: 'Broadway Cast Changes - Upcoming Departures, Arrivals & Limited Engagements',
   description: 'Track upcoming Broadway cast changes across all open shows. Find out who\'s leaving, who\'s joining, and which stars are doing limited engagements.',
   alternates: {
     canonical: `${BASE_URL}/cast-changes`,
@@ -107,6 +107,19 @@ function getEventConfig(event: CastEvent) {
   }
 }
 
+function sortEvents(events: CastEvent[]): CastEvent[] {
+  const typeOrder: Record<string, number> = { departure: 0, arrival: 1, absence: 2, note: 3 };
+  return [...events].sort((a, b) => {
+    const typeA = typeOrder[a.type] ?? 4;
+    const typeB = typeOrder[b.type] ?? 4;
+    if (typeA !== typeB) return typeA - typeB;
+    if (a.date && b.date) return a.date.localeCompare(b.date);
+    if (a.date) return -1;
+    if (b.date) return 1;
+    return 0;
+  });
+}
+
 interface ShowWithCast {
   show: {
     id: string;
@@ -122,7 +135,8 @@ interface ShowWithCast {
 }
 
 function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; index: number }) {
-  const { show, events } = showWithCast;
+  const { show } = showWithCast;
+  const events = sortEvents(showWithCast.events);
   const score = show.criticScore?.score;
 
   return (
