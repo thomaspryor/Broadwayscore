@@ -1,98 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-06T12:46:44.570Z",
+    "generatedAt": "2026-04-06T12:53:48.002Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 34766,
-      "inReviewsJson": 15971,
+      "inReviewsJson": 15963,
       "skippedExcluded": 6,
-      "withFullText": 26,
+      "withFullText": 17,
       "excerptOnly": 1587,
-      "llmClassified": 25,
+      "llmClassified": 16,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 7,
+      "nonReviewsFound": 0,
       "uncertainCases": 16,
-      "budgetUsed": 0.0025999999999999994,
-      "llmCalls": 26,
+      "budgetUsed": 0.0017000000000000006,
+      "llmCalls": 17,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14352
+      "skippedAlreadyClassified": 14353
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "born-yesterday-2011/nydailynews--joe-dziemianowicz.json",
-      "showId": "born-yesterday-2011",
-      "outlet": "New York Daily News",
-      "outletId": "nydailynews",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news report about a Michigan State football game, not a review of the Broadway show \"Born Yesterday.\"",
-      "currentScore": 81
-    },
-    {
-      "file": "irenas-vow-2009/nydailynews--unknown.json",
-      "showId": "irenas-vow-2009",
-      "outlet": "New York Daily News",
-      "outletId": "nydailynews",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news report about a Michigan State football game, not a review of the Broadway show \"Irena's Vow\".",
-      "currentScore": 79
-    },
-    {
-      "file": "looped-2010/nydailynews--unknown.json",
-      "showId": "looped-2010",
-      "outlet": "New York Daily News",
-      "outletId": "nydailynews",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news report about a college football game, not a review of the Broadway show \"Looped\".",
-      "currentScore": 73
-    },
-    {
-      "file": "the-house-of-blue-leaves-2011/nydailynews--joe-dziemianowicz.json",
-      "showId": "the-house-of-blue-leaves-2011",
-      "outlet": "New York Daily News",
-      "outletId": "nydailynews",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news report about a Michigan State football game, not a review of the play 'The House of Blue Leaves'.",
-      "currentScore": 70
-    },
-    {
-      "file": "the-peewee-herman-show-2010/nydailynews--joe-dziemianowicz.json",
-      "showId": "the-peewee-herman-show-2010",
-      "outlet": "New York Daily News",
-      "outletId": "nydailynews",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news report about a college football game, not a review of \"The Pee-wee Herman Show.\"",
-      "currentScore": 74
-    },
-    {
-      "file": "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json",
-      "showId": "the-scottsboro-boys-2010",
-      "outlet": "New York Daily News",
-      "outletId": "nydailynews",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news report about a college football game, not a review of a Broadway show.",
-      "currentScore": 78
-    },
-    {
-      "file": "wonderland-2011/nydailynews--joe-dziamonowicz.json",
-      "showId": "wonderland-2011",
-      "outlet": "New York Daily News",
-      "outletId": "nydailynews",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news report about a Michigan State football game, not a review of the Broadway show \"Wonderland\".",
-      "currentScore": 63
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -101,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also discusses other theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production itself. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -111,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences' itself.",
       "currentScore": 82
     },
     {
@@ -141,7 +70,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than evaluating a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -151,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there is no evaluative content about the show itself in this excerpt.",
       "currentScore": 88
     },
     {
@@ -171,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -181,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no review content present.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news item related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -191,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -201,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -211,7 +140,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, including the history of Hal Prince's work and the show's unique narratorial form. While it contains some evaluative language ('excellent casting choices'), it primarily functions as a descriptive feature rather than a critical review. The truncated po",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -221,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -231,7 +160,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or show listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -241,7 +170,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show. It does not evaluate \"The Price\".",
       "currentScore": 78
     },
     {
@@ -251,50 +180,11 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it lacks a clear verdict or assessment of its artistic merit.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events. However, it does not offer a critical evaluation or opinion on the quality of the production itself.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "les-miserables-2006/nytimes--ben-brantley.json",
-    "the-color-purple-2005/thewrap--ross-bonaime.json"
-  ],
-  "perShowSummary": [
-    {
-      "showId": "born-yesterday-2011",
-      "currentCount": 20,
-      "removed": 1
-    },
-    {
-      "showId": "irenas-vow-2009",
-      "currentCount": 5,
-      "removed": 1
-    },
-    {
-      "showId": "looped-2010",
-      "currentCount": 8,
-      "removed": 1
-    },
-    {
-      "showId": "the-house-of-blue-leaves-2011",
-      "currentCount": 22,
-      "removed": 1
-    },
-    {
-      "showId": "the-peewee-herman-show-2010",
-      "currentCount": 18,
-      "removed": 1
-    },
-    {
-      "showId": "the-scottsboro-boys-2010",
-      "currentCount": 19,
-      "removed": 1
-    },
-    {
-      "showId": "wonderland-2011",
-      "currentCount": 21,
-      "removed": 1
-    }
-  ]
+  "reviewsConfirmed": [],
+  "perShowSummary": []
 }
