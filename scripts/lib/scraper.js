@@ -186,6 +186,9 @@ let playwright = null; // Lazy load only if needed
 // --- Per-run SB credit budget ---
 // Default 250: allows ~250 render_js=false calls or ~50 render_js=true calls.
 // Gather-reviews with 5 shows uses ~30-50 SB fallback calls; opening night ~100.
+// For bulk runs (backfills, large dispatches), override via env:
+//   SB_CREDIT_BUDGET=1000 node scripts/gather-reviews.js ...
+// or in a workflow step:  env: { SB_CREDIT_BUDGET: '1000' }
 const SB_CREDIT_BUDGET = parseInt(process.env.SB_CREDIT_BUDGET || '250', 10);
 
 // --- Per-run cost tracking ---

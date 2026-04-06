@@ -2635,11 +2635,14 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.log(`  ...and ${driftedReviews.length - 10} more`);
       }
 
-      // No blocking guard — analyze-rebuild-drops.js reads rebuild-score-drift.json and
-      // sends a qualitative alert email if drift is significant. ALLOW_DRIFT env var removed.
+      // Non-blocking — analyze-rebuild-drops.js sends qualitative alert email.
       if (driftedReviews.length > DRIFT_THRESHOLD) {
         console.log(`  ⚠️  Exceeds threshold (${DRIFT_THRESHOLD}). analyze-rebuild-drops.js will send an alert email.`);
       }
+      console.log(`\n  📋 ACTION: This guard is NON-BLOCKING — the rebuild will continue.`);
+      console.log(`     If drift is from opening night corrections: this is expected, no action needed.`);
+      console.log(`     If unexpected: check data/audit/rebuild-score-drift.json for details.`);
+      console.log(`     To fix wrong scores: set humanReviewScore on the source file (the only field rebuild respects).`);
     }
 
     // ========================================
@@ -2723,8 +2726,12 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.log(`  ...and ${regressions.length - 10} more`);
       }
 
-      // No blocking guard — analyze-rebuild-drops.js sends a qualitative alert email instead.
-      // Historical analysis showed every guard fire was intentional pipeline work, never corruption.
+      // Non-blocking — analyze-rebuild-drops.js sends qualitative alert email.
+      console.log(`\n  📋 ACTION: This guard is NON-BLOCKING — the rebuild will continue.`);
+      console.log(`     If regressions are from opening night corrections (flagging wrongProduction, duplicates): expected.`);
+      console.log(`     If unexpected: check data/audit/rebuild-regression.json for details.`);
+      console.log(`     Each entry shows scored files on disk vs build output — disk mismatch = bug.`);
+      console.log(`     If deploy is blocked: gh workflow run "Rebuild Reviews Data" -f force_write=true`);
     }
     // ========================================
     // 3B-iii: PER-SHOW AGGREGATE SCORE DRIFT GUARD
@@ -2806,7 +2813,11 @@ if (fs.existsSync(reviewsJsonPath)) {
         console.log(`  ...and ${showDrifts.length - 10} more`);
       }
 
-      // No blocking guard — analyze-rebuild-drops.js sends a qualitative alert email instead.
+      // Non-blocking — analyze-rebuild-drops.js sends qualitative alert email.
+      console.log(`\n  📋 ACTION: This guard is NON-BLOCKING — the rebuild will continue.`);
+      console.log(`     Show-level drift without new reviews usually means: tier weight change, outlet remap, or duplicate detection.`);
+      console.log(`     If from corrections: expected — scores shift when bad reviews are removed/fixed.`);
+      console.log(`     Details: data/audit/rebuild-show-drift.json`);
     }
   } catch (e) {
     // Can't read current file, skip drift/regression check (first build)
