@@ -131,7 +131,8 @@ const SB_PREMIUM_DOMAINS = new Set([
   'nbcnewyork.com', 'newsday.com',
 ]);
 
-// Per-run SB page credit budget — prevents runaway spending
+// Per-run SB page credit budget — prevents runaway spending.
+// For bulk backfills, override: SB_PAGE_CREDIT_BUDGET=1000 node scripts/collect-review-texts.js ...
 const SB_PAGE_CREDIT_BUDGET = parseInt(process.env.SB_PAGE_CREDIT_BUDGET || '200', 10);
 
 // Parse CLI arguments
