@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: BASE_URL,
     types: {
-      'application/rss+xml': `${BASE_URL}/reviews/feed.xml`,
+      'application/rss+xml': `${BASE_URL}/rss.xml`,
     },
   },
   other: {

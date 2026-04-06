@@ -396,12 +396,15 @@ async function scrapeArticles(targetShows, { onShowComplete } = {}) {
 
     // Build search queries
     const queries = [
+      // Keyword-free query catches articles with creative titles (e.g., "Oh, Maya!")
+      `site:playbill.com "${show.title}" broadway`,
       `site:playbill.com "${show.title}" (cast OR joining OR leaving OR replacing OR departure OR "final performance" OR "new star")`,
       `site:broadwayworld.com "${show.title}" broadway cast (change OR joining OR leaving OR replacing OR departure)`,
     ];
 
     // High-freq shows get extra queries
     if (HIGH_FREQ_SHOWS.has(show.id)) {
+      queries.push(`site:broadwayworld.com "${show.title}" broadway`);
       queries.push(`site:playbill.com "${show.title}" broadway (starring OR "new cast" OR "stunt casting")`);
       queries.push(`site:broadwayworld.com "${show.title}" broadway (star OR starring OR "new cast")`);
     }
