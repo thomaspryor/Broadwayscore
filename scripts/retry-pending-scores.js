@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
+const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');

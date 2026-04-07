@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { extractScore } = require('./lib/score-extractors');
 const { fetchPage } = require('./lib/scraper');
+const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'archives', 'reviews');

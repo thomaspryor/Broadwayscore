@@ -28,6 +28,7 @@ const path = require('path');
 const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { normalizeLlmResult, LETTER_GRADES } = require('./lib/score-parsers');
+const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -570,7 +571,11 @@ async function processReview(entry) {
 
   if (!DRY_RUN) {
     // Write human-readable string to originalScore, numeric to originalScoreNormalized
-    data.originalScore = result.originalScore;
+    if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
+      data.aggregatorStars = result.originalScore;
+    } else {
+      data.originalScore = result.originalScore;
+    }
     data.originalScoreNormalized = result.normalizedScore;
     data.originalRating = result.originalScore;
     data.originalScoreSource = result.source;

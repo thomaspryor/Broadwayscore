@@ -22,6 +22,7 @@ const path = require('path');
 const https = require('https');
 const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
+const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -327,7 +328,12 @@ async function main() {
           if (t.data.originalScore) {
             t.data.previousShowScoreRating = t.data.originalScore;
           }
-          t.data.originalScore = result.originalScore;
+          const isAggSource = AGGREGATOR_SCORE_SOURCES.has(result.source);
+          if (isAggSource) {
+            t.data.aggregatorStars = result.originalScore;
+          } else {
+            t.data.originalScore = result.originalScore;
+          }
           t.data.originalScoreNormalized = result.normalizedScore;
           t.data.scoreSource = result.source;
           t.data.originalScoreSource = result.source;

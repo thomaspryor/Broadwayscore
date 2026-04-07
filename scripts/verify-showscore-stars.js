@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
+const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
 // ---------------------------------------------------------------------------
 // CLI args
