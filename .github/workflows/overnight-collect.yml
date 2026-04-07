@@ -16,6 +16,10 @@ on:
         required: false
         default: 'true'
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   collect-batch:
     runs-on: ubuntu-latest

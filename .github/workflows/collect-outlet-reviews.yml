@@ -54,6 +54,10 @@ concurrency:
   group: collect-outlet-reviews-${{ github.event.inputs.market || 'manual' }}
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   # Cron: run each market in parallel so no market starves the others
   collect-market:

@@ -33,6 +33,10 @@ concurrency:
   group: backfill-review-dates
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   backfill:
     runs-on: ubuntu-latest
