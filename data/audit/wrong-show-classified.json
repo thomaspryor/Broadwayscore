@@ -1,39 +1,14 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-07T17:52:04.884Z",
+    "generatedAt": "2026-04-07T18:00:29.986Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 3,
-    "classified": 3,
+    "total": 0,
+    "classified": 0,
     "wrongShow": 0,
-    "correct": 3,
+    "correct": 0,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": [
-    {
-      "showId": "la-cage-aux-folles-1983",
-      "showTitle": "La Cage aux Folles",
-      "file": "ew--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, composer, plot, and characters like Albin and Georges, confirming it's about La Cage aux Folles."
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
-      "showTitle": "Glengarry Glen Ross",
-      "file": "timeout--david-cote.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play \"Glengarry Glen Ross\" and discusses the cast, characters (Roma, Levene), and themes of the play. It also mentions the 2012 production and director Daniel Sullivan."
-    },
-    {
-      "showId": "present-laughter-2017",
-      "showTitle": "Present Laughter",
-      "file": "hollywood-reporter--david-rooney.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, the main character Garry Essendine, and the playwright Noel Coward, confirming it is about 'Present Laughter'. It also discusses the actor Kevin Kline and the director Moritz von Stuelpnagel."
-    }
-  ]
+  "results": []
 }
