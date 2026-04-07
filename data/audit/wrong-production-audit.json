@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-07T03:55:38.510Z",
+  "timestamp": "2026-04-07T04:08:28.259Z",
   "stats": {
-    "totalReviews": 34614,
-    "alreadyFlagged": 13070,
+    "totalReviews": 34615,
+    "alreadyFlagged": 13071,
     "dateGuardCatches": 55,
     "directorMismatch": 1001,
     "tvFilmSignals": 3466,
@@ -29460,6 +29460,25 @@
     },
     {
       "showId": "les-miserables-west-end-2021",
+      "file": "express-uk--neil-norman.json",
+      "score": 85,
+      "publishDate": "2020-01-16",
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
       "file": "guardian--michael-billington.json",
       "score": 77,
       "publishDate": "2020-01-16",
@@ -29653,25 +29672,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2014 (2x) more than 2020 (0x). 2014 matches production: les-miserables-2014"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-west-end-2021",
-      "file": "the-express--neil-norman.json",
-      "score": 85,
-      "publishDate": "2020-01-16",
-      "url": "https://www.express.co.uk/entertainment/theatre",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -33799,6 +33799,20 @@
     },
     {
       "showId": "mj-the-musical-west-end-2024",
+      "file": "express-uk--neil-norman.json",
+      "score": 78,
+      "publishDate": "2024-03-28",
+      "url": "https://www.express.co.uk/entertainment/theatre/1882479/MJ-The-Musical-review-Michael-Jackson-Thriller",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
       "file": "financialtimes--financial-times.json",
       "score": 42,
       "publishDate": "2024-03-27",
@@ -33845,20 +33859,6 @@
       "score": 74,
       "publishDate": "2024-03-27",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/mj-the-musical-prince-edward-theatre-review-wheeldon/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
-        }
-      ]
-    },
-    {
-      "showId": "mj-the-musical-west-end-2024",
-      "file": "the-express--neil-norman.json",
-      "score": 78,
-      "publishDate": "2024-03-28",
-      "url": "https://www.express.co.uk/entertainment/theatre/1882479/MJ-The-Musical-review-Michael-Jackson-Thriller",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -53967,6 +53967,20 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "express-uk--robert-gore-langton.json",
+      "score": 80,
+      "publishDate": "1999-10-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
       "publishDate": "1999-10-21",
@@ -54111,20 +54125,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "the-express--robert-gore-langton.json",
-      "score": 80,
-      "publishDate": "1999-10-20",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -76486,6 +76486,20 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "express-uk--stefan-kyriazis.json",
+      "score": 92,
+      "publishDate": "2023-05-11",
+      "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "guardian--emma-john.json",
       "score": 79,
       "publishDate": "2023-05-10",
@@ -76518,20 +76532,6 @@
       "score": 92,
       "publishDate": "2023-05-10",
       "url": "https://lostintheatreland.co.uk/operation-mincemeat-review-fortune-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "the-express--stefan-kyriazis.json",
-      "score": 92,
-      "publishDate": "2023-05-11",
-      "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
