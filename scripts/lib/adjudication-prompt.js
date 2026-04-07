@@ -7,19 +7,25 @@
 // a star rating for one of these outlets, it's relaying the outlet's own score.
 // Mirrored from rebuild-helpers.js — if you update one, update both.
 const KNOWN_STAR_OUTLETS = new Set([
+  // --- WE outlets (matches rebuild-helpers.js exactly) ---
   'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
   'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
   'artsdesk', 'thestage', 'whatsonstage',
   // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
   // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet
-  'observer', 'metro-uk', 'thearts-desk',
-  'nytimes', 'usatoday', 'new-york-post', 'new-york-daily-news',
-  'chicago-tribune', 'chicago-sun-times', 'washington-post',
-  'sf-chronicle', 'boston-globe', 'la-times', 'newsday', 'amny',
-  'theatrely', 'new-york-stage-review', 'curtainup',
-  'entertainment-weekly', 'time-magazine', 'rolling-stone',
+  'metro', 'the-sun', 'digital-spy', 'radio-times',
+  'all-that-dazzles-uk', 'musical-theatre-review',
+  'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',
+  'tim-talks-theatre-uk', 'city-am', 'plays-international',
+  'theatreandtonic', 'the-recs', 'broadwayworld',
   'londontheatre1', 'everything-theatre', 'thereviewshub',
   'shy-strange-manic', 'express-uk', 'theatre-weekly',
+  // --- US outlets (verified outletIds from reviews.json) ---
+  'observer', 'nytimes', 'usatoday', 'nypost', 'nydailynews',
+  'chicagotribune', 'chicago-sun-times', 'washpost',
+  'san-francisco-chronicle', 'boston-globe', 'latimes', 'newsday', 'amny',
+  'theatrely', 'nysr', 'curtainup',
+  'ew', 'time', 'rollingstone',
 ]);
 
 /**

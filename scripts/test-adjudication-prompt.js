@@ -87,13 +87,41 @@ console.log('\nTest 5: Unknown outlet via review fallback');
 // --- Test 6: KNOWN_STAR_OUTLETS set is populated and correct ---
 console.log('\nTest 6: KNOWN_STAR_OUTLETS sanity checks');
 {
+  // WE outlets
   assert(KNOWN_STAR_OUTLETS.has('guardian'), 'guardian is in set');
-  assert(KNOWN_STAR_OUTLETS.has('nytimes'), 'nytimes is in set');
   assert(KNOWN_STAR_OUTLETS.has('thestage'), 'thestage is in set');
+  assert(KNOWN_STAR_OUTLETS.has('broadwayworld'), 'broadwayworld is in set');
+  // US outlets — verify correct outletIds (not display names)
+  assert(KNOWN_STAR_OUTLETS.has('nytimes'), 'nytimes is in set');
+  assert(KNOWN_STAR_OUTLETS.has('ew'), 'ew is in set (not entertainment-weekly)');
+  assert(KNOWN_STAR_OUTLETS.has('nypost'), 'nypost is in set (not new-york-post)');
+  assert(KNOWN_STAR_OUTLETS.has('chicagotribune'), 'chicagotribune is in set (not chicago-tribune)');
+  assert(KNOWN_STAR_OUTLETS.has('washpost'), 'washpost is in set (not washington-post)');
+  assert(KNOWN_STAR_OUTLETS.has('nydailynews'), 'nydailynews is in set (not new-york-daily-news)');
+  assert(KNOWN_STAR_OUTLETS.has('nysr'), 'nysr is in set (not new-york-stage-review)');
+  assert(KNOWN_STAR_OUTLETS.has('latimes'), 'latimes is in set (not la-times)');
+  assert(KNOWN_STAR_OUTLETS.has('rollingstone'), 'rollingstone is in set (not rolling-stone)');
+  assert(KNOWN_STAR_OUTLETS.has('time'), 'time is in set (not time-magazine)');
+  // Excluded outlets
   assert(!KNOWN_STAR_OUTLETS.has('london-theatre'), 'london-theatre is NOT in set');
   assert(!KNOWN_STAR_OUTLETS.has('london-box-office'), 'london-box-office is NOT in set');
   assert(!KNOWN_STAR_OUTLETS.has('show-score'), 'show-score is NOT in set');
-  assert(KNOWN_STAR_OUTLETS.size > 20, `Set has ${KNOWN_STAR_OUTLETS.size} entries (expected >20)`);
+  // Old wrong IDs should NOT be present
+  assert(!KNOWN_STAR_OUTLETS.has('entertainment-weekly'), 'entertainment-weekly (wrong ID) is NOT in set');
+  assert(!KNOWN_STAR_OUTLETS.has('chicago-tribune'), 'chicago-tribune (wrong ID) is NOT in set');
+  assert(!KNOWN_STAR_OUTLETS.has('new-york-post'), 'new-york-post (wrong ID) is NOT in set');
+  assert(!KNOWN_STAR_OUTLETS.has('rolling-stone'), 'rolling-stone (wrong ID) is NOT in set');
+  assert(KNOWN_STAR_OUTLETS.size > 30, `Set has ${KNOWN_STAR_OUTLETS.size} entries (expected >30)`);
+}
+
+// --- Test 7: EW (known star outlet) gets rating without warning ---
+console.log('\nTest 7: EW outlet (ew) — rating included normally');
+{
+  const review = { ...baseReview, outletId: 'ew' };
+  const source = { ...baseSourceData, outletId: 'ew', outlet: 'Entertainment Weekly', originalScore: 'A-' };
+  const prompt = buildUserPrompt(review, source, 'Test Show');
+  assert(prompt.includes('### Original Rating\nA-'), 'EW rating included normally');
+  assert(!prompt.includes('UNVERIFIED'), 'No UNVERIFIED warning for EW');
 }
 
 // --- Summary ---
