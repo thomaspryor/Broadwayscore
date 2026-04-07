@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-04-07T03:36:46.819Z",
+    "lastUpdated": "2026-04-07T03:53:55.648Z",
     "version": "2.0.0"
   },
   "outlets": {
@@ -232,7 +232,6 @@
         "time out ny",
         "timeout new york",
         "timeout ny",
-        "time out",
         "adam-feldman",
         "timeout-ny",
         "time-out"
@@ -2250,20 +2249,6 @@
       "domain": "radiotimes.com",
       "accessModel": "free",
       "region": "london"
-    },
-    "the-express": {
-      "displayName": "The Express",
-      "tier": 3,
-      "aliases": [
-        "the-express",
-        "daily-express",
-        "express",
-        "the-express-george-simpson",
-        "Daily Express"
-      ],
-      "domain": "express.co.uk",
-      "region": "london",
-      "accessModel": "free"
     },
     "attitude": {
       "displayName": "Attitude",
@@ -4973,7 +4958,10 @@
         "sundayexpress",
         "dailyexpress",
         "daily express",
-        "the express"
+        "the-express",
+        "daily-express",
+        "express",
+        "the-express-george-simpson"
       ],
       "region": "london",
       "accessModel": "free",
@@ -9441,7 +9429,7 @@
     "the-dc-line-dr-lewis": "the-dc-line",
     "all-that-dazzles-daz-gale": "all-that-dazzles-uk",
     "radio-times-olivia-garrett": "radio-times",
-    "the-express-george-simpson": "the-express",
+    "the-express-george-simpson": "express-uk",
     "attitude-simon-button": "attitude",
     "culture-whisper-holly-omahony": "culture-whisper",
     "gay-times-chris-selman": "gay-times",
