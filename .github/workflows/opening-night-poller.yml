@@ -209,6 +209,7 @@ jobs:
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: 'true'
           BROWSERBASE_MAX_SESSIONS_PER_RUN: '10'
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
           NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
