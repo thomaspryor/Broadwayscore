@@ -30,7 +30,10 @@ function parseStarRating(rating) {
     const stars = parseFloat(starMatch[1]);
     const maxStars = parseInt(starMatch[2] || starMatch[3] || '5');
     if (maxStars > 0 && stars <= maxStars) {
-      return Math.round((stars / maxStars) * 100);
+      // Cap perfect scores at 95 — a 5/5 is outstanding but not literally 100.
+      // 100 should be reserved for explicit "100/100" ratings.
+      const raw = Math.round((stars / maxStars) * 100);
+      return raw === 100 && maxStars < 100 ? 95 : raw;
     }
     return null; // value > scale is invalid
   }
@@ -40,7 +43,8 @@ function parseStarRating(rating) {
   const emptyStars = (r.match(/☆/g) || []).length;
   if (filledStars > 0) {
     const total = filledStars + emptyStars || 5;
-    return Math.round((filledStars / total) * 100);
+    const raw = Math.round((filledStars / total) * 100);
+    return raw === 100 ? 95 : raw;
   }
 
   return null;
@@ -152,7 +156,9 @@ function normalizeLlmResult(result) {
   }
 
   if (type === 'stars') {
-    const normalizedScore = Math.round((value / scale) * 100);
+    let normalizedScore = Math.round((value / scale) * 100);
+    // Cap perfect star scores at 95 (consistent with parseStarRating)
+    if (normalizedScore === 100 && scale < 100) normalizedScore = 95;
     return {
       originalScore: `${value}/${scale} stars`,
       normalizedScore,

@@ -28,7 +28,9 @@ const AGGREGATOR_DOMAINS = new Set([
   'show-score.com', 'showscore.com', 'playbill.com',
   // NOTE: broadwayworld.com NOT here — BWW publishes original reviews; roundups use isRoundupArticle flag
   'ibdb.com', 'broadway.com', 'broadway.org',
-  'newyorktheatreguide.com', 'newyorktheaterguide.com',
+  // NOTE: newyorktheatreguide.com removed — NYTG publishes original reviews (e.g., Kyle Turner)
+  // Was blocking Becky Shaw NYTG review despite passing all other guards.
+  'newyorktheaterguide.com', // US spelling variant — keep blocked (redirects to .theatre. anyway)
   'lovelondonloveculture.com', 'westendtheatre.com',
   'newyorkcitytheatre.com', 'broadwayacrossamerica.com',
   'broadwayscorecard.com', 'broadway.org.uk', 'londonsbroadwaybuzz.ca',

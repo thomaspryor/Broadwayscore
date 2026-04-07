@@ -78,6 +78,7 @@ const ESSENTIAL_COOKIE_PATTERNS = {
   'thetimes.co.uk': /^(auth0|auth0_compat|sacs_tnl|authId|blaize_jwt|nukt_mem|nuk_customer_location_hint|login_event_fired|pay_fls|gamera_user_id|_nuk_sp_id\.|_nuk_sp_ses\.)$/,
   'thetimes.com': /^(auth0|auth0_compat|sacs_tnl|authId|blaize_jwt|nukt_mem|nuk_customer_location_hint|login_event_fired|pay_fls|gamera_user_id|_nuk_sp_id\.|_nuk_sp_ses\.)$/,
   'thestage.co.uk': null, // Small enough to send all
+  'ft.com': null, // Small enough to send all
 };
 
 function loadCookiesForUrl(url) {
