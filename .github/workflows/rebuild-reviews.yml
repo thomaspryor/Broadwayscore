@@ -30,6 +30,11 @@ on:
         required: false
         default: 'false'
         type: string
+      skip_enrichment:
+        description: 'Skip slow enrichment steps (backfill critics, classify wrong-production, etc.) — use for corrections'
+        required: false
+        default: 'false'
+        type: string
 
 permissions:
   contents: write
@@ -75,32 +80,38 @@ jobs:
           fi
 
       - name: Extract pull quotes for new reviews
+        if: inputs.skip_enrichment != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/extract-pull-quotes.js --limit=500
         continue-on-error: true
 
       - name: Classify new review files
+        if: inputs.skip_enrichment != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose
         continue-on-error: true
 
       - name: Flag wrong-production reviews by date window
+        if: inputs.skip_enrichment != 'true'
         run: node scripts/flag-wrong-production-by-date.js --apply
         continue-on-error: true
 
       - name: Audit pre-2005 wrong-production reviews
+        if: inputs.skip_enrichment != 'true'
         run: node scripts/audit-pre2005-reviews.js
         continue-on-error: true
 
       - name: Classify medium-confidence wrong-production flags
+        if: inputs.skip_enrichment != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/classify-wrong-production.js --apply --resume --limit=200
         continue-on-error: true
 
       - name: Classify wrong-show flags (LLM)
+        if: inputs.skip_enrichment != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/classify-wrong-show.js --apply --resume --limit=100
@@ -108,10 +119,12 @@ jobs:
         timeout-minutes: 5
 
       - name: Backfill unknown outlets (local, free)
+        if: inputs.skip_enrichment != 'true'
         run: node scripts/backfill-unknown-critics.js --outlets-only
         continue-on-error: true
 
       - name: Backfill unknown critics (via scraper infrastructure)
+        if: inputs.skip_enrichment != 'true'
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
@@ -120,18 +133,22 @@ jobs:
         timeout-minutes: 15
 
       - name: Cleanup phantom outlet duplicates
+        if: inputs.skip_enrichment != 'true'
         run: node scripts/cleanup-phantom-outlets.js --apply
         continue-on-error: true
 
       - name: Strip stale single-model scores from flagged reviews
+        if: inputs.skip_enrichment != 'true'
         run: node scripts/strip-stale-single-model-scores.js --apply
         continue-on-error: true
 
       - name: Detect syndicated duplicates and author mismatches
+        if: inputs.skip_enrichment != 'true'
         run: node scripts/detect-syndicated-duplicates.js
         continue-on-error: true
 
       - name: Apply audit flags to review-text files
+        if: inputs.skip_enrichment != 'true'
         run: node scripts/apply-audit-flags.js
         continue-on-error: true
 

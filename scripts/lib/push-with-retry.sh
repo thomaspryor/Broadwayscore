@@ -26,6 +26,8 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 MAX_RETRIES=${1:-7}
 BRANCH=${2:-main}
 
@@ -86,6 +88,21 @@ resolve_conflicts() {
   return 1
 }
 
+# After rebase/merge, restore any manually-set correction fields
+# (humanReviewScore, manualContentTier, etc.) that -X theirs silently dropped.
+# These fields are ONLY set by humans, never by CI — always safe to restore.
+restore_protected_fields() {
+  if ! command -v node &>/dev/null; then return 0; fi
+  local remote_ref="origin/$PULL_BRANCH"
+  local count
+  count=$(node "$SCRIPT_DIR/restore-protected-fields.js" "$remote_ref" 2>&1 | tail -1)
+  if [ "$count" -gt 0 ] 2>/dev/null; then
+    echo "  Restored protected fields in $count file(s) after rebase"
+    git add -A
+    git commit --amend --no-edit 2>/dev/null || true
+  fi
+}
+
 pushed=false
 for i in $(seq 1 "$MAX_RETRIES"); do
   if git push origin "$BRANCH"; then
@@ -102,6 +119,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   rebase_ok=false
   if git rebase -X theirs "origin/$PULL_BRANCH" 2>/dev/null; then
     rebase_ok=true
+    restore_protected_fields
   else
     echo "  Rebase had conflicts, attempting auto-resolution..."
     # Try up to 4 rounds of conflict resolution (one per conflicting commit)
@@ -110,6 +128,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         if GIT_EDITOR=true git rebase --continue 2>/dev/null; then
           rebase_ok=true
           echo "  Rebase completed after $_round round(s) of conflict resolution"
+          restore_protected_fields
           break
         fi
       else
@@ -129,8 +148,10 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # -X ours in merge context = keep our branch's version
     if git merge "origin/$PULL_BRANCH" -X ours --no-edit 2>/dev/null; then
       echo "  Merge succeeded"
+      restore_protected_fields
     elif resolve_conflicts merge && git commit --no-edit 2>/dev/null; then
       echo "  Merge succeeded after auto-resolving conflicts"
+      restore_protected_fields
     else
       echo "  Merge also failed, aborting..."
       git merge --abort 2>/dev/null || true
@@ -142,6 +163,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         git reset --hard "origin/$PULL_BRANCH" 2>/dev/null || true
         if git cherry-pick "$OUR_HEAD" --strategy-option=theirs 2>/dev/null; then
           echo "  Cherry-pick succeeded (our changes on top of remote)"
+          restore_protected_fields
         else
           git cherry-pick --abort 2>/dev/null || true
           git reset --hard "$OUR_HEAD" 2>/dev/null || true

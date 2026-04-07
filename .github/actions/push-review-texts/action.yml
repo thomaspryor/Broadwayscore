@@ -180,6 +180,18 @@ runs:
               GIT_EDITOR=true git rebase --continue 2>/dev/null || true
             fi
 
+            # After rebase, restore any manually-set correction fields (humanReviewScore,
+            # manualContentTier, etc.) that content-length resolution may have dropped.
+            # These fields are ONLY set by humans — always safe to merge from either side.
+            if command -v node &>/dev/null; then
+              RESTORED=$(node ../../scripts/lib/restore-protected-fields.js "origin/main" 2>&1 | tail -1)
+              if [ "$RESTORED" -gt 0 ] 2>/dev/null; then
+                echo "  Restored protected fields in $RESTORED file(s) after conflict resolution"
+                git add -A
+                git commit --amend --no-edit 2>/dev/null || true
+              fi
+            fi
+
             if git push origin main 2>&1; then
               echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
               exit 0
