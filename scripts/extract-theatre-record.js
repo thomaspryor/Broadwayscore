@@ -19,6 +19,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
+const { normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 
 // ─── PDF review parser ───
 // Parses reviews from pdftotext output. Reviews follow pattern:
@@ -533,13 +534,9 @@ function getOutletDisplayName(trName) {
   return outlet?.displayName || trName;
 }
 
-function slugifyCritic(name) {
-  return name.toLowerCase().replace(/['']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
-
 function makeFilename(outletId, criticName) {
-  const critic = criticName ? slugifyCritic(criticName) : 'unknown';
-  return `${outletId}--${critic}.json`;
+  // Use shared normalization to prevent accent/alias variants creating duplicates
+  return generateReviewFilename(outletId, criticName || 'unknown');
 }
 
 function parseDate(dateStr) {
@@ -856,8 +853,10 @@ async function main() {
       const filename = makeFilename(outletId, review.critic);
       const filepath = path.join(showDir, filename);
 
+      // Check for existing file — both exact match and fuzzy (accent/alias variants)
       const fileExists = fs.existsSync(filepath);
-      if (fileExists && !noSkipExisting) {
+      const existingVariant = findExistingReviewFile(showDir, outletId, review.critic);
+      if ((fileExists || existingVariant) && !noSkipExisting) {
         skippedCount++;
         continue;
       }
