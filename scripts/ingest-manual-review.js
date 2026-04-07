@@ -132,9 +132,7 @@ if (starsArg) {
     process.exit(1);
   }
   const [, num, denom] = match;
-  let normalized = Math.round((parseFloat(num) / parseFloat(denom)) * 100);
-  // Cap perfect star scores at 95 (consistent with parseStarRating)
-  if (normalized === 100 && parseFloat(denom) < 100) normalized = 95;
+  const normalized = Math.round((parseFloat(num) / parseFloat(denom)) * 100);
   originalScore = starsArg;
   originalScoreSource = 'manual-stars';
   // If no explicit --score given, derive from stars

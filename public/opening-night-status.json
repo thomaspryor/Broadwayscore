@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T18:04:38.266Z",
+  "generatedAt": "2026-04-07T18:17:08.760Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,20 +13,19 @@
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 72,
+      "liveScore": 75,
       "scoreDrift": null,
-      "total": 2,
-      "t1": 2,
+      "total": 3,
+      "t1": 3,
       "t2": 0,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/12 total",
-          "T1:2/3",
+          "3/12 total",
           "T2:0/3",
           "hi-conf:2/8"
         ],
@@ -65,10 +64,6 @@
         },
         {
           "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
           "isDualMarket": false
         },
         {
@@ -311,6 +306,18 @@
           "t2": 0,
           "t3": 0,
           "p": 0,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-07T18:17:08.760Z",
+          "rc": 3,
+          "s": 75,
+          "t1": 3,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
           "m": 2,
           "n": 0,
           "bc": "waiting"
