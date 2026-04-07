@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: main
 
@@ -119,7 +119,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -159,7 +159,7 @@ jobs:
       fail-fast: false  # Don't cancel other batches if one fails
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -178,7 +178,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -315,7 +315,7 @@ jobs:
 
     steps:
       - name: Checkout (latest, after gather pushes)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -334,7 +334,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -402,7 +402,7 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Checkout (latest, after all batches pushed)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -417,7 +417,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -613,7 +613,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Update issue (if exists)
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Find and comment on the related new-show issue

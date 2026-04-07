@@ -66,7 +66,7 @@ jobs:
     timeout-minutes: 360  # GitHub max — allows ~6 hours of polling
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -396,7 +396,7 @@ jobs:
 
       - name: Setup Node for status notification
         if: always() && steps.find.outputs.has_shows == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
 

@@ -34,7 +34,7 @@ jobs:
     timeout-minutes: 240  # 4 hour timeout - 29 shows × ~8 min each
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -44,7 +44,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'

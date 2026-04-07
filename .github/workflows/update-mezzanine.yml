@@ -41,7 +41,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
 
       - name: Checkout core data
@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
 
@@ -80,7 +80,7 @@ jobs:
 
       - name: Send alert on failure (Discord + email)
         if: failure()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

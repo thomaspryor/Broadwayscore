@@ -50,7 +50,7 @@ jobs:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -232,7 +232,7 @@ jobs:
             echo "pending_shows=$PENDING" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         if: steps.check.outputs.pending_shows != ''
         with:
           node-version: 20
