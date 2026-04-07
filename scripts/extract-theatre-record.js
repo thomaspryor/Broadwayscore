@@ -437,9 +437,15 @@ const TR_PASSWORD = process.env.TR_PASSWORD || '';
 // Load data
 const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
 
+// TR-specific overrides where the generic name is ambiguous
+// (TR only covers London/WE productions)
+const TR_MARKET_OVERRIDES = {
+  'timeout': 'timeout-london',  // "Time Out" in TR is always London
+};
+
 function getOutletId(trName) {
-  // Use shared normalizeOutlet — all aliases, case-insensitive, registry-aware
-  return normalizeOutlet(trName);
+  const id = normalizeOutlet(trName);
+  return TR_MARKET_OVERRIDES[id] || id;
 }
 
 function getOutletDisplayName(trName) {
