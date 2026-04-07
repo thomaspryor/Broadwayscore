@@ -407,8 +407,26 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
     return directResult;
   }
 
-  // Fallback: use fetchPage (Bright Data → ScrapingBee → Playwright) for CI environments
-  // where https.get gets TLS-fingerprinted and blocked by CDNs
+  // Fallback 1: try fetch() (undici TLS) — passes CDN fingerprinting where https.get() fails.
+  // This is free (no proxy cost) and works for most sites including BWW.
+  try {
+    const fetchResp = await fetch(searchUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' },
+      signal: AbortSignal.timeout(15000),
+      redirect: 'follow',
+    });
+    if (fetchResp.ok) {
+      const fetchHtml = await fetchResp.text();
+      if (fetchHtml.length > 2000) {
+        console.log(`    → ${aggregatorName}: fetch() succeeded (${(fetchHtml.length / 1024).toFixed(0)}KB)`);
+        return { found: true, html: fetchHtml, finalUrl: searchUrl, method: 'fetch-fallback' };
+      }
+    }
+  } catch (err) {
+    // fetch() not available or failed — continue to fetchPage
+  }
+
+  // Fallback 2: use fetchPage (Bright Data → ScrapingBee → Playwright) for CI environments
   if (typeof fetchPage === 'function') {
     try {
       const fpResult = await fetchPage(searchUrl);
@@ -1478,8 +1496,16 @@ function extractDTLIReviews(html, showId, dtliUrl) {
  * BWW homepage contains "Review Roundup" in nav links but lacks article-specific markers.
  */
 function isBWWRoundupContent(html) {
-  return html.includes('Review Roundup') &&
-    (html.includes('BlogPosting') || html.includes('articleBody') || html.includes('Photo Credit:'));
+  if (!html.includes('Review Roundup')) return false;
+  // Primary markers (full HTML with schema.org)
+  if (html.includes('BlogPosting') || html.includes('articleBody') || html.includes('Photo Credit:')) return true;
+  // Secondary markers (proxy-rendered HTML may strip schema.org but keep article content)
+  // "Opens-on-Broadway" or "Opens-in-the-West-End" appear in roundup article URLs/titles
+  if (html.includes('Opens-on-Broadway') || html.includes('Opens-On-Broadway') ||
+      html.includes('Opens-in-the-West-End') || html.includes('Opens-In-London')) return true;
+  // Fallback: if the page has >5000 chars and contains "Review Roundup" in the title area, it's likely real
+  if (html.length > 5000 && (html.includes('<title') && html.includes('Review Roundup'))) return true;
+  return false;
 }
 
 /**
