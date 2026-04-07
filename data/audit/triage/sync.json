@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "warn",
-  "lastChecked": "2026-04-06T08:21:51.051Z",
+  "status": "pass",
+  "lastChecked": "2026-04-07T08:11:00.614Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,12 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "27 open shows all have reviews and grosses"
+      "message": "28 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Open shows dropped by 5: 142 vs baseline 147"
+      "status": "pass",
+      "message": "2430 shows, 144 open, 17422 reviews (all at or above baseline)"
     }
   ]
 }
