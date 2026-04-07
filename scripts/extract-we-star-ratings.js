@@ -80,7 +80,11 @@ async function main() {
 
         if (result && result.originalScore) {
           console.log(`  ✓ ${label}: ${result.originalScore} [${result.source}]`);
-          data.originalScore = result.originalScore;
+          if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
+            data.aggregatorStars = result.originalScore;
+          } else {
+            data.originalScore = result.originalScore;
+          }
           data.originalScoreNormalized = result.normalizedScore;
           data.scoreSource = result.source;
 

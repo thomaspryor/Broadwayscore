@@ -81,7 +81,11 @@ async function main() {
       });
 
       if (result) {
-        data.originalScore = result.originalScore;
+        if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
+          data.aggregatorStars = result.originalScore;
+        } else {
+          data.originalScore = result.originalScore;
+        }
         data.originalScoreNormalized = result.normalizedScore;
         data.originalScoreSource = result.source;
         delete data.scoreExtractionPending;

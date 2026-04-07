@@ -457,7 +457,11 @@ function applyResult(review, result, extractedFrom) {
   review.verifiedSource = result.source;
 
   if (!DRY_RUN) {
-    review.data.originalScore = result.originalScore;
+    if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
+      review.data.aggregatorStars = result.originalScore;
+    } else {
+      review.data.originalScore = result.originalScore;
+    }
     if (result.normalizedScore) {
       review.data.originalScoreNormalized = result.normalizedScore;
     }
