@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-06T22:23:55.205Z",
+    "lastUpdated": "2026-04-07T00:36:11.282Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 34769,
-    "skippedFiles": 13403,
-    "totalCritics": 1531,
-    "registryCritics": 525,
-    "flaggedReviews": 37
+    "totalFilesScanned": 34840,
+    "skippedFiles": 13429,
+    "totalCritics": 1539,
+    "registryCritics": 527,
+    "flaggedReviews": 38
   },
   "flaggedReviews": [
     {
@@ -239,7 +239,7 @@
       "outletShare": 3,
       "primaryOutlet": "whatsonstage",
       "primaryShare": 97,
-      "totalReviews": 36
+      "totalReviews": 37
     },
     {
       "critic": "Steven Ross",
@@ -371,7 +371,7 @@
       "outletShare": 2,
       "primaryOutlet": "telegraph",
       "primaryShare": 98,
-      "totalReviews": 44
+      "totalReviews": 45
     },
     {
       "critic": "Patrick Ryan",
@@ -405,6 +405,17 @@
       "primaryOutlet": "nytg",
       "primaryShare": 96,
       "totalReviews": 23
+    },
+    {
+      "critic": "John Nathan",
+      "criticSlug": "john-nathan",
+      "outlet": "jewish-chronicle",
+      "showId": "hamilton-west-end-2021",
+      "file": "jewish-chronicle--john-nathan.json",
+      "outletShare": 9,
+      "primaryOutlet": "the-jewish-chronicle",
+      "primaryShare": 91,
+      "totalReviews": 11
     },
     {
       "critic": "Shania Russell",
@@ -444,7 +455,7 @@
         "theatermania",
         "the-clyde-fitch-report"
       ],
-      "totalReviews": 182
+      "totalReviews": 183
     },
     {
       "critic": "David Rooney",
@@ -458,7 +469,7 @@
         "timeout",
         "ap"
       ],
-      "totalReviews": 438
+      "totalReviews": 439
     },
     {
       "critic": "Mark Kennedy",
@@ -556,8 +567,8 @@
         "theatermania",
         "frontmezzjunkies",
         "thestage",
-        "playbill",
         "nytimes",
+        "playbill",
         "timeout",
         "nydailynews",
         "nytg",
@@ -588,16 +599,17 @@
         "whatsonstage",
         "usatoday",
         "all-that-dazzles-uk",
+        "culturesauce",
+        "times-uk",
         "bloomberg",
         "buy-tickets",
         "london-theatre",
+        "londonist",
         "nysr",
         "theatrely",
         "new-york-sun",
         "exeunt-magazine",
         "latimes",
-        "culturesauce",
-        "times-uk",
         "one-minute-critic",
         "huffpost",
         "nbcny",
@@ -629,6 +641,7 @@
         "herald-sun",
         "a-younger-theatre",
         "fathomentertainmentcom",
+        "front-row-center",
         "buy-tickets-from-the-theatre-here",
         "the-morning-star",
         "the-sun",
@@ -638,6 +651,7 @@
         "by-clicking-here",
         "newyorker",
         "broadwayspotted",
+        "thereviewshub",
         "arenastageorg",
         "lighting-and-sound-america",
         "theater-news-online",
@@ -648,9 +662,10 @@
         "metro-uk",
         "manhattantheatreclubcom",
         "bamorg",
+        "theatreandtonic",
         "kenny-leon"
       ],
-      "totalReviews": 549
+      "totalReviews": 558
     },
     {
       "critic": "Brittani Samuel",
@@ -901,11 +916,11 @@
         "deadline",
         "bloomberg",
         "theater-news-online",
+        "variety",
         "vulture",
-        "business-week",
-        "variety"
+        "business-week"
       ],
-      "totalReviews": 198
+      "totalReviews": 200
     },
     {
       "critic": "Robert Kahn",
@@ -1056,7 +1071,7 @@
         "backstage",
         "cultural-weekly"
       ],
-      "totalReviews": 112
+      "totalReviews": 113
     },
     {
       "critic": "David NouNou",
@@ -1157,7 +1172,7 @@
         "nytimes",
         "variety"
       ],
-      "totalReviews": 40
+      "totalReviews": 41
     },
     {
       "critic": "Sam Marlowe",
@@ -1190,7 +1205,7 @@
         "broadwayworld",
         "artsdesk"
       ],
-      "totalReviews": 28
+      "totalReviews": 29
     },
     {
       "critic": "Quentin Letts",
@@ -1419,7 +1434,7 @@
         "standard",
         "telegraph"
       ],
-      "totalReviews": 28
+      "totalReviews": 29
     },
     {
       "critic": "Tim Bano",
@@ -1432,7 +1447,7 @@
         "times-uk",
         "independent"
       ],
-      "totalReviews": 27
+      "totalReviews": 28
     },
     {
       "critic": "Kevin Filipski",
@@ -1632,7 +1647,7 @@
         "london-theatre",
         "whatsonstage"
       ],
-      "totalReviews": 21
+      "totalReviews": 22
     },
     {
       "critic": "Theo Bosanquet",
@@ -1641,7 +1656,7 @@
         "whatsonstage",
         "london-theatre"
       ],
-      "totalReviews": 12
+      "totalReviews": 13
     },
     {
       "critic": "Paul Raven",
@@ -1689,7 +1704,7 @@
         "artsdesk",
         "broadwayworld"
       ],
-      "totalReviews": 15
+      "totalReviews": 16
     },
     {
       "critic": "Holly Williams",
@@ -2035,6 +2050,15 @@
         "timeout"
       ],
       "totalReviews": 13
+    },
+    {
+      "critic": "Oliver Jones",
+      "slug": "oliver-jones",
+      "outlets": [
+        "thestage",
+        "whatsonstage"
+      ],
+      "totalReviews": 3
     },
     {
       "critic": "Iris Fanger",

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-06T22:23:52.627Z",
+  "timestamp": "2026-04-07T00:36:08.785Z",
   "stats": {
-    "totalReviews": 34361,
-    "alreadyFlagged": 13183,
+    "totalReviews": 34432,
+    "alreadyFlagged": 13209,
     "dateGuardCatches": 12,
-    "directorMismatch": 929,
-    "tvFilmSignals": 3441,
-    "londonSignals": 1106,
+    "directorMismatch": 944,
+    "tvFilmSignals": 3446,
+    "londonSignals": 1109,
     "offBroadwaySignals": 981,
     "yearMismatch": 73,
-    "noPublishDate": 5546
+    "noPublishDate": 5551
   },
   "findings": [
     {
@@ -20554,6 +20554,20 @@
     },
     {
       "showId": "hairspray-2002",
+      "file": "nytimes--robin-pogrebin.json",
+      "score": null,
+      "publishDate": "2002-08-15",
+      "url": "https://www.nytimes.com/2002/08/21/theater/big-hair-personality-match-for-young-actress-s-career-bouffant-moment-hairspray.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "hairspray-2002",
       "file": "talkinbroadway--unknown.json",
       "score": 85,
       "publishDate": "2002-08-15",
@@ -25049,6 +25063,250 @@
       "score": 86,
       "publishDate": "December 12th, 2025",
       "url": "https://www.whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "artsdesk--gary-naylor.json",
+      "score": 78,
+      "publishDate": "2025-12-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "british-theatre--howard-loxton.json",
+      "score": 83,
+      "publishDate": "2025-12-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 91,
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "daily-mail--mark-cook.json",
+      "score": 72,
+      "publishDate": "2025-12-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 82,
+      "publishDate": "2025-12-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "financialtimes--tim-bano.json",
+      "score": 82,
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 88,
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 82,
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 92,
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "observer--susannah-clapp.json",
+      "score": 92,
+      "publishDate": "2025-12-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 82,
+      "publishDate": "2025-12-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 85,
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "score": 88,
+      "publishDate": "2026-01-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "theatrecat--libby-purves.json",
+      "score": 92,
+      "publishDate": "2025-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 95,
+      "publishDate": "2025-12-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 92,
+      "publishDate": "2025-12-12",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33065,6 +33323,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "file": "theatermania--pete-hempstead.json",
+      "score": 42,
+      "publishDate": "2026-03-19",
+      "url": "https://www.theatermania.com/news/review-adam-jacobs-and-sierra-boggess-are-impeccably-cast-in-a-disneyfied-monte-cristo_1828924/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -73545,7 +73817,7 @@
       "file": "theatre-weekly--greg-stewart.json",
       "score": 72,
       "publishDate": "2022-01-20",
-      "url": "https://stagedoor.com/musicals/11104-moulin-rouge-the-musical/critic-reviews",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -79072,6 +79344,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-boy-at-the-back-of-the-class-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 78,
+      "publishDate": "2026-04-07",
+      "url": "https://www.whatsonstage.com/news/the-boy-at-the-back-of-the-class-at-rose-theatre-kingston-and-on-tour-review_1570446/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
