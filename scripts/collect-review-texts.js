@@ -4175,7 +4175,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // Phase 2a: Run both old regex AND new LLM extraction, log disagreements, use LLM result
   const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
   const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
-  if ((!data.originalScore || hasUnverifiedSSScore) && (html || text)) {
+  // Skip re-extraction if score was deliberately cleared by P0 audit
+  const wasCleared = data.originalScoreCleared === true;
+  if (!wasCleared && (!data.originalScore || hasUnverifiedSSScore) && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
 
     // Old regex extraction (for comparison logging)

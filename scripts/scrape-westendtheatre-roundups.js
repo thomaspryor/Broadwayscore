@@ -362,16 +362,15 @@ function saveReview(review) {
     fields: {
       westEndTheatreScore: review.westEndTheatreScore || null,
       westEndTheatreExcerpt: review.westEndTheatreExcerpt || null,
-      originalScore: review.originalScore || null,
+      aggregatorStars: review.aggregatorStars || null,
       publishDate: review.publishDate || null,
     },
   }, {
     onMerge(existing, input) {
-      // Preserve existing originalScore if incoming doesn't have one
-      if (existing.originalScore && !input.fields?.originalScore) {
-        // Already preserved — don't overwrite
-      } else if (input.fields?.originalScore && !existing.originalScore) {
-        existing.originalScore = input.fields.originalScore;
+      // WET is an aggregator — never write to originalScore (P0 slot).
+      // Only update aggregatorStars metadata.
+      if (input.fields?.aggregatorStars) {
+        existing.aggregatorStars = input.fields.aggregatorStars;
       }
     },
   });
@@ -536,7 +535,8 @@ async function main() {
         publishDate: postDate,
         westEndTheatreScore: `${r.stars}/5 stars`,
         westEndTheatreExcerpt: r.excerpt || null,
-        originalScore: `${r.stars}/5 stars`,
+        originalScore: null,
+        aggregatorStars: `${r.stars}/5 stars`,
         fullText: null,
         isFullReview: false,
         assignedScore: null,

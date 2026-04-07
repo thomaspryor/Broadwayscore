@@ -19,7 +19,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
-const { normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
 
 // ─── PDF review parser ───
 // Parses reviews from pdftotext output. Reviews follow pattern:
@@ -414,7 +414,7 @@ const ROOT = path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
-const OUTLET_REGISTRY = path.join(ROOT, 'data', 'outlet-registry.json');
+// outlet-registry.json is now loaded via shared normalizeOutlet() from review-normalization.js
 
 // CLI args
 const args = process.argv.slice(2);
@@ -431,107 +431,20 @@ const noSkipExisting = args.includes('--no-skip-existing');
 const TR_EMAIL = process.env.TR_EMAIL || 'thomas.pryor@gmail.com';
 const TR_PASSWORD = process.env.TR_PASSWORD || '';
 
-// Theatre Record outlet name → our outlet ID mapping
-const TR_OUTLET_MAP = {
-  'The Guardian': 'guardian',
-  'The Telegraph': 'telegraph',
-  'The Times': 'times-uk',
-  'The Standard': 'standard',
-  'Evening Standard': 'standard',
-  'The Stage': 'thestage',
-  'Time Out': 'timeout-london',
-  'Time Out London': 'timeout-london',
-  'The Independent': 'independent',
-  'Financial Times': 'financialtimes',
-  'Daily Mail': 'daily-mail',
-  'The i': 'i-paper',
-  'i': 'i-paper',
-  'WhatsOnStage': 'whatsonstage',
-  'The Observer': 'observer',
-  'The Arts Desk': 'artsdesk',
-  'BroadwayWorld': 'broadwayworld',
-  'London Theatre': 'london-theatre',
-  'LondonTheatre1': 'londontheatre1',
-  'The Reviews Hub': 'thereviewshub',
-  'theatreCat': 'theatrecat',
-  'Theatre Weekly': 'theatre-weekly',
-  'Musical Theatre Review': 'musical-theatre-review',
-  'Everything Theatre': 'everything-theatre',
-  'West End Wilma': 'west-end-wilma',
-  'Radio Times': 'radio-times',
-  'Metro': 'metro',
-  'City A.M.': 'city-am',
-  'Digital Spy': 'digital-spy',
-  'The Sun': 'the-sun',
-  'Daily Express': 'express-uk',
-  'The Express': 'express-uk',
-  'Mail on Sunday': 'daily-mail',
-  'The Sunday Times': 'sunday-times',
-  'Sunday Telegraph': 'sunday-telegraph',
-  'The Scotsman': 'the-scotsman',
-  'Hampstead & Highgate Express': 'hampstead-highgate-express',
-  'The Spectator': 'the-spectator-uk',
-  'London Box Office': 'london-box-office',
-  'BBC News': 'bbc-news',
-  'Culture Whisper': 'culture-whisper',
-  'Londonist': 'londonist',
-  'The Mirror': 'the-mirror',
-  'A Younger Theatre': 'a-younger-theatre',
-  'All That Dazzles': 'all-that-dazzles-uk',
-  'West End Best Friend': 'west-end-best-friend',
-  'Lost in Theatreland': 'lost-in-theatreland',
-  'Shy Strange Manic': 'shy-strange-manic',
-  'Theatre Bee': 'theatre-bee-uk',
-  'Tim Talks Theatre': 'tim-talks-theatre-uk',
-  'Variety': 'variety',
-  'The New York Times': 'nytimes',
-  'British Theatre Guide': 'british-theatre',
-  'Gay Times': 'gay-times',
-  'Attitude': 'attitude',
-  'Sunday Express': 'express-uk',
-  'The Sunday Express': 'express-uk',
-  'i news': 'i-paper',
-  'The i Paper': 'i-paper',
-  'i newspaper': 'i-paper',
-  'The Jewish Chronicle': 'the-jewish-chronicle',
-  'Jewish Chronicle': 'the-jewish-chronicle',
-  'The Herald': 'the-herald',
-  'Herald': 'herald',
-  'The List': 'the-list',
-  "What's On": 'whatsonstage',
-  "What'son": 'whatsonstage',
-  "What's On Stage": 'whatsonstage',
-  'Sunday Times': 'sunday-times',
-  'Tribune': 'tribune',
-  'The Mirror': 'mirror',
-};
+// TR_OUTLET_MAP removed — all mappings now in outlet-registry.json aliases,
+// resolved via shared normalizeOutlet() from review-normalization.js.
 
 // Load data
 const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
-const outletRegistry = JSON.parse(fs.readFileSync(OUTLET_REGISTRY, 'utf8'));
 
 function getOutletId(trName) {
-  // Direct map first (case-insensitive)
-  if (TR_OUTLET_MAP[trName]) return TR_OUTLET_MAP[trName];
-  const trNameLower = trName.toLowerCase().trim();
-  for (const [key, val] of Object.entries(TR_OUTLET_MAP)) {
-    if (key.toLowerCase() === trNameLower) return val;
-  }
-
-  // Try matching against outlet registry aliases
-  for (const [id, outlet] of Object.entries(outletRegistry.outlets || {})) {
-    if (outlet.displayName?.toLowerCase() === trNameLower) return id;
-    if (outlet.aliases?.some(a => a.toLowerCase() === trNameLower)) return id;
-  }
-
-  // Slugify as fallback
-  return trName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  // Use shared normalizeOutlet — all aliases, case-insensitive, registry-aware
+  return normalizeOutlet(trName);
 }
 
 function getOutletDisplayName(trName) {
   const id = getOutletId(trName);
-  const outlet = outletRegistry.outlets?.[id];
-  return outlet?.displayName || trName;
+  return getRegistryDisplayName(id) || trName;
 }
 
 function makeFilename(outletId, criticName) {

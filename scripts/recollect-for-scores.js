@@ -219,6 +219,7 @@ async function main() {
         const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
         const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
         const hasAggregatorScore = replaceAggregator && data.originalScore && AGGREGATOR_SOURCES.has(data.scoreSource);
+        if (data.originalScoreCleared) continue; // Deliberately cleared by P0 audit
         if (data.originalScore && !hasUnverifiedSSScore && !hasAggregatorScore) continue;
         if (!data.url) continue; // No URL to fetch
         if (data.wrongShow) continue; // Flagged as wrong content

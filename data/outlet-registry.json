@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-04-05T18:42:13.091Z",
+    "lastUpdated": "2026-04-07T03:36:46.819Z",
     "version": "2.0.0"
   },
   "outlets": {
@@ -1875,7 +1875,9 @@
         "whatson",
         "what-son",
         "what-s-on",
-        "for-whatsonstage"
+        "for-whatsonstage",
+        "what's on",
+        "whats-on"
       ],
       "domain": "whatsonstage.com",
       "region": "london",
@@ -4969,7 +4971,9 @@
       "aliases": [
         "express-uk",
         "sundayexpress",
-        "dailyexpress"
+        "dailyexpress",
+        "daily express",
+        "the express"
       ],
       "region": "london",
       "accessModel": "free",
@@ -7432,10 +7436,13 @@
       "displayName": "The Jewish Chronicle",
       "tier": 3,
       "aliases": [
-        "the-jewish-chronicle"
+        "the-jewish-chronicle",
+        "jewish chronicle",
+        "jewish-chronicle"
       ],
       "accessModel": "paywalled",
-      "region": "london"
+      "region": "london",
+      "domain": "thejc.com"
     },
     "the-journal-record": {
       "displayName": "The Journal Record",
@@ -8074,7 +8081,8 @@
       "aliases": [
         "time out london",
         "timeout london",
-        "time-out-london"
+        "time-out-london",
+        "time out"
       ],
       "domain": "timeout.com",
       "accessModel": "free"
@@ -9291,17 +9299,15 @@
         "sundaytelegraph"
       ]
     },
-    "jewish-chronicle": {
-      "displayName": "Jewish Chronicle",
-      "region": "london",
-      "domain": "thejc.com",
-      "tier": 3
-    },
     "sunday-express": {
       "displayName": "Sunday Express",
       "region": "london",
       "domain": "express.co.uk",
-      "tier": 3
+      "tier": 3,
+      "aliases": [
+        "sunday-express",
+        "the sunday express"
+      ]
     },
     "cambridge": {
       "displayName": "Cambridge",
