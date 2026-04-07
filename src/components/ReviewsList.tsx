@@ -14,7 +14,7 @@ interface Review {
   outletSlug?: string;
   criticName?: string;
   criticSlug?: string | null;
-  url: string;
+  url: string | null;
   publishDate: string;
   tier: 1 | 2 | 3;
   reviewScore: number;
