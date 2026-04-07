@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-07T06:33:49.702Z",
+  "timestamp": "2026-04-07T07:11:23.526Z",
   "stats": {
-    "totalReviews": 34435,
-    "alreadyFlagged": 13081,
+    "totalReviews": 34438,
+    "alreadyFlagged": 13082,
     "dateGuardCatches": 55,
     "directorMismatch": 1007,
-    "tvFilmSignals": 3466,
-    "londonSignals": 1121,
+    "tvFilmSignals": 3467,
+    "londonSignals": 1122,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
     "noPublishDate": 5591
@@ -53081,6 +53081,20 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "london-box-office--emmie-newitt.json",
+      "score": 48,
+      "publishDate": "2026-02-19",
+      "url": "https://www.londonboxoffice.co.uk/news/post/trailer-released-for-the-hunger-games-on-stage",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"motion picture\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "nytimes--alexis-soloski.json",
       "score": 63,
       "publishDate": "2025-11-12",
@@ -63292,6 +63306,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 182d before show (March 14, 2008 vs 2008-09-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-mirrored-monet-west-end-2026",
+      "file": "whatsonstage--miriam-sallon.json",
+      "publishDate": "2026-03-25",
+      "url": "https://www.whatsonstage.com/news/a-mirrored-monet-musical-at-charing-cross-theatre-review_1716250/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
