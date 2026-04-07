@@ -1,0 +1,99 @@
+name: Backfill Review Dates
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max reviews to process per run'
+        required: false
+        default: '100'
+        type: string
+      offset:
+        description: 'Skip first N undated reviews (for batching)'
+        required: false
+        default: '0'
+        type: string
+      show:
+        description: 'Only process a specific show ID'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Show what would be updated without writing files'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: backfill-review-dates
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run date backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          ARGS="--limit=${{ inputs.limit }} --offset=${{ inputs.offset }}"
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Running: node scripts/backfill-review-dates.js $ARGS"
+          node scripts/backfill-review-dates.js $ARGS
+
+      - name: Commit and push review texts
+        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
+        run: |
+          cd data/review-texts
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            COUNT=$(git diff --cached --numstat | wc -l | tr -d ' ')
+            git commit -m "data: Backfill publishDate for ${COUNT} reviews from HTML metadata"
+            bash ../../scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Trigger rebuild
+        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Rebuild Reviews Data" -f reason="Post date backfill"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Review Dates Failed'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
