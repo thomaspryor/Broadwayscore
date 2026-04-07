@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
@@ -50,6 +51,14 @@ async function main() {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (data.scoreExtractionPending && !data.originalScore && data.fullText && data.fullText.length > 200) {
+        // Skip outlets that are marked noScoreExtractor — clear the pending flag and move on
+        const outletId = (data.outletId || '').toLowerCase();
+        const extractor = OUTLET_EXTRACTORS[outletId];
+        if (extractor && extractor.name === 'noScoreExtractor') {
+          delete data.scoreExtractionPending;
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+          continue;
+        }
         pending.push({ filePath, data });
       }
     } catch (e) { /* skip unreadable */ }

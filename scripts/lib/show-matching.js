@@ -522,15 +522,25 @@ function pickBestProduction(matches, targetYear, preferredMarket, prefer) {
     const strategy = prefer || 'recent';
     const ids = matches.map(m => m.id).join(', ');
 
-    // For 'open' strategy: if exactly one production is currently running, pick it
-    if (strategy === 'open') {
+    // For 'open' or 'recent' strategy: if exactly one production is currently running, pick it.
+    // This prevents announced/future shows from beating a running production.
+    if (strategy === 'open' || strategy === 'recent') {
       const openShows = matches.filter(m => m.status === 'open' || m.status === 'previews');
       if (openShows.length === 1) return openShows[0];
-      // Fall through to 'recent' if 0 or 2+ are open
+      // Fall through to year comparison if 0 or 2+ are open
+    }
+
+    // For 'recent' strategy: filter out announced shows before year comparison,
+    // so a future date on an announced show can't beat a closed show with reviews.
+    // Only filter if non-announced candidates remain (avoid empty set).
+    let candidates = matches;
+    if (strategy === 'recent') {
+      const nonAnnounced = matches.filter(m => m.status !== 'announced');
+      if (nonAnnounced.length > 0) candidates = nonAnnounced;
     }
 
     console.warn(`  ⚠️  [AMBIGUOUS MATCH] ${matches.length} productions for "${matches[0].title}" (${ids}) — no year hint, picking ${strategy}. Pass { year } to disambiguate.`);
-    return matches.reduce((best, show) => {
+    return candidates.reduce((best, show) => {
       const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
       const bestYear = best.openingDate ? new Date(best.openingDate).getFullYear() : 0;
       if (strategy === 'original') {

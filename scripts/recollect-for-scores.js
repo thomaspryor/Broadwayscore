@@ -62,6 +62,12 @@ if (!OUTLET_EXTRACTORS[outlet]) {
   process.exit(1);
 }
 
+if (OUTLET_EXTRACTORS[outlet] && OUTLET_EXTRACTORS[outlet].name === 'noScoreExtractor') {
+  console.error(`Outlet "${outlet}" is marked noScoreExtractor — this outlet publishes text-only reviews with no star ratings.`);
+  console.error('Re-collection would fetch pages but never find ratings. Exiting to prevent wasted scraping.');
+  process.exit(1);
+}
+
 // Cookie domain map from shared cookie-loader (full map, not just UK outlets)
 const { COOKIE_DOMAIN_MAP, loadCookiesForDomain: _loadCookiesForDomain } = require('./lib/cookie-loader');
 
@@ -222,6 +228,12 @@ async function main() {
         if (data.originalScoreCleared) continue; // Deliberately cleared by P0 audit
         if (data.originalScore && !hasUnverifiedSSScore && !hasAggregatorScore) continue;
         if (!data.url) continue; // No URL to fetch
+        // Skip reviews where URL points to an aggregator (contaminated data)
+        try {
+          const urlHost = new URL(data.url).hostname.replace(/^www\./, '');
+          const aggDomains = ['show-score.com','showscore.com','westendtheatre.co.uk','theatrereviews.wordpress.com','theatre.reviews','didtheylikeit.com','londonboxoffice.co.uk','nyctheatre.com','stagedoor.com'];
+          if (aggDomains.includes(urlHost)) continue;
+        } catch {}
         if (data.wrongShow) continue; // Flagged as wrong content
         if (data.wrongProduction) continue; // URL is for a different production
         // Skip if already checked with current extractor version
