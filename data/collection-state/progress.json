@@ -27,7 +27,15 @@
     "alice-in-wonderland-west-end-2026/timeout-london--andrzej-lukowski.json",
     "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
     "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json",
-    "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json"
+    "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json",
+    "alice-in-wonderland-west-end-2026/times-uk--rachel-halliburton.json",
+    "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+    "giant-2026/variety--daniel-daddario.json",
+    "consumed-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "consumed-west-end-2026/thestage--dave-fargnoli.json",
+    "consumed-west-end-2026/times-uk--clive-davis.json",
+    "kinky-boots-the-musical-west-end-2026/attitude--gary-grimes.json",
+    "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -52,7 +60,9 @@
     "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json",
     "copenhagen-west-end-2026/telegraph--travel-writer.json",
     "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
-    "the-authenticator-west-end-2026/broadwayworld--team-bww.json"
+    "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -71,12 +81,19 @@
       "inter-alia-west-end-2026/guardian--emma-john.json",
       "romeo-and-juliet-west-end-2026/i-paper--fiona-mountford.json",
       "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
-      "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json"
+      "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json",
+      "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
+      "consumed-west-end-2026/thestage--dave-fargnoli.json",
+      "kinky-boots-the-musical-west-end-2026/attitude--gary-grimes.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-listening-off-broadway-2026/hollywood-reporter--unknown.json",
-      "the-listening-off-broadway-2026/hollywood-reporter--unknown.json"
+      "the-listening-off-broadway-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/giant-2026/variety--daniel-daddario.json",
+      "giant-2026/variety--daniel-daddario.json",
+      "data/review-texts/kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
+      "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -86,7 +103,10 @@
       "copenhagen-west-end-2026/independent--laura-hall.json",
       "becky-shaw-2026/theatrely--juan-a-ramirez.json",
       "romeo-and-juliet-west-end-2026/metro--brooke-ivy-johnson.json",
-      "the-authenticator-west-end-2026/broadwayworld--team-bww.json"
+      "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
+      "alice-in-wonderland-west-end-2026/times-uk--rachel-halliburton.json",
+      "consumed-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "consumed-west-end-2026/times-uk--clive-davis.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -106,7 +126,7 @@
     ]
   },
   "startTime": "2026-04-07T09:12:19.021Z",
-  "lastProcessed": "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json",
+  "lastProcessed": "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
   "log": [
     {
       "t": "2026-04-07T09:16:15.147Z",
@@ -129,6 +149,23 @@
       "t": "2026-04-07T11:00:07.885Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-07T11:06:27.413Z",
+      "event": "bb-session",
+      "session": "1d2d4a3d",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-04-07T11:06:28.746Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T11:09:02.251Z",
+      "event": "bb-session",
+      "session": "d98f4f8d",
+      "url": "https://www.express.co.uk/entertainment/theatre/2085524/christian-aguilera-new-m"
     }
   ]
 }
