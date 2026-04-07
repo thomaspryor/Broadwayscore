@@ -29,6 +29,10 @@ on:
         type: number
         default: 10
 
+permissions:
+  contents: write
+  actions: write
+
 concurrency:
   group: show-score
   cancel-in-progress: false
