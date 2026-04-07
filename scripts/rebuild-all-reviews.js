@@ -1529,14 +1529,6 @@ showDirs.forEach(showId => {
           return;
         }
       }
-      // Debug: log NYTG processing for Becky Shaw
-      if (showId === 'becky-shaw-2026' && file.includes('nytg')) {
-        console.log(`  [DEBUG NYTG] ${file}: wrongProd=${data.wrongProduction} wrongShow=${data.wrongShow} score=${data.humanReviewScore||data.assignedScore} manualClear=${data.wrongProductionManualClear}`);
-      }
-      // Debug: log ALL Becky Shaw reviews that reach this point
-      if (showId === 'becky-shaw-2026') {
-        console.log(`  [DEBUG BECKY] PASSED GUARDS: ${file} score=${data.humanReviewScore||data.assignedScore}`);
-      }
 
       // Auto-reject reviews with blocked URLs (ticket pages, aggregators, social media)
       // This catches URLs that slipped through gather-reviews before the isBlockedReviewUrl guard
