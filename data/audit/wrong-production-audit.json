@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T05:07:48.131Z",
+  "timestamp": "2026-04-07T05:19:58.872Z",
   "stats": {
-    "totalReviews": 34439,
-    "alreadyFlagged": 13079,
+    "totalReviews": 34435,
+    "alreadyFlagged": 13082,
     "dateGuardCatches": 55,
-    "directorMismatch": 1000,
-    "tvFilmSignals": 3465,
-    "londonSignals": 1116,
+    "directorMismatch": 1003,
+    "tvFilmSignals": 3466,
+    "londonSignals": 1119,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5606
+    "noPublishDate": 5593
   },
   "findings": [
     {
@@ -22689,6 +22689,20 @@
     },
     {
       "showId": "high-noon-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 50,
+      "publishDate": "2026-01-10",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-high-noon-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "high-noon-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
       "score": 45,
       "publishDate": "2026-01-11",
@@ -25381,6 +25395,19 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "plays-international--maryam-philpott.json",
+      "publishDate": "2025-12-15",
+      "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--unknown.json",
       "score": 80,
       "publishDate": "2025-12-15",
@@ -27060,6 +27087,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 74,
+      "publishDate": "2026-03-26",
+      "url": "https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -31425,7 +31471,7 @@
     {
       "showId": "man-and-boy-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 62,
+      "score": 88,
       "publishDate": "2026-02-11",
       "url": "https://www.londonboxoffice.co.uk/news/post/man-and-boy-dorfman-theatre-review",
       "findings": [
@@ -46080,6 +46126,19 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "plays-international--maryam-philpott.json",
+      "publishDate": "2023-12-19",
+      "url": "https://playsinternational.org.uk/stranger-things-the-first-shadow-phoenix-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "plays-international--unknown.json",
       "score": 68,
       "publishDate": "2023-12-19",
@@ -48444,8 +48503,8 @@
     {
       "showId": "tammy-faye-2024",
       "file": "vulture--sara-holdren.json",
-      "score": 44,
-      "publishDate": "November 14, 2024",
+      "score": 34,
+      "publishDate": "2024-11-14",
       "url": "https://www.vulture.com/article/theater-review-broadway-musical-tammy-faye.html",
       "findings": [
         {
@@ -65658,8 +65717,8 @@
     {
       "showId": "broken-glass-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 44,
-      "publishDate": "2026-03-04",
+      "score": 81,
+      "publishDate": "2026-03-03",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-broken-glass-young-vic",
       "findings": [
         {
@@ -74968,6 +75027,20 @@
     },
     {
       "showId": "miss-saigon-1991",
+      "file": "is-sensational-in-every-way--laurence-connor.json",
+      "score": 80,
+      "publishDate": "1991-04-07",
+      "url": "https://www.nytimes.com/1991/04/07/theater/miss-saigon-flirts-with-art-and-reality.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-1991",
       "file": "nytimes--david-richards.json",
       "publishDate": "1990-08-14",
       "url": "https://www.newspapers.com/image/1286711527/",
@@ -75782,6 +75855,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 80,
+      "publishDate": "2025-12-19",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-oh-mary-trafalgar-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -86078,7 +86165,7 @@
     {
       "showId": "woman-in-mind-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 81,
       "publishDate": "2026-01-07",
       "url": "https://www.londonboxoffice.co.uk/news/post/woman-in-mind-duke-of-yorks-theatre-review",
       "findings": [

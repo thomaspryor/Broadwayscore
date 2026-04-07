@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T05:07:40.477Z",
+  "generatedAt": "2026-04-07T05:19:51.064Z",
   "issues": [
     {
       "type": "designation-score-mismatch",
@@ -8,14 +8,6 @@
       "outlet": "nytimes",
       "critic": "Ben Brantley",
       "detail": "Critics_Pick but score=38 (source: llmScore)"
-    },
-    {
-      "type": "designation-score-mismatch",
-      "severity": "medium",
-      "showId": "les-miserables-2006",
-      "outlet": "nytimes",
-      "critic": "Ben Brantley",
-      "detail": "Critics_Pick but score=54 (source: llmScore-lowconf)"
     },
     {
       "type": "designation-score-mismatch",
@@ -41,7 +33,7 @@
       "type": "score-clustering",
       "severity": "low",
       "showId": "high-noon-west-end-2025",
-      "detail": "11/19 reviews (58%) scored exactly 60"
+      "detail": "11/20 reviews (55%) scored exactly 60"
     },
     {
       "type": "score-clustering",
@@ -52,14 +44,20 @@
     {
       "type": "score-clustering",
       "severity": "low",
+      "showId": "oh-mary-west-end-2025",
+      "detail": "10/20 reviews (50%) scored exactly 80"
+    },
+    {
+      "type": "score-clustering",
+      "severity": "low",
       "showId": "paddington-the-musical-west-end-2025",
-      "detail": "14/24 reviews (58%) scored exactly 100"
+      "detail": "14/25 reviews (56%) scored exactly 100"
     },
     {
       "type": "score-clustering",
       "severity": "low",
       "showId": "paranormal-activity-west-end-2025",
-      "detail": "9/16 reviews (56%) scored exactly 80"
+      "detail": "10/17 reviews (59%) scored exactly 80"
     },
     {
       "type": "score-clustering",
