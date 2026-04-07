@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T11:31:27.975Z",
+  "timestamp": "2026-04-07T11:53:46.392Z",
   "stats": {
-    "totalReviews": 34608,
-    "alreadyFlagged": 13121,
+    "totalReviews": 34601,
+    "alreadyFlagged": 13176,
     "dateGuardCatches": 55,
     "directorMismatch": 1007,
-    "tvFilmSignals": 3473,
-    "londonSignals": 1124,
+    "tvFilmSignals": 3475,
+    "londonSignals": 1126,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5707
+    "noPublishDate": 5636
   },
   "findings": [
     {
@@ -5818,6 +5818,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 81,
+      "publishDate": "2021-09-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/back-future-musical-review-cars-star-feelgood-triumph/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -59170,6 +59184,25 @@
     },
     {
       "showId": "titanique-west-end-2024",
+      "file": "express-uk--neil-norman.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
       "file": "londontheatre1--chris-omaweng.json",
       "score": 81,
       "publishDate": "2025-01-09",
@@ -75555,6 +75588,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "whatsonstage--lucinda-everett.json",
+      "score": 76,
+      "publishDate": "2025-10-29",
+      "url": "https://www.whatsonstage.com/news/the-rscs-wendy-and-peter-pan-at-the-barbican-theatre-review_1700152/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

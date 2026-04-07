@@ -1,45 +1,65 @@
 {
   "meta": {
-    "generatedAt": "2026-04-07T11:27:22.099Z",
+    "generatedAt": "2026-04-07T11:49:25.966Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 35016,
-      "inReviewsJson": 16246,
+      "totalFiles": 35009,
+      "inReviewsJson": 16229,
       "skippedExcluded": 61,
       "withFullText": 34,
-      "excerptOnly": 1630,
+      "excerptOnly": 1610,
       "llmClassified": 33,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 2,
+      "nonReviewsFound": 4,
       "uncertainCases": 16,
       "budgetUsed": 0.003399999999999998,
       "llmCalls": 34,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14521
+      "skippedAlreadyClassified": 14524
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "teeth-n-smiles-west-end-2026/standard--nick-curtis.json",
-      "showId": "teeth-n-smiles-west-end-2026",
-      "outlet": "The Standard",
-      "outletId": "standard",
-      "contentType": "feature",
-      "confidence": "high",
-      "reasoning": "This article discusses various schools and educational resources; it does not review or evaluate the play \"Teeth 'n' Smiles\".",
-      "currentScore": 40
-    },
-    {
-      "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/whatsonstage--sarah-crompton.json",
-      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
-      "outlet": "WhatsOnStage",
+      "file": "matilda-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
+      "showId": "matilda-the-musical-west-end-2021",
+      "outlet": "What's On Stage",
       "outletId": "whatsonstage",
       "contentType": "review",
       "confidence": "high",
-      "reasoning": "The article is a review of \"The Hills of California\", which is not the target show. The presence of evaluative language and a verdict confirms it is a review.",
+      "reasoning": "This is a review of Paddington The Musical, not Matilda The Musical. The text evaluates the production's quality, including acting, direction, and overall impact.",
+      "currentScore": 100
+    },
+    {
+      "file": "my-neighbour-totoro-west-end-2025/whatsonstage--lucinda-everett.json",
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "outlet": "What's On Stage",
+      "outletId": "whatsonstage",
+      "contentType": "review",
+      "confidence": "high",
+      "reasoning": "This is a review of 'Peter Pan', not 'My Neighbour Totoro'. The presence of evaluative language and a verdict confirms it is a review.",
+      "currentScore": 80
+    },
+    {
+      "file": "the-phantom-of-the-opera-west-end-1986/independent--louis-chilton.json",
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "outlet": "The Independent",
+      "outletId": "independent",
+      "contentType": "review",
+      "confidence": "high",
+      "reasoning": "The article is a review of \"Into the Woods\", evaluating the production's strengths and weaknesses in acting, direction, and design. It expresses the critic's opinion on the revival's quality.",
+      "currentScore": 80
+    },
+    {
+      "file": "titanique-west-end-2024/express-uk--neil-norman.json",
+      "showId": "titanique-west-end-2024",
+      "outlet": "Daily Express",
+      "outletId": "express-uk",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This is a roundup of various reviews and news items across different shows and events; it does not focus on 'Titanique' or provide a review of it.",
       "currentScore": 80
     }
   ],
@@ -51,7 +71,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production itself. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -61,7 +81,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain any review content itself.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -71,7 +91,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and other general theater topics.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -91,7 +111,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -101,7 +121,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -111,7 +131,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -121,7 +141,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -131,7 +151,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is displaying subscription information. It does not contain any evaluative content about the show 'Parade'.",
+      "reasoning": "The article appears to be truncated and is displaying subscription prompts, but the visible content suggests it is a news article or advertisement rather than a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -141,7 +161,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
+      "reasoning": "The article describes the premise of the play 'Paranormal Activity' and sets the stage for the audience, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview or introductory piece.",
       "currentScore": 80
     },
     {
@@ -151,7 +171,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific show like Pippin.",
       "currentScore": 80
     },
     {
@@ -161,7 +181,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also veers into an interview with an actor.",
       "currentScore": 83
     },
     {
@@ -171,7 +191,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -181,7 +201,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article provides production details and ticket information, resembling a news item or listing rather than a review with critical evaluation.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -201,37 +221,45 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the play's autobiographical elements and the themes it explores.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "alice-in-wonderland-west-end-2026/thestage--tom-wicker.json",
-    "alice-in-wonderland-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "alice-in-wonderland-west-end-2026/times-uk--rachel-halliburton.json",
-    "consumed-west-end-2026/thestage--dave-fargnoli.json",
-    "consumed-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "consumed-west-end-2026/times-uk--clive-davis.json",
-    "hercules-west-end-2025/i-paper--fiona-mountford.json",
-    "kinky-boots-the-musical-west-end-2026/attitude--gary-grimes.json",
-    "my-neighbour-totoro-west-end-2025/artsdesk--unknown.json",
-    "romeo-and-juliet-west-end-2026/i-paper--fiona-mountford.json",
-    "romeo-and-juliet-west-end-2026/metro--brooke-ivy-johnson.json",
-    "the-hunger-games-on-stage-west-end-2025/whatsonstage--alex-wood.json",
-    "the-producers-west-end-2025/financialtimes--sarah-hemming.json",
-    "the-producers-west-end-2025/i-paper--fiona-mountford.json",
-    "the-producers-west-end-2025/the-sun--dominic-maxwell.json"
+    "dracula-west-end-2025/metro--brooke-ivey-johnson.json",
+    "hadestown-west-end-2024/timeout-london--andrzej-lukowski.json",
+    "hercules-west-end-2025/the-sun--dominic-maxwell.json",
+    "matilda-the-musical-west-end-2021/independent--alice-saville.json",
+    "matilda-the-musical-west-end-2021/standard--tim-bano.json",
+    "matilda-the-musical-west-end-2021/telegraph--dominic-cavendish.json",
+    "matilda-the-musical-west-end-2021/thestage--sam-marlowe.json",
+    "matilda-the-musical-west-end-2021/timeout-london--andrzej-lukowski.json",
+    "my-neighbour-totoro-west-end-2025/independent--alice-saville.json",
+    "starlight-express-west-end-2024/standard--tim-bano.json",
+    "the-phantom-of-the-opera-west-end-1986/guardian--kate-wyver.json",
+    "the-play-that-goes-wrong-west-end-2021/guardian--chris-wiegand.json",
+    "the-play-that-goes-wrong-west-end-2021/standard--nick-curtis.json"
   ],
   "perShowSummary": [
     {
-      "showId": "teeth-n-smiles-west-end-2026",
-      "currentCount": 21,
+      "showId": "matilda-the-musical-west-end-2021",
+      "currentCount": 22,
       "removed": 1
     },
     {
-      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "showId": "my-neighbour-totoro-west-end-2025",
       "currentCount": 12,
+      "removed": 1
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "currentCount": 16,
+      "removed": 1
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "currentCount": 18,
       "removed": 1
     }
   ]
