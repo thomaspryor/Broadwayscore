@@ -789,6 +789,20 @@ async function main() {
         skipReason = `wrong-production-date (review ${pubDate} vs show ${showEarliestDate})`;
       }
 
+      // When show has no opening date, fall back to comparing review year vs show ID year.
+      // Catches TR archiving reviews from a prior production under an unrelated future show
+      // (e.g., "A Doll's House, Part 2" 2022 reviews assigned to "A Doll's House" 2026).
+      if (!skipReason && !showEarliestDate && pubDate) {
+        const idYearMatch = show.id.match(/-(\d{4})$/);
+        if (idYearMatch) {
+          const showIdYear = parseInt(idYearMatch[1]);
+          const reviewYear = new Date(pubDate).getFullYear();
+          if (showIdYear - reviewYear >= 2) {
+            skipReason = `wrong-production-year (review year ${reviewYear} vs show ID year ${showIdYear}, no opening date to validate)`;
+          }
+        }
+      }
+
       if (!skipReason) {
         const tourPatterns = [
           /\breview(?:ed)?\s+at\s+(?:the\s+)?(?:lowry|playhouse|hippodrome|opera house|new theatre|grand theatre|leeds|birmingham|manchester|bristol|cardiff|glasgow|edinburgh|sheffield|nottingham|southampton|brighton|bath|chichester|oxford|cambridge|salford|milton keynes)/i,

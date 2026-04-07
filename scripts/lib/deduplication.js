@@ -246,8 +246,10 @@ function isMultiProduction(newShow, existing) {
     const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
     const newVenue = stripDash(normalizeVenueName(newShow.venue));
     const existVenue = stripDash(normalizeVenueName(existing.venue));
-    if (!newVenue || !existVenue || newVenue !== existVenue) {
-      return true; // Different (or unknown) venues = legitimate transfer
+    // Treat "TBA" as unknown — a show with no venue yet is not a confirmed transfer
+    const isUnknown = v => !v || v === 'tba' || v === 'tbd';
+    if (!isUnknown(newVenue) && !isUnknown(existVenue) && newVenue !== existVenue) {
+      return true; // Different confirmed venues = legitimate transfer
     }
     // Same venue = likely duplicate, not a transfer — fall through to other checks
   }
