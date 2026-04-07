@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-07T19:41:12.975Z",
+    "generatedAt": "2026-04-07T19:54:48.831Z",
     "description": "Pre-2005 wrong-production audit results",
     "totalFlagged": 158,
-    "highConfidence": 43,
-    "mediumConfidence": 115,
+    "highConfidence": 46,
+    "mediumConfidence": 112,
     "lowConfidence": 0,
-    "reassignable": 86
+    "reassignable": 88
   },
   "results": [
     {
@@ -1407,10 +1407,11 @@
       "file": "vulture--jackson-mchenry.json",
       "outlet": "Vulture",
       "criticName": "Jackson McHenry",
-      "publishDate": null,
+      "publishDate": "2024-04-22",
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
+        "publishDate 2024 is 37 years after original opening 1987",
         "revival text signals: revival, this production"
       ],
       "textSnippet": "The ache for an absent artist permeates Lanford Wilson’s “Burn This,” now receiving a finely-tuned Broadway revival that features incendiary performances by Adam Driver and Keri Russell, playing two l"
@@ -1484,12 +1485,12 @@
       "file": "ew--shania-russell.json",
       "outlet": "Entertainment Weekly",
       "criticName": "Shania Russell",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
+      "publishDate": "2025-11-16",
+      "confidence": "high",
+      "suggestedShowId": "chess-2025",
       "signals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
+        "publishDate 2025 matches revival chess-2025 (opened 2025)",
+        "revival text signals: revival, this production"
       ],
       "textSnippet": "When chess master Johannes Zukertort described the game as \"a struggle against error,\" he may as well have been talking about this musical. Chess is a show constantly at war with its past, and 37 year"
     },
@@ -1500,13 +1501,13 @@
       "file": "vulture--sara-holdren.json",
       "outlet": "Vulture",
       "criticName": "Sara Holdren",
-      "publishDate": null,
-      "confidence": "medium",
+      "publishDate": "2025-11-16",
+      "confidence": "high",
       "suggestedShowId": "chess-2025",
       "signals": [
+        "publishDate 2025 matches revival chess-2025 (opened 2025)",
         "revival text signals: revival, back on broadway",
-        "year 2025 in text matches revival chess-2025",
-        "no publishDate + revival signals + revivals exist"
+        "year 2025 in text matches revival chess-2025"
       ],
       "textSnippet": "Photo: Matthew Murphy/Matthew Murphy\n \n \n \n Grab your sleeping bags and bug spray, people. It’s time for camp. Chess is back on Broadway after 37 years, as big and weird as ever, with as much late-’80"
     },
@@ -2093,12 +2094,12 @@
       "file": "nydailynews--chris-jones.json",
       "outlet": "The New York Daily News",
       "criticName": "Chris Jones",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
+      "publishDate": "2021-10-28",
+      "confidence": "high",
+      "suggestedShowId": "caroline-or-change-2021",
       "signals": [
-        "revival text signals: new production, this production",
-        "no publishDate + revival signals + revivals exist"
+        "publishDate 2021 matches revival caroline-or-change-2021 (opened 2021)",
+        "revival text signals: new production, this production"
       ],
       "textSnippet": "Tony Kushner, the author of “Caroline, or Change,” was examining the sociopolitical intersection of racism and American capitalism long before it became theatrically fashionable. His prescient early w"
     },

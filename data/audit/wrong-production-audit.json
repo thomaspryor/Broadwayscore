@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T19:45:28.365Z",
+  "timestamp": "2026-04-07T19:59:24.402Z",
   "stats": {
     "totalReviews": 34593,
-    "alreadyFlagged": 13223,
-    "dateGuardCatches": 56,
-    "directorMismatch": 992,
+    "alreadyFlagged": 13234,
+    "dateGuardCatches": 57,
+    "directorMismatch": 990,
     "tvFilmSignals": 3474,
-    "londonSignals": 1129,
+    "londonSignals": 1126,
     "offBroadwaySignals": 983,
     "yearMismatch": 74,
-    "noPublishDate": 5572
+    "noPublishDate": 5527
   },
   "findings": [
     {
@@ -6501,25 +6501,6 @@
     },
     {
       "showId": "betrayal-2013",
-      "file": "hollywood-reporter--demetrios-matheou.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/review/tom-hiddleston-betrayal-theater-review-1194700",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
       "file": "nytimes--matt-wolf.json",
       "score": 45,
       "publishDate": "November 5, 2013",
@@ -7040,7 +7021,7 @@
       "showId": "blackbird-2016",
       "file": "chicagotribune--chris-jones.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2016-03-10",
       "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-blackbird-broadway-review-ent-0310-20160310-column.html",
       "findings": [
         {
@@ -7661,7 +7642,7 @@
       "showId": "broadway-1987",
       "file": "vulture--jackson-mchenry.json",
       "score": 61,
-      "publishDate": null,
+      "publishDate": "2024-04-22",
       "url": "https://www.vulture.com/article/heart-of-rock-and-roll-broadway-theater-review.html",
       "findings": [
         {
@@ -7802,20 +7783,6 @@
       "score": 78,
       "publishDate": "December 13, 2023",
       "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
-        }
-      ]
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
-      "file": "talkinbroadway--howard-miller.json",
-      "score": 84,
-      "publishDate": null,
-      "url": "https://www.talkinbroadway.com/page/world/BuenaVistaSocialClub.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8860,7 +8827,7 @@
       "showId": "caroline-or-change-2004",
       "file": "nydailynews--chris-jones.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2021-10-28",
       "url": "https://www.nydailynews.com/entertainment/broadway/ny-caroline-or-change-broadway-review-20211028-pdvcx2n2anezbf3z64hnkk5liy-story.html",
       "findings": [
         {
@@ -10164,7 +10131,7 @@
       "showId": "chess-1988",
       "file": "ew--shania-russell.json",
       "score": 64,
-      "publishDate": null,
+      "publishDate": "2025-11-16",
       "url": "https://ew.com/chess-review-infamous-broadway-flop-returns-with-lea-michele-aaron-tveit-11850388",
       "findings": [
         {
@@ -10178,7 +10145,7 @@
       "showId": "chess-1988",
       "file": "vulture--sara-holdren.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2025-11-16",
       "url": "https://www.vulture.com/article/theater-review-chess-musical-broadway-tveit-michele.html",
       "findings": [
         {
@@ -24679,6 +24646,7 @@
     {
       "showId": "inter-alia-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/inter-alia-national-theatre-review-dazzling-performance-questionable-writing",
       "findings": [
@@ -49375,6 +49343,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "guardian--arifa-akbar.json",
+      "score": 94,
       "publishDate": "2025-08-12",
       "url": "https://www.theguardian.com/stage/2013/mar/24/book-of-mormon-review",
       "findings": [
@@ -65093,6 +65062,20 @@
       ]
     },
     {
+      "showId": "beetlejuice-2025",
+      "file": "guardian--xan-brooks.json",
+      "score": 63,
+      "publishDate": "2025-05-18",
+      "url": "https://www.theguardian.com/stage/2025/may/18/beetlejuice-the-musical-review-eddie-perfect-is-simply-perfect-in-his-nutty-and-wild-hit",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 143d before show (2025-05-18 vs 2025-10-08)"
+        }
+      ]
+    },
+    {
       "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
       "file": "london-theatre--matt-wolf.json",
       "score": 89,
@@ -65122,20 +65105,6 @@
     },
     {
       "showId": "betrayal-2019",
-      "file": "hollywood-reporter--demetrios-matheou.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/news/general-news/tom-hiddleston-betrayal-theater-review-1194700/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
       "file": "slantmagazine--dan-rubins.json",
       "score": 66,
       "publishDate": "2019-09-08",
@@ -65150,23 +65119,9 @@
     },
     {
       "showId": "betrayal-2019",
-      "file": "standard--henry-hitchings.json",
-      "score": 83,
-      "publishDate": null,
-      "url": "https://www.standard.co.uk/culture/theatre/betrayal-review-tom-hiddlestons-poise-and-sensitivity-impress-in-elegant-pinter-finale-a4091281.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
       "file": "theatermania--hayley-levitt.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2019-09-05",
       "url": "https://www.theatermania.com/broadway/reviews/broadway-continues-its-love-affair-with-betrayal_89678.html",
       "findings": [
         {
@@ -81903,6 +81858,7 @@
     {
       "showId": "the-devil-wears-prada-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 52,
       "publishDate": "2025-12-12",
       "url": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/",
       "findings": [
@@ -83769,6 +83725,7 @@
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 78,
       "publishDate": "2025-12-12",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
       "findings": [
