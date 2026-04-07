@@ -369,10 +369,12 @@ function getBestScore(data, opts = {}) {
   const KNOWN_STAR_OUTLETS = new Set([
     'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
     'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
-    'artsdesk', 'thestage', 'whatsonstage', 'london-theatre',
+    'artsdesk', 'thestage', 'whatsonstage',
+    // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
+    // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet
     'metro', 'the-sun', 'digital-spy', 'radio-times',
     // WE outlets with verified star ratings (added 2026-04-03)
-    'london-box-office', 'all-that-dazzles-uk', 'musical-theatre-review',
+    'all-that-dazzles-uk', 'musical-theatre-review',
     'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',
     'tim-talks-theatre-uk', 'city-am', 'plays-international',
     'theatreandtonic', 'the-recs', 'broadwayworld',
