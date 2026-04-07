@@ -615,6 +615,9 @@ const showClosingDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
 const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway')
+// URL slug index: Map<slug, showId> for cross-show URL validation.
+// Slug is the show ID stripped of market suffix and year (e.g., "kinky-boots-the-musical").
+const urlSlugIndex = new Map();
 const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 for (const s of showsData.shows) {
@@ -624,6 +627,11 @@ for (const s of showsData.shows) {
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
   showCategoryMap[s.id] = s.category || 'broadway';
+  // Build URL slug index: strip market suffix and year, keep only the distinctive title slug
+  const titleSlug = s.id.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
+  if (titleSlug.length >= 6 && !urlSlugIndex.has(titleSlug)) {
+    urlSlugIndex.set(titleSlug, s.id);
+  }
   // Long-run WE shows: openingDate before 2015 AND London market.
   // These have decades of valid reviews; the 90-day pre-opening guard shouldn't apply.
   // Also catches shows where the ID year is significantly earlier than the stored openingDate
@@ -1604,33 +1612,32 @@ showDirs.forEach(showId => {
         }
       }
 
-      // URL slug cross-check: if the URL path clearly mentions a DIFFERENT show's title,
-      // null out the URL (keep the review for its score, but don't link to wrong content).
+      // URL slug cross-check: if the URL path contains a different show's hyphenated slug
+      // but NOT the target show's slug, null out the URL. Uses actual show slugs (not word
+      // matching) to avoid false positives from common English words in titles.
       // Catches roundup/aggregator contamination where URLs get positionally misassigned
       // (e.g., a Clueless review URL paired with a Kinky Boots critic from a Show Score carousel).
-      if (data.url && !data.wrongShow) {
+      if (data.url && !data.wrongShow && urlSlugIndex) {
+        const GENERIC_URL_SLUGS = new Set(['broadway', 'west-end', 'off-broadway', 'the-musical', 'the-play', 'theatre', 'theater', 'reviews', 'london-theatre']);
         try {
-          const urlPath = new URL(data.url).pathname.toLowerCase().replace(/[^a-z0-9]/g, ' ');
+          const urlPath = new URL(data.url).pathname.toLowerCase();
           const showSlug = showId.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
-          const showWords = showSlug.split('-').filter(w => w.length > 3);
-          // Check if URL mentions the target show at all (at least one significant word)
-          const showMatch = showWords.length > 0 && showWords.some(w => urlPath.includes(w));
-          // Build a set of other show slugs to check against
-          if (!showMatch && showWords.length > 0) {
-            // URL doesn't mention target show — check if it mentions a DIFFERENT known show
-            const otherShowTitles = Object.entries(showTitleMap)
-              .filter(([id]) => id !== showId)
-              .map(([, title]) => title.toLowerCase().replace(/[^a-z0-9]/g, ''));
-            const otherMatch = otherShowTitles.find(t => {
-              const words = t.split(/\s+/).filter(w => w.length > 4);
-              return words.length >= 2 && words.every(w => urlPath.includes(w));
-            });
-            if (otherMatch) {
-              stats.urlSlugMismatch = (stats.urlSlugMismatch || 0) + 1;
-              console.log(`  ⚠️  [url-slug-mismatch] ${showId}/${file}: URL mentions "${otherMatch}" not "${showSlug}" — nulling URL`);
-              data.url = null;
-              data._urlNulledReason = `url-slug-mismatch: URL path matches "${otherMatch}" not "${showSlug}"`;
-              try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          // Only check if target slug is long enough AND not in the URL
+          if (showSlug.length >= 8 && !urlPath.includes(showSlug)) {
+            for (const [slug, otherId] of urlSlugIndex) {
+              if (otherId === showId) continue;
+              if (slug.length < 10) continue; // multi-word slug required for confidence
+              if (GENERIC_URL_SLUGS.has(slug)) continue;
+              // Skip if slugs overlap (same show family, e.g., a-dolls-house vs a-dolls-house-part-2)
+              if (showSlug.includes(slug) || slug.includes(showSlug)) continue;
+              // Match slug as a bounded path segment (not a substring of another word)
+              if (urlPath.includes(slug)) {
+                stats.urlSlugMismatch = (stats.urlSlugMismatch || 0) + 1;
+                const otherTitle = showTitleMap[otherId] || otherId;
+                console.log(`  ⚠️  [url-slug-mismatch] ${showId}/${file}: URL contains "${slug}" (${otherTitle}) but not "${showSlug}" — nulling URL in output only`);
+                data.url = null; // Null in memory only — do NOT write back to source file
+                break;
+              }
             }
           }
         } catch (e) { /* invalid URL — will be caught by other guards */ }
