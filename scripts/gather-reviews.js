@@ -22,6 +22,7 @@
  * Usage:
  *   node scripts/gather-reviews.js --shows=show-id-1,show-id-2
  *   node scripts/gather-reviews.js --shows=all-out-2025
+ *   node scripts/gather-reviews.js --shows=show-id --validate-urls  # Content-check roundup URLs
  *
  * Environment Variables:
  *   SCRAPINGBEE_API_KEY - Required for SERP-based outlet discovery
@@ -2661,7 +2662,7 @@ function parseRating(rating, outletId) {
 /**
  * Main review gathering for a single show
  */
-async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
+async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {}) {
   console.log(`\n${'='.repeat(60)}`);
   console.log(`Gathering reviews for: ${showId}`);
   console.log('='.repeat(60));
@@ -2699,6 +2700,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
     serp: { calls: 0, hits: 0, skipped: false },
     wrongUrlRetry: { found: 0, retried: 0, fixed: 0, skipped: false },
     rejections: { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, domainMismatch: 0 },
+    urlValidation: { checked: 0, nulled: 0 },
   };
 
   // STEP 1: Check ALL THREE aggregators (DTLI, Show Score, BWW Review Roundups)
@@ -3451,9 +3453,42 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
   // STEP 3: Deduplicate and create review files
   console.log('\n[3/4] Deduplicating and creating review files...');
 
+  // Roundup/aggregator sources whose URLs come from positional matching
+  // (carousel order, roundup page layout) and may be misattributed.
+  // SERP-discovered and manual URLs are already validated elsewhere.
+  const ROUNDUP_URL_SOURCES = new Set([
+    'show-score', 'show-score-playwright', 'dtli',
+    'bww-roundup', 'lbo-roundup',
+    'westendtheatre', 'theatre-reviews', 'stagedoor', 'thestage-roundup',
+  ]);
+
   let created = 0;
   for (const review of foundReviews) {
     if (review.url && !review.needsUrl) {
+      // --validate-urls: fetch roundup-sourced URLs and verify the page is about this show.
+      // If validation fails, null the URL but keep score/critic data.
+      if (options.validateUrls && review.source && ROUNDUP_URL_SOURCES.has(review.source)) {
+        try {
+          const pageResult = await fetchPage(review.url, { timeout: 15000 });
+          if (pageResult && pageResult.content) {
+            const validation = await validatePageMatchesShow(pageResult.content, show.title, {
+              openingYear: year,
+            });
+            health.urlValidation.checked++;
+            if (!validation.valid) {
+              console.log(`    ⚠ URL validation failed for ${review.outlet || review.outletId}: ${validation.reason}`);
+              console.log(`      Nulling URL (keeping score/critic): ${review.url}`);
+              review.url = null;
+              health.urlValidation.nulled++;
+            }
+          }
+          // fetchPage returned null/no HTML — keep URL (innocent until proven guilty)
+        } catch (e) {
+          // Network error, paywall, etc. — keep URL (innocent until proven guilty)
+          console.log(`    ⟳ URL validation fetch failed for ${review.url}: ${e.message} — keeping URL`);
+        }
+      }
+
       const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd });
       if (result === true) {
         created++;
@@ -3461,6 +3496,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false) {
         health.rejections[result]++;
       }
     }
+  }
+
+  if (options.validateUrls && health.urlValidation.checked > 0) {
+    console.log(`  URL validation: ${health.urlValidation.checked} checked, ${health.urlValidation.nulled} nulled`);
   }
 
   // [3b/4] Merge BWW excerpt-only reviews into existing files, create stubs for unmatched
@@ -3715,12 +3754,16 @@ async function main() {
 
   const showIds = showsArg.replace('--shows=', '').split(',').map(s => s.trim());
   const aggregatorsOnly = args.includes('--aggregators-only');
+  const validateUrls = args.includes('--validate-urls');
 
   console.log('========================================');
   console.log('Broadway Review Gatherer');
   console.log('========================================');
   console.log(`Shows to process: ${showIds.join(', ')}`);
   console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + SERP discovery)'}`);
+  if (validateUrls) {
+    console.log('URL validation: ON (roundup-sourced URLs will be content-checked)');
+  }
   if (!aggregatorsOnly) {
     console.log(`SCRAPINGBEE_API_KEY: ${process.env.SCRAPINGBEE_API_KEY ? 'Set' : 'NOT SET'}`);
     console.log(`BRIGHTDATA_TOKEN: ${process.env.BRIGHTDATA_TOKEN ? 'Set' : 'NOT SET'}`);
@@ -3731,7 +3774,7 @@ async function main() {
   for (const showId of showIds) {
     let result;
     try {
-      result = await gatherReviewsForShow(showId, aggregatorsOnly);
+      result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls });
     } catch (err) {
       console.error(`✗ Unhandled error for ${showId}: ${err.message}`);
       result = { showId, success: false, error: err.message, reviewsFound: 0, filesCreated: 0 };
@@ -3805,6 +3848,13 @@ async function main() {
       if (zeroAgg > 0) {
         console.log(`    ⚠️  ${zeroAgg} open shows with ZERO aggregator hits`);
       }
+    }
+
+    // Total URL validation stats
+    const totalUrlChecked = healthResults.reduce((s, r) => s + (r.health.urlValidation ? r.health.urlValidation.checked : 0), 0);
+    const totalUrlNulled = healthResults.reduce((s, r) => s + (r.health.urlValidation ? r.health.urlValidation.nulled : 0), 0);
+    if (totalUrlChecked > 0) {
+      console.log(`\n  URL validation: ${totalUrlChecked} checked, ${totalUrlNulled} nulled (${Math.round(100 * totalUrlNulled / totalUrlChecked)}% rejection rate)`);
     }
 
     // Total wrongUrl retry stats
