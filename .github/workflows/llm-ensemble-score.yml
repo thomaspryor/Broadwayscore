@@ -151,6 +151,28 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Refresh review-texts before scoring
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Review-texts was checked out at job start, but fixes may have been pushed
+          # while this run was queued. Pull latest to avoid scoring stale data.
+          # (Becky Shaw incident: wrongShow:false was pushed but scoring used the old checkout)
+          cd data/review-texts
+          git remote set-url origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 2>/dev/null || true
+          if [ -n "${{ github.event.inputs.show }}" ]; then
+            # Targeted refresh: only pull the specific show directory (faster)
+            echo "Refreshing review-texts for show: ${{ github.event.inputs.show }}"
+            git fetch origin main --depth=1
+            git checkout origin/main -- "${{ github.event.inputs.show }}/" 2>/dev/null || echo "Show directory not found in remote — using existing checkout"
+          else
+            # Full refresh: pull all latest changes
+            echo "Refreshing all review-texts..."
+            git pull origin main --rebase --quiet 2>/dev/null || echo "Pull failed — using existing checkout"
+          fi
+          cd ../..
+          echo "Review-texts refreshed"
+
       - name: Check if scoring needed (scheduled runs)
         if: github.event_name == 'schedule'
         id: check-needed
