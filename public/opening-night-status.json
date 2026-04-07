@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T20:43:55.717Z",
+  "generatedAt": "2026-04-07T20:58:19.539Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -930,10 +930,6 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -945,10 +941,6 @@
         },
         {
           "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         },
         {
@@ -972,24 +964,24 @@
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 78,
+      "liveScore": 58,
       "scoreDrift": null,
-      "total": 1,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 1,
       "positive": 1,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:1/6"
+          "T2:1/2",
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1043,10 +1035,6 @@
         {
           "name": "The Independent",
           "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -1072,6 +1060,18 @@
           "p": 1,
           "m": 0,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-07T20:58:19.539Z",
+          "rc": 2,
+          "s": 58,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 1,
           "bc": "waiting"
         }
       ]
