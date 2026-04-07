@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-07T04:52:08.368Z",
+    "generatedAt": "2026-04-07T05:03:38.058Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 34847,
-      "inReviewsJson": 16034,
+      "inReviewsJson": 16169,
       "skippedExcluded": 60,
-      "withFullText": 19,
+      "withFullText": 152,
       "excerptOnly": 1590,
-      "llmClassified": 18,
+      "llmClassified": 50,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 16,
-      "budgetUsed": 0.0019000000000000006,
-      "llmCalls": 19,
+      "uncertainCases": 4,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
-      "errors": 1,
-      "skippedAlreadyClassified": 14365
+      "errors": 0,
+      "skippedAlreadyClassified": 14367
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items, suggesting it's a feature or roundup rather than a review.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -60,134 +60,58 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
-    },
-    {
-      "file": "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "outlet": "The Telegraph",
-      "outletId": "telegraph",
-      "contentType": "feature",
-      "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
-      "currentScore": 60
-    },
-    {
-      "file": "liberation-2025/newyorker--helen-shaw.json",
-      "showId": "liberation-2025",
-      "outlet": "The New Yorker",
-      "outletId": "newyorker",
-      "contentType": "other",
-      "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
-      "currentScore": 88
-    },
-    {
-      "file": "once-on-this-island-2017/talkinbroadway--matthew-murray.json",
-      "showId": "once-on-this-island-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
-      "currentScore": 89
-    },
-    {
-      "file": "one-man-two-guvnors-2012/faster-times--jonathan-mandell.json",
-      "showId": "one-man-two-guvnors-2012",
-      "outlet": "Faster Times",
-      "outletId": "faster-times",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
-      "currentScore": 74
-    },
-    {
-      "file": "parade-2023/wsj--terry-teachout.json",
-      "showId": "parade-2023",
-      "outlet": "The Wall Street Journal",
-      "outletId": "wsj",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
-      "currentScore": 78
-    },
-    {
-      "file": "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
-      "showId": "paranormal-activity-west-end-2025",
-      "outlet": "The Telegraph",
-      "outletId": "telegraph",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting, but does not offer an evaluation or opinion on its quality. It seems to be setting the stage for potential viewers.",
-      "currentScore": 80
-    },
-    {
-      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
-      "showId": "pippin-2013",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
-      "currentScore": 80
-    },
-    {
-      "file": "prince-of-broadway-2017/stagebuddy--ariana-rudes.json",
-      "showId": "prince-of-broadway-2017",
-      "outlet": "Stage Buddy",
-      "outletId": "stagebuddy",
-      "contentType": "feature",
-      "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the historical significance of the material.",
-      "currentScore": 83
-    },
-    {
-      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
-      "showId": "the-assembled-parties-2013",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
-      "currentScore": 42
-    },
-    {
-      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
-      "showId": "the-glass-menagerie-2017",
-      "outlet": "The Front Row Center",
-      "outletId": "front-row-center",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
-      "currentScore": 64
-    },
-    {
-      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
-      "showId": "the-price-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
-      "currentScore": 78
-    },
-    {
-      "file": "yellow-face-2024/joysauce--janvi-sai.json",
-      "showId": "yellow-face-2024",
-      "outlet": "joysauce",
-      "outletId": "joysauce",
-      "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play to the audience.",
-      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "hercules-west-end-2025/afridiziak-theatre-news--sophia-a-jackson.json",
-    "paddington-the-musical-west-end-2025/musical-theatre-review--lisa-martland.json"
+    "110-in-the-shade-2007/newsday--linda-winer.json",
+    "a-catered-affair-2008/newsday--linda-winer.json",
+    "a-chorus-line-2006/newsday--linda-winer.json",
+    "a-chorus-line-2006/nydailynews--joe-dziemianowicz.json",
+    "a-life-in-the-theatre-2010/newyorker--john-lahr.json",
+    "a-soldiers-play-2020/chicagotribune--chris-jones.json",
+    "a-steady-rain-2009/chicagotribune--chris-jones.json",
+    "a-steady-rain-2009/newsday--linda-winer.json",
+    "after-miss-julie-2009/newsday--linda-winer.json",
+    "aint-too-proud-2019/chicagotribune--chris-jones.json",
+    "aladdin-2014/becca-on-broadway--becca.json",
+    "aladdin-2014/uinterview--daniel-graugnard.json",
+    "all-about-me-2010/nydailynews--joe-dziemianowicz.json",
+    "all-my-sons-2008/chicagotribune--chris-jones.json",
+    "beetlejuice-2019/chicagotribune--chris-jones.json",
+    "billy-elliot-the-musical-2008/latimes--charles-mcnulty.json",
+    "billy-elliot-the-musical-2008/newsday--linda-winer.json",
+    "boeingboeing-2008/newsday--linda-winer.json",
+    "bridge-and-tunnel-2006/newsday--linda-winer.json",
+    "brighton-beach-memoirs-2009/chicagotribune--chris-jones.json",
+    "burn-the-floor-2009/newsday--linda-winer.json",
+    "burn-this-2019/chicagotribune--chris-jones.json",
+    "bye-bye-birdie-2009/newsday--linda-winer.json",
+    "bye-bye-birdie-2009/nydailynews--joe-dziemianowicz.json",
+    "come-back-little-sheba-2008/newsday--linda-winer.json",
+    "constellations-2015/chicagotribune--chris-jones.json",
+    "crybaby-2008/chicagotribune--chris-jones.json",
+    "crybaby-2008/newsday--linda-winer.json",
+    "curtains-2007/newsday--linda-winer.json",
+    "disgraced-2014/chicagotribune--chris-jones.json",
+    "dividing-the-estate-2008/newsday--linda-winer.json",
+    "everyday-rapture-2010/nydailynews--joe-dziemianowicz.json",
+    "festen-2006/newsday--linda-winer.json",
+    "frostnixon-2007/newsday--linda-winer.json",
+    "frostnixon-2007/nydailynews--joe-dziemianowicz.json",
+    "godspell-2011/nydailynews--joe-dziemianowicz.json",
+    "good-night-and-good-luck-2025/newyorker--helen-shaw.json",
+    "grey-gardens-2006/chicagotribune--chris-jones.json",
+    "grey-gardens-2006/newsday--linda-winer.json",
+    "grey-gardens-2006/nydailynews--joe-dziemianowicz.json",
+    "gypsy-2008/chicagotribune--chris-jones.json",
+    "gypsy-2008/newsday--linda-winer.json",
+    "heartbreak-house-2006/newsday--linda-winer.json",
+    "in-the-next-room-2009/newsday--linda-winer.json",
+    "in-the-next-room-2009/nydailynews--joe-dziemianowicz.json",
+    "inherit-the-wind-2007/newsday--linda-winer.json"
   ],
   "perShowSummary": []
 }
