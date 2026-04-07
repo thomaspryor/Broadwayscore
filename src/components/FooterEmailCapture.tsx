@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 
-export default function FooterEmailCapture() {
+export default function FooterEmailCapture({ inputId = 'footer-email' }: { inputId?: string }) {
   const [email, setEmail] = useState('');
   const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
@@ -35,9 +35,9 @@ export default function FooterEmailCapture() {
       <p className="text-sm font-semibold text-white mb-1">Never Miss a New {marketLabel} Show</p>
       <p className="text-xs text-gray-500 mb-3">No spam, no schedule &mdash; just opening night scores. Unsubscribe anytime.</p>
       <form onSubmit={handleSubmit} className="flex gap-2">
-        <label htmlFor="footer-email" className="sr-only">Email address</label>
+        <label htmlFor={inputId} className="sr-only">Email address</label>
         <input
-          id="footer-email"
+          id={inputId}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

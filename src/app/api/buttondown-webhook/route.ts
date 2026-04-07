@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createHmac, timingSafeEqual } from 'crypto';
-import { readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
 
 /**
  * Buttondown webhook handler.
@@ -10,16 +8,19 @@ import { join } from 'path';
  *   - subscriber.unsubscribed — subscriber clicked the unsubscribe link in a broadcast
  *   - subscriber.complained  — subscriber marked the email as spam
  *
- * Both are treated as unsubscribes: the email is removed from subscribers.json so
- * sync-followers.js marks them as unsubscribed in Buttondown on the next broadcast run.
+ * Both are treated as unsubscribes: the email is submitted to Formspree with
+ * action: 'unsubscribe' so sync-followers.js removes them on the next run.
+ *
+ * NOTE: Previous implementation wrote directly to data/subscribers.json on disk,
+ * which silently fails on Vercel (read-only/ephemeral filesystem). Now mirrors
+ * the Resend webhook approach: submit to Formspree, let sync-followers handle it.
  *
  * Buttondown signature: X-Buttondown-Signature header, HMAC-SHA256 of raw body.
- * Simpler than Svix (no svix-id/timestamp headers needed).
  */
 
 const WEBHOOK_SECRET = process.env.BUTTONDOWN_WEBHOOK_SECRET || '';
-const SUBSCRIBERS_PATH = join(process.cwd(), 'data', 'subscribers.json');
-const SUBSCRIBERS_WESTEND_PATH = join(process.cwd(), 'data', 'subscribers-westend.json');
+const FORMSPREE_BROADWAY_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
+const FORMSPREE_WESTEND_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
 
 function verifySignature(rawBody: string, headers: Headers): boolean {
   if (!WEBHOOK_SECRET) {
@@ -39,22 +40,6 @@ function verifySignature(rawBody: string, headers: Headers): boolean {
       Buffer.from(signature, 'hex'),
       Buffer.from(computed, 'hex')
     );
-  } catch {
-    return false;
-  }
-}
-
-function removeFromSubscriberFile(filePath: string, email: string): boolean {
-  try {
-    const data = JSON.parse(readFileSync(filePath, 'utf8'));
-    const subscribers: string[] = data.subscribers || [];
-    const before = subscribers.length;
-    const updated = subscribers.filter((e: string) => e.toLowerCase() !== email.toLowerCase());
-    if (updated.length === before) return false; // not found
-    data.subscribers = updated;
-    data._meta = { ...data._meta, lastSynced: new Date().toISOString(), totalSubscribers: updated.length };
-    writeFileSync(filePath, JSON.stringify(data, null, 2));
-    return true;
   } catch {
     return false;
   }
@@ -93,17 +78,29 @@ export async function POST(request: NextRequest) {
 
   const masked = email.replace(/(.{2}).*(@.*)/, '$1***$2');
 
-  // Remove from Broadway subscribers
-  const removedBroadway = removeFromSubscriberFile(SUBSCRIBERS_PATH, email);
-  // Remove from West End subscribers
-  const removedWestEnd = removeFromSubscriberFile(SUBSCRIBERS_WESTEND_PATH, email);
+  // Submit unsubscribe to both Broadway and WE Formspree forms (same approach as Resend webhook).
+  // sync-followers.js will pick up the unsubscribe action on the next run.
+  const formIds = [FORMSPREE_BROADWAY_ID, FORMSPREE_WESTEND_ID].filter(Boolean);
+  if (formIds.length === 0) {
+    console.error('Buttondown webhook: no Formspree form IDs configured');
+    return NextResponse.json({ received: true });
+  }
 
-  if (removedBroadway || removedWestEnd) {
-    const markets = [removedBroadway && 'broadway', removedWestEnd && 'west-end'].filter(Boolean).join('+');
-    console.log(`Buttondown webhook: unsubscribed ${masked} from ${markets} via ${event_type}`);
+  const body = JSON.stringify({ email, action: 'unsubscribe' });
+  const results = await Promise.allSettled(
+    formIds.map(id =>
+      fetch(`https://formspree.io/f/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+      })
+    )
+  );
+  const failures = results.filter(r => r.status === 'rejected');
+  if (failures.length === 0) {
+    console.log(`Buttondown webhook: unsubscribed ${masked} via ${event_type} (${formIds.length} forms)`);
   } else {
-    // Return 200 — subscriber may have already been removed or not in our lists
-    console.log(`Buttondown webhook: ${masked} not found in subscriber files (${event_type})`);
+    console.error(`Buttondown webhook: ${failures.length}/${formIds.length} Formspree submissions failed for ${event_type}`);
   }
 
   return NextResponse.json({ received: true });

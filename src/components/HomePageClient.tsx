@@ -737,7 +737,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       {/* Email Capture — lazy-loaded since it's below the fold */}
       <div id="subscribe" className="mt-8 max-w-md mx-auto">
         <Suspense fallback={<div className="h-24" />}>
-          <FooterEmailCapture />
+          <FooterEmailCapture inputId="inline-email" />
         </Suspense>
       </div>
 
