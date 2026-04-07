@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T21:26:29.535Z",
+  "timestamp": "2026-04-07T21:42:02.239Z",
   "stats": {
     "totalReviews": 34595,
-    "alreadyFlagged": 13281,
+    "alreadyFlagged": 13293,
     "dateGuardCatches": 61,
-    "directorMismatch": 985,
-    "tvFilmSignals": 3467,
-    "londonSignals": 1122,
-    "offBroadwaySignals": 979,
+    "directorMismatch": 984,
+    "tvFilmSignals": 3465,
+    "londonSignals": 1120,
+    "offBroadwaySignals": 977,
     "yearMismatch": 74,
-    "noPublishDate": 5374
+    "noPublishDate": 5243
   },
   "findings": [
     {
@@ -42253,7 +42253,7 @@
       "showId": "school-of-rock-the-musical-2015",
       "file": "latimes--charles-mcnulty.json",
       "score": 58,
-      "publishDate": null,
+      "publishDate": "2015-12-07",
       "url": "https://www.latimes.com/entertainment/arts/theater/la-et-cm-1207-school-of-rock-review-20151207-column.html",
       "findings": [
         {
@@ -42783,7 +42783,7 @@
       "showId": "shucked-2023",
       "file": "guardian--adrian-horton.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2023-04-04",
       "url": "https://www.theguardian.com/stage/2023/apr/04/shucked-review-corny-musical-broadway",
       "findings": [
         {
@@ -43509,7 +43509,7 @@
       "showId": "skeleton-crew-2022",
       "file": "variety--ayanna-prescod.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2022-01-27",
       "url": "https://variety.com/2022/legit/reviews/skeleton-crew-review-broadway-phylicia-rashad-1235164240/",
       "findings": [
         {
@@ -44022,7 +44022,7 @@
       "showId": "some-like-it-hot-2022",
       "file": "ew--lester-fabian-brathwaite.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2022-12-12",
       "url": "https://ew.com/theater/some-like-it-hot-broadway-review/",
       "findings": [
         {
@@ -44246,7 +44246,7 @@
       "showId": "something-rotten-2015",
       "file": "chicagotribune--chris-jones.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2015-04-22",
       "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-something-rotten-broadway-review-20150422-column.html",
       "findings": [
         {
@@ -44344,7 +44344,7 @@
       "showId": "something-rotten-2015",
       "file": "theatermania--zachary-stewart.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2015-04-22",
       "url": "https://www.theatermania.com/broadway/reviews/something-rotten_72631.html",
       "findings": [
         {
@@ -44466,7 +44466,7 @@
       "showId": "soul-doctor-2013",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2013-08-15",
       "url": "https://www.hollywoodreporter.com/review/soul-doctor-theater-review-607355",
       "findings": [
         {
@@ -44964,24 +44964,6 @@
       ]
     },
     {
-      "showId": "spread-off-broadway-2026",
-      "file": "whatsonstage--michael-coveney.json",
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/spread-a-bit-of-cheer-the-top-cheerleaders-in-musicals_51222/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "spring-awakening-2006",
       "file": "nytimes--ben-brantley.json",
       "score": 81,
@@ -45196,7 +45178,7 @@
       "showId": "spring-awakening-2015",
       "file": "timeout--david-cote.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2015-09-25",
       "url": "https://www.timeout.com/newyork/theater/spring-awakening",
       "findings": [
         {
@@ -46247,7 +46229,7 @@
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "chicagotribune--chris-jones.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2017-02-23",
       "url": "https://www.chicagotribune.com/entertainment/theater/broadway/sc-sunday-park-george-broadway-review-ent-0223-20170223-column.html",
       "findings": [
         {
@@ -46331,7 +46313,7 @@
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 89,
-      "publishDate": null,
+      "publishDate": "2017-02-23",
       "url": "https://www.hollywoodreporter.com/news/general-news/sunday-in-the-park-with-george-theater-979116/",
       "findings": [
         {
@@ -48553,7 +48535,7 @@
       "showId": "the-addams-family-2010",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2010-10-14",
       "url": "https://www.hollywoodreporter.com/movies/movie-reviews/addams-family-theater-review-29475/",
       "findings": [
         {
@@ -49168,7 +49150,7 @@
       "showId": "the-big-knife-2013",
       "file": "timeout--david-cote.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2013-04-16",
       "url": "https://www.timeout.com/newyork/theater/the-big-knife",
       "findings": [
         {
@@ -49817,7 +49799,7 @@
       "showId": "the-cher-show-2018",
       "file": "latimes--charles-mcnulty.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2018-12-14",
       "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-cher-show-review-20181214-story.html",
       "findings": [
         {
@@ -49955,20 +49937,6 @@
     },
     {
       "showId": "the-cher-show-2018",
-      "file": "timeout--adam-feldman.json",
-      "score": 64,
-      "publishDate": null,
-      "url": "https://www.timeout.com/chicago/theater/the-cher-show",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-cher-show-2018",
       "file": "variety--frank-rizzo.json",
       "score": 42,
       "publishDate": "December 3, 2018",
@@ -50015,20 +49983,6 @@
       "score": 44,
       "publishDate": null,
       "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"simon godwin\" from the-cherry-orchard-2016"
-        }
-      ]
-    },
-    {
-      "showId": "the-cherry-orchard-1977",
-      "file": "timeout--david-cote.json",
-      "score": 63,
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/blog/broadway-review-diane-lane-suffers-beautifully-in-the-cherry-orchard-101416",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -50176,7 +50130,7 @@
       "showId": "the-children-2017",
       "file": "theater-life--isa-goldberg.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2017-12-24",
       "url": "https://theaterlife.com/the-children-1-2-once-on-this-island/",
       "findings": [
         {
@@ -50899,7 +50853,7 @@
       "showId": "the-cripple-of-inishmaan-2014",
       "file": "chicagotribune--chris-jones.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2014-04-20",
       "url": "http://www.chicagotribune.com/entertainment/theater/ct-cripple-of-inishmaan-broadway-review-20140420,0,2068152.column",
       "findings": [
         {
@@ -51638,7 +51592,7 @@
       "showId": "the-front-page-2016",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2016-10-23",
       "url": "https://www.hollywoodreporter.com/review/front-page-940735",
       "findings": [
         {
@@ -51652,7 +51606,7 @@
       "showId": "the-front-page-2016",
       "file": "theatermania--zachary-stewart.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2016-10-21",
       "url": "https://www.theatermania.com/broadway/reviews/the-front-page_78873.html",
       "findings": [
         {
@@ -51925,7 +51879,7 @@
       "showId": "the-glass-menagerie-2013",
       "file": "variety--frank-rizzo.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2013-09-27",
       "url": "https://variety.com/2013/legit/reviews/broadway-review-the-glass-menagerie-1200671070/",
       "findings": [
         {
@@ -77570,20 +77524,6 @@
     },
     {
       "showId": "sea-wall-a-life-2019",
-      "file": "nytg--donna-herman.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/review-of-sea-walla-life-starring-jake-gyllenhaal-tom-sturridge-on-broadway",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "sea-wall-a-life-2019",
       "file": "theatermania--adam-feldman.json",
       "score": 79,
       "publishDate": "August 9, 2019",
@@ -77600,7 +77540,7 @@
       "showId": "sea-wall-a-life-2019",
       "file": "theatermania--zachary-stewart.json",
       "score": 73,
-      "publishDate": null,
+      "publishDate": "2019-08-08",
       "url": "https://www.theatermania.com/broadway/reviews/sea-wall-a-life-jake-gyllenhaal-tom-sturridge_89503.html",
       "findings": [
         {
@@ -77642,7 +77582,7 @@
       "showId": "sea-wall-a-life-2019",
       "file": "variety--marilyn-stasio.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2019-08-09",
       "url": "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-broadway-1203292445/",
       "findings": [
         {
@@ -77934,20 +77874,6 @@
     },
     {
       "showId": "skeleton-crew-2022",
-      "file": "nytg--diep-tran.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/skeleton-crew-broadway-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "skeleton-crew-2022",
       "file": "variety--marilyn-stasio.json",
       "score": 82,
       "publishDate": "January 13, 2022",
@@ -78089,7 +78015,7 @@
       "showId": "skylight-2015",
       "file": "theatermania--zachary-stewart.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2015-04-02",
       "url": "https://www.theatermania.com/broadway/reviews/skylight_72357.html",
       "findings": [
         {
@@ -78170,20 +78096,6 @@
     },
     {
       "showId": "sondheim-on-sondheim-2010",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "score": 45,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/sondheim-sondheim-theater-review-29512/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "sondheim-on-sondheim-2010",
       "file": "nytimes--ben-brantley.json",
       "score": 73,
       "publishDate": "April 23, 2010",
@@ -78242,7 +78154,7 @@
       "showId": "soul-doctor-2013",
       "file": "vulture--scott-brown.json",
       "score": 56,
-      "publishDate": null,
+      "publishDate": "2013-08-15",
       "url": "https://www.vulture.com/2013/08/theater-reviews-shida.html",
       "findings": [
         {
@@ -79067,7 +78979,7 @@
       "showId": "stranger-things-2024",
       "file": "variety--frank-rizzo.json",
       "score": 64,
-      "publishDate": null,
+      "publishDate": "2025-04-23",
       "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/",
       "findings": [
         {
@@ -79198,7 +79110,7 @@
       "showId": "suffs-2024",
       "file": "nytg--amelia-merrill.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2024-04-19",
       "url": "https://www.newyorktheatreguide.com/reviews/suffs-broadway-review",
       "findings": [
         {
@@ -79254,7 +79166,7 @@
       "showId": "suffs-2024",
       "file": "theatermania--rachel-graham.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2024-04-19",
       "url": "https://www.theatermania.com/news/review-shaina-taubs-suffs-on-broadway-sacrifices-the-personal-for-the-political_1737608/",
       "findings": [
         {
@@ -79422,7 +79334,7 @@
       "showId": "sunset-boulevard-2017",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2017-02-09",
       "url": "https://www.hollywoodreporter.com/review/sunset-boulevard-theater-974020",
       "findings": [
         {
@@ -79621,7 +79533,7 @@
     {
       "showId": "sweat-2017",
       "file": "deadline--matt-windman.json",
-      "publishDate": null,
+      "publishDate": "2017-03-27",
       "url": "https://deadline.com/2017/03/broadway-review-sweat-and-dear-evan-hansen-1202052531/",
       "findings": [
         {
@@ -79857,7 +79769,7 @@
       "showId": "sweat-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-03-26",
       "url": "https://www.theatermania.com/broadway/reviews/sweat_80501.html",
       "findings": [
         {
@@ -80206,7 +80118,7 @@
       "showId": "the-audience-2015",
       "file": "chicagotribune--chris-jones.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2015-03-08",
       "url": "http://www.chicagotribune.com/entertainment/theater/ct-the-audience-broadway-review-20150308-column.html",
       "findings": [
         {
@@ -80234,7 +80146,7 @@
       "showId": "the-audience-2015",
       "file": "guardian--alexis-soloski.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2015-03-09",
       "url": "http://www.theguardian.com/stage/2015/mar/09/the-audience-review-helen-mirren-queen-broadway-gerald-schoenfeld-theater",
       "findings": [
         {
@@ -80625,7 +80537,7 @@
       "showId": "the-bands-visit-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "2017-11-09",
       "url": "https://www.theatermania.com/broadway/reviews/the-bands-visit_83107.html",
       "findings": [
         {
@@ -80943,7 +80855,7 @@
       "showId": "the-children-2017",
       "file": "theater-life--david-sheward.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-12-26",
       "url": "https://theaterlife.com/the-children-farinelli-and-the-king/",
       "findings": [
         {
@@ -82007,7 +81919,7 @@
       "showId": "the-ferryman-2018",
       "file": "theatermania--david-gordon.json",
       "score": 94,
-      "publishDate": null,
+      "publishDate": "2018-10-21",
       "url": "https://www.theatermania.com/broadway/news/the-ferryman_86783.html",
       "findings": [
         {
@@ -82082,7 +81994,7 @@
       "showId": "the-glass-menagerie-2013",
       "file": "vulture--scott-brown.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2013-09-26",
       "url": "https://www.vulture.com/2013/09/theater-reviews-arguendo.html",
       "findings": [
         {
