@@ -92,6 +92,8 @@ function getKnownUrls(showId) {
     if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      // Skip wrongProduction/wrongShow files — their URLs shouldn't block fresh discovery
+      if (data.wrongProduction || data.wrongShow) continue;
       if (data.url) urls.add(data.url);
       if (data.reviewUrl) urls.add(data.reviewUrl);
     } catch {}
