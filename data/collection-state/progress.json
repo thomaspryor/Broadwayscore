@@ -2,29 +2,49 @@
   "processed": [
     "cats-the-jellicle-ball-2026/nytimes--unknown.json",
     "cats-the-jellicle-ball-2026/vulture--unknown.json",
-    "cats-the-jellicle-ball-2026/timeout--adam-feldman.json"
+    "cats-the-jellicle-ball-2026/timeout--adam-feldman.json",
+    "copenhagen-west-end-2026/telegraph--unknown.json",
+    "copenhagen-west-end-2026/times-uk--unknown.json",
+    "copenhagen-west-end-2026/whatsonstage--unknown.json",
+    "inter-alia-west-end-2026/artsdesk--aleks-sierz.json",
+    "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+    "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json",
+    "inter-alia-west-end-2026/standard--nick-curtis.json",
+    "inter-alia-west-end-2026/whatsonstage--lucinda-everett.json",
+    "becky-shaw-2026/cote-notices--unknown.json"
   ],
   "failed": [
     "cats-the-jellicle-ball-2026/billboard--unknown.json",
-    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json"
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "inter-alia-west-end-2026/artsdesk--aleks-sierz.json",
+      "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+      "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json",
+      "inter-alia-west-end-2026/standard--nick-curtis.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "cats-the-jellicle-ball-2026/nytimes--unknown.json"
+      "cats-the-jellicle-ball-2026/nytimes--unknown.json",
+      "copenhagen-west-end-2026/times-uk--unknown.json",
+      "copenhagen-west-end-2026/whatsonstage--unknown.json",
+      "inter-alia-west-end-2026/whatsonstage--lucinda-everett.json",
+      "becky-shaw-2026/cote-notices--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
       "cats-the-jellicle-ball-2026/vulture--unknown.json",
-      "cats-the-jellicle-ball-2026/timeout--adam-feldman.json"
+      "cats-the-jellicle-ball-2026/timeout--adam-feldman.json",
+      "copenhagen-west-end-2026/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-04-07T18:14:51.073Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
   "log": []
 }
