@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T18:17:08.760Z",
+  "generatedAt": "2026-04-07T19:10:21.184Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,23 +13,24 @@
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 75,
+      "liveScore": 73,
       "scoreDrift": null,
-      "total": 3,
-      "t1": 3,
+      "total": 1,
+      "t1": 1,
       "t2": 0,
       "t3": 0,
-      "positive": 1,
-      "mixed": 2,
+      "positive": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "1/12 total",
+          "T1:1/3",
           "T2:0/3",
-          "hi-conf:2/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 2,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -42,6 +43,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -64,6 +69,10 @@
         },
         {
           "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out New York",
           "isDualMarket": false
         },
         {
@@ -319,6 +328,18 @@
           "t3": 0,
           "p": 1,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-07T19:10:21.184Z",
+          "rc": 1,
+          "s": 73,
+          "t1": 1,
+          "t2": 0,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -724,8 +745,8 @@
       "status": "open",
       "slug": "the-boy-at-the-back-of-the-class-west-end",
       "thumbnail": "/images/shows/the-boy-at-the-back-of-the-class-west-end-2026/thumbnail.webp",
-      "siteScore": 83,
-      "liveScore": 83,
+      "siteScore": 85,
+      "liveScore": 85,
       "scoreDrift": 0,
       "total": 6,
       "t1": 0,
@@ -809,6 +830,18 @@
           "t": "2026-04-07T15:48:16.815Z",
           "rc": 6,
           "s": 83,
+          "t1": 0,
+          "t2": 2,
+          "t3": 4,
+          "p": 5,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-07T19:10:21.184Z",
+          "rc": 6,
+          "s": 85,
           "t1": 0,
           "t2": 2,
           "t3": 4,
@@ -991,8 +1024,8 @@
       "status": "open",
       "slug": "becky-shaw",
       "thumbnail": "/images/shows/becky-shaw-2026/thumbnail.webp",
-      "siteScore": 81,
-      "liveScore": 81,
+      "siteScore": 82,
+      "liveScore": 82,
       "scoreDrift": 0,
       "total": 20,
       "t1": 7,
@@ -1289,6 +1322,18 @@
           "t": "2026-04-07T15:48:16.815Z",
           "rc": 20,
           "s": 81,
+          "t1": 7,
+          "t2": 11,
+          "t3": 2,
+          "p": 18,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-07T19:10:21.184Z",
+          "rc": 20,
+          "s": 82,
           "t1": 7,
           "t2": 11,
           "t3": 2,
