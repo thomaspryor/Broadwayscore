@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-07T20:21:27.735Z",
+  "updatedAt": "2026-04-07T20:23:42.142Z",
   "processed": 83,
-  "failed": 292,
-  "successRate": "22.1%",
+  "failed": 302,
+  "successRate": "21.6%",
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 32,
     "brightdata": 0,
-    "archiveToday": 5,
+    "archiveToday": 7,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-07T19:15:53.677Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-04-07T19:39:19.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-04-07T20:22:04.886Z",
+      "event": "bb-session",
+      "session": "d5aed510",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2022/04/21/take-me-out-broa"
+    },
+    {
+      "t": "2026-04-07T20:22:05.914Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
     }
