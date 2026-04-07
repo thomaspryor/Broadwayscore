@@ -2475,6 +2475,11 @@ showDirs.forEach(showId => {
       // Get best score - returns null if no valid score
       const scoreResult = getBestScore(data);
 
+      // Debug: trace NYTG through score assignment
+      if (showId === 'becky-shaw-2026' && file.includes('nytg')) {
+        console.log(`  [DEBUG NYTG SCORE] ${file}: scoreResult=${JSON.stringify(scoreResult)} humanReviewScore=${data.humanReviewScore} llmScore=${JSON.stringify(data.llmScore?.score)} originalScore=${data.originalScore} assignedScore=${data.assignedScore}`);
+      }
+
       if (scoreResult === null) {
         // Skip this review - no valid score
         stats.skippedNoScore++;
@@ -2991,6 +2996,13 @@ if (consistencyIssues.length > 0) {
       const existing = byShowOutlet.get(key);
       const existDate = existing.publishDate || '';
       const newDate = review.publishDate || '';
+      // Debug: trace NYTG dedup collisions
+      if (review.showId === 'becky-shaw-2026' && (review.outletId === 'nytg' || existing.outletId === 'nytg')) {
+        console.log(`  [DEBUG NYTG DEDUP] Collision: key=${key}`);
+        console.log(`    Existing: critic=${existing.criticName} date=${existDate} score=${existing.assignedScore}`);
+        console.log(`    New:      critic=${review.criticName} date=${newDate} score=${review.assignedScore}`);
+        console.log(`    Winner:   ${newDate > existDate ? 'new' : 'existing'}`);
+      }
       if (newDate > existDate) {
         byShowOutlet.set(key, review);
       }
@@ -3034,6 +3046,16 @@ const output = {
   },
   reviews: allReviews
 };
+
+// Debug: final check for NYTG in output
+{
+  const nytgInOutput = allReviews.filter(r => r.showId === 'becky-shaw-2026' && r.outletId === 'nytg');
+  const beckyTotal = allReviews.filter(r => r.showId === 'becky-shaw-2026');
+  console.log(`  [DEBUG NYTG FINAL] becky-shaw-2026: ${beckyTotal.length} reviews total, ${nytgInOutput.length} from nytg`);
+  if (nytgInOutput.length > 0) {
+    nytgInOutput.forEach(r => console.log(`    nytg: critic=${r.criticName} score=${r.assignedScore} date=${r.publishDate}`));
+  }
+}
 
 // REVIEW COUNT REGRESSION GUARD: warn if rebuild would lose >2% of reviews.
 // Logs prominently and writes audit trail, but proceeds with the write.
