@@ -190,7 +190,52 @@
     "the-miracle-worker-2010/newsday--linda-winer.json",
     "miss-saigon-1991/is-sensational-in-every-way--laurence-connor.json",
     "doubt-a-parable/nytg--gillian-russo.json",
-    "doubt-a-parable/nytimes--jesse-green.json"
+    "doubt-a-parable/nytimes--jesse-green.json",
+    "doubt-a-parable/vulture--sara-holdren.json",
+    "harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+    "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
+    "purpose/hollywood-reporter--lovia-gyarkye.json",
+    "purpose/newyorker--helen-shaw.json",
+    "purpose/nytg--joe-dziemianowicz.json",
+    "purpose/nytimes--jesse-green.json",
+    "purpose/variety--aramide-tinubu.json",
+    "romeo-juliet/hollywood-reporter--david-rooney.json",
+    "romeo-juliet/nyt-theater--jonathan-mandell.json",
+    "romeo-juliet/nytg--gillian-russo.json",
+    "romeo-juliet/nytimes--jesse-green.json",
+    "romeo-juliet/variety--trish-deitch.json",
+    "romeo-juliet/vulture--sara-holdren.json",
+    "take-me-out/nytimes--ben-brantley.json",
+    "tammy-faye/nyt-theater--jonathan-mandell.json",
+    "tammy-faye/nytg--joe-dziemianowicz.json",
+    "tammy-faye/nytimes--elisabeth-vincentelli.json",
+    "tammy-faye/variety--frank-rizzo.json",
+    "tammy-faye/vulture--sara-holdren.json",
+    "doubt-a-parable/broadwaynews--brittani-samuel.json",
+    "doubt-a-parable/deadline--greg-evans.json",
+    "doubt-a-parable/ew--dalton-ross.json",
+    "doubt-a-parable/nydailynews--chris-jones.json",
+    "doubt-a-parable/nypost--johnny-oleksinski.json",
+    "doubt-a-parable/theatermania--zachary-stewart.json",
+    "doubt-a-parable/timeout--adam-feldman.json",
+    "harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json",
+    "harry-potter-and-the-cursed-child/timeout--adam-feldman.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/ew--marc-snetiker.json",
+    "moulin-rouge-the-musical-review/deadline--greg-evans.json",
+    "purpose/deadline--greg-evans.json",
+    "purpose/new-york-sun--elysa-gardner.json",
+    "purpose/nydailynews--chris-jones.json",
+    "purpose/nypost--johnny-oleksinski.json",
+    "purpose/theatermania--zachary-stewart.json",
+    "purpose/timeout--adam-feldman.json",
+    "romeo-juliet/broadwaynews--brittani-samuel.json",
+    "romeo-juliet/deadline--greg-evans.json",
+    "romeo-juliet/ew--emlyn-travis.json",
+    "romeo-juliet/guardian--adrian-horton.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1587,7 +1632,12 @@
     "soul-doctor-2013/northjerseycom--robert-feldberg.json",
     "enron-2010/chicagotribune--shanxi-radio-and.json",
     "fences-2010/wsj--christopher-john-farley.json",
-    "xanadu-2007/nydailynews--joe-dziemianowicz.json"
+    "xanadu-2007/nydailynews--joe-dziemianowicz.json",
+    "purpose/vulture--jackson-mchenry.json",
+    "doubt-a-parable/thewrap--jd-knapp.json",
+    "doubt-a-parable/wsj--charles-isherwood.json",
+    "purpose/broadwaynews--brittani-samuel.json",
+    "purpose/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1679,7 +1729,25 @@
       "all-my-sons-west-end-2025/plays-international--maryam-philpott.json",
       "fiddler-on-the-roof-2015/show-buzz-nyc--laura-heller.json",
       "enron-2010/financialtimes--brendan-lemon.json",
-      "doubt-a-parable/nytg--gillian-russo.json"
+      "doubt-a-parable/nytg--gillian-russo.json",
+      "purpose/nytg--joe-dziemianowicz.json",
+      "romeo-juliet/nyt-theater--jonathan-mandell.json",
+      "romeo-juliet/nytg--gillian-russo.json",
+      "tammy-faye/nyt-theater--jonathan-mandell.json",
+      "tammy-faye/nytg--joe-dziemianowicz.json",
+      "doubt-a-parable/broadwaynews--brittani-samuel.json",
+      "doubt-a-parable/ew--dalton-ross.json",
+      "doubt-a-parable/theatermania--zachary-stewart.json",
+      "doubt-a-parable/timeout--adam-feldman.json",
+      "harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json",
+      "harry-potter-and-the-cursed-child/timeout--adam-feldman.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/ew--marc-snetiker.json",
+      "purpose/new-york-sun--elysa-gardner.json",
+      "purpose/theatermania--zachary-stewart.json",
+      "purpose/timeout--adam-feldman.json",
+      "romeo-juliet/broadwaynews--brittani-samuel.json",
+      "romeo-juliet/ew--emlyn-travis.json",
+      "romeo-juliet/guardian--adrian-horton.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1750,7 +1818,37 @@
       "data/review-texts/bronx-bombers-2014/newsday--linda-winer.json",
       "bronx-bombers-2014/newsday--linda-winer.json",
       "data/review-texts/the-miracle-worker-2010/newsday--linda-winer.json",
-      "the-miracle-worker-2010/newsday--linda-winer.json"
+      "the-miracle-worker-2010/newsday--linda-winer.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+      "data/review-texts/purpose/hollywood-reporter--lovia-gyarkye.json",
+      "purpose/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/purpose/variety--aramide-tinubu.json",
+      "purpose/variety--aramide-tinubu.json",
+      "data/review-texts/romeo-juliet/hollywood-reporter--david-rooney.json",
+      "romeo-juliet/hollywood-reporter--david-rooney.json",
+      "data/review-texts/romeo-juliet/variety--trish-deitch.json",
+      "romeo-juliet/variety--trish-deitch.json",
+      "data/review-texts/take-me-out/nytimes--ben-brantley.json",
+      "take-me-out/nytimes--ben-brantley.json",
+      "data/review-texts/tammy-faye/variety--frank-rizzo.json",
+      "tammy-faye/variety--frank-rizzo.json",
+      "data/review-texts/doubt-a-parable/deadline--greg-evans.json",
+      "doubt-a-parable/deadline--greg-evans.json",
+      "data/review-texts/doubt-a-parable/nypost--johnny-oleksinski.json",
+      "doubt-a-parable/nypost--johnny-oleksinski.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+      "data/review-texts/moulin-rouge-the-musical-review/deadline--greg-evans.json",
+      "moulin-rouge-the-musical-review/deadline--greg-evans.json",
+      "data/review-texts/purpose/deadline--greg-evans.json",
+      "purpose/deadline--greg-evans.json",
+      "data/review-texts/purpose/nypost--johnny-oleksinski.json",
+      "purpose/nypost--johnny-oleksinski.json",
+      "data/review-texts/romeo-juliet/deadline--greg-evans.json",
+      "romeo-juliet/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1783,7 +1881,13 @@
       "american-buffalo-2022/theater-life--david-sheward.json",
       "something-rotten-2015/broadwayworld--roy-berko.json",
       "miss-saigon-1991/is-sensational-in-every-way--laurence-connor.json",
-      "doubt-a-parable/nytimes--jesse-green.json"
+      "doubt-a-parable/nytimes--jesse-green.json",
+      "harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json",
+      "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
+      "purpose/newyorker--helen-shaw.json",
+      "purpose/nytimes--jesse-green.json",
+      "romeo-juliet/nytimes--jesse-green.json",
+      "tammy-faye/nytimes--elisabeth-vincentelli.json"
     ],
     "brightdata": [
       "scandalous-2012/variety--marilyn-stasio.json",
@@ -1875,7 +1979,11 @@
       "data/review-texts/spread-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/beetlejuice-2019/thestage--giselle.json",
       "data/review-texts/soul-doctor-2013/northjerseycom--robert-feldberg.json",
-      "data/review-texts/xanadu-2007/nydailynews--joe-dziemianowicz.json"
+      "data/review-texts/xanadu-2007/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/purpose/vulture--jackson-mchenry.json",
+      "data/review-texts/doubt-a-parable/thewrap--jd-knapp.json",
+      "data/review-texts/purpose/broadwaynews--brittani-samuel.json",
+      "data/review-texts/purpose/thewrap--robert-hofler.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -1897,11 +2005,17 @@
       "starlight-express-west-end-2024/plays-international--maryam-philpott.json",
       "tammy-faye-2024/vulture--unknown.json",
       "how-i-learned-to-drive-2022/parterre-box--david-fox.json",
-      "angels-in-america-2018/vulture--jesse-green-pt-2.json"
+      "angels-in-america-2018/vulture--jesse-green-pt-2.json",
+      "doubt-a-parable/vulture--sara-holdren.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+      "romeo-juliet/vulture--sara-holdren.json",
+      "tammy-faye/vulture--sara-holdren.json",
+      "doubt-a-parable/nydailynews--chris-jones.json",
+      "purpose/nydailynews--chris-jones.json"
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "doubt-a-parable/nytimes--jesse-green.json",
+  "lastProcessed": "romeo-juliet/guardian--adrian-horton.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2464,6 +2578,193 @@
       "t": "2026-04-07T05:03:44.727Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-07T05:06:15.117Z",
+      "event": "bb-session",
+      "session": "4bb644be",
+      "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-revie"
+    },
+    {
+      "t": "2026-04-07T05:06:16.427Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-07T05:06:51.460Z",
+      "event": "bb-session",
+      "session": "28e6f606",
+      "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-ch"
+    },
+    {
+      "t": "2026-04-07T05:06:52.791Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-07T05:07:28.586Z",
+      "event": "bb-session",
+      "session": "d618c179",
+      "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-b"
+    },
+    {
+      "t": "2026-04-07T05:07:29.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T05:07:58.829Z",
+      "event": "bb-session",
+      "session": "b9c7c489",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/purpose-review-phylicia-rashad-"
+    },
+    {
+      "t": "2026-04-07T05:08:00.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-07T05:08:51.993Z",
+      "event": "bb-session",
+      "session": "dc2d6842",
+      "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/"
+    },
+    {
+      "t": "2026-04-07T05:08:53.474Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T05:12:08.532Z",
+      "event": "bb-session",
+      "session": "2b04c931",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review"
+    },
+    {
+      "t": "2026-04-07T05:12:09.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-07T05:13:08.746Z",
+      "event": "bb-session",
+      "session": "432c9725",
+      "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel"
+    },
+    {
+      "t": "2026-04-07T05:13:10.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T05:13:35.823Z",
+      "event": "bb-session",
+      "session": "2d3f8bc7",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c04e3d9123cf93ba15751c0"
+    },
+    {
+      "t": "2026-04-07T05:13:37.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-07T05:14:26.087Z",
+      "event": "bb-session",
+      "session": "af4c3b19",
+      "url": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-"
+    },
+    {
+      "t": "2026-04-07T05:14:27.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T05:15:36.757Z",
+      "event": "bb-session",
+      "session": "9e1ace76",
+      "url": "https://deadline.com/2024/03/doubt-broadway-review-1235847662/"
+    },
+    {
+      "t": "2026-04-07T05:15:38.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:16:11.501Z",
+      "event": "bb-session",
+      "session": "2689be77",
+      "url": "https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review"
+    },
+    {
+      "t": "2026-04-07T05:16:12.802Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-07T05:20:00.265Z",
+      "event": "bb-session",
+      "session": "6675ab43",
+      "url": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-"
+    },
+    {
+      "t": "2026-04-07T05:20:01.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-07T05:21:48.314Z",
+      "event": "bb-session",
+      "session": "c81fc280",
+      "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-"
+    },
+    {
+      "t": "2026-04-07T05:21:49.616Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:22:11.532Z",
+      "event": "bb-session",
+      "session": "3a1c337b",
+      "url": "https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1"
+    },
+    {
+      "t": "2026-04-07T05:22:12.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:24:17.133Z",
+      "event": "bb-session",
+      "session": "1e60ab8d",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-04-07T05:24:18.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:24:49.548Z",
+      "event": "bb-session",
+      "session": "0e75c1d5",
+      "url": "https://nypost.com/2025/03/17/entertainment/purpose-review-a-hilarious-and-blist"
+    },
+    {
+      "t": "2026-04-07T05:24:50.769Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-07T05:29:15.822Z",
+      "event": "bb-session",
+      "session": "250f152f",
+      "url": "https://deadline.com/2024/10/romeo-juliet-broadway-review-kit-connor-rachel-zegl"
+    },
+    {
+      "t": "2026-04-07T05:29:17.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
