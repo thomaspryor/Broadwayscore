@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T08:17:21.957Z",
+  "generatedAt": "2026-04-07T09:14:01.285Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "broadway",
       "type": "musical",
       "openingDate": "2026-04-07",
-      "status": "previews",
+      "status": "open",
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
       "siteScore": null,
@@ -310,7 +310,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-04-07",
-      "status": "previews",
+      "status": "open",
       "slug": "the-listening-off-broadway",
       "thumbnail": "/images/shows/the-listening-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -611,7 +611,7 @@
       "category": "west-end",
       "type": "musical",
       "openingDate": "2026-04-07",
-      "status": "upcoming",
+      "status": "open",
       "slug": "midnight-in-the-toyshop-west-end",
       "thumbnail": "/images/shows/midnight-in-the-toyshop-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -700,28 +700,26 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-04-07",
-      "status": "upcoming",
+      "status": "open",
       "slug": "the-boy-at-the-back-of-the-class-west-end",
       "thumbnail": "/images/shows/the-boy-at-the-back-of-the-class-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "total": 0,
+      "siteScore": 85,
+      "liveScore": 85,
+      "scoreDrift": 0,
+      "total": 6,
       "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "t2": 2,
+      "t3": 4,
+      "positive": 5,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "6/8 total",
+          "T1:0/3"
         ],
-        "highConfidence": 0,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -772,6 +770,20 @@
           "name": "The Independent",
           "isDualMarket": true
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-07T09:14:01.285Z",
+          "rc": 6,
+          "s": 85,
+          "t1": 0,
+          "t2": 2,
+          "t3": 4,
+          "p": 5,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -781,7 +793,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-04-07",
-      "status": "previews",
+      "status": "open",
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -870,7 +882,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-04-07",
-      "status": "previews",
+      "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
       "siteScore": null,
