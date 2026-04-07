@@ -253,8 +253,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Usage:** Specify seasons like `2024-2025,2023-2024` (one or two at a time)
 
 ## `enrich-ibdb-dates.yml`
-- **Runs:** Manual trigger only
-- **Does:** Enriches or verifies show dates (preview, opening, closing) from IBDB
+- **Runs:** Weekly on Wednesdays at 7 AM UTC (scheduled), or manually
+- **Does:** Enriches or verifies show dates (preview, opening, closing) from IBDB. Scheduled runs target open shows only (skips 700+ closed).
 - **Options:** `mode` (enrich/verify/force), `show` (optional slug), `status` (optional filter)
 - **Script:** `scripts/enrich-ibdb-dates.js`
 - **Requires:** `SCRAPINGBEE_API_KEY` (primary), `BRIGHTDATA_TOKEN` (fallback)
