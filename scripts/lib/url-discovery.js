@@ -16,6 +16,7 @@ const scraper = require('./scraper');
 const { domainMatchesExpected, setRegistryDomainAliases } = scraper;
 const { isUrlYearOutsideWindow } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
+const { urlLooksLikeReview } = require('./review-guards');
 
 // Derive outlet-to-domain mapping from outlet-registry.json (single source of truth)
 // Maps outlet IDs + aliases → primary domain for SERP URL discovery
@@ -565,6 +566,14 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (!titleHasShow && !urlHasShow) continue;
     const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
     if (!titleHasReview && !urlHasReview && !isTimeoutListing) continue;
+
+    // Cross-show URL slug guard: verify URL path contains show title words.
+    // Catches SERP results where Google returns the right domain but wrong show
+    // (e.g., Monte Cristo review when searching for Becky Shaw).
+    if (showInfo.title && !urlLooksLikeReview(url, showInfo.title)) {
+      log(`    ✗ URL slug doesn't match "${showInfo.title}": ${url.substring(0, 80)}`);
+      continue;
+    }
 
     log(`    ✓ Found via ${provider}: ${url}`);
     return returnMetadata ? { url, serpTitle: result.title || '' } : url;

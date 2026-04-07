@@ -58,8 +58,9 @@ const { verifyProduction, quickDateCheck, getShowData } = require('./lib/product
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { isLikelyTourReview } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
+const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
@@ -1513,22 +1514,7 @@ function extractDTLIReviews(html, showId, dtliUrl) {
   return reviews;
 }
 
-/**
- * Check if HTML looks like a real BWW Review Roundup (not the homepage or a redirect).
- * BWW homepage contains "Review Roundup" in nav links but lacks article-specific markers.
- */
-function isBWWRoundupContent(html) {
-  if (!html.includes('Review Roundup')) return false;
-  // Primary markers (full HTML with schema.org)
-  if (html.includes('BlogPosting') || html.includes('articleBody') || html.includes('Photo Credit:')) return true;
-  // Secondary markers (proxy-rendered HTML may strip schema.org but keep article content)
-  // "Opens-on-Broadway" or "Opens-in-the-West-End" appear in roundup article URLs/titles
-  if (html.includes('Opens-on-Broadway') || html.includes('Opens-On-Broadway') ||
-      html.includes('Opens-in-the-West-End') || html.includes('Opens-In-London')) return true;
-  // Fallback: if the page has >5000 chars and contains "Review Roundup" in the title area, it's likely real
-  if (html.length > 5000 && (html.includes('<title') && html.includes('Review Roundup'))) return true;
-  return false;
-}
+// isBWWRoundupContent() moved to scripts/lib/bww-roundup-validator.js (shared module)
 
 /**
  * Search BroadwayWorld for Review Roundup article
@@ -1746,8 +1732,9 @@ async function scrapeBWWRoundupWithPlaywright(url) {
  * Extract reviews from BWW Review Roundup HTML
  * Uses two methods: BlogPosting JSON-LD entries (newer articles) and articleBody parsing (older)
  */
-function extractBWWRoundupReviews(html, showId, bwwUrl) {
+function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   let reviews = [];
+  const method1Seen = new Set();
 
   // Method 1: Extract from JSON-LD entries (newer BWW articles)
   // Newer articles use LiveBlogPosting with liveBlogUpdate[] containing BlogPosting entries
@@ -1830,6 +1817,11 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
         const outletName = getOutletDisplayName(outletId);
         const quote = posting.articleBody || posting.description || '';
 
+        // Dedup within Method 1: BWW sometimes has duplicate BlogPosting entries
+        const dedupKey = `${outletId}|${normalizeCritic(criticName)}`;
+        if (method1Seen.has(dedupKey)) continue;
+        method1Seen.add(dedupKey);
+
         reviews.push({
           showId,
           outletId,
@@ -1880,21 +1872,33 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
       if (oid && !urlByOutlet[oid]) urlByOutlet[oid] = href;
     }
     let urlsPopulated = 0;
+    let urlsRejected = 0;
     for (const review of reviews) {
       if (!review.url && review.outletId && urlByOutlet[review.outletId]) {
-        review.url = urlByOutlet[review.outletId];
+        const candidateUrl = urlByOutlet[review.outletId];
+        // Validate URL slug matches show title — prevents cross-show contamination
+        // (e.g., Monte Cristo URL assigned to Becky Shaw review)
+        if (showTitle && !urlLooksLikeReview(candidateUrl, showTitle)) {
+          urlsRejected++;
+          console.log(`    ✗ Rejected URL for ${review.outletId}: slug doesn't match "${showTitle}" — ${candidateUrl.substring(0, 80)}`);
+          continue;
+        }
+        review.url = candidateUrl;
         urlsPopulated++;
       }
     }
     if (urlsPopulated > 0) {
-      console.log(`    Populated ${urlsPopulated} source URLs from BWW roundup HTML`);
+      console.log(`    Populated ${urlsPopulated} source URLs from BWW roundup HTML${urlsRejected > 0 ? ` (${urlsRejected} rejected for wrong show)` : ''}`);
     }
 
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup (BlogPosting)`);
-    return reviews;
+    // Fall through to supplementary text scan — don't return early.
+    // JSON-LD may omit entries that lack hyperlinks (Guardian, NYTG, etc.).
   }
 
-  // Method 2: Fall back to articleBody text parsing (older BWW articles)
+  // Method 2 / Supplement: articleBody text parsing
+  // Runs as primary extraction for older articles (no BlogPosting JSON-LD),
+  // or as supplementary scan after Method 1 to catch entries not in structured data.
   const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   if (jsonLdMatch) {
     try {
@@ -1904,16 +1908,22 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
       const publishDate = jsonLd.datePublished || null;
 
       if (articleBody) {
+        // Build dedup set from Method 1 results so we don't add duplicates
+        const existingKeys = new Set(reviews.map(r =>
+          `${(r.outletId || normalizeOutlet(r.outlet)).toLowerCase()}|${normalizeCritic(r.criticName)}`
+        ));
+
         // Find where reviews start
         const reviewStart = articleBody.indexOf("Let's see what the critics had to say");
         const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
 
         // Pattern: "Critic Name, Outlet:" followed by review text
         // Name pattern supports apostrophes (D'Addario, O'Brien) and hyphens (Jean-Paul)
-        const pattern = /([A-Z][a-z'\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\-]+),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z'\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\-]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
+        const pattern = /([A-Z][a-z'\u2019\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\u2019\-]+(?:\s+[A-Z][a-z'\u2019\-]+)?),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z'\u2019\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\u2019\-]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
 
         let match;
         const seen = new Set();
+        let supplementAdded = 0;
         while ((match = pattern.exec(text)) !== null) {
           const criticName = match[1].trim();
           const outletRaw = match[2].trim();
@@ -1937,6 +1947,12 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
           const outletId = normalizeOutlet(outletRaw);
           const outletName = getOutletDisplayName(outletId);
 
+          // Dedup against Method 1 results
+          const dedupKey = `${outletId.toLowerCase()}|${normalizeCritic(criticName)}`;
+          if (existingKeys.has(dedupKey)) continue;
+          existingKeys.add(dedupKey);
+
+          supplementAdded++;
           reviews.push({
             showId,
             outletId,
@@ -1948,6 +1964,10 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
             bwwRoundupUrl: bwwUrl,
             source: 'bww-roundup',
           });
+        }
+
+        if (supplementAdded > 0) {
+          console.log(`    Supplementary text scan found ${supplementAdded} additional reviews not in JSON-LD`);
         }
       }
     } catch (e) {
@@ -1969,16 +1989,23 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
       if (oid && !urlByOutlet2[oid]) urlByOutlet2[oid] = href;
     }
     let urlsPopulated2 = 0;
+    let urlsRejected2 = 0;
     for (const review of reviews) {
       if (!review.url && review.outletId && urlByOutlet2[review.outletId]) {
-        review.url = urlByOutlet2[review.outletId];
+        const candidateUrl = urlByOutlet2[review.outletId];
+        if (showTitle && !urlLooksLikeReview(candidateUrl, showTitle)) {
+          urlsRejected2++;
+          console.log(`    ✗ Rejected URL for ${review.outletId}: slug doesn't match "${showTitle}" — ${candidateUrl.substring(0, 80)}`);
+          continue;
+        }
+        review.url = candidateUrl;
         urlsPopulated2++;
       }
     }
     if (urlsPopulated2 > 0) {
-      console.log(`    Populated ${urlsPopulated2} source URLs from BWW roundup HTML`);
+      console.log(`    Populated ${urlsPopulated2} source URLs from BWW roundup HTML${urlsRejected2 > 0 ? ` (${urlsRejected2} rejected for wrong show)` : ''}`);
     }
-    console.log(`    Extracted ${reviews.length} reviews from BWW roundup (articleBody)`);
+    console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
   } else if (html && html.length > 5000) {
     console.log(`    ⚠️  BWW roundup page loaded but 0 reviews extracted from both JSON-LD and articleBody`);
   }
@@ -2913,7 +2940,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
-      let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url);
+      let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url, show.title);
       // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
       // Validate publish year — reject roundups from older productions of the same title
