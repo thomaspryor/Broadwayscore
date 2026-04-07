@@ -4,17 +4,24 @@ name: Opening Night Orchestrator
 # every N minutes for up to M iterations. Each poller run gets a fresh
 # checkout — no stale git state issues.
 #
-# Three crons:
-#   - Broadway evening: 1 AM UTC = 9 PM ET (catches early reviews)
+# Five crons (GitHub Actions silently drops crons on workflows with many schedules,
+# so we duplicate the Broadway evening window for reliability):
+#   - Broadway evening: 1 AM + 2 AM UTC = 9-10 PM ET (catches early reviews)
 #   - Broadway morning: 10 AM UTC = 5 AM ET (catches overnight stragglers)
-#   - West End evening: 20 UTC ≈ 9 PM BST
+#   - West End morning: 7 AM UTC = 8 AM BST (broadsheet reviews)
+#   - West End evening: 20 UTC = 9 PM BST (press night evening)
+#
+# The duplicate 1/2 AM crons are intentional — GitHub dropped the 1 AM cron for weeks
+# without warning (discovered during Becky Shaw opening 2026-04-06). Both map to
+# market=broadway via the hour 0-4 window in the market detection step.
 #
 # On nights with no opening, exits in <1 min (zero cost).
 
 on:
   schedule:
-    - cron: '0 1 * * *'    # Broadway — 9 PM ET
-    - cron: '0 7 * * *'    # West End — 8 AM BST (morning sweep — catches broadsheet reviews)
+    - cron: '0 1 * * *'    # Broadway — 9 PM ET (primary)
+    - cron: '30 2 * * *'   # Broadway — 10:30 PM ET (backup — GitHub drops 1 AM)
+    - cron: '0 7 * * *'    # West End — 8 AM BST (morning sweep)
     - cron: '0 10 * * *'   # Broadway — 5 AM ET (morning sweep)
     - cron: '0 20 * * *'   # West End — 9 PM BST (press night evening)
   workflow_dispatch:
