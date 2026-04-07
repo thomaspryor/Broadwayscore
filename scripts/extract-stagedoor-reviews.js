@@ -133,10 +133,12 @@ for (const file of files) {
       outletId,
       outlet: outletName,
       criticName,
-      url: `https://stagedoor.com${archive.stagedoorUrl}`,
+      url: null, // Don't use aggregator URL — outlet URL must come from SERP/recollect
+      stagedoorUrl: `https://stagedoor.com${archive.stagedoorUrl}`,
       publishDate: null, // Stagedoor doesn't provide review dates
       stagedoorExcerpt: r.excerpt || null,
-      originalScore: `${r.stars}/5 stars`,
+      aggregatorStars: `${r.stars}/5 stars`, // Stagedoor's rating, not the outlet's own
+      scoreSource: 'stagedoor-star-rating',
       fullText: null,
       isFullReview: false,
       assignedScore: null,

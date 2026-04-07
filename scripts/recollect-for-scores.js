@@ -222,6 +222,12 @@ async function main() {
         if (data.originalScoreCleared) continue; // Deliberately cleared by P0 audit
         if (data.originalScore && !hasUnverifiedSSScore && !hasAggregatorScore) continue;
         if (!data.url) continue; // No URL to fetch
+        // Skip reviews where URL points to an aggregator (contaminated data)
+        try {
+          const urlHost = new URL(data.url).hostname.replace(/^www\./, '');
+          const aggDomains = ['show-score.com','showscore.com','westendtheatre.co.uk','theatrereviews.wordpress.com','theatre.reviews','didtheylikeit.com','londonboxoffice.co.uk','nyctheatre.com','stagedoor.com'];
+          if (aggDomains.includes(urlHost)) continue;
+        } catch {}
         if (data.wrongShow) continue; // Flagged as wrong content
         if (data.wrongProduction) continue; // URL is for a different production
         // Skip if already checked with current extractor version
