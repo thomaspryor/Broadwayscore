@@ -171,7 +171,13 @@
     "the-devil-wears-prada-west-end-2024/daily-mail--robert-gore-langton.json",
     "starlight-express-west-end-2024/plays-international--maryam-philpott.json",
     "hadestown-west-end-2024/nytg--gillian-russo.json",
-    "stranger-things-the-first-shadow-west-end-2023/plays-international--maryam-philpott.json"
+    "stranger-things-the-first-shadow-west-end-2023/plays-international--maryam-philpott.json",
+    "witness-for-the-prosecution-west-end-2022/london-box-office--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/musical-theatre-review--tom-martland.json",
+    "moulin-rouge-the-musical-west-end-2021/londonist--unknown.json",
+    "trainspotting-the-musical-west-end-2026/london-box-office--stuart-king.json",
+    "man-and-boy-west-end-2026/london-box-office--unknown.json",
+    "an-ark-off-broadway-2026/nytimes--ben-brantley.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1557,7 +1563,11 @@
     "becky-shaw-2026/wsj--unknown.json",
     "becky-shaw-2026/talkinbroadway--unknown.json",
     "calf-scramble-off-broadway-2026/talkinbroadway--unknown.json",
-    "the-hunger-games-on-stage-west-end-2025/london-box-office--unknown.json"
+    "the-hunger-games-on-stage-west-end-2025/london-box-office--unknown.json",
+    "magic-mike-live-west-end-2021/express-uk--neil-norman.json",
+    "les-miserables-west-end-2021/thestage--mert-dilek.json",
+    "the-lion-king-west-end-2021/guardian--lyngardner.json",
+    "spread-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1638,7 +1648,12 @@
       "into-the-woods-west-end-2025/plays-international--maryam-philpott.json",
       "paddington-the-musical-west-end-2025/london-box-office--unknown.json",
       "hadestown-west-end-2024/nytg--gillian-russo.json",
-      "stranger-things-the-first-shadow-west-end-2023/plays-international--maryam-philpott.json"
+      "stranger-things-the-first-shadow-west-end-2023/plays-international--maryam-philpott.json",
+      "witness-for-the-prosecution-west-end-2022/london-box-office--unknown.json",
+      "moulin-rouge-the-musical-west-end-2021/musical-theatre-review--tom-martland.json",
+      "moulin-rouge-the-musical-west-end-2021/londonist--unknown.json",
+      "trainspotting-the-musical-west-end-2026/london-box-office--stuart-king.json",
+      "man-and-boy-west-end-2026/london-box-office--unknown.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1702,7 +1717,10 @@
       "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json",
       "a-thousand-clowns-2001/nytimes--bruce-weber.json",
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
-      "giant-2026/variety--daniel-daddario.json"
+      "giant-2026/variety--daniel-daddario.json",
+      "data/review-texts/magic-mike-live-west-end-2021/express-uk--neil-norman.json",
+      "data/review-texts/an-ark-off-broadway-2026/nytimes--ben-brantley.json",
+      "an-ark-off-broadway-2026/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1818,7 +1836,9 @@
       "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
       "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json",
-      "data/review-texts/the-hunger-games-on-stage-west-end-2025/london-box-office--unknown.json"
+      "data/review-texts/the-hunger-games-on-stage-west-end-2025/london-box-office--unknown.json",
+      "data/review-texts/les-miserables-west-end-2021/thestage--mert-dilek.json",
+      "data/review-texts/spread-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -1841,7 +1861,7 @@
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/plays-international--maryam-philpott.json",
+  "lastProcessed": "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2343,6 +2363,23 @@
       "t": "2026-04-07T04:39:27.677Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T04:45:55.917Z",
+      "event": "bb-session",
+      "session": "ecc3cfb9",
+      "url": "https://www.express.co.uk/entertainment/theatre/1991428/tempest-starring-sigourn"
+    },
+    {
+      "t": "2026-04-07T04:50:02.389Z",
+      "event": "bb-session",
+      "session": "302213bd",
+      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
+    },
+    {
+      "t": "2026-04-07T04:50:03.561Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

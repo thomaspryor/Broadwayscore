@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-04-07T04:44:38.616Z",
-  "processed": 172,
-  "failed": 1384,
-  "successRate": "11.1%",
+  "updatedAt": "2026-04-07T04:50:19.278Z",
+  "processed": 178,
+  "failed": 1388,
+  "successRate": "11.4%",
   "tierBreakdown": {
-    "playwright": 77,
+    "playwright": 82,
     "amp": 20,
-    "browserbase": 40,
+    "browserbase": 43,
     "directCookies": 0,
     "scrapingbee": 26,
     "brightdata": 22,
-    "archiveToday": 61,
+    "archiveToday": 63,
     "archive": 17
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-06T18:42:57.582Z",
-      "event": "bb-session",
-      "session": "11b7a10b",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C1"
-    },
-    {
-      "t": "2026-04-06T18:42:59.208Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-06T18:44:18.517Z",
-      "event": "bb-session",
-      "session": "fdf6fa84",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=F"
-    },
     {
       "t": "2026-04-06T18:44:19.899Z",
       "event": "bb-cookie-inject",
@@ -124,6 +107,23 @@
       "t": "2026-04-07T04:39:27.677Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T04:45:55.917Z",
+      "event": "bb-session",
+      "session": "ecc3cfb9",
+      "url": "https://www.express.co.uk/entertainment/theatre/1991428/tempest-starring-sigourn"
+    },
+    {
+      "t": "2026-04-07T04:50:02.389Z",
+      "event": "bb-session",
+      "session": "302213bd",
+      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
+    },
+    {
+      "t": "2026-04-07T04:50:03.561Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
