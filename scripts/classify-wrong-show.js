@@ -243,7 +243,8 @@ function findCandidates() {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
         // Skip already classified or flagged
-        if (data.publishDate || data.wrongShow || data.wrongProduction || data.wsClassified) continue;
+        // Note: wrongShow===false means manually verified as correct — skip it too
+        if (data.publishDate || data.wrongShow !== undefined || data.wrongProduction || data.wsClassified) continue;
         if (!VALID_SOURCES.has(data.source)) continue;
 
         // Get text
