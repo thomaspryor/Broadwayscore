@@ -184,7 +184,13 @@
     "tammy-faye-2024/vulture--unknown.json",
     "how-i-learned-to-drive-2022/parterre-box--david-fox.json",
     "angels-in-america-2018/vulture--jesse-green-pt-2.json",
-    "fiddler-on-the-roof-2015/show-buzz-nyc--laura-heller.json"
+    "fiddler-on-the-roof-2015/show-buzz-nyc--laura-heller.json",
+    "bronx-bombers-2014/newsday--linda-winer.json",
+    "enron-2010/financialtimes--brendan-lemon.json",
+    "the-miracle-worker-2010/newsday--linda-winer.json",
+    "miss-saigon-1991/is-sensational-in-every-way--laurence-connor.json",
+    "doubt-a-parable/nytg--gillian-russo.json",
+    "doubt-a-parable/nytimes--jesse-green.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1577,7 +1583,11 @@
     "spread-off-broadway-2026/talkinbroadway--unknown.json",
     "american-buffalo-2022/theater-life--david-sheward.json",
     "beetlejuice-2019/thestage--giselle.json",
-    "something-rotten-2015/broadwayworld--roy-berko.json"
+    "something-rotten-2015/broadwayworld--roy-berko.json",
+    "soul-doctor-2013/northjerseycom--robert-feldberg.json",
+    "enron-2010/chicagotribune--shanxi-radio-and.json",
+    "fences-2010/wsj--christopher-john-farley.json",
+    "xanadu-2007/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1667,7 +1677,9 @@
       "high-noon-west-end-2025/london-box-office--unknown.json",
       "woman-in-mind-west-end-2025/london-box-office--unknown.json",
       "all-my-sons-west-end-2025/plays-international--maryam-philpott.json",
-      "fiddler-on-the-roof-2015/show-buzz-nyc--laura-heller.json"
+      "fiddler-on-the-roof-2015/show-buzz-nyc--laura-heller.json",
+      "enron-2010/financialtimes--brendan-lemon.json",
+      "doubt-a-parable/nytg--gillian-russo.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1734,7 +1746,11 @@
       "giant-2026/variety--daniel-daddario.json",
       "data/review-texts/magic-mike-live-west-end-2021/express-uk--neil-norman.json",
       "data/review-texts/an-ark-off-broadway-2026/nytimes--ben-brantley.json",
-      "an-ark-off-broadway-2026/nytimes--ben-brantley.json"
+      "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
+      "data/review-texts/bronx-bombers-2014/newsday--linda-winer.json",
+      "bronx-bombers-2014/newsday--linda-winer.json",
+      "data/review-texts/the-miracle-worker-2010/newsday--linda-winer.json",
+      "the-miracle-worker-2010/newsday--linda-winer.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1764,7 +1780,10 @@
       "titus-andronicus-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "my-neighbour-totoro-west-end-2025/whatsonstage--tom-millward.json",
       "the-devil-wears-prada-west-end-2024/daily-mail--robert-gore-langton.json",
-      "american-buffalo-2022/theater-life--david-sheward.json"
+      "american-buffalo-2022/theater-life--david-sheward.json",
+      "something-rotten-2015/broadwayworld--roy-berko.json",
+      "miss-saigon-1991/is-sensational-in-every-way--laurence-connor.json",
+      "doubt-a-parable/nytimes--jesse-green.json"
     ],
     "brightdata": [
       "scandalous-2012/variety--marilyn-stasio.json",
@@ -1854,7 +1873,9 @@
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/london-box-office--unknown.json",
       "data/review-texts/les-miserables-west-end-2021/thestage--mert-dilek.json",
       "data/review-texts/spread-off-broadway-2026/talkinbroadway--unknown.json",
-      "data/review-texts/beetlejuice-2019/thestage--giselle.json"
+      "data/review-texts/beetlejuice-2019/thestage--giselle.json",
+      "data/review-texts/soul-doctor-2013/northjerseycom--robert-feldberg.json",
+      "data/review-texts/xanadu-2007/nydailynews--joe-dziemianowicz.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -1880,7 +1901,7 @@
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "something-rotten-2015/broadwayworld--roy-berko.json",
+  "lastProcessed": "doubt-a-parable/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2399,6 +2420,50 @@
       "t": "2026-04-07T04:50:03.561Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-07T05:00:44.912Z",
+      "event": "bb-session",
+      "session": "a0c1e539",
+      "url": "https://www.newsday.com/news/new-york/theater-review-bronx-bombers-2-stars-c1706"
+    },
+    {
+      "t": "2026-04-07T05:00:46.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-07T05:01:43.283Z",
+      "event": "bb-session",
+      "session": "e76cd267",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/219881241_Theater_review_"
+    },
+    {
+      "t": "2026-04-07T05:01:44.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-07T05:02:33.076Z",
+      "event": "bb-session",
+      "session": "ffc7058f",
+      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
+    },
+    {
+      "t": "2026-04-07T05:02:34.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-07T05:03:43.419Z",
+      "event": "bb-session",
+      "session": "f454e174",
+      "url": "https://www.newsday.com/lifestyle/family/kidsday-review-the-miracle-worker-j9612"
+    },
+    {
+      "t": "2026-04-07T05:03:44.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
