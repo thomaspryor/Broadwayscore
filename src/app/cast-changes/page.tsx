@@ -280,7 +280,7 @@ export default function CastChangesPage() {
             Upcoming cast departures, arrivals, and limited engagements across currently running Broadway shows.
           </p>
           <p className="text-sm text-gray-500 mt-1">
-            {showsWithCast.length} shows with updates · Last updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            {showsWithCast.length} shows with updates · Last updated {formatEventDate(lastUpdated)}
           </p>
         </div>
 
