@@ -8,6 +8,7 @@
 const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES } = require('./score-extractors');
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities } = require('./text-cleaning');
+const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
 
 // ===================================================
 // TEXT CLEANING
@@ -386,9 +387,17 @@ function getBestScore(data, opts = {}) {
   // Only downgrade if: aggregator source + WE + NOT outlet-verified + NOT a known star outlet
   const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified && !isKnownStarOutlet;
 
+  // Skip P0 if score was deliberately cleared by audit (aggregator in wrong slot,
+  // extraction with no evidence, outlet doesn't publish star ratings)
+  const scoreCleared = data.originalScoreCleared === true;
+  // Also skip if scoreSource is a known aggregator source — these should be in
+  // aggregatorStars, not originalScore (prevents re-contamination even if
+  // originalScore gets re-set by a CI process that hasn't been updated yet)
+  const isAggregatorScoreSource = AGGREGATOR_SOURCES_SET && AGGREGATOR_SOURCES_SET.has(data.scoreSource);
+
   // Effective score: use originalScore, or for known star outlets, treat aggregatorStars
   // as the outlet's own published rating (aggregators relay "Guardian: 4/5" etc.)
-  const effectiveOriginalScore = data.originalScore
+  const effectiveOriginalScore = (!scoreCleared && !isAggregatorScoreSource && data.originalScore)
     || (data.aggregatorStars && isKnownStarOutlet ? data.aggregatorStars : null);
   const effectiveScoreLabel = data.originalScore ? 'originalScore' : 'aggregatorStars (known star outlet)';
 

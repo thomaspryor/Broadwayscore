@@ -53,7 +53,8 @@ runs:
             'contentTierReason', 'contentVerification', 'ensembleData', 'tierReason',
             'showTitle', 'textFetchedAt', 'textWordCount', 'textStatus', 'sourceMethod',
             'isFullReview', 'wrongFullText', 'wrongShowReason', 'wrongProduction',
-            'wrongProductionNote', 'incompleteReason', 'incompleteDetail'
+            'wrongProductionNote', 'incompleteReason', 'incompleteDetail',
+            'originalScoreCleared', 'originalScoreClearedReason', 'previousOriginalScore'
           ];
           const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
           let restored = 0;
