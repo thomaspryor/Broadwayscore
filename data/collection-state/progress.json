@@ -5,7 +5,18 @@
     "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
     "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
     "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
-    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
+    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+    "copenhagen-west-end-2026/times-uk--unknown.json",
+    "copenhagen-west-end-2026/whatsonstage--unknown.json",
+    "inter-alia-west-end-2026/artsdesk--aleks-sierz.json",
+    "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+    "inter-alia-west-end-2026/daily-mail--patrick-marmion.json",
+    "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json",
+    "inter-alia-west-end-2026/i-paper--anya-ryan.json",
+    "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json",
+    "inter-alia-west-end-2026/standard--nick-curtis.json",
+    "inter-alia-west-end-2026/times-uk--clive-davis.json",
+    "inter-alia-west-end-2026/whatsonstage--lucinda-everett.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -20,7 +31,11 @@
     "data-off-broadway-2026/timeout--unknown.json",
     "titanique-off-broadway-2022/newyorker--dan-stahl.json",
     "monte-cristo-the-york-theatre-company-off-broadway-2026/talkinbroadway--unknown.json",
-    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
+    "ulster-american-irish-repertory-theatre-off-broadway-2026/nysr--michael-sommers.json",
+    "ulster-american-irish-repertory-theatre-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json",
+    "inter-alia-west-end-2026/guardian--emma-john.json",
+    "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -29,13 +44,21 @@
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
-      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
+      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+      "inter-alia-west-end-2026/artsdesk--aleks-sierz.json",
+      "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+      "inter-alia-west-end-2026/i-paper--anya-ryan.json",
+      "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json",
+      "inter-alia-west-end-2026/standard--nick-curtis.json",
+      "inter-alia-west-end-2026/times-uk--clive-davis.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "bigfoot-off-broadway-2026/timeout--adam-feldman.json"
+      "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+      "bigfoot-off-broadway-2026/timeout--unknown.json",
+      "copenhagen-west-end-2026/times-uk--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -43,9 +66,26 @@
       "data/review-texts/data-off-broadway-2026/timeout--unknown.json",
       "data/review-texts/monte-cristo-the-york-theatre-company-off-broadway-2026/talkinbroadway--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "copenhagen-west-end-2026/whatsonstage--unknown.json",
+      "inter-alia-west-end-2026/daily-mail--patrick-marmion.json",
+      "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json",
+      "inter-alia-west-end-2026/whatsonstage--lucinda-everett.json"
+    ]
   },
-  "startTime": "2026-04-07T09:28:57.146Z",
-  "lastProcessed": "jackals-off-broadway-2026/times-uk--anne-treneman.json",
-  "log": []
+  "startTime": "2026-04-07T09:12:19.021Z",
+  "lastProcessed": "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json",
+  "log": [
+    {
+      "t": "2026-04-07T09:16:15.147Z",
+      "event": "bb-session",
+      "session": "a0a5c763",
+      "url": "https://www.wsj.com/articles/ulster-american-review-matthew-brodericks-smug-star"
+    },
+    {
+      "t": "2026-04-07T09:16:16.434Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
