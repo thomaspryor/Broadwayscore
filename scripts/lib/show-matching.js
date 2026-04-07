@@ -109,6 +109,10 @@ const KNOWN_ALIASES = {
   '& juliet': 'and-juliet',
   '&juliet': 'and-juliet',
 
+  // Romeo and Juliet variations (& vs "and")
+  'romeo & juliet': 'romeo-and-juliet',
+  'romeo and juliet': 'romeo-and-juliet',
+
   // Oh Mary variations
   'oh, mary!': 'oh-mary',
   'oh mary': 'oh-mary',

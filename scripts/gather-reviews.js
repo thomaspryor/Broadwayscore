@@ -2536,16 +2536,11 @@ function createReviewFile(showId, reviewData, options = {}) {
     outlet: getOutletDisplayName(normalizedOutletId),
     criticName: reviewData.criticName || 'Unknown',
     url: reviewData.url || null,
-    publishDate: normalizePublishDate(reviewData.publishDate) || (() => {
-      // Fallback: use show's opening date when no review date available
-      try {
-        const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
-        const showsJSON = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
-        const show = showsJSON.shows.find(s => s.id === showId);
-        if (show && show.openingDate) return show.openingDate;
-      } catch {}
-      return null;
-    })(),
+    publishDate: normalizePublishDate(reviewData.publishDate) || null,
+    // NOTE: Previously fell back to show's opening date when no review date available.
+    // Removed: fake dates mask wrong-production reviews (e.g., OB review stamped with
+    // Broadway opening date defeats date-based guards). Null is safer — downstream
+    // scripts (backfill-review-dates, backfill-llm-dates) will fill in real dates later.
     fullText: null,  // Never populate from excerpts — let collect-review-texts.js scrape real fullText
     isFullReview: false,
     dtliExcerpt: cleanText(reviewData.dtliExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null,
