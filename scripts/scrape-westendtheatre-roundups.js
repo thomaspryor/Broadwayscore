@@ -20,7 +20,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const {
   normalizeOutlet,
@@ -28,6 +27,7 @@ const {
   getOutletDisplayName,
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { fetchJSON: scraperFetchJSON, fetchPage, cleanup } = require('./lib/scraper');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/westendtheatre');
@@ -38,14 +38,10 @@ const dryRun = args.includes('--dry-run');
 const force = args.includes('--force');
 
 const RATE_LIMIT_MS = 1500;
-const API_PAGE_DELAY_MS = 3000; // Delay between WP API page fetches (Sucuri WAF evasion)
+const API_PAGE_DELAY_MS = 3000;
 const WP_API_BASE = 'https://www.westendtheatre.com/wp-json/wp/v2';
-const COOKIE_JAR = '/tmp/westendtheatre-cookies.txt';
-const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
-const PER_PAGE = 50; // Lower than 100 to look less bot-like
-// Category 10 = reviews, Tag 8631 = reviews-round-up
+const PER_PAGE = 50;
 const REVIEWS_CATEGORY = 10;
-const ROUNDUP_TAG = 8631;
 
 const stats = {
   apiPages: 0,
@@ -63,112 +59,39 @@ const stats = {
 // --- HTTP helpers ---
 
 /**
- * Fetch JSON from WordPress API using curl with Sucuri WAF handling.
- * Uses cookie jar to persist Sucuri challenge cookies, proper User-Agent,
- * and falls back to Node https if curl fails.
+ * Fetch JSON from WordPress API using the shared scraper proxy chain.
+ * ScrapingBee (1 credit, render_js=false) bypasses Sucuri WAF that blocks direct requests.
+ * Falls back to direct fetch if no API key.
+ *
+ * Pagination: count-based (no WP headers needed — ScrapingBee doesn't expose them).
+ * If a page returns PER_PAGE results, there's likely another page.
  */
-async function fetchJSON(url) {
-  const { execFileSync } = require('child_process');
+async function fetchWpApiPage(url) {
   try {
-    const result = execFileSync('curl', [
-      '-s', '-i', url,
-      '-H', 'Accept: application/json',
-      '-H', `User-Agent: ${USER_AGENT}`,
-      '-b', COOKIE_JAR,
-      '-c', COOKIE_JAR,
-      '--compressed',
-    ], { timeout: 30000, maxBuffer: 10 * 1024 * 1024, encoding: 'utf8' });
-
-    const headerEnd = result.indexOf('\r\n\r\n');
-    if (headerEnd === -1) throw new Error('No header/body separator found');
-
-    const headers = result.slice(0, headerEnd).toLowerCase();
-    const body = result.slice(headerEnd + 4);
-
-    const totalPagesMatch = headers.match(/x-wp-totalpages:\s*(\d+)/);
-    const totalPostsMatch = headers.match(/x-wp-total:\s*(\d+)/);
-    const totalPages = totalPagesMatch ? parseInt(totalPagesMatch[1]) : 1;
-    const totalPosts = totalPostsMatch ? parseInt(totalPostsMatch[1]) : 0;
-
-    const parsed = JSON.parse(body);
-    return { data: parsed, totalPages, totalPosts };
-  } catch (e) {
-    if (e.stdout) {
-      try {
-        const bodyPart = e.stdout.includes('\r\n\r\n')
-          ? e.stdout.slice(e.stdout.indexOf('\r\n\r\n') + 4)
-          : e.stdout;
-        const parsed = JSON.parse(bodyPart);
-        if (parsed.code === 'rest_post_invalid_page_number') {
-          return { data: [], totalPages: 0, totalPosts: 0 };
-        }
-      } catch { /* not JSON */ }
+    const data = await scraperFetchJSON(url);
+    if (data && data.code === 'rest_post_invalid_page_number') {
+      return [];
     }
-    // Fallback: try Node https
-    console.log(`  ⚠️  curl failed, trying Node https fallback...`);
-    return fetchJSONNodeHttps(url);
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    // ScrapingBee may return the Sucuri challenge as HTML → JSON parse fails
+    if (e.message.includes('JSON parse') || e.message.includes('all methods failed')) {
+      console.log(`  ⚠️  API fetch failed (likely WAF): ${e.message}`);
+    }
+    throw e;
   }
 }
 
 /**
- * Node https fallback for when curl fails entirely.
+ * Fetch rendered page HTML for posts where review content is JS-rendered.
+ * Uses the shared scraper (Playwright → Bright Data → ScrapingBee fallback).
  */
-function fetchJSONNodeHttps(url) {
-  return new Promise((resolve, reject) => {
-    const req = https.get(url, {
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': USER_AGENT,
-      },
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => { data += chunk; });
-      res.on('end', () => {
-        try {
-          const parsed = JSON.parse(data);
-          if (parsed.code === 'rest_post_invalid_page_number') {
-            resolve({ data: [], totalPages: 0, totalPosts: 0 });
-            return;
-          }
-          const totalPages = parseInt(res.headers['x-wp-totalpages'] || '1');
-          const totalPosts = parseInt(res.headers['x-wp-total'] || '0');
-          resolve({ data: parsed, totalPages, totalPosts });
-        } catch (parseErr) {
-          reject(new Error(`JSON parse failed: ${parseErr.message}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Timeout')); });
-  });
-}
-
-/**
- * Fetch with headers to get WP total pages.
- * Now just delegates to fetchJSON which handles headers, cookies, and UA.
- * Kept as a separate function for call-site clarity.
- */
-async function fetchJSONWithHeaders(url) {
-  return fetchJSON(url);
-}
-
-/**
- * Fetch rendered page HTML (not API) for posts where review content is JS-rendered.
- * Uses curl with the same UA/cookie jar as the API fetches.
- */
-function fetchRenderedPage(url) {
-  const { execFileSync } = require('child_process');
+async function fetchRenderedPageHtml(url) {
   try {
-    const result = execFileSync('curl', [
-      '-s', '-L', url,
-      '-H', `User-Agent: ${USER_AGENT}`,
-      '-H', 'Accept: text/html',
-      '-b', COOKIE_JAR,
-      '-c', COOKIE_JAR,
-      '--compressed',
-    ], { timeout: 20000, maxBuffer: 5 * 1024 * 1024, encoding: 'utf8' });
-    return result;
+    const result = await fetchPage(url, { preferPlaywright: true });
+    return result?.content || null;
   } catch (e) {
+    console.log(`  ⚠️  Page fetch failed: ${e.message}`);
     return null;
   }
 }
@@ -395,36 +318,33 @@ async function main() {
   console.log(`   Dry run: ${dryRun}`);
   console.log('');
 
-  // Clean cookie jar from previous runs so Sucuri gets a fresh start
-  try { fs.unlinkSync(COOKIE_JAR); } catch { /* doesn't exist yet */ }
-
   if (!dryRun) {
     fs.mkdirSync(archiveDir, { recursive: true });
   }
 
-  // Fetch all roundup posts via WP API (paginated)
+  // Fetch all roundup posts via WP API (paginated, count-based)
   const allPosts = [];
   let page = 1;
-  let totalPages = 1;
+  const MAX_PAGES = 30; // Safety limit (~1500 posts)
 
   console.log('📡 Fetching review roundup posts from WordPress API...\n');
 
-  while (page <= totalPages) {
-    // Fetch reviews category without tag filter — the star table format is recent (Dec 2025+)
-    // and not consistently tagged. We filter by table presence instead.
+  while (page <= MAX_PAGES) {
     const url = `${WP_API_BASE}/posts?categories=${REVIEWS_CATEGORY}&per_page=${PER_PAGE}&page=${page}`;
     try {
-      const result = await (page === 1 ? fetchJSONWithHeaders(url) : fetchJSON(url));
-      if (page === 1) totalPages = result.totalPages;
+      const posts = await fetchWpApiPage(url);
       stats.apiPages++;
 
-      if (result.data.length === 0) break;
+      if (posts.length === 0) break;
 
-      allPosts.push(...result.data);
-      console.log(`  Page ${page}/${totalPages}: ${result.data.length} posts (${allPosts.length} total)`);
+      allPosts.push(...posts);
+      console.log(`  Page ${page}: ${posts.length} posts (${allPosts.length} total)`);
+
+      // If we got fewer than PER_PAGE, this was the last page
+      if (posts.length < PER_PAGE) break;
 
       page++;
-      if (page <= totalPages) await sleep(API_PAGE_DELAY_MS);
+      await sleep(API_PAGE_DELAY_MS);
     } catch (e) {
       console.error(`  ❌ API error on page ${page}: ${e.message}`);
       stats.errors.push(`API page ${page}: ${e.message}`);
@@ -510,21 +430,17 @@ async function main() {
     // If still no ratings, the review content is JS-rendered (not in API).
     // Fetch the actual page HTML as last resort.
     if (ratings.length === 0 && postUrl) {
-      try {
-        console.log(`  [FETCH PAGE] ${show.title} — API has no ratings, fetching rendered page...`);
-        const pageHtml = await fetchRenderedPage(postUrl);
-        if (pageHtml) {
-          const pageRatings = extractSectionReviews(pageHtml);
-          if (pageRatings.length > 0) {
-            ratings = pageRatings;
-            usedSectionFormat = true;
-            console.log(`    ✓ ${pageRatings.length} ratings from rendered page`);
-          }
+      console.log(`  [FETCH PAGE] ${show.title} — API has no ratings, fetching rendered page...`);
+      const pageHtml = await fetchRenderedPageHtml(postUrl);
+      if (pageHtml) {
+        const pageRatings = extractSectionReviews(pageHtml);
+        if (pageRatings.length > 0) {
+          ratings = pageRatings;
+          usedSectionFormat = true;
+          console.log(`    ✓ ${pageRatings.length} ratings from rendered page`);
         }
-        await sleep(RATE_LIMIT_MS);
-      } catch (err) {
-        console.log(`    ✗ Page fetch error: ${err.message}`);
       }
+      await sleep(RATE_LIMIT_MS);
     }
 
     if (ratings.length === 0) {
@@ -608,11 +524,14 @@ async function main() {
   }
 }
 
-module.exports = { extractStarRatings, extractSectionReviews, extractShowTitle, stripHtml, fetchRenderedPage };
+module.exports = { extractStarRatings, extractSectionReviews, extractShowTitle, stripHtml };
 
 if (require.main === module) {
-  main().catch(e => {
-    console.error('Fatal error:', e);
-    process.exit(1);
-  });
+  main()
+    .then(() => cleanup())
+    .then(() => process.exit(0))  // fetchPage() uses Playwright which hangs node
+    .catch(e => {
+      console.error('Fatal error:', e);
+      cleanup().finally(() => process.exit(1));
+    });
 }
