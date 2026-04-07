@@ -3033,6 +3033,45 @@ if (consistencyIssues.length > 0) {
   }
 }
 
+// Preserve manualEntry reviews from the current reviews.json that the pipeline didn't produce.
+// These are direct corrections added via manual-review-direct.js. They survive until the pipeline
+// produces a version with scoreSource='human-review' (meaning the source file was processed).
+{
+  try {
+    const currentReviewsPath = reviewsJsonPath; // already defined earlier in the script
+    if (fs.existsSync(currentReviewsPath)) {
+      const currentData = JSON.parse(fs.readFileSync(currentReviewsPath, 'utf8'));
+      const manualEntries = (currentData.reviews || []).filter(r => r.manualEntry === true);
+      let preserved = 0;
+      for (const manual of manualEntries) {
+        const key = `${manual.showId}|${manual.outletId}`;
+        const pipelineVersion = allReviews.find(r =>
+          r.showId === manual.showId && r.outletId === manual.outletId
+        );
+        if (pipelineVersion && pipelineVersion.scoreSource === 'human-review') {
+          // Pipeline processed the source file with humanReviewScore — it's authoritative
+          continue;
+        }
+        if (pipelineVersion && pipelineVersion.assignedScore) {
+          // Pipeline has an LLM score — keep manual entry (human score beats LLM)
+          const idx = allReviews.indexOf(pipelineVersion);
+          if (idx >= 0) allReviews[idx] = manual;
+          preserved++;
+        } else if (!pipelineVersion) {
+          // Pipeline didn't produce this review at all — keep manual entry
+          allReviews.push(manual);
+          preserved++;
+        }
+      }
+      if (preserved > 0) {
+        console.log(`\n✅ Preserved ${preserved} manual entries from previous reviews.json`);
+      }
+    }
+  } catch (e) {
+    // Non-fatal: if we can't read current reviews.json, just proceed without manual entries
+  }
+}
+
 const output = {
   _meta: {
     description: "Critic reviews - raw input data",
