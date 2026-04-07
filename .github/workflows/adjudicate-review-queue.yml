@@ -71,6 +71,13 @@ jobs:
         if: steps.check_queue.outputs.has_items == 'true'
         run: npm ci
 
+      - name: Reset mis-adjudicated reviews (one-time)
+        if: steps.check_queue.outputs.has_items == 'true'
+        run: |
+          # One-time reset for reviews mis-adjudicated before outlet-awareness fix.
+          # Safe to leave permanently — the script is idempotent (skips already-cleared reviews).
+          node scripts/reset-adjudication.js ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+
       - name: Run adjudication
         if: steps.check_queue.outputs.has_items == 'true'
         env:
