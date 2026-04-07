@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T11:11:38.184Z",
+  "timestamp": "2026-04-07T11:31:27.975Z",
   "stats": {
-    "totalReviews": 34611,
-    "alreadyFlagged": 13094,
+    "totalReviews": 34608,
+    "alreadyFlagged": 13121,
     "dateGuardCatches": 55,
     "directorMismatch": 1007,
-    "tvFilmSignals": 3470,
-    "londonSignals": 1122,
+    "tvFilmSignals": 3473,
+    "londonSignals": 1124,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5742
+    "noPublishDate": 5707
   },
   "findings": [
     {
@@ -22376,6 +22376,20 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 18,
+      "publishDate": "2025-06-24",
+      "url": "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "independent--alice-saville.json",
       "score": 40,
       "publishDate": "2025-06-25",
@@ -22464,6 +22478,20 @@
       "score": 75,
       "publishDate": "January 12, 2026",
       "url": "https://www.telegraph.co.uk/art/reviews/hercules-disney-review-theatre-royal-drury-lane/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "file": "the-sun--dominic-maxwell.json",
+      "score": 25,
+      "publishDate": "2025-06-28",
+      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -53208,14 +53236,19 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "whatsonstage--alex-wood.json",
-      "score": 77,
-      "publishDate": "2025-11-28",
+      "score": 61,
+      "publishDate": "2025-11-12",
       "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -56694,6 +56727,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "express-uk--neil-norman.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
