@@ -55,7 +55,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       - name: Run WestEndTheatre scraper
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
           ARGS=""
 
