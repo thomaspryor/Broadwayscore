@@ -124,29 +124,62 @@ function stripHtml(html) {
 
 /**
  * Extract show title from WP post title.
- * Strips common prefixes like "Reviews of", "Review:", etc.
+ *
+ * WET uses many title patterns. Real examples from the API:
+ *   "Into the Woods Reviews Round-up – Bridge Theatre London [Updated]"
+ *   "Oliver! in the West End Reviews Round-up – Gielgud Theatre London [Updated]"
+ *   "Oh, Mary! Reviews: Is it the most outrageous comedy in London?"
+ *   "American Psycho reviews: Is Rupert Goold's 2026 London revival a killer?"
+ *   "Reviews round-up of The Comedy About Spies in the West End [Updated]"
+ *   "Summerfolk reviews: What do the critics think of the National Theatre's new production?"
+ *   "Romeo & Juliet" (simple, no cruft)
  */
 function extractShowTitle(wpTitle) {
   let title = stripHtml(wpTitle);
 
+  // Strip [Updated] tag (very common in WET)
+  title = title.replace(/\s*\[Updated\]\s*/gi, ' ').trim();
+
+  // Strip trailing star ratings: ★★★★ or ★★★★★
+  title = title.replace(/\s*★+\s*$/, '').trim();
+
   // Strip common review prefixes
   title = title
     .replace(/^reviews?\s+of\s+/i, '')
+    .replace(/^reviews?\s+round-?up\s+of\s+/i, '')
+    .replace(/^reviews?\s+round-?up:?\s*/i, '')
     .replace(/^reviews?:\s*/i, '')
     .replace(/^review\s+roundup:\s*/i, '')
     .replace(/^what the critics (are )?say(ing)? about\s+/i, '')
-    .replace(/^what the critics think about\s+/i, '')
+    .replace(/^what the critics think (about|of)\s+/i, '')
+    .replace(/^what do the critics (think|say) (about|of)\s+/i, '')
     .replace(/^critics (on|review)\s+/i, '')
     .replace(/^the reviews are in for\s+/i, '')
+    .replace(/^west end reviews?\s+of\s+/i, '')
+    .trim();
+
+  // Strip middle/trailing review cruft:
+  //   "X Reviews Round-up – Y" → "X"
+  //   "X reviews: subtitle here" → "X"
+  //   "X in the West End Reviews Round-up" → "X"
+  //   "X – Reviews Round-up" → "X"
+  title = title
+    .replace(/\s+reviews?\s+round-?up\b.*$/i, '')       // "X Reviews Round-up – venue"
+    .replace(/\s+reviews?:\s+.+$/i, '')                   // "X reviews: Is it the best..."
+    .replace(/\s+in\s+(the\s+)?west\s+end\b.*$/i, '')    // "X in the West End ..."
+    .replace(/\s+in\s+london\b.*$/i, '')                  // "X in London"
     .trim();
 
   // Strip trailing " starring ...", " at the [Venue]", " – reviews"
   title = title
     .replace(/\s+starring\s+.+$/i, '')
-    .replace(/\s+at\s+(the\s+)?(donmar|bridge|national|old vic|young vic|soho|gielgud|garrick|apollo|lyceum|lyric|savoy|noël coward|noel coward|harold pinter|wyndham|duchess|duke of york|fortune|vaudeville|criterion|adelphi|gillian lynne|phoenix|dominion|piccadilly|victoria palace|kit kat club|barbican|sadler'?s wells|menier|almeida|bush|kiln|hampstead)\b.*$/i, '')
+    .replace(/\s+at\s+(the\s+)?west\s+end'?s?\b.*$/i, '')   // "at the West End's Theatre Royal"
+    .replace(/\s+at\s+(the\s+)?(donmar|bridge|national|old vic|young vic|soho|gielgud|garrick|apollo|lyceum|lyric|savoy|noël coward|noel coward|harold pinter|wyndham|duchess|duke of york|fortune|vaudeville|criterion|adelphi|gillian lynne|phoenix|dominion|piccadilly|victoria palace|kit kat club|barbican|sadler'?s wells|menier|almeida|bush|kiln|hampstead|prince edward|prince of wales|theatre royal|shakespeare'?s globe|royal court|ambassadors)\b.*$/i, '')
     .replace(/\s+at\s+(the\s+)?[\w'-]+(\s+[\w'-]+){0,3}\s*(theatre|theater|playhouse|palace|house|hall|studio|space|centre|center|warehouse)$/i, '')
-    .replace(/\s*[-–—]\s*reviews?$/i, '')
-    .replace(/\s+reviews?$/i, '')
+    .replace(/\s*[-–—]\s*reviews?\s*(round-?up)?$/i, '')  // "– Reviews" or "– Reviews Round-up"
+    .replace(/\s*[-–—]\s*$/i, '')                          // trailing dash
+    .replace(/\s+reviews?\s*(round-?up)?$/i, '')           // "reviews" or "reviews round-up"
+    .replace(/\s+west\s+end$/i, '')                         // trailing "West End" (market, not title)
     .trim();
 
   return title;
