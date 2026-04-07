@@ -37,6 +37,7 @@ const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters
 const { isLondonMarket } = require('./lib/venue-classification');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -448,7 +449,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     try {
       stats.roundupsFetched++;
       const html = await fetchHtml(url);
-      if (html && (html.includes('critics') || html.includes('Review Roundup'))) {
+      if (html && isBWWRoundupContent(html)) {
         // Validate page actually matches show (LLM tiebreaker for edge cases)
         const validation = await validatePageMatchesShow(html, searchTitle, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
         if (!validation.valid) {
