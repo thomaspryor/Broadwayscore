@@ -71,8 +71,8 @@ async function processReview(filePath, showId) {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     stats.totalReviews++;
 
-    // Skip if already has originalScore
-    if (data.originalScore) {
+    // Skip if already has originalScore or was deliberately cleared by P0 audit
+    if (data.originalScore || data.originalScoreCleared) {
       stats.alreadyHadScore++;
       return false;
     }
