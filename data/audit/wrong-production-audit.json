@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T15:56:35.539Z",
+  "timestamp": "2026-04-07T16:46:40.431Z",
   "stats": {
-    "totalReviews": 34611,
-    "alreadyFlagged": 13204,
-    "dateGuardCatches": 55,
+    "totalReviews": 34609,
+    "alreadyFlagged": 13203,
+    "dateGuardCatches": 56,
     "directorMismatch": 1005,
     "tvFilmSignals": 3475,
-    "londonSignals": 1125,
+    "londonSignals": 1127,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5628
+    "noPublishDate": 5626
   },
   "findings": [
     {
@@ -35233,6 +35233,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "financialtimes--financial-times.json",
+      "score": 87,
+      "publishDate": "2022-10-19",
+      "url": "https://www.ft.com/content/a49309dc-bda1-4f26-93cf-274237764e15",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -80764,6 +80783,19 @@
       "showId": "the-authenticator-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
       "score": 76,
+      "publishDate": "2026-04-03",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-AUTHENTICATOR-at-National-Theatre-20260403",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "broadwayworld--team-bww.json",
       "publishDate": "2026-04-03",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-AUTHENTICATOR-at-National-Theatre-20260403",
       "findings": [

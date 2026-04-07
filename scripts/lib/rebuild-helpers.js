@@ -360,19 +360,21 @@ function getBestScore(data, opts = {}) {
   const AGGREGATOR_SOURCES = new Set([
     'show-score', 'show-score-playwright', 'showscore-roundup',
     'theatre-reviews', 'theatre-reviews-roundup',
-    'westendtheatre', 'stagedoor',
+    'westendtheatre', 'stagedoor', 'theatre-record',
     'bww-roundup', 'bww-reviews', 'playbill-verdict',
-    'lbo-roundup', 'nyc-theatre',
+    'lbo-roundup', 'lbo-individual', 'nyc-theatre',
   ]);
   // Outlets known to publish their own star ratings — when an aggregator reports
   // a star rating for one of these outlets, it's relaying the outlet's own score.
   const KNOWN_STAR_OUTLETS = new Set([
     'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
     'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
-    'artsdesk', 'thestage', 'whatsonstage', 'london-theatre',
+    'artsdesk', 'thestage', 'whatsonstage',
+    // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
+    // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet
     'metro', 'the-sun', 'digital-spy', 'radio-times',
     // WE outlets with verified star ratings (added 2026-04-03)
-    'london-box-office', 'all-that-dazzles-uk', 'musical-theatre-review',
+    'all-that-dazzles-uk', 'musical-theatre-review',
     'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',
     'tim-talks-theatre-uk', 'city-am', 'plays-international',
     'theatreandtonic', 'the-recs', 'broadwayworld',
