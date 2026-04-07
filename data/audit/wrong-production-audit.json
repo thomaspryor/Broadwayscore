@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-07T13:59:28.325Z",
+  "timestamp": "2026-04-07T14:07:41.674Z",
   "stats": {
-    "totalReviews": 34609,
-    "alreadyFlagged": 13197,
+    "totalReviews": 34610,
+    "alreadyFlagged": 13199,
     "dateGuardCatches": 55,
     "directorMismatch": 1005,
     "tvFilmSignals": 3475,
-    "londonSignals": 1125,
+    "londonSignals": 1126,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
     "noPublishDate": 5629
@@ -66454,6 +66454,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "whatsonstage--zachary-stewart.json",
+      "score": 82,
+      "publishDate": "2026-04-07",
+      "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
