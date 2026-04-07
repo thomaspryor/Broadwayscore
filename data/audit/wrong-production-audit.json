@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T10:12:09.656Z",
+  "timestamp": "2026-04-07T10:32:59.790Z",
   "stats": {
-    "totalReviews": 34606,
-    "alreadyFlagged": 13086,
+    "totalReviews": 34609,
+    "alreadyFlagged": 13091,
     "dateGuardCatches": 55,
     "directorMismatch": 1007,
-    "tvFilmSignals": 3468,
+    "tvFilmSignals": 3471,
     "londonSignals": 1122,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5751
+    "noPublishDate": 5742
   },
   "findings": [
     {
@@ -54090,6 +54090,19 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "independent--paul-taylor.json",
+      "publishDate": "1999-10-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "london-box-office--miriam-gibson.json",
       "score": 66,
       "publishDate": "2022-07-01",
@@ -54179,6 +54192,19 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "telegraph--charles-spencer.json",
+      "publishDate": "1999-10-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "telegraph--david-gritten.json",
       "score": 82,
       "publishDate": "October 17th, 2014",
@@ -54221,6 +54247,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "times-uk--benedict-nightingale.json",
+      "publishDate": "1999-10-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },

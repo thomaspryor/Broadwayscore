@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-07T10:12:12.096Z",
+    "lastUpdated": "2026-04-07T10:33:02.224Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 35014,
-    "skippedFiles": 13306,
-    "totalCritics": 1550,
-    "registryCritics": 537,
-    "flaggedReviews": 37
+    "totalFilesScanned": 35017,
+    "skippedFiles": 13311,
+    "totalCritics": 1551,
+    "registryCritics": 538,
+    "flaggedReviews": 36
   },
   "flaggedReviews": [
     {
@@ -405,17 +405,6 @@
       "primaryOutlet": "ew",
       "primaryShare": 95,
       "totalReviews": 19
-    },
-    {
-      "critic": "Neil Norman",
-      "criticSlug": "neil-norman",
-      "outlet": "the-sun",
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "file": "the-sun--neil-norman.json",
-      "outletShare": 9,
-      "primaryOutlet": "express-uk",
-      "primaryShare": 91,
-      "totalReviews": 11
     }
   ],
   "freelancers": [
@@ -582,7 +571,6 @@
         "amny",
         "london-theatre",
         "stagebuddy",
-        "telegraph",
         "times-uk",
         "cititour",
         "ew",
@@ -590,6 +578,7 @@
         "stageandcinema",
         "independent",
         "timeout-london",
+        "telegraph",
         "i-paper",
         "british-theatre",
         "usatoday",
@@ -660,7 +649,7 @@
         "bamorg",
         "kenny-leon"
       ],
-      "totalReviews": 597
+      "totalReviews": 596
     },
     {
       "critic": "Brittani Samuel",
@@ -846,7 +835,7 @@
         "nytimes",
         "nyt-theater"
       ],
-      "totalReviews": 423
+      "totalReviews": 424
     },
     {
       "critic": "Peter Marks",
@@ -1155,7 +1144,7 @@
         "stageandcinema",
         "vulture"
       ],
-      "totalReviews": 112
+      "totalReviews": 113
     },
     {
       "critic": "Matt Wolf",
@@ -2044,6 +2033,16 @@
       "totalReviews": 3
     },
     {
+      "critic": "Neil Norman",
+      "slug": "neil-norman",
+      "outlets": [
+        "express-uk",
+        "sunday-express",
+        "the-sun"
+      ],
+      "totalReviews": 12
+    },
+    {
       "critic": "A.A. Cristi",
       "slug": "a-a-cristi",
       "outlets": [
@@ -2061,7 +2060,7 @@
         "guardian",
         "timeout"
       ],
-      "totalReviews": 15
+      "totalReviews": 14
     },
     {
       "critic": "Oliver Jones",
@@ -2152,6 +2151,15 @@
       "outlets": [
         "nytg",
         "whatsonstage"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Benedict Nightingale",
+      "slug": "benedict-nightingale",
+      "outlets": [
+        "times-uk",
+        "nytimes"
       ],
       "totalReviews": 3
     },
