@@ -1059,19 +1059,19 @@ const KNOWN_SYNDICATION_PAIRS = {
         if (stale) continue;
         let promoted = false;
         if (cv.wrongProduction === true && d.wrongProduction !== true
-            && !d.wrongProductionOverride && !d.wrongProductionManualClear) {
+            && !d.wrongProductionOverride && !d.wrongProductionManualClear && !d.allowEarlyDate) {
           d.wrongProduction = true;
           d.wrongProductionReason = d.wrongProductionReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
         }
         const wpConf = cv.confidence || 'medium';
         const skipLondon = isLondonMarket(sCat) && isUkOutletUrl(d.url) && wpConf !== 'high';
-        if (cv.wrongArticle === true && d.wrongShow !== true && !skipLondon) {
+        if (cv.wrongArticle === true && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate) {
           d.wrongShow = true;
           d.wrongShowReason = d.wrongShowReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
         }
-        if (cv.isFilmTv === true && d.wrongShow !== true && !skipLondon) {
+        if (cv.isFilmTv === true && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate) {
           d.wrongShow = true;
           d.wrongShowReason = d.wrongShowReason || `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
@@ -1108,12 +1108,12 @@ showDirs.forEach(showId => {
           const ucv = ud.contentVerification;
           if (!ucv || (ucv.confidence !== 'high' && ucv.confidence !== 'medium')) continue;
           let promoted = false;
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !ud.wrongProductionOverride && !ud.wrongProductionManualClear) {
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !ud.wrongProductionOverride && !ud.wrongProductionManualClear && !ud.allowEarlyDate) {
             ud.wrongProduction = true;
             ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-          if (ucv.wrongArticle === true && ud.wrongShow !== true) {
+          if (ucv.wrongArticle === true && ud.wrongShow !== true && !ud.allowEarlyDate) {
             ud.wrongShow = true;
             ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -1418,7 +1418,7 @@ showDirs.forEach(showId => {
           const isHighMediumConfidence = wpConfidence === 'high' || wpConfidence === 'medium';
           if (cv.wrongProduction === true && data.wrongProduction !== true
               && !data.wrongProductionOverride && !data.wrongProductionManualClear
-              && isHighMediumConfidence) {
+              && isHighMediumConfidence && !data.allowEarlyDate) {
             data.wrongProduction = true;
             data.wrongProductionReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -1426,12 +1426,12 @@ showDirs.forEach(showId => {
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
           // wrongArticle means the fetched text is genuinely for a different show/venue)
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
-          if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon) {
+          if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate) {
             data.wrongShow = true;
             data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-          if (cv.isFilmTv === true && data.wrongShow !== true && !skipWsForLondon) {
+          if (cv.isFilmTv === true && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate) {
             data.wrongShow = true;
             data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -1507,6 +1507,14 @@ showDirs.forEach(showId => {
           } catch {}
         }
       }
+      // allowEarlyDate overrides wrongProduction — user explicitly approved the early date
+      if (data.wrongProduction === true && data.allowEarlyDate) {
+        delete data.wrongProduction;
+        delete data.wrongProductionNote;
+        data.wrongProductionAutoCleared = `rebuild: allowEarlyDate bypasses wrongProduction`;
+        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
+      }
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
         return;
@@ -1541,6 +1549,15 @@ showDirs.forEach(showId => {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
+        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
+      }
+      // allowEarlyDate overrides wrongShow — user explicitly approved this review
+      if (data.wrongShow === true && data.allowEarlyDate) {
+        delete data.wrongShow;
+        delete data.wrongShowNote;
+        delete data.wrongShowReason;
+        data.wrongShowAutoCleared = `rebuild: allowEarlyDate bypasses wrongShow`;
         try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
@@ -1591,7 +1608,7 @@ showDirs.forEach(showId => {
       // flag the copy that's farther from its show's opening year as wrongProduction.
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews
       // on a 2026 Off-Broadway page with the same title).
-      if (data.url && !data.wrongProduction) {
+      if (data.url && !data.wrongProduction && !data.allowEarlyDate) {
         const norm = data.url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '').toLowerCase();
         const entry = crossShowUrlIndex.get(norm);
         if (entry && entry.conflicts.length > 0) {
@@ -1665,7 +1682,7 @@ showDirs.forEach(showId => {
         } catch (e) {}
       }
 
-      if (isLondonMarket(showCategory)
+      if (isLondonMarket(showCategory) && !data.allowEarlyDate
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         // URL-domain fallback: if outlet has no region in registry, check if the URL is a UK domain
@@ -1696,7 +1713,7 @@ showDirs.forEach(showId => {
       // Unlike the forward guard, we DON'T exempt Tier 1/2 here — a London Tier 1 outlet like
       // Evening Standard never covers Broadway. Only explicitly dual-market outlets (Guardian, FT, Variety)
       // are allowed to cross markets. Tier 1/2 exemption was designed for US outlets reviewing WE.
-      if ((showCategory === 'broadway' || showCategory === 'off-broadway')
+      if ((showCategory === 'broadway' || showCategory === 'off-broadway') && !data.allowEarlyDate
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         // URL-domain fallback: if outlet has no region in registry, check if the URL is a .co.uk domain
@@ -1725,7 +1742,7 @@ showDirs.forEach(showId => {
       // (and vice versa) even from dual-market outlets. The outlet may cover both markets,
       // but a URL containing "-broadway-review" or "on-broadway" is reviewing a specific production.
       // Excludes broadwayworld.com (outlet domain, not a production indicator).
-      if (data.url && !data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
+      if (data.url && !data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear && !data.allowEarlyDate) {
         try {
           const urlObj = new URL(data.url);
           const hostname = urlObj.hostname.replace(/^www\./, '');
@@ -1978,7 +1995,7 @@ showDirs.forEach(showId => {
       // This guard is independent of multiProdYearGuard (doesn't require sibling productions in DB).
       // WE/OB exempt: they commonly transfer from fringe/regional, so URL years mismatch legitimately
       if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
-          && !data.wrongProductionManualClear
+          && !data.wrongProductionManualClear && !data.allowEarlyDate
           && !isLondonMarket(showCategory) && showCategory !== 'off-broadway') {
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
