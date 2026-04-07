@@ -212,16 +212,18 @@ const ReviewCard = memo(function ReviewCard({ review, isLast }: { review: Review
           ) : (
             <span className="text-sm text-gray-400">{review.outlet} Staff</span>
           )}
-          <a
-            href={review.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-brand hover:text-brand-hover transition-colors uppercase tracking-wide"
-            aria-label={`Read full review from ${review.outlet}${review.criticName && review.criticName !== 'Unknown' ? ` by ${review.criticName}` : ''} (opens in new tab)`}
-          >
-            Full Review
-            <ExternalLinkIcon className="w-3 h-3" />
-          </a>
+          {review.url && (
+            <a
+              href={review.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-brand hover:text-brand-hover transition-colors uppercase tracking-wide"
+              aria-label={`Read full review from ${review.outlet}${review.criticName && review.criticName !== 'Unknown' ? ` by ${review.criticName}` : ''} (opens in new tab)`}
+            >
+              Full Review
+              <ExternalLinkIcon className="w-3 h-3" />
+            </a>
+          )}
         </div>
       </div>
     </article>
