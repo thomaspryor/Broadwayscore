@@ -162,7 +162,12 @@
     "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
     "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
     "cats-the-jellicle-ball-2026/nytimes--unknown.json",
-    "the-listening-off-broadway-2026/hollywood-reporter--daniel-fienberg.json"
+    "the-listening-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
+    "cats-the-jellicle-ball-2026/variety--unknown.json",
+    "cats-the-jellicle-ball-2026/variety--rebecca-rubin.json",
+    "becky-shaw-2026/cote-notices--unknown.json",
+    "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
+    "bigfoot-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -305,7 +310,12 @@
     "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
     "becky-shaw-2026/wsj--unknown.json",
     "becky-shaw-2026/talkinbroadway--unknown.json",
-    "innocence-off-broadway-2026/playbill--unknown.json"
+    "innocence-off-broadway-2026/playbill--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -411,7 +421,11 @@
       "data/review-texts/les-miserables-west-end-2021/express-uk--stefan-kyriazis.json",
       "les-miserables-west-end-2021/express-uk--stefan-kyriazis.json",
       "data/review-texts/the-listening-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
-      "the-listening-off-broadway-2026/hollywood-reporter--daniel-fienberg.json"
+      "the-listening-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/variety--unknown.json",
+      "cats-the-jellicle-ball-2026/variety--unknown.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/variety--rebecca-rubin.json",
+      "cats-the-jellicle-ball-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -455,7 +469,9 @@
       "loves-labours-lost-globe-west-end-2026/timeout--unknown.json",
       "just-for-us-2023/timeout--adam-feldman.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
-      "cats-the-jellicle-ball-2026/nytimes--unknown.json"
+      "cats-the-jellicle-ball-2026/nytimes--unknown.json",
+      "becky-shaw-2026/cote-notices--unknown.json",
+      "bigfoot-off-broadway-2026/timeout--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -497,11 +513,12 @@
       "some-like-it-hot-2022/newyorker--helen-shaw.json",
       "tina-2019/newyorker--michael-schulman.json",
       "the-height-of-the-storm-2019/timeout--adam-feldman.json",
-      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "the-authenticator-west-end-2026/broadwayworld--team-bww.json"
     ]
   },
   "startTime": "2026-04-07T09:12:19.021Z",
-  "lastProcessed": "innocence-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-04-07T09:16:15.147Z",
@@ -581,6 +598,28 @@
       "t": "2026-04-07T12:33:40.293Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-07T16:02:07.680Z",
+      "event": "bb-session",
+      "session": "7ae1c5ce",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-07T16:02:08.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T16:02:25.716Z",
+      "event": "bb-session",
+      "session": "df14ed9d",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-07T16:02:26.875Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
