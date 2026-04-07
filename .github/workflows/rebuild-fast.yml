@@ -1,0 +1,209 @@
+# Fast rebuild — checkout → rebuild reviews.json → push → deploy
+# No backfill, no classification, no flagging. 5 minutes instead of 30.
+# Use for opening-night corrections and manual data fixes.
+name: Rebuild Reviews (Fast)
+
+concurrency:
+  group: rebuild-reviews
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for fast rebuild'
+        required: false
+        default: 'Fast rebuild — manual correction'
+        type: string
+      force_write:
+        description: 'Override regression guard (true/false)'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  rebuild-fast:
+    name: Fast rebuild reviews.json
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Get current review count
+        id: before
+        run: |
+          if [ -f data/reviews.json ]; then
+            COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
+            echo "count=$COUNT" >> $GITHUB_OUTPUT
+          else
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Rebuild reviews.json
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          FORCE_FLAG=""
+          if [ "${{ inputs.force_write || 'false' }}" = "true" ]; then
+            FORCE_FLAG="--force-write"
+            echo "⚠️  Force-write enabled — regression guard overridden"
+          fi
+
+          # First attempt
+          if node scripts/rebuild-all-reviews.js $FORCE_FLAG; then
+            echo "Rebuild succeeded on first attempt"
+            exit 0
+          fi
+
+          echo ""
+          echo "⚠️  Rebuild failed (likely stale checkout) — re-cloning review-texts and retrying..."
+          echo ""
+
+          rm -rf data/review-texts
+          git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+
+          node scripts/rebuild-all-reviews.js $FORCE_FLAG
+
+      - name: Snapshot rebuilt core data for private repo push
+        if: always()
+        run: |
+          for f in reviews.json shows.json critic-consensus.json critic-registry.json outlet-registry.json; do
+            if [ -f "data/$f" ]; then
+              cp -f "data/$f" /tmp/core-data-snapshot/
+            fi
+          done
+          echo "Updated core-data snapshot with rebuilt files"
+
+      - name: Update critic registry
+        run: node scripts/audit-critic-outlets.js
+        continue-on-error: true
+
+      - name: Regenerate mobile detail JSONs
+        run: node scripts/generate-mobile-show-details.js
+        continue-on-error: true
+
+      - name: Get new review count
+        id: after
+        run: |
+          COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+      - name: Check for changes
+        if: always()
+        id: changes
+        run: |
+          REVIEWS_CHANGED=false
+          PUBLIC_CHANGED=false
+          if ! git diff --quiet data/reviews.json 2>/dev/null; then
+            REVIEWS_CHANGED=true
+            echo "Changes detected in reviews.json"
+            git diff --stat data/reviews.json
+          fi
+          if ! git diff --quiet public/data/shows/ 2>/dev/null; then
+            PUBLIC_CHANGED=true
+            echo "Changes detected in public show JSONs"
+            git diff --stat public/data/shows/ | tail -5
+          fi
+          if [ "$REVIEWS_CHANGED" = "true" ] || [ "$PUBLIC_CHANGED" = "true" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to reviews.json or public show JSONs"
+          fi
+
+      - name: Check for large files
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Rebuild Reviews (Fast) — push changes"
+
+      - name: Commit and push changes
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/*.json 2>/dev/null || true
+          git add public/opening-night-status.json public/status.html 2>/dev/null || true
+          git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
+
+          BEFORE=${{ steps.before.outputs.count }}
+          AFTER=${{ steps.after.outputs.count }}
+          DIFF=$((AFTER - BEFORE))
+
+          REASON="${{ inputs.reason }}"
+          MSG="data: Fast rebuild - $REASON"
+
+          if [ $DIFF -ne 0 ]; then
+            if [ $DIFF -gt 0 ]; then
+              MSG="$MSG (+$DIFF reviews)"
+            else
+              MSG="$MSG ($DIFF reviews)"
+            fi
+          fi
+
+          git commit -m "$MSG
+
+          Reviews: $BEFORE → $AFTER
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from rebuild-fast'
+
+      - name: Trigger deploy
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "Triggering deploy..."
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fast Rebuild Failed'
+          description: 'Fast rebuild failed. Check run logs. To re-run: gh workflow run "Rebuild Reviews (Fast)" -f reason="Retry"'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Summary
+        run: |
+          echo "## Fast Rebuild Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Before:** ${{ steps.before.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "**After:** ${{ steps.after.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "**Changes:** ${{ steps.changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Reason:** ${{ inputs.reason }}" >> $GITHUB_STEP_SUMMARY

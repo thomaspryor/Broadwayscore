@@ -132,7 +132,9 @@ if (starsArg) {
     process.exit(1);
   }
   const [, num, denom] = match;
-  const normalized = Math.round((parseFloat(num) / parseFloat(denom)) * 100);
+  let normalized = Math.round((parseFloat(num) / parseFloat(denom)) * 100);
+  // Cap perfect star scores at 95 (consistent with parseStarRating)
+  if (normalized === 100 && parseFloat(denom) < 100) normalized = 95;
   originalScore = starsArg;
   originalScoreSource = 'manual-stars';
   // If no explicit --score given, derive from stars
@@ -181,6 +183,18 @@ if (humanScore) {
   // humanReviewScore is the ONLY score field rebuild respects
   fields.humanReviewScore = humanScore;
 }
+
+// ALL protection fields — missing any one means a different guard re-flags the review.
+// These survive rebuild scoring, content reclassification, wrong-production flagging,
+// wrong-show classification, and pre-opening date guards.
+fields.wrongProduction = false;
+fields.wrongProductionManualClear = true;
+fields.allowEarlyDate = true;
+fields.wrongShow = false;
+fields.contentVerification = {
+  wrongProduction: false,
+  wrongArticle: false,
+};
 
 if (originalScore) {
   fields.originalScore = originalScore;
