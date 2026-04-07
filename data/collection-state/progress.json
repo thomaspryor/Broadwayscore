@@ -209,7 +209,17 @@
     "romeo-juliet/variety--trish-deitch.json",
     "romeo-juliet/vulture--sara-holdren.json",
     "take-me-out/nytimes--ben-brantley.json",
-    "tammy-faye/nyt-theater--jonathan-mandell.json"
+    "tammy-faye/nyt-theater--jonathan-mandell.json",
+    "tammy-faye/nytg--joe-dziemianowicz.json",
+    "tammy-faye/nytimes--elisabeth-vincentelli.json",
+    "tammy-faye/variety--frank-rizzo.json",
+    "tammy-faye/vulture--sara-holdren.json",
+    "doubt-a-parable/broadwaynews--brittani-samuel.json",
+    "doubt-a-parable/deadline--greg-evans.json",
+    "doubt-a-parable/ew--dalton-ross.json",
+    "doubt-a-parable/nydailynews--chris-jones.json",
+    "doubt-a-parable/nypost--johnny-oleksinski.json",
+    "doubt-a-parable/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1703,7 +1713,11 @@
       "purpose/nytg--joe-dziemianowicz.json",
       "romeo-juliet/nyt-theater--jonathan-mandell.json",
       "romeo-juliet/nytg--gillian-russo.json",
-      "tammy-faye/nyt-theater--jonathan-mandell.json"
+      "tammy-faye/nyt-theater--jonathan-mandell.json",
+      "tammy-faye/nytg--joe-dziemianowicz.json",
+      "doubt-a-parable/broadwaynews--brittani-samuel.json",
+      "doubt-a-parable/ew--dalton-ross.json",
+      "doubt-a-parable/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1788,7 +1802,13 @@
       "data/review-texts/romeo-juliet/variety--trish-deitch.json",
       "romeo-juliet/variety--trish-deitch.json",
       "data/review-texts/take-me-out/nytimes--ben-brantley.json",
-      "take-me-out/nytimes--ben-brantley.json"
+      "take-me-out/nytimes--ben-brantley.json",
+      "data/review-texts/tammy-faye/variety--frank-rizzo.json",
+      "tammy-faye/variety--frank-rizzo.json",
+      "data/review-texts/doubt-a-parable/deadline--greg-evans.json",
+      "doubt-a-parable/deadline--greg-evans.json",
+      "data/review-texts/doubt-a-parable/nypost--johnny-oleksinski.json",
+      "doubt-a-parable/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1826,7 +1846,8 @@
       "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
       "purpose/newyorker--helen-shaw.json",
       "purpose/nytimes--jesse-green.json",
-      "romeo-juliet/nytimes--jesse-green.json"
+      "romeo-juliet/nytimes--jesse-green.json",
+      "tammy-faye/nytimes--elisabeth-vincentelli.json"
     ],
     "brightdata": [
       "scandalous-2012/variety--marilyn-stasio.json",
@@ -1944,11 +1965,13 @@
       "angels-in-america-2018/vulture--jesse-green-pt-2.json",
       "doubt-a-parable/vulture--sara-holdren.json",
       "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
-      "romeo-juliet/vulture--sara-holdren.json"
+      "romeo-juliet/vulture--sara-holdren.json",
+      "tammy-faye/vulture--sara-holdren.json",
+      "doubt-a-parable/nydailynews--chris-jones.json"
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "tammy-faye/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "doubt-a-parable/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2599,6 +2622,39 @@
       "t": "2026-04-07T05:13:37.055Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-07T05:14:26.087Z",
+      "event": "bb-session",
+      "session": "af4c3b19",
+      "url": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-"
+    },
+    {
+      "t": "2026-04-07T05:14:27.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T05:15:36.757Z",
+      "event": "bb-session",
+      "session": "9e1ace76",
+      "url": "https://deadline.com/2024/03/doubt-broadway-review-1235847662/"
+    },
+    {
+      "t": "2026-04-07T05:15:38.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:16:11.501Z",
+      "event": "bb-session",
+      "session": "2689be77",
+      "url": "https://nypost.com/2024/03/07/entertainment/liev-schreiber-doubt-broadway-review"
+    },
+    {
+      "t": "2026-04-07T05:16:12.802Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
