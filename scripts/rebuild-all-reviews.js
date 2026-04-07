@@ -37,7 +37,7 @@ const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extr
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isRoundupUrl, isVenueMismatch } = require('./lib/review-guards');
-const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb } = require('./lib/rebuild-helpers');
+const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 
@@ -2510,7 +2510,25 @@ showDirs.forEach(showId => {
         thumb: scoreToThumb(score),
         criticName: data.criticName || null,
         url: data.url || null,
-        publishDate: normalizePublishDate(data.publishDate),
+        publishDate: normalizePublishDate(data.publishDate) || (() => {
+          // Backfill: extract date from URL when source file has no publishDate
+          const urlDate = extractDateFromUrl(data.url);
+          if (urlDate && urlDate.date) {
+            stats.urlDateBackfills = (stats.urlDateBackfills || 0) + 1;
+            // Validate: if extracted date year is before show opens, log warning
+            if (showDateMap[showId]) {
+              const showYear = showDateMap[showId].getFullYear();
+              const extractedYear = parseInt(urlDate.date.substring(0, 4));
+              if (extractedYear < showYear - 1) {
+                console.log(`  [URL-DATE SUSPECT] ${showId}/${file}: URL date ${urlDate.date} is before show opens ${showYear} (${urlDate.source})`);
+                if (!stats.urlDateSuspect) stats.urlDateSuspect = [];
+                stats.urlDateSuspect.push({ showId, file, urlDate: urlDate.date, showYear, source: urlDate.source });
+              }
+            }
+            return urlDate.date;
+          }
+          return null;
+        })(),
         originalRating: (source === 'originalScore-priority0' || source === 'originalScore-showscore-downgraded')
           ? data.originalScore || null
           : source === 'aggregatorStars-fallback'
@@ -3303,6 +3321,20 @@ if (stats.excerptMismatches > 0) {
     if (stats.excerptMismatchDetails.length > 10) {
       console.log(`    ...and ${stats.excerptMismatchDetails.length - 10} more`);
     }
+  }
+}
+
+// URL date backfill summary
+if (stats.urlDateBackfills > 0) {
+  console.log(`\n📅 URL date backfills: ${stats.urlDateBackfills} reviews gained publishDate from URL`);
+}
+if (stats.urlDateSuspect && stats.urlDateSuspect.length > 0) {
+  console.log(`  ⚠️  URL-date suspect (year before show opens): ${stats.urlDateSuspect.length}`);
+  stats.urlDateSuspect.slice(0, 10).forEach(d =>
+    console.log(`    ${d.showId}/${d.file}: URL date ${d.urlDate}, show opens ${d.showYear} (${d.source})`)
+  );
+  if (stats.urlDateSuspect.length > 10) {
+    console.log(`    ...and ${stats.urlDateSuspect.length - 10} more`);
   }
 }
 
