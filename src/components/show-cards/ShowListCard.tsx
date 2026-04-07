@@ -144,11 +144,11 @@ const ShowListCard = memo(function ShowListCard({
           <span className="text-emerald-400">{show.performances.toLocaleString()} performances</span>
         ) : (
           <>
-            {isOpen && (() => {
+            {show.status === 'open' && (() => {
               const duration = getBroadwayDuration(show.openingDate, durationSuffix);
               return duration ? <span>{duration}</span> : null;
             })()}
-            {isOpen && show.closingDate && (
+            {show.status === 'open' && show.closingDate && (
               <span className="text-amber-400">
                 {getBroadwayDuration(show.openingDate, durationSuffix) && '·'} Closes {new Date(show.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </span>
