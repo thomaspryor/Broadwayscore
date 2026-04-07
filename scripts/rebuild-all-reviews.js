@@ -1521,8 +1521,17 @@ showDirs.forEach(showId => {
         data.wrongProduction = false;
       }
       if (data.wrongProduction === true) {
-        stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
-        return;
+        if (data.wrongProductionManualClear) {
+          console.log(`  [NUCLEAR GUARD FAILURE] ${showId}/${file}: wrongProduction=true despite wrongProductionManualClear=true — FORCING false`);
+          data.wrongProduction = false;
+        } else {
+          stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
+          return;
+        }
+      }
+      // Debug: log NYTG processing for Becky Shaw
+      if (showId === 'becky-shaw-2026' && file.includes('nytg')) {
+        console.log(`  [DEBUG NYTG] ${file}: wrongProd=${data.wrongProduction} wrongShow=${data.wrongShow} score=${data.humanReviewScore||data.assignedScore} manualClear=${data.wrongProductionManualClear}`);
       }
 
       // Auto-reject reviews with blocked URLs (ticket pages, aggregators, social media)
