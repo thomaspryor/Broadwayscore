@@ -226,7 +226,16 @@
     "harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
     "harry-potter-and-the-cursed-child-parts-one-and-two/ew--marc-snetiker.json",
     "moulin-rouge-the-musical-review/deadline--greg-evans.json",
-    "purpose/deadline--greg-evans.json"
+    "purpose/deadline--greg-evans.json",
+    "purpose/new-york-sun--elysa-gardner.json",
+    "purpose/nydailynews--chris-jones.json",
+    "purpose/nypost--johnny-oleksinski.json",
+    "purpose/theatermania--zachary-stewart.json",
+    "purpose/timeout--adam-feldman.json",
+    "romeo-juliet/broadwaynews--brittani-samuel.json",
+    "romeo-juliet/deadline--greg-evans.json",
+    "romeo-juliet/ew--emlyn-travis.json",
+    "romeo-juliet/guardian--adrian-horton.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1627,7 +1636,8 @@
     "purpose/vulture--jackson-mchenry.json",
     "doubt-a-parable/thewrap--jd-knapp.json",
     "doubt-a-parable/wsj--charles-isherwood.json",
-    "purpose/broadwaynews--brittani-samuel.json"
+    "purpose/broadwaynews--brittani-samuel.json",
+    "purpose/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1731,7 +1741,13 @@
       "doubt-a-parable/timeout--adam-feldman.json",
       "harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json",
       "harry-potter-and-the-cursed-child/timeout--adam-feldman.json",
-      "harry-potter-and-the-cursed-child-parts-one-and-two/ew--marc-snetiker.json"
+      "harry-potter-and-the-cursed-child-parts-one-and-two/ew--marc-snetiker.json",
+      "purpose/new-york-sun--elysa-gardner.json",
+      "purpose/theatermania--zachary-stewart.json",
+      "purpose/timeout--adam-feldman.json",
+      "romeo-juliet/broadwaynews--brittani-samuel.json",
+      "romeo-juliet/ew--emlyn-travis.json",
+      "romeo-juliet/guardian--adrian-horton.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1828,7 +1844,11 @@
       "data/review-texts/moulin-rouge-the-musical-review/deadline--greg-evans.json",
       "moulin-rouge-the-musical-review/deadline--greg-evans.json",
       "data/review-texts/purpose/deadline--greg-evans.json",
-      "purpose/deadline--greg-evans.json"
+      "purpose/deadline--greg-evans.json",
+      "data/review-texts/purpose/nypost--johnny-oleksinski.json",
+      "purpose/nypost--johnny-oleksinski.json",
+      "data/review-texts/romeo-juliet/deadline--greg-evans.json",
+      "romeo-juliet/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1962,7 +1982,8 @@
       "data/review-texts/xanadu-2007/nydailynews--joe-dziemianowicz.json",
       "data/review-texts/purpose/vulture--jackson-mchenry.json",
       "data/review-texts/doubt-a-parable/thewrap--jd-knapp.json",
-      "data/review-texts/purpose/broadwaynews--brittani-samuel.json"
+      "data/review-texts/purpose/broadwaynews--brittani-samuel.json",
+      "data/review-texts/purpose/thewrap--robert-hofler.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -1989,11 +2010,12 @@
       "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
       "romeo-juliet/vulture--sara-holdren.json",
       "tammy-faye/vulture--sara-holdren.json",
-      "doubt-a-parable/nydailynews--chris-jones.json"
+      "doubt-a-parable/nydailynews--chris-jones.json",
+      "purpose/nydailynews--chris-jones.json"
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "purpose/deadline--greg-evans.json",
+  "lastProcessed": "romeo-juliet/guardian--adrian-horton.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2719,6 +2741,28 @@
     },
     {
       "t": "2026-04-07T05:24:18.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:24:49.548Z",
+      "event": "bb-session",
+      "session": "0e75c1d5",
+      "url": "https://nypost.com/2025/03/17/entertainment/purpose-review-a-hilarious-and-blist"
+    },
+    {
+      "t": "2026-04-07T05:24:50.769Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-07T05:29:15.822Z",
+      "event": "bb-session",
+      "session": "250f152f",
+      "url": "https://deadline.com/2024/10/romeo-juliet-broadway-review-kit-connor-rachel-zegl"
+    },
+    {
+      "t": "2026-04-07T05:29:17.147Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
