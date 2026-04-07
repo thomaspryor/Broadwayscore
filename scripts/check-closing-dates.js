@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { serpQuery } = require('./lib/url-discovery');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const BROADWAY_ORG_URL = 'https://www.broadway.org/shows/';
@@ -130,7 +131,10 @@ async function checkClosingDates() {
     console.log('');
   }
 
-  // Try to fetch Broadway.org
+  const newDates = [];      // Shows that didn't have a date
+  const extensions = [];    // Shows where the date moved later (extended!)
+
+  // ── Phase 1: Broadway.org scrape ──
   console.log('Fetching Broadway.org for closing date announcements...');
 
   try {
@@ -142,12 +146,8 @@ async function checkClosingDates() {
     // Guard: content must be reasonably sized for a page listing 30+ shows
     if (html.length < 5000) {
       console.error(`GUARD: Fetched content suspiciously short (${html.length} bytes). Possible error page.`);
-      console.error('Skipping closing date check to avoid silent failure.');
-      return;
-    }
-
-    const newDates = [];      // Shows that didn't have a date
-    const extensions = [];    // Shows where the date moved later (extended!)
+      console.error('Skipping Broadway.org check (will still try SERP).');
+    } else {
 
     // Track how many shows we find on Broadway.org for validation
     let showsFoundOnPage = 0;
@@ -251,58 +251,140 @@ async function checkClosingDates() {
       console.warn(`Content format: ${result.format}, source: ${result.source}, length: ${html.length} bytes`);
     }
 
-    // Report and apply new closing dates
+    // Report Broadway.org findings
     if (newDates.length > 0) {
       console.log('');
-      console.log('NEW CLOSING DATES:');
+      console.log('NEW CLOSING DATES (Broadway.org):');
       console.log('-'.repeat(40));
       for (const update of newDates) {
         console.log(`  📅 ${update.title}: ${update.closingDate}`);
-
-        if (!dryRun) {
-          const show = data.shows.find(s => s.id === update.id);
-          if (show) {
-            show.closingDate = update.closingDate;
-          }
-        }
       }
     }
 
-    // Report and apply extensions
     if (extensions.length > 0) {
       console.log('');
       console.log('🎉 EXTENSIONS DETECTED (closing date pushed later):');
       console.log('-'.repeat(40));
       for (const update of extensions) {
         console.log(`  📅 ${update.title}: ${update.oldDate} → ${update.closingDate}`);
-
-        if (!dryRun) {
-          const show = data.shows.find(s => s.id === update.id);
-          if (show) {
-            show.closingDate = update.closingDate;
-          }
-        }
       }
     }
 
-    const totalUpdates = newDates.length + extensions.length;
-    if (totalUpdates > 0) {
-      if (!dryRun) {
-        saveShows(data);
-        console.log('');
-        console.log(`✅ Updated ${totalUpdates} shows (${newDates.length} new, ${extensions.length} extensions)`);
-      }
-    } else {
+    if (newDates.length === 0 && extensions.length === 0) {
       console.log('');
-      console.log('No closing date changes found in scrape.');
-      console.log('(This may require manual checking of Broadway news sources)');
+      console.log('No closing date changes found on Broadway.org.');
     }
 
+    } // end else (content length guard)
   } catch (error) {
-    console.error('Error fetching data:', error.message);
-  } finally {
-    await cleanup();
+    console.error('Error fetching Broadway.org:', error.message);
   }
+
+  // ── Phase 2: SERP-based closing date discovery ──
+  // For shows still missing dates, search news sources via SERP.
+  // Skip long-running shows (opened before 2023) — they rarely announce closings.
+  const cutoffYear = new Date().getFullYear() - 3;
+  const stillMissing = showsWithoutClosingDate.filter(s => {
+    // Already found via Broadway.org?
+    if (newDates.find(u => u.id === s.id)) return false;
+    // Long-running show? Skip SERP — waste of queries.
+    const openYear = s.openingDate ? parseInt(s.openingDate.split('-')[0]) : 0;
+    return openYear >= cutoffYear;
+  });
+
+  if (stillMissing.length > 0) {
+    console.log('');
+    console.log(`Searching SERP for ${stillMissing.length} recent shows still missing closing dates...`);
+    const currentYear = new Date().getFullYear();
+
+    for (const show of stillMissing) {
+      const query = `"${show.title}" broadway closing ${currentYear}`;
+      console.log(`  🔍 ${show.title}: ${query}`);
+
+      try {
+        const results = await serpQuery(query, { nbResults: 5, preferSpeed: true });
+        if (!results || results.length === 0) {
+          console.log(`     No SERP results`);
+          continue;
+        }
+
+        let foundDate = null;
+        for (const r of results) {
+          const text = `${r.title || ''} ${r.snippet || ''}`;
+          // Match patterns like "through September 6, 2026", "closes July 5",
+          // "final performance September 6", "closing date: July 5, 2026"
+          const datePatterns = [
+            /(?:through|closes?|closing(?:\s+date)?|final\s+performance)[:\s]+(\w+\s+\d{1,2},?\s*\d{4})/i,
+            /(?:through|closes?|closing(?:\s+date)?|final\s+performance)[:\s]+(\w+\s+\d{1,2})/i,
+          ];
+
+          for (const pat of datePatterns) {
+            const m = text.match(pat);
+            if (!m) continue;
+
+            const dateStr = m[1];
+            const hasYear = /\d{4}/.test(dateStr);
+            const fullDateStr = hasYear ? dateStr : `${dateStr}, ${currentYear}`;
+
+            try {
+              const date = new Date(fullDateStr);
+              if (isNaN(date.getTime())) continue;
+              // Must be in the future and within 2 years
+              if (date <= new Date()) continue;
+              const twoYearsOut = new Date();
+              twoYearsOut.setFullYear(twoYearsOut.getFullYear() + 2);
+              if (date > twoYearsOut) continue;
+
+              foundDate = date.toISOString().split('T')[0];
+              console.log(`     ✅ Found: ${foundDate} (from: "${r.title?.slice(0, 80)}")`);
+              break;
+            } catch (e) { /* continue */ }
+          }
+          if (foundDate) break;
+        }
+
+        if (foundDate) {
+          newDates.push({
+            id: show.id,
+            title: show.title,
+            closingDate: foundDate,
+            type: 'new',
+            source: 'serp',
+          });
+        } else {
+          console.log(`     No closing date found in SERP results`);
+        }
+
+        // Rate limit between SERP queries
+        await new Promise(r => setTimeout(r, 1000));
+      } catch (err) {
+        console.log(`     ⚠️ SERP error: ${err.message}`);
+      }
+    }
+  }
+
+  // ── Apply all discovered dates ──
+  const totalUpdates = newDates.length + extensions.length;
+  if (totalUpdates > 0 && !dryRun) {
+    for (const update of newDates) {
+      const show = data.shows.find(s => s.id === update.id);
+      if (show) show.closingDate = update.closingDate;
+    }
+    for (const update of extensions) {
+      const show = data.shows.find(s => s.id === update.id);
+      if (show) show.closingDate = update.closingDate;
+    }
+    saveShows(data);
+    console.log('');
+    console.log(`✅ Updated ${totalUpdates} shows (${newDates.length} new, ${extensions.length} extensions)`);
+    const serpCount = newDates.filter(d => d.source === 'serp').length;
+    if (serpCount > 0) console.log(`   (${serpCount} via SERP discovery)`);
+  } else if (totalUpdates === 0) {
+    console.log('');
+    console.log('✅ No closing date changes found');
+  }
+
+  await cleanup();
 
   console.log('');
   console.log('='.repeat(60));
