@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T00:36:12.406Z",
+  "generatedAt": "2026-04-07T03:22:27.325Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -962,25 +962,20 @@
       "status": "open",
       "slug": "becky-shaw",
       "thumbnail": "/images/shows/becky-shaw-2026/thumbnail.webp",
-      "siteScore": null,
+      "siteScore": 84,
       "liveScore": 84,
-      "scoreDrift": null,
-      "total": 1,
-      "t1": 1,
-      "t2": 0,
-      "t3": 0,
-      "positive": 1,
+      "scoreDrift": 0,
+      "total": 15,
+      "t1": 5,
+      "t2": 9,
+      "t3": 1,
+      "positive": 15,
       "mixed": 0,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "1/12 total",
-          "T1:1/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -990,27 +985,11 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
           "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -1019,10 +998,6 @@
         },
         {
           "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
           "isDualMarket": false
         },
         {
@@ -1056,39 +1031,11 @@
       ],
       "missingT2": [
         {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
         {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
-          "isDualMarket": false
-        },
-        {
           "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
           "isDualMarket": false
         },
         {
@@ -1116,19 +1063,7 @@
           "isDualMarket": true
         },
         {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -1253,6 +1188,18 @@
           "t2": 0,
           "t3": 0,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-07T03:10:45.199Z",
+          "rc": 15,
+          "s": 84,
+          "t1": 5,
+          "t2": 9,
+          "t3": 1,
+          "p": 15,
           "m": 0,
           "n": 0,
           "bc": "waiting"
