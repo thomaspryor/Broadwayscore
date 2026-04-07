@@ -250,7 +250,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                     })()}
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <ScoreBadge score={score} size="sm" showCrown />
+                    <ScoreBadge score={score} size="sm" showCrown reviewCount={item.show.criticScore?.reviewCount ?? undefined} />
                   </td>
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     <div className="flex flex-wrap gap-1 justify-center">
@@ -487,7 +487,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                     )}
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <ScoreBadge score={score} size="sm" showCrown />
+                    <ScoreBadge score={score} size="sm" showCrown reviewCount={item.show.criticScore?.reviewCount ?? undefined} />
                   </td>
                   </tr>
                   {isExpanded && sro && (
@@ -730,7 +730,7 @@ export function RushTable({ data }: RushTableProps) {
                     </div>
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
-                    <ScoreBadge score={score} size="sm" showCrown />
+                    <ScoreBadge score={score} size="sm" showCrown reviewCount={item.show.criticScore?.reviewCount ?? undefined} />
                   </td>
                   <td className="py-3 px-4 text-center hidden lg:table-cell">
                     <div className="flex flex-wrap gap-1 justify-center">

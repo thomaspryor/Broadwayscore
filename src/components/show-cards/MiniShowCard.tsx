@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { getScoreColorClass, MustSeeCrown } from '@/components/show-cards';
-import { getGoldThreshold } from '@/config/score-buckets';
+import { getGoldThreshold, hasEnoughReviews } from '@/config/score-buckets';
 import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { ShowCardShow } from './types';
@@ -19,8 +19,11 @@ export interface MiniShowCardProps {
 // NOTE: Poster images use 2:3 aspect ratio (standard Broadway poster format, e.g., 480x720)
 // Never use a landscape/hero image as a poster — source proper portrait images instead
 const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: MiniShowCardProps) {
-  const score = show.criticScore?.score;
   const category = show.category ?? 'broadway';
+  const reviewCount = show.criticScore?.reviewCount ?? 0;
+  const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+  const rawScore = show.criticScore?.score;
+  const score = rawScore != null && hasEnoughReviews(reviewCount, category, t1t2) ? rawScore : null;
   const marketLabel = getMarketLabel(category);
 
   return (
