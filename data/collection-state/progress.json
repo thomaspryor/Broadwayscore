@@ -153,7 +153,16 @@
     "the-boy-at-the-back-of-the-class-west-end-2026/west-end-best-friend--nancy-brie.json",
     "the-boy-at-the-back-of-the-class-west-end-2026/whatsonstage--theo-bosanquet.json",
     "becky-shaw-2026/nytg--kyle-turner.json",
-    "becky-shaw-2026/nysr--frank-scheck.json"
+    "becky-shaw-2026/nysr--frank-scheck.json",
+    "the-authenticator-west-end-2026/plays-international--maryam-philpott.json",
+    "romeo-and-juliet-west-end-2026/plays-international--maryam-philpott.json",
+    "john-proctor-is-the-villain-west-end-2026/london-box-office--stuart-king.json",
+    "giant-2026/variety--daniel-daddario.json",
+    "titus-andronicus-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "mexodus-off-broadway-2026/theatermania--david-gordon.json",
+    "broken-glass-west-end-2026/london-box-office--unknown.json",
+    "bigfoot-off-broadway-2026/theatermania--unknown.json",
+    "oh-mary-west-end-2025/london-box-office--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1537,7 +1546,8 @@
     "jackals-off-broadway-2026/times-uk--anne-treneman.json",
     "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json",
     "becky-shaw-2026/wsj--unknown.json",
-    "becky-shaw-2026/talkinbroadway--unknown.json"
+    "becky-shaw-2026/talkinbroadway--unknown.json",
+    "calf-scramble-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1605,7 +1615,14 @@
       "the-boy-at-the-back-of-the-class-west-end-2026/theatre-weekly--greg-stewart.json",
       "the-boy-at-the-back-of-the-class-west-end-2026/west-end-best-friend--nancy-brie.json",
       "becky-shaw-2026/nytg--kyle-turner.json",
-      "becky-shaw-2026/nysr--frank-scheck.json"
+      "becky-shaw-2026/nysr--frank-scheck.json",
+      "the-authenticator-west-end-2026/plays-international--maryam-philpott.json",
+      "romeo-and-juliet-west-end-2026/plays-international--maryam-philpott.json",
+      "john-proctor-is-the-villain-west-end-2026/london-box-office--stuart-king.json",
+      "mexodus-off-broadway-2026/theatermania--david-gordon.json",
+      "broken-glass-west-end-2026/london-box-office--unknown.json",
+      "bigfoot-off-broadway-2026/theatermania--unknown.json",
+      "oh-mary-west-end-2025/london-box-office--unknown.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1667,7 +1684,9 @@
       "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
       "by-jeeves-2001/nytimes--bruce-weber.json",
       "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json",
-      "a-thousand-clowns-2001/nytimes--bruce-weber.json"
+      "a-thousand-clowns-2001/nytimes--bruce-weber.json",
+      "data/review-texts/giant-2026/variety--daniel-daddario.json",
+      "giant-2026/variety--daniel-daddario.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1693,7 +1712,8 @@
       "our-town-1988/nytimes--unknown.json",
       "barnum-1980/nytimes--frank-rich.json",
       "the-waterfall-2026/front-row-center--brittany-crowell.json",
-      "the-boy-at-the-back-of-the-class-west-end-2026/whatsonstage--theo-bosanquet.json"
+      "the-boy-at-the-back-of-the-class-west-end-2026/whatsonstage--theo-bosanquet.json",
+      "titus-andronicus-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "brightdata": [
       "scandalous-2012/variety--marilyn-stasio.json",
@@ -1778,7 +1798,8 @@
       "data/review-texts/the-merchant-of-venice-1973/backstage--david-sheward.json",
       "data/review-texts/the-other-place-2026/ap--mark-kennedy.json",
       "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
-      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
+      "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -1800,7 +1821,7 @@
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "becky-shaw-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/london-box-office--unknown.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2291,6 +2312,17 @@
       "t": "2026-04-07T03:54:36.959Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-07T04:39:26.426Z",
+      "event": "bb-session",
+      "session": "dfbc764c",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-04-07T04:39:27.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
