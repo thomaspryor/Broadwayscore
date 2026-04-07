@@ -560,8 +560,9 @@ function getBestScore(data, opts = {}) {
   }
 
   // P5.7: aggregatorStars fallback — third-party star ratings from aggregator sites.
-  // Lower priority than LLM/outlet-verified but keeps review in the dataset.
-  if (data.aggregatorStars) {
+  // Only trust if the outlet actually publishes star ratings (KNOWN_STAR_OUTLETS).
+  // Otherwise the aggregator may have invented the rating (e.g., London Theatre).
+  if (data.aggregatorStars && isKnownStarOutlet) {
     const parsed = parseOriginalScore(data.aggregatorStars, data.outletId);
     if (parsed !== null) {
       inc('aggregatorStarsFallback');
