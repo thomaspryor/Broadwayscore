@@ -477,7 +477,12 @@ function writeOutput(stats, results, mismatches) {
   console.log(`\nReport: ${OUTPUT_PATH}`);
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Allow importing as a module (for tests) without running CLI
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { urlPathContainsTitleWords };
