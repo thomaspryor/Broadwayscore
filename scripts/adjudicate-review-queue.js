@@ -21,6 +21,25 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { isLondonMarket } = require('./lib/venue-classification');
 
+// Outlets known to publish their own star ratings — when an aggregator reports
+// a star rating for one of these outlets, it's relaying the outlet's own score.
+// Mirrored from rebuild-helpers.js — if you update one, update both.
+const KNOWN_STAR_OUTLETS = new Set([
+  'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
+  'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
+  'artsdesk', 'thestage', 'whatsonstage',
+  // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
+  // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet
+  'observer', 'metro-uk', 'thearts-desk',
+  'nytimes', 'usatoday', 'new-york-post', 'new-york-daily-news',
+  'chicago-tribune', 'chicago-sun-times', 'washington-post',
+  'sf-chronicle', 'boston-globe', 'la-times', 'newsday', 'amny',
+  'theatrely', 'new-york-stage-review', 'curtainup',
+  'entertainment-weekly', 'time-magazine', 'rolling-stone',
+  'londontheatre1', 'everything-theatre', 'thereviewshub',
+  'shy-strange-manic', 'express-uk', 'theatre-weekly',
+]);
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -75,7 +94,7 @@ Read the review text carefully and determine the correct sentiment bucket and sc
 2. **Aggregator editors read the full review** — their thumbs (Up/Down/Flat) carry real weight.
 3. **BUT: Meh/Flat thumbs were wrong 83% of the time** in our audit. Be skeptical of Flat thumbs.
 4. **PERFORMER PRAISE DOES NOT REDEEM A PAN** — score the overall verdict, not the best element.
-5. **Star ratings override language** — if a critic gave 4/5 stars but sounds measured, trust the stars.
+5. **Star ratings override language** — if a critic gave 4/5 stars but sounds measured, trust the stars. (Only included when the outlet is known to publish its own star ratings.)
 6. **Excerpt-only reviews are harder** — if you only have a short excerpt, acknowledge uncertainty.
 
 ## Output Format
@@ -149,9 +168,14 @@ function buildUserPrompt(review, sourceData, showTitle) {
     parts.push(textSources.join('\n\n'));
   }
 
-  // Star rating context
-  if (sourceData.originalScore) {
+  // Star rating context — only include if the outlet is known to publish its own
+  // star ratings. Aggregators like Show Score invent star ratings for outlets that
+  // don't have them (e.g., "5/5 stars" for London Theatre), which misleads scoring.
+  const outletId = sourceData.outletId || review.outletId;
+  if (sourceData.originalScore && KNOWN_STAR_OUTLETS.has(outletId)) {
     parts.push(`\n### Original Rating\n${sourceData.originalScore}`);
+  } else if (sourceData.originalScore) {
+    parts.push(`\n### Original Rating (UNVERIFIED — this outlet is not known to publish star ratings; the rating may have been assigned by an aggregator, not the critic)\n${sourceData.originalScore}`);
   }
 
   parts.push('\nRespond with ONLY the JSON object.');
