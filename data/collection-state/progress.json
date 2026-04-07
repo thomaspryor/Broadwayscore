@@ -200,7 +200,16 @@
     "purpose/hollywood-reporter--lovia-gyarkye.json",
     "purpose/newyorker--helen-shaw.json",
     "purpose/nytg--joe-dziemianowicz.json",
-    "purpose/nytimes--jesse-green.json"
+    "purpose/nytimes--jesse-green.json",
+    "purpose/variety--aramide-tinubu.json",
+    "romeo-juliet/hollywood-reporter--david-rooney.json",
+    "romeo-juliet/nyt-theater--jonathan-mandell.json",
+    "romeo-juliet/nytg--gillian-russo.json",
+    "romeo-juliet/nytimes--jesse-green.json",
+    "romeo-juliet/variety--trish-deitch.json",
+    "romeo-juliet/vulture--sara-holdren.json",
+    "take-me-out/nytimes--ben-brantley.json",
+    "tammy-faye/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1597,7 +1606,8 @@
     "soul-doctor-2013/northjerseycom--robert-feldberg.json",
     "enron-2010/chicagotribune--shanxi-radio-and.json",
     "fences-2010/wsj--christopher-john-farley.json",
-    "xanadu-2007/nydailynews--joe-dziemianowicz.json"
+    "xanadu-2007/nydailynews--joe-dziemianowicz.json",
+    "purpose/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1690,7 +1700,10 @@
       "fiddler-on-the-roof-2015/show-buzz-nyc--laura-heller.json",
       "enron-2010/financialtimes--brendan-lemon.json",
       "doubt-a-parable/nytg--gillian-russo.json",
-      "purpose/nytg--joe-dziemianowicz.json"
+      "purpose/nytg--joe-dziemianowicz.json",
+      "romeo-juliet/nyt-theater--jonathan-mandell.json",
+      "romeo-juliet/nytg--gillian-russo.json",
+      "tammy-faye/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1767,7 +1780,15 @@
       "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
       "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
       "data/review-texts/purpose/hollywood-reporter--lovia-gyarkye.json",
-      "purpose/hollywood-reporter--lovia-gyarkye.json"
+      "purpose/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/purpose/variety--aramide-tinubu.json",
+      "purpose/variety--aramide-tinubu.json",
+      "data/review-texts/romeo-juliet/hollywood-reporter--david-rooney.json",
+      "romeo-juliet/hollywood-reporter--david-rooney.json",
+      "data/review-texts/romeo-juliet/variety--trish-deitch.json",
+      "romeo-juliet/variety--trish-deitch.json",
+      "data/review-texts/take-me-out/nytimes--ben-brantley.json",
+      "take-me-out/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1804,7 +1825,8 @@
       "harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json",
       "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
       "purpose/newyorker--helen-shaw.json",
-      "purpose/nytimes--jesse-green.json"
+      "purpose/nytimes--jesse-green.json",
+      "romeo-juliet/nytimes--jesse-green.json"
     ],
     "brightdata": [
       "scandalous-2012/variety--marilyn-stasio.json",
@@ -1896,7 +1918,8 @@
       "data/review-texts/spread-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/beetlejuice-2019/thestage--giselle.json",
       "data/review-texts/soul-doctor-2013/northjerseycom--robert-feldberg.json",
-      "data/review-texts/xanadu-2007/nydailynews--joe-dziemianowicz.json"
+      "data/review-texts/xanadu-2007/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/purpose/vulture--jackson-mchenry.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -1920,11 +1943,12 @@
       "how-i-learned-to-drive-2022/parterre-box--david-fox.json",
       "angels-in-america-2018/vulture--jesse-green-pt-2.json",
       "doubt-a-parable/vulture--sara-holdren.json",
-      "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json"
+      "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+      "romeo-juliet/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "purpose/nytimes--jesse-green.json",
+  "lastProcessed": "tammy-faye/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2531,6 +2555,50 @@
       "t": "2026-04-07T05:08:00.395Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-07T05:08:51.993Z",
+      "event": "bb-session",
+      "session": "dc2d6842",
+      "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/"
+    },
+    {
+      "t": "2026-04-07T05:08:53.474Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T05:12:08.532Z",
+      "event": "bb-session",
+      "session": "2b04c931",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review"
+    },
+    {
+      "t": "2026-04-07T05:12:09.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-07T05:13:08.746Z",
+      "event": "bb-session",
+      "session": "432c9725",
+      "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel"
+    },
+    {
+      "t": "2026-04-07T05:13:10.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T05:13:35.823Z",
+      "event": "bb-session",
+      "session": "2d3f8bc7",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c04e3d9123cf93ba15751c0"
+    },
+    {
+      "t": "2026-04-07T05:13:37.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
