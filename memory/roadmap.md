@@ -109,6 +109,12 @@
 
 ## Recently Completed
 
+### Closing Soon Shelf Fix (2026-04-06)
+- **Shelf hidden because only 1 Broadway show had closingDate within 60 days.** Expanded window to 120 days — 6 shows now qualify (Every Brilliant Thing, Chess, Ragtime, Giant, Oh Mary!, Moulin Rouge). Verified live on production.
+
+### Score Display Consistency Fix (2026-04-06)
+- **10 score display sites bypassed `hasEnoughReviews()` gate** — Becky Shaw showed 84 in shelf but TBD in browse listing. Fixed all: 6 shelf filters in page.tsx, FeaturedRowServer, MiniShowCard, RelatedShows (ScoreBadge props), SortableLotteryRushTables (3 tables). Feedback memory saved to prevent recurrence.
+
 ### Image Pipeline Hardening (2026-03-26)
 - **Hash-based placeholder detection** — 6 known "Coming Soon" hash variants added. Downloads rejected, `--missing` filter re-queues affected shows. CI now errors on open/previews shows with placeholder disk files via `validatePlaceholderImageHashes()` in validate-data.js.
 - **276 orphan dirs + 48 placeholder files deleted** — 40.6 MB freed. Stale dirs from old ID formats (before `-off-broadway-`/`-west-end-` suffixes standardized).
