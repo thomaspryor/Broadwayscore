@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T11:53:46.392Z",
+  "timestamp": "2026-04-07T12:23:22.451Z",
   "stats": {
-    "totalReviews": 34601,
-    "alreadyFlagged": 13176,
+    "totalReviews": 34600,
+    "alreadyFlagged": 13181,
     "dateGuardCatches": 55,
     "directorMismatch": 1007,
     "tvFilmSignals": 3475,
-    "londonSignals": 1126,
+    "londonSignals": 1127,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5636
+    "noPublishDate": 5629
   },
   "findings": [
     {
@@ -64903,6 +64903,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 43,
+      "publishDate": "2026-02-05",
+      "url": "https://inews.co.uk/culture/arts/tom-stoppard-arcadia-left-me-cold-4199216",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
