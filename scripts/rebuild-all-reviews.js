@@ -1829,7 +1829,16 @@ showDirs.forEach(showId => {
         if (syndConfig && syndConfig.secondary.includes(outletSynd)) {
           const primaryPrefix = `${syndConfig.primary}--`;
           const criticSlug = criticSynd.replace(/\s+/g, '-');
-          const hasPrimary = allJsonFiles.some(f => f.startsWith(primaryPrefix) && f.includes(criticSlug));
+          // Only skip secondary if the primary file is unflagged (not wrongProduction/wrongShow).
+          // A flagged primary shouldn't block a valid secondary — e.g., OB theatermania flagged
+          // but Broadway whatsonstage is the real review for this production.
+          const hasPrimary = allJsonFiles.some(f => {
+            if (!f.startsWith(primaryPrefix) || !f.includes(criticSlug)) return false;
+            try {
+              const pData = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+              return !pData.wrongProduction && !pData.wrongShow;
+            } catch { return false; }
+          });
           if (hasPrimary) {
             stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
             return;
