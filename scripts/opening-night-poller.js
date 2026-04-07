@@ -35,6 +35,7 @@ const {
   extractDTLIReviews,
   extractShowScoreReviews,
   extractBWWRoundupReviews,
+  validateBWWRoundupYear,
   createReviewFile,
   loadShowData,
   gatherReviewsForShow,
@@ -258,7 +259,9 @@ async function runAggregators(show) {
       const bwwOptions = BWW_ROUNDUP_URL ? { overrideUrl: BWW_ROUNDUP_URL } : {};
       const bww = await searchBWWRoundup(show, year, bwwOptions);
       if (bww && bww.html) {
-        const reviews = extractBWWRoundupReviews(bww.html, show.id, bww.url, show.title);
+        let reviews = extractBWWRoundupReviews(bww.html, show.id, bww.url, show.title);
+        // Validate roundup year — reject if from older production (e.g., OB roundup for Broadway show)
+        reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate, show.id, bww.url);
         console.log(`  BWW RR: ${reviews.length} reviews found`);
         results.push(...reviews);
       } else {

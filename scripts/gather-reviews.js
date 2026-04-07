@@ -3952,6 +3952,8 @@ module.exports = {
   extractDTLIReviews,
   extractShowScoreReviews,
   extractBWWRoundupReviews,
+  validateBWWRoundupYear,
+  validateBWWRoundupGeography,
   createReviewFile,
   gatherReviewsForShow,
   loadShowData,
