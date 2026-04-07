@@ -36,7 +36,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       description,
       url: canonicalUrl,
       type: 'website',
-      images: [{ url: theater.images?.exterior ? getWikimediaThumbUrl(theater.images.exterior, 1200) : `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: `${theater.name} - Broadway Theater` }],
+      images: [{ url: `${BASE_URL}${getTheaterImageUrl(params.slug)}`, width: 1200, height: 630, alt: `${theater.name} - Broadway Theater` }],
     },
     twitter: {
       card: 'summary',
@@ -50,13 +50,9 @@ function getGoogleMapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-/** Convert Wikimedia original URL to width-based thumb URL */
-function getWikimediaThumbUrl(originalUrl: string, width: number): string {
-  if (!originalUrl.includes('/commons/') || originalUrl.includes('/thumb/')) return originalUrl;
-  const parts = originalUrl.split('/commons/');
-  const path = parts[1];
-  const filename = path.split('/').pop();
-  return `${parts[0]}/commons/thumb/${path}/${width}px-${filename}`;
+/** Local theater image path (Wikimedia hotlinking deprecated April 2026) */
+function getTheaterImageUrl(slug: string): string {
+  return `/images/theaters/${slug}.jpg`;
 }
 
 export default function TheaterPage({ params }: { params: { slug: string } }) {
@@ -156,32 +152,23 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
         {/* Header */}
         <div className="mb-6">
           {/* Hero image */}
-          {theater.images?.exterior && (
-            <div className="mb-4">
-              <div className="relative rounded-xl overflow-hidden" style={{ maxHeight: '240px' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={getWikimediaThumbUrl(theater.images.exterior, 800)}
-                  alt={`${theater.name} exterior`}
-                  className="w-full h-full object-cover"
-                  style={{ maxHeight: '240px' }}
-                  loading="eager"
-                />
-              </div>
-              {theater.images.attribution && (
-                <p className="text-[10px] text-gray-600 mt-1 text-right">Photo: {theater.images.attribution}</p>
-              )}
+          <div className="mb-4">
+            <div className="relative rounded-xl overflow-hidden" style={{ maxHeight: '240px' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={getTheaterImageUrl(params.slug)}
+                alt={`${theater.name} exterior`}
+                className="w-full h-full object-cover"
+                style={{ maxHeight: '240px' }}
+                loading="eager"
+              />
             </div>
-          )}
+            {theater.images?.attribution && (
+              <p className="text-[10px] text-gray-600 mt-1 text-right">Photo: {theater.images.attribution}</p>
+            )}
+          </div>
 
           <div className="flex items-center gap-3 mb-3">
-            {!theater.images?.exterior && (
-              <div className="w-12 h-12 rounded-lg bg-surface-overlay flex items-center justify-center flex-shrink-0">
-                <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-            )}
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{theater.name}</h1>
               {theater.formerNames && theater.formerNames.length > 0 && (
