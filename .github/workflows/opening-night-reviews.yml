@@ -171,7 +171,8 @@ jobs:
             -f shows="$GATHER_SHOWS" \
             -f parallel_jobs=1 \
             -f max_tier=3 \
-            -f aggregators_only=true
+            -f aggregators_only=true \
+            -f validate_urls=true
           echo "Gather reviews triggered for: $GATHER_SHOWS"
 
       - name: Trigger Reddit sentiment for recently opened shows

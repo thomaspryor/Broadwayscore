@@ -23,6 +23,11 @@ on:
         required: false
         type: boolean
         default: false
+      validate_urls:
+        description: 'Content-check roundup-sourced URLs against target show (costs SB credits, use for opening nights)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -224,8 +229,13 @@ jobs:
             AGG_ONLY_FLAG="--aggregators-only"
             echo "ℹ️ Running in aggregators-only mode (SERP skipped)"
           fi
+          VALIDATE_FLAG=""
+          if [ "${{ inputs.validate_urls }}" = "true" ]; then
+            VALIDATE_FLAG="--validate-urls"
+            echo "ℹ️ URL content validation enabled"
+          fi
           if [ -f scripts/gather-reviews.js ]; then
-            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG
+            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG $VALIDATE_FLAG
           else
             echo "Note: scripts/gather-reviews.js not found"
             echo "Review data will need to be gathered manually"

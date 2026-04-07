@@ -374,7 +374,7 @@ jobs:
 
             if [ "$SKIP_GATHER" = "false" ]; then
               echo "Shows not ready for broadcast — triggering gather-reviews for: $PENDING"
-              gh workflow run gather-reviews.yml -f shows="$PENDING" || echo "Gather dispatch failed"
+              gh workflow run gather-reviews.yml -f shows="$PENDING" -f validate_urls=true || echo "Gather dispatch failed"
             fi
           fi
 

@@ -101,6 +101,16 @@ assert(titlesMatch('The Lion King', 'Lion King (The)'),
 
 console.log('--- titlesMatch (negative cases) ---');
 
+// Bug 8: Sequel/Part mismatches (A Doll's House vs Part 2 incident, 2026-04-07)
+assert(!titlesMatch("A Doll's House", "A Doll's House, Part 2"),
+  "A Doll's House does NOT match Part 2 (different play)");
+assert(!titlesMatch('Henry IV Part 1', 'Henry IV Part 2'),
+  'Henry IV Part 1 does NOT match Part 2');
+assert(!titlesMatch('Henry IV', 'Henry IV Part 1'),
+  'Henry IV does NOT match Henry IV Part 1');
+assert(titlesMatch('Henry IV: Part 1', 'Henry IV Part 1'),
+  'Same part with/without colon DOES match');
+
 assert(!titlesMatch('Wicked', 'Wicked Lady'),
   'Wicked does NOT match Wicked Lady (70% threshold)');
 assert(!titlesMatch('Bug', 'Debugging'),
