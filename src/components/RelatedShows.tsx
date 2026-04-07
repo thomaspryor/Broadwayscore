@@ -38,7 +38,14 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
                 }
               />
               <div className="absolute bottom-1.5 right-1.5">
-                <ScoreBadge score={show.criticScore?.score} size="sm" showCrown />
+                <ScoreBadge
+                  score={show.criticScore?.score}
+                  size="sm"
+                  showCrown
+                  reviewCount={show.criticScore?.reviewCount}
+                  category={show.category}
+                  tier1And2Count={show.criticScore ? (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0) : undefined}
+                />
               </div>
             </div>
             <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">

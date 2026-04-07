@@ -235,7 +235,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaDescription: 'These Broadway shows are closing soon — see exact closing dates and grab tickets before they\'re gone. Updated weekly with the latest announcements.',
     intro: 'Time is running out to see these Broadway productions! Whether they\'re limited engagements or shows that have announced their closing dates, these productions will be gone soon. If any of these have been on your must-see list, now is the time to act. Once a show closes on Broadway, there\'s no guarantee it will return. Don\'t let these slip away - book your tickets before it\'s too late.',
     filter: (show) => {
-      return show.status === 'open' && isClosingWithinDays(show, 60);
+      return show.status === 'open' && isClosingWithinDays(show, 120);
     },
     sort: 'closing-date',
     sectionGroup: (show) => {
