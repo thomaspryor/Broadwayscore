@@ -62,6 +62,12 @@ if (!OUTLET_EXTRACTORS[outlet]) {
   process.exit(1);
 }
 
+if (OUTLET_EXTRACTORS[outlet] && OUTLET_EXTRACTORS[outlet].name === 'noScoreExtractor') {
+  console.error(`Outlet "${outlet}" is marked noScoreExtractor — this outlet publishes text-only reviews with no star ratings.`);
+  console.error('Re-collection would fetch pages but never find ratings. Exiting to prevent wasted scraping.');
+  process.exit(1);
+}
+
 // Cookie domain map from shared cookie-loader (full map, not just UK outlets)
 const { COOKIE_DOMAIN_MAP, loadCookiesForDomain: _loadCookiesForDomain } = require('./lib/cookie-loader');
 

@@ -80,7 +80,7 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // Score extraction for original scores
-const { extractScore, extractDesignation, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
+const { extractScore, extractDesignation, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
@@ -4219,7 +4219,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     } else if (!hasUnverifiedSSScore) {
       // Both failed and no existing score — mark as pending for retry
       // Don't mark pending if we were trying to replace an SS score (keep SS as fallback)
-      data.scoreExtractionPending = true;
+      // Don't mark pending for noScoreExtractor outlets (text-only, no star ratings to find)
+      const outletExtractor = OUTLET_EXTRACTORS[(data.outletId || review.outletId || '').toLowerCase()];
+      if (!outletExtractor || outletExtractor.name !== 'noScoreExtractor') {
+        data.scoreExtractionPending = true;
+      }
     }
   }
 
