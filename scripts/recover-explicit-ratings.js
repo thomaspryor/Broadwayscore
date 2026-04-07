@@ -574,16 +574,14 @@ async function phase3ScrapeURLs(reviews) {
 
       let html = null;
 
-      // For paywall/blocked sites, try archive.org first
-      if (isArchiveFirstSite(url)) {
+      // Try direct HTTP with subscriber cookies first (free, instant)
+      html = await httpGetWithCookies(url);
+
+      // For paywall/blocked sites without cookies, try archive.org
+      if (!html && isArchiveFirstSite(url)) {
         console.log(`    → Trying archive.org (paywall site)...`);
         html = await fetchFromArchiveOrg(url);
         if (html) console.log(`    → Archive.org: ${html.length} chars`);
-      }
-
-      // Try direct HTTP with subscriber cookies (free, no API credits)
-      if (!html) {
-        html = await httpGetWithCookies(url);
       }
 
       // Fall back to scraper for non-paywall or if archive/cookies failed
