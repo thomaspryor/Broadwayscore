@@ -58,7 +58,7 @@ function stripSuffix(s) {
     // Only strip "the Musical/Play/etc." when preceded by whitespace — not bare "play" at end
     // e.g. "SIX the Musical" → "SIX" but "Sad Gay AIDS Play" stays unchanged
     .replace(/\s+the\s+(musical|play|show|revue|opera|concert|experience)$/i, '')
-    .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
+    .replace(/\s*[-–—:]?\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii|\d+|[ivx]+)?$/i, '')
     // Only strip "at the [venue]" with known venue names
     .replace(AT_THE_PATTERN, '')
     .replace(/\s+live$/i, '')
@@ -76,6 +76,15 @@ function stripPrefix(s) {
 }
 
 /**
+ * Detect if a normalized title ends with a part/sequel indicator (e.g. "part 2", "part ii").
+ * Returns the part indicator string or null.
+ */
+function hasPartSuffix(normalized) {
+  const m = normalized.match(/\bparts?\s*(\d+|[ivx]+|one|two|three|four|five)$/i);
+  return m ? m[0] : null;
+}
+
+/**
  * Check if two titles match — exact first, then strip suffixes/prefixes,
  * then allow prefix/suffix substring match at ≥70% length.
  */
@@ -84,16 +93,35 @@ function titlesMatch(a, b) {
   const nb = normalizeTitle(b);
   if (na === nb) return true;
 
-  if (stripSuffix(na) === stripSuffix(nb)) return true;
+  // Strip suffixes/prefixes, but guard against sequel mismatches:
+  // "A Doll's House" vs "A Doll's House Part 2" must NOT match even after stripping
+  const sa = stripSuffix(na), sb = stripSuffix(nb);
+  if (sa === sb) {
+    // Only match if both had the same type of part suffix (or neither had one)
+    const partA = hasPartSuffix(na), partB = hasPartSuffix(nb);
+    if (partA === partB || (!partA && !partB)) return true;
+    // One has "Part X" and the other doesn't — different works
+    return false;
+  }
 
-  if (stripPrefix(stripSuffix(na)) === stripPrefix(stripSuffix(nb))) return true;
+  const spa = stripPrefix(sa), spb = stripPrefix(sb);
+  if (spa === spb) {
+    const partA = hasPartSuffix(na), partB = hasPartSuffix(nb);
+    if (partA === partB || (!partA && !partB)) return true;
+    return false;
+  }
 
   // Allow contains match if the shorter is ≥70% of the longer and ≥4 chars
-  const sna = stripPrefix(stripSuffix(na));
-  const snb = stripPrefix(stripSuffix(nb));
-  const [shorter, longer] = sna.length <= snb.length ? [sna, snb] : [snb, sna];
+  const [shorter, longer] = spa.length <= spb.length ? [spa, spb] : [spb, spa];
   if (shorter.length >= 4 && shorter.length >= longer.length * 0.7) {
-    if (longer.startsWith(shorter) || longer.endsWith(shorter)) return true;
+    if (longer.startsWith(shorter) || longer.endsWith(shorter)) {
+      // Reject if the remainder is a sequel/part indicator
+      const remainder = longer.startsWith(shorter)
+        ? longer.slice(shorter.length).trim()
+        : longer.slice(0, longer.length - shorter.length).trim();
+      if (/^parts?\s*(\d+|[ivx]+|one|two|three|four|five)$/i.test(remainder)) return false;
+      return true;
+    }
   }
   return false;
 }
@@ -111,7 +139,7 @@ function cleanSearchTitle(title) {
     .replace(/\s*\([^)]{5,}\)\s*$/, '')      // Strip trailing parenthetical (venue qualifiers)
     .replace(/\s*[-–—:]\s*(the\s+)?(musical|play|show|revue)$/i, '')
     .replace(/\s+the\s+(musical|play|show|revue)$/i, '')
-    .replace(/\s*[-–—:]\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii)?$/i, '')
+    .replace(/\s*[-–—:]?\s*(both\s+)?parts?\s*(one\s+and\s+two|i\s+and\s+ii|\d+|[ivx]+)?$/i, '')
     .replace(AT_THE_PATTERN, '')
     .replace(/\s+live$/i, '')
     .replace(new RegExp(`\\s*[-–—]\\s*(?:${VENUE_NAMES.join('|')})$`, 'i'), '')
