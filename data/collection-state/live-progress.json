@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-07T05:29:46.663Z",
-  "processed": 236,
+  "updatedAt": "2026-04-07T05:32:08.371Z",
+  "processed": 246,
   "failed": 1400,
-  "successRate": "14.4%",
+  "successRate": "14.9%",
   "tierBreakdown": {
-    "playwright": 106,
+    "playwright": 112,
     "amp": 20,
-    "browserbase": 77,
+    "browserbase": 83,
     "directCookies": 0,
     "scrapingbee": 36,
     "brightdata": 22,
     "archiveToday": 70,
-    "archive": 26
+    "archive": 27
   },
-  "browserbaseSessions": 24,
+  "browserbaseSessions": 27,
   "recentActivity": [
-    {
-      "t": "2026-04-07T05:13:35.823Z",
-      "event": "bb-session",
-      "session": "2d3f8bc7",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c04e3d9123cf93ba15751c0"
-    },
-    {
-      "t": "2026-04-07T05:13:37.055Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-07T05:14:26.087Z",
-      "event": "bb-session",
-      "session": "af4c3b19",
-      "url": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-"
-    },
-    {
-      "t": "2026-04-07T05:14:27.397Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-07T05:15:36.757Z",
-      "event": "bb-session",
-      "session": "9e1ace76",
-      "url": "https://deadline.com/2024/03/doubt-broadway-review-1235847662/"
-    },
-    {
-      "t": "2026-04-07T05:15:38.086Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-04-07T05:16:11.501Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-04-07T05:29:17.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:29:52.529Z",
+      "event": "bb-session",
+      "session": "5391fc7a",
+      "url": "https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shine"
+    },
+    {
+      "t": "2026-04-07T05:29:53.922Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-07T05:30:12.085Z",
+      "event": "bb-session",
+      "session": "30f9e4ec",
+      "url": "https://observer.com/2024/10/review-juliet-is-fire-romeo-got-mad-rizz-in-this-sh"
+    },
+    {
+      "t": "2026-04-07T05:30:13.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-07T05:31:05.095Z",
+      "event": "bb-session",
+      "session": "02ff6f6b",
+      "url": "https://deadline.com/2024/11/tammy-faye-broadway-review-1236174460/"
+    },
+    {
+      "t": "2026-04-07T05:31:06.443Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }

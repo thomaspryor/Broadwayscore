@@ -235,7 +235,17 @@
     "romeo-juliet/broadwaynews--brittani-samuel.json",
     "romeo-juliet/deadline--greg-evans.json",
     "romeo-juliet/ew--emlyn-travis.json",
-    "romeo-juliet/guardian--adrian-horton.json"
+    "romeo-juliet/guardian--adrian-horton.json",
+    "romeo-juliet/nypost--johnny-oleksinski.json",
+    "romeo-juliet/observer--david-cote.json",
+    "romeo-juliet/timeout--adam-feldman.json",
+    "tammy-faye/broadwaynews--brittani-samuel.json",
+    "tammy-faye/deadline--greg-evans.json",
+    "tammy-faye/ew--emlyn-travis.json",
+    "tammy-faye/new-york-sun--elysa-gardner.json",
+    "tammy-faye/theatermania--zachary-stewart.json",
+    "tammy-faye/thewrap--robert-hofler.json",
+    "tammy-faye/timeout--adam-feldman.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1747,7 +1757,13 @@
       "purpose/timeout--adam-feldman.json",
       "romeo-juliet/broadwaynews--brittani-samuel.json",
       "romeo-juliet/ew--emlyn-travis.json",
-      "romeo-juliet/guardian--adrian-horton.json"
+      "romeo-juliet/guardian--adrian-horton.json",
+      "romeo-juliet/timeout--adam-feldman.json",
+      "tammy-faye/broadwaynews--brittani-samuel.json",
+      "tammy-faye/ew--emlyn-travis.json",
+      "tammy-faye/new-york-sun--elysa-gardner.json",
+      "tammy-faye/theatermania--zachary-stewart.json",
+      "tammy-faye/timeout--adam-feldman.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1848,7 +1864,13 @@
       "data/review-texts/purpose/nypost--johnny-oleksinski.json",
       "purpose/nypost--johnny-oleksinski.json",
       "data/review-texts/romeo-juliet/deadline--greg-evans.json",
-      "romeo-juliet/deadline--greg-evans.json"
+      "romeo-juliet/deadline--greg-evans.json",
+      "data/review-texts/romeo-juliet/nypost--johnny-oleksinski.json",
+      "romeo-juliet/nypost--johnny-oleksinski.json",
+      "data/review-texts/romeo-juliet/observer--david-cote.json",
+      "romeo-juliet/observer--david-cote.json",
+      "data/review-texts/tammy-faye/deadline--greg-evans.json",
+      "tammy-faye/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2011,11 +2033,12 @@
       "romeo-juliet/vulture--sara-holdren.json",
       "tammy-faye/vulture--sara-holdren.json",
       "doubt-a-parable/nydailynews--chris-jones.json",
-      "purpose/nydailynews--chris-jones.json"
+      "purpose/nydailynews--chris-jones.json",
+      "tammy-faye/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "romeo-juliet/guardian--adrian-horton.json",
+  "lastProcessed": "tammy-faye/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2763,6 +2786,39 @@
     },
     {
       "t": "2026-04-07T05:29:17.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:29:52.529Z",
+      "event": "bb-session",
+      "session": "5391fc7a",
+      "url": "https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shine"
+    },
+    {
+      "t": "2026-04-07T05:29:53.922Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-07T05:30:12.085Z",
+      "event": "bb-session",
+      "session": "30f9e4ec",
+      "url": "https://observer.com/2024/10/review-juliet-is-fire-romeo-got-mad-rizz-in-this-sh"
+    },
+    {
+      "t": "2026-04-07T05:30:13.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-07T05:31:05.095Z",
+      "event": "bb-session",
+      "session": "02ff6f6b",
+      "url": "https://deadline.com/2024/11/tammy-faye-broadway-review-1236174460/"
+    },
+    {
+      "t": "2026-04-07T05:31:06.443Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
