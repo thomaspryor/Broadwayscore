@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T17:40:53.046Z",
+  "timestamp": "2026-04-07T17:56:06.745Z",
   "stats": {
-    "totalReviews": 34609,
-    "alreadyFlagged": 13203,
+    "totalReviews": 34594,
+    "alreadyFlagged": 13206,
     "dateGuardCatches": 56,
-    "directorMismatch": 1005,
-    "tvFilmSignals": 3475,
-    "londonSignals": 1127,
+    "directorMismatch": 992,
+    "tvFilmSignals": 3474,
+    "londonSignals": 1125,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5626
+    "noPublishDate": 5628
   },
   "findings": [
     {
@@ -3447,7 +3447,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 78,
       "publishDate": "2025-11-21",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15314889/amp/Breaking-Dad-Bryan-Cranston-wringer-tale-family-despair-PATRICK-MARMION-reviews.html",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -25580,236 +25580,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "artsdesk--gary-naylor.json",
-      "score": 78,
-      "publishDate": "2025-12-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "british-theatre--howard-loxton.json",
-      "score": 83,
-      "publishDate": "2025-12-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "daily-mail--mark-cook.json",
-      "score": 72,
-      "publishDate": "2025-12-21",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 82,
-      "publishDate": "2025-12-19",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "financialtimes--tim-bano.json",
-      "score": 82,
-      "publishDate": "2025-12-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "guardian--arifa-akbar.json",
-      "score": 88,
-      "publishDate": "2025-12-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 82,
-      "publishDate": "2025-12-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 92,
-      "publishDate": "2025-12-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "observer--susannah-clapp.json",
-      "score": 92,
-      "publishDate": "2025-12-19",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 82,
-      "publishDate": "2025-12-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 85,
-      "publishDate": "2025-12-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "the-jewish-chronicle--john-nathan.json",
-      "score": 88,
-      "publishDate": "2026-01-06",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "theatrecat--libby-purves.json",
-      "score": 92,
-      "publishDate": "2025-12-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 95,
-      "publishDate": "2025-12-11",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 92,
-      "publishDate": "2025-12-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
       "showId": "is-he-dead-2007",
       "file": "variety--david-rooney.json",
       "score": 78,
@@ -32150,16 +31920,49 @@
     },
     {
       "showId": "master-class-1995",
-      "file": "broadwayworld--michael-dale.json",
-      "score": 79,
+      "file": "ny1--david-cote.json",
+      "score": 74,
       "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Master-Class",
+      "url": "http://www.ny1.com/content/ny1_living/theater_reviews/142454/time-out-theater-review---master-class-",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"stephen wadsworth\" from master-class-2011"
         },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "master-class-1995",
+      "file": "philadelphia-inquirer--howard-shapiro.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "http://www.philly.com/philly/columnists/howard_shapiro/125108339.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen wadsworth\" from master-class-2011"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "master-class-2011",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Master-Class",
+      "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -37074,7 +36877,7 @@
     {
       "showId": "oh-mary-off-broadway-2024",
       "file": "vulture--jackson-mchenry.json",
-      "score": 82,
+      "score": 86,
       "publishDate": "January 12, 2026",
       "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
       "findings": [
@@ -48773,7 +48576,7 @@
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
       "file": "nysr--roma-torre.json",
-      "score": 85,
+      "score": 86,
       "publishDate": "November 17, 2025",
       "url": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
       "findings": [
@@ -54084,7 +53887,7 @@
       "file": "daily-mail--michael-coveney.json",
       "score": 86,
       "publishDate": "1999-10-22",
-      "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -62441,6 +62244,7 @@
     {
       "showId": "wicked-2003",
       "file": "guardian--peter-bradshaw.json",
+      "score": 75,
       "publishDate": "2023-09-09",
       "url": "https://www.theguardian.com/stage/2023/sep/09/wicked-review-sydney-lyric-theatre",
       "findings": [
@@ -75428,7 +75232,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 60,
       "publishDate": "2022-01-21",
-      "url": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75790,6 +75594,7 @@
     {
       "showId": "next-to-normal-2009",
       "file": "theater-life--eric-march.json",
+      "score": 86,
       "publishDate": "2008-05-05T01:01:00",
       "url": "https://theaterlife.com/next-to-normal/",
       "findings": [
