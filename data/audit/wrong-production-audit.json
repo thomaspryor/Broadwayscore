@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T20:17:45.016Z",
+  "timestamp": "2026-04-07T20:25:26.509Z",
   "stats": {
     "totalReviews": 34593,
-    "alreadyFlagged": 13256,
+    "alreadyFlagged": 13258,
     "dateGuardCatches": 60,
     "directorMismatch": 985,
     "tvFilmSignals": 3469,
-    "londonSignals": 1124,
-    "offBroadwaySignals": 981,
+    "londonSignals": 1123,
+    "offBroadwaySignals": 980,
     "yearMismatch": 74,
-    "noPublishDate": 5400
+    "noPublishDate": 5399
   },
   "findings": [
     {
@@ -66155,34 +66155,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "file": "vulture--sara-holdren.json",
-      "score": 73,
-      "publishDate": "2026-04-07",
-      "url": "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html?utm_campaign=vulture&utm_medium=s1&utm_source=tw#/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"perelman\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "file": "whatsonstage--zachary-stewart.json",
-      "score": 82,
-      "publishDate": "2026-04-07",
-      "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
