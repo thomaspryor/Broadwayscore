@@ -136,7 +136,17 @@
     "walking-with-ghosts-2022/dtli--ran-xia.json",
     "cost-of-living-2022/newyorker--vinson-cunningham.json",
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
-    "the-kite-runner-2022/thewrap--robert-hofler.json"
+    "the-kite-runner-2022/thewrap--robert-hofler.json",
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "girl-from-the-north-country-2022/theater-news-online--david-cote.json",
+    "girl-from-the-north-country-2022/times-uk--ann-treneman.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
+    "beetlejuice-2022/pittsburgh-city-paper--jordana-rosenfeld.json",
+    "take-me-out-2022/talkinbroadway--matthew-murray.json",
+    "take-me-out-2022/usatoday--charles-isherwood.json",
+    "take-me-out-2022/theatermania--jesse-green.json",
+    "slave-play-2021/theater-news-online--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -216,7 +226,10 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/bigfoot-off-broadway-2026/timeout--adam-feldman.json"
+      "data/review-texts/bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+      "data/review-texts/take-me-out-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/take-me-out-2022/usatoday--charles-isherwood.json",
+      "data/review-texts/take-me-out-2022/theatermania--jesse-green.json"
     ],
     "archive": [
       "cats-the-jellicle-ball-2026/vulture--unknown.json",
@@ -231,7 +244,7 @@
     ]
   },
   "startTime": "2026-04-07T18:14:51.073Z",
-  "lastProcessed": "the-kite-runner-2022/thewrap--robert-hofler.json",
+  "lastProcessed": "slave-play-2021/theater-news-online--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-07T19:15:53.677Z",
@@ -243,6 +256,17 @@
       "t": "2026-04-07T19:15:54.888Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T19:39:18.340Z",
+      "event": "bb-session",
+      "session": "76621c37",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2022/04/21/take-me-out-broa"
+    },
+    {
+      "t": "2026-04-07T19:39:19.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
