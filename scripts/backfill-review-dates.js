@@ -47,6 +47,7 @@ const SKIP_DOMAINS = new Set([
   'cititour.com',        // 216 undated, 0% date rate, custom CMS with no metadata
   'nytheatre.com',       // 11 undated, 0% date rate, defunct
   'stagedoor.com',       // aggregator excerpts, not original articles
+  'lightingandsoundamerica.com', // print magazine, 1 undated with URL, HTTPS redirect loop
 ]);
 
 // --- Date extraction from HTML (copied from collect-review-texts.js) ---
@@ -116,6 +117,25 @@ function extractPublishDateFromHtml(html) {
   const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
   if (timeMatch && timeMatch[1]) {
     const normalized = normalizeExtractedDate(timeMatch[1]);
+    if (normalized) return normalized;
+  }
+
+  // 4. Outlet-specific extractors
+  const outletDate = extractDateFromOutletHtml(html);
+  if (outletDate) return outletDate;
+
+  return null;
+}
+
+/**
+ * Outlet-specific date extractors for sites without standard metadata.
+ * Each extractor targets a known HTML pattern for a specific domain.
+ */
+function extractDateFromOutletHtml(html) {
+  // The Stage (thestage.co.uk) — date in: <span class="aos-ArticleDate...">Dec 1, 2025</span>
+  const stageMatch = html.match(/aos-ArticleDate[^>]*>((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s*\d{4})/i);
+  if (stageMatch && stageMatch[1]) {
+    const normalized = normalizeExtractedDate(stageMatch[1]);
     if (normalized) return normalized;
   }
 
