@@ -1,15 +1,15 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-31T06:18:21.179Z",
-    "totalScanned": 27334,
+    "generatedAt": "2026-04-07T06:21:31.344Z",
+    "totalScanned": 25889,
     "flagged": 52,
     "byType": {
       "preview_article": 32,
       "garbage_scrape": 4,
-      "awards_coverage": 5,
-      "news_article": 7,
-      "obituary": 1,
-      "press_release": 2,
+      "awards_coverage": 4,
+      "news_article": 8,
+      "obituary": 2,
+      "press_release": 1,
       "interview": 1
     }
   },
@@ -20,7 +20,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating that the page cannot be found, not a review of a",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating that the page could not be found, not a review o",
       "outlet": "TheaterMania",
       "critic": "Andy Propst",
       "score": 77
@@ -53,7 +53,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text primarily provides background information about George Takei's personal experie",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text primarily describes the background of George Takei and the premise of the music",
       "outlet": "womens-voices-for-change",
       "critic": "Alexandra MacAaron",
       "score": 77
@@ -97,7 +97,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of the play",
       "outlet": "TheaterMania",
       "critic": "Andy Propst",
       "score": 81
@@ -130,7 +130,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting there is no review present.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of the play",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 76
@@ -152,7 +152,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, so it cannot be a review.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, so it's not a review of the play.",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 81
@@ -163,7 +163,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting there is no review present.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page cannot be found, suggesting it is an error message rath",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 76
@@ -196,21 +196,10 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW: The text indicates that the page was not found, suggesting it's an error message rather ",
+      "evidence": "First Look at | LLM: NOT_REVIEW: The text indicates that the page was not found, and the content provided is a search pro",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 79
-    },
-    {
-      "showId": "doubt-2024",
-      "file": "theatermania--andy-propst.json",
-      "type": "awards_coverage",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "Tony nominations | LLM: NOT_REVIEW. This text is an interview with the playwright and an actor from the play, not a critical",
-      "outlet": "TheaterMania",
-      "critic": "Andy Propst",
-      "score": 82
     },
     {
       "showId": "eclipsed-2016",
@@ -218,7 +207,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The text provides a brief description of the play and the playwright but doesn't offer a",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The text provides a brief description of the play and its author but doesn't offer any c",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 93
@@ -229,7 +218,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page or review could not be found.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of the play",
       "outlet": "TheaterMania",
       "critic": "David Rooney",
       "score": 83
@@ -244,6 +233,17 @@
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 61
+    },
+    {
+      "showId": "good-night-oscar-2023",
+      "file": "financialtimes--tim-auld.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "died aged 65 | LLM: NOT_REVIEW. The text provides background information about the play's origins, subject matter, and p",
+      "outlet": "Financial Times",
+      "critic": "Tim Auld",
+      "score": 73
     },
     {
       "showId": "gutenberg-2023",
@@ -262,7 +262,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW: The text indicates that the page was not found, so it cannot be a review.",
+      "evidence": "First Look at | LLM: NOT_REVIEW: The text is an error message indicating the page or review could not be found, not an ac",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 82
@@ -317,10 +317,21 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting there is no review present.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 61
+    },
+    {
+      "showId": "it-shoulda-been-you-2015",
+      "file": "hollywood-reporter--david-rooney.json",
+      "type": "news_article",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "final performance | LLM: NOT_REVIEW. This text is a news article announcing the closing of the show and includes quotes from ",
+      "outlet": "The Hollywood Reporter",
+      "critic": "David Rooney",
+      "score": 81
     },
     {
       "showId": "la-bete-2010",
@@ -350,7 +361,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Award winners | LLM: NOT_REVIEW. The text primarily discusses the playwright, director, and the play's history, rather th",
+      "evidence": "Award winners | LLM: NOT_REVIEW. The text primarily discusses the playwright, director, and history of the play rather th",
       "outlet": "BroadwayWorld",
       "critic": "Michael Dale",
       "score": 75
@@ -383,7 +394,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "final performance | LLM: NOT_REVIEW. While it mentions \"New York, New York,\" it primarily discusses \"Chicago\" and the works o",
+      "evidence": "final performance | LLM: NOT_REVIEW. The text primarily discusses the history and context of Kander and Ebb's musicals, compa",
       "outlet": "amNY",
       "critic": "Matt Windman",
       "score": 60
@@ -405,21 +416,10 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Sneak Peek | LLM: NOT_REVIEW. The text consists of headlines and brief descriptions of celebrity news and gossip, lack",
+      "evidence": "Sneak Peek | LLM: NOT_REVIEW. The text consists of celebrity news headlines and gossip, lacking any critical evaluatio",
       "outlet": "Perez Hilton",
       "critic": "Perez Hilton",
       "score": 88
-    },
-    {
-      "showId": "one-man-two-guvnors-2012",
-      "file": "times-uk--libby-purves.json",
-      "type": "press_release",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "announces that | LLM: NOT_REVIEW. The text describes expectations and a general tone rather than evaluating specific perfo",
-      "outlet": "The Times",
-      "critic": "Libby Purves",
-      "score": 75
     },
     {
       "showId": "parade-2023",
@@ -427,7 +427,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, and it includes search functionality and",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of the play",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 86
@@ -438,7 +438,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, indicating that the page for the review can",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of the play",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 79
@@ -449,7 +449,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "previews begin | LLM: NOT_REVIEW. This text primarily announces the play's transfer to Broadway, provides cast information",
+      "evidence": "previews begin | LLM: NOT_REVIEW. This text is a news announcement about the play's transfer to Broadway, including dates,",
       "outlet": "Deadline",
       "critic": "Pete Hammond",
       "score": 82
@@ -515,7 +515,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and parallels with the theater industry's struggl",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than evalua",
       "outlet": "The Hollywood Reporter",
       "critic": "Angie Han",
       "score": 77
@@ -526,7 +526,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments, rather than evalua",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and parallels with the theater industry's struggl",
       "outlet": "The Hollywood Reporter",
       "critic": "Anita Gates",
       "score": 76
