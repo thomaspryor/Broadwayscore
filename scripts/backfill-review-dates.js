@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
+const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 
 const args = process.argv.slice(2);
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '50');
@@ -172,6 +173,39 @@ async function main() {
     console.log(`  URL: ${url.substring(0, 100)}`);
 
     try {
+      // Pre-check: try URL-based extraction first (free, no API credits)
+      const urlDateResult = extractDateFromUrl(url);
+      if (urlDateResult && urlDateResult.date) {
+        console.log(`  ✓ Date from URL (no fetch needed): ${urlDateResult.date}`);
+        if (!dryRun) {
+          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          data.publishDate = urlDateResult.date;
+          data.dateSource = `url-backfill-${urlDateResult.source}`;
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+        }
+        extracted++;
+        continue;
+      }
+
+      // Pre-check: try text-based extraction from existing fullText (free)
+      {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (data.fullText) {
+          const textDate = extractDateFromText(data.fullText);
+          if (textDate) {
+            console.log(`  ✓ Date from text regex (no fetch needed): ${textDate}`);
+            if (!dryRun) {
+              data.publishDate = textDate;
+              data.dateSource = 'text-regex-backfill';
+              fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+            }
+            extracted++;
+            continue;
+          }
+        }
+      }
+
+      // Fetch the page to extract date from HTML metadata
       const result = await fetchPage(url, { timeout: 15000 });
       const html = typeof result === 'string' ? result : (result?.html || result?.content || '');
 
@@ -182,15 +216,6 @@ async function main() {
       }
 
       let date = extractPublishDateFromHtml(html);
-
-      // Fallback: try text-based extraction from existing fullText
-      if (!date) {
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.fullText) {
-          date = extractDateFromText(data.fullText);
-          if (date) console.log(`  → Date from text regex: ${date}`);
-        }
-      }
 
       if (date) {
         console.log(`  ✓ Extracted date: ${date}`);

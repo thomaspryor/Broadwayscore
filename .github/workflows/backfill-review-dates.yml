@@ -70,18 +70,12 @@ jobs:
           echo "Running: node scripts/backfill-review-dates.js $ARGS"
           node scripts/backfill-review-dates.js $ARGS
 
-      - name: Commit and push review texts
+      - name: Push review texts
         if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
-        run: |
-          cd data/review-texts
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            COUNT=$(git diff --cached --numstat | wc -l | tr -d ' ')
-            git commit -m "data: Backfill publishDate for ${COUNT} reviews from HTML metadata"
-            bash ../../scripts/lib/push-with-retry.sh 5 main
-          fi
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Backfill publishDate from HTML metadata'
 
       - name: Trigger rebuild
         if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
