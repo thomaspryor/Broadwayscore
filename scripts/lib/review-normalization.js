@@ -397,6 +397,9 @@ function normalizeCritic(criticName) {
 function generateReviewFilename(outlet, critic) {
   const normalizedOutlet = normalizeOutlet(outlet);
   const normalizedCritic = normalizeCritic(critic);
+  if (isSuspiciousOutletId(normalizedOutlet)) {
+    console.warn(`  ⚠️  Suspicious outlet ID in filename: "${normalizedOutlet}" (${outlet})`);
+  }
   return `${normalizedOutlet}--${normalizedCritic}.json`;
 }
 
