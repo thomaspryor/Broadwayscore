@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T05:31:45.859Z",
+  "timestamp": "2026-04-07T05:49:49.516Z",
   "stats": {
     "totalReviews": 34435,
     "alreadyFlagged": 13082,
     "dateGuardCatches": 55,
     "directorMismatch": 1003,
     "tvFilmSignals": 3466,
-    "londonSignals": 1119,
+    "londonSignals": 1120,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5593
+    "noPublishDate": 5591
   },
   "findings": [
     {
@@ -85542,6 +85542,20 @@
       "score": 86,
       "publishDate": "2025-11-20T22:00:00",
       "url": "https://theaterlife.com/two-strangers-carry-a-cake-across-new-york/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "ulster-american-irish-repertory-theatre-off-broadway-2026",
+      "file": "nysr--roma-torre.json",
+      "score": 68,
+      "publishDate": "2026-03-16",
+      "url": "https://nystagereview.com/2026/03/15/ulster-american-irish-reps-scalding-satire-pulls-no-punches/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
