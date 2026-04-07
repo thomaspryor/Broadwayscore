@@ -1515,6 +1515,11 @@ showDirs.forEach(showId => {
         try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
         stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
       }
+      // Nuclear guard: if manual clear is set, force wrongProduction=false regardless
+      // of what earlier passes may have done in memory
+      if (data.wrongProductionManualClear || data.wrongProductionOverride) {
+        data.wrongProduction = false;
+      }
       if (data.wrongProduction === true) {
         stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
         return;
