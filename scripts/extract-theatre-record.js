@@ -965,7 +965,7 @@ async function main() {
         // Add TR-sourced data without overwriting outlet-sourced data
         if (!merged.fullText && reviewData.fullText) merged.fullText = reviewData.fullText;
         if (!merged.textWordCount && reviewData.textWordCount) merged.textWordCount = reviewData.textWordCount;
-        if (!merged.contentTier || merged.contentTier === 'stub' || merged.contentTier === 'excerpt') {
+        if (!merged.contentTier || merged.contentTier === 'stub' || merged.contentTier === 'excerpt' || merged.contentTier === 'invalid') {
           merged.contentTier = reviewData.contentTier;
           merged.contentTierReason = reviewData.contentTierReason;
         }
