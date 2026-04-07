@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-07T12:23:22.451Z",
+  "timestamp": "2026-04-07T12:40:27.287Z",
   "stats": {
-    "totalReviews": 34600,
-    "alreadyFlagged": 13181,
+    "totalReviews": 34602,
+    "alreadyFlagged": 13182,
     "dateGuardCatches": 55,
-    "directorMismatch": 1007,
+    "directorMismatch": 1005,
     "tvFilmSignals": 3475,
     "londonSignals": 1127,
     "offBroadwaySignals": 982,
@@ -9876,25 +9876,6 @@
       "score": 79,
       "publishDate": "2024-06-20",
       "url": "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html?utm_campaign=vulture&utm_medium=s1&utm_source=tw#/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "whatsonstage--zachary-stewart.json",
-      "score": 92,
-      "publishDate": "2024-06-21",
-      "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",

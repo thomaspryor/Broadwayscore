@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T12:23:26.622Z",
+  "generatedAt": "2026-04-07T12:40:31.488Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,24 +13,24 @@
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 72,
       "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
+      "total": 2,
+      "t1": 2,
       "t2": 0,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
-          "T1:0/3",
+          "2/12 total",
+          "T1:2/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:2/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -43,14 +43,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -296,6 +288,20 @@
         {
           "name": "The Stage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-07T12:40:31.488Z",
+          "rc": 2,
+          "s": 72,
+          "t1": 2,
+          "t2": 0,
+          "t3": 0,
+          "p": 0,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
