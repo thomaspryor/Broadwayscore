@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-07T06:05:00.073Z",
+  "timestamp": "2026-04-07T06:26:04.690Z",
   "stats": {
     "totalReviews": 34435,
-    "alreadyFlagged": 13082,
+    "alreadyFlagged": 13081,
     "dateGuardCatches": 55,
-    "directorMismatch": 1003,
+    "directorMismatch": 1007,
     "tvFilmSignals": 3466,
-    "londonSignals": 1120,
+    "londonSignals": 1121,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
     "noPublishDate": 5591
@@ -29734,6 +29734,40 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "thestage--mert-dilek.json",
+      "score": 93,
+      "publishDate": "2020-01-17",
+      "url": "https://www.thestage.co.uk/opinion/les-miserables-returns-to-the-sondheim-theatre-london--review-round-up",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
