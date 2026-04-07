@@ -245,7 +245,16 @@
     "tammy-faye/new-york-sun--elysa-gardner.json",
     "tammy-faye/theatermania--zachary-stewart.json",
     "tammy-faye/thewrap--robert-hofler.json",
-    "tammy-faye/timeout--adam-feldman.json"
+    "tammy-faye/timeout--adam-feldman.json",
+    "ulster-american-irish-repertory-theatre-off-broadway-2026/ew--thom-geier.json",
+    "ulster-american-irish-repertory-theatre-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+    "doubt-a-parable/theatrely--juan-a-ramirez.json",
+    "purpose/theatrely--juan-a-ramirez.json",
+    "romeo-juliet/theatrely--juan-a-ramirez.json",
+    "tammy-faye/theatrely--juan-a-ramirez.json",
+    "harry-potter-and-the-cursed-child/dtli--ana-zambrana.json",
+    "moulin-rouge-the-musical-review/amny--matt-windman.json",
+    "purpose/dailybeast--tim-teeman.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1647,7 +1656,8 @@
     "doubt-a-parable/thewrap--jd-knapp.json",
     "doubt-a-parable/wsj--charles-isherwood.json",
     "purpose/broadwaynews--brittani-samuel.json",
-    "purpose/thewrap--robert-hofler.json"
+    "purpose/thewrap--robert-hofler.json",
+    "ulster-american-irish-repertory-theatre-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1763,7 +1773,10 @@
       "tammy-faye/ew--emlyn-travis.json",
       "tammy-faye/new-york-sun--elysa-gardner.json",
       "tammy-faye/theatermania--zachary-stewart.json",
-      "tammy-faye/timeout--adam-feldman.json"
+      "tammy-faye/timeout--adam-feldman.json",
+      "ulster-american-irish-repertory-theatre-off-broadway-2026/ew--thom-geier.json",
+      "ulster-american-irish-repertory-theatre-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+      "harry-potter-and-the-cursed-child/dtli--ana-zambrana.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1870,7 +1883,9 @@
       "data/review-texts/romeo-juliet/observer--david-cote.json",
       "romeo-juliet/observer--david-cote.json",
       "data/review-texts/tammy-faye/deadline--greg-evans.json",
-      "tammy-faye/deadline--greg-evans.json"
+      "tammy-faye/deadline--greg-evans.json",
+      "data/review-texts/moulin-rouge-the-musical-review/amny--matt-windman.json",
+      "moulin-rouge-the-musical-review/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1909,7 +1924,11 @@
       "purpose/newyorker--helen-shaw.json",
       "purpose/nytimes--jesse-green.json",
       "romeo-juliet/nytimes--jesse-green.json",
-      "tammy-faye/nytimes--elisabeth-vincentelli.json"
+      "tammy-faye/nytimes--elisabeth-vincentelli.json",
+      "doubt-a-parable/theatrely--juan-a-ramirez.json",
+      "purpose/theatrely--juan-a-ramirez.json",
+      "romeo-juliet/theatrely--juan-a-ramirez.json",
+      "tammy-faye/theatrely--juan-a-ramirez.json"
     ],
     "brightdata": [
       "scandalous-2012/variety--marilyn-stasio.json",
@@ -2034,11 +2053,12 @@
       "tammy-faye/vulture--sara-holdren.json",
       "doubt-a-parable/nydailynews--chris-jones.json",
       "purpose/nydailynews--chris-jones.json",
-      "tammy-faye/thewrap--robert-hofler.json"
+      "tammy-faye/thewrap--robert-hofler.json",
+      "purpose/dailybeast--tim-teeman.json"
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "tammy-faye/timeout--adam-feldman.json",
+  "lastProcessed": "purpose/dailybeast--tim-teeman.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2821,6 +2841,28 @@
       "t": "2026-04-07T05:31:06.443Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:32:25.662Z",
+      "event": "bb-session",
+      "session": "7dab1d3e",
+      "url": "https://www.wsj.com/articles/ulster-american-review-matthew-brodericks-smug-star"
+    },
+    {
+      "t": "2026-04-07T05:32:26.988Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-07T05:33:46.127Z",
+      "event": "bb-session",
+      "session": "f0abfbf3",
+      "url": "https://www.amny.com/entertainment/moulin-rouge-review-1.34264501"
+    },
+    {
+      "t": "2026-04-07T05:33:47.394Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
