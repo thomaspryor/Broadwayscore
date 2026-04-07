@@ -85,6 +85,27 @@ const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.jso
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
 
+// Roundup/aggregator sources whose URLs come from positional matching
+// (carousel order, roundup page layout) and may be misattributed.
+// SERP-discovered and manual URLs are already validated elsewhere.
+const ROUNDUP_URL_SOURCES = new Set([
+  'show-score', 'show-score-playwright', 'dtli',
+  'bww-roundup', 'lbo-roundup',
+  'westendtheatre', 'theatre-reviews', 'stagedoor', 'thestage-roundup',
+]);
+
+/**
+ * Determine whether a review's URL needs content validation.
+ * Only roundup/aggregator-sourced URLs need checking — SERP and manual URLs
+ * are already validated by other guards.
+ *
+ * @param {object} review - Review data with source and url fields
+ * @returns {boolean} true if this review's URL should be content-validated
+ */
+function shouldValidateUrl(review) {
+  return !!(review.url && review.source && ROUNDUP_URL_SOURCES.has(review.source));
+}
+
 // Show Score URL map (curated from listings discovery)
 let _showScoreUrlMap = null;
 function getShowScoreUrlMap() {
@@ -3453,21 +3474,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   // STEP 3: Deduplicate and create review files
   console.log('\n[3/4] Deduplicating and creating review files...');
 
-  // Roundup/aggregator sources whose URLs come from positional matching
-  // (carousel order, roundup page layout) and may be misattributed.
-  // SERP-discovered and manual URLs are already validated elsewhere.
-  const ROUNDUP_URL_SOURCES = new Set([
-    'show-score', 'show-score-playwright', 'dtli',
-    'bww-roundup', 'lbo-roundup',
-    'westendtheatre', 'theatre-reviews', 'stagedoor', 'thestage-roundup',
-  ]);
-
   let created = 0;
   for (const review of foundReviews) {
     if (review.url && !review.needsUrl) {
       // --validate-urls: fetch roundup-sourced URLs and verify the page is about this show.
       // If validation fails, null the URL but keep score/critic data.
-      if (options.validateUrls && review.source && ROUNDUP_URL_SOURCES.has(review.source)) {
+      if (options.validateUrls && shouldValidateUrl(review)) {
         try {
           const pageResult = await fetchPage(review.url, { timeout: 15000 });
           if (pageResult && pageResult.content) {
@@ -3917,4 +3929,6 @@ module.exports = {
   gatherReviewsForShow,
   loadShowData,
   getGlobalUrlIndex,
+  shouldValidateUrl,
+  ROUNDUP_URL_SOURCES,
 };
