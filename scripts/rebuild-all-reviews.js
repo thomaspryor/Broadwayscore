@@ -857,7 +857,7 @@ const crossShowFingerprints = new Map();
             if (ym) reviewDate = new Date(`${ym[1]}-07-01`);
           }
         }
-        if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000) {
+        if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && !d.wrongProductionManualClear) {
           console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is 90+ days before show ${showEarliest.toISOString().split('T')[0]}`);
           d.wrongProduction = true;
           d.wrongProductionNote = `Pre-opening guard: review dated ${reviewDate.toISOString().split('T')[0]} is 90+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
