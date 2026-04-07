@@ -83,15 +83,21 @@ export default function HomePage() {
   // Precompute "Best Recent Shows" server-side for both preload links and SSR featured row
   const twelveMonthsAgo = new Date();
   twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+  const shelfScoreFilter = (s: typeof allShows[number]) =>
+    s.criticScore?.score && hasEnoughReviews(
+      s.criticScore.reviewCount ?? 0, s.category,
+      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0)
+    );
+
   const bestRecentShows = allShows
-    .filter(s => (s.type === 'musical' || s.type === 'play') && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && s.criticScore?.score)
+    .filter(s => (s.type === 'musical' || s.type === 'play') && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && shelfScoreFilter(s))
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .slice(0, 10)
     .map(serializeShow);
 
   // Pre-compute ALL featured rows server-side to avoid 700+ item iterations on client hydration
   const bestNewPlaysShows = allShows
-    .filter(s => s.type === 'play' && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && s.criticScore?.score)
+    .filter(s => s.type === 'play' && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && shelfScoreFilter(s))
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .map(serializeShow);
 
