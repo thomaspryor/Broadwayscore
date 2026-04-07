@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-07T09:45:06.310Z",
+    "lastUpdated": "2026-04-07T09:56:41.630Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 34863,
+    "totalFilesScanned": 35013,
     "skippedFiles": 13298,
-    "totalCritics": 1544,
-    "registryCritics": 532,
-    "flaggedReviews": 36
+    "totalCritics": 1550,
+    "registryCritics": 537,
+    "flaggedReviews": 37
   },
   "flaggedReviews": [
     {
@@ -236,10 +236,10 @@
       "outlet": "telegraph",
       "showId": "glengarry-glen-ross-2012",
       "file": "telegraph--sarah-crompton.json",
-      "outletShare": 3,
+      "outletShare": 2,
       "primaryOutlet": "whatsonstage",
-      "primaryShare": 97,
-      "totalReviews": 37
+      "primaryShare": 98,
+      "totalReviews": 44
     },
     {
       "critic": "Steven Ross",
@@ -360,7 +360,7 @@
       "outletShare": 2,
       "primaryOutlet": "telegraph",
       "primaryShare": 98,
-      "totalReviews": 46
+      "totalReviews": 49
     },
     {
       "critic": "Patrick Ryan",
@@ -405,6 +405,17 @@
       "primaryOutlet": "ew",
       "primaryShare": 95,
       "totalReviews": 19
+    },
+    {
+      "critic": "Neil Norman",
+      "criticSlug": "neil-norman",
+      "outlet": "the-sun",
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "the-sun--neil-norman.json",
+      "outletShare": 9,
+      "primaryOutlet": "express-uk",
+      "primaryShare": 91,
+      "totalReviews": 11
     }
   ],
   "freelancers": [
@@ -545,43 +556,50 @@
         "theatermania",
         "frontmezzjunkies",
         "thestage",
-        "playbill",
         "timeout",
+        "playbill",
         "nytimes",
         "nydailynews",
+        "west-end-wilma",
         "nytg",
         "variety",
         "ny1",
         "backstage",
         "chicagotribune",
-        "west-end-wilma",
         "washpost",
         "newsday",
+        "guardian",
+        "artsdesk",
+        "musical-theatre-review",
         "theatre-weekly",
         "plays-international",
-        "artsdesk",
-        "vulture",
-        "guardian",
-        "telegraph",
-        "hollywood-reporter",
         "broadwayworld",
+        "theupcoming",
+        "whatsonstage",
+        "vulture",
+        "hollywood-reporter",
+        "financialtimes",
         "amny",
+        "london-theatre",
         "stagebuddy",
+        "times-uk",
         "cititour",
         "ew",
         "nypost",
-        "musical-theatre-review",
-        "whatsonstage",
         "stageandcinema",
-        "times-uk",
+        "independent",
+        "timeout-london",
+        "telegraph",
+        "i-paper",
         "british-theatre",
         "usatoday",
         "all-that-dazzles-uk",
         "culturesauce",
         "bloomberg",
-        "i-paper",
+        "city-am",
+        "the-sun",
         "buy-tickets",
-        "london-theatre",
+        "londonist",
         "nysr",
         "theatrely",
         "new-york-sun",
@@ -590,23 +608,23 @@
         "one-minute-critic",
         "huffpost",
         "nbcny",
+        "standard",
+        "theatreandtonic",
         "theater-pizzazz",
-        "timeout-london",
         "dctheatrescene",
         "stannswarehouseorg",
         "american-theater-web",
         "americanpsychothemusicalcomlottery",
+        "express-uk",
         "theater-life",
-        "londonist",
         "ct-now",
         "nycitycenterorg",
         "curtainup",
         "indiewire",
         "minneapolis-star-tribune",
-        "independent",
+        "metro",
         "deadline",
         "ricky-martin",
-        "financialtimes",
         "burlington-free-press",
         "cnn",
         "san-jose-mercury-news",
@@ -621,10 +639,11 @@
         "fathomentertainmentcom",
         "front-row-center",
         "buy-tickets-from-the-theatre-here",
+        "london-box-office",
         "the-morning-star",
-        "the-sun",
         "center-on-the-aisle",
         "schoolofrockthemusicalcomtickets",
+        "daily-mail",
         "abc-news",
         "by-clicking-here",
         "newyorker",
@@ -639,10 +658,9 @@
         "metro-uk",
         "manhattantheatreclubcom",
         "bamorg",
-        "theatreandtonic",
         "kenny-leon"
       ],
-      "totalReviews": 553
+      "totalReviews": 596
     },
     {
       "critic": "Brittani Samuel",
@@ -1143,13 +1161,13 @@
       "critic": "Matt Wolf",
       "slug": "matt-wolf",
       "outlets": [
-        "telegraph",
         "london-theatre",
+        "telegraph",
         "artsdesk",
         "nytimes",
         "variety"
       ],
-      "totalReviews": 44
+      "totalReviews": 45
     },
     {
       "critic": "Sam Marlowe",
@@ -1162,7 +1180,7 @@
         "timeout-london",
         "london-theatre"
       ],
-      "totalReviews": 30
+      "totalReviews": 37
     },
     {
       "critic": "Jessie Thompson",
@@ -1182,7 +1200,7 @@
         "broadwayworld",
         "artsdesk"
       ],
-      "totalReviews": 30
+      "totalReviews": 31
     },
     {
       "critic": "Maryam Philpott",
@@ -1268,6 +1286,15 @@
         "bobs-theater-blog"
       ],
       "totalReviews": 50
+    },
+    {
+      "critic": "Lucinda Everett",
+      "slug": "lucinda-everett",
+      "outlets": [
+        "whatsonstage",
+        "guardian"
+      ],
+      "totalReviews": 3
     },
     {
       "critic": "Simon Saltzman",
@@ -1412,6 +1439,27 @@
       "totalReviews": 17
     },
     {
+      "critic": "Tom Wicker",
+      "slug": "tom-wicker",
+      "outlets": [
+        "thestage",
+        "timeout-london",
+        "telegraph",
+        "exeunt-magazine",
+        "timeout"
+      ],
+      "totalReviews": 15
+    },
+    {
+      "critic": "Rachel Halliburton",
+      "slug": "rachel-halliburton",
+      "outlets": [
+        "artsdesk",
+        "times-uk"
+      ],
+      "totalReviews": 6
+    },
+    {
       "critic": "Caroline Cao",
       "slug": "caroline-cao",
       "outlets": [
@@ -1430,7 +1478,7 @@
         "standard",
         "telegraph"
       ],
-      "totalReviews": 30
+      "totalReviews": 37
     },
     {
       "critic": "Tim Bano",
@@ -1443,7 +1491,7 @@
         "times-uk",
         "independent"
       ],
-      "totalReviews": 28
+      "totalReviews": 31
     },
     {
       "critic": "Kevin Filipski",
@@ -1942,18 +1990,6 @@
       "totalReviews": 3
     },
     {
-      "critic": "Tom Wicker",
-      "slug": "tom-wicker",
-      "outlets": [
-        "thestage",
-        "timeout-london",
-        "telegraph",
-        "exeunt-magazine",
-        "timeout"
-      ],
-      "totalReviews": 13
-    },
-    {
       "critic": "Michael Coveney",
       "slug": "michael-coveney",
       "outlets": [
@@ -2025,7 +2061,7 @@
         "guardian",
         "timeout"
       ],
-      "totalReviews": 13
+      "totalReviews": 15
     },
     {
       "critic": "Oliver Jones",
