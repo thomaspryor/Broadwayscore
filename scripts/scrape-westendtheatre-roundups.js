@@ -54,6 +54,8 @@ const stats = {
   newReviews: 0,
   updatedReviews: 0,
   skippedNoMatch: 0,
+  skippedLowConfidence: 0,
+  skippedContentMismatch: 0,
   skippedNoTable: 0,
   errors: [],
 };
@@ -210,14 +212,16 @@ function extractShowTitle(wpTitle) {
     .replace(/^reviews?:\s*/i, '')
     .replace(/^review\s+roundup:\s*/i, '')
     .replace(/^what the critics (are )?say(ing)? about\s+/i, '')
+    .replace(/^what the critics think about\s+/i, '')
     .replace(/^critics (on|review)\s+/i, '')
     .replace(/^the reviews are in for\s+/i, '')
     .trim();
 
-  // Strip trailing " starring ...", " at ...", " – reviews"
+  // Strip trailing " starring ...", " at the [Venue]", " – reviews"
   title = title
     .replace(/\s+starring\s+.+$/i, '')
-    .replace(/\s+at\s+(the\s+)?\w+\s+(theatre|theater)$/i, '')
+    .replace(/\s+at\s+(the\s+)?(donmar|bridge|national|old vic|young vic|soho|gielgud|garrick|apollo|lyceum|lyric|savoy|noël coward|noel coward|harold pinter|wyndham|duchess|duke of york|fortune|vaudeville|criterion|adelphi|gillian lynne|phoenix|dominion|piccadilly|victoria palace|kit kat club|barbican|sadler'?s wells|menier|almeida|bush|kiln|hampstead)\b.*$/i, '')
+    .replace(/\s+at\s+(the\s+)?[\w'-]+(\s+[\w'-]+){0,3}\s*(theatre|theater|playhouse|palace|house|hall|studio|space|centre|center|warehouse)$/i, '')
     .replace(/\s*[-–—]\s*reviews?$/i, '')
     .replace(/\s+reviews?$/i, '')
     .trim();
@@ -445,14 +449,41 @@ async function main() {
       continue;
     }
 
-    // Match to our shows
+    // Match to our shows — require high confidence to prevent wrong-show contamination.
+    // Medium-confidence (word-based fuzzy) matches caused 27 wrong-show archives (e.g.,
+    // Mamma Mia archive had Into the Woods reviews, Matilda had Paddington).
     const matchResult = matchTitleToShow(showTitle, allShows, { market: 'west-end' });
     if (!matchResult || !matchResult.show) {
       stats.skippedNoMatch++;
+      if (showFilter || dryRun) console.log(`  [NO MATCH] "${showTitle}" (from: ${stripHtml(wpTitle)})`);
+      continue;
+    }
+
+    if (matchResult.confidence !== 'high') {
+      stats.skippedLowConfidence++;
+      console.log(`  [LOW CONFIDENCE] "${showTitle}" → ${matchResult.show.title} (${matchResult.confidence}) — skipped`);
       continue;
     }
 
     const show = matchResult.show;
+
+    // Content validation: verify the matched show's title actually appears in the
+    // post title or body. Prevents wrong-show archives when extractShowTitle strips
+    // too aggressively and the matcher finds a spurious exact match.
+    const postText = (stripHtml(wpTitle) + ' ' + stripHtml(htmlContent)).toLowerCase();
+    const showTitleLower = show.title.toLowerCase();
+    // Check: show title (or its significant words) appear in the post
+    const significantWords = showTitleLower
+      .replace(/^the\s+/i, '')
+      .split(/[\s,]+/)
+      .filter(w => w.length > 2 && !['the', 'a', 'an', 'musical', 'play'].includes(w));
+    const wordsFound = significantWords.filter(w => postText.includes(w)).length;
+    const contentMatch = significantWords.length === 0 || wordsFound >= Math.ceil(significantWords.length * 0.5);
+    if (!contentMatch) {
+      stats.skippedContentMismatch++;
+      console.log(`  [CONTENT MISMATCH] "${showTitle}" matched ${show.title} but post lacks show words — skipped`);
+      continue;
+    }
 
     // Apply show filter
     if (showFilter && show.id !== showFilter) continue;
@@ -511,6 +542,8 @@ async function main() {
         title: show.title,
         wpPostId: post.id,
         wpTitle: stripHtml(wpTitle),
+        extractedTitle: showTitle,
+        matchConfidence: matchResult.confidence,
         postUrl,
         postDate,
         ratings,
@@ -562,6 +595,8 @@ async function main() {
   console.log(`  Total posts:    ${stats.totalPosts}`);
   console.log(`  Matched shows:  ${stats.matchedShows}`);
   console.log(`  No match:       ${stats.skippedNoMatch}`);
+  console.log(`  Low confidence: ${stats.skippedLowConfidence}`);
+  console.log(`  Content mismatch: ${stats.skippedContentMismatch}`);
   console.log(`  No table:       ${stats.skippedNoTable}`);
   if (!dryRun) {
     console.log(`  New reviews:    ${stats.newReviews}`);
