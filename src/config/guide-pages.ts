@@ -154,14 +154,14 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     title: 'Broadway Shows Closing Soon',
     h1Template: 'Broadway Shows Closing Soon ({monthYear})',
     metaTitleTemplate: 'Broadway Shows Closing Soon {monthYear} | Last Chance',
-    metaDescriptionTemplate: 'Don\'t miss these {count} Broadway shows before they close! Productions ending their runs in the next 60 days as of {monthYear}.',
-    introFallback: 'Time is running out to see these Broadway shows. {count} productions are closing within the next 60 days. Don\'t let these slip away — book your tickets now.',
+    metaDescriptionTemplate: 'Don\'t miss these {count} Broadway shows before they close! Productions ending their runs in the next 120 days as of {monthYear}.',
+    introFallback: 'Time is running out to see these Broadway shows. {count} productions are closing within the next few months. Don\'t let these slip away — book your tickets now.',
     filter: (show) => {
       if (show.status !== 'open' || !show.closingDate) return false;
       const closing = new Date(show.closingDate);
       const now = new Date();
       const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-      return diffDays > 0 && diffDays <= 60;
+      return diffDays > 0 && diffDays <= 120;
     },
     sort: 'closing-date',
     relatedGuides: ['best-broadway-shows', 'best-new-broadway-shows', 'cheap-broadway-tickets'],
