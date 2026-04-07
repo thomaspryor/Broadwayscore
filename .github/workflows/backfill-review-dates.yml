@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      domains:
+        description: 'Domain filter: high-yield (recommended), or comma-separated list'
+        required: false
+        default: 'high-yield'
+        type: string
 
 concurrency:
   group: backfill-review-dates
@@ -63,6 +68,9 @@ jobs:
           ARGS="--limit=${{ inputs.limit }} --offset=${{ inputs.offset }}"
           if [ -n "${{ inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          if [ -n "${{ inputs.domains }}" ]; then
+            ARGS="$ARGS --domains=${{ inputs.domains }}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"

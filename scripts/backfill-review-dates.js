@@ -9,10 +9,13 @@
  *   node scripts/backfill-review-dates.js [--limit=N] [--show=SHOW_ID] [--dry-run]
  *
  * Options:
- *   --limit=N      Max reviews to process (default: 50)
- *   --show=ID      Only process a specific show
- *   --dry-run      Show what would be updated without writing files
- *   --offset=N     Skip first N undated reviews (for batching)
+ *   --limit=N            Max reviews to process (default: 50)
+ *   --show=ID            Only process a specific show
+ *   --dry-run            Show what would be updated without writing files
+ *   --offset=N           Skip first N undated reviews (for batching)
+ *   --domains=high-yield Only process reviews from high-yield domains (>70% date rate)
+ *   --domains=a.com,b.com  Only process specific domains
+ *   --prioritize         Sort high-yield domains first (even without --domains filter)
  */
 
 const fs = require('fs');
@@ -25,6 +28,26 @@ const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] |
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
 const offset = parseInt(args.find(a => a.startsWith('--offset='))?.split('=')[1] || '0');
+const domainMode = args.find(a => a.startsWith('--domains='))?.split('=')[1]; // high-yield, custom list, or omit for all
+const prioritize = args.includes('--prioritize'); // sort by high-yield domains first
+
+// Domains with >70% existing date rate — HTML fetching works well on these
+const HIGH_YIELD_DOMAINS = new Set([
+  'hollywoodreporter.com', 'ew.com', 'nydailynews.com', 'vulture.com',
+  'timeout.com', 'variety.com', 'theatermania.com', 'wsj.com', 'nypost.com',
+  'deadline.com', 'observer.com', 'talkinbroadway.com', 'ny1.com',
+  'telegraph.co.uk', 'newyorktheatreguide.com', 'standard.co.uk',
+  'theaterlife.com', 'ft.com', 'whatsonstage.com', 'independent.co.uk',
+  'thestage.co.uk', 'chicagotribune.com', 'nytimes.com', 'washingtonpost.com',
+  'theguardian.com', 'npr.org', 'latimes.com', 'usatoday.com',
+]);
+
+// Domains that never/rarely have structured date metadata — skip to save API credits
+const SKIP_DOMAINS = new Set([
+  'cititour.com',        // 216 undated, 0% date rate, custom CMS with no metadata
+  'nytheatre.com',       // 11 undated, 0% date rate, defunct
+  'stagedoor.com',       // aggregator excerpts, not original articles
+]);
 
 // --- Date extraction from HTML (copied from collect-review-texts.js) ---
 
@@ -144,6 +167,7 @@ async function main() {
   });
 
   const candidates = [];
+  let skippedDomain = 0;
   for (const show of shows) {
     if (showFilter && show !== showFilter) continue;
     const dir = path.join(baseDir, show);
@@ -152,13 +176,39 @@ async function main() {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
         if (!data.publishDate && data.url && !data.wrongProduction && !data.wrongShow) {
-          candidates.push({ show, file, url: data.url, filePath: path.join(dir, file) });
+          let domain;
+          try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
+
+          // Skip known-zero-yield domains
+          if (SKIP_DOMAINS.has(domain)) { skippedDomain++; continue; }
+
+          // Domain filter: only include specified domains
+          if (domainMode === 'high-yield' && !HIGH_YIELD_DOMAINS.has(domain)) continue;
+          if (domainMode && domainMode !== 'high-yield') {
+            // Custom comma-separated domain list
+            const customDomains = new Set(domainMode.split(',').map(d => d.trim()));
+            if (!customDomains.has(domain)) continue;
+          }
+
+          const isHighYield = HIGH_YIELD_DOMAINS.has(domain);
+          candidates.push({ show, file, url: data.url, filePath: path.join(dir, file), domain, isHighYield });
         }
       } catch (e) { /* skip invalid JSON */ }
     }
   }
 
+  // Sort: high-yield domains first (when --prioritize or --domains=high-yield)
+  if (prioritize || domainMode === 'high-yield') {
+    candidates.sort((a, b) => {
+      if (a.isHighYield && !b.isHighYield) return -1;
+      if (!a.isHighYield && b.isHighYield) return 1;
+      return 0;
+    });
+  }
+
   console.log(`Found ${candidates.length} undated reviews with URLs`);
+  if (skippedDomain > 0) console.log(`Skipped ${skippedDomain} reviews from zero-yield domains`);
+  if (domainMode) console.log(`Domain filter: ${domainMode}`);
   if (offset > 0) console.log(`Skipping first ${offset}`);
 
   const batch = candidates.slice(offset, offset + limit);
