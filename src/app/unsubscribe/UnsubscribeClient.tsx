@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { SUBSCRIBED_KEY, SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
@@ -46,6 +47,12 @@ export default function UnsubscribeClient() {
         }),
       });
       if (res.ok) {
+        // Clear localStorage so the site doesn't falsely show "Subscribed"
+        try {
+          localStorage.removeItem(SUBSCRIBED_KEY_PREFIX + market);
+          localStorage.removeItem(SUBSCRIBED_KEY); // Legacy key
+          localStorage.removeItem('bsc_user_data');
+        } catch { /* noop */ }
         setStatus('success');
       } else {
         setStatus('error');
