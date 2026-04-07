@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-07T04:08:30.662Z",
+    "lastUpdated": "2026-04-07T04:24:22.923Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 35023,
-    "skippedFiles": 13291,
-    "totalCritics": 1547,
-    "registryCritics": 532,
+    "totalFilesScanned": 34847,
+    "skippedFiles": 13296,
+    "totalCritics": 1544,
+    "registryCritics": 531,
     "flaggedReviews": 36
   },
   "flaggedReviews": [
@@ -27,10 +27,10 @@
       "outlet": "the-la-times",
       "showId": "a-strange-loop-2022",
       "file": "the-la-times--charles-mcnulty.json",
-      "outletShare": 1,
+      "outletShare": 2,
       "primaryOutlet": "latimes",
-      "primaryShare": 99,
-      "totalReviews": 138
+      "primaryShare": 98,
+      "totalReviews": 132
     },
     {
       "critic": "Charles McNulty",
@@ -38,10 +38,10 @@
       "outlet": "the-la-times",
       "showId": "every-brilliant-thing-2026",
       "file": "the-la-times--charles-mcnulty.json",
-      "outletShare": 1,
+      "outletShare": 2,
       "primaryOutlet": "latimes",
-      "primaryShare": 99,
-      "totalReviews": 138
+      "primaryShare": 98,
+      "totalReviews": 132
     },
     {
       "critic": "Leah Greenblatt",
@@ -173,7 +173,7 @@
       "outletShare": 2,
       "primaryOutlet": "ap",
       "primaryShare": 98,
-      "totalReviews": 49
+      "totalReviews": 48
     },
     {
       "critic": "Martin Denton",
@@ -349,7 +349,7 @@
       "outletShare": 4,
       "primaryOutlet": "daily-mail",
       "primaryShare": 96,
-      "totalReviews": 28
+      "totalReviews": 27
     },
     {
       "critic": "Dominic Cavendish",
@@ -478,7 +478,7 @@
         "thestage",
         "thewrap"
       ],
-      "totalReviews": 577
+      "totalReviews": 544
     },
     {
       "critic": "Michael Sommers",
@@ -549,13 +549,13 @@
         "playbill",
         "timeout",
         "nydailynews",
-        "west-end-wilma",
         "nytg",
         "variety",
         "ny1",
         "backstage",
         "london-box-office",
         "chicagotribune",
+        "west-end-wilma",
         "washpost",
         "newsday",
         "vulture",
@@ -634,7 +634,6 @@
         "lighting-and-sound-america",
         "theater-news-online",
         "hypable",
-        "reviews",
         "familyvacationcritic",
         "streetdirectory",
         "metro-uk",
@@ -643,7 +642,7 @@
         "theatreandtonic",
         "kenny-leon"
       ],
-      "totalReviews": 566
+      "totalReviews": 561
     },
     {
       "critic": "Brittani Samuel",
@@ -750,7 +749,7 @@
         "timeout",
         "timeout-london"
       ],
-      "totalReviews": 135
+      "totalReviews": 132
     },
     {
       "critic": "Michael Dale",
@@ -898,7 +897,7 @@
         "vulture",
         "business-week"
       ],
-      "totalReviews": 201
+      "totalReviews": 200
     },
     {
       "critic": "Robert Kahn",
@@ -923,7 +922,7 @@
         "newsday",
         "theaternewsonline"
       ],
-      "totalReviews": 446
+      "totalReviews": 416
     },
     {
       "critic": "Thom Geier",
@@ -1078,7 +1077,7 @@
         "nysr",
         "huffpost"
       ],
-      "totalReviews": 11
+      "totalReviews": 10
     },
     {
       "critic": "Lane Williamson",
@@ -1644,7 +1643,7 @@
         "london-theatre",
         "whatsonstage"
       ],
-      "totalReviews": 22
+      "totalReviews": 21
     },
     {
       "critic": "Theo Bosanquet",
@@ -1991,6 +1990,15 @@
       "totalReviews": 3
     },
     {
+      "critic": "Frank Sheck",
+      "slug": "frank-sheck",
+      "outlets": [
+        "hollywood-reporter",
+        "nysr"
+      ],
+      "totalReviews": 3
+    },
+    {
       "critic": "Mert Dilek",
       "slug": "mert-dilek",
       "outlets": [
@@ -2081,6 +2089,15 @@
         "guardian",
         "artsdesk",
         "daily-mail"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Lisa Martland",
+      "slug": "lisa-martland",
+      "outlets": [
+        "musical-theatre-review",
+        "thestage"
       ],
       "totalReviews": 3
     },
