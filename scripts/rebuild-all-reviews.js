@@ -770,12 +770,31 @@ try {
 // Cross-show URL dedup: detect when the same review URL exists in multiple show directories.
 // When a URL appears in two shows, the show whose opening year is closest to the review's
 // publish date (or URL year) gets priority. The other is flagged wrongProduction.
+function normalizeUrlForDedup(url) {
+    if (!url) return null;
+    // Strip tracking params and fragments to catch OB/Broadway copies of the same review
+    // that differ only by utm_*, searchResultPosition, etc.
+    // Preserve meaningful query params for old-format URLs (e.g., treview.html?res=ABC)
+    const TRACKING_PARAMS = new Set([
+      'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+      'searchresultposition', 'gaa_at', 'gaa_n', 'gaa_ts', 'gaa_sig',
+      'ref', 'fbclid', 'gclid', 'mc_cid', 'mc_eid',
+    ]);
+    let cleaned = url;
+    // Strip fragment
+    cleaned = cleaned.split('#')[0];
+    // Strip tracking query params
+    try {
+      const u = new URL(cleaned);
+      for (const key of [...u.searchParams.keys()]) {
+        if (TRACKING_PARAMS.has(key.toLowerCase())) u.searchParams.delete(key);
+      }
+      cleaned = u.href;
+    } catch { /* not a valid URL, proceed with string ops */ }
+    return cleaned.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?&]$/, '').replace(/\/+$/, '').toLowerCase();
+}
 const crossShowUrlIndex = new Map();
 {
-  function normalizeUrlForDedup(url) {
-    if (!url) return null;
-    return url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '').toLowerCase();
-  }
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     const showYear = showDateMap[sid] ? showDateMap[sid].getFullYear() : null;
@@ -1619,8 +1638,8 @@ showDirs.forEach(showId => {
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews
       // on a 2026 Off-Broadway page with the same title).
       if (data.url && !data.wrongProduction && !data.allowEarlyDate) {
-        const norm = data.url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '').toLowerCase();
-        const entry = crossShowUrlIndex.get(norm);
+        const norm = normalizeUrlForDedup(data.url);
+        const entry = norm ? crossShowUrlIndex.get(norm) : null;
         if (entry && entry.conflicts.length > 0) {
           const allCopies = [{ showId: entry.showId, showYear: entry.showYear },
             ...entry.conflicts.map(c => ({ showId: c.showId, showYear: c.showYear }))];
