@@ -114,6 +114,43 @@ const CRITICAL_PATTERNS = [
       'Must use isScoreable() for scoreability checks, not inline flag checks. ' +
       'Inline checks miss new exclusion flags when they are added.',
   },
+  // P0 score corruption guards (April 2026): aggregator star ratings must never
+  // reach the P0 originalScore slot. WET scraper was the worst offender.
+  {
+    file: 'scripts/scrape-westendtheatre-roundups.js',
+    pattern: 'aggregatorStars',
+    description:
+      'WET scraper must write to aggregatorStars, not originalScore. ' +
+      'WET is an aggregator — its star ratings are third-party data, not outlet ratings.',
+  },
+  {
+    file: 'scripts/scrape-westendtheatre-roundups.js',
+    pattern: 'originalScore: null',
+    description:
+      'WET scraper must set originalScore: null explicitly. ' +
+      'Without this, aggregator star ratings get P0 priority in scoring.',
+  },
+  {
+    file: 'scripts/lib/rebuild-helpers.js',
+    pattern: 'originalScoreCleared',
+    description:
+      'getBestScore must check originalScoreCleared flag to skip P0 for audited reviews. ' +
+      'Without this guard, CI re-contamination overwrites score corrections.',
+  },
+  {
+    file: 'scripts/lib/rebuild-helpers.js',
+    pattern: 'AGGREGATOR_SOURCES_SET',
+    description:
+      'getBestScore must check scoreSource against aggregator set. ' +
+      'Prevents aggregator scores from reaching P0 even if originalScoreCleared is missing.',
+  },
+  {
+    file: 'scripts/collect-review-texts.js',
+    pattern: 'originalScoreCleared',
+    description:
+      'collect-review-texts must skip re-extraction when originalScoreCleared is set. ' +
+      'Without this, cleared scores get re-extracted from the same wrong page elements.',
+  },
 ];
 
 /**
