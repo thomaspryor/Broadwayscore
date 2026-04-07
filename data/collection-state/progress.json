@@ -1894,7 +1894,17 @@
     "ifthen-2014/huffpost--mark-kennedy.json",
     "rocky-2014/nysr--huffington-poststeven-suskin.json",
     "all-the-way-2014/ap--mark-kennedy.json",
-    "all-the-way-2014/ap--unknown.json"
+    "all-the-way-2014/ap--unknown.json",
+    "machinal-2014/timeout--david-cote.json",
+    "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/bloomberg--jeremy-gerard.json",
+    "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
+    "the-winslow-boy-2013/bloomberg--unknown.json",
+    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+    "soul-doctor-2013/northjerseycom--robert-feldberg.json",
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "pippin-2013/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2282,7 +2292,8 @@
       "data/review-texts/ulster-american-irish-repertory-theatre-off-broadway-2026/talkinbroadway--marc-miller.json",
       "data/review-texts/calf-scramble-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/the-hunger-games-on-stage-west-end-2025/london-box-office--unknown.json",
-      "data/review-texts/spread-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/spread-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/soul-doctor-2013/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -2317,7 +2328,7 @@
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "all-the-way-2014/ap--unknown.json",
+  "lastProcessed": "pippin-2013/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -3122,6 +3133,17 @@
       "t": "2026-04-07T05:33:47.394Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-07T06:17:22.247Z",
+      "event": "bb-session",
+      "session": "f4042cdb",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/219881241_Theater_review_"
+    },
+    {
+      "t": "2026-04-07T06:17:23.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
