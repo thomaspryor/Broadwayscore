@@ -1,48 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-07T05:15:44.659Z",
+    "generatedAt": "2026-04-07T05:27:07.839Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 34843,
-      "inReviewsJson": 16168,
+      "inReviewsJson": 16169,
       "skippedExcluded": 60,
-      "withFullText": 113,
+      "withFullText": 84,
       "excerptOnly": 1586,
-      "llmClassified": 50,
+      "llmClassified": 49,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 2,
-      "uncertainCases": 12,
+      "nonReviewsFound": 0,
+      "uncertainCases": 14,
       "budgetUsed": 0.005,
       "llmCalls": 50,
       "rateLimitHits": 0,
-      "errors": 0,
-      "skippedAlreadyClassified": 14409
+      "errors": 1,
+      "skippedAlreadyClassified": 14439
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "an-ark-off-broadway-2026/nytimes--ben-brantley.json",
-      "showId": "an-ark-off-broadway-2026",
-      "outlet": "NY Times",
-      "outletId": "nytimes",
-      "contentType": "preview",
-      "confidence": "high",
-      "reasoning": "This article describes the concept and technology behind \"An Ark\" before its opening, focusing on the mixed reality aspect and the creative team's intentions, rather than evaluating the quality of the production.",
-      "currentScore": 71
-    },
-    {
-      "file": "rent-1996/ap--michael-kuchwara.json",
-      "showId": "rent-1996",
-      "outlet": "Associated Press",
-      "outletId": "ap",
-      "contentType": "preview",
-      "confidence": "high",
-      "reasoning": "This article describes the upcoming Broadway opening of \"Rent\" and provides background information on the show's creator and inspiration, but it does not offer an evaluation or opinion on the quality of the production itself.",
-      "currentScore": 76
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -51,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production itself. It also includes information about other shows and theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -61,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it's a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems like a list of search terms or categories, possibly from a website.",
       "currentScore": 82
     },
     {
@@ -71,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -81,7 +60,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It reads like a preview or introductory piece.",
       "currentScore": 81
     },
     {
@@ -91,7 +70,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The text discusses how to stage the play, suggesting a feature article rather than a review. The article does not evaluate the quality of the production.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -101,7 +80,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -121,7 +100,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -131,7 +110,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and promotes a WSJ subscription. The visible content does not contain any evaluative statements about the show 'Parade'.",
+      "reasoning": "The article appears to be truncated and is displaying subscription prompts. Based on the available text, it seems to be a news article or advertisement related to the Wall Street Journal.",
       "currentScore": 78
     },
     {
@@ -141,7 +120,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the premise of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
       "currentScore": 80
     },
     {
@@ -161,59 +140,67 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also veers into an interview with an actor.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview segment.",
       "currentScore": 83
+    },
+    {
+      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
+      "showId": "the-assembled-parties-2013",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "currentScore": 42
+    },
+    {
+      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "The Front Row Center",
+      "outletId": "front-row-center",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content.",
+      "currentScore": 64
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "broken-glass-west-end-2026/london-box-office--stuart-king.json",
-    "inherit-the-wind-2007/nydailynews--joe-dziemianowicz.json",
-    "is-he-dead-2007/newsday--linda-winer.json",
-    "is-he-dead-2007/nydailynews--joe-dziemianowicz.json",
-    "joe-turners-come-and-gone-2009/newsday--linda-winer.json",
-    "journeys-end-2007/newsday--linda-winer.json",
-    "kiss-me-kate-2019/chicagotribune--chris-jones.json",
-    "lady-day-at-emersons-bar-and-grill-2014/nydailynews--joe-dziemianowicz.json",
-    "legally-blonde-2007/newsday--linda-winer.json",
-    "lennon-2005/nydailynews--joe-dziemianowicz.json",
-    "lestat-2006/newsday--linda-winer.json",
-    "lestat-2006/nydailynews--joe-dziemianowicz.json",
-    "lovemusik-2007/newsday--linda-winer.json",
-    "macbeth-2008/latimes--charles-mcnulty.json",
-    "macbeth-2013/chicagotribune--chris-jones.json",
-    "man-and-boy-west-end-2026/london-box-office--stuart-king.json",
-    "martin-short-fame-becomes-me-2006/newsday--linda-winer.json",
-    "mary-stuart-2009/newsday--linda-winer.json",
-    "memphis-2009/newsday--linda-winer.json",
-    "memphis-2009/nydailynews--joe-dziemianowicz.json",
-    "moulin-rouge-2019/chicagotribune--chris-jones.json",
-    "oklahoma-2019/chicagotribune--chris-jones.json",
-    "our-town-2024/newyorker--helen-shaw.json",
-    "pal-joey-2008/newsday--linda-winer.json",
-    "passing-strange-2008/chicagotribune--chris-jones.json",
-    "passing-strange-2008/newsday--linda-winer.json",
-    "pretty-woman-the-musical-2018/usatoday--elysa-gardner.json",
-    "radio-golf-2007/newsday--linda-winer.json",
-    "radio-golf-2007/nydailynews--joe-dziemianowicz.json",
-    "rent-1996/curtainup--unknown.json",
-    "rent-1996/newsday--linda-winer.json",
-    "rent-1996/nydailynews--howard-kissel.json",
-    "rent-1996/variety--jeremy-gerard.json",
-    "rock-n-roll-2007/newsday--linda-winer.json",
-    "rock-of-ages-2009/newsday--linda-winer.json",
-    "romeo-juliet-2024/newyorker--helen-shaw.json"
+    "all-my-sons-west-end-2025/plays-international--maryam-philpott.json",
+    "bigfoot-off-broadway-2026/theatermania--hayley-levitt.json",
+    "into-the-woods-west-end-2025/plays-international--maryam-philpott.json",
+    "oh-mary-west-end-2025/london-box-office--shehrazade-zafar-arif.json",
+    "paddington-the-musical-west-end-2025/london-box-office--shehrazade-zafar-arif.json",
+    "paranormal-activity-west-end-2025/london-box-office--shehrazade-zafar-arif.json",
+    "romeo-and-juliet-west-end-2026/plays-international--maryam-philpott.json",
+    "shrek-the-musical-2008/chicagotribune--chris-jones.json",
+    "shrek-the-musical-2008/nydailynews--joe-dziemianowicz.json",
+    "side-show-2014/latimes--charles-mcnulty.json",
+    "something-rotten-2015/broadwayworld--roy-berko.json",
+    "south-pacific-2008/newsday--linda-winer.json",
+    "speedtheplow-2008/nydailynews--joe-dziemianowicz.json",
+    "stranger-things-the-first-shadow-west-end-2023/plays-international--maryam-philpott.json",
+    "superior-donuts-2009/chicagotribune--chris-jones.json",
+    "superior-donuts-2009/latimes--charles-mcnulty.json",
+    "superior-donuts-2009/newsday--linda-winer.json",
+    "tammy-faye-2024/vulture--sara-holdren.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/nydailynews--joe-dziemianowicz.json",
+    "the-39-steps-2008/newsday--linda-winer.json",
+    "the-american-plan-2009/newsday--linda-winer.json",
+    "the-apple-tree-2006/newsday--linda-winer.json",
+    "the-authenticator-west-end-2026/plays-international--maryam-philpott.json",
+    "the-columnist-2012/nydailynews--joe-dziemianowicz.json",
+    "the-farnsworth-invention-2007/newsday--linda-winer.json",
+    "the-farnsworth-invention-2007/nydailynews--joe-dziemianowicz.json",
+    "the-great-society-2019/chicagotribune--chris-jones.json",
+    "the-heiress-2012/nydailynews--joe-dziemianowicz.json",
+    "the-homecoming-2007/nydailynews--joe-dziemianowicz.json",
+    "the-inheritance-2019/chicagotribune--chris-jones.json",
+    "the-last-ship-2014/chicagotribune--chris-jones.json",
+    "the-lieutenant-of-inishmore-2006/newsday--linda-winer.json",
+    "the-lifespan-of-a-fact-2018/chicagotribune--chris-jones.json",
+    "the-little-dog-laughed-2006/newsday--linda-winer.json",
+    "the-little-mermaid-2008/chicagotribune--chris-jones.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "an-ark-off-broadway-2026",
-      "currentCount": 14,
-      "removed": 1
-    },
-    {
-      "showId": "rent-1996",
-      "currentCount": 7,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
