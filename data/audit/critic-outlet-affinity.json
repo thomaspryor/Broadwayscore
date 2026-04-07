@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-07T03:22:26.129Z",
+    "lastUpdated": "2026-04-07T03:43:38.112Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 34853,
-    "skippedFiles": 13292,
+    "totalFilesScanned": 35034,
+    "skippedFiles": 13293,
     "totalCritics": 1549,
-    "registryCritics": 531,
+    "registryCritics": 532,
     "flaggedReviews": 37
   },
   "flaggedReviews": [
@@ -27,10 +27,10 @@
       "outlet": "the-la-times",
       "showId": "a-strange-loop-2022",
       "file": "the-la-times--charles-mcnulty.json",
-      "outletShare": 2,
+      "outletShare": 1,
       "primaryOutlet": "latimes",
-      "primaryShare": 98,
-      "totalReviews": 132
+      "primaryShare": 99,
+      "totalReviews": 138
     },
     {
       "critic": "Charles McNulty",
@@ -38,10 +38,10 @@
       "outlet": "the-la-times",
       "showId": "every-brilliant-thing-2026",
       "file": "the-la-times--charles-mcnulty.json",
-      "outletShare": 2,
+      "outletShare": 1,
       "primaryOutlet": "latimes",
-      "primaryShare": 98,
-      "totalReviews": 132
+      "primaryShare": 99,
+      "totalReviews": 138
     },
     {
       "critic": "Leah Greenblatt",
@@ -173,7 +173,7 @@
       "outletShare": 2,
       "primaryOutlet": "ap",
       "primaryShare": 98,
-      "totalReviews": 48
+      "totalReviews": 49
     },
     {
       "critic": "Martin Denton",
@@ -294,7 +294,7 @@
       "outletShare": 6,
       "primaryOutlet": "nytg",
       "primaryShare": 94,
-      "totalReviews": 16
+      "totalReviews": 17
     },
     {
       "critic": "David Roberts",
@@ -489,7 +489,7 @@
         "thestage",
         "thewrap"
       ],
-      "totalReviews": 544
+      "totalReviews": 577
     },
     {
       "critic": "Michael Sommers",
@@ -560,13 +560,13 @@
         "playbill",
         "timeout",
         "nydailynews",
+        "west-end-wilma",
         "nytg",
         "variety",
         "ny1",
         "backstage",
         "london-box-office",
         "chicagotribune",
-        "west-end-wilma",
         "washpost",
         "newsday",
         "vulture",
@@ -654,7 +654,7 @@
         "theatreandtonic",
         "kenny-leon"
       ],
-      "totalReviews": 562
+      "totalReviews": 566
     },
     {
       "critic": "Brittani Samuel",
@@ -761,7 +761,7 @@
         "4columns",
         "timeout-london"
       ],
-      "totalReviews": 133
+      "totalReviews": 136
     },
     {
       "critic": "Michael Dale",
@@ -798,7 +798,7 @@
         "thestage",
         "ny-theater"
       ],
-      "totalReviews": 358
+      "totalReviews": 359
     },
     {
       "critic": "Jesse Green",
@@ -909,7 +909,7 @@
         "vulture",
         "business-week"
       ],
-      "totalReviews": 200
+      "totalReviews": 201
     },
     {
       "critic": "Robert Kahn",
@@ -934,7 +934,7 @@
         "newsday",
         "theaternewsonline"
       ],
-      "totalReviews": 416
+      "totalReviews": 446
     },
     {
       "critic": "Thom Geier",
@@ -1089,7 +1089,7 @@
         "nysr",
         "huffpost"
       ],
-      "totalReviews": 10
+      "totalReviews": 11
     },
     {
       "critic": "Lane Williamson",
@@ -1195,6 +1195,15 @@
         "artsdesk"
       ],
       "totalReviews": 29
+    },
+    {
+      "critic": "Maryam Philpott",
+      "slug": "maryam-philpott",
+      "outlets": [
+        "thereviewshub",
+        "plays-international"
+      ],
+      "totalReviews": 14
     },
     {
       "critic": "Quentin Letts",
@@ -1357,11 +1366,11 @@
       "slug": "david-fox",
       "outlets": [
         "reclining-standards",
+        "parterre-box",
         "vulture",
-        "df-reviews",
-        "parterre-box"
+        "df-reviews"
       ],
-      "totalReviews": 7
+      "totalReviews": 8
     },
     {
       "critic": "Nicole Serratore",
@@ -2003,15 +2012,6 @@
       "totalReviews": 3
     },
     {
-      "critic": "Frank Sheck",
-      "slug": "frank-sheck",
-      "outlets": [
-        "hollywood-reporter",
-        "nysr"
-      ],
-      "totalReviews": 3
-    },
-    {
       "critic": "Mert Dilek",
       "slug": "mert-dilek",
       "outlets": [
@@ -2113,15 +2113,6 @@
         "the-express",
         "sarasota-herald-tribune",
         "express-uk"
-      ],
-      "totalReviews": 3
-    },
-    {
-      "critic": "Lisa Martland",
-      "slug": "lisa-martland",
-      "outlets": [
-        "musical-theatre-review",
-        "thestage"
       ],
       "totalReviews": 3
     },
