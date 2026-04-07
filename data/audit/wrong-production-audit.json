@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T09:45:03.864Z",
+  "timestamp": "2026-04-07T09:56:39.145Z",
   "stats": {
-    "totalReviews": 34455,
+    "totalReviews": 34605,
     "alreadyFlagged": 13078,
     "dateGuardCatches": 55,
     "directorMismatch": 1007,
-    "tvFilmSignals": 3467,
+    "tvFilmSignals": 3468,
     "londonSignals": 1122,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5610
+    "noPublishDate": 5756
   },
   "findings": [
     {
@@ -54037,7 +54037,7 @@
       "file": "daily-mail--michael-coveney.json",
       "score": 86,
       "publishDate": "1999-10-22",
-      "url": null,
+      "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -54169,19 +54169,6 @@
       "score": 88,
       "publishDate": "1999-10-20",
       "url": "https://www.standard.co.uk/go/london/theatre/lion-king-is-a-roaring-success-7435263.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "telegraph--charles-spencer.json",
-      "publishDate": "1999-10-20",
-      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -56532,6 +56519,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2020-12-15",
+      "url": "https://www.theguardian.com/stage/2025/dec/15/christmas-carol-goes-wrong-review-apollo-mischief-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2020-12-14",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26427",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -75303,7 +75316,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 60,
       "publishDate": "2022-01-21",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -84730,7 +84743,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
       "publishDate": "2026-02-12",
-      "url": null,
+      "url": "https://www.ft.com/content/e78cc386-2bb5-416b-bd81-a80a69025573",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
