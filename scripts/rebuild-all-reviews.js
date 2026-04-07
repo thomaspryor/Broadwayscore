@@ -1604,38 +1604,6 @@ showDirs.forEach(showId => {
         }
       }
 
-      // URL slug cross-check: if the URL path clearly mentions a DIFFERENT show's title,
-      // null out the URL (keep the review for its score, but don't link to wrong content).
-      // Catches roundup/aggregator contamination where URLs get positionally misassigned
-      // (e.g., a Clueless review URL paired with a Kinky Boots critic from a Show Score carousel).
-      if (data.url && !data.wrongShow) {
-        try {
-          const urlPath = new URL(data.url).pathname.toLowerCase().replace(/[^a-z0-9]/g, ' ');
-          const showSlug = showId.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
-          const showWords = showSlug.split('-').filter(w => w.length > 3);
-          // Check if URL mentions the target show at all (at least one significant word)
-          const showMatch = showWords.length > 0 && showWords.some(w => urlPath.includes(w));
-          // Build a set of other show slugs to check against
-          if (!showMatch && showWords.length > 0) {
-            // URL doesn't mention target show — check if it mentions a DIFFERENT known show
-            const otherShowTitles = Object.entries(showTitleMap)
-              .filter(([id]) => id !== showId)
-              .map(([, title]) => title.toLowerCase().replace(/[^a-z0-9]/g, ''));
-            const otherMatch = otherShowTitles.find(t => {
-              const words = t.split(/\s+/).filter(w => w.length > 4);
-              return words.length >= 2 && words.every(w => urlPath.includes(w));
-            });
-            if (otherMatch) {
-              stats.urlSlugMismatch = (stats.urlSlugMismatch || 0) + 1;
-              console.log(`  ⚠️  [url-slug-mismatch] ${showId}/${file}: URL mentions "${otherMatch}" not "${showSlug}" — nulling URL`);
-              data.url = null;
-              data._urlNulledReason = `url-slug-mismatch: URL path matches "${otherMatch}" not "${showSlug}"`;
-              try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-            }
-          }
-        } catch (e) { /* invalid URL — will be caught by other guards */ }
-      }
-
       // Cross-show URL dedup: if this URL also exists in another show's directory,
       // flag the copy that's farther from its show's opening year as wrongProduction.
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews

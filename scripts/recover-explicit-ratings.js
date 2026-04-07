@@ -101,7 +101,8 @@ const RATED_OUTLETS = new Map([
   ['the-arts-desk', { format: 'stars/5', api: null }],
   ['artsdesk', { format: 'stars/5', api: null }],
   ['musical-theatre-review', { format: 'stars/5', api: null }],
-  ['london-theatre', { format: 'stars/5', api: null }],
+  // london-theatre (londontheatrereviews.co.uk): text-only reviews, no star ratings published.
+  // Marked noScoreExtractor in score-extractors.js — do not attempt recovery.
   ['all-that-dazzles-uk', { format: 'stars/5', api: null }],
   ['everything-theatre', { format: 'stars/5', api: null }],
   ['everything-theatre-uk', { format: 'stars/5', api: null }],
@@ -116,7 +117,8 @@ const RATED_OUTLETS = new Map([
 
   // UK outlets added for Theatre Record coverage
   ['thereviewshub', { format: 'percentage', api: null }],
-  ['londontheatre1', { format: 'stars/5', api: null }],
+  // londontheatre1 (londontheatre1.com): text-only reviews, no star ratings published.
+  // Marked noScoreExtractor in score-extractors.js — do not attempt recovery.
   ['broadwayworld', { format: 'stars/5', api: null }],
   ['sunday-times', { format: 'stars/5', api: null }],
   ['i-paper', { format: 'stars/5', api: null }],

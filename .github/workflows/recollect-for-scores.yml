@@ -85,9 +85,8 @@ jobs:
             # Paywalled UK outlets (telegraph, thestage) use cookie secrets for auth
             # Excluded: guardian (stars from API not HTML), usatoday (no stars in HTML)
             # Excluded: theater-life, london-theatre (no stars in HTML)
-            # Excluded: times-uk, financialtimes (paywalled, no cookies)
             # Excluded: nydailynews, rollingstone (no star ratings)
-            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am"
+            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am,times-uk,financialtimes"
           else
             OUTLETS="$OUTLETS_INPUT"
           fi

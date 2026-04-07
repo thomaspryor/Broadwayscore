@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T04:24:20.478Z",
+  "timestamp": "2026-04-07T05:07:48.131Z",
   "stats": {
     "totalReviews": 34439,
-    "alreadyFlagged": 13076,
+    "alreadyFlagged": 13079,
     "dateGuardCatches": 55,
-    "directorMismatch": 999,
-    "tvFilmSignals": 3466,
+    "directorMismatch": 1000,
+    "tvFilmSignals": 3465,
     "londonSignals": 1116,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5608
+    "noPublishDate": 5606
   },
   "findings": [
     {
@@ -2657,6 +2657,7 @@
     {
       "showId": "aint-too-proud-2019",
       "file": "newsday--barbara-schuler.json",
+      "score": 66,
       "publishDate": null,
       "url": "https://www.newsday.com/entertainment/theater/aint-too-proud-temptations-1.28731283",
       "findings": [
@@ -2684,6 +2685,7 @@
     {
       "showId": "aladdin-2014",
       "file": "becca-on-broadway--becca.json",
+      "score": 64,
       "publishDate": "2014-04-09",
       "url": "http://beccaonbroadway.com/2014/04/09/aladdin/",
       "findings": [
@@ -3131,6 +3133,7 @@
     {
       "showId": "aladdin-2014",
       "file": "uinterview--daniel-graugnard.json",
+      "score": 75,
       "publishDate": "2014-03-24",
       "url": "http://uinterview.com/reviews/stage/aladdin-the-musical-review-disney-provides-another-fun-broadway-hit/",
       "findings": [
@@ -6938,6 +6941,7 @@
     {
       "showId": "billy-elliot-the-musical-2008",
       "file": "newsday--linda-winer.json",
+      "score": 87,
       "publishDate": "2008-11-14",
       "url": "https://www.newspapers.com/image/710988585/",
       "findings": [
@@ -6979,6 +6983,7 @@
     {
       "showId": "billy-elliot-the-musical-2008",
       "file": "village-voice--michael-feingold.json",
+      "score": 68,
       "publishDate": "2008-11-19",
       "url": "https://www.villagevoice.com/2008-11-19/theater/faust-and-billy-elliot-souls-adrift-in-multimedia-saturn-returns-no-soul-at-all/",
       "findings": [
@@ -10955,6 +10960,7 @@
     {
       "showId": "come-back-little-sheba-2008",
       "file": "newsday--linda-winer.json",
+      "score": 38,
       "publishDate": "2008-01-25",
       "url": "https://www.newspapers.com/image/710565811/",
       "findings": [
@@ -16681,6 +16687,7 @@
     {
       "showId": "frostnixon-2007",
       "file": "newsday--linda-winer.json",
+      "score": 44,
       "publishDate": "2007-04-23",
       "url": "https://www.newspapers.com/image/713946009/",
       "findings": [
@@ -22212,6 +22219,7 @@
     {
       "showId": "hercules-west-end-2025",
       "file": "afridiziak-theatre-news--sophia-a-jackson.json",
+      "score": 87,
       "publishDate": "2025-06-24",
       "url": "https://www.afridiziak.com/reviews/disneys-hercules-theatre-royal-drury-lane/",
       "findings": [
@@ -25555,6 +25563,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2026",
+      "file": "daily-mail--mark-cook.json",
+      "score": 72,
+      "publishDate": "2025-12-21",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 82,
       "publishDate": "2025-12-19",
@@ -26533,6 +26555,7 @@
     {
       "showId": "joe-turners-come-and-gone-2009",
       "file": "newsday--linda-winer.json",
+      "score": 79,
       "publishDate": "2009-04-17",
       "url": "https://www.newspapers.com/image/711251453/",
       "findings": [
@@ -34291,6 +34314,7 @@
     {
       "showId": "moulin-rouge-2019",
       "file": "njcom--christopher-kelly.json",
+      "score": 77,
       "publishDate": "2019-07-26",
       "url": "https://www.nj.com/entertainment/2019/07/moulin-rouge-is-a-dizzying-blast-of-color-and-music-broadway-review.html",
       "findings": [
@@ -36772,6 +36796,7 @@
     {
       "showId": "oh-mary-2024",
       "file": "washpost--shane-oneill.json",
+      "score": 83,
       "publishDate": "2024-07-06",
       "url": "https://www.washingtonpost.com/entertainment/theater/2024/07/06/cole-escola-oh-mary-broadway/",
       "findings": [
@@ -38210,6 +38235,7 @@
     {
       "showId": "our-town-2024",
       "file": "newyorker--helen-shaw.json",
+      "score": 76,
       "publishDate": "2024-10-17",
       "url": "https://www.newyorker.com/magazine/2024/10/28/hold-on-to-me-darling-theatre-review-our-town",
       "findings": [
@@ -41574,6 +41600,7 @@
     {
       "showId": "rent-1996",
       "file": "ap--michael-kuchwara.json",
+      "score": 76,
       "publishDate": "1996-04-28",
       "url": "https://www.newspapers.com/image/347485472/",
       "findings": [
@@ -41587,6 +41614,7 @@
     {
       "showId": "rent-1996",
       "file": "variety--jeremy-gerard.json",
+      "score": 93,
       "publishDate": "1996-04-30",
       "url": "https://variety.com/1996/legit/reviews/rent-5-1200445535/",
       "findings": [
@@ -41682,19 +41710,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "rocky-2014",
-      "file": "latimes--charles-mcnulty.json",
-      "publishDate": "2014-03-12",
-      "url": "https://www.newspapers.com/image/203442189/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -42092,6 +42107,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "newyorker--helen-shaw.json",
+      "score": 64,
       "publishDate": "2024-10-25",
       "url": "https://www.newyorker.com/magazine/2024/11/04/sunset-blvd-romeo-and-juliet-theatre-review",
       "findings": [
@@ -42920,6 +42936,7 @@
     {
       "showId": "shrek-the-musical-2008",
       "file": "chicagotribune--chris-jones.json",
+      "score": 66,
       "publishDate": "2008-12-15",
       "url": "https://www.newspapers.com/image/232075947/",
       "findings": [
@@ -42933,6 +42950,7 @@
     {
       "showId": "shrek-the-musical-2008",
       "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 75,
       "publishDate": "2008-12-15",
       "url": "https://www.newspapers.com/image/393092795/",
       "findings": [
@@ -47317,6 +47335,7 @@
     {
       "showId": "superior-donuts-2009",
       "file": "latimes--charles-mcnulty.json",
+      "score": 75,
       "publishDate": "2009-10-02",
       "url": "https://www.newspapers.com/image/193494070/",
       "findings": [
@@ -51346,6 +51365,7 @@
     {
       "showId": "the-elephant-man-2014",
       "file": "newsday--linda-winer.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://www.newsday.com/entertainment/theater/the-elephant-man-review-a-stellar-bradley-cooper-1.9685494",
       "findings": [
@@ -51442,6 +51462,7 @@
     {
       "showId": "the-farnsworth-invention-2007",
       "file": "newsday--linda-winer.json",
+      "score": 85,
       "publishDate": "2007-12-04",
       "url": "https://www.newspapers.com/image/714794657/",
       "findings": [
@@ -51455,6 +51476,7 @@
     {
       "showId": "the-farnsworth-invention-2007",
       "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 45,
       "publishDate": "2007-12-04",
       "url": "https://www.newspapers.com/image/411138289/",
       "findings": [
@@ -54347,6 +54369,7 @@
     {
       "showId": "the-little-mermaid-2008",
       "file": "chicagotribune--chris-jones.json",
+      "score": 50,
       "publishDate": "2008-01-11",
       "url": "https://www.newspapers.com/image/231942414/",
       "findings": [
@@ -54373,6 +54396,7 @@
     {
       "showId": "the-little-mermaid-2008",
       "file": "newsday--linda-winer.json",
+      "score": 78,
       "publishDate": "2008-01-11",
       "url": "https://www.newspapers.com/image/714656658/",
       "findings": [
@@ -58143,6 +58167,7 @@
     {
       "showId": "the-vertical-hour-2006",
       "file": "newsday--linda-winer.json",
+      "score": 41,
       "publishDate": "2006-12-01",
       "url": "https://www.newspapers.com/image/713797600/",
       "findings": [
@@ -62037,6 +62062,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "newsday--linda-winer.json",
+      "score": 91,
       "publishDate": "2012-10-15",
       "url": "https://www.newspapers.com/image/1011210550/",
       "findings": [
@@ -62064,6 +62090,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 89,
       "publishDate": "2012-10-16",
       "url": "https://www.newspapers.com/image/575154843/",
       "findings": [
@@ -62854,6 +62881,7 @@
     {
       "showId": "a-chorus-line-2006",
       "file": "newsday--linda-winer.json",
+      "score": 72,
       "publishDate": "2006-10-06",
       "url": "https://www.newspapers.com/image/713766181/",
       "findings": [
@@ -65248,6 +65276,7 @@
     {
       "showId": "billy-elliot-the-musical-2008",
       "file": "latimes--charles-mcnulty.json",
+      "score": 45,
       "publishDate": "2008-11-14",
       "url": "https://www.newspapers.com/image/193456095/",
       "findings": [
@@ -66814,6 +66843,7 @@
     {
       "showId": "constellations-2015",
       "file": "chicagotribune--chris-jones.json",
+      "score": 81,
       "publishDate": "2015-01-15",
       "url": "https://www.newspapers.com/image/241374409/",
       "findings": [
@@ -68376,6 +68406,7 @@
     {
       "showId": "festen-2006",
       "file": "newsday--linda-winer.json",
+      "score": 78,
       "publishDate": "2006-04-10",
       "url": "https://www.newspapers.com/image/710084114/",
       "findings": [
@@ -69242,6 +69273,7 @@
     {
       "showId": "grey-gardens-2006",
       "file": "chicagotribune--chris-jones.json",
+      "score": 89,
       "publishDate": "2006-11-03",
       "url": "https://www.newspapers.com/image/231392090/",
       "findings": [
@@ -69255,6 +69287,7 @@
     {
       "showId": "grey-gardens-2006",
       "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 90,
       "publishDate": "2006-11-03",
       "url": "https://www.newspapers.com/image/409402095/",
       "findings": [
@@ -70256,6 +70289,7 @@
     {
       "showId": "hand-to-god-2015",
       "file": "njcom--ronni-reich.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://www.nj.com/entertainment/index.ssf/2015/04/review_hand_to_god_brings_irreverent_laughs_to_bro.html",
       "findings": [
@@ -73256,6 +73290,7 @@
     {
       "showId": "latin-history-for-morons-2017",
       "file": "thewrap--robert-hofler.json",
+      "score": 80,
       "publishDate": null,
       "url": "https://www.thewrap.com/latin-history-morons-theater-review-john-leguizamo-explains/",
       "findings": [
@@ -76620,6 +76655,7 @@
     {
       "showId": "outside-mullingar-2014",
       "file": "huffpost--steven-suskin.json",
+      "score": 79,
       "publishDate": "2014-01-24",
       "url": "https://www.huffpost.com/steven-suskin/aisle-view-moonstruck-in_b_4655940.html",
       "findings": [
@@ -76633,6 +76669,7 @@
     {
       "showId": "paddington-the-musical-west-end-2025",
       "file": "musical-theatre-review--lisa-martland.json",
+      "score": 93,
       "publishDate": "2025-11-29",
       "url": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
       "findings": [
@@ -76702,6 +76739,7 @@
     {
       "showId": "passing-strange-2008",
       "file": "chicagotribune--chris-jones.json",
+      "score": 76,
       "publishDate": "2008-03-02",
       "url": "https://www.newspapers.com/image/231588383/",
       "findings": [
@@ -76729,6 +76767,7 @@
     {
       "showId": "passing-strange-2008",
       "file": "newsday--linda-winer.json",
+      "score": 82,
       "publishDate": "2008-02-29",
       "url": "https://www.newspapers.com/image/730598133/",
       "findings": [
@@ -77216,6 +77255,7 @@
     {
       "showId": "rent-1996",
       "file": "curtainup--unknown.json",
+      "score": 86,
       "publishDate": "1999-01-01",
       "url": "https://www.curtainup.com/rent.html",
       "findings": [
@@ -77342,6 +77382,7 @@
     {
       "showId": "rock-of-ages-2009",
       "file": "newsday--linda-winer.json",
+      "score": 71,
       "publishDate": "2009-04-08",
       "url": "https://www.newspapers.com/image/711254349/",
       "findings": [
@@ -80240,6 +80281,7 @@
     {
       "showId": "the-39-steps-2008",
       "file": "newsday--linda-winer.json",
+      "score": 71,
       "publishDate": "2008-01-16",
       "url": "https://www.newspapers.com/image/714658701/",
       "findings": [
@@ -80365,6 +80407,7 @@
     {
       "showId": "the-audience-2015",
       "file": "njcom--ronni-reich.json",
+      "score": 81,
       "publishDate": null,
       "url": "https://www.nj.com/entertainment/index.ssf/2015/03/helen_mirren_brings_her_majesty_to_broadway_in_the.html",
       "findings": [
@@ -85043,6 +85086,7 @@
     {
       "showId": "title-of-show-2008",
       "file": "newsday--linda-winer.json",
+      "score": 59,
       "publishDate": "2008-07-18",
       "url": "https://www.newspapers.com/image/730519686/",
       "findings": [
