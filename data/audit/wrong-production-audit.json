@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-07T10:32:59.790Z",
+  "timestamp": "2026-04-07T10:55:04.818Z",
   "stats": {
     "totalReviews": 34609,
-    "alreadyFlagged": 13091,
+    "alreadyFlagged": 13093,
     "dateGuardCatches": 55,
     "directorMismatch": 1007,
-    "tvFilmSignals": 3471,
+    "tvFilmSignals": 3470,
     "londonSignals": 1122,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
@@ -54091,6 +54091,7 @@
     {
       "showId": "the-lion-king-west-end-2021",
       "file": "independent--paul-taylor.json",
+      "score": 77,
       "publishDate": "1999-10-21",
       "url": null,
       "findings": [
@@ -54247,19 +54248,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "times-uk--benedict-nightingale.json",
-      "publishDate": "1999-10-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
