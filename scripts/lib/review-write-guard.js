@@ -26,6 +26,11 @@ const path = require('path');
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
 const PROTECTED_FIELDS = [
   'assignedScore',
+  'humanReviewScore',
+  'manualContentTier',
+  'originalScore',
+  'originalScoreSource',
+  'originalScoreNormalized',
   'llmScore',
   'llmMetadata',
   'fullText',
