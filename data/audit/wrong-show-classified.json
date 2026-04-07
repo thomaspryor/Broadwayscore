@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-07T00:31:53.212Z",
+    "generatedAt": "2026-04-07T03:06:34.835Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "becky-shaw-2026",
+      "showTitle": "Becky Shaw",
+      "file": "cititour--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, playwright, director, venue (Second Stage at the Hayes Theatre), and cast members (Lauren Patten, Alden Ehrenreich, Linda Emond, Patrick Ball). It also discusses the plot and themes of the play."
+    }
+  ]
 }

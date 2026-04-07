@@ -1,33 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-07T00:31:51.840Z",
+    "generatedAt": "2026-04-07T03:06:32.672Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 76,
-    "classified": 1,
+    "classified": 0,
     "wrongProduction": 0,
-    "correctProduction": 1,
+    "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
     "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "how-to-succeed-in-business-without-really-trying-1995",
-      "showTitle": "How to Succeed in Business Without Really Trying",
-      "showYear": 1995,
-      "file": "variety--jeremy-gerard.json",
-      "outlet": "Variety",
-      "criticName": "Jeremy Gerard",
-      "publishDate": "1995-03-23",
-      "originalSignals": [
-        "revival text signals: revival, this production"
-      ],
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions Matthew Broderick as J. Pierrepont Finch, which was the lead in the 1995 production. The review also mentions Walter Cronkite's narration, which was part of the 1995 production."
-    }
-  ]
+  "results": []
 }
