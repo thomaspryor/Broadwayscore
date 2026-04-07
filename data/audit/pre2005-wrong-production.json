@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-07T15:30:54.397Z",
+    "generatedAt": "2026-04-07T15:43:49.275Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 105,
-    "highConfidence": 29,
+    "totalFlagged": 107,
+    "highConfidence": 31,
     "mediumConfidence": 76,
     "lowConfidence": 0,
-    "reassignable": 53
+    "reassignable": 55
   },
   "results": [
     {
@@ -1617,6 +1617,21 @@
       "textSnippet": "Among the many events involved in the reopening of the theater industry following the industrywide shutdown, one of the most significant – at least for passionate devotees of musical theater – occurre"
     },
     {
+      "showId": "glengarry-glen-ross-1984",
+      "showTitle": "Glengarry Glen Ross",
+      "showYear": 1984,
+      "file": "financialtimes--brendan-lemon.json",
+      "outlet": "Financial Times",
+      "criticName": "Brendan Lemon",
+      "publishDate": "2012-12-09",
+      "confidence": "high",
+      "suggestedShowId": "glengarry-glen-ross-2012",
+      "signals": [
+        "publishDate 2012 matches revival glengarry-glen-ross-2012 (opened 2012)"
+      ],
+      "textSnippet": "David Mamet-bashing is so rife right now in New York that it is reassuring to be reminded why he presents such a large target in the first place: his masterpiece, Glengarry Glen Ross. Even in an only "
+    },
+    {
       "showId": "sunday-in-the-park-with-george-1984",
       "showTitle": "Sunday in the Park with George",
       "showYear": 1984,
@@ -1646,6 +1661,23 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "NEW YORK — Could the timing be any better for a Broadway revival of Annie? The uplifting musical sells not only the archetypal rags-to-riches fantasy but promotes belief in the power of government to "
+    },
+    {
+      "showId": "jesus-christ-superstar-1971",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 1971,
+      "file": "financialtimes--brendan-lemon.json",
+      "outlet": "Financial Times",
+      "criticName": "Brendan Lemon",
+      "publishDate": "2012-03-22",
+      "confidence": "high",
+      "suggestedShowId": "jesus-christ-superstar-2012",
+      "signals": [
+        "publishDate 2012 matches revival jesus-christ-superstar-2012 (opened 2012)",
+        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Stratford, director: Des McAnuff",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "It comes as no surprise that this revival of Andrew Lloyd Webber and Tim Rice’s Jesus Christ Superstar provides a measure of enjoyment. Like the hit Four Seasons musical Jersey Boys, which faces it at"
     }
   ]
 }

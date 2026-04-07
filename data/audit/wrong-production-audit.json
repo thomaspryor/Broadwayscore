@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T15:35:35.468Z",
+  "timestamp": "2026-04-07T15:48:13.048Z",
   "stats": {
     "totalReviews": 34611,
-    "alreadyFlagged": 13200,
+    "alreadyFlagged": 13206,
     "dateGuardCatches": 55,
-    "directorMismatch": 1005,
+    "directorMismatch": 1003,
     "tvFilmSignals": 3475,
-    "londonSignals": 1126,
+    "londonSignals": 1125,
     "offBroadwaySignals": 982,
     "yearMismatch": 74,
-    "noPublishDate": 5629
+    "noPublishDate": 5628
   },
   "findings": [
     {
@@ -25603,34 +25603,6 @@
       "file": "british-theatre--howard-loxton.json",
       "score": 83,
       "publishDate": "2025-12-14",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "daily-mail--mark-cook.json",
-      "score": 72,
-      "publishDate": "2025-12-21",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2026",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 82,
-      "publishDate": "2025-12-19",
       "url": null,
       "findings": [
         {
@@ -83846,20 +83818,6 @@
       "score": 69,
       "publishDate": "2021-08-21",
       "url": "https://www.britishtheatre.com/posts/review-the-phantom-of-the-opera-her-majestys-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "nytg--diep-tran.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/everything-you-need-to-know-about-the-phantom-of-the-opera-on-broadway",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
