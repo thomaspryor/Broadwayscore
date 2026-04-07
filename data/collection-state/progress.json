@@ -190,7 +190,17 @@
     "the-miracle-worker-2010/newsday--linda-winer.json",
     "miss-saigon-1991/is-sensational-in-every-way--laurence-connor.json",
     "doubt-a-parable/nytg--gillian-russo.json",
-    "doubt-a-parable/nytimes--jesse-green.json"
+    "doubt-a-parable/nytimes--jesse-green.json",
+    "doubt-a-parable/vulture--sara-holdren.json",
+    "harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+    "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
+    "purpose/hollywood-reporter--lovia-gyarkye.json",
+    "purpose/newyorker--helen-shaw.json",
+    "purpose/nytg--joe-dziemianowicz.json",
+    "purpose/nytimes--jesse-green.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1679,7 +1689,8 @@
       "all-my-sons-west-end-2025/plays-international--maryam-philpott.json",
       "fiddler-on-the-roof-2015/show-buzz-nyc--laura-heller.json",
       "enron-2010/financialtimes--brendan-lemon.json",
-      "doubt-a-parable/nytg--gillian-russo.json"
+      "doubt-a-parable/nytg--gillian-russo.json",
+      "purpose/nytg--joe-dziemianowicz.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1750,7 +1761,13 @@
       "data/review-texts/bronx-bombers-2014/newsday--linda-winer.json",
       "bronx-bombers-2014/newsday--linda-winer.json",
       "data/review-texts/the-miracle-worker-2010/newsday--linda-winer.json",
-      "the-miracle-worker-2010/newsday--linda-winer.json"
+      "the-miracle-worker-2010/newsday--linda-winer.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+      "data/review-texts/purpose/hollywood-reporter--lovia-gyarkye.json",
+      "purpose/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1783,7 +1800,11 @@
       "american-buffalo-2022/theater-life--david-sheward.json",
       "something-rotten-2015/broadwayworld--roy-berko.json",
       "miss-saigon-1991/is-sensational-in-every-way--laurence-connor.json",
-      "doubt-a-parable/nytimes--jesse-green.json"
+      "doubt-a-parable/nytimes--jesse-green.json",
+      "harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json",
+      "moulin-rouge-the-musical-review/nytimes--ben-brantley.json",
+      "purpose/newyorker--helen-shaw.json",
+      "purpose/nytimes--jesse-green.json"
     ],
     "brightdata": [
       "scandalous-2012/variety--marilyn-stasio.json",
@@ -1897,11 +1918,13 @@
       "starlight-express-west-end-2024/plays-international--maryam-philpott.json",
       "tammy-faye-2024/vulture--unknown.json",
       "how-i-learned-to-drive-2022/parterre-box--david-fox.json",
-      "angels-in-america-2018/vulture--jesse-green-pt-2.json"
+      "angels-in-america-2018/vulture--jesse-green-pt-2.json",
+      "doubt-a-parable/vulture--sara-holdren.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "doubt-a-parable/nytimes--jesse-green.json",
+  "lastProcessed": "purpose/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2464,6 +2487,50 @@
       "t": "2026-04-07T05:03:44.727Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-07T05:06:15.117Z",
+      "event": "bb-session",
+      "session": "4bb644be",
+      "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-revie"
+    },
+    {
+      "t": "2026-04-07T05:06:16.427Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-07T05:06:51.460Z",
+      "event": "bb-session",
+      "session": "28e6f606",
+      "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-ch"
+    },
+    {
+      "t": "2026-04-07T05:06:52.791Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-07T05:07:28.586Z",
+      "event": "bb-session",
+      "session": "d618c179",
+      "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-b"
+    },
+    {
+      "t": "2026-04-07T05:07:29.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-07T05:07:58.829Z",
+      "event": "bb-session",
+      "session": "b9c7c489",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/purpose-review-phylicia-rashad-"
+    },
+    {
+      "t": "2026-04-07T05:08:00.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
