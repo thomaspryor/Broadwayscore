@@ -166,14 +166,23 @@ async function fetchSeatPlan(theaterName) {
   return null;
 }
 
+// AVFMS uses different venue names than our canonical theater names.
+// When adding a new theater, check aviewfrommyseat.com for the actual venue slug.
+const AVFMS_NAME_OVERRIDES = {
+  'Helen Hayes Theater': 'Hayes Theater',
+  'Harold and Miriam Steinberg Center for Theatre': 'Black Box Theatre at the Steinberg Center for Theatre',
+};
+
 async function fetchAVFMS(theaterName) {
-  const encoded = theaterName.replace(/ /g, '+');
+  const avfmsName = AVFMS_NAME_OVERRIDES[theaterName] || theaterName;
+  const encoded = avfmsName.replace(/ /g, '+');
   const url = `https://aviewfrommyseat.com/venue/${encoded}/tips/`;
   try {
     const result = await fetchPage(url);
     if (result && result.content && result.content.length > 200) {
       return { url, content: extractText(result.content, 3000) };
     }
+    console.log(`    AVFMS: no content at ${url} — venue name may differ on AVFMS`);
   } catch (err) {
     console.log(`    AVFMS failed: ${err.message}`);
   }
