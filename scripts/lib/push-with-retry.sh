@@ -95,7 +95,7 @@ restore_protected_fields() {
   if ! command -v node &>/dev/null; then return 0; fi
   local remote_ref="origin/$PULL_BRANCH"
   local count
-  count=$(node "$SCRIPT_DIR/restore-protected-fields.js" "$remote_ref" 2>&1 | tail -1)
+  count=$(node "$SCRIPT_DIR/restore-protected-fields.js" "$remote_ref")
   if [ "$count" -gt 0 ] 2>/dev/null; then
     echo "  Restored protected fields in $count file(s) after rebase"
     git add -A
