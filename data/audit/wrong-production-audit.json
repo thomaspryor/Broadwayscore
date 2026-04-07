@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T20:10:23.683Z",
+  "timestamp": "2026-04-07T20:17:45.016Z",
   "stats": {
     "totalReviews": 34593,
-    "alreadyFlagged": 13234,
-    "dateGuardCatches": 57,
-    "directorMismatch": 990,
-    "tvFilmSignals": 3474,
-    "londonSignals": 1126,
-    "offBroadwaySignals": 983,
+    "alreadyFlagged": 13256,
+    "dateGuardCatches": 60,
+    "directorMismatch": 985,
+    "tvFilmSignals": 3469,
+    "londonSignals": 1124,
+    "offBroadwaySignals": 981,
     "yearMismatch": 74,
-    "noPublishDate": 5527
+    "noPublishDate": 5400
   },
   "findings": [
     {
@@ -11848,7 +11848,7 @@
       "showId": "days-of-wine-and-roses-2024",
       "file": "ew--emlyn-travis.json",
       "score": 75,
-      "publishDate": null,
+      "publishDate": "2024-01-29",
       "url": "https://ew.com/days-of-wine-and-roses-broadway-review-kelli-ohara-brain-darcy-james-8550561",
       "findings": [
         {
@@ -11862,7 +11862,7 @@
       "showId": "days-of-wine-and-roses-2024",
       "file": "guardian--lauren-mechling.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2024-01-29",
       "url": "https://www.theguardian.com/stage/2024/jan/29/days-of-wine-and-roses-review-broadway-musical",
       "findings": [
         {
@@ -11946,7 +11946,7 @@
       "showId": "dead-accounts-2012",
       "file": "latimes--charles-mcnulty.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2012-11-30",
       "url": "https://www.latimes.com/entertainment/arts/culture/la-et-cm-dead-accounts-review-katie-holmes-20121130,0,1376784.story",
       "findings": [
         {
@@ -12105,9 +12105,14 @@
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
       "file": "thestage--alistair-smith.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2023-06-21",
       "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
       "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 979d before show (2023-06-21 vs 2026-02-24)"
+        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -12345,20 +12350,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2012",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-death-salesman-20221010-ggdxdb4ia5ecbgbkats54zlhze-story.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
         }
       ]
     },
@@ -12951,20 +12942,6 @@
     },
     {
       "showId": "diana-the-musical-2021",
-      "file": "nytg--joe-dziemianowicz.json",
-      "score": 25,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/diana-the-musical-broadway-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "diana-the-musical-2021",
       "file": "nytimes--jesse-green.json",
       "score": 25,
       "publishDate": "2021-11-17T19:32:08-05:00",
@@ -13483,20 +13460,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "doubt-2005",
-      "file": "thestage--lane-williamson.json",
-      "score": 60,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/reviews/doubt-a-parable-review-at-the-todd-haimes-theatre-new-york-by-john-patrick-shanley-with-liev-schreiber-and-amy-ryan-roundabout-theatre-company",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"scott ellis\" from doubt-2024"
         }
       ]
     },
@@ -14128,7 +14091,7 @@
       "showId": "english-2025",
       "file": "guardian--gloria-oladipo.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2025-01-23",
       "url": "https://www.theguardian.com/stage/2025/jan/23/english-review-broadway",
       "findings": [
         {
@@ -14544,7 +14507,7 @@
       "showId": "every-brilliant-thing-2026",
       "file": "vulture--sara-holdren.json",
       "score": 86,
-      "publishDate": null,
+      "publishDate": "2026-03-12",
       "url": "https://www.vulture.com/article/daniel-radcliffe-every-brilliant-thing-review.html",
       "findings": [
         {
@@ -14669,9 +14632,14 @@
       "showId": "faith-healer-2006",
       "file": "variety--karen-fricker.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2006-02-09",
       "url": "https://variety.com/2006/legit/reviews/faith-healer-2-1200518647/",
       "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 68d before show (2006-02-09 vs 2006-04-18)"
+        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -14847,7 +14815,7 @@
       "showId": "fat-ham-2023",
       "file": "guardian--gloria-oladipo.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2023-04-13",
       "url": "https://www.theguardian.com/stage/2023/apr/13/fat-ham-review-broadway-hamlet-pulitzer",
       "findings": [
         {
@@ -15382,7 +15350,7 @@
       "showId": "fiddler-on-the-roof-2015",
       "file": "theatermania--zachary-stewart.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2015-12-20",
       "url": "https://www.theatermania.com/broadway/reviews/fiddler-on-the-roof_75372.html",
       "findings": [
         {
@@ -16144,7 +16112,7 @@
       "showId": "fish-in-the-dark-2015",
       "file": "theater-life--patrick-christiano.json",
       "score": 22,
-      "publishDate": null,
+      "publishDate": "2015-03-10",
       "url": "https://theaterlife.com/node/13574",
       "findings": [
         {
@@ -16172,7 +16140,7 @@
       "showId": "fish-in-the-dark-2015",
       "file": "theatermania--david-gordon.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2015-03-05",
       "url": "https://www.theatermania.com/new-york-city-theater/reviews/fish-in-the-dark_71969.html",
       "findings": [
         {
@@ -16690,44 +16658,6 @@
     },
     {
       "showId": "frozen-2004",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 64,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/review/frozen-broadway-theater-review-1096441",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael grandage\" from frozen-2018"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2004",
-      "file": "latimes--charles-mcnulty.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "http://www.latimes.com/entertainment/arts/la-et-cm-frozen-broadway-review-20180322-story.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael grandage\" from frozen-2018"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2004",
       "file": "newsday--barbara-schuler.json",
       "score": 77,
       "publishDate": "2004-05-04",
@@ -16838,7 +16768,7 @@
       "showId": "frozen-2018",
       "file": "chicagotribune--chris-jones.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2018-03-22",
       "url": "https://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-frozen-broadway-review-0322-story.html",
       "findings": [
         {
@@ -17384,7 +17314,7 @@
       "showId": "frozen-2018",
       "file": "theatermania--zachary-stewart.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2018-03-22",
       "url": "https://www.theatermania.com/broadway/reviews/disney-lets-it-go-with-frozen-on-broadway_84554.html",
       "findings": [
         {
@@ -17412,7 +17342,7 @@
       "showId": "frozen-2018",
       "file": "thestage--mark-shenton.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2018-03-23",
       "url": "https://www.thestage.co.uk/reviews/disneys-frozen-review-at-st-james-theatre-new-york--a-thrilling-stage-version",
       "findings": [
         {
@@ -17824,7 +17754,7 @@
       "showId": "funny-girl-2022",
       "file": "nytg--suzy-evans.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2022-11-15",
       "url": "https://www.newyorktheatreguide.com/reviews/funny-girl-broadway-lea-michele-review",
       "findings": [
         {
@@ -18203,7 +18133,7 @@
       "showId": "gigi-2015",
       "file": "latimes--charles-mcnulty.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2015-04-09",
       "url": "https://www.latimes.com/entertainment/arts/la-et-cm-gigi-broadway-review-20150409-column.html",
       "findings": [
         {
@@ -18301,7 +18231,7 @@
       "showId": "gigi-2015",
       "file": "vulture--jesse-green.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2015-04-08",
       "url": "https://www.vulture.com/2015/04/theater-review-vanessa-hudgens-in-gigi.html",
       "findings": [
         {
@@ -18402,20 +18332,6 @@
       "score": 56,
       "publishDate": null,
       "url": "http://www.nypost.com/p/entertainment/theater/more_fizzle_than_sizzle_NjcY22o8gi8mcbUmlL5tKJ",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from glengarry-glen-ross-2012"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2005",
-      "file": "timeout--david-cote.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "http://www.timeout.com/newyork/theater/glengarry-glen-ross",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18750,7 +18666,7 @@
       "showId": "godspell-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 43,
-      "publishDate": null,
+      "publishDate": "2011-11-07",
       "url": "https://www.hollywoodreporter.com/review/godspell-theater-review-258325",
       "findings": [
         {
@@ -19719,19 +19635,6 @@
     },
     {
       "showId": "grey-gardens-2006",
-      "file": "latimes--charles-mcnulty.json",
-      "publishDate": null,
-      "url": "https://www.latimes.com/entertainment/arts/la-et-cm-grey-gardens-tour-review-20160712-snap-story.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "grey-gardens-2006",
       "file": "variety--charles-isherwood.json",
       "score": 88,
       "publishDate": "November 2, 2006",
@@ -20038,7 +19941,7 @@
       "showId": "groundhog-day-2017",
       "file": "theatermania--david-gordon.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2017-04-17",
       "url": "https://www.theatermania.com/broadway/reviews/groundhog-day_80742.html",
       "findings": [
         {
@@ -20863,6 +20766,20 @@
     },
     {
       "showId": "hadestown-west-end-2024",
+      "file": "thestage--tim-bano.json",
+      "score": 76,
+      "publishDate": "2018-11-14",
+      "url": "https://www.thestage.co.uk/reviews/hadestown-review-at-national-theatre-london--stunning-new-folk-opera",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1914d before show (2018-11-14 vs 2024-02-10)"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
       "file": "variety--matt-trueman.json",
       "score": 89,
       "publishDate": "2018-11-15",
@@ -20872,19 +20789,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1913d before show (2018-11-15 vs 2024-02-10)"
-        }
-      ]
-    },
-    {
-      "showId": "hairspray-2002",
-      "file": "hollywood-reporter--david-rooney.json",
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/review/hairspray-live-953980",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -21057,7 +20961,7 @@
       "showId": "hand-to-god-2015",
       "file": "chicagotribune--chris-jones.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2015-04-07",
       "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-hand-to-god-broadway-review-20150407-column.html",
       "findings": [
         {
@@ -21131,7 +21035,7 @@
       "showId": "hands-on-a-hardbody-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2013-03-21",
       "url": "https://www.hollywoodreporter.com/review/hands-a-hardbody-theater-review-430291",
       "findings": [
         {
@@ -21262,7 +21166,7 @@
       "showId": "harry-potter-2021",
       "file": "guardian--alexis-soloski.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2018-04-22",
       "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
       "findings": [
         {
@@ -21389,7 +21293,7 @@
       "showId": "harry-potter-2021",
       "file": "telegraph--diane-snyder.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2018-04-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
       "findings": [
         {
@@ -21520,7 +21424,7 @@
       "showId": "head-over-heels-2018",
       "file": "guardian--alexis-soloski.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2018-07-26",
       "url": "https://www.theguardian.com/stage/2018/jul/26/head-over-heels-review-go-gos-jukebox-musical-packs-a-power-pop-punch",
       "findings": [
         {
@@ -21818,7 +21722,7 @@
     {
       "showId": "hedwig-and-the-angry-inch-2014",
       "file": "guardian--alexis-soloski.json",
-      "publishDate": null,
+      "publishDate": "2014-04-23",
       "url": "http://www.theguardian.com/stage/2014/apr/23/hedwig-angry-inch-review-belasco-new-york",
       "findings": [
         {
@@ -67007,20 +66911,6 @@
       ]
     },
     {
-      "showId": "dana-h-2021",
-      "file": "nytg--juan-michael-porter-ii.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/dana-h-broadway-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
-        }
-      ]
-    },
-    {
       "showId": "days-of-wine-and-roses-2024",
       "file": "front-row-center--tulis-mccall.json",
       "score": 66,
@@ -67421,7 +67311,7 @@
       "showId": "doctor-zhivago-2015",
       "file": "variety--marilyn-stasio.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2015-04-22",
       "url": "https://variety.com/2015/legit/reviews/doctor-zhivago-review-broadway-musical-1201476701/",
       "findings": [
         {
@@ -67645,7 +67535,7 @@
       "showId": "eclipsed-2016",
       "file": "theatermania--zachary-stewart.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2016-03-06",
       "url": "https://www.theatermania.com/broadway/reviews/eclipsed_76216.html",
       "findings": [
         {
@@ -67827,7 +67717,7 @@
       "showId": "english-2025",
       "file": "vulture--sara-holdren.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2025-01-23",
       "url": "https://www.vulture.com/article/freedom-in-speech-sanaz-toossis-english.html",
       "findings": [
         {
@@ -67890,19 +67780,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "eureka-day-2024",
-      "file": "telegraph--dominic-cavendish.json",
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/eureka-day-review-anti-woke-satire-exactly-what-old-vic-needed/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -68151,23 +68028,9 @@
     },
     {
       "showId": "faith-healer-2006",
-      "file": "guardian--karen-fricker.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2006/feb/09/theatre1",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "faith-healer-2006",
       "file": "theatermania--unknown.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2006-05-04",
       "url": "https://www.theatermania.com/news/faith-healer_8196/",
       "findings": [
         {
@@ -68181,7 +68044,7 @@
       "showId": "falsettos-2016",
       "file": "theatermania--zachary-stewart.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2016-10-27",
       "url": "https://www.theatermania.com/broadway/reviews/falsettos_78942.html",
       "findings": [
         {
@@ -68337,20 +68200,6 @@
       "score": 75,
       "publishDate": "2023-04-19",
       "url": "https://www.theaterscene.net/plays/broadway-plays/fat-ham-2/joseph-pisano/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "fat-ham-2023",
-      "file": "theatermania--matt-windman.json",
-      "score": 95,
-      "publishDate": null,
-      "url": "https://www.theatermania.com/news/review-pulitzer-winning-fat-ham-serves-up-shakespeare-with-a-tasty-rub_93837/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -68755,7 +68604,7 @@
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
       "file": "variety--ayanna-prescod.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2022-04-21",
       "url": "https://variety.com/2022/legit/reviews/for-colored-girls-review-broadway-ntozake-shange-1235236902/",
       "findings": [
         {
@@ -68839,7 +68688,7 @@
       "showId": "fully-committed-2016",
       "file": "theatermania--hayley-levitt.json",
       "score": 48,
-      "publishDate": null,
+      "publishDate": "2016-04-25",
       "url": "https://www.theatermania.com/broadway/reviews/fully-committed-jesse-tyler-ferguson_76850.html",
       "findings": [
         {
@@ -69119,7 +68968,7 @@
       "showId": "ghost-the-musical-2012",
       "file": "variety--steven-suskin.json",
       "score": 38,
-      "publishDate": null,
+      "publishDate": "2012-04-24",
       "url": "https://www.variety.com/review/VE1117947430",
       "findings": [
         {
@@ -69397,7 +69246,7 @@
       "showId": "groundhog-day-2017",
       "file": "latimes--charles-mcnulty.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2017-04-17",
       "url": "https://www.latimes.com/entertainment/arts/la-et-cm-groundhog-day-review-20170417-story.html",
       "findings": [
         {
@@ -69425,7 +69274,7 @@
       "showId": "groundhog-day-2017",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2017-04-17",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/andy-karl-brightens-groundhog-day-theater-review-article-1.3065671",
       "findings": [
         {
@@ -69453,7 +69302,7 @@
       "showId": "groundhog-day-2017",
       "file": "thestage--mark-shenton.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2017-04-18",
       "url": "https://www.thestage.co.uk/reviews/groundhog-day-review-at-august-wilson-theatre-new-york--hilarious-and-bracing",
       "findings": [
         {
