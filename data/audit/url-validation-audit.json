@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "runDate": "2026-04-07T18:50:56.407Z",
+    "filters": {
+      "status": "open",
+      "source": null,
+      "show": null,
+      "phase": "all"
+    },
+    "stats": {
+      "totalScanned": 59,
+      "phase1SlugMatch": 0,
+      "phase1Suspicious": 59,
+      "phase2ArchiveValid": 0,
+      "phase2NoArchive": 39,
+      "phase3Fetched": 3,
+      "phase3Valid": 2,
+      "phase3FetchFailed": 0,
+      "mismatches": 1,
+      "budgetExhausted": false,
+      "creditsUsed": 0
+    }
+  },
+  "results": [
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "sunday-telegraph--dominic-cavendish.json",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/",
+      "source": "bww-roundup",
+      "outlet": "Sunday Telegraph",
+      "phase": 3,
+      "verdict": "valid",
+      "reason": "LLM confirmed (gemini)",
+      "showTitle": "Cabaret at the Kit Kat Club",
+      "showStatus": "open"
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "url": "https://www.thetimes.co.uk/article/cabaret-review-sinister-redmayne-and-sumptuous-set-are-a-seductive-combination-8r76crq0g",
+      "source": "bww-roundup",
+      "outlet": "The Times",
+      "phase": 3,
+      "verdict": "valid",
+      "reason": "LLM confirmed (gemini)",
+      "showTitle": "Cabaret at the Kit Kat Club",
+      "showStatus": "open"
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "west-end-wilma--west-end-wilma.json",
+      "url": "https://westendwilma.com/review-cabaret-musical-london-october-2025/",
+      "source": "stagedoor",
+      "outlet": "West End Wilma",
+      "phase": 3,
+      "verdict": "mismatch",
+      "reason": "year mismatch: heading years [2025,2025] vs show opened 2021",
+      "showTitle": "Cabaret at the Kit Kat Club",
+      "showStatus": "open"
+    }
+  ],
+  "mismatches": [
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "west-end-wilma--west-end-wilma.json",
+      "url": "https://westendwilma.com/review-cabaret-musical-london-october-2025/",
+      "source": "stagedoor",
+      "outlet": "West End Wilma",
+      "phase": 3,
+      "verdict": "mismatch",
+      "reason": "year mismatch: heading years [2025,2025] vs show opened 2021",
+      "showTitle": "Cabaret at the Kit Kat Club",
+      "showStatus": "open"
+    }
+  ]
+}
