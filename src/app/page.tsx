@@ -75,11 +75,6 @@ export default function HomePage() {
     .map(serializeShow);
 
   // Pre-compute ALL featured rows server-side to avoid 700+ item iterations on client hydration
-  const bestNewPlaysShows = allShows
-    .filter(s => s.type === 'play' && s.status === 'open' && new Date(s.openingDate) >= twelveMonthsAgo && shelfScoreFilter(s))
-    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
-    .map(serializeShow);
-
   const tonyWinnersShows = allShows
     .filter(s => s.status === 'open' && s.tags?.some(t => t.toLowerCase() === 'tony-winner'))
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
