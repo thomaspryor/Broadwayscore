@@ -21,7 +21,13 @@
     "bigfoot-off-broadway-2026/timeout--unknown.json",
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/i-paper--fiona-mountford.json",
     "into-the-woods-west-end-2025/i-paper--unknown.json",
-    "chess-2025/playbill--logan-culwell-block.json"
+    "chess-2025/playbill--logan-culwell-block.json",
+    "just-in-time-2025/billboard--rebecca-milzoff.json",
+    "stranger-things-2024/thestage--unknown.json",
+    "the-devil-wears-prada-west-end-2024/independent--louis-chilton.json",
+    "the-devil-wears-prada-west-end-2024/thestage--sam-marlowe.json",
+    "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json",
+    "hadestown-west-end-2024/variety--matt-trueman.json"
   ],
   "failed": [
     "cats-the-jellicle-ball-2026/billboard--unknown.json",
@@ -36,7 +42,11 @@
     "dracula-west-end-2025/times-uk--clive-davis.json",
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
     "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
-    "ragtime-2025/bloomberg--chris-rovzar.json"
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -50,10 +60,15 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "into-the-woods-west-end-2025/i-paper--unknown.json",
-      "chess-2025/playbill--logan-culwell-block.json"
+      "chess-2025/playbill--logan-culwell-block.json",
+      "stranger-things-2024/thestage--unknown.json",
+      "the-devil-wears-prada-west-end-2024/thestage--sam-marlowe.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/hadestown-west-end-2024/variety--matt-trueman.json",
+      "hadestown-west-end-2024/variety--matt-trueman.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "cats-the-jellicle-ball-2026/nytimes--unknown.json",
@@ -62,7 +77,8 @@
       "inter-alia-west-end-2026/whatsonstage--lucinda-everett.json",
       "becky-shaw-2026/cote-notices--unknown.json",
       "alice-in-wonderland-west-end-2026/telegraph--tim-robey.json",
-      "bigfoot-off-broadway-2026/timeout--unknown.json"
+      "bigfoot-off-broadway-2026/timeout--unknown.json",
+      "the-devil-wears-prada-west-end-2024/independent--louis-chilton.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -73,10 +89,24 @@
       "cats-the-jellicle-ball-2026/timeout--adam-feldman.json",
       "copenhagen-west-end-2026/telegraph--unknown.json",
       "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
-      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/i-paper--fiona-mountford.json"
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/i-paper--fiona-mountford.json",
+      "just-in-time-2025/billboard--rebecca-milzoff.json",
+      "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json"
     ]
   },
   "startTime": "2026-04-07T18:14:51.073Z",
-  "lastProcessed": "ragtime-2025/bloomberg--chris-rovzar.json",
-  "log": []
+  "lastProcessed": "hadestown-west-end-2024/times-uk--clive-davis.json",
+  "log": [
+    {
+      "t": "2026-04-07T19:15:53.677Z",
+      "event": "bb-session",
+      "session": "acc8f1e6",
+      "url": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191"
+    },
+    {
+      "t": "2026-04-07T19:15:54.888Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
