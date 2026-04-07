@@ -43,7 +43,15 @@
     "dracula-west-end-2025/metro--unknown.json",
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/timeout-london--unknown.json",
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/i-paper--fiona-mountford.json",
-    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json"
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/whatsonstage--sarah-crompton.json",
+    "black-is-the-color-of-my-voice-west-end-2026/guardian--unknown.json",
+    "black-is-the-color-of-my-voice-west-end-2026/financialtimes--unknown.json",
+    "black-is-the-color-of-my-voice-west-end-2026/london-theatre--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
+    "chess-2025/playbill--logan-culwell-block.json",
+    "the-producers-west-end-2025/express-uk--neil-norman.json",
+    "the-producers-west-end-2025/financialtimes--sarah-hemming.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -72,7 +80,9 @@
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
     "dracula-west-end-2025/times-uk--clive-davis.json",
-    "shadowlands-west-end-2026/times-uk--clive-davis.json"
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -99,7 +109,12 @@
       "kinky-boots-the-musical-west-end-2026/radio-times--joanna-magill.json",
       "broken-glass-west-end-2026/express-uk--unknown.json",
       "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/i-paper--fiona-mountford.json",
-      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json"
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json",
+      "black-is-the-color-of-my-voice-west-end-2026/guardian--unknown.json",
+      "black-is-the-color-of-my-voice-west-end-2026/financialtimes--unknown.json",
+      "black-is-the-color-of-my-voice-west-end-2026/london-theatre--unknown.json",
+      "chess-2025/playbill--logan-culwell-block.json",
+      "the-producers-west-end-2025/financialtimes--sarah-hemming.json"
     ],
     "amp": [],
     "browserbase": [
@@ -123,7 +138,10 @@
       "consumed-west-end-2026/timeout-london--andrzej-lukowski.json",
       "consumed-west-end-2026/times-uk--clive-davis.json",
       "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
-      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/timeout-london--unknown.json"
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/timeout-london--unknown.json",
+      "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/whatsonstage--sarah-crompton.json",
+      "the-hunger-games-on-stage-west-end-2025/whatsonstage--unknown.json",
+      "the-producers-west-end-2025/express-uk--neil-norman.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -144,7 +162,7 @@
     ]
   },
   "startTime": "2026-04-07T09:12:19.021Z",
-  "lastProcessed": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--sam-marlowe.json",
+  "lastProcessed": "the-producers-west-end-2025/financialtimes--sarah-hemming.json",
   "log": [
     {
       "t": "2026-04-07T09:16:15.147Z",
@@ -184,6 +202,12 @@
       "event": "bb-session",
       "session": "d98f4f8d",
       "url": "https://www.express.co.uk/entertainment/theatre/2085524/christian-aguilera-new-m"
+    },
+    {
+      "t": "2026-04-07T11:14:08.709Z",
+      "event": "bb-session",
+      "session": "b7e62210",
+      "url": "https://www.express.co.uk/entertainment/theatre"
     }
   ]
 }
