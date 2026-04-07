@@ -48,10 +48,12 @@ export default function UnsubscribeClient() {
       });
       if (res.ok) {
         // Clear localStorage so the site doesn't falsely show "Subscribed"
+        // Also reset page view counter to avoid immediately re-gating the user
         try {
           localStorage.removeItem(SUBSCRIBED_KEY_PREFIX + market);
           localStorage.removeItem(SUBSCRIBED_KEY); // Legacy key
           localStorage.removeItem('bsc_user_data');
+          localStorage.removeItem('bsc_page_views');
         } catch { /* noop */ }
         setStatus('success');
       } else {
