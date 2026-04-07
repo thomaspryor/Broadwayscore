@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-07T07:06:56.840Z",
+  "updatedAt": "2026-04-07T07:21:40.101Z",
   "processed": 275,
-  "failed": 1998,
+  "failed": 2001,
   "successRate": "12.1%",
   "tierBreakdown": {
     "playwright": 129,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 44,
     "brightdata": 22,
-    "archiveToday": 79,
+    "archiveToday": 80,
     "archive": 31
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-07T05:22:11.532Z",
-      "event": "bb-session",
-      "session": "3a1c337b",
-      "url": "https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1"
-    },
-    {
-      "t": "2026-04-07T05:22:12.759Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-04-07T05:24:17.133Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-07T06:17:23.477Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-07T07:20:11.470Z",
+      "event": "bb-session",
+      "session": "214dd611",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-07T07:20:12.832Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
