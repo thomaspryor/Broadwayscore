@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T03:43:35.656Z",
+  "timestamp": "2026-04-07T03:55:38.510Z",
   "stats": {
-    "totalReviews": 34626,
-    "alreadyFlagged": 13073,
+    "totalReviews": 34614,
+    "alreadyFlagged": 13070,
     "dateGuardCatches": 55,
     "directorMismatch": 1001,
-    "tvFilmSignals": 3467,
+    "tvFilmSignals": 3466,
     "londonSignals": 1116,
-    "offBroadwaySignals": 986,
+    "offBroadwaySignals": 984,
     "yearMismatch": 74,
-    "noPublishDate": 5632
+    "noPublishDate": 5627
   },
   "findings": [
     {
@@ -48387,20 +48387,6 @@
     },
     {
       "showId": "tammy-faye-2024",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 61,
-      "publishDate": "2024-11-14",
-      "url": "https://www.timeout.com/newyork/theater/tammy-faye-broadway-musical-review-elton-john-tammy-faye-bakker",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "tammy-faye-2024",
       "file": "variety--aramide-tinubu.json",
       "score": 44,
       "publishDate": "November 15, 2024",
@@ -63646,20 +63632,6 @@
       "score": 94,
       "publishDate": "November 12, 2015",
       "url": "http://www.timeout.com/newyork/theater/a-view-from-the-bridge",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2015",
-      "file": "timeout--time-out.json",
-      "score": 93,
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/a-view-from-the-bridge",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -80144,19 +80116,6 @@
       "file": "timeout--david-rooney.json",
       "publishDate": "2017-03-29",
       "url": "https://www.timeout.com/newyork/theater/sweat-1",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "sweat-2017",
-      "file": "timeout--matt-windman.json",
-      "publishDate": "2017-03-29",
-      "url": "http://www.timeout.com/newyork/theater/sweat-1",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
