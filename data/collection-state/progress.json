@@ -219,7 +219,14 @@
     "doubt-a-parable/ew--dalton-ross.json",
     "doubt-a-parable/nydailynews--chris-jones.json",
     "doubt-a-parable/nypost--johnny-oleksinski.json",
-    "doubt-a-parable/theatermania--zachary-stewart.json"
+    "doubt-a-parable/theatermania--zachary-stewart.json",
+    "doubt-a-parable/timeout--adam-feldman.json",
+    "harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json",
+    "harry-potter-and-the-cursed-child/timeout--adam-feldman.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+    "harry-potter-and-the-cursed-child-parts-one-and-two/ew--marc-snetiker.json",
+    "moulin-rouge-the-musical-review/deadline--greg-evans.json",
+    "purpose/deadline--greg-evans.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1617,7 +1624,10 @@
     "enron-2010/chicagotribune--shanxi-radio-and.json",
     "fences-2010/wsj--christopher-john-farley.json",
     "xanadu-2007/nydailynews--joe-dziemianowicz.json",
-    "purpose/vulture--jackson-mchenry.json"
+    "purpose/vulture--jackson-mchenry.json",
+    "doubt-a-parable/thewrap--jd-knapp.json",
+    "doubt-a-parable/wsj--charles-isherwood.json",
+    "purpose/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1717,7 +1727,11 @@
       "tammy-faye/nytg--joe-dziemianowicz.json",
       "doubt-a-parable/broadwaynews--brittani-samuel.json",
       "doubt-a-parable/ew--dalton-ross.json",
-      "doubt-a-parable/theatermania--zachary-stewart.json"
+      "doubt-a-parable/theatermania--zachary-stewart.json",
+      "doubt-a-parable/timeout--adam-feldman.json",
+      "harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json",
+      "harry-potter-and-the-cursed-child/timeout--adam-feldman.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/ew--marc-snetiker.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1808,7 +1822,13 @@
       "data/review-texts/doubt-a-parable/deadline--greg-evans.json",
       "doubt-a-parable/deadline--greg-evans.json",
       "data/review-texts/doubt-a-parable/nypost--johnny-oleksinski.json",
-      "doubt-a-parable/nypost--johnny-oleksinski.json"
+      "doubt-a-parable/nypost--johnny-oleksinski.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+      "harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+      "data/review-texts/moulin-rouge-the-musical-review/deadline--greg-evans.json",
+      "moulin-rouge-the-musical-review/deadline--greg-evans.json",
+      "data/review-texts/purpose/deadline--greg-evans.json",
+      "purpose/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1940,7 +1960,9 @@
       "data/review-texts/beetlejuice-2019/thestage--giselle.json",
       "data/review-texts/soul-doctor-2013/northjerseycom--robert-feldberg.json",
       "data/review-texts/xanadu-2007/nydailynews--joe-dziemianowicz.json",
-      "data/review-texts/purpose/vulture--jackson-mchenry.json"
+      "data/review-texts/purpose/vulture--jackson-mchenry.json",
+      "data/review-texts/doubt-a-parable/thewrap--jd-knapp.json",
+      "data/review-texts/purpose/broadwaynews--brittani-samuel.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -1971,7 +1993,7 @@
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "doubt-a-parable/theatermania--zachary-stewart.json",
+  "lastProcessed": "purpose/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2655,6 +2677,50 @@
       "t": "2026-04-07T05:16:12.802Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-07T05:20:00.265Z",
+      "event": "bb-session",
+      "session": "6675ab43",
+      "url": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-"
+    },
+    {
+      "t": "2026-04-07T05:20:01.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-07T05:21:48.314Z",
+      "event": "bb-session",
+      "session": "c81fc280",
+      "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-"
+    },
+    {
+      "t": "2026-04-07T05:21:49.616Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:22:11.532Z",
+      "event": "bb-session",
+      "session": "3a1c337b",
+      "url": "https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1"
+    },
+    {
+      "t": "2026-04-07T05:22:12.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-07T05:24:17.133Z",
+      "event": "bb-session",
+      "session": "1e60ab8d",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-04-07T05:24:18.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
