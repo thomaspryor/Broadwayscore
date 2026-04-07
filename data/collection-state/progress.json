@@ -151,7 +151,9 @@
     "the-boy-at-the-back-of-the-class-west-end-2026/broadwayworld--niamh-jones.json",
     "the-boy-at-the-back-of-the-class-west-end-2026/theatre-weekly--greg-stewart.json",
     "the-boy-at-the-back-of-the-class-west-end-2026/west-end-best-friend--nancy-brie.json",
-    "the-boy-at-the-back-of-the-class-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "the-boy-at-the-back-of-the-class-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "becky-shaw-2026/nytg--kyle-turner.json",
+    "becky-shaw-2026/nysr--frank-scheck.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1533,7 +1535,9 @@
     "data-2026/vulture--jackson-mchenry.json",
     "the-monsters-2026/vulture--jackson-mchenry.json",
     "jackals-off-broadway-2026/times-uk--anne-treneman.json",
-    "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json"
+    "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1599,7 +1603,9 @@
       "the-other-place-2026/thestage--dave-fargnoli.json",
       "the-boy-at-the-back-of-the-class-west-end-2026/all-that-dazzles-uk--rosie-holmes.json",
       "the-boy-at-the-back-of-the-class-west-end-2026/theatre-weekly--greg-stewart.json",
-      "the-boy-at-the-back-of-the-class-west-end-2026/west-end-best-friend--nancy-brie.json"
+      "the-boy-at-the-back-of-the-class-west-end-2026/west-end-best-friend--nancy-brie.json",
+      "becky-shaw-2026/nytg--kyle-turner.json",
+      "becky-shaw-2026/nysr--frank-scheck.json"
     ],
     "amp": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
@@ -1771,7 +1777,8 @@
       "data/review-texts/an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
       "data/review-texts/the-merchant-of-venice-1973/backstage--david-sheward.json",
       "data/review-texts/the-other-place-2026/ap--mark-kennedy.json",
-      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json"
+      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "the-authenticator-west-end-2026/broadwayworld--team-bww.json",
@@ -1793,7 +1800,7 @@
     ]
   },
   "startTime": "2026-04-06T09:24:22.901Z",
-  "lastProcessed": "the-boy-at-the-back-of-the-class-west-end-2026/whatsonstage--theo-bosanquet.json",
+  "lastProcessed": "becky-shaw-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-04-06T09:51:33.789Z",
@@ -2273,6 +2280,17 @@
       "t": "2026-04-06T18:56:22.468Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-07T03:54:35.771Z",
+      "event": "bb-session",
+      "session": "73dc1cd1",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-07T03:54:36.959Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

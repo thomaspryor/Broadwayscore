@@ -1,0 +1,89 @@
+{
+  "runDate": "2026-04-07T03:44:48.144Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 10,
+    "priority": "all",
+    "showFilter": "becky-shaw-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 4,
+    "failed": 2,
+    "skipped": 0,
+    "successRate": "66.7%"
+  },
+  "tierBreakdown": {
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 4,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "becky-shaw-2026/nytg--kyle-turner.json",
+    "becky-shaw-2026/vulture--unknown.json",
+    "becky-shaw-2026/guardian--adrian-horton.json",
+    "becky-shaw-2026/playbill--unknown.json"
+  ],
+  "failed": [
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "becky-shaw-2026/nytg--kyle-turner.json",
+      "becky-shaw-2026/guardian--adrian-horton.json",
+      "becky-shaw-2026/playbill--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
+    ],
+    "archive": [
+      "becky-shaw-2026/vulture--unknown.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "becky-shaw-2026/playbill--unknown.json",
+      "oldUrl": "https://playbill.com/article/video-in-becky-shaw-everyone-is-awful-but-thats-what-makes-it-a-fun-time",
+      "newUrl": "https://playbill.com/article/becky-shaw-verdict"
+    }
+  ]
+}
