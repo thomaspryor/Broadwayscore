@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-07T12:13:13.778Z",
-  "processed": 157,
-  "failed": 136,
+  "updatedAt": "2026-04-07T12:35:35.626Z",
+  "processed": 163,
+  "failed": 141,
   "successRate": "53.6%",
   "tierBreakdown": {
     "playwright": 89,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 40,
+    "scrapingbee": 41,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 7,
     "archive": 30
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-07T09:16:15.147Z",
@@ -71,6 +71,28 @@
       "event": "bb-session",
       "session": "d7ee2b5f",
       "url": "https://www.express.co.uk/entertainment/theatre/2108952/producers-musical-london"
+    },
+    {
+      "t": "2026-04-07T12:33:22.959Z",
+      "event": "bb-session",
+      "session": "29735ec8",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/listening-kenny-g-1235011662/"
+    },
+    {
+      "t": "2026-04-07T12:33:24.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-07T12:33:39.279Z",
+      "event": "bb-session",
+      "session": "a892f254",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-07T12:33:40.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
