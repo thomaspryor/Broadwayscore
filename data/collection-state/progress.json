@@ -100,7 +100,17 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
     "back-to-the-future-west-end-2021/financialtimes--unknown.json",
-    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json"
+    "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+    "the-phantom-of-the-opera-west-end-1986/guardian--kate-wyver.json",
+    "the-phantom-of-the-opera-west-end-1986/timeout-london--andrjez-lukowski.json",
+    "the-phantom-of-the-opera-west-end-1986/i-paper--fiona-mountford.json",
+    "the-phantom-of-the-opera-west-end-1986/independent--alice-saville.json",
+    "the-phantom-of-the-opera-west-end-1986/independent--louis-chilton.json",
+    "the-phantom-of-the-opera-west-end-1986/london-theatre--julia-rank.json",
+    "the-phantom-of-the-opera-west-end-1986/telegraph--dominic-cavendish.json",
+    "the-phantom-of-the-opera-west-end-1986/thestage--sam-marlowe.json",
+    "les-miserables-west-end-2021/express-uk--stefan-kyriazis.json",
+    "les-miserables-west-end-2021/independent--louis-chilton.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -205,7 +215,12 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/londontheatre1--roz-wyllie.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/thestage--dave-fargnoli.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/thestage--sam-marlowe.json",
-      "back-to-the-future-west-end-2021/financialtimes--unknown.json"
+      "back-to-the-future-west-end-2021/financialtimes--unknown.json",
+      "the-phantom-of-the-opera-west-end-1986/i-paper--fiona-mountford.json",
+      "the-phantom-of-the-opera-west-end-1986/independent--alice-saville.json",
+      "the-phantom-of-the-opera-west-end-1986/independent--louis-chilton.json",
+      "the-phantom-of-the-opera-west-end-1986/london-theatre--julia-rank.json",
+      "the-phantom-of-the-opera-west-end-1986/thestage--sam-marlowe.json"
     ],
     "amp": [],
     "browserbase": [
@@ -214,7 +229,9 @@
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
       "giant-2026/variety--daniel-daddario.json",
       "data/review-texts/kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
-      "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json"
+      "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
+      "data/review-texts/les-miserables-west-end-2021/express-uk--stefan-kyriazis.json",
+      "les-miserables-west-end-2021/express-uk--stefan-kyriazis.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -242,7 +259,9 @@
       "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json",
       "hadestown-west-end-2024/timeout-london--unknown.json",
       "magic-mike-live-west-end-2021/observer--susannah-clapp.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/guardian--emma-john.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/guardian--emma-john.json",
+      "the-phantom-of-the-opera-west-end-1986/guardian--kate-wyver.json",
+      "les-miserables-west-end-2021/independent--louis-chilton.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -267,11 +286,13 @@
       "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--kirsten-grant.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--nick-ferris.json",
       "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
-      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json"
+      "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+      "the-phantom-of-the-opera-west-end-1986/timeout-london--andrjez-lukowski.json",
+      "the-phantom-of-the-opera-west-end-1986/telegraph--dominic-cavendish.json"
     ]
   },
   "startTime": "2026-04-07T09:12:19.021Z",
-  "lastProcessed": "back-to-the-future-west-end-2021/telegraph--dominic-cavendish.json",
+  "lastProcessed": "les-miserables-west-end-2021/independent--louis-chilton.json",
   "log": [
     {
       "t": "2026-04-07T09:16:15.147Z",
@@ -323,6 +344,12 @@
       "event": "bb-session",
       "session": "adf039e7",
       "url": "https://www.express.co.uk/entertainment/theatre"
+    },
+    {
+      "t": "2026-04-07T11:33:36.061Z",
+      "event": "bb-session",
+      "session": "d7ee2b5f",
+      "url": "https://www.express.co.uk/entertainment/theatre/2108952/producers-musical-london"
     }
   ]
 }
