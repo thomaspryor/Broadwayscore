@@ -1020,7 +1020,7 @@ const OUTLET_EXTRACTORS = {
   'the-arts-desk': extractUKStarRating,
   'artsdesk': extractUKStarRating,
   'musical-theatre-review': extractUKStarRating,
-  'london-theatre': extractUKStarRating,
+  'london-theatre': noScoreExtractor,    // LT reviews are text-only, no star ratings published
   'all-that-dazzles-uk': extractAllThatDazzlesScore,
   'all-that-dazzles': extractAllThatDazzlesScore,
   'london-box-office': extractLBOScore,
@@ -1050,7 +1050,7 @@ const OUTLET_EXTRACTORS = {
   'britishtheatreguide': noScoreExtractor,
   'rolling-stone': noScoreExtractor,
   'theater-life': extractUKStarRating,
-  'londontheatre1': extractUKStarRating,
+  'londontheatre1': noScoreExtractor,    // Same as london-theatre — no star ratings
   'sunday-times': extractUKStarRating,
   'the-scotsman': extractUKStarRating,
   'the-sun': extractUKStarRating,
