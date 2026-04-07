@@ -853,6 +853,28 @@ async function main() {
         }
       }
 
+      // Guard 6: Variant-show detection
+      // Theatre Record sometimes co-lists variant productions (dining experiences,
+      // immersive events) on the same page as the base musical. This guard uses
+      // KNOWN variant signatures — specific to titles with known confusable variants.
+      // Generic keywords like "immersive" are too broad (Cabaret, Hunger Games, etc.).
+      if (!skipReason) {
+        const reviewLower = review.fullText.toLowerCase();
+        const targetTitleNorm = (show.title || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
+        const KNOWN_VARIANTS = [
+          { title: 'mamma mia', keywords: ['the party', 'taverna', 'o2 arena'], label: 'Mamma Mia! The Party' },
+          // Add more known variant titles here as they're discovered
+        ];
+        for (const variant of KNOWN_VARIANTS) {
+          if (!targetTitleNorm.startsWith(variant.title)) continue;
+          const matchedWord = variant.keywords.find(w => reviewLower.includes(w));
+          if (matchedWord) {
+            skipReason = `variant-show (review mentions "${matchedWord}" → likely ${variant.label}, not "${show.title}")`;
+            break;
+          }
+        }
+      }
+
       if (skipReason) {
         console.log(`    SKIP: ${filename} — ${skipReason}`);
         skippedCount++;
