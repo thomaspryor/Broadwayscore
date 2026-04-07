@@ -81,6 +81,7 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
 const JS_REQUIRED_DOMAINS = new Set([
   'show-score.com',     // React SPA — requires JS rendering
   'theatermania.com',   // Dynamic content loading
+  'timeout.com',        // Star ratings rendered via client-side SVG (_ratingStars_ CSS classes)
 ]);
 
 function _isJsRequiredDomain(url) {
