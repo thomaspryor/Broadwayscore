@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-04-08T03:36:14.165Z",
+  "runDate": "2026-04-08T04:43:29.025Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,15 +11,15 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 174,
-    "failed": 1118,
+    "processed": 175,
+    "failed": 1120,
     "skipped": 0,
     "successRate": "13.5%"
   },
   "tierBreakdown": {
     "playwright": 76,
     "amp": 2,
-    "browserbase": 36,
+    "browserbase": 38,
     "directCookies": 0,
     "scrapingbee": 51,
     "brightdata": 15,
@@ -27,27 +27,27 @@
     "archive": 17
   },
   "statistics": {
-    "tier1Attempts": 79,
-    "tier1Success": 27,
-    "ampAttempts": 4,
-    "ampSuccess": 2,
-    "tier1_5Attempts": 34,
-    "tier1_5Success": 16,
-    "tier2Attempts": 60,
-    "tier2Success": 15,
-    "tier3Attempts": 64,
-    "tier3Success": 19,
-    "tier3_6Attempts": 37,
-    "tier3_6Success": 36,
-    "tier4Attempts": 37,
-    "tier4Success": 3,
-    "totalFailed": 133,
-    "scrapingBeePageCredits": 120,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 1,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 34,
-    "browserbaseMinutesUsed": 12.6,
-    "urlDiscoveryAttempts": 95,
-    "urlDiscoverySuccess": 1,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.7,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -224,7 +224,8 @@
     "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
     "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
     "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
-    "the-other-place-2026/thestage--dave-fargnoli.json"
+    "the-other-place-2026/thestage--dave-fargnoli.json",
+    "innocence-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "cats-the-jellicle-ball-2026/billboard--unknown.json",
@@ -1344,7 +1345,9 @@
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
     "data-2026/vulture--jackson-mchenry.json",
     "the-monsters-2026/vulture--jackson-mchenry.json",
-    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json",
+    "cats-the-jellicle-ball-2026/usatoday--patrick-ryan.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1465,7 +1468,9 @@
       "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json",
       "a-thousand-clowns-2001/nytimes--bruce-weber.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
-      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1612,151 +1617,12 @@
   },
   "failuresByOutlet": {
     "The Wall Street Journal": {
-      "count": 2,
+      "count": 1,
       "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
-    },
-    "NY Post": {
-      "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Associated Press": {
-      "count": 4,
-      "domain": "forbes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "New York Post": {
-      "count": 1,
-      "domain": "nypost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Chicago Tribune": {
-      "count": 2,
-      "domain": "newspapers.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Variety": {
-      "count": 4,
-      "domain": "variety.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Onandoffbroadwaytheaterreviews": {
-      "count": 1,
-      "domain": "onandoffbroadwaytheaterreviews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The New York Times": {
-      "count": 2,
-      "domain": "nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "New York Daily News": {
-      "count": 1,
-      "domain": "newspapers.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times (UK)": {
-      "count": 1,
-      "domain": "thetimes.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Zeal NYC": {
-      "count": 1,
-      "domain": "zealnyc.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NY1": {
-      "count": 1,
-      "domain": "ny1.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Newsday": {
-      "count": 1,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Entertainment Weekly": {
-      "count": 2,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "businessworld": {
-      "count": 1,
-      "domain": "bworldonline.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "the-philippine-star": {
-      "count": 1,
-      "domain": "philstar.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "amNY": {
-      "count": 1,
-      "domain": "amny.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Woman Around Town": {
-      "count": 1,
-      "domain": "womanaroundtown.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Telegraph": {
-      "count": 2,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "assassins-2004/nytimes--ben-brantley.json",
-      "oldUrl": "http://theater.nytimes.com/mem/theater/treview.html?res=9a05eed7173af930a15757c0a9629c8b63",
-      "newUrl": "https://www.nytimes.com/2004/04/22/theater/ready-aim-sing-assassins-hits-broadway.html"
-    }
-  ]
+  "urlDiscoveries": []
 }
