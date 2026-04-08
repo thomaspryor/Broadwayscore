@@ -177,7 +177,10 @@
     "innocence-off-broadway-2026/variety--rebecca-rubin.json",
     "the-listening-off-broadway-2026/variety--unknown.json",
     "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
-    "becky-shaw-2026/variety--unknown.json"
+    "becky-shaw-2026/variety--unknown.json",
+    "cats-the-jellicle-ball-2026/nytg--unknown.json",
+    "cats-the-jellicle-ball-2026/people--unknown.json",
+    "innocence-off-broadway-2026/nytimes--unknown.json"
   ],
   "failed": [
     "cats-the-jellicle-ball-2026/billboard--unknown.json",
@@ -1901,6 +1904,12 @@
     "innocence-off-broadway-2026/vulture--unknown.json",
     "becky-shaw-2026/wsj--unknown.json",
     "becky-shaw-2026/talkinbroadway--unknown.json",
+    "innocence-off-broadway-2026/playbill--unknown.json",
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "innocence-off-broadway-2026/vulture--unknown.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json",
     "innocence-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
@@ -1982,7 +1991,9 @@
       "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
       "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
       "the-other-place-2026/thestage--dave-fargnoli.json",
-      "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json"
+      "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
+      "cats-the-jellicle-ball-2026/nytg--unknown.json",
+      "cats-the-jellicle-ball-2026/people--unknown.json"
     ],
     "amp": [
       "data/review-texts/mamma-mia-2001/nydailynews--howard-kissel.json",
@@ -2084,7 +2095,8 @@
       "robin-hood-and-the-merry-mandem-off-west-end-2026/times-uk--dominic-maxwell.json",
       "the-other-place-2026/whatsonstage--sarah-crompton.json",
       "the-waterfall-2026/front-row-center--brittany-crowell.json",
-      "this-is-not-about-me-off-west-end-2026/whatsonstage--alun-hood.json"
+      "this-is-not-about-me-off-west-end-2026/whatsonstage--alun-hood.json",
+      "innocence-off-broadway-2026/nytimes--unknown.json"
     ],
     "brightdata": [
       "cats-the-jellicle-ball-2026/variety--unknown.json",
@@ -2156,6 +2168,9 @@
       "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
       "data/review-texts/inter-alia-west-end-2026/theupcoming--unknown.json",
       "data/review-texts/inter-alia-west-end-2026/theupcoming--unknown.json",
+      "data/review-texts/innocence-off-broadway-2026/vulture--unknown.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
       "data/review-texts/innocence-off-broadway-2026/vulture--unknown.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
     ],
@@ -2713,6 +2728,17 @@
     },
     {
       "t": "2026-04-08T06:28:08.835Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T06:59:19.644Z",
+      "event": "bb-session",
+      "session": "3b7deb4f",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T06:59:20.729Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
