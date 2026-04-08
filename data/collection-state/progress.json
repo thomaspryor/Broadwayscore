@@ -36,6 +36,10 @@
     "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
     "becky-shaw-2026/wsj--unknown.json",
     "becky-shaw-2026/talkinbroadway--unknown.json",
+    "innocence-off-broadway-2026/playbill--unknown.json",
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json",
     "innocence-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
@@ -72,6 +76,8 @@
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
@@ -79,7 +85,7 @@
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "innocence-off-broadway-2026/variety--rebecca-rubin.json",
+  "lastProcessed": "innocence-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -146,6 +152,17 @@
       "t": "2026-04-08T13:44:30.347Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T14:15:35.912Z",
+      "event": "bb-session",
+      "session": "74623daa",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T14:15:36.329Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
