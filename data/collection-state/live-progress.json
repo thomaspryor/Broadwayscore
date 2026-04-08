@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-08T03:36:14.129Z",
-  "processed": 174,
-  "failed": 1118,
-  "successRate": "13.5%",
+  "updatedAt": "2026-04-08T04:49:22.197Z",
+  "processed": 177,
+  "failed": 1123,
+  "successRate": "13.6%",
   "tierBreakdown": {
-    "playwright": 76,
+    "playwright": 77,
     "amp": 2,
-    "browserbase": 36,
+    "browserbase": 40,
     "directCookies": 0,
     "scrapingbee": 51,
     "brightdata": 15,
-    "archiveToday": 50,
+    "archiveToday": 51,
     "archive": 17
   },
-  "browserbaseSessions": 34,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-08T02:55:15.656Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:55:45.090Z",
-      "event": "bb-session",
-      "session": "1cc9d29c",
-      "url": "https://www.nytimes.com/2001/04/20/movies/theater-review-frolic-and-detour-on-th"
-    },
-    {
-      "t": "2026-04-08T02:55:46.260Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T03:03:32.336Z",
-      "event": "bb-session",
-      "session": "00bc3dbb",
-      "url": "https://www.northjersey.com/arts_entertainment/127572463__Rent__revival_off-Broa"
-    },
-    {
-      "t": "2026-04-08T03:03:33.773Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-04-08T03:10:40.033Z",
-      "event": "bb-session",
-      "session": "3b82be7b",
-      "url": "https://www.newsday.com/entertainment/theater/al-pacino-s-merchant-of-venice-eve"
-    },
     {
       "t": "2026-04-08T03:10:41.236Z",
       "event": "bb-cookie-inject",
@@ -124,6 +91,39 @@
       "t": "2026-04-08T03:35:19.879Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-08T04:46:11.189Z",
+      "event": "bb-session",
+      "session": "9dbe7d1a",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:46:12.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T04:46:57.470Z",
+      "event": "bb-session",
+      "session": "30ce4b02",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:46:58.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T04:47:15.074Z",
+      "event": "bb-session",
+      "session": "cec733b6",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T04:47:16.059Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
