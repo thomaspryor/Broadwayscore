@@ -430,8 +430,12 @@ async function main() {
       .replace(/^the\s+/i, '')
       .split(/[\s,]+/)
       .filter(w => w.length > 2 && !['the', 'a', 'an', 'musical', 'play'].includes(w));
+    // For short-titled shows (MJ, Six) where no significant words survive filtering,
+    // fall back to checking if the full title appears as a substring in the post text.
     const wordsFound = significantWords.filter(w => postText.includes(w)).length;
-    const contentMatch = significantWords.length === 0 || wordsFound >= Math.ceil(significantWords.length * 0.5);
+    const contentMatch = significantWords.length === 0
+      ? postText.includes(showTitleLower)
+      : wordsFound >= Math.ceil(significantWords.length * 0.5);
     if (!contentMatch) {
       stats.skippedContentMismatch++;
       console.log(`  [CONTENT MISMATCH] "${showTitle}" matched ${show.title} but post lacks show words — skipped`);
