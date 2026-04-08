@@ -1499,9 +1499,7 @@
       "officialUrl": "https://catsthejellicleball.com/",
       "todayTixCategory": "Musicals",
       "ibdbRevivalChecked": true,
-      "openingDateSource": "ibdb",
-      "market": "broadway",
-      "category": "broadway"
+      "openingDateSource": "ibdb"
     },
     {
       "id": "becky-shaw-2026",
@@ -219387,7 +219385,21 @@
       "ibdbRevivalChecked": true,
       "isRevival": false,
       "previewsStartDate": "2026-04-07",
-      "openingDateSource": "todaytix"
+      "openingDateSource": "todaytix",
+      "creativeTeam": [
+        {
+          "name": "Zach Redler",
+          "role": "Composer"
+        },
+        {
+          "name": "Sara Cooper",
+          "role": "Lyricist"
+        },
+        {
+          "name": "Rachel Chavkin",
+          "role": "Director"
+        }
+      ]
     },
     {
       "id": "the-book-of-mormon-west-end-2024",
@@ -224059,7 +224071,7 @@
       "closingDate": "2026-04-12",
       "status": "open",
       "type": "play",
-      "runtime": null,
+      "runtime": "2h",
       "intermissions": null,
       "images": {
         "thumbnail": "/images/shows/the-boy-at-the-back-of-the-class-west-end-2026/thumbnail.webp",
@@ -224116,7 +224128,16 @@
           "role": "Clarissa"
         }
       ],
-      "creativeTeam": [],
+      "creativeTeam": [
+        {
+          "name": "Olivier Tallec",
+          "role": "Author"
+        },
+        {
+          "name": "Natasha Marchewka",
+          "role": "Adapter"
+        }
+      ],
       "category": "off-west-end",
       "ibdbUrl": null,
       "todayTixCategory": "Plays",
@@ -236064,8 +236085,12 @@
       "cast": [],
       "creativeTeam": [
         {
-          "name": "Morgan Jenness",
+          "name": "Jonathan Silverstein",
           "role": "Director"
+        },
+        {
+          "name": "Bess Wohl",
+          "role": "Book Writer"
         }
       ],
       "category": "off-broadway"
@@ -236295,8 +236320,8 @@
       "cast": [],
       "creativeTeam": [
         {
-          "name": "Unknown",
-          "role": "Director"
+          "name": "N/A",
+          "role": "N/A"
         }
       ],
       "ibdbRevivalChecked": true,
@@ -236364,8 +236389,12 @@
       "cast": [],
       "creativeTeam": [
         {
-          "name": "Gadi Dagon",
-          "role": "Director"
+          "name": "Gale Childs Daly",
+          "role": "Adapter"
+        },
+        {
+          "name": "Neil Bartram",
+          "role": "Composer"
         }
       ],
       "ibdbRevivalChecked": true,
