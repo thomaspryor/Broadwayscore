@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-08T01:55:12.710Z",
+  "timestamp": "2026-04-08T02:29:54.410Z",
   "stats": {
-    "totalReviews": 34599,
-    "alreadyFlagged": 13308,
+    "totalReviews": 34605,
+    "alreadyFlagged": 13305,
     "dateGuardCatches": 61,
     "directorMismatch": 982,
-    "tvFilmSignals": 3466,
+    "tvFilmSignals": 3467,
     "londonSignals": 1115,
-    "offBroadwaySignals": 978,
+    "offBroadwaySignals": 981,
     "yearMismatch": 74,
-    "noPublishDate": 5116
+    "noPublishDate": 5117
   },
   "findings": [
     {
@@ -9524,6 +9524,20 @@
       "score": 48,
       "publishDate": "2016-07-31",
       "url": "https://www.thewrap.com/cats-broadway-review-andrew-lloyd-webbers-hit-is-back-for-a-10th-life/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "variety--frank-rizzo.json",
+      "score": 90,
+      "publishDate": "2026-04-08",
+      "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -66063,6 +66077,48 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 81,
+      "publishDate": "2026-04-08",
+      "url": "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "nydailynews--chris-jones.json",
+      "score": 86,
+      "publishDate": "2026-04-08",
+      "url": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "timeout--adam-feldman.json",
+      "score": 93,
+      "publishDate": "2026-04-08",
+      "url": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
         }
       ]
     },
