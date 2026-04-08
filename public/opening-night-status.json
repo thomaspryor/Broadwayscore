@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T07:41:41.154Z",
+  "generatedAt": "2026-04-08T07:54:25.188Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -15,17 +15,17 @@
       "siteScore": 88,
       "liveScore": 88,
       "scoreDrift": 0,
-      "total": 23,
+      "total": 22,
       "t1": 4,
-      "t2": 15,
+      "t2": 14,
       "t3": 4,
-      "positive": 22,
+      "positive": 21,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -99,6 +99,10 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
         },
         {
           "name": "The New York Sun",
@@ -405,6 +409,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T07:54:25.188Z",
+          "rc": 22,
+          "s": 88,
+          "t1": 4,
+          "t2": 14,
+          "t3": 4,
+          "p": 21,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -456,6 +472,10 @@
         {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -965,6 +985,14 @@
           "isDualMarket": true
         },
         {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -1013,24 +1041,23 @@
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 65,
+      "liveScore": 74,
       "scoreDrift": null,
-      "total": 3,
+      "total": 4,
       "t1": 1,
-      "t2": 1,
+      "t2": 2,
       "t3": 1,
-      "positive": 1,
-      "mixed": 1,
+      "positive": 3,
+      "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:1/3",
-          "T2:1/2",
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1124,6 +1151,18 @@
           "t3": 1,
           "p": 1,
           "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T07:54:25.188Z",
+          "rc": 4,
+          "s": 74,
+          "t1": 1,
+          "t2": 2,
+          "t3": 1,
+          "p": 3,
+          "m": 0,
           "n": 1,
           "bc": "waiting"
         }
@@ -1494,24 +1533,24 @@
       "slug": "innocence-off-broadway",
       "thumbnail": "/images/shows/innocence-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 94,
+      "liveScore": 76,
       "scoreDrift": null,
-      "total": 1,
-      "t1": 1,
+      "total": 2,
+      "t1": 2,
       "t2": 0,
       "t3": 0,
       "positive": 1,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
-          "T1:1/3",
+          "2/12 total",
+          "T1:2/3",
           "T2:0/3",
-          "hi-conf:1/8"
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1781,6 +1820,18 @@
           "t3": 0,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T07:54:25.188Z",
+          "rc": 2,
+          "s": 76,
+          "t1": 2,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }

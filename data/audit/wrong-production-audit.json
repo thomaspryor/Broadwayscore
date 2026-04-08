@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-08T07:41:37.455Z",
+  "timestamp": "2026-04-08T07:54:21.001Z",
   "stats": {
-    "totalReviews": 34626,
-    "alreadyFlagged": 13338,
+    "totalReviews": 34618,
+    "alreadyFlagged": 13341,
     "dateGuardCatches": 61,
     "directorMismatch": 981,
     "tvFilmSignals": 3466,
-    "londonSignals": 1114,
+    "londonSignals": 1116,
     "offBroadwaySignals": 987,
     "yearMismatch": 74,
-    "noPublishDate": 5112
+    "noPublishDate": 5102
   },
   "findings": [
     {
@@ -71859,6 +71859,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "daily-mail--sean-ogrady.json",
+      "score": 82,
+      "publishDate": "2026-04-08",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15714271/Rosamund-Pike-breaks-tears-emotional-curtain-call-Inter-Alia-press-night-West-End-performance-receives-rave-reviews.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 79,
+      "publishDate": "2026-04-07",
+      "url": "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
