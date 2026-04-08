@@ -21,7 +21,10 @@
     "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
     "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json",
     "cats-the-jellicle-ball-2026/new-york-sun--elysa-gardner.json",
-    "inter-alia-west-end-2026/thestage--sam-marlowe.json"
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json",
+    "innocence-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -53,14 +56,15 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json"
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "copenhagen-west-end-2026/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-04-08T07:28:07.476Z",
-  "lastProcessed": "innocence-off-broadway-2026/vulture--unknown.json",
+  "lastProcessed": "innocence-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-04-08T07:28:19.449Z",
@@ -94,6 +98,17 @@
       "t": "2026-04-08T07:34:28.184Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-08T07:35:25.606Z",
+      "event": "bb-session",
+      "session": "e3212a72",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T07:35:26.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
