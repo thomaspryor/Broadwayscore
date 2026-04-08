@@ -827,6 +827,69 @@ const crossShowUrlIndex = new Map();
 // Key: SHA-256 hash of full cleaned text (avoids false positives from shared boilerplate prefixes)
 const crossShowFingerprints = new Map();
 
+// OB→Broadway transfer guard: when an OB show transfers to Broadway, flag OB review files
+// that share URLs with the Broadway directory. The critic typically updates the same URL
+// for the Broadway run, so the OB copy is superseded. Without this, the OB file claims
+// the URL in the crossShowUrlIndex and blocks the Broadway version.
+{
+  let transferFlagged = 0;
+  // Build title→shows map for transfer detection
+  const showsByTitle = new Map();
+  const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+  for (const s of showsData.shows) {
+    const normTitle = s.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (!showsByTitle.has(normTitle)) showsByTitle.set(normTitle, []);
+    showsByTitle.get(normTitle).push(s);
+  }
+
+  for (const [, group] of showsByTitle) {
+    if (group.length < 2) continue;
+    const obShows = group.filter(s => s.category === 'off-broadway');
+    const bwShows = group.filter(s => !s.category || s.category === 'broadway');
+    if (obShows.length === 0 || bwShows.length === 0) continue;
+
+    for (const bw of bwShows) {
+      // Only flag if Broadway show has opened (status !== 'previews')
+      if (bw.status === 'previews') continue;
+      const bwDir = path.join(reviewTextsDir, bw.id);
+      if (!fs.existsSync(bwDir)) continue;
+
+      // Collect Broadway URLs
+      const bwUrls = new Set();
+      for (const f of fs.readdirSync(bwDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(bwDir, f), 'utf8'));
+          if (d.url) bwUrls.add(normalizeUrlForDedup(d.url));
+        } catch {}
+      }
+
+      // Flag matching OB files
+      for (const ob of obShows) {
+        const obDir = path.join(reviewTextsDir, ob.id);
+        if (!fs.existsSync(obDir)) continue;
+        for (const f of fs.readdirSync(obDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+          try {
+            const fp = path.join(obDir, f);
+            const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
+            if (d.wrongProduction || d.wrongProductionManualClear) continue;
+            if (!d.url) continue;
+            const norm = normalizeUrlForDedup(d.url);
+            if (norm && bwUrls.has(norm)) {
+              d.wrongProduction = true;
+              d.wrongProductionNote = `OB review superseded by Broadway transfer ${bw.id} (shared URL)`;
+              fs.writeFileSync(fp, JSON.stringify(d, null, 2) + '\n');
+              transferFlagged++;
+            }
+          } catch {}
+        }
+      }
+    }
+  }
+  if (transferFlagged > 0) {
+    console.log(`OB→Broadway transfer guard: flagged ${transferFlagged} OB reviews with shared URLs`);
+  }
+}
+
 // Pre-opening guard pass: flag reviews published 90+ days before a show's earliest date
 // as wrongProduction. Runs on ALL shows regardless of status — a 2019 review filed under
 // a 2026 remount is wrong whether the show is in previews, open, or closed.
