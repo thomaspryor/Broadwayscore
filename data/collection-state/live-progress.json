@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-08T11:06:55.257Z",
-  "processed": 16,
-  "failed": 29,
-  "successRate": "35.6%",
+  "updatedAt": "2026-04-08T11:03:28.897Z",
+  "processed": 17,
+  "failed": 25,
+  "successRate": "40.5%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 2,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-08T10:06:48.503Z",
@@ -67,6 +67,17 @@
     },
     {
       "t": "2026-04-08T10:09:51.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T11:02:24.828Z",
+      "event": "bb-session",
+      "session": "47863f66",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T11:02:25.463Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
