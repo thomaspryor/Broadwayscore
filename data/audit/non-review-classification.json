@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-04-08T22:31:41.106Z",
+    "generatedAt": "2026-04-08T22:56:40.821Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 35056,
-      "inReviewsJson": 17168,
+      "inReviewsJson": 17169,
       "skippedExcluded": 15,
-      "withFullText": 56,
+      "withFullText": 23,
       "excerptOnly": 1645,
-      "llmClassified": 49,
+      "llmClassified": 22,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
-      "uncertainCases": 15,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "nonReviewsFound": 1,
+      "uncertainCases": 18,
+      "budgetUsed": 0.0023,
+      "llmCalls": 23,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 15452
+      "skippedAlreadyClassified": 15486
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "the-producers-west-end-2025/express-uk--neil-norman.json",
+      "showId": "the-producers-west-end-2025",
+      "outlet": "Daily Express",
+      "outletId": "express-uk",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a roundup of various news items and brief reviews across different shows and events, not a dedicated review of \"The Producers.\"",
+      "currentScore": 100
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -30,7 +41,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production itself. It also includes information about other shows and theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. There is no evaluative content about 'Fences' or any other show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London and awards, but it does not offer a critical evaluation of the production itself. It sets the stage for the show without providing a review.",
       "currentScore": 81
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater and music, rather than a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -130,7 +141,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -140,7 +151,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links or categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
       "currentScore": 83
     },
     {
@@ -170,46 +181,51 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "currentScore": 78
+    },
+    {
+      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "currentScore": 89
+    },
+    {
+      "file": "yellow-face-2024/joysauce--janvi-sai.json",
+      "showId": "yellow-face-2024",
+      "outlet": "joysauce",
+      "outletId": "joysauce",
+      "contentType": "preview",
+      "confidence": "medium",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It includes background information and mentions the autobiographical nature of the play, but it lacks a clear verdict or assessment of the show'",
+      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "manic-street-creature-west-end-2026/thereviewshub--scott-matthewman.json",
-    "marie-and-rosetta-west-end-2026/broadwayworld--aliya-al-hassan.json",
-    "marie-and-rosetta-west-end-2026/everything-theatre--rob-warren.json",
-    "marjorie-prime-2025/nysr--frank-scheck.json",
-    "maybe-happy-ending-2024/nysr--michael-sommers.json",
-    "misery-2015/nytimes--charles-isherwood.json",
-    "mj-2022/nysr--jesse-oxfeld.json",
-    "moulin-rouge-2019/vulture--sara-holdren.json",
-    "my-fair-lady-2018/vulture--sara-holdren.json",
-    "oedipus-2025/nysr--frank-scheck.json",
-    "oh-mary-2024/nysr--michael-sommers.json",
-    "oliver-west-end-2024/telegraph--dominic-cavendish.json",
-    "oliver-west-end-2024/whatsonstage--gareth-carr.json",
-    "our-town-2024/nysr--steven-suskin.json",
-    "paddington-the-musical-west-end-2025/standard--tim-bano.json",
-    "prayer-for-the-french-republic-2024/nysr--roma-torre.json",
-    "punch-2025/nysr--frank-scheck.json",
-    "ragtime-2025/nysr--melissa-rose-bernardo.json",
-    "six-the-musical-west-end-2021/london-box-office--stuart-king.json",
-    "six-the-musical-west-end-2021/london-theatre--sam-marlowe.json",
-    "spring-awakening-2015/hollywood-reporter--jordan-riefe.json",
-    "stereophonic-2024/nysr--melissa-rose-bernardo.json",
-    "summerfolk-west-end-2026/daily-mail--patrick-marmion.json",
-    "summerfolk-west-end-2026/thereviewshub--maryam-philpott.json",
-    "teeth-n-smiles-west-end-2026/daily-mail--patrick-marmion.json",
-    "the-bands-visit-2017/theater-life--isa-goldberg.json",
-    "the-cottage-2023/nysr--melissa-rose-bernardo.json",
-    "the-great-gatsby-2024/daily-mail--veronica-lee.json",
-    "the-great-gatsby-2024/times-uk--clive-davis.json",
-    "the-holy-rosenbergs-west-end-2026/daily-mail--patrick-marmion.json",
-    "the-hunger-games-on-stage-west-end-2025/daily-mail--patrick-marmion.json",
-    "the-iceman-cometh-2018/theater-life--david-sheward.json",
-    "the-notebook-2024/nysr--steven-suskin.json",
-    "the-outsiders-2024/nysr--roma-torre.json"
+    "copenhagen-west-end-2026/london-box-office--stuart-king.json",
+    "the-shark-is-broken-2023/nysr--steven-suskin.json",
+    "woman-in-mind-west-end-2025/daily-mail--patrick-marmion.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "the-producers-west-end-2025",
+      "currentCount": 20,
+      "removed": 1
+    }
+  ]
 }
