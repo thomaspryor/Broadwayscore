@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-08T04:18:32.015Z",
+  "generatedAt": "2026-04-08T04:42:28.292Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 89,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -17,7 +17,7 @@
       "secondaryOutlets": [
         "nydailynews"
       ],
-      "count": 0
+      "count": 1
     },
     {
       "critic": "kathleen campion",
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Chris Jones",
+      "showId": "becky-shaw-2026",
+      "primaryOutlet": "chicagotribune",
+      "secondaryOutlet": "nydailynews",
+      "primaryFile": "chicagotribune--chris-jones.json",
+      "secondaryFile": "nydailynews--chris-jones.json",
+      "similarity": 89,
+      "primaryScore": 85,
+      "secondaryScore": 86,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "bernhardthamlet-2018",
