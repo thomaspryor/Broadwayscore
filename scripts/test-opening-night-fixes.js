@@ -955,6 +955,215 @@ assert(
 );
 
 // ============================================================
+// extractBWWRoundupReviews — supplementary scan (#17) + URL slug guard (#18)
+// ============================================================
+console.log('\n--- extractBWWRoundupReviews (#17 supplementary scan, #18 URL slug guard) ---');
+
+const { extractBWWRoundupReviews } = require('./gather-reviews');
+
+// --- Fix #17: Method 2 catches entries not in JSON-LD ---
+
+// Build synthetic HTML with:
+// - 2 BlogPosting entries in JSON-LD (NYT and Variety)
+// - 1 additional entry in articleBody text only (Guardian — no JSON-LD entry)
+// - Links for all 3 outlets
+const syntheticRoundupHtml = `<html><head><title>Review Roundup: TEST SHOW Opens-on-Broadway-20260406</title></head><body>
+<script type="application/ld+json">{
+  "@type": "LiveBlogPosting",
+  "liveBlogUpdate": [
+    {"@type": "BlogPosting", "author": {"name": "The New York Times - Jesse Green"}, "articleBody": "A remarkable show that dazzles."},
+    {"@type": "BlogPosting", "author": {"name": "Variety - Frank Rizzo"}, "articleBody": "Stunning performances throughout."}
+  ],
+  "articleBody": "Review Roundup. Let's see what the critics had to say. Jesse Green, The New York Times: A remarkable show that dazzles. Frank Rizzo, Variety: Stunning performances throughout. Arifa Akbar, The Guardian: A mixed but fascinating evening of theater that challenges expectations."
+}</script>
+<p>Jesse Green, <a href="https://nytimes.com/2026/04/06/theater/test-show-review.html">The New York Times:</a> A remarkable show.</p>
+<p>Frank Rizzo, <a href="https://variety.com/2026/legit/reviews/test-show-review-1234.html">Variety:</a> Stunning performances.</p>
+<p>Arifa Akbar, <a href="https://theguardian.com/stage/2026/apr/06/test-show-broadway-review">The Guardian:</a> A mixed but fascinating evening.</p>
+</body></html>`;
+
+const suppReviews = extractBWWRoundupReviews(syntheticRoundupHtml, 'test-show-2026', 'https://bww.com/roundup', 'Test Show');
+
+assert(
+  suppReviews.length >= 3,
+  `Supplementary scan: found ${suppReviews.length} reviews (expected >=3, Method 1 has 2 + Method 2 adds Guardian)`
+);
+
+const guardianReview = suppReviews.find(r =>
+  (r.outletId || '').includes('guardian') || (r.outlet || '').toLowerCase().includes('guardian')
+);
+assert(
+  !!guardianReview,
+  'Supplementary scan found Guardian entry not in JSON-LD BlogPosting'
+);
+
+assert(
+  guardianReview && guardianReview.criticName && guardianReview.criticName.includes('Akbar'),
+  `Guardian has critic name "Arifa Akbar" (got: ${guardianReview ? guardianReview.criticName : 'not found'})`
+);
+
+// Dedup: NYT and Variety should NOT appear twice (once from Method 1, once from Method 2)
+const nytReviews = suppReviews.filter(r =>
+  (r.outletId || '').includes('nytimes') || (r.outlet || '').toLowerCase().includes('new york times')
+);
+assert(
+  nytReviews.length === 1,
+  `NYT appears exactly once after dedup (got: ${nytReviews.length})`
+);
+
+const varietyReviews = suppReviews.filter(r =>
+  (r.outletId || '').includes('variety') || (r.outlet || '').toLowerCase().includes('variety')
+);
+assert(
+  varietyReviews.length === 1,
+  `Variety appears exactly once after dedup (got: ${varietyReviews.length})`
+);
+
+// --- Fix #17: entries without hyperlinks still extracted ---
+
+// Build HTML where Guardian has NO <a href> — just text
+const noLinkHtml = `<html><head><title>Review Roundup: NO LINK SHOW Opens-on-Broadway-20260406</title></head><body>
+<script type="application/ld+json">{
+  "@type": "LiveBlogPosting",
+  "liveBlogUpdate": [
+    {"@type": "BlogPosting", "author": {"name": "Variety - Brent Lang"}, "articleBody": "A powerful production."}
+  ],
+  "articleBody": "Review Roundup. Let's see what the critics had to say. Brent Lang, Variety: A powerful production. Adrian Horton, The Guardian: A thoughtful meditation on modern life that rewards patient viewers."
+}</script>
+<p>Brent Lang, <a href="https://variety.com/2026/legit/reviews/no-link-show-1234.html">Variety:</a> A powerful production.</p>
+<p>Adrian Horton, The Guardian: A thoughtful meditation on modern life.</p>
+</body></html>`;
+
+const noLinkReviews = extractBWWRoundupReviews(noLinkHtml, 'no-link-show-2026', 'https://bww.com/roundup', 'No Link Show');
+
+const noLinkGuardian = noLinkReviews.find(r =>
+  (r.outletId || '').includes('guardian') || (r.outlet || '').toLowerCase().includes('guardian')
+);
+assert(
+  !!noLinkGuardian,
+  'Entry without hyperlink (Guardian): found via text scan'
+);
+
+assert(
+  !noLinkGuardian || !noLinkGuardian.url,
+  'Entry without hyperlink (Guardian): url is null (no link to pair)'
+);
+
+assert(
+  noLinkGuardian && noLinkGuardian.bwwExcerpt && noLinkGuardian.bwwExcerpt.length > 10,
+  'Entry without hyperlink (Guardian): has excerpt text'
+);
+
+// --- Fix #18: URL slug validation rejects cross-show URLs ---
+
+// Build HTML where all links point to WRONG show (Monte Cristo URLs)
+const wrongUrlHtml = `<html><head><title>Review Roundup: BECKY SHAW Opens-on-Broadway-20260406</title></head><body>
+<script type="application/ld+json">{
+  "@type": "LiveBlogPosting",
+  "liveBlogUpdate": [
+    {"@type": "BlogPosting", "author": {"name": "The New York Times - Jesse Green"}, "articleBody": "Shaw delivers brilliance."},
+    {"@type": "BlogPosting", "author": {"name": "Culture Sauce - Thom Geier"}, "articleBody": "A sparkling comedy."}
+  ],
+  "articleBody": "Review Roundup."
+}</script>
+<p>Jesse Green, <a href="https://nytimes.com/2026/04/06/theater/monte-cristo-review.html">The New York Times:</a> Shaw delivers.</p>
+<p>Thom Geier, <a href="https://culturesauce.com/2026/04/06/monte-cristo-broadway-review/">Culture Sauce:</a> A sparkling comedy.</p>
+</body></html>`;
+
+const wrongUrlReviews = extractBWWRoundupReviews(wrongUrlHtml, 'becky-shaw-2026', 'https://bww.com/roundup', 'Becky Shaw');
+
+const wrongUrlNyt = wrongUrlReviews.find(r =>
+  (r.outletId || '').includes('nytimes') || (r.outlet || '').toLowerCase().includes('new york times')
+);
+assert(
+  wrongUrlNyt && !wrongUrlNyt.url,
+  'URL slug guard: NYT Monte Cristo URL rejected for Becky Shaw (url should be null)'
+);
+
+const wrongUrlCulture = wrongUrlReviews.find(r =>
+  (r.outletId || '').includes('culturesauce') || (r.outlet || '').toLowerCase().includes('culture sauce')
+);
+assert(
+  wrongUrlCulture && !wrongUrlCulture.url,
+  'URL slug guard: Culture Sauce Monte Cristo URL rejected for Becky Shaw (url should be null)'
+);
+
+// --- Fix #18: correct URLs are accepted ---
+
+const correctUrlHtml = `<html><head><title>Review Roundup: BECKY SHAW Opens-on-Broadway-20260406</title></head><body>
+<script type="application/ld+json">{
+  "@type": "LiveBlogPosting",
+  "liveBlogUpdate": [
+    {"@type": "BlogPosting", "author": {"name": "Variety - Brent Lang"}, "articleBody": "A deft comedy."}
+  ],
+  "articleBody": "Review Roundup."
+}</script>
+<p>Brent Lang, <a href="https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-1234.html">Variety:</a> A deft comedy.</p>
+</body></html>`;
+
+const correctUrlReviews = extractBWWRoundupReviews(correctUrlHtml, 'becky-shaw-2026', 'https://bww.com/roundup', 'Becky Shaw');
+const correctVariety = correctUrlReviews.find(r =>
+  (r.outletId || '').includes('variety') || (r.outlet || '').toLowerCase().includes('variety')
+);
+assert(
+  correctVariety && correctVariety.url && correctVariety.url.includes('becky-shaw'),
+  'URL slug guard: correct Becky Shaw URL accepted for Variety'
+);
+
+// --- Fix #18: showTitle=undefined gracefully degrades (no URL rejection) ---
+
+const noTitleReviews = extractBWWRoundupReviews(correctUrlHtml, 'becky-shaw-2026', 'https://bww.com/roundup');
+const noTitleVariety = noTitleReviews.find(r =>
+  (r.outletId || '').includes('variety') || (r.outlet || '').toLowerCase().includes('variety')
+);
+assert(
+  noTitleVariety && noTitleVariety.url,
+  'showTitle=undefined: URLs still accepted (graceful degradation, no crash)'
+);
+
+// --- Fix #18: short single-word title through URL pairing ---
+
+const shortTitleHtml = `<html><head><title>Review Roundup: CATS Opens-on-Broadway-20260406</title></head><body>
+<script type="application/ld+json">{
+  "@type": "LiveBlogPosting",
+  "liveBlogUpdate": [
+    {"@type": "BlogPosting", "author": {"name": "Variety - Someone"}, "articleBody": "Meow."}
+  ],
+  "articleBody": "Review Roundup."
+}</script>
+<p>Someone, <a href="https://variety.com/2026/legit/reviews/cats-jellicle-ball-review.html">Variety:</a> Meow.</p>
+</body></html>`;
+
+const shortTitleReviews = extractBWWRoundupReviews(shortTitleHtml, 'cats-2026', 'https://bww.com/roundup', 'Cats');
+const shortTitleVariety = shortTitleReviews.find(r =>
+  (r.outletId || '').includes('variety')
+);
+assert(
+  shortTitleVariety && shortTitleVariety.url && shortTitleVariety.url.includes('cats'),
+  'Short title "Cats": URL with "cats" in slug accepted'
+);
+
+// Short title: wrong-show URL should be rejected
+const shortTitleWrongHtml = `<html><head><title>Review Roundup: CATS Opens-on-Broadway-20260406</title></head><body>
+<script type="application/ld+json">{
+  "@type": "LiveBlogPosting",
+  "liveBlogUpdate": [
+    {"@type": "BlogPosting", "author": {"name": "Variety - Someone"}, "articleBody": "Meow."}
+  ],
+  "articleBody": "Review Roundup."
+}</script>
+<p>Someone, <a href="https://variety.com/2026/legit/reviews/hamilton-broadway-review.html">Variety:</a> Meow.</p>
+</body></html>`;
+
+const shortTitleWrongReviews = extractBWWRoundupReviews(shortTitleWrongHtml, 'cats-2026', 'https://bww.com/roundup', 'Cats');
+const shortTitleWrongVariety = shortTitleWrongReviews.find(r =>
+  (r.outletId || '').includes('variety')
+);
+assert(
+  shortTitleWrongVariety && !shortTitleWrongVariety.url,
+  'Short title "Cats": URL without "cats" in slug rejected'
+);
+
+// ============================================================
 // Summary
 // ============================================================
 console.log(`\n${'='.repeat(50)}`);

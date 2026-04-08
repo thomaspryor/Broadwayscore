@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-04-08T03:36:14.165Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 1000,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 174,
+    "failed": 1118,
+    "skipped": 0,
+    "successRate": "13.5%"
+  },
+  "tierBreakdown": {
+    "playwright": 76,
+    "amp": 2,
+    "browserbase": 36,
+    "directCookies": 0,
+    "scrapingbee": 51,
+    "brightdata": 15,
+    "archiveToday": 50,
+    "archive": 17
+  },
+  "statistics": {
+    "tier1Attempts": 79,
+    "tier1Success": 27,
+    "ampAttempts": 4,
+    "ampSuccess": 2,
+    "tier1_5Attempts": 34,
+    "tier1_5Success": 16,
+    "tier2Attempts": 60,
+    "tier2Success": 15,
+    "tier3Attempts": 64,
+    "tier3Success": 19,
+    "tier3_6Attempts": 37,
+    "tier3_6Success": 36,
+    "tier4Attempts": 37,
+    "tier4Success": 3,
+    "totalFailed": 133,
+    "scrapingBeePageCredits": 120,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 34,
+    "browserbaseMinutesUsed": 12.6,
+    "urlDiscoveryAttempts": 95,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "cats-the-jellicle-ball-2026/nytimes--unknown.json",
     "cats-the-jellicle-ball-2026/vulture--unknown.json",
@@ -1295,8 +1346,7 @@
     "the-monsters-2026/vulture--jackson-mchenry.json",
     "jackals-off-broadway-2026/times-uk--anne-treneman.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "inter-alia-west-end-2026/artsdesk--aleks-sierz.json",
       "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
@@ -1560,487 +1610,153 @@
       "robin-hood-and-the-merry-mandem-off-west-end-2026/whatsonstage--tom-millward.json"
     ]
   },
-  "startTime": "2026-04-07T18:14:51.073Z",
-  "lastProcessed": "the-other-place-2026/thestage--dave-fargnoli.json",
-  "log": [
-    {
-      "t": "2026-04-07T19:15:53.677Z",
-      "event": "bb-session",
-      "session": "acc8f1e6",
-      "url": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191"
-    },
-    {
-      "t": "2026-04-07T19:15:54.888Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-07T19:39:18.340Z",
-      "event": "bb-session",
-      "session": "76621c37",
-      "url": "https://www.usatoday.com/story/entertainment/theater/2022/04/21/take-me-out-broa"
-    },
-    {
-      "t": "2026-04-07T19:39:19.539Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-04-07T20:22:04.886Z",
-      "event": "bb-session",
-      "session": "d5aed510",
-      "url": "https://www.usatoday.com/story/entertainment/theater/2022/04/21/take-me-out-broa"
-    },
-    {
-      "t": "2026-04-07T20:22:05.914Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-04-08T01:41:33.514Z",
-      "event": "bb-session",
-      "session": "0ed8c9ec",
-      "url": "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/"
-    },
-    {
-      "t": "2026-04-08T01:41:34.762Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-08T01:43:32.539Z",
-      "event": "bb-session",
-      "session": "558812e7",
-      "url": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euph"
-    },
-    {
-      "t": "2026-04-08T01:43:33.602Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-04-08T01:50:57.164Z",
-      "event": "bb-session",
-      "session": "71beaa38",
-      "url": "https://www.wsj.com/articles/SB10001424052748704559904576230590370976156?gaa_at="
-    },
-    {
-      "t": "2026-04-08T01:50:58.342Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T01:54:04.835Z",
-      "event": "bb-session",
-      "session": "38108949",
-      "url": "https://www.wsj.com/articles/SB10001424052702304520804576345833761027232"
-    },
-    {
-      "t": "2026-04-08T01:54:05.987Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T02:01:23.614Z",
-      "event": "bb-session",
-      "session": "209baee5",
-      "url": "https://www.wsj.com/articles/SB10001424052748703848204575608401767708396?gaa_at="
-    },
-    {
-      "t": "2026-04-08T02:01:24.852Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T02:06:23.944Z",
-      "event": "bb-session",
-      "session": "f659713a",
-      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
-    },
-    {
-      "t": "2026-04-08T02:06:25.046Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T02:09:44.286Z",
-      "event": "bb-session",
-      "session": "1f8993ff",
-      "url": "https://www.newsday.com/lifestyle/family/kidsday-review-the-miracle-worker-j9612"
-    },
-    {
-      "t": "2026-04-08T02:09:45.398Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
-    {
-      "t": "2026-04-08T02:11:38.312Z",
-      "event": "bb-session",
-      "session": "91301012",
-      "url": "https://www.wsj.com/articles/SB10001424052748703499404574561734246276554?gaa_at="
-    },
-    {
-      "t": "2026-04-08T02:11:39.408Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T02:12:59.992Z",
-      "event": "bb-session",
-      "session": "2144aa27",
-      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
-    },
-    {
-      "t": "2026-04-08T02:13:01.045Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T02:16:39.691Z",
-      "event": "bb-session",
-      "session": "d94290ff",
-      "url": "https://www.nypost.com/seven/05012009/entertainment/theater/partons_musical_work"
-    },
-    {
-      "t": "2026-04-08T02:16:40.813Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-04-08T02:25:44.990Z",
-      "event": "bb-session",
-      "session": "e2dcabe2",
-      "url": "http://www.nypost.com/seven/03102008/entertainment/theater/uptown_upstaged_10124"
-    },
-    {
-      "t": "2026-04-08T02:25:46.251Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-04-08T02:31:00.449Z",
-      "event": "bb-session",
-      "session": "0305bc5e",
-      "url": "https://www.usatoday.com/life/theater/reviews/2006-03-07-three-days-rain_x.htm"
-    },
-    {
-      "t": "2026-04-08T02:31:01.570Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-04-08T02:32:49.763Z",
-      "event": "bb-session",
-      "session": "e422ae4b",
-      "url": "https://www.hollywoodreporter.com/business/business-news/power-players-90s-11904"
-    },
-    {
-      "t": "2026-04-08T02:32:51.019Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-08T02:37:22.186Z",
-      "event": "bb-session",
-      "session": "2d5921a6",
-      "url": "http://hollywoodreporter.com/thr-esq/judge-overturns-jurys-verdict-jersey-boys-i"
-    },
-    {
-      "t": "2026-04-08T02:37:23.245Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-08T02:38:09.651Z",
-      "event": "bb-session",
-      "session": "15c7ca96",
-      "url": "https://www.nytimes.com/2005/10/28/theater/reviews/the-odd-couple-redux-still-at"
-    },
-    {
-      "t": "2026-04-08T02:38:11.010Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:39:32.599Z",
-      "event": "bb-session",
-      "session": "42dca95a",
-      "url": "https://www.wsj.com/articles/SB112693598167234567"
-    },
-    {
-      "t": "2026-04-08T02:39:33.815Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T02:41:02.042Z",
-      "event": "bb-session",
-      "session": "92b1a642",
-      "url": "https://www.nytimes.com/2005/09/27/theater/reviews/latinologues-plural-voices-of"
-    },
-    {
-      "t": "2026-04-08T02:41:03.178Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:42:48.349Z",
-      "event": "bb-session",
-      "session": "899cab31",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/style/2005/08/16/lennon-a-music"
-    },
-    {
-      "t": "2026-04-08T02:42:49.482Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-04-08T02:44:20.397Z",
-      "event": "bb-session",
-      "session": "acf3c48c",
-      "url": "https://www.newsday.com/entertainment/theater/frozen-review-1.17578362"
-    },
-    {
-      "t": "2026-04-08T02:44:21.441Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
-    {
-      "t": "2026-04-08T02:46:58.973Z",
-      "event": "bb-session",
-      "session": "50522c62",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B04E3DF143DF936A35751C1"
-    },
-    {
-      "t": "2026-04-08T02:47:00.044Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:47:16.445Z",
-      "event": "bb-session",
-      "session": "065058c7",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c1"
-    },
-    {
-      "t": "2026-04-08T02:47:17.586Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:47:34.388Z",
-      "event": "bb-session",
-      "session": "4e5bb577",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
-    },
-    {
-      "t": "2026-04-08T02:47:35.463Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:47:54.563Z",
-      "event": "bb-session",
-      "session": "e7c3d2af",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9506e5dd1730f933a05753c1"
-    },
-    {
-      "t": "2026-04-08T02:47:55.678Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:49:23.043Z",
-      "event": "bb-session",
-      "session": "a6e01760",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0"
-    },
-    {
-      "t": "2026-04-08T02:49:24.122Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:49:40.215Z",
-      "event": "bb-session",
-      "session": "cf36c63e",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c06e3d71e30f93ba15750c0"
-    },
-    {
-      "t": "2026-04-08T02:49:41.515Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:49:58.351Z",
-      "event": "bb-session",
-      "session": "5c64785e",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
-    },
-    {
-      "t": "2026-04-08T02:49:59.494Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:50:16.092Z",
-      "event": "bb-session",
-      "session": "bb36cb36",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C1"
-    },
-    {
-      "t": "2026-04-08T02:50:17.177Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:51:32.473Z",
-      "event": "bb-session",
-      "session": "8c63ffda",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=F"
-    },
-    {
-      "t": "2026-04-08T02:51:33.658Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:53:52.175Z",
-      "event": "bb-session",
-      "session": "74357f69",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9406e0dc1f3af936a35757c0"
-    },
-    {
-      "t": "2026-04-08T02:53:53.536Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:54:15.278Z",
-      "event": "bb-session",
-      "session": "5f042799",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
-    },
-    {
-      "t": "2026-04-08T02:54:16.283Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:55:14.575Z",
-      "event": "bb-session",
-      "session": "e5e81722",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf93"
-    },
-    {
-      "t": "2026-04-08T02:55:15.656Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T02:55:45.090Z",
-      "event": "bb-session",
-      "session": "1cc9d29c",
-      "url": "https://www.nytimes.com/2001/04/20/movies/theater-review-frolic-and-detour-on-th"
-    },
-    {
-      "t": "2026-04-08T02:55:46.260Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T03:03:32.336Z",
-      "event": "bb-session",
-      "session": "00bc3dbb",
-      "url": "https://www.northjersey.com/arts_entertainment/127572463__Rent__revival_off-Broa"
-    },
-    {
-      "t": "2026-04-08T03:03:33.773Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-04-08T03:10:40.033Z",
-      "event": "bb-session",
-      "session": "3b82be7b",
-      "url": "https://www.newsday.com/entertainment/theater/al-pacino-s-merchant-of-venice-eve"
-    },
-    {
-      "t": "2026-04-08T03:10:41.236Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
-    {
-      "t": "2026-04-08T03:13:42.524Z",
-      "event": "bb-session",
-      "session": "8c8ab3b9",
-      "url": "https://www.nytimes.com/1987/03/13/theater/theater-les-miserables.html"
-    },
-    {
-      "t": "2026-04-08T03:13:43.700Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T03:19:27.208Z",
-      "event": "bb-session",
-      "session": "84342c75",
-      "url": "https://www.amny.com/urbanite-1.812039/theater-review-annie-1-5-stars-1.4202762"
-    },
-    {
-      "t": "2026-04-08T03:19:28.284Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-04-08T03:20:37.001Z",
-      "event": "bb-session",
-      "session": "77870d9b",
-      "url": "https://news.google.com/news/url?sr=1&sa=t&ct2=us%2F0_0_s_6_0_t&usg=AFQjCNFS17Ms"
-    },
-    {
-      "t": "2026-04-08T03:25:15.355Z",
-      "event": "bb-session",
-      "session": "eb2f4bfa",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review_"
-    },
-    {
-      "t": "2026-04-08T03:25:17.207Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-04-08T03:26:20.657Z",
-      "event": "bb-session",
-      "session": "e445936e",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-04-08T03:26:22.564Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T03:26:52.795Z",
-      "event": "bb-session",
-      "session": "8760b13d",
-      "url": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-"
-    },
-    {
-      "t": "2026-04-08T03:26:55.085Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T03:35:18.431Z",
-      "event": "bb-session",
-      "session": "ed6b8895",
-      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
-    },
-    {
-      "t": "2026-04-08T03:35:19.879Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+  "failuresByOutlet": {
+    "The Wall Street Journal": {
+      "count": 2,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "NY Post": {
+      "count": 1,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Associated Press": {
+      "count": 4,
+      "domain": "forbes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "New York Post": {
+      "count": 1,
+      "domain": "nypost.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Chicago Tribune": {
+      "count": 2,
+      "domain": "newspapers.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Variety": {
+      "count": 4,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Onandoffbroadwaytheaterreviews": {
+      "count": 1,
+      "domain": "onandoffbroadwaytheaterreviews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "CurtainUp": {
+      "count": 1,
+      "domain": "curtainup.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The New York Times": {
+      "count": 2,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "New York Daily News": {
+      "count": 1,
+      "domain": "newspapers.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Zeal NYC": {
+      "count": 1,
+      "domain": "zealnyc.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NY1": {
+      "count": 1,
+      "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Newsday": {
+      "count": 1,
+      "domain": "newsday.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Entertainment Weekly": {
+      "count": 2,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "businessworld": {
+      "count": 1,
+      "domain": "bworldonline.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "the-philippine-star": {
+      "count": 1,
+      "domain": "philstar.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "amNY": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Woman Around Town": {
+      "count": 1,
+      "domain": "womanaroundtown.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Telegraph": {
+      "count": 2,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "assassins-2004/nytimes--ben-brantley.json",
+      "oldUrl": "http://theater.nytimes.com/mem/theater/treview.html?res=9a05eed7173af930a15757c0a9629c8b63",
+      "newUrl": "https://www.nytimes.com/2004/04/22/theater/ready-aim-sing-assassins-hits-broadway.html"
     }
   ]
 }
