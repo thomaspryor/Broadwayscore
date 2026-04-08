@@ -93,7 +93,11 @@
     "inter-alia-west-end-2026/guardian--emma-john.json",
     "inter-alia-west-end-2026/standard--unknown.json",
     "inter-alia-west-end-2026/daily-mail--patrick-marmion.json",
-    "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json"
+    "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json",
+    "cats-the-jellicle-ball-2026/slantmagazine--unknown.json",
+    "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
+    "becky-shaw-2026/variety--unknown.json",
+    "innocence-off-broadway-2026/variety--unknown.json"
   ],
   "failed": [
     "cats-the-jellicle-ball-2026/billboard--unknown.json",
@@ -975,7 +979,13 @@
     "inter-alia-west-end-2026/theupcoming--unknown.json",
     "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json",
     "copenhagen-west-end-2026/telegraph--suzanne-king.json",
-    "inter-alia-west-end-2026/thestage--sam-marlowe.json"
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "cats-the-jellicle-ball-2026/usatoday--patrick-ryan.json",
+    "cats-the-jellicle-ball-2026/usatoday--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json",
+    "innocence-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1026,12 +1036,18 @@
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
       "once-2012/theatermania--dan-bacalzo.json",
       "inter-alia-west-end-2026/guardian--emma-john.json",
-      "inter-alia-west-end-2026/standard--unknown.json"
+      "inter-alia-west-end-2026/standard--unknown.json",
+      "cats-the-jellicle-ball-2026/slantmagazine--unknown.json",
+      "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/hadestown-west-end-2024/variety--matt-trueman.json",
-      "hadestown-west-end-2024/variety--matt-trueman.json"
+      "hadestown-west-end-2024/variety--matt-trueman.json",
+      "data/review-texts/becky-shaw-2026/variety--unknown.json",
+      "becky-shaw-2026/variety--unknown.json",
+      "data/review-texts/innocence-off-broadway-2026/variety--unknown.json",
+      "innocence-off-broadway-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1086,7 +1102,8 @@
       "data/review-texts/the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json",
       "data/review-texts/inter-alia-west-end-2026/theupcoming--unknown.json",
       "data/review-texts/inter-alia-west-end-2026/theupcoming--unknown.json",
-      "data/review-texts/inter-alia-west-end-2026/theupcoming--unknown.json"
+      "data/review-texts/inter-alia-west-end-2026/theupcoming--unknown.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "cats-the-jellicle-ball-2026/vulture--unknown.json",
@@ -1106,7 +1123,7 @@
     ]
   },
   "startTime": "2026-04-07T18:14:51.073Z",
-  "lastProcessed": "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+  "lastProcessed": "innocence-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-04-07T19:15:53.677Z",
@@ -1140,6 +1157,39 @@
       "t": "2026-04-07T20:22:05.914Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-04-08T04:27:04.682Z",
+      "event": "bb-session",
+      "session": "158c6ed8",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:27:05.103Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T04:27:20.043Z",
+      "event": "bb-session",
+      "session": "dd0af65b",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:27:20.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T04:27:35.160Z",
+      "event": "bb-session",
+      "session": "b792d9dc",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T04:27:35.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
