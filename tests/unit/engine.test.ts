@@ -304,9 +304,9 @@ describe('computeCompositeScore', () => {
   test('critic + audience uses correct weights', () => {
     // critic=80 (weight 0.50), audience=90 (weight 0.35)
     // Normalized: critic=0.50/0.85=0.588, audience=0.35/0.85=0.412
-    // Score = 80*0.588 + 90*0.412 = 47.06 + 37.06 = 84.12 → 84
+    // Score = 80*0.588 + 90*0.412 = 47.06 + 37.06 = 84.12 (2dp for sort tiebreaking)
     const result = computeCompositeScore(80, 90, null);
-    assert.strictEqual(result, 84);
+    assert.strictEqual(result, 84.12);
   });
 
   test('all three components', () => {
