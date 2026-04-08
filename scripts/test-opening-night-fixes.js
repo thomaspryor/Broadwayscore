@@ -1258,6 +1258,82 @@ assert(
   'Show Score: showTitle=undefined accepts URLs (graceful degradation)'
 );
 
+// Show Score HTML "Read more" link extraction path (not JSON-LD)
+const ssHtmlWrongUrl = `<html><body>
+<div class="review-tile-v2 -critic">
+  <img alt="Variety">
+  <a href="/member/brent-lang">Brent Lang</a>
+  <a href="https://variety.com/2026/legit/reviews/monte-cristo-review.html">Read more</a>
+</div>
+</body></html>`;
+
+const ssHtmlWrongReviews = extractShowScoreReviews(ssHtmlWrongUrl, 'becky-shaw-2026', 'Becky Shaw');
+const ssHtmlVariety = ssHtmlWrongReviews.find(r => (r.outletId || '').includes('variety'));
+assert(
+  !ssHtmlVariety || !ssHtmlVariety.url,
+  'Show Score HTML path: Monte Cristo URL rejected for Becky Shaw'
+);
+
+// Show Score HTML with correct URL
+const ssHtmlCorrectUrl = ssHtmlWrongUrl.replace('monte-cristo-review', 'becky-shaw-review');
+const ssHtmlCorrectReviews = extractShowScoreReviews(ssHtmlCorrectUrl, 'becky-shaw-2026', 'Becky Shaw');
+const ssHtmlCorrectVariety = ssHtmlCorrectReviews.find(r => (r.outletId || '').includes('variety'));
+assert(
+  ssHtmlCorrectVariety && ssHtmlCorrectVariety.url && ssHtmlCorrectVariety.url.includes('becky-shaw'),
+  'Show Score HTML path: correct Becky Shaw URL accepted'
+);
+
+// Show Score HTML fallback path (outlet resolved from URL domain, not predefined list)
+const ssHtmlFallbackUrl = `<html><body>
+<div class="review-tile-v2 -critic">
+  <img alt="Some Obscure Blog">
+  <a href="https://obscureblog.com/2026/04/monte-cristo-review">Read more</a>
+</div>
+</body></html>`;
+
+const ssHtmlFallbackReviews = extractShowScoreReviews(ssHtmlFallbackUrl, 'becky-shaw-2026', 'Becky Shaw');
+const ssHtmlFallback = ssHtmlFallbackReviews.find(r => (r.outletId || '').includes('obscureblog'));
+assert(
+  !ssHtmlFallback || !ssHtmlFallback.url,
+  'Show Score HTML fallback path: wrong-show URL rejected even for unknown outlets'
+);
+
+// ============================================================
+// Source-level verification: all URL assignment paths have guards
+// ============================================================
+console.log('\n--- Source-level verification: URL slug guards wired in ---');
+
+// Verify guard presence in source code for paths we can't unit-test
+// (Playwright, paginated, standalone scripts with side effects)
+const _fs = require('fs');
+const _path = require('path');
+
+const gatherSrc = _fs.readFileSync(_path.join(__dirname, 'gather-reviews.js'), 'utf8');
+const dtliSrc = _fs.readFileSync(_path.join(__dirname, 'scrape-dtli.js'), 'utf8');
+const pollerSrc = _fs.readFileSync(_path.join(__dirname, 'opening-night-poller.js'), 'utf8');
+const urlDiscSrc = _fs.readFileSync(_path.join(__dirname, 'lib', 'url-discovery.js'), 'utf8');
+
+// scrape-dtli.js standalone
+assert(dtliSrc.includes('urlLooksLikeReview'), 'scrape-dtli.js: imports urlLooksLikeReview');
+assert(dtliSrc.includes("showTitle && !urlLooksLikeReview(url, showTitle)"), 'scrape-dtli.js: has URL slug guard');
+assert(dtliSrc.includes("extractDTLIReviews(html, show.id, dtliUrl, show.title)"), 'scrape-dtli.js: call site passes show.title');
+
+// Playwright Show Score path
+assert(gatherSrc.includes("!urlLooksLikeReview(review.url, show.title)"), 'gather-reviews.js: Playwright SS path has guard');
+
+// Paginated Show Score path
+assert(gatherSrc.includes("fetchShowScorePaginatedReviews(") && gatherSrc.includes("showTitle && !urlLooksLikeReview(url, showTitle)"),
+  'gather-reviews.js: paginated SS path has guard');
+assert(gatherSrc.includes("showScoreResult.url, showScoreResult.html, showId, show.title"), 'gather-reviews.js: paginated call passes show.title');
+
+// opening-night-poller.js call sites
+assert(pollerSrc.includes("extractDTLIReviews(dtli.html, show.id, dtli.url, show.title)"), 'opening-night-poller.js: DTLI call passes show.title');
+assert(pollerSrc.includes("extractShowScoreReviews(ss.html, show.id, show.title)"), 'opening-night-poller.js: SS call passes show.title');
+assert(pollerSrc.includes("extractBWWRoundupReviews(bww.html, show.id, bww.url, show.title)"), 'opening-night-poller.js: BWW call passes show.title');
+
+// url-discovery.js SERP guard
+assert(urlDiscSrc.includes("urlLooksLikeReview(url, showInfo.title)"), 'url-discovery.js: discoverCorrectUrl has URL slug guard');
+
 // ============================================================
 // Summary
 // ============================================================

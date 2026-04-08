@@ -28,7 +28,7 @@ COOKIE_FILE_CANDIDATES = [
     os.path.expanduser("~/Library/Cookies/Cookies.binarycookies"),
     os.path.expanduser("~/Library/Containers/com.apple.Safari/Data/Library/Cookies/Cookies.binarycookies"),
 ]
-COOKIE_FILE = next((p for p in COOKIE_FILE_CANDIDATES if os.path.isfile(p)), COOKIE_FILE_CANDIDATES[0])
+COOKIE_FILE = next((p for p in COOKIE_FILE_CANDIDATES if os.path.isfile(p) and os.path.getsize(p) > 0), COOKIE_FILE_CANDIDATES[0])
 
 # Domain groups: which domains map to which output file
 DOMAIN_GROUPS = {
