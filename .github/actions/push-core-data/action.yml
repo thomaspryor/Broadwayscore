@@ -95,11 +95,49 @@ runs:
           # Save remote's audience-buzz.json before rebase overwrites it
           git show origin/main:audience-buzz.json > /tmp/remote-audience-buzz.json 2>/dev/null || true
 
-          # Rebase with -X ours: our version wins on conflicts
+          # Save remote's shows.json before rebase overwrites it
+          git show origin/main:shows.json > /tmp/remote-shows.json 2>/dev/null || true
+
+          # Rebase with -X ours: our version wins on conflicts.
+          # Post-rebase reconciliation below restores any remote-only changes
+          # that -X ours silently dropped (manual corrections to shows.json, audience-buzz).
           if ! git pull --rebase -X ours origin main; then
             git rebase --abort 2>/dev/null || true
             sleep $((RANDOM % 10 + 5))
             continue
+          fi
+
+          # Reconcile shows.json: restore fields from remote that -X ours may have dropped.
+          # This catches manual corrections (venue, synopsis, dates) pushed to origin
+          # while CI was running. Only restores fields where remote is non-null and local is null.
+          if [ -f "/tmp/remote-shows.json" ] && [ -f "shows.json" ]; then
+            node -e '
+              const fs = require("fs");
+              try {
+                const local = JSON.parse(fs.readFileSync("shows.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-shows.json", "utf8"));
+                const localMap = {};
+                for (const s of (local.shows || [])) localMap[s.id] = s;
+                let recovered = 0;
+                for (const rs of (remote.shows || [])) {
+                  const ls = localMap[rs.id];
+                  if (!ls) continue; // show only in remote — skip (likely intentional removal)
+                  // Restore non-null fields from remote where local is null/undefined
+                  for (const [key, val] of Object.entries(rs)) {
+                    if (val !== null && val !== undefined && (ls[key] === null || ls[key] === undefined)) {
+                      ls[key] = val;
+                      recovered++;
+                    }
+                  }
+                }
+                if (recovered > 0) {
+                  fs.writeFileSync("shows.json", JSON.stringify(local, null, 2) + "\n");
+                  console.log("Reconciled " + recovered + " fields from remote shows.json");
+                }
+              } catch (e) {
+                console.error("Shows reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
           fi
 
           # Reconcile audience-buzz.json: merge show-level entries from remote
@@ -177,11 +215,19 @@ runs:
               ' 2>&1 || true
             fi
 
-            # Re-stage and amend if reconciliation or recalculation changed the file
+            # Re-stage and amend if reconciliation or recalculation changed files
+            RECONCILED_FILES=""
+            if ! git diff --quiet shows.json 2>/dev/null; then
+              git add shows.json
+              RECONCILED_FILES="$RECONCILED_FILES shows.json"
+            fi
             if ! git diff --quiet audience-buzz.json 2>/dev/null; then
               git add audience-buzz.json
+              RECONCILED_FILES="$RECONCILED_FILES audience-buzz.json"
+            fi
+            if [ -n "$RECONCILED_FILES" ]; then
               git commit --amend --no-edit
-              echo "Amended commit with reconciled audience-buzz.json"
+              echo "Amended commit with reconciled:$RECONCILED_FILES"
             fi
           fi
 

@@ -411,86 +411,15 @@ jobs:
 
           Co-Authored-By: Claude <noreply@anthropic.com>"
 
-          # Robust push with retry and conflict resolution
-          MAX_RETRIES=5
-          pushed=false
-
           # Stash unstaged changes (review-texts files modified by scoring but pushed separately)
           git stash --include-untracked --quiet 2>/dev/null || true
 
-          for i in $(seq 1 $MAX_RETRIES); do
-            echo "Push attempt $i of $MAX_RETRIES..."
+          # Use shared push-with-retry script (handles rebase, conflict resolution,
+          # and manual field restoration). Replaces 70-line inline loop.
+          bash scripts/lib/push-with-retry.sh 5 "HEAD:${{ github.ref_name }}"
 
-            # Fetch latest
-            git fetch origin ${{ github.ref_name }}
-
-            # Try rebase first
-            if git rebase origin/${{ github.ref_name }}; then
-              echo "Rebase successful"
-            else
-              echo "Rebase had conflicts, attempting auto-resolution..."
-              # Resolve modify/delete conflicts: if remote deleted a file, accept the deletion
-              # (the file was likely a cleaned-up duplicate; our score updates don't matter for it)
-              CONFLICTED=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
-              if [ -n "$CONFLICTED" ]; then
-                echo "Resolving conflicts by accepting deletions:"
-                echo "$CONFLICTED"
-                echo "$CONFLICTED" | while read -r f; do
-                  git rm --force "$f" 2>/dev/null || git checkout --theirs "$f" && git add "$f" 2>/dev/null || true
-                done
-                if git rebase --continue 2>/dev/null; then
-                  echo "Rebase completed after conflict resolution"
-                else
-                  echo "Rebase still failing, trying merge..."
-                  git rebase --abort 2>/dev/null || true
-
-                  # Reset to our commit and try merge
-                  git reset --hard HEAD
-                  git fetch origin ${{ github.ref_name }}
-                  if git merge origin/${{ github.ref_name }} -X ours --no-edit 2>/dev/null; then
-                    echo "Merge successful"
-                  else
-                    # Resolve any remaining modify/delete conflicts
-                    MERGE_CONFLICTS=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
-                    if [ -n "$MERGE_CONFLICTS" ]; then
-                      echo "Resolving merge conflicts:"
-                      echo "$MERGE_CONFLICTS" | while read -r f; do
-                        git rm --force "$f" 2>/dev/null || git checkout --theirs "$f" && git add "$f" 2>/dev/null || true
-                      done
-                      git commit --no-edit 2>/dev/null || true
-                    else
-                      echo "Merge failed with non-file conflicts, will retry..."
-                      git merge --abort 2>/dev/null || true
-                      sleep $((i * 2))
-                      continue
-                    fi
-                  fi
-                fi
-              else
-                echo "No conflicted files found, aborting rebase..."
-                git rebase --abort 2>/dev/null || true
-                sleep $((i * 2))
-                continue
-              fi
-            fi
-
-            # Try to push
-            if git push origin HEAD:${{ github.ref_name }}; then
-              echo "Push successful!"
-              pushed=true
-              break
-            else
-              echo "Push failed, will retry..."
-              sleep $((i * 2))
-            fi
-          done
           # Restore stashed changes (review-texts files for downstream steps)
           git stash pop --quiet 2>/dev/null || true
-
-          if [ "$pushed" != "true" ]; then
-            echo "::error::All push attempts failed"
-            exit 1
-          fi
 
       - name: Push core data to private repo
         if: always()
