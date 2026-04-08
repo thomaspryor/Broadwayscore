@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-08T02:29:54.410Z",
+  "timestamp": "2026-04-08T03:36:45.637Z",
   "stats": {
-    "totalReviews": 34605,
-    "alreadyFlagged": 13305,
+    "totalReviews": 34602,
+    "alreadyFlagged": 13318,
     "dateGuardCatches": 61,
-    "directorMismatch": 982,
+    "directorMismatch": 983,
     "tvFilmSignals": 3467,
     "londonSignals": 1115,
-    "offBroadwaySignals": 981,
+    "offBroadwaySignals": 984,
     "yearMismatch": 74,
-    "noPublishDate": 5117
+    "noPublishDate": 5108
   },
   "findings": [
     {
@@ -31,6 +31,20 @@
       "file": "latimes--charles-mcnulty-bway.json",
       "publishDate": "2008-10-08",
       "url": "https://www.newspapers.com/image/193268859/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "13-2008",
+      "file": "talkinbroadway--unknown.json",
+      "score": null,
+      "publishDate": "2008-10-05",
+      "url": "https://www.talkinbroadway.com/world/Thirteen.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -9534,6 +9548,44 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
+      "file": "nyt-theater--unknown.json",
+      "score": 75,
+      "publishDate": "2026-04-07",
+      "url": "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": null,
+      "publishDate": "2026-04-07",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
       "file": "variety--frank-rizzo.json",
       "score": 90,
       "publishDate": "2026-04-08",
@@ -16686,25 +16738,6 @@
     },
     {
       "showId": "frozen-2004",
-      "file": "newsday--barbara-schuler.json",
-      "score": 77,
-      "publishDate": "2004-05-04",
-      "url": "https://www.newsday.com/entertainment/theater/frozen-review-1.17578362",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael grandage\" from frozen-2018"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2004",
       "file": "nypost--johnny-oleksinski.json",
       "score": 42,
       "publishDate": "2004-05-04",
@@ -20837,7 +20870,7 @@
     {
       "showId": "hairspray-2002",
       "file": "nytimes--robin-pogrebin.json",
-      "score": 80,
+      "score": null,
       "publishDate": "2002-08-15",
       "url": "https://www.nytimes.com/2002/08/21/theater/big-hair-personality-match-for-young-actress-s-career-bouffant-moment-hairspray.html",
       "findings": [
@@ -66114,6 +66147,20 @@
       "score": 93,
       "publishDate": "2026-04-08",
       "url": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 87,
+      "publishDate": "2026-04-07",
+      "url": "https://www.vulture.com/article/cats-the-jellicle-ball-is-the-real-thing.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
