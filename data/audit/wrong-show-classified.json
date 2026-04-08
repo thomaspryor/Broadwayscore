@@ -1,14 +1,31 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-07T22:10:49.929Z",
+    "generatedAt": "2026-04-08T00:05:22.287Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 2,
+    "classified": 2,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 2,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "sunset-boulevard-2017",
+      "showTitle": "Sunset Boulevard",
+      "file": "close-gives-a-bravura-performance--like-burnett.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions Glenn Close in \"Sunset Boulevard\" and discusses the production's costumes, venue (Palace Theatre), and themes."
+    },
+    {
+      "showId": "sunset-boulevard-2017",
+      "showTitle": "Sunset Boulevard",
+      "file": "and-be-assured--new-york.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The reviews explicitly mention Glenn Close as Norma Desmond in Sunset Boulevard, the Palace Theater, and Andrew Lloyd Webber's music, all confirming the show."
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T22:15:05.492Z",
+  "generatedAt": "2026-04-08T00:10:41.916Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -926,10 +926,6 @@
           "isDualMarket": true
         },
         {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -1714,95 +1710,6 @@
           "isDualMarket": true
         }
       ]
-    },
-    {
-      "id": "heart-wall-west-end-2026",
-      "title": "HEART WALL",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-04-04",
-      "status": "open",
-      "slug": "heart-wall-west-end",
-      "thumbnail": "/images/shows/heart-wall-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ]
     }
   ],
   "upcoming": [
@@ -1816,7 +1723,7 @@
       "status": "previews",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1855,7 +1762,7 @@
       "status": "previews",
       "slug": "lost-in-del-valle-off-broadway",
       "thumbnail": "/images/shows/lost-in-del-valle-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1894,7 +1801,7 @@
       "status": "upcoming",
       "slug": "flyby-off-west-end",
       "thumbnail": "/images/shows/flyby-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1919,7 +1826,7 @@
       "status": "previews",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1958,7 +1865,7 @@
       "status": "upcoming",
       "slug": "myras-story-west-end",
       "thumbnail": "/images/shows/myras-story-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1983,7 +1890,7 @@
       "status": "upcoming",
       "slug": "yokos-husbands-killers-japanese-wife-gloria-off-broadway",
       "thumbnail": "/images/shows/yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2022,7 +1929,7 @@
       "status": "previews",
       "slug": "rheology-off-broadway",
       "thumbnail": "/images/shows/rheology-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2061,7 +1968,7 @@
       "status": "upcoming",
       "slug": "what-happened-was-off-broadway",
       "thumbnail": "/images/shows/what-happened-was-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2087,6 +1994,148 @@
         "warnings": 2,
         "unknowns": 4,
         "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-fear-of-13-2026",
+      "title": "The Fear of 13",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-04-15",
+      "status": "previews",
+      "slug": "the-fear-of-13",
+      "thumbnail": "/images/shows/the-fear-of-13-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-The-Fear-of-13-Opens-on-Broadway-20260415",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/TheFearOf132026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-receptionist-off-broadway-2026",
+      "title": "The Receptionist",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-15",
+      "status": "previews",
+      "slug": "the-receptionist-off-broadway",
+      "thumbnail": "/images/shows/the-receptionist-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-The-Receptionist-Opens-on-Broadway-20260415",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/TheReceptionist2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "kenrex-off-broadway-2026",
+      "title": "KENREX",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-15",
+      "status": "previews",
+      "slug": "kenrex-off-broadway",
+      "thumbnail": "/images/shows/kenrex-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-KENREX-Opens-on-Broadway-20260415",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/Kenrex2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "title": "One Flew Over the Cuckoo’s Nest",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-04-15",
+      "status": "previews",
+      "slug": "one-flew-over-the-cuckoos-nest-west-end",
+      "thumbnail": "/images/shows/one-flew-over-the-cuckoos-nest-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
       },
       "preflight": false
     }
