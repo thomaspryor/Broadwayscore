@@ -45,7 +45,8 @@
     "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
     "the-peewee-herman-show-2010/theatermania--unknown.json",
     "enron-2010/chicagotribune--shanxi-radio-and.json",
-    "million-dollar-quartet-2010/theatermania--unknown.json"
+    "million-dollar-quartet-2010/theatermania--unknown.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "the-boy-at-the-back-of-the-class-west-end-2026/guardian--arifa-akbar.json",
@@ -750,7 +751,16 @@
     "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
     "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
     "race-2009/theatermania--charles-isherwood.json",
-    "fela-2009/new-jersey-newsroom--michael-sommers.json"
+    "fela-2009/new-jersey-newsroom--michael-sommers.json",
+    "memphis-2009/variety--charles-isherwood.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+    "oleanna-2009/times-uk--dominic-maxwell.json",
+    "the-royal-family-2009/washpost--peter-marks.json",
+    "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -778,7 +788,8 @@
       "once-2012/theatermania--dan-bacalzo.json",
       "stranger-things-2024/thestage--unknown.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
-      "million-dollar-quartet-2010/theatermania--unknown.json"
+      "million-dollar-quartet-2010/theatermania--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -835,7 +846,7 @@
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "fela-2009/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "waiting-for-godot-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -966,6 +977,17 @@
     },
     {
       "t": "2026-04-08T19:30:03.132Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:33:36.928Z",
+      "event": "bb-session",
+      "session": "8b2483fe",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-08T19:33:37.324Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
