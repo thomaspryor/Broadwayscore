@@ -19,7 +19,8 @@
     "innocence-off-broadway-2026/nytimes--unknown.json",
     "the-listening-off-broadway-2026/variety--rebecca-rubin.json",
     "becky-shaw-2026/variety--rebecca-rubin.json",
-    "innocence-off-broadway-2026/variety--unknown.json"
+    "innocence-off-broadway-2026/variety--unknown.json",
+    "innocence-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
@@ -36,6 +37,11 @@
     "innocence-off-broadway-2026/playbill--unknown.json",
     "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
     "cats-the-jellicle-ball-2026/new-york-sun--elysa-gardner.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json",
+    "innocence-off-broadway-2026/playbill--unknown.json",
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
     "becky-shaw-2026/wsj--unknown.json",
     "becky-shaw-2026/talkinbroadway--unknown.json",
     "innocence-off-broadway-2026/playbill--unknown.json"
@@ -63,7 +69,9 @@
       "data/review-texts/becky-shaw-2026/variety--rebecca-rubin.json",
       "becky-shaw-2026/variety--rebecca-rubin.json",
       "data/review-texts/innocence-off-broadway-2026/variety--unknown.json",
-      "innocence-off-broadway-2026/variety--unknown.json"
+      "innocence-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -80,6 +88,8 @@
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
@@ -87,7 +97,7 @@
     ]
   },
   "startTime": "2026-04-07T18:14:51.073Z",
-  "lastProcessed": "innocence-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "innocence-off-broadway-2026/variety--rebecca-rubin.json",
   "log": [
     {
       "t": "2026-04-08T07:28:19.449Z",
@@ -187,6 +197,28 @@
       "t": "2026-04-08T08:23:06.357Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T08:49:40.371Z",
+      "event": "bb-session",
+      "session": "ca145cc7",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T08:49:40.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T08:52:02.711Z",
+      "event": "bb-session",
+      "session": "00ad28bf",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T08:52:03.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

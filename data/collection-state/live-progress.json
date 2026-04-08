@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-08T08:25:13.268Z",
-  "processed": 20,
-  "failed": 17,
-  "successRate": "54.1%",
+  "updatedAt": "2026-04-08T08:52:20.078Z",
+  "processed": 21,
+  "failed": 22,
+  "successRate": "48.8%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 7,
+    "archiveToday": 9,
     "archive": 1
   },
   "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-08T07:28:19.449Z",
-      "event": "bb-session",
-      "session": "fb5b8641",
-      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
-    },
-    {
-      "t": "2026-04-08T07:28:20.219Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-08T07:33:53.444Z",
       "event": "bb-session",
@@ -113,6 +102,28 @@
       "t": "2026-04-08T08:23:06.357Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T08:49:40.371Z",
+      "event": "bb-session",
+      "session": "ca145cc7",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T08:49:40.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T08:52:02.711Z",
+      "event": "bb-session",
+      "session": "00ad28bf",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T08:52:03.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
