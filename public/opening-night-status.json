@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T03:36:49.317Z",
+  "generatedAt": "2026-04-08T03:51:20.750Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,20 +12,20 @@
       "status": "open",
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
-      "siteScore": 89,
-      "liveScore": 89,
+      "siteScore": 88,
+      "liveScore": 88,
       "scoreDrift": 0,
-      "total": 12,
+      "total": 13,
       "t1": 3,
-      "t2": 8,
+      "t2": 9,
       "t3": 1,
       "positive": 12,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 12,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -94,10 +94,6 @@
         },
         {
           "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -327,6 +323,18 @@
           "t3": 1,
           "p": 12,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T03:51:20.750Z",
+          "rc": 13,
+          "s": 88,
+          "t1": 3,
+          "t2": 9,
+          "t3": 1,
+          "p": 12,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
