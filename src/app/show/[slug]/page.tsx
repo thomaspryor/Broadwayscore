@@ -40,8 +40,6 @@ import CastSection from '@/components/CastSection';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
-import VideoReviewsShelf from '@/components/VideoReviewsShelf';
-import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
@@ -301,7 +299,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end') ? getRelatedShowsClosed(show) : [];
   const otherProductions = getOtherProductions(show);
   const comparisons = getComparisonsForShow(show.slug);
-  const videoReviews = getVideoReviews(show.id);
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
@@ -1228,11 +1225,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               })}
             </div>
           </div>
-        )}
-
-        {/* Video Reviews */}
-        {videoReviews.length > 0 && (
-          <VideoReviewsShelf reviews={videoReviews} showTitle={show.title} />
         )}
 
         {/* Related Shows */}
