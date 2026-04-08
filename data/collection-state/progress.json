@@ -48,7 +48,10 @@
     "million-dollar-quartet-2010/theatermania--unknown.json",
     "oleanna-2009/theatermania--unknown.json",
     "speedtheplow-2008/nytimes--dave-itzkoff.json",
-    "a-bronx-tale-2007/nydailynews--unknown.json"
+    "a-bronx-tale-2007/nydailynews--unknown.json",
+    "jersey-boys-2005/hollywood-reporter--eriq-gardner.json",
+    "never-gonna-dance-2003/nytimes--ben-brantley.json",
+    "flower-drum-song-2002/nytimes--ben-brantley.json"
   ],
   "failed": [
     "the-boy-at-the-back-of-the-class-west-end-2026/guardian--arifa-akbar.json",
@@ -800,7 +803,14 @@
     "journeys-end-2007/variety--david-rooney.json",
     "high-fidelity-2006/times-uk--clive-davis.json",
     "mary-poppins-2006/variety--charles-isherwood.json",
-    "tarzan-2006/variety--charles-isherwood.json"
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "festen-2006/variety--charles-isherwood.json",
+    "well-2006/chicagotribune--chris-jones-bway.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "the-odd-couple-2005/wsj--terry-teachout.json",
+    "lennon-2005/chicagotribune--chris-jones-bway.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -840,7 +850,13 @@
       "data/review-texts/becky-shaw-2026/variety--rebecca-rubin.json",
       "becky-shaw-2026/variety--rebecca-rubin.json",
       "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
-      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/jersey-boys-2005/hollywood-reporter--eriq-gardner.json",
+      "jersey-boys-2005/hollywood-reporter--eriq-gardner.json",
+      "data/review-texts/never-gonna-dance-2003/nytimes--ben-brantley.json",
+      "never-gonna-dance-2003/nytimes--ben-brantley.json",
+      "data/review-texts/flower-drum-song-2002/nytimes--ben-brantley.json",
+      "flower-drum-song-2002/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -876,7 +892,9 @@
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
-      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--howard-miller.json"
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--howard-miller.json",
+      "data/review-texts/well-2006/chicagotribune--chris-jones-bway.json",
+      "data/review-texts/lennon-2005/chicagotribune--chris-jones-bway.json"
     ],
     "archive": [
       "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json",
@@ -888,7 +906,7 @@
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "tarzan-2006/variety--charles-isherwood.json",
+  "lastProcessed": "flower-drum-song-2002/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -1032,6 +1050,62 @@
       "t": "2026-04-08T19:33:37.324Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:40:03.223Z",
+      "event": "bb-session",
+      "session": "8d2464d1",
+      "url": "https://www.newspapers.com/image/236263434/"
+    },
+    {
+      "t": "2026-04-08T19:40:47.530Z",
+      "event": "bb-session",
+      "session": "795bd225",
+      "url": "http://hollywoodreporter.com/thr-esq/judge-overturns-jurys-verdict-jersey-boys-i"
+    },
+    {
+      "t": "2026-04-08T19:40:47.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-08T19:41:01.323Z",
+      "event": "bb-session",
+      "session": "262b802d",
+      "url": "https://www.wsj.com/articles/SB112693598167234567"
+    },
+    {
+      "t": "2026-04-08T19:41:01.661Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:43:17.582Z",
+      "event": "bb-session",
+      "session": "ddf6e871",
+      "url": "https://www.newspapers.com/image/231988523/"
+    },
+    {
+      "t": "2026-04-08T19:43:46.270Z",
+      "event": "bb-session",
+      "session": "6095450a",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B04E3DF143DF936A35751C1"
+    },
+    {
+      "t": "2026-04-08T19:43:46.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-08T19:44:04.116Z",
+      "event": "bb-session",
+      "session": "7771969e",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=F"
+    },
+    {
+      "t": "2026-04-08T19:44:04.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
