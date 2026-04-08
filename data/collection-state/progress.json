@@ -43,7 +43,8 @@
     "once-2012/theatermania--dan-bacalzo.json",
     "stranger-things-2024/thestage--unknown.json",
     "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
-    "the-peewee-herman-show-2010/theatermania--unknown.json"
+    "the-peewee-herman-show-2010/theatermania--unknown.json",
+    "enron-2010/chicagotribune--shanxi-radio-and.json"
   ],
   "failed": [
     "the-boy-at-the-back-of-the-class-west-end-2026/guardian--arifa-akbar.json",
@@ -710,7 +711,16 @@
     "a-life-in-the-theatre-2010/new-jersey-newsroom--michael-sommers.json",
     "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
     "the-pitmen-painters-2010/backstage--erik-haagensen.json",
-    "the-pitmen-painters-2010/bloomberg--john-simon.json"
+    "the-pitmen-painters-2010/bloomberg--john-simon.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "brief-encounter-2010/nytheatre--martin-denton.json",
+    "everyday-rapture-2010/backstage--david-sheward.json",
+    "collected-stories-2010/ap--unknown.json",
+    "collected-stories-2010/backstage--david-sheward.json",
+    "enron-2010/new-jersey-newsroom--michael-sommers.json",
+    "enron-2010/backstage--erik-haagensen.json",
+    "fences-2010/wsj--christopher-john-farley.json",
+    "fences-2010/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -789,11 +799,12 @@
       "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json",
       "just-in-time-2025/billboard--rebecca-milzoff.json",
       "the-lion-king-1997/salt-lake-city-weekly--scott-renshaw.json",
-      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "enron-2010/chicagotribune--shanxi-radio-and.json"
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "the-pitmen-painters-2010/bloomberg--john-simon.json",
+  "lastProcessed": "fences-2010/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -913,6 +924,17 @@
     },
     {
       "t": "2026-04-08T19:22:10.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:30:02.717Z",
+      "event": "bb-session",
+      "session": "b25706f3",
+      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
+    },
+    {
+      "t": "2026-04-08T19:30:03.132Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-08T19:29:18.093Z",
-  "processed": 44,
-  "failed": 665,
-  "successRate": "6.2%",
+  "updatedAt": "2026-04-08T19:30:49.197Z",
+  "processed": 45,
+  "failed": 674,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 23,
     "amp": 0,
@@ -11,21 +11,10 @@
     "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 13,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-08T12:54:47.364Z",
-      "event": "bb-session",
-      "session": "8dcc7b73",
-      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
-    },
-    {
-      "t": "2026-04-08T12:54:48.330Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-08T12:55:03.841Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-08T19:22:10.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:30:02.717Z",
+      "event": "bb-session",
+      "session": "b25706f3",
+      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
+    },
+    {
+      "t": "2026-04-08T19:30:03.132Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
