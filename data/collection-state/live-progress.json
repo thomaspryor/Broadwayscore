@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-08T19:56:50.866Z",
-  "processed": 67,
-  "failed": 772,
-  "successRate": "8.0%",
+  "updatedAt": "2026-04-08T20:00:14.124Z",
+  "processed": 70,
+  "failed": 778,
+  "successRate": "8.3%",
   "tierBreakdown": {
-    "playwright": 32,
+    "playwright": 34,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 23,
+    "archiveToday": 25,
     "archive": 7
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 15,
   "recentActivity": [
-    {
-      "t": "2026-04-08T19:30:03.132Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T19:33:36.928Z",
-      "event": "bb-session",
-      "session": "8b2483fe",
-      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
-    },
     {
       "t": "2026-04-08T19:33:37.324Z",
       "event": "bb-cookie-inject",
@@ -125,6 +114,17 @@
       "t": "2026-04-08T19:50:09.493Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:57:13.555Z",
+      "event": "bb-session",
+      "session": "b802f4f9",
+      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
+    },
+    {
+      "t": "2026-04-08T19:57:13.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

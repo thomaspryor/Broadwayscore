@@ -66,7 +66,10 @@
     "kinky-boots-2026/stage-left--robert-russo.json",
     "the-other-place-2026/whatsonstage--sarah-crompton.json",
     "the-play-that-goes-wrong-2019/towleroad--naveen-kumar.json",
-    "the-waterfall-2026/front-row-center--brittany-crowell.json"
+    "the-waterfall-2026/front-row-center--brittany-crowell.json",
+    "the-dinosaurs-2026/nytg--caroline-cao.json",
+    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+    "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
   ],
   "failed": [
     "the-boy-at-the-back-of-the-class-west-end-2026/guardian--arifa-akbar.json",
@@ -840,7 +843,13 @@
     "the-play-that-goes-wrong-2019/theater-news-online--brian-scott-lipton.json",
     "perfect-crime-1987/woman-around-town--quan-lam.json",
     "the-other-place-2026/ap--mark-kennedy.json",
-    "the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json"
+    "the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+    "data-2026/vulture--jackson-mchenry.json",
+    "the-monsters-2026/vulture--jackson-mchenry.json",
+    "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json",
+    "the-other-place-2026/thestage--dave-fargnoli.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -876,7 +885,9 @@
       "amaze-magic-2025/theater-pizzazz--alix-cohen.json",
       "data-2026/the-interested-bystander--cary-wong.json",
       "kinky-boots-2026/stage-left--robert-russo.json",
-      "the-play-that-goes-wrong-2019/towleroad--naveen-kumar.json"
+      "the-play-that-goes-wrong-2019/towleroad--naveen-kumar.json",
+      "the-dinosaurs-2026/nytg--caroline-cao.json",
+      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
     ],
     "amp": [],
     "browserbase": [
@@ -895,7 +906,9 @@
       "data/review-texts/flower-drum-song-2002/nytimes--ben-brantley.json",
       "flower-drum-song-2002/nytimes--ben-brantley.json",
       "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
-      "by-jeeves-2001/nytimes--bruce-weber.json"
+      "by-jeeves-2001/nytimes--bruce-weber.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -947,7 +960,9 @@
       "data/review-texts/purpose/thewrap--robert-hofler.json",
       "data/review-texts/the-play-that-goes-wrong-2019/theater-news-online--brian-scott-lipton.json",
       "data/review-texts/the-other-place-2026/ap--mark-kennedy.json",
-      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json"
+      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+      "data/review-texts/hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+      "data/review-texts/the-other-place-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json",
@@ -960,7 +975,7 @@
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "the-waterfall-2026/front-row-center--brittany-crowell.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -1199,6 +1214,17 @@
       "t": "2026-04-08T19:50:09.493Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:57:13.555Z",
+      "event": "bb-session",
+      "session": "b802f4f9",
+      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
+    },
+    {
+      "t": "2026-04-08T19:57:13.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
