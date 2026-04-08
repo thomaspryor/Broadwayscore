@@ -5,7 +5,7 @@
  * Uses require() on the real lib module (never copies logic).
  */
 
-const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
+const { KNOWN_STAR_OUTLETS, DESIGNATION_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 
 let passed = 0;
 let failed = 0;
@@ -92,7 +92,7 @@ console.log('\nTest 6: KNOWN_STAR_OUTLETS sanity checks');
   assert(KNOWN_STAR_OUTLETS.has('thestage'), 'thestage is in set');
   assert(KNOWN_STAR_OUTLETS.has('broadwayworld'), 'broadwayworld is in set');
   // US outlets — verify correct outletIds (not display names)
-  assert(KNOWN_STAR_OUTLETS.has('nytimes'), 'nytimes is in set');
+  assert(!KNOWN_STAR_OUTLETS.has('nytimes'), 'nytimes is NOT in star set (uses Critic\'s Pick designation)');
   assert(KNOWN_STAR_OUTLETS.has('ew'), 'ew is in set (not entertainment-weekly)');
   assert(KNOWN_STAR_OUTLETS.has('nypost'), 'nypost is in set (not new-york-post)');
   assert(KNOWN_STAR_OUTLETS.has('chicagotribune'), 'chicagotribune is in set (not chicago-tribune)');
@@ -122,6 +122,27 @@ console.log('\nTest 7: EW outlet (ew) — rating included normally');
   const prompt = buildUserPrompt(review, source, 'Test Show');
   assert(prompt.includes('### Original Rating\nA-'), 'EW rating included normally');
   assert(!prompt.includes('UNVERIFIED'), 'No UNVERIFIED warning for EW');
+}
+
+// --- Test 8: NYT (designation outlet) gets special handling ---
+console.log('\nTest 8: NYT Critic\'s Pick — treated as designation, not star rating');
+{
+  const review = { ...baseReview, outletId: 'nytimes' };
+  const source = { ...baseSourceData, outletId: 'nytimes', outlet: 'The New York Times', originalScore: "Critic's Pick" };
+  const prompt = buildUserPrompt(review, source, 'Test Show');
+  assert(prompt.includes('Designation (NOT a star rating)'), 'Labeled as designation');
+  assert(prompt.includes('binary endorsement'), 'Explains it is binary');
+  assert(prompt.includes('score based on the review text'), 'Instructs to use text');
+  assert(!prompt.includes('UNVERIFIED'), 'Not marked as UNVERIFIED');
+  assert(!prompt.includes('### Original Rating\n'), 'Not shown as plain Original Rating');
+}
+
+// --- Test 9: DESIGNATION_OUTLETS sanity checks ---
+console.log('\nTest 9: DESIGNATION_OUTLETS membership');
+{
+  assert(DESIGNATION_OUTLETS.has('nytimes'), 'nytimes is a designation outlet');
+  assert(!DESIGNATION_OUTLETS.has('timeout'), 'timeout is NOT designation-only (has star ratings too)');
+  assert(!DESIGNATION_OUTLETS.has('guardian'), 'guardian is NOT a designation outlet');
 }
 
 // --- Summary ---

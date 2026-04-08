@@ -22,11 +22,22 @@ const KNOWN_STAR_OUTLETS = new Set([
   'londontheatre1', 'everything-theatre', 'thereviewshub',
   'shy-strange-manic', 'express-uk', 'theatre-weekly',
   // --- US outlets (verified outletIds from reviews.json) ---
-  'observer', 'nytimes', 'usatoday', 'nypost', 'nydailynews',
+  // NOTE: nytimes NOT here — NYT uses Critic's Pick (binary), not star ratings. See DESIGNATION_OUTLETS.
+  'observer', 'usatoday', 'nypost', 'nydailynews',
   'chicagotribune', 'chicago-sun-times', 'washpost',
   'san-francisco-chronicle', 'boston-globe', 'latimes', 'newsday', 'amny',
   'theatrely', 'nysr', 'curtainup',
   'ew', 'time', 'rollingstone',
+]);
+
+// Outlets that use binary designations (Critic's Pick, Critics' Choice) instead of
+// star/letter ratings. These are endorsements — they indicate positive sentiment but
+// should NOT override language analysis the way a 4/5 star rating would.
+// See compute-critic-score.js DESIGNATION_BUMPS for the scoring impact.
+const DESIGNATION_OUTLETS = new Set([
+  'nytimes',       // NYT Critics' Pick (binary yes/no)
+  // NOTE: timeout/timeout-london also have Critics' Choice, but they ALSO publish
+  // star ratings (1-5), so they stay in KNOWN_STAR_OUTLETS for the star rating.
 ]);
 
 /**
@@ -81,13 +92,17 @@ function buildUserPrompt(review, sourceData, showTitle) {
     parts.push(textSources.join('\n\n'));
   }
 
-  // Star rating context — only include if the outlet is known to publish its own
-  // star ratings. Aggregators like Show Score invent star ratings for outlets that
-  // don't have them (e.g., "5/5 stars" for London Theatre), which misleads scoring.
+  // Star rating / designation context
   const outletId = sourceData.outletId || review.outletId;
   if (sourceData.originalScore && KNOWN_STAR_OUTLETS.has(outletId)) {
+    // Outlet publishes its own star/letter ratings — trust it
     parts.push(`\n### Original Rating\n${sourceData.originalScore}`);
+  } else if (sourceData.originalScore && DESIGNATION_OUTLETS.has(outletId)) {
+    // Outlet uses a binary designation (e.g., NYT Critic's Pick), not a star rating.
+    // This signals positive sentiment but should NOT override text analysis.
+    parts.push(`\n### Designation (NOT a star rating)\nThis outlet uses a binary endorsement system ("${sourceData.originalScore}"), not a numeric/star scale. Treat this as a positive signal but score based on the review text, not the designation alone.`);
   } else if (sourceData.originalScore) {
+    // Unknown outlet — rating may have been invented by an aggregator
     parts.push(`\n### Original Rating (UNVERIFIED — this outlet is not known to publish star ratings; the rating may have been assigned by an aggregator, not the critic)\n${sourceData.originalScore}`);
   }
 
@@ -95,4 +110,4 @@ function buildUserPrompt(review, sourceData, showTitle) {
   return parts.join('\n');
 }
 
-module.exports = { KNOWN_STAR_OUTLETS, buildUserPrompt };
+module.exports = { KNOWN_STAR_OUTLETS, DESIGNATION_OUTLETS, buildUserPrompt };
