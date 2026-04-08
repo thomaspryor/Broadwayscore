@@ -890,6 +890,71 @@ assert(
 );
 
 // ============================================================
+// isBWWRoundupContent — shared roundup validator (#16)
+// ============================================================
+console.log('\n--- isBWWRoundupContent (#16) ---');
+
+const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
+
+// Should REJECT: BWW homepage (has nav links with "Review Roundup" but no article markers)
+assert(
+  !isBWWRoundupContent('<html><head><title>BroadwayWorld</title></head><body><nav><a>Review Roundup</a></nav></body></html>'),
+  'BWW homepage with "Review Roundup" in nav: REJECTED'
+);
+
+// Should REJECT: page without "Review Roundup" at all
+assert(
+  !isBWWRoundupContent('<html><body><p>Hello world</p></body></html>'),
+  'Random page without Review Roundup: REJECTED'
+);
+
+// Should REJECT: empty string
+assert(!isBWWRoundupContent(''), 'Empty string: REJECTED');
+
+// Should ACCEPT: BlogPosting marker
+assert(
+  isBWWRoundupContent('<html><body>Review Roundup<script type="application/ld+json">{"@type":"BlogPosting"}</script></body></html>'),
+  'Page with Review Roundup + BlogPosting: ACCEPTED'
+);
+
+// Should ACCEPT: articleBody marker
+assert(
+  isBWWRoundupContent('<html><body>Review Roundup<script type="application/ld+json">{"articleBody":"text"}</script></body></html>'),
+  'Page with Review Roundup + articleBody: ACCEPTED'
+);
+
+// Should ACCEPT: Photo Credit marker
+assert(
+  isBWWRoundupContent('<html><body><h1>Review Roundup</h1><p>Photo Credit: Joan Marcus</p></body></html>'),
+  'Page with Review Roundup + Photo Credit: ACCEPTED'
+);
+
+// Should ACCEPT: Opens-on-Broadway marker
+assert(
+  isBWWRoundupContent('<html><body><h1>Review Roundup: SHOW Opens-on-Broadway</h1></body></html>'),
+  'Page with Opens-on-Broadway: ACCEPTED'
+);
+
+// Should ACCEPT: Opens-in-the-West-End marker
+assert(
+  isBWWRoundupContent('<html><body><h1>Review Roundup: SHOW Opens-in-the-West-End</h1></body></html>'),
+  'Page with Opens-in-the-West-End: ACCEPTED'
+);
+
+// Should ACCEPT: long page with title tag containing Review Roundup
+const longPage = '<html><head><title>Review Roundup: BECKY SHAW</title></head><body>' + 'x'.repeat(5000) + '</body></html>';
+assert(
+  isBWWRoundupContent(longPage),
+  'Long page (>5000 chars) with Review Roundup in <title>: ACCEPTED'
+);
+
+// Should REJECT: short page with title tag (below 5000 char threshold)
+assert(
+  !isBWWRoundupContent('<html><head><title>Review Roundup</title></head><body>short</body></html>'),
+  'Short page with Review Roundup in <title> only: REJECTED (below threshold)'
+);
+
+// ============================================================
 // Summary
 // ============================================================
 console.log(`\n${'='.repeat(50)}`);
