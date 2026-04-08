@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-08T00:35:07.117Z",
+  "timestamp": "2026-04-08T01:55:12.710Z",
   "stats": {
     "totalReviews": 34599,
-    "alreadyFlagged": 13303,
+    "alreadyFlagged": 13308,
     "dateGuardCatches": 61,
-    "directorMismatch": 984,
-    "tvFilmSignals": 3468,
-    "londonSignals": 1116,
+    "directorMismatch": 982,
+    "tvFilmSignals": 3466,
+    "londonSignals": 1115,
     "offBroadwaySignals": 978,
     "yearMismatch": 74,
-    "noPublishDate": 5247
+    "noPublishDate": 5116
   },
   "findings": [
     {
@@ -55322,7 +55322,7 @@
       "showId": "the-parisian-woman-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2017-11-30",
       "url": "https://www.hollywoodreporter.com/review/parisian-woman-theater-review-1063132",
       "findings": [
         {
@@ -55523,7 +55523,7 @@
       "showId": "the-parisian-woman-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2017-11-30",
       "url": "https://www.theatermania.com/broadway/reviews/the-parisian-woman_83336.html?cid=homepage_news",
       "findings": [
         {
@@ -55881,7 +55881,7 @@
       "showId": "the-piano-lesson-2022",
       "file": "ew--dave-quinn.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2022-10-14",
       "url": "https://ew.com/theater/theater-reviews/the-piano-lesson-broadway-review/",
       "findings": [
         {
@@ -56226,7 +56226,7 @@
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
       "file": "nytg--stanford-friedman.json",
       "score": 84,
-      "publishDate": null,
+      "publishDate": "2022-01-25",
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-the-play-that-goes-wrong-at-new-world-stages",
       "findings": [
         {
@@ -56332,7 +56332,7 @@
       "showId": "the-present-2017",
       "file": "telegraph--diane-snyder.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-01-09",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/cate-blanchett-makes-stellar-broadway-debut-present-review/",
       "findings": [
         {
@@ -56594,7 +56594,7 @@
       "showId": "the-prom-2018",
       "file": "thestage--mark-shenton.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2018-11-16",
       "url": "https://www.thestage.co.uk/reviews/the-prom-review-at-longacre-theatre-new-york--joyous-and-affectionate",
       "findings": [
         {
@@ -56956,7 +56956,7 @@
       "showId": "the-river-2014",
       "file": "latimes--charles-mcnulty.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2014-11-17",
       "url": "https://www.latimes.com/entertainment/arts/theater/la-et-cm-the-river-review-20141117-column.html",
       "findings": [
         {
@@ -57122,29 +57122,10 @@
       ]
     },
     {
-      "showId": "the-rose-tattoo-1995",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 38,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/review/rose-tattoo-theater-review-1247237",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trip cullman\" from the-rose-tattoo-2019"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
-        }
-      ]
-    },
-    {
       "showId": "the-rose-tattoo-2019",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 35,
-      "publishDate": null,
+      "publishDate": "2019-10-15",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-tattoo-theater-review-1247237/",
       "findings": [
         {
@@ -57436,7 +57417,7 @@
     {
       "showId": "the-sound-inside-2019",
       "file": "vulture--helen-shaw.json",
-      "publishDate": null,
+      "publishDate": "2019-10-17",
       "url": "https://www.vulture.com/2019/10/theater-review-the-sound-inside-with-mary-louise-parker.html",
       "findings": [
         {
@@ -57485,19 +57466,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-tempest-globe-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "publishDate": null,
-      "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -57701,7 +57669,7 @@
       "showId": "the-testament-of-mary-2013",
       "file": "latimes--charles-mcnulty.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2013-04-23",
       "url": "https://www.latimes.com/entertainment/arts/culture/la-et-testament-of-mary-review-20130423,0,2796051.story",
       "findings": [
         {
@@ -57911,7 +57879,7 @@
       "showId": "the-trip-to-bountiful-2013",
       "file": "latimes--charles-mcnulty.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2013-04-24",
       "url": "https://www.latimes.com/entertainment/arts/culture/la-et-cm-cicely-tyson-trip-to-bountiful-review-20130424,0,7640443.story",
       "findings": [
         {
@@ -57995,7 +57963,7 @@
       "showId": "the-trip-to-bountiful-2013",
       "file": "vulture--jesse-green.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2013-04-23",
       "url": "https://www.vulture.com/2013/04/theater-review-the-trip-to-bountiful.html",
       "findings": [
         {
@@ -58399,7 +58367,7 @@
       "showId": "this-is-not-about-me-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 53,
-      "publishDate": null,
+      "publishDate": "2023-05-17",
       "url": "https://www.timeout.com/london/theatre/once-on-this-island-1-review",
       "findings": [
         {
@@ -58596,7 +58564,7 @@
       "showId": "three-tall-women-2018",
       "file": "latimes--charles-mcnulty.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2018-03-30",
       "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-three-tall-women-review-20180330-story.html",
       "findings": [
         {
@@ -59097,7 +59065,7 @@
       "showId": "tootsie-2019",
       "file": "nytg--mark-shenton.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2019-04-24",
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-tootsie-starring-santino-fontana-on-broadway",
       "findings": [
         {
@@ -59322,7 +59290,7 @@
       "showId": "topdog-underdog-2022",
       "file": "theatermania--david-gordon.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2022-10-20",
       "url": "https://www.theatermania.com/broadway/news/review-topdog-underdog-broadway-revival_94441.html",
       "findings": [
         {
@@ -59437,25 +59405,6 @@
       ]
     },
     {
-      "showId": "travesties-1975",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/review/travesties-theater-1104956",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from travesties-2018"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "travesties-2018",
       "file": "curtainup--elyse-sommer.json",
       "score": 85,
@@ -59520,7 +59469,7 @@
       "showId": "travesties-2018",
       "file": "vulture--sara-holdren.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2018-04-25",
       "url": "https://www.vulture.com/2018/04/theater-the-travesties-ive-been-waiting-decades-to-see.html",
       "findings": [
         {
@@ -59857,7 +59806,7 @@
       "showId": "tuck-everlasting-2016",
       "file": "thestage--mark-shenton.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2016-04-27",
       "url": "https://www.thestage.co.uk/reviews/tuck-everlasting-review-at-broadhurst-theatre-new-york--a-polite-misfire",
       "findings": [
         {
@@ -60095,7 +60044,7 @@
       "showId": "uncle-vanya-2024",
       "file": "guardian--adrian-horton.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2024-04-24",
       "url": "https://www.theguardian.com/stage/2024/apr/24/uncle-vanya-review-steve-carell",
       "findings": [
         {
@@ -83548,7 +83497,7 @@
       "showId": "the-play-that-goes-wrong-2017",
       "file": "thestage--mark-shenton.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2017-04-03",
       "url": "https://www.thestage.co.uk/reviews/the-play-that-goes-wrong-review-at-lyceum-theatre-new-york--deliriously-funny",
       "findings": [
         {
@@ -83870,7 +83819,7 @@
       "showId": "the-river-2014",
       "file": "chicagotribune--chris-jones.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2014-11-16",
       "url": "http://www.chicagotribune.com/entertainment/theater/broadway/ct-the-river-broadway-review-20141116-column.html",
       "findings": [
         {
@@ -84093,7 +84042,7 @@
       "showId": "the-shark-is-broken-2023",
       "file": "theatermania--pete-hempstead.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2023-08-11",
       "url": "https://www.theatermania.com/news/review-no-shark-but-lots-of-jawing-in-the-shark-is-broken_1711412/",
       "findings": [
         {
@@ -84401,7 +84350,7 @@
       "showId": "the-visit-2015",
       "file": "chicagotribune--chris-jones.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2015-04-23",
       "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-the-visit-broadway-review-20150423-column.html",
       "findings": [
         {
@@ -84569,7 +84518,7 @@
       "showId": "the-winslow-boy-2013",
       "file": "variety--marilyn-stasio.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2013-10-18",
       "url": "https://variety.com/2013/legit/reviews/broadway-review-the-winslow-boy-1200725005/",
       "findings": [
         {
@@ -84597,7 +84546,7 @@
       "showId": "this-is-our-youth-2014",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 74,
-      "publishDate": null,
+      "publishDate": "2014-09-11",
       "url": "https://www.hollywoodreporter.com/review/is-youth-theater-review-732208",
       "findings": [
         {
@@ -84667,7 +84616,7 @@
       "showId": "three-tall-women-2018",
       "file": "telegraph--diane-snyder.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2018-03-30",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/three-tall-women-golden-theatre-new-york-review-glenda-jackson/",
       "findings": [
         {
@@ -84709,7 +84658,7 @@
       "showId": "three-tall-women-2018",
       "file": "theatermania--zachary-stewart.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2018-03-29",
       "url": "https://www.theatermania.com/broadway/reviews/three-towering-performances-in-three-tall-women_84622.html",
       "findings": [
         {
@@ -85106,7 +85055,7 @@
       "showId": "true-west-2019",
       "file": "deadline--greg-evans.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2019-01-25",
       "url": "https://deadline.com/2019/01/true-west-broadway-review-ethan-hawke-paul-dano-sam-shepard-classic-play-1202540410/",
       "findings": [
         {
@@ -85120,7 +85069,7 @@
       "showId": "true-west-2019",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 52,
-      "publishDate": null,
+      "publishDate": "2019-01-24",
       "url": "https://www.hollywoodreporter.com/review/true-west-review-1177735",
       "findings": [
         {
