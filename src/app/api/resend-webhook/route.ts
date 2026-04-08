@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
       })
     )
   );
-  const failures = results.filter(r => r.status === 'rejected');
+  const failures = results.filter(r => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.ok));
   if (failures.length === 0) {
     console.log(`Resend webhook: unsubscribed ${masked} via ${type} (${formIds.length} forms)`);
   } else {

@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
       })
     )
   );
-  const failures = results.filter(r => r.status === 'rejected');
+  const failures = results.filter(r => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.ok));
   if (failures.length === 0) {
     console.log(`Buttondown webhook: unsubscribed ${masked} via ${event_type} (${formIds.length} forms)`);
   } else {
