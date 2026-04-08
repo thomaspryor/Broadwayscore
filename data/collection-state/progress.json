@@ -51,7 +51,11 @@
     "a-bronx-tale-2007/nydailynews--unknown.json",
     "jersey-boys-2005/hollywood-reporter--eriq-gardner.json",
     "never-gonna-dance-2003/nytimes--ben-brantley.json",
-    "flower-drum-song-2002/nytimes--ben-brantley.json"
+    "flower-drum-song-2002/nytimes--ben-brantley.json",
+    "by-jeeves-2001/nytimes--bruce-weber.json",
+    "how-to-succeed-in-business-without-really-trying-1995/times-uk--clive-davis.json",
+    "les-miserables-1987/huffpost--mike-ryan.json",
+    "barnum-1980/nytimes--frank-rich.json"
   ],
   "failed": [
     "the-boy-at-the-back-of-the-class-west-end-2026/guardian--arifa-akbar.json",
@@ -810,7 +814,13 @@
     "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-odd-couple-2005/wsj--terry-teachout.json",
-    "lennon-2005/chicagotribune--chris-jones-bway.json"
+    "lennon-2005/chicagotribune--chris-jones-bway.json",
+    "thoroughly-modern-millie-2002/nydailynews--howard-kissel.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
+    "rent-1996/newyorker--john-lahr-1996.json",
+    "smokey-joes-cafe-1995/newsday--linda-winer.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "working-1978/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -839,7 +849,8 @@
       "stranger-things-2024/thestage--unknown.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
       "million-dollar-quartet-2010/theatermania--unknown.json",
-      "oleanna-2009/theatermania--unknown.json"
+      "oleanna-2009/theatermania--unknown.json",
+      "les-miserables-1987/huffpost--mike-ryan.json"
     ],
     "amp": [],
     "browserbase": [
@@ -856,7 +867,9 @@
       "data/review-texts/never-gonna-dance-2003/nytimes--ben-brantley.json",
       "never-gonna-dance-2003/nytimes--ben-brantley.json",
       "data/review-texts/flower-drum-song-2002/nytimes--ben-brantley.json",
-      "flower-drum-song-2002/nytimes--ben-brantley.json"
+      "flower-drum-song-2002/nytimes--ben-brantley.json",
+      "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
+      "by-jeeves-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -876,7 +889,9 @@
       "tina-2019/newyorker--michael-schulman.json",
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
       "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
-      "speedtheplow-2008/nytimes--dave-itzkoff.json"
+      "speedtheplow-2008/nytimes--dave-itzkoff.json",
+      "how-to-succeed-in-business-without-really-trying-1995/times-uk--clive-davis.json",
+      "barnum-1980/nytimes--frank-rich.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -894,7 +909,9 @@
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/well-2006/chicagotribune--chris-jones-bway.json",
-      "data/review-texts/lennon-2005/chicagotribune--chris-jones-bway.json"
+      "data/review-texts/lennon-2005/chicagotribune--chris-jones-bway.json",
+      "data/review-texts/thoroughly-modern-millie-2002/nydailynews--howard-kissel.json",
+      "data/review-texts/smokey-joes-cafe-1995/newsday--linda-winer.json"
     ],
     "archive": [
       "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json",
@@ -906,7 +923,7 @@
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "flower-drum-song-2002/nytimes--ben-brantley.json",
+  "lastProcessed": "working-1978/theater-news-online--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -1104,6 +1121,23 @@
     },
     {
       "t": "2026-04-08T19:44:04.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-08T19:45:19.434Z",
+      "event": "bb-session",
+      "session": "f566b7ac",
+      "url": "https://www.newspapers.com/image/412320223/"
+    },
+    {
+      "t": "2026-04-08T19:45:51.043Z",
+      "event": "bb-session",
+      "session": "32c699cd",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-04-08T19:45:51.364Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

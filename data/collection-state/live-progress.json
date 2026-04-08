@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-04-08T19:44:17.515Z",
-  "processed": 52,
-  "failed": 757,
-  "successRate": "6.4%",
+  "updatedAt": "2026-04-08T19:48:29.571Z",
+  "processed": 56,
+  "failed": 763,
+  "successRate": "6.8%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 26,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 17,
+    "scrapingbee": 19,
     "brightdata": 0,
-    "archiveToday": 15,
+    "archiveToday": 17,
     "archive": 6
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-04-08T15:28:03.432Z",
-      "event": "bb-session",
-      "session": "d10f0d9d",
-      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
-    },
-    {
-      "t": "2026-04-08T15:28:04.462Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T19:21:18.470Z",
-      "event": "bb-session",
-      "session": "ec660dda",
-      "url": "https://www.wsj.com/articles/SB10001424052748704559904576230590370976156?gaa_at="
-    },
     {
       "t": "2026-04-08T19:21:18.886Z",
       "event": "bb-cookie-inject",
@@ -123,6 +106,23 @@
     },
     {
       "t": "2026-04-08T19:44:04.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-08T19:45:19.434Z",
+      "event": "bb-session",
+      "session": "f566b7ac",
+      "url": "https://www.newspapers.com/image/412320223/"
+    },
+    {
+      "t": "2026-04-08T19:45:51.043Z",
+      "event": "bb-session",
+      "session": "32c699cd",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-04-08T19:45:51.364Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
