@@ -55,7 +55,12 @@
     "by-jeeves-2001/nytimes--bruce-weber.json",
     "how-to-succeed-in-business-without-really-trying-1995/times-uk--clive-davis.json",
     "les-miserables-1987/huffpost--mike-ryan.json",
-    "barnum-1980/nytimes--frank-rich.json"
+    "barnum-1980/nytimes--frank-rich.json",
+    "the-merchant-of-venice-1973/backstage--david-sheward.json",
+    "doubt-a-parable/wsj--charles-isherwood.json",
+    "the-other-place-2026/timeout-london--andrzej-lukowski.json",
+    "the-phantom-of-the-opera-off-west-end-2021/guardian--michael-billington.json",
+    "the-phantom-of-the-opera-off-west-end-2021/timeout-london--andrzej-lukowski.json"
   ],
   "failed": [
     "the-boy-at-the-back-of-the-class-west-end-2026/guardian--arifa-akbar.json",
@@ -820,7 +825,12 @@
     "rent-1996/newyorker--john-lahr-1996.json",
     "smokey-joes-cafe-1995/newsday--linda-winer.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "working-1978/theater-news-online--joe-dziemianowicz.json"
+    "working-1978/theater-news-online--joe-dziemianowicz.json",
+    "a-little-night-music-1973/backstage--erik-haagensen.json",
+    "an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
+    "heathers-the-musical-2025/ew--kyle-anderson.json",
+    "purpose/broadwaynews--brittani-samuel.json",
+    "purpose/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -850,7 +860,9 @@
       "the-peewee-herman-show-2010/theatermania--unknown.json",
       "million-dollar-quartet-2010/theatermania--unknown.json",
       "oleanna-2009/theatermania--unknown.json",
-      "les-miserables-1987/huffpost--mike-ryan.json"
+      "les-miserables-1987/huffpost--mike-ryan.json",
+      "the-merchant-of-venice-1973/backstage--david-sheward.json",
+      "the-phantom-of-the-opera-off-west-end-2021/guardian--michael-billington.json"
     ],
     "amp": [],
     "browserbase": [
@@ -891,7 +903,9 @@
       "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
       "speedtheplow-2008/nytimes--dave-itzkoff.json",
       "how-to-succeed-in-business-without-really-trying-1995/times-uk--clive-davis.json",
-      "barnum-1980/nytimes--frank-rich.json"
+      "barnum-1980/nytimes--frank-rich.json",
+      "the-other-place-2026/timeout-london--andrzej-lukowski.json",
+      "the-phantom-of-the-opera-off-west-end-2021/timeout-london--andrzej-lukowski.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -911,7 +925,10 @@
       "data/review-texts/well-2006/chicagotribune--chris-jones-bway.json",
       "data/review-texts/lennon-2005/chicagotribune--chris-jones-bway.json",
       "data/review-texts/thoroughly-modern-millie-2002/nydailynews--howard-kissel.json",
-      "data/review-texts/smokey-joes-cafe-1995/newsday--linda-winer.json"
+      "data/review-texts/smokey-joes-cafe-1995/newsday--linda-winer.json",
+      "data/review-texts/an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
+      "data/review-texts/purpose/broadwaynews--brittani-samuel.json",
+      "data/review-texts/purpose/thewrap--robert-hofler.json"
     ],
     "archive": [
       "inter-alia-west-end-2026/daily-mail--robert-gore-langton.json",
@@ -919,11 +936,12 @@
       "the-lion-king-1997/salt-lake-city-weekly--scott-renshaw.json",
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
       "enron-2010/chicagotribune--shanxi-radio-and.json",
-      "a-bronx-tale-2007/nydailynews--unknown.json"
+      "a-bronx-tale-2007/nydailynews--unknown.json",
+      "doubt-a-parable/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "working-1978/theater-news-online--joe-dziemianowicz.json",
+  "lastProcessed": "the-phantom-of-the-opera-off-west-end-2021/timeout-london--andrzej-lukowski.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -1140,6 +1158,28 @@
       "t": "2026-04-08T19:45:51.364Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-08T19:49:50.513Z",
+      "event": "bb-session",
+      "session": "e8069131",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review_"
+    },
+    {
+      "t": "2026-04-08T19:49:50.902Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-08T19:50:09.123Z",
+      "event": "bb-session",
+      "session": "c6e367d2",
+      "url": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-"
+    },
+    {
+      "t": "2026-04-08T19:50:09.493Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

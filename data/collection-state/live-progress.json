@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-08T19:48:29.571Z",
-  "processed": 56,
-  "failed": 763,
-  "successRate": "6.8%",
+  "updatedAt": "2026-04-08T19:54:21.835Z",
+  "processed": 61,
+  "failed": 768,
+  "successRate": "7.4%",
   "tierBreakdown": {
-    "playwright": 26,
+    "playwright": 28,
     "amp": 0,
     "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 19,
+    "scrapingbee": 21,
     "brightdata": 0,
-    "archiveToday": 17,
-    "archive": 6
+    "archiveToday": 20,
+    "archive": 7
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-04-08T19:21:18.886Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T19:22:10.638Z",
-      "event": "bb-session",
-      "session": "d0b27c5d",
-      "url": "https://www.wsj.com/articles/SB10001424052702304520804576345833761027232"
-    },
-    {
-      "t": "2026-04-08T19:22:10.990Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-08T19:30:02.717Z",
-      "event": "bb-session",
-      "session": "b25706f3",
-      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
-    },
     {
       "t": "2026-04-08T19:30:03.132Z",
       "event": "bb-cookie-inject",
@@ -125,6 +103,28 @@
       "t": "2026-04-08T19:45:51.364Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-08T19:49:50.513Z",
+      "event": "bb-session",
+      "session": "e8069131",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review_"
+    },
+    {
+      "t": "2026-04-08T19:49:50.902Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-08T19:50:09.123Z",
+      "event": "bb-session",
+      "session": "c6e367d2",
+      "url": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-"
+    },
+    {
+      "t": "2026-04-08T19:50:09.493Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
