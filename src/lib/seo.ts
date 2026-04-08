@@ -303,8 +303,28 @@ export function generateShowFAQSchema(show: ComputedShow) {
 
   const faqs: { question: string; answer: string }[] = [];
 
-  // Q: What is the score?
   const minReviewsForFAQ = getMarketMinReviews(show.category);
+
+  // Q: Is it worth seeing? (highest-intent query — placed first for AI Overview targeting)
+  if (score && reviewCount >= minReviewsForFAQ) {
+    const goldMin = getGoldThreshold(show.category);
+    const worthSeeingAnswer =
+      score >= goldMin
+        ? `Absolutely — ${show.title} is one of the season's most acclaimed shows, earning a rare ${score}/100 from ${reviewCount} critics. Don't miss it.`
+        : score >= 75
+        ? `Yes. ${show.title} earns strong reviews from critics (${score}/100 from ${reviewCount} reviews). Most theatergoers will have a great time.`
+        : score >= 65
+        ? `Probably, if the material interests you. Critics say ${show.title} is worth seeing (${score}/100 from ${reviewCount} reviews) — it works best if the premise or cast appeals to you.`
+        : score >= 55
+        ? `Only if you're a devoted fan. Critics are mixed on ${show.title} (${score}/100 from ${reviewCount} reviews). Most suggest you could skip it.`
+        : `Probably not. Critics generally don't recommend ${show.title} (${score}/100 from ${reviewCount} reviews). Save your time and money unless you have a specific reason to go.`;
+    faqs.push({
+      question: `Is ${show.title} worth seeing?`,
+      answer: worthSeeingAnswer,
+    });
+  }
+
+  // Q: What is the score?
   if (score && reviewCount >= minReviewsForFAQ) {
     const goldMin = getGoldThreshold(show.category);
     faqs.push({
