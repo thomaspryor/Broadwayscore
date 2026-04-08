@@ -56,6 +56,15 @@ const PROTECTED_FIELDS = [
   'originalScoreCleared',
   'originalScoreClearedReason',
   'previousOriginalScore',
+  'humanReviewNote',
+  'humanReviewedWrongProduction',
+  'designation',
+  'isCriticsPick',
+  'duplicateOf',
+  'duplicateReason',
+  'publishDateVerified',
+  'publishDateSource',
+  'allowEarlyDate',
 ];
 
 /**
