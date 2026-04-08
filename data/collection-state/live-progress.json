@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-08T14:17:51.898Z",
+  "updatedAt": "2026-04-08T14:50:08.059Z",
   "processed": 16,
-  "failed": 23,
-  "successRate": "41.0%",
+  "failed": 29,
+  "successRate": "35.6%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
@@ -10,7 +10,7 @@
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 6,
+    "archiveToday": 8,
     "archive": 1
   },
   "browserbaseSessions": 1,
@@ -89,6 +89,17 @@
     },
     {
       "t": "2026-04-08T14:15:36.329Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T14:47:39.837Z",
+      "event": "bb-session",
+      "session": "fe8f0212",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T14:47:41.036Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
