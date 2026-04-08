@@ -5,7 +5,8 @@
 
 // Outlets known to publish their own star ratings — when an aggregator reports
 // a star rating for one of these outlets, it's relaying the outlet's own score.
-// Mirrored from rebuild-helpers.js — if you update one, update both.
+// Superset of rebuild-helpers.js (WE outlets) plus US outlets.
+// rebuild-helpers.js only needs WE outlets (gates on isWestEnd). Update both when adding WE outlets.
 const KNOWN_STAR_OUTLETS = new Set([
   // --- WE outlets (matches rebuild-helpers.js exactly) ---
   'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
