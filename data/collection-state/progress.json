@@ -50,6 +50,13 @@
     "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
     "becky-shaw-2026/wsj--unknown.json",
     "becky-shaw-2026/talkinbroadway--unknown.json",
+    "innocence-off-broadway-2026/playbill--unknown.json",
+    "cats-the-jellicle-ball-2026/talkinbroadway--howard-miller.json",
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+    "cats-the-jellicle-ball-2026/new-york-sun--elysa-gardner.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json",
     "innocence-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
@@ -91,6 +98,9 @@
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--howard-miller.json",
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
     ],
@@ -197,6 +207,17 @@
     },
     {
       "t": "2026-04-08T15:28:04.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T15:55:54.314Z",
+      "event": "bb-session",
+      "session": "56e91ad2",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T15:55:54.888Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
