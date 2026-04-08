@@ -347,9 +347,14 @@ function getBestScore(data, opts = {}) {
     return null;
   }
 
-  // P0: Human-reviewed score
+  // P0: Human-reviewed score (manual override — always wins)
   if (data.humanReviewScore && data.humanReviewScore >= 1 && data.humanReviewScore <= 100) {
     return { score: data.humanReviewScore, source: 'human-review' };
+  }
+
+  // P0a: Adjudicated score (LLM re-evaluation of flagged reviews — beats LLM but not human)
+  if (data.adjudicatedScore && data.adjudicatedScore >= 1 && data.adjudicatedScore <= 100) {
+    return { score: data.adjudicatedScore, source: 'adjudicated' };
   }
 
   // P0.5: originalScore (aggregator-provided)

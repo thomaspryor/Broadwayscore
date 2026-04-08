@@ -378,13 +378,15 @@ Respond with ONLY this JSON (no markdown fences):
     const attempts = sourceData.adjudicationAttempts || 0;
 
     // Check max attempts — auto-accept LLM score
+    // NOTE: Do NOT use humanReviewScore here — that's reserved for actual human overrides.
+    // Using it makes the LLM score permanent and blocks future rescoring.
     if (attempts >= MAX_ADJUDICATION_ATTEMPTS) {
       const llmScore = review.llmScore || (sourceData.llmScore && sourceData.llmScore.score) || 65;
       console.log(`  🔄 Max attempts reached (${attempts}) — auto-accepting LLM score: ${llmScore}`);
 
       if (!DRY_RUN) {
-        sourceData.humanReviewScore = llmScore;
-        sourceData.humanReviewNote = `Auto-accepted after ${MAX_ADJUDICATION_ATTEMPTS} uncertain adjudications - LLM original score retained`;
+        sourceData.adjudicatedScore = llmScore;
+        sourceData.adjudicationNote = `Auto-accepted after ${MAX_ADJUDICATION_ATTEMPTS} uncertain adjudications - LLM original score retained`;
         sourceData.humanReviewAt = new Date().toISOString();
         sourceData.adjudicationAttempts = attempts;
 
@@ -429,13 +431,16 @@ Respond with ONLY this JSON (no markdown fences):
     };
 
     if (result.confidence === 'high' || result.confidence === 'medium') {
-      // Confident — write override
-      console.log(`  ✅ Confident adjudication — writing humanReviewScore: ${result.score}`);
+      // Confident — write adjudicated score
+      // NOTE: Use adjudicatedScore, NOT humanReviewScore. humanReviewScore is reserved
+      // for actual human overrides. Using it here makes LLM scores permanent and blocks
+      // future rescoring and manual corrections.
+      console.log(`  ✅ Confident adjudication — writing adjudicatedScore: ${result.score}`);
 
       if (!DRY_RUN) {
-        sourceData.humanReviewScore = result.score;
-        sourceData.humanReviewNote = `Auto-adjudicated (${result.confidence} confidence, sided with ${result.sidedWith || 'analysis'}): ${result.reasoning || ''}`.trim();
-        sourceData.humanReviewPreviousScore = review.llmScore || (sourceData.llmScore && sourceData.llmScore.score) || null;
+        sourceData.adjudicatedScore = result.score;
+        sourceData.adjudicationNote = `Auto-adjudicated (${result.confidence} confidence, sided with ${result.sidedWith || 'analysis'}): ${result.reasoning || ''}`.trim();
+        sourceData.adjudicationPreviousScore = review.llmScore || (sourceData.llmScore && sourceData.llmScore.score) || null;
         sourceData.humanReviewAt = new Date().toISOString();
         sourceData.adjudicationAttempts = attempts + 1;
         sourceData.adjudicationHistory = [

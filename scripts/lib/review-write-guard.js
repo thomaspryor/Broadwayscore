@@ -27,6 +27,8 @@ const path = require('path');
 const PROTECTED_FIELDS = [
   'assignedScore',
   'humanReviewScore',
+  'adjudicatedScore',
+  'adjudicationNote',
   'manualContentTier',
   'originalScore',
   'originalScoreSource',
