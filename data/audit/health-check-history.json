@@ -1,11 +1,11 @@
 {
-  "lastRun": "2026-04-07T08:11:00.612Z",
+  "lastRun": "2026-04-08T08:11:55.216Z",
   "consecutiveErrorDays": 0,
   "results": [
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: shows.json",
@@ -15,7 +15,7 @@
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "16h old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -25,22 +25,22 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "12d old"
+      "message": "13d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "21h old"
+      "message": "2d old"
     },
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (23h old, workflow 2d ago)"
+      "message": "Data synced (23h old, workflow 3d ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -50,22 +50,22 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "28 open shows all have reviews and grosses"
+      "message": "29 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: baseline drift",
-      "status": "pass",
-      "message": "2430 shows, 144 open, 17422 reviews (all at or above baseline)"
+      "status": "warn",
+      "message": "Shows dropped: 2429 vs baseline 2430"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 23h ago"
+      "message": "Last success 1h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
@@ -75,22 +75,22 @@
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 7d ago"
+      "message": "Last success 8d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "warn",
-      "message": "Last success 23d ago (threshold: 10d)"
+      "message": "Last success 24d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 5h ago"
+      "message": "Last success 12h ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "99.5% scored (17422/17505)"
+      "message": "99.6% scored (17664/17739)"
     },
     {
       "name": "Cookies: expiration",
@@ -100,32 +100,32 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (2d ago)"
+      "message": "All metrics within thresholds (3d ago)"
     },
     {
       "name": "SEO: health",
       "status": "pass",
-      "message": "Healthy (2d ago)"
+      "message": "Healthy (3d ago)"
     },
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "23h ago, cancelled"
+      "message": "1h ago, cancelled"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, "
     },
     {
       "name": "Cron: Test Suite",
@@ -135,18 +135,18 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (19h ago)"
+      "message": "Last check passed (11h ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "2872k credits left (54%) · renews May 5 (burn rate unavailable — <5 days into cycle)"
+      "message": "2796k credits left (52%) · renews May 5 (burn rate unavailable — <5 days into cycle)"
     }
   ],
-  "lastCleanStreak": 2
+  "lastCleanStreak": 3
 }
