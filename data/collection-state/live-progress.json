@@ -1,24 +1,35 @@
 {
-  "updatedAt": "2026-04-08T07:38:02.608Z",
-  "processed": 16,
-  "failed": 7,
-  "successRate": "69.6%",
+  "updatedAt": "2026-04-08T07:58:30.131Z",
+  "processed": 183,
+  "failed": 1733,
+  "successRate": "9.6%",
   "tierBreakdown": {
-    "playwright": 8,
-    "amp": 0,
-    "browserbase": 6,
+    "playwright": 79,
+    "amp": 2,
+    "browserbase": 46,
     "directCookies": 0,
-    "scrapingbee": 4,
-    "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "scrapingbee": 52,
+    "brightdata": 15,
+    "archiveToday": 59,
+    "archive": 17
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-04-08T07:28:19.449Z",
+      "t": "2026-04-08T03:35:18.431Z",
       "event": "bb-session",
-      "session": "fb5b8641",
+      "session": "ed6b8895",
+      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
+    },
+    {
+      "t": "2026-04-08T03:35:19.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-08T04:42:28.010Z",
+      "event": "bb-session",
+      "session": "4979bce1",
       "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
     },
     {
@@ -58,6 +69,39 @@
       "t": "2026-04-08T07:35:26.519Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T07:55:36.924Z",
+      "event": "bb-session",
+      "session": "d7f92ff3",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T07:55:37.387Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T07:55:54.428Z",
+      "event": "bb-session",
+      "session": "8e514876",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T07:55:54.799Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T07:58:14.950Z",
+      "event": "bb-session",
+      "session": "4699c5ae",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T07:58:15.316Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
