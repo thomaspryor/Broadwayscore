@@ -194,7 +194,7 @@ async function runAggregators(show) {
           openingYear: year,
         });
         if (validation.valid) {
-          const reviews = extractDTLIReviews(dtli.html, show.id, dtli.url);
+          const reviews = extractDTLIReviews(dtli.html, show.id, dtli.url, show.title);
           console.log(`  DTLI: ${reviews.length} reviews found`);
           results.push(...reviews);
         } else {
@@ -235,7 +235,7 @@ async function runAggregators(show) {
             });
           }
         } else {
-          const reviews = extractShowScoreReviews(ss.html, show.id);
+          const reviews = extractShowScoreReviews(ss.html, show.id, show.title);
           console.log(`  Show Score: ${reviews.length} reviews (HTML)`);
           results.push(...reviews);
         }

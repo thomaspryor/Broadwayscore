@@ -18,6 +18,7 @@ const https = require('https');
 const { isJunkOutlet } = require('./lib/review-normalization');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { urlLooksLikeReview } = require('./lib/review-guards');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -253,7 +254,7 @@ async function findDTLIPage(show) {
 /**
  * Extract reviews from DTLI HTML
  */
-function extractDTLIReviews(html, showId, dtliUrl) {
+function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
   const reviews = [];
 
   // Extract summary thumb counts from the numbered hand images
@@ -327,7 +328,12 @@ function extractDTLIReviews(html, showId, dtliUrl) {
           .replace(/\s+/g, ' ')
           .trim();
       }
-      const url = urlMatch[1];
+      let url = urlMatch[1];
+      // Validate URL slug matches show title (prevents cross-show contamination)
+      if (showTitle && !urlLooksLikeReview(url, showTitle)) {
+        console.log(`    ✗ Rejected URL for ${outletId}: slug doesn't match "${showTitle}" — ${url.substring(0, 80)}`);
+        url = null;
+      }
 
       reviews.push({
         showId,
@@ -437,7 +443,7 @@ async function processShow(show) {
   }
 
   // Extract reviews
-  const { reviews, summary } = extractDTLIReviews(html, show.id, dtliUrl);
+  const { reviews, summary } = extractDTLIReviews(html, show.id, dtliUrl, show.title);
 
   // Save DTLI summary to aggregator-summary.json
   if (summary.up > 0 || summary.meh > 0 || summary.down > 0) {

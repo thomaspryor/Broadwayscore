@@ -472,7 +472,7 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
  * The remaining reviews are fetched via AJAX at /shows/{slug}/paginate_critic_reviews?page=N.
  * Each page returns JSON: {"html": "<review tile HTML>"} with ~8 review tiles per page.
  */
-async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId) {
+async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId, showTitle) {
   const additionalReviews = [];
 
   // Parse pagination attributes from the critic reviews scrollable block
@@ -571,15 +571,18 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId) 
         }
 
         if (url && !additionalReviews.some(r => r.url === url)) {
-          additionalReviews.push({
-            showId,
-            outlet: outletName,
-            outletId,
-            criticName: critic,
-            url,
-            publishDate: normalizePublishDate(date) || null,
-            source: 'show-score',
-          });
+          const validatedUrl = (showTitle && !urlLooksLikeReview(url, showTitle)) ? null : url;
+          if (validatedUrl) {
+            additionalReviews.push({
+              showId,
+              outlet: outletName,
+              outletId,
+              criticName: critic,
+              url: validatedUrl,
+              publishDate: normalizePublishDate(date) || null,
+              source: 'show-score',
+            });
+          }
         }
       }
 
@@ -1188,8 +1191,18 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
 /**
  * Extract reviews from Show Score HTML
  */
-function extractShowScoreReviews(html, showId) {
+function extractShowScoreReviews(html, showId, showTitle) {
   const reviews = [];
+
+  // URL slug validation helper — rejects URLs that don't match the show title
+  function validateUrl(url) {
+    if (!url || !showTitle) return url;
+    if (!urlLooksLikeReview(url, showTitle)) {
+      console.log(`    ✗ Rejected Show Score URL: slug doesn't match "${showTitle}" — ${url.substring(0, 80)}`);
+      return null;
+    }
+    return url;
+  }
 
   // Extract critic reviews from review tiles
   // Show Score uses .review-tile-v2.-critic for critic reviews
@@ -1235,7 +1248,7 @@ function extractShowScoreReviews(html, showId) {
                 outlet: outletName,
                 outletId,
                 criticName: review.author?.name || 'Unknown',
-                url: review.url,
+                url: validateUrl(review.url),
                 excerpt: review.reviewBody || null,
                 publishDate: normalizePublishDate(review.datePublished) || null,
                 source: 'show-score'
@@ -1327,7 +1340,7 @@ function extractShowScoreReviews(html, showId) {
             outlet,
             outletId,
             criticName,
-            url,
+            url: validateUrl(url),
             source: 'show-score'
           });
         }
@@ -1380,7 +1393,7 @@ function extractShowScoreReviews(html, showId) {
         outlet,
         outletId,
         criticName,
-        url,
+        url: validateUrl(url),
         source: 'show-score'
       });
     }
@@ -1398,7 +1411,7 @@ function extractShowScoreReviews(html, showId) {
 /**
  * Extract reviews from DTLI HTML with individual thumb data
  */
-function extractDTLIReviews(html, showId, dtliUrl) {
+function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
   const reviews = [];
 
   // Extract summary thumb counts from the numbered hand images
@@ -1490,12 +1503,19 @@ function extractDTLIReviews(html, showId, dtliUrl) {
           .trim();
       }
 
+      // Validate URL slug matches show title (prevents cross-show contamination)
+      let reviewUrl = urlMatch[1];
+      if (showTitle && !urlLooksLikeReview(reviewUrl, showTitle)) {
+        console.log(`    ✗ Rejected URL for ${outletId}: slug doesn't match "${showTitle}" — ${reviewUrl.substring(0, 80)}`);
+        reviewUrl = null;
+      }
+
       reviews.push({
         showId,
         outletId,
         outlet: outletName,
         criticName,
-        url: urlMatch[1],
+        url: reviewUrl,
         publishDate: normalizePublishDate(date),
         dtliExcerpt: excerpt,
         dtliThumb: thumb,
@@ -2761,7 +2781,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   }
   if (dtliResult) {
     health.dtli.found = true;
-    const dtliReviews = extractDTLIReviews(dtliResult.html, showId, dtliResult.url);
+    const dtliReviews = extractDTLIReviews(dtliResult.html, showId, dtliResult.url, show.title);
     health.dtli.extracted = dtliReviews.length;
     foundReviews.push(...dtliReviews);
     // Archive the page
@@ -2826,7 +2846,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           outlet: outletDisplayName,
           outletId,
           criticName: review.critic || 'Unknown',
-          url: review.url,
+          url: (show.title && review.url && !urlLooksLikeReview(review.url, show.title)) ? null : review.url,
           publishDate: normalizePublishDate(review.date) || null,
           showScoreExcerpt: review.excerpt || null,
           originalRating,
@@ -2835,7 +2855,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       }
     } else {
       // Fall back to HTML extraction for initial reviews
-      const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId);
+      const showScoreReviews = extractShowScoreReviews(showScoreResult.html, showId, show.title);
       showScoreCount += showScoreReviews.length;
       foundReviews.push(...showScoreReviews);
     }
@@ -2843,7 +2863,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     // Fetch remaining reviews via Show Score pagination API
     // The initial page only shows 8 critic reviews; the rest are loaded via AJAX
     const paginatedReviews = await fetchShowScorePaginatedReviews(
-      showScoreResult.url, showScoreResult.html, showId
+      showScoreResult.url, showScoreResult.html, showId, show.title
     );
     for (const review of paginatedReviews) {
       // Only add if not already found (avoid duplicates from initial extraction)

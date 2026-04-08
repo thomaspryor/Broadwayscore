@@ -1164,6 +1164,101 @@ assert(
 );
 
 // ============================================================
+// extractDTLIReviews — URL slug guard (#18 extension)
+// ============================================================
+console.log('\n--- extractDTLIReviews URL slug guard ---');
+
+const { extractDTLIReviews } = require('./gather-reviews');
+
+// Synthetic DTLI HTML with one review linking to wrong show
+const dtliWrongUrlHtml = `<html><body>
+<section>
+<div class="review-item">
+  <img class="review-item-attribution" alt="Variety">
+  <img src="BigThumbs_UP.png">
+  <h2 class="review-item-critic-name"><a href="/critic?s=Brent%20Lang">Brent Lang</a></h2>
+  <div class="review-item-date">April 6, 2026</div>
+  <p class="paragraph">A stunning production.</p>
+  <a href="https://variety.com/2026/legit/reviews/monte-cristo-review-1234.html" class="button-pink review-item-button">READ THE REVIEW</a>
+</div>
+</section>
+</body></html>`;
+
+const dtliWrongReviews = extractDTLIReviews(dtliWrongUrlHtml, 'becky-shaw-2026', 'https://dtli.com/becky-shaw', 'Becky Shaw');
+const dtliVariety = dtliWrongReviews.find(r => (r.outletId || '').includes('variety'));
+assert(
+  dtliVariety && !dtliVariety.url,
+  'DTLI: Monte Cristo URL rejected for Becky Shaw (url nulled)'
+);
+assert(
+  dtliVariety && dtliVariety.dtliThumb === 'UP',
+  'DTLI: thumb data preserved even when URL rejected'
+);
+
+// Correct URL should be accepted
+const dtliCorrectUrlHtml = dtliWrongUrlHtml.replace('monte-cristo-review', 'becky-shaw-review');
+const dtliCorrectReviews = extractDTLIReviews(dtliCorrectUrlHtml, 'becky-shaw-2026', 'https://dtli.com/becky-shaw', 'Becky Shaw');
+const dtliCorrectVariety = dtliCorrectReviews.find(r => (r.outletId || '').includes('variety'));
+assert(
+  dtliCorrectVariety && dtliCorrectVariety.url && dtliCorrectVariety.url.includes('becky-shaw'),
+  'DTLI: correct Becky Shaw URL accepted'
+);
+
+// showTitle=undefined should accept URLs (graceful degradation)
+const dtliNoTitleReviews = extractDTLIReviews(dtliWrongUrlHtml, 'becky-shaw-2026', 'https://dtli.com/becky-shaw');
+const dtliNoTitleVariety = dtliNoTitleReviews.find(r => (r.outletId || '').includes('variety'));
+assert(
+  dtliNoTitleVariety && dtliNoTitleVariety.url,
+  'DTLI: showTitle=undefined accepts URLs (graceful degradation)'
+);
+
+// ============================================================
+// extractShowScoreReviews — URL slug guard (#18 extension)
+// ============================================================
+console.log('\n--- extractShowScoreReviews URL slug guard ---');
+
+const { extractShowScoreReviews } = require('./gather-reviews');
+
+// Show Score with JSON-LD containing wrong-show URL
+const ssWrongUrlHtml = `<html><body>
+<script type="application/ld+json">{
+  "review": [
+    {
+      "author": {"name": "Jesse Green"},
+      "publisher": {"name": "The New York Times"},
+      "url": "https://nytimes.com/2026/04/06/theater/monte-cristo-review.html",
+      "reviewBody": "A magnificent production.",
+      "datePublished": "2026-04-06"
+    }
+  ]
+}</script>
+</body></html>`;
+
+const ssWrongReviews = extractShowScoreReviews(ssWrongUrlHtml, 'becky-shaw-2026', 'Becky Shaw');
+const ssNyt = ssWrongReviews.find(r => (r.outletId || '').includes('nytimes') || (r.outlet || '').toLowerCase().includes('new york times'));
+assert(
+  ssNyt && !ssNyt.url,
+  'Show Score JSON-LD: Monte Cristo URL rejected for Becky Shaw'
+);
+
+// Correct URL should be accepted
+const ssCorrectUrlHtml = ssWrongUrlHtml.replace('monte-cristo-review', 'becky-shaw-review');
+const ssCorrectReviews = extractShowScoreReviews(ssCorrectUrlHtml, 'becky-shaw-2026', 'Becky Shaw');
+const ssCorrectNyt = ssCorrectReviews.find(r => (r.outletId || '').includes('nytimes') || (r.outlet || '').toLowerCase().includes('new york times'));
+assert(
+  ssCorrectNyt && ssCorrectNyt.url && ssCorrectNyt.url.includes('becky-shaw'),
+  'Show Score JSON-LD: correct Becky Shaw URL accepted'
+);
+
+// showTitle=undefined should accept URLs
+const ssNoTitleReviews = extractShowScoreReviews(ssWrongUrlHtml, 'becky-shaw-2026');
+const ssNoTitleNyt = ssNoTitleReviews.find(r => (r.outletId || '').includes('nytimes') || (r.outlet || '').toLowerCase().includes('new york times'));
+assert(
+  ssNoTitleNyt && ssNoTitleNyt.url,
+  'Show Score: showTitle=undefined accepts URLs (graceful degradation)'
+);
+
+// ============================================================
 // Summary
 // ============================================================
 console.log(`\n${'='.repeat(50)}`);
