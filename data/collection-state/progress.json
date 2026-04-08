@@ -26,7 +26,9 @@
     "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
     "dear-england-new-wimbledon-theatre-west-end-2026/artsdesk--demetrios-matheou.json",
     "data-off-broadway-2026/timeout--unknown.json",
-    "all-out-2025/ew--dalton-ross.json"
+    "all-out-2025/ew--dalton-ross.json",
+    "life-of-pi-2023/newyorker--katy-waldman.json",
+    "some-like-it-hot-2022/newyorker--helen-shaw.json"
   ],
   "failed": [
     "copenhagen-west-end-2026/telegraph--travel-writer.json",
@@ -83,7 +85,15 @@
     "eureka-day-2024/times-uk--clive-davis.json",
     "romeo-juliet-2024/thestage--nicole-serratore.json",
     "the-hills-of-california-2024/times-uk--clive-davis.json",
-    "stereophonic-2024/usatoday--charles-isherwood.json"
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "the-collaboration-2022/hollywood-reporter--angie-han.json",
+    "the-collaboration-2022/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -116,7 +126,10 @@
       "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
       "innocence-off-broadway-2026/variety--rebecca-rubin.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "life-of-pi-2023/newyorker--katy-waldman.json",
+      "some-like-it-hot-2022/newyorker--helen-shaw.json"
+    ],
     "scrapingbee": [
       "loves-labours-lost-globe-west-end-2026/timeout--unknown.json",
       "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
@@ -131,14 +144,13 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
-      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
+      "data/review-texts/just-for-us-2023/timeout--adam-feldman.json"
     ],
-    "archive": [
-      "inter-alia-west-end-2026/timeout--unknown.json"
-    ]
+    "archive": []
   },
   "startTime": "2026-04-08T09:16:07.511Z",
-  "lastProcessed": "stereophonic-2024/usatoday--charles-isherwood.json",
+  "lastProcessed": "some-like-it-hot-2022/newyorker--helen-shaw.json",
   "log": [
     {
       "t": "2026-04-08T10:06:48.503Z",
@@ -205,6 +217,28 @@
       "t": "2026-04-08T11:02:25.463Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T11:17:58.309Z",
+      "event": "bb-session",
+      "session": "bfac0e98",
+      "url": "https://www.newyorker.com/magazine/2023/03/13/life-of-pi-comes-to-broadway"
+    },
+    {
+      "t": "2026-04-08T11:17:58.949Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-04-08T11:19:22.705Z",
+      "event": "bb-session",
+      "session": "c354a169",
+      "url": "https://www.newyorker.com/magazine/2022/11/28/some-like-it-hot-dresses-up-for-br"
+    },
+    {
+      "t": "2026-04-08T11:19:23.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
