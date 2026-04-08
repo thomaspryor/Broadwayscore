@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-08T21:01:31.666Z",
+  "timestamp": "2026-04-08T21:20:09.082Z",
   "stats": {
-    "totalReviews": 34651,
-    "alreadyFlagged": 13374,
+    "totalReviews": 34650,
+    "alreadyFlagged": 13372,
     "dateGuardCatches": 61,
     "directorMismatch": 981,
     "tvFilmSignals": 3468,
-    "londonSignals": 1118,
+    "londonSignals": 1122,
     "offBroadwaySignals": 987,
     "yearMismatch": 74,
-    "noPublishDate": 5090
+    "noPublishDate": 5089
   },
   "findings": [
     {
@@ -66784,6 +66784,20 @@
     },
     {
       "showId": "copenhagen-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 66,
+      "publishDate": "2026-04-08",
+      "url": "https://www.standard.co.uk/culture/theatre/copenhagen-theatre-review-b1277998.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "copenhagen-west-end-2026",
       "file": "west-end-best-friend--chris-abbott.json",
       "score": 66,
       "publishDate": "2026-04-08",
@@ -71906,6 +71920,48 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 75,
+      "publishDate": "2026-04-07",
+      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 53,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 66,
+      "publishDate": "2026-04-08",
+      "url": "https://www.thetimes.com/article/9e0d6a06-e200-437a-87f7-09d8a94a5039",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
