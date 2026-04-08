@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T06:40:44.132Z",
+  "generatedAt": "2026-04-08T07:12:00.009Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -15,17 +15,17 @@
       "siteScore": 88,
       "liveScore": 88,
       "scoreDrift": 0,
-      "total": 21,
+      "total": 22,
       "t1": 4,
-      "t2": 13,
+      "t2": 14,
       "t3": 4,
-      "positive": 20,
+      "positive": 21,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -99,10 +99,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "The New York Sun",
@@ -382,6 +378,18 @@
           "t2": 13,
           "t3": 4,
           "p": 20,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T07:12:00.009Z",
+          "rc": 22,
+          "s": 88,
+          "t1": 4,
+          "t2": 14,
+          "t3": 4,
+          "p": 21,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1462,24 +1470,24 @@
       "slug": "innocence-off-broadway",
       "thumbnail": "/images/shows/innocence-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 94,
       "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
+      "total": 1,
+      "t1": 1,
       "t2": 0,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
-          "T1:0/3",
+          "1/12 total",
+          "T1:1/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1492,10 +1500,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -1741,6 +1745,20 @@
         {
           "name": "The Stage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-08T07:12:00.009Z",
+          "rc": 1,
+          "s": 94,
+          "t1": 1,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     }
