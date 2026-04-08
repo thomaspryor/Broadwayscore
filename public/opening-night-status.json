@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T08:35:34.895Z",
+  "generatedAt": "2026-04-08T09:17:23.373Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1040,21 +1040,21 @@
       "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 74,
-      "scoreDrift": null,
-      "total": 4,
-      "t1": 1,
+      "siteScore": 73,
+      "liveScore": 73,
+      "scoreDrift": 0,
+      "total": 5,
+      "t1": 2,
       "t2": 2,
       "t3": 1,
       "positive": 3,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
-          "T1:1/3",
+          "5/8 total",
+          "T1:2/3",
           "hi-conf:4/6"
         ],
         "highConfidence": 4,
@@ -1163,6 +1163,18 @@
           "t3": 1,
           "p": 3,
           "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T09:17:23.373Z",
+          "rc": 5,
+          "s": 73,
+          "t1": 2,
+          "t2": 2,
+          "t3": 1,
+          "p": 3,
+          "m": 1,
           "n": 1,
           "bc": "waiting"
         }
