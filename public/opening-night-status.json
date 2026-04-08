@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T07:12:00.009Z",
+  "generatedAt": "2026-04-08T07:41:41.154Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -15,17 +15,17 @@
       "siteScore": 88,
       "liveScore": 88,
       "scoreDrift": 0,
-      "total": 22,
+      "total": 23,
       "t1": 4,
-      "t2": 14,
+      "t2": 15,
       "t3": 4,
-      "positive": 21,
+      "positive": 22,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 20,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -390,6 +390,18 @@
           "t2": 14,
           "t3": 4,
           "p": 21,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T07:41:41.154Z",
+          "rc": 23,
+          "s": 88,
+          "t1": 4,
+          "t2": 15,
+          "t3": 4,
+          "p": 22,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1001,24 +1013,24 @@
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 58,
+      "liveScore": 65,
       "scoreDrift": null,
-      "total": 2,
-      "t1": 0,
+      "total": 3,
+      "t1": 1,
       "t2": 1,
       "t3": 1,
       "positive": 1,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
-          "T1:0/3",
+          "3/8 total",
+          "T1:1/3",
           "T2:1/2",
-          "hi-conf:2/6"
+          "hi-conf:3/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1100,6 +1112,18 @@
           "t3": 1,
           "p": 1,
           "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T07:41:41.154Z",
+          "rc": 3,
+          "s": 65,
+          "t1": 1,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
           "n": 1,
           "bc": "waiting"
         }
