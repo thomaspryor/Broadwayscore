@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T04:20:20.209Z",
+  "generatedAt": "2026-04-08T04:44:02.152Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -15,11 +15,11 @@
       "siteScore": 88,
       "liveScore": 88,
       "scoreDrift": 0,
-      "total": 17,
+      "total": 19,
       "t1": 3,
-      "t2": 10,
+      "t2": 12,
       "t3": 4,
-      "positive": 16,
+      "positive": 18,
       "mixed": 1,
       "negative": 0,
       "readiness": {
@@ -354,6 +354,18 @@
           "t2": 10,
           "t3": 4,
           "p": 16,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T04:44:02.152Z",
+          "rc": 19,
+          "s": 88,
+          "t1": 3,
+          "t2": 12,
+          "t3": 4,
+          "p": 18,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1094,17 +1106,17 @@
       "siteScore": 83,
       "liveScore": 83,
       "scoreDrift": 0,
-      "total": 20,
+      "total": 22,
       "t1": 7,
-      "t2": 11,
-      "t3": 2,
-      "positive": 18,
+      "t2": 12,
+      "t3": 3,
+      "positive": 20,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1420,6 +1432,18 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T04:44:02.152Z",
+          "rc": 22,
+          "s": 83,
+          "t1": 7,
+          "t2": 12,
+          "t3": 3,
+          "p": 20,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1471,6 +1495,10 @@
         {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
