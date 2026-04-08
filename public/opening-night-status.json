@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T09:29:37.921Z",
+  "generatedAt": "2026-04-08T10:48:49.322Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -16,8 +16,8 @@
       "liveScore": 88,
       "scoreDrift": 0,
       "total": 22,
-      "t1": 4,
-      "t2": 14,
+      "t1": 5,
+      "t2": 13,
       "t3": 4,
       "positive": 21,
       "mixed": 1,
@@ -25,7 +25,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 20,
+        "highConfidence": 19,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -61,10 +61,6 @@
         {
           "name": "Los Angeles Times",
           "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -824,15 +820,15 @@
       "status": "open",
       "slug": "the-boy-at-the-back-of-the-class-west-end",
       "thumbnail": "/images/shows/the-boy-at-the-back-of-the-class-west-end-2026/thumbnail.webp",
-      "siteScore": 85,
-      "liveScore": 85,
+      "siteScore": 86,
+      "liveScore": 86,
       "scoreDrift": 0,
       "total": 6,
       "t1": 0,
       "t2": 2,
       "t3": 4,
-      "positive": 5,
-      "mixed": 1,
+      "positive": 6,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
@@ -928,6 +924,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T10:48:49.322Z",
+          "rc": 6,
+          "s": 86,
+          "t1": 0,
+          "t2": 2,
+          "t3": 4,
+          "p": 6,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -942,19 +950,19 @@
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 84,
+      "liveScore": 76,
       "scoreDrift": null,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 1,
-      "t3": 0,
+      "t3": 1,
       "positive": 1,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:0/6"
@@ -1025,6 +1033,18 @@
           "t3": 0,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T10:48:49.322Z",
+          "rc": 2,
+          "s": 76,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -1587,6 +1607,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
         {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
