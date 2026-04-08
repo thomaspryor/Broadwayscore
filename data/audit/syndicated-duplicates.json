@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-08T21:45:26.108Z",
+  "generatedAt": "2026-04-08T22:01:38.981Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 1,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 2,
+    "newlyFlagged": 1,
     "alreadyFlagged": 1,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 97,
+    "avgScoreDiff": 15
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Dominic Cavendish",
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "primaryOutlet": "telegraph",
+      "secondaryOutlet": "sunday-telegraph",
+      "primaryFile": "telegraph--dominic-cavendish.json",
+      "secondaryFile": "sunday-telegraph--dominic-cavendish.json",
+      "similarity": 97,
+      "primaryScore": 100,
+      "secondaryScore": 85,
+      "scoreDiff": 15
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "bernhardthamlet-2018",
