@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-08T03:51:16.628Z",
+  "timestamp": "2026-04-08T04:11:51.974Z",
   "stats": {
-    "totalReviews": 34603,
+    "totalReviews": 34610,
     "alreadyFlagged": 13318,
     "dateGuardCatches": 61,
-    "directorMismatch": 983,
-    "tvFilmSignals": 3467,
+    "directorMismatch": 984,
+    "tvFilmSignals": 3468,
     "londonSignals": 1115,
-    "offBroadwaySignals": 985,
+    "offBroadwaySignals": 986,
     "yearMismatch": 74,
     "noPublishDate": 5108
   },
@@ -9548,6 +9548,25 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
+      "file": "culturesauce--unknown.json",
+      "score": 80,
+      "publishDate": "2026-04-07",
+      "url": "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
       "file": "nyt-theater--unknown.json",
       "score": 75,
       "publishDate": "2026-04-07",
@@ -9595,6 +9614,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "wolf-entertainment-guide--unknown.json",
+      "score": 94,
+      "publishDate": "2026-04-07",
+      "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
         }
       ]
     },
