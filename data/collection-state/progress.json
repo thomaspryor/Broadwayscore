@@ -650,7 +650,17 @@
     "baby-its-you-2011/backstage--david-sheward.json",
     "the-normal-heart-2011/backstage--unknown.json",
     "the-normal-heart-2011/bloomberg--jeremy-gerard.json",
-    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json"
+    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+    "the-house-of-blue-leaves-2011/new-jersey-newsroom--michael-sommers.json",
+    "born-yesterday-2011/wsj--unknown.json",
+    "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json",
+    "jerusalem-2011/wsj--unknown.json",
+    "jerusalem-2011/backstage--erik-haagensen.json",
+    "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
+    "sister-act-2011/backstage--erik-haagensen.json",
+    "high-2011/backstage--erik-haagensen.json",
+    "high-2011/bloomberg--jeremy-gerard.json",
+    "wonderland-2011/nytheatre--jo-ann-rosen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -732,7 +742,7 @@
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+  "lastProcessed": "wonderland-2011/nytheatre--jo-ann-rosen.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -830,6 +840,28 @@
     },
     {
       "t": "2026-04-08T15:28:04.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:21:18.470Z",
+      "event": "bb-session",
+      "session": "ec660dda",
+      "url": "https://www.wsj.com/articles/SB10001424052748704559904576230590370976156?gaa_at="
+    },
+    {
+      "t": "2026-04-08T19:21:18.886Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T19:22:10.638Z",
+      "event": "bb-session",
+      "session": "d0b27c5d",
+      "url": "https://www.wsj.com/articles/SB10001424052702304520804576345833761027232"
+    },
+    {
+      "t": "2026-04-08T19:22:10.990Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
