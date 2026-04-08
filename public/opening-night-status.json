@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T11:44:39.023Z",
+  "generatedAt": "2026-04-08T12:31:02.357Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -949,25 +949,25 @@
       "status": "open",
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 76,
-      "scoreDrift": null,
-      "total": 2,
+      "siteScore": 72,
+      "liveScore": 72,
+      "scoreDrift": 0,
+      "total": 3,
       "t1": 0,
       "t2": 1,
-      "t3": 1,
+      "t3": 2,
       "positive": 1,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "3/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1047,6 +1047,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T12:31:02.357Z",
+          "rc": 3,
+          "s": 72,
+          "t1": 0,
+          "t2": 1,
+          "t3": 2,
+          "p": 1,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1061,24 +1073,24 @@
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 80,
+      "liveScore": 82,
       "scoreDrift": null,
-      "total": 3,
+      "total": 4,
       "t1": 1,
       "t2": 1,
-      "t3": 1,
-      "positive": 3,
+      "t3": 2,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:1/3",
           "T2:1/2",
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1223,6 +1235,18 @@
           "t2": 1,
           "t3": 1,
           "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T12:31:02.357Z",
+          "rc": 4,
+          "s": 82,
+          "t1": 1,
+          "t2": 1,
+          "t3": 2,
+          "p": 4,
           "m": 0,
           "n": 0,
           "bc": "waiting"

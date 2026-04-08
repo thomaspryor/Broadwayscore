@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-08T11:44:35.329Z",
+  "timestamp": "2026-04-08T12:30:58.661Z",
   "stats": {
-    "totalReviews": 34641,
+    "totalReviews": 34643,
     "alreadyFlagged": 13367,
     "dateGuardCatches": 61,
     "directorMismatch": 981,
     "tvFilmSignals": 3467,
-    "londonSignals": 1116,
+    "londonSignals": 1118,
     "offBroadwaySignals": 987,
     "yearMismatch": 74,
     "noPublishDate": 5089
@@ -66778,6 +66778,20 @@
       ]
     },
     {
+      "showId": "copenhagen-west-end-2026",
+      "file": "west-end-best-friend--chris-abbott.json",
+      "score": 66,
+      "publishDate": "2026-04-08",
+      "url": "https://www.westendbestfriend.co.uk/news/review-copenhagen-hampstead-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "cymbeline-2007",
       "file": "hollywood-reporter--thr-staff.json",
       "score": 62,
@@ -71887,6 +71901,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "west-end-best-friend--cara-brazier.json",
+      "score": 89,
+      "publishDate": "2026-04-08",
+      "url": "https://www.westendbestfriend.co.uk/news/review-inter-alia-the-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
