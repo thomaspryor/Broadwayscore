@@ -8,10 +8,20 @@
     "inter-alia-west-end-2026/daily-mail--unknown.json",
     "inter-alia-west-end-2026/standard--nick-curtis.json",
     "inter-alia-west-end-2026/standard--unknown.json",
-    "inter-alia-west-end-2026/theupcoming--unknown.json"
+    "inter-alia-west-end-2026/theupcoming--unknown.json",
+    "inter-alia-west-end-2026/whatsonstage--unknown.json",
+    "copenhagen-west-end-2026/telegraph--suzanne-king.json",
+    "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+    "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json",
+    "becky-shaw-2026/variety--unknown.json",
+    "innocence-off-broadway-2026/nytimes--unknown.json",
+    "innocence-off-broadway-2026/vulture--unknown.json"
   ],
   "failed": [
-    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json"
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+    "the-boy-at-the-back-of-the-class-west-end-2026/thestage--oliver-jones.json",
+    "cats-the-jellicle-ball-2026/new-york-sun--elysa-gardner.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,17 +30,26 @@
       "cats-the-jellicle-ball-2026/ew--unknown.json",
       "inter-alia-west-end-2026/standard--nick-curtis.json",
       "inter-alia-west-end-2026/standard--unknown.json",
-      "inter-alia-west-end-2026/theupcoming--unknown.json"
+      "inter-alia-west-end-2026/theupcoming--unknown.json",
+      "copenhagen-west-end-2026/telegraph--suzanne-king.json",
+      "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+      "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-listening-off-broadway-2026/variety--unknown.json",
-      "the-listening-off-broadway-2026/variety--unknown.json"
+      "the-listening-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/becky-shaw-2026/variety--unknown.json",
+      "becky-shaw-2026/variety--unknown.json",
+      "data/review-texts/innocence-off-broadway-2026/nytimes--unknown.json",
+      "innocence-off-broadway-2026/nytimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "copenhagen-west-end-2026/times-uk--unknown.json",
-      "inter-alia-west-end-2026/daily-mail--unknown.json"
+      "inter-alia-west-end-2026/daily-mail--unknown.json",
+      "inter-alia-west-end-2026/whatsonstage--unknown.json",
+      "innocence-off-broadway-2026/vulture--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -41,7 +60,7 @@
     ]
   },
   "startTime": "2026-04-08T07:28:07.476Z",
-  "lastProcessed": "inter-alia-west-end-2026/theupcoming--unknown.json",
+  "lastProcessed": "innocence-off-broadway-2026/vulture--unknown.json",
   "log": [
     {
       "t": "2026-04-08T07:28:19.449Z",
@@ -53,6 +72,28 @@
       "t": "2026-04-08T07:28:20.219Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T07:33:53.444Z",
+      "event": "bb-session",
+      "session": "f31b4aef",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T07:33:54.346Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T07:34:27.441Z",
+      "event": "bb-session",
+      "session": "a8b1a232",
+      "url": "https://www.nytimes.com/2026/04/07/arts/music/innocence-met-opera-review.html"
+    },
+    {
+      "t": "2026-04-08T07:34:28.184Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
