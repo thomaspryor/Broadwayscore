@@ -11,7 +11,11 @@
     "inter-alia-west-end-2026/whatsonstage--lucinda-everett.json",
     "inter-alia-west-end-2026/timeout--andrzej-lukowski.json",
     "becky-shaw-2026/variety--unknown.json",
-    "innocence-off-broadway-2026/variety--unknown.json"
+    "innocence-off-broadway-2026/variety--unknown.json",
+    "cats-the-jellicle-ball-2026/pages-on-stages--mason-pilevsky.json",
+    "becky-shaw-2026/theatre-reviews-limited--david-roberts.json",
+    "becky-shaw-2026/variety--rebecca-rubin.json",
+    "innocence-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "the-boy-at-the-back-of-the-class-west-end-2026/guardian--arifa-akbar.json",
@@ -26,6 +30,12 @@
     "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
     "becky-shaw-2026/wsj--unknown.json",
     "becky-shaw-2026/talkinbroadway--unknown.json",
+    "innocence-off-broadway-2026/playbill--unknown.json",
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+    "cats-the-jellicle-ball-2026/new-york-sun--elysa-gardner.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json",
     "innocence-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
@@ -35,14 +45,20 @@
       "copenhagen-west-end-2026/west-end-best-friend--unknown.json",
       "inter-alia-west-end-2026/standard--nick-curtis.json",
       "inter-alia-west-end-2026/thestage--sam-marlowe.json",
-      "inter-alia-west-end-2026/west-end-best-friend--unknown.json"
+      "inter-alia-west-end-2026/west-end-best-friend--unknown.json",
+      "cats-the-jellicle-ball-2026/pages-on-stages--mason-pilevsky.json",
+      "becky-shaw-2026/theatre-reviews-limited--david-roberts.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/becky-shaw-2026/variety--unknown.json",
       "becky-shaw-2026/variety--unknown.json",
       "data/review-texts/innocence-off-broadway-2026/variety--unknown.json",
-      "innocence-off-broadway-2026/variety--unknown.json"
+      "innocence-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/becky-shaw-2026/variety--rebecca-rubin.json",
+      "becky-shaw-2026/variety--rebecca-rubin.json",
+      "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -54,6 +70,8 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
       "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
@@ -61,7 +79,7 @@
     ]
   },
   "startTime": "2026-04-08T12:15:57.482Z",
-  "lastProcessed": "innocence-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "innocence-off-broadway-2026/variety--rebecca-rubin.json",
   "log": [
     {
       "t": "2026-04-08T12:54:28.164Z",
@@ -95,6 +113,39 @@
       "t": "2026-04-08T12:55:06.155Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T13:41:22.037Z",
+      "event": "bb-session",
+      "session": "dcbd6e72",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T13:41:23.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T13:44:04.869Z",
+      "event": "bb-session",
+      "session": "9b58f804",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-04-08T13:44:05.946Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T13:44:29.226Z",
+      "event": "bb-session",
+      "session": "df9f93d5",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T13:44:30.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

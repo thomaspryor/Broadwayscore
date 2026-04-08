@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-04-08T12:57:25.129Z",
-  "processed": 12,
-  "failed": 13,
-  "successRate": "48.0%",
+  "updatedAt": "2026-04-08T13:44:48.132Z",
+  "processed": 16,
+  "failed": 19,
+  "successRate": "45.7%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 4,
     "archive": 1
   },
   "browserbaseSessions": 3,
@@ -47,6 +47,39 @@
       "t": "2026-04-08T12:55:06.155Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T13:41:22.037Z",
+      "event": "bb-session",
+      "session": "dcbd6e72",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T13:41:23.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T13:44:04.869Z",
+      "event": "bb-session",
+      "session": "9b58f804",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-04-08T13:44:05.946Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T13:44:29.226Z",
+      "event": "bb-session",
+      "session": "df9f93d5",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T13:44:30.347Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
