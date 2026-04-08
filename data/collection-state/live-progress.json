@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-08T04:43:24.288Z",
-  "processed": 175,
-  "failed": 1120,
-  "successRate": "13.5%",
+  "updatedAt": "2026-04-08T04:58:29.803Z",
+  "processed": 178,
+  "failed": 1127,
+  "successRate": "13.6%",
   "tierBreakdown": {
-    "playwright": 76,
+    "playwright": 77,
     "amp": 2,
-    "browserbase": 38,
+    "browserbase": 42,
     "directCookies": 0,
     "scrapingbee": 51,
     "brightdata": 15,
-    "archiveToday": 50,
+    "archiveToday": 51,
     "archive": 17
   },
   "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-08T03:03:33.773Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-04-08T03:10:40.033Z",
-      "event": "bb-session",
-      "session": "3b82be7b",
-      "url": "https://www.newsday.com/entertainment/theater/al-pacino-s-merchant-of-venice-eve"
-    },
-    {
-      "t": "2026-04-08T03:10:41.236Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
-    {
-      "t": "2026-04-08T03:13:42.524Z",
-      "event": "bb-session",
-      "session": "8c8ab3b9",
-      "url": "https://www.nytimes.com/1987/03/13/theater/theater-les-miserables.html"
-    },
     {
       "t": "2026-04-08T03:13:43.700Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-04-08T04:42:41.627Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T04:52:30.844Z",
+      "event": "bb-session",
+      "session": "3e9fd912",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:52:31.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T04:58:01.689Z",
+      "event": "bb-session",
+      "session": "37df52a7",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:58:02.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

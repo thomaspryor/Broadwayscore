@@ -174,7 +174,10 @@
     "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
     "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
     "the-other-place-2026/thestage--dave-fargnoli.json",
-    "innocence-off-broadway-2026/variety--rebecca-rubin.json"
+    "innocence-off-broadway-2026/variety--rebecca-rubin.json",
+    "the-listening-off-broadway-2026/variety--unknown.json",
+    "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
+    "becky-shaw-2026/variety--unknown.json"
   ],
   "failed": [
     "cats-the-jellicle-ball-2026/billboard--unknown.json",
@@ -1296,7 +1299,14 @@
     "the-monsters-2026/vulture--jackson-mchenry.json",
     "jackals-off-broadway-2026/times-uk--anne-treneman.json",
     "cats-the-jellicle-ball-2026/usatoday--patrick-ryan.json",
-    "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+    "inter-alia-west-end-2026/theupcoming--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "inter-alia-west-end-2026/thestage--sam-marlowe.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1376,7 +1386,8 @@
       "the-dinosaurs-2026/nytg--caroline-cao.json",
       "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
       "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
-      "the-other-place-2026/thestage--dave-fargnoli.json"
+      "the-other-place-2026/thestage--dave-fargnoli.json",
+      "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json"
     ],
     "amp": [
       "data/review-texts/mamma-mia-2001/nydailynews--howard-kissel.json",
@@ -1420,7 +1431,11 @@
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
       "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
       "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
-      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/the-listening-off-broadway-2026/variety--unknown.json",
+      "the-listening-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/becky-shaw-2026/variety--unknown.json",
+      "becky-shaw-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1543,7 +1558,8 @@
       "data/review-texts/an-enemy-of-the-people-1971/northjerseycom--robert-feldberg.json",
       "data/review-texts/purpose/broadwaynews--brittani-samuel.json",
       "data/review-texts/the-other-place-2026/ap--mark-kennedy.json",
-      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json"
+      "data/review-texts/the-play-that-goes-wrong-2019/curtainup--simon-saltzman.json",
+      "data/review-texts/inter-alia-west-end-2026/theupcoming--unknown.json"
     ],
     "archive": [
       "cats-the-jellicle-ball-2026/vulture--unknown.json",
@@ -1566,7 +1582,7 @@
     ]
   },
   "startTime": "2026-04-07T18:14:51.073Z",
-  "lastProcessed": "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+  "lastProcessed": "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
   "log": [
     {
       "t": "2026-04-07T19:15:53.677Z",
@@ -2068,6 +2084,28 @@
       "t": "2026-04-08T04:42:41.627Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T04:52:30.844Z",
+      "event": "bb-session",
+      "session": "3e9fd912",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:52:31.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T04:58:01.689Z",
+      "event": "bb-session",
+      "session": "37df52a7",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:58:02.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
