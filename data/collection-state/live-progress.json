@@ -1,35 +1,24 @@
 {
-  "updatedAt": "2026-04-08T07:58:30.131Z",
-  "processed": 183,
-  "failed": 1733,
-  "successRate": "9.6%",
+  "updatedAt": "2026-04-08T08:25:13.268Z",
+  "processed": 20,
+  "failed": 17,
+  "successRate": "54.1%",
   "tierBreakdown": {
-    "playwright": 79,
-    "amp": 2,
-    "browserbase": 46,
+    "playwright": 8,
+    "amp": 0,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 52,
-    "brightdata": 15,
-    "archiveToday": 59,
-    "archive": 17
+    "scrapingbee": 4,
+    "brightdata": 0,
+    "archiveToday": 7,
+    "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-04-08T03:35:18.431Z",
+      "t": "2026-04-08T07:28:19.449Z",
       "event": "bb-session",
-      "session": "ed6b8895",
-      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
-    },
-    {
-      "t": "2026-04-08T03:35:19.879Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-08T04:42:28.010Z",
-      "event": "bb-session",
-      "session": "4979bce1",
+      "session": "fb5b8641",
       "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
     },
     {
@@ -102,6 +91,28 @@
       "t": "2026-04-08T07:58:15.316Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T08:22:46.426Z",
+      "event": "bb-session",
+      "session": "1523635d",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T08:22:47.474Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T08:23:05.367Z",
+      "event": "bb-session",
+      "session": "7a6354d5",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T08:23:06.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
