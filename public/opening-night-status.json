@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T22:03:13.595Z",
+  "generatedAt": "2026-04-08T22:36:11.207Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1049,25 +1049,25 @@
       "status": "open",
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
-      "siteScore": 68.2,
+      "siteScore": 68.27,
       "liveScore": 68,
-      "scoreDrift": -0.20000000000000284,
-      "total": 4,
+      "scoreDrift": -0.269999999999996,
+      "total": 6,
       "t1": 1,
       "t2": 1,
-      "t3": 2,
+      "t3": 4,
       "positive": 1,
-      "mixed": 3,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "6/8 total",
           "T1:1/3",
           "T2:1/2",
-          "hi-conf:2/6"
+          "hi-conf:3/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1090,10 +1090,6 @@
         },
         {
           "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
           "isDualMarket": true
         },
         {
@@ -1189,6 +1185,18 @@
           "t3": 2,
           "p": 1,
           "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T22:36:11.207Z",
+          "rc": 6,
+          "s": 68.27,
+          "t1": 1,
+          "t2": 1,
+          "t3": 4,
+          "p": 1,
+          "m": 5,
           "n": 0,
           "bc": "waiting"
         }
