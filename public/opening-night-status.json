@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T10:48:49.322Z",
+  "generatedAt": "2026-04-08T11:16:52.620Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -25,7 +25,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1061,23 +1061,24 @@
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 74,
+      "liveScore": 80,
       "scoreDrift": null,
-      "total": 4,
+      "total": 3,
       "t1": 1,
-      "t2": 2,
+      "t2": 1,
       "t3": 1,
       "positive": 3,
       "mixed": 0,
-      "negative": 1,
+      "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "3/8 total",
           "T1:1/3",
-          "hi-conf:4/6"
+          "T2:1/2",
+          "hi-conf:3/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1122,6 +1123,10 @@
         },
         {
           "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -1208,6 +1213,18 @@
           "p": 3,
           "m": 0,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T11:16:52.620Z",
+          "rc": 3,
+          "s": 80,
+          "t1": 1,
+          "t2": 1,
+          "t3": 1,
+          "p": 3,
+          "m": 0,
+          "n": 0,
           "bc": "waiting"
         }
       ]
