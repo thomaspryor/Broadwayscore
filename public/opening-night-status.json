@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-08T05:45:02.846Z",
+  "generatedAt": "2026-04-08T06:20:46.757Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -15,17 +15,17 @@
       "siteScore": 88,
       "liveScore": 88,
       "scoreDrift": 0,
-      "total": 20,
+      "total": 21,
       "t1": 4,
-      "t2": 12,
+      "t2": 13,
       "t3": 4,
-      "positive": 19,
+      "positive": 20,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 18,
+        "highConfidence": 19,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -94,14 +94,6 @@
         },
         {
           "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": false
-        },
-        {
-          "name": "Playbill",
           "isDualMarket": false
         },
         {
@@ -382,6 +374,18 @@
           "t2": 12,
           "t3": 4,
           "p": 19,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-08T06:20:46.757Z",
+          "rc": 21,
+          "s": 88,
+          "t1": 4,
+          "t2": 13,
+          "t3": 4,
+          "p": 20,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1503,10 +1507,6 @@
         {
           "name": "The New York Times",
           "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
         },
         {
           "name": "Variety",
