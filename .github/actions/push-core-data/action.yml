@@ -107,12 +107,19 @@ runs:
             continue
           fi
 
-          # Reconcile shows.json: restore fields from remote that -X ours may have dropped.
-          # This catches manual corrections (venue, synopsis, dates) pushed to origin
-          # while CI was running. Only restores fields where remote is non-null and local is null.
+          # Reconcile shows.json: restore manually-correctable fields from remote
+          # that -X ours may have dropped. Only restores a safelist of fields that
+          # are typically set by manual corrections (venue, synopsis, dates, runtime).
+          # Excludes derived/internal fields (_meta, lastUpdated, tags, images) and
+          # fields that may be intentionally nulled (closingDate clearing, etc.).
           if [ -f "/tmp/remote-shows.json" ] && [ -f "shows.json" ]; then
             node -e '
               const fs = require("fs");
+              // Only reconcile fields that are manually corrected, never auto-generated
+              const RECONCILABLE = new Set([
+                "venue", "synopsis", "runtime", "intermissions", "ageRecommendation",
+                "officialUrl", "wikipediaUrl", "ibdbUrl",
+              ]);
               try {
                 const local = JSON.parse(fs.readFileSync("shows.json", "utf8"));
                 const remote = JSON.parse(fs.readFileSync("/tmp/remote-shows.json", "utf8"));
@@ -121,9 +128,9 @@ runs:
                 let recovered = 0;
                 for (const rs of (remote.shows || [])) {
                   const ls = localMap[rs.id];
-                  if (!ls) continue; // show only in remote — skip (likely intentional removal)
-                  // Restore non-null fields from remote where local is null/undefined
-                  for (const [key, val] of Object.entries(rs)) {
+                  if (!ls) continue;
+                  for (const key of RECONCILABLE) {
+                    const val = rs[key];
                     if (val !== null && val !== undefined && (ls[key] === null || ls[key] === undefined)) {
                       ls[key] = val;
                       recovered++;
@@ -215,20 +222,19 @@ runs:
               ' 2>&1 || true
             fi
 
-            # Re-stage and amend if reconciliation or recalculation changed files
-            RECONCILED_FILES=""
-            if ! git diff --quiet shows.json 2>/dev/null; then
-              git add shows.json
-              RECONCILED_FILES="$RECONCILED_FILES shows.json"
-            fi
+            # Re-stage and amend if audience-buzz reconciliation changed the file
             if ! git diff --quiet audience-buzz.json 2>/dev/null; then
               git add audience-buzz.json
-              RECONCILED_FILES="$RECONCILED_FILES audience-buzz.json"
-            fi
-            if [ -n "$RECONCILED_FILES" ]; then
               git commit --amend --no-edit
-              echo "Amended commit with reconciled:$RECONCILED_FILES"
+              echo "Amended commit with reconciled audience-buzz.json"
             fi
+          fi
+
+          # Re-stage shows.json if reconciliation changed it (outside audience-buzz guard)
+          if ! git diff --quiet shows.json 2>/dev/null; then
+            git add shows.json
+            git commit --amend --no-edit
+            echo "Amended commit with reconciled shows.json"
           fi
 
           sleep $((RANDOM % 10 + 5))
