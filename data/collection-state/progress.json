@@ -173,7 +173,8 @@
     "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
     "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
     "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
-    "the-other-place-2026/thestage--dave-fargnoli.json"
+    "the-other-place-2026/thestage--dave-fargnoli.json",
+    "innocence-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "cats-the-jellicle-ball-2026/billboard--unknown.json",
@@ -1293,7 +1294,9 @@
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
     "data-2026/vulture--jackson-mchenry.json",
     "the-monsters-2026/vulture--jackson-mchenry.json",
-    "jackals-off-broadway-2026/times-uk--anne-treneman.json"
+    "jackals-off-broadway-2026/times-uk--anne-treneman.json",
+    "cats-the-jellicle-ball-2026/usatoday--patrick-ryan.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1415,7 +1418,9 @@
       "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json",
       "a-thousand-clowns-2001/nytimes--bruce-weber.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
-      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1561,7 +1566,7 @@
     ]
   },
   "startTime": "2026-04-07T18:14:51.073Z",
-  "lastProcessed": "the-other-place-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
   "log": [
     {
       "t": "2026-04-07T19:15:53.677Z",
@@ -2041,6 +2046,28 @@
       "t": "2026-04-08T03:35:19.879Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-08T04:42:28.010Z",
+      "event": "bb-session",
+      "session": "4979bce1",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T04:42:28.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T04:42:41.269Z",
+      "event": "bb-session",
+      "session": "5ccae9f8",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-08T04:42:41.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
