@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-08T03:36:45.637Z",
+  "timestamp": "2026-04-08T03:51:16.628Z",
   "stats": {
-    "totalReviews": 34602,
+    "totalReviews": 34603,
     "alreadyFlagged": 13318,
     "dateGuardCatches": 61,
     "directorMismatch": 983,
     "tvFilmSignals": 3467,
     "londonSignals": 1115,
-    "offBroadwaySignals": 984,
+    "offBroadwaySignals": 985,
     "yearMismatch": 74,
     "noPublishDate": 5108
   },
@@ -42,7 +42,7 @@
     {
       "showId": "13-2008",
       "file": "talkinbroadway--unknown.json",
-      "score": null,
+      "score": 43,
       "publishDate": "2008-10-05",
       "url": "https://www.talkinbroadway.com/world/Thirteen.html",
       "findings": [
@@ -20870,7 +20870,7 @@
     {
       "showId": "hairspray-2002",
       "file": "nytimes--robin-pogrebin.json",
-      "score": null,
+      "score": 75,
       "publishDate": "2002-08-15",
       "url": "https://www.nytimes.com/2002/08/21/theater/big-hair-personality-match-for-young-actress-s-career-bouffant-moment-hairspray.html",
       "findings": [
@@ -66133,6 +66133,20 @@
       "score": 86,
       "publishDate": "2026-04-08",
       "url": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "thewrap--unknown.json",
+      "score": 58,
+      "publishDate": "2026-04-07",
+      "url": "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
