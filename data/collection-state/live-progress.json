@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-08T06:01:35.864Z",
+  "updatedAt": "2026-04-08T06:30:08.731Z",
   "processed": 178,
-  "failed": 1717,
+  "failed": 1722,
   "successRate": "9.4%",
   "tierBreakdown": {
     "playwright": 77,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 51,
     "brightdata": 15,
-    "archiveToday": 52,
+    "archiveToday": 54,
     "archive": 17
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-08T03:13:43.700Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-08T03:19:27.208Z",
-      "event": "bb-session",
-      "session": "84342c75",
-      "url": "https://www.amny.com/urbanite-1.812039/theater-review-annie-1-5-stars-1.4202762"
-    },
     {
       "t": "2026-04-08T03:19:28.284Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-04-08T04:58:02.502Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T06:28:07.702Z",
+      "event": "bb-session",
+      "session": "fadfb9c4",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T06:28:08.835Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
