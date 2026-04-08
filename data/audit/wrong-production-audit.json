@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-07T22:15:01.415Z",
+  "timestamp": "2026-04-08T00:10:38.257Z",
   "stats": {
-    "totalReviews": 34595,
-    "alreadyFlagged": 13304,
+    "totalReviews": 34597,
+    "alreadyFlagged": 13303,
     "dateGuardCatches": 61,
     "directorMismatch": 984,
-    "tvFilmSignals": 3465,
+    "tvFilmSignals": 3468,
     "londonSignals": 1116,
-    "offBroadwaySignals": 977,
+    "offBroadwaySignals": 978,
     "yearMismatch": 74,
-    "noPublishDate": 5243
+    "noPublishDate": 5245
   },
   "findings": [
     {
@@ -4526,6 +4526,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam gold\" from an-enemy-of-the-people-2024"
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "broadwayworld--alexander-cohen.json",
+      "score": 49,
+      "publishDate": "2024-02-20",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -41463,6 +41477,20 @@
       ]
     },
     {
+      "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
+      "file": "whatsonstage--tom-millward.json",
+      "score": 72,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/robin-hood-pantomime-at-the-london-palladium-review_1657477/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "rock-n-roll-2007",
       "file": "nydailynews--joe-dziemianowicz-bway.json",
       "publishDate": "2007-11-05",
@@ -58364,6 +58392,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
+        }
+      ]
+    },
+    {
+      "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 53,
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/once-on-this-island-1-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -75407,6 +75449,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"cherry lane\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 63,
+      "publishDate": "2025-12-19",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
