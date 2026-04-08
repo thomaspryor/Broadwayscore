@@ -564,7 +564,9 @@ export function computeCompositeScore(
     weight: s.weight / totalWeight,
   }));
 
-  return Math.round(normalizedScores.reduce((sum, s) => sum + s.value * s.weight, 0));
+  // Keep 2 decimal places for tiebreaking in sort order
+  const raw = normalizedScores.reduce((sum, s) => sum + s.value * s.weight, 0);
+  return Math.round(raw * 100) / 100;
 }
 
 // ===========================================
@@ -629,7 +631,10 @@ export function computeShowData(
   }
 
   // V1: composite score = critic score (audience/buzz coming later)
-  const compositeScore = criticScore?.weightedScore ? Math.round(criticScore.weightedScore) : null;
+  // Keep 2 decimal places for tiebreaking in sort order (e.g., 87.96 vs 87.12)
+  const compositeScore = criticScore?.weightedScore
+    ? Math.round(criticScore.weightedScore * 100) / 100
+    : null;
 
   // Build-time status correction: safety net for stale data from concurrent pushes.
   // The source script (update-show-status.js) runs daily, but race conditions between

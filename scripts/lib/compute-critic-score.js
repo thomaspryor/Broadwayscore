@@ -78,11 +78,11 @@ function computeCriticScore(showReviews, outletRegistry = {}) {
 
   if (totalWeight === 0) return null;
 
+  // Keep 2 decimal places for tiebreaking in sort order
   const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
-  const rounded = Math.round(weightedScore);
 
   return {
-    s: rounded,
+    s: weightedScore,
     rc: scoredCount,
     t1: tier1Count,
   };

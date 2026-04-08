@@ -94,7 +94,7 @@ function calculateCombinedScore(sources, showInfo) {
   if (active.length === 1) {
     const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0, broadwayCom: 0, seatplan: 0, lbo: 0, ltd: 0 };
     weights[active[0].name] = 100;
-    return { score: Math.round(active[0].score), weights };
+    return { score: Math.round(active[0].score * 100) / 100, weights };
   }
 
   // Proportional weighting by volume
@@ -123,7 +123,7 @@ function calculateCombinedScore(sources, showInfo) {
     weights[w.name] = Math.round(w.weight * 100);
   }
 
-  return { score: Math.round(combinedScore), weights };
+  return { score: Math.round(combinedScore * 100) / 100, weights };
 }
 
 /**
