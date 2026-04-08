@@ -4,7 +4,11 @@
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "loves-labours-lost-globe-west-end-2026/timeout--unknown.json",
     "robin-hood-and-the-merry-mandem-off-west-end-2026/telegraph--claire-allfree.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "the-listening-off-broadway-2026/variety--rebecca-rubin.json",
+    "becky-shaw-2026/variety--unknown.json",
+    "innocence-off-broadway-2026/variety--unknown.json",
+    "becky-shaw-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "copenhagen-west-end-2026/telegraph--travel-writer.json",
@@ -23,7 +27,13 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "the-book-of-mormon-west-end-2024/thestage--unknown.json",
     "the-lion-king-west-end-2021/thestage--unknown.json",
-    "high-noon-west-end-2025/times-uk--clive-davis.json"
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+    "cats-the-jellicle-ball-2026/new-york-sun--elysa-gardner.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "becky-shaw-2026/talkinbroadway--unknown.json",
+    "innocence-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -33,17 +43,85 @@
       "robin-hood-and-the-merry-mandem-off-west-end-2026/telegraph--claire-allfree.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-listening-off-broadway-2026/variety--rebecca-rubin.json",
+      "the-listening-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/becky-shaw-2026/variety--unknown.json",
+      "becky-shaw-2026/variety--unknown.json",
+      "data/review-texts/innocence-off-broadway-2026/variety--unknown.json",
+      "innocence-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/becky-shaw-2026/variety--rebecca-rubin.json",
+      "becky-shaw-2026/variety--rebecca-rubin.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "loves-labours-lost-globe-west-end-2026/timeout--unknown.json",
       "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/cats-the-jellicle-ball-2026/talkinbroadway--unknown.json",
+      "data/review-texts/becky-shaw-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-04-08T09:16:07.511Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "becky-shaw-2026/variety--rebecca-rubin.json",
+  "log": [
+    {
+      "t": "2026-04-08T10:06:48.503Z",
+      "event": "bb-session",
+      "session": "f221df0e",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T10:06:49.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T10:07:11.898Z",
+      "event": "bb-session",
+      "session": "3bc4fd2a",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T10:07:12.833Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T10:07:30.228Z",
+      "event": "bb-session",
+      "session": "9145a5b9",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-08T10:07:31.263Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-08T10:07:47.655Z",
+      "event": "bb-session",
+      "session": "8bfa47b1",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-08T10:07:48.652Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-08T10:09:50.152Z",
+      "event": "bb-session",
+      "session": "50efcd2a",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-04-08T10:09:51.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
