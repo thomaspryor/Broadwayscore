@@ -97,9 +97,32 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const siteName = isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
   const marketLabel = isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
-  const description = score
-    ? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.${statusLabel ? ` ${statusLabel} at ${show.venue}.` : ''} ${synopsisSnippet}`.trim().slice(0, 160)
-    : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.${statusLabel ? ` ${statusLabel} at ${show.venue}.` : ''} ${synopsisSnippet}`.trim().slice(0, 160);
+
+  // Sentiment label maps tier → SEO-friendly phrase used in title + description
+  const tier = roundedScore ? getScoreTier(roundedScore, show.category) : null;
+  const SEO_SENTIMENT: Record<string, string> = {
+    'Critical Gold': 'Rave Reviews',
+    'Recommended': 'Positive Reviews',
+    'Worth Seeing': 'Worth Seeing',
+    'Skippable': 'Mixed Reviews',
+    'Stay Away': 'Poor Reviews',
+  };
+  const sentimentLabel = tier ? (SEO_SENTIMENT[tier.label] ?? null) : null;
+
+  // Sentiment-aware description: lead with verdict, not database dump
+  const statusPart = statusLabel ? ` ${statusLabel} at ${show.venue}.` : '';
+  const synopsisPart = synopsisSnippet ? ` ${synopsisSnippet}` : '';
+  const SENTIMENT_PHRASES: Record<string, string> = {
+    'Critical Gold': `Critics rave about ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Recommended': `${show.title} earns positive reviews — ${roundedScore}/100 from ${reviewCount} critics.`,
+    'Worth Seeing': `Critics say ${show.title} is worth seeing — ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Skippable': `Critics are mixed on ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Stay Away': `${show.title} gets poor reviews from critics — ${roundedScore}/100 from ${reviewCount} reviews.`,
+  };
+  const description = (score && roundedScore && tier
+    ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
+    : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.${statusLabel ? ` ${statusLabel} at ${show.venue}.` : ''} ${synopsisSnippet}`
+  ).trim().slice(0, 160);
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
@@ -112,8 +135,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   return {
     title: {
-      absolute: roundedScore
-        ? `${show.title} Reviews (${roundedScore}/100) — ${reviewCount} Critic Reviews Aggregated | ${siteName}`
+      absolute: roundedScore && sentimentLabel
+        ? `${show.title} — ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
         : `${show.title} Reviews ${marketLabel} — ${siteName}`,
     },
     description,
