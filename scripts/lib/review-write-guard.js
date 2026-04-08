@@ -48,6 +48,7 @@ const PROTECTED_FIELDS = [
   'sourceMethod',
   'isFullReview',
   'wrongFullText',
+  'wrongShow',
   'wrongShowReason',
   'wrongProduction',
   'wrongProductionNote',
