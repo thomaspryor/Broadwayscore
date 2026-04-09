@@ -110,6 +110,15 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ---
 
+## `rebuild-fast.yml`
+- **Runs:** Manual trigger only
+- **Does:** Lightweight rebuild: checkout → rebuild reviews.json → push → deploy. No backfill, classification, or flagging steps. ~5 min instead of ~30 min.
+- **Concurrency:** `rebuild-reviews` group (shared with full rebuild — queued, not cancelled)
+- **When to use:** Opening-night corrections, manual data fixes, any time you need a fast rebuild without the full pipeline
+- **Manual trigger:** `gh workflow run "Rebuild Reviews (Fast)" -f reason="your reason"`
+- **Options:** `reason` (commit message), `force_write` (override regression guard)
+- **Key difference from full rebuild:** Skips extract-pull-quotes, classify-non-reviews, flag-wrong-production, classify-wrong-production, classify-wrong-show, backfill-unknown-critics, cleanup-phantom-outlets, strip-stale-scores, detect-syndicated-duplicates, apply-audit-flags, analyze-rebuild-drops, audit-wrong-production, enrich-cast, generate-status-page. Keeps: rebuild, critic registry, mobile detail JSONs, deploy.
+
 ## `rebuild-reviews.yml`
 - **Runs:** Daily at 4 AM UTC (11 PM EST), auto-triggered via `workflow_run` when "Collect Review Texts" completes successfully, or manually triggered
 - **Does:** Rebuilds `reviews.json` from `review-texts/` source files
