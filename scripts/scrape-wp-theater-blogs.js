@@ -457,6 +457,11 @@ async function scrapeSite(site, shows) {
       siteStats.skippedNoMatch++;
       continue;
     }
+    if (match.confidence !== 'high') {
+      siteStats.skippedNoMatch++;
+      console.log(`  [LOW CONFIDENCE] "${titleForMatching}" → ${match.show.title} (${match.confidence}) — skipped`);
+      continue;
+    }
 
     const { show, confidence } = match;
     const showId = show.slug || show.id;

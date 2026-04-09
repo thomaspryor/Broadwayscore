@@ -573,11 +573,14 @@ async function scrapeLBORoundups() {
     if (!extractedTitle) continue;
 
     const match = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
-    if (match && match.show) {
-      if (curatedMatchedIds.has(match.show.id)) continue; // Already have curated URL
-      if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
-      matchedRoundups.push({ url, show: match.show, extractedTitle });
+    if (!match || !match.show) continue;
+    if (match.confidence !== 'high') {
+      console.log(`  [LOW CONFIDENCE] roundup "${extractedTitle}" → ${match.show.title} (${match.confidence}) — skipped`);
+      continue;
     }
+    if (curatedMatchedIds.has(match.show.id)) continue; // Already have curated URL
+    if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
+    matchedRoundups.push({ url, show: match.show, extractedTitle });
   }
 
   // Match individual review URLs to shows
@@ -588,10 +591,13 @@ async function scrapeLBORoundups() {
     if (!extractedTitle) continue;
 
     const match = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
-    if (match && match.show) {
-      if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
-      matchedIndividual.push({ url, show: match.show, extractedTitle });
+    if (!match || !match.show) continue;
+    if (match.confidence !== 'high') {
+      console.log(`  [LOW CONFIDENCE] individual "${extractedTitle}" → ${match.show.title} (${match.confidence}) — skipped`);
+      continue;
     }
+    if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
+    matchedIndividual.push({ url, show: match.show, extractedTitle });
   }
 
   stats.matchedShows = matchedRoundups.length;

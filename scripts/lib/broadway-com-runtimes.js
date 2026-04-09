@@ -434,7 +434,7 @@ function matchRuntimesToShows(runtimeEntries, shows) {
 
   for (const entry of runtimeEntries) {
     const match = matchTitleToShow(entry.title, shows, { market: 'broadway' });
-    if (match) {
+    if (match && match.confidence === 'high') {
       const showId = match.show.id;
       enrichments[showId] = {
         runtime: entry.runtime,
@@ -468,7 +468,7 @@ async function batchScrapeAgeRecommendations(runtimeEntries, shows, enrichments)
     if (!entry.broadwayComUrl) continue;
 
     const match = matchTitleToShow(entry.title, shows, { market: 'broadway' });
-    if (!match) continue;
+    if (!match || match.confidence !== 'high') continue;
 
     const showId = match.show.id;
     // Skip if show already has an age recommendation

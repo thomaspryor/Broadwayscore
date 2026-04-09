@@ -331,13 +331,15 @@ async function main() {
     const matched = [];
     for (const sd of stagedoorShows) {
       const result = matchTitleToShow(sd.title, ourShows, { market: 'west-end' });
-      if (result && result.show) {
+      if (result && result.show && result.confidence === 'high') {
         matched.push({
           ...sd,
           ourShowId: result.show.id,
           ourTitle: result.show.title,
           confidence: result.confidence,
         });
+      } else if (result && result.show) {
+        console.log(`  [LOW CONFIDENCE] "${sd.title}" → ${result.show.title} (${result.confidence}) — skipped`);
       }
     }
 

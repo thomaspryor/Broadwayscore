@@ -355,11 +355,14 @@ async function main() {
     if (!title) continue;
 
     const match = matchTitleToShow(title, weShows, { market: 'west-end' });
-    if (match && match.show) {
-      if (TARGET_SHOWS && !TARGET_SHOWS.includes(match.show.id)) continue;
-      matched.push({ url, show: match.show, extractedTitle: title });
-      console.log(`  Matched: "${title}" → ${match.show.id}`);
+    if (!match || !match.show) continue;
+    if (match.confidence !== 'high') {
+      console.log(`  [LOW CONFIDENCE] "${title}" → ${match.show.title} (${match.confidence}) — skipped`);
+      continue;
     }
+    if (TARGET_SHOWS && !TARGET_SHOWS.includes(match.show.id)) continue;
+    matched.push({ url, show: match.show, extractedTitle: title });
+    console.log(`  Matched: "${title}" → ${match.show.id}`);
   }
 
   console.log(`\nMatched ${matched.length} shows to roundup URLs\n`);

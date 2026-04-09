@@ -454,7 +454,7 @@ async function _buildTRIndex(weShows) {
     for (const slug of [...new Set(cleanedSlugs)]) {
       const titleFromSlug = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
       const match = matchTitleToShow(titleFromSlug, weShows, { market: 'west-end' });
-      if (match && match.show) { bestMatch = match; break; }
+      if (match && match.show && match.confidence === 'high') { bestMatch = match; break; }
     }
 
     // Fallback: check if any show title words appear in raw slug
@@ -753,7 +753,7 @@ async function _buildTSIndex(weShows) {
       for (const slug of uniqueSlugs) {
         const titleFromSlug = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         const match = matchTitleToShow(titleFromSlug, weShows, { market: 'west-end' });
-        if (match && match.show) { bestMatch = match; break; }
+        if (match && match.show && match.confidence === 'high') { bestMatch = match; break; }
       }
 
       // Fallback: check if any show title words appear in raw slug
