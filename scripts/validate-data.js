@@ -210,11 +210,22 @@ function validateRequiredFields(shows) {
 function validateStatus(shows) {
   info('Checking status values...');
   const validStatuses = ['open', 'closed', 'previews', 'upcoming', 'announced'];
+  const validCategories = ['broadway', 'off-broadway', 'west-end', 'off-west-end'];
   let invalid = 0;
 
   for (const show of shows) {
     if (!validStatuses.includes(show.status)) {
       error(`Show "${show.title}" has invalid status: "${show.status}"`);
+      invalid++;
+    }
+    // Active shows MUST have explicit category — implicit default to 'broadway'
+    // causes silent failures in market filtering (opening night orchestrator, poller)
+    if (['open', 'previews', 'upcoming'].includes(show.status) && !show.category) {
+      warn(`Active show "${show.title}" (${show.id}) missing category field — pipeline will default to broadway`);
+      invalid++;
+    }
+    if (show.category && !validCategories.includes(show.category)) {
+      error(`Show "${show.title}" has invalid category: "${show.category}"`);
       invalid++;
     }
   }
