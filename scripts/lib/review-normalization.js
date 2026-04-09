@@ -567,6 +567,13 @@ function mergeReviews(existing, incoming) {
     }
   }
 
+  // Upgrade Unknown critic name from incoming data
+  if (incoming.criticName && incoming.criticName !== 'Unknown'
+      && (!existing.criticName || existing.criticName === 'Unknown')
+      && !existing.criticNameManual) {
+    merged.criticName = incoming.criticName;
+  }
+
   // Keep all excerpts (decode entities on incoming)
   if (incoming.dtliExcerpt && !existing.dtliExcerpt) {
     merged.dtliExcerpt = decodeHtmlEntities(incoming.dtliExcerpt);

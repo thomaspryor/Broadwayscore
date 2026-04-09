@@ -1387,6 +1387,53 @@ assert(pollerSrc.includes("extractBWWRoundupReviews(bww.html, show.id, bww.url, 
 assert(urlDiscSrc.includes("urlLooksLikeReview(url, showInfo.title)"), 'url-discovery.js: discoverCorrectUrl has URL slug guard');
 
 // ============================================================
+// mergeReviews — critic name upgrade from Unknown
+// ============================================================
+console.log('\n--- mergeReviews critic name upgrade ---');
+
+const { mergeReviews } = require('./lib/review-normalization');
+
+// Unknown critic should be upgraded when incoming has real name
+const mergedUpgrade = mergeReviews(
+  { outletId: 'nytimes', criticName: 'Unknown', source: 'serp-discovery', url: 'https://nytimes.com/review' },
+  { outletId: 'nytimes', criticName: 'Jesse Green', source: 'dtli', dtliThumb: 'UP' }
+);
+assert(
+  mergedUpgrade.criticName === 'Jesse Green',
+  `mergeReviews: Unknown → "Jesse Green" (got: "${mergedUpgrade.criticName}")`
+);
+
+// Named critic should NOT be overwritten by another name
+const mergedKeep = mergeReviews(
+  { outletId: 'nytimes', criticName: 'Jesse Green', source: 'serp-discovery' },
+  { outletId: 'nytimes', criticName: 'Helen Shaw', source: 'dtli' }
+);
+assert(
+  mergedKeep.criticName === 'Jesse Green',
+  `mergeReviews: keeps existing named critic (got: "${mergedKeep.criticName}")`
+);
+
+// criticNameManual should block upgrade
+const mergedManual = mergeReviews(
+  { outletId: 'nytimes', criticName: 'Unknown', criticNameManual: true, source: 'manual' },
+  { outletId: 'nytimes', criticName: 'Jesse Green', source: 'dtli' }
+);
+assert(
+  mergedManual.criticName === 'Unknown',
+  `mergeReviews: criticNameManual blocks upgrade (got: "${mergedManual.criticName}")`
+);
+
+// Unknown incoming should not overwrite existing named critic
+const mergedNoDowngrade = mergeReviews(
+  { outletId: 'nytimes', criticName: 'Jesse Green', source: 'dtli' },
+  { outletId: 'nytimes', criticName: 'Unknown', source: 'serp-discovery' }
+);
+assert(
+  mergedNoDowngrade.criticName === 'Jesse Green',
+  `mergeReviews: Unknown incoming doesn't downgrade (got: "${mergedNoDowngrade.criticName}")`
+);
+
+// ============================================================
 // Summary
 // ============================================================
 console.log(`\n${'='.repeat(50)}`);
