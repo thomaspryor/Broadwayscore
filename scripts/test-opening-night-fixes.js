@@ -1051,6 +1051,25 @@ assert(
   `Named critic dedup: Variety appears exactly once (got: ${upgradeVariety.length})`
 );
 
+// --- Fix #17: hyphenated critic names (Collins-Hughes, Ben-David) ---
+
+const hyphenHtml = `<html><head><title>Review Roundup: HYPHEN TEST Opens-on-Broadway-20260406</title></head><body>
+<script type="application/ld+json">{
+  "@type": "LiveBlogPosting",
+  "liveBlogUpdate": [
+    {"@type": "BlogPosting", "author": {"name": "The New York Times"}, "articleBody": "Brilliant."}
+  ],
+  "articleBody": "Review Roundup. Let's see what the critics had to say. Laura Collins-Hughes, The New York Times: A brilliant production that never falters."
+}</script>
+</body></html>`;
+
+const hyphenReviews = extractBWWRoundupReviews(hyphenHtml, 'hyphen-test-2026', 'https://bww.com/roundup', 'Hyphen Test');
+const hyphenNyt = hyphenReviews.find(r => (r.outletId || '').includes('nytimes'));
+assert(
+  hyphenNyt && hyphenNyt.criticName === 'Laura Collins-Hughes',
+  `Hyphenated critic name: parsed "Laura Collins-Hughes" (got: "${hyphenNyt?.criticName}")`
+);
+
 // --- Fix #17: entries without hyperlinks still extracted ---
 
 // Build HTML where Guardian has NO <a href> — just text

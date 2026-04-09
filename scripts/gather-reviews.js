@@ -1945,8 +1945,9 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
 
         // Pattern: "Critic Name, Outlet:" followed by review text
-        // Name pattern supports apostrophes (D'Addario, O'Brien) and hyphens (Jean-Paul)
-        const pattern = /([A-Z][a-z'\u2019\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\u2019\-]+(?:\s+[A-Z][a-z'\u2019\-]+)?),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z'\u2019\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\u2019\-]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
+        // Name pattern supports apostrophes (D'Addario, O'Brien), hyphens (Jean-Paul, Collins-Hughes)
+        // [a-zA-Z] after hyphen handles uppercase in hyphenated surnames (Collins-Hughes, Ben-David)
+        const pattern = /([A-Z][a-zA-Z'\u2019\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'\u2019\-]+(?:\s+[A-Z][a-zA-Z'\u2019\-]+)?),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-zA-Z'\u2019\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'\u2019\-]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
 
         let match;
         const seen = new Set();
