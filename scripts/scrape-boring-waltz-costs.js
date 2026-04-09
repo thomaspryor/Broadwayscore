@@ -243,7 +243,7 @@ function matchShowName(showName, lookup) {
 
   // 2. Use shared matchTitleToShow (handles normalization, slug matching, etc.)
   const matched = matchTitleToShow(showName, shows, { market: 'broadway' });
-  if (matched) return matched;
+  if (matched && matched.confidence === 'high') return matched;
 
   return null;
 }

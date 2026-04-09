@@ -390,6 +390,11 @@ async function scrapeNYSRReviews() {
       stats.skippedNoMatch++;
       continue;
     }
+    if (match.confidence !== 'high') {
+      stats.skippedNoMatch++;
+      console.log(`  [LOW CONFIDENCE] "${cleanTitle}" → ${match.show.title} (${match.confidence}) — skipped`);
+      continue;
+    }
 
     const { show, confidence } = match;
     const showId = show.slug || show.id;

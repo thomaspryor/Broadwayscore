@@ -171,6 +171,7 @@ function matchResultToShow(result, config, shows) {
   const serpYear = extractYearFromSerpResult(result);
   const matched = matchTitleToShow(candidateTitle, shows, { market: 'broadway', ...(serpYear ? { year: serpYear } : {}) });
   if (!matched?.show) return null;
+  if (matched.confidence !== 'high') return null;
 
   // Guard against false matches where candidate and show share only one short word
   // e.g., "life and trust" matching "Life of Pi" via the single word "life"

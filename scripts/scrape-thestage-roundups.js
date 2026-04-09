@@ -211,6 +211,10 @@ async function scrapeRoundups(page, urls, weShows) {
 
     const match = matchTitleToShow(title, weShows, { market: 'west-end' });
     if (!match || !match.show) continue;
+    if (match.confidence !== 'high') {
+      console.log(`  [LOW CONFIDENCE] "${title}" → ${match.show.title} (${match.confidence}) — skipped`);
+      continue;
+    }
     if (TARGET_SHOWS && !TARGET_SHOWS.includes(match.show.id)) continue;
 
     const showId = match.show.id;

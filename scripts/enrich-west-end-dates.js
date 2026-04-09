@@ -201,7 +201,7 @@ async function scrapeTheatremonkey(weShows) {
   for (const entry of indexEntries) {
     const cleaned = cleanTitle(entry.title);
     const result = matchTitleToShow(cleaned, weShows, { market: 'west-end' });
-    if (result && (result.show.category === 'west-end' || result.show.category === 'off-west-end')) {
+    if (result && result.confidence === 'high' && (result.show.category === 'west-end' || result.show.category === 'off-west-end')) {
       matched.push({ ...entry, show: result.show, confidence: result.confidence });
     }
   }
@@ -495,7 +495,7 @@ async function main() {
     const cleaned = cleanTitle(entry.title);
     const result = matchTitleToShow(cleaned, weShows, { market: 'west-end' });
 
-    if (!result || (result.show.category !== 'west-end' && result.show.category !== 'off-west-end')) {
+    if (!result || result.confidence !== 'high' || (result.show.category !== 'west-end' && result.show.category !== 'off-west-end')) {
       unmatched.push(entry.title);
       continue;
     }
