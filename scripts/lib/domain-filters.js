@@ -25,7 +25,9 @@ const TICKET_DOMAINS = new Set([
 
 // Aggregator/listing sites — not direct review sources
 const AGGREGATOR_DOMAINS = new Set([
-  'show-score.com', 'showscore.com', 'playbill.com',
+  'show-score.com', 'showscore.com',
+  // NOTE: playbill.com removed from blanket block — Playbill publishes original articles (/article/ paths).
+  // Listing pages (/production/, /show/) are caught by the path-based check below.
   // NOTE: broadwayworld.com NOT here — BWW publishes original reviews; roundups use isRoundupArticle flag
   'ibdb.com', 'broadway.com', 'broadway.org',
   // NOTE: newyorktheatreguide.com removed — NYTG publishes original reviews (e.g., Kyle Turner)
@@ -79,9 +81,15 @@ function isBlockedReviewUrl(url) {
       || matchesDomainSet(hostname, TICKET_DOMAINS)
       || matchesDomainSet(hostname, AGGREGATOR_DOMAINS)
       || matchesDomainSet(hostname, REFERENCE_DOMAINS)) return true;
+    // Path-based blocking for sites that publish BOTH reviews and listings
+    const lowerPath = parsed.pathname.toLowerCase();
+    // Playbill: /article/ paths are reviews/content (allow), /production/ and /show/ are listings (block)
+    if (matchesDomainSet(hostname, new Set(['playbill.com']))) {
+      if (lowerPath.startsWith('/article/')) return false; // allow articles
+      return true; // block everything else (listings, production pages)
+    }
     // Path-based ticket/listing detection — catches ticket pages on news sites
     // (e.g., standard.co.uk/go/london/mamma-mia-musical-theatre-tickets-in-london)
-    const lowerPath = parsed.pathname.toLowerCase();
     if (lowerPath.includes('/tickets/') || lowerPath.includes('/buy-tickets')
       || lowerPath.includes('/book-tickets') || lowerPath.includes('tickets-in-london')
       || lowerPath.includes('/going-out/tickets/')) return true;
