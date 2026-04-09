@@ -8,10 +8,12 @@ export function getBroadwayDuration(openingDate: string | null, suffix = 'on Bro
   const open = new Date(openingDate);
   const now = new Date();
   // Don't show "Just opened" on opening day itself — Broadway shows open
-  // in the evening, so the show hasn't actually opened until the next day
-  open.setHours(0, 0, 0, 0);
-  now.setHours(0, 0, 0, 0);
-  if (open >= now) return null;
+  // in the evening, so the show hasn't actually opened until the next day.
+  // Compare as UTC date strings to avoid timezone issues (new Date('YYYY-MM-DD')
+  // parses as UTC but setHours operates in local time, shifting the date).
+  const openDateStr = openingDate.slice(0, 10);
+  const nowDateStr = now.toISOString().slice(0, 10);
+  if (openDateStr >= nowDateStr) return null;
   const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
   if (months < 1) return 'Just opened';
   if (months < 12) return `${months} month${months === 1 ? '' : 's'} ${suffix}`;
