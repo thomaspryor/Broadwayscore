@@ -30,7 +30,9 @@ const REVIEWS_TO_RESET = [
 ];
 
 const FIELDS_TO_CLEAR = [
+  // Old field name (pre-linter fix) and new field name — clear both for safety
   'humanReviewScore', 'humanReviewNote', 'humanReviewPreviousScore',
+  'adjudicatedScore', 'adjudicationNote', 'adjudicationPreviousScore',
   'humanReviewAt', 'adjudicationAttempts', 'adjudicationHistory',
 ];
 
@@ -71,14 +73,14 @@ for (const review of REVIEWS_TO_RESET) {
 
   const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
-  if (!data.humanReviewScore) {
-    console.log(`  ⏭️  ${label} — no humanReviewScore to clear`);
+  const oldScore = data.humanReviewScore || data.adjudicatedScore;
+  if (!oldScore) {
+    console.log(`  ⏭️  ${label} — no adjudicated/human score to clear`);
     skippedCount++;
     continue;
   }
 
-  const oldScore = data.humanReviewScore;
-  console.log(`  🗑️  ${label} — clearing humanReviewScore: ${oldScore}`);
+  console.log(`  🗑️  ${label} — clearing score: ${oldScore}`);
 
   if (!DRY_RUN) {
     for (const field of FIELDS_TO_CLEAR) {
