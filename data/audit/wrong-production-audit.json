@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-09T02:56:08.439Z",
+  "timestamp": "2026-04-09T03:08:45.303Z",
   "stats": {
     "totalReviews": 34654,
-    "alreadyFlagged": 13628,
+    "alreadyFlagged": 13619,
     "dateGuardCatches": 61,
     "directorMismatch": 965,
-    "tvFilmSignals": 3426,
-    "londonSignals": 1111,
+    "tvFilmSignals": 3428,
+    "londonSignals": 1114,
     "offBroadwaySignals": 979,
     "yearMismatch": 72,
-    "noPublishDate": 7113
+    "noPublishDate": 6993
   },
   "findings": [
     {
@@ -43,7 +43,7 @@
       "showId": "13-2008",
       "file": "talkinbroadway--unknown.json",
       "score": 43,
-      "publishDate": null,
+      "publishDate": "2008-10-05",
       "url": "https://www.talkinbroadway.com/world/Thirteen.html",
       "findings": [
         {
@@ -211,7 +211,7 @@
       "showId": "700-sundays-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2013-11-13",
       "url": "https://www.hollywoodreporter.com/review/700-sundays-theater-review-655699",
       "findings": [
         {
@@ -340,6 +340,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "a-bronx-tale-the-musical-2016",
+      "file": "ew--elysa-gardner.json",
+      "score": 68,
+      "publishDate": "2016-12-01",
+      "url": "http://www.ew.com/article/2016/12/01/bronx-tale-ew-stage-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -519,6 +533,20 @@
     },
     {
       "showId": "a-christmas-carol-2019",
+      "file": "ew--ruth-kinane.json",
+      "score": 78,
+      "publishDate": "2019-11-20",
+      "url": "https://ew.com/theater-reviews/2019/11/20/christmas-carol-broadway-review-jack-thorne/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-2019",
       "file": "guardian--alexis-soloski.json",
       "score": 72,
       "publishDate": "November 21, 2019",
@@ -556,6 +584,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael arden\" from a-christmas-carol-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-2022",
+      "file": "nytimes--alexis-soloski.json",
+      "score": 72,
+      "publishDate": "2022-11-21",
+      "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -783,7 +835,7 @@
       "showId": "a-dolls-house-2023",
       "file": "ew--leah-greenblatt.json",
       "score": 55,
-      "publishDate": null,
+      "publishDate": "2023-03-09",
       "url": "https://ew.com/theater/theater-reviews/dolls-house-jessica-chastain-broadway-review/",
       "findings": [
         {
@@ -797,7 +849,7 @@
       "showId": "a-dolls-house-2023",
       "file": "guardian--gloria-oladipo.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2023-03-09",
       "url": "https://www.theguardian.com/stage/2023/mar/09/a-dolls-house-review-jessica-chastain-broadway",
       "findings": [
         {
@@ -811,7 +863,7 @@
       "showId": "a-dolls-house-2023",
       "file": "timeout--adam-feldman.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2023-03-09",
       "url": "https://www.timeout.com/newyork/theater/dolls-house-broadway-review-jessica-chastain-ibsen",
       "findings": [
         {
@@ -905,7 +957,7 @@
       "showId": "a-dolls-house-part-2-2017",
       "file": "latimes--charles-mcnulty.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2017-04-27",
       "url": "http://www.latimes.com/entertainment/arts/la-et-cm-dolls-house-part-2-review-20170427-story.html",
       "findings": [
         {
@@ -952,7 +1004,7 @@
       "showId": "a-dolls-house-part-2-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-04-27",
       "url": "https://www.theatermania.com/broadway/reviews/a-dolls-house-part-2_80874.html",
       "findings": [
         {
@@ -1166,7 +1218,7 @@
       "showId": "a-little-night-music-2009",
       "file": "talkinbroadway--unknown.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2009-12-13",
       "url": "https://www.talkinbroadway.com/world/LittleNightMusic.html",
       "findings": [
         {
@@ -1180,7 +1232,7 @@
       "showId": "a-little-night-music-2009",
       "file": "theatermania--unknown.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2009-12-13",
       "url": "https://www.theatermania.com/news/a-little-night-music_23441/",
       "findings": [
         {
@@ -1414,7 +1466,7 @@
       "showId": "a-raisin-in-the-sun-2014",
       "file": "washpost--peter-marks.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2014-04-03",
       "url": "http://www.washingtonpost.com/blogs/style-blog/wp/2014/04/03/denzel-washington-in-broadways-resonant-new-a-raisin-in-the-sun/",
       "findings": [
         {
@@ -1601,7 +1653,7 @@
       "showId": "a-strange-loop-2022",
       "file": "latimes--charles-mcnulty.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2022-04-26",
       "url": "https://www.latimes.com/entertainment-arts/story/2022-04-26/review-a-strange-loop-michael-r-jackson-musical-broadway",
       "findings": [
         {
@@ -1676,7 +1728,7 @@
       "showId": "a-strange-loop-2022",
       "file": "the-la-times--charles-mcnulty.json",
       "score": 93,
-      "publishDate": null,
+      "publishDate": "2022-04-26",
       "url": "https://www.latimes.com/entertainment-arts/story/2022-04-26/review-a-strange-loop-michael-r-jackson-musical-broadway",
       "findings": [
         {
@@ -1859,7 +1911,7 @@
       "showId": "a-time-to-kill-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2013-10-20",
       "url": "https://www.hollywoodreporter.com/review/a-time-kill-theater-review-649686",
       "findings": [
         {
@@ -1887,7 +1939,7 @@
       "showId": "a-time-to-kill-2013",
       "file": "usatoday--elysa-gardner.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2013-10-20",
       "url": "https://www.usatoday.com/story/life/theater/2013/10/20/broadway-review-a-time-to-kill/3124405/",
       "findings": [
         {
@@ -2117,7 +2169,7 @@
       "showId": "abba-voyage-off-west-end-2026",
       "file": "standard--david-smyth.json",
       "score": 93,
-      "publishDate": null,
+      "publishDate": "2022-05-27",
       "url": "https://www.standard.co.uk/culture/music/abba-voyage-concert-experience-review-london-arena-b1002718.html",
       "findings": [
         {
@@ -2131,7 +2183,7 @@
       "showId": "abba-voyage-off-west-end-2026",
       "file": "telegraph--neil-mccormick.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2022-05-26",
       "url": "https://www.telegraph.co.uk/music/what-to-listen-to/abba-voyage-review-mind-blowing-celebration-greatest-pop-music/",
       "findings": [
         {
@@ -2592,7 +2644,7 @@
       "showId": "aladdin-2014",
       "file": "chicagotribune--chris-jones.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2014-03-20",
       "url": "https://www.chicagotribune.com/entertainment/theater/ct-aladdin-broadway-review-column.html",
       "findings": [
         {
@@ -3012,7 +3064,7 @@
       "showId": "aladdin-2014",
       "file": "timeout--adam-feldman.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2014-03-20",
       "url": "http://www.timeout.com/newyork/theater/aladdin-1",
       "findings": [
         {
@@ -3268,7 +3320,7 @@
       "showId": "all-my-sons-2019",
       "file": "latimes--charles-mcnulty.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2019-04-22",
       "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-all-my-sons-review-20190422-story.html",
       "findings": [
         {
@@ -3917,7 +3969,7 @@
       "showId": "american-buffalo-2022",
       "file": "nytimes--jesse-green.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2022-04-14",
       "url": "https://www.nytimes.com/2022/04/14/theater/american-buffalo-review.html",
       "findings": [
         {
@@ -4043,7 +4095,7 @@
       "showId": "american-psycho-2016",
       "file": "chicagotribune--chris-jones.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2016-04-21",
       "url": "https://www.chicagotribune.com/entertainment/theater/broadway/sc-american-psycho-broadway-review-0421-20160421-column.html",
       "findings": [
         {
@@ -4071,7 +4123,7 @@
       "showId": "american-psycho-2016",
       "file": "latimes--charles-mcnulty.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2016-04-23",
       "url": "https://www.latimes.com/entertainment/arts/la-et-cm-american-psycho-review-20160423-column.html",
       "findings": [
         {
@@ -4232,20 +4284,6 @@
       ]
     },
     {
-      "showId": "an-act-of-god-2016",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 42,
-      "publishDate": null,
-      "url": "https://www.theatermania.com/broadway/reviews/an-act-of-god_73063.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
       "showId": "an-american-in-paris-2015",
       "file": "deadline--jeremy-gerard.json",
       "score": 69,
@@ -4305,7 +4343,7 @@
       "showId": "an-american-in-paris-2015",
       "file": "guardian--alexis-soloski.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2015-04-13",
       "url": "https://www.theguardian.com/stage/2015/apr/13/an-american-in-paris-christopher-wheeldon-new-york-review",
       "findings": [
         {
@@ -4547,7 +4585,7 @@
       "showId": "an-enemy-of-the-people-2024",
       "file": "telegraph--diane-snyder.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2024-03-19",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/an-enemy-of-the-people-new-york-succession-jeremy-strong/",
       "findings": [
         {
@@ -4636,7 +4674,7 @@
       "showId": "anastasia-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2017-04-25",
       "url": "https://deadline.com/2017/04/broadway-review-anastasia-1202076421/",
       "findings": [
         {
@@ -4814,7 +4852,7 @@
       "showId": "and-juliet-2022",
       "file": "talkinbroadway--howard-miller.json",
       "score": 74,
-      "publishDate": null,
+      "publishDate": "2022-11-17",
       "url": "https://www.talkinbroadway.com/page/world/AndJuliet.html",
       "findings": [
         {
@@ -5224,24 +5262,10 @@
       ]
     },
     {
-      "showId": "anything-goes-1987",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/review/joel-greys-anything-goes-review-176133",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"kathleen marshall\" from anything-goes-2011"
-        }
-      ]
-    },
-    {
       "showId": "appropriate-2023",
       "file": "chicagotribune--chris-jones.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2023-12-19",
       "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-appropriate-broadway-review-20231219-ccqq4wgb4vg35ovtaalmimvfuy-story.html",
       "findings": [
         {
@@ -62018,6 +62042,20 @@
     },
     {
       "showId": "a-christmas-carol-2019",
+      "file": "nytimes--ben-brantley.json",
+      "score": 82,
+      "publishDate": "2019-11-20",
+      "url": "https://www.nytimes.com/2019/11/20/theater/a-christmas-carol-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-2019",
       "file": "nytimes--jesse-darling.json",
       "score": null,
       "publishDate": "December 6, 2019",
@@ -62514,6 +62552,20 @@
     },
     {
       "showId": "a-view-from-the-bridge-2015",
+      "file": "ny1--roma-torre.json",
+      "score": 82,
+      "publishDate": "2015-11-12",
+      "url": "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2015/11/12/theater-review---a-view-from-the-bridge-.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 45,
       "publishDate": "November 15, 2015",
@@ -62568,7 +62620,7 @@
       "showId": "a-view-from-the-bridge-2015",
       "file": "theatermania--zachary-stewart.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2015-11-12",
       "url": "https://www.theatermania.com/broadway/reviews/a-view-from-the-bridge_74921.html",
       "findings": [
         {
@@ -62988,7 +63040,7 @@
       "showId": "all-my-sons-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 81,
-      "publishDate": null,
+      "publishDate": "2025-11-21",
       "url": "https://www.whatsonstage.com/news/all-my-sons-west-end-review-bryan-cranston-in-an-explosive-production_1703544/",
       "findings": [
         {
@@ -63082,7 +63134,7 @@
       "showId": "american-psycho-2016",
       "file": "ew--melissa-rose-bernardo.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2016-04-21",
       "url": "http://www.ew.com/article/2016/04/21/american-psycho-broadway-review",
       "findings": [
         {
@@ -63250,7 +63302,7 @@
       "showId": "an-enemy-of-the-people-2012",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2012-09-27",
       "url": "https://www.hollywoodreporter.com/lifestyle/style/an-enemy-of-the-people-theater-review-374734/",
       "findings": [
         {
@@ -63334,7 +63386,7 @@
       "showId": "and-juliet-2022",
       "file": "nytg--joe-dziemianowicz.json",
       "score": 75,
-      "publishDate": null,
+      "publishDate": "2022-11-18",
       "url": "https://www.newyorktheatreguide.com/reviews/and-juliet-broadway-review",
       "findings": [
         {
@@ -63348,7 +63400,7 @@
       "showId": "and-juliet-2022",
       "file": "theatermania--hayley-levitt.json",
       "score": 60,
-      "publishDate": null,
+      "publishDate": "2022-11-17",
       "url": "https://www.theatermania.com/broadway/news/review-and-juliet-musical-broadway_94560.html",
       "findings": [
         {
@@ -63460,7 +63512,7 @@
       "showId": "angels-in-america-2018",
       "file": "latimes--charles-mcnulty.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2018-03-27",
       "url": "https://www.latimes.com/entertainment/arts/la-et-cm-angels-in-america-20180327-story.html",
       "findings": [
         {
@@ -63530,7 +63582,7 @@
       "showId": "angels-in-america-2018",
       "file": "theatermania--zachary-stewart.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "2018-03-25",
       "url": "https://www.theatermania.com/broadway/reviews/the-prophecy-of-tony-kushner-returns-to-broadway-w_84581.html",
       "findings": [
         {
@@ -63642,7 +63694,7 @@
       "showId": "appropriate-2023",
       "file": "whatsonstage--zachary-stewart.json",
       "score": 55,
-      "publishDate": null,
+      "publishDate": "2023-12-21",
       "url": "https://www.whatsonstage.com/news/appropriate-on-broadway-review-sarah-paulson-and-elle-fanning-star-in-branden-jacobs-jenkins-jaw-dropping-drama_1559990/",
       "findings": [
         {
@@ -63726,7 +63778,7 @@
       "showId": "arcadia-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 84,
-      "publishDate": null,
+      "publishDate": "2026-02-06",
       "url": "https://www.standard.co.uk/culture/theatre/arcadia-at-the-old-vic-review-tom-stoppard-b1269701.html",
       "findings": [
         {
