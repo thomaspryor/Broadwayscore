@@ -4640,6 +4640,40 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     data.isFullReview = data.contentTier === 'complete';
   }
 
+  // Paywall truncation override: proxy scrapers (BD, SB) often return truncated text
+  // from paywalled outlets that passes generic quality thresholds but is actually
+  // missing 30-70% of the review. For known long-form paywalled outlets, enforce
+  // minimum char counts when text came from a proxy source.
+  if (data.contentTier === 'complete' && data.fullText && data.url) {
+    // Conservative thresholds: below these, the review is almost certainly truncated.
+    // NYT median is ~6200 chars; 3000 catches clearly truncated without false-flagging
+    // legitimate capsule reviews. Only applies to proxy-scraped text.
+    const PAYWALL_MIN_CHARS = {
+      'nytimes.com': 3000,
+      'newyorker.com': 3000,
+      'wsj.com': 2500,
+      'washingtonpost.com': 2500,
+      'ft.com': 2000,
+      'vulture.com': 2500,
+      'nymag.com': 2500,
+      'bloomberg.com': 2000,
+    };
+    const PROXY_METHODS = new Set(['brightdata', 'scrapingbee', 'scrapingbee_premium', 'archive']);
+    try {
+      const urlHost = new URL(data.url).hostname.replace(/^www\./, '');
+      const minChars = PAYWALL_MIN_CHARS[urlHost];
+      const isProxy = PROXY_METHODS.has(data.sourceMethod);
+      if (minChars && isProxy && data.fullText.length < minChars) {
+        data.contentTier = 'truncated';
+        data.tierReason = `Paywall truncation: ${data.fullText.length} chars < ${minChars} min for ${urlHost} (source: ${data.sourceMethod})`;
+        data.textStatus = 'truncated';
+        data.textQuality = 'truncated';
+        data.isFullReview = false;
+        console.log(`    ⚠ Paywall truncation override: ${urlHost} ${data.fullText.length} chars < ${minChars} (${data.sourceMethod})`);
+      }
+    } catch (e) { /* invalid URL — skip */ }
+  }
+
   // Set incompleteReason if content is not complete
   if (data.contentTier && data.contentTier !== 'complete') {
     const reasonResult = classifyIncompleteReason(data, null);

@@ -1598,13 +1598,15 @@ showDirs.forEach(showId => {
         stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
       }
       // Nuclear guard: if manual clear is set, force wrongProduction=false regardless
-      // of what earlier passes may have done in memory
-      if (data.wrongProductionManualClear || data.wrongProductionOverride) {
+      // of what earlier passes may have done in memory.
+      // humanReviewedWrongProduction===false means "human verified this IS the correct production"
+      // — equivalent to wrongProductionManualClear but used by opening-night correction sessions.
+      if (data.wrongProductionManualClear || data.wrongProductionOverride || data.humanReviewedWrongProduction === false) {
         data.wrongProduction = false;
       }
       if (data.wrongProduction === true) {
-        if (data.wrongProductionManualClear) {
-          console.log(`  [NUCLEAR GUARD FAILURE] ${showId}/${file}: wrongProduction=true despite wrongProductionManualClear=true — FORCING false`);
+        if (data.wrongProductionManualClear || data.humanReviewedWrongProduction === false) {
+          console.log(`  [NUCLEAR GUARD FAILURE] ${showId}/${file}: wrongProduction=true despite manual clear — FORCING false`);
           data.wrongProduction = false;
         } else {
           stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
