@@ -1932,6 +1932,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const existingKeys = new Set(reviews.map(r =>
           `${(r.outletId || normalizeOutlet(r.outlet)).toLowerCase()}|${normalizeCritic(r.criticName)}`
         ));
+        // Also track outlet-only keys for Method 1 entries with Unknown critic.
+        // Method 1 (JSON-LD) often has Unknown critic; Method 2 (text) parses the real name.
+        // Without this, NYSR|unknown and NYSR|frank-scheck both pass → duplicate in reviews.json.
+        const existingOutletOnly = new Set(
+          reviews.filter(r => normalizeCritic(r.criticName) === 'unknown')
+            .map(r => (r.outletId || normalizeOutlet(r.outlet)).toLowerCase())
+        );
 
         // Find where reviews start
         const reviewStart = articleBody.indexOf("Let's see what the critics had to say");
@@ -1970,6 +1977,24 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           // Dedup against Method 1 results
           const dedupKey = `${outletId.toLowerCase()}|${normalizeCritic(criticName)}`;
           if (existingKeys.has(dedupKey)) continue;
+
+          // If Method 1 found this outlet with Unknown critic, upgrade it with the real name
+          // instead of adding a duplicate entry
+          if (existingOutletOnly.has(outletId.toLowerCase())) {
+            const existing = reviews.find(r =>
+              (r.outletId || normalizeOutlet(r.outlet)).toLowerCase() === outletId.toLowerCase()
+              && normalizeCritic(r.criticName) === 'unknown'
+            );
+            if (existing) {
+              existing.criticName = criticName;
+              if (quote && (!existing.bwwExcerpt || existing.bwwExcerpt.length < quote.length)) {
+                existing.bwwExcerpt = quote.substring(0, 300) + (quote.length > 300 ? '...' : '');
+              }
+              existingOutletOnly.delete(outletId.toLowerCase());
+              continue;
+            }
+          }
+
           existingKeys.add(dedupKey);
 
           supplementAdded++;
