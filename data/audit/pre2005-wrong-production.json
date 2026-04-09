@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-09T10:30:18.759Z",
+    "generatedAt": "2026-04-09T10:55:48.521Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 152,
-    "highConfidence": 47,
-    "mediumConfidence": 105,
+    "totalFlagged": 155,
+    "highConfidence": 49,
+    "mediumConfidence": 106,
     "lowConfidence": 0,
-    "reassignable": 86
+    "reassignable": 88
   },
   "results": [
     {
@@ -1324,6 +1324,21 @@
       "textSnippet": "The good news on the Broadway revival of “Six Degrees of Separation” is great news. Twenty-seven years after the debut of John Guare’s comedy of manners and mores in Manhattan, “Six Degrees” retains i"
     },
     {
+      "showId": "the-big-love-1991",
+      "showTitle": "The Big Love",
+      "showYear": 1991,
+      "file": "nytimes--unknown.json",
+      "outlet": "The New York Times",
+      "criticName": "Unknown",
+      "publishDate": "February 23, 2015",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2015 is 24 years after original opening 1991"
+      ],
+      "textSnippet": "\"For the first time in my life, I was absolutely speechless,\" says Florence Aadland, the Hollywood mother played by Tracey Ullman in \"The Big Love,\" as she recalls her 15-year-old daughter's fateful n"
+    },
+    {
       "showId": "miss-saigon-1991",
       "showTitle": "Miss Saigon",
       "showYear": 1991,
@@ -1730,6 +1745,21 @@
         "publishDate 2012 matches revival death-of-a-salesman-2012 (opened 2012)"
       ],
       "textSnippet": " The still-vibrant, still-powerful story of Arthur Miller's Willy Loman returns to a nation now emerging from a Great Recession, awash with consumerism, disgusted by greed and where audience members a"
+    },
+    {
+      "showId": "pacific-overtures-1976",
+      "showTitle": "Pacific Overtures",
+      "showYear": 1976,
+      "file": "nytimes--unknown.json",
+      "outlet": "The New York Times",
+      "criticName": "Unknown",
+      "publishDate": "December 3, 2004",
+      "confidence": "high",
+      "suggestedShowId": "pacific-overtures-2004",
+      "signals": [
+        "publishDate 2004 matches revival pacific-overtures-2004 (opened 2004)"
+      ],
+      "textSnippet": "he translation of a culture -- and a translation of a translation at that -- this is only the beginning of the beguiling and sometimes bewildering\n complexities of the new musical \"Pacific Overtures,\""
     },
     {
       "showId": "that-championship-season-1972",
@@ -2298,6 +2328,21 @@
         "publishDate 2012 matches revival glengarry-glen-ross-2012 (opened 2012)"
       ],
       "textSnippet": "David Mamet-bashing is so rife right now in New York that it is reassuring to be reminded why he presents such a large target in the first place: his masterpiece, Glengarry Glen Ross. Even in an only "
+    },
+    {
+      "showId": "glengarry-glen-ross-1984",
+      "showTitle": "Glengarry Glen Ross",
+      "showYear": 1984,
+      "file": "nytimes--unknown.json",
+      "outlet": "The New York Times",
+      "criticName": "Unknown",
+      "publishDate": "December 9, 2012",
+      "confidence": "high",
+      "suggestedShowId": "glengarry-glen-ross-2012",
+      "signals": [
+        "publishDate 2012 matches revival glengarry-glen-ross-2012 (opened 2012)"
+      ],
+      "textSnippet": "THE only mellifluous words in David Mamet's new play are those of its title - ''Glengarry Glen Ross.'' In this scalding comedy about small-time, cutthroat real-estate salesmen, most of the language is"
     },
     {
       "showId": "sunday-in-the-park-with-george-1984",
