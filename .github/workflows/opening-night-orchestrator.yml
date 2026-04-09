@@ -134,6 +134,9 @@ jobs:
           SHOWS=$(node -e "
             const shows = require('./data/shows.json').shows;
             const now = new Date();
+            // Look 6 hours ahead so the 23:00 UTC cron (which may fire before
+            // midnight) still discovers shows opening the next calendar day.
+            const lookAhead = new Date(now.getTime() + 6 * 60 * 60 * 1000);
             const cutoff = new Date(now);
             // WE reviews publish 12-48h after press night; Broadway same evening
             const isWE = '$MARKET' === 'west-end';
@@ -145,11 +148,11 @@ jobs:
             const TRUSTED_SOURCES = new Set(['theatremonkey', 'playbill', 'ibdb', 'manual']);
             const opened = shows.filter(s => {
               if (!s.openingDate) return false;
-              // Include 'previews' shows whose opening date has passed — update-show-status
-              // runs at 8 AM UTC but the orchestrator runs at 10 PM UTC, so shows may still
-              // be in 'previews' on their opening night.
+              // Include 'previews' shows whose opening date has passed or is within
+              // 6 hours — the 23:00 UTC cron fires before midnight, so we need to
+              // catch shows opening "tomorrow" in UTC terms.
               const validStatus = s.status === 'open' || s.status === 'upcoming' ||
-                (s.status === 'previews' && s.openingDate && new Date(s.openingDate) <= now);
+                (s.status === 'previews' && s.openingDate && new Date(s.openingDate) <= lookAhead);
               if (!validStatus) return false;
               const cat = s.category || 'broadway';
               // Market filter
@@ -162,7 +165,7 @@ jobs:
               }
               const d = new Date(s.openingDate);
               d.setHours(0,0,0,0);
-              return d >= cutoff && d <= now;
+              return d >= cutoff && d <= lookAhead;
             });
             if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
           ")
@@ -345,6 +348,9 @@ jobs:
               POLLER_ARGS="$POLLER_ARGS -f market=$MARKET"
             fi
 
+            # Record the newest poller run ID BEFORE dispatch so we can detect the new one
+            PRE_DISPATCH_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+
             # Use comma-separated shows for single-show dispatch, or let poller auto-discover
             IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
             if [ ${#SHOW_ARRAY[@]} -eq 1 ]; then
@@ -363,8 +369,6 @@ jobs:
             fi
 
             # Wait for the dispatched poller run to appear and complete
-            # Record the newest poller run ID BEFORE dispatch registered
-            PRE_DISPATCH_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
             echo "Pre-dispatch latest poller run: ${PRE_DISPATCH_ID:-none}"
             echo "Waiting for new poller run to appear..."
 

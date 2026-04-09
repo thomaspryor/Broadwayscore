@@ -1605,7 +1605,7 @@ showDirs.forEach(showId => {
         data.wrongProduction = false;
       }
       if (data.wrongProduction === true) {
-        if (data.wrongProductionManualClear || data.humanReviewedWrongProduction === false) {
+        if (data.wrongProductionManualClear || data.wrongProductionOverride || data.humanReviewedWrongProduction === false) {
           console.log(`  [NUCLEAR GUARD FAILURE] ${showId}/${file}: wrongProduction=true despite manual clear — FORCING false`);
           data.wrongProduction = false;
         } else {
