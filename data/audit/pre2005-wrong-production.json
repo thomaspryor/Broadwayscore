@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-09T04:10:52.827Z",
+    "generatedAt": "2026-04-09T04:25:29.203Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 149,
-    "highConfidence": 43,
-    "mediumConfidence": 106,
+    "totalFlagged": 151,
+    "highConfidence": 46,
+    "mediumConfidence": 105,
     "lowConfidence": 0,
-    "reassignable": 83
+    "reassignable": 85
   },
   "results": [
     {
@@ -1096,6 +1096,21 @@
       "textSnippet": "Tickets\n\nCast\n\nPhotos\n\nVideos\n\n \n\nInfo\n\nTravel\n\nMarley is still dead to begin with, and near the end we're still reminded of Tiny Tim's observation, \"God bless us, everyone!\" But in between... Let's j"
     },
     {
+      "showId": "a-christmas-carol-2001",
+      "showTitle": "A Christmas Carol",
+      "showYear": 2001,
+      "file": "dailybeast--tim-teeman.json",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "publishDate": "2022-11-22",
+      "confidence": "high",
+      "suggestedShowId": "a-christmas-carol-2022",
+      "signals": [
+        "publishDate 2022 matches revival a-christmas-carol-2022 (opened 2022)"
+      ],
+      "textSnippet": "Jefferson Mays narrates and plays every single character in “A Christmas Carol” on Broadway, with thrilling visual trickery and stage surprises.\n\nA Christmas Carol LiveIt’s that time of year again, wh"
+    },
+    {
       "showId": "oklahoma-2002",
       "showTitle": "Oklahoma!",
       "showYear": 2002,
@@ -1363,21 +1378,6 @@
       "showId": "broadway-1987",
       "showTitle": "Broadway",
       "showYear": 1987,
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "criticName": "Robert Hofler",
-      "publishDate": "2024-04-23",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2024 is 37 years after original opening 1987"
-      ],
-      "textSnippet": "There are way too many dead parents in Jonathan A. Abrams’ book about a Sammy Glick-like hustler named Bobby (Corey Cott). He’s the rocker who gives up his life on the stage so he can make deals selli"
-    },
-    {
-      "showId": "broadway-1987",
-      "showTitle": "Broadway",
-      "showYear": 1987,
       "file": "vulture--jackson-mchenry.json",
       "outlet": "Vulture",
       "criticName": "Jackson McHenry",
@@ -1446,10 +1446,11 @@
       "file": "dailybeast--tim-teeman.json",
       "outlet": "The Daily Beast",
       "criticName": "Tim Teeman",
-      "publishDate": null,
-      "confidence": "medium",
+      "publishDate": "2025-11-17",
+      "confidence": "high",
       "suggestedShowId": "chess-2025",
       "signals": [
+        "publishDate 2025 matches revival chess-2025 (opened 2025)",
         "year 2026 in text matches revival chess-2025"
       ],
       "textSnippet": "The received wisdom is that the book has always been the problem with Chess, if only—as so many have attempted—the book could be fixed…\n\nBut, as the much-anticipated revival of Sir Tim Rice and Abba’s"
@@ -1699,6 +1700,21 @@
         "year 2014 in text matches revival on-the-twentieth-century-2015"
       ],
       "textSnippet": "At the top of Act II in On the Twentieth Century, four tap-dancing redcap Pullman porters work overtime to funnel syncopated energy into the facile analogy of “Life is Like a Train.” But this strained"
+    },
+    {
+      "showId": "death-of-a-salesman-1975",
+      "showTitle": "Death of a Salesman",
+      "showYear": 1975,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": "2012-03-15",
+      "confidence": "high",
+      "suggestedShowId": "death-of-a-salesman-2012",
+      "signals": [
+        "publishDate 2012 matches revival death-of-a-salesman-2012 (opened 2012)"
+      ],
+      "textSnippet": " The still-vibrant, still-powerful story of Arthur Miller's Willy Loman returns to a nation now emerging from a Great Recession, awash with consumerism, disgusted by greed and where audience members a"
     },
     {
       "showId": "that-championship-season-1972",
@@ -2282,6 +2298,21 @@
         "revival text signals: revival, back on broadway"
       ],
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
+    },
+    {
+      "showId": "anna-christie-1977",
+      "showTitle": "Anna Christie",
+      "showYear": 1977,
+      "file": "dailybeast--tim-teeman.json",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "publishDate": "2025-12-14",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2025 is 48 years after original opening 1977"
+      ],
+      "textSnippet": "Everything we cannot stop loving, hating, and thinking about this week in pop culture.\n\nSign Up\n \n \n \n \n By clicking \"Sign Up\" you agree to our\n \n Terms of Use\n \n and\n \n Privacy Policy\n \n .\n\n“By Jimin"
     },
     {
       "showId": "annie-1977",
