@@ -1,7 +1,698 @@
 {
-  "generatedAt": "2026-04-08T23:59:51.973Z",
+  "generatedAt": "2026-04-09T00:15:40.004Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "death-of-a-salesman-2026",
+      "title": "Death of a Salesman",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-04-09",
+      "status": "previews",
+      "slug": "death-of-a-salesman",
+      "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/12 total",
+          "T1:0/3",
+          "T2:0/3",
+          "hi-conf:0/8"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Vulture",
+          "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Hollywood Reporter",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Washington Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Los Angeles Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Broadway News",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "Entertainment Weekly",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
+          "isDualMarket": false
+        },
+        {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
+        {
+          "name": "amNewYork",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Stage Review",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Tribune",
+          "isDualMarket": false
+        },
+        {
+          "name": "USA Today",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Daily News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Newsday",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheWrap",
+          "isDualMarket": false
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theater",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatrely",
+          "isDualMarket": false
+        },
+        {
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Billboard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Village Voice",
+          "isDualMarket": false
+        },
+        {
+          "name": "IndieWire",
+          "isDualMarket": false
+        },
+        {
+          "name": "NorthJersey.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "CurtainUp",
+          "isDualMarket": false
+        },
+        {
+          "name": "NY1",
+          "isDualMarket": false
+        },
+        {
+          "name": "NJ.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "HuffPost",
+          "isDualMarket": false
+        },
+        {
+          "name": "NBC New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time",
+          "isDualMarket": false
+        },
+        {
+          "name": "Backstage",
+          "isDualMarket": false
+        },
+        {
+          "name": "Bloomberg",
+          "isDualMarket": false
+        },
+        {
+          "name": "WNYC",
+          "isDualMarket": false
+        },
+        {
+          "name": "Rolling Stone",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Philadelphia Inquirer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Vox",
+          "isDualMarket": false
+        },
+        {
+          "name": "Parade",
+          "isDualMarket": false
+        },
+        {
+          "name": "People",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slate",
+          "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "CBS News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Sun-Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "lost-in-del-valle-off-broadway-2026",
+      "title": "Lost in Del Valle",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-09",
+      "status": "previews",
+      "slug": "lost-in-del-valle-off-broadway",
+      "thumbnail": "/images/shows/lost-in-del-valle-off-broadway-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/12 total",
+          "T1:0/3",
+          "T2:0/3",
+          "hi-conf:0/8"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Vulture",
+          "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Hollywood Reporter",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Washington Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Los Angeles Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Broadway News",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "Entertainment Weekly",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
+          "isDualMarket": false
+        },
+        {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
+        {
+          "name": "amNewYork",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Stage Review",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Tribune",
+          "isDualMarket": false
+        },
+        {
+          "name": "USA Today",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Daily News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Newsday",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheWrap",
+          "isDualMarket": false
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theater",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatrely",
+          "isDualMarket": false
+        },
+        {
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Billboard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Village Voice",
+          "isDualMarket": false
+        },
+        {
+          "name": "IndieWire",
+          "isDualMarket": false
+        },
+        {
+          "name": "NorthJersey.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "CurtainUp",
+          "isDualMarket": false
+        },
+        {
+          "name": "NY1",
+          "isDualMarket": false
+        },
+        {
+          "name": "NJ.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "HuffPost",
+          "isDualMarket": false
+        },
+        {
+          "name": "NBC New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time",
+          "isDualMarket": false
+        },
+        {
+          "name": "Backstage",
+          "isDualMarket": false
+        },
+        {
+          "name": "Bloomberg",
+          "isDualMarket": false
+        },
+        {
+          "name": "WNYC",
+          "isDualMarket": false
+        },
+        {
+          "name": "Rolling Stone",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Philadelphia Inquirer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Vox",
+          "isDualMarket": false
+        },
+        {
+          "name": "Parade",
+          "isDualMarket": false
+        },
+        {
+          "name": "People",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slate",
+          "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "CBS News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Sun-Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "flyby-off-west-end-2026",
+      "title": "FLYBY",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-04-09",
+      "status": "upcoming",
+      "slug": "flyby-off-west-end",
+      "thumbnail": "/images/shows/flyby-off-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "cats-the-jellicle-ball-2026",
       "title": "CATS: The Jellicle Ball",
@@ -1049,25 +1740,25 @@
       "status": "open",
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
-      "siteScore": 68.27,
-      "liveScore": 68,
-      "scoreDrift": -0.269999999999996,
-      "total": 6,
-      "t1": 1,
+      "siteScore": 71.1,
+      "liveScore": 71,
+      "scoreDrift": -0.09999999999999432,
+      "total": 7,
+      "t1": 2,
       "t2": 1,
       "t3": 4,
-      "positive": 1,
+      "positive": 2,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
-          "T1:1/3",
+          "7/8 total",
+          "T1:2/3",
           "T2:1/2",
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1220,6 +1911,18 @@
           "t2": 1,
           "t3": 4,
           "p": 1,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-09T00:15:40.004Z",
+          "rc": 7,
+          "s": 71.1,
+          "t1": 2,
+          "t2": 1,
+          "t3": 4,
+          "p": 2,
           "m": 5,
           "n": 0,
           "bc": "waiting"
@@ -2146,109 +2849,6 @@
   ],
   "upcoming": [
     {
-      "id": "death-of-a-salesman-2026",
-      "title": "Death of a Salesman",
-      "market": "broadway",
-      "category": "broadway",
-      "type": "play",
-      "openingDate": "2026-04-09",
-      "status": "previews",
-      "slug": "death-of-a-salesman",
-      "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": true,
-          "detail": "DTLI slug: death-of-a-salesman"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Death-of-a-Salesman-Opens-on-Broadway-20260409",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/DeathOfASalesman2026.html",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
-    {
-      "id": "lost-in-del-valle-off-broadway-2026",
-      "title": "Lost in Del Valle",
-      "market": "broadway",
-      "category": "off-broadway",
-      "type": "play",
-      "openingDate": "2026-04-09",
-      "status": "previews",
-      "slug": "lost-in-del-valle-off-broadway",
-      "thumbnail": "/images/shows/lost-in-del-valle-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Lost-in-Del-Valle-Opens-on-Broadway-20260409",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/LostInDelValle2026.html",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
-    {
-      "id": "flyby-off-west-end-2026",
-      "title": "FLYBY",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "musical",
-      "openingDate": "2026-04-09",
-      "status": "upcoming",
-      "slug": "flyby-off-west-end",
-      "thumbnail": "/images/shows/flyby-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
       "id": "titanique-2026",
       "title": "Titanique",
       "market": "broadway",
@@ -2258,7 +2858,7 @@
       "status": "previews",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2297,7 +2897,7 @@
       "status": "upcoming",
       "slug": "myras-story-west-end",
       "thumbnail": "/images/shows/myras-story-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2322,7 +2922,7 @@
       "status": "upcoming",
       "slug": "yokos-husbands-killers-japanese-wife-gloria-off-broadway",
       "thumbnail": "/images/shows/yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2361,7 +2961,7 @@
       "status": "previews",
       "slug": "rheology-off-broadway",
       "thumbnail": "/images/shows/rheology-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2400,7 +3000,7 @@
       "status": "upcoming",
       "slug": "what-happened-was-off-broadway",
       "thumbnail": "/images/shows/what-happened-was-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2439,7 +3039,7 @@
       "status": "previews",
       "slug": "the-fear-of-13",
       "thumbnail": "/images/shows/the-fear-of-13-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2478,7 +3078,7 @@
       "status": "previews",
       "slug": "the-receptionist-off-broadway",
       "thumbnail": "/images/shows/the-receptionist-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2517,7 +3117,7 @@
       "status": "previews",
       "slug": "kenrex-off-broadway",
       "thumbnail": "/images/shows/kenrex-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2556,6 +3156,70 @@
       "status": "previews",
       "slug": "one-flew-over-the-cuckoos-nest-west-end",
       "thumbnail": "/images/shows/one-flew-over-the-cuckoos-nest-west-end-2026/thumbnail.webp",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "proof-2026",
+      "title": "Proof",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-04-16",
+      "status": "previews",
+      "slug": "proof",
+      "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Proof-Opens-on-Broadway-20260416",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/Proof2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "musical",
+      "openingDate": "2026-04-16",
+      "status": "previews",
+      "slug": "avenue-q-west-end",
+      "thumbnail": "/images/shows/avenue-q-west-end-2026/thumbnail.webp",
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
@@ -2568,6 +3232,109 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "please-please-me-west-end-2026",
+      "title": "Please Please Me",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-04-16",
+      "status": "upcoming",
+      "slug": "please-please-me-west-end",
+      "thumbnail": "/images/shows/please-please-me-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
+      "title": "A.I.M by Kyle Abraham: Cassette Vol. 1",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "special",
+      "openingDate": "2026-04-16",
+      "status": "upcoming",
+      "slug": "aim-by-kyle-abraham-cassette-vol-1-off-broadway",
+      "thumbnail": "/images/shows/aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-AIM-by-Kyle-Abraham-Cassette-Vol-1-Opens-on-Broadway-20260416",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/AimByKyleAbrahamCassetteVol12026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "milk-and-honey-amt-theater-off-broadway-2026",
+      "title": "Milk and Honey (AMT Theater)",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-16",
+      "status": "previews",
+      "slug": "milk-and-honey-amt-theater-off-broadway",
+      "thumbnail": "/images/shows/milk-and-honey-amt-theater-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Milk-and-Honey-AMT-Theater-Opens-on-Broadway-20260416",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/MilkAndHoneyAmtTheater2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     }
