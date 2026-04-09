@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-09T07:00:37.992Z",
+  "generatedAt": "2026-04-09T07:28:05.068Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -706,17 +706,17 @@
       "siteScore": 87.05,
       "liveScore": 87,
       "scoreDrift": -0.04999999999999716,
-      "total": 23,
+      "total": 25,
       "t1": 5,
-      "t2": 13,
+      "t2": 15,
       "t3": 5,
-      "positive": 21,
+      "positive": 23,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 23,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1181,6 +1181,18 @@
           "t2": 13,
           "t3": 5,
           "p": 21,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-09T07:28:05.068Z",
+          "rc": 25,
+          "s": 87.05,
+          "t1": 5,
+          "t2": 15,
+          "t3": 5,
+          "p": 23,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -1940,22 +1952,20 @@
       "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "siteScore": 77.15,
+      "siteScore": 77.21,
       "liveScore": 77,
-      "scoreDrift": -0.15000000000000568,
-      "total": 8,
-      "t1": 2,
-      "t2": 4,
-      "t3": 2,
-      "positive": 7,
-      "mixed": 1,
+      "scoreDrift": -0.20999999999999375,
+      "total": 15,
+      "t1": 3,
+      "t2": 5,
+      "t3": 7,
+      "positive": 12,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 7,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1965,7 +1975,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -2165,6 +2175,18 @@
           "t3": 2,
           "p": 7,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-09T07:28:05.068Z",
+          "rc": 15,
+          "s": 77.21,
+          "t1": 3,
+          "t2": 5,
+          "t3": 7,
+          "p": 12,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
