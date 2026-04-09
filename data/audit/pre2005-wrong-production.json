@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-09T01:22:25.440Z",
+    "generatedAt": "2026-04-09T02:51:16.715Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 157,
-    "highConfidence": 46,
-    "mediumConfidence": 111,
+    "totalFlagged": 154,
+    "highConfidence": 40,
+    "mediumConfidence": 114,
     "lowConfidence": 0,
-    "reassignable": 88
+    "reassignable": 85
   },
   "results": [
     {
@@ -991,12 +991,13 @@
       "file": "newnownextcom--michael-musto.json",
       "outlet": "NewNowNext",
       "criticName": "Michael Musto",
-      "publishDate": "2002-08-08",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": "frankie-and-johnny-in-the-clair-de-lune-2019",
       "signals": [
         "revival text signals: revival, revived",
-        "year 2019 in text matches revival frankie-and-johnny-in-the-clair-de-lune-2019"
+        "year 2019 in text matches revival frankie-and-johnny-in-the-clair-de-lune-2019",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Just take a cab to Penn Station, then a train to Babylon, then switch to another train to Sayville, then take the shuttle van to the ferry landing, then board a boat to either the Pines or Cherry Grov"
     },
@@ -1007,11 +1008,12 @@
       "file": "talkinbroadway--unknown.json",
       "outlet": "Talkin' Broadway",
       "criticName": "Unknown",
-      "publishDate": "2002-08-08",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "revival text signals: new production, this production"
+        "revival text signals: new production, this production",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Talkin' Broadway Review: Frankie and Johnny In The Clair De Lune\n\nTheatre Review by Matthew Murray - August 8, 2002\n\nFrankie and Johnny In The Clair De Lune by Terrence McNally. Directed by Joe Mantel"
     },
@@ -1115,7 +1117,7 @@
       "file": "curtainup--elyse-sommer.json",
       "outlet": "CurtainUp",
       "criticName": "Elyse Sommer",
-      "publishDate": "2001-09-20",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
@@ -1162,14 +1164,15 @@
       "file": "nypost--johnny-oleksinski.json",
       "outlet": "New York Post",
       "criticName": "Johnny Oleksinski",
-      "publishDate": "1997-11-09",
+      "publishDate": null,
       "confidence": "high",
       "suggestedShowId": "into-the-woods-2022",
       "signals": [
         "revival cast/director match for into-the-woods-2022: Sara Bareilles, Brian d'Arcy James, St. James Theatre",
         "revival text signals: revival, new revival",
         "year 1986 in text matches revival into-the-woods-1987",
-        "year 1987 in text matches revival into-the-woods-1987"
+        "year 1987 in text matches revival into-the-woods-1987",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Thanks for contacting us. Weve received your submission.\n\nSara Bareilles and Brian D'Arcy James play the Baker's Wife and the Baker in \"Into The Woods\" on Broadway. \n Evan Zimmerman \n \n \n \n \n \n \n\nThe "
     },
@@ -1180,7 +1183,7 @@
       "file": "nysr--david-finkle.json",
       "outlet": "New York Stage Review",
       "criticName": "David Finkle",
-      "publishDate": "1997-11-09",
+      "publishDate": null,
       "confidence": "high",
       "suggestedShowId": "into-the-woods-2022",
       "signals": [
@@ -1278,11 +1281,12 @@
       "file": "variety--jeremy-gerard.json",
       "outlet": "Variety",
       "criticName": "Jeremy Gerard",
-      "publishDate": "1995-03-23",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "revival text signals: revival, this production"
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
     },
@@ -1423,13 +1427,14 @@
       "file": "theatermania--hayley-levitt.json",
       "outlet": "TheaterMania",
       "criticName": "Hayley Levitt",
-      "publishDate": "1987-11-05",
+      "publishDate": null,
       "confidence": "high",
       "suggestedShowId": "into-the-woods-2022",
       "signals": [
         "revival cast/director match for into-the-woods-2022: Sara Bareilles, Brian d'Arcy James, St. James Theatre, Lear deBessonet, director: Lear deBessonet",
         "revival text signals: revival, this production",
-        "year 2026 in text matches revival into-the-woods-west-end-2025"
+        "year 2026 in text matches revival into-the-woods-west-end-2025",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Lear deBessonet’s concert production of Stephen Sondheim and James Lapine’s fairytale musical has transferred to Broadway’s St. James Theatre. Who would have thought back in 1987 that in 35 years we'd"
     },
@@ -1440,7 +1445,7 @@
       "file": "washpost--peter-marks.json",
       "outlet": "The Washington Post",
       "criticName": "Peter Marks",
-      "publishDate": "1987-11-05",
+      "publishDate": null,
       "confidence": "high",
       "suggestedShowId": "into-the-woods-2022",
       "signals": [
@@ -1533,44 +1538,13 @@
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
-      "file": "njcom--christopher-kelly.json",
-      "outlet": "NJ.com",
-      "criticName": "Christopher Kelly",
-      "publishDate": "1981-01-22",
-      "confidence": "high",
-      "suggestedShowId": "macbeth-1982",
-      "signals": [
-        "publishDate 1981 matches revival macbeth-1982 (opened 1982)"
-      ],
-      "textSnippet": "What a time for “Macbeth” nerds: Fresh on the heels of Denzel Washington’s somber, burdened turn as the Scottish king in Joel Coen’s fabulously entertaining movie “The Tragedy of Macbeth,” along comes"
-    },
-    {
-      "showId": "macbeth-1981",
-      "showTitle": "Macbeth",
-      "showYear": 1981,
-      "file": "nytimes--frank-rich.json",
-      "outlet": "The New York Times",
-      "criticName": "Frank Rich",
-      "publishDate": "1981-01-22",
-      "confidence": "high",
-      "suggestedShowId": "macbeth-1982",
-      "signals": [
-        "publishDate 1981 matches revival macbeth-1982 (opened 1982)"
-      ],
-      "textSnippet": "https://www.nytimes.com/1981/01/24/theater/stage-macbeth-returns.htmlShare full articleAdvertisement\n\nTo put it simply, there can be no ''Macbeth'' without Macbeth. Such is the sad case with the Linco"
-    },
-    {
-      "showId": "macbeth-1981",
-      "showTitle": "Macbeth",
-      "showYear": 1981,
       "file": "talkinbroadway--howard-miller.json",
       "outlet": "Talkin' Broadway",
       "criticName": "Howard Miller",
-      "publishDate": "1981-01-22",
-      "confidence": "high",
-      "suggestedShowId": "macbeth-1982",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "macbeth-2022",
       "signals": [
-        "publishDate 1981 matches revival macbeth-1982 (opened 1982)",
         "year 2022 in text matches revival macbeth-2022",
         "modern references: covid"
       ],
@@ -1583,11 +1557,10 @@
       "file": "theater-life--samuel-l-leiter.json",
       "outlet": "Theater Life",
       "criticName": "Samuel L. Leiter",
-      "publishDate": "1981-01-22",
-      "confidence": "high",
-      "suggestedShowId": "macbeth-1982",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "macbeth-2022",
       "signals": [
-        "publishDate 1981 matches revival macbeth-1982 (opened 1982)",
         "year 2022 in text matches revival macbeth-2022",
         "modern references: pandemic"
       ],
@@ -1597,29 +1570,13 @@
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
-      "file": "theater-pizzazz--jk-clarke.json",
-      "outlet": "Theater Pizzazz",
-      "criticName": "JK Clarke",
-      "publishDate": "1981-01-22",
-      "confidence": "high",
-      "suggestedShowId": "macbeth-1982",
-      "signals": [
-        "publishDate 1981 matches revival macbeth-1982 (opened 1982)"
-      ],
-      "textSnippet": "Does Sam Gold hate Shakespeare? I found myself wondering that as I watched his latest deconstructed, minimalist hatchet job as director one of the Bard’s most beloved plays—the bloody Scottish tragedy"
-    },
-    {
-      "showId": "macbeth-1981",
-      "showTitle": "Macbeth",
-      "showYear": 1981,
       "file": "thewrap--robert-hofler.json",
       "outlet": "TheWrap",
       "criticName": "Robert Hofler",
-      "publishDate": "1981-01-22",
-      "confidence": "high",
-      "suggestedShowId": "macbeth-1982",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "macbeth-2008",
       "signals": [
-        "publishDate 1981 matches revival macbeth-1982 (opened 1982)",
         "year 2008 in text matches revival macbeth-2008",
         "modern references: pandemic"
       ],
@@ -1780,12 +1737,13 @@
       "file": "nytimes--richard-eder.json",
       "outlet": "The New York Times",
       "criticName": "Richard Eder",
-      "publishDate": "1977-10-20",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
         "revival text signals: revival, revived, new production",
-        "modern references: hamilton"
+        "modern references: hamilton",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
     },
@@ -1985,11 +1943,12 @@
       "file": "talkinbroadway--unknown.json",
       "outlet": "Talkin' Broadway",
       "criticName": "Unknown",
-      "publishDate": "2003-11-09",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "revival text signals: new production, this production"
+        "revival text signals: new production, this production",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Theatre Review by Matthew Murray \n - November 9, 2003\n\nThe Caretaker by Harold Pinter. Directed by David Jones. Set design by John Lee Beatty. Costume design by Jane Greenwood. Lighting design by Pete"
     },
@@ -2000,11 +1959,12 @@
       "file": "theatermania--unknown.json",
       "outlet": "TheaterMania",
       "criticName": "Unknown",
-      "publishDate": "2003-11-09",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "revival text signals: revival, this production"
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Harold Pinter writes his plays with precise requirements as to how they’re to be directed and acted. He has such a pronounced sense of what he wants done that, in his many stage directions, he differe"
     },
@@ -2110,11 +2070,12 @@
       "file": "variety--unknown.json",
       "outlet": "Variety",
       "criticName": "Unknown",
-      "publishDate": "2000-03-02",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "revival text signals: revival, new production, new revival"
+        "revival text signals: revival, new production, new revival",
+        "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "A mere 30 years or so after joining the front rank of American playwrights, Sam Shepard looks to have his first Broadway hit courtesy of Matthew Warchus’ blistering new revival of “True West.”\n\nMake t"
     },
@@ -2158,7 +2119,7 @@
       "file": "variety--unknown.json",
       "outlet": "Variety",
       "criticName": "Unknown",
-      "publishDate": "2000-04-16",
+      "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": "jesus-christ-superstar-1971",
       "signals": [
