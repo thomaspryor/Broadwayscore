@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-09T03:59:34.931Z",
+    "generatedAt": "2026-04-09T04:10:52.827Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 147,
-    "highConfidence": 40,
-    "mediumConfidence": 107,
+    "totalFlagged": 149,
+    "highConfidence": 43,
+    "mediumConfidence": 106,
     "lowConfidence": 0,
-    "reassignable": 81
+    "reassignable": 83
   },
   "results": [
     {
@@ -1081,6 +1081,21 @@
       "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nNYC Weather \n \n \n \n A \n CurtainUp Review\n\nCharles Shaughnessy (center) as Caldwell B. Cladwell/\n (l-r) Lawrence E. Street, Jame"
     },
     {
+      "showId": "a-christmas-carol-2001",
+      "showTitle": "A Christmas Carol",
+      "showYear": 2001,
+      "file": "broadwayworld--michael-dale.json",
+      "outlet": "BroadwayWorld",
+      "criticName": "Michael Dale",
+      "publishDate": "2019-11-21",
+      "confidence": "high",
+      "suggestedShowId": "a-christmas-carol-2019",
+      "signals": [
+        "publishDate 2019 matches revival a-christmas-carol-2019 (opened 2019)"
+      ],
+      "textSnippet": "Tickets\n\nCast\n\nPhotos\n\nVideos\n\n \n\nInfo\n\nTravel\n\nMarley is still dead to begin with, and near the end we're still reminded of Tiny Tim's observation, \"God bless us, everyone!\" But in between... Let's j"
+    },
+    {
       "showId": "oklahoma-2002",
       "showTitle": "Oklahoma!",
       "showYear": 2002,
@@ -1348,6 +1363,21 @@
       "showId": "broadway-1987",
       "showTitle": "Broadway",
       "showYear": 1987,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": "2024-04-23",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2024 is 37 years after original opening 1987"
+      ],
+      "textSnippet": "There are way too many dead parents in Jonathan A. Abrams’ book about a Sammy Glick-like hustler named Bobby (Corey Cott). He’s the rocker who gives up his life on the stage so he can make deals selli"
+    },
+    {
+      "showId": "broadway-1987",
+      "showTitle": "Broadway",
+      "showYear": 1987,
       "file": "vulture--jackson-mchenry.json",
       "outlet": "Vulture",
       "criticName": "Jackson McHenry",
@@ -1367,10 +1397,11 @@
       "file": "broadwayworld--michael-dale.json",
       "outlet": "BroadwayWorld",
       "criticName": "Michael Dale",
-      "publishDate": null,
-      "confidence": "medium",
+      "publishDate": "2019-04-17",
+      "confidence": "high",
       "suggestedShowId": "burn-this-2019",
       "signals": [
+        "publishDate 2019 matches revival burn-this-2019 (opened 2019)",
         "year 2019 in text matches revival burn-this-2019"
       ],
       "textSnippet": "The phrase \"toxic masculinity\" wasn't exactly in the vernacular in 1987, when Circle Rep's buzz-producing mounting of Lanford Wilson's Burn This moved uptown to Broadway. So perhaps coked-up, homophob"
@@ -1722,13 +1753,13 @@
       "file": "broadwayworld--michael-dale.json",
       "outlet": "BroadwayWorld",
       "criticName": "Michael Dale",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
+      "publishDate": "2013-11-13",
+      "confidence": "high",
+      "suggestedShowId": "700-sundays-2013",
       "signals": [
+        "publishDate 2013 matches revival 700-sundays-2013 (opened 2013)",
         "revival text signals: revival, returns to broadway",
-        "modern references: twitter",
-        "no publishDate + revival signals + revivals exist"
+        "modern references: twitter"
       ],
       "textSnippet": "Faster than a speeding Les Misérables revival, Billy Crystal's solo performance piece, 700 Sundays, returns to Broadway a mere 386 Sundays after its Tony-winning original production gave its regards.\n"
     },
