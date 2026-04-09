@@ -68,9 +68,7 @@ function isDateReached(dateStr) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
-  // Strictly past — Broadway shows open in the evening, so on opening day
-  // the show hasn't actually opened yet. Transition happens the next day.
-  return date < today;
+  return date <= today;
 }
 
 // ── TodayTix API for West End date refresh ──
