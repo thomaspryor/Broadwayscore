@@ -40,14 +40,17 @@ const SOURCE_FAKE_RATES = {
   'serp-discovery': 50,
 };
 
-const targetSources = new Set(
+// When --all is passed, target ALL sources regardless of fake rate
+const targetAll = process.argv.includes('--all');
+
+const targetSources = targetAll ? null : new Set(
   Object.entries(SOURCE_FAKE_RATES)
     .filter(([, rate]) => rate >= threshold)
     .map(([src]) => src)
 );
 
-console.log(`Threshold: ${threshold}%`);
-console.log(`Target sources: ${[...targetSources].join(', ')}`);
+console.log(`Threshold: ${targetAll ? 'ALL sources' : threshold + '%'}`);
+if (!targetAll) console.log(`Target sources: ${[...targetSources].join(', ')}`);
 console.log(`Mode: ${dryRun ? 'DRY RUN (use --write to modify files)' : 'WRITING CHANGES'}\n`);
 
 // Build show opening date map
@@ -83,7 +86,7 @@ for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
       total++;
       const src = d.source || 'unknown';
 
-      if (!targetSources.has(src)) {
+      if (!targetAll && !targetSources.has(src)) {
         skipped++;
         continue;
       }
