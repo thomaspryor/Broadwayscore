@@ -215,16 +215,16 @@ export function LotteryTable({ data }: LotteryTableProps) {
                       {index + 1}
                     </span>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-2">
-                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3 px-4 max-w-[200px] sm:max-w-none">
+                    <div className="flex items-center gap-1.5">
+                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium truncate" onClick={(e) => e.stopPropagation()}>
                         {item.show.title}
                       </Link>
-                      {hasDetails && <ChevronIcon open={isExpanded} />}
+                      {hasDetails && <span className="flex-shrink-0"><ChevronIcon open={isExpanded} /></span>}
                     </div>
                     {(() => {
                       const platform = lottery?.platform || special?.platform;
-                      return platform ? <span className="block text-xs text-gray-500 sm:hidden">{platform}</span> : null;
+                      return platform ? <span className="block text-xs text-gray-500 sm:hidden truncate">{platform}</span> : null;
                     })()}
                   </td>
                   <td className="py-3 px-4 text-right">
@@ -461,14 +461,14 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                       {index + 1}
                     </span>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-2">
-                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3 px-4 max-w-[200px] sm:max-w-none">
+                    <div className="flex items-center gap-1.5">
+                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium truncate" onClick={(e) => e.stopPropagation()}>
                         {item.show.title}
                       </Link>
-                      {hasDetails && <ChevronIcon open={isExpanded} />}
+                      {hasDetails && <span className="flex-shrink-0"><ChevronIcon open={isExpanded} /></span>}
                     </div>
-                    {item.show.venue && <span className="block text-xs text-gray-500 sm:hidden">{item.show.venue}</span>}
+                    {item.show.venue && <span className="block text-xs text-gray-500 sm:hidden truncate">{item.show.venue}</span>}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-500/15 border border-gray-500/30 text-gray-300 font-semibold">
@@ -690,14 +690,14 @@ export function RushTable({ data }: RushTableProps) {
                       {index + 1}
                     </span>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-2">
-                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3 px-4 max-w-[200px] sm:max-w-none">
+                    <div className="flex items-center gap-1.5">
+                      <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium truncate" onClick={(e) => e.stopPropagation()}>
                         {item.show.title}
                       </Link>
-                      {hasDetails && <ChevronIcon open={isExpanded} />}
+                      {hasDetails && <span className="flex-shrink-0"><ChevronIcon open={isExpanded} /></span>}
                     </div>
-                    <span className="block text-xs text-gray-500 sm:hidden">{rushType}</span>
+                    <span className="block text-xs text-gray-500 sm:hidden truncate">{rushType}</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold">

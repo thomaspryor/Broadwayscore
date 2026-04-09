@@ -308,7 +308,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                         {index + 1}
                       </span>
                     </td>
-                    <td className="py-3 px-2 sm:px-3">
+                    <td className="py-3 px-2 sm:px-3 max-w-[200px] sm:max-w-none">
                       <div className="flex items-center gap-1.5 min-w-0">
                         <Link
                           href={`/show/${row.slug}`}

@@ -90,14 +90,14 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
   return (
     <Link
       href={`/show/${show.slug}`}
-      className="group card-interactive flex flex-col sm:flex-row gap-4 p-4 animate-in"
+      className="group card-interactive flex flex-row gap-4 p-4 animate-in"
       style={{ animationDelay: `${index * 30}ms` }}
     >
-      {/* Thumbnail */}
-      <div className="flex-shrink-0 w-full sm:w-28 h-40 sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
-        {show.images?.thumbnail ? (
+      {/* Poster with score overlay */}
+      <div className="relative flex-shrink-0 w-24 sm:w-28 aspect-[2/3] sm:aspect-square sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
+        {(show.images?.poster || show.images?.thumbnail) ? (
           <img
-            src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
+            src={getOptimizedImageUrl((show.images.poster || show.images.thumbnail)!, 'thumbnail')}
             alt={`${show.title} ${getMarketLabel(show.category)} ${show.type}`}
             loading={index < 6 ? "eager" : "lazy"}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -107,6 +107,10 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
             <div className="text-3xl">🎭</div>
           </div>
         )}
+        {/* Score overlay — mobile only */}
+        <div className="absolute bottom-1.5 right-1.5 sm:hidden">
+          <ScoreBadge score={score} size="sm" showCrown />
+        </div>
       </div>
 
       {/* Info */}
@@ -161,10 +165,10 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
         )}
       </div>
 
-      {/* Score Badge */}
-      <div className="flex-shrink-0 flex items-center justify-center sm:flex-col sm:items-center gap-2 sm:w-20">
+      {/* Score Badge — desktop only */}
+      <div className="flex-shrink-0 hidden sm:flex flex-col items-center justify-center gap-2 w-20">
         <ScoreBadge score={score} size="md" showCrown />
-        <span className="text-xs text-gray-500 hidden sm:block">
+        <span className="text-xs text-gray-500">
           {show.criticScore?.reviewCount || 0} reviews
         </span>
       </div>
