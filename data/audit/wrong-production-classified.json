@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-09T09:41:57.937Z",
+    "generatedAt": "2026-04-09T10:11:09.965Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 105,
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review discusses a Sydney production of Wicked, mentioning the 2008 Australian premiere and a 2014 return season. It also mentions a new remounting at the Sydney Lyric, indicating it's not about the 2003 Broadway production."
+      "reasoning": "This review is about a Sydney production of Wicked, not the Broadway production that opened in 2003. It mentions the show's third opening night in Sydney and discusses the 2008 Australian premiere."
     },
     {
       "showId": "the-heiress-1995",
@@ -44,25 +44,24 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-heiress-2012",
-      "reasoning": "The review mentions Jessica Chastain, Dan Stevens, and director Moisés Kaufman, who were all involved in the 2012 production. It also mentions the Walter Kerr Theatre, where the 2012 production played."
+      "reasoning": "The review mentions Jessica Chastain, Dan Stevens, and director Moisés Kaufman, who were all involved in the 2012 production of The Heiress. It also mentions the Walter Kerr Theatre, where the 2012 production played."
     },
     {
-      "showId": "ragtime-1998",
-      "showTitle": "Ragtime",
-      "showYear": 1998,
-      "file": "exeunt-magazine--lane-williamson.json",
-      "outlet": "Exeunt",
-      "criticName": "Lane Williamson",
+      "showId": "miss-saigon-1991",
+      "showTitle": "Miss Saigon",
+      "showYear": 1991,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
       "publishDate": null,
       "originalSignals": [
-        "revival text signals: revival, this production",
-        "year 2024 in text matches revival ragtime-2025",
+        "revival text signals: revival, new revival",
         "no publishDate + revival signals + revivals exist"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "ragtime-2025",
-      "reasoning": "The review explicitly mentions \"Now in its second Broadway revival at Lincoln Center’s Vivian Beaumont Theater\" and discusses the director Lear deBessonet. This matches the 2025 revival at the Vivian Beaumont Theater."
+      "targetShowId": "miss-saigon-2017",
+      "reasoning": "The review mentions the 2017 revival's cast (Eva Noblezada, Alistair Brammer, Nicholas Christopher, Katie Rose Clarke) and director (Laurence Connor), and states that the revival opened on Thursday at the Broadway Theatre."
     },
     {
       "showId": "master-class-1995",
@@ -101,23 +100,6 @@
       "reasoning": "The review mentions Tyne Daly, Stephen Wadsworth, and the Samuel J. Friedman Theatre, all associated with the 2011 revival. It also mentions the Kennedy Center's 2010 tribute to Terrence McNally, where this production originated."
     },
     {
-      "showId": "miss-saigon-1991",
-      "showTitle": "Miss Saigon",
-      "showYear": 1991,
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "criticName": "Robert Hofler",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, new revival",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "miss-saigon-2017",
-      "reasoning": "The review mentions the 2017 revival's cast (Eva Noblezada, Alistair Brammer, Nicholas Christopher, Katie Rose Clarke) and director (Laurence Connor), and states that the revival opened on Thursday at the Broadway Theatre."
-    },
-    {
       "showId": "how-to-succeed-in-business-without-really-trying-1995",
       "showTitle": "How to Succeed in Business Without Really Trying",
       "showYear": 1995,
@@ -133,7 +115,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
-      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also mentions the 2010 production of \"Promises, Promises\" which is a reference to Rob Ashford's previous work before the 2011 revival."
+      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also references a '2010 production of Promises, Promises' by the same director, further indicating it's about the 2011 revival."
     },
     {
       "showId": "six-degrees-of-separation-1990",
@@ -153,6 +135,24 @@
       "reasoning": "The review explicitly refers to the 'Broadway revival' and mentions the Barrymore Theatre, which was the venue for the 2017 production. It also mentions Allison Janney, Corey Hawkins, and Trip Cullman, who were involved in the 2017 production, not the 1990 production."
     },
     {
+      "showId": "ragtime-1998",
+      "showTitle": "Ragtime",
+      "showYear": 1998,
+      "file": "exeunt-magazine--lane-williamson.json",
+      "outlet": "Exeunt",
+      "criticName": "Lane Williamson",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "year 2024 in text matches revival ragtime-2025",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "ragtime-2025",
+      "reasoning": "The review explicitly mentions \"Now in its second Broadway revival at Lincoln Center’s Vivian Beaumont Theater\" and discusses the director Lear deBessonet. This matches the 2025 revival at the Vivian Beaumont Theater, not the 1998 production."
+    },
+    {
       "showId": "broadway-1987",
       "showTitle": "Broadway",
       "showYear": 1987,
@@ -167,7 +167,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review discusses a revival starring Adam Driver and Keri Russell, directed by Michael Mayer. This is clearly a different production than the 1987 original."
+      "reasoning": "The review discusses a revival starring Adam Driver and Keri Russell, directed by Michael Mayer. This is not the original 1987 production."
     },
     {
       "showId": "the-elephant-man-1979",
@@ -183,7 +183,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-elephant-man-2014",
-      "reasoning": "The review mentions Bradley Cooper, Scott Ellis, and the Booth Theatre, all associated with the 2014 revival."
+      "reasoning": "The review mentions Bradley Cooper, Alessandro Nivola, Scott Ellis, and the Booth Theatre, all associated with the 2014 revival."
     },
     {
       "showId": "on-the-twentieth-century-1978",
@@ -218,7 +218,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "cat-on-a-hot-tin-roof-2013",
-      "reasoning": "The review mentions Scarlett Johansson and Rob Ashford, who were involved in the 2013 production. It also mentions the Richard Rodgers Theatre, where the 2013 production played."
+      "reasoning": "The review explicitly mentions Scarlett Johansson and Rob Ashford, who were involved in the 2013 production. It also mentions the Richard Rodgers Theatre, where the 2013 production played."
     },
     {
       "showId": "the-gin-game-1977",
@@ -234,7 +234,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
     },
     {
       "showId": "that-championship-season-1972",
@@ -251,41 +251,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "that-championship-season-2011",
-      "reasoning": "The review mentions the director (Gregory Mosher), set designer (Michael Yeargan), venue (Bernard B. Jacobs Theatre), and cast (Brian Cox, Jim Gaffigan, Chris Noth, Jason Patric, Kiefer Sutherland) of the 2011 revival."
-    },
-    {
-      "showId": "on-the-twentieth-century-1978",
-      "showTitle": "On the Twentieth Century",
-      "showYear": 1978,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2015 in text matches revival on-the-twentieth-century-2015",
-        "year 2014 in text matches revival on-the-twentieth-century-2015"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "on-the-twentieth-century-2015",
-      "reasoning": "The review mentions Kristin Chenoweth, Peter Gallagher, and Scott Ellis, who were all involved in the 2015 revival. It also mentions the Roundabout Theatre Company, which presented the 2015 revival."
-    },
-    {
-      "showId": "the-house-of-blue-leaves-1986",
-      "showTitle": "The House of Blue Leaves",
-      "showYear": 1986,
-      "file": "ew--thom-geier.json",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Thom Geier",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-house-of-blue-leaves-2011",
-      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which indicates that this is a di"
+      "reasoning": "The review mentions the director (Gregory Mosher), venue (Bernard B. Jacobs Theatre), and cast (Brian Cox, Jim Gaffigan, Chris Noth, Jason Patric, Kiefer Sutherland) of the 2011 revival. It also mentions the production closing in May."
     },
     {
       "showId": "the-mystery-of-edwin-drood-1985",
@@ -306,6 +272,40 @@
       "reasoning": "The review mentions cast members (Betsy Wolfe, Will Chase, Stephanie J. Block, Jim Norton, Chita Rivera, Andy Karl, Jessie Mueller, Gregg Edelman, Robert Creighton), director (Scott Ellis), and choreographer (Warren Carlyle) from the 2012 Broadway revival."
     },
     {
+      "showId": "on-the-twentieth-century-1978",
+      "showTitle": "On the Twentieth Century",
+      "showYear": 1978,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2015 in text matches revival on-the-twentieth-century-2015",
+        "year 2014 in text matches revival on-the-twentieth-century-2015"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "on-the-twentieth-century-2015",
+      "reasoning": "The review mentions Kristin Chenoweth, Peter Gallagher, Scott Ellis, and Warren Carlyle, who were all involved in the 2015 revival, not the 1978 original. It also mentions the Roundabout Theatre Company, which produced the 2015 revival."
+    },
+    {
+      "showId": "the-house-of-blue-leaves-1986",
+      "showTitle": "The House of Blue Leaves",
+      "showYear": 1986,
+      "file": "ew--thom-geier.json",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Thom Geier",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-house-of-blue-leaves-2011",
+      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which implies that this is a new "
+    },
+    {
       "showId": "cat-on-a-hot-tin-roof-2003",
       "showTitle": "Cat on a Hot Tin Roof",
       "showYear": 2003,
@@ -320,7 +320,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "cat-on-a-hot-tin-roof-2013",
-      "reasoning": "The review mentions Scarlett Johansson and Rob Ashford, who were involved in the 2013 production. The review also mentions the Richard Rodgers Theatre and a closing date of March 30, which aligns with the 2013 production."
+      "reasoning": "The review mentions Scarlett Johansson and Rob Ashford, who were involved in the 2013 production. The review also mentions the Richard Rodgers Theatre, which hosted the 2013 production."
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2003",
@@ -338,7 +338,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "cat-on-a-hot-tin-roof-2013",
-      "reasoning": "The review discusses the 2003 production, then the 2008 production, and then describes a \"new staging directed by Rob Ashford\" starring Scarlett Johansson and Benjamin Walker, which is the 2013 production. The review also mentions the Richard Rodgers Theatre, where the 2013 production played."
+      "reasoning": "The review discusses the 2003 production, then the 2008 production, and then goes on to review a 'new staging' starring Scarlett Johansson and Benjamin Walker, directed by Rob Ashford, playing at the Richard Rodgers Theatre. This is the 2013 production."
     },
     {
       "showId": "born-yesterday-1989",
@@ -358,38 +358,6 @@
       "reasoning": "The review mentions the Cort Theatre, Jim Belushi, Nina Arianda, Robert Sean Leonard, and director Doug Hughes, all associated with the 2011 revival."
     },
     {
-      "showId": "the-real-thing-2000",
-      "showTitle": "The Real Thing",
-      "showYear": 2000,
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "criticName": "Robert Hofler",
-      "publishDate": null,
-      "originalSignals": [
-        "year 1984 in text matches revival the-real-thing-1984"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the American Airlines Theatre, which is associated with the 2014 production. It also mentions the 1984 and 2000 productions."
-    },
-    {
-      "showId": "the-real-thing-1984",
-      "showTitle": "The Real Thing",
-      "showYear": 1984,
-      "file": "telegraph--matt-wolf.json",
-      "outlet": "Telegraph",
-      "criticName": "Matt Wolf",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2000 in text matches revival the-real-thing-2000"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 production. It also mentions Cynthia Nixon, who was in the 1984 production but also appeared in the 2014 production."
-    },
-    {
       "showId": "macbeth-2000",
       "showTitle": "Macbeth",
       "showYear": 2000,
@@ -403,7 +371,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "macbeth-2022",
-      "reasoning": "The review mentions Daniel Craig and Ruth Negga as the leads, Sam Gold as the director, and the Longacre Theatre as the venue, all of which are associated with the 2022 production of Macbeth. It also mentions the play is in performance through July 10, 2022."
+      "reasoning": "The review mentions Daniel Craig and Ruth Negga as the Macbeths, and states the production is playing at the Longacre Theatre through July 10, 2022. This matches the 2022 production, not the 2000 production."
     },
     {
       "showId": "the-real-thing-2000",
@@ -422,15 +390,31 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor, Maggie Gyllenhaal, Cynthia Nixon, and Sam Gold, who were all involved in the 2014 production. It also mentions the Roundabout Theatre Company, which produced the 2014 revival."
+      "reasoning": "The review mentions Ewan McGregor, Maggie Gyllenhaal, Cynthia Nixon, and Josh Hamilton, who were in the 2014 production. It also mentions Sam Gold as the director, who directed the 2014 production."
+    },
+    {
+      "showId": "the-real-thing-1984",
+      "showTitle": "The Real Thing",
+      "showYear": 1984,
+      "file": "telegraph--matt-wolf.json",
+      "outlet": "Telegraph",
+      "criticName": "Matt Wolf",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2000 in text matches revival the-real-thing-2000"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-real-thing-2014",
+      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 revival. It also mentions Cynthia Nixon, who was in the 1984 production but also this one."
     },
     {
       "showId": "the-real-thing-2000",
       "showTitle": "The Real Thing",
       "showYear": 2000,
-      "file": "telegraph--matt-wolf.json",
-      "outlet": "Telegraph",
-      "criticName": "Matt Wolf",
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
       "publishDate": null,
       "originalSignals": [
         "year 1984 in text matches revival the-real-thing-1984"
@@ -438,7 +422,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 production, and the American Airlines Theatre, where the 2014 production played. It also mentions Cynthia Nixon, who was in both the 1984 production and the 2014 production."
+      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the American Airlines Theatre, which is the 2014 production. It also mentions the 1984 and 2000 productions."
     },
     {
       "showId": "glengarry-glen-ross-1984",
@@ -456,7 +440,23 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "glengarry-glen-ross-2012",
-      "reasoning": "The review mentions Al Pacino, Daniel Sullivan as director, and Jeffrey Richards as producer, which are all associated with the 2012 Broadway revival. The review also mentions the 1984 production winning the Pulitzer Prize, but then states that the show was on Broadway \"a mere seven years ago\", whic"
+      "reasoning": "The review mentions Al Pacino, Daniel Sullivan as director, and Jeffrey Richards as producer, which all align with the 2012 Broadway revival. The review also mentions actors in the 2012 production, such as David Harbour, John C. McGinley, Richard Schiff, and Bobby Cannavale."
+    },
+    {
+      "showId": "the-real-thing-2000",
+      "showTitle": "The Real Thing",
+      "showYear": 2000,
+      "file": "telegraph--matt-wolf.json",
+      "outlet": "Telegraph",
+      "criticName": "Matt Wolf",
+      "publishDate": null,
+      "originalSignals": [
+        "year 1984 in text matches revival the-real-thing-1984"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-real-thing-2014",
+      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 production, and Cynthia Nixon, who was in the 1984 production but also the 2014 production. It also mentions the American Airlines Theatre, where the 2014 production played."
     },
     {
       "showId": "old-times-1971",
@@ -489,7 +489,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre and a production running through Nov. 29, which aligns with the 2015 revival starring Clive Owen, Kelly Reilly, and Eve Best. It also mentions Douglas Hodge as the director, which is specific to the 2015 production."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of which are associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre."
     }
   ]
 }
