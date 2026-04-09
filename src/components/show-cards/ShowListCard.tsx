@@ -200,9 +200,12 @@ const ShowListCard = memo(function ShowListCard({
           })()}</span>
         ) : (
           <>
-            {getBroadwayDuration(show.openingDate, durationSuffix)}
+            {(() => {
+              const duration = getBroadwayDuration(show.openingDate, durationSuffix);
+              return duration ? <>{duration}</> : null;
+            })()}
             {show.closingDate && (
-              <span className="text-amber-400"> · Closes {formatOpeningDate(show.closingDate)}</span>
+              <span className="text-amber-400">{getBroadwayDuration(show.openingDate, durationSuffix) ? ' · ' : ''}Closes {formatOpeningDate(show.closingDate)}</span>
             )}
           </>
         )}
