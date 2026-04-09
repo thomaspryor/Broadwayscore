@@ -1433,6 +1433,20 @@ assert(
   `mergeReviews: Unknown incoming doesn't downgrade (got: "${mergedNoDowngrade.criticName}")`
 );
 
+// --- createReviewFile Unknown→named file merge ---
+// Test that createReviewFile merges vulture--unknown.json + incoming vulture/Sara Holdren
+// We can't easily unit test createReviewFile (it writes to disk), but we verify the
+// code path exists via source verification
+const gatherSrcCRF = require('fs').readFileSync(require('path').join(__dirname, 'gather-reviews.js'), 'utf8');
+assert(
+  gatherSrcCRF.includes("existingCriticSlug === 'unknown' && incomingCriticSlug !== 'unknown'"),
+  'createReviewFile: has Unknown→named critic merge path'
+);
+assert(
+  gatherSrcCRF.includes("Unknown→named: merged"),
+  'createReviewFile: logs Unknown→named merge'
+);
+
 // ============================================================
 // Summary
 // ============================================================

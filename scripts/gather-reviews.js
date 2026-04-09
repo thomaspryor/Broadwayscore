@@ -2506,6 +2506,21 @@ function createReviewFile(showId, reviewData, options = {}) {
             console.log(`    ⟳ Prefix match: merged ${existingFile} into ${filename}`);
             return true;
           }
+          // Unknown critic upgrade: existing "unknown" + incoming named critic → merge and rename
+          // Catches: vulture--unknown.json (SERP) + incoming vulture/Sara Holdren (BWW/DTLI)
+          if (existingCriticSlug === 'unknown' && incomingCriticSlug !== 'unknown'
+              && !existingReview.criticNameManual) {
+            const merged = mergeReviews(existingReview, {
+              ...reviewData,
+              source: reviewData.source || 'gather-reviews',
+            });
+            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+            if (existingFile !== filename) {
+              fs.renameSync(path.join(showDir, existingFile), filepath);
+            }
+            console.log(`    ⟳ Unknown→named: merged ${existingFile} into ${filename}`);
+            return true;
+          }
         }
 
         // Check if same review (by key or URL)
