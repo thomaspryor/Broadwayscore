@@ -1,20 +1,26 @@
 {
-  "totalCandidates": 8,
-  "cdxFound": 0,
-  "cdxNotFound": 0,
-  "recovered": 0,
+  "totalCandidates": 55,
+  "cdxFound": 9,
+  "cdxNotFound": 12,
+  "recovered": 4,
   "recoveredByTier": {
-    "1": 0,
+    "1": 2,
     "2": 0,
-    "3": 0
+    "3": 2
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "latimes.com": 1,
+    "timeout.com": 1,
+    "dailymail.co.uk": 2
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 8,
-  "notInArchive": 0,
-  "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "errors": 21,
+  "notInArchive": 12,
+  "domainSkipped": 13,
+  "circuitBrokenDomains": [
+    "newspapers.com"
+  ]
 }
