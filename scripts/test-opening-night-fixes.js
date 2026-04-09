@@ -1018,6 +1018,39 @@ assert(
   `Variety appears exactly once after dedup (got: ${varietyReviews.length})`
 );
 
+// --- Fix #17: Unknown critic upgraded by supplementary scan ---
+
+// Build HTML where Method 1 has outlet with Unknown critic, Method 2 has real name
+const upgradeHtml = `<html><head><title>Review Roundup: UPGRADE TEST Opens-on-Broadway-20260406</title></head><body>
+<script type="application/ld+json">{
+  "@type": "LiveBlogPosting",
+  "liveBlogUpdate": [
+    {"@type": "BlogPosting", "author": {"name": "New York Stage Review"}, "articleBody": "Exceptional."},
+    {"@type": "BlogPosting", "author": {"name": "Variety - Brent Lang"}, "articleBody": "Stunning."}
+  ],
+  "articleBody": "Review Roundup. Let's see what the critics had to say. Frank Scheck, New York Stage Review: Exceptional work from the entire cast. Brent Lang, Variety: Stunning in every respect."
+}</script>
+</body></html>`;
+
+const upgradeReviews = extractBWWRoundupReviews(upgradeHtml, 'upgrade-test-2026', 'https://bww.com/roundup', 'Upgrade Test');
+
+const upgradeNysr = upgradeReviews.filter(r => (r.outletId || '').includes('nysr'));
+assert(
+  upgradeNysr.length === 1,
+  `Unknown→named upgrade: NYSR appears exactly once (got: ${upgradeNysr.length})`
+);
+assert(
+  upgradeNysr[0] && upgradeNysr[0].criticName === 'Frank Scheck',
+  `Unknown→named upgrade: NYSR critic upgraded to "Frank Scheck" (got: "${upgradeNysr[0]?.criticName}")`
+);
+
+// Variety already had critic name in Method 1 — should not be duplicated
+const upgradeVariety = upgradeReviews.filter(r => (r.outletId || '').includes('variety'));
+assert(
+  upgradeVariety.length === 1,
+  `Named critic dedup: Variety appears exactly once (got: ${upgradeVariety.length})`
+);
+
 // --- Fix #17: entries without hyperlinks still extracted ---
 
 // Build HTML where Guardian has NO <a href> — just text
