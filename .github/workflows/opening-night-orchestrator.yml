@@ -4,26 +4,29 @@ name: Opening Night Orchestrator
 # every N minutes for up to M iterations. Each poller run gets a fresh
 # checkout — no stale git state issues.
 #
-# Five crons (GitHub Actions silently drops crons on workflows with many schedules,
-# so we duplicate the Broadway evening window for reliability):
-#   - Broadway evening: 1 AM + 2 AM UTC = 9-10 PM ET (catches early reviews)
-#   - Broadway morning: 10 AM UTC = 5 AM ET (catches overnight stragglers)
-#   - West End morning: 7 AM UTC = 8 AM BST (broadsheet reviews)
-#   - West End evening: 20 UTC = 9 PM BST (press night evening)
+# Five crons. GitHub Actions crons have CONSISTENT delays:
+#   - 1 AM UTC crons: DROPPED entirely (never fires)
+#   - 2:30 AM UTC: fires ~4 AM UTC (1.5h late)
+#   - 7 AM: fires ~8:15 UTC (1.25h late)
+#   - 10 AM: fires ~10:45 UTC (45m late)
+#   - 20:00: fires ~20:30 UTC (30m late)
 #
-# The duplicate 1/2 AM crons are intentional — GitHub dropped the 1 AM cron for weeks
-# without warning (discovered during Becky Shaw opening 2026-04-06). Both map to
-# market=broadway via the hour 0-4 window in the market detection step.
+# Crons are shifted 2h EARLIER to compensate for consistent GitHub delay.
+# With ~2h lag, actual fire times hit the intended windows:
+#   - Broadway evening: 23:00 + 00:00 UTC → fires ~1-2 AM UTC = 9-10 PM ET ✓
+#   - Broadway morning: 8:00 UTC → fires ~9 AM UTC = 4 AM ET ✓
+#   - West End morning: 5:00 UTC → fires ~6:30 AM UTC = 7:30 AM BST ✓
+#   - West End evening: 18:00 UTC → fires ~19 UTC = 8 PM BST ✓
 #
 # On nights with no opening, exits in <1 min (zero cost).
 
 on:
   schedule:
-    - cron: '0 1 * * *'    # Broadway — 9 PM ET (primary)
-    - cron: '30 2 * * *'   # Broadway — 10:30 PM ET (backup — GitHub drops 1 AM)
-    - cron: '0 7 * * *'    # West End — 8 AM BST (morning sweep)
-    - cron: '0 10 * * *'   # Broadway — 5 AM ET (morning sweep)
-    - cron: '0 20 * * *'   # West End — 9 PM BST (press night evening)
+    - cron: '0 23 * * *'   # Broadway evening (primary) — fires ~1 AM UTC = 9 PM ET
+    - cron: '0 0 * * *'    # Broadway evening (backup) — fires ~2 AM UTC = 10 PM ET
+    - cron: '0 5 * * *'    # West End morning — fires ~6:30 AM UTC = 7:30 AM BST
+    - cron: '0 8 * * *'    # Broadway morning — fires ~9 AM UTC = 4 AM ET
+    - cron: '0 18 * * *'   # West End evening — fires ~19 UTC = 8 PM BST
   workflow_dispatch:
     inputs:
       show_id:
@@ -83,21 +86,22 @@ jobs:
             echo "market=$INPUT_MARKET" >> $GITHUB_OUTPUT
             echo "Using manual market: $INPUT_MARKET"
           elif [ "${{ github.event_name }}" = "schedule" ]; then
-            # Use hour ranges to handle GitHub cron lag (routinely 15-60+ min late)
+            # Hour ranges account for GitHub's consistent 1-2h cron delay.
+            # Crons shifted 2h early → actual fire times shown in comments above.
             HOUR=$(date -u +%H)
             HOUR_INT=$((10#$HOUR))
-            if [ "$HOUR_INT" -ge 0 ] && [ "$HOUR_INT" -le 4 ]; then
+            if [ "$HOUR_INT" -ge 22 ] || [ "$HOUR_INT" -le 4 ]; then
               echo "market=broadway" >> $GITHUB_OUTPUT
-              echo "${HOUR} UTC (1 AM cron window) → broadway market"
-            elif [ "$HOUR_INT" -ge 6 ] && [ "$HOUR_INT" -le 8 ]; then
+              echo "${HOUR} UTC (evening cron window) → broadway market"
+            elif [ "$HOUR_INT" -ge 5 ] && [ "$HOUR_INT" -le 7 ]; then
               echo "market=west-end" >> $GITHUB_OUTPUT
-              echo "${HOUR} UTC (7 AM cron window) → west-end market (morning sweep)"
-            elif [ "$HOUR_INT" -ge 9 ] && [ "$HOUR_INT" -le 13 ]; then
+              echo "${HOUR} UTC (WE morning cron window) → west-end market"
+            elif [ "$HOUR_INT" -ge 8 ] && [ "$HOUR_INT" -le 13 ]; then
               echo "market=broadway" >> $GITHUB_OUTPUT
-              echo "${HOUR} UTC (10 AM cron window) → broadway market"
-            elif [ "$HOUR_INT" -ge 19 ] && [ "$HOUR_INT" -le 22 ]; then
+              echo "${HOUR} UTC (BW morning cron window) → broadway market"
+            elif [ "$HOUR_INT" -ge 17 ] && [ "$HOUR_INT" -le 21 ]; then
               echo "market=west-end" >> $GITHUB_OUTPUT
-              echo "${HOUR} UTC (8 PM cron window) → west-end market"
+              echo "${HOUR} UTC (WE evening cron window) → west-end market"
             else
               echo "market=broadway" >> $GITHUB_OUTPUT
               echo "Unknown cron hour $HOUR — defaulting to broadway"

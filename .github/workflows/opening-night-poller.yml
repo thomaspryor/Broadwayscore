@@ -53,8 +53,13 @@ permissions:
   actions: write
 
 concurrency:
-  group: opening-night-poller
-  cancel-in-progress: false  # Queue instead of cancel — prevents WE cron from killing BW pipeline
+  # Per-run concurrency: each poller dispatch gets its own lane. The orchestrator
+  # serializes dispatches via `gh run watch`, so concurrent pollers only happen
+  # across markets (BW vs WE) — which is fine, they work on different shows.
+  # The old shared group `opening-night-poller` had GitHub's 1-pending queue limit
+  # cancel 30% of runs when dispatches overlapped (Cats postmortem 2026-04-07).
+  group: opening-night-poller-${{ github.run_id }}
+  cancel-in-progress: false
 
 jobs:
   poll:
