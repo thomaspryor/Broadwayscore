@@ -1,815 +1,815 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-09T03:52:53.671Z",
+    "generatedAt": "2026-04-09T03:59:59.386Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 248,
+    "total": 148,
     "classified": 100,
     "wrongShow": 0,
-    "correct": 99,
-    "uncertain": 1,
+    "correct": 100,
+    "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
   "results": [
     {
-      "showId": "john-lithgow-stories-by-heart-2018",
-      "showTitle": "John Lithgow: Stories By Heart",
-      "file": "dctheatrescene--deb-miller.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"John Lithgow: Stories by Heart\" and discusses the content, inspiration, and structure of the show, including the stories performed and the personal anecdotes shared by Lithgow."
-    },
-    {
-      "showId": "john-lithgow-stories-by-heart-2018",
-      "showTitle": "John Lithgow: Stories By Heart",
-      "file": "stageandcinema--paul-birchall.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions John Lithgow as the performer and writer of the solo show, and discusses the content of the show, including the stories by Ring Lardner and P.G. Wodehouse. It also mentions the director, Daniel Sullivan."
-    },
-    {
-      "showId": "john-lithgow-stories-by-heart-2018",
-      "showTitle": "John Lithgow: Stories By Heart",
-      "file": "broadwaynews--elizabeth-bradley.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"John Lithgow: Stories By Heart\" and discusses the content, venue (American Airlines Theatre), and director (Daniel Sullivan) of the show. It also mentions specific stories performed by Lithgow."
-    },
-    {
-      "showId": "john-proctor-is-the-villain-2025",
-      "showTitle": "John Proctor is the Villain",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"John Proctor is the Villain\" and discusses the plot, themes, and cast (Sadie Sink, Gabriel Ebert) of the show. It also references Arthur Miller's \"The Crucible\" as a point of comparison."
-    },
-    {
-      "showId": "john-lithgow-stories-by-heart-2018",
-      "showTitle": "John Lithgow: Stories By Heart",
-      "file": "stageandcinema--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions John Lithgow as the performer and writer of the solo show, and discusses the content of the show, including the stories by Ring Lardner and P.G. Wodehouse, which aligns with the show's description."
-    },
-    {
-      "showId": "king-lear-2019",
-      "showTitle": "King Lear",
-      "file": "washpost--peter-marks.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions a production of \"King Lear\" opening at the Cort Theatre, which matches the show details."
-    },
-    {
-      "showId": "kinky-boots-off-broadway-2026",
-      "showTitle": "Kinky Boots",
-      "file": "nyt-theater--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Kinky Boots\" and discusses the plot, characters (Lola), and creative team (Cyndi Lauper). It also mentions the venue (Stage 42) and the show's history."
-    },
-    {
-      "showId": "kinky-boots-off-broadway-2026",
-      "showTitle": "Kinky Boots",
-      "file": "nytimes--elisabeth-vincentelli.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Kinky Boots\" and discusses the plot, characters (Lola, Charlie), and creative team (Cyndi Lauper, Harvey Fierstein, Jerry Mitchell). It also mentions the venue (Stage 42) and the show's previous Broadway run."
-    },
-    {
-      "showId": "kiss-me-kate-2019",
-      "showTitle": "Kiss Me, Kate",
-      "file": "nypost--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Kiss Me, Kate\" and discusses the plot, cast (Kelli O'Hara, Will Chase, Stephanie Styles, Corbin Bleu), and creative team (Scott Ellis, David Rockwell, Warren Carlyle) of the 2019 Roundabout Theatre revival."
-    },
-    {
-      "showId": "king-charles-iii-2015",
-      "showTitle": "King Charles III",
-      "file": "amny--matt-windman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"King Charles III\" and discusses the plot, characters, and themes of the play, including Charles' refusal to sign a bill, William's role, and Harry's relationship. It also mentions the director and the venue."
-    },
-    {
-      "showId": "left-on-tenth-2024",
-      "showTitle": "Left on Tenth",
-      "file": "frontmezzjunkies--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Left on Tenth\", the playwright Delia Ephron, and the James Earl Jones Theatre, all associated with the show."
-    },
-    {
-      "showId": "left-on-tenth-2024",
-      "showTitle": "Left on Tenth",
-      "file": "broadwaynews--brittani-samuel.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, the author Delia Ephron, the director Susan Stroman, and the actor Julianna Margulies, all of which are associated with the show 'Left on Tenth'."
-    },
-    {
-      "showId": "left-on-tenth-2024",
-      "showTitle": "Left on Tenth",
-      "file": "theatermania--rachel-graham.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, director Susan Stroman, writer Delia Ephron, and actors Peter Gallagher and Julianna Margulies, all associated with 'Left on Tenth.' It also describes the plot of the show."
-    },
-    {
-      "showId": "left-on-tenth-2024",
-      "showTitle": "Left on Tenth",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the title \"Left on Tenth\" and discusses the plot, cast (Julianna Margulies, Peter Gallagher), and creative team (Delia Ephron, Susan Stroman, Beowulf Boritt) of the show."
-    },
-    {
-      "showId": "left-on-tenth-2024",
-      "showTitle": "Left on Tenth",
-      "file": "theatrely--joey-sims.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title 'Left on Tenth' and discusses the plot, cast (Julianna Marguiles, Peter Gallagher), and creative team (Delia Ephron, Susan Stroman) of the show."
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "showTitle": "Les Liaisons Dangereuses",
-      "file": "radio-times--joanna-magill.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the title \"Les Liaisons Dangereuses\", the actors Lesley Manville and Aidan Turner, and the plot of the show."
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "showTitle": "Les Liaisons Dangereuses",
-      "file": "afridiziak-theatre-news--mark-arbouine.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, author, director, and cast members, confirming it is about the specified production of \"Les Liaisons Dangereuses.\""
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "showTitle": "Les Liaisons Dangereuses",
-      "file": "city-am--anna-moloney.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the National Theatre production of \"Les Liaisons Dangereuses\", mentioning the plot, characters (Marquise de Merteuil and Vicomte de Valmont), and actors (Lesley Manville and Aiden Turner)."
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "showTitle": "Les Liaisons Dangereuses",
-      "file": "artsdesk--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play's title, author, characters (Marquise de Merteuil, Vicomte de Valmont, Cécile de Volanges, Madame de Tourvel), and director (Marianne Elliott), confirming it's about the correct show."
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "showTitle": "Les Liaisons Dangereuses",
-      "file": "london-box-office--stuart-king.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play title, author, and plot details, as well as the names of the actors playing the lead roles (Lesley Manville and Aidan Turner). It also mentions the director and venue."
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "showTitle": "Les Liaisons Dangereuses",
-      "file": "thereviewshub--the-reviews-hub-london.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play title, director, and plot details, confirming it's about the correct show. It also discusses the themes and staging of the production."
-    },
-    {
-      "showId": "les-miserables-2006",
-      "showTitle": "Les Misérables",
-      "file": "talkinbroadway--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Les Miserables\" and provides details about the production, including the creative team, cast, and venue (Broadhurst Theatre)."
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "showTitle": "Les Liaisons Dangereuses",
-      "file": "thestage--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title (adapted from Pierre Choderlos de Laclos' novel), the plot, and the lead actors Lesley Manville and Aidan Turner, confirming it's about 'Les Liaisons Dangereuses'."
-    },
-    {
-      "showId": "les-miserables-2014",
-      "showTitle": "Les Misérables",
-      "file": "usatoday--elysa-gardner.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions 'Les Misérables' and discusses the 2014 revival, including cast members (Ramin Karimloo), creative team (Claude-Michel Schönberg, Alain Boublil, Herbert Kretzmer, Cameron Mackintosh, Laurence Connor, James Powell, Matt Kinley), and the venue (Imperial Theatre)."
-    },
-    {
-      "showId": "linda-vista-2019",
-      "showTitle": "Linda Vista",
-      "file": "artsfuse--arts-fuse-editor.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, playwright Tracy Letts, cast members Ian Barford and Cora Vander Broek, and the venue (Helen Hayes Theatre). It also discusses the plot and themes of the show."
-    },
-    {
-      "showId": "little-bear-ridge-road-2025",
-      "showTitle": "Little Bear Ridge Road",
-      "file": "wsj--charles-isherwood.json",
-      "verdict": "UNCERTAIN",
-      "confidence": "high",
-      "reasoning": "This is just share/resize buttons and CSS styling, not a review of the show."
-    },
-    {
-      "showId": "linda-vista-2019",
-      "showTitle": "Linda Vista",
-      "file": "dctheatrescene--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, the central character Wheeler, and other characters like Paul and Jules. It also discusses the plot and themes of the play, confirming it is a review of 'Linda Vista'."
-    },
-    {
-      "showId": "little-shop-of-horrors-2003",
-      "showTitle": "Little Shop of Horrors",
-      "file": "talkinbroadway--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Little Shop of Horrors\" and discusses the cast, creative team, and plot elements associated with the show. It also mentions the Virginia Theatre, where the 2003 Broadway production played."
-    },
-    {
-      "showId": "little-shop-of-horrors-2003",
-      "showTitle": "Little Shop of Horrors",
-      "file": "theatermania--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, plot, characters (Seymour, Audrey II), and creative team (Howard Ashman, Alan Menken), clearly indicating it's about Little Shop of Horrors."
-    },
-    {
-      "showId": "little-women-2005",
-      "showTitle": "Little Women",
-      "file": "theatermania--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the musical version of Little Women and discusses the plot, characters (Jo March), and the adaptation of the novel. It also mentions the cast (Sutton Foster) and the creative team (Allan Knee)."
-    },
-    {
-      "showId": "lysistrata-jones-2011",
-      "showTitle": "Lysistrata Jones",
-      "file": "there-was-a-surprising-jolt--memorial-church.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Lysistrata Jones\" and discusses the plot, cast, and creative team, confirming it's about the correct show."
-    },
-    {
-      "showId": "love-letters-2014",
-      "showTitle": "Love Letters",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the actors Mia Farrow and Brian Dennehy, the plot of the play, and the playwright A.R. Gurney, all of which match the show 'Love Letters'."
-    },
-    {
-      "showId": "lucky-guy-2013",
-      "showTitle": "Lucky Guy",
-      "file": "nyt-theater--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Lucky Guy\", Tom Hanks, Nora Ephron, George C. Wolfe, and the plot about Mike McAlary. All of these details match the show."
-    },
-    {
-      "showId": "love-letters-2014",
-      "showTitle": "Love Letters",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Love Letters\" and discusses the plot, cast (Mia Farrow, Brian Dennehy), director (Gregory Mosher), and set designer (John Lee Beatty) of the 2014 Broadway production."
-    },
-    {
-      "showId": "little-women-2005",
-      "showTitle": "Little Women",
-      "file": "variety--david-rooney.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Little Women: The Musical\" and discusses the March girls, which are central to the show's plot and characters. It also mentions the musical aspect, confirming it's about the stage production."
-    },
-    {
-      "showId": "martin-short-fame-becomes-me-2006",
-      "showTitle": "Martin Short: Fame Becomes Me",
-      "file": "theatermania--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Martin Short: Fame Becomes Me\" and discusses the show's content, style, and creative team."
-    },
-    {
-      "showId": "man-and-boy-2011",
-      "showTitle": "Man and Boy",
-      "file": "business-week--jeremy-gerard.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Man and Boy\", the Roundabout Theatre Company, Frank Langella, and other cast members, all associated with the show."
-    },
-    {
-      "showId": "marjorie-prime-2025",
-      "showTitle": "Marjorie Prime",
-      "file": "one-minute-critic--matthew-wexler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, cast (June Squibb, Danny Burstein, Cynthia Nixon, Christopher Lowell), and themes of 'Marjorie Prime,' confirming it's about the correct show."
-    },
-    {
-      "showId": "martin-short-fame-becomes-me-2006",
-      "showTitle": "Martin Short: Fame Becomes Me",
-      "file": "talkinbroadway--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review text explicitly mentions the show title, creative team (Martin Short, Marc Shaiman, Scott Wittman), cast members, and the venue (Jacobs Theatre). It is clearly a review of the specified show."
-    },
-    {
-      "showId": "marvins-room-2017",
-      "showTitle": "Marvin's Room",
+      "showId": "saint-joan-2018",
+      "showTitle": "Saint Joan",
       "file": "broadwaynews--charles-isherwood.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review mentions the play's title, playwright, venue (American Airlines Theatre), and characters (Marvin, Bessie, Lee, Hank, Charlie), confirming it is about the 2017 Broadway production of \"Marvin's Room.\""
-    },
-    {
-      "showId": "mary-jane-2024",
-      "showTitle": "Mary Jane",
-      "file": "usatoday--patrick-ryan.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, playwright, lead actress, and venue, and describes the plot."
-    },
-    {
-      "showId": "mary-jane-2024",
-      "showTitle": "Mary Jane",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play \"Mary Jane\", the star Rachel McAdams, the playwright Amy Herzog, the director Anne Kauffman, and the Samuel J. Friedman Theatre, all associated with the show."
-    },
-    {
-      "showId": "master-class-2011",
-      "showTitle": "Master Class",
-      "file": "village-voice--michael-musto.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the play Master Class, mentioning Maria Callas, Terrence McNally, Zoe Caldwell, Audra McDonald, Tyne Daly, and Sierra Boggess, all associated with the show."
-    },
-    {
-      "showId": "mean-girls-2018",
-      "showTitle": "Mean Girls",
-      "file": "nypost--sara-stewart.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Mean Girls\" and discusses the plot, characters (Cady Heron, Regina George, Janis, Damian, Gretchen Wieners, Karen Smith), and creative team (Tina Fey, Casey Nicholaw, Jeff Richmond, Nell Benjamin) of the show."
-    },
-    {
-      "showId": "master-class-2011",
-      "showTitle": "Master Class",
-      "file": "financialtimes--brendan-lemon.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses Terrence McNally's play 'Master Class' and mentions Maria Callas, the setting of masterclasses in New York, and the actress Tyne Daly who played Callas. It also references previous actresses who played the role, such as Zoe Caldwell."
-    },
-    {
-      "showId": "million-dollar-quartet-2010",
-      "showTitle": "Million Dollar Quartet",
-      "file": "nytimes--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Million Dollar Quartet\" and discusses the plot, cast, and setting of the show."
-    },
-    {
-      "showId": "million-dollar-quartet-2010",
-      "showTitle": "Million Dollar Quartet",
-      "file": "theatermania--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, venue, and cast members, confirming it is about Million Dollar Quartet."
-    },
-    {
-      "showId": "miss-saigon-2017",
-      "showTitle": "Miss Saigon",
-      "file": "dctheatrescene--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions 'Miss Saigon' and discusses the plot, characters (Chris, Kim, Engineer), and setting of the show."
-    },
-    {
-      "showId": "miss-saigon-2017",
-      "showTitle": "Miss Saigon",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Miss Saigon\" and discusses the plot, characters (Kim, Chris, the Engineer), and themes of the show. It also references the 2017 revival and cast members."
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
-      "showTitle": "Merrily We Roll Along",
-      "file": "times-uk--will-pavia.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Daniel Radcliffe, Jonathan Groff, Lindsay Mendez), and plot details, confirming it's about 'Merrily We Roll Along'."
-    },
-    {
-      "showId": "miss-saigon-2017",
-      "showTitle": "Miss Saigon",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Miss Saigon\" and discusses the plot, characters (Kim, Chris, The Engineer), and the venue (Broadway Theatre). It also references the director Laurence Connor."
-    },
-    {
-      "showId": "mothers-and-sons-2014",
-      "showTitle": "Mothers and Sons",
-      "file": "vulture--jesse-green.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses Tyne Daly's performance in \"Mothers and Sons\", the plot, and the playwright Terrence McNally, all of which are related to the show."
-    },
-    {
-      "showId": "mothers-and-sons-2014",
-      "showTitle": "Mothers and Sons",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, cast members (Frederick Weller, Tyne Daly, Bobby Steggert), and plot elements, confirming it's about 'Mothers and Sons'."
-    },
-    {
-      "showId": "miss-saigon-2017",
-      "showTitle": "Miss Saigon",
-      "file": "washpost--peter-marks.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Miss Saigon\" and discusses the plot, cast (Alistair Brammer, Eva Noblezada, Jon Jon Briones), creative team (Claude-Michel Schonberg, Alain Boublil, Laurence Connor), and venue (Broadway Theatre)."
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "showTitle": "Moulin Rouge! The Musical",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Moulin Rouge! The Musical\", the Al Hirschfeld Theatre, Baz Luhrmann, and elements from the show like the windmill and blue elephant, confirming it's about the correct production."
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "showTitle": "Moulin Rouge! The Musical",
-      "file": "timeout--adam-feldman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title, director Alex Timbers, the plot, characters like Satine (Karen Olivo) and Christian (Aaron Tveit), and the venue (Moulin Rouge)."
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "showTitle": "Moulin Rouge! The Musical",
-      "file": "thewrap--robert-hofler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the Al Hirschfeld Theatre, the set design, the director Alex Timbers, and the main characters Satine (Karen Olivo) and Christian (Aaron Tveit), all of which are associated with \"Moulin Rouge! The Musical\"."
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "showTitle": "Moulin Rouge! The Musical",
-      "file": "nypost--johnny-oleksinski.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Moulin Rouge!\" and discusses the plot, characters (Christian, Satine, Duke of Monroth), songs, and the venue, all aligning with the show's details."
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "showTitle": "Moulin Rouge! The Musical",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Moulin Rouge! The Musical\" and discusses the plot, setting (Parisian nighterie), and the Baz Luhrmann movie adaptation, confirming it's about the correct show."
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "showTitle": "Moulin Rouge! The Musical",
-      "file": "mashable--erin-strecker.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Moulin Rouge!\" and discusses the plot, characters (Satine, Christian, the Duke), and setting of the show. It also references the 2001 film on which the musical is based."
-    },
-    {
-      "showId": "my-fair-lady-2018",
-      "showTitle": "My Fair Lady",
-      "file": "broadwaynews--charles-isherwood.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, director, and lead actors, confirming it is about the correct production."
-    },
-    {
-      "showId": "mr-saturday-night-2022",
-      "showTitle": "Mr. Saturday Night",
-      "file": "washpost--peter-marks.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Mr. Saturday Night\" and discusses the plot, cast (Billy Crystal, David Paymer), creative team (Jason Robert Brown, Amanda Green, John Rando), and venue (Nederlander Theatre)."
-    },
-    {
-      "showId": "my-fair-lady-2018",
-      "showTitle": "My Fair Lady",
-      "file": "nytheatre--steven-suskin.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"My Fair Lady\" and discusses the 2018 Bartlett Sher production at the Vivian Beaumont, along with references to Lerner & Loewe and the plot."
-    },
-    {
-      "showId": "night-side-songs-off-broadway-2026",
-      "showTitle": "Night Side Songs",
-      "file": "one-minute-critic--matthew-wexler.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Night Side Songs\", the writers (the Lazours), the venue (Lincoln Center's Claire Tow Theater), and the plot about Yasmine's cancer diagnosis. It is clearly a review of the stated show."
-    },
-    {
-      "showId": "night-side-songs-off-broadway-2026",
-      "showTitle": "Night Side Songs",
-      "file": "dc-theater-arts--deb-miller.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Night Side Songs\", the venue (Lincoln Center Theater), the creative team (The Lazours, Taibi Magar), and cast members (Brooke Ishibashi, Mary Testa, Robin de Jesús, Kris Saint-Louis, Jonathan Raviv). It also describes the plot and themes of the show."
-    },
-    {
-      "showId": "no-singing-in-the-navy-off-broadway-2026",
-      "showTitle": "No Singing in the Navy",
-      "file": "one-minute-critic--emily-chackerian.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title, plot, venue (Playwrights Horizons), and cast members, confirming it's about the correct show."
-    },
-    {
-      "showId": "of-mice-and-men-2014",
-      "showTitle": "Of Mice and Men",
-      "file": "telegraph--tom-wicker.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title 'Of Mice and Men', the actors Chris O'Dowd and James Franco, and the characters Lennie and George, confirming it's about the correct show."
-    },
-    {
-      "showId": "night-side-songs-off-broadway-2026",
-      "showTitle": "Night Side Songs",
-      "file": "vulture--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Night Side Songs\" and discusses the plot, cast members (Brooke Ishibashi, Mary Testa, Robin de Jesús, Jonathan Raviv, Kris Saint-Louis), and themes of the show, confirming it is a review of the correct production."
-    },
-    {
-      "showId": "old-times-2015",
-      "showTitle": "Old Times",
-      "file": "dctheatrescene--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Old Times\", the playwright Harold Pinter, the director Douglas Hodge, and the cast members Clive Owen, Kelly Reilly, and Eve Best. It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "of-mice-and-men-2014",
-      "showTitle": "Of Mice and Men",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the 2014 Broadway revival of \"Of Mice and Men\", mentioning cast members like James Franco, Chris O'Dowd, and director Anna D. Shapiro. It also references the plot and themes of the show."
-    },
-    {
-      "showId": "on-your-feet-2015",
-      "showTitle": "On Your Feet!",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"On Your Feet! The Story of Emilio & Gloria Estefan\" and discusses the cast, music, and plot of the show."
-    },
-    {
-      "showId": "on-the-twentieth-century-2015",
-      "showTitle": "On the Twentieth Century",
-      "file": "usatoday--elysa-gardner.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"On the Twentieth Century\" and discusses the plot, cast (Kristin Chenoweth, Peter Gallagher), and director (Scott Ellis) of the 2015 revival."
-    },
-    {
-      "showId": "old-times-2015",
-      "showTitle": "Old Times",
-      "file": "usatoday--elysa-gardner.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Old Times\", the playwright Harold Pinter, the director Douglas Hodge, the venue American Airlines Theatre, and cast members Clive Owen, Kelly Reilly, and Eve Best, all of which match the show details."
-    },
-    {
-      "showId": "on-the-twentieth-century-2015",
-      "showTitle": "On the Twentieth Century",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title of the show, the cast (Kristin Chenoweth, Peter Gallagher), the director (Scott Ellis), and the setting (1932 train from Chicago to Broadway). It's clearly a review of \"On the Twentieth Century\"."
-    },
-    {
-      "showId": "on-the-twentieth-century-2015",
-      "showTitle": "On the Twentieth Century",
-      "file": "ew--jason-clark.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Kristin Chenoweth, Peter Gallagher, Andy Karl), creative team (Betty Comden, Adolph Green, Cy Coleman), and the venue (American Airlines Theatre). It also discusses the plot and themes of the show."
-    },
-    {
-      "showId": "operation-mincemeat-2025",
-      "showTitle": "Operation Mincemeat",
-      "file": "talkinbroadway--howard-miller.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Operation Mincemeat\" and discusses the plot, cast, and creative team, matching the show in question."
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "showTitle": "Operation Mincemeat",
-      "file": "nytimes--alexis-soloski.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Operation Mincemeat\" and discusses the plot, creators (SpitLip), and cast members of the show."
-    },
-    {
-      "showId": "operation-mincemeat-2025",
-      "showTitle": "Operation Mincemeat",
-      "file": "ew--shania-russell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Operation Mincemeat\" and discusses the plot, cast size, venue (John Golden Theatre), and creative team (SpitLip)."
-    },
-    {
-      "showId": "our-town-2024",
-      "showTitle": "Our Town",
-      "file": "culturesauce--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast member Jim Parsons, director Kenny Leon, and the Barrymore Theatre, all associated with the 2024 Broadway production of 'Our Town.' It also discusses the play's themes and setting."
-    },
-    {
-      "showId": "operation-mincemeat-2025",
-      "showTitle": "Operation Mincemeat",
-      "file": "culturesauce--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title, cast members (Zoë Roberts, Jak Malone, Natasha Hodgson, David Cumming, and Claire-Marie Hall), and plot details about the WWII spycraft operation. It also references the SplitLip troupe and specific characters like Ewen Montagu and Charles Cholmodeley."
-    },
-    {
-      "showId": "outside-mullingar-2014",
-      "showTitle": "Outside Mullingar",
-      "file": "vulture--jesse-green.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, setting, and cast (Brían F. O'Byrne) of \"Outside Mullingar\" at the Manhattan Theater Club."
-    },
-    {
-      "showId": "outside-mullingar-2014",
-      "showTitle": "Outside Mullingar",
-      "file": "usatoday--elysa-gardner.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Outside Mullingar\", the playwright John Patrick Shanley, and the Samuel J. Friedman Theatre, all associated with the show."
-    },
-    {
-      "showId": "paradise-square-2022",
-      "showTitle": "Paradise Square",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, plot, characters (Nelly O'Brien, Willie O'Brien, Anna, Rev. Samuel Jacob Lewis), and setting (Five Points, Draft Riots of 1863)."
-    },
-    {
-      "showId": "pacific-overtures-1976",
-      "showTitle": "Pacific Overtures",
-      "file": "nytimes--unknown.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the plot, themes, and creative team (Stephen Sondheim, John Weidman) of \"Pacific Overtures,\" including Commodore Perry's expedition to Japan and the influence of Kabuki theater."
-    },
-    {
-      "showId": "pass-over-2021",
-      "showTitle": "Pass Over",
-      "file": "cititour--brian-scott-lipton.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play's title, playwright Antoinette Chinonye Nwandu, director Danya Taymor, the August Wilson Theatre, and actors Jon Michael Hill and Namir Smallwood, all associated with 'Pass Over'. It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "pirates-the-penzance-musical-2025",
-      "showTitle": "Pirates! The Penzance Musical",
-      "file": "culturesauce--thom-geier.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, cast members (Nicholas Barasch, Ramin Karimloo, David Hyde Pierce), director (Scott Ellis), and plot details, confirming it's about \"Pirates! The Penzance Musical\"."
-    },
-    {
-      "showId": "plaza-suite-2022",
-      "showTitle": "Plaza Suite",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Plaza Suite\" and discusses the plot, actors (Matthew Broderick and Sarah Jessica Parker), and playwright (Neil Simon), all of which are associated with the show."
-    },
-    {
-      "showId": "pass-over-2021",
-      "showTitle": "Pass Over",
-      "file": "nydailynews--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show's title, playwright (Antoinette Chinonye Nwandu), venue (August Wilson Theatre), and cast members (Jon Michael Hill, Namir Smallwood). It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "pictures-from-home-2023",
-      "showTitle": "Pictures From Home",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, the source material, the cast (Danny Burstein, Nathan Lane, Zoë Wanamaker), and the director (Bartlett Sher), confirming it's about the correct show."
-    },
-    {
-      "showId": "pirates-the-penzance-musical-2025",
-      "showTitle": "Pirates! The Penzance Musical",
-      "file": "chicagotribune--chris-jones.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions \"Pirates! The Penzance Musical\" and discusses the plot, characters, and creative team (W.S. Gilbert, Arthur Sullivan, Rupert Holmes) associated with the show."
-    },
-    {
-      "showId": "present-laughter-2017",
-      "showTitle": "Present Laughter",
-      "file": "broadwaynews--elizabeth-bradley.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the title \"Present Laughter\" and discusses the plot, cast (Kevin Kline as Garry Essendine), and themes of the show."
-    },
-    {
-      "showId": "present-laughter-2017",
-      "showTitle": "Present Laughter",
-      "file": "dailybeast--tim-teeman.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review discusses the Broadway production of Present Laughter, mentioning the stage design, cast members (Kevin Kline, Tedra Millan, Ellen Harvey, Matt Bittner), and the character Garry Essendine."
-    },
-    {
-      "showId": "present-laughter-2017",
-      "showTitle": "Present Laughter",
-      "file": "laughteronbroadwaycomlottery--ava-smith.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Present Laughter\" and discusses the plot, cast (Kevin Kline, Kate Burton, Kristine Nielsen), director (Moritz von Stuelpnagel), and set designer (David Zinn)."
-    },
-    {
-      "showId": "present-laughter-2017",
-      "showTitle": "Present Laughter",
-      "file": "newsday--linda-winer.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the show title, the venue (St. James Theatre), the lead actor (Kevin Kline), the playwright (Noël Coward), and other cast members, confirming it is about 'Present Laughter'."
-    },
-    {
-      "showId": "present-laughter-2017",
-      "showTitle": "Present Laughter",
-      "file": "dctheatrescene--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Present Laughter\" and discusses the plot, cast (Kevin Kline, Kate Burton, Kristine Nielsen), director (Moritz von Stuelpnagel), and set designer (David Zinn)."
-    },
-    {
-      "showId": "prima-facie-2023",
-      "showTitle": "Prima Facie",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the play title \"Prima Facie\", the actress Jodie Comer, the playwright Suzie Miller, and the Golden Theater, all associated with the show. It also discusses the plot and themes of the play."
-    },
-    {
-      "showId": "prima-facie-2023",
-      "showTitle": "Prima Facie",
-      "file": "talkinbroadway--james-wilson.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, playwright, director, cast, and venue, and discusses the plot and themes of the play. It is clearly a review of 'Prima Facie'."
-    },
-    {
-      "showId": "prima-facie-2023",
-      "showTitle": "Prima Facie",
-      "file": "chelsea-community-news--michael-musto.json",
-      "verdict": "CORRECT",
-      "confidence": "high",
-      "reasoning": "The review mentions the play's title, writer Suzie Miller, actress Jodie Comer, and the plot about a lawyer who becomes a rape victim. It clearly discusses the show 'Prima Facie'."
+      "reasoning": "The review mentions 'Saint Joan' and discusses the cast, including Rashad, and the production itself, indicating it is about the correct show."
     },
     {
       "showId": "romeo-and-juliet-2013",
       "showTitle": "Romeo and Juliet",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, director (David Leveaux), cast members (Orlando Bloom, Condola Rashad, Christian Camargo), and the venue (Richard Rodgers Theatre). It also discusses plot points and themes from the play."
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "showTitle": "Romeo and Juliet",
+      "file": "nytimes--houman-barekat.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Romeo and Juliet), director (Robert Icke), and venue (Harold Pinter Theater) of the show, confirming it's about the correct production. It also mentions the actors Sadie Sink and Noah Jupe."
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "showTitle": "Romeo and Juliet",
+      "file": "west-end-best-friend--livvy-perrett.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Noah Jupe, Sadie Sink), director (Robert Icke), and themes of Shakespeare's Romeo and Juliet, specifically mentioning this production in the West End."
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "showTitle": "Romeo and Juliet",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Sadie Sink, Noah Jupe), director (Robert Icke), and plot elements, confirming it's about the correct production."
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
+      "showTitle": "Sea Wall / A Life",
+      "file": "washpost--peter-marks.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions Jake Gyllenhaal and the playwrights Simon Stephens and Nick Payne, who are associated with the show \"Sea Wall / A Life.\""
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
+      "showTitle": "Sea Wall / A Life",
+      "file": "nysr--david-finkle.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions both 'Sea Wall' and 'A Life', as well as the actors Tom Sturridge and Jake Gyllenhaal, who starred in the show. It also discusses the plot and themes of the show."
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
+      "showTitle": "Sea Wall / A Life",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions both 'Sea Wall' and 'A Life', the playwrights, the actors (Tom Sturridge and Jake Gyllenhaal), and the Hudson theater, all associated with the show 'Sea Wall / A Life'."
+    },
+    {
+      "showId": "she-loves-me-2016",
+      "showTitle": "She Loves Me",
+      "file": "ew--jessica-derschowitz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, cast members (Zachary Levi, Laura Benanti, Jane Krakowski, Gavin Creel), the director (Scott Ellis), and the venue (Studio 54). It also discusses the plot and the source material."
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
+      "showTitle": "Sea Wall / A Life",
+      "file": "broadwaynews--charles-isherwood.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions both \"Sea Wall\" and \"A Life\", Jake Gyllenhaal, Tom Sturridge, Simon Stephens, Nick Payne, and the Hudson Theatre, all associated with the show."
+    },
+    {
+      "showId": "sister-act-2011",
+      "showTitle": "Sister Act",
+      "file": "philadelphia-inquirer--howard-shapiro.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Sister Act\" and its connection to the Whoopi Goldberg movie, the setting in Philadelphia, and the involvement of Alan Menken."
+    },
+    {
+      "showId": "significant-other-2017",
+      "showTitle": "Significant Other",
+      "file": "ew--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, author (Joshua Harmon), venue (Booth Theatre), and lead actor (Gideon Glick), confirming it's about 'Significant Other'."
+    },
+    {
+      "showId": "six-degrees-of-separation-2017",
+      "showTitle": "Six Degrees of Separation",
+      "file": "broadwaynews--charles-isherwood.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the Broadway revival of \"Six Degrees of Separation,\" starring Allison Janney and directed by Trip Cullman. It discusses the plot, themes, and characters of the play, confirming it is a review of the stated show."
+    },
+    {
+      "showId": "six-degrees-of-separation-2017",
+      "showTitle": "Six Degrees of Separation",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play \"Six Degrees of Separation\", the movie adaptation, the characters Ouisa and Flan, and the actors Allison Janney and John Benjamin Hickey who are in the 2017 Broadway revival."
+    },
+    {
+      "showId": "significant-other-2017",
+      "showTitle": "Significant Other",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, playwright, director, cast members, and plot details, confirming it is about \"Significant Other.\""
+    },
+    {
+      "showId": "something-rotten-2015",
+      "showTitle": "Something Rotten!",
       "file": "newsday--linda-winer.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title, cast members (Orlando Bloom, Condola Rashad), and director (David Leveaux) of the 2013 production of Romeo and Juliet."
+      "reasoning": "The review mentions the plot, characters (Nick Bottom, Shakespeare), and creative team (Casey Nicholaw, Christian Borle) of 'Something Rotten!'."
     },
     {
-      "showId": "real-women-have-curves-2025",
-      "showTitle": "Real Women Have Curves",
-      "file": "nytimes--collins-hughes.json",
+      "showId": "something-rotten-2015",
+      "showTitle": "Something Rotten!",
+      "file": "ew--clark-collis.json",
       "verdict": "CORRECT",
       "confidence": "high",
-      "reasoning": "The review explicitly mentions the show title \"Real Women Have Curves\" and discusses the plot, characters (Ana, Carmen, Estela), and themes of the show. It also mentions the James Earl Jones Theater, where the show opened."
+      "reasoning": "The review mentions the show title, cast members (Brian d'Arcy James and Christian Borle), and plot details, confirming it's about 'Something Rotten!'"
+    },
+    {
+      "showId": "six-degrees-of-separation-2017",
+      "showTitle": "Six Degrees of Separation",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play title, the actress Allison Janney, and discusses the plot and themes of the play. It is clearly a review of the stated show."
+    },
+    {
+      "showId": "something-rotten-2015",
+      "showTitle": "Something Rotten!",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title \"Something Rotten!\" and discusses the plot, cast (Brian d'Arcy James, Brad Oscar, Christian Borle, John Cariani), director (Casey Nicholaw), and themes of the show."
+    },
+    {
+      "showId": "skeleton-crew-2022",
+      "showTitle": "Skeleton Crew",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play title \"Skeleton Crew\" and discusses the plot, characters (Faye, Reggie, Shanita, Dez), cast (Phylicia Rashad, Brandon Dirden, Chanté Adams, Joshua Boone), director (Ruben Santiago-Hudson), and setting (Detroit auto workers during the Great Recession)."
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "showTitle": "Spring Awakening",
+      "file": "dctheatrescene--var-block.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Wendle, Melchior, Moritz), and themes of \"Spring Awakening,\" indicating it is about the correct show. The mention of Frank Wedekind further confirms this."
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "showTitle": "Spring Awakening",
+      "file": "ew--bill-keith.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Spring Awakening\" and discusses the 2015 revival, along with the director, cast, and themes of the show. It also references the original Broadway production and the Deaf West Theatre company's involvement."
+    },
+    {
+      "showId": "something-rotten-2015",
+      "showTitle": "Something Rotten!",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, cast (Brian d'Arcy James), creative team (Wayne Kirkpatrick, Karey Kirkpatrick, Casey Nicholaw), and themes of 'Something Rotten!', indicating it is about the correct show."
+    },
+    {
+      "showId": "soul-doctor-2013",
+      "showTitle": "Soul Doctor",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title 'Soul Doctor' and discusses the plot, characters (Shlomo Carlebach, Nina Simone), and creative team (David Schechter, Daniel S. Wise)."
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "showTitle": "Spring Awakening",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the cast (Austin P. McKenzie, Sandra Mae Frank, Katie Boeck, Camryn Manheim, Marlee Matlin, Daniel N. Durant, Alex Boniello), plot points (Wendla's pregnancy, Moritz's tragedy), and songs ('The Bitch of Living,' 'Totally F - - ked,' 'Mama Who Bore Me') from 'Spring Awakening'. It"
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "showTitle": "Spring Awakening",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'Spring Awakening' and discusses the Deaf West Theatre's staging, the cast, director Michael Arden, and the plot/themes of the show."
+    },
+    {
+      "showId": "straight-white-men-2018",
+      "showTitle": "Straight White Men",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, cast members (Armie Hammer, Josh Charles, Paul Schneider), and the venue (Hayes Theater), confirming it's about \"Straight White Men.\""
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "showTitle": "Spring Awakening",
+      "file": "nyt-theater--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the Deaf West production of Spring Awakening at the Brooks Atkinson, which matches the show details. It discusses the unique aspects of this production, such as the pairing of deaf and hearing actors."
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "showTitle": "Spring Awakening",
+      "file": "timeout--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions 'Spring Awakening' and discusses the original cast, including Lea Michele and Jonathan Groff, and the show's themes and creative team (Duncan Sheik and Steven Sater)."
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "showTitle": "Spring Awakening",
+      "file": "washpost--peter-marks.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Deaf West Theatre's 'Spring Awakening'\", cast members, the director, and the venue (Brooks Atkinson Theatre). It also discusses the plot and themes of the show."
+    },
+    {
+      "showId": "stranger-things-2024",
+      "showTitle": "Stranger Things: The First Shadow",
+      "file": "timeout--adam-feldman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Stranger Things: The First Shadow\" and discusses the plot, director, and setting of the show, confirming it is about the correct production."
+    },
+    {
+      "showId": "stranger-things-2024",
+      "showTitle": "Stranger Things: The First Shadow",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Stranger Things The First Shadow\" and discusses the plot, characters, and creative team (Duffer Brothers, Jack Thorne, Stephen Daldry, Justin Martin) of the show."
+    },
+    {
+      "showId": "stranger-things-2024",
+      "showTitle": "Stranger Things: The First Shadow",
+      "file": "nydailynews--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Stranger Things The First Shadow\" and discusses the plot, characters, and setting of the show, confirming it's a review of the correct production."
+    },
+    {
+      "showId": "stranger-things-2024",
+      "showTitle": "Stranger Things: The First Shadow",
+      "file": "nypost--johnny-oleksinski.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Stranger Things: The First Shadow\", the Mind Flayer, Vecna, Henry Creel, and Eleven, all of which are elements of the show."
+    },
+    {
+      "showId": "stranger-things-2024",
+      "showTitle": "Stranger Things: The First Shadow",
+      "file": "latimes--charles-mcnulty.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Stranger Things: The First Shadow\", the cast member Louis McCartney, the venue Marquis, and the creative team including Stephen Daldry and the Duffer Brothers. It is clearly a review of the stated show."
+    },
+    {
+      "showId": "sunset-boulevard-2017",
+      "showTitle": "Sunset Boulevard",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions Glenn Close's Norma Desmond and Andrew Lloyd Webber's \"Sunset Boulevard\", confirming it's about the correct show. It also discusses the production, cast, and creative team."
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "showTitle": "Sunset Boulevard",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, director Jamie Lloyd, the lead actress Nicole Scherzinger, and songs from the musical. It clearly discusses the 2024 revival of \"Sunset Boulevard.\""
+    },
+    {
+      "showId": "sweeney-todd-2023",
+      "showTitle": "Sweeney Todd",
+      "file": "washpost--peter-marks.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"Sweeney Todd: the Demon Barber of Fleet Street,\" Josh Groban, Annaleigh Ashford, Thomas Kail, and Mrs. Lovett, all associated with the 2023 revival of the show."
+    },
+    {
+      "showId": "sunset-boulevard-2017",
+      "showTitle": "Sunset Boulevard",
+      "file": "ew--leah-greenblatt.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, the plot, the cast (Glenn Close, Michael Xavier, Fred Johanson, Siobhan Dillon), and the director (Lonny Price)."
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "showTitle": "Stranger Things: The First Shadow",
+      "file": "broadwayworld--alexander-cohen.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions key elements of the show, including the setting in 1950s Hawkins, characters like Henry Creel/Vecna, Jim Hopper, Joyce, and Dr. Brenner, and the overall themes of the Stranger Things universe. It also mentions the cast and creative team."
+    },
+    {
+      "showId": "the-bands-visit-2017",
+      "showTitle": "The Band's Visit",
+      "file": "broadwayworld--michael-dale.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Band's Visit\" and discusses the plot, cast, and creative team, confirming it is about the correct show."
+    },
+    {
+      "showId": "the-big-love-1991",
+      "showTitle": "The Big Love",
+      "file": "nytimes--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Big Love\" and discusses the plot, characters, and creative team of the show."
+    },
+    {
+      "showId": "the-big-knife-2013",
+      "showTitle": "The Big Knife",
+      "file": "ap--mark-kennedy.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses Clifford Odets' play 'The Big Knife' and mentions the cast (Bobby Cannavale), the production company (Roundabout Theatre Company), and the director (Doug Hughes), all of which align with the show details."
+    },
+    {
+      "showId": "the-bridges-of-madison-county-2014",
+      "showTitle": "The Bridges of Madison County",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Bridges of Madison County\" and discusses the plot, cast (Kelli O'Hara, Steven Pasquale), and creative team (Bartlett Sher, Jason Robert Brown)."
+    },
+    {
+      "showId": "the-bridges-of-madison-county-2014",
+      "showTitle": "The Bridges of Madison County",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, composer Jason Robert Brown, writer Marsha Norman, and lead actors Kelli O'Hara and Steven Pasquale. It also discusses the plot and themes of the show."
+    },
+    {
+      "showId": "the-cherry-orchard-2016",
+      "showTitle": "The Cherry Orchard",
+      "file": "ew--melissa-rose-bernardo.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Cherry Orchard\" and discusses the cast, director, and themes of the play, matching the show details."
+    },
+    {
+      "showId": "the-cripple-of-inishmaan-2014",
+      "showTitle": "The Cripple of Inishmaan",
+      "file": "amny--matt-windman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Cripple of Inishmaan\" and discusses the plot, cast (Daniel Radcliffe as Cripple Billy), and themes of the show. It also mentions the venue (Cort Theatre)."
+    },
+    {
+      "showId": "the-country-house-2014",
+      "showTitle": "The Country House",
+      "file": "nyt-theater--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters, and playwright of \"The Country House,\" and mentions the venue (Samuel J. Friedman Theater) and themes related to the show."
+    },
+    {
+      "showId": "the-cherry-orchard-2016",
+      "showTitle": "The Cherry Orchard",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play title, the venue (American Airlines Theatre), cast members (Diane Lane, Joel Grey), and the playwright (Anton Chekhov). It is clearly a review of the stated show."
+    },
+    {
+      "showId": "the-bridges-of-madison-county-2014",
+      "showTitle": "The Bridges of Madison County",
+      "file": "washpost--peter-marks.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Bridges of Madison County\" and discusses the plot, cast (Kelli O'Hara, Steven Pasquale, Hunter Foster, Derek Klena, Caitlin Kinnunen), creative team (Jason Robert Brown, Bartlett Sher, Marsha Norman), and venue (Gerald Schoenfeld Theatre) of the show."
+    },
+    {
+      "showId": "the-cripple-of-inishmaan-2014",
+      "showTitle": "The Cripple of Inishmaan",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the title \"The Cripple of Inishmaan\", the playwright Martin McDonagh, the character Cripple Billy, and the Cort Theatre, all associated with the show."
+    },
+    {
+      "showId": "the-gin-game-2015",
+      "showTitle": "The Gin Game",
+      "file": "nyt-theater--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the actors James Earl Jones and Cicely Tyson, who starred in the 2015 Broadway revival of The Gin Game. It also mentions the play's plot of two characters playing card games."
+    },
+    {
+      "showId": "the-glass-menagerie-2013",
+      "showTitle": "The Glass Menagerie",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Glass Menagerie\" and discusses the cast (Zachary Quinto, Celia Keenan-Bolger, Cherry Jones), the director (John Tiffany), and the plot/themes of the play."
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "showTitle": "The Enormous Crocodile",
+      "file": "timeout--andrzej-lukowski.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, creative team (Suhayla El-Bushra, Ahmed Abdullahi Gallab, Emily Lim, Toby Olié), and themes of the show 'The Enormous Crocodile', even mentioning it's an adaptation of Roald Dahl's picture book."
+    },
+    {
+      "showId": "the-gin-game-2015",
+      "showTitle": "The Gin Game",
+      "file": "newsday--linda-winer.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions \"The Gin Game\" by name and discusses the plot, characters (Fonsia Dorsey and Weller Martin), and the original actors (Jessica Tandy and Hume Cronyn). It also mentions the current actors (Cicely Tyson and James Earl Jones) and the director (Leonard Foglia)."
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "showTitle": "The Great Gatsby",
+      "file": "dc-theater-arts--deb-miller.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Great Gatsby\" and discusses the plot, characters, creative team (music, lyrics, book), and setting of the show."
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "showTitle": "The Great Gatsby",
+      "file": "guardian--gloria-oladipo.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Great Gatsby\" musical playing at the Broadway Theatre, along with cast members, plot points, and creative team members, confirming it's about the specified show."
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "showTitle": "The Great Gatsby",
+      "file": "nysr--david-finkle.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Great Gatsby\" and discusses the plot, cast (Jeremy Jordan, Eva Noblezada), and creative team (Kait Kerrigan, Jason Howland, Nathan Tysen, Marc Bruni, Dominique Kelley) of the Broadway production."
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "showTitle": "The Great Gatsby",
+      "file": "slantmagazine--dan-rubins.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Great Gatsby\" and discusses the plot, cast (Jeremy Jordan and Eva Noblezada), and previous production at Paper Mill Playhouse, all related to the specified show."
+    },
+    {
+      "showId": "the-glass-menagerie-2013",
+      "showTitle": "The Glass Menagerie",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, cast members (Cherry Jones, Celia Keenan-Bolger, Zachary Quinto), director (John Tiffany), and the venue (Booth Theatre), confirming it's about the 2013 Broadway production of \"The Glass Menagerie.\""
+    },
+    {
+      "showId": "the-heidi-chronicles-2015",
+      "showTitle": "The Heidi Chronicles",
+      "file": "ew--melissa-maerz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, cast (Elisabeth Moss, Jason Biggs), playwright (Wendy Wasserstein), and plot details of \"The Heidi Chronicles\"."
+    },
+    {
+      "showId": "the-heidi-chronicles-2015",
+      "showTitle": "The Heidi Chronicles",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title 'Heidi Chronicles', the director Pam MacKinnon, the venue Music Box Theatre, and the actress Elisabeth Moss who played Heidi Holland. It also discusses the plot and themes of the show."
+    },
+    {
+      "showId": "the-height-of-the-storm-2019",
+      "showTitle": "The Height of the Storm",
+      "file": "broadwaynews--charles-isherwood.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the play's title, playwright Florian Zeller, actors Jonathan Pryce and Eileen Atkins, and the Samuel J. Friedman Theatre, all associated with \"The Height of the Storm.\""
+    },
+    {
+      "showId": "the-heidi-chronicles-2015",
+      "showTitle": "The Heidi Chronicles",
+      "file": "dailybeast--emily-shire.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions Elisabeth Moss starring in the revival of \"The Heidi Chronicles\" and discusses the play's plot and themes. It also mentions the Music Box Theatre, where the revival opened."
+    },
+    {
+      "showId": "the-great-society-2019",
+      "showTitle": "The Great Society",
+      "file": "broadwaynews--charles-isherwood.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Great Society\" and discusses its plot, cast (Brian Cox), and connection to \"All the Way\" and LBJ's presidency, confirming it's about the correct show."
+    },
+    {
+      "showId": "the-last-five-years-2025",
+      "showTitle": "The Last Five Years",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Last Five Years\" and discusses the plot, cast (Nick Jonas, Adrienne Warren), and creative team (Whitney White, Jason Robert Brown). It also references specific songs from the show."
+    },
+    {
+      "showId": "the-house-of-blue-leaves-2011",
+      "showTitle": "The House of Blue Leaves",
+      "file": "showbiz411--roger-friedman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The House of Blue Leaves\" and discusses the cast, plot, and themes of the show, including Ben Stiller, Edie Falco, and the setting in 1971."
+    },
+    {
+      "showId": "the-last-five-years-2025",
+      "showTitle": "The Last Five Years",
+      "file": "nypost--lou-lumenick.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Last Five Years\" and discusses the plot, characters (Jamie and Cathy), composer (Jason Robert Brown), and venue (Hudson Theatre). It also mentions specific songs from the show."
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "showTitle": "The Hunger Games On Stage",
+      "file": "i-paper--fiona-mountford.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Hunger Games\" and discusses plot elements, characters (Katniss Everdeen, President Snow), and themes directly related to the show. It also mentions the director and adaptor."
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "showTitle": "The Hills of California",
+      "file": "nytimes--houman-barekat.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (the Webb sisters), setting (Blackpool, England), and creative team (Sam Mendes, Jez Butterworth) of \"The Hills of California,\" indicating it is a review of the correct show."
+    },
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "showTitle": "The Lehman Trilogy",
+      "file": "parterre-box--david-fox.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Lehman Trilogy\" and discusses its Broadway run, cast, and themes."
+    },
+    {
+      "showId": "the-lifespan-of-a-fact-2018",
+      "showTitle": "The Lifespan of a Fact",
+      "file": "nypost--joe-dziemianowicz.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title \"The Lifespan of a Fact\" and discusses the plot, cast (Daniel Radcliffe, Cherry Jones, Bobby Cannavale), and themes of the show."
+    },
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "showTitle": "The Lehman Trilogy",
+      "file": "washpost--peter-marks.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the actors (Simon Russell Beale, Adam Godley, Adrian Lester), the playwright (Stefano Massini), the adapter (Ben Power), the director (Sam Mendes), the set designer (Es Devlin), and the venue (Nederlander Theatre), all of which are associated with \"The Lehman Trilogy.\""
+    },
+    {
+      "showId": "the-lifespan-of-a-fact-2018",
+      "showTitle": "The Lifespan of a Fact",
+      "file": "vulture--sarah-holdren.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the actors (Bobby Cannavale, Daniel Radcliffe, Cherry Jones), the plot of the play, and the characters' names (John D'Agata, Jim Fingal, Emily Penrose), all of which are associated with 'The Lifespan of a Fact'."
+    },
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "showTitle": "The Lehman Trilogy",
+      "file": "nydailynews--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Lehman Trilogy\" and discusses the plot, cast (Adam Godley, Simon Russell Beale, Adrian Lester), and creative team (Stefano Massini, Ben Power, Sam Mendes). It also mentions the Nederlander Theatre, where the show played."
+    },
+    {
+      "showId": "the-little-foxes-2017",
+      "showTitle": "The Little Foxes",
+      "file": "broadwaynews--charles-isherwood.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Little Foxes\" playwright Lillian Hellman, director Daniel Sullivan, the Manhattan Theatre Club production at the Samuel J. Friedman Theatre, and the cast including Laura Linney and Cynthia Nixon."
+    },
+    {
+      "showId": "the-light-in-the-piazza-2005",
+      "showTitle": "The Light in the Piazza",
+      "file": "variety--david-rooney.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show's title, cast (Victoria Clark), creative team (Adam Guettel, Craig Lucas), and plot elements, confirming it's about \"The Light in the Piazza.\""
+    },
+    {
+      "showId": "the-little-foxes-2017",
+      "showTitle": "The Little Foxes",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the play title \"The Little Foxes\" and discusses the actors (Laura Linney, Cynthia Nixon), the playwright (Lillian Hellman), the director (Daniel Sullivan), and the setting of the play."
+    },
+    {
+      "showId": "the-light-in-the-piazza-2005",
+      "showTitle": "The Light in the Piazza",
+      "file": "talkinbroadway--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Light In The Piazza\" and discusses the book, music, lyrics, director, cast, and venue, all of which match the show in question."
+    },
+    {
+      "showId": "the-light-in-the-piazza-2005",
+      "showTitle": "The Light in the Piazza",
+      "file": "theatermania--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the show title, composer Adam Guettel, librettist Craig Lucas, and the source material (Elizabeth Spencer's novella). It's clearly a review of \"The Light in the Piazza.\""
+    },
+    {
+      "showId": "the-little-foxes-2017",
+      "showTitle": "The Little Foxes",
+      "file": "ew--isabella-biedenharn.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the title \"The Little Foxes\" and discusses the cast, plot, and setting of the play, confirming it is about the correct show."
+    },
+    {
+      "showId": "the-peewee-herman-show-2010",
+      "showTitle": "The Pee-wee Herman Show",
+      "file": "theatermania--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions \"Broadway's The Pee-wee Herman Show\" and Paul Reubens, who is Pee-wee Herman. It also mentions the opening night of the show."
+    },
+    {
+      "showId": "the-miracle-worker-2010",
+      "showTitle": "The Miracle Worker",
+      "file": "ap--michael-kuchwara.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Miracle Worker\" and discusses the cast (Abigail Breslin, Alison Pill), the plot (Helen Keller's education), and the venue (Circle in the Square Theatre)."
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "showTitle": "The Piano Lesson",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Piano Lesson\" and discusses the plot, cast (Samuel L. Jackson, Danielle Brooks, John David Washington), and themes of the play. It also mentions August Wilson, the playwright."
+    },
+    {
+      "showId": "the-parisian-woman-2017",
+      "showTitle": "The Parisian Woman",
+      "file": "newsday--barbara-schuler.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review mentions the title, cast (Uma Thurman, Josh Lucas, Blair Brown), playwright (Beau Willimon), director (Pam MacKinnon), and venue (Hudson Theatre) of 'The Parisian Woman'."
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "showTitle": "The Piano Lesson",
+      "file": "nysr--joe-dziemianowics.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"August Wilson's drama\" and \"The Piano Lesson\", along with characters and plot points from the play."
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "showTitle": "The Piano Lesson",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses August Wilson's \"The Piano Lesson\", the fourth play in his \"Pittsburgh Cycle\", and mentions the Barrymore Theatre, John David Washington, and the plot of the play, all of which align with the show in question."
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "showTitle": "The Piano Lesson",
+      "file": "nydailynews--unknown.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Piano Lesson\" at the Barrymore Theatre, discusses the plot, cast (Samuel L. Jackson, Danielle Brooks, John David Washington), and themes of the play."
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-2025",
+      "showTitle": "The Picture of Dorian Gray",
+      "file": "cititour--brian-scott-lipton.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the show title, the actress Sarah Snook, the director Kip Williams, and characters from the novel, confirming it's about the correct production."
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "showTitle": "The Piano Lesson",
+      "file": "latimes--charles-mcnulty.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Piano Lesson\" and discusses the plot, cast (Samuel L. Jackson, Danielle Brooks, John David Washington), and themes of the play. It also mentions the Ethel Barrymore Theatre, where the 2022 revival opened."
+    },
+    {
+      "showId": "the-play-that-goes-wrong-2017",
+      "showTitle": "The Play That Goes Wrong",
+      "file": "broadwaynews--charles-isherwood.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Play That Goes Wrong\" and discusses the plot, characters, and creative team, confirming it's about the correct show."
+    },
+    {
+      "showId": "the-play-that-goes-wrong-2017",
+      "showTitle": "The Play That Goes Wrong",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Play That Goes Wrong\" and discusses the plot, characters, and creative team involved in the production."
+    },
+    {
+      "showId": "the-play-that-goes-wrong-2017",
+      "showTitle": "The Play That Goes Wrong",
+      "file": "ew--isabella-biedenharn.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Play That Goes Wrong\" and discusses the plot, characters, and setting of the show."
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-2025",
+      "showTitle": "The Picture of Dorian Gray",
+      "file": "washpost--naveen-kumar.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Picture of Dorian Gray\" and discusses the plot, cast (Sarah Snook), and director (Kip Williams) of the show. It also mentions the venue (Broadway)."
+    },
+    {
+      "showId": "the-play-that-goes-wrong-2017",
+      "showTitle": "The Play That Goes Wrong",
+      "file": "dailybeast--tim-teeman.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Play That Goes Wrong\" and discusses the plot and premise of the show, including the play-within-a-play structure and the fictional Cornley University Drama Society."
+    },
+    {
+      "showId": "the-realistic-joneses-2014",
+      "showTitle": "The Realistic Joneses",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Realistic Joneses\" and discusses the cast, director, and themes of the play. It also mentions the venue (Lyceum Theatre)."
+    },
+    {
+      "showId": "the-realistic-joneses-2014",
+      "showTitle": "The Realistic Joneses",
+      "file": "usatoday--elysa-gardner.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Realistic Joneses\" and discusses the cast (Tracy Letts, Toni Collette, Michael C. Hall, Marisa Tomei), the plot, and the playwright (Will Eno)."
+    },
+    {
+      "showId": "the-rose-tattoo-2019",
+      "showTitle": "The Rose Tattoo",
+      "file": "broadwaynews--charles-isherwood.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions the title \"The Rose Tattoo\" and discusses the plot, characters (Serafina Delle Rose, Alvaro), and themes of the play. It also mentions the director (Trip Cullman) and the original Broadway production."
+    },
+    {
+      "showId": "the-real-thing-2014",
+      "showTitle": "The Real Thing",
+      "file": "huffpost--david-finkle.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Real Thing\" by Tom Stoppard and discusses its revival at the American Airlines Theatre, which aligns with the show details."
+    },
+    {
+      "showId": "the-rose-tattoo-2019",
+      "showTitle": "The Rose Tattoo",
+      "file": "chicagotribune--chris-jones.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review explicitly mentions \"The Rose Tattoo\" and discusses the plot, characters (Serafina Delle Rose, Alvaro Mangiacavallo), and the director (Trip Cullman) of the 2019 Broadway production starring Marisa Tomei."
     }
   ]
 }
