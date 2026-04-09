@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-09T04:36:51.121Z",
+    "generatedAt": "2026-04-09T04:52:52.878Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 150,
-    "highConfidence": 46,
-    "mediumConfidence": 104,
+    "totalFlagged": 153,
+    "highConfidence": 47,
+    "mediumConfidence": 106,
     "lowConfidence": 0,
-    "reassignable": 85
+    "reassignable": 86
   },
   "results": [
     {
@@ -1378,6 +1378,21 @@
       "showId": "broadway-1987",
       "showTitle": "Broadway",
       "showYear": 1987,
+      "file": "new-york-sun--elysa-gardner.json",
+      "outlet": "The New York Sun",
+      "criticName": "Elysa Gardner",
+      "publishDate": "2024-04-23",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2024 is 37 years after original opening 1987"
+      ],
+      "textSnippet": "It has never been considered especially cool to be a fan of Huey Lewis and the News. Even during its heyday in the 1980s, song and album titles such as “Hip to Be Square,” “Sports,” and “Fore!” — the "
+    },
+    {
+      "showId": "broadway-1987",
+      "showTitle": "Broadway",
+      "showYear": 1987,
       "file": "vulture--jackson-mchenry.json",
       "outlet": "Vulture",
       "criticName": "Jackson McHenry",
@@ -1520,6 +1535,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "There are moments during the new Broadway revival of John Guare's '60s-set dramedy The House of Blue Leaves that really sing. Many of these involve Edie Falco, who plays the mentally unstable heroine "
+    },
+    {
+      "showId": "macbeth-1981",
+      "showTitle": "Macbeth",
+      "showYear": 1981,
+      "file": "njcom--christopher-kelly.json",
+      "outlet": "NJ.com",
+      "criticName": "Christopher Kelly",
+      "publishDate": "2022-04-29",
+      "confidence": "high",
+      "suggestedShowId": "macbeth-2022",
+      "signals": [
+        "publishDate 2022 matches revival macbeth-2022 (opened 2022)"
+      ],
+      "textSnippet": "What a time for “Macbeth” nerds: Fresh on the heels of Denzel Washington’s somber, burdened turn as the Scottish king in Joel Coen’s fabulously entertaining movie “The Tragedy of Macbeth,” along comes"
     },
     {
       "showId": "evita-1979",
@@ -2298,6 +2328,21 @@
         "revival text signals: revival, back on broadway"
       ],
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
+    },
+    {
+      "showId": "ghosts-1982",
+      "showTitle": "Ghosts",
+      "showYear": 1982,
+      "file": "exeunt-magazine--nicole-serratore.json",
+      "outlet": "Exeunt",
+      "criticName": "Nicole Serratore",
+      "publishDate": "2025-03-11",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2025 is 43 years after original opening 1982"
+      ],
+      "textSnippet": "Lily Rabe and Billy Crudup in Ghosts (Photo: Jeremy Daniel) Playwright Henrik Ibsen is known for writing some remarkable women for the stage including Nora Helmer and Hedda Gabler. While his play Ghos"
     },
     {
       "showId": "annie-1977",
