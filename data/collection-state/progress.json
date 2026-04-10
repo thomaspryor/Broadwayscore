@@ -46,7 +46,8 @@
     "starlight-express-west-end-2024/thestage--paul-vale.json",
     "dog-man-the-musical-west-end-2026/timeout--andrzej-lukowski.json",
     "the-peewee-herman-show-2010/theatermania--unknown.json",
-    "bloody-bloody-andrew-jackson-2010/new-jersey-newsroom--michael-sommers.json"
+    "bloody-bloody-andrew-jackson-2010/new-jersey-newsroom--michael-sommers.json",
+    "fences-2010/wsj--christopher-john-farley.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -977,7 +978,16 @@
     "brief-encounter-2010/nytheatre--martin-denton.json",
     "everyday-rapture-2010/backstage--david-sheward.json",
     "collected-stories-2010/ap--unknown.json",
-    "collected-stories-2010/backstage--david-sheward.json"
+    "collected-stories-2010/backstage--david-sheward.json",
+    "enron-2010/new-jersey-newsroom--michael-sommers.json",
+    "enron-2010/backstage--erik-haagensen.json",
+    "fences-2010/backstage--erik-haagensen.json",
+    "promises-promises-2010/new-jersey-newsroom--michael-sommers.json",
+    "promises-promises-2010/toronto-star--richard-ouzounian.json",
+    "american-idiot-2010/variety--david-rooney.json",
+    "american-idiot-2010/bloomberg--jeremy-gerard.json",
+    "la-cage-aux-folles-2010/new-jersey-newsroom--michael-sommers.json",
+    "la-cage-aux-folles-2010/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1038,7 +1048,8 @@
       "death-of-a-salesman-2026/variety--rebecca-rubin.json",
       "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
-      "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json"
+      "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
+      "fences-2010/wsj--christopher-john-farley.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1047,7 +1058,7 @@
     ]
   },
   "startTime": "2026-04-10T09:30:06.313Z",
-  "lastProcessed": "collected-stories-2010/backstage--david-sheward.json",
+  "lastProcessed": "la-cage-aux-folles-2010/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-10T10:12:17.924Z",
@@ -1081,6 +1092,17 @@
       "t": "2026-04-10T11:51:48.822Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-10T19:03:51.508Z",
+      "event": "bb-session",
+      "session": "67dce294",
+      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
+    },
+    {
+      "t": "2026-04-10T19:03:52.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
