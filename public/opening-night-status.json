@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T06:53:33.864Z",
+  "generatedAt": "2026-04-10T07:17:44.567Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -114,10 +114,6 @@
         },
         {
           "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -885,10 +881,6 @@
         {
           "name": "Slate",
           "isDualMarket": false
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
         },
         {
           "name": "CBS News",
@@ -1800,22 +1792,20 @@
       "status": "open",
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
-      "siteScore": 68.1,
-      "liveScore": 68,
-      "scoreDrift": -0.09999999999999432,
-      "total": 12,
-      "t1": 2,
+      "siteScore": 67.05,
+      "liveScore": 67,
+      "scoreDrift": -0.04999999999999716,
+      "total": 13,
+      "t1": 3,
       "t2": 3,
       "t3": 7,
       "positive": 4,
-      "mixed": 7,
+      "mixed": 8,
       "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 10,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1825,7 +1815,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1834,14 +1824,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -1999,6 +1981,18 @@
           "m": 7,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T07:17:44.567Z",
+          "rc": 13,
+          "s": 67.05,
+          "t1": 3,
+          "t2": 3,
+          "t3": 7,
+          "p": 4,
+          "m": 8,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -2012,9 +2006,9 @@
       "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "siteScore": 79.35,
+      "siteScore": 79.17,
       "liveScore": 79,
-      "scoreDrift": -0.3499999999999943,
+      "scoreDrift": -0.1700000000000017,
       "total": 18,
       "t1": 4,
       "t2": 5,
@@ -2314,6 +2308,18 @@
           "t": "2026-04-10T05:43:24.480Z",
           "rc": 18,
           "s": 79.35,
+          "t1": 4,
+          "t2": 5,
+          "t3": 9,
+          "p": 15,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T07:17:44.567Z",
+          "rc": 18,
+          "s": 79.17,
           "t1": 4,
           "t2": 5,
           "t3": 9,

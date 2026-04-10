@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T06:53:29.959Z",
+  "timestamp": "2026-04-10T07:17:40.754Z",
   "stats": {
-    "totalReviews": 34687,
-    "alreadyFlagged": 13745,
+    "totalReviews": 34696,
+    "alreadyFlagged": 13744,
     "dateGuardCatches": 62,
     "directorMismatch": 963,
     "tvFilmSignals": 3409,
-    "londonSignals": 1122,
+    "londonSignals": 1123,
     "offBroadwaySignals": 971,
     "yearMismatch": 72,
-    "noPublishDate": 6275
+    "noPublishDate": 6285
   },
   "findings": [
     {
@@ -65695,6 +65695,20 @@
     },
     {
       "showId": "copenhagen-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 66,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/apr/08/copenhagen-review-hampstead-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "copenhagen-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 63,
       "publishDate": "2026-04-08",
@@ -70867,7 +70881,7 @@
       "file": "thestage--sam-marlowe.json",
       "score": 45,
       "publishDate": null,
-      "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
+      "url": "https://www.thestage.co.uk/reviews/inter-alia-review-lyttelton-national-theatre-london-rosamund-pike-suzie-miller",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -70895,7 +70909,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 66,
       "publishDate": "2026-04-08",
-      "url": "https://www.thetimes.com/article/9e0d6a06-e200-437a-87f7-09d8a94a5039",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
