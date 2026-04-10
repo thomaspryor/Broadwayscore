@@ -39,6 +39,9 @@ const USER_AGENT = 'Theatr/184 CFNetwork/3860.400.51 Darwin/25.3.0';
 
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 const showsPath = path.join(__dirname, '../data/shows.json');
+// Image cache shared with fetch-show-images-auto.js so that script NEVER
+// needs to call Theatr API itself. Only this script touches Theatr auth.
+const theatrImageCachePath = path.join(__dirname, '../data/theatr-image-cache.json');
 
 let audienceBuzz, showsData, showMapById;
 
@@ -340,6 +343,34 @@ async function main() {
   const broadway = theatrShows.filter(s => s.eventCategory === 'Broadway');
   const offBroadway = theatrShows.filter(s => s.eventCategory === 'Off & Off-Off Broadway');
   console.log(`  Broadway: ${broadway.length} | Off-Broadway: ${offBroadway.length}\n`);
+
+  // 2b. Populate the image cache file used by fetch-show-images-auto.js.
+  // This makes THIS script the single place that calls Theatr API. Image
+  // fetching reads from the cache file without needing the refresh token,
+  // which eliminates the race where two separate workflows both rotated
+  // the token and one of them lost the rotated value.
+  if (!dryRun) {
+    try {
+      const imageRecords = theatrShows
+        .filter(r => r.imageUrl || r.verticalPosterUrl || r.bannerImageUrl)
+        .map(r => ({
+          name: r.name,
+          imageUrl: r.imageUrl || null,
+          posterUrl: r.verticalPosterUrl || null,
+          heroUrl: r.bannerImageUrl || null,
+          eventCategory: r.eventCategory || null,
+          venue: r.venue || null,
+        }));
+      fs.writeFileSync(theatrImageCachePath, JSON.stringify({
+        lastUpdated: new Date().toISOString(),
+        recordCount: imageRecords.length,
+        records: imageRecords,
+      }, null, 2));
+      console.log(`  Wrote ${imageRecords.length} records to theatr-image-cache.json`);
+    } catch (e) {
+      console.error(`  WARNING: Failed to write image cache: ${e.message}`);
+    }
+  }
 
   // 3. Match to our shows
   console.log('Matching to shows.json...');

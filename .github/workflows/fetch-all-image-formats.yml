@@ -77,7 +77,12 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
           MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
-          THEATR_REFRESH_TOKEN: ${{ secrets.THEATR_REFRESH_TOKEN }}
+          # Intentionally NOT passing THEATR_REFRESH_TOKEN.
+          # fetch-show-images-auto.js reads data/theatr-image-cache.json only.
+          # Theatr API is called exclusively from update-theatr.yml via
+          # scripts/scrape-theatr-audience.js which also populates this cache.
+          # This prevents the refresh-token race where two workflows rotated
+          # the token and one lost the rotated value.
         run: |
           ARGS=""
           if [ -n "${{ inputs.show_id }}" ]; then
@@ -97,17 +102,6 @@ jobs:
             INCLUDE_CLOSED="--include-closed"
           fi
           node scripts/fetch-show-images-auto.js $ARGS $INCLUDE_CLOSED --concurrency=$CONCURRENCY $VERIFY_FLAG --max-runtime=150
-
-      - name: Persist rotated Theatr token
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ -f data/theatr-refresh-token.tmp ]; then
-            echo "Updating THEATR_REFRESH_TOKEN secret with rotated token..."
-            gh secret set THEATR_REFRESH_TOKEN < data/theatr-refresh-token.tmp
-            rm data/theatr-refresh-token.tmp
-          fi
 
       - name: Archive images locally
         if: always()

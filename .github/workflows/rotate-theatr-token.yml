@@ -1,0 +1,128 @@
+name: Rotate Theatr Refresh Token
+
+# One-click Theatr refresh-token rotation.
+#
+# Paste a fresh refresh token captured from the Theatr iOS app (via mitmproxy
+# or your preferred interception tool) into the workflow dispatch input.
+# The workflow:
+#   1. Sets THEATR_REFRESH_TOKEN secret to the pasted value
+#   2. Immediately calls Theatr auth with the new token to VALIDATE it works
+#   3. On success: persists the rotated token back to the secret so the cron
+#      chain starts from a known-good state. The validator burns the pasted
+#      token (Theatr rotates on every use), but the new rotated token is saved.
+#   4. On failure: fails loudly with the Theatr error message so you know to
+#      re-capture
+#
+# This replaces manual `gh secret set` + manual workflow dispatch verification.
+
+on:
+  workflow_dispatch:
+    inputs:
+      refresh_token:
+        description: 'Fresh refresh token captured from Theatr iOS app'
+        required: true
+        type: string
+
+concurrency:
+  group: theatr
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set secret to pasted token
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          PASTED_TOKEN: ${{ inputs.refresh_token }}
+        run: |
+          if [ -z "$PASTED_TOKEN" ]; then
+            echo "::error::refresh_token input is empty"
+            exit 1
+          fi
+          echo "Setting THEATR_REFRESH_TOKEN to pasted value..."
+          printf '%s' "$PASTED_TOKEN" | gh secret set THEATR_REFRESH_TOKEN
+          echo "  (the next Theatr API call will immediately rotate this token)"
+
+      - name: Validate token and rotate to fresh one
+        env:
+          THEATR_TOKEN_INPUT: ${{ inputs.refresh_token }}
+        run: |
+          node -e "
+            const https = require('https');
+            const fs = require('fs');
+            const refreshToken = process.env.THEATR_TOKEN_INPUT;
+            const body = JSON.stringify({ refreshToken });
+            const req = https.request({
+              hostname: 'appapi.theatr-app.com',
+              path: '/v1/auth/access-tokens',
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json',
+                'accept': '*/*',
+                'user-agent': 'Theatr/184 CFNetwork/3860.400.51 Darwin/25.3.0',
+                'content-length': Buffer.byteLength(body),
+              },
+            }, res => {
+              let data = '';
+              res.on('data', c => data += c);
+              res.on('end', () => {
+                let parsed;
+                try { parsed = JSON.parse(data); } catch {
+                  console.error('Non-JSON response from Theatr:', data.slice(0, 300));
+                  process.exit(1);
+                }
+                if (!parsed.success) {
+                  console.error('::error::Theatr rejected the pasted refresh token:', parsed.message || JSON.stringify(parsed));
+                  console.error('Re-capture from the iOS app and try again.');
+                  process.exit(1);
+                }
+                const newRefresh = parsed.content && parsed.content.refreshToken;
+                if (!newRefresh) {
+                  console.error('::error::Theatr accepted the token but did not return a new refreshToken. Full response:');
+                  console.error(JSON.stringify(parsed));
+                  process.exit(1);
+                }
+                fs.writeFileSync('/tmp/theatr-rotated-token.txt', newRefresh);
+                console.log('Theatr auth succeeded — new refresh token captured (' + newRefresh.length + ' chars)');
+              });
+            });
+            req.on('error', e => { console.error('::error::Request failed:', e.message); process.exit(1); });
+            req.setTimeout(15000, () => { req.destroy(); console.error('::error::Timeout'); process.exit(1); });
+            req.write(body);
+            req.end();
+          "
+
+      - name: Persist the rotated token back to the secret
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          if [ ! -s /tmp/theatr-rotated-token.txt ]; then
+            echo "::error::No rotated token file — previous step must have failed"
+            exit 1
+          fi
+          gh secret set THEATR_REFRESH_TOKEN < /tmp/theatr-rotated-token.txt
+          rm /tmp/theatr-rotated-token.txt
+          echo "::notice::Theatr refresh token rotation complete. Next scheduled update-theatr.yml run will succeed."
+
+      - name: Dispatch update-theatr as a smoke test
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "Dispatching update-theatr.yml to confirm the fresh token actually scrapes..."
+          gh workflow run update-theatr.yml -f show=death-of-a-salesman-2026 || echo "::warning::Dispatch failed — check update-theatr.yml manually"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Rotate Theatr Token Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
