@@ -116,6 +116,17 @@
 
 ## Recently Completed
 
+### Cats Opening Night Save + Date Fallback Removal (2026-04-07 to 2026-04-10)
+- **OB reviews leaked onto Cats Broadway 2026 page** on opening day. Two unflagged Vulture/WhatsOnStage files from the OB 2024 BWW roundup were displayed with fake April 7 dates. Saw it live, had to fix mid-day.
+- **Root cause #1: opening-night-poller.js missing year validation.** Called `extractBWWRoundupReviews()` but NOT `validateBWWRoundupYear()`, so SERP-discovered OB roundups passed through. Fixed: exported `validateBWWRoundupYear` from `gather-reviews.js`, applied in poller after extraction. Tested: blocks roundups 18+ months before opening date.
+- **Root cause #2: createReviewFile() opening-date fallback.** When a review had no `publishDate`, it stamped the show's openingDate. This made OB reviews look like they were from the Broadway opening, defeating ALL date-based wrong-production guards. Fixed: removed fallback, use `null` instead.
+- **Root cause #3: getKnownUrls() included wrongProduction URLs.** Could block fresh discovery of legitimate same-URL Broadway reviews. Fixed: skip wrongProduction/wrongShow files when building knownUrls set.
+- **Root cause #4: normalizeUrlForDedup() didn't strip tracking params.** `?searchResultPosition=1`, `#/`, UTM params made identical URLs look different. Cross-show URL dedup missed duplicate OB/Broadway copies. Fixed: strip known tracking params + fragments while preserving meaningful query params for old-format URLs.
+- **Historical date cleanup (2,315 files):** Created `scripts/cleanup-fake-publish-dates.js` to null fake `publishDate == openingDate` values from all aggregator sources (show-score-playwright 716, playbill-verdict 600, bww-reviews 298, bww-roundup 292, etc.). Pushed to private repo.
+- **Date recovery (109 files):** Created `scripts/recover-null-dates.js` to extract real dates from URL patterns (`/YYYY/MM/DD/`, `-YYYYMMDD`, etc.) using existing `extractDateFromUrl()`. fullText regex scanning was tried and removed (~60% false positive rate — matched show booking dates and historical references). Cleanup script also enhanced inline (parallel session) to recover URL dates BEFORE nulling.
+- **Final date recovery tally:** 308 (daily backfill) + 109 (URL extraction) + 793 (parallel session — Archive.org/cookies) = ~1,210 of 2,388 originally fake dates now have real values (~51%). Remaining ~1,178 are aggregator stubs without scrapeable dates — null is honest, and the cross-show URL dedup falls back to URL year extraction for them.
+- **Cats result:** Live page now shows 24 real critic reviews (NYT, Vulture, NY Post, Variety, Time Out, Guardian, etc.) with accurate April 7-8 dates and a composite score of 86.16. No OB contamination.
+
 ### WET Scraper Wrong-Show Fix + WAF Bypass (2026-04-08)
 - **27 wrong-show archives** — WET scraper accepted medium-confidence fuzzy matches from `matchTitleToShow()`. Generic WP titles matched random shows via word overlap (e.g., "Best West End Shows This Week" → "THIS IS NOT ABOUT ME."). Fixed: confidence gate (only HIGH), content validation (show title words in post body), short-title fallback.
 - **Sucuri WAF bypass** — WET WordPress API blocked since ~Mar 22 (returning HTML challenge instead of JSON). Replaced custom curl/https with shared `scraper.js` `fetchJSON()` (ScrapingBee proxy, 1 credit/page). 884 posts fetched successfully.
