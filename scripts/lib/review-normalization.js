@@ -816,26 +816,36 @@ function buildDomainToOutletIndex() {
   const registry = loadOutletRegistry();
 
   if (registry && registry.outlets) {
+    // Two-pass build: primary domains take precedence over domainAliases.
+    // This prevents a defunct outlet's stale alias from poisoning a live outlet's
+    // primary domain (DoaS Apr 9-10 #7/#8: wolf-entertainment-guide.domainAliases
+    // claimed newyorktheatreguide.com, observer.domainAliases claimed
+    // theguardian.com — single-pass iteration order made the bug intermittent).
+    //
+    // Pass 1: register every outlet's primary `domain`. Last-write-wins is OK
+    // here because two live outlets should not share a primary domain.
     for (const [outletId, outletData] of Object.entries(registry.outlets)) {
+      if (!outletData.domain) continue;
       const entry = { outletId, displayName: outletData.displayName };
+      const fullHost = outletData.domain.replace(/^www\./, '').toLowerCase();
+      const domainBase = fullHost.split('.')[0];
+      _domainToOutletCache.set(fullHost, entry);
+      _domainToOutletCache.set(domainBase, entry);
+    }
 
-      if (outletData.domain) {
-        // Strip www. prefix and convert to lowercase
-        const fullHost = outletData.domain.replace(/^www\./, '').toLowerCase();
-        // Extract domain base (without TLD): "nytimes.com" -> "nytimes"
-        const domainBase = fullHost.split('.')[0];
-
-        // Map both full hostname and domain base
-        _domainToOutletCache.set(fullHost, entry);
-        _domainToOutletCache.set(domainBase, entry);
-      }
-
-      // Also index domainAliases (alternate/historical domains for the same outlet)
-      if (outletData.domainAliases) {
-        for (const alias of outletData.domainAliases) {
-          const aliasHost = alias.replace(/^www\./, '').toLowerCase();
-          const aliasBase = aliasHost.split('.')[0];
+    // Pass 2: register domainAliases ONLY where the key is not already taken
+    // by a primary domain. This guarantees a live outlet's primary always wins
+    // over any other outlet's alias claiming the same domain.
+    for (const [outletId, outletData] of Object.entries(registry.outlets)) {
+      if (!outletData.domainAliases) continue;
+      const entry = { outletId, displayName: outletData.displayName };
+      for (const alias of outletData.domainAliases) {
+        const aliasHost = alias.replace(/^www\./, '').toLowerCase();
+        const aliasBase = aliasHost.split('.')[0];
+        if (!_domainToOutletCache.has(aliasHost)) {
           _domainToOutletCache.set(aliasHost, entry);
+        }
+        if (!_domainToOutletCache.has(aliasBase)) {
           _domainToOutletCache.set(aliasBase, entry);
         }
       }

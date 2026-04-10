@@ -341,6 +341,55 @@ function isUrlTitleMismatch(url, showTitle) {
 }
 
 /**
+ * Like urlLooksLikeReview but ALSO accepts a match against the article title/H1.
+ *
+ * Critics often use creative review titles that don't repeat the show name in the URL —
+ * Theater Pizzazz Ron Fassler's DoaS review URL is "hes-back-but-has-willy-loman-ever-left-us"
+ * with no "death-of-a-salesman" in the URL slug. The strict urlLooksLikeReview rejected
+ * the legit review on opening night.
+ *
+ * Resolution order:
+ *   1. If options.trustedSource === true, accept (used by BWW Review Roundup extractor
+ *      where the manual curation is the trusted signal).
+ *   2. URL still has rejected patterns (/tag/, /author/, /ticket without /review): reject.
+ *   3. URL slug matches the show title via urlLooksLikeReview: accept.
+ *   4. articleTitle exists and contains enough title words: accept.
+ *   5. Otherwise reject.
+ *
+ * @param {string} url - Review URL
+ * @param {string} showTitle - Show title to match against
+ * @param {string|null} articleTitle - Optional article H1 / og:title
+ * @param {Object} [options]
+ * @param {boolean} [options.trustedSource=false] - Bypass for trusted aggregators
+ * @returns {boolean}
+ *
+ * Refs: memory/project_doas_opening_night_issues.md issue #6
+ */
+function urlOrTitleLooksLikeReview(url, showTitle, articleTitle, options = {}) {
+  if (!url) return false;
+  // 1. trustedSource bypass (BWW Roundup curation) — but still check URL is article-shaped
+  const lower = url.toLowerCase();
+  // Reject obviously non-article URLs even with trustedSource (defense in depth)
+  if (lower.includes('/tag/') || lower.includes('/author/') || lower.includes('/category/')) return false;
+  if (lower.includes('/search') || lower.includes('/page/') || lower.includes('/obituar')) return false;
+  if (lower.includes('ticket') && !lower.includes('review')) return false;
+
+  if (options.trustedSource === true) return true;
+
+  // 2. Try the strict slug check first (cheaper)
+  if (urlLooksLikeReview(url, showTitle)) return true;
+
+  // 3. Fall back to article title match if provided
+  if (articleTitle && typeof articleTitle === 'string' && articleTitle.trim().length > 0) {
+    // Reuse urlLooksLikeReview's word-matching by treating articleTitle as if it were a URL
+    // This gives us free word-boundary checking and the same significant-word filter.
+    if (urlLooksLikeReview(articleTitle, showTitle)) return true;
+  }
+
+  return false;
+}
+
+/**
  * Centralized check for whether the wrong-production audit should skip a review file.
  *
  * Returns true if any of the three "human-verified positive" overrides is set:
@@ -410,4 +459,5 @@ module.exports = {
   isUrlTitleMismatch,
   shouldSkipWrongProductionAudit,
   isRevivalByCanonicalTitle,
+  urlOrTitleLooksLikeReview,
 };

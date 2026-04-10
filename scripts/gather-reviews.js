@@ -58,7 +58,7 @@ const { verifyProduction, quickDateCheck, getShowData } = require('./lib/product
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { isLikelyTourReview, urlLooksLikeReview } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
@@ -1896,11 +1896,16 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     for (const review of reviews) {
       if (!review.url && review.outletId && urlByOutlet[review.outletId]) {
         const candidateUrl = urlByOutlet[review.outletId];
-        // Validate URL slug matches show title — prevents cross-show contamination
-        // (e.g., Monte Cristo URL assigned to Becky Shaw review)
-        if (showTitle && !urlLooksLikeReview(candidateUrl, showTitle)) {
+        // BWW Review Roundup is manually curated by BWW editors — trust the
+        // outlet→URL mapping. The cross-show URL slug guard at line 2357
+        // (detectCrossShowUrlMismatch in createReviewFile) catches genuine
+        // misattributions downstream. Without trusting BWW curation, we lost
+        // legitimate creative-titled URLs on opening night (Theater Pizzazz
+        // Ron Fassler "hes-back-but-has-willy-loman-ever-left-us" had no
+        // "death-of-a-salesman" in the slug). DoaS Apr 9-10 #6.
+        if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
           urlsRejected++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: slug doesn't match "${showTitle}" — ${candidateUrl.substring(0, 80)}`);
+          console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
           continue;
         }
         review.url = candidateUrl;
@@ -1908,7 +1913,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
       }
     }
     if (urlsPopulated > 0) {
-      console.log(`    Populated ${urlsPopulated} source URLs from BWW roundup HTML${urlsRejected > 0 ? ` (${urlsRejected} rejected for wrong show)` : ''}`);
+      console.log(`    Populated ${urlsPopulated} source URLs from BWW roundup HTML${urlsRejected > 0 ? ` (${urlsRejected} rejected as non-article)` : ''}`);
     }
 
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup (BlogPosting)`);
@@ -2039,9 +2044,11 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     for (const review of reviews) {
       if (!review.url && review.outletId && urlByOutlet2[review.outletId]) {
         const candidateUrl = urlByOutlet2[review.outletId];
-        if (showTitle && !urlLooksLikeReview(candidateUrl, showTitle)) {
+        // Same trustedSource bypass as Method 1 — BWW Roundup curation is trusted,
+        // detectCrossShowUrlMismatch (line 2357) catches misattributions downstream.
+        if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
           urlsRejected2++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: slug doesn't match "${showTitle}" — ${candidateUrl.substring(0, 80)}`);
+          console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
           continue;
         }
         review.url = candidateUrl;
@@ -2049,7 +2056,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
       }
     }
     if (urlsPopulated2 > 0) {
-      console.log(`    Populated ${urlsPopulated2} source URLs from BWW roundup HTML${urlsRejected2 > 0 ? ` (${urlsRejected2} rejected for wrong show)` : ''}`);
+      console.log(`    Populated ${urlsPopulated2} source URLs from BWW roundup HTML${urlsRejected2 > 0 ? ` (${urlsRejected2} rejected as non-article)` : ''}`);
     }
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
   } else if (html && html.length > 5000) {
