@@ -74,6 +74,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
           MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
           THEATR_REFRESH_TOKEN: ${{ secrets.THEATR_REFRESH_TOKEN }}

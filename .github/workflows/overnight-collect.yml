@@ -102,7 +102,7 @@ jobs:
           WASHPOST_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
           WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
           WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
-          BRIGHTDATA_ZONE: mcp_unlocker
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           IFS=',' read -ra SHOWS <<< "${{ steps.shows.outputs.list }}"
           TOTAL=${#SHOWS[@]}

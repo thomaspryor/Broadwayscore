@@ -67,6 +67,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           BASE_ARGS="--verbose"
           if [ "${{ inputs.dry_run }}" = "true" ]; then

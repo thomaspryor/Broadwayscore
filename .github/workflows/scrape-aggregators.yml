@@ -52,6 +52,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SHOWS: ${{ inputs.shows }}
         run: |
           echo "Scraping Did They Like It reviews..."
@@ -103,6 +104,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SHOWS: ${{ inputs.shows }}
         run: |
           echo "Scraping BroadwayWorld Review Roundups..."

@@ -49,6 +49,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
           FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}

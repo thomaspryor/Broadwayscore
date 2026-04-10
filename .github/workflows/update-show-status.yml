@@ -68,6 +68,7 @@ jobs:
         id: status-update
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
           SS_FLAG=""
@@ -95,6 +96,7 @@ jobs:
         if: ${{ inputs.skip_discovery != 'true' }}
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates
 
@@ -116,6 +118,7 @@ jobs:
       - name: Refresh StubHub prices (scraping — temporary until API access)
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/enrich-stubhub-prices.js
         continue-on-error: true
@@ -794,6 +797,7 @@ jobs:
         if: steps.filter.outputs.cast_shows != ''
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
           for slug in $(echo "${{ steps.filter.outputs.cast_shows }}" | tr ',' '\n'); do

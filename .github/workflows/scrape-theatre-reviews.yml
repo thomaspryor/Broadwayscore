@@ -59,6 +59,7 @@ jobs:
       - name: Run theatre.reviews scraper
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           ARGS=""
 

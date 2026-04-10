@@ -127,6 +127,7 @@ jobs:
         if: inputs.skip_enrichment != 'true'
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/backfill-unknown-critics.js --critics-only --limit=50
         continue-on-error: true

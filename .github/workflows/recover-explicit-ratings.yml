@@ -78,7 +78,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_ZONE: mcp_unlocker
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
           COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}

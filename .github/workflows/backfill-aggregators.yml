@@ -159,6 +159,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           echo "Batch ${{ matrix.batch_id }}: Playbill Verdict for ${{ matrix.size }} shows"
           DATE_FLAG=""

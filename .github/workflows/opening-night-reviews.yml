@@ -131,6 +131,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           SERP_SHOWS="${{ steps.find.outputs.serp_shows }}"
           if [ -z "$SERP_SHOWS" ]; then

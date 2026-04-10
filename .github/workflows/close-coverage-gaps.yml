@@ -316,6 +316,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           IFS=',' read -ra SHOWS <<< "${{ matrix.shows }}"
           TOTAL=${#SHOWS[@]}
@@ -433,6 +434,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           SHOWS=$(cat /tmp/gap-data/gap-shows.txt)
           node scripts/scrape-playbill-verdict.js --shows="$SHOWS" --no-date-filter || true

@@ -97,6 +97,7 @@ jobs:
         id: recollect
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SB_CREDIT_BUDGET: '500'
           COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}

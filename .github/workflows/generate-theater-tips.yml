@@ -58,6 +58,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' || inputs.skip_scrape != true }}
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: |
           ARGS=""

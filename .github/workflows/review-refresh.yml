@@ -90,6 +90,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SHOW_FILTER: ${{ inputs.show_filter }}
           INCLUDE_CLOSED: ${{ inputs.include_closed }}
           IS_AWARDS_SEASON: ${{ steps.season.outputs.is_awards_season }}
@@ -288,6 +289,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           SHOWS="${{ steps.check.outputs.shows_with_updates }}"
           if [ -n "$SHOWS" ]; then
@@ -330,6 +332,7 @@ jobs:
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           echo "Running Phase 0 URL discovery for WE reviews without URLs..."
           node scripts/recover-explicit-ratings.js --phase=0 --market=west-end --limit=50

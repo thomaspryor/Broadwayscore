@@ -117,7 +117,7 @@ jobs:
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_ZONE: mcp_unlocker
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_ENABLED: 'true'
