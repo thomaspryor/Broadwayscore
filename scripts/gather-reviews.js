@@ -58,7 +58,7 @@ const { verifyProduction, quickDateCheck, getShowData } = require('./lib/product
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
@@ -2541,6 +2541,14 @@ function createReviewFile(showId, reviewData, options = {}) {
           const isHumanFlagged = existingReview.wrongShowReason
             || existingReview.humanReviewedWrongProduction === false
             || existingReview.humanReviewScore != null;
+          // DoaS Apr 9-10 #13: variety--unknown loop. When BOTH critics are
+          // "unknown", outlet+unknown identity is too weak to claim "same review."
+          // Refuse the URL re-assignment; preserve the existing wrongShow flag.
+          // Named-critic upgrades still work via the path at line ~2511.
+          if (isWrongShowUnknownLocked(existingReview, reviewData)) {
+            console.log(`    ⊘ wrongShow lock: refusing to reassign URL on ${existingFile} (both critics unknown)`);
+            return false;
+          }
           if ((existingReview.wrongShow || existingReview.wrongProduction) && reviewData.url
               && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))
               && !isHumanFlagged) {

@@ -390,6 +390,42 @@ function urlOrTitleLooksLikeReview(url, showTitle, articleTitle, options = {}) {
 }
 
 /**
+ * Returns true if a wrongShow file should be locked against URL re-assignment
+ * because both the existing file's critic and the incoming review's critic
+ * normalize to "unknown."
+ *
+ * The DoaS Apr 9-10 postmortem (#13) showed an RSS feed loop where
+ * variety--unknown.json kept getting new wrong URLs assigned to it because:
+ *   1. RSS discovery couldn't extract a critic name (criticName = "Unknown")
+ *   2. The existing file was already wrongShow=true (from a prior bad URL)
+ *   3. The incoming review key (outletId + "unknown") matched the existing key
+ *   4. The "wrongShow + URL change" replace branch fired, wiping the wrongShow
+ *      flag and stamping a new (also wrong) URL
+ *   5. Next cycle: repeat with another wrong URL
+ *
+ * Outlet+"unknown" is too weak an identity match to claim "same review, just a
+ * new URL." When BOTH sides are unknown-critic, refuse the URL re-assignment
+ * and preserve the existing file as-is. Site search and SERP layers can still
+ * discover the correct URL with a NAMED critic, which falls into the existing
+ * unknown→named upgrade path (gather-reviews.js:2511) — that's not blocked.
+ *
+ * @param {Object|null} existing - Existing review data on disk
+ * @param {Object|null} incoming - New review data being merged
+ * @returns {boolean} true if the URL re-assignment should be blocked
+ *
+ * Refs: memory/project_doas_opening_night_issues.md issue #13
+ */
+function isWrongShowUnknownLocked(existing, incoming) {
+  if (!existing || typeof existing !== 'object') return false;
+  if (!incoming || typeof incoming !== 'object') return false;
+  if (existing.wrongShow !== true) return false;
+  const existingCritic = (existing.criticName || '').trim().toLowerCase();
+  const incomingCritic = (incoming.criticName || '').trim().toLowerCase();
+  const isUnknown = (c) => c === '' || c === 'unknown' || c === 'unnamed';
+  return isUnknown(existingCritic) && isUnknown(incomingCritic);
+}
+
+/**
  * Centralized check for whether the wrong-production audit should skip a review file.
  *
  * Returns true if any of the three "human-verified positive" overrides is set:
@@ -460,4 +496,5 @@ module.exports = {
   shouldSkipWrongProductionAudit,
   isRevivalByCanonicalTitle,
   urlOrTitleLooksLikeReview,
+  isWrongShowUnknownLocked,
 };
