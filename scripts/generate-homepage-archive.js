@@ -139,21 +139,10 @@ const archiveShows = shows.filter(show => {
 const archiveData = archiveShows.map(show => {
   const showReviews = reviewsByShow[show.id] || [];
 
-  // Compute critic score
-  let criticScore = computeCriticScore(showReviews);
-
-  // Pre-2005 gating
-  if (criticScore && show.openingDate) {
-    const openingYear = new Date(show.openingDate).getFullYear();
-    if (openingYear < SCORE_DISPLAY_YEAR_CUTOFF) {
-      const highConfCount = showReviews.filter(r =>
-        r.scoreSource && !LOW_CONF_SCORE_SOURCES.has(r.scoreSource)
-      ).length;
-      if (highConfCount < MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF) {
-        criticScore = null;
-      }
-    }
-  }
+  // Pre-2005 closed shows: hide reviews entirely
+  const openingYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 9999;
+  const hideReviews = openingYear < SCORE_DISPLAY_YEAR_CUTOFF && show.status === 'closed';
+  let criticScore = hideReviews ? null : computeCriticScore(showReviews);
 
   // Audience data
   const buzz = audienceBuzz[show.id];

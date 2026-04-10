@@ -6,7 +6,7 @@
 import type { GoldListEntry } from './data-types';
 import type { GoldListType } from '@/config/gold-lists';
 import { GOLD_LIST_MAP } from '@/config/gold-lists';
-import { OUTLET_TIERS, TIER_WEIGHTS, DEFAULT_TIER, SCORE_DISPLAY_YEAR_CUTOFF, MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF, LOW_CONF_SCORE_SOURCES } from '@/config/scoring';
+import { OUTLET_TIERS, TIER_WEIGHTS, DEFAULT_TIER, SCORE_DISPLAY_YEAR_CUTOFF, MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF, LOW_CONF_SCORE_SOURCES, shouldHideReviews } from '@/config/scoring';
 import { getSeason } from './data-commercial';
 
 import showsData from '../../data/shows.json';
@@ -185,12 +185,8 @@ function computeCriticalGold(season: string): GoldListEntry[] {
     if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
     if (reviews.length < 5) continue;
 
-    // Pre-2005 gate: require minimum high-confidence reviews
-    const openingYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
-    if (openingYear < SCORE_DISPLAY_YEAR_CUTOFF) {
-      const highConf = reviews.filter(r => r.scoreSource && !LOW_CONF_SCORE_SOURCES.has(r.scoreSource)).length;
-      if (highConf < MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF) continue;
-    }
+    // Pre-2005 closed shows: skip entirely (unreliable review data)
+    if (shouldHideReviews(show)) continue;
 
     let weightedSum = 0;
     let weightSum = 0;

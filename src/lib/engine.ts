@@ -27,6 +27,7 @@ import {
   SCORE_DISPLAY_YEAR_CUTOFF,
   MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF,
   LOW_CONF_SCORE_SOURCES,
+  shouldHideReviews,
 } from '@/config/scoring';
 import { getRegistryTier } from './outlet-id-mapper';
 
@@ -615,20 +616,9 @@ export function computeShowData(
 ): ComputedShow {
   const showReviews = reviews.filter(r => r.showId === show.id);
 
-  let criticScore = computeCriticScore(showReviews);
-
-  // Gate: Pre-2005 Broadway shows need minimum high-confidence reviews to display a score.
-  // Most pre-2005 reviews are excerpt-only with low-confidence LLM scores, and many are
-  // wrong-production (revival reviews mapped to the original production ID).
-  if (criticScore && show.openingDate && (!show.category || show.category === 'broadway')) {
-    const openingYear = new Date(show.openingDate).getFullYear();
-    if (openingYear < SCORE_DISPLAY_YEAR_CUTOFF) {
-      const highConfCount = showReviews.filter(r => r.scoreSource && !LOW_CONF_SCORE_SOURCES.has(r.scoreSource)).length;
-      if (highConfCount < MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF) {
-        criticScore = null;
-      }
-    }
-  }
+  // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
+  const hideReviews = shouldHideReviews(show);
+  let criticScore = hideReviews ? null : computeCriticScore(showReviews);
 
   // V1: composite score = critic score (audience/buzz coming later)
   // Keep 2 decimal places for tiebreaking in sort order (e.g., 87.96 vs 87.12)

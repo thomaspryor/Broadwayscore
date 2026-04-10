@@ -60,7 +60,10 @@ const searchShows = visibleShows.map(show => {
     entry.images = { thumbnail: show.images.thumbnail };
   }
 
-  if (showsWithScores.has(show.id)) {
+  // Don't mark pre-2005 closed shows as having scores (reviews hidden)
+  const openingYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 9999;
+  const hideReviews = openingYear < 2005 && show.status === 'closed';
+  if (showsWithScores.has(show.id) && !hideReviews) {
     entry.hasScore = true;
   }
 
