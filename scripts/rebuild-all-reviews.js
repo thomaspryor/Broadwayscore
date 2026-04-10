@@ -3220,10 +3220,16 @@ if (consistencyIssues.length > 0) {
       const currentData = JSON.parse(fs.readFileSync(currentReviewsPath, 'utf8'));
       const manualEntries = (currentData.reviews || []).filter(r => r.manualEntry === true);
       let preserved = 0;
+      const normCritic = (name) => (name || 'unknown').toLowerCase().trim();
       for (const manual of manualEntries) {
-        const key = `${manual.showId}|${manual.outletId}`;
+        const manualCritic = normCritic(manual.criticName);
+        // Match by showId + outletId + criticName. Outlets like NYSR have multiple
+        // critics per show — matching only by outletId returns the wrong entry and
+        // leaves the actual pipeline version un-replaced (causing a duplicate).
         const pipelineVersion = allReviews.find(r =>
-          r.showId === manual.showId && r.outletId === manual.outletId
+          r.showId === manual.showId &&
+          r.outletId === manual.outletId &&
+          normCritic(r.criticName) === manualCritic
         );
         if (pipelineVersion && pipelineVersion.scoreSource === 'human-review') {
           // Pipeline processed the source file with humanReviewScore — it's authoritative
