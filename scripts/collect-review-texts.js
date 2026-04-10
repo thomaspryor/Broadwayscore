@@ -5093,7 +5093,12 @@ function findReviewsToProcess() {
         if (data.incompleteReason === 'permanently_unavailable' && CONFIG.incompleteReasonFilter.length === 0) continue;
 
         // Skip misattributed/wrong reviews (unless explicitly targeting wrong_content)
-        const isWrongContent = data.wrongAttribution || data.wrongProduction || data.wrongShow;
+        // EXCEPTION: if a human reviewed and verified the production (humanReviewedWrongProduction:false)
+        // or set humanReviewScore, the wrongProduction flag is a false-positive — allow re-fetch.
+        const isHumanVerified = data.humanReviewedWrongProduction === false
+          || data.humanReviewScore != null;
+        const isWrongContent = (data.wrongAttribution || data.wrongProduction || data.wrongShow)
+          && !isHumanVerified;
         if (isWrongContent && !CONFIG.incompleteReasonFilter.includes('wrong_content')) {
           // Allow retry for collector-flagged wrongShow files (bad scrape of correct URL)
           // These have wrongShowReason starting with "Collector LLM" — distinguishes from
