@@ -59,6 +59,8 @@ const PROTECTED_FIELDS = [
   'previousOriginalScore',
   'humanReviewNote',
   'humanReviewedWrongProduction',
+  'wrongProductionManualClear',
+  'wrongProductionOverride',
   'designation',
   'isCriticsPick',
   'duplicateOf',

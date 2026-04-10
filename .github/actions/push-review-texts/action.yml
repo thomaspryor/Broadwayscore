@@ -48,6 +48,7 @@ runs:
           const fs = require('fs');
           const { execSync } = require('child_process');
           // KEEP IN SYNC with scripts/lib/review-write-guard.js PROTECTED_FIELDS
+          // and scripts/lib/restore-protected-fields.js MANUAL_FIELDS
           const PROTECTED = [
             'assignedScore', 'llmScore', 'llmMetadata', 'fullText', 'contentTier',
             'contentTierReason', 'contentVerification', 'ensembleData', 'tierReason',
@@ -56,6 +57,7 @@ runs:
             'wrongProductionNote', 'incompleteReason', 'incompleteDetail',
             'originalScoreCleared', 'originalScoreClearedReason', 'previousOriginalScore',
             'humanReviewScore', 'humanReviewNote', 'humanReviewedWrongProduction',
+            'wrongProductionManualClear', 'wrongProductionOverride',
             'designation', 'isCriticsPick', 'originalScore', 'duplicateOf', 'duplicateReason',
             'publishDateVerified', 'publishDateSource', 'allowEarlyDate'
           ];

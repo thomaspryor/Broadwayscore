@@ -22,10 +22,15 @@ const { execSync } = require('child_process');
 
 // Fields that are ONLY set by manual human corrections, never by CI pipelines.
 // If the remote has these and local doesn't, it's ALWAYS correct to restore them.
+// humanReviewedWrongProduction: false is the linchpin guard for opening night —
+// CI rebases dropped it during DoaS Apr 9-10, causing CV-promotion to re-flag
+// human-verified files as wrongProduction. See memory/project_doas_opening_night_issues.md.
 const MANUAL_FIELDS = [
   'humanReviewScore',
   'manualContentTier',
   'wrongProductionManualClear',
+  'wrongProductionOverride',
+  'humanReviewedWrongProduction',
   'allowEarlyDate',
 ];
 
