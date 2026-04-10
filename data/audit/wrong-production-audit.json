@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T18:26:24.447Z",
+  "timestamp": "2026-04-10T19:31:26.861Z",
   "stats": {
-    "totalReviews": 34683,
+    "totalReviews": 34689,
     "alreadyFlagged": 13776,
     "dateGuardCatches": 60,
     "directorMismatch": 954,
     "tvFilmSignals": 3407,
-    "londonSignals": 1118,
-    "offBroadwaySignals": 970,
+    "londonSignals": 1119,
+    "offBroadwaySignals": 971,
     "yearMismatch": 71,
-    "noPublishDate": 5215
+    "noPublishDate": 5211
   },
   "findings": [
     {
@@ -12561,6 +12561,7 @@
     {
       "showId": "death-of-a-salesman-2026",
       "file": "nyt-theater--unknown.json",
+      "score": 63,
       "publishDate": "2026-04-10",
       "url": "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/",
       "findings": [
@@ -63997,6 +63998,20 @@
     },
     {
       "showId": "bloody-bloody-andrew-jackson-2010",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "http://www.newjerseynewsroom.com/movies/bloody-bloody-andrew-jackson-hits-broadway-broadway",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "bloody-bloody-andrew-jackson-2010",
       "file": "newsday--linda-winer.json",
       "score": 72,
       "publishDate": null,
@@ -67081,6 +67096,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "flyby-off-west-end-2026",
+      "file": "whatsonstage--lucinda-everett.json",
+      "score": 73,
+      "publishDate": "2026-04-10",
+      "url": "https://www.whatsonstage.com/news/flyby-musical-at-southwark-playhouse-borough-review_1717813/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
