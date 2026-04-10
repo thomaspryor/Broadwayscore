@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T05:22:58.412Z",
+  "generatedAt": "2026-04-10T05:43:24.480Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -25,7 +25,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -631,9 +631,9 @@
           "1/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -718,20 +718,20 @@
       "status": "open",
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
-      "siteScore": 87,
+      "siteScore": 86.96,
       "liveScore": 87,
-      "scoreDrift": 0,
-      "total": 23,
+      "scoreDrift": 0.04000000000000625,
+      "total": 24,
       "t1": 5,
-      "t2": 13,
+      "t2": 14,
       "t3": 5,
-      "positive": 21,
+      "positive": 22,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 22,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1228,6 +1228,18 @@
           "t2": 13,
           "t3": 5,
           "p": 21,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T05:43:24.480Z",
+          "rc": 24,
+          "s": 86.96,
+          "t1": 5,
+          "t2": 14,
+          "t3": 5,
+          "p": 22,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -1803,7 +1815,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 9,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2000,20 +2012,20 @@
       "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "siteScore": 79.33,
+      "siteScore": 79.35,
       "liveScore": 79,
-      "scoreDrift": -0.3299999999999983,
-      "total": 17,
+      "scoreDrift": -0.3499999999999943,
+      "total": 18,
       "t1": 4,
       "t2": 5,
-      "t3": 8,
-      "positive": 14,
+      "t3": 9,
+      "positive": 15,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2294,6 +2306,18 @@
           "t2": 5,
           "t3": 8,
           "p": 14,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T05:43:24.480Z",
+          "rc": 18,
+          "s": 79.35,
+          "t1": 4,
+          "t2": 5,
+          "t3": 9,
+          "p": 15,
           "m": 3,
           "n": 0,
           "bc": "waiting"
