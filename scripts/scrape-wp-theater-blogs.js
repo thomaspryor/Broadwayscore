@@ -613,6 +613,13 @@ async function main() {
   }
   console.log(`\n  TOTAL: ${totalNew} new, ${totalUpdated} updated`);
   if (DRY_RUN) console.log('  (dry run — no files written)');
+
+  // Zero-data guard: if ALL sites returned 0 posts, likely network/WAF issue
+  const totalPosts = allStats.reduce((sum, s) => sum + (s.totalPosts || 0), 0);
+  if (totalPosts === 0 && allStats.length > 0) {
+    console.error('❌ ZERO POSTS fetched across all WP theater blog sites — likely blocked. Failing.');
+    process.exit(1);
+  }
 }
 
 main().catch(err => {

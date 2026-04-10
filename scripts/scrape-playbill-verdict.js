@@ -715,6 +715,13 @@ async function scrapePlaybillVerdict() {
   }
 
   printSummary();
+
+  // Zero-data guard: if no articles found, Playbill page structure may have changed
+  if (stats.articlesFound === 0) {
+    console.error('❌ ZERO articles found on Playbill — likely page structure change. Failing.');
+    process.exit(1);
+  }
+
   return stats;
 }
 
