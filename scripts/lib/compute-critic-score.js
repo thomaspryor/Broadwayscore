@@ -9,11 +9,22 @@
  * Used by: generate-mobile-data.js, generate-mobile-show-details.js
  */
 
+const path = require('path');
+
 const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
 const DEFAULT_TIER = 3;
 
 const DESIGNATION_BUMPS = { 'Critics_Pick': 3, 'Critics_Choice': 2 };
 const DESIGNATION_FLOORS = { 'Critics_Pick': 70 };
+
+// Tier overrides mirrored from src/config/scoring.ts::OUTLET_TIERS so JS
+// scripts see the same tier data as engine.ts::getOutletConfig(). Without
+// this, outlets like The Stage (T1 in scoring.ts, T2 in outlet-registry.json)
+// get the wrong tier here — which caused ~68 shows to have rounded-score
+// drift between the show page and homepage before this fix.
+// A parity test in tests/unit/compute-critic-score.test.mjs fails if the
+// JSON and scoring.ts ever diverge.
+const OUTLET_TIER_OVERRIDES = require(path.join(__dirname, 'outlet-tier-overrides.json'));
 
 const TOP_CRITICS = new Set([
   'Jesse Green', 'Ben Brantley', 'Charles Isherwood', 'David Rooney',
@@ -53,10 +64,17 @@ function computeCriticScore(showReviews, outletRegistry = {}) {
   let scoredCount = 0;
 
   for (const review of dedupedReviews) {
-    // Determine tier (top critics get T1 regardless of outlet)
+    // Determine tier (top critics get T1 regardless of outlet).
+    // Lookup priority must match engine.ts::getOutletConfig():
+    //   1. Top critic name → T1
+    //   2. OUTLET_TIER_OVERRIDES (mirrors scoring.ts OUTLET_TIERS)
+    //   3. outletRegistry (falls back to ~775 long-tail outlets)
+    //   4. DEFAULT_TIER
     const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
-    const entry = outletRegistry[review.outletId?.toLowerCase()?.trim()];
-    const tier = isTopCritic ? 1 : (entry?.tier || DEFAULT_TIER);
+    const normalizedId = review.outletId?.toLowerCase()?.trim();
+    const overrideTier = normalizedId ? OUTLET_TIER_OVERRIDES[normalizedId] : undefined;
+    const registryTier = normalizedId ? outletRegistry[normalizedId]?.tier : undefined;
+    const tier = isTopCritic ? 1 : (overrideTier || registryTier || DEFAULT_TIER);
     const tierWeight = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
 
     // Determine score (same priority as engine.ts)

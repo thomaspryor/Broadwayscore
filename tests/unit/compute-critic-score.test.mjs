@@ -111,6 +111,47 @@ describe('computeCriticScore — tier weighting (regression coverage)', () => {
   });
 });
 
+describe('OUTLET_TIER_OVERRIDES parity with scoring.ts', () => {
+  it('outlet-tier-overrides.json matches src/config/scoring.ts OUTLET_TIERS', () => {
+    // Drift detection: scoring.ts OUTLET_TIERS is the source of truth for
+    // tier assignments on the show page (engine.ts uses it). scripts/lib
+    // cannot import TS directly, so we mirror the tier data into a JSON
+    // file. This test parses scoring.ts and diffs it against the JSON.
+    // If they drift, regenerate the JSON with:
+    //   node -e 'const s=require("fs").readFileSync("src/config/scoring.ts","utf8");const m=s.match(/export const OUTLET_TIERS[^{]*{([\\s\\S]*?)^};/m);const r={};const re=/[\\x27"]([a-z0-9_-]+)[\\x27"]:\\s*{\\s*tier:\\s*(\\d)/g;let x;while((x=re.exec(m[1]))!==null)r[x[1]]=Number(x[2]);require("fs").writeFileSync("scripts/lib/outlet-tier-overrides.json", JSON.stringify(Object.keys(r).sort().reduce((a,k)=>(a[k]=r[k],a),{}), null, 2)+"\\n")'
+    const fs = require('fs');
+    const path = require('path');
+    const overrides = require('../../scripts/lib/outlet-tier-overrides.json');
+
+    const src = fs.readFileSync(path.resolve('src/config/scoring.ts'), 'utf8');
+    const match = src.match(/export const OUTLET_TIERS[^{]*{([\s\S]*?)^};/m);
+    assert.ok(match, 'OUTLET_TIERS block not found in scoring.ts');
+
+    const parsedFromSource = {};
+    const lineRe = /['"]([a-z0-9_-]+)['"]:\s*{\s*tier:\s*(\d)/g;
+    let m;
+    while ((m = lineRe.exec(match[1])) !== null) {
+      parsedFromSource[m[1]] = Number(m[2]);
+    }
+
+    // Every source entry must be in the JSON with the same tier
+    for (const [outletId, tier] of Object.entries(parsedFromSource)) {
+      assert.equal(
+        overrides[outletId],
+        tier,
+        `OUTLET drift: scoring.ts has ${outletId}=T${tier} but outlet-tier-overrides.json has T${overrides[outletId]}. Regenerate the JSON.`
+      );
+    }
+    // And no extra entries in the JSON that scoring.ts doesn't have
+    for (const outletId of Object.keys(overrides)) {
+      assert.ok(
+        parsedFromSource[outletId] !== undefined,
+        `OUTLET drift: outlet-tier-overrides.json has ${outletId} but scoring.ts does not. Regenerate the JSON.`
+      );
+    }
+  });
+});
+
 describe('computeCriticScore — edge cases', () => {
   it('returns null for empty input', () => {
     assert.equal(computeCriticScore([], outletRegistry), null);
