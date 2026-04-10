@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-10T04:56:12.021Z",
-  "processed": 29,
-  "failed": 28,
-  "successRate": "50.9%",
+  "updatedAt": "2026-04-10T04:58:33.786Z",
+  "processed": 37,
+  "failed": 30,
+  "successRate": "55.2%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 20,
     "amp": 0,
     "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 7,
-    "brightdata": 0,
+    "scrapingbee": 8,
+    "brightdata": 2,
     "archiveToday": 2,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-10T01:07:26.861Z",
-      "event": "bb-session",
-      "session": "5ad49a90",
-      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
-    },
-    {
-      "t": "2026-04-10T01:07:27.719Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-10T01:07:50.118Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-10T04:16:57.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T04:57:23.674Z",
+      "event": "bb-session",
+      "session": "8e582007",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-10T04:57:24.350Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
