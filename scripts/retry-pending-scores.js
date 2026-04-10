@@ -90,7 +90,14 @@ async function main() {
       });
 
       if (result) {
-        if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
+        // If EITHER the incoming extraction OR the file's existing scoreSource
+        // is an aggregator, the rating belongs in aggregatorStars — not in
+        // originalScore. Checking only result.source missed files already
+        // tagged with an aggregator scoreSource by upstream gather/classify
+        // steps (see contamination on high-noon/oliver, Apr 2026).
+        const incomingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(result.source);
+        const existingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(data.scoreSource);
+        if (incomingIsAggregator || existingIsAggregator) {
           data.aggregatorStars = result.originalScore;
         } else {
           data.originalScore = result.originalScore;
