@@ -17,7 +17,11 @@
     "death-of-a-salesman-2026/culturesauce--thom-geier.json",
     "death-of-a-salesman-2026/nysr--david-finkle.json",
     "death-of-a-salesman-2026/one-minute-critic--unknown.json",
-    "death-of-a-salesman-2026/slantmagazine--unknown.json"
+    "death-of-a-salesman-2026/slantmagazine--unknown.json",
+    "death-of-a-salesman-2026/variety--naveen-kumar.json",
+    "death-of-a-salesman-2026/vulture--unknown.json",
+    "death-of-a-salesman-2026/cote-notices--david-cote.json",
+    "death-of-a-salesman-2026/nysr--unknown.json"
   ],
   "failed": [
     "death-of-a-salesman-2026/deadline--greg-evans.json",
@@ -36,6 +40,9 @@
     "death-of-a-salesman-2026/vulture--unknown.json",
     "death-of-a-salesman-2026/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
+    "death-of-a-salesman-2026/theatermania--pete-hempstead.json",
+    "death-of-a-salesman-2026/wsj--charles-isherwood.json",
+    "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
     "death-of-a-salesman-2026/theatermania--pete-hempstead.json"
   ],
   "skipped": [],
@@ -47,7 +54,8 @@
       "death-of-a-salesman-2026/culturesauce--thom-geier.json",
       "death-of-a-salesman-2026/nysr--david-finkle.json",
       "death-of-a-salesman-2026/one-minute-critic--unknown.json",
-      "death-of-a-salesman-2026/slantmagazine--unknown.json"
+      "death-of-a-salesman-2026/slantmagazine--unknown.json",
+      "death-of-a-salesman-2026/nysr--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -71,9 +79,13 @@
       "death-of-a-salesman-2026/nytimes--helen-shaw.json",
       "death-of-a-salesman-2026/nydailynews--unknown.json",
       "death-of-a-salesman-2026/thewrap--robert-hofler.json",
-      "death-of-a-salesman-2026/chicagotribune--unknown.json"
+      "death-of-a-salesman-2026/chicagotribune--unknown.json",
+      "death-of-a-salesman-2026/cote-notices--david-cote.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "death-of-a-salesman-2026/variety--naveen-kumar.json",
+      "death-of-a-salesman-2026/vulture--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/death-of-a-salesman-2026/vulture--unknown.json"
     ],
@@ -169,6 +181,17 @@
       "t": "2026-04-10T02:36:27.611Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-10T03:03:37.735Z",
+      "event": "bb-session",
+      "session": "acbe97a3",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-re"
+    },
+    {
+      "t": "2026-04-10T03:03:38.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
