@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-10T19:45:24.054Z",
+  "timestamp": "2026-04-10T20:13:12.924Z",
   "stats": {
     "totalReviews": 34688,
     "alreadyFlagged": 13776,
     "dateGuardCatches": 60,
-    "directorMismatch": 954,
+    "directorMismatch": 956,
     "tvFilmSignals": 3407,
     "londonSignals": 1119,
     "offBroadwaySignals": 971,
@@ -48548,6 +48548,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "thestage--unknown.json",
+      "score": 77,
+      "publishDate": "2013-03-22",
+      "url": "https://www.thestage.co.uk/reviews/the-book-of-mormon-review-at-prince-of-wales-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
