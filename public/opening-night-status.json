@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T10:30:25.801Z",
+  "generatedAt": "2026-04-10T10:49:52.527Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -25,7 +25,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 20,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -81,11 +81,11 @@
       ],
       "missingT2": [
         {
-          "name": "TheaterMania",
+          "name": "USA Today",
           "isDualMarket": false
         },
         {
-          "name": "USA Today",
+          "name": "New York Daily News",
           "isDualMarket": false
         },
         {
@@ -388,10 +388,6 @@
         {
           "name": "Vulture",
           "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -1897,10 +1893,6 @@
         {
           "name": "The Times (UK)",
           "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -2090,20 +2082,20 @@
       "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "siteScore": 79.86,
+      "siteScore": 80.04,
       "liveScore": 80,
-      "scoreDrift": 0.14000000000000057,
-      "total": 17,
+      "scoreDrift": -0.04000000000000625,
+      "total": 16,
       "t1": 4,
       "t2": 4,
-      "t3": 9,
+      "t3": 8,
       "positive": 15,
-      "mixed": 2,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2445,6 +2437,18 @@
           "t3": 9,
           "p": 15,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T10:49:52.527Z",
+          "rc": 16,
+          "s": 80.04,
+          "t1": 4,
+          "t2": 4,
+          "t3": 8,
+          "p": 15,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }

@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-10T10:30:22.103Z",
+  "timestamp": "2026-04-10T10:49:48.723Z",
   "stats": {
-    "totalReviews": 34698,
-    "alreadyFlagged": 13751,
+    "totalReviews": 34703,
+    "alreadyFlagged": 13753,
     "dateGuardCatches": 62,
-    "directorMismatch": 964,
-    "tvFilmSignals": 3409,
+    "directorMismatch": 965,
+    "tvFilmSignals": 3410,
     "londonSignals": 1123,
     "offBroadwaySignals": 971,
     "yearMismatch": 72,
@@ -12603,6 +12603,20 @@
     },
     {
       "showId": "death-of-a-salesman-2026",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "2026-04-10",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-review-nathan-lane-broadway-1236560881/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 81,
       "publishDate": "2026-04-10",
@@ -12618,7 +12632,6 @@
     {
       "showId": "death-of-a-salesman-2026",
       "file": "nytg--austin-fimmano.json",
-      "score": 86,
       "publishDate": "2026-04-09",
       "url": "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf",
       "findings": [
@@ -12645,7 +12658,7 @@
     {
       "showId": "death-of-a-salesman-2026",
       "file": "theater-pizzazz--ron-fassler.json",
-      "score": 85,
+      "score": 84,
       "publishDate": "2026-04-09",
       "url": "https://theaterpizzazz.com/hes-back-but-has-willy-loman-ever-left-us/",
       "findings": [
@@ -12667,6 +12680,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-07",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cursed-child-1236709765/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
         }
       ]
     },
@@ -14821,7 +14848,7 @@
       "file": "talkinbroadway--unknown.json",
       "score": 65,
       "publishDate": "November 23, 2009",
-      "url": null,
+      "url": "http://www.talkinbroadway.com/world/index.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -44390,7 +44417,7 @@
       "file": "as-her-world-turns--erica-meyer.json",
       "score": 86,
       "publishDate": null,
-      "url": null,
+      "url": "http://www.asherworldturns.com/theater-recap-fall-2015/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -45384,7 +45411,7 @@
       "file": "broadwaynews--brittani-samuel.json",
       "score": 25,
       "publishDate": "April 25, 2023",
-      "url": null,
+      "url": "https://www.broadwaynews.com/review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -57870,7 +57897,7 @@
       "file": "nytimes--ben-brantley.json",
       "score": 39,
       "publishDate": "October 15, 2008",
-      "url": null,
+      "url": "http://theater.nytimes.com/2008/10/15/theater/reviews/15tobe.html?ref=theater",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -65697,7 +65724,7 @@
       "file": "artsdesk--demetrios-matheou.json",
       "score": 77,
       "publishDate": "2026-04-09",
-      "url": null,
+      "url": "http://www.theartsdesk.com/theatre/copenhagen-hampstead-theatre-review-scientists-these-who-needs-enemies",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -65753,7 +65780,7 @@
       "file": "thereviewshub--john-cutler.json",
       "score": 72,
       "publishDate": "2026-04-08",
-      "url": null,
+      "url": "https://www.thereviewshub.com/copenhagen-hampstead-theatre-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -70936,7 +70963,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 81,
       "publishDate": "2026-04-07",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
