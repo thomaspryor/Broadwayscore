@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-10T21:20:20.598Z",
+    "generatedAt": "2026-04-10T21:37:12.163Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 119,
-    "highConfidence": 29,
-    "mediumConfidence": 90,
+    "totalFlagged": 120,
+    "highConfidence": 33,
+    "mediumConfidence": 87,
     "lowConfidence": 0,
-    "reassignable": 58
+    "reassignable": 62
   },
   "results": [
     {
@@ -601,10 +601,11 @@
       "file": "amny--matt-windman.json",
       "outlet": "amNewYork",
       "criticName": "Matt Windman",
-      "publishDate": null,
+      "publishDate": "2016-07-20",
       "confidence": "medium",
       "suggestedShowId": "chicago-1975",
       "signals": [
+        "publishDate 2016 is 20 years after original opening 1996",
         "year 1975 in text matches revival chicago-1975"
       ],
       "textSnippet": "For a Broadway musical that has lasted thousands of performances, played three different theaters, gone through a head-spinning number of cast changes and is about to reach its 20-year anniversary, “C"
@@ -1243,12 +1244,12 @@
       "file": "thewrap--robert-hofler.json",
       "outlet": "The Wrap",
       "criticName": "Robert Hofler",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
+      "publishDate": "2017-04-26",
+      "confidence": "high",
+      "suggestedShowId": "six-degrees-of-separation-2017",
       "signals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
+        "publishDate 2017 matches revival six-degrees-of-separation-2017 (opened 2017)",
+        "revival text signals: revival, this production"
       ],
       "textSnippet": "The good news on the Broadway revival of “Six Degrees of Separation” is great news. Twenty-seven years after the debut of John Guare’s comedy of manners and mores in Manhattan, “Six Degrees” retains i"
     },
@@ -1259,12 +1260,12 @@
       "file": "thewrap--robert-hofler.json",
       "outlet": "The Wrap",
       "criticName": "Robert Hofler",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
+      "publishDate": "2017-03-24",
+      "confidence": "high",
+      "suggestedShowId": "miss-saigon-2017",
       "signals": [
-        "revival text signals: revival, new revival",
-        "no publishDate + revival signals + revivals exist"
+        "publishDate 2017 matches revival miss-saigon-2017 (opened 2017)",
+        "revival text signals: revival, new revival"
       ],
       "textSnippet": "Claude-Michel Schonberg and Alain Boublil have a lot to answer for. Under the umbrella of producer Cameron Mackintosh, their back-to-back hits “Les Miserables” and “Miss Saigon” were part of the Briti"
     },
@@ -1399,6 +1400,21 @@
       "textSnippet": "Tickets\n\nCast\n\nPhotos\n\nVideos\n\nInfo\n\nWhile audiences gather at Lincoln Center to see Lerner and Lowe's musical adaptation of George Bernard Shaw's classic, there's a different kind of Pygmalion story "
     },
     {
+      "showId": "children-of-a-lesser-god-1980",
+      "showTitle": "Children of a Lesser God",
+      "showYear": 1980,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": "2018-04-12",
+      "confidence": "high",
+      "suggestedShowId": "children-of-a-lesser-god-2018",
+      "signals": [
+        "publishDate 2018 matches revival children-of-a-lesser-god-2018 (opened 2018)"
+      ],
+      "textSnippet": "As issue plays go, “Children of a Lesser God” has sprouted a brand new one. Back in 1980, Mark Medoff’s play was all about an instructor-therapist who can’t fathom the silent reality of the deaf femal"
+    },
+    {
       "showId": "sweeney-todd-1979",
       "showTitle": "Sweeney Todd",
       "showYear": 1979,
@@ -1488,12 +1504,12 @@
       "file": "amny--matt-windman.json",
       "outlet": "amNY",
       "criticName": "Matt Windman",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
+      "publishDate": "2015-03-15",
+      "confidence": "high",
+      "suggestedShowId": "on-the-twentieth-century-2015",
       "signals": [
-        "revival text signals: revival, new production",
-        "no publishDate + revival signals + revivals exist"
+        "publishDate 2015 matches revival on-the-twentieth-century-2015 (opened 2015)",
+        "revival text signals: revival, new production"
       ],
       "textSnippet": "I have waited for years for a Broadway revival of the 1978 musical “On the Twentieth Century,” a screwball comedy about a down-on-his-luck Broadway producer and the Hollywood actress he needs to star "
     },
