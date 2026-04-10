@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-04-10T00:48:10.203Z",
-  "processed": 3,
-  "failed": 3,
-  "successRate": "50.0%",
+  "updatedAt": "2026-04-10T01:08:06.879Z",
+  "processed": 5,
+  "failed": 6,
+  "successRate": "45.5%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -34,6 +34,28 @@
     },
     {
       "t": "2026-04-10T00:47:37.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-10T01:07:26.861Z",
+      "event": "bb-session",
+      "session": "5ad49a90",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-10T01:07:27.719Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-10T01:07:50.118Z",
+      "event": "bb-session",
+      "session": "93a2d3ee",
+      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/"
+    },
+    {
+      "t": "2026-04-10T01:07:50.935Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
