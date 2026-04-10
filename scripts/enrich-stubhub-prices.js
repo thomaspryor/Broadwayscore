@@ -45,6 +45,8 @@ async function main() {
   let updated = 0;
   let skipped = 0;
   let failed = 0;
+  let consecutiveFailures = 0;
+  const MAX_CONSECUTIVE_FAILURES = 5;
   const toProcess = candidates.slice(0, LIMIT);
 
   for (let i = 0; i < toProcess.length; i++) {
@@ -60,6 +62,11 @@ async function main() {
       if (!html || html.length < 1000) {
         console.log(`  ⚠ Empty or blocked response (${html.length} bytes)`);
         failed++;
+        consecutiveFailures++;
+        if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+          console.log(`\n⚠ ${MAX_CONSECUTIVE_FAILURES} consecutive failures — scraping provider likely down. Aborting early.`);
+          break;
+        }
         continue;
       }
 
@@ -67,8 +74,14 @@ async function main() {
       if (price == null) {
         console.log(`  ⚠ No prices found in page`);
         failed++;
+        consecutiveFailures++;
+        if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+          console.log(`\n⚠ ${MAX_CONSECUTIVE_FAILURES} consecutive failures — scraping provider likely down. Aborting early.`);
+          break;
+        }
         continue;
       }
+      consecutiveFailures = 0; // Reset on success
 
       if (shLink.priceFrom === price) {
         console.log(`  → $${price} (unchanged)`);
