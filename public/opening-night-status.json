@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T12:41:04.773Z",
+  "generatedAt": "2026-04-10T18:18:12.261Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,9 +12,9 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 86.12,
+      "siteScore": 86.17,
       "liveScore": 86,
-      "scoreDrift": -0.12000000000000455,
+      "scoreDrift": -0.1700000000000017,
       "total": 24,
       "t1": 6,
       "t2": 14,
@@ -25,7 +25,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 22,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -40,6 +40,10 @@
       "missingT1": [
         {
           "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -98,10 +102,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theater",
           "isDualMarket": false
         },
         {
@@ -333,6 +333,18 @@
           "m": 2,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T18:18:12.261Z",
+          "rc": 24,
+          "s": 86.17,
+          "t1": 6,
+          "t2": 14,
+          "t3": 4,
+          "p": 21,
+          "m": 2,
+          "n": 1,
+          "bc": "preview-sent"
         }
       ]
     },
@@ -746,12 +758,12 @@
       "status": "open",
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
-      "siteScore": 86.96,
-      "liveScore": 87,
+      "siteScore": 85.96,
+      "liveScore": 86,
       "scoreDrift": 0.04000000000000625,
       "total": 24,
-      "t1": 5,
-      "t2": 14,
+      "t1": 4,
+      "t2": 15,
       "t3": 5,
       "positive": 22,
       "mixed": 1,
@@ -1290,6 +1302,18 @@
           "s": 86.96,
           "t1": 5,
           "t2": 14,
+          "t3": 5,
+          "p": 22,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T18:18:12.261Z",
+          "rc": 24,
+          "s": 85.96,
+          "t1": 4,
+          "t2": 15,
           "t3": 5,
           "p": 22,
           "m": 1,
@@ -1852,9 +1876,9 @@
       "status": "open",
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
-      "siteScore": 67.56,
+      "siteScore": 67.64,
       "liveScore": 68,
-      "scoreDrift": 0.4399999999999977,
+      "scoreDrift": 0.35999999999999943,
       "total": 14,
       "t1": 4,
       "t2": 3,
@@ -2077,6 +2101,18 @@
           "m": 8,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T18:18:12.261Z",
+          "rc": 14,
+          "s": 67.64,
+          "t1": 4,
+          "t2": 3,
+          "t3": 7,
+          "p": 5,
+          "m": 8,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -2103,7 +2139,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 15,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,

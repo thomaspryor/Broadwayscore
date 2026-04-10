@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-10T12:30:09.759Z",
+    "generatedAt": "2026-04-10T18:08:55.665Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
     "correct": 0,
-    "uncertain": 0,
+    "uncertain": 1,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-kite-runner-2022",
+      "showTitle": "The Kite Runner",
+      "file": "thewrap--robert-hofler.json",
+      "verdict": "UNCERTAIN",
+      "confidence": "medium",
+      "reasoning": "The review discusses Nazis and the Taliban, but it's unclear if it's related to the themes or plot of \"The Kite Runner\" without more context. It could be a general commentary on villains in storytelling."
+    }
+  ]
 }
