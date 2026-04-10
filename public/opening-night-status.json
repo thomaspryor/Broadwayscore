@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T22:03:25.746Z",
+  "generatedAt": "2026-04-10T22:18:25.703Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -679,24 +679,22 @@
       "status": "open",
       "slug": "flyby-off-west-end",
       "thumbnail": "/images/shows/flyby-off-west-end-2026/thumbnail.webp",
-      "siteScore": 61.05,
-      "liveScore": 61,
-      "scoreDrift": -0.04999999999999716,
-      "total": 6,
+      "siteScore": 62.37,
+      "liveScore": 62,
+      "scoreDrift": -0.36999999999999744,
+      "total": 8,
       "t1": 1,
       "t2": 3,
-      "t3": 2,
-      "positive": 1,
-      "mixed": 3,
+      "t3": 4,
+      "positive": 2,
+      "mixed": 4,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
-          "T1:1/3",
-          "hi-conf:5/6"
+          "T1:1/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -770,6 +768,18 @@
           "t3": 2,
           "p": 1,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T22:18:25.703Z",
+          "rc": 8,
+          "s": 62.37,
+          "t1": 1,
+          "t2": 3,
+          "t3": 4,
+          "p": 2,
+          "m": 4,
           "n": 2,
           "bc": "waiting"
         }
@@ -2222,20 +2232,20 @@
       "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "siteScore": 79.32,
+      "siteScore": 79.23,
       "liveScore": 79,
-      "scoreDrift": -0.3199999999999932,
-      "total": 16,
+      "scoreDrift": -0.23000000000000398,
+      "total": 15,
       "t1": 4,
-      "t2": 4,
+      "t2": 3,
       "t3": 8,
-      "positive": 15,
+      "positive": 14,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2612,6 +2622,18 @@
           "t2": 4,
           "t3": 8,
           "p": 15,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T22:18:25.703Z",
+          "rc": 15,
+          "s": 79.23,
+          "t1": 4,
+          "t2": 3,
+          "t3": 8,
+          "p": 14,
           "m": 1,
           "n": 0,
           "bc": "waiting"
