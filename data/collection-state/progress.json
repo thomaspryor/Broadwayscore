@@ -50,7 +50,10 @@
     "fences-2010/wsj--christopher-john-farley.json",
     "million-dollar-quartet-2010/theatermania--unknown.json",
     "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
-    "oleanna-2009/theatermania--unknown.json"
+    "oleanna-2009/theatermania--unknown.json",
+    "never-gonna-dance-2003/nytimes--ben-brantley.json",
+    "flower-drum-song-2002/nytimes--ben-brantley.json",
+    "by-jeeves-2001/nytimes--bruce-weber.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1047,7 +1050,14 @@
     "xanadu-2007/variety--david-rooney.json",
     "talk-radio-2007/variety--charles-isherwood.json",
     "journeys-end-2007/variety--david-rooney.json",
-    "mary-poppins-2006/variety--charles-isherwood.json"
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "festen-2006/variety--charles-isherwood.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "the-odd-couple-2005/wsj--terry-teachout.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1085,7 +1095,13 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--unknown.json",
       "music-city-off-broadway-2026/deadline--unknown.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/never-gonna-dance-2003/nytimes--ben-brantley.json",
+      "never-gonna-dance-2003/nytimes--ben-brantley.json",
+      "data/review-texts/flower-drum-song-2002/nytimes--ben-brantley.json",
+      "flower-drum-song-2002/nytimes--ben-brantley.json",
+      "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
+      "by-jeeves-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1123,7 +1139,7 @@
     ]
   },
   "startTime": "2026-04-10T09:30:06.313Z",
-  "lastProcessed": "mary-poppins-2006/variety--charles-isherwood.json",
+  "lastProcessed": "by-jeeves-2001/nytimes--bruce-weber.json",
   "log": [
     {
       "t": "2026-04-10T10:12:17.924Z",
@@ -1190,6 +1206,50 @@
       "t": "2026-04-10T19:10:27.305Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T19:15:08.278Z",
+      "event": "bb-session",
+      "session": "1389ca35",
+      "url": "https://www.wsj.com/articles/SB112693598167234567"
+    },
+    {
+      "t": "2026-04-10T19:15:09.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T19:16:33.671Z",
+      "event": "bb-session",
+      "session": "15287139",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B04E3DF143DF936A35751C1"
+    },
+    {
+      "t": "2026-04-10T19:16:34.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-10T19:16:53.294Z",
+      "event": "bb-session",
+      "session": "9bb8fd74",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=F"
+    },
+    {
+      "t": "2026-04-10T19:16:54.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-10T19:17:17.186Z",
+      "event": "bb-session",
+      "session": "138acf70",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-04-10T19:17:18.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
