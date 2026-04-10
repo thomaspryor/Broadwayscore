@@ -54,9 +54,13 @@ function main(): void {
     return;
   }
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f =>
-    fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory()
-  );
+  const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
+    try {
+      return fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory();
+    } catch {
+      return false;
+    }
+  });
 
   // Collect all data
   let totalReviews = 0;

@@ -115,9 +115,13 @@ function loadEvaluationCandidates(): EvaluationExample[] {
     return candidates;
   }
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f =>
-    fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory()
-  );
+  const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
+    try {
+      return fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory();
+    } catch {
+      return false;
+    }
+  });
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
