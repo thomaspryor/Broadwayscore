@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T00:51:43.037Z",
+  "timestamp": "2026-04-10T00:59:19.090Z",
   "stats": {
     "totalReviews": 34681,
-    "alreadyFlagged": 13691,
+    "alreadyFlagged": 13694,
     "dateGuardCatches": 62,
-    "directorMismatch": 960,
+    "directorMismatch": 961,
     "tvFilmSignals": 3416,
     "londonSignals": 1120,
     "offBroadwaySignals": 968,
     "yearMismatch": 72,
-    "noPublishDate": 6449
+    "noPublishDate": 6428
   },
   "findings": [
     {
@@ -12565,6 +12565,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-02",
+      "url": "https://playbill.com/article/nathan-lanes-willy-loman-in-death-of-a-salesman-has-been-30-years-in-the-making",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
         }
       ]
     },
@@ -30437,7 +30451,7 @@
       "showId": "magic-mike-live-west-end-2021",
       "file": "thestage--francesca-peschier.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2018-11-30",
       "url": "https://www.thestage.co.uk/reviews/magic-mike-live-review-at-london-hippodrome--a-money-maker-shaking-hit",
       "findings": [
         {
@@ -66803,7 +66817,7 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "thestage--unknown.json",
       "score": 81,
-      "publishDate": null,
+      "publishDate": "2026-02-27",
       "url": "https://www.thestage.co.uk/review-round-ups/evening-all-afternoon-at-the-donmar-warehouse-review-round-up",
       "findings": [
         {
@@ -68999,7 +69013,7 @@
       "showId": "hamilton-west-end-2021",
       "file": "thestage--tim-bano.json",
       "score": 94,
-      "publishDate": null,
+      "publishDate": "2017-12-21",
       "url": "https://www.thestage.co.uk/reviews/hamilton-review-at-victoria-palace-theatre-london--world-shattering",
       "findings": [
         {
