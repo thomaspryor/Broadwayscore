@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T03:22:46.346Z",
+  "timestamp": "2026-04-10T03:56:00.584Z",
   "stats": {
-    "totalReviews": 34693,
-    "alreadyFlagged": 13747,
+    "totalReviews": 34697,
+    "alreadyFlagged": 13746,
     "dateGuardCatches": 62,
-    "directorMismatch": 961,
+    "directorMismatch": 962,
     "tvFilmSignals": 3405,
     "londonSignals": 1119,
     "offBroadwaySignals": 968,
     "yearMismatch": 72,
-    "noPublishDate": 6296
+    "noPublishDate": 6297
   },
   "findings": [
     {
@@ -12565,6 +12565,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "theater-pizzazz--ron-fassler.json",
+      "score": 85,
+      "publishDate": "2026-04-09",
+      "url": "https://theaterpizzazz.com/hes-back-but-has-willy-loman-ever-left-us/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
         }
       ]
     },

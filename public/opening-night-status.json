@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T03:22:50.125Z",
+  "generatedAt": "2026-04-10T03:56:04.319Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,20 +12,20 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 86.85,
-      "liveScore": 87,
-      "scoreDrift": 0.15000000000000568,
-      "total": 14,
-      "t1": 4,
-      "t2": 8,
-      "t3": 2,
-      "positive": 13,
-      "mixed": 0,
+      "siteScore": 86.31,
+      "liveScore": 86,
+      "scoreDrift": -0.3100000000000023,
+      "total": 23,
+      "t1": 6,
+      "t2": 13,
+      "t3": 4,
+      "positive": 21,
+      "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 10,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -63,10 +63,6 @@
           "isDualMarket": false
         },
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Broadway News",
           "isDualMarket": false
         },
@@ -90,10 +86,6 @@
       "missingT2": [
         {
           "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "amNewYork",
           "isDualMarket": false
         },
         {
@@ -126,10 +118,6 @@
         },
         {
           "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
           "isDualMarket": false
         },
         {
@@ -287,6 +275,18 @@
           "t3": 2,
           "p": 13,
           "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T03:56:04.319Z",
+          "rc": 23,
+          "s": 86.31,
+          "t1": 6,
+          "t2": 13,
+          "t3": 4,
+          "p": 21,
+          "m": 1,
           "n": 1,
           "bc": "waiting"
         }
