@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-04-10T03:14:05.338Z",
-  "processed": 19,
-  "failed": 18,
-  "successRate": "51.4%",
+  "updatedAt": "2026-04-10T03:39:48.875Z",
+  "processed": 20,
+  "failed": 21,
+  "successRate": "48.8%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 14,
     "directCookies": 0,
@@ -111,6 +111,17 @@
     },
     {
       "t": "2026-04-10T03:13:22.639Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T03:39:07.062Z",
+      "event": "bb-session",
+      "session": "74ee02be",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-re"
+    },
+    {
+      "t": "2026-04-10T03:39:08.230Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
