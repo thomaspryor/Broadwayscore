@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "description": "Tracks countries already identified as bot-dominated. New bot countries trigger alerts via weekly-geo-audit.yml. See memory/analytics-real-users-segment.md for the canonical Real Users lens definition.",
+  "lastUpdated": "2026-04-10",
+  "knownBots": [
+    "Singapore",
+    "China",
+    "Vietnam"
+  ]
+}
