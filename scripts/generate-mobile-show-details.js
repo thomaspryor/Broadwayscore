@@ -170,9 +170,14 @@ for (const show of visibleShows) {
     if (buzz.sources) {
       // Minified key map for mobile app payload
       const KEY_MAP = { showScore: 'ss', mezzanine: 'mz', reddit: 'rd', theatr: 'th', broadwayCom: 'bc', seatplan: 'sp', lbo: 'lb' };
+      // Per-source minimum-volume gates (mirrors scripts/lib/audience-weighting.js).
+      // Without these, sources with too little signal (e.g., Theatr with 1 vote)
+      // render as misleading "100% / 1 vote" cards next to real data.
+      const { MIN_THEATR_VOTES } = require('./lib/audience-weighting');
       const sources = {};
       for (const [key, data] of Object.entries(buzz.sources)) {
         if (!data || data.score == null) continue;
+        if (key === 'theatr' && (data.reviewCount || 0) < MIN_THEATR_VOTES) continue;
         const minKey = KEY_MAP[key] || key;
         const entry = { s: data.score, c: data.reviewCount };
         if (data.starRating) entry.sr = data.starRating;

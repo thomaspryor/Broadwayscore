@@ -350,6 +350,46 @@ async function checkFormspreeSubscribers() {
   }
 }
 
+async function checkTheatrToken() {
+  // Theatr uses self-rotating refresh tokens — we cannot test the token without
+  // burning it. Instead, watch the freshness of the most recent successful
+  // `update-theatr.yml` run. If it's been failing for >10 days, the refresh
+  // token has expired (Theatr 30-day window) and audience scores are going stale.
+  const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+  const ghToken = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (!ghToken) return { name: 'Theatr Token', status: 'skip', message: 'GH_TOKEN not set — cannot check workflow history' };
+
+  const res = await httpsGet(
+    `https://api.github.com/repos/${repo}/actions/workflows/update-theatr.yml/runs?per_page=20`,
+    {
+      'Authorization': `Bearer ${ghToken}`,
+      'Accept': 'application/vnd.github+json',
+      'User-Agent': 'broadwayscorecard-health-check',
+    }
+  );
+
+  if (res.status === 404) return { name: 'Theatr Token', status: 'skip', message: 'update-theatr.yml not found' };
+  if (res.status !== 200) return { name: 'Theatr Token', status: 'warn', message: `GitHub API status ${res.status}` };
+
+  let data;
+  try { data = JSON.parse(res.body); } catch { return { name: 'Theatr Token', status: 'warn', message: 'Could not parse runs response' }; }
+
+  const runs = data.workflow_runs || [];
+  const lastSuccess = runs.find(r => r.conclusion === 'success');
+  if (!lastSuccess) {
+    return { name: 'Theatr Token', status: 'fail', message: 'No successful Theatr runs in last 20 attempts — token likely expired' };
+  }
+
+  const daysAgo = Math.floor((Date.now() - new Date(lastSuccess.created_at).getTime()) / (1000 * 60 * 60 * 24));
+  if (daysAgo > 14) {
+    return { name: 'Theatr Token', status: 'fail', message: `Last successful run ${daysAgo}d ago — refresh token expired (30-day window). Audience scores stale.` };
+  }
+  if (daysAgo > 9) {
+    return { name: 'Theatr Token', status: 'warn', message: `Last successful run ${daysAgo}d ago — token nearing 30-day expiry. Refresh soon.` };
+  }
+  return { name: 'Theatr Token', status: 'pass', message: `Last successful run ${daysAgo}d ago` };
+}
+
 async function checkFormspreeFeedback() {
   const apiKey = process.env.FORMSPREE_TOKEN;
   if (!apiKey) return { name: 'Formspree (Feedback)', status: 'skip', message: 'Token not set' };
@@ -382,6 +422,7 @@ async function main() {
     checkVercel,
     checkSentry,
     checkResend,
+    checkTheatrToken,
     checkFormspreeSubscribers,
     checkFormspreeFeedback,
   ];

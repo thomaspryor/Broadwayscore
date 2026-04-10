@@ -20,6 +20,11 @@
 const MIN_REDDIT_ITEMS = 50;
 const REDDIT_RECENCY_YEARS = 3;
 const MAX_SINGLE_SOURCE_WEIGHT = 0.80;
+// Theatr is a 3-way thumb vote (like / mixed / dislike). Below 10 votes the
+// score is statistically meaningless (single voter = 100 or 0). Skip it from
+// both combined-score weighting AND display. Matches Reddit's MIN_REDDIT_ITEMS
+// philosophy: each source needs minimum signal before it counts.
+const MIN_THEATR_VOTES = 10;
 
 // Reddit scores average ~5 points below Mezzanine (the most neutral source) on the same
 // shows — a systematic scale difference, not a signal difference. Calibrating to
@@ -65,7 +70,7 @@ function calculateCombinedScore(sources, showInfo) {
   if (sources.mezzanine?.score != null && sources.mezzanine.reviewCount > 0) {
     active.push({ name: 'mezzanine', score: sources.mezzanine.score, volume: sources.mezzanine.reviewCount });
   }
-  if (sources.theatr?.score != null && sources.theatr.reviewCount > 0) {
+  if (sources.theatr?.score != null && sources.theatr.reviewCount >= MIN_THEATR_VOTES) {
     active.push({ name: 'theatr', score: sources.theatr.score, volume: sources.theatr.reviewCount });
   }
   if (sources.broadwayCom?.score != null && sources.broadwayCom.reviewCount > 0) {
@@ -140,4 +145,4 @@ function getDesignation(score) {
   return 'Loathing';
 }
 
-module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP };
+module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP, MIN_THEATR_VOTES };

@@ -199,6 +199,10 @@ export default function AudienceBuzzCard({ buzz, showScoreUrl, limitedSources, m
         {visibleSources.map(src => {
           const data = buzz.sources[src.key];
           if (!data || data.score == null) return null;
+          // Per-source minimum-volume gates (mirrors scripts/lib/audience-weighting.js
+          // and generate-mobile-show-details.js). Without these, sources with too
+          // little signal render as misleading "100% / 1 vote" cards.
+          if (src.key === 'theatr' && (data.reviewCount || 0) < 10) return null;
           const IconComponent = SOURCE_ICONS[src.key] || ShowScoreIcon;
           const url = src.key === 'showScore'
             ? showScoreUrl

@@ -250,6 +250,9 @@ jobs:
 
             echo "  → Dispatching Mezzanine for: $SHOWS"
             gh workflow run update-mezzanine.yml -f shows="$SHOWS" 2>/dev/null || true
+
+            echo "  → Dispatching Theatr for: $SHOWS"
+            gh workflow run update-theatr.yml -f shows="$SHOWS" 2>/dev/null || true
           fi
 
           # These work for both markets (Reddit uses r/TheWestEnd for WE, r/Broadway for BW)

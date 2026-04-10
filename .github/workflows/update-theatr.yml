@@ -10,6 +10,10 @@ on:
         description: 'Single show ID to update (e.g., hamilton-2015)'
         required: false
         type: string
+      shows:
+        description: 'Comma-separated show IDs (used by orchestrator)'
+        required: false
+        type: string
       limit:
         description: 'Max number of shows to process'
         required: false
@@ -54,6 +58,10 @@ jobs:
 
           if [ -n "${{ inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
           fi
 
           if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then

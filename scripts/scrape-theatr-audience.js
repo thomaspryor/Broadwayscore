@@ -26,6 +26,8 @@ const { isLondonMarket } = require('./lib/venue-classification');
 // Parse command line args
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+const showsFilterArg = args.find(a => a.startsWith('--shows='))?.split('=')[1];
+const showsFilter = showsFilterArg ? new Set(showsFilterArg.split(',').map(s => s.trim()).filter(Boolean)) : null;
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const dryRun = args.includes('--dry-run');
@@ -349,6 +351,10 @@ async function main() {
   if (showFilter) {
     toProcess = matches.filter(m => m.show.id === showFilter);
     console.log(`Filtered to show: ${showFilter} (${toProcess.length} matches)`);
+  }
+  if (showsFilter) {
+    toProcess = toProcess.filter(m => showsFilter.has(m.show.id));
+    console.log(`Filtered to ${showsFilter.size} shows: ${[...showsFilter].join(', ')} (${toProcess.length} matches)`);
   }
   if (showLimit) {
     toProcess = toProcess.slice(0, showLimit);
