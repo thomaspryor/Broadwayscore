@@ -4,7 +4,15 @@
     "lost-in-del-valle-off-broadway-2026/variety--unknown.json",
     "death-of-a-salesman-2026/playbill--unknown.json",
     "death-of-a-salesman-2026/variety--payton-turkeltaub.json",
-    "lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json"
+    "lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
+    "death-of-a-salesman-2026/nytimes--helen-shaw.json",
+    "death-of-a-salesman-2026/vulture--unknown.json",
+    "death-of-a-salesman-2026/deadline--greg-evans.json",
+    "death-of-a-salesman-2026/ew--unknown.json",
+    "death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
+    "death-of-a-salesman-2026/thewrap--robert-hofler.json",
+    "death-of-a-salesman-2026/culturesauce--thom-geier.json",
+    "death-of-a-salesman-2026/nysr--david-finkle.json"
   ],
   "failed": [
     "death-of-a-salesman-2026/deadline--greg-evans.json",
@@ -18,12 +26,17 @@
     "death-of-a-salesman-2026/thewrap--robert-hofler.json",
     "death-of-a-salesman-2026/deadline--greg-evans.json",
     "death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
-    "death-of-a-salesman-2026/thewrap--robert-hofler.json"
+    "death-of-a-salesman-2026/thewrap--robert-hofler.json",
+    "death-of-a-salesman-2026/variety--naveen-kumar.json",
+    "death-of-a-salesman-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "death-of-a-salesman-2026/playbill--unknown.json"
+      "death-of-a-salesman-2026/playbill--unknown.json",
+      "death-of-a-salesman-2026/ew--unknown.json",
+      "death-of-a-salesman-2026/culturesauce--thom-geier.json",
+      "death-of-a-salesman-2026/nysr--david-finkle.json"
     ],
     "amp": [],
     "browserbase": [
@@ -34,16 +47,25 @@
       "data/review-texts/death-of-a-salesman-2026/variety--payton-turkeltaub.json",
       "death-of-a-salesman-2026/variety--payton-turkeltaub.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
-      "lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json"
+      "lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
+      "data/review-texts/death-of-a-salesman-2026/deadline--greg-evans.json",
+      "death-of-a-salesman-2026/deadline--greg-evans.json",
+      "data/review-texts/death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
+      "death-of-a-salesman-2026/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "death-of-a-salesman-2026/nytimes--helen-shaw.json"
+    ],
+    "brightdata": [
+      "death-of-a-salesman-2026/vulture--unknown.json",
+      "death-of-a-salesman-2026/thewrap--robert-hofler.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-04-10T00:47:12.305Z",
-  "lastProcessed": "death-of-a-salesman-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "death-of-a-salesman-2026/nysr--david-finkle.json",
   "log": [
     {
       "t": "2026-04-10T00:47:14.178Z",
@@ -88,6 +110,39 @@
       "t": "2026-04-10T01:07:50.935Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-10T02:29:15.532Z",
+      "event": "bb-session",
+      "session": "083a068d",
+      "url": "https://deadline.com/2026/04/death-of-a-salesman-broadway-review-nathan-lane-123"
+    },
+    {
+      "t": "2026-04-10T02:29:16.341Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-10T02:29:39.208Z",
+      "event": "bb-session",
+      "session": "bf671e83",
+      "url": "https://nypost.com/2026/04/09/entertainment/death-of-a-salesman-review-nathan-la"
+    },
+    {
+      "t": "2026-04-10T02:29:39.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-10T02:29:59.673Z",
+      "event": "bb-session",
+      "session": "8de8c294",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-re"
+    },
+    {
+      "t": "2026-04-10T02:30:00.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
