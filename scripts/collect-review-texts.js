@@ -95,7 +95,7 @@ const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, norm
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { shouldSkipScoredReview } = require('./lib/review-guards');
+const { shouldSkipScoredReview, shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
 // Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
@@ -4480,9 +4480,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // Auto-null fullText on high/medium confidence wrong production (tour, regional, off-Broadway, etc.)
     // Off-Broadway shows are exempt: they commonly transfer from regional theaters,
     // so LLM often misidentifies the production as "wrong" when it's actually correct.
+    // Human-verified files are also exempt (humanReviewedWrongProduction === false signals
+    // a human has reviewed and confirmed this is NOT wrong production — DoaS Apr 9-10 #10).
     const showCat = _showsJsonCache?.shows?.find(s => s.id === data.showId)?.category;
-    if (data.wrongProductionOverride || data.wrongProductionManualClear) {
-      console.log(`    ⚠ wrongProductionOverride/ManualClear set — skipping wrongProduction check`);
+    if (shouldSkipWrongProductionAudit(data)) {
+      console.log(`    ⚠ wrongProduction override set (human-verified or manual) — skipping wrongProduction check`);
     } else if (contentVerification.wrongProduction && isHighConfidence && data.fullText && showCat !== 'off-broadway') {
       if (alreadyScored) {
         // Don't destroy an already-scored review — flag for human review instead
@@ -5667,7 +5669,12 @@ async function processReview(review) {
           criticName: review.critic,
           openingDate: showMeta?.openingDate || null,
           venue: showMeta?.venue || null,
-          market: showMeta?.category || 'broadway'
+          market: showMeta?.category || 'broadway',
+          // Pass publishDate so applyTemporalOverrides can downgrade wrongProduction
+          // confidence on opening-week reviews (DoaS Apr 9-10 postmortem #9: missing
+          // publishDate caused legitimate revival reviews to have their text nulled).
+          // Falls back to textFetchedAt as a proxy when publishDate is missing.
+          publishDate: reviewData.publishDate || reviewData.textFetchedAt || null,
         });
 
         const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';
@@ -5711,6 +5718,9 @@ async function processReview(review) {
     clearFailedFetch(review.reviewId);
 
     // For wrong_content: now safe to clear flags (content fetched and validated from new URL)
+    // DoaS Apr 9-10 #11: also clear stale rejection metadata so the file isn't permanently
+    // skipped on next run. Without clearing incompleteReason/incompleteDetail/contentTier,
+    // the next collect cycle would re-skip the file via line 5067's isWrongContent guard.
     if (review.incompleteReason === 'wrong_content' && review._urlDiscovered && review.filePath) {
       try {
         const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
@@ -5720,8 +5730,17 @@ async function processReview(review) {
         delete postData.wrongShowReason;
         delete postData.showNotMentioned;
         delete postData.contentMismatchNote;
+        delete postData.incompleteReason;
+        delete postData.incompleteDetail;
+        if (postData.contentTier === 'invalid' || postData.contentTier === 'needs-rescrape') {
+          delete postData.contentTier;
+        }
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
-      } catch (e) {}
+        console.log(`    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
+      } catch (e) {
+        // Recovery cleanup failed — preserve original state. Log so we know why next-cycle still skips.
+        console.log(`    ⚠ wrong_content recovery cleanup failed (${e.message}) — file state preserved`);
+      }
     }
 
     // For collector-flagged wrongShow retries: clear flags if re-fetch succeeded with valid content

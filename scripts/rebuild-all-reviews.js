@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { isRoundupUrl, isVenueMismatch } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -873,6 +873,7 @@ const crossShowFingerprints = new Map();
             const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
             if (d.wrongProduction || d.wrongProductionManualClear) continue;
             if (!d.url) continue;
+            if (shouldSkipWrongProductionAudit(d)) continue; // [GUARD:OB-BW-TRANSFER]
             const norm = normalizeUrlForDedup(d.url);
             if (norm && bwUrls.has(norm)) {
               d.wrongProduction = true;
@@ -939,7 +940,7 @@ const crossShowFingerprints = new Map();
             if (ym) reviewDate = new Date(`${ym[1]}-07-01`);
           }
         }
-        if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && !d.wrongProductionManualClear) {
+        if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && !shouldSkipWrongProductionAudit(d)) {
           console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is 90+ days before show ${showEarliest.toISOString().split('T')[0]}`);
           d.wrongProduction = true;
           d.wrongProductionNote = `Pre-opening guard: review dated ${reviewDate.toISOString().split('T')[0]} is 90+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
@@ -1141,7 +1142,8 @@ const KNOWN_SYNDICATION_PAIRS = {
         if (stale) continue;
         let promoted = false;
         if (cv.wrongProduction === true && d.wrongProduction !== true
-            && !d.wrongProductionOverride && !d.wrongProductionManualClear && !d.allowEarlyDate) {
+            && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate) {
+          // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
           d.wrongProductionReason = d.wrongProductionReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
@@ -1190,7 +1192,8 @@ showDirs.forEach(showId => {
           const ucv = ud.contentVerification;
           if (!ucv || (ucv.confidence !== 'high' && ucv.confidence !== 'medium')) continue;
           let promoted = false;
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !ud.wrongProductionOverride && !ud.wrongProductionManualClear && !ud.allowEarlyDate) {
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate) {
+            // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
             ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -1499,8 +1502,9 @@ showDirs.forEach(showId => {
           const wpConfidence = cv.confidence || 'medium';
           const isHighMediumConfidence = wpConfidence === 'high' || wpConfidence === 'medium';
           if (cv.wrongProduction === true && data.wrongProduction !== true
-              && !data.wrongProductionOverride && !data.wrongProductionManualClear
+              && !shouldSkipWrongProductionAudit(data)
               && isHighMediumConfidence && !data.allowEarlyDate) {
+            // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
             data.wrongProductionReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -1749,6 +1753,7 @@ showDirs.forEach(showId => {
             for (const other of allCopies) {
               if (other.showId === showId || !other.showYear) continue;
               if (Math.abs(other.showYear - reviewYear) < myDist) {
+                if (shouldSkipWrongProductionAudit(data)) continue; // [GUARD:CROSS-SHOW-URL-DATED]
                 console.log(`  [CROSS-SHOW URL] ${showId}/${file}: URL year ${reviewYear} closer to ${other.showId} (${other.showYear}) than ${showId} (${myYear})`);
                 stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
                 data.wrongProduction = true;
@@ -1763,6 +1768,7 @@ showDirs.forEach(showId => {
           if (!myYear && reviewYear) {
             for (const other of allCopies) {
               if (other.showId === showId || !other.showYear) continue;
+              if (shouldSkipWrongProductionAudit(data)) continue; // [GUARD:CROSS-SHOW-URL-DATELESS]
               console.log(`  [CROSS-SHOW URL] ${showId}/${file}: dateless show loses to ${other.showId} (${other.showYear}) for URL year ${reviewYear}`);
               stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
               data.wrongProduction = true;
@@ -1817,7 +1823,8 @@ showDirs.forEach(showId => {
         }
         if (outletRegion !== 'london' && !urlIsUK) {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-          if (!data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
+          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+            // [GUARD:CROSS-MARKET-US-ON-LONDON]
             data.wrongProduction = true;
             data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing London show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
@@ -1846,7 +1853,8 @@ showDirs.forEach(showId => {
         }
         if (outletRegion === 'london' || urlIsUK) {
           // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-          if (!data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
+          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+            // [GUARD:CROSS-MARKET-LONDON-ON-OTHER]
             data.wrongProduction = true;
             data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
@@ -1862,7 +1870,8 @@ showDirs.forEach(showId => {
       // (and vice versa) even from dual-market outlets. The outlet may cover both markets,
       // but a URL containing "-broadway-review" or "on-broadway" is reviewing a specific production.
       // Excludes broadwayworld.com (outlet domain, not a production indicator).
-      if (data.url && !data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear && !data.allowEarlyDate) {
+      // [GUARD:URL-PATH-CROSS-MARKET] outer guard covers both inner sites
+      if (data.url && !data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate) {
         try {
           const urlObj = new URL(data.url);
           const hostname = urlObj.hostname.replace(/^www\./, '');
@@ -1907,7 +1916,8 @@ showDirs.forEach(showId => {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
           // Also flag the source file for future reference
-          if (!data.wrongProduction && !data.wrongProductionOverride && !data.wrongProductionManualClear) {
+          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+            // [GUARD:DAYS-BEFORE-OPENED]
             data.wrongProduction = true;
             data.wrongProductionNote = `Review published ${daysBefore} days before show opened — likely reviewing a different production`;
             fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
@@ -2123,8 +2133,9 @@ showDirs.forEach(showId => {
       // If URL year is >2 years from show opening, flag as wrongProduction.
       // This guard is independent of multiProdYearGuard (doesn't require sibling productions in DB).
       // WE/OB exempt: they commonly transfer from fringe/regional, so URL years mismatch legitimately
+      // [GUARD:URL-YEAR-STANDALONE] outer-block guard
       if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
-          && !data.wrongProductionManualClear && !data.allowEarlyDate
+          && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate
           && !isLondonMarket(showCategory) && showCategory !== 'off-broadway') {
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
