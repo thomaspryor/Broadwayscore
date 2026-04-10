@@ -20,6 +20,7 @@
  *   node scripts/query-analytics.js traffic            # Daily sessions & users (last 30 days)
  *   node scripts/query-analytics.js events             # All custom events summary
  *   node scripts/query-analytics.js search-terms       # What users search for on-site
+ *   node scripts/query-analytics.js geo-audit          # Country breakdown — find bot geos
  *   node scripts/query-analytics.js --days=7           # Override date range (any report)
  *   node scripts/query-analytics.js --start=2026-02-01 --end=2026-02-17  # Exact range
  */
@@ -172,6 +173,39 @@ async function reportEvents(client, dateRange) {
   ]));
 }
 
+async function reportGeoAudit(client, dateRange) {
+  console.log('\nGeo Audit — bot detection via engagement outliers\n');
+  const [res] = await client.runReport({
+    property: `properties/${PROPERTY_ID}`,
+    dateRanges: [dateRange],
+    dimensions: [{ name: 'country' }],
+    metrics: [
+      { name: 'sessions' },
+      { name: 'engagementRate' },
+      { name: 'averageSessionDuration' },
+      { name: 'screenPageViewsPerSession' },
+    ],
+    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+    limit: 25,
+  });
+  formatTable(
+    ['Country', 'Sessions', 'Engagement %', 'Avg Duration', 'Pages/Session'],
+    (res.rows || []).map((r) => {
+      const engagement = parseFloat(r.metricValues[1]?.value || '0') * 100;
+      const duration = parseFloat(r.metricValues[2]?.value || '0');
+      const pps = parseFloat(r.metricValues[3]?.value || '0');
+      return [
+        r.dimensionValues[0]?.value || '(not set)',
+        parseInt(r.metricValues[0]?.value || '0').toLocaleString(),
+        engagement.toFixed(1) + '%',
+        duration.toFixed(1) + 's',
+        pps.toFixed(2),
+      ];
+    })
+  );
+  console.log('\n  Bot signature: high sessions + low engagement % + low duration + ~1.0 pages/session');
+}
+
 async function reportSearchTerms(client, dateRange) {
   console.log('\nOn-Site Search Terms\n');
   const [res] = await client.runReport({
@@ -202,6 +236,7 @@ async function main() {
   const reports = {
     'ticket-clicks': reportTicketClicks, 'top-pages': reportTopPages,
     'traffic': reportTraffic, 'events': reportEvents, 'search-terms': reportSearchTerms,
+    'geo-audit': reportGeoAudit,
   };
   const fn = reports[opts.report];
   if (!fn) { console.error(`Unknown report: ${opts.report}\nAvailable: ${Object.keys(reports).join(', ')}`); process.exit(1); }
