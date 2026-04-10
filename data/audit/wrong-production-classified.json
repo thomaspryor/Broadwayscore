@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-10T19:20:31.169Z",
+    "generatedAt": "2026-04-10T19:35:23.718Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 90,
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review is about a Sydney production of Wicked, not the Broadway production that opened in 2003. It mentions the show's third opening night in Sydney and references specific Australian cast members."
+      "reasoning": "This review is about the Australian production of Wicked, specifically the Sydney Lyric production. It mentions the 2008 Australian premiere and a 2014 return season, and discusses the current production in Sydney."
     },
     {
       "showId": "the-lion-king-1997",
@@ -47,23 +47,6 @@
       "reasoning": "The review is about an Atlanta production at the Fox Theatre, not the Broadway production filed under. It mentions the Fox Theatre in Atlanta and provides ticket information specific to that venue."
     },
     {
-      "showId": "miss-saigon-1991",
-      "showTitle": "Miss Saigon",
-      "showYear": 1991,
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "criticName": "Robert Hofler",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, new revival",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "miss-saigon-2017",
-      "reasoning": "The review mentions the 2017 revival's cast (Eva Noblezada, Alistair Brammer, Nicholas Christopher, Katie Rose Clarke) and director (Laurence Connor), and states that the revival opened on Thursday at the Broadway Theatre."
-    },
-    {
       "showId": "master-class-1995",
       "showTitle": "Master Class",
       "showYear": 1995,
@@ -79,7 +62,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "master-class-2011",
-      "reasoning": "The review mentions Tyne Daly, Stephen Wadsworth, and the Samuel J. Friedman Theatre, all associated with the 2011 revival. It also mentions the Kennedy Center's 2010 tribute to Terrence McNally, where this production originated."
+      "reasoning": "The review mentions Tyne Daly, Stephen Wadsworth, the Samuel J. Friedman Theatre, and the Kennedy Center's 2010 tribute to Terrence McNally, all associated with the 2011 revival."
     },
     {
       "showId": "six-degrees-of-separation-1990",
@@ -96,7 +79,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "six-degrees-of-separation-2017",
-      "reasoning": "The review explicitly mentions the \"Broadway revival\" opening at the Barrymore Theatre, directed by Trip Cullman, and starring Allison Janney. These details match the 2017 production, not the 1990 original."
+      "reasoning": "The review explicitly mentions the 'Broadway revival' and the Barrymore Theatre, which are associated with the 2017 production. It also mentions actors in the 2017 production, such as Allison Janney."
     },
     {
       "showId": "how-to-succeed-in-business-without-really-trying-1995",
@@ -114,24 +97,24 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
-      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also mentions the 2010 production of 'Promises, Promises' by the same director, further indicating it's about the 2011 production."
+      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also mentions the 2010 production of \"Promises, Promises\" which is a reference to Rob Ashford's work before the 2011 revival."
     },
     {
-      "showId": "broadway-1987",
-      "showTitle": "Broadway",
-      "showYear": 1987,
-      "file": "vulture--jackson-mchenry.json",
-      "outlet": "Vulture",
-      "criticName": "Jackson McHenry",
-      "publishDate": "2024-04-22",
+      "showId": "miss-saigon-1991",
+      "showTitle": "Miss Saigon",
+      "showYear": 1991,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": null,
       "originalSignals": [
-        "publishDate 2024 is 37 years after original opening 1987",
-        "revival text signals: revival, this production"
+        "revival text signals: revival, new revival",
+        "no publishDate + revival signals + revivals exist"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses a revival starring Adam Driver and Keri Russell, directed by Michael Mayer. This is not the original 1987 production."
+      "targetShowId": "miss-saigon-2017",
+      "reasoning": "The review mentions the 2017 revival's cast (Eva Noblezada, Alistair Brammer, Nicholas Christopher, Katie Rose Clarke) and director (Laurence Connor), and states that the revival opened Thursday at the Broadway Theatre."
     },
     {
       "showId": "on-the-twentieth-century-1978",
@@ -164,7 +147,24 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions James Earl Jones and Cicely Tyson, who starred in the 2015 revival. It also mentions the John Golden Theatre, where the 2015 production opened, and the review's publish date is in 2015."
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
+    },
+    {
+      "showId": "broadway-1987",
+      "showTitle": "Broadway",
+      "showYear": 1987,
+      "file": "vulture--jackson-mchenry.json",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "publishDate": "2024-04-22",
+      "originalSignals": [
+        "publishDate 2024 is 37 years after original opening 1987",
+        "revival text signals: revival, this production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This\", not the original 1987 production. The review also mentions the director, Michael Mayer, and set designer, Derek McLane, who were involved in the 2019 revival."
     },
     {
       "showId": "the-house-of-blue-leaves-1986",
@@ -181,7 +181,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-house-of-blue-leaves-2011",
-      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 production. It also refers to this production as a 'new Broadway revival'."
+      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, indicating this is a different pr"
     },
     {
       "showId": "the-real-thing-2000",
@@ -213,7 +213,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, indicating a recent production."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre and a production running through Nov. 29, which aligns with the 2015 revival starring Clive Owen, Kelly Reilly, and Eve Best. It also mentions Douglas Hodge as the director, who directed the 2015 production."
     }
   ]
 }
