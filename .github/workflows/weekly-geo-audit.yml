@@ -1,0 +1,56 @@
+name: Weekly Geo Bot Audit
+
+# Runs every Monday at 9 AM UTC. Queries GA4 for last 7 days of country-level
+# engagement metrics, alerts via Discord + email if any new bot countries
+# (high sessions, low engagement) appeared since last audit. Silent on
+# no-new-bots so we don't get spammed.
+#
+# See: scripts/audit-geo-bots.js + memory/analytics-real-users-segment.md
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Force alert by ignoring known-bot-geos.json (for verifying email/Discord wiring)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: weekly-geo-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run geo bot audit
+        run: node scripts/audit-geo-bots.js ${{ inputs.test == true && '--test' || '' }}
+        env:
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Geo Bot Audit failed'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
