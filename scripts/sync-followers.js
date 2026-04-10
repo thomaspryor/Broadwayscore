@@ -359,6 +359,7 @@ async function main() {
         const action = (sub.action || 'subscribe').toLowerCase();
 
         if (!isValidEmail(email)) continue;
+        if (action === 'health-check') continue; // Skip canary submissions from check-formspree-health.js
 
         if (action === 'unsubscribe') {
           if (generalSubscribers.has(email)) {
@@ -433,6 +434,7 @@ async function main() {
         const action = (sub.action || 'subscribe').toLowerCase();
 
         if (!isValidEmail(email)) continue;
+        if (action === 'health-check') continue; // Skip canary submissions from check-formspree-health.js
 
         if (action === 'unsubscribe') {
           if (weSubscribers.has(email)) {
