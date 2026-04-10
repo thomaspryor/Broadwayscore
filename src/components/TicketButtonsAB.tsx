@@ -22,54 +22,54 @@ interface TicketButtonsABProps {
 /**
  * A/B test wrapper for ticket buttons on show pages.
  *
- * Reads PostHog feature flag `ticket-primary-platform` to determine which
- * platform gets position 1 (the filled primary CTA). Falls back to default
- * sort order (TodayTix first) if the flag isn't loaded or variant not applicable.
- *
- * PostHog feature flag setup (create in PostHog UI):
- *   Key: ticket-primary-platform
- *   Variants: "todaytix" (50%), "stubhub" (50%)
- *   Ensure experience continuity: ON
+ * Active tests:
+ *   1. ticket-primary-platform — TodayTix first (WINNER, locked 100%)
+ *   2. ticket-single-button — single CTA vs multiple buttons (50/50)
  */
 export default function TicketButtonsAB({
   showName, showId, showSlug, showStatus, showCategory, showScore,
   ticketLinks, officialUrl, pageType, maxButtons = 4,
   buttonClassName = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0",
 }: TicketButtonsABProps) {
-  // PostHog flag loads async — start with default sort, re-render when flag arrives
-  const [abVariant, setAbVariant] = useState<string | null>(null);
+  const [abPlatformVariant, setAbPlatformVariant] = useState<string | null>(null);
+  const [abButtonVariant, setAbButtonVariant] = useState<string | null>(null);
 
   useEffect(() => {
-    const checkFlag = () => {
+    const checkFlags = () => {
       const ph = window.posthog;
-      if (ph?.getFeatureFlag) {
-        const variant = ph.getFeatureFlag('ticket-primary-platform');
-        if (typeof variant === 'string') {
-          setAbVariant(variant);
-        }
-      }
+      if (!ph?.getFeatureFlag) return;
+
+      const platformFlag = ph.getFeatureFlag('ticket-primary-platform');
+      if (typeof platformFlag === 'string') setAbPlatformVariant(platformFlag);
+
+      const buttonFlag = ph.getFeatureFlag('ticket-single-button');
+      if (typeof buttonFlag === 'string') setAbButtonVariant(buttonFlag);
     };
 
-    // Check immediately (PostHog may already be loaded)
-    checkFlag();
-
-    // Also check after a short delay (PostHog loads async)
-    const timer = setTimeout(checkFlag, 2000);
+    checkFlags();
+    const timer = setTimeout(checkFlags, 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Determine which platform to put first based on A/B variant
+  // Platform ordering (test 1 — locked to TodayTix)
   let overridePlatform: string | undefined;
-  if (abVariant === 'stubhub') {
-    // Only override if the show actually has StubHub
-    if (ticketLinks.some(l => l.platform === 'StubHub')) {
-      overridePlatform = 'StubHub';
-    }
+  if (abPlatformVariant === 'stubhub' && ticketLinks.some(l => l.platform === 'StubHub')) {
+    overridePlatform = 'StubHub';
   }
-  // 'todaytix' or null = default sort (TodayTix already priority 1)
 
   const sorted = sortTicketLinks(ticketLinks, overridePlatform);
-  const visibleLinks = sorted.slice(0, officialUrl ? maxButtons - 1 : maxButtons);
+  const isSingleButton = abButtonVariant === 'single';
+
+  // Single-button variant: just show the primary CTA, nothing else
+  const visibleLinks = isSingleButton
+    ? sorted.slice(0, 1)
+    : sorted.slice(0, officialUrl ? maxButtons - 1 : maxButtons);
+
+  // Combine variants into a tracking string
+  const abVariantStr = [
+    abPlatformVariant ? `platform:${abPlatformVariant}` : null,
+    abButtonVariant ? `buttons:${abButtonVariant}` : null,
+  ].filter(Boolean).join(',') || undefined;
 
   if (showStatus === 'closed' || visibleLinks.length === 0) return null;
 
@@ -89,14 +89,12 @@ export default function TicketButtonsAB({
           pageType={pageType}
           linkPosition={i}
           totalLinks={visibleLinks.length}
-          abVariant={abVariant ?? undefined}
+          abVariant={abVariantStr}
           className={buttonClassName}
         >
           {i === 0 ? (
-            // Primary CTA — no icon, "Get Tickets from $X" or "Get Tickets on Platform"
             link.priceFrom ? `Get Tickets from $${link.priceFrom}` : `Get Tickets on ${link.platform}`
           ) : (
-            // Secondary buttons — icon + platform name
             <>
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
@@ -106,7 +104,8 @@ export default function TicketButtonsAB({
           )}
         </TicketLink>
       ))}
-      {officialUrl && (
+      {/* In single-button variant, hide Official Site and secondary buttons */}
+      {!isSingleButton && officialUrl && (
         <TicketLink
           showName={showName}
           showId={showId}
