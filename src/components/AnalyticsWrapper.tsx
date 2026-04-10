@@ -3,7 +3,7 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface SentryEvent {
   exception?: { values?: Array<{ stacktrace?: { frames?: Array<{ filename?: string }> } }> };
@@ -22,15 +22,7 @@ const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
 
 export default function AnalyticsWrapper() {
-  const [isDisabled, setIsDisabled] = useState(false);
-
-  useEffect(() => {
-    const disabled = localStorage.getItem('va-disable') === 'true';
-    setIsDisabled(disabled);
-  }, []);
-
   // PostHog — session recordings, heatmaps, autocapture (replaces Clarity)
-  // Runs unconditionally on mount — independent of the Vercel Analytics va-disable flag.
   useEffect(() => {
     import('posthog-js').then(({ default: posthog }) => {
       if (!posthog.__loaded) {
@@ -57,7 +49,7 @@ export default function AnalyticsWrapper() {
   // Deferred to idle time to avoid blocking critical rendering (TBT reduction)
   // Filters out browser extension noise so only real site errors are reported
   useEffect(() => {
-    if (isDisabled || !SENTRY_DSN) return;
+    if (!SENTRY_DSN) return;
 
     let idleId: number | undefined;
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -135,11 +127,7 @@ export default function AnalyticsWrapper() {
         clearTimeout(timeoutId);
       }
     };
-  }, [isDisabled]);
-
-  if (isDisabled) {
-    return null;
-  }
+  }, []);
 
   return (
     <>
