@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T05:06:37.082Z",
+  "generatedAt": "2026-04-10T05:22:58.412Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -616,19 +616,19 @@
       "slug": "flyby-off-west-end",
       "thumbnail": "/images/shows/flyby-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 40,
       "scoreDrift": null,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
+      "t3": 1,
       "positive": 0,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:0/6"
@@ -692,6 +692,20 @@
           "name": "The Stage",
           "isDualMarket": true
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-10T05:22:58.412Z",
+          "rc": 1,
+          "s": 40,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -704,20 +718,20 @@
       "status": "open",
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
-      "siteScore": 87.05,
+      "siteScore": 87,
       "liveScore": 87,
-      "scoreDrift": -0.04999999999999716,
-      "total": 25,
+      "scoreDrift": 0,
+      "total": 23,
       "t1": 5,
-      "t2": 15,
+      "t2": 13,
       "t3": 5,
-      "positive": 23,
+      "positive": 21,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 23,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -791,6 +805,10 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
         },
         {
           "name": "Billboard",
@@ -867,6 +885,10 @@
         {
           "name": "Slate",
           "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         },
         {
           "name": "CBS News",
@@ -1194,6 +1216,18 @@
           "t2": 15,
           "t3": 5,
           "p": 23,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T05:22:58.412Z",
+          "rc": 23,
+          "s": 87,
+          "t1": 5,
+          "t2": 13,
+          "t3": 5,
+          "p": 21,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -1769,7 +1803,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1966,15 +2000,15 @@
       "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "siteScore": 77.75,
-      "liveScore": 78,
-      "scoreDrift": 0.25,
+      "siteScore": 79.33,
+      "liveScore": 79,
+      "scoreDrift": -0.3299999999999983,
       "total": 17,
       "t1": 4,
       "t2": 5,
       "t3": 8,
-      "positive": 13,
-      "mixed": 4,
+      "positive": 14,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": true,
@@ -2249,6 +2283,18 @@
           "t3": 8,
           "p": 13,
           "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T05:22:58.412Z",
+          "rc": 17,
+          "s": 79.33,
+          "t1": 4,
+          "t2": 5,
+          "t3": 8,
+          "p": 14,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
