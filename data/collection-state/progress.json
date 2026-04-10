@@ -11,7 +11,13 @@
     "death-of-a-salesman-2026/new-york-sun--unknown.json",
     "death-of-a-salesman-2026/nydailynews--unknown.json",
     "death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
-    "death-of-a-salesman-2026/thewrap--robert-hofler.json"
+    "death-of-a-salesman-2026/thewrap--robert-hofler.json",
+    "death-of-a-salesman-2026/amny--unknown.json",
+    "death-of-a-salesman-2026/chicagotribune--unknown.json",
+    "death-of-a-salesman-2026/culturesauce--thom-geier.json",
+    "death-of-a-salesman-2026/nysr--david-finkle.json",
+    "death-of-a-salesman-2026/one-minute-critic--unknown.json",
+    "death-of-a-salesman-2026/slantmagazine--unknown.json"
   ],
   "failed": [
     "death-of-a-salesman-2026/deadline--greg-evans.json",
@@ -28,14 +34,20 @@
     "death-of-a-salesman-2026/thewrap--robert-hofler.json",
     "death-of-a-salesman-2026/variety--naveen-kumar.json",
     "death-of-a-salesman-2026/vulture--unknown.json",
-    "death-of-a-salesman-2026/wsj--charles-isherwood.json"
+    "death-of-a-salesman-2026/wsj--charles-isherwood.json",
+    "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
+    "death-of-a-salesman-2026/theatermania--pete-hempstead.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "death-of-a-salesman-2026/playbill--unknown.json",
       "death-of-a-salesman-2026/ew--unknown.json",
-      "death-of-a-salesman-2026/new-york-sun--unknown.json"
+      "death-of-a-salesman-2026/new-york-sun--unknown.json",
+      "death-of-a-salesman-2026/culturesauce--thom-geier.json",
+      "death-of-a-salesman-2026/nysr--david-finkle.json",
+      "death-of-a-salesman-2026/one-minute-critic--unknown.json",
+      "death-of-a-salesman-2026/slantmagazine--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -50,13 +62,16 @@
       "data/review-texts/death-of-a-salesman-2026/deadline--greg-evans.json",
       "death-of-a-salesman-2026/deadline--greg-evans.json",
       "data/review-texts/death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
-      "death-of-a-salesman-2026/nypost--johnny-oleksinski.json"
+      "death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
+      "data/review-texts/death-of-a-salesman-2026/amny--unknown.json",
+      "death-of-a-salesman-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "death-of-a-salesman-2026/nytimes--helen-shaw.json",
       "death-of-a-salesman-2026/nydailynews--unknown.json",
-      "death-of-a-salesman-2026/thewrap--robert-hofler.json"
+      "death-of-a-salesman-2026/thewrap--robert-hofler.json",
+      "death-of-a-salesman-2026/chicagotribune--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -65,7 +80,7 @@
     "archive": []
   },
   "startTime": "2026-04-10T00:47:12.305Z",
-  "lastProcessed": "death-of-a-salesman-2026/wsj--charles-isherwood.json",
+  "lastProcessed": "death-of-a-salesman-2026/theatermania--pete-hempstead.json",
   "log": [
     {
       "t": "2026-04-10T00:47:14.178Z",
@@ -143,6 +158,17 @@
       "t": "2026-04-10T02:35:17.413Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T02:36:26.890Z",
+      "event": "bb-session",
+      "session": "d191515d",
+      "url": "https://www.amny.com/entertainment/nathan-lane-electrifies-in-death-of-a-salesma"
+    },
+    {
+      "t": "2026-04-10T02:36:27.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
