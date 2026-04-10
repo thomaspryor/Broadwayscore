@@ -22,6 +22,22 @@ const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
 
 export default function AnalyticsWrapper() {
+  // Owner tagging — Real Users analytics lens.
+  // ?bwsc-owner=1 once per device persists localStorage.bwsc-owner='true'.
+  // Tagged sessions stay in topline counts (Vercel + GA + PostHog) but can be
+  // filtered out via PostHog cohort + GA4 internal-traffic comparison.
+  // See memory/analytics-real-users-segment.md
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('bwsc-owner') === '1') {
+        localStorage.setItem('bwsc-owner', 'true');
+      }
+    } catch {
+      // ignore localStorage / URL parse failures
+    }
+  }, []);
+
   // PostHog — 10% sampled session recordings + pageviews + manual events (replaces Clarity)
   // Autocapture/heatmaps/person profiles disabled to stay within free tier.
   useEffect(() => {
@@ -39,6 +55,15 @@ export default function AnalyticsWrapper() {
             if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
           },
         });
+      }
+      // Stamp every event with is_owner if this device is the owner.
+      // register() = super-property, no person profile created (free-tier safe).
+      try {
+        if (localStorage.getItem('bwsc-owner') === 'true') {
+          posthog.register({ is_owner: true });
+        }
+      } catch {
+        // ignore
       }
       // Always expose on window — even if already loaded from a prior render.
       // TicketLink and other components use window.posthog.capture() for native events.
@@ -145,7 +170,9 @@ export default function AnalyticsWrapper() {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${GA_MEASUREMENT_ID}');
+              var __bwscOwner = false;
+              try { __bwscOwner = localStorage.getItem('bwsc-owner') === 'true'; } catch (e) {}
+              gtag('config', '${GA_MEASUREMENT_ID}', __bwscOwner ? { traffic_type: 'internal' } : {});
             `}
           </Script>
         </>
