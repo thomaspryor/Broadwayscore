@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-10T02:26:58.671Z",
+    "generatedAt": "2026-04-10T02:43:01.954Z",
     "description": "Pre-2005 wrong-production audit results",
     "totalFlagged": 147,
     "highConfidence": 43,
@@ -1189,13 +1189,13 @@
       "file": "philadelphia-inquirer--howard-shapiro.json",
       "outlet": "The Philadelphia Inquirer",
       "criticName": "Howard Shapiro",
-      "publishDate": null,
+      "publishDate": "2026-04-09",
       "confidence": "medium",
       "suggestedShowId": "master-class-2011",
       "signals": [
+        "publishDate 2026 is 31 years after original opening 1995",
         "revival text signals: revival, this production, new revival",
-        "year 2010 in text matches revival master-class-2011",
-        "no publishDate + revival signals + revivals exist"
+        "year 2010 in text matches revival master-class-2011"
       ],
       "textSnippet": "McNally’s play may be a bit schematic, punctuated by soul-searching monologues about the diva’s tortured affair with Greek billionaire Aristotle Onassis, but it’s an entertaining vehicle for Daly, and"
     },

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T02:39:39.766Z",
+  "timestamp": "2026-04-10T02:51:38.241Z",
   "stats": {
-    "totalReviews": 34685,
-    "alreadyFlagged": 13740,
+    "totalReviews": 34693,
+    "alreadyFlagged": 13747,
     "dateGuardCatches": 62,
-    "directorMismatch": 959,
-    "tvFilmSignals": 3406,
+    "directorMismatch": 961,
+    "tvFilmSignals": 3405,
     "londonSignals": 1119,
     "offBroadwaySignals": 968,
     "yearMismatch": 72,
-    "noPublishDate": 6360
+    "noPublishDate": 6296
   },
   "findings": [
     {
@@ -12279,7 +12279,7 @@
       "showId": "death-of-a-salesman-2012",
       "file": "philadelphia-inquirer--howard-shapiro.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2012-03-15",
       "url": "https://www.philly.com/philly/entertainment/20120315_Broadway_review_Death_of_a_Salesman.html",
       "findings": [
         {
@@ -12537,6 +12537,34 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "deadline--greg-evans.json",
+      "score": 85,
+      "publishDate": "2026-04-10",
+      "url": "https://deadline.com/2026/04/death-of-a-salesman-broadway-review-nathan-lane-1236784788/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 81,
+      "publishDate": "2026-04-10",
+      "url": "https://www.nysun.com/article/nathan-lane-and-laurie-metcalf-breathe-new-life-into-death-of-a-salesman",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
         }
       ]
     },
@@ -13193,7 +13221,7 @@
       "showId": "dog-day-afternoon-2026",
       "file": "newyorker--emily-nussbaum.json",
       "score": 26,
-      "publishDate": null,
+      "publishDate": "2026-04-02",
       "url": "https://www.newyorker.com/magazine/2026/04/13/dog-day-afternoon-theatre-review",
       "findings": [
         {
@@ -31161,7 +31189,7 @@
       "showId": "master-class-1995",
       "file": "philadelphia-inquirer--howard-shapiro.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2026-04-09",
       "url": "http://www.philly.com/philly/columnists/howard_shapiro/125108339.html",
       "findings": [
         {
@@ -35198,7 +35226,7 @@
       "showId": "newsies-the-musical-2012",
       "file": "philadelphia-inquirer--howard-shapiro.json",
       "score": 87,
-      "publishDate": null,
+      "publishDate": "2012-03-29",
       "url": "http://www.philly.com/philly/entertainment/20120329_Broadway_review___Newsies_.html?cmpid=138886364",
       "findings": [
         {
@@ -40812,7 +40840,7 @@
       "showId": "rocky-2014",
       "file": "philadelphia-daily-news--chuck-darron.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2014-03-14",
       "url": "https://www.philly.com/philly/entertainment/20140314__Rocky__looks_like_Broadway_s_next_heavyweight_champ.html",
       "findings": [
         {
@@ -46117,7 +46145,7 @@
       "showId": "sunset-boulevard-2024",
       "file": "digital-journal--markos-papadatos.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "2024-10-27",
       "url": "https://www.digitaljournal.com/entertainment/review-nicole-scherzinger-and-tom-francis-star-in-sunset-boulevard-on-broadway/article",
       "findings": [
         {
@@ -48228,20 +48256,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "the-big-knife-2013",
-      "file": "philly-stage--toby-zinman.json",
-      "score": 25,
-      "publishDate": null,
-      "url": "https://www.philly.com/philly/blogs/phillystage/203318346.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -54816,7 +54830,7 @@
       "showId": "the-piano-lesson-2022",
       "file": "newyorker--helen-shaw.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2022-10-14",
       "url": "https://www.newyorker.com/culture/the-theatre/a-piano-lesson-with-no-false-notes",
       "findings": [
         {

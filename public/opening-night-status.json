@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T02:39:43.552Z",
+  "generatedAt": "2026-04-10T02:51:42.021Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,25 +12,20 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "siteScore": 87.16,
+      "liveScore": 87,
+      "scoreDrift": -0.1599999999999966,
+      "total": 12,
+      "t1": 4,
+      "t2": 6,
+      "t3": 2,
+      "positive": 11,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -40,31 +35,15 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
         {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
         },
         {
           "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -110,27 +89,11 @@
       ],
       "missingT2": [
         {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
           "name": "TheaterMania",
           "isDualMarket": false
         },
         {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -139,10 +102,6 @@
         },
         {
           "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
           "isDualMarket": false
         },
         {
@@ -155,10 +114,6 @@
         },
         {
           "name": "Observer",
-          "isDualMarket": false
-        },
-        {
-          "name": "Playbill",
           "isDualMarket": false
         },
         {
@@ -183,10 +138,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -311,6 +262,18 @@
           "t2": 0,
           "t3": 0,
           "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T02:51:42.021Z",
+          "rc": 12,
+          "s": 87.16,
+          "t1": 4,
+          "t2": 6,
+          "t3": 2,
+          "p": 11,
           "m": 1,
           "n": 0,
           "bc": "waiting"
