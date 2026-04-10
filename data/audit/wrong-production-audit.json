@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T22:18:21.931Z",
+  "timestamp": "2026-04-10T22:33:18.373Z",
   "stats": {
-    "totalReviews": 34693,
-    "alreadyFlagged": 13830,
+    "totalReviews": 34692,
+    "alreadyFlagged": 13841,
     "dateGuardCatches": 60,
-    "directorMismatch": 940,
-    "tvFilmSignals": 3403,
+    "directorMismatch": 936,
+    "tvFilmSignals": 3401,
     "londonSignals": 1115,
-    "offBroadwaySignals": 967,
+    "offBroadwaySignals": 966,
     "yearMismatch": 71,
-    "noPublishDate": 4534
+    "noPublishDate": 4399
   },
   "findings": [
     {
@@ -35560,7 +35560,7 @@
       "showId": "oh-hello-on-broadway-2016",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2016-10-10",
       "url": "http://www.hollywoodreporter.com/review/hello-broadway-theater-review-936822",
       "findings": [
         {
@@ -36217,7 +36217,7 @@
       "showId": "on-the-town-2014",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2015-08-26",
       "url": "http://www.hollywoodreporter.com/review/misty-copeland-town-theater-review-817876",
       "findings": [
         {
@@ -37067,7 +37067,7 @@
       "showId": "other-desert-cities-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 83,
-      "publishDate": null,
+      "publishDate": "2011-11-03",
       "url": "https://www.hollywoodreporter.com/review/desert-cities-theater-review-257214",
       "findings": [
         {
@@ -38504,7 +38504,7 @@
       "showId": "pippin-2013",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2013-04-26",
       "url": "https://www.nypost.com/p/entertainment/theater/pippin_pip_pip_hooray_DsM7DdoXiJNL0wBRht9zEP",
       "findings": [
         {
@@ -38899,20 +38899,6 @@
     },
     {
       "showId": "present-laughter-2010",
-      "file": "theatermania--david-gordon.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://www.theatermania.com/broadway/news/present-laughter_80614.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moritz von stuelpnagel\" from present-laughter-2017"
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2010",
       "file": "variety--joe-dziemianowicz.json",
       "score": 58,
       "publishDate": "January 21, 2010",
@@ -38957,7 +38943,7 @@
       "showId": "present-laughter-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2017-04-06",
       "url": "https://deadline.com/2017/04/present-laughter-kevin-kline-broadway-review-1202061549/",
       "findings": [
         {
@@ -38976,7 +38962,7 @@
       "showId": "present-laughter-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-04-05",
       "url": "https://www.hollywoodreporter.com/review/present-laughter-theater-review-991396",
       "findings": [
         {
@@ -39111,7 +39097,7 @@
       "showId": "pretty-woman-the-musical-2018",
       "file": "deadline--greg-evans.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2018-08-17",
       "url": "https://deadline.com/2018/08/pretty-woman-broadway-review-musical-samantha-barks-julia-roberts-all-dressed-up-no-place-to-go-1202445929/",
       "findings": [
         {
@@ -39410,7 +39396,7 @@
       "showId": "prima-facie-2023",
       "file": "variety--trish-deitch.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2023-04-24",
       "url": "https://variety.com/2023/legit/reviews/prima-facie-review-jodie-comer-broadway-1235590985/",
       "findings": [
         {
@@ -39577,7 +39563,7 @@
       "showId": "private-lives-2011",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2011-11-18",
       "url": "http://www.nypost.com/p/entertainment/theater/cattrall_sexes_up_dull_lives_ckhjS4IJiRko8D07LWlWFP",
       "findings": [
         {
@@ -39708,7 +39694,7 @@
       "showId": "promises-promises-2010",
       "file": "variety--steven-suskin.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2010-04-26",
       "url": "https://variety.com/2010/legit/reviews/promises-promises-1117942620/",
       "findings": [
         {
@@ -40284,20 +40270,6 @@
       ]
     },
     {
-      "showId": "reasons-to-be-pretty-2009",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 70,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/reasons-be-happy-theater-review-566335",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
       "showId": "reckless-2004",
       "file": "nytimes--ben-brantley.json",
       "score": 81,
@@ -40488,7 +40460,7 @@
       "showId": "relatively-speaking-2011",
       "file": "variety--marilyn-stasio.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2011-10-21",
       "url": "http://www.variety.com/review/VE1117946401",
       "findings": [
         {
@@ -40716,7 +40688,7 @@
       "showId": "rodgers-hammersteins-cinderella-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 75,
-      "publishDate": null,
+      "publishDate": "2013-03-03",
       "url": "https://www.hollywoodreporter.com/review/rodgers-hammersteins-cinderella-theater-review-425763",
       "findings": [
         {
@@ -43441,7 +43413,7 @@
       "showId": "something-rotten-2015",
       "file": "theatermania--zachary-stewart.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2015-04-22",
       "url": "https://www.theatermania.com/broadway/reviews/something-rotten_72631.html",
       "findings": [
         {
@@ -43549,7 +43521,7 @@
       "showId": "soul-doctor-2013",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2013-08-15",
       "url": "https://www.hollywoodreporter.com/review/soul-doctor-theater-review-607355",
       "findings": [
         {
@@ -45307,7 +45279,7 @@
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 89,
-      "publishDate": null,
+      "publishDate": "2017-02-23",
       "url": "https://www.hollywoodreporter.com/news/general-news/sunday-in-the-park-with-george-theater-979116/",
       "findings": [
         {
@@ -45645,7 +45617,7 @@
       "showId": "sunday-in-the-park-with-george-2017",
       "file": "variety--marilyn-stasio.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-02-24",
       "url": "http://variety.com/2017/legit/reviews/sunday-in-the-park-with-george-review-jake-gyllenhaal-1201993848/",
       "findings": [
         {
@@ -48813,20 +48785,6 @@
       ]
     },
     {
-      "showId": "the-cherry-orchard-1997",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 36,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/diane-lane-leads-fruitless-cherry-orchard-article-1.2831068",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"simon godwin\" from the-cherry-orchard-2016"
-        }
-      ]
-    },
-    {
       "showId": "the-cherry-orchard-2016",
       "file": "njcom--christopher-kelly.json",
       "score": 35,
@@ -50644,7 +50602,7 @@
       "showId": "the-glass-menagerie-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2013-09-26",
       "url": "https://www.hollywoodreporter.com/news/general-news/glass-menagerie-theater-review-2-637472/",
       "findings": [
         {
@@ -51041,7 +50999,7 @@
       "showId": "the-heidi-chronicles-2015",
       "file": "deadline--jeremy-gerard.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2015-03-20",
       "url": "https://deadline.com/2015/03/elisabeth-moss-heidi-chronicles-review-broadway-1201395185/",
       "findings": [
         {
@@ -51825,7 +51783,7 @@
       "showId": "the-inheritance-2019",
       "file": "nydailynews--chris-jones.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2019-11-17",
       "url": "https://www.nydailynews.com/entertainment/broadway/ny-inheritance-chris-jones-review-20191117-as6zzjpeqbeaxk4mokfs4qreau-story.html",
       "findings": [
         {
@@ -52804,7 +52762,7 @@
       "showId": "the-little-foxes-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2017-04-19",
       "url": "https://www.hollywoodreporter.com/review/little-foxes-theater-review-995267",
       "findings": [
         {
@@ -52932,19 +52890,6 @@
       "score": 50,
       "publishDate": "2008-01-11",
       "url": "https://www.newspapers.com/image/231942414/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-little-mermaid-2008",
-      "file": "hollywood-reporter--robyn-bahr.json",
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/little-mermaid-live-review-1252669/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -53141,38 +53086,10 @@
     },
     {
       "showId": "the-merchant-of-venice-1989",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/merchant-venice-starring-al-pacino-45210",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from the-merchant-of-venice-2010"
-        }
-      ]
-    },
-    {
-      "showId": "the-merchant-of-venice-1989",
       "file": "newsday--linda-winer.json",
       "score": 84,
       "publishDate": null,
       "url": "https://www.newsday.com/entertainment/theater/al-pacino-s-merchant-of-venice-even-better-indoors-1.2461204?qr=1",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from the-merchant-of-venice-2010"
-        }
-      ]
-    },
-    {
-      "showId": "the-merchant-of-venice-1989",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "http://www.nypost.com/p/entertainment/theater/heiress_glitters_outwits_jew_in_AQ9G1CkUxvgv1bAGVTrjZI?CMP=OTC-rss&FEEDNAME=",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -53423,7 +53340,7 @@
       "showId": "the-nance-2013",
       "file": "variety--gordon-cox.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2013-04-16",
       "url": "https://variety.com/2013/legit/reviews/legit-review-the-nance-1200369817/",
       "findings": [
         {
@@ -53997,7 +53914,7 @@
       "showId": "the-parisian-woman-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2017-11-30",
       "url": "https://www.hollywoodreporter.com/review/parisian-woman-theater-review-1063132",
       "findings": [
         {
@@ -54198,7 +54115,7 @@
       "showId": "the-parisian-woman-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2017-11-30",
       "url": "https://www.theatermania.com/broadway/reviews/the-parisian-woman_83336.html?cid=homepage_news",
       "findings": [
         {
@@ -54873,7 +54790,7 @@
       "showId": "the-play-that-goes-wrong-2017",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2017-04-02",
       "url": "http://www.hollywoodreporter.com/review/play-goes-wrong-review-990621",
       "findings": [
         {
@@ -74910,7 +74827,7 @@
       "showId": "oslo-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2017-04-14",
       "url": "https://deadline.com/2017/04/oslo-broadway-the-hairy-ape-review-1202069313/",
       "findings": [
         {
@@ -75649,19 +75566,6 @@
       ]
     },
     {
-      "showId": "rent-1996",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "publishDate": null,
-      "url": "http://www.nypost.com/p/entertainment/theater/not_quite_grand_larson_OtBX3oMgO2puRrDzpTFXfN?CMP=OTC-rss&FEEDNAME=",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
       "showId": "rock-n-roll-2007",
       "file": "london-theatre--matt-wolf.json",
       "score": 84,
@@ -76070,7 +75974,7 @@
       "showId": "sea-wall-a-life-2019",
       "file": "theatermania--zachary-stewart.json",
       "score": 73,
-      "publishDate": null,
+      "publishDate": "2019-08-08",
       "url": "https://www.theatermania.com/broadway/reviews/sea-wall-a-life-jake-gyllenhaal-tom-sturridge_89503.html",
       "findings": [
         {
@@ -76545,7 +76449,7 @@
       "showId": "skylight-2015",
       "file": "theatermania--zachary-stewart.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2015-04-02",
       "url": "https://www.theatermania.com/broadway/reviews/skylight_72357.html",
       "findings": [
         {
@@ -77850,7 +77754,7 @@
       "showId": "sunset-boulevard-2017",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2017-02-09",
       "url": "https://www.hollywoodreporter.com/review/sunset-boulevard-theater-974020",
       "findings": [
         {
@@ -78285,7 +78189,7 @@
       "showId": "sweat-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-03-26",
       "url": "https://www.theatermania.com/broadway/reviews/sweat_80501.html",
       "findings": [
         {
@@ -78368,7 +78272,7 @@
       "showId": "sweat-2017",
       "file": "variety--matt-windman.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2017-03-27",
       "url": "http://variety.com/2017/legit/reviews/sweat-review-broadway-lynn-nottage-1202015575/",
       "findings": [
         {
@@ -78969,7 +78873,7 @@
       "showId": "the-bands-visit-2017",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2017-11-10",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/band-visit-shines-tony-shalhoub-katrina-lenk-review-article-1.3621587",
       "findings": [
         {
@@ -79053,7 +78957,7 @@
       "showId": "the-bands-visit-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "2017-11-09",
       "url": "https://www.theatermania.com/broadway/reviews/the-bands-visit_83107.html",
       "findings": [
         {
@@ -79142,7 +79046,7 @@
       "showId": "the-caretaker-2003",
       "file": "theatermania--unknown.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2003-11-09",
       "url": "https://www.theatermania.com/news/the-caretaker_4076/",
       "findings": [
         {
@@ -79357,7 +79261,7 @@
       "showId": "the-children-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 55,
-      "publishDate": null,
+      "publishDate": "2017-12-12",
       "url": "http://www.theatermania.com/broadway/reviews/the-children_83466.html",
       "findings": [
         {
@@ -80393,7 +80297,7 @@
       "showId": "the-ferryman-2018",
       "file": "theatermania--david-gordon.json",
       "score": 94,
-      "publishDate": null,
+      "publishDate": "2018-10-21",
       "url": "https://www.theatermania.com/broadway/news/the-ferryman_86783.html",
       "findings": [
         {
@@ -80846,7 +80750,7 @@
       "showId": "the-humans-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2016-02-19",
       "url": "https://deadline.com/2016/02/the-humans-broadway-review-1201705337/",
       "findings": [
         {
@@ -81098,7 +81002,7 @@
       "showId": "the-king-and-i-2015",
       "file": "theatermania--zachary-stewart.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2015-04-17",
       "url": "https://www.theatermania.com/broadway/reviews/the-king-and-i_72556.html",
       "findings": [
         {
@@ -81271,7 +81175,7 @@
       "showId": "the-lehman-trilogy-2021",
       "file": "variety--marilyn-stasio.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2021-10-15",
       "url": "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235088743/",
       "findings": [
         {
@@ -81481,7 +81385,7 @@
       "showId": "the-mountaintop-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2011-10-13",
       "url": "http://www.hollywoodreporter.com/review/mountaintop-theater-review-248274",
       "findings": [
         {
@@ -81575,7 +81479,7 @@
       "showId": "the-nap-2018",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2018-09-27",
       "url": "https://www.hollywoodreporter.com/review/nap-theater-review-1147534",
       "findings": [
         {
