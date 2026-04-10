@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-10T05:27:07.870Z",
-  "processed": 58,
-  "failed": 141,
-  "successRate": "29.1%",
+  "updatedAt": "2026-04-10T05:40:55.256Z",
+  "processed": 67,
+  "failed": 149,
+  "successRate": "31.0%",
   "tierBreakdown": {
     "playwright": 36,
     "amp": 0,
     "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 16,
-    "brightdata": 3,
-    "archiveToday": 2,
+    "brightdata": 5,
+    "archiveToday": 3,
     "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-10T01:07:50.118Z",
-      "event": "bb-session",
-      "session": "93a2d3ee",
-      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/"
-    },
-    {
-      "t": "2026-04-10T01:07:50.935Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-10T02:33:18.732Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-10T04:57:24.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T05:39:11.194Z",
+      "event": "bb-session",
+      "session": "3bebd94f",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-10T05:39:11.831Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
