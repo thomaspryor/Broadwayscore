@@ -162,6 +162,15 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   return schema;
 }
 
+// Contrastive openers signal a mid-review qualifier (e.g. "But the second act
+// drags...") rather than a blurb-quality quote. Strip these because Google
+// review snippets show the quote next to the show title in SERPs.
+const CONTRASTIVE_OPENER_RE = /^\s*(but|however|still|yet|though|although|granted|unfortunately|fortunately|sadly|alas|nevertheless|nonetheless|honestly)\b/i;
+
+// Buckets that signal a positive critical reception. Used to gate which
+// reviews are eligible for SERP-facing CriticReview snippets.
+const POSITIVE_BUCKETS = new Set(['rave', 'positive']);
+
 // CriticReview Schema - Top-level Review objects pointing back to the show.
 //
 // This is the supported pattern for Google's "review snippet" rich result on
@@ -170,7 +179,13 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
 // field '<parent_node>'". Top-level Review objects with `itemReviewed` are the
 // correct shape per https://developers.google.com/search/docs/appearance/structured-data/review-snippet
 //
-// Eligible reviews: T1/T2 outlets with a real text excerpt (quote or summary).
+// Eligible reviews:
+//   - T1/T2 outlets only
+//   - Score >= 70 OR positive bucket (Rave/Positive). Negative quotes will hurt
+//     CTR if Google renders them next to the show title — better no snippet
+//     than a bad snippet.
+//   - Excerpt >= 30 chars and doesn't open with a contrastive conjunction
+//     ("But...", "However...", etc) which signals a mid-review qualifier.
 // Capped at 8 to keep JSON-LD payload small. Each Review references the show
 // via itemReviewed so Google can associate the rating with the correct entity.
 export function generateCriticReviewsSchema(
@@ -182,6 +197,7 @@ export function generateCriticReviewsSchema(
     publishDate: string;
     tier: 1 | 2 | 3;
     reviewScore: number;
+    bucket?: string;
     quote?: string;
     summary?: string;
     pullQuote?: string;
@@ -199,8 +215,19 @@ export function generateCriticReviewsSchema(
   const eligible = reviews
     .filter(r => r.tier === 1 || r.tier === 2)
     .filter(r => {
-      const text = r.quote || r.summary || r.pullQuote || '';
-      return text.trim().length >= 30;
+      // Sentiment gate: require positive critical reception
+      const bucket = (r.bucket || '').toLowerCase();
+      return r.reviewScore >= 70 || POSITIVE_BUCKETS.has(bucket);
+    })
+    .filter(r => {
+      // Note: only pullQuote is currently populated by the pipeline. The
+      // quote/summary fields are reserved on the type for future use.
+      const text = (r.quote || r.summary || r.pullQuote || '').trim();
+      if (text.length < 30) return false;
+      // Reject contrastive openers — they signal mid-review qualifiers, not
+      // blurb-quality opening lines.
+      if (CONTRASTIVE_OPENER_RE.test(text)) return false;
+      return true;
     })
     .filter(r => r.outlet && r.publishDate)
     .slice(0, 8);
@@ -826,15 +853,9 @@ export function generateUnifiedCreativePersonSchema(profile: {
     jobTitle: categoryLabels,
     knowsAbout: 'Broadway Theater',
     description: `${profile.name} is a Broadway ${categoryLabels.join(', ').toLowerCase()} with ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? ` and an average critic score of ${profile.avgScore}/100` : ''}.`,
-    ...(profile.avgScore !== null && profile.scoredShowCount >= 3 && {
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: toFiveStarScale(profile.avgScore),
-        bestRating: 5,
-        worstRating: 1,
-        ratingCount: profile.scoredShowCount,
-      },
-    }),
+    // Note: AggregateRating is not valid on Person per Google's structured data spec.
+    // Only supported on Product, Recipe, LocalBusiness, etc. Removed to avoid GSC warnings.
+    // Mirrors the same fix already applied to generateOutletSchema and generateCriticSchema.
   };
 }
 
