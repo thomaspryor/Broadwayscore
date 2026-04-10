@@ -61,11 +61,13 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   let outletId = input.outletId || normalizeOutlet(input.outlet);
   if (!outletId) return { action: 'skipped', reason: 'no-outlet' };
 
-  // URL-based outlet refinement for shared-domain outlets.
-  // Some outlets share a domain but serve different markets via URL path
-  // (e.g. timeout.com: /newyork → timeout, /london → timeout-london).
-  // The URL path is more authoritative than the outlet display name scraped from HTML,
-  // which may be ambiguous (e.g. "Time Out" resolves to "timeout" regardless of market).
+  // URL-based outlet refinement. The URL is objective ground truth;
+  // aggregator-supplied outlet labels can be wrong. Two cases:
+  //   1. Same-domain, path-based split (e.g. timeout.com /newyork vs /london)
+  //   2. Cross-domain misattribution (e.g. an aggregator credits a theguardian.com
+  //      URL to "Observer" — the URL domain wins).
+  // See: DTLI misattributed a Guardian review as Observer on cats-the-jellicle-ball-2026
+  // (Apr 2026). That created a duplicate file and a cross-market validation failure.
   if (input.url) {
     const urlResolved = resolveOutletFromUrl(input.url);
     if (urlResolved && urlResolved.outletId !== outletId) {
@@ -73,7 +75,13 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];
       if (urlOutlet && nameOutlet && urlOutlet.domain === nameOutlet.domain) {
-        // Same domain, different path-based outlet — URL is authoritative
+        // Case 1: same domain, path-based disambiguation — URL is authoritative
+        outletId = urlResolved.outletId;
+      } else if (urlOutlet) {
+        // Case 2: cross-domain. URL points to a known outlet's domain, so the
+        // aggregator-supplied name-derived outletId is a misattribution.
+        // Prefer the URL, log the correction.
+        console.warn(`  ⚠️  Outlet mismatch for ${showId}: URL=${urlResolved.outletId} (${input.url}) vs name=${outletId}. Preferring URL.`);
         outletId = urlResolved.outletId;
       }
     }

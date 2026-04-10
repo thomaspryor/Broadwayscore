@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename } = require('./lib/review-normalization');
+const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -191,10 +191,29 @@ function extractReviewsFromDTLI(content, showId) {
 
     const outlet = normalizeOutlet(outletRaw);
 
+    // URL is objective ground truth — if the review URL points to a known
+    // outlet's domain and that outlet differs from what DTLI labeled it,
+    // prefer the URL-derived outlet. DTLI has been observed misattributing
+    // theguardian.com URLs as "Observer", etc. (Apr 2026, cats-the-jellicle-ball-2026)
+    let finalOutletId = outlet.outletId;
+    let finalOutletName = outlet.name;
+    if (url) {
+      const urlResolved = resolveOutletFromUrl(url);
+      if (urlResolved && urlResolved.outletId && urlResolved.outletId !== finalOutletId) {
+        const registry = loadOutletRegistry();
+        const urlOutletEntry = registry?.outlets?.[urlResolved.outletId];
+        if (urlOutletEntry) {
+          console.warn(`  ⚠️  DTLI outlet mismatch for ${showId}: URL=${urlResolved.outletId} (${url}) vs DTLI label=${finalOutletId}. Preferring URL.`);
+          finalOutletId = urlResolved.outletId;
+          finalOutletName = getOutletDisplayName(finalOutletId) || finalOutletName;
+        }
+      }
+    }
+
     reviews.push({
       showId,
-      outletId: outlet.outletId,
-      outlet: outlet.name,
+      outletId: finalOutletId,
+      outlet: finalOutletName,
       criticName,
       url,
       publishDate: normalizePublishDate(dateStr),
