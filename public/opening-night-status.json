@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T02:51:42.021Z",
+  "generatedAt": "2026-04-10T03:22:50.125Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,20 +12,20 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 87.16,
+      "siteScore": 86.85,
       "liveScore": 87,
-      "scoreDrift": -0.1599999999999966,
-      "total": 12,
+      "scoreDrift": 0.15000000000000568,
+      "total": 14,
       "t1": 4,
-      "t2": 6,
+      "t2": 8,
       "t3": 2,
-      "positive": 11,
-      "mixed": 1,
-      "negative": 0,
+      "positive": 13,
+      "mixed": 0,
+      "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 11,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -276,6 +276,18 @@
           "p": 11,
           "m": 1,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T03:22:50.125Z",
+          "rc": 14,
+          "s": 86.85,
+          "t1": 4,
+          "t2": 8,
+          "t3": 2,
+          "p": 13,
+          "m": 0,
+          "n": 1,
           "bc": "waiting"
         }
       ]
