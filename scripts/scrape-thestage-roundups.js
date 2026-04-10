@@ -498,6 +498,12 @@ async function main() {
   console.log(`  Files created: ${stats.filesCreated}`);
   console.log(`  Files updated: ${stats.filesUpdated}`);
   console.log(`  Errors: ${stats.errors}`);
+
+  // Zero-data guard: if no pages were checked, the scraper couldn't reach The Stage
+  if (stats.pagesChecked === 0 && !TARGET_SHOWS) {
+    console.error('❌ ZERO pages checked from The Stage — likely blocked or site change. Failing.');
+    process.exit(1);
+  }
 }
 
 module.exports = { extractReviews };

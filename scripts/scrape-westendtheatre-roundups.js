@@ -388,6 +388,13 @@ async function main() {
   stats.totalPosts = allPosts.length;
   console.log(`\n   Total roundup posts: ${allPosts.length}\n`);
 
+  // Zero-data guard: if API returned 0 posts, something is wrong (WAF, API change, etc.)
+  // Don't silently succeed — alert so the issue is caught quickly, not after weeks.
+  if (allPosts.length === 0 && !showFilter) {
+    console.error('❌ ZERO POSTS fetched from WET API — likely WAF block or API change. Failing.');
+    process.exit(1);
+  }
+
   // Process each post
   for (let i = 0; i < allPosts.length; i++) {
     const post = allPosts[i];

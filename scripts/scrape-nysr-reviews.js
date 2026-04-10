@@ -462,6 +462,12 @@ async function scrapeNYSRReviews() {
     }
   }
 
+  // Zero-data guard: WP API may return 0 posts if blocked or API changes
+  if (stats.totalPosts === 0) {
+    console.error('❌ ZERO POSTS fetched from NYSR WP API — likely blocked or API change. Failing.');
+    process.exit(1);
+  }
+
   // Print summary
   console.log('\n=== NYSR Scrape Summary ===');
   console.log(`API pages fetched: ${stats.apiPages}`);
