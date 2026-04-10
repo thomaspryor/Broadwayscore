@@ -3,7 +3,13 @@
     "copenhagen-west-end-2026/times-uk--jane-edwardes.json",
     "magic-mike-live-west-end-2021/daily-mail--candice-jackson.json",
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-    "mj-the-musical-west-end-2024/standard--simone-noakes.json"
+    "mj-the-musical-west-end-2024/standard--simone-noakes.json",
+    "death-of-a-salesman-2026/variety--unknown.json",
+    "lost-in-del-valle-off-broadway-2026/variety--unknown.json",
+    "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
+    "death-of-a-salesman-2026/variety--payton-turkeltaub.json",
+    "lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
+    "death-of-a-salesman-2026/theatermania--pete-hempstead.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -27,20 +33,41 @@
   "tierBreakdown": {
     "playwright": [
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "mj-the-musical-west-end-2024/standard--simone-noakes.json"
+      "mj-the-musical-west-end-2024/standard--simone-noakes.json",
+      "death-of-a-salesman-2026/theatermania--pete-hempstead.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
+      "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "copenhagen-west-end-2026/times-uk--jane-edwardes.json",
       "magic-mike-live-west-end-2021/daily-mail--candice-jackson.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "death-of-a-salesman-2026/variety--unknown.json",
+      "lost-in-del-valle-off-broadway-2026/variety--unknown.json",
+      "death-of-a-salesman-2026/variety--payton-turkeltaub.json",
+      "lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-04-10T09:30:06.313Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "death-of-a-salesman-2026/theatermania--pete-hempstead.json",
+  "log": [
+    {
+      "t": "2026-04-10T10:12:17.924Z",
+      "event": "bb-session",
+      "session": "d16eca22",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-rev"
+    },
+    {
+      "t": "2026-04-10T10:12:18.992Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
