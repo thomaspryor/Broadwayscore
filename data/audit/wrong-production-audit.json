@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T11:07:40.915Z",
+  "timestamp": "2026-04-10T12:02:43.533Z",
   "stats": {
-    "totalReviews": 34703,
-    "alreadyFlagged": 13753,
+    "totalReviews": 34684,
+    "alreadyFlagged": 13742,
     "dateGuardCatches": 62,
-    "directorMismatch": 964,
+    "directorMismatch": 960,
     "tvFilmSignals": 3410,
-    "londonSignals": 1123,
+    "londonSignals": 1121,
     "offBroadwaySignals": 971,
     "yearMismatch": 72,
-    "noPublishDate": 6273
+    "noPublishDate": 6272
   },
   "findings": [
     {
@@ -12239,34 +12239,6 @@
       ]
     },
     {
-      "showId": "death-of-a-salesman-1975",
-      "file": "ew--thom-geier.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "http://www.ew.com/ew/article/0,,20364394_20578450,00.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-1975",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "score": 66,
-      "publishDate": null,
-      "url": "http://www.nypost.com/p/entertainment/theater/attention_must_be_paid_to_age_kQdtu7z9RSuwwtO9pKNtPO?utm_medium=rss&utm_content=Theater",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
-        }
-      ]
-    },
-    {
       "showId": "death-of-a-salesman-2012",
       "file": "kansas-city-star--robert-trussell.json",
       "score": 89,
@@ -12522,25 +12494,6 @@
       "score": 82,
       "publishDate": "October 10, 2022",
       "url": "https://www.timeout.com/newyork/theater/death-of-a-salesman",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2022",
-      "file": "vulture--jesse-green.json",
-      "score": 88,
-      "publishDate": "October 10, 2022",
-      "url": "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -65979,20 +65932,6 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
-      "file": "ew--fabian-brathwiate.json",
-      "score": 71,
-      "publishDate": "October 3, 2022",
-      "url": "https://ew.com/theater/death-of-a-salesman-broadway-revival-review-wendell-pierce/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2022",
       "file": "ew--lester-fabian-brathwaite.json",
       "score": 78,
       "publishDate": "October 3, 2022",
@@ -66091,20 +66030,6 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
-      "file": "theatermania--adam-feldman.json",
-      "score": 92,
-      "publishDate": "October 10, 2022",
-      "url": "https://www.theatermania.com/news/review-arthur-millers-death-of-a-salesman-returns-to-broadway-as-devastating-as-ever_94401/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2022",
       "file": "theatermania--zachary-stewart.json",
       "score": 87,
       "publishDate": "October 3, 2022",
@@ -66135,20 +66060,6 @@
       "showId": "death-of-a-salesman-2022",
       "file": "variety--frank-rizzo.json",
       "score": 84,
-      "publishDate": "October 10, 2022",
-      "url": "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-broadway-wendell-pierce-1235397256/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2022",
-      "file": "variety--jesse-green.json",
-      "score": 85,
       "publishDate": "October 10, 2022",
       "url": "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-broadway-wendell-pierce-1235397256/",
       "findings": [
@@ -70823,6 +70734,20 @@
       "showId": "inter-alia-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
       "score": 74,
+      "publishDate": "2026-04-07",
+      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "broadwayworld--harlan-clementine-scott.json",
+      "score": 73,
       "publishDate": "2026-04-07",
       "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
       "findings": [

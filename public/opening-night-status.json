@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T11:07:44.602Z",
+  "generatedAt": "2026-04-10T12:02:47.298Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -25,7 +25,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 22,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -34,8 +34,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "overdue",
+        "detail": "Overdue alert sent"
       },
       "missingT1": [
         {
@@ -98,10 +98,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theater",
           "isDualMarket": false
         },
         {
@@ -1852,20 +1848,20 @@
       "status": "open",
       "slug": "copenhagen-west-end",
       "thumbnail": "/images/shows/copenhagen-west-end-2026/thumbnail.webp",
-      "siteScore": 66.46,
-      "liveScore": 66,
-      "scoreDrift": -0.45999999999999375,
-      "total": 13,
-      "t1": 3,
+      "siteScore": 67.56,
+      "liveScore": 68,
+      "scoreDrift": 0.4399999999999977,
+      "total": 14,
+      "t1": 4,
       "t2": 3,
       "t3": 7,
-      "positive": 4,
+      "positive": 5,
       "mixed": 8,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 11,
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2062,6 +2058,18 @@
           "t2": 3,
           "t3": 7,
           "p": 4,
+          "m": 8,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T12:02:47.298Z",
+          "rc": 14,
+          "s": 67.56,
+          "t1": 4,
+          "t2": 3,
+          "t3": 7,
+          "p": 5,
           "m": 8,
           "n": 1,
           "bc": "waiting"
