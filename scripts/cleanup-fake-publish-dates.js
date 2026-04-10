@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -61,9 +62,11 @@ for (const s of showsJSON.shows) {
 }
 
 let nulled = 0;
+let recovered = 0;
 let skipped = 0;
 let total = 0;
 const bySource = {};
+const recoveredBySource = {};
 
 for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
   const sdir = path.join(REVIEW_TEXTS_DIR, sid);
@@ -80,6 +83,25 @@ for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
       // Skip already-flagged files
       if (d.wrongProduction || d.wrongShow) continue;
 
+      // Rescue pass: files previously nulled by an older cleanup run still
+      // carry publishDateNulledReason. Try to recover their real date from
+      // the URL — if found, restore it and clear the nulled marker.
+      if (d.publishDate === null && d.publishDateNulledReason) {
+        const rescueResult = extractDateFromUrl(d.url);
+        if (rescueResult && rescueResult.date && rescueResult.date !== showOpening) {
+          const src = d.source || 'unknown';
+          recoveredBySource[src] = (recoveredBySource[src] || 0) + 1;
+          if (!dryRun) {
+            d.publishDate = rescueResult.date;
+            d.dateSource = rescueResult.source;
+            delete d.publishDateNulledReason;
+            fs.writeFileSync(filePath, JSON.stringify(d, null, 2) + '\n');
+          }
+          recovered++;
+        }
+        continue;
+      }
+
       // Only target files where publishDate == opening date
       if (d.publishDate !== showOpening) continue;
 
@@ -88,6 +110,26 @@ for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
 
       if (!targetAll && !targetSources.has(src)) {
         skipped++;
+        continue;
+      }
+
+      // Before nulling, try to recover a real date from the URL.
+      // The opening-date fallback masks reviews whose URL contains the actual
+      // publish date — destroying that signal makes wrong-production guards blind.
+      const urlDateResult = extractDateFromUrl(d.url);
+      const recoveredDate = urlDateResult && urlDateResult.date && urlDateResult.date !== showOpening
+        ? urlDateResult.date
+        : null;
+
+      if (recoveredDate) {
+        recoveredBySource[src] = (recoveredBySource[src] || 0) + 1;
+        if (!dryRun) {
+          d.publishDate = recoveredDate;
+          d.dateSource = urlDateResult.source;
+          delete d.publishDateNulledReason;
+          fs.writeFileSync(filePath, JSON.stringify(d, null, 2) + '\n');
+        }
+        recovered++;
         continue;
       }
 
@@ -105,14 +147,23 @@ for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
 }
 
 console.log(`Total files with publishDate == openingDate: ${total}`);
+console.log(`Recovered real date from URL: ${recovered}`);
 console.log(`Nulled: ${nulled}`);
 console.log(`Skipped (below threshold): ${skipped}`);
-console.log(`\nBy source:`);
+
+if (recovered > 0) {
+  console.log(`\nRecovered by source:`);
+  Object.entries(recoveredBySource).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => {
+    console.log(`  ${k}: ${v}`);
+  });
+}
+
+console.log(`\nNulled by source:`);
 Object.entries(bySource).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => {
   console.log(`  ${k}: ${v}`);
 });
 
-if (dryRun && nulled > 0) {
+if (dryRun && (nulled > 0 || recovered > 0)) {
   console.log(`\nRun with --write to apply changes.`);
 }
 
