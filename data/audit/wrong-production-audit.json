@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T21:48:10.994Z",
+  "timestamp": "2026-04-10T22:03:22.037Z",
   "stats": {
     "totalReviews": 34689,
-    "alreadyFlagged": 13814,
+    "alreadyFlagged": 13830,
     "dateGuardCatches": 60,
-    "directorMismatch": 948,
-    "tvFilmSignals": 3404,
-    "londonSignals": 1116,
-    "offBroadwaySignals": 969,
+    "directorMismatch": 940,
+    "tvFilmSignals": 3403,
+    "londonSignals": 1115,
+    "offBroadwaySignals": 967,
     "yearMismatch": 71,
-    "noPublishDate": 4650
+    "noPublishDate": 4531
   },
   "findings": [
     {
@@ -1777,34 +1777,6 @@
       ]
     },
     {
-      "showId": "a-streetcar-named-desire-1973",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "http://www.nypost.com/p/entertainment/theater/substandard_stanley_MSiCly5m92C8E52H042LVP",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"emily mann\" from a-streetcar-named-desire-2012"
-        }
-      ]
-    },
-    {
-      "showId": "a-streetcar-named-desire-2005",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 73,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/a-streetcar-named-desire-theater-314871",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"emily mann\" from a-streetcar-named-desire-2012"
-        }
-      ]
-    },
-    {
       "showId": "a-streetcar-named-desire-2012",
       "file": "nytimes--ben-brantley.json",
       "score": 38,
@@ -1822,7 +1794,7 @@
       "showId": "a-streetcar-named-desire-2012",
       "file": "variety--marilyn-stasio.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2012-04-23",
       "url": "http://www.variety.com/review/VE1117947418",
       "findings": [
         {
@@ -5034,38 +5006,10 @@
     },
     {
       "showId": "annie-1977",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/annie-theater-review-387835",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from annie-2012"
-        }
-      ]
-    },
-    {
-      "showId": "annie-1977",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 82,
       "publishDate": null,
       "url": "http://www.northjersey.com/arts_entertainment/theater/178047031_Theater_review__Broadway_revival_of__Annie_.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from annie-2012"
-        }
-      ]
-    },
-    {
-      "showId": "annie-1977",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-annie-broadway-article-1.1199159",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -7436,7 +7380,7 @@
       "showId": "bring-it-on-the-musical-2012",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2012-08-01",
       "url": "https://www.hollywoodreporter.com/review/bring-it-on-theater-review-355631",
       "findings": [
         {
@@ -9208,7 +9152,7 @@
       "showId": "catch-me-if-you-can-2011",
       "file": "reuters--david-rooney.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2011-04-10",
       "url": "https://www.hollywoodreporter.com/review/catch-me-you-can-theater-176795",
       "findings": [
         {
@@ -10975,7 +10919,7 @@
       "showId": "come-from-away-2017",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-03-12",
       "url": "https://www.hollywoodreporter.com/review/come-away-theater-review-985425",
       "findings": [
         {
@@ -11510,20 +11454,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "cyrano-de-bergerac-2007",
-      "file": "variety--marilyn-stasio.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://www.variety.com/review/VE1117948530",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
         }
       ]
     },
@@ -14413,7 +14343,7 @@
       "showId": "every-brilliant-thing-2026",
       "file": "ew--dalton-ross.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2026-03-12",
       "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
       "findings": [
         {
@@ -14539,7 +14469,7 @@
       "showId": "evita-1979",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2012-04-05",
       "url": "http://www.nydailynews.com/entertainment/evita-opens-broadway-starring-ricky-martin-argentinian-actress-elena-roger-article-1.1056595",
       "findings": [
         {
@@ -14553,7 +14483,7 @@
       "showId": "evita-1979",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 83,
-      "publishDate": null,
+      "publishDate": "2012-04-06",
       "url": "http://www.nypost.com/p/entertainment/theater/you_must_love_che_WMFrjwJmuK264KxT8MjTOM#ixzz1rG3TzHLN",
       "findings": [
         {
@@ -15284,7 +15214,7 @@
       "showId": "fiddler-on-the-roof-2015",
       "file": "theatermania--zachary-stewart.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2015-12-20",
       "url": "https://www.theatermania.com/broadway/reviews/fiddler-on-the-roof_75372.html",
       "findings": [
         {
@@ -15780,7 +15710,7 @@
       "showId": "fish-in-the-dark-2015",
       "file": "deadline--jeremy-gerard.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2015-03-06",
       "url": "http://deadline.com/2015/03/larry-david-fish-in-the-dark-review-broadway-1201386962/",
       "findings": [
         {
@@ -16060,7 +15990,7 @@
       "showId": "fish-in-the-dark-2015",
       "file": "theatermania--david-gordon.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2015-03-05",
       "url": "https://www.theatermania.com/new-york-city-theater/reviews/fish-in-the-dark_71969.html",
       "findings": [
         {
@@ -16219,7 +16149,7 @@
       "showId": "fool-for-love-2015",
       "file": "deadline--jeremy-gerard.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2015-10-16",
       "url": "http://deadline.com/2015/10/gin-game-fool-for-love-perfect-arrangement-reviews-1201583983/",
       "findings": [
         {
@@ -17210,7 +17140,7 @@
       "showId": "frozen-2018",
       "file": "theatermania--zachary-stewart.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2018-03-22",
       "url": "https://www.theatermania.com/broadway/reviews/disney-lets-it-go-with-frozen-on-broadway_84554.html",
       "findings": [
         {
@@ -18223,39 +18153,6 @@
       ]
     },
     {
-      "showId": "glengarry-glen-ross-2005",
-      "file": "nypost--elisabeth-vincentelli.json",
-      "score": 56,
-      "publishDate": null,
-      "url": "http://www.nypost.com/p/entertainment/theater/more_fizzle_than_sizzle_NjcY22o8gi8mcbUmlL5tKJ",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from glengarry-glen-ross-2012"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2005",
-      "file": "variety--marilyn-stasio.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "http://www.variety.com/review/VE1117948889?refCatId=33",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from glengarry-glen-ross-2012"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
       "showId": "glengarry-glen-ross-2012",
       "file": "backstage--erik-haagensen.json",
       "score": 62,
@@ -18515,7 +18412,7 @@
       "showId": "godspell-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 43,
-      "publishDate": null,
+      "publishDate": "2011-11-07",
       "url": "https://www.hollywoodreporter.com/review/godspell-theater-review-258325",
       "findings": [
         {
@@ -18529,7 +18426,7 @@
       "showId": "godspell-2011",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2011-11-08",
       "url": "http://www.nypost.com/p/entertainment/theater/bit_bible_campy_ap5AEY7kOvd6ECidB6v5nJ",
       "findings": [
         {
@@ -19790,7 +19687,7 @@
       "showId": "groundhog-day-2017",
       "file": "theatermania--david-gordon.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2017-04-17",
       "url": "https://www.theatermania.com/broadway/reviews/groundhog-day_80742.html",
       "findings": [
         {
@@ -20781,7 +20678,7 @@
       "showId": "hands-on-a-hardbody-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2013-03-21",
       "url": "https://www.hollywoodreporter.com/review/hands-a-hardbody-theater-review-430291",
       "findings": [
         {
@@ -21573,20 +21470,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/hello-dolly-theater-review-995956",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
         }
       ]
     },
@@ -22430,7 +22313,7 @@
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2016-10-07",
       "url": "https://deadline.com/2016/10/irving-berlin-holiday-inn-judith-light-reviews-1201832127/",
       "findings": [
         {
@@ -63544,20 +63427,6 @@
       ]
     },
     {
-      "showId": "becky-shaw-2026",
-      "file": "hollywood-reporter--ray-bennett.json",
-      "score": 84,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/becky-shaw-theater-review-74757/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
       "showId": "beetlejuice-2025",
       "file": "guardian--xan-brooks.json",
       "score": 63,
@@ -63617,7 +63486,7 @@
       "showId": "betrayal-2019",
       "file": "theatermania--hayley-levitt.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2019-09-05",
       "url": "https://www.theatermania.com/broadway/reviews/broadway-continues-its-love-affair-with-betrayal_89678.html",
       "findings": [
         {
@@ -65081,7 +64950,7 @@
       "showId": "cirque-du-soleil-paramour-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2016-05-26",
       "url": "https://deadline.com/2016/05/paramour-broadway-the-total-bent-public-theater-review-1201762379/",
       "findings": [
         {
@@ -65513,20 +65382,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "cymbeline-2007",
-      "file": "hollywood-reporter--thr-staff.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/cymbeline-theater-review-813603",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -66083,20 +65938,6 @@
     },
     {
       "showId": "eclipsed-2016",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/lupita-nyong-brilliant-bleak-blunt-eclipsed-article-1.2397495",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "eclipsed-2016",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 76,
       "publishDate": "March 7, 2016",
@@ -66127,7 +65968,7 @@
       "showId": "eclipsed-2016",
       "file": "theatermania--zachary-stewart.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2016-03-06",
       "url": "https://www.theatermania.com/broadway/reviews/eclipsed_76216.html",
       "findings": [
         {
@@ -66225,7 +66066,7 @@
       "showId": "elling-2010",
       "file": "variety--marilyn-stasio.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2010-11-22",
       "url": "http://www.variety.com/review/VE1117944090?categoryid=33&cs=1&nid=2562&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+variety/headlines+(Variety+-+Latest+News)",
       "findings": [
         {
@@ -66608,7 +66449,7 @@
       "showId": "faith-healer-2006",
       "file": "theatermania--unknown.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2006-05-04",
       "url": "https://www.theatermania.com/news/faith-healer_8196/",
       "findings": [
         {
@@ -66622,7 +66463,7 @@
       "showId": "falsettos-2016",
       "file": "theatermania--zachary-stewart.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2016-10-27",
       "url": "https://www.theatermania.com/broadway/reviews/falsettos_78942.html",
       "findings": [
         {
@@ -67266,7 +67107,7 @@
       "showId": "fully-committed-2016",
       "file": "theatermania--hayley-levitt.json",
       "score": 48,
-      "publishDate": null,
+      "publishDate": "2016-04-25",
       "url": "https://www.theatermania.com/broadway/reviews/fully-committed-jesse-tyler-ferguson_76850.html",
       "findings": [
         {
@@ -67406,7 +67247,7 @@
       "showId": "fun-home-2015",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2015-04-20",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/fun-home-shines-broadway-residency-article-1.2189141",
       "findings": [
         {
@@ -67462,7 +67303,7 @@
       "showId": "fun-home-2015",
       "file": "theatermania--david-gordon.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2015-04-19",
       "url": "http://www.theatermania.com/broadway/reviews/fun-home_72584.html",
       "findings": [
         {
@@ -68444,7 +68285,7 @@
       "showId": "hamilton-2015",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2015-08-06",
       "url": "https://www.hollywoodreporter.com/news/general-news/lin-manuel-mirandas-hamilton-theater-813145/",
       "findings": [
         {
@@ -68486,7 +68327,7 @@
       "showId": "hamilton-2015",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 94,
-      "publishDate": null,
+      "publishDate": "2015-08-07",
       "url": "http://www.nydailynews.com/entertainment/theater-arts/hamilton-musical-mint-condition-broadway-article-1.2316761",
       "findings": [
         {
@@ -68687,7 +68528,7 @@
       "showId": "hamilton-west-end-2021",
       "file": "variety--matt-trueman.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2017-12-21",
       "url": "http://variety.com/2017/legit/reviews/hamilton-review-london-west-end-1202647480/",
       "findings": [
         {

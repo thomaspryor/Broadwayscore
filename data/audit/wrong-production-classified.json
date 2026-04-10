@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-10T21:37:17.537Z",
+    "generatedAt": "2026-04-10T21:51:41.252Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 87,
+    "total": 86,
     "classified": 9,
     "wrongProduction": 9,
     "correctProduction": 0,
@@ -47,6 +47,23 @@
       "reasoning": "The review is about an Atlanta production at the Fox Theatre, not the Broadway production filed under. It mentions the Fox Theatre in Atlanta and provides ticket information specific to that venue."
     },
     {
+      "showId": "broadway-1987",
+      "showTitle": "Broadway",
+      "showYear": 1987,
+      "file": "vulture--jackson-mchenry.json",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "publishDate": "2024-04-22",
+      "originalSignals": [
+        "publishDate 2024 is 37 years after original opening 1987",
+        "revival text signals: revival, this production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review discusses a revival starring Adam Driver and Keri Russell, directed by Michael Mayer. This is a different production than the original 1987 Broadway production."
+    },
+    {
       "showId": "master-class-1995",
       "showTitle": "Master Class",
       "showYear": 1995,
@@ -65,23 +82,6 @@
       "reasoning": "The review mentions Tyne Daly, Stephen Wadsworth, and the Samuel J. Friedman Theatre, all associated with the 2011 revival. It also mentions the Kennedy Center's 2010 tribute to Terrence McNally, where this production originated."
     },
     {
-      "showId": "broadway-1987",
-      "showTitle": "Broadway",
-      "showYear": 1987,
-      "file": "vulture--jackson-mchenry.json",
-      "outlet": "Vulture",
-      "criticName": "Jackson McHenry",
-      "publishDate": "2024-04-22",
-      "originalSignals": [
-        "publishDate 2024 is 37 years after original opening 1987",
-        "revival text signals: revival, this production"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review mentions Adam Driver and Keri Russell, who starred in the 2019 revival of Burn This. The review also mentions the director, Michael Mayer, and set designer, Derek McLane, who were part of the 2019 production."
-    },
-    {
       "showId": "how-to-succeed-in-business-without-really-trying-1995",
       "showTitle": "How to Succeed in Business Without Really Trying",
       "showYear": 1995,
@@ -97,7 +97,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
-      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also references a '2010 production of Promises, Promises' by the same director, further indicating it's about the 2011 production."
+      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also mentions the 2010 production of 'Promises, Promises' by the same director, further indicating it's about the 2011 production."
     },
     {
       "showId": "the-house-of-blue-leaves-1986",
@@ -114,7 +114,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-house-of-blue-leaves-2011",
-      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, indicating that this is a new pro"
+      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which confirms it is about the 20"
     },
     {
       "showId": "the-gin-game-1977",
@@ -130,7 +130,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also includes the publish date of 2015."
     },
     {
       "showId": "the-real-thing-2000",
@@ -162,7 +162,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of which are associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre and a production running through Nov. 29, which matches the 2015 revival. It also mentions Clive Owen, Kelly Reilly, and Eve Best, who starred in the 2015 production."
     }
   ]
 }

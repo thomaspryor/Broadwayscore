@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-10T21:37:12.163Z",
+    "generatedAt": "2026-04-10T21:51:36.215Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 120,
+    "totalFlagged": 119,
     "highConfidence": 33,
-    "mediumConfidence": 87,
+    "mediumConfidence": 86,
     "lowConfidence": 0,
     "reassignable": 62
   },
@@ -1358,14 +1358,14 @@
       "file": "nydailynews--joe-dziemianowicz.json",
       "outlet": "NY Daily News",
       "criticName": "Joe Dziemianowicz",
-      "publishDate": null,
+      "publishDate": "2012-04-05",
       "confidence": "high",
       "suggestedShowId": "evita-2012",
       "signals": [
+        "publishDate 2012 matches revival evita-2012 (opened 2012)",
         "revival cast/director match for evita-2012: Ricky Martin, Elena Roger, Michael Cerveris, director: Michael Grandage",
         "revival text signals: revival, this production",
-        "modern references: social media",
-        "no publishDate + revival signals + revivals exist"
+        "modern references: social media"
       ],
       "textSnippet": "Ricky Martin gives a great big touch of star quality to the seductive revival of “Evita” at the Marquis. He also gives an appealing performance in the role of Che, which, like the show, has been re-im"
     },
@@ -1376,10 +1376,11 @@
       "file": "nypost--elisabeth-vincentelli.json",
       "outlet": "NY Post",
       "criticName": "Elisabeth Vincentelli",
-      "publishDate": null,
+      "publishDate": "2012-04-06",
       "confidence": "high",
       "suggestedShowId": "evita-2012",
       "signals": [
+        "publishDate 2012 matches revival evita-2012 (opened 2012)",
         "revival cast/director match for evita-2012: Ricky Martin, Elena Roger, Michael Cerveris, director: Michael Grandage"
       ],
       "textSnippet": "Last night, “Evita” returned after a 30-year absence from Broadway. The wait was worth it: This is a big, fat, juicy blockbuster of a show. Naturally, everybody’s flipping out over the hot new bombshe"
@@ -1823,22 +1824,6 @@
         "revival text signals: revival, back on broadway"
       ],
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
-    },
-    {
-      "showId": "annie-1977",
-      "showTitle": "Annie",
-      "showYear": 1977,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "NEW YORK — Could the timing be any better for a Broadway revival of Annie? The uplifting musical sells not only the archetypal rags-to-riches fantasy but promotes belief in the power of government to "
     },
     {
       "showId": "jesus-christ-superstar-1971",
