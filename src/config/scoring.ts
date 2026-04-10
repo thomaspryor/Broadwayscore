@@ -6,10 +6,11 @@ export const METHODOLOGY_VERSION = "2.2.0";
 export const METHODOLOGY_DATE = "2026-02-22";
 
 // ===========================================
-// PRE-2005 SCORE GATING
+// PRE-2005 REVIEW VISIBILITY
 // ===========================================
-// Pre-2005 Broadway shows need minimum high-confidence reviews to display a score.
-// Reviews from these sources are considered low-confidence:
+// Pre-2005 closed shows have unreliable review data (wrong-production mixing,
+// misattributed reviews from revivals). Hide reviews and scores entirely.
+// Exception: shows still open (e.g., Wicked, Lion King, Chicago).
 export const SCORE_DISPLAY_YEAR_CUTOFF = 2005;
 export const MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF = 3;
 export const LOW_CONF_SCORE_SOURCES = new Set([
@@ -18,6 +19,16 @@ export const LOW_CONF_SCORE_SOURCES = new Set([
   'thumb',
   'bwwScore-fallback',
 ]);
+
+/** Returns true if a show's reviews should be completely hidden on the site. */
+export function shouldHideReviews(show: { openingDate?: string | null; status?: string; category?: string }): boolean {
+  if (!show.openingDate) return false;
+  const openingYear = new Date(show.openingDate).getFullYear();
+  if (openingYear >= SCORE_DISPLAY_YEAR_CUTOFF) return false;
+  // Still-open shows were explicitly collected — show their reviews
+  if (show.status === 'open' || show.status === 'previews') return false;
+  return true;
+}
 
 // ===========================================
 // COMPONENT WEIGHTS (must sum to 1.0)

@@ -119,7 +119,16 @@ function computeShowScore(showReviews) {
 // GENERATE MOBILE DATA
 // ===========================================
 
-// Filter: same logic as generate-search-shows.js
+// Helper: should reviews be hidden for this show? (matches src/config/scoring.ts)
+function shouldHideReviews(show) {
+  if (!show.openingDate) return false;
+  const openingYear = new Date(show.openingDate).getFullYear();
+  if (openingYear >= SCORE_DISPLAY_YEAR_CUTOFF) return false;
+  if (show.status === 'open' || show.status === 'previews') return false;
+  return true;
+}
+
+// Filter: include all non-closed shows + closed shows that have scores (and aren't review-hidden)
 const showsWithScores = new Set();
 for (const review of reviews) {
   if (review.assignedScore != null) showsWithScores.add(review.showId);
@@ -132,21 +141,9 @@ const visibleShows = shows.filter(show =>
 const mobileShows = visibleShows.map(show => {
   const showReviews = reviewsByShow[show.id] || [];
 
-  // Compute critic score
-  let criticScore = computeShowScore(showReviews);
-
-  // Pre-2005 gating (same as engine.ts)
-  if (criticScore && show.openingDate && (!show.category || show.category === 'broadway')) {
-    const openingYear = new Date(show.openingDate).getFullYear();
-    if (openingYear < SCORE_DISPLAY_YEAR_CUTOFF) {
-      const highConfCount = showReviews.filter(r =>
-        r.scoreSource && !LOW_CONF_SCORE_SOURCES.has(r.scoreSource)
-      ).length;
-      if (highConfCount < MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF) {
-        criticScore = null;
-      }
-    }
-  }
+  // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
+  const hideReviews = shouldHideReviews(show);
+  let criticScore = hideReviews ? null : computeShowScore(showReviews);
 
   // Composite score = critic score (V1: critic-only, same as engine.ts line 618)
   const compositeScore = criticScore ? criticScore.s : null;
