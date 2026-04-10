@@ -34,7 +34,11 @@
     "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
     "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
     "the-lyons-2012/theatermania--dan-bacalzo.json",
-    "clybourne-park-2012/theatermania--dan-bacalzo.json"
+    "clybourne-park-2012/theatermania--dan-bacalzo.json",
+    "death-of-a-salesman-2026/nyt-theater--unknown.json",
+    "death-of-a-salesman-2026/forward--unknown.json",
+    "death-of-a-salesman-2026/stageandcinema--unknown.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -327,7 +331,13 @@
     "baby-its-you-2011/backstage--david-sheward.json",
     "the-normal-heart-2011/backstage--unknown.json",
     "the-normal-heart-2011/bloomberg--jeremy-gerard.json",
-    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json"
+    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+    "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -347,14 +357,19 @@
       "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
       "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
       "the-lyons-2012/theatermania--dan-bacalzo.json",
-      "clybourne-park-2012/theatermania--dan-bacalzo.json"
+      "clybourne-park-2012/theatermania--dan-bacalzo.json",
+      "death-of-a-salesman-2026/nyt-theater--unknown.json",
+      "death-of-a-salesman-2026/forward--unknown.json",
+      "death-of-a-salesman-2026/stageandcinema--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
       "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--unknown.json",
-      "music-city-off-broadway-2026/deadline--unknown.json"
+      "music-city-off-broadway-2026/deadline--unknown.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -384,7 +399,7 @@
     ]
   },
   "startTime": "2026-04-10T09:30:06.313Z",
-  "lastProcessed": "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+  "lastProcessed": "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-04-10T10:12:17.924Z",
@@ -405,6 +420,17 @@
     },
     {
       "t": "2026-04-10T11:03:29.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-10T11:51:47.996Z",
+      "event": "bb-session",
+      "session": "a458bfdb",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-04-10T11:51:48.822Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
