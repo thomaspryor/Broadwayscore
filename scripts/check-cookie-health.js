@@ -63,6 +63,18 @@ const CRITICAL_OUTLETS = {
     testUrl: 'https://www.timeout.com/newyork/theater/1776-review-broadway-revival',
     authCookies: [], // Metered/GDPR wall — no hard auth cookies
   },
+  thestage: {
+    envVar: 'THESTAGE_COOKIES',
+    testUrl: 'https://www.thestage.co.uk/reviews/giant-2025-review-royal-court-theatre-london',
+    authCookies: [], // Cookie-only auth — monitor via structural/volume check
+    minCookies: 10, // Stage uses multiple session/auth cookies; <10 signals stale/incomplete bundle
+  },
+  thetimes: {
+    envVar: 'THETIMES_COOKIES',
+    testUrl: 'https://www.thetimes.com/culture/theatre-dance/article/1776-review-broadway-revival',
+    authCookies: [], // Complex subscriber auth — monitor via structural/volume check
+    minCookies: 15, // Times bundle historically has 20+ cookies; <15 signals stale
+  },
 };
 
 // All outlet fileKey → envVar mappings (from shared cookie-loader)
@@ -309,10 +321,24 @@ async function main() {
 
     const auth = checkAuthExpiry(structure.cookies, config.authCookies || []);
     const health = checkGeneralHealth(structure.cookies);
-    const worstStatus = auth.status === 'fail' ? 'fail' : auth.status === 'warn' ? 'warn' : health.status === 'warn' ? 'warn' : 'pass';
+
+    // Volume check: outlets where authCookies: [] (can't check specific names) but we know
+    // a healthy bundle should have at least N cookies. Low count = stale/incomplete extraction.
+    let volume = { status: 'pass', message: '' };
+    if (config.minCookies && structure.cookies.length < config.minCookies) {
+      volume = {
+        status: 'fail',
+        message: `only ${structure.cookies.length} cookies (expected ≥${config.minCookies}) — bundle stale`,
+      };
+    }
+
+    const worstStatus = auth.status === 'fail' || volume.status === 'fail' ? 'fail'
+      : auth.status === 'warn' || volume.status === 'warn' ? 'warn'
+      : health.status === 'warn' ? 'warn' : 'pass';
 
     const parts = [structure.message];
     if (auth.message) parts.push(auth.message);
+    if (volume.message) parts.push(volume.message);
     if (health.message) parts.push(health.message);
     const msg = parts.join(' | ');
 

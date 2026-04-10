@@ -378,8 +378,10 @@ const OUTLET_WAIT_CONFIGS = {
 // Cookie loading is centralized in scripts/lib/cookie-loader.js
 // Provides 3-tier fallback: COOKIES_BUNDLE_* → individual env vars → local files
 
-// Domains where login triggers OTC/OTP emails — use cookie injection ONLY, never attempt login
-const COOKIE_ONLY_DOMAINS = ['newyorker.com'];
+// Domains where login triggers OTC/OTP emails — use cookie injection ONLY, never attempt login.
+// thestage.co.uk: session-limited hard paywall, email/password auth was removed — secrets deleted.
+// See memory/feedback_stage_cookie_only.md.
+const COOKIE_ONLY_DOMAINS = ['newyorker.com', 'thestage.co.uk'];
 
 /**
  * Inject cookies into a Playwright browser context.
@@ -1142,38 +1144,10 @@ async function loginToSite(domain, email, password) {
     }
 
     if (domain === 'thestage.co.uk') {
-      await page.goto('https://www.thestage.co.uk/login', { timeout: CONFIG.loginTimeout });
-      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
-      await page.waitForTimeout(3000);
-      const cookieBtn = await page.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
-      if (cookieBtn) { const v = await cookieBtn.isVisible().catch(() => false); if (v) { console.log('    → Dismissing cookie consent...'); await cookieBtn.click(); await page.waitForTimeout(1000); } }
-      // /login has two forms (main + nav) — find the visible one
-      const emailInputs = await page.$$('input[type="email"], input[name="email"], input[id*="email"]');
-      let emailInput = null;
-      for (const inp of emailInputs) { if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; } }
-      if (!emailInput) { console.log('    ✗ The Stage login FAILED (no visible email field)'); return false; }
-      await emailInput.click();
-      await emailInput.type(email, { delay: 30 });
-      await page.waitForTimeout(500);
-      const passInputs = await page.$$('input[type="password"], input[name="password"]');
-      let passInput = null;
-      for (const inp of passInputs) { if (await inp.isVisible().catch(() => false)) { passInput = inp; break; } }
-      if (passInput) {
-        await passInput.click();
-        await passInput.type(password, { delay: 30 });
-        await page.waitForTimeout(500);
-        const signInBtns = await page.$$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Login"), button[type="submit"], input[type="submit"]');
-        let signInBtn = null;
-        for (const btn of signInBtns) { if (await btn.isVisible().catch(() => false)) { signInBtn = btn; break; } }
-        if (signInBtn) await signInBtn.click();
-        else await page.keyboard.press('Enter');
-        await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-        await page.waitForTimeout(3000);
-      } else { console.log('    ✗ The Stage login FAILED (no visible password field)'); return false; }
-      const postUrl = page.url();
-      if (!postUrl.includes('/login')) { console.log('    ✓ The Stage login verified'); return true; }
-      console.log('    ⚠ The Stage login uncertain - continuing');
-      return true;
+      // Cookie-only — secrets deleted, never attempt login.
+      // See memory/feedback_stage_cookie_only.md.
+      console.log('    → The Stage is cookie-only, skipping login');
+      return false;
     }
 
     if (domain === 'ft.com') {
@@ -1638,39 +1612,10 @@ async function browserbaseLogin(bbPage, domain, email, password) {
   }
 
   if (domain === 'thestage.co.uk') {
-    console.log(`    → Browserbase: navigating to The Stage login...`);
-    await bbPage.goto('https://www.thestage.co.uk/login', { timeout: CONFIG.loginTimeout });
-    await bbPage.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
-    await bbPage.waitForTimeout(3000);
-    const cookieBtn = await bbPage.$('button:has-text("Accept All Cookies"), button:has-text("Accept All"), button:has-text("Accept")');
-    if (cookieBtn) { const v = await cookieBtn.isVisible().catch(() => false); if (v) { console.log('    → Dismissing cookie consent...'); await cookieBtn.click(); await bbPage.waitForTimeout(1000); } }
-    // /login has two forms (main + nav) — find the visible one
-    const emailInputs = await bbPage.$$('input[type="email"], input[name="email"], input[id*="email"]');
-    let emailInput = null;
-    for (const inp of emailInputs) { if (await inp.isVisible().catch(() => false)) { emailInput = inp; break; } }
-    if (!emailInput) { console.log('    ✗ The Stage login FAILED (no visible email field)'); return false; }
-    await emailInput.click();
-    await emailInput.type(email, { delay: 30 });
-    await bbPage.waitForTimeout(500);
-    const passInputs = await bbPage.$$('input[type="password"], input[name="password"]');
-    let passInput = null;
-    for (const inp of passInputs) { if (await inp.isVisible().catch(() => false)) { passInput = inp; break; } }
-    if (passInput) {
-      await passInput.click();
-      await passInput.type(password, { delay: 30 });
-      await bbPage.waitForTimeout(500);
-      const signInBtns = await bbPage.$$('button:has-text("Sign in"), button:has-text("Log in"), button:has-text("Login"), button[type="submit"], input[type="submit"]');
-      let signInBtn = null;
-      for (const btn of signInBtns) { if (await btn.isVisible().catch(() => false)) { signInBtn = btn; break; } }
-      if (signInBtn) await signInBtn.click();
-      else await bbPage.keyboard.press('Enter');
-      await bbPage.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-      await bbPage.waitForTimeout(3000);
-    } else { console.log('    ✗ The Stage login FAILED (no visible password field)'); return false; }
-    const postUrl = bbPage.url();
-    if (!postUrl.includes('/login')) { console.log('    ✓ The Stage login succeeded (via Browserbase)'); return true; }
-    console.log('    ⚠ The Stage login uncertain - continuing');
-    return true;
+    // Cookie-only — secrets deleted, never attempt login.
+    // See memory/feedback_stage_cookie_only.md.
+    console.log('    → The Stage is cookie-only, skipping Browserbase login');
+    return false;
   }
 
   if (domain === 'ft.com') {

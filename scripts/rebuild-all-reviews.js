@@ -29,7 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -1682,6 +1682,32 @@ showDirs.forEach(showId => {
         if (!hasAggregatorScore && !hasExcerpt) {
           stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
           return;
+        }
+      }
+
+      // Auto-migrate aggregator-sourced originalScore → aggregatorStars.
+      // Defense-in-depth for the aggregator-score guard: no matter which extractor
+      // wrote originalScore with a scoreSource in AGGREGATOR_SCORE_SOURCES (show-score-stars,
+      // lbo-star-rating, theatre-reviews-star-rating, etc.), move the value to aggregatorStars
+      // and clear originalScore. Show Score / LBO / TR are aggregators — their "stars" are
+      // their own interpretation and must not be treated as the outlet's published rating.
+      // See memory/feedback_aggregator_score_guard.md.
+      if (data.originalScore && data.scoreSource && AGGREGATOR_SCORE_SOURCES.has(data.scoreSource)) {
+        if (!data.aggregatorStars) {
+          data.aggregatorStars = data.originalScore;
+        }
+        data.originalScore = null;
+        if (data.originalScoreNormalized != null) {
+          data.originalScoreNormalized = null;
+        }
+        if (data.originalScoreSource && AGGREGATOR_SCORE_SOURCES.has(data.originalScoreSource)) {
+          data.originalScoreSource = null;
+        }
+        try {
+          fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+          stats.migratedAggregatorScore = (stats.migratedAggregatorScore || 0) + 1;
+        } catch (e) {
+          console.warn('  Failed to write back aggregator-score migration:', file, e.message);
         }
       }
 
