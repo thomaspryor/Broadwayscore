@@ -778,7 +778,8 @@ async function scrapeLBORoundups() {
   if (DRY_RUN) console.log('\n[DRY RUN] No files were written');
 
   // Zero-data guard: if sitemap returned 0 URLs, the site structure changed or we're blocked
-  if (stats.sitemapUrls === 0 && !TARGET_SHOWS) {
+  // (only fires on full runs, not when scoped to specific shows)
+  if (stats.sitemapUrls === 0 && !targetShowIds) {
     console.error('❌ ZERO sitemap URLs from LBO — likely site change or block. Failing.');
     process.exit(1);
   }
