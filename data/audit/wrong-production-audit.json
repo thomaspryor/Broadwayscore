@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T07:32:32.848Z",
+  "timestamp": "2026-04-10T08:01:28.383Z",
   "stats": {
-    "totalReviews": 34699,
+    "totalReviews": 34696,
     "alreadyFlagged": 13746,
     "dateGuardCatches": 62,
     "directorMismatch": 963,
-    "tvFilmSignals": 3409,
+    "tvFilmSignals": 3408,
     "londonSignals": 1123,
     "offBroadwaySignals": 971,
     "yearMismatch": 72,
-    "noPublishDate": 6285
+    "noPublishDate": 6282
   },
   "findings": [
     {
@@ -9380,7 +9380,7 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
-      "file": "nyt-theater--unknown.json",
+      "file": "nyt-theater--jonathan-mandell.json",
       "score": 75,
       "publishDate": "2026-04-07",
       "url": "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review/",
@@ -24318,20 +24318,6 @@
       "score": 70,
       "publishDate": null,
       "url": "https://www.timeout.com/london/theatre/inter-alia",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.timeout.com/london/news/review-inter-alia-starring-rosamund-pike-at-the-national-theatre-072425",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",

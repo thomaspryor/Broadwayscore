@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T07:32:36.499Z",
+  "generatedAt": "2026-04-10T08:01:32.076Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,9 +12,9 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 85.83,
+      "siteScore": 85.8,
       "liveScore": 86,
-      "scoreDrift": 0.1700000000000017,
+      "scoreDrift": 0.20000000000000284,
       "total": 23,
       "t1": 6,
       "t2": 13,
@@ -290,6 +290,18 @@
           "t": "2026-04-10T05:06:37.082Z",
           "rc": 23,
           "s": 85.83,
+          "t1": 6,
+          "t2": 13,
+          "t3": 4,
+          "p": 20,
+          "m": 1,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T08:01:32.076Z",
+          "rc": 23,
+          "s": 85.8,
           "t1": 6,
           "t2": 13,
           "t3": 4,
@@ -710,20 +722,20 @@
       "status": "open",
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
-      "siteScore": 86.96,
+      "siteScore": 86.87,
       "liveScore": 87,
-      "scoreDrift": 0.04000000000000625,
-      "total": 24,
+      "scoreDrift": 0.12999999999999545,
+      "total": 25,
       "t1": 5,
-      "t2": 14,
+      "t2": 15,
       "t3": 5,
-      "positive": 22,
+      "positive": 23,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 22,
+        "highConfidence": 23,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1224,6 +1236,18 @@
           "t2": 14,
           "t3": 5,
           "p": 22,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T08:01:32.076Z",
+          "rc": 25,
+          "s": 86.87,
+          "t1": 5,
+          "t2": 15,
+          "t3": 5,
+          "p": 23,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -1819,6 +1843,10 @@
           "isDualMarket": true
         },
         {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -2010,20 +2038,20 @@
       "status": "open",
       "slug": "inter-alia-west-end-2026",
       "thumbnail": "/images/shows/inter-alia-west-end-2026/thumbnail.webp",
-      "siteScore": 79.17,
-      "liveScore": 79,
-      "scoreDrift": -0.1700000000000017,
-      "total": 18,
+      "siteScore": 79.86,
+      "liveScore": 80,
+      "scoreDrift": 0.14000000000000057,
+      "total": 17,
       "t1": 4,
-      "t2": 5,
+      "t2": 4,
       "t3": 9,
       "positive": 15,
-      "mixed": 3,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2329,6 +2357,18 @@
           "t3": 9,
           "p": 15,
           "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T08:01:32.076Z",
+          "rc": 17,
+          "s": 79.86,
+          "t1": 4,
+          "t2": 4,
+          "t3": 9,
+          "p": 15,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
