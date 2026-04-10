@@ -162,6 +162,84 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   return schema;
 }
 
+// CriticReview Schema - Top-level Review objects pointing back to the show.
+//
+// This is the supported pattern for Google's "review snippet" rich result on
+// Event types. The earlier attempt nested `review` arrays inside TheaterEvent
+// (commit de1f2cba09) and was rejected by GSC with "Invalid object type for
+// field '<parent_node>'". Top-level Review objects with `itemReviewed` are the
+// correct shape per https://developers.google.com/search/docs/appearance/structured-data/review-snippet
+//
+// Eligible reviews: T1/T2 outlets with a real text excerpt (quote or summary).
+// Capped at 8 to keep JSON-LD payload small. Each Review references the show
+// via itemReviewed so Google can associate the rating with the correct entity.
+export function generateCriticReviewsSchema(
+  show: ComputedShow,
+  reviews: Array<{
+    outlet: string;
+    criticName?: string;
+    url: string;
+    publishDate: string;
+    tier: 1 | 2 | 3;
+    reviewScore: number;
+    quote?: string;
+    summary?: string;
+    pullQuote?: string;
+  }>,
+): Record<string, unknown>[] {
+  if (!reviews || reviews.length === 0) return [];
+
+  const showUrl = `${BASE_URL}/show/${show.slug}`;
+  const itemReviewed = {
+    '@type': 'TheaterEvent',
+    name: show.title,
+    url: showUrl,
+  };
+
+  const eligible = reviews
+    .filter(r => r.tier === 1 || r.tier === 2)
+    .filter(r => {
+      const text = r.quote || r.summary || r.pullQuote || '';
+      return text.trim().length >= 30;
+    })
+    .filter(r => r.outlet && r.publishDate)
+    .slice(0, 8);
+
+  return eligible.map(r => {
+    const rawBody = (r.quote || r.summary || r.pullQuote || '').trim();
+    // Cap excerpt length so JSON-LD doesn't bloat the page
+    const reviewBody = rawBody.length > 300 ? `${rawBody.slice(0, 297)}...` : rawBody;
+
+    const review: Record<string, unknown> = {
+      '@context': 'https://schema.org',
+      '@type': 'Review',
+      itemReviewed,
+      author: r.criticName
+        ? { '@type': 'Person', name: r.criticName }
+        : { '@type': 'Organization', name: r.outlet },
+      datePublished: r.publishDate,
+      reviewBody,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: toFiveStarScale(r.reviewScore),
+        bestRating: 5,
+        worstRating: 1,
+      },
+    };
+
+    // Add publisher only when distinct from author (i.e. when we have a critic name)
+    if (r.criticName && r.outlet) {
+      review.publisher = { '@type': 'Organization', name: r.outlet };
+    }
+
+    if (r.url) {
+      review.url = r.url;
+    }
+
+    return review;
+  });
+}
+
 
 // PerformingArtsTheater Schema - For theater pages
 export function generateTheaterSchema(theater: {
