@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T20:50:21.328Z",
+  "timestamp": "2026-04-10T21:16:52.328Z",
   "stats": {
     "totalReviews": 34688,
-    "alreadyFlagged": 13776,
+    "alreadyFlagged": 13798,
     "dateGuardCatches": 60,
-    "directorMismatch": 956,
-    "tvFilmSignals": 3407,
-    "londonSignals": 1119,
+    "directorMismatch": 955,
+    "tvFilmSignals": 3406,
+    "londonSignals": 1116,
     "offBroadwaySignals": 971,
     "yearMismatch": 71,
-    "noPublishDate": 5108
+    "noPublishDate": 4995
   },
   "findings": [
     {
@@ -1076,20 +1076,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "a-life-in-the-theatre-2010",
-      "file": "vulture--scott-brown.json",
-      "score": 68,
-      "publishDate": null,
-      "url": "http://nymag.com/daily/entertainment/2010/10/theater_review_a_very_chilly_l.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"series finale\""
         }
       ]
     },
@@ -5755,7 +5741,7 @@
       "showId": "bad-cinderella-2023",
       "file": "guardian--lauren-mechling.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2023-03-24",
       "url": "https://www.theguardian.com/stage/2023/mar/24/bad-cinderella-review-andrew-lloyd-webbers-chaotic-musical-hits-broadway",
       "findings": [
         {
@@ -7348,7 +7334,7 @@
       "showId": "breakfast-at-tiffanys-2013",
       "file": "vulture--jesse-green.json",
       "score": 28,
-      "publishDate": null,
+      "publishDate": "2013-03-20",
       "url": "https://www.vulture.com/2013/03/roughening-up-breakfast-at-tiffanys.html",
       "findings": [
         {
@@ -11308,7 +11294,7 @@
       "showId": "cost-of-living-2022",
       "file": "guardian--alexis-soloski.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2022-10-03",
       "url": "https://www.theguardian.com/stage/2022/oct/03/cost-of-living-broadway-samuel-j-friedman-theater-new-york",
       "findings": [
         {
@@ -14469,7 +14455,7 @@
       "showId": "every-brilliant-thing-2026",
       "file": "vulture--sara-holdren.json",
       "score": 86,
-      "publishDate": null,
+      "publishDate": "2026-03-12",
       "url": "https://www.vulture.com/article/daniel-radcliffe-every-brilliant-thing-review.html",
       "findings": [
         {
@@ -17523,7 +17509,7 @@
       "showId": "fully-committed-2016",
       "file": "vulture--jesse-green.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2016-04-26",
       "url": "http://www.vulture.com/2016/04/theater-review-fully-committed.html",
       "findings": [
         {
@@ -18141,7 +18127,7 @@
       "showId": "gigi-2015",
       "file": "vulture--jesse-green.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2015-04-08",
       "url": "https://www.vulture.com/2015/04/theater-review-vanessa-hudgens-in-gigi.html",
       "findings": [
         {
@@ -22659,7 +22645,7 @@
       "showId": "home-2024",
       "file": "vulture--amelia-merrill.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2024-06-05",
       "url": "https://www.vulture.com/article/theater-reviews-home-breaking-the-story-what-became-of-us.html",
       "findings": [
         {
@@ -22767,7 +22753,7 @@
       "showId": "honeymoon-in-vegas-2015",
       "file": "vulture--jesse-green.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2015-01-15",
       "url": "https://www.vulture.com/2015/01/theater-review-honeymoon-in-vegas.html",
       "findings": [
         {
@@ -25480,7 +25466,7 @@
       "showId": "jajas-african-hair-braiding-2023",
       "file": "guardian--gloria-oladipo.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2023-10-03",
       "url": "https://www.theguardian.com/stage/2023/oct/03/jajas-african-hair-braiding-harlem-broadway-play-review",
       "findings": [
         {
@@ -25877,7 +25863,7 @@
       "showId": "job-2024",
       "file": "guardian--adrian-horton.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2024-07-30",
       "url": "https://www.theguardian.com/stage/article/2024/jul/30/job-broadway-review",
       "findings": [
         {
@@ -26017,7 +26003,7 @@
       "showId": "john-lithgow-stories-by-heart-2018",
       "file": "guardian--alexis-soloski.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2018-01-11",
       "url": "http://www.theguardian.com/stage/2018/jan/11/john-lithgow-stories-by-heart-review-star-presence-cant-save-humdrum-one-man-show",
       "findings": [
         {
@@ -27704,25 +27690,6 @@
       ]
     },
     {
-      "showId": "la-cage-aux-folles-1983",
-      "file": "vulture--scott-brown.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "http://nymag.com/arts/theater/reviews/65485/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"terry johnson\" from la-cage-aux-folles-2010"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "la-cage-aux-folles-2010",
       "file": "broadwayworld--michael-dale.json",
       "score": 71,
@@ -28622,7 +28589,7 @@
       "showId": "les-miserables-2014",
       "file": "vulture--jesse-green.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2014-03-23",
       "url": "https://www.vulture.com/2014/03/theater-review-the-return-of-les-miserables.html",
       "findings": [
         {
@@ -29416,7 +29383,7 @@
       "showId": "little-bear-ridge-road-2025",
       "file": "vulture--jackson-mchenry.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2025-10-30",
       "url": "https://www.vulture.com/article/theater-review-samuel-hunter-laurie-metcalf-little-bear-ridge-road.html",
       "findings": [
         {
@@ -32716,7 +32683,7 @@
       "showId": "miss-saigon-2017",
       "file": "wsj--terry-teachout.json",
       "score": 22,
-      "publishDate": null,
+      "publishDate": "2017-03-24",
       "url": "https://www.wsj.com/articles/miss-saigon-review-hard-landing-1490315400",
       "findings": [
         {
@@ -33509,7 +33476,7 @@
     {
       "showId": "moulin-rouge-2019",
       "file": "vulture--sarah-holdren.json",
-      "publishDate": null,
+      "publishDate": "2019-07-25",
       "url": "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
       "findings": [
         {
@@ -34407,7 +34374,7 @@
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
       "file": "wsj--terry-teachout.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2016-11-17",
       "url": "https://www.wsj.com/articles/natasha-pierre-the-great-comet-of-1812-review-immersed-in-tolstoy-1479423248",
       "findings": [
         {
@@ -39471,7 +39438,7 @@
       "showId": "pretty-woman-the-musical-2018",
       "file": "vulture--sara-holdren.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2018-08-16",
       "url": "https://www.vulture.com/2018/08/theater-pretty-woman-and-the-trouble-with-onstage-nostalgia.html",
       "findings": [
         {
@@ -39942,7 +39909,7 @@
       "showId": "purlie-victorious-2023",
       "file": "guardian--jesse-hassenger.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2023-09-27",
       "url": "https://www.theguardian.com/stage/2023/sep/27/purlie-victorious-review-broadway-play?utm_source=dlvr.it&utm_medium=twitter",
       "findings": [
         {
@@ -51699,7 +51666,7 @@
       "showId": "the-humans-2016",
       "file": "vulture--jesse-green.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2016-02-18",
       "url": "https://www.vulture.com/2016/02/theater-reviews-old-hats.html",
       "findings": [
         {
@@ -53452,7 +53419,7 @@
       "showId": "the-minutes-2022",
       "file": "guardian--alexis-soloski.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2022-04-17",
       "url": "https://www.theguardian.com/stage/2022/apr/17/the-minutes-review-tracy-letts",
       "findings": [
         {
@@ -64569,7 +64536,7 @@
       "showId": "burn-this-2019",
       "file": "vulture--sara-holdren.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2019-04-16",
       "url": "https://www.vulture.com/2019/04/theater-men-behaving-bigly-in-burn-this-and-socrates.html",
       "findings": [
         {
@@ -65586,7 +65553,7 @@
       "showId": "copenhagen-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2026-04-08",
       "url": "https://www.theguardian.com/stage/2026/apr/08/copenhagen-review-hampstead-theatre-london",
       "findings": [
         {
@@ -66459,7 +66426,7 @@
       "showId": "english-2025",
       "file": "vulture--sara-holdren.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2025-01-23",
       "url": "https://www.vulture.com/article/freedom-in-speech-sanaz-toossis-english.html",
       "findings": [
         {
@@ -70867,7 +70834,7 @@
       "showId": "jackals-off-broadway-2026",
       "file": "guardian--michael-billington.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2017-05-24",
       "url": "https://www.theguardian.com/stage/2017/may/24/woyzeck-review-john-boyega-jack-thorne-georg-buchner-old-vic-london",
       "findings": [
         {
@@ -71737,20 +71704,6 @@
       ]
     },
     {
-      "showId": "la-cage-aux-folles-2010",
-      "file": "vulture--scott-brown.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "http://nymag.com/arts/theater/reviews/65485/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "lackawanna-blues-2021",
       "file": "amny--matt-windman.json",
       "score": 78,
@@ -72020,7 +71973,7 @@
       "showId": "latin-history-for-morons-2017",
       "file": "wsj--edward-rothstein.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2017-11-16",
       "url": "https://www.wsj.com/articles/latin-history-for-morons-review-a-lesson-in-identity-politics-1510870632",
       "findings": [
         {
@@ -72707,20 +72660,6 @@
       "score": 85,
       "publishDate": "2022-01-25",
       "url": "https://www.londontheatre.co.uk/reviews/channing-tatum-magic-mike-live-hippodrome-casino",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-2001",
-      "file": "vulture--john-simon.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "http://nymag.com/nymetro/arts/theater/reviews/5312/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73908,7 +73847,7 @@
       "showId": "my-joy-is-heavy-off-broadway-2025",
       "file": "vulture--sara-holdren.json",
       "score": 57,
-      "publishDate": null,
+      "publishDate": "2026-03-17",
       "url": "https://www.vulture.com/article/review-bengsons-my-joy-is-heavy-nytw.html",
       "findings": [
         {
@@ -75862,7 +75801,7 @@
     {
       "showId": "queen-versailles-2025",
       "file": "vulture--sara-holdren-and-jesse-david-fox.json",
-      "publishDate": null,
+      "publishDate": "2025-11-10",
       "url": "https://www.vulture.com/article/theater-review-the-queen-of-versailles-broadway-burning-cauldron-fiery-fire.html",
       "findings": [
         {
@@ -77035,7 +76974,7 @@
       "showId": "soul-doctor-2013",
       "file": "vulture--scott-brown.json",
       "score": 56,
-      "publishDate": null,
+      "publishDate": "2013-08-15",
       "url": "https://www.vulture.com/2013/08/theater-reviews-shida.html",
       "findings": [
         {
@@ -78747,7 +78686,7 @@
       "showId": "sweat-2017",
       "file": "vulture--matt-windman.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2017-03-26",
       "url": "http://www.vulture.com/2017/03/theater-lynn-nottages-sweat-tells-but-doesnt-show.html",
       "findings": [
         {
@@ -78818,7 +78757,7 @@
       "file": "artsdesk--aleks-sierz.json",
       "score": 90,
       "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/teeth-n-smiles-duke-yorks-theatre-review-rebecca-lucy-taylor-smash",
+      "url": "https://theartsdesk.com/theatre/teeth-n-smiles-duke-yorks-theatre-review-rebecca-lucy-taylor-smash?amp",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80833,7 +80772,7 @@
       "showId": "the-glass-menagerie-2013",
       "file": "vulture--scott-brown.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2013-09-26",
       "url": "https://www.vulture.com/2013/09/theater-reviews-arguendo.html",
       "findings": [
         {
