@@ -545,12 +545,20 @@ function mergeReviews(existing, incoming) {
     if (urlChanged) {
       // URL fundamentally changed — old content flags are stale
       if (incoming.publishDate) merged.publishDate = incoming.publishDate;
-      delete merged.wrongProduction;
-      delete merged.wrongProductionNote;
+      // Preserve manual flags: if a human reviewed and flagged this file
+      // (humanReviewedWrongProduction === false means "verified correct"),
+      // do NOT clear the wrong-production/wrong-show state
+      if (existing.humanReviewedWrongProduction !== false) {
+        delete merged.wrongProduction;
+        delete merged.wrongProductionNote;
+      }
       delete merged.wrongArticle;
-      delete merged.wrongShow;
-      delete merged.wrongShowNote;
-      delete merged.wrongShowAutoCleared;
+      // Only clear wrongShow if it wasn't manually set with a reason
+      if (!existing.wrongShowReason) {
+        delete merged.wrongShow;
+        delete merged.wrongShowNote;
+        delete merged.wrongShowAutoCleared;
+      }
       // Reset content state so text collection re-fetches from the new URL
       if (merged.contentTier === 'invalid' || merged.contentTier === 'stub') {
         delete merged.contentTier;
