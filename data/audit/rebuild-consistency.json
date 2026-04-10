@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T03:55:52.819Z",
+  "generatedAt": "2026-04-07T19:18:28.792Z",
   "issues": [
     {
       "type": "designation-score-mismatch",
@@ -8,6 +8,14 @@
       "outlet": "nytimes",
       "critic": "Ben Brantley",
       "detail": "Critics_Pick but score=38 (source: llmScore)"
+    },
+    {
+      "type": "designation-score-mismatch",
+      "severity": "medium",
+      "showId": "les-miserables-2006",
+      "outlet": "nytimes",
+      "critic": "Ben Brantley",
+      "detail": "Critics_Pick but score=54 (source: llmScore-lowconf)"
     },
     {
       "type": "designation-score-mismatch",

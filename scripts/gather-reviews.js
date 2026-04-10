@@ -2529,8 +2529,14 @@ function createReviewFile(showId, reviewData, options = {}) {
           // replace the existing file instead of merging — the old content is junk.
           // Preserve aggregator-sourced scores (bwwScore, showScoreRating, dtliThumb) that
           // came from a legitimate source even though the text content is wrong.
+          // EXCEPTION: if a human reviewed and flagged this file (wrongShowReason or
+          // humanReviewedWrongProduction set), DO NOT replace — the flag is intentional.
+          const isHumanFlagged = existingReview.wrongShowReason
+            || existingReview.humanReviewedWrongProduction === false
+            || existingReview.humanReviewScore != null;
           if ((existingReview.wrongShow || existingReview.wrongProduction) && reviewData.url
-              && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))) {
+              && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))
+              && !isHumanFlagged) {
             const preserved = {};
             for (const key of ['bwwScore', 'bwwExcerpt', 'showScoreRating', 'showScoreExcerpt', 'dtliThumb', 'dtliExcerpt']) {
               if (existingReview[key] !== undefined) preserved[key] = existingReview[key];
