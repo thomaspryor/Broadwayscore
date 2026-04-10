@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-10T09:46:21.092Z",
+  "timestamp": "2026-04-10T10:02:48.491Z",
   "stats": {
-    "totalReviews": 34698,
-    "alreadyFlagged": 13752,
+    "totalReviews": 34697,
+    "alreadyFlagged": 13753,
     "dateGuardCatches": 62,
-    "directorMismatch": 963,
+    "directorMismatch": 964,
     "tvFilmSignals": 3408,
     "londonSignals": 1123,
     "offBroadwaySignals": 971,
@@ -12607,6 +12607,19 @@
       "score": 81,
       "publishDate": "2026-04-10",
       "url": "https://www.nysun.com/article/nathan-lane-and-laurie-metcalf-breathe-new-life-into-death-of-a-salesman",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "playbill--unknown.json",
+      "publishDate": "2026-04-02",
+      "url": "https://playbill.com/article/reviews-what-do-the-critics-think-of-broadways-death-of-a-salesman-starring-nathan-lane-laurie-metcalf-and-christopher-abbott",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -70895,7 +70908,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 66,
       "publishDate": "2026-04-08",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "url": "https://www.thetimes.com/article/9e0d6a06-e200-437a-87f7-09d8a94a5039",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

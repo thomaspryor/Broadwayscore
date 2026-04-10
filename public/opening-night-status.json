@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T09:46:24.893Z",
+  "generatedAt": "2026-04-10T10:02:52.252Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,20 +12,20 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 85.82,
+      "siteScore": 86.04,
       "liveScore": 86,
-      "scoreDrift": 0.18000000000000682,
-      "total": 24,
+      "scoreDrift": -0.04000000000000625,
+      "total": 23,
       "t1": 6,
-      "t2": 14,
+      "t2": 13,
       "t3": 4,
-      "positive": 21,
+      "positive": 20,
       "mixed": 2,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 18,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -101,10 +101,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Playbill",
-          "isDualMarket": false
-        },
-        {
           "name": "The Daily Beast",
           "isDualMarket": false
         },
@@ -114,6 +110,10 @@
         },
         {
           "name": "New York Theater",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -321,6 +321,18 @@
           "m": 2,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T10:02:52.252Z",
+          "rc": 23,
+          "s": 86.04,
+          "t1": 6,
+          "t2": 13,
+          "t3": 4,
+          "p": 20,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -372,6 +384,10 @@
         {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
