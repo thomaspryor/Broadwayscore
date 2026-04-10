@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T08:01:28.383Z",
+  "timestamp": "2026-04-10T08:36:20.775Z",
   "stats": {
-    "totalReviews": 34696,
+    "totalReviews": 34691,
     "alreadyFlagged": 13746,
     "dateGuardCatches": 62,
     "directorMismatch": 963,
-    "tvFilmSignals": 3408,
+    "tvFilmSignals": 3409,
     "londonSignals": 1123,
     "offBroadwaySignals": 971,
     "yearMismatch": 72,
-    "noPublishDate": 6282
+    "noPublishDate": 6276
   },
   "findings": [
     {
@@ -12626,6 +12626,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "variety--naveen-kumar.json",
+      "score": 66,
+      "publishDate": "2026-04-07",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-lead-disappointing-revival-1236711360/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -70895,7 +70909,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 66,
       "publishDate": "2026-04-08",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "url": "https://www.thetimes.com/article/9e0d6a06-e200-437a-87f7-09d8a94a5039",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

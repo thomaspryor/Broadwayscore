@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T08:01:32.076Z",
+  "generatedAt": "2026-04-10T08:36:24.549Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,20 +12,20 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 85.8,
+      "siteScore": 85.82,
       "liveScore": 86,
-      "scoreDrift": 0.20000000000000284,
-      "total": 23,
+      "scoreDrift": 0.18000000000000682,
+      "total": 24,
       "t1": 6,
-      "t2": 13,
+      "t2": 14,
       "t3": 4,
-      "positive": 20,
-      "mixed": 1,
-      "negative": 2,
+      "positive": 21,
+      "mixed": 2,
+      "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -309,6 +309,18 @@
           "m": 1,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T08:36:24.549Z",
+          "rc": 24,
+          "s": 85.82,
+          "t1": 6,
+          "t2": 14,
+          "t3": 4,
+          "p": 21,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -360,6 +372,10 @@
         {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -722,20 +738,20 @@
       "status": "open",
       "slug": "cats-the-jellicle-ball",
       "thumbnail": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp",
-      "siteScore": 86.87,
+      "siteScore": 86.96,
       "liveScore": 87,
-      "scoreDrift": 0.12999999999999545,
-      "total": 25,
+      "scoreDrift": 0.04000000000000625,
+      "total": 24,
       "t1": 5,
-      "t2": 15,
+      "t2": 14,
       "t3": 5,
-      "positive": 23,
+      "positive": 22,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 23,
+        "highConfidence": 22,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -809,6 +825,10 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
         },
         {
           "name": "Billboard",
@@ -885,6 +905,10 @@
         {
           "name": "Slate",
           "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         },
         {
           "name": "CBS News",
@@ -1248,6 +1272,18 @@
           "t2": 15,
           "t3": 5,
           "p": 23,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T08:36:24.549Z",
+          "rc": 24,
+          "s": 86.96,
+          "t1": 5,
+          "t2": 14,
+          "t3": 5,
+          "p": 22,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -1840,10 +1876,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
