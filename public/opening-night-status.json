@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T12:02:47.298Z",
+  "generatedAt": "2026-04-10T12:41:04.773Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -34,8 +34,8 @@
         }
       },
       "broadcast": {
-        "state": "overdue",
-        "detail": "Overdue alert sent"
+        "state": "preview-sent",
+        "detail": "Preview sent (24 reviews)"
       },
       "missingT1": [
         {
@@ -98,6 +98,10 @@
         },
         {
           "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Theater",
           "isDualMarket": false
         },
         {
