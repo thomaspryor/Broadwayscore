@@ -340,4 +340,74 @@ function isUrlTitleMismatch(url, showTitle) {
   return { isMismatch: false };
 }
 
-module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview, isRoundupUrl, isVenueMismatch, isUrlTitleMismatch };
+/**
+ * Centralized check for whether the wrong-production audit should skip a review file.
+ *
+ * Returns true if any of the three "human-verified positive" overrides is set:
+ *   - humanReviewedWrongProduction === false (explicit human verification)
+ *   - wrongProductionManualClear === true
+ *   - wrongProductionOverride === true
+ *
+ * Use this at every site in rebuild-all-reviews.js that writes wrongProduction = true.
+ * Without it, CV-pre-pass and other guards re-flag human-verified files (the DoaS Apr 9-10
+ * bug class — see memory/project_doas_opening_night_issues.md issue #10).
+ *
+ * Strict equality is intentional: the override is the literal value `false`, not just
+ * any falsy value. A missing/null/undefined humanReviewedWrongProduction means "not yet
+ * human-verified" and the audit should run normally.
+ *
+ * @param {Object|null} data - Review data object (from review-texts JSON file)
+ * @returns {boolean} true if the audit should skip this file
+ */
+function shouldSkipWrongProductionAudit(data) {
+  if (!data || typeof data !== 'object') return false;
+  return (
+    data.humanReviewedWrongProduction === false ||
+    data.wrongProductionManualClear === true ||
+    data.wrongProductionOverride === true
+  );
+}
+
+/**
+ * Returns true if the show is a revival of an earlier-titled production.
+ *
+ * Revival = another show in shows.json shares the same `title` (or `canonicalTitle`)
+ * but a different show ID. This is more reliable than year-suffix regex because TodayTix
+ * IDs use varied suffixes: `-2026`, `-2`, no suffix at all (e.g. `giant-2`, `death-of-a-salesman`).
+ *
+ * Used by the revival heuristic gate in content-quality.js — when a review's text mentions
+ * actors/details from a prior production of the same title, the LLM should NOT trip
+ * "different show mentioned" because the prior production IS the same play, just a
+ * different cast/year.
+ *
+ * @param {string} showId - The show ID being checked (e.g. "death-of-a-salesman-2026")
+ * @param {Array} shows - Array of show records (typically from shows.json)
+ * @returns {boolean} true if at least one OTHER show shares the same canonical title
+ */
+function isRevivalByCanonicalTitle(showId, shows) {
+  if (!showId || !Array.isArray(shows) || shows.length === 0) return false;
+  const target = shows.find(s => s && s.id === showId);
+  if (!target) return false;
+  const targetTitle = (target.canonicalTitle || target.title || '').toLowerCase().trim();
+  if (!targetTitle) return false;
+  for (const s of shows) {
+    if (!s || s.id === showId) continue;
+    const t = (s.canonicalTitle || s.title || '').toLowerCase().trim();
+    if (t === targetTitle) return true;
+  }
+  return false;
+}
+
+module.exports = {
+  shouldSkipScoredReview,
+  pickBestDtliSlug,
+  applyTemporalOverrides,
+  urlLooksLikeReview,
+  isLikelyWrongProduction,
+  isLikelyTourReview,
+  isRoundupUrl,
+  isVenueMismatch,
+  isUrlTitleMismatch,
+  shouldSkipWrongProductionAudit,
+  isRevivalByCanonicalTitle,
+};
