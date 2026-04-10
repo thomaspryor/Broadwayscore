@@ -28,6 +28,11 @@ on:
         required: false
         default: 'high-yield'
         type: string
+      free_only:
+        description: 'Only use free sources (Archive.org + cookies), no paid scrapers'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: backfill-review-dates
@@ -69,6 +74,16 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
         run: |
           ARGS="--limit=${{ inputs.limit }} --offset=${{ inputs.offset }}"
           if [ -n "${{ inputs.show }}" ]; then
@@ -79,6 +94,9 @@ jobs:
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ inputs.free_only }}" = "true" ]; then
+            ARGS="$ARGS --free-only"
           fi
           echo "Running: node scripts/backfill-review-dates.js $ARGS"
           node scripts/backfill-review-dates.js $ARGS

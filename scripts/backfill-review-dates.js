@@ -16,10 +16,19 @@
  *   --domains=high-yield Only process reviews from high-yield domains (>70% date rate)
  *   --domains=a.com,b.com  Only process specific domains
  *   --prioritize         Sort high-yield domains first (even without --domains filter)
+ *   --free-only          Only use free sources (cookies + Archive.org), no paid scrapers
+ *
+ * Source priority:
+ *   1. URL pattern extraction (free, no fetch)
+ *   2. Text regex from existing fullText (free, no fetch)
+ *   3. Direct fetch with cookies (free, paywalled sites)
+ *   4. Archive.org Wayback Machine (free)
+ *   5. ScrapingBee/Bright Data (paid, only if --free-only NOT set)
  */
 
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 const { fetchPage } = require('./lib/scraper');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 
@@ -30,6 +39,11 @@ const dryRun = args.includes('--dry-run');
 const offset = parseInt(args.find(a => a.startsWith('--offset='))?.split('=')[1] || '0');
 const domainMode = args.find(a => a.startsWith('--domains='))?.split('=')[1]; // high-yield, custom list, or omit for all
 const prioritize = args.includes('--prioritize'); // sort by high-yield domains first
+const freeOnly = args.includes('--free-only'); // skip paid scrapers (Archive.org + direct fetch only)
+
+// Rate limit Archive.org to ~6 req/min (CDX limit is ~15/min)
+let lastArchiveRequest = 0;
+const ARCHIVE_MIN_DELAY_MS = 1500;
 
 // Domains with >70% existing date rate — HTML fetching works well on these
 const HIGH_YIELD_DOMAINS = new Set([
@@ -172,6 +186,65 @@ function extractDateFromText(text) {
   return null;
 }
 
+// --- Free fetchers (no API credits) ---
+
+/**
+ * Fetch HTML from Archive.org Wayback Machine. Free, no credits.
+ * Uses the availability API to find the closest snapshot.
+ */
+async function fetchFromArchiveOrg(url) {
+  // Rate limit
+  const elapsed = Date.now() - lastArchiveRequest;
+  if (elapsed < ARCHIVE_MIN_DELAY_MS) {
+    await new Promise(r => setTimeout(r, ARCHIVE_MIN_DELAY_MS - elapsed));
+  }
+  lastArchiveRequest = Date.now();
+
+  // Check availability
+  const availUrl = `http://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
+  const avail = await axios.get(availUrl, { timeout: 15000 });
+  const snapshot = avail.data?.archived_snapshots?.closest;
+  if (!snapshot || !snapshot.url) {
+    throw new Error('No archive snapshot');
+  }
+
+  // Fetch the archived page
+  const resp = await axios.get(snapshot.url, {
+    timeout: 30000,
+    headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' },
+    maxRedirects: 5,
+  });
+  return { html: resp.data, archiveTimestamp: snapshot.timestamp };
+}
+
+/**
+ * Fetch HTML directly with cookies (for paywalled domains where we have cookies).
+ * Free, no credits — uses local axios + cookie jar.
+ */
+async function fetchWithCookies(url) {
+  const { loadCookiesForDomain } = require('./lib/cookie-loader');
+  const domain = new URL(url).hostname.replace(/^www\./, '');
+  const cookies = loadCookiesForDomain(domain);
+  if (!cookies || cookies.length === 0) {
+    throw new Error(`No cookies for ${domain}`);
+  }
+
+  // Build Cookie header
+  const cookieHeader = cookies.map(c => `${c.name}=${c.value}`).join('; ');
+
+  const resp = await axios.get(url, {
+    timeout: 30000,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Version/17.0 Safari/605.1.15',
+      'Cookie': cookieHeader,
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.5',
+    },
+    maxRedirects: 5,
+  });
+  return { html: resp.data };
+}
+
 // --- Main ---
 
 async function main() {
@@ -275,29 +348,65 @@ async function main() {
         }
       }
 
-      // Fetch the page to extract date from HTML metadata
-      const result = await fetchPage(url, { timeout: 15000 });
-      const html = typeof result === 'string' ? result : (result?.html || result?.content || '');
+      // Try free sources first (no API credits)
+      let html = null;
+      let dateSource = null;
 
-      if (!html || html.length < 100) {
-        console.log('  ✗ No HTML returned');
+      // Free source 1: Direct fetch with cookies (for paywalled domains we have cookies for)
+      try {
+        const result = await fetchWithCookies(url);
+        if (result.html && result.html.length > 500) {
+          html = result.html;
+          dateSource = 'html-cookies';
+          console.log('  → Got HTML via cookies (free)');
+        }
+      } catch (e) { /* try next */ }
+
+      // Free source 2: Archive.org Wayback Machine
+      if (!html) {
+        try {
+          const result = await fetchFromArchiveOrg(url);
+          if (result.html && result.html.length > 500) {
+            html = result.html;
+            dateSource = 'html-archive-org';
+            console.log(`  → Got HTML via Archive.org (free, snapshot=${result.archiveTimestamp})`);
+          }
+        } catch (e) { /* try next */ }
+      }
+
+      // Paid source: ScrapingBee/Bright Data (only if --free-only is NOT set)
+      if (!html && !freeOnly) {
+        try {
+          const result = await fetchPage(url, { timeout: 15000 });
+          html = typeof result === 'string' ? result : (result?.html || result?.content || '');
+          if (html && html.length > 100) {
+            dateSource = 'html-paid';
+            console.log('  → Got HTML via paid scraper');
+          } else {
+            html = null;
+          }
+        } catch (e) { /* fall through */ }
+      }
+
+      if (!html) {
+        console.log(freeOnly ? '  ✗ No free source available' : '  ✗ All sources failed');
         failed++;
         continue;
       }
 
-      let date = extractPublishDateFromHtml(html);
+      const date = extractPublishDateFromHtml(html);
 
       if (date) {
-        console.log(`  ✓ Extracted date: ${date}`);
+        console.log(`  ✓ Extracted date: ${date} (${dateSource})`);
         extracted++;
         if (!dryRun) {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           data.publishDate = date;
-          data.dateSource = 'html-backfill';
+          data.dateSource = dateSource;
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
         }
       } else {
-        console.log('  ✗ No date found in HTML or text');
+        console.log('  ✗ No date in HTML metadata');
         failed++;
       }
     } catch (e) {
