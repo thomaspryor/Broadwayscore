@@ -499,6 +499,22 @@ async function loadMezzanineProductions() {
   return mezzanineCache;
 }
 
+// Mezzanine openedAt comes back from Parse API as { __type: 'Date', iso: '...' }
+// but diary-shows.json fallback writes plain ISO strings. Handle both shapes.
+function extractMezzYear(openedAt) {
+  if (!openedAt) return 0;
+  if (typeof openedAt === 'object' && openedAt !== null) {
+    const iso = openedAt.iso || '';
+    const y = parseInt(String(iso).substring(0, 4));
+    return Number.isFinite(y) && y > 1900 ? y : 0;
+  }
+  if (typeof openedAt === 'string') {
+    const y = parseInt(openedAt.substring(0, 4));
+    return Number.isFinite(y) && y > 1900 ? y : 0;
+  }
+  return 0;
+}
+
 async function fetchFromMezzanine(show) {
   const { byNormTitle } = await loadMezzanineProductions();
   if (byNormTitle.size === 0) return null;
@@ -513,15 +529,17 @@ async function fetchFromMezzanine(show) {
   let bestDist = Infinity;
 
   for (const p of candidates) {
-    const dateStr = p.openedAt || '';
-    const mYear = dateStr ? parseInt(String(dateStr).substring(0, 4)) : 0;
+    const mYear = extractMezzYear(p.openedAt);
     const dist = showYear && mYear ? Math.abs(showYear - mYear) : 999;
 
-    // Prefer Broadway-flagged, then closest year, then highest ratings
+    // Year proximity is the PRIMARY signal. Broadway flag and ratings count are
+    // only used as tiebreakers when year distance is equal. Previously, the
+    // Broadway flag dominated year, so the first Broadway-flagged candidate
+    // would win for every production of the same title.
     if (!best ||
-        (p.isBroadway && !best.isBroadway) ||
-        (p.isBroadway === best.isBroadway && dist < bestDist) ||
-        (p.isBroadway === best.isBroadway && dist === bestDist && (p.ratingsCount || 0) > (best.ratingsCount || 0))) {
+        dist < bestDist ||
+        (dist === bestDist && p.isBroadway && !best.isBroadway) ||
+        (dist === bestDist && p.isBroadway === best.isBroadway && (p.ratingsCount || 0) > (best.ratingsCount || 0))) {
       best = p;
       bestDist = dist;
     }
@@ -529,20 +547,25 @@ async function fetchFromMezzanine(show) {
 
   if (!best || !best.artUrl) return null;
 
-  // Reject if year distance > 2 AND at least one candidate HAS a date (so we know the best
-  // match is genuinely wrong, not just missing date data). When no candidates have dates,
-  // trust the Broadway-flagged / highest-rated one — Gemini verification catches wrong images.
-  const anyHasDate = candidates.some(p => {
-    const d = p.openedAt || '';
-    return d && parseInt(String(d).substring(0, 4)) > 1900;
-  });
-  if (candidates.length > 1 && bestDist > 2 && showYear && anyHasDate) {
-    console.log(`   ✗ Mezzanine: ${candidates.length} candidates, best is ${bestDist} years off — skipping`);
+  // Reject if the best candidate's year is > 2 years off from the show.
+  // This applies whether there is 1 candidate or many — a 1979 show should NOT
+  // get the 1992 production's poster just because it's the only Mezzanine entry.
+  // When no candidates have dates at all, fall through and trust verification downstream.
+  const bestYear = extractMezzYear(best.openedAt);
+  if (showYear && bestYear && bestDist > 2) {
+    console.log(`   ✗ Mezzanine: best candidate is ${bestDist} years off (${bestYear} vs show ${showYear}) — skipping`);
+    return null;
+  }
+
+  // Extra guard: if multiple candidates exist but the show has no opening year,
+  // we cannot disambiguate productions. Skip rather than return an arbitrary one.
+  if (candidates.length > 1 && !showYear) {
+    console.log(`   ✗ Mezzanine: ${candidates.length} candidates but show has no openingDate — skipping`);
     return null;
   }
 
   const theater = best.theater || 'unknown venue';
-  console.log(`   ✓ Mezzanine: found poster art (${theater}, ${bestDist <= 2 ? 'year match' : 'no year'})`);
+  console.log(`   ✓ Mezzanine: found poster art (${theater}, ${bestDist <= 2 ? `year match dist=${bestDist}` : 'no year'})`);
 
   return {
     thumbnail: best.artUrl,
