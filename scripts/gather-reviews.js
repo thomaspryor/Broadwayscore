@@ -193,6 +193,19 @@ function slugify(text) {
     .replace(/^-|-$/g, '');
 }
 
+// Strip ShowScore aggregator verb phrases from critic names.
+// ShowScore excerpts use patterns like "The Standard asserts Dominic Cavendish..."
+// and sometimes the critic name is extracted as "Asserts Dominic Cavendish".
+// These create duplicate files alongside real critic entries pointing to the same URL.
+const SYNTHETIC_CRITIC_VERBS = /^(asserts?|observes?|claims?|notes?|writes?|states?|says?|calls?|finds?|praises?|pans?|argues?)\s+/i;
+function sanitizeCriticName(name) {
+  if (!name) return name;
+  const stripped = name.replace(SYNTHETIC_CRITIC_VERBS, '').trim();
+  // Only accept the stripped version if it looks like a real name (2+ words, starts uppercase)
+  if (stripped !== name && /^[A-Z][a-z]/.test(stripped) && stripped.includes(' ')) return stripped;
+  return name;
+}
+
 // Cross-show URL slug detection: lazy-loaded index of show title slugs.
 // Used to catch URLs that clearly belong to a different show.
 // Exclude titles that are common URL path words (cause false positives).
@@ -539,7 +552,7 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId, 
       const pageReviewCount = Math.max(outlets.length, urls.length);
       for (let i = 0; i < pageReviewCount; i++) {
         const outletRaw = outlets[i] || null;
-        const critic = critics[i] || 'Unknown';
+        const critic = sanitizeCriticName(critics[i]) || 'Unknown';
         const url = urls[i] || null;
         const date = dates[i] || null;
 
@@ -2907,7 +2920,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           showId,
           outlet: outletDisplayName,
           outletId,
-          criticName: review.critic || 'Unknown',
+          criticName: sanitizeCriticName(review.critic) || 'Unknown',
           url: (show.title && review.url && !urlLooksLikeReview(review.url, show.title)) ? null : review.url,
           publishDate: normalizePublishDate(review.date) || null,
           showScoreExcerpt: review.excerpt || null,
@@ -3030,6 +3043,30 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   }
   await sleep(DELAY_MS);
 
+  // Helper: extract publish date from roundup HTML (JSON-LD, meta tags, or <time>)
+  function extractRoundupDateFromHtml(html) {
+    if (!html || html.length < 100) return null;
+    // JSON-LD datePublished
+    const jsonLdMatch = html.match(/"datePublished"\s*:\s*"([^"]+)"/);
+    if (jsonLdMatch) {
+      const d = jsonLdMatch[1].substring(0, 10);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+    }
+    // article:published_time meta
+    const metaMatch = html.match(/property=["']article:published_time["'][^>]*content=["']([^"']+)["']/i);
+    if (metaMatch) {
+      const d = metaMatch[1].substring(0, 10);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+    }
+    // <time datetime="...">
+    const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["']/i);
+    if (timeMatch) {
+      const d = timeMatch[1].substring(0, 10);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+    }
+    return null;
+  }
+
   // 1d. London Box Office Review Roundups (West End only, archive-based)
   console.log('\n  === London Box Office Review Roundups ===');
   if (!isWestEnd) {
@@ -3040,8 +3077,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(lboArchivePath)) {
       const lboHtml = fs.readFileSync(lboArchivePath, 'utf8');
       const lboRawReviews = extractReviewsFromLBO(lboHtml, showId);
+      const lboRoundupDate = extractRoundupDateFromHtml(lboHtml);
       health.lbo.found = true;
-      console.log(`    ✓ LBO archive found, extracted ${lboRawReviews.length} reviews`);
+      console.log(`    ✓ LBO archive found, extracted ${lboRawReviews.length} reviews${lboRoundupDate ? ` (date: ${lboRoundupDate})` : ''}`);
 
       for (const lboReview of lboRawReviews) {
         foundReviews.push({
@@ -3053,7 +3091,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           score: lboReview.score,
           scoreSource: lboReview.score !== null ? 'lbo-star-rating' : undefined,
           source: 'lbo-roundup',
-          publishDate: null,
+          publishDate: lboRoundupDate || null,
         });
       }
       health.lbo.extracted = lboRawReviews.length;
@@ -3075,17 +3113,18 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(wetCache)) {
       try {
         const cached = JSON.parse(fs.readFileSync(wetCache, 'utf8'));
-        const wetReviews = cached.reviews || [];
+        const wetReviews = cached.reviews || cached.ratings || [];
+        const wetPostDate = cached.postDate || null;
         if (wetReviews.length > 0) {
-          console.log(`    ✓ WET: ${wetReviews.length} reviews from cache`);
+          console.log(`    ✓ WET: ${wetReviews.length} reviews from cache${wetPostDate ? ` (date: ${wetPostDate})` : ''}`);
           for (const r of wetReviews) {
             foundReviews.push({
               outlet: r.outlet, outletId: r.outletId || normalizeOutlet(r.outlet),
-              criticName: r.critic || 'Unknown', url: r.url || '',
+              criticName: r.critic || 'Unknown', url: r.url || r.reviewUrl || '',
               excerpt: r.excerpt || '',
               // WET rates shows independently — don't use as outlet's score
               wetStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
-              source: 'westendtheatre', publishDate: null,
+              source: 'westendtheatre', publishDate: normalizePublishDate(r.date || wetPostDate) || null,
             });
           }
         }
@@ -3099,8 +3138,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       try {
         const html = fs.readFileSync(trArchive, 'utf8');
         const trReviews = extractTR(html, showId);
+        const trRoundupDate = extractRoundupDateFromHtml(html);
         if (trReviews.length > 0) {
-          console.log(`    ✓ TR:  ${trReviews.length} reviews from archive`);
+          console.log(`    ✓ TR:  ${trReviews.length} reviews from archive${trRoundupDate ? ` (date: ${trRoundupDate})` : ''}`);
           for (const r of trReviews) {
             foundReviews.push({
               outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
@@ -3108,7 +3148,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               excerpt: r.excerpt || '',
               // TR rates shows independently — don't use as outlet's score
               theatreReviewsStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
-              source: 'theatre-reviews', publishDate: null,
+              source: 'theatre-reviews', publishDate: trRoundupDate || null,
             });
           }
         }
@@ -3144,8 +3184,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       try {
         const html = fs.readFileSync(tsArchive, 'utf8');
         const tsReviews = extractTS(html, showId);
+        const tsRoundupDate = extractRoundupDateFromHtml(html);
         if (tsReviews.length > 0) {
-          console.log(`    ✓ TS:  ${tsReviews.length} reviews from archive`);
+          console.log(`    ✓ TS:  ${tsReviews.length} reviews from archive${tsRoundupDate ? ` (date: ${tsRoundupDate})` : ''}`);
           for (const r of tsReviews) {
             foundReviews.push({
               outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
@@ -3153,7 +3194,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               excerpt: r.excerpt || '',
               score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
               scoreSource: r.stars ? 'thestage-roundup-star-rating' : undefined,
-              source: 'thestage-roundup', publishDate: null,
+              source: 'thestage-roundup', publishDate: tsRoundupDate || null,
             });
           }
         }
@@ -3294,8 +3335,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
             if (trPageHtml) {
               const trReviews = extractTR(trPageHtml, showId);
+              const trLiveDate = extractRoundupDateFromHtml(trPageHtml);
               if (trReviews.length > 0) {
-                console.log(`    ✓ TR live: ${trReviews.length} reviews`);
+                console.log(`    ✓ TR live: ${trReviews.length} reviews${trLiveDate ? ` (date: ${trLiveDate})` : ''}`);
                 for (const r of trReviews) {
                   foundReviews.push({
                     outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
@@ -3303,7 +3345,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
                     excerpt: r.excerpt || '',
                     // TR rates shows independently — don't use as outlet's score
                     theatreReviewsStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
-                    source: 'theatre-reviews', publishDate: null,
+                    source: 'theatre-reviews', publishDate: trLiveDate || null,
                   });
                 }
                 // Cache
@@ -3375,8 +3417,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               if (tsHtml && tsHtml.length > 5000) {
                 const { extractReviews: extractTS } = require('./scrape-thestage-roundups');
                 const tsReviews = extractTS(tsHtml, showId);
+                const tsLiveDate = extractRoundupDateFromHtml(tsHtml);
                 if (tsReviews.length > 0) {
-                  console.log(`    ✓ TS live: ${tsReviews.length} reviews`);
+                  console.log(`    ✓ TS live: ${tsReviews.length} reviews${tsLiveDate ? ` (date: ${tsLiveDate})` : ''}`);
                   for (const r of tsReviews) {
                     foundReviews.push({
                       outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
@@ -3384,7 +3427,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
                       excerpt: r.excerpt || '',
                       score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
                       scoreSource: r.stars ? 'thestage-roundup-star-rating' : undefined,
-                      source: 'thestage-roundup', publishDate: null,
+                      source: 'thestage-roundup', publishDate: tsLiveDate || null,
                     });
                   }
                   // Cache

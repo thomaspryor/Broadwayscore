@@ -5,7 +5,7 @@
  * Monitors all automated pipelines for silent failures.
  * Checks across 9 categories:
  *   A. Data Freshness (7) — are data files up to date?
- *   B. Data Sync (3) — do derived files match source files?
+ *   B. Data Sync (4) — do derived files match source files?
  *   C. Pipeline Health (6) — did critical workflows run recently? (warn only)
  *   D. Content Quality (1) — is scored review percentage healthy?
  *   E. Cookie Expiration (1) — are paywall cookies still valid?
@@ -382,7 +382,39 @@ function checkSync() {
     return { name: 'Sync: open show coverage', status: worstStatus, message: parts.join('; '), hint: 'Check gather-reviews and weekly-grosses workflows' };
   }));
 
-  // B3: Baseline drift
+  // B3: Phantom show detection — open shows with TBA venue and no reviews
+  // Auto-discover can create phantom entries when isMultiProduction() treats TBA-venue
+  // shows as distinct productions. These show up as open shows with no reviews and no venue.
+  results.push(runCheck('Sync: phantom show detection', () => {
+    const shows = readJSON(path.join(DATA_DIR, 'shows.json'));
+    const reviews = readJSON(path.join(DATA_DIR, 'reviews.json'));
+
+    const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
+    const reviewedShowIds = new Set();
+    for (const r of reviews.reviews || []) {
+      if (r.showId) reviewedShowIds.add(r.showId);
+    }
+
+    const phantomCandidates = showList.filter(s =>
+      s.status === 'open' &&
+      !reviewedShowIds.has(s.id) &&
+      !s.openingDate &&
+      (s.venue === 'TBA' || s.venue === 'TBD' || !s.venue)
+    );
+
+    if (phantomCandidates.length === 0) {
+      return { name: 'Sync: phantom show detection', status: 'pass', message: 'No phantom show candidates found' };
+    }
+    const names = phantomCandidates.map(s => s.id).join(', ');
+    return {
+      name: 'Sync: phantom show detection',
+      status: 'warn',
+      message: `${phantomCandidates.length} open show(s) with TBA venue, no reviews, no opening date: ${names}`,
+      hint: 'These may be phantom shows created by auto-discover. Verify each is a real production, then add openingDate or real venue, or delete from shows.json.'
+    };
+  }));
+
+  // B4: Baseline drift
   results.push(runCheck('Sync: baseline drift', () => {
     const baselinePath = path.join(AUDIT_DIR, 'validation-baseline.json');
     if (!fs.existsSync(baselinePath)) {

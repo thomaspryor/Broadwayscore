@@ -65,9 +65,12 @@ const CRITICAL_OUTLETS = {
   },
   thestage: {
     envVar: 'THESTAGE_COOKIES',
-    testUrl: 'https://www.thestage.co.uk/reviews/giant-2025-review-royal-court-theatre-london',
-    authCookies: [], // Cookie-only auth — monitor via structural/volume check
-    minCookies: 10, // Stage uses multiple session/auth cookies; <10 signals stale/incomplete bundle
+    testUrl: 'https://www.thestage.co.uk/',
+    // Stage's logged-in cookie set is just 5: VISITOR, USER, USERSECURE, AWSALB, AWSALBCORS.
+    // USERSECURE is the actual subscriber auth token. Verified by fetching Stage homepage
+    // with the bundle and observing "my account" in nav + no "sign in" markers (2026-04-10).
+    authCookies: ['USERSECURE', 'USER'],
+    minCookies: 3, // VISITOR + USER + USERSECURE is the floor; AWS LB cookies are bonuses
   },
   thetimes: {
     envVar: 'THETIMES_COOKIES',

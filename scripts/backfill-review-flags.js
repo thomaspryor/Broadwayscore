@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
+const { evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -106,21 +107,46 @@ for (const showId of showDirs) {
 
       const fullText = data.fullText;
 
-      // 1A: Show title mention check (only for texts >500 chars)
-      if (fullText.length > 500) {
+      // 1A: Show title mention check
+      // Uses the shared evaluateShowMentionGuard so the threshold + alreadyScored
+      // behavior stays in sync with collect-review-texts.js. The guard refuses to
+      // fire on short paywalled excerpts and refuses to set the flag when an
+      // aggregator score is already on the file.
+      {
         const show = showsData[showId];
-        const showTitle = show ? show.title : showId.replace(/-\d{4}$/, '').replace(/-/g, ' ');
+        const showTitle = pickShowTitleForHeuristic(showId, show);
+        const fullTextWordCount = fullText.split(/\s+/).filter(w => w.length > 0).length;
         const showCheck = validateShowMentioned(fullText, showTitle, showId);
+        const guard = evaluateShowMentionGuard(data, fullText, fullTextWordCount, showCheck);
 
-        if (!showCheck.valid && showCheck.confidence === 'high') {
+        if (guard.action === 'null-text') {
+          // Unscored review whose substantive text doesn't mention the show
           if (!data.showNotMentioned) {
             data.showNotMentioned = true;
             modified = true;
           }
-          flags.push(`showNotMentioned: ${showCheck.reason}`);
+          flags.push(`showNotMentioned: ${guard.reason}`);
           stats.showNotMentioned++;
+        } else if (guard.action === 'flag-needs-review') {
+          // Already-scored review — repair stale damage AND flag for human review
+          if (!data.needsReview) {
+            data.needsReview = true;
+            data.needsReviewReason = `Heuristic: show not mentioned in text (${guard.reason}) but already scored — needs human verification`;
+            modified = true;
+          }
+          if (data.showNotMentioned) {
+            delete data.showNotMentioned;
+            delete data._showNotMentionedDiscoveryAttempted;
+            modified = true;
+          }
+          if (!data.fullText && data.wrongFullText) {
+            data.fullText = data.wrongFullText;
+            delete data.wrongFullText;
+            modified = true;
+          }
+          flags.push(`scored-but-title-missing: ${guard.reason}`);
         } else if (data.showNotMentioned) {
-          // Clear stale flag
+          // showCheck passed OR context too thin → clear stale flag
           delete data.showNotMentioned;
           modified = true;
         }

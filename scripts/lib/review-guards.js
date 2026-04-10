@@ -483,6 +483,186 @@ function isRevivalByCanonicalTitle(showId, shows) {
   return false;
 }
 
+/**
+ * Show-mention heuristic guard.
+ *
+ * The heuristic show-mention check (validateShowMentioned) is a fast, fragile
+ * fallback for when LLM verification was skipped or unavailable. It checks
+ * whether the show title appears in the article body. The check has two
+ * well-known failure modes:
+ *
+ *   (1) Paywalled outlets (Times UK, FT, Telegraph, NYT) often return only
+ *       the lede + first paragraphs, which may use a metaphorical opening
+ *       and never name the show. The collector then nulls fullText and the
+ *       review is silently dropped from scoring.
+ *
+ *   (2) The collector previously derived the title from the showId
+ *       (e.g. "dracula-west-end-2025" → "dracula west end") rather than the
+ *       canonical title in shows.json ("Dracula"). For multi-word slugs,
+ *       this caused validateShowMentioned to look for the wrong string.
+ *
+ * This guard codifies the rules that should govern WHEN the heuristic is
+ * allowed to fire and what to do about prior runs that already left damage:
+ *
+ *   - The text must be substantive enough for the heuristic to be reliable
+ *     (≥250 words AND ≥1500 chars). Below that, the lede may legitimately
+ *     omit the title and we should defer to LLM verification or aggregator
+ *     scores instead of nulling fullText.
+ *
+ *   - If the review is alreadyScored (has a valid 1-100 assignedScore from
+ *     a trusted aggregator), the heuristic must NOT null fullText. The score
+ *     is the source of truth; the heuristic only flags for human review.
+ *     Additionally, this branch must CLEAR any stale showNotMentioned /
+ *     wrongFullText damage from prior runs (before the alreadyScored guard
+ *     existed) so the file recovers automatically.
+ *
+ *   - The canonical title from shows.json should be preferred over the
+ *     showId-derived title.
+ *
+ * @param {Object} review - Review file data
+ * @param {string} cleanedText - Text after cleanText() has run
+ * @param {number} cleanedWordCount - Word count of cleanedText
+ * @param {{ valid: boolean, confidence: string, reason?: string }} showCheck
+ *   - Result of validateShowMentioned() (or equivalent)
+ * @returns {{ action: 'skip' | 'flag-needs-review' | 'null-text', reason?: string, repairStaleFlags: boolean }}
+ *   - 'skip': context is too thin OR title was found — do nothing
+ *   - 'flag-needs-review': set needsReview=true, leave fullText alone, and clear
+ *     any stale showNotMentioned / wrongFullText / restore fullText if it was nulled
+ *   - 'null-text': move fullText → wrongFullText and null fullText (legacy behavior,
+ *     only applies to unscored reviews with substantive text)
+ */
+function evaluateShowMentionGuard(review, cleanedText, cleanedWordCount, showCheck) {
+  // Context-too-thin gate: heuristic is unreliable on short paywalled excerpts
+  // where the lede may legitimately omit the show title (metaphorical opening,
+  // anecdotal lede, performance-focused lede, etc.).
+  const charCount = (cleanedText || '').length;
+  const HEURISTIC_MIN_CHARS = 1500;
+  const HEURISTIC_MIN_WORDS = 250;
+  if (charCount < HEURISTIC_MIN_CHARS || cleanedWordCount < HEURISTIC_MIN_WORDS) {
+    return {
+      action: 'skip',
+      reason: `context too thin (${cleanedWordCount} words / ${charCount} chars < ${HEURISTIC_MIN_WORDS}w/${HEURISTIC_MIN_CHARS}c)`,
+      repairStaleFlags: false,
+    };
+  }
+
+  // showCheck either passed or wasn't decisive — nothing to do
+  if (!showCheck || showCheck.valid || showCheck.confidence !== 'high') {
+    return { action: 'skip', repairStaleFlags: false };
+  }
+
+  // alreadyScored guard: never destroy a review that has a trusted aggregator score.
+  // Also clear any stale damage from prior runs (before this guard existed).
+  const alreadyScored = !!(review.assignedScore && review.assignedScore >= 1 && review.assignedScore <= 100);
+  if (alreadyScored) {
+    return {
+      action: 'flag-needs-review',
+      reason: showCheck.reason || 'show title not found in text',
+      repairStaleFlags: true,
+    };
+  }
+
+  return {
+    action: 'null-text',
+    reason: showCheck.reason || 'show title not found in text',
+    repairStaleFlags: false,
+  };
+}
+
+/**
+ * Pick the canonical show title for heuristic checks.
+ *
+ * Prefers the title from shows.json (e.g. "Dracula") over the showId-derived
+ * fallback ("dracula west end") because the latter contains market suffixes
+ * that the article body never uses.
+ *
+ * @param {string} showId - Show ID (e.g. "dracula-west-end-2025")
+ * @param {Object|null} showMeta - Show entry from shows.json (or null if unavailable)
+ * @returns {string} Title to pass to validateShowMentioned
+ */
+function pickShowTitleForHeuristic(showId, showMeta) {
+  if (showMeta && typeof showMeta.title === 'string' && showMeta.title.trim().length > 0) {
+    return showMeta.title;
+  }
+  return (showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
+}
+
+/**
+ * Build a keyword set for "does this text look like it's about this show" checks.
+ *
+ * Used as a final-mile guard before auto-restoring a wrongFullText → fullText.
+ * The rebuild auto-clear trusts a prior LLM verification (verifiedBy=llm:gemini,
+ * isValid:true), but LLMs hallucinate isValid:true on garbage pages — browser-update
+ * prompts, paywall walls, sidebar story lists, even wrong-show content. Without
+ * this final check, the auto-clear restores junk as the canonical fullText.
+ *
+ * Keywords include: full lowercased title, individual title words ≥3 chars (minus
+ * stopwords), top 5 cast surnames (≥4 chars), top 3 director surnames, venue words.
+ *
+ * @param {Object} show - shows.json entry
+ * @returns {Set<string>} Lowercased keywords
+ */
+function buildShowKeywordSet(show) {
+  const keywords = new Set();
+  if (!show) return keywords;
+  // Stopwords excluded from EVERY source (title words, cast surnames, creative team
+  // surnames, venue words). Some shows have corrupted creative team data with sentence
+  // fragments like "Gordon Greenberg is working with" → last word "with" would pollute
+  // the keyword set otherwise.
+  const STOP = new Set([
+    'the','and','for','with','play','show','musical','broadway','london','westend','west','end','theatre','theater','from','that','this',
+    // Common verb/preposition fragments that creep in from corrupted creative team data
+    'working','person','people','from','have','will','been','were','their','about','into','onto','some','also','only','more','most','than','then','when','what','which','where','they','them','some','some',
+  ]);
+  const passes = (w) => w.length >= 3 && !STOP.has(w);
+  const passesLong = (w) => w.length >= 4 && !STOP.has(w);
+
+  const realTitle = (show.title || '').toLowerCase();
+  if (realTitle.length >= 4) keywords.add(realTitle);
+  for (const w of realTitle.replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)) {
+    if (passes(w)) keywords.add(w);
+  }
+  for (const c of (show.cast || []).slice(0, 5)) {
+    if (!c.name) continue;
+    const last = c.name.split(/\s+/).pop().toLowerCase();
+    if (passesLong(last)) keywords.add(last);
+  }
+  for (const c of (show.creativeTeam || []).slice(0, 3)) {
+    if (!c.name) continue;
+    const last = c.name.split(/\s+/).pop().toLowerCase();
+    if (passesLong(last)) keywords.add(last);
+  }
+  if (show.venue) {
+    for (const w of show.venue.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)) {
+      if (w.length >= 5 && !STOP.has(w) && w !== 'theatre' && w !== 'theater') keywords.add(w);
+    }
+  }
+  return keywords;
+}
+
+/**
+ * Check if `text` mentions any keyword from `keywordSet`.
+ * Long keywords (≥5 chars) use substring match; short keywords (<5) use word-boundary
+ * regex to avoid "rent" matching "current" or "win" matching "winning".
+ *
+ * @param {string} text - Text to scan
+ * @param {Set<string>} keywordSet - Keywords from buildShowKeywordSet()
+ * @returns {string|null} The first matched keyword, or null if none matched
+ */
+function findShowKeywordInText(text, keywordSet) {
+  if (!text || !keywordSet || keywordSet.size === 0) return null;
+  const lower = text.toLowerCase();
+  for (const k of keywordSet) {
+    if (k.length >= 5) {
+      if (lower.includes(k)) return k;
+    } else {
+      const re = new RegExp('\\b' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+      if (re.test(text)) return k;
+    }
+  }
+  return null;
+}
+
 module.exports = {
   shouldSkipScoredReview,
   pickBestDtliSlug,
@@ -497,4 +677,8 @@ module.exports = {
   isRevivalByCanonicalTitle,
   urlOrTitleLooksLikeReview,
   isWrongShowUnknownLocked,
+  evaluateShowMentionGuard,
+  pickShowTitleForHeuristic,
+  buildShowKeywordSet,
+  findShowKeywordInText,
 };
