@@ -133,7 +133,7 @@ Respond with ONLY valid JSON (no markdown, no explanation):
   "recoupedSource": "<source description>" or null,
   "designation": "<one of the designations above>",
   "notes": "<brief financial summary, 1-3 sentences>",
-  "sources": [{"type": "trade"|"sec"|"reddit", "url": "<actual URL found>", "date": "<date if known>"}],
+  "sources": [{"type": "trade"|"sec"|"reddit"|"manual", "url": "<actual URL found>", "date": "<YYYY-MM-DD or null>"}],
   "confidence": "high" | "medium" | "low"
 }`;
 

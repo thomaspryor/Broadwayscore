@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { normalizeSources } = require('./lib/commercial-sources');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
@@ -145,7 +146,12 @@ function main() {
     if (entry.recoupedDate) commercialEntry.recoupedDate = entry.recoupedDate;
     if (entry.recoupedSource) commercialEntry.recoupedSource = entry.recoupedSource;
     if (entry.notes) commercialEntry.notes = entry.notes;
-    if (entry.sources && entry.sources.length > 0) commercialEntry.sources = entry.sources;
+    if (entry.sources && entry.sources.length > 0) {
+      // Normalize: coerce unknown type values (e.g. "other") to validator-allowed
+      // types and preserve null dates (validator tolerates null, not bad format).
+      const normalized = normalizeSources(entry.sources);
+      if (normalized.length > 0) commercialEntry.sources = normalized;
+    }
 
     commercialEntry.lastUpdated = new Date().toISOString();
     commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString();

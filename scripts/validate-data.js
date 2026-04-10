@@ -2288,8 +2288,10 @@ function validateCommercialJson() {
             error(`commercial.json: "${showId}" sources[${idx}].url must be a string`);
             issues++;
           }
-          if (!src.date || typeof src.date !== 'string' || !sourceDateRegex.test(src.date)) {
-            error(`commercial.json: "${showId}" sources[${idx}].date must be in YYYY-MM-DD format`);
+          // Date is optional (null/undefined allowed) — many venue/aggregator URLs lack a publish date.
+          // But if present, it must match YYYY-MM-DD.
+          if (src.date != null && (typeof src.date !== 'string' || !sourceDateRegex.test(src.date))) {
+            error(`commercial.json: "${showId}" sources[${idx}].date must be in YYYY-MM-DD format (or null)`);
             issues++;
           }
         });

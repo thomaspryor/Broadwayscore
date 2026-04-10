@@ -219,7 +219,7 @@ Respond with ONLY a JSON object (no markdown fences):
   "recoupedSource": "<description>" or null,
   "designation": "<designation>",
   "notes": "<brief summary of financial situation>",
-  "sources": [{"type": "trade"|"sec"|"reddit", "url": "<url>", "date": "<date if known>"}],
+  "sources": [{"type": "trade"|"sec"|"reddit"|"manual", "url": "<url>", "date": "<YYYY-MM-DD or null>"}],
   "confidence": "high"|"medium"|"low"
 }`;
 

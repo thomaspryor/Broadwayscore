@@ -272,7 +272,7 @@ Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
   "designation": "<designation>",
   "notes": "<brief summary>",
   "confidence": "<high|medium|low>",
-  "sources": [{"type": "<sec|trade|reddit>", "url": "<url>", "date": "<YYYY-MM-DD or null>"}]
+  "sources": [{"type": "<sec|trade|reddit|manual>", "url": "<url>", "date": "<YYYY-MM-DD or null>"}]
 }
 \`\`\``;
 
