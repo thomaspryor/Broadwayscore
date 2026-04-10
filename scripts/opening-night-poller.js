@@ -978,12 +978,21 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
         criticName: 'Unknown',
         url: '',
       };
+      // Tight date range for opening night SERP: only reviews from last 14 days
+      // Prevents cross-production contamination (e.g., 2022 revival reviews appearing for 2026)
+      const DAY = 86400000;
+      const openingNightDateRange = {
+        dateMin: new Date(Date.now() - 14 * DAY),
+        dateMax: new Date(Date.now() + 7 * DAY),
+      };
+
       const result = await discoverCorrectUrl(
         reviewObj,
         process.env.SCRAPINGBEE_API_KEY || '',
         {
           brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
           preferSpeed: true, // Opening night — latency matters
+          dateRange: openingNightDateRange,
         }
       );
 
