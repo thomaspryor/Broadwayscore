@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T02:19:23.446Z",
+  "timestamp": "2026-04-10T02:39:39.766Z",
   "stats": {
-    "totalReviews": 34686,
-    "alreadyFlagged": 13721,
+    "totalReviews": 34685,
+    "alreadyFlagged": 13740,
     "dateGuardCatches": 62,
-    "directorMismatch": 960,
-    "tvFilmSignals": 3410,
+    "directorMismatch": 959,
+    "tvFilmSignals": 3406,
     "londonSignals": 1119,
     "offBroadwaySignals": 968,
     "yearMismatch": 72,
-    "noPublishDate": 6398
+    "noPublishDate": 6360
   },
   "findings": [
     {
@@ -1014,20 +1014,6 @@
       "file": "wsj--terry-teachout.json",
       "score": 93,
       "publishDate": "November 19, 2010",
-      "url": "http://online.wsj.com/article/SB10001424052748703326204575616442412658382.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "a-free-man-of-color-2010",
-      "file": "wsj--unknown.json",
-      "score": 75,
-      "publishDate": "November 18, 2010",
       "url": "http://online.wsj.com/article/SB10001424052748703326204575616442412658382.html",
       "findings": [
         {
@@ -3371,7 +3357,7 @@
       "showId": "all-my-sons-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2025-11-21",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/all-my-sons-theatre-review-bryan-cranston-h2xqh238h",
       "findings": [
         {
@@ -18278,25 +18264,6 @@
     },
     {
       "showId": "glengarry-glen-ross-2012",
-      "file": "times-uk--harriet-alexander.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-broadway-laps-up-kieran-culkins-one-liners-57ww3ckw0",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
       "file": "vulture--jesse-green.json",
       "score": 62,
       "publishDate": "December 3, 2012",
@@ -22819,20 +22786,6 @@
     },
     {
       "showId": "how-to-succeed-in-business-without-really-trying-2011",
-      "file": "times-uk--clive-davis.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://www.thetimes.com/article/how-to-succeed-in-business-without-really-trying-review-sharp-suits-and-strong-songs-7v6g8v3cz",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "how-to-succeed-in-business-without-really-trying-2011",
       "file": "variety--marilyn-stasio.json",
       "score": 78,
       "publishDate": "March 27, 2011",
@@ -25127,7 +25080,7 @@
       "showId": "into-the-woods-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2025-12-12",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b?gaa_at=eafs&gaa_n=AWEtsqewS4asH9dOpBRkGr14r7oO_WtnbyzHzUEcsWYFhhAXS_YX5GrJIDg02txfwB0%3D&gaa_ts=693c087d&gaa_sig=3nLmAA87YjX1jabQUqv9a73Q9XJ2i47cqm-Gj4kj6hGV9VgHN_qv6mjd5C6NrRbDQqD2T46vajJi3ZyxvY-7BQ%3D%3D",
       "findings": [
         {
@@ -28369,20 +28322,6 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "times-uk--ian-johns.json",
-      "score": 41,
-      "publishDate": null,
-      "url": "https://www.thetimes.com/travel/destinations/europe-travel/france/paris/les-liaisons-dangereuses-gvd35d6nfr5",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 81,
       "publishDate": null,
@@ -29095,7 +29034,7 @@
       "showId": "les-miserables-west-end-2021",
       "file": "times-uk--clive-davis.json",
       "score": 60,
-      "publishDate": null,
+      "publishDate": "2020-01-17",
       "url": "https://www.thetimes.co.uk/article/les-miserables-review-overlong-and-clunky-but-there-was-much-to-admire-in-the-performances-r6w7lmhj5",
       "findings": [
         {
@@ -32259,7 +32198,7 @@
       "showId": "merrily-we-roll-along-2023",
       "file": "times-uk--will-pavia.json",
       "score": 50,
-      "publishDate": null,
+      "publishDate": "2023-10-10",
       "url": "https://www.thetimes.co.uk/article/merrily-we-roll-along-review-daniel-radcliffe-casts-a-spell-over-broadway-qwh56j267",
       "findings": [
         {
@@ -41395,7 +41334,7 @@
       "showId": "romeo-juliet-2024",
       "file": "times-uk--susie-goldsbrough.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "2024-10-25",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/romeo-and-juliet-broadway-kit-connor-rachel-zegler-vsk757kln",
       "findings": [
         {
@@ -63663,7 +63602,7 @@
       "showId": "back-to-the-future-west-end-2021",
       "file": "times-uk--clive-davis.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2021-09-13",
       "url": "https://www.thetimes.co.uk/article/back-to-the-future-the-musical-review-classic-stalls-like-an-old-delorean-njg5tp88x",
       "findings": [
         {
@@ -78923,7 +78862,7 @@
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2026-03-25",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/teeth-n-smiles-review-self-esteem-brings-jagged-drama-to-life-vrr7b0vz3",
       "findings": [
         {
