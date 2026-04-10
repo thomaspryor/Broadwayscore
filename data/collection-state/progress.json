@@ -1,0 +1,56 @@
+{
+  "processed": [
+    "death-of-a-salesman-2026/variety--unknown.json",
+    "lost-in-del-valle-off-broadway-2026/variety--unknown.json",
+    "death-of-a-salesman-2026/playbill--unknown.json"
+  ],
+  "failed": [
+    "death-of-a-salesman-2026/deadline--greg-evans.json",
+    "death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
+    "death-of-a-salesman-2026/thewrap--robert-hofler.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [
+      "death-of-a-salesman-2026/playbill--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/death-of-a-salesman-2026/variety--unknown.json",
+      "death-of-a-salesman-2026/variety--unknown.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--unknown.json",
+      "lost-in-del-valle-off-broadway-2026/variety--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "startTime": "2026-04-10T00:47:12.305Z",
+  "lastProcessed": "death-of-a-salesman-2026/playbill--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-10T00:47:14.178Z",
+      "event": "bb-session",
+      "session": "9483fc86",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-10T00:47:15.325Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-10T00:47:36.155Z",
+      "event": "bb-session",
+      "session": "c6127fe2",
+      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/"
+    },
+    {
+      "t": "2026-04-10T00:47:37.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
+}
