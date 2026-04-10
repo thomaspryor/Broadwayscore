@@ -33,22 +33,53 @@ export default function TicketButtonsAB({
 }: TicketButtonsABProps) {
   const [abPlatformVariant, setAbPlatformVariant] = useState<string | null>(null);
   const [abButtonVariant, setAbButtonVariant] = useState<string | null>(null);
+  const [flagsLoaded, setFlagsLoaded] = useState(false);
 
   useEffect(() => {
+    let attempts = 0;
+    const maxAttempts = 20; // 20 × 250ms = 5 seconds total
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    let fallbackTimer: ReturnType<typeof setTimeout> | null = null;
+
     const checkFlags = () => {
       const ph = window.posthog;
-      if (!ph?.getFeatureFlag) return;
+      if (ph?.getFeatureFlag) {
+        const platformFlag = ph.getFeatureFlag('ticket-primary-platform');
+        const buttonFlag = ph.getFeatureFlag('ticket-single-button');
 
-      const platformFlag = ph.getFeatureFlag('ticket-primary-platform');
-      if (typeof platformFlag === 'string') setAbPlatformVariant(platformFlag);
-
-      const buttonFlag = ph.getFeatureFlag('ticket-single-button');
-      if (typeof buttonFlag === 'string') setAbButtonVariant(buttonFlag);
+        // Only mark loaded once we get string values for both
+        if (typeof platformFlag === 'string' && typeof buttonFlag === 'string') {
+          setAbPlatformVariant(platformFlag);
+          setAbButtonVariant(buttonFlag);
+          setFlagsLoaded(true);
+          if (intervalId) clearInterval(intervalId);
+          if (fallbackTimer) clearTimeout(fallbackTimer);
+          return;
+        }
+      }
+      attempts++;
+      if (attempts >= maxAttempts && intervalId) {
+        clearInterval(intervalId);
+      }
     };
 
+    // Try immediately, then poll every 250ms
     checkFlags();
-    const timer = setTimeout(checkFlags, 2000);
-    return () => clearTimeout(timer);
+    intervalId = setInterval(checkFlags, 250);
+
+    // Fallback: after 5 seconds, give up and render with defaults (control = multi)
+    // This handles ad blockers / opted-out users — they get the control variant
+    // and the click WILL still fire with ab_variant="platform:default,buttons:multi-fallback"
+    // so we can identify and exclude these in analysis.
+    fallbackTimer = setTimeout(() => {
+      if (intervalId) clearInterval(intervalId);
+      setFlagsLoaded(true);
+    }, 5000);
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+    };
   }, []);
 
   // Platform ordering (test 1 — locked to TodayTix)
@@ -65,12 +96,15 @@ export default function TicketButtonsAB({
     ? sorted.slice(0, 1)
     : sorted.slice(0, officialUrl ? maxButtons - 1 : maxButtons);
 
-  // Combine variants into a tracking string
-  const abVariantStr = [
-    abPlatformVariant ? `platform:${abPlatformVariant}` : null,
-    abButtonVariant ? `buttons:${abButtonVariant}` : null,
-  ].filter(Boolean).join(',') || undefined;
+  // Combine variants into a tracking string. Use explicit "fallback" marker
+  // when flags didn't load (ad blocker / opt-out) so we can exclude these from analysis.
+  const platformPart = abPlatformVariant ?? 'fallback';
+  const buttonsPart = abButtonVariant ?? 'fallback';
+  const abVariantStr = `platform:${platformPart},buttons:${buttonsPart}`;
 
+  // Don't render anything until flags load (or fallback fires after 5s)
+  // This eliminates the multi-default flicker that biased early clicks to control.
+  if (!flagsLoaded) return null;
   if (showStatus === 'closed' || visibleLinks.length === 0) return null;
 
   return (
