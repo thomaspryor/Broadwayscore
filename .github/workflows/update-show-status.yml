@@ -28,7 +28,7 @@ permissions:
 jobs:
   update-shows:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
@@ -119,7 +119,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/enrich-stubhub-prices.js
         continue-on-error: true
-        timeout-minutes: 15
+        timeout-minutes: 5
 
       - name: Enrich shows with Telecharge/Ticketmaster links
         if: ${{ inputs.skip_discovery != 'true' }}
