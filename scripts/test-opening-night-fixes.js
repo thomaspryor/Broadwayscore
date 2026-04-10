@@ -11,7 +11,7 @@
  * See: scripts/lib/review-guards.js
  */
 
-const { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
+const { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, evaluateShowMentionGuard, pickShowTitleForHeuristic, buildShowKeywordSet, findShowKeywordInText } = require('./lib/review-guards');
 
 let passed = 0;
 let failed = 0;
@@ -1603,6 +1603,124 @@ assert(
   assert(
     guard.action === 'skip',
     'Low-confidence showCheck → skip (only act on high confidence)'
+  );
+}
+
+// ============================================================
+// rebuild-all-reviews.js auto-clear keyword check
+// (buildShowKeywordSet + findShowKeywordInText)
+//
+// Bug context: rebuild's second auto-clear restored wrongFullText → fullText
+// when contentVerification.isValid:true, but LLMs hallucinate isValid:true on
+// garbage pages. Without a final-mile keyword check, the auto-clear restored:
+//   - browser update prompts (wsj/an-act-of-god)
+//   - sidebar story lists (rent-1996/newyorker, time/scottsboro-boys)
+//   - wrong-show content (memphis → My Fair Lady, lucky-guy → Brendan Fraser)
+//   - paywall login walls (starlight-express/thestage)
+//   - bloomberg navigation footers (escape-to-margaritaville, time-stands-still)
+// This regression test ensures the keyword check rejects all those cases.
+// ============================================================
+console.log('\n=== rebuild auto-clear keyword check (buildShowKeywordSet + findShowKeywordInText) ===\n');
+
+// buildShowKeywordSet — basic shape
+{
+  const dracula = { id: 'dracula-west-end-2025', title: 'Dracula', cast: [{ name: 'Cynthia Erivo' }], creativeTeam: [{ name: 'Kip Williams' }], venue: 'Noël Coward Theatre' };
+  const kw = buildShowKeywordSet(dracula);
+  assert(kw.has('dracula'), 'Dracula keywords include "dracula"');
+  assert(kw.has('erivo'), 'Dracula keywords include "erivo" (Cynthia Erivo surname)');
+  assert(kw.has('williams'), 'Dracula keywords include "williams" (Kip Williams surname)');
+  assert(kw.has('coward'), 'Dracula keywords include "coward" (Noël Coward venue word)');
+  assert(!kw.has('theatre'), 'Dracula keywords exclude "theatre" stopword');
+  assert(!kw.has('the'), 'Dracula keywords exclude "the" stopword');
+}
+
+// buildShowKeywordSet — short title with full title preserved
+{
+  const six = { id: 'six-2021', title: 'Six', cast: [{ name: 'Adrianna Hicks' }] };
+  const kw = buildShowKeywordSet(six);
+  // "six" is 3 chars — gets added through the title-words loop (>= 3 chars)
+  assert(kw.has('six'), 'Short title "Six" → keywords include "six"');
+  assert(kw.has('hicks'), 'Six keywords include cast surname "hicks"');
+}
+
+// buildShowKeywordSet — null/empty input
+{
+  assert(buildShowKeywordSet(null).size === 0, 'Null show → empty keyword set');
+  assert(buildShowKeywordSet({}).size === 0, 'Empty show → empty keyword set');
+  assert(buildShowKeywordSet({ title: '' }).size === 0, 'Empty title → empty keyword set');
+}
+
+// findShowKeywordInText — substring match for long keywords
+{
+  const kw = new Set(['dracula', 'erivo']);
+  assert(findShowKeywordInText('Watching Cynthia Erivo perform...', kw) !== null, 'Long keyword: substring match works');
+  assert(findShowKeywordInText('Some unrelated text', kw) === null, 'Long keyword: no match returns null');
+}
+
+// findShowKeywordInText — word boundary for short keywords
+{
+  const kw = new Set(['rent']);
+  assert(findShowKeywordInText('Rent is a musical', kw) !== null, 'Short keyword: word-boundary match works');
+  assert(findShowKeywordInText('current events', kw) === null, '"rent" does NOT match "current"');
+  assert(findShowKeywordInText('different rate', kw) === null, '"rent" does NOT match "different"');
+}
+
+// findShowKeywordInText — null/empty input
+{
+  assert(findShowKeywordInText('', new Set(['x'])) === null, 'Empty text → null');
+  assert(findShowKeywordInText('hello', new Set()) === null, 'Empty keyword set → null');
+  assert(findShowKeywordInText(null, new Set(['x'])) === null, 'Null text → null');
+}
+
+// REGRESSION: actual garbage texts that triggered the false-restore bug
+{
+  const hamilton = { title: 'Hamilton', cast: [{ name: 'Lin-Manuel Miranda' }] };
+  const hamiltonKw = buildShowKeywordSet(hamilton);
+  const ampJunk = "AMP connection: Shareholders of AMP Inc. have tendered a majority of that company's shares to hostile bidder AlliedSignal Inc.";
+  assert(
+    findShowKeywordInText(ampJunk, hamiltonKw) === null,
+    'REGRESSION: AMP shareholder news fails Hamilton keyword check (would have been restored as Hamilton fullText)'
+  );
+
+  const memphis = { title: 'Memphis', cast: [{ name: 'Chad Kimball' }] };
+  const memphisKw = buildShowKeywordSet(memphis);
+  const myFairLady = "Read More About: Bartlett Sher, Lauren Ambrose, Lincoln Center Theater, My Fair Lady";
+  assert(
+    findShowKeywordInText(myFairLady, memphisKw) === null,
+    'REGRESSION: My Fair Lady sidebar fails Memphis keyword check'
+  );
+
+  const luckyGuy = { title: 'Lucky Guy', cast: [{ name: 'Tom Hanks' }] };
+  const luckyKw = buildShowKeywordSet(luckyGuy);
+  const fraser = "Brendan Fraser reflects on his acting journey and his latest Oscar-contending role in Rental Family";
+  assert(
+    findShowKeywordInText(fraser, luckyKw) === null,
+    'REGRESSION: Brendan Fraser content fails Lucky Guy keyword check'
+  );
+
+  const browserUpdate = "BROWSER UPDATE To gain access to the full experience, please upgrade your browser";
+  const anyShow = { title: 'An Act of God', cast: [{ name: 'Sean Hayes' }] };
+  assert(
+    findShowKeywordInText(browserUpdate, buildShowKeywordSet(anyShow)) === null,
+    'REGRESSION: Browser update prompt fails any show keyword check'
+  );
+
+  // POSITIVE case: legitimate Dracula lede mentions cast surname
+  const dracula = { title: 'Dracula', cast: [{ name: 'Cynthia Erivo' }] };
+  const draculaKw = buildShowKeywordSet(dracula);
+  const lede = "Watching Cynthia Erivo in this solo rendition of Bram Stoker's novel...";
+  assert(
+    findShowKeywordInText(lede, draculaKw) === 'erivo',
+    'POSITIVE: Dracula lede passes via cast surname "erivo" (no need to mention "Dracula")'
+  );
+
+  // POSITIVE case: Oliver! lede mentions venue
+  const oliver = { title: 'Oliver!', venue: 'Gielgud Theatre' };
+  const oliverKw = buildShowKeywordSet(oliver);
+  const oliverLede = "Q: What is the oldest named UK cheese? Some musicals have sets that are more memorable than their songs. Oliver!, which the super-producer Cameron Mackintosh is giving its first Gielgud revival...";
+  assert(
+    findShowKeywordInText(oliverLede, oliverKw) !== null,
+    'POSITIVE: Oliver lede passes via "oliver" or "gielgud" keyword'
   );
 }
 

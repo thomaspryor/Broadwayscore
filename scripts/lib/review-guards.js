@@ -444,4 +444,80 @@ function pickShowTitleForHeuristic(showId, showMeta) {
   return (showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
 }
 
-module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview, isRoundupUrl, isVenueMismatch, isUrlTitleMismatch, evaluateShowMentionGuard, pickShowTitleForHeuristic };
+/**
+ * Build a keyword set for "does this text look like it's about this show" checks.
+ *
+ * Used as a final-mile guard before auto-restoring a wrongFullText → fullText.
+ * The rebuild auto-clear trusts a prior LLM verification (verifiedBy=llm:gemini,
+ * isValid:true), but LLMs hallucinate isValid:true on garbage pages — browser-update
+ * prompts, paywall walls, sidebar story lists, even wrong-show content. Without
+ * this final check, the auto-clear restores junk as the canonical fullText.
+ *
+ * Keywords include: full lowercased title, individual title words ≥3 chars (minus
+ * stopwords), top 5 cast surnames (≥4 chars), top 3 director surnames, venue words.
+ *
+ * @param {Object} show - shows.json entry
+ * @returns {Set<string>} Lowercased keywords
+ */
+function buildShowKeywordSet(show) {
+  const keywords = new Set();
+  if (!show) return keywords;
+  // Stopwords excluded from EVERY source (title words, cast surnames, creative team
+  // surnames, venue words). Some shows have corrupted creative team data with sentence
+  // fragments like "Gordon Greenberg is working with" → last word "with" would pollute
+  // the keyword set otherwise.
+  const STOP = new Set([
+    'the','and','for','with','play','show','musical','broadway','london','westend','west','end','theatre','theater','from','that','this',
+    // Common verb/preposition fragments that creep in from corrupted creative team data
+    'working','person','people','from','have','will','been','were','their','about','into','onto','some','also','only','more','most','than','then','when','what','which','where','they','them','some','some',
+  ]);
+  const passes = (w) => w.length >= 3 && !STOP.has(w);
+  const passesLong = (w) => w.length >= 4 && !STOP.has(w);
+
+  const realTitle = (show.title || '').toLowerCase();
+  if (realTitle.length >= 4) keywords.add(realTitle);
+  for (const w of realTitle.replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)) {
+    if (passes(w)) keywords.add(w);
+  }
+  for (const c of (show.cast || []).slice(0, 5)) {
+    if (!c.name) continue;
+    const last = c.name.split(/\s+/).pop().toLowerCase();
+    if (passesLong(last)) keywords.add(last);
+  }
+  for (const c of (show.creativeTeam || []).slice(0, 3)) {
+    if (!c.name) continue;
+    const last = c.name.split(/\s+/).pop().toLowerCase();
+    if (passesLong(last)) keywords.add(last);
+  }
+  if (show.venue) {
+    for (const w of show.venue.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)) {
+      if (w.length >= 5 && !STOP.has(w) && w !== 'theatre' && w !== 'theater') keywords.add(w);
+    }
+  }
+  return keywords;
+}
+
+/**
+ * Check if `text` mentions any keyword from `keywordSet`.
+ * Long keywords (≥5 chars) use substring match; short keywords (<5) use word-boundary
+ * regex to avoid "rent" matching "current" or "win" matching "winning".
+ *
+ * @param {string} text - Text to scan
+ * @param {Set<string>} keywordSet - Keywords from buildShowKeywordSet()
+ * @returns {string|null} The first matched keyword, or null if none matched
+ */
+function findShowKeywordInText(text, keywordSet) {
+  if (!text || !keywordSet || keywordSet.size === 0) return null;
+  const lower = text.toLowerCase();
+  for (const k of keywordSet) {
+    if (k.length >= 5) {
+      if (lower.includes(k)) return k;
+    } else {
+      const re = new RegExp('\\b' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+      if (re.test(text)) return k;
+    }
+  }
+  return null;
+}
+
+module.exports = { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, urlLooksLikeReview, isLikelyWrongProduction, isLikelyTourReview, isRoundupUrl, isVenueMismatch, isUrlTitleMismatch, evaluateShowMentionGuard, pickShowTitleForHeuristic, buildShowKeywordSet, findShowKeywordInText };

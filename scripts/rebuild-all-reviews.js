@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { isRoundupUrl, isVenueMismatch } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, buildShowKeywordSet, findShowKeywordInText } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -2254,27 +2254,45 @@ showDirs.forEach(showId => {
 
         // Second auto-clear: LLM previously verified content as valid but heuristic still set
         // showNotMentioned (happens when word count < 200 prevents LLM from running during
-        // collect-review-texts). Trust the prior LLM verification and restore fullText.
+        // collect-review-texts). Trust the prior LLM verification BUT verify the wrongFullText
+        // actually mentions a show keyword first — LLMs hallucinate isValid:true on garbage
+        // pages (browser-update prompts, paywall walls, sidebar lists, wrong-show content)
+        // and a naive auto-restore would re-introduce the bad data.
         if (data.showNotMentioned === true) {
           const cv = data.contentVerification;
           if (cv && cv.verifiedBy && cv.verifiedBy.startsWith('llm:') && cv.isValid === true && !cv.wrongArticle && data.wrongFullText) {
-            data.showNotMentioned = false;
-            delete data._showNotMentionedDiscoveryAttempted;
-            if (!data.fullText && data.wrongFullText) {
-              data.fullText = data.wrongFullText;
-              delete data.wrongFullText;
-            }
-            stats.showNotMentionedCvCleared = (stats.showNotMentionedCvCleared || 0) + 1;
-            try {
-              const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-              sourceData.showNotMentioned = false;
-              delete sourceData._showNotMentionedDiscoveryAttempted;
-              if (!sourceData.fullText && sourceData.wrongFullText) {
-                sourceData.fullText = sourceData.wrongFullText;
-                delete sourceData.wrongFullText;
+            // Final-mile keyword check: wrongFullText must mention something distinctive
+            // about this show (title word, lead actor surname, director surname, or venue word).
+            // Catches LLM hallucinations where verifiedBy=llm:gemini, isValid=true, but the
+            // actual text is sidebar junk / wrong-show content / browser-update prompts.
+            // See scripts/lib/review-guards.js for the shared implementation + tests.
+            const show = showsData.shows.find(s => s.id === (data.showId || showId));
+            const keywords = buildShowKeywordSet(show);
+            const matchedKeyword = findShowKeywordInText(data.wrongFullText, keywords);
+
+            if (matchedKeyword) {
+              data.showNotMentioned = false;
+              delete data._showNotMentionedDiscoveryAttempted;
+              if (!data.fullText && data.wrongFullText) {
+                data.fullText = data.wrongFullText;
+                delete data.wrongFullText;
               }
-              fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
-            } catch (e) { console.warn('  Failed to write back showNotMentioned CV fix:', filePath, e.message); }
+              stats.showNotMentionedCvCleared = (stats.showNotMentionedCvCleared || 0) + 1;
+              try {
+                const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                sourceData.showNotMentioned = false;
+                delete sourceData._showNotMentionedDiscoveryAttempted;
+                if (!sourceData.fullText && sourceData.wrongFullText) {
+                  sourceData.fullText = sourceData.wrongFullText;
+                  delete sourceData.wrongFullText;
+                }
+                fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+              } catch (e) { console.warn('  Failed to write back showNotMentioned CV fix:', filePath, e.message); }
+            } else {
+              // LLM verified valid but content fails keyword check — likely an LLM hallucination.
+              // Leave showNotMentioned set; the file stays out of scoring until re-collected.
+              stats.showNotMentionedCvSkippedHallucination = (stats.showNotMentionedCvSkippedHallucination || 0) + 1;
+            }
           }
         }
 
@@ -3502,6 +3520,9 @@ if (stats.showNotMentionedAutoCleared > 0) {
 }
 if (stats.showNotMentionedCvCleared > 0) {
   console.log(`  Auto-cleared stale showNotMentioned (LLM-verified valid, wrongFullText restored): ${stats.showNotMentionedCvCleared}`);
+}
+if (stats.showNotMentionedCvSkippedHallucination > 0) {
+  console.log(`  Skipped CV-based restore (LLM verified valid but wrongFullText fails keyword check — likely hallucination): ${stats.showNotMentionedCvSkippedHallucination}`);
 }
 if (stats.showNotMentionedWithExcerpts > 0) {
   console.log(`  Show not mentioned but has excerpts (allowed): ${stats.showNotMentionedWithExcerpts}`);
