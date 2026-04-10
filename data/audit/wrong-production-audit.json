@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T01:34:53.740Z",
+  "timestamp": "2026-04-10T01:44:09.721Z",
   "stats": {
     "totalReviews": 34683,
-    "alreadyFlagged": 13694,
+    "alreadyFlagged": 13714,
     "dateGuardCatches": 62,
     "directorMismatch": 961,
-    "tvFilmSignals": 3416,
+    "tvFilmSignals": 3410,
     "londonSignals": 1120,
     "offBroadwaySignals": 968,
     "yearMismatch": 72,
-    "noPublishDate": 6428
+    "noPublishDate": 6405
   },
   "findings": [
     {
@@ -9261,20 +9261,6 @@
       ]
     },
     {
-      "showId": "catch-me-if-you-can-2011",
-      "file": "vulture--scott-brown.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_catch_it_if_you.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
       "showId": "cats-1982",
       "file": "towncountry--jesse-oxfeld.json",
       "score": 35,
@@ -18487,20 +18473,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "god-of-carnage-2009",
-      "file": "vulture--scott-brown.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://nymag.com/arts/theater/reviews/55644/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -31187,20 +31159,6 @@
     },
     {
       "showId": "mary-poppins-2006",
-      "file": "vulture--jeremy-mccarter.json",
-      "score": 43,
-      "publishDate": null,
-      "url": "https://nymag.com/arts/theater/reviews/24356/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "mary-poppins-2006",
       "file": "wsj--terry-teachout.json",
       "score": 38,
       "publishDate": null,
@@ -35712,7 +35670,7 @@
       "showId": "oedipus-2025",
       "file": "theater-scene--deirdre-donovan.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2025-11-21",
       "url": "https://theaterscene.com/reviews/oedipus/",
       "findings": [
         {
@@ -42633,20 +42591,6 @@
       ]
     },
     {
-      "showId": "sister-act-2011",
-      "file": "vulture--scott-brown.json",
-      "score": 73,
-      "publishDate": null,
-      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_sister_acts_cha.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
       "showId": "six-2021",
       "file": "broadwaynews--charles-isherwood.json",
       "score": 73,
@@ -43839,20 +43783,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "sondheim-on-sondheim-2010",
-      "file": "vulture--christopher-bonanos.json",
-      "score": 70,
-      "publishDate": null,
-      "url": "https://nymag.com/arts/theater/reviews/65618/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
@@ -47930,20 +47860,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-addams-family-2010",
-      "file": "vulture--scott-brown.json",
-      "score": 25,
-      "publishDate": null,
-      "url": "https://nymag.com/arts/theater/reviews/65353/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },
