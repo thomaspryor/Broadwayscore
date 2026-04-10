@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-10T03:40:33.721Z",
+  "updatedAt": "2026-04-10T04:00:53.373Z",
   "processed": 20,
-  "failed": 21,
-  "successRate": "48.8%",
+  "failed": 24,
+  "successRate": "45.5%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 0,
@@ -15,17 +15,6 @@
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-10T00:47:14.178Z",
-      "event": "bb-session",
-      "session": "9483fc86",
-      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
-    },
-    {
-      "t": "2026-04-10T00:47:15.325Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-10T00:47:36.155Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-10T03:39:53.661Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T04:00:20.844Z",
+      "event": "bb-session",
+      "session": "e87c99a3",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-re"
+    },
+    {
+      "t": "2026-04-10T04:00:21.761Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
