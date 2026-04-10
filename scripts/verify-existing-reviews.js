@@ -374,6 +374,19 @@ function pushReviewTextsCheckpoint(message) {
     for (let i = 1; i <= 3; i++) {
       try {
         execSync('git pull --rebase -X theirs origin main', { cwd: rtDir, stdio: 'pipe' });
+        // CRITICAL: -X theirs silently drops local changes to protected fields.
+        // Restore them before pushing. Same fix as collect-review-texts.js (50e0de8b63).
+        try {
+          const restoreScriptPath = path.resolve(__dirname, 'lib', 'restore-protected-fields.js');
+          const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: rtDir, encoding: 'utf8', stdio: 'pipe' }).trim();
+          if (parseInt(restored, 10) > 0) {
+            console.log(`  [checkpoint] ↻ Restored protected fields in ${restored} file(s) after rebase`);
+            execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+            execSync('git commit --amend --no-edit', { cwd: rtDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
+          }
+        } catch (restoreErr) {
+          console.log(`  [checkpoint] ⚠ restore-protected-fields failed: ${restoreErr.message}`);
+        }
         execSync('git push origin main', { cwd: rtDir, stdio: 'pipe' });
         console.log(`  [checkpoint] ✓ Pushed review-texts to private repo (attempt ${i})`);
         return;
