@@ -32,12 +32,27 @@ const TOP_CRITICS = new Set([
 function computeCriticScore(showReviews, outletRegistry = {}) {
   if (!showReviews || showReviews.length === 0) return null;
 
+  // Outlet-level dedup: keep only one review per outlet (most recent by publishDate).
+  // MUST match src/lib/engine.ts::computeCriticScore(). Long-running shows accumulate
+  // multiple critics at the same outlet, which gives that outlet disproportionate
+  // weight in the tier-weighted composite. Without this, the homepage/mobile score
+  // (computed here) drifts away from the show-page score (computed in engine.ts).
+  const byOutlet = new Map();
+  for (const review of showReviews) {
+    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
+    const existing = byOutlet.get(outletKey);
+    if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
+      byOutlet.set(outletKey, review);
+    }
+  }
+  const dedupedReviews = Array.from(byOutlet.values());
+
   let weightedSum = 0;
   let totalWeight = 0;
   let tier1Count = 0;
   let scoredCount = 0;
 
-  for (const review of showReviews) {
+  for (const review of dedupedReviews) {
     // Determine tier (top critics get T1 regardless of outlet)
     const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
     const entry = outletRegistry[review.outletId?.toLowerCase()?.trim()];

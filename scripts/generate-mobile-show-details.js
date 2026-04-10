@@ -106,7 +106,21 @@ let generated = 0;
 let totalSize = 0;
 
 for (const show of visibleShows) {
-  const showReviews = reviewsByShow[show.id] || [];
+  const allShowReviews = reviewsByShow[show.id] || [];
+
+  // Outlet-level dedup: keep most-recent review per outlet. MUST match
+  // src/lib/engine.ts and scripts/lib/compute-critic-score.js. Without this,
+  // shows with multiple reviews from the same outlet (e.g. Stereophonic's two
+  // NYSR reviews) get a different score/count here than on the show page.
+  const byOutlet = new Map();
+  for (const review of allShowReviews) {
+    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
+    const existing = byOutlet.get(outletKey);
+    if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
+      byOutlet.set(outletKey, review);
+    }
+  }
+  const showReviews = Array.from(byOutlet.values());
   const buzz = audienceBuzz[show.id];
 
   // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Stay Away (<55)
