@@ -143,26 +143,41 @@ async function main() {
       console.log(`  ${p}: ${c} clicks`);
     });
 
-    // A/B test breakdown
-    const withVariant = clicks.filter(e => e.properties?.ab_variant);
-    if (withVariant.length > 0) {
-      console.log('\nA/B Test (ticket-primary-platform):');
-      const byVariant = {};
-      withVariant.forEach(e => {
-        const v = e.properties.ab_variant;
-        if (!byVariant[v]) byVariant[v] = { total: 0, byPlatform: {} };
-        byVariant[v].total++;
-        const p = e.properties.platform || 'Unknown';
-        byVariant[v].byPlatform[p] = (byVariant[v].byPlatform[p] || 0) + 1;
+    // A/B test breakdown — apply CORRECT filters per memory/feedback_ab_test_analysis.md
+    // 1. Only show pages (page_type='show')
+    // 2. New format ab_variant: "platform:X,buttons:Y"
+    // 3. Exclude fallback variants (ad blockers / opt-outs)
+    // For full analysis use: node scripts/analyze-ab-test.js
+    const abClicks = clicks.filter(e => {
+      const props = e.properties || {};
+      if (props.page_type !== 'show') return false;
+      const v = props.ab_variant;
+      if (typeof v !== 'string') return false;
+      if (!v.match(/^platform:[^,]+,buttons:[^,]+$/)) return false;
+      if (v.includes('fallback')) return false;
+      return true;
+    });
+
+    if (abClicks.length > 0) {
+      console.log('\nA/B Test (ticket-single-button) — filtered, show pages only:');
+      // Group by buttons variant (the active test)
+      const byButtons = {};
+      abClicks.forEach(e => {
+        const match = e.properties.ab_variant.match(/buttons:([^,]+)/);
+        if (!match) return;
+        const v = match[1];
+        if (!byButtons[v]) byButtons[v] = { clicks: 0, users: new Set() };
+        byButtons[v].clicks++;
+        byButtons[v].users.add(e.distinct_id);
       });
-      Object.entries(byVariant).forEach(([variant, data]) => {
-        console.log(`  Variant "${variant}": ${data.total} clicks`);
-        Object.entries(data.byPlatform).sort((a, b) => b[1] - a[1]).forEach(([p, c]) => {
-          console.log(`    ${p}: ${c}`);
-        });
+      Object.entries(byButtons).sort().forEach(([variant, data]) => {
+        const userCount = data.users.size;
+        const cpu = userCount > 0 ? (data.clicks / userCount).toFixed(2) : 'N/A';
+        console.log(`  ${variant}: ${data.clicks} clicks, ${userCount} users (${cpu} clicks/user)`);
       });
+      console.log(`  → Run "node scripts/analyze-ab-test.js" for stat sig + decision guidance`);
     } else {
-      console.log('\nA/B test: No variant-tagged clicks yet.');
+      console.log('\nA/B test: No qualified events yet (need page_type=show + valid ab_variant).');
     }
   } else {
     console.log('\n── PostHog: SKIPPED (no credentials) ──');
