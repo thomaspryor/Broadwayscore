@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-10T10:02:52.252Z",
+  "generatedAt": "2026-04-10T10:30:25.801Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,20 +12,20 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 86.04,
+      "siteScore": 86.12,
       "liveScore": 86,
-      "scoreDrift": -0.04000000000000625,
-      "total": 23,
+      "scoreDrift": -0.12000000000000455,
+      "total": 24,
       "t1": 6,
-      "t2": 13,
+      "t2": 14,
       "t3": 4,
-      "positive": 20,
+      "positive": 21,
       "mixed": 2,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -38,10 +38,6 @@
         "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
-        },
         {
           "name": "The New Yorker",
           "isDualMarket": false
@@ -97,6 +93,10 @@
           "isDualMarket": false
         },
         {
+          "name": "TheWrap",
+          "isDualMarket": false
+        },
+        {
           "name": "Observer",
           "isDualMarket": false
         },
@@ -105,15 +105,7 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -330,6 +322,18 @@
           "t2": 13,
           "t3": 4,
           "p": 20,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-10T10:30:25.801Z",
+          "rc": 24,
+          "s": 86.12,
+          "t1": 6,
+          "t2": 14,
+          "t3": 4,
+          "p": 21,
           "m": 2,
           "n": 1,
           "bc": "waiting"

@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-10T10:02:48.491Z",
+  "timestamp": "2026-04-10T10:30:22.103Z",
   "stats": {
-    "totalReviews": 34697,
-    "alreadyFlagged": 13753,
+    "totalReviews": 34698,
+    "alreadyFlagged": 13751,
     "dateGuardCatches": 62,
     "directorMismatch": 964,
-    "tvFilmSignals": 3408,
+    "tvFilmSignals": 3409,
     "londonSignals": 1123,
     "offBroadwaySignals": 971,
     "yearMismatch": 72,
@@ -12612,6 +12612,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "nytg--austin-fimmano.json",
+      "score": 86,
+      "publishDate": "2026-04-09",
+      "url": "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
