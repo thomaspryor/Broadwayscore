@@ -1,4 +1,4 @@
-# Roadmap — Last updated 2026-03-26 (image pipeline hardening)
+# Roadmap — Last updated 2026-04-10 (Wrong-production prevention + data integrity)
 
 > **Active work is now tracked on the [GitHub Projects board](https://github.com/users/thomaspryor/projects/1).**
 > Open issues with `session` label = active Claude Code sessions.
@@ -70,8 +70,12 @@
 - ~~**Bright Data `mcp_unlocker` trial exhausted**~~ → DONE (2026-03-25). Zone recovered + re-enabled via UI. New admin token (`d52fd1e8`) deployed to all 4 repos. Billing active at $1.5/CPM.
 - ~~**ScrapingBee credits depleted**~~ → DONE (2026-03-25). Replenished to ~1M credits. Renews 2026-04-25.
 - **`mcp_browser` zone wrong type** — `client_10090`: Browser API requires WebSocket/CDP, not HTTP proxy. Code now detects and skips it permanently. Either reconfigure zone as Unblocker type, or leave unused (only `mcp_unlocker` is needed).
+- **Broadway.com coverage ceiling** — ~30-40% of closed shows have customer reviews (only ticket buyers can review). Shows like Phantom, Dear Evan Hansen, Kimberly Akimbo have no audience reviews on Broadway.com. The remaining ~70% genuinely lack data — not a scraping issue. Could batch more closed shows with `--field shows=ID1,ID2,...` but diminishing returns.
 
 **Data Quality:**
+- **Boy at the Back of the Class WE — collect actual April 2026 reviews** (P1) — Show ID `the-boy-at-the-back-of-the-class-west-end-2026`. QEH Southbank Apr 7-12, 2026 (6-day run, 2026 Olivier nominee Best Family Show). Currently 0 displayed reviews after I flagged 5 Show Score reviews as wrongProduction (commit `7315065b3c` in broadway-review-texts) — they were actually from the same touring production's Feb 2024 Rose Theatre Kingston run. Action: targeted gather-reviews / opening-night-poller dispatch for this show ID to find actual QEH-run reviews. As of Apr 10, 3 days into run, 2 days remaining.
+- **`cleanup-fake-publish-dates.js` destroys recoverable real dates** (P2 fix) — When run with `--all`, the script unconditionally nulls `publishDate` when it equals `openingDate`, even though real dates are often recoverable from URL/text. Concrete impact: all 5 Show Score reviews on the-boy-at-the-back-of-the-class-west-end-2026 had this happen (real Feb 2024 dates restored manually via web fetch in commit `7315065b3c`). Fix: before nulling, attempt URL-based date extraction (rebuild-all-reviews.js logic). Better: do URL date extraction during gather-reviews.js for show-score sources so the opening-date fallback never fires. Note: 8 sibling reviews via bww-roundup pipeline correctly extracted dates from URL (YYYYMMDD pattern) — gap is specifically pure show-score collection.
+- **Audit other touring-then-WE shows for the same wrong-production review pattern** (P2 data quality) — Show Score has one page per production. When a touring production hits the WE and we list it as a WE show, Show Score's reviews on that page are still from original tour stops, contaminating the WE show's score. Audit: `cd data/review-texts && git grep -l 'publishDateNulledReason.*show-score' | sed 's|/[^/]*$||' | sort | uniq -c | sort -rn` — group by show ID, triage shows where >50% of reviews share the issue. Likely candidates: shows that toured (Rose Theatre, Devonshire Park Theatre, etc.) before transferring to a WE venue. Companion to the cleanup-fake-publish-dates fix above.
 12. ~~WE/OB review cleanup — duplicates~~ → DONE. 35→0 duplicates via comprehensive dedup.
 13. ~~WE/OB review cleanup — URL collisions~~ → DONE. All 87 collisions resolved (94 files flagged across 53 shows).
 14. ~~Cross-outlet duplicate reviews~~ → DONE. 90 found, 31 flagged (28 very-high + 3 AP syndication). Remaining 59 are false positives (different critics, similar text).
@@ -89,6 +93,9 @@
 **Image gaps:** Dear England WE (score 83, 7 reviews) has no image — auto-fetch missed it, may need manual sourcing. Birthright/Giulia/Whoopi Monologues (previews) have CDN placeholders — will auto-archive when TodayTix releases real art.
 **Infrastructure:** Show images to CDN (173MB/deploy), prune low-value static pages, domain retry intelligence, ~~ScrapingBee SERP credit optimization~~ → DONE (3.3M→968K credits/month + BrightData fallback), ~~Scraper cost optimization~~ → DONE (Playwright-first for public sites, BD-first SERP, SB credit pre-check, per-run cost logging). gather-reviews outlet-SERP cut 200→30 searches for routine runs (2026-03-25), 200 preserved for opening nights (max_tier=3)
 **Scraper resilience:** Consolidate inline SERP in collect-review-texts.js to use shared url-discovery.js module (eliminates diverged 200-line fork). Migrate `recollect-for-scores.js`, `scrape-theater-tips.js` to use `scraper.js` fetchPage() instead of calling SB API directly (currently in CI exempt list — no BD fallback)
+- **matchTitleToShow confidence audit** — 25+ scripts call `matchTitleToShow()` without checking `.confidence`. Same bug class as WET wrong-show contamination. Highest-risk: aggregator scrapers (theatre.reviews, LBO roundups, The Stage, Stagedoor, Playbill Verdict, NYSR, WP theater blogs, SERP discovery). Add confidence gates to all aggregator callers.
+- **Zero-data aggregator scraper guard** — WET scraper silently returned 0 posts for ~2 weeks (Sucuri WAF). Add health check: if an aggregator scraper fetches 0 items, warn or fail instead of silent success.
+- **WET title extraction regression tests** — 30+ real WET post titles tested manually. Extract into unit test file to protect against future regressions in `extractShowTitle` and `matchTitleToShow`.
 **Domain matching:** `domainMatchesExpected()` in `scraper.js` doesn't match subdomains of registry aliases (e.g., `articles.philly.com` doesn't match alias `philly.com`). Workaround: added explicit subdomain aliases. Real fix: extend the matching function. LOW priority.
 **Code Quality:**
 18. ~~**TypeScript strictness cleanup**~~ → DONE. Zero TS errors, zero `as any` casts. Added Window.gtag/Sentry declarations, SentryEvent interface, GoldListType narrowing.
@@ -109,11 +116,24 @@
 
 ## Recently Completed
 
-### Closing Soon Shelf Fix (2026-04-06)
-- **Shelf hidden because only 1 Broadway show had closingDate within 60 days.** Expanded window to 120 days — 6 shows now qualify (Every Brilliant Thing, Chess, Ragtime, Giant, Oh Mary!, Moulin Rouge). Verified live on production.
+### WET Scraper Wrong-Show Fix + WAF Bypass (2026-04-08)
+- **27 wrong-show archives** — WET scraper accepted medium-confidence fuzzy matches from `matchTitleToShow()`. Generic WP titles matched random shows via word overlap (e.g., "Best West End Shows This Week" → "THIS IS NOT ABOUT ME."). Fixed: confidence gate (only HIGH), content validation (show title words in post body), short-title fallback.
+- **Sucuri WAF bypass** — WET WordPress API blocked since ~Mar 22 (returning HTML challenge instead of JSON). Replaced custom curl/https with shared `scraper.js` `fetchJSON()` (ScrapingBee proxy, 1 credit/page). 884 posts fetched successfully.
+- **Title extraction for real WP patterns** — Handles 10+ real WET title formats: `{Show} Reviews Round-up – {Venue} [Updated]`, `{Show} reviews: {subtitle}`, 30+ named WE venues. 171 shows matched at HIGH confidence (up from 143 before extraction fix).
+- **Romeo & Juliet alias** — Added `"romeo & juliet"` / `"romeo and juliet"` to show-matching aliases.
 
-### Score Display Consistency Fix (2026-04-06)
-- **10 score display sites bypassed `hasEnoughReviews()` gate** — Becky Shaw showed 84 in shelf but TBD in browse listing. Fixed all: 6 shelf filters in page.tsx, FeaturedRowServer, MiniShowCard, RelatedShows (ScoreBadge props), SortableLotteryRushTables (3 tables). Feedback memory saved to prevent recurrence.
+### Full Review Button Fix + URL Backfill (2026-04-07)
+- **"Full Review" button broken for 433 reviews** — `ReviewsList.tsx` rendered `<a href="undefined">` for reviews with null URLs. Fixed with conditional guard + updated TypeScript type to `string | null`.
+- **URL backfill via SERP** — 55 missing review URLs discovered via BrightData SERP search. Top outlets recovered: NYT, Vulture, Guardian, Daily Mail, The Stage, Talkin' Broadway. 328 remain unfindable (defunct outlets: Lighting & Sound America print-only, Bloomberg theater desk, AP wire).
+- **Re-enabled `rediscover-urls.yml`** — Weekly cron was manually disabled. Re-enabled for ongoing dead URL detection.
+
+### Broadway.com Backfill + Reddit Preview Fix (2026-03-28)
+- **Broadway.com bot-challenge bypass** — Playwright fallback for Cloudflare-blocked pages. 17→55+ shows with data. HTML fallback parser for pages without JSON-LD (`extractHtmlRating()`). Sitemap discovery + URL construction for closed shows.
+- **Broadway.com backfill** — 10 major closed shows extracted (Sunset Blvd 88, Gypsy 94, Hell's Kitchen 96, Merrily 100, Notebook 96, etc.). ~30% of closed shows have Broadway.com customer reviews (only shows sold via their ticketing platform).
+- **Reddit scraper includes preview shows** — Was filtering to `status === 'open'` only, missing all preview-period discussion. Now includes `previews`. CATS: The Jellicle Ball got Reddit data (score 79, 22 posts, 97 relevant items).
+- **Reddit triggered on show discovery** — `update-show-status.yml` now dispatches Reddit sentiment for newly discovered preview shows (not just previews→open transitions).
+- **BD zone fix** — `reddit-api.js` hardcoded wrong zone names (`mcp_browser`). Now uses `BRIGHTDATA_ZONE` env var consistently with all other scrapers.
+- **Process.exit fix** — Broadway.com scraper didn't exit after completion (Playwright held process open). Each show hit 120s bash timeout even when scraping took 2s. Fixed: `process.exit(0)` on completion. Batches now complete in ~2 min instead of 20.
 
 ### Image Pipeline Hardening (2026-03-26)
 - **Hash-based placeholder detection** — 6 known "Coming Soon" hash variants added. Downloads rejected, `--missing` filter re-queues affected shows. CI now errors on open/previews shows with placeholder disk files via `validatePlaceholderImageHashes()` in validate-data.js.
@@ -261,6 +281,22 @@ All re-runnable. Run `flag-wrong-production-by-date.js` after adding more dates.
 - **Cookie refresh** — Already covered by health check alerts + email. Manual step can't be automated.
 
 
+### Week of 2026-04-09
+- **Wrong-production prevention + data integrity sweep** — 3-layer fix: (1) `titlesMatch()` sequel guard (`title-normalization.js`) — substring match rejects "Part N/IV/etc." remainder, prevents "A Doll's House" matching "A Doll's House, Part 2"; (2) TR year guard (`extract-theatre-record.js`) — when show has no opening date, rejects reviews 2+ years before show ID year; (3) Dedup TBA fix (`deduplication.js`) — "TBA" venue treated as unknown, preventing phantom shows bypassing dedup as "transfers." Data: 25 wrong-production reviews flagged (14 Doll's House + 8 Cleansed + others), 1 cross-show URL (Wicked WE/Dracula), phantom `into-the-woods-west-end-2026` removed (was re-created 4×).
+- **Weekly integrity check failure fixed** — Root cause: `.gitignore` `/data/*.md` rule silently blocked `git add data/integrity-report.md`, failing the workflow for 3+ weeks. Fixed with `!/data/integrity-report.md` negation rule.
+- **ShowScore synthetic critic name prevention** — `sanitizeCriticName()` added to `gather-reviews.js` both extraction paths. Strips ShowScore aggregator verb phrases ("Asserts Dominic Cavendish" → "Dominic Cavendish"), preventing duplicate review files with the same URL.
+- **Phantom show detection health check guard** — New B3 check in `health-check.js` alerts when open shows have TBA/missing venue, no reviews, and no opening date — signature of phantom auto-discover entries. Catches future `isMultiProduction()` regressions before they accumulate.
+- **Discount tickets UI overhaul** — Rush/Lottery Detailed View cards: poster images (2:3) replace badly-cropped hero images, score badge overlaid on image bottom-right on mobile (like homepage shelves), always-horizontal layout. Table view: long titles truncated with ellipsis (max-w-[200px] on mobile), chevron arrows inline with titles, price column always visible. Applied to all 4 tables (Lottery, Rush, SRO, All Discount).
+- **Opening day "Just opened" timezone bug** — `new Date('YYYY-MM-DD')` parses as UTC midnight, but `setHours(0,0,0,0)` operates in local time — in ET this shifts April 9 back to April 8, defeating the same-day guard. Fixed with UTC ISO string comparison in `getBroadwayDuration`. Also fixed leading " · " separator when duration is null. Status transition (`update-show-status.js`) correctly uses `<=` — shows flip to `open` on opening day.
+
+### Week of 2026-04-07
+- **Adjudicator outlet awareness** — The adjudicator was trusting aggregator-invented star ratings (e.g., Show Score assigning "5/5 stars" to London Theatre), inflating `humanReviewScore` to 100. Fix: 3-tier outlet handling (KNOWN_STAR_OUTLETS → trust, DESIGNATION_OUTLETS → binary signal, unknown → UNVERIFIED warning). Extracted `buildUserPrompt` to testable lib (`scripts/lib/adjudication-prompt.js`, 39 tests). Fixed 6 wrong outletIds (display names → actual data IDs). Reset 4 mis-adjudicated reviews (all re-adjudicated overnight). Separated NYT Critic's Pick into designation category. Also: linter renamed adjudicator output from `humanReviewScore` to `adjudicatedScore` (correct — P0a priority in rebuild, not P0 human override).
+- **`actions:write` fix for 13 workflows** — 13 workflows that dispatch other workflows via `gh workflow run` silently failed with HTTP 403 (missing `actions: write` permission). Fixed all 13. Adjudication rebuild trigger confirmed working in overnight cron.
+
+### Week of 2026-04-06
+- **Theater images - Wikimedia hotlink fix** — All 42 theater images were broken (Wikimedia changed thumbnail serving policy, all `/commons/thumb/` URLs return HTTP 429). Switched both theater detail pages and index page to serve local copies already in `public/images/theaters/`. Removed Wikimedia dependency entirely. Verified live on 2026-04-08.
+- **WET scraper content-match fix for short titles (uncommitted)** — `scripts/scrape-westendtheatre-roundups.js` has an uncommitted fix: shows with no significant words after filtering (MJ, Six) now fall back to substring match on full title instead of always passing. Needs committing.
+
 ### Week of 2026-03-19 — WE Aggregator Sweep
 - **WE aggregator sweep fully operational** — 4 aggregators (WET 48, TR 24, SD 34, TS 28), archive-first caching, ~1,200 total reviews. Weekly Tuesday 8AM UTC.
 - **Archive-first for all aggregators** — WET/TR/SD/TS all cache results. Numbers stable across runs, no WAF variance.
@@ -279,6 +315,11 @@ All re-runnable. Run `flag-wrong-production-by-date.js` after adding more dates.
 - Off-West End classification + venue filter
 - iOS: Sentry, push notifications, offline queue, haptics, store review, deep linking (Build #29)
 - BTC: TBD badges + curated nominees QA
+
+
+
+
+
 
 
 
