@@ -2657,6 +2657,14 @@ showDirs.forEach(showId => {
             }
             return urlDate.date;
           }
+          // Final fallback: use show's opening date as approximate publish date
+          // Most reviews are published within a few days of opening night
+          const showOpen = showDateMap[showId];
+          if (showOpen) {
+            const openStr = showOpen.toISOString().substring(0, 10);
+            stats.openingDateFallbacks = (stats.openingDateFallbacks || 0) + 1;
+            return openStr;
+          }
           return null;
         })(),
         originalRating: (source === 'originalScore-priority0' || source === 'originalScore-showscore-downgraded')
@@ -3496,6 +3504,9 @@ if (stats.excerptMismatches > 0) {
 // URL date backfill summary
 if (stats.urlDateBackfills > 0) {
   console.log(`\n📅 URL date backfills: ${stats.urlDateBackfills} reviews gained publishDate from URL`);
+}
+if (stats.openingDateFallbacks > 0) {
+  console.log(`📅 Opening date fallbacks: ${stats.openingDateFallbacks} reviews used show opening date as publishDate`);
 }
 if (stats.urlDateSuspect && stats.urlDateSuspect.length > 0) {
   console.log(`  ⚠️  URL-date suspect (year before show opens): ${stats.urlDateSuspect.length}`);
