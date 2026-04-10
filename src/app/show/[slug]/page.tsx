@@ -967,9 +967,32 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           ) : null;
         })()}
 
-        {/* Awards - above Box Office */}
-        <div id="awards" className="scroll-mt-20" />
-        {featureFlags.awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
+        {/* Showtimes — all markets (Broadway via bwayrush, WE/OB via TodayTix) */}
+        <div id="showtimes" className="scroll-mt-20" />
+        {showSchedule &&
+          (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
+          <ShowtimesCard
+            schedule={showSchedule}
+            currentMonday={getScheduleCurrentMonday()}
+            showStatus={show.status}
+            ticketLinks={sortedTicketLinks}
+            todaytixShowtimes={getShowShowtimeIds(show.id)}
+            showName={show.title}
+            showId={show.id}
+            showSlug={show.slug}
+          />
+        )}
+
+        {/* Theater Scorecard (Broadway only) */}
+        {theater?.venueScores && (
+          <TheaterScorecardCard
+            venueScores={theater.venueScores}
+            accessibility={theater.accessibility}
+            externalLinks={theater.externalLinks}
+            theaterName={theater.name}
+            theaterSlug={theater.slug}
+          />
+        )}
 
         {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
         <div id="box-office" className="scroll-mt-20" />
@@ -983,6 +1006,22 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </section>
           ) : null
         )}
+
+        {/* Lottery/Rush Tickets */}
+        <div id="discount-tickets" className="scroll-mt-20" />
+        {featureFlags.discountTickets && lotteryRush && (() => {
+          // Don't show until previews have started
+          if (show.previewsStartDate) {
+            const previewsStart = new Date(show.previewsStartDate);
+            const today = new Date();
+            if (today < previewsStart) return null;
+          }
+          return <LotteryRushCard data={lotteryRush} showStatus={show.status} showCategory={show.category} />;
+        })()}
+
+        {/* Awards */}
+        <div id="awards" className="scroll-mt-20" />
+        {featureFlags.awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
 
         {/* Commercial Scorecard — Broadway only */}
         {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
@@ -1002,34 +1041,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </section>
           ) : null
         )}
-
-        {/* Showtimes — all markets (Broadway via bwayrush, WE/OB via TodayTix) */}
-        <div id="showtimes" className="scroll-mt-20" />
-        {showSchedule &&
-          (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
-          <ShowtimesCard
-            schedule={showSchedule}
-            currentMonday={getScheduleCurrentMonday()}
-            showStatus={show.status}
-            ticketLinks={sortedTicketLinks}
-            todaytixShowtimes={getShowShowtimeIds(show.id)}
-            showName={show.title}
-            showId={show.id}
-            showSlug={show.slug}
-          />
-        )}
-
-        {/* Lottery/Rush Tickets */}
-        <div id="discount-tickets" className="scroll-mt-20" />
-        {featureFlags.discountTickets && lotteryRush && (() => {
-          // Don't show until previews have started
-          if (show.previewsStartDate) {
-            const previewsStart = new Date(show.previewsStartDate);
-            const today = new Date();
-            if (today < previewsStart) return null;
-          }
-          return <LotteryRushCard data={lotteryRush} showStatus={show.status} showCategory={show.category} />;
-        })()}
 
         {/* Cast Updates - below Lottery/Rush */}
         {featureFlags.castChanges && castChangesData && (
@@ -1077,17 +1088,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             category={show.category}
             actorSlugs={castActorSlugs}
             tonyMap={getShowCastTonyMap(show.id)}
-          />
-        )}
-
-        {/* Theater Scorecard (Broadway only) */}
-        {theater?.venueScores && (
-          <TheaterScorecardCard
-            venueScores={theater.venueScores}
-            accessibility={theater.accessibility}
-            externalLinks={theater.externalLinks}
-            theaterName={theater.name}
-            theaterSlug={theater.slug}
           />
         )}
 
