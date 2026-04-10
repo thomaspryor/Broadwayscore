@@ -193,6 +193,19 @@ function slugify(text) {
     .replace(/^-|-$/g, '');
 }
 
+// Strip ShowScore aggregator verb phrases from critic names.
+// ShowScore excerpts use patterns like "The Standard asserts Dominic Cavendish..."
+// and sometimes the critic name is extracted as "Asserts Dominic Cavendish".
+// These create duplicate files alongside real critic entries pointing to the same URL.
+const SYNTHETIC_CRITIC_VERBS = /^(asserts?|observes?|claims?|notes?|writes?|states?|says?|calls?|finds?|praises?|pans?|argues?)\s+/i;
+function sanitizeCriticName(name) {
+  if (!name) return name;
+  const stripped = name.replace(SYNTHETIC_CRITIC_VERBS, '').trim();
+  // Only accept the stripped version if it looks like a real name (2+ words, starts uppercase)
+  if (stripped !== name && /^[A-Z][a-z]/.test(stripped) && stripped.includes(' ')) return stripped;
+  return name;
+}
+
 // Cross-show URL slug detection: lazy-loaded index of show title slugs.
 // Used to catch URLs that clearly belong to a different show.
 // Exclude titles that are common URL path words (cause false positives).
@@ -539,7 +552,7 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId, 
       const pageReviewCount = Math.max(outlets.length, urls.length);
       for (let i = 0; i < pageReviewCount; i++) {
         const outletRaw = outlets[i] || null;
-        const critic = critics[i] || 'Unknown';
+        const critic = sanitizeCriticName(critics[i]) || 'Unknown';
         const url = urls[i] || null;
         const date = dates[i] || null;
 
@@ -2845,7 +2858,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           showId,
           outlet: outletDisplayName,
           outletId,
-          criticName: review.critic || 'Unknown',
+          criticName: sanitizeCriticName(review.critic) || 'Unknown',
           url: (show.title && review.url && !urlLooksLikeReview(review.url, show.title)) ? null : review.url,
           publishDate: normalizePublishDate(review.date) || null,
           showScoreExcerpt: review.excerpt || null,
