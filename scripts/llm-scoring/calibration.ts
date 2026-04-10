@@ -41,9 +41,13 @@ function loadLLMScoredReviews(): ScoredReviewFile[] {
     return scored;
   }
 
-  const shows = fs.readdirSync(reviewTextsDir).filter(f =>
-    fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-  );
+  const shows = fs.readdirSync(reviewTextsDir).filter(f => {
+    try {
+      return fs.statSync(path.join(reviewTextsDir, f)).isDirectory();
+    } catch {
+      return false;
+    }
+  });
 
   for (const show of shows) {
     const showDir = path.join(reviewTextsDir, show);
