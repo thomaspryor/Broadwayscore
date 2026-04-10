@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-10T05:43:20.771Z",
+  "timestamp": "2026-04-10T06:26:13.925Z",
   "stats": {
     "totalReviews": 34687,
-    "alreadyFlagged": 13746,
+    "alreadyFlagged": 13745,
     "dateGuardCatches": 62,
     "directorMismatch": 963,
-    "tvFilmSignals": 3408,
+    "tvFilmSignals": 3409,
     "londonSignals": 1122,
-    "offBroadwaySignals": 970,
+    "offBroadwaySignals": 971,
     "yearMismatch": 72,
     "noPublishDate": 6276
   },
@@ -6140,6 +6140,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "file": "variety--rebecca-rubin.json",
+      "score": null,
+      "publishDate": "2026-04-07",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenreich-patrick-ball-comedy-1236708566/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -84226,6 +84240,20 @@
       "score": 88,
       "publishDate": "November 8, 2011",
       "url": "https://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-venus-in-fur-1005489162.story",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "http://www.newjerseynewsroom.com/new-york-theater/review-venus-in-fur-gets-sexy-with-nina-arianda-and-hugh-dancy",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
