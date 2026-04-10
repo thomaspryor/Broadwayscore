@@ -48,7 +48,9 @@
     "the-peewee-herman-show-2010/theatermania--unknown.json",
     "bloody-bloody-andrew-jackson-2010/new-jersey-newsroom--michael-sommers.json",
     "fences-2010/wsj--christopher-john-farley.json",
-    "million-dollar-quartet-2010/theatermania--unknown.json"
+    "million-dollar-quartet-2010/theatermania--unknown.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -1007,7 +1009,15 @@
     "a-behanding-in-spokane-2010/backstage--david-sheward.json",
     "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
     "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
-    "race-2009/theatermania--charles-isherwood.json"
+    "race-2009/theatermania--charles-isherwood.json",
+    "fela-2009/new-jersey-newsroom--michael-sommers.json",
+    "the-royal-family-2009/washpost--peter-marks.json",
+    "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "9-to-5-2009/wsj--terry-teachout.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1035,7 +1045,8 @@
       "death-of-a-salesman-2026/forward--benjamin-ivry.json",
       "death-of-a-salesman-2026/stageandcinema--michael-m-landman-karny.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
-      "million-dollar-quartet-2010/theatermania--unknown.json"
+      "million-dollar-quartet-2010/theatermania--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1070,16 +1081,19 @@
       "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
       "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
-      "fences-2010/wsj--christopher-john-farley.json"
+      "fences-2010/wsj--christopher-john-farley.json",
+      "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/9-to-5-2009/wsj--terry-teachout.json"
+    ],
     "archive": [
       "just-in-time-2025/billboard--rebecca-milzoff.json",
       "starlight-express-west-end-2024/thestage--paul-vale.json"
     ]
   },
   "startTime": "2026-04-10T09:30:06.313Z",
-  "lastProcessed": "race-2009/theatermania--charles-isherwood.json",
+  "lastProcessed": "waiting-for-godot-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-10T10:12:17.924Z",
@@ -1122,6 +1136,28 @@
     },
     {
       "t": "2026-04-10T19:03:52.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T19:06:30.709Z",
+      "event": "bb-session",
+      "session": "0556837c",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-10T19:06:31.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T19:10:26.100Z",
+      "event": "bb-session",
+      "session": "474bdc14",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
+    },
+    {
+      "t": "2026-04-10T19:10:27.305Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
