@@ -323,6 +323,17 @@ jobs:
           echo "Extracting reviews from Theatre Record (browse WE listing)..."
           node scripts/extract-theatre-record.js --browse-we --no-skip-existing
 
+      - name: Discover URLs for Theatre Record reviews (Phase 0)
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        continue-on-error: true
+        timeout-minutes: 20
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          echo "Running Phase 0 URL discovery for WE reviews without URLs..."
+          node scripts/recover-explicit-ratings.js --phase=0 --market=west-end --limit=50
+
       - name: Cleanup phantom outlet duplicates
         run: node scripts/cleanup-phantom-outlets.js --apply
 
