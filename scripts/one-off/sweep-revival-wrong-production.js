@@ -109,7 +109,25 @@ for (const file of files) {
   const mutations = [];
 
   // A. RECOVERY: bug victims with wrongFullText preserved
-  if (wrongFullTextLen > 0 && fullTextLen === 0 && incompleteReason === 'wrong_content') {
+  // STRICT GATING: only recover when ALL of these are true:
+  //   - wrongFullText preserved AND fullText empty AND incompleteReason='wrong_content'
+  //   - wrongShow !== true (do NOT recover regional productions, feature articles, etc.)
+  //   - publishDate within 14 days of OPENING_DATE (avoids 2022/2012 productions)
+  //     OR publishDate is null AND URL contains current year suffix (e.g., /2026/)
+  // The intent: only recover the FALSE POSITIVES from the revival heuristic on
+  // actual current-production reviews. Genuinely-wrong reviews (regional, prior
+  // production, non-review features) are skipped to manual review.
+  const OPENING_DATE = new Date('2026-04-09'); // DoaS opening night
+  const RECOVERY_WINDOW_MS = 14 * 86400000;
+  const publishDateValue = data.publishDate ? new Date(data.publishDate) : null;
+  const publishDateValid = publishDateValue && !isNaN(publishDateValue.getTime());
+  const withinOpeningWindow = publishDateValid &&
+    Math.abs(publishDateValue.getTime() - OPENING_DATE.getTime()) <= RECOVERY_WINDOW_MS;
+  const urlHasOpeningYear = data.url && /\/2026\//.test(data.url);
+  const recoveryAllowedByDate = withinOpeningWindow || (!publishDateValid && urlHasOpeningYear);
+
+  if (wrongFullTextLen > 0 && fullTextLen === 0 && incompleteReason === 'wrong_content'
+      && !isWrongShow && recoveryAllowedByDate) {
     mutations.push(`restore fullText (${wrongFullTextLen} chars from wrongFullText)`);
     if (apply) {
       data.fullText = data.wrongFullText;
@@ -155,30 +173,29 @@ for (const file of files) {
   }
   // B. PROTECT-KNOWN-GOOD: has text, not currently flagged wrong
   else if (fullTextLen > 0 && !isWrongProduction && !isWrongShow) {
-    if (alreadyHrwpFalse) {
-      stats.alreadyClean.push(file);
-    } else {
+    if (!alreadyHrwpFalse) {
       mutations.push('set humanReviewedWrongProduction=false (proactive revival protection)');
       if (apply) {
         data.humanReviewedWrongProduction = false;
       }
-      stats.protected.push({ file, mutations });
     }
 
     // C. CLEAR STALE CV-FLAG: if cv.wrongProduction stale-true, clear
     if (cvWrongProd) {
-      const cvMutation = 'clear contentVerification.wrongProduction (stale true on healthy file)';
+      mutations.push('clear contentVerification.wrongProduction (stale true on healthy file)');
       if (apply) {
         delete data.contentVerification.wrongProduction;
         if (Object.keys(data.contentVerification).length === 0) {
           delete data.contentVerification;
         }
       }
-      stats.clearedCv.push({ file, mutation: cvMutation });
-      // Add to last protected entry's mutations if applicable
-      if (stats.protected.length > 0 && stats.protected[stats.protected.length - 1].file === file) {
-        stats.protected[stats.protected.length - 1].mutations.push(cvMutation);
-      }
+      stats.clearedCv.push({ file });
+    }
+
+    if (mutations.length === 0) {
+      stats.alreadyClean.push(file);
+    } else {
+      stats.protected.push({ file, mutations });
     }
   }
   // E. SKIP-EMPTY-NEW: stubs without flags
