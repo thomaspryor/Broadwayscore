@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-10T20:01:09.058Z",
+    "generatedAt": "2026-04-10T20:41:27.300Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 90,
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review is about a Sydney, Australia production of Wicked. It mentions the 2008 Australian premiere and a 2014 return season, and the Sydney Lyric as the venue."
+      "reasoning": "The review discusses a Sydney production of Wicked, mentioning specific Australian cast members and opening nights in Sydney. It also mentions a Brazilian production. This is not a review of the 2003 Broadway production."
     },
     {
       "showId": "the-lion-king-1997",
@@ -45,6 +45,23 @@
       "confidence": "high",
       "targetShowId": null,
       "reasoning": "The review is about an Atlanta production at the Fox Theatre, not the Broadway production filed under. It mentions the Fox Theatre in Atlanta and specific performers in that production."
+    },
+    {
+      "showId": "miss-saigon-1991",
+      "showTitle": "Miss Saigon",
+      "showYear": 1991,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, new revival",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "miss-saigon-2017",
+      "reasoning": "The review mentions the 2017 revival's cast (Eva Noblezada, Alistair Brammer, Katie Rose Clarke, Nicholas Christopher) and director (Laurence Connor), and refers to the opening as happening 'Thursday at the Broadway Theatre'."
     },
     {
       "showId": "master-class-1995",
@@ -79,7 +96,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "six-degrees-of-separation-2017",
-      "reasoning": "The review explicitly mentions the 'Broadway revival' and the Barrymore Theatre, which are associated with the 2017 production. It also mentions actors Corey Hawkins and Allison Janney, who were in the 2017 production."
+      "reasoning": "The review explicitly mentions the 'Broadway revival' and its opening at the Barrymore Theatre, which aligns with the 2017 production. It also mentions Allison Janney, Corey Hawkins, and Trip Cullman, who were involved in the 2017 production, not the 1990 production."
     },
     {
       "showId": "how-to-succeed-in-business-without-really-trying-1995",
@@ -97,57 +114,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
-      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also mentions the 2010 production of \"Promises, Promises\" which is a clear indicator that the review is about the 2011 revival."
-    },
-    {
-      "showId": "miss-saigon-1991",
-      "showTitle": "Miss Saigon",
-      "showYear": 1991,
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "criticName": "Robert Hofler",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, new revival",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "miss-saigon-2017",
-      "reasoning": "The review mentions the 2017 revival's cast (Eva Noblezada, Alistair Brammer, Katie Rose Clarke, Nicholas Christopher), director (Laurence Connor), and designers (Dotie Driver and Matt Kinley). It also mentions that the revival opened at the Broadway Theatre."
-    },
-    {
-      "showId": "on-the-twentieth-century-1978",
-      "showTitle": "On the Twentieth Century",
-      "showYear": 1978,
-      "file": "amny--matt-windman.json",
-      "outlet": "amNY",
-      "criticName": "Matt Windman",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, new production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "on-the-twentieth-century-2015",
-      "reasoning": "The review explicitly mentions the Roundabout Theatre Company's new production with Kristin Chenoweth and Peter Gallagher, which is the 2015 revival."
-    },
-    {
-      "showId": "the-gin-game-1977",
-      "showTitle": "The Gin Game",
-      "showYear": 1977,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2015 in text matches revival the-gin-game-2015"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
+      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival, and references a '2010 production of Promises, Promises' by the same director. It also mentions Matthew Broderick's 1995 production, indicating this review is about a different revival."
     },
     {
       "showId": "broadway-1987",
@@ -164,7 +131,40 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This,\" not the original 1987 production. The review also mentions the director, Mic, and the set designer, Derek McLane, who were involved in the 2019 production."
+      "reasoning": "The review explicitly mentions a \"Broadway revival\" starring Adam Driver and Keri Russell, directed by Michael Mayer. This is a different production than the original 1987 Broadway production."
+    },
+    {
+      "showId": "on-the-twentieth-century-1978",
+      "showTitle": "On the Twentieth Century",
+      "showYear": 1978,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, new production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "on-the-twentieth-century-2015",
+      "reasoning": "The review explicitly discusses the Roundabout Theatre Company's new production with Kristin Chenoweth and Peter Gallagher, which is the 2015 revival."
+    },
+    {
+      "showId": "the-gin-game-1977",
+      "showTitle": "The Gin Game",
+      "showYear": 1977,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2015 in text matches revival the-gin-game-2015"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-gin-game-2015",
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
     },
     {
       "showId": "the-house-of-blue-leaves-1986",
@@ -184,22 +184,6 @@
       "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which implies he was not in the 1"
     },
     {
-      "showId": "old-times-1971",
-      "showTitle": "Old Times",
-      "showYear": 1971,
-      "file": "nbcny--robert-kahn.json",
-      "outlet": "NBC New York",
-      "criticName": "Robert Kahn",
-      "publishDate": null,
-      "originalSignals": [
-        "modern references: twitter"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of which are associated with the 2015 revival. It also mentions the play running through Nov. 29, which aligns with the 2015 production's dates."
-    },
-    {
       "showId": "the-real-thing-2000",
       "showTitle": "The Real Thing",
       "showYear": 2000,
@@ -213,7 +197,23 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the Roundabout's American Airlines Theatre, which corresponds to the 2014 production. It also mentions the 1984 and 2000 productions."
+      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the American Airlines Theatre, which matches the 2014 production. It also mentions the 1984 and 2000 productions."
+    },
+    {
+      "showId": "old-times-1971",
+      "showTitle": "Old Times",
+      "showYear": 1971,
+      "file": "nbcny--robert-kahn.json",
+      "outlet": "NBC New York",
+      "criticName": "Robert Kahn",
+      "publishDate": null,
+      "originalSignals": [
+        "modern references: twitter"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "old-times-2015",
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, indicating a recent production."
     }
   ]
 }
