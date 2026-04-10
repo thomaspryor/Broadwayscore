@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-04-10T10:13:10.178Z",
-  "processed": 10,
-  "failed": 16,
-  "successRate": "38.5%",
+  "updatedAt": "2026-04-10T11:04:52.093Z",
+  "processed": 15,
+  "failed": 21,
+  "successRate": "41.7%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 2,
-    "brightdata": 4,
+    "scrapingbee": 5,
+    "brightdata": 5,
     "archiveToday": 0,
     "archive": 0
   },
@@ -25,6 +25,17 @@
       "t": "2026-04-10T10:12:18.992Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-10T11:03:28.652Z",
+      "event": "bb-session",
+      "session": "5ca8ad51",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-04-10T11:03:29.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
