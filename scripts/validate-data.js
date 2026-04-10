@@ -1381,6 +1381,15 @@ function validateReviewsJson() {
             if (fileData.duplicateTextOf !== undefined && typeof fileData.duplicateTextOf !== 'string') {
               warn(`${showDir}/${file}: duplicateTextOf should be string, got ${typeof fileData.duplicateTextOf}`);
             }
+            // Validate that duplicateTextOf points to an existing file in the same dir.
+            // Broken refs cause silent dedup failures (the duplicate slips through and
+            // double-counts the same review under a misattributed critic).
+            if (typeof fileData.duplicateTextOf === 'string') {
+              const refPath = path.join(showDir, fileData.duplicateTextOf);
+              if (!fs.existsSync(refPath)) {
+                warn(`${showDir}/${file}: duplicateTextOf points to non-existent file "${fileData.duplicateTextOf}"`);
+              }
+            }
             // Validate human review score fields
             if (fileData.humanReviewScore !== undefined && (typeof fileData.humanReviewScore !== 'number' || fileData.humanReviewScore < 0 || fileData.humanReviewScore > 100)) {
               warn(`${showDir}/${file}: humanReviewScore should be number 0-100`);

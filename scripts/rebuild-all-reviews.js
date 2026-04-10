@@ -2240,8 +2240,12 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Cross-show duplicate text detection: skip if this fullText was already seen under a different show
-      // Uses SHA-256 hash of full cleaned text to avoid false positives from shared boilerplate prefixes
+      // Cross-show + within-show duplicate text detection.
+      // Same fullText fingerprint = same review. Catches:
+      //   - Cross-show contamination (review for show A filed under show B)
+      //   - Within-show misattribution (same Vulture review filed under multiple critic names)
+      // Within-show wins go to the file with the better critic attribution: prefer files
+      // without "(Pt. 2)" / "unknown" / lowercased typo variants in the critic name.
       if (data.fullText && data.fullText.length > 200) {
         const cleanedForFp = (cleanText(data.fullText) || '').toLowerCase().replace(/\s+/g, '');
         if (cleanedForFp.length > 200) {
@@ -2251,6 +2255,13 @@ showDirs.forEach(showId => {
             stats.skippedCrossShowDupe = (stats.skippedCrossShowDupe || 0) + 1;
             if (!stats.crossShowDupeDetails) stats.crossShowDupeDetails = [];
             stats.crossShowDupeDetails.push(`${showId}/${file} duplicates ${existing.showId}/${existing.file}`);
+            return;
+          }
+          if (existing && existing.showId === showId) {
+            // Within-show duplicate. Skip the second one.
+            stats.skippedWithinShowDupe = (stats.skippedWithinShowDupe || 0) + 1;
+            if (!stats.withinShowDupeDetails) stats.withinShowDupeDetails = [];
+            stats.withinShowDupeDetails.push(`${showId}/${file} duplicates ${showId}/${existing.file}`);
             return;
           }
           if (!existing) {
@@ -3414,6 +3425,13 @@ console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
   stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));
+}
+console.log(`  Skipped (within-show duplicate text): ${stats.skippedWithinShowDupe || 0}`);
+if (stats.withinShowDupeDetails && stats.withinShowDupeDetails.length > 0) {
+  stats.withinShowDupeDetails.slice(0, 30).forEach(d => console.log(`    - ${d}`));
+  if (stats.withinShowDupeDetails.length > 30) {
+    console.log(`    ... +${stats.withinShowDupeDetails.length - 30} more`);
+  }
 }
 console.log(`  Skipped (show not mentioned, no excerpts): ${stats.skippedShowNotMentioned || 0}`);
 if (stats.showIdMismatches > 0) {
