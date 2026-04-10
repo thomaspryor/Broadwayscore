@@ -29,19 +29,19 @@ export default function AnalyticsWrapper() {
     setIsDisabled(disabled);
   }, []);
 
-  // PostHog — session recordings, heatmaps, autocapture (replaces Clarity)
-  // Runs unconditionally on mount — independent of the Vercel Analytics va-disable flag.
+  // PostHog — 10% sampled session recordings + pageviews + manual events (replaces Clarity)
+  // Autocapture/heatmaps/person profiles disabled to stay within free tier.
   useEffect(() => {
     import('posthog-js').then(({ default: posthog }) => {
       if (!posthog.__loaded) {
         posthog.init(POSTHOG_KEY, {
           api_host: 'https://us.i.posthog.com',
-          autocapture: true,
+          autocapture: false,
           capture_pageview: true,
           capture_pageleave: true,
-          enable_heatmaps: true,
-          person_profiles: 'always',
-          session_recording: { maskAllInputs: false },
+          enable_heatmaps: false,
+          person_profiles: 'identified_only',
+          session_recording: { maskAllInputs: false, sampleRate: 0.1 },
           loaded: (ph) => {
             if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
           },
