@@ -253,6 +253,15 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     }
   }
 
+  // 2E: Force low confidence for SHORT excerpt-only text (DoaS Apr 9-10 #14)
+  // Even when multiple excerpts are present, if the actual text being scored is
+  // a tiny aggregator fragment (<200 chars from a *Excerpt field), the score
+  // is unreliable. Variety was scored 73/Positive from a 180-char BWW excerpt;
+  // the full text was actually Mixed (66).
+  if (textQualityStatus === 'excerpt-only' && textResult.text && textResult.text.length < 200) {
+    confidence = 'low';
+  }
+
   return {
     text: textResult.text,
     context: contextParts.join('\n'),

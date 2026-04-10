@@ -328,13 +328,28 @@ export class EnsembleReviewScorer {
       };
     }
 
+    // Cap final confidence to the LOWER of ensemble agreement and input quality.
+    // See scripts/lib/llm-confidence.js capLlmConfidence (extracted per CLAUDE.md §15
+    // so the unit test in tests/unit/llm-confidence-cap.test.mjs requires the same
+    // function — preventing test/prod drift).
+    //
+    // DoaS Apr 9-10 #14: Variety scored 73/Positive with high confidence from a
+    // 180-char BWW excerpt; full review was Mixed (66) once we got the real text.
+    // Operator escape hatch: reviewFile.confidenceOverride bypasses the cap.
+    const { capLlmConfidence } = require('../lib/llm-confidence.js');
+    const cappedConfidence = capLlmConfidence(
+      ensembleResult.confidence,
+      scoringInput.confidence,
+      (reviewFile as any).confidenceOverride
+    );
+
     // Build the scored file
     const scoredFile: ScoredReviewFile = {
       ...reviewFile,
       assignedScore: ensembleResult.score,
       llmScore: {
         score: ensembleResult.score,
-        confidence: ensembleResult.confidence,
+        confidence: cappedConfidence,
         range: { low: ensembleResult.score - 5, high: ensembleResult.score + 5 },
         bucket: ensembleResult.bucket,
         thumb: ensembleResult.bucket === 'Rave' || ensembleResult.bucket === 'Positive' ? 'Up' :
