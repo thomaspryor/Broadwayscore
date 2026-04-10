@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-10T03:56:00.584Z",
+  "timestamp": "2026-04-10T04:18:17.159Z",
   "stats": {
     "totalReviews": 34697,
-    "alreadyFlagged": 13746,
+    "alreadyFlagged": 13745,
     "dateGuardCatches": 62,
-    "directorMismatch": 962,
+    "directorMismatch": 963,
     "tvFilmSignals": 3405,
     "londonSignals": 1119,
     "offBroadwaySignals": 968,
@@ -12533,6 +12533,20 @@
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
         },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 86,
+      "publishDate": "2026-04-09",
+      "url": "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
+      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",

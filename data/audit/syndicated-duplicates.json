@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-10T03:54:29.926Z",
+  "generatedAt": "2026-04-10T04:16:45.912Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 1,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 2,
+    "newlyFlagged": 1,
     "alreadyFlagged": 1,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 67,
+    "avgScoreDiff": 10
   },
   "syndicationPairs": [
     {
@@ -17,7 +17,7 @@
       "secondaryOutlets": [
         "nydailynews"
       ],
-      "count": 0
+      "count": 1
     },
     {
       "critic": "kathleen campion",
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Chris Jones",
+      "showId": "death-of-a-salesman-2026",
+      "primaryOutlet": "chicagotribune",
+      "secondaryOutlet": "nydailynews",
+      "primaryFile": "chicagotribune--chris-jones.json",
+      "secondaryFile": "nydailynews--chris-jones.json",
+      "similarity": 67,
+      "primaryScore": 80,
+      "secondaryScore": 90,
+      "scoreDiff": 10
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "bernhardthamlet-2018",
