@@ -45,6 +45,9 @@
     "death-of-a-salesman-2026/theatermania--pete-hempstead.json",
     "death-of-a-salesman-2026/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
+    "death-of-a-salesman-2026/theatermania--pete-hempstead.json",
+    "death-of-a-salesman-2026/wsj--charles-isherwood.json",
+    "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
     "death-of-a-salesman-2026/theatermania--pete-hempstead.json"
   ],
   "skipped": [],
@@ -212,6 +215,17 @@
     },
     {
       "t": "2026-04-10T04:00:21.761Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-10T04:15:57.587Z",
+      "event": "bb-session",
+      "session": "22ef4f79",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-re"
+    },
+    {
+      "t": "2026-04-10T04:15:57.980Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
