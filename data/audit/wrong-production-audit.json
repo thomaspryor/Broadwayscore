@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T01:44:09.721Z",
+  "timestamp": "2026-04-10T02:05:58.004Z",
   "stats": {
     "totalReviews": 34683,
-    "alreadyFlagged": 13714,
+    "alreadyFlagged": 13717,
     "dateGuardCatches": 62,
-    "directorMismatch": 961,
+    "directorMismatch": 960,
     "tvFilmSignals": 3410,
-    "londonSignals": 1120,
+    "londonSignals": 1119,
     "offBroadwaySignals": 968,
     "yearMismatch": 72,
-    "noPublishDate": 6405
+    "noPublishDate": 6404
   },
   "findings": [
     {
@@ -12551,20 +12551,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
-      "file": "playbill--unknown.json",
-      "score": null,
-      "publishDate": "2026-04-02",
-      "url": "https://playbill.com/article/nathan-lanes-willy-loman-in-death-of-a-salesman-has-been-30-years-in-the-making",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
         }
       ]
     },
@@ -66082,20 +66068,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
-      "file": "latimes--unknown.json",
-      "score": 55,
-      "publishDate": null,
-      "url": "https://www.latimes.com/entertainment-arts/story/2026-04-01/arthur-miller-plays-revivals-death-of-a-salesman-the-price-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
