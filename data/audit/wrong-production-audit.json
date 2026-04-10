@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T18:18:08.232Z",
+  "timestamp": "2026-04-10T18:26:24.447Z",
   "stats": {
-    "totalReviews": 34684,
-    "alreadyFlagged": 13765,
-    "dateGuardCatches": 62,
+    "totalReviews": 34683,
+    "alreadyFlagged": 13776,
+    "dateGuardCatches": 60,
     "directorMismatch": 954,
-    "tvFilmSignals": 3410,
-    "londonSignals": 1121,
+    "tvFilmSignals": 3407,
+    "londonSignals": 1118,
     "offBroadwaySignals": 970,
     "yearMismatch": 71,
-    "noPublishDate": 5223
+    "noPublishDate": 5215
   },
   "findings": [
     {
@@ -12029,30 +12029,6 @@
       ]
     },
     {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "file": "thestage--alistair-smith.json",
-      "score": 80,
-      "publishDate": "2023-06-21",
-      "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 979d before show (2023-06-21 vs 2026-02-24)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "dear-evan-hansen-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 82,
@@ -20563,20 +20539,6 @@
     },
     {
       "showId": "hadestown-west-end-2024",
-      "file": "thestage--tim-bano.json",
-      "score": 76,
-      "publishDate": "2018-11-14",
-      "url": "https://www.thestage.co.uk/reviews/hadestown-review-at-national-theatre-london--stunning-new-folk-opera",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1914d before show (2018-11-14 vs 2024-02-10)"
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-west-end-2024",
       "file": "variety--matt-trueman.json",
       "score": 89,
       "publishDate": "2018-11-15",
@@ -23628,20 +23590,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "im-sorry-prime-minister-west-end-2026",
-      "file": "artsdesk--helen-hawkins.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -45369,20 +45317,6 @@
       "score": 79,
       "publishDate": "2026-03-27",
       "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "summerfolk-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 93,
-      "publishDate": "2026-03-18",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/summerfolk-olivier-national-theatre-review-fxg9sjknh",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -76004,8 +75938,6 @@
     {
       "showId": "rent-1996",
       "file": "newyorker--john-lahr-1996.json",
-      "publishDate": "1996-02-19",
-      "url": "https://www.newyorker.com/magazine/1996/02/19/hello-and-goodbye",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -79505,20 +79437,6 @@
       ]
     },
     {
-      "showId": "the-boy-at-the-back-of-the-class-west-end-2026",
-      "file": "whatsonstage--theo-bosanquet.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/the-boy-at-the-back-of-the-class-at-rose-theatre-kingston-and-on-tour-review_1570446/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
       "file": "whatsonstage--michael-davies.json",
       "score": 78,
@@ -81135,20 +81053,6 @@
       "score": 66,
       "publishDate": "2026-03-13",
       "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-holy-rosenbergs-west-end-2026",
-      "file": "london-theatre--matt-wolf.json",
-      "score": 83,
-      "publishDate": null,
-      "url": "https://www.londontheatre.co.uk/reviews/the-holy-rosenbergs-review-menier-chocolate-factory",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
