@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-10T00:44:06.755Z",
+  "timestamp": "2026-04-10T00:51:43.037Z",
   "stats": {
     "totalReviews": 34681,
-    "alreadyFlagged": 13663,
+    "alreadyFlagged": 13691,
     "dateGuardCatches": 62,
-    "directorMismatch": 961,
-    "tvFilmSignals": 3420,
+    "directorMismatch": 960,
+    "tvFilmSignals": 3416,
     "londonSignals": 1120,
-    "offBroadwaySignals": 977,
+    "offBroadwaySignals": 968,
     "yearMismatch": 72,
-    "noPublishDate": 6541
+    "noPublishDate": 6449
   },
   "findings": [
     {
@@ -7383,25 +7383,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
-        }
-      ]
-    },
-    {
-      "showId": "brief-encounter-2010",
-      "file": "timeout--david-cote.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/articles/theater/89426/brief-encounter-at-studio-54-theater-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
@@ -17292,7 +17273,7 @@
       "showId": "frozen-2018",
       "file": "village-voice--michael-feingold.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2018-03-27",
       "url": "https://www.villagevoice.com/disneys-frozen-leaves-an-icy-imprint-on-broadway/",
       "findings": [
         {
@@ -19964,25 +19945,6 @@
       ]
     },
     {
-      "showId": "gypsy-2008",
-      "file": "village-voice--michael-musto.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.villagevoice.com/review-once-again-the-diva-of-the-moment-gets-to-revel-in-gypsy/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. wolfe\" from gypsy-2024"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "gypsy-2024",
       "file": "amny--matt-windman.json",
       "score": 91,
@@ -20409,7 +20371,7 @@
       "showId": "gypsy-2024",
       "file": "village-voice--michael-musto.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2024-12-20",
       "url": "https://www.villagevoice.com/review-once-again-the-diva-of-the-moment-gets-to-revel-in-gypsy/",
       "findings": [
         {
@@ -22545,7 +22507,7 @@
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
       "file": "towleroad--naveen-kumar.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2016-10-07",
       "url": "https://www.towleroad.com/2016/10/holiday-inn-broadway/",
       "findings": [
         {
@@ -27834,25 +27796,6 @@
     },
     {
       "showId": "la-cage-aux-folles-2010",
-      "file": "timeout--adam-feldman.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/articles/theater/84810/la-cage-aux-folles-at-longacre-theatre-theater-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
-      "showId": "la-cage-aux-folles-2010",
       "file": "variety--steven-suskin.json",
       "score": 82,
       "publishDate": "April 18, 2010",
@@ -30279,7 +30222,7 @@
       "showId": "m-butterfly-2017",
       "file": "village-voice--michael-feingold.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2017-11-02",
       "url": "https://www.villagevoice.com/david-henry-hwangs-m-butterfly-travels-east-to-explore-delusions-of-gender/",
       "findings": [
         {
@@ -32386,7 +32329,7 @@
       "showId": "merrily-we-roll-along-2023",
       "file": "village-voice--michael-musto.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2023-10-10",
       "url": "https://www.villagevoice.com/review-merrily-we-roll-along-finally-has-its-moment-in-time/",
       "findings": [
         {
@@ -35204,7 +35147,7 @@
       "showId": "new-york-new-york-2023",
       "file": "village-voice--michael-musto.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2023-04-27",
       "url": "https://www.villagevoice.com/review-new-york-new-york-makes-it-here/",
       "findings": [
         {
@@ -36282,7 +36225,7 @@
       "showId": "ohio-state-murders-2022",
       "file": "village-voice--michael-musto.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2022-12-09",
       "url": "https://www.villagevoice.com/audra-mcdonald-takes-ohio-state-murders-to-its-limit/",
       "findings": [
         {
@@ -36827,7 +36770,7 @@
       "showId": "once-on-this-island-2017",
       "file": "village-voice--michael-feingold.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2017-12-19",
       "url": "https://www.villagevoice.com/a-revived-once-on-this-island-belts-out-a-still-magical-tale/",
       "findings": [
         {
@@ -39605,7 +39548,7 @@
       "showId": "pretty-woman-the-musical-2018",
       "file": "village-voice--david-cote.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2018-08-17",
       "url": "https://www.villagevoice.com/the-lyrical-artistry-of-broadways-pretty-woman-musical-wouldnt-pass-muster-in-a-febreze-commercial/",
       "findings": [
         {
@@ -42374,7 +42317,7 @@
       "showId": "shucked-2023",
       "file": "village-voice--michael-musto.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2023-04-05",
       "url": "https://www.villagevoice.com/review-shucked-brings-the-cornpone-home/",
       "findings": [
         {
@@ -42890,7 +42833,7 @@
       "showId": "six-degrees-of-separation-2017",
       "file": "towleroad--naveen-kumar.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2017-04-26",
       "url": "https://www.towleroad.com/2017/04/six-degrees-separation/",
       "findings": [
         {
@@ -43641,7 +43584,7 @@
       "showId": "some-like-it-hot-2022",
       "file": "village-voice--michael-musto.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2022-12-12",
       "url": "https://www.villagevoice.com/review-updating-and-upgrading-the-movie-broadways-some-like-it-hot-hits-all-the-right-notes/",
       "findings": [
         {
@@ -47959,20 +47902,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-addams-family-2010",
-      "file": "timeout--david-cote.json",
-      "score": 65,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/articles/theater/84586/the-addams-family-at-lunt-fontanne-theatre-theater-review#ixzz0kd04Jy7L",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -56234,7 +56163,7 @@
       "showId": "the-roommate-2024",
       "file": "village-voice--michael-musto.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2024-09-13",
       "url": "https://www.villagevoice.com/review-the-roommate-relies-on-star-power-to-transform-bad-into-good/",
       "findings": [
         {
@@ -63455,7 +63384,7 @@
       "showId": "angels-in-america-2018",
       "file": "towleroad--naveen-kumar.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2018-03-26",
       "url": "https://www.towleroad.com/2018/03/angels-in-america-review/",
       "findings": [
         {
@@ -64301,20 +64230,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "bloody-bloody-andrew-jackson-2010",
-      "file": "timeout--david-cote.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/articles/theater/89922/bloody-bloody-andrew-jackson-at-bernard-b-jacobs-theatre-theater-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -65593,20 +65508,6 @@
     },
     {
       "showId": "collected-stories-2010",
-      "file": "timeout--adam-feldman.json",
-      "score": 68,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/articles/theater/85231/collected-stories-at-samuel-j-friedman-theatre-theater-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "collected-stories-2010",
       "file": "variety--charles-isherwood.json",
       "score": 58,
       "publishDate": "March 2, 2010",
@@ -66762,7 +66663,7 @@
       "showId": "escape-to-margaritaville-2018",
       "file": "towleroad--naveen-kumar.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2018-03-16",
       "url": "https://www.towleroad.com/2018/03/margaritaville-broadway/",
       "findings": [
         {
@@ -69758,20 +69659,6 @@
     },
     {
       "showId": "hells-kitchen-2024",
-      "file": "theatrely--juan-a-ramirez.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/alicia-keys-charts-broadway-beginnings-in-hells-kitchen-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hells-kitchen-2024",
       "file": "thewrap--robert-hofler.json",
       "score": 63,
       "publishDate": "April 20, 2024",
@@ -70694,7 +70581,7 @@
       "showId": "indecent-2017",
       "file": "towleroad--naveen-kumar.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2017-04-19",
       "url": "https://www.towleroad.com/2017/04/indecent-play/",
       "findings": [
         {
@@ -73824,7 +73711,7 @@
       "showId": "meteor-shower-2017",
       "file": "village-voice--david-cote.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2017-12-01",
       "url": "https://www.villagevoice.com/steve-martins-relationship-comedy-meteor-shower-is-a-dim-snooze/",
       "findings": [
         {
@@ -74015,7 +73902,7 @@
       "showId": "miss-saigon-2017",
       "file": "towleroad--naveen-kumar.json",
       "score": 32,
-      "publishDate": null,
+      "publishDate": "2017-03-27",
       "url": "https://www.towleroad.com/2017/03/miss-saigon-broadway/",
       "findings": [
         {
@@ -76358,20 +76245,6 @@
       ]
     },
     {
-      "showId": "rock-of-ages-2009",
-      "file": "timeout--david-cote.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/articles/theater/73407/rock-of-ages-at-brooks-atkinson-theatre-theater-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
       "showId": "romeo-and-juliet-2013",
       "file": "front-row-center--george-crowley.json",
       "score": 25,
@@ -77247,20 +77120,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "sondheim-on-sondheim-2010",
-      "file": "timeout--adam-feldman.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/articles/theater/85031/sondheim-on-sondheim-at-studio-54-theater-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
@@ -79707,7 +79566,7 @@
       "showId": "the-bands-visit-2017",
       "file": "village-voice--michael-feingold.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2017-11-14",
       "url": "https://www.villagevoice.com/the-unimportance-of-the-broadway-musical-the-bands-visit-is-downright-inspiring/",
       "findings": [
         {
@@ -80072,7 +79931,7 @@
       "showId": "the-children-2017",
       "file": "village-voice--michael-feingold.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2017-12-15",
       "url": "https://www.villagevoice.com/lucy-kirkwoods-the-children-takes-an-earnest-trip-through-nuclear-family-values/",
       "findings": [
         {
@@ -82366,20 +82225,6 @@
       ]
     },
     {
-      "showId": "the-normal-heart-2011",
-      "file": "timeout--adam-feldman.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/arts-culture/theater/1269691/review-the-normal-heart",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
       "showId": "the-other-place-2013",
       "file": "backstage--erik-haagensen.json",
       "score": 92,
@@ -82613,20 +82458,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "the-pitmen-painters-2010",
-      "file": "timeout--adam-feldman.json",
-      "score": 74,
-      "publishDate": null,
-      "url": "https://newyork.timeout.com/articles/theater/89601/the-pitmen-painters-at-samuel-j-friedman-theatre-theater-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
