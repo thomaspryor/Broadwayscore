@@ -2252,6 +2252,32 @@ showDirs.forEach(showId => {
           }
         }
 
+        // Second auto-clear: LLM previously verified content as valid but heuristic still set
+        // showNotMentioned (happens when word count < 200 prevents LLM from running during
+        // collect-review-texts). Trust the prior LLM verification and restore fullText.
+        if (data.showNotMentioned === true) {
+          const cv = data.contentVerification;
+          if (cv && cv.verifiedBy && cv.verifiedBy.startsWith('llm:') && cv.isValid === true && !cv.wrongArticle && data.wrongFullText) {
+            data.showNotMentioned = false;
+            delete data._showNotMentionedDiscoveryAttempted;
+            if (!data.fullText && data.wrongFullText) {
+              data.fullText = data.wrongFullText;
+              delete data.wrongFullText;
+            }
+            stats.showNotMentionedCvCleared = (stats.showNotMentionedCvCleared || 0) + 1;
+            try {
+              const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+              sourceData.showNotMentioned = false;
+              delete sourceData._showNotMentionedDiscoveryAttempted;
+              if (!sourceData.fullText && sourceData.wrongFullText) {
+                sourceData.fullText = sourceData.wrongFullText;
+                delete sourceData.wrongFullText;
+              }
+              fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+            } catch (e) { console.warn('  Failed to write back showNotMentioned CV fix:', filePath, e.message); }
+          }
+        }
+
         if (data.showNotMentioned === true) {
           const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt;
           // Allow through if review has an aggregator-provided star rating (e.g. from WET roundup)
@@ -3473,6 +3499,9 @@ if (stats.showIdMismatches > 0) {
 }
 if (stats.showNotMentionedAutoCleared > 0) {
   console.log(`  Auto-cleared stale showNotMentioned (fullText valid): ${stats.showNotMentionedAutoCleared}`);
+}
+if (stats.showNotMentionedCvCleared > 0) {
+  console.log(`  Auto-cleared stale showNotMentioned (LLM-verified valid, wrongFullText restored): ${stats.showNotMentionedCvCleared}`);
 }
 if (stats.showNotMentionedWithExcerpts > 0) {
   console.log(`  Show not mentioned but has excerpts (allowed): ${stats.showNotMentionedWithExcerpts}`);

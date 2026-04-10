@@ -95,7 +95,7 @@ const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, norm
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { shouldSkipScoredReview } = require('./lib/review-guards');
+const { shouldSkipScoredReview, evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
 // Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
@@ -4067,6 +4067,17 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     delete data.contentVerification.confidence;
     delete data.contentVerification.isValid;
   }
+
+  // When LLM verification was skipped this run (e.g. word count < 200), fall back to existing
+  // contentVerification from the JSON file. This prevents heuristics from wiping fullText on
+  // paywalled/truncated pages where a prior run already verified the content is legitimate.
+  // Guard: only use existing if it's valid and not wrongArticle (wrongArticle means a different page entirely).
+  const effectiveVerification = contentVerification || (
+    data.contentVerification && !data.contentVerification.wrongArticle && data.contentVerification.isValid !== false
+      ? data.contentVerification
+      : null
+  );
+
   data.fullText = cleanedText;
   data.isFullReview = cleanedText.length > 1500;
   data.textWordCount = cleanedText.split(/\s+/).filter(w => w.length > 0).length;
@@ -4221,34 +4232,73 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // 1A. Show title mention check
   // If LLM verified the content → clear any stale showNotMentioned flag (LLM is a stronger signal)
   // If no LLM verification → fall back to heuristic title check
-  if (contentVerification && contentVerification.verifiedBy?.startsWith('llm:')) {
+  // Uses effectiveVerification which falls back to existing JSON contentVerification when LLM was
+  // skipped this run (word count < 200), preventing the heuristic from wiping valid paywalled text.
+  if (effectiveVerification && effectiveVerification.verifiedBy?.startsWith('llm:')) {
     // LLM confirmed content is correct — clear stale flag from previous bad fetches
     if (data.showNotMentioned) {
       console.log(`    ✓ LLM verified correct show — clearing stale showNotMentioned flag`);
       delete data.showNotMentioned;
       delete data._showNotMentionedDiscoveryAttempted;
-    }
-  } else if (cleanedText.length > 500) {
-    const showTitle = (data.showId || review.showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
-    const showId = data.showId || review.showId || '';
-    const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
-    if (!showCheck.valid && showCheck.confidence === 'high') {
-      const alreadyScored = !!(data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100);
-      if (alreadyScored) {
-        // Don't destroy an already-scored review — flag for human review instead
-        data.needsReview = true;
-        data.needsReviewReason = `Heuristic: show not mentioned in text (${showCheck.reason}) but already scored — needs human verification`;
-        console.log(`    ⚠ Heuristic: show not mentioned — but already scored, flagging for review instead of nulling`);
-      } else {
-        data.showNotMentioned = true;
-        // Null out wrong fullText so it can't be scored — keep URL for URL discovery on next run
-        data.wrongFullText = data.fullText;
-        data.fullText = null;
-        data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
-        console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${showCheck.reason}`);
+      if (data.wrongFullText) {
+        delete data.wrongFullText;
+        console.log(`    → Cleared stale wrongFullText (LLM-verified content restored to fullText)`);
       }
+    }
+  } else {
+    // Heuristic show-mention check — only fires when text is substantive enough.
+    // See evaluateShowMentionGuard() for the full reasoning behind the gates.
+    const showId = data.showId || review.showId || '';
+    let showMeta = null;
+    try {
+      if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      showMeta = _showsJsonCache.shows.find(s => s.id === showId) || null;
+    } catch (e) { /* shows.json unavailable */ }
+    const showTitle = pickShowTitleForHeuristic(showId, showMeta);
+    const cleanedWordCount = data.textWordCount || 0;
+    const showCheck = validateShowMentioned(cleanedText, showTitle, showId);
+    const guard = evaluateShowMentionGuard(data, cleanedText, cleanedWordCount, showCheck);
+
+    if (guard.action === 'flag-needs-review') {
+      // Already-scored review whose lede doesn't mention the title.
+      // Don't destroy the score; flag for human review AND repair stale damage from prior runs.
+      data.needsReview = true;
+      data.needsReviewReason = `Heuristic: show not mentioned in text (${guard.reason}) but already scored — needs human verification`;
+      console.log(`    ⚠ Heuristic: show not mentioned — but already scored, flagging for review instead of nulling`);
+
+      if (guard.repairStaleFlags) {
+        let repaired = false;
+        if (data.showNotMentioned) {
+          delete data.showNotMentioned;
+          delete data._showNotMentionedDiscoveryAttempted;
+          repaired = true;
+        }
+        // Restore fullText from wrongFullText if a prior run nulled it
+        if (!data.fullText && data.wrongFullText) {
+          data.fullText = data.wrongFullText;
+          delete data.wrongFullText;
+          repaired = true;
+        }
+        if (repaired) {
+          console.log(`    → Repaired stale showNotMentioned/wrongFullText damage from prior run`);
+        }
+      }
+    } else if (guard.action === 'null-text') {
+      // Unscored review with substantive text that doesn't mention the show.
+      data.showNotMentioned = true;
+      data.wrongFullText = data.fullText;
+      data.fullText = null;
+      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
+      console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${guard.reason}`);
+    } else if (guard.action === 'skip' && guard.reason) {
+      // Heuristic deferred (text too thin) — log so we can spot regressions
+      console.log(`    → Show-mention heuristic skipped: ${guard.reason}`);
     } else {
-      delete data.showNotMentioned;
+      // showCheck passed (or wasn't decisive) — clear any stale flag from prior runs
+      if (data.showNotMentioned) {
+        delete data.showNotMentioned;
+        delete data._showNotMentionedDiscoveryAttempted;
+      }
     }
   }
 
@@ -4393,7 +4443,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // 1D. Content-show match verification (heuristic fallback — skipped when LLM verified)
   // Uses weighted signals (title, director, venue, cast) to detect wrong-show content.
   // Only auto-nulls on confident_mismatch (score <= -3) with 2+ independent negative signals.
-  if ((!contentVerification || !contentVerification.verifiedBy?.startsWith('llm:')) && cleanedText && cleanedText.length > 500 && data.fullText) {
+  if ((!effectiveVerification || !effectiveVerification.verifiedBy?.startsWith('llm:')) && cleanedText && cleanedText.length > 500 && data.fullText) {
     const showIdForContent = data.showId || review.showId || '';
     let showMeta = null;
     try {

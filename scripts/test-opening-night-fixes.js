@@ -11,7 +11,7 @@
  * See: scripts/lib/review-guards.js
  */
 
-const { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides } = require('./lib/review-guards');
+const { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
 let passed = 0;
 let failed = 0;
@@ -1446,6 +1446,165 @@ assert(
   gatherSrcCRF.includes("Unknown→named: merged"),
   'createReviewFile: logs Unknown→named merge'
 );
+
+// ============================================================
+// Times UK heuristic guard — see scripts/lib/review-guards.js evaluateShowMentionGuard
+//
+// Bug context: paywalled outlets like Times UK return only the lede (~136 words),
+// the lede uses a metaphorical opening that never names the show ("Bram Stoker's
+// novel" instead of "Dracula"), and the heuristic show-mention check then fires
+// and nulls fullText. The fix gates the heuristic on word count + char count and
+// adds a stale-flag repair branch for already-scored reviews.
+//
+// Repro file: data/review-texts/dracula-west-end-2025/times-uk--clive-davis.json
+// ============================================================
+console.log('\n=== Times UK heuristic guard (evaluateShowMentionGuard) ===\n');
+
+const { validateShowMentioned } = require('./lib/content-quality');
+
+// Repro: dracula-west-end-2025 / times-uk -- the actual paywall lede
+// (137 words, ~720 chars) — does NOT mention "Dracula" or "west"
+const draculaLede = "Q: What was the most watched film broadcast on UK television? Now that's what I call event theatre. Watching Cynthia Erivo in this solo rendition of Bram Stoker's novel is akin to seeing an ice skater going for gold in the Winter Olympics. Can she pull off one triple Lutz after another without taking a tumble? During early previews at the Noël Coward, word of mouth suggested that the Wicked star — who plays all 23 characters, some live, some pre-recorded — was struggling to negotiate the dense tangle of dialogue and cues. Some audience members were said to be unhappy at seeing teleprompters on stage. Those problems seem to have been ironed out. At the press preview I saw, Erivo fumbled a few lines but otherwise gave a commanding display in a Kip Williams production";
+const draculaLedeWordCount = draculaLede.split(/\s+/).filter(w => w).length;
+
+// Sanity check: this is the data that broke the pipeline
+assert(
+  draculaLedeWordCount < 250 && draculaLede.length > 500,
+  `Repro setup: ${draculaLedeWordCount} words / ${draculaLede.length} chars — short enough to trip pre-fix gate, long enough to trip old 500-char gate`
+);
+assert(
+  !draculaLede.toLowerCase().includes('dracula'),
+  'Repro setup: lede does not contain "Dracula" (the bug surface)'
+);
+
+// pickShowTitleForHeuristic: prefers shows.json title over showId-derived
+assert(
+  pickShowTitleForHeuristic('dracula-west-end-2025', { title: 'Dracula' }) === 'Dracula',
+  'pickShowTitleForHeuristic: uses canonical title from shows.json'
+);
+assert(
+  pickShowTitleForHeuristic('dracula-west-end-2025', null) === 'dracula west end',
+  'pickShowTitleForHeuristic: falls back to showId-derived title when shows.json unavailable'
+);
+assert(
+  pickShowTitleForHeuristic('dracula-west-end-2025', { title: '' }) === 'dracula west end',
+  'pickShowTitleForHeuristic: empty title in shows.json triggers fallback'
+);
+
+// Step 1: validateShowMentioned correctly says "not mentioned" with the canonical title
+const draculaCheck = validateShowMentioned(draculaLede, 'Dracula', 'dracula-west-end-2025');
+assert(
+  draculaCheck.valid === false && draculaCheck.confidence === 'high',
+  `validateShowMentioned: returns invalid+high for Dracula lede (got valid=${draculaCheck.valid}, conf=${draculaCheck.confidence})`
+);
+
+// Step 2: evaluateShowMentionGuard gates on word count — short text deferred
+{
+  const guard = evaluateShowMentionGuard(
+    { assignedScore: 85 },
+    draculaLede,
+    draculaLedeWordCount,
+    draculaCheck
+  );
+  assert(
+    guard.action === 'skip',
+    `Times UK lede (${draculaLedeWordCount}w) → guard action='skip' (was 'null-text' in old code) — got '${guard.action}'`
+  );
+  assert(
+    guard.reason && guard.reason.includes('context too thin'),
+    `skip reason mentions context too thin — got: ${guard.reason}`
+  );
+}
+
+// Step 3: even unscored reviews are deferred when text is too thin
+{
+  const guard = evaluateShowMentionGuard(
+    { assignedScore: 0 }, // unscored
+    draculaLede,
+    draculaLedeWordCount,
+    draculaCheck
+  );
+  assert(
+    guard.action === 'skip',
+    'Unscored short review: guard still defers (no longer destroys fullText)'
+  );
+}
+
+// Step 4: alreadyScored repair branch — substantive text where title is missing
+{
+  const longText = 'A '.repeat(1500) + draculaLede; // 3000+ words, no Dracula mention
+  const longCheck = validateShowMentioned(longText, 'Dracula', 'dracula-west-end-2025');
+  // longCheck may downgrade confidence due to "Check 3" relaxation, but we want to test
+  // the repair branch — force a high-confidence missing-title result by passing a title
+  // that definitely isn't in the text.
+  const missingCheck = { valid: false, confidence: 'high', reason: 'Show "Dracula" not mentioned' };
+  const wordCount = longText.split(/\s+/).filter(w => w).length;
+  const guard = evaluateShowMentionGuard(
+    { assignedScore: 85, showNotMentioned: true, wrongFullText: 'old junk', fullText: null },
+    longText,
+    wordCount,
+    missingCheck
+  );
+  assert(
+    guard.action === 'flag-needs-review',
+    `Substantive text + alreadyScored + missing title → flag-needs-review (got '${guard.action}')`
+  );
+  assert(
+    guard.repairStaleFlags === true,
+    'flag-needs-review action carries repairStaleFlags=true so caller cleans up prior damage'
+  );
+}
+
+// Step 5: substantive text + unscored + missing title → still null-text (legacy behavior)
+{
+  const longText = 'A '.repeat(1500); // 3000 words, no show title
+  const missingCheck = { valid: false, confidence: 'high', reason: 'Show "Dracula" not mentioned' };
+  const wordCount = longText.split(/\s+/).filter(w => w).length;
+  const guard = evaluateShowMentionGuard(
+    { assignedScore: 0 }, // unscored
+    longText,
+    wordCount,
+    missingCheck
+  );
+  assert(
+    guard.action === 'null-text',
+    `Substantive text + unscored + missing title → null-text (legacy, got '${guard.action}')`
+  );
+  assert(
+    guard.repairStaleFlags === false,
+    'null-text action does not request stale-flag repair (no prior damage to fix)'
+  );
+}
+
+// Step 6: passing showCheck → skip with no reason (no-op)
+{
+  const passingCheck = { valid: true, confidence: 'high' };
+  const guard = evaluateShowMentionGuard(
+    { assignedScore: 85 },
+    'A '.repeat(1500),
+    3000,
+    passingCheck
+  );
+  assert(
+    guard.action === 'skip' && !guard.reason,
+    'Passing showCheck → skip with no reason (no-op)'
+  );
+}
+
+// Step 7: low-confidence showCheck → skip (don't act on weak signals)
+{
+  const weakCheck = { valid: false, confidence: 'low', reason: 'maybe' };
+  const guard = evaluateShowMentionGuard(
+    { assignedScore: 0 },
+    'A '.repeat(1500),
+    3000,
+    weakCheck
+  );
+  assert(
+    guard.action === 'skip',
+    'Low-confidence showCheck → skip (only act on high confidence)'
+  );
+}
 
 // ============================================================
 // Summary
