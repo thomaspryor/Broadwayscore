@@ -21,7 +21,7 @@ import { GOLD_LIST_MAP } from '@/config/gold-lists';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
-import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
+import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
 import { getCurrencySymbol } from '@/lib/market-utils';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -268,6 +268,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
   ]);
   const faqSchema = generateShowFAQSchema(show);
+  // Top-level Review objects with itemReviewed → TheaterEvent. Eligible for
+  // Google's review snippet rich result; safer than nesting reviews inside Event
+  // (which GSC rejected — see seo.ts comment + commit de1f2cba09).
+  const criticReviewSchemas = show.criticScore?.reviews
+    ? generateCriticReviewsSchema(show, show.criticScore.reviews)
+    : [];
   const score = show.criticScore?.score;
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
@@ -301,7 +307,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const comparisons = getComparisonsForShow(show.slug);
 
   // Combine schemas, filtering out null FAQ schema
-  const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
+  const schemas = [showSchema, breadcrumbSchema, faqSchema, ...criticReviewSchemas].filter(Boolean);
 
   // Pre-compute score variables for redesigned mobile header
   const reviewCount = show.criticScore?.reviewCount || 0;
