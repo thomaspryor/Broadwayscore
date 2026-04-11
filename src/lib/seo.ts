@@ -3,6 +3,7 @@
 import { ComputedShow } from './engine';
 import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel } from './venue-classification';
 import { getGoldThreshold } from '@/config/score-buckets';
+import { isPlatformHidden } from './ticket-utils';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -125,19 +126,22 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   // Individual reviews were causing "Invalid object type for field '<parent_node>'"
   // errors in Google Search Console.
 
-  // Add ticket offers
+  // Add ticket offers (excluding hidden platforms — stale/non-converting affiliates)
   if (show.ticketLinks && show.ticketLinks.length > 0) {
-    schema.offers = show.ticketLinks.map(link => ({
-      '@type': 'Offer',
-      url: link.url,
-      priceCurrency: currency,
-      ...(link.priceFrom && { price: link.priceFrom }),
-      availability: 'https://schema.org/InStock',
-      seller: {
-        '@type': 'Organization',
-        name: link.platform,
-      },
-    }));
+    const visibleLinks = show.ticketLinks.filter(l => !isPlatformHidden(l.platform));
+    if (visibleLinks.length > 0) {
+      schema.offers = visibleLinks.map(link => ({
+        '@type': 'Offer',
+        url: link.url,
+        priceCurrency: currency,
+        ...(link.priceFrom && { price: link.priceFrom }),
+        availability: 'https://schema.org/InStock',
+        seller: {
+          '@type': 'Organization',
+          name: link.platform,
+        },
+      }));
+    }
   }
 
   // Add director
@@ -372,20 +376,23 @@ export function generateItemListSchema(items: {
         };
       }
 
-      // Ticket offers
+      // Ticket offers (excluding hidden platforms)
       if (item.ticketLinks && item.ticketLinks.length > 0) {
         const itemCurrency = getMarketCurrency(item.category);
-        event.offers = item.ticketLinks.map(link => ({
-          '@type': 'Offer',
-          url: link.url,
-          priceCurrency: itemCurrency,
-          ...(link.priceFrom && { price: link.priceFrom }),
-          availability: 'https://schema.org/InStock',
-          seller: {
-            '@type': 'Organization',
-            name: link.platform,
-          },
-        }));
+        const visibleLinks = item.ticketLinks.filter(l => !isPlatformHidden(l.platform));
+        if (visibleLinks.length > 0) {
+          event.offers = visibleLinks.map(link => ({
+            '@type': 'Offer',
+            url: link.url,
+            priceCurrency: itemCurrency,
+            ...(link.priceFrom && { price: link.priceFrom }),
+            availability: 'https://schema.org/InStock',
+            seller: {
+              '@type': 'Organization',
+              name: link.platform,
+            },
+          }));
+        }
       }
 
       return {
