@@ -12,7 +12,11 @@
     "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
     "the-peewee-herman-show-2010/wsj--terry-teachout.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
-    "the-scottsboro-boys-2010/wsj--terry-teachout.json"
+    "the-scottsboro-boys-2010/wsj--terry-teachout.json",
+    "the-scottsboro-boys-2010/time--richard-zoglin.json",
+    "time-stands-still-2010/bloomberg--john-simon.json",
+    "memphis-2009/variety--charles-isherwood.json",
+    "rent-1996/newyorker--john-lahr-1996.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -31,18 +35,29 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/talkinbroadway--matthew-murray.json",
-    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json"
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+    "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
+    "time-stands-still-2010/wsj--terry-teachout.json",
+    "time-stands-still-2010/chicagotribune--chris-jones.json",
+    "memphis-2009/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/the-scottsboro-boys-2010/time--richard-zoglin.json",
+      "the-scottsboro-boys-2010/time--richard-zoglin.json"
+    ],
+    "browserbase": [
+      "data/review-texts/memphis-2009/variety--charles-isherwood.json",
+      "memphis-2009/variety--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "lucky-guy-2013/backstage--erik-haagensen.json",
       "wit-2012/bloomberg--jeremy-gerard.json",
-      "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json"
+      "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
+      "rent-1996/newyorker--john-lahr-1996.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -53,7 +68,8 @@
       "data/review-texts/wit-2012/usatoday--elysa-gardner.json",
       "data/review-texts/the-peewee-herman-show-2010/ap--david-rooney.json",
       "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/wsj--terry-teachout.json",
-      "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/talkinbroadway--matthew-murray.json"
+      "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/talkinbroadway--matthew-murray.json",
+      "data/review-texts/time-stands-still-2010/chicagotribune--chris-jones.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -64,11 +80,12 @@
       "an-act-of-god-2016/wsj--terry-teachout.json",
       "the-peewee-herman-show-2010/wsj--terry-teachout.json",
       "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
-      "the-scottsboro-boys-2010/wsj--terry-teachout.json"
+      "the-scottsboro-boys-2010/wsj--terry-teachout.json",
+      "time-stands-still-2010/bloomberg--john-simon.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
+  "lastProcessed": "rent-1996/newyorker--john-lahr-1996.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -174,6 +191,39 @@
       "t": "2026-04-11T17:24:39.360Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-11T17:27:15.759Z",
+      "event": "bb-session",
+      "session": "23631bfa",
+      "url": "https://www.wsj.com/articles/SB10001424052748704621204575013853169167814"
+    },
+    {
+      "t": "2026-04-11T17:27:16.651Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:29:37.809Z",
+      "event": "bb-session",
+      "session": "ec8cd983",
+      "url": "https://www.wsj.com/articles/SB125782678542851645"
+    },
+    {
+      "t": "2026-04-11T17:29:38.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:30:25.106Z",
+      "event": "bb-session",
+      "session": "49610006",
+      "url": "https://variety.com/2009/legit/reviews/memphis-3-1200476779/"
+    },
+    {
+      "t": "2026-04-11T17:30:25.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
