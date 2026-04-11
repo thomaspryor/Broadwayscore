@@ -67,6 +67,43 @@ runs:
           exit 1
         fi
 
+        # Recalculate audience-buzz combinedScores BEFORE committing. Any caller
+        # that writes audience-buzz.json may have stored an uncalibrated
+        # combinedScore (e.g., a scraper that bypassed audience-weighting.js).
+        # This guarantees combinedScore + designation are always derived from
+        # the current calibration logic before data leaves CI.
+        if [ -f "audience-buzz.json" ] && [ -n "${GITHUB_WORKSPACE}" ]; then
+          node -e '
+            const path = require("path");
+            const ws = process.env.GITHUB_WORKSPACE;
+            const { calculateCombinedScore, getDesignation } = require(path.join(ws, "scripts/lib/audience-weighting"));
+            const fs = require("fs");
+            try {
+              const audienceBuzz = JSON.parse(fs.readFileSync("audience-buzz.json", "utf8"));
+              const showsData = fs.existsSync("shows.json") ? JSON.parse(fs.readFileSync("shows.json", "utf8")) : null;
+              const showMap = {};
+              if (showsData) for (const s of (showsData.shows || [])) showMap[s.id] = s;
+              let updated = 0;
+              for (const [showId, show] of Object.entries(audienceBuzz.shows || {})) {
+                const showData = showMap[showId];
+                const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status, category: showData.category } : undefined;
+                const { score } = calculateCombinedScore(show.sources, showInfo);
+                if (score !== null && score !== show.combinedScore) {
+                  show.combinedScore = score;
+                  show.designation = getDesignation(score);
+                  updated++;
+                }
+              }
+              if (updated > 0) {
+                fs.writeFileSync("audience-buzz.json", JSON.stringify(audienceBuzz, null, 2) + "\n");
+                console.log("Pre-commit: recalculated combinedScore for " + updated + " shows");
+              }
+            } catch (e) {
+              console.error("Pre-commit recalc failed (non-fatal):", e.message);
+            }
+          ' 2>&1 || true
+        fi
+
         git add -A
 
         if git diff --staged --quiet; then
