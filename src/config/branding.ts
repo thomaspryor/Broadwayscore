@@ -37,14 +37,6 @@ export const MARKET_BRAND = {
     emailColor: '#d4a574',
     gradientClass: 'text-gradient',
   },
-  'off-west-end': {
-    logoPrefix: 'Off-West End',
-    logoSuffix: 'Scorecard',
-    siteName: 'Off-West End Scorecard',
-    /** Brand color for email inline styles (violet) */
-    emailColor: '#a78bfa',
-    gradientClass: 'bg-gradient-to-r from-violet-400 to-violet-500 bg-clip-text text-transparent',
-  },
 } as const;
 
 export type MarketKey = keyof typeof MARKET_BRAND;
