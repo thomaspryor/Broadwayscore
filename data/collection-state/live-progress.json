@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-11T19:01:05.292Z",
-  "processed": 46,
-  "failed": 295,
+  "updatedAt": "2026-04-11T18:59:24.738Z",
+  "processed": 47,
+  "failed": 301,
   "successRate": "13.5%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 2,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 14,
     "brightdata": 0,
     "archiveToday": 10,
     "archive": 12
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-11T17:21:00.719Z",
-      "event": "bb-session",
-      "session": "402f6169",
-      "url": "https://www.usatoday.com/life/theater/reviews/story/2012-01-26/wit-cynthia-nixon"
-    },
-    {
-      "t": "2026-04-11T17:21:01.449Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
     {
       "t": "2026-04-11T17:23:17.699Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-11T18:19:10.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:58:27.158Z",
+      "event": "bb-session",
+      "session": "66ec6f63",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-04-11T18:58:28.343Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
