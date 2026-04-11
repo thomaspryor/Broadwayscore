@@ -330,6 +330,7 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits } = require('./lib/scraper');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
+const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 
 // Outlet-specific Playwright wait configurations
 // Some outlets render content via JS and need specific selectors/waits
@@ -2672,11 +2673,41 @@ let _showsJsonCache = null; // Cached shows.json data (used by URL discovery + c
 
 /**
  * Thin wrapper around shared url-discovery.js discoverCorrectUrl.
- * Adds per-run cap, stats tracking, and UNCOLLECTABLE_OUTLETS filter.
+ * Adds per-run cap, stats tracking, UNCOLLECTABLE_OUTLETS filter, AND the
+ * lifecycle-aware SERP retry gate (shouldRetryUrlDiscovery). The gate stops
+ * re-SERPing stuck wrong_content reviews on closed-old shows where the SERP
+ * date window is frozen. See sprint-plan-serp-cost-reduction.md.
  */
 async function discoverCorrectUrl(review) {
   if (!CONFIG.scrapingBeeKey && !CONFIG.brightDataKey) return null;
   if (UNCOLLECTABLE_OUTLETS.has((review.outletId || '').toLowerCase())) return null;
+
+  // Look up show metadata for the lifecycle gate (null is safe — guard treats
+  // missing show as 'unknown' lifecycle with default retry behavior).
+  let showMeta = null;
+  try {
+    if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    showMeta = _showsJsonCache.shows.find(s => s.id === review.showId) || null;
+  } catch (e) { /* shows.json unavailable — fall through with null */ }
+
+  // Lifecycle retry gate: stops re-SERPing stuck wrong_content files, applies
+  // cooldown to no_url files, and short-circuits serpDiscoveryAbandoned files.
+  const gate = shouldRetryUrlDiscovery(showMeta, review);
+  if (!gate.shouldRetry) {
+    const detail = gate.nextAttemptAt ? ` (next ${gate.nextAttemptAt.slice(0, 10)})` : '';
+    console.log(`    [serp-gate] Skipping URL discovery: ${gate.reason}${detail}`);
+    stats.urlDiscoveryGated = (stats.urlDiscoveryGated || 0) + 1;
+    // If the gate returned a terminal-state patch (e.g. just crossed max-retries),
+    // write it now so the next run fast-paths on 'abandoned' without re-evaluating.
+    if (gate.updates && review.filePath) {
+      try {
+        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        Object.assign(fileData, gate.updates);
+        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+      } catch (e) { /* non-fatal — gate will re-evaluate next run */ }
+    }
+    return null;
+  }
 
   // Per-run cap to prevent runaway SERP API costs
   if (stats.urlDiscoveryAttempts >= URL_DISCOVERY_MAX_PER_RUN) {
@@ -2694,6 +2725,20 @@ async function discoverCorrectUrl(review) {
     brightDataKey: CONFIG.brightDataKey || '',
     log: (msg) => console.log(msg),
   });
+
+  // Record attempt state BEFORE returning — advances serpRetryCount/cooldown
+  // whether the SERP succeeded or failed. Perpetually-null responses must
+  // still progress toward abandonment, not retry forever.
+  if (review.filePath && result !== '__SERP_UNAVAILABLE__') {
+    try {
+      const attemptUpdates = recordSerpAttempt(showMeta, review);
+      if (Object.keys(attemptUpdates).length > 0) {
+        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        Object.assign(fileData, attemptUpdates);
+        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+      }
+    } catch (e) { /* non-fatal — next run re-evaluates */ }
+  }
 
   if (result === '__SERP_UNAVAILABLE__') return '__SERP_UNAVAILABLE__';
 

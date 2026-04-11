@@ -9,7 +9,8 @@
  * and disconnects randomly. This script is ~200ms per call via curl-equivalent.
  *
  * Usage:
- *   node scripts/notion-brain.js create "Card title" [--status "In progress"] [--priority "P1 Next"] [--category Product] [--type "New Feature"] [--tags scoring,scraping] [--notes "Goal text"]
+ *   node scripts/notion-brain.js create "Card title" [--status "In progress"] [--priority "P1 Next"] [--category Product] [--type "New Feature"] [--tags scoring,scraping] --notes "## Problem\n...\n## Suggested approach\n...\n## Acceptance criteria\n..."
+ *     (notes are REQUIRED and validated — sparse cards are rejected. Backlog cards must have Problem + Suggested approach + Acceptance criteria. Use --force "<reason ≥10 chars>" to bypass in the rare case you need a skeleton card.)
  *   node scripts/notion-brain.js update <page-id> [--status Done] [--outcome "## What changed\n..."] [--tags scoring] [--notes "..."] [--completed-date 2026-03-31] [--key-files "..."]
  *   node scripts/notion-brain.js search [--status "In progress"] [--priority "P0 Now"] [--text "keyword"]
  *   node scripts/notion-brain.js list [--priority "P0 Now,P1 Next"] [--status "Not started"] [--limit 10]
@@ -117,6 +118,100 @@ function formatCard(page) {
 }
 
 // Truncate to Notion's 2000-char rich_text limit
+// ── Card quality validation ─────────────────────────────────────────────
+// Added 2026-04-11 after audit showed 3 of 5 active cards had 0 notes.
+// The rule in memory/feedback_notion_card_context.md was aspirational only.
+// Now enforced at the CLI level so sparse cards physically cannot be created.
+
+const CARD_TEMPLATE = `## Problem
+[What's wrong or needed — specific, not a label. A new session reading this
+should understand what needs to happen without needing to ask questions.]
+
+## Evidence
+[Show IDs, error counts, log snippets, URLs, command output — whatever proves
+the problem exists or the work is real. If you're creating this card after
+investigating something, paste the output you were looking at.]
+
+## Suggested approach
+[File paths to modify, commands to run, gotchas discovered during investigation.
+If you already know how to fix it, write down the fix recipe. If you don't, say
+what you'd try first.]
+
+## What was already tried
+[Anything the creating session attempted that didn't work — so the next session
+doesn't repeat failed paths. Skip if N/A.]
+
+## Acceptance criteria
+[Specific way to verify the fix/feature is done. "Works" is not acceptance
+criteria. "grep -c X returns 0" or "http://.../foo loads cleanly in mobile
+Safari" is.]`;
+
+function validateCardNotes({ notes, status, force, context }) {
+  // Allow explicit bypass with justification — accepts only non-empty strings
+  if (force && typeof force === 'string' && force.length >= 10) {
+    return { ok: true, bypassed: force };
+  }
+
+  const notesStr = (notes || '').trim();
+  const effectiveStatus = status || 'In progress';
+  const isBacklog = effectiveStatus === 'Not started' || effectiveStatus === 'Paused';
+
+  // Rule 1: cards cannot be completely empty
+  if (notesStr.length === 0) {
+    return {
+      ok: false,
+      reason: 'EMPTY_NOTES',
+      message:
+        `Card notes cannot be empty. At minimum, describe the Problem — what is this card actually about?\n\n` +
+        `Pass --notes "## Problem\\n<description>..." or --force "<reason at least 10 chars>" to bypass.\n\n` +
+        `Full template:\n${CARD_TEMPLATE}`,
+    };
+  }
+
+  // Rule 2: in-progress/done cards need at least a Problem section (minimum viable context)
+  if (!isBacklog) {
+    if (notesStr.length < 80) {
+      return {
+        ok: false,
+        reason: 'TOO_SHORT',
+        message:
+          `Card notes are too short (${notesStr.length} chars). Even in-progress cards need at least one paragraph describing what you're working on.\n\n` +
+          `Write 2-3 sentences minimum. If the session is trivial, pass --force "<reason>".`,
+      };
+    }
+    return { ok: true };
+  }
+
+  // Rule 3: backlog cards (Not started / Paused) must be self-contained handoffs
+  // Require at least Problem + Suggested approach + Acceptance criteria
+  const lower = notesStr.toLowerCase();
+  const hasProblem = /(^|\n)##?\s*problem/i.test(notesStr) || (lower.includes('problem') && notesStr.length > 200);
+  const hasSuggested = /(^|\n)##?\s*(suggested|approach|how to|proposed|plan)/i.test(notesStr);
+  const hasAcceptance = /(^|\n)##?\s*(acceptance|verify|verification|done when|success|criteria)/i.test(notesStr);
+
+  const missing = [];
+  if (!hasProblem) missing.push('Problem');
+  if (!hasSuggested) missing.push('Suggested approach');
+  if (!hasAcceptance) missing.push('Acceptance criteria');
+
+  if (missing.length > 0 || notesStr.length < 300) {
+    return {
+      ok: false,
+      reason: 'INCOMPLETE_HANDOFF',
+      message:
+        `Backlog card (status="${effectiveStatus}") is not a self-contained handoff.\n` +
+        `Missing required sections: ${missing.length ? missing.join(', ') : '(length check)'}\n` +
+        `Notes length: ${notesStr.length} chars (need ≥300 for backlog cards)\n\n` +
+        `A fresh session with zero context must be able to start work on this card in under 2 minutes. ` +
+        `See memory/feedback_notion_card_context.md for the rule.\n\n` +
+        `Template:\n${CARD_TEMPLATE}\n\n` +
+        `To bypass (rare — e.g., session marker that will be filled in later), pass --force "<reason ≥10 chars>".`,
+    };
+  }
+
+  return { ok: true };
+}
+
 function truncateRichText(text, limit = 2000) {
   if (text.length <= limit) return text;
   return text.slice(0, limit - 20) + '\n\n[...truncated]';
@@ -129,6 +224,24 @@ async function createCard(args) {
   if (!title) {
     console.error('Usage: notion-brain create "Card title" [--status ...] [--priority ...] ...');
     process.exit(1);
+  }
+
+  // Enforce card context quality — reject sparse cards at the CLI level.
+  // See memory/feedback_notion_card_context.md for the rule rationale.
+  const validation = validateCardNotes({
+    notes: args.notes,
+    status: args.status,
+    force: args.force,
+    context: 'create',
+  });
+  if (!validation.ok) {
+    console.error(`\n❌ REJECTED (${validation.reason}) — "${title}"\n`);
+    console.error(validation.message);
+    console.error('');
+    process.exit(2);
+  }
+  if (validation.bypassed) {
+    console.error(`⚠️  Card context validation bypassed: ${validation.bypassed}`);
   }
 
   const properties = {
@@ -396,11 +509,18 @@ Options (create/update):
   --category Product        Category: Product, Marketing, Partnerships, Admin
   --type "New Feature"      Type: New Feature, Fix, Data Quality, Market Expansion
   --tags scoring,scraping   Tags (comma-separated)
-  --notes "Goal text"       Notes field
+  --notes "## Problem..."   Notes field — REQUIRED on create, validated for quality
   --outcome "## Summary"    Outcome (prepends to existing by default)
   --key-files "file.js"     Key Files field
   --completed-date DATE     Completed Date (YYYY-MM-DD)
   --overwrite-outcome       Overwrite outcome instead of prepending
+  --force "<reason>"        Bypass notes validation (reason must be ≥10 chars, e.g. "session marker, will fill on wrap-up")
+
+Notes quality enforcement (2026-04-11):
+  - In-progress cards need ≥80 chars of notes
+  - Backlog cards (Not started, Paused) need ≥300 chars AND sections for Problem,
+    Suggested approach, and Acceptance criteria
+  - Sparse cards are rejected with exit 2. See memory/feedback_notion_card_context.md
 
 Options (search/list):
   --status "In progress"    Filter by status

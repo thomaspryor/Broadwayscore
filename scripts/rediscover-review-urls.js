@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { OUTLET_DOMAINS, DOMAIN_REDIRECTS, discoverCorrectUrl } = require('./lib/url-discovery');
+const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 
 // ---------------------------------------------------------------------------
 // CONFIG
@@ -514,6 +515,16 @@ async function runPhase3(candidates) {
     return 0;
   }
 
+  // Load shows.json once for the lifecycle SERP gate
+  let _phase3ShowsById = null;
+  try {
+    const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    _phase3ShowsById = {};
+    for (const s of showsData.shows) _phase3ShowsById[s.id] = s;
+  } catch (e) {
+    console.log('  ⚠ Could not load shows.json for SERP gate — all shows will be treated as "unknown" lifecycle');
+  }
+
   // Phase 3 candidates: missing fullText, not yet rediscovered.
   // Priority: confirmed 404s first, then never-attempted, then failed-other.
   const confirmed404 = [];
@@ -571,11 +582,37 @@ async function runPhase3(candidates) {
     processed++;
 
     try {
+      // Lifecycle gate — skip stuck wrong_content files on closed-old shows.
+      // c.data was populated at line 533 with the fresh file contents.
+      const showMeta = _phase3ShowsById ? _phase3ShowsById[c.showId] : null;
+      const gate = shouldRetryUrlDiscovery(showMeta, { ...(c.data || {}), filePath: c.filePath });
+      if (!gate.shouldRetry) {
+        console.log(`  [serp-gate] ${c.showId}/${c.outletId}: ${gate.reason}`);
+        if (gate.updates && c.data && c.filePath && !CONFIG.dryRun) {
+          try {
+            Object.assign(c.data, gate.updates);
+            fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2) + '\n');
+          } catch (e) { /* non-fatal */ }
+        }
+        continue;
+      }
+
       const newUrl = await discoverCorrectUrl(
         { showId: c.showId, outletId: c.outletId, outlet: c.outlet, url: c.url },
         CONFIG.scrapingBeeKey,
         { brightDataKey: CONFIG.brightDataKey }
       );
+
+      // Advance SERP attempt state even on failure
+      if (c.data && c.filePath && !CONFIG.dryRun && newUrl !== '__SERP_UNAVAILABLE__') {
+        try {
+          const attemptUpdates = recordSerpAttempt(showMeta, c.data);
+          if (Object.keys(attemptUpdates).length > 0) {
+            Object.assign(c.data, attemptUpdates);
+            fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2) + '\n');
+          }
+        } catch (e) { /* non-fatal */ }
+      }
 
       if (newUrl === '__SERP_UNAVAILABLE__') {
         consecutiveUnavailable++;

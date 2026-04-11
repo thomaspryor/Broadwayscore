@@ -175,6 +175,13 @@ async function fetchPartnerize(startDate, endDate) {
 
 // ── PostHog ────────────────────────────────────────────────────────────
 
+/**
+ * Single HogQL query returns the entire funnel in one round-trip:
+ *   total pageviews, show pageviews, ticket clicks, plus per-platform clicks.
+ *
+ * Why HogQL not /events: scanning raw events for a 7-day window is O(thousands)
+ * and breaks the 8s timeout. HogQL aggregates server-side and returns scalars.
+ */
 async function fetchPosthog(startDate, endDate) {
   const phKey = process.env.POSTHOG_PERSONAL_API_KEY;
   const phProject = process.env.POSTHOG_PROJECT_ID;
@@ -182,29 +189,62 @@ async function fetchPosthog(startDate, endDate) {
     return { skipped: true, reason: 'missing credentials' };
   }
 
-  const url = `https://us.posthog.com/api/projects/${phProject}/events/?event=ticket_click&limit=500`;
-  const { ok, status, data } = await fetchWithTimeout(url, {
-    headers: { Authorization: `Bearer ${phKey}` },
-  });
+  const startISO = startDate.toISOString();
+  const endISO = endDate.toISOString();
+  const queryUrl = `https://us.posthog.com/api/projects/${phProject}/query/`;
+  const headers = {
+    Authorization: `Bearer ${phKey}`,
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
 
-  if (!ok) throw new Error(`PostHog error: ${status}`);
+  // Funnel scalars: pageviews + show pageviews + ticket clicks
+  const scalarsHogQL = `
+    SELECT
+      countIf(event = '$pageview') AS pageviews,
+      countIf(event = '$pageview' AND properties.$pathname LIKE '/show/%') AS show_pageviews,
+      countIf(event = 'ticket_click') AS ticket_clicks
+    FROM events
+    WHERE timestamp >= toDateTime('${startISO}') AND timestamp <= toDateTime('${endISO}')
+      AND (event = '$pageview' OR event = 'ticket_click')
+  `;
+  // Per-platform click breakdown
+  const platformsHogQL = `
+    SELECT properties.platform AS platform, count() AS clicks
+    FROM events
+    WHERE event = 'ticket_click'
+      AND timestamp >= toDateTime('${startISO}') AND timestamp <= toDateTime('${endISO}')
+    GROUP BY platform
+    ORDER BY clicks DESC
+  `;
 
-  const clicks = (data.results || []).filter(e => {
-    const t = new Date(e.timestamp);
-    return t >= startDate && t <= endDate;
-  });
+  const [scalarsRes, platformsRes] = await Promise.all([
+    fetchWithTimeout(queryUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ query: { kind: 'HogQLQuery', query: scalarsHogQL } }),
+    }),
+    fetchWithTimeout(queryUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ query: { kind: 'HogQLQuery', query: platformsHogQL } }),
+    }),
+  ]);
 
-  const byPlatform = {};
-  for (const e of clicks) {
-    const p = e.properties?.platform || 'Unknown';
-    byPlatform[p] = (byPlatform[p] || 0) + 1;
-  }
+  if (!scalarsRes.ok) throw new Error(`PostHog HogQL scalars error: ${scalarsRes.status}`);
+  if (!platformsRes.ok) throw new Error(`PostHog HogQL platforms error: ${platformsRes.status}`);
+
+  const [pageviews = 0, showPageviews = 0, ticketClicks = 0] = scalarsRes.data.results?.[0] || [];
+  const byPlatform = (platformsRes.data.results || []).map(([platform, count]) => ({
+    platform: platform || 'Unknown',
+    count: Number(count) || 0,
+  }));
 
   return {
-    totalClicks: clicks.length,
-    byPlatform: Object.entries(byPlatform)
-      .sort((a, b) => b[1] - a[1])
-      .map(([platform, count]) => ({ platform, count })),
+    pageviews: Number(pageviews) || 0,
+    showPageviews: Number(showPageviews) || 0,
+    totalClicks: Number(ticketClicks) || 0,
+    byPlatform,
   };
 }
 
@@ -276,6 +316,82 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
     // Partnerize API doesn't return revenue/commission on the list endpoints
   }
 
+  // ── Funnel: pageviews -> show pageviews -> ticket clicks -> conversions -> commission ──
+  const funnel = {
+    showPageviews: posthog && !posthog.skipped ? posthog.showPageviews : null,
+    ticketClicks: posthog && !posthog.skipped ? posthog.totalClicks : null,
+    conversions: totalConversions,
+    commission: totalCommission,
+    // Conversion rates between adjacent stages (null when denominator is 0/missing)
+    rates: {
+      clicksPerShowView: null,    // ticketClicks / showPageviews
+      convsPerClick: null,        // conversions / ticketClicks
+      epc: null,                  // commission / ticketClicks (earnings per click)
+    },
+  };
+  if (funnel.showPageviews && funnel.showPageviews > 0 && funnel.ticketClicks != null) {
+    funnel.rates.clicksPerShowView = funnel.ticketClicks / funnel.showPageviews;
+  }
+  if (funnel.ticketClicks && funnel.ticketClicks > 0) {
+    funnel.rates.convsPerClick = funnel.conversions / funnel.ticketClicks;
+    funnel.rates.epc = funnel.commission / funnel.ticketClicks;
+  }
+
+  // ── Unit economics ──
+  const unitEconomics = {
+    avgOrderValue: totalConversions > 0 ? totalRevenue / totalConversions : null,
+    avgCommissionPerConv: totalConversions > 0 ? totalCommission / totalConversions : null,
+    takeRate: totalRevenue > 0 ? totalCommission / totalRevenue : null,
+    earningsPerClick: funnel.rates.epc,
+  };
+
+  // ── Per-platform efficiency table ──
+  // Joins PostHog clicks (every platform we link to) with Impact campaign data
+  // (TodayTix, Ticketmaster, etc.) and Partnerize (StubHub). Platforms with no
+  // affiliate program show clicks only — surfacing how much traffic we send for free.
+  const perPlatform = [];
+  if (posthog && !posthog.skipped) {
+    const impactByCampaign = new Map();
+    if (impact && !impact.skipped && impact.byCampaign) {
+      for (const c of impact.byCampaign) impactByCampaign.set(c.name, c);
+    }
+    for (const p of posthog.byPlatform) {
+      const row = {
+        platform: p.platform,
+        clicks: p.count,
+        conversions: null,
+        commission: null,
+        revenue: null,
+        conversionRate: null,
+        epc: null,
+        affiliate: false,
+      };
+      // Try Impact match first (TodayTix, Ticketmaster, etc.)
+      const impactMatch = impactByCampaign.get(p.platform);
+      if (impactMatch) {
+        row.conversions = impactMatch.count;
+        row.commission = impactMatch.payout;
+        row.revenue = impactMatch.revenue;
+        row.affiliate = true;
+      }
+      // StubHub comes from Partnerize, not Impact
+      if (p.platform === 'StubHub' && partnerize && !partnerize.skipped) {
+        row.conversions = partnerize.conversions || 0;
+        row.commission = 0; // Partnerize list API doesn't return commission
+        row.revenue = null;
+        row.affiliate = true;
+      }
+      if (row.clicks > 0 && row.conversions != null) {
+        row.conversionRate = row.conversions / row.clicks;
+      }
+      if (row.clicks > 0 && row.commission != null) {
+        row.epc = row.commission / row.clicks;
+      }
+      perPlatform.push(row);
+    }
+    perPlatform.sort((a, b) => (b.commission || 0) - (a.commission || 0) || b.clicks - a.clicks);
+  }
+
   // WoW delta: fetch prior equivalent window (only if caller requested and window fits)
   let wowDelta = null;
   if (includeWoW && clampedDays * 2 <= IMPACT_MAX_DAYS) {
@@ -311,9 +427,12 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
     },
     totals: {
       commission: totalCommission,
-      revenue: totalRevenue,
+      revenue: totalRevenue, // gross ticket sales attributed (NOT our revenue)
       conversions: totalConversions,
     },
+    funnel,
+    unitEconomics,
+    perPlatform,
     wowDelta,
     impact,
     partnerize,

@@ -46,6 +46,8 @@ interface PlatformCount {
 interface PosthogBlock {
   skipped?: boolean;
   reason?: string;
+  pageviews?: number;
+  showPageviews?: number;
   totalClicks?: number;
   byPlatform?: PlatformCount[];
 }
@@ -57,9 +59,42 @@ interface WoWDelta {
   priorRevenue: number;
 }
 
+interface Funnel {
+  showPageviews: number | null;
+  ticketClicks: number | null;
+  conversions: number;
+  commission: number;
+  rates: {
+    clicksPerShowView: number | null;
+    convsPerClick: number | null;
+    epc: number | null;
+  };
+}
+
+interface UnitEconomics {
+  avgOrderValue: number | null;
+  avgCommissionPerConv: number | null;
+  takeRate: number | null;
+  earningsPerClick: number | null;
+}
+
+interface PlatformRow {
+  platform: string;
+  clicks: number;
+  conversions: number | null;
+  commission: number | null;
+  revenue: number | null;
+  conversionRate: number | null;
+  epc: number | null;
+  affiliate: boolean;
+}
+
 interface Stats {
   window: { days: number; startDate: string; endDate: string };
   totals: { commission: number; revenue: number; conversions: number };
+  funnel: Funnel;
+  unitEconomics: UnitEconomics;
+  perPlatform: PlatformRow[];
   wowDelta: WoWDelta | null;
   impact: ImpactBlock | null;
   partnerize: PartnerizeBlock | null;
@@ -96,6 +131,38 @@ function StatRow({ label, value, accent }: { label: string; value: string; accen
     <div className="flex justify-between items-baseline py-1">
       <span className="text-sm text-gray-400">{label}</span>
       <span className={`text-base font-semibold tabular-nums ${accentClass}`}>{value}</span>
+    </div>
+  );
+}
+
+function FunnelStage({
+  label,
+  value,
+  rateLabel,
+  accent,
+}: {
+  label: string;
+  value: string;
+  rateLabel: string | null;
+  accent?: boolean;
+}) {
+  return (
+    <div className="bg-gray-950/60 border border-gray-800 rounded-md p-3">
+      <div className="text-[10px] uppercase tracking-wide text-gray-500">{label}</div>
+      <div className={`text-xl sm:text-2xl font-extrabold tabular-nums mt-1 ${accent ? 'text-green-400' : 'text-white'}`}>
+        {value}
+      </div>
+      <div className="text-[11px] text-gray-500 mt-1 h-4">{rateLabel || ''}</div>
+    </div>
+  );
+}
+
+function UnitStat({ label, value, hint }: { label: string; value: string; hint: string }) {
+  return (
+    <div>
+      <div className="text-[10px] uppercase tracking-wide text-gray-500">{label}</div>
+      <div className="text-xl font-bold text-white tabular-nums mt-1">{value}</div>
+      <div className="text-[10px] text-gray-500 mt-0.5">{hint}</div>
     </div>
   );
 }
@@ -190,128 +257,168 @@ export default function Dashboard() {
 
       {stats && (
         <>
-          {/* Top-line */}
-          <Card title={`Total — last ${stats.window.days} days`}>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Commission</div>
-                <div className="text-2xl font-extrabold text-white tabular-nums">
-                  {fmtMoney(stats.totals.commission)}
-                </div>
-                {wow?.commissionPct != null && (
-                  <div className={`text-xs font-semibold ${commissionAccent === 'pos' ? 'text-green-400' : 'text-red-400'}`}>
-                    {fmtPct(wow.commissionPct)} vs prior {stats.window.days}d
-                  </div>
-                )}
+          {/* Top-line: commission earned (our revenue) + WoW */}
+          <Card title={`Our earnings — last ${stats.window.days} days`}>
+            <div>
+              <div className="text-xs text-gray-500 uppercase tracking-wide">Commission earned</div>
+              <div className="text-4xl sm:text-5xl font-extrabold text-white tabular-nums leading-none mt-1">
+                {fmtMoney(stats.totals.commission)}
               </div>
-              <div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Revenue</div>
-                <div className="text-2xl font-extrabold text-white tabular-nums">
-                  {fmtMoney(stats.totals.revenue)}
+              {wow?.commissionPct != null && (
+                <div className={`text-sm font-semibold mt-2 ${commissionAccent === 'pos' ? 'text-green-400' : 'text-red-400'}`}>
+                  {fmtPct(wow.commissionPct)} vs prior {stats.window.days}d
                 </div>
-              </div>
-              <div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Conversions</div>
-                <div className="text-2xl font-extrabold text-white tabular-nums">
-                  {fmtInt(stats.totals.conversions)}
-                </div>
-              </div>
+              )}
             </div>
           </Card>
 
-          {/* TodayTix */}
+          {/* Funnel — pageviews → clicks → conversions → commission */}
+          <Card title="Conversion funnel">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-2">
+              <FunnelStage
+                label="Show page views"
+                value={fmtInt(stats.funnel.showPageviews)}
+                rateLabel={null}
+              />
+              <FunnelStage
+                label="Ticket clicks"
+                value={fmtInt(stats.funnel.ticketClicks)}
+                rateLabel={
+                  stats.funnel.rates.clicksPerShowView != null
+                    ? `${(stats.funnel.rates.clicksPerShowView * 100).toFixed(2)}% of views`
+                    : null
+                }
+              />
+              <FunnelStage
+                label="Conversions"
+                value={fmtInt(stats.funnel.conversions)}
+                rateLabel={
+                  stats.funnel.rates.convsPerClick != null
+                    ? `${(stats.funnel.rates.convsPerClick * 100).toFixed(2)}% of clicks`
+                    : null
+                }
+              />
+              <FunnelStage
+                label="Commission"
+                value={fmtMoney(stats.funnel.commission)}
+                rateLabel={
+                  stats.funnel.rates.epc != null
+                    ? `$${stats.funnel.rates.epc.toFixed(3)} / click`
+                    : null
+                }
+                accent
+              />
+            </div>
+          </Card>
+
+          {/* Unit economics */}
+          <Card title="Unit economics (per conversion)">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <UnitStat
+                label="Avg order"
+                value={fmtMoney(stats.unitEconomics.avgOrderValue)}
+                hint="ticket sale value"
+              />
+              <UnitStat
+                label="Avg commission"
+                value={fmtMoney(stats.unitEconomics.avgCommissionPerConv)}
+                hint="we earn"
+              />
+              <UnitStat
+                label="Take rate"
+                value={
+                  stats.unitEconomics.takeRate != null
+                    ? `${(stats.unitEconomics.takeRate * 100).toFixed(2)}%`
+                    : '—'
+                }
+                hint="commission ÷ sale"
+              />
+              <UnitStat
+                label="EPC"
+                value={
+                  stats.unitEconomics.earningsPerClick != null
+                    ? `$${stats.unitEconomics.earningsPerClick.toFixed(3)}`
+                    : '—'
+                }
+                hint="commission ÷ click"
+              />
+            </div>
+          </Card>
+
+          {/* Per-platform efficiency table */}
+          {stats.perPlatform.length > 0 && (
+            <Card title="By platform">
+              <div className="overflow-x-auto -mx-4 sm:-mx-5">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-xs text-gray-500 uppercase tracking-wide">
+                      <th className="text-left font-medium px-4 sm:px-5 pb-2">Platform</th>
+                      <th className="text-right font-medium px-2 pb-2">Clicks</th>
+                      <th className="text-right font-medium px-2 pb-2">Conv</th>
+                      <th className="text-right font-medium px-2 pb-2">CR</th>
+                      <th className="text-right font-medium px-2 pb-2">Comm</th>
+                      <th className="text-right font-medium px-4 sm:px-5 pb-2">EPC</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stats.perPlatform.map(r => (
+                      <tr key={r.platform} className="border-t border-gray-800">
+                        <td className="px-4 sm:px-5 py-2 text-white font-medium">
+                          {r.platform}
+                          {!r.affiliate && (
+                            <span className="ml-1 text-xs text-gray-500" title="No affiliate program">·</span>
+                          )}
+                        </td>
+                        <td className="px-2 py-2 text-right text-gray-300 tabular-nums">{fmtInt(r.clicks)}</td>
+                        <td className="px-2 py-2 text-right text-gray-300 tabular-nums">
+                          {r.conversions != null ? fmtInt(r.conversions) : <span className="text-gray-600">—</span>}
+                        </td>
+                        <td className="px-2 py-2 text-right text-gray-300 tabular-nums">
+                          {r.conversionRate != null ? `${(r.conversionRate * 100).toFixed(1)}%` : <span className="text-gray-600">—</span>}
+                        </td>
+                        <td className="px-2 py-2 text-right text-white font-semibold tabular-nums">
+                          {r.commission != null ? fmtMoney(r.commission) : <span className="text-gray-600">—</span>}
+                        </td>
+                        <td className="px-4 sm:px-5 py-2 text-right text-gray-300 tabular-nums">
+                          {r.epc != null ? `$${r.epc.toFixed(3)}` : <span className="text-gray-600">—</span>}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="text-xs text-gray-500 mt-3">
+                · = no affiliate program; clicks shown for reference. CR = conversion rate. EPC = earnings per click.
+              </div>
+            </Card>
+          )}
+
+          {/* TodayTix customer mix */}
           {impact && !impact.skipped && impact.todaytixMix && (
-            <Card title="TodayTix (Impact)">
+            <Card title="TodayTix customer mix">
               {(() => {
                 const m = impact.todaytixMix!;
                 const total = m.newCount + m.existingCount;
                 const newPct = total > 0 ? Math.round((m.newCount / total) * 100) : 0;
-                const ttCampaign = impact.byCampaign?.find(c => c.name === 'TodayTix');
                 return (
                   <>
-                    {ttCampaign && (
-                      <>
-                        <StatRow label="Conversions" value={fmtInt(ttCampaign.count)} />
-                        <StatRow label="Revenue" value={fmtMoney(ttCampaign.revenue)} />
-                        <StatRow label="Commission" value={fmtMoney(ttCampaign.payout)} />
-                      </>
-                    )}
-                    <div className="mt-3 pt-3 border-t border-gray-800">
-                      <div className="text-xs text-gray-500 mb-2">
-                        Customer mix (inferred from payout/sale ratio)
-                      </div>
-                      <StatRow label={`New (${newPct}%)`} value={`${m.newCount} · ${fmtMoney(m.newPayout)}`} />
-                      <StatRow label={`Existing (${100 - newPct}%)`} value={`${m.existingCount} · ${fmtMoney(m.existingPayout)}`} />
-                      {m.rateBumpUplift > 0 && (
-                        <StatRow
-                          label="Rate-bump uplift vs old 2%"
-                          value={`+${fmtMoney(m.rateBumpUplift)}`}
-                          accent="pos"
-                        />
-                      )}
+                    <div className="text-xs text-gray-500 mb-3">
+                      Inferred from payout / sale ratio (5% = new, 1% = existing under current contract)
                     </div>
+                    <StatRow label={`New (${newPct}%)`} value={`${m.newCount} · ${fmtMoney(m.newPayout)} commission`} />
+                    <StatRow label={`Existing (${100 - newPct}%)`} value={`${m.existingCount} · ${fmtMoney(m.existingPayout)} commission`} />
+                    {m.rateBumpUplift > 0 && (
+                      <StatRow
+                        label="Rate-bump uplift vs old 2%"
+                        value={`+${fmtMoney(m.rateBumpUplift)}`}
+                        accent="pos"
+                      />
+                    )}
                   </>
                 );
               })()}
             </Card>
           )}
-
-          {/* Other Impact campaigns */}
-          {impact && !impact.skipped && impact.byCampaign && impact.byCampaign.filter(c => c.name !== 'TodayTix').length > 0 && (
-            <Card title="Other Impact programs">
-              {impact.byCampaign
-                .filter(c => c.name !== 'TodayTix')
-                .map(c => (
-                  <div key={c.name} className="py-2 border-b border-gray-800 last:border-b-0">
-                    <div className="flex justify-between items-baseline">
-                      <span className="text-sm font-medium text-white">{c.name}</span>
-                      <span className="text-sm font-semibold text-white tabular-nums">{fmtMoney(c.payout)}</span>
-                    </div>
-                    <div className="text-xs text-gray-500 mt-0.5">
-                      {c.count} sales · {fmtMoney(c.revenue)} revenue
-                    </div>
-                  </div>
-                ))}
-            </Card>
-          )}
-
-          {/* Partnerize */}
-          <Card title="StubHub (Partnerize)">
-            {partnerize?.skipped ? (
-              <div className="text-sm text-gray-500">Skipped — {partnerize.reason}</div>
-            ) : partnerize ? (
-              <>
-                <StatRow label="Clicks" value={fmtInt(partnerize.clicks)} />
-                <StatRow label="Conversions" value={fmtInt(partnerize.conversions)} />
-                {partnerize.clicks && partnerize.clicks > 0 && (
-                  <StatRow
-                    label="Conversion rate"
-                    value={`${((partnerize.conversionRate || 0) * 100).toFixed(2)}%`}
-                  />
-                )}
-              </>
-            ) : (
-              <div className="text-sm text-red-400">Provider error</div>
-            )}
-          </Card>
-
-          {/* PostHog clicks */}
-          <Card title="Ticket clicks (PostHog)">
-            {posthog?.skipped ? (
-              <div className="text-sm text-gray-500">Skipped — {posthog.reason}</div>
-            ) : posthog && posthog.byPlatform ? (
-              <>
-                <StatRow label="Total clicks" value={fmtInt(posthog.totalClicks)} />
-                <div className="mt-2 pt-2 border-t border-gray-800">
-                  {posthog.byPlatform.map(p => (
-                    <StatRow key={p.platform} label={p.platform} value={fmtInt(p.count)} />
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="text-sm text-red-400">Provider error</div>
-            )}
-          </Card>
 
           {/* Errors */}
           {stats.errors.length > 0 && (

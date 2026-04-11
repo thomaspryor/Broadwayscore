@@ -94,10 +94,10 @@ jobs:
         run: |
           echo "=== Market: ${{ matrix.market }} ==="
           # Auto-retry once on failure (SERP transient errors, rate limits)
-          node scripts/collect-outlet-reviews.js --market "${{ matrix.market }}" --open-only --max-tier 2 --max-searches 150 --no-skip-existing || {
+          node scripts/collect-outlet-reviews.js --market "${{ matrix.market }}" --open-only --max-tier 2 --max-searches 150 --retry-urlless || {
             echo "⚠️ First attempt failed, retrying after 30s..."
             sleep 30
-            node scripts/collect-outlet-reviews.js --market "${{ matrix.market }}" --open-only --max-tier 2 --max-searches 150 --no-skip-existing
+            node scripts/collect-outlet-reviews.js --market "${{ matrix.market }}" --open-only --max-tier 2 --max-searches 150 --retry-urlless
           }
 
       - name: Push review texts

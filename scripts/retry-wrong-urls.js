@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { normalizeOutlet } = require('./lib/review-normalization');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -45,6 +46,14 @@ async function main() {
 
   const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
   const outlets = registry.outlets || registry;
+
+  // Load shows.json for lifecycle SERP gate
+  let showsById = null;
+  try {
+    const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    showsById = {};
+    for (const s of showsData.shows) showsById[s.id] = s;
+  } catch (e) { /* fall through — gate treats as 'unknown' */ }
 
   // Find all wrongUrl reviews at T1/T2 outlets
   const candidates = [];
@@ -82,19 +91,49 @@ async function main() {
     retried++;
     process.stdout.write(`[${retried}/${Math.min(candidates.length, opts.limit)}] T${c.tier} ${c.outletName} @ ${c.showId}... `);
 
+    const filePath = path.join(REVIEW_TEXTS_DIR, c.showId, c.file);
     const reviewObj = {
+      ...c.data,
       showId: c.showId,
       outletId: c.outletId,
       outlet: c.outletName,
       criticName: (c.data.criticName && c.data.criticName !== 'Unknown') ? c.data.criticName : 'Unknown',
       source: 'wrongUrl-retry',
       url: c.data.url || '',
+      filePath,
     };
+
+    // Lifecycle SERP gate (defense-in-depth — the wrongUrl filter at L64
+    // excludes wrongShow/wrongProduction, so gated files don't reach here
+    // today, but defends against future flag-setting changes).
+    const showMeta = showsById ? showsById[c.showId] : null;
+    const gate = shouldRetryUrlDiscovery(showMeta, reviewObj);
+    if (!gate.shouldRetry) {
+      console.log(`gated: ${gate.reason}`);
+      if (gate.updates && !opts.dryRun) {
+        try {
+          Object.assign(c.data, gate.updates);
+          fs.writeFileSync(filePath, JSON.stringify(c.data, null, 2) + '\n');
+        } catch (e) { /* non-fatal */ }
+      }
+      continue;
+    }
 
     const result = await discoverCorrectUrl(reviewObj, scrapingBeeKey, {
       brightDataKey,
       log: () => {}, // quiet
     });
+
+    // Advance SERP attempt state even on failure
+    if (!opts.dryRun && result !== '__SERP_UNAVAILABLE__') {
+      try {
+        const attemptUpdates = recordSerpAttempt(showMeta, c.data);
+        if (Object.keys(attemptUpdates).length > 0) {
+          Object.assign(c.data, attemptUpdates);
+          fs.writeFileSync(filePath, JSON.stringify(c.data, null, 2) + '\n');
+        }
+      } catch (e) { /* non-fatal */ }
+    }
 
     if (result && result !== '__SERP_UNAVAILABLE__' && result !== c.data.url) {
       console.log(`✓ ${result}`);

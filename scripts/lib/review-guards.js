@@ -663,6 +663,227 @@ function findShowKeywordInText(text, keywordSet) {
   return null;
 }
 
+// ---------------------------------------------------------------------------
+// SERP retry guard — splits by incompleteReason
+// ---------------------------------------------------------------------------
+//
+// Empirical context (2026-04-11): 13,905 review files are stuck with
+// incompleteReason in {no_url, wrong_content, fabricatedEntry}. 13,483 are
+// `wrong_content` — a URL was found but content verification rejected it.
+// Re-SERPing these with the same deterministic query (site:outlet + title +
+// year window) returns the same wrong URL (url-discovery.js:533 skips the
+// current URL and picks sibling pages). 83% are on shows closed >180 days
+// ago where the SERP date window is frozen.
+//
+// Strategy:
+//   - `no_url` (422 files): timestamp-based cooldown via serpRetryAfter
+//   - `wrong_content` (13,483 files): hard retry cap via serpRetryCount +
+//     serpDiscoveryAbandoned. Closed-old (>180d) gets 0 retries — once a file
+//     with a frozen SERP window is known bad, it's always bad.
+//
+// The guard is PURE: query functions (shouldRetryUrlDiscovery) decide whether
+// to SERP, compute functions (recordSerpAttempt) return the new state the
+// caller must write to the review file. All I/O happens in the caller.
+//
+// New protected fields on review files (synced in review-write-guard.js +
+// push-review-texts action.yml PROTECTED list):
+//   - serpRetryAfter (ISO timestamp — don't SERP before this)
+//   - serpRetryCount (int — cumulative SERP attempts for this file)
+//   - serpDiscoveryAbandoned (bool — permanent gate, only cleared manually)
+//
+// See: sprint-plan-serp-cost-reduction.md, /second-opinion review
+
+const DAY_MS = 86400000;
+
+// Max SERP retries for `wrong_content` reviews keyed by show lifecycle.
+// closedOld = 0 because the SERP window is frozen and retries are futile.
+// openWindow = 3 because outlet content is still churning during the
+// 14-day (BW) / 21-day (WE/OB) opening window and new URLs may be indexed.
+const MAX_RETRIES_WRONG_CONTENT = Object.freeze({
+  previews: 2,
+  openWindow: 3,
+  openRecent: 1,
+  openMature: 1,
+  closedRecent: 1,
+  closedOld: 0,
+  unknown: 1,
+});
+
+// Cooldown between SERP attempts (for `no_url` and for `wrong_content` while
+// still under MAX_RETRIES). Short during opening windows (hourly poller needs
+// fresh signal), long for closed shows (SERP results frozen).
+const COOLDOWN_MS = Object.freeze({
+  previews: 24 * 3600 * 1000,     // 24h
+  openWindow: 12 * 3600 * 1000,   // 12h
+  openRecent: 3 * DAY_MS,          // 3 days
+  openMature: 14 * DAY_MS,         // 14 days
+  closedRecent: 30 * DAY_MS,       // 30 days
+  closedOld: 90 * DAY_MS,          // 90 days
+  unknown: 7 * DAY_MS,             // 7 days (safe default)
+});
+
+/**
+ * Classify a show into a lifecycle bucket for SERP retry decisions.
+ *
+ * Buckets:
+ *   - 'previews'     — status=='previews' OR openingDate is in the future
+ *   - 'openWindow'   — open, within 14d (BW) / 21d (WE/OB/OWE) of opening
+ *   - 'openRecent'   — open, within 90d of opening
+ *   - 'openMature'   — open, >90d since opening
+ *   - 'closedRecent' — closed ≤180 days ago
+ *   - 'closedOld'    — closed >180 days ago
+ *   - 'unknown'      — missing status/openingDate/closingDate (safe default)
+ *
+ * @param {Object|null} show - shows.json entry
+ * @returns {'previews'|'openWindow'|'openRecent'|'openMature'|'closedRecent'|'closedOld'|'unknown'}
+ */
+function classifyLifecycle(show) {
+  if (!show || typeof show !== 'object') return 'unknown';
+  const status = show.status || 'unknown';
+  const now = Date.now();
+
+  if (status === 'closed') {
+    if (!show.closingDate) return 'unknown';
+    const closedMs = new Date(show.closingDate).getTime();
+    if (isNaN(closedMs)) return 'unknown';
+    const daysClosed = (now - closedMs) / DAY_MS;
+    return daysClosed > 180 ? 'closedOld' : 'closedRecent';
+  }
+
+  if (status === 'previews') return 'previews';
+
+  // open / unknown-but-has-opening
+  if (!show.openingDate) return 'unknown';
+  const openedMs = new Date(show.openingDate).getTime();
+  if (isNaN(openedMs)) return 'unknown';
+  const daysOpen = (now - openedMs) / DAY_MS;
+
+  if (daysOpen < 0) return 'previews'; // opening date in future ⇒ still previews
+  const category = show.category || '';
+  const isWEorOB = category === 'west-end' || category === 'off-west-end' || category === 'off-broadway';
+  const openWindowDays = isWEorOB ? 21 : 14;
+  if (daysOpen <= openWindowDays) return 'openWindow';
+  if (daysOpen <= 90) return 'openRecent';
+  return 'openMature';
+}
+
+/**
+ * Decide whether a review should be re-SERPed for URL discovery.
+ *
+ * Returns { shouldRetry, reason, nextAttemptAt?, updates? }. The `updates`
+ * field is a state patch the caller MUST write to the review file even when
+ * shouldRetry is false — specifically when we just crossed the max-retries
+ * threshold and need to record serpDiscoveryAbandoned so the next run
+ * short-circuits without re-evaluating.
+ *
+ * Reasons the gate can return:
+ *   - 'not_gated'           — incompleteReason is not no_url/wrong_content/fabricated, allow retry
+ *   - 'abandoned'           — serpDiscoveryAbandoned is already true, never retry
+ *   - 'max_retries_reached' — just hit max; caller should apply updates and skip
+ *   - 'cooldown'            — serpRetryAfter is in the future, skip until then
+ *   - 'no_url_retry'        — proceed with SERP
+ *   - 'wrong_content_retry' — proceed with SERP (still under max, cooldown elapsed)
+ *
+ * @param {Object|null} show - shows.json entry
+ * @param {Object} review - Review data object
+ * @returns {{ shouldRetry: boolean, reason: string, nextAttemptAt?: string, updates?: Object }}
+ */
+function shouldRetryUrlDiscovery(show, review) {
+  if (!review || typeof review !== 'object') return { shouldRetry: true, reason: 'not_gated' };
+
+  const ir = review.incompleteReason;
+  const isNoUrl = ir === 'no_url';
+  const isWrongContent = ir === 'wrong_content';
+  const isFabricated = !!review.fabricatedEntry;
+
+  // Not in a gated state → let callers proceed (e.g. collector-flagged
+  // wrongShow retries via existing wrongShowRetryAt path are not this gate's
+  // responsibility).
+  if (!isNoUrl && !isWrongContent && !isFabricated) {
+    return { shouldRetry: true, reason: 'not_gated' };
+  }
+
+  // Permanent gate — once set, only a human unsets.
+  if (review.serpDiscoveryAbandoned === true) {
+    return { shouldRetry: false, reason: 'abandoned' };
+  }
+
+  const lifecycle = classifyLifecycle(show);
+  const count = typeof review.serpRetryCount === 'number' ? review.serpRetryCount : 0;
+
+  // wrong_content: hard retry cap
+  if (isWrongContent) {
+    const max = MAX_RETRIES_WRONG_CONTENT[lifecycle] ?? 1;
+    if (count >= max) {
+      return {
+        shouldRetry: false,
+        reason: 'max_retries_reached',
+        updates: { serpDiscoveryAbandoned: true },
+      };
+    }
+  }
+
+  // Cooldown gate (applies to both no_url and wrong_content under max)
+  if (review.serpRetryAfter) {
+    const after = new Date(review.serpRetryAfter).getTime();
+    if (!isNaN(after) && Date.now() < after) {
+      return {
+        shouldRetry: false,
+        reason: 'cooldown',
+        nextAttemptAt: review.serpRetryAfter,
+      };
+    }
+  }
+
+  // Allow retry — tag reason for logging
+  if (isWrongContent) return { shouldRetry: true, reason: 'wrong_content_retry' };
+  return { shouldRetry: true, reason: isFabricated ? 'fabricated_retry' : 'no_url_retry' };
+}
+
+/**
+ * Compute the state updates to apply to a review file AFTER a SERP attempt.
+ *
+ * Call this whether the SERP call succeeded or failed — the retry count and
+ * cooldown must advance either way, or a perpetually-null SERP response
+ * would never trigger abandonment.
+ *
+ * Returns { serpRetryCount, serpRetryAfter?, serpDiscoveryAbandoned? } — a
+ * patch the caller merges into the review file before writing.
+ *
+ * @param {Object|null} show - shows.json entry
+ * @param {Object} review - Review data object (pre-update)
+ * @returns {Object} Patch to apply
+ */
+function recordSerpAttempt(show, review) {
+  if (!review || typeof review !== 'object') return {};
+
+  const ir = review.incompleteReason;
+  const isNoUrl = ir === 'no_url' || !!review.fabricatedEntry;
+  const isWrongContent = ir === 'wrong_content';
+  if (!isNoUrl && !isWrongContent) return {};
+
+  const prevCount = typeof review.serpRetryCount === 'number' ? review.serpRetryCount : 0;
+  const newCount = prevCount + 1;
+  const updates = { serpRetryCount: newCount };
+
+  const lifecycle = classifyLifecycle(show);
+
+  // wrong_content: check if this attempt just hit the cap → abandon
+  if (isWrongContent) {
+    const max = MAX_RETRIES_WRONG_CONTENT[lifecycle] ?? 1;
+    if (newCount >= max) {
+      updates.serpDiscoveryAbandoned = true;
+      return updates;
+    }
+  }
+
+  // Still have retries → set next cooldown
+  const cooldown = COOLDOWN_MS[lifecycle] ?? (7 * DAY_MS);
+  updates.serpRetryAfter = new Date(Date.now() + cooldown).toISOString();
+
+  return updates;
+}
+
 module.exports = {
   shouldSkipScoredReview,
   pickBestDtliSlug,
@@ -681,4 +902,10 @@ module.exports = {
   pickShowTitleForHeuristic,
   buildShowKeywordSet,
   findShowKeywordInText,
+  classifyLifecycle,
+  shouldRetryUrlDiscovery,
+  recordSerpAttempt,
+  // Exported for test assertions
+  MAX_RETRIES_WRONG_CONTENT,
+  COOLDOWN_MS,
 };

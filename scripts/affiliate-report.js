@@ -36,10 +36,49 @@ async function main() {
     return;
   }
 
-  const { window, impact, partnerize, posthog, errors } = stats;
+  const { window, impact, partnerize, posthog, errors, funnel, unitEconomics, perPlatform } = stats;
 
   console.log(`\n📊 Affiliate Performance Report (${window.startDate} to ${window.endDate})\n`);
   console.log('='.repeat(60));
+
+  // ── Funnel ──
+  if (funnel) {
+    console.log('\n── Conversion Funnel ──');
+    const pv = funnel.showPageviews != null ? funnel.showPageviews.toLocaleString() : '—';
+    const tc = funnel.ticketClicks != null ? funnel.ticketClicks.toLocaleString() : '—';
+    const ctr = funnel.rates.clicksPerShowView != null ? `${(funnel.rates.clicksPerShowView * 100).toFixed(2)}%` : '—';
+    const cr = funnel.rates.convsPerClick != null ? `${(funnel.rates.convsPerClick * 100).toFixed(2)}%` : '—';
+    const epc = funnel.rates.epc != null ? `$${funnel.rates.epc.toFixed(3)}` : '—';
+    console.log(`  Show page views : ${pv}`);
+    console.log(`  Ticket clicks   : ${tc}    (${ctr} of views)`);
+    console.log(`  Conversions     : ${funnel.conversions}    (${cr} of clicks)`);
+    console.log(`  Commission      : $${funnel.commission.toFixed(2)}    (${epc} EPC)`);
+  }
+
+  // ── Unit economics ──
+  if (unitEconomics && unitEconomics.avgOrderValue != null) {
+    console.log('\n── Unit Economics ──');
+    console.log(`  Avg order value     : $${unitEconomics.avgOrderValue.toFixed(2)}`);
+    console.log(`  Avg commission/conv : $${unitEconomics.avgCommissionPerConv.toFixed(2)}`);
+    console.log(`  Take rate           : ${(unitEconomics.takeRate * 100).toFixed(2)}%`);
+    console.log(`  EPC                 : $${(unitEconomics.earningsPerClick || 0).toFixed(3)}`);
+  }
+
+  // ── Per-platform table ──
+  if (perPlatform && perPlatform.length > 0) {
+    console.log('\n── By Platform ──');
+    console.log('  Platform        Clicks  Conv     CR     Commission     EPC');
+    for (const r of perPlatform) {
+      const aff = r.affiliate ? '*' : ' ';
+      const clicks = String(r.clicks).padStart(5);
+      const conv = r.conversions != null ? String(r.conversions).padStart(4) : '   —';
+      const cr = r.conversionRate != null ? `${(r.conversionRate * 100).toFixed(1)}%`.padStart(6) : '     —';
+      const comm = r.commission != null ? `$${r.commission.toFixed(2)}`.padStart(11) : '          —';
+      const epc = r.epc != null ? `$${r.epc.toFixed(3)}`.padStart(8) : '       —';
+      console.log(`  ${aff}${(r.platform).padEnd(15)} ${clicks}  ${conv}  ${cr}  ${comm}  ${epc}`);
+    }
+    console.log('  (* = affiliate program; others are unmonetized)');
+  }
 
   // ── Impact ──
   console.log('\n── Impact (TodayTix, Ticketmaster, SeatPlan, Vivid Seats) ──');
@@ -51,11 +90,11 @@ async function main() {
   } else {
     console.log(`Conversions: ${impact.conversions}`);
     if (impact.conversions > 0) {
-      console.log(`Total ticket sales: $${impact.totalRevenue.toFixed(2)}`);
-      console.log(`Total commission: $${impact.totalPayout.toFixed(2)}`);
+      console.log(`Commission earned (our revenue): $${impact.totalPayout.toFixed(2)}`);
+      console.log(`Ticket sales attributed (gross order value, NOT ours): $${impact.totalRevenue.toFixed(2)}`);
       console.log('By campaign:');
       for (const c of impact.byCampaign) {
-        console.log(`  ${c.name}: ${c.count} sales, $${c.revenue.toFixed(2)} revenue, $${c.payout.toFixed(2)} commission`);
+        console.log(`  ${c.name}: ${c.count} sales, $${c.payout.toFixed(2)} commission ($${c.revenue.toFixed(2)} attributed)`);
       }
       if (impact.todaytixMix) {
         const m = impact.todaytixMix;
@@ -63,8 +102,8 @@ async function main() {
         if (total > 0) {
           const newPct = Math.round((m.newCount / total) * 100);
           console.log('TodayTix customer mix (inferred from payout rate):');
-          console.log(`  New: ${m.newCount} (${newPct}%), $${m.newRevenue.toFixed(2)} revenue, $${m.newPayout.toFixed(2)} commission`);
-          console.log(`  Existing: ${m.existingCount} (${100 - newPct}%), $${m.existingRevenue.toFixed(2)} revenue, $${m.existingPayout.toFixed(2)} commission`);
+          console.log(`  New: ${m.newCount} (${newPct}%), $${m.newPayout.toFixed(2)} commission ($${m.newRevenue.toFixed(2)} attributed)`);
+          console.log(`  Existing: ${m.existingCount} (${100 - newPct}%), $${m.existingPayout.toFixed(2)} commission ($${m.existingRevenue.toFixed(2)} attributed)`);
           if (m.unknownCount > 0) console.log(`  Unknown rate: ${m.unknownCount}`);
           if (m.rateBumpUplift > 0) {
             console.log(`  Rate-bump uplift (vs old 2%/1% contract): +$${m.rateBumpUplift.toFixed(2)} commission this period`);
