@@ -11,7 +11,7 @@
  * See: scripts/lib/review-guards.js
  */
 
-const { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, evaluateShowMentionGuard, pickShowTitleForHeuristic, buildShowKeywordSet, findShowKeywordInText } = require('./lib/review-guards');
+const { shouldSkipScoredReview, pickBestDtliSlug, applyTemporalOverrides, evaluateShowMentionGuard, pickShowTitleForHeuristic, buildShowKeywordSet, findShowKeywordInText, pickRerouteTarget } = require('./lib/review-guards');
 
 let passed = 0;
 let failed = 0;
@@ -1752,6 +1752,98 @@ console.log('\n=== rebuild auto-clear keyword check (buildShowKeywordSet + findS
   assert(
     findShowKeywordInText(oliverLede, oliverKw) !== null,
     'POSITIVE: Oliver lede passes via "oliver" or "gielgud" keyword'
+  );
+}
+
+// ============================================================
+// pickRerouteTarget — URL-year cross-production reroute decision
+// Replaces drop-on-mismatch in scripts/rebuild-all-reviews.js
+// ============================================================
+console.log('\n=== pickRerouteTarget: URL-year reroute decision ===\n');
+
+{
+  // chess-1988 holds a review whose URL/publishDate year is 2025; sibling chess-2025
+  const chessSiblings = [{ id: 'chess-2025', year: 2025 }];
+  const r1 = pickRerouteTarget(1988, chessSiblings, 2025);
+  assert(
+    r1.action === 'reroute' && r1.targetShowId === 'chess-2025' && r1.distance === 0,
+    'chess-1988 → chess-2025: detected 2025 reroutes (distance 0)'
+  );
+
+  // Inverse: chess-2025 holds a 1988 review → reroute back to chess-1988
+  const chessSiblingsInverse = [{ id: 'chess-1988', year: 1988 }];
+  const r2 = pickRerouteTarget(2025, chessSiblingsInverse, 1988);
+  assert(
+    r2.action === 'reroute' && r2.targetShowId === 'chess-1988',
+    'chess-2025 → chess-1988: detected 1988 reroutes back to original production'
+  );
+
+  // Within ±1 year of current → keep
+  const r3 = pickRerouteTarget(2025, chessSiblingsInverse, 2024);
+  assert(r3.action === 'keep', 'detected year within 1 of current → keep');
+  const r4 = pickRerouteTarget(2025, chessSiblingsInverse, 2026);
+  assert(r4.action === 'keep', 'detected year within 1 of current → keep (other side)');
+
+  // Multiple siblings — pick CLOSEST, not first
+  const heathersSiblings = [
+    { id: 'heathers-2014', year: 2014 },
+    { id: 'heathers-2026', year: 2026 },
+  ];
+  const r5 = pickRerouteTarget(2014, heathersSiblings, 2025);
+  assert(
+    r5.action === 'reroute' && r5.targetShowId === 'heathers-2026' && r5.distance === 1,
+    'multiple siblings: pick closest by distance (heathers-2026 over heathers-2014)'
+  );
+
+  // Sibling exists but is NOT closer than current → keep
+  const r6 = pickRerouteTarget(2014, [{ id: 'heathers-2026', year: 2026 }], 2015);
+  assert(r6.action === 'keep', 'sibling not closer than current → keep');
+
+  // Tiebreak: equidistant siblings — prefer the more recent year
+  // current 2000, detected 2010, siblings 2005 (dist 5) and 2015 (dist 5)
+  const tieSiblings = [
+    { id: 'show-2005', year: 2005 },
+    { id: 'show-2015', year: 2015 },
+  ];
+  const r7 = pickRerouteTarget(2000, tieSiblings, 2010);
+  assert(
+    r7.action === 'reroute' && r7.targetShowId === 'show-2015',
+    'tiebreak: equidistant siblings → prefer more recent year'
+  );
+  // Same with reversed input order — proves it's not first-wins
+  const r8 = pickRerouteTarget(2000, [...tieSiblings].reverse(), 2010);
+  assert(
+    r8.action === 'reroute' && r8.targetShowId === 'show-2015',
+    'tiebreak holds regardless of sibling array order'
+  );
+
+  // No detected year → keep (no signal to act on)
+  assert(
+    pickRerouteTarget(2025, chessSiblingsInverse, null).action === 'keep',
+    'null detectedYear → keep'
+  );
+
+  // No siblings → keep
+  assert(
+    pickRerouteTarget(2025, [], 1988).action === 'keep',
+    'empty siblings array → keep'
+  );
+
+  // Sibling missing year → ignored, fall through to keep
+  assert(
+    pickRerouteTarget(2025, [{ id: 'broken', year: null }], 1988).action === 'keep',
+    'sibling with null year is ignored'
+  );
+
+  // Three productions, detected exactly between two siblings: pick the closer one
+  const triSiblings = [
+    { id: 'show-1990', year: 1990 },
+    { id: 'show-2010', year: 2010 },
+  ];
+  const r11 = pickRerouteTarget(2026, triSiblings, 2008);
+  assert(
+    r11.action === 'reroute' && r11.targetShowId === 'show-2010' && r11.distance === 2,
+    'three-way: detected 2008 closer to 2010 than 1990 or 2026'
   );
 }
 

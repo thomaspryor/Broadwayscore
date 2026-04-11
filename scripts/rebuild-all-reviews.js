@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -2122,8 +2122,9 @@ showDirs.forEach(showId => {
       }
 
       // URL-year cross-production guard for multi-production shows
-      // If a review's URL or publish date contains a year clearly closer to a sibling production,
-      // skip it (likely filed in the wrong directory by aggregator scrapers)
+      // If a review's URL or publish date contains a year clearly closer to a sibling
+      // production, REROUTE it to the sibling's directory instead of dropping it.
+      // Pure decision: pickRerouteTarget() in scripts/lib/review-guards.js (with tests).
       // Bypass: wrongProductionManualClear, wrongProductionOverride, allowEarlyDate, allowLateDate
       if (multiProdYearGuard[showId]
           && !data.wrongProductionManualClear
@@ -2143,18 +2144,42 @@ showDirs.forEach(showId => {
           const m = data.url.match(/\/(20\d\d|19\d\d)\//);
           if (m) { detectedYear = parseInt(m[1]); yearSource = 'urlYear'; }
         }
-        if (detectedYear) {
-          const distToThis = Math.abs(detectedYear - guard.showYear);
-          if (distToThis > 1) {
-            for (const sib of guard.siblings) {
-              const distToSib = Math.abs(detectedYear - sib.year);
-              if (distToSib < distToThis) {
-                console.log(`  [URL-YEAR GUARD] ${showId}/${file}: ${yearSource}=${detectedYear}, show=${guard.showYear}, closer to ${sib.id} (${sib.year})`);
-                stats.skippedUrlYearMismatch = (stats.skippedUrlYearMismatch || 0) + 1;
-                return;
-              }
-            }
+        const decision = pickRerouteTarget(guard.showYear, guard.siblings, detectedYear);
+        if (decision.action === 'reroute') {
+          const targetShowId = decision.targetShowId;
+          const targetDir = path.join(reviewTextsDir, targetShowId);
+          const targetPath = path.join(targetDir, file);
+          const sourcePath = path.join(showDir, file);
+          // Collision: target already has a file with this slug. Drop in this case
+          // (matches old behavior — never overwrite an existing review).
+          if (fs.existsSync(targetPath)) {
+            console.log(`  [REROUTE COLLISION] ${showId}/${file}: target ${targetShowId}/${file} exists, dropping (${yearSource}=${detectedYear})`);
+            stats.rerouteCollisionDropped = (stats.rerouteCollisionDropped || 0) + 1;
+            stats.skippedUrlYearMismatch = (stats.skippedUrlYearMismatch || 0) + 1;
+            return;
           }
+          try {
+            if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+            // Re-read source fresh to avoid clobbering concurrent updates, then stamp
+            // routing metadata so future rebuilds have an audit trail.
+            const sourceData = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
+            sourceData.showId = targetShowId;
+            sourceData.routedFromShowId = showId;
+            sourceData.routedReason = `${yearSource}=${detectedYear} closer to ${targetShowId} (${decision.targetYear}) than ${showId} (${guard.showYear})`;
+            sourceData.routedAt = new Date().toISOString();
+            fs.writeFileSync(targetPath, JSON.stringify(sourceData, null, 2) + '\n');
+            fs.unlinkSync(sourcePath);
+            console.log(`  [REROUTE] ${showId}/${file} → ${targetShowId}/${file} (${yearSource}=${detectedYear}, dist ${decision.distance})`);
+            stats.reroutedToSibling = (stats.reroutedToSibling || 0) + 1;
+          } catch (e) {
+            console.warn(`  [REROUTE FAIL] ${showId}/${file} → ${targetShowId}: ${e.message} — falling back to drop`);
+            stats.rerouteFailedDropped = (stats.rerouteFailedDropped || 0) + 1;
+            stats.skippedUrlYearMismatch = (stats.skippedUrlYearMismatch || 0) + 1;
+          }
+          // Skip processing this file in the current rebuild — it now lives at
+          // the sibling directory and will be picked up next rebuild (or this one,
+          // if the sibling sorts later alphabetically).
+          return;
         }
       }
 

@@ -940,6 +940,55 @@ function recordSerpAttempt(show, review) {
   return updates;
 }
 
+/**
+ * Cross-production reroute decision (URL-year guard).
+ *
+ * Given the show year of the current directory and a list of sibling productions
+ * (same title, same market, different show ID), and a year detected from the
+ * review's publishDate or URL, decide whether to keep the review in the current
+ * directory or reroute it to a sibling whose year is closer.
+ *
+ * Replaces the previous "drop on mismatch" behavior at scripts/rebuild-all-reviews.js
+ * (URL-year cross-production guard) — instead of losing legitimate reviews filed
+ * under the wrong sibling, we hand them to the correct one.
+ *
+ * Decision rules:
+ *   - If detectedYear is within 1 year of currentShowYear → keep (not a mismatch).
+ *   - Otherwise pick the sibling with the SMALLEST distance to detectedYear.
+ *   - That distance must be strictly less than the distance to the current show.
+ *   - Tiebreak between equidistant siblings: prefer the more RECENT year (newer
+ *     productions are more likely to be the live target of aggregator scrapers).
+ *   - If no sibling beats the current distance, keep.
+ *
+ * @param {number} currentShowYear - Opening year of the show whose directory holds the file
+ * @param {Array<{id: string, year: number}>} siblings - Other productions in the same market
+ * @param {number|null} detectedYear - Year extracted from publishDate or URL (null = no signal)
+ * @returns {{action: 'keep'} | {action: 'reroute', targetShowId: string, targetYear: number, distance: number}}
+ */
+function pickRerouteTarget(currentShowYear, siblings, detectedYear) {
+  if (!detectedYear || !currentShowYear || !siblings || siblings.length === 0) {
+    return { action: 'keep' };
+  }
+  const distToCurrent = Math.abs(detectedYear - currentShowYear);
+  if (distToCurrent <= 1) return { action: 'keep' };
+
+  let best = null;
+  for (const sib of siblings) {
+    if (!sib || !sib.year || !sib.id) continue;
+    const dist = Math.abs(detectedYear - sib.year);
+    if (dist >= distToCurrent) continue; // not closer than current
+    if (
+      best === null ||
+      dist < best.distance ||
+      (dist === best.distance && sib.year > best.targetYear)
+    ) {
+      best = { targetShowId: sib.id, targetYear: sib.year, distance: dist };
+    }
+  }
+  if (!best) return { action: 'keep' };
+  return { action: 'reroute', ...best };
+}
+
 module.exports = {
   shouldSkipScoredReview,
   pickBestDtliSlug,
@@ -962,6 +1011,7 @@ module.exports = {
   classifyLifecycle,
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
+  pickRerouteTarget,
   // Exported for test assertions
   MAX_RETRIES_WRONG_CONTENT,
   COOLDOWN_MS,
