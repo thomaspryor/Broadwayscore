@@ -328,6 +328,45 @@ async function main() {
   } else if (DRY_RUN) {
     console.log(`\n(dry run — no files written)`);
   }
+
+  // Sync olivier-winner tag in shows.json. Tags only the CURRENT WE production
+  // (status open or previews) when its awards.shows[id].olivier.wins is non-empty.
+  // Rationale:
+  //   - The WE shelf in WestEndPageClient.tsx filters by `status === 'open' &&
+  //     tags.includes('olivier-winner')` — historical/closed shows won't appear
+  //     on the shelf even if tagged, so backfilling 100+ historical entries is
+  //     pure noise.
+  //   - The tag is the gate for the "Olivier Award Winning Shows" featured row.
+  //     We only want CURRENT productions on that shelf.
+  //   - Tags are never REMOVED (additive only) so manually-curated tags from
+  //     prior sessions survive. Manual tags on closed shows persist as history.
+  // (showsData was loaded earlier in main(); we reuse and rewrite it.)
+  let tagged = 0;
+  const newlyTagged = [];
+  for (const show of shows) {
+    if (show.status !== 'open' && show.status !== 'previews') continue;
+    const olivier = awardsData.shows[show.id]?.olivier;
+    if (!olivier || !Array.isArray(olivier.wins) || olivier.wins.length === 0) continue;
+    if (!show.tags) show.tags = [];
+    if (!show.tags.includes('olivier-winner')) {
+      show.tags.push('olivier-winner');
+      tagged++;
+      newlyTagged.push(`${show.id} (${olivier.wins.length} wins: ${olivier.wins.slice(0, 2).join(', ')}${olivier.wins.length > 2 ? '...' : ''})`);
+    }
+  }
+
+  if (tagged > 0) {
+    if (DRY_RUN) {
+      console.log(`\n(dry run) Would tag ${tagged} shows with olivier-winner:`);
+      newlyTagged.forEach(line => console.log(`  + ${line}`));
+    } else {
+      fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2) + '\n');
+      console.log(`\nTagged ${tagged} shows with olivier-winner:`);
+      newlyTagged.forEach(line => console.log(`  + ${line}`));
+    }
+  } else {
+    console.log(`\nNo new olivier-winner tags to add (all winning shows already tagged).`);
+  }
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
