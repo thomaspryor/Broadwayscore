@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T18:16:41.462Z",
+  "timestamp": "2026-04-11T18:36:38.304Z",
   "stats": {
-    "totalReviews": 34737,
-    "alreadyFlagged": 14060,
-    "dateGuardCatches": 62,
+    "totalReviews": 34736,
+    "alreadyFlagged": 14063,
+    "dateGuardCatches": 60,
     "directorMismatch": 926,
-    "tvFilmSignals": 3348,
+    "tvFilmSignals": 3347,
     "londonSignals": 1086,
     "offBroadwaySignals": 955,
     "yearMismatch": 71,
-    "noPublishDate": 4148
+    "noPublishDate": 4147
   },
   "findings": [
     {
@@ -56374,39 +56374,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "titanique-2026",
-      "file": "daily-mail--neil-armstrong.json",
-      "score": 89,
-      "publishDate": "2025-01-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 438d before show (2025-01-12 vs 2026-03-26)"
-        }
-      ]
-    },
-    {
-      "showId": "titanique-2026",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 81,
-      "publishDate": "2025-01-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 438d before show (2025-01-12 vs 2026-03-26)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },

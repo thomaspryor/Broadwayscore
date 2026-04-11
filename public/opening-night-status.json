@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-11T18:16:45.794Z",
+  "generatedAt": "2026-04-11T18:36:42.042Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,9 +12,9 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 85.38,
+      "siteScore": 85.44,
       "liveScore": 85,
-      "scoreDrift": -0.37999999999999545,
+      "scoreDrift": -0.4399999999999977,
       "total": 25,
       "t1": 6,
       "t2": 15,
@@ -25,7 +25,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 22,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -413,6 +413,18 @@
           "m": 3,
           "n": 1,
           "bc": "overdue"
+        },
+        {
+          "t": "2026-04-11T18:36:42.042Z",
+          "rc": 25,
+          "s": 85.44,
+          "t1": 6,
+          "t2": 15,
+          "t3": 4,
+          "p": 21,
+          "m": 3,
+          "n": 1,
+          "bc": "complete"
         }
       ]
     },
@@ -464,6 +476,10 @@
         {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
