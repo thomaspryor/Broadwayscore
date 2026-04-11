@@ -48,6 +48,10 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/browse/west-end-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
               <li><Link href="/west-end/audience-buzz" className="hover:text-white transition-colors">Audience Buzz</Link></li>
               <li><Link href="/west-end/theater" className="hover:text-white transition-colors">West End Theatres</Link></li>
+              <li><Link href="/west-end/discount-tickets" className="hover:text-white transition-colors">Discount Tickets</Link></li>
+              <li><Link href="/west-end/best-value" className="hover:text-white transition-colors">Best Value</Link></li>
+              <li><Link href="/west-end/lotteries" className="hover:text-white transition-colors">Lotteries</Link></li>
+              <li><Link href="/west-end/rush" className="hover:text-white transition-colors">Rush &amp; Day Seats</Link></li>
             </ul>
           </div>
           <div>

@@ -1,0 +1,337 @@
+import Link from 'next/link';
+import { Metadata } from 'next';
+import { getWestEndShows } from '@/lib/data-core';
+import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
+import type { ShowLotteryRush } from '@/lib/data-types';
+import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { getMarketLabel } from '@/lib/venue-classification';
+import { ComputedShow } from '@/lib/engine';
+import { RushTable } from '@/components/SortableLotteryRushTables';
+import { ScoreBadge } from '@/components/show-cards';
+import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
+import { formatTicketPrice } from '@/lib/formatting';
+
+export const metadata: Metadata = {
+  title: { absolute: 'West End Rush Tickets — Same-Day Discount London Theatre Tickets' },
+  description:
+    'Same-day rush tickets for West End shows. Box office day seats, digital rush via TodayTix, and student standby. Updated regularly.',
+  alternates: {
+    canonical: `${BASE_URL}/west-end/rush`,
+  },
+  openGraph: {
+    title: 'West End Rush Tickets — Same-Day Cheap London Theatre Seats',
+    description:
+      'First-come, first-served same-day discounted tickets for West End shows.',
+    url: `${BASE_URL}/west-end/rush`,
+    type: 'article',
+    siteName: 'West End Scorecard',
+    images: [{ url: `${BASE_URL}/og/west-end.png`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'West End Rush Tickets',
+    description: 'Same-day discounted West End tickets from box office day seats or digital rush apps.',
+    images: [`${BASE_URL}/og/west-end.png`],
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What are West End rush tickets?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Rush tickets are same-day discounted West End tickets sold at the box office when it opens, or released through digital apps like TodayTix at a set time (usually 9\u201310 AM). They are first-come, first-served and typically cost \u00a320\u2013\u00a340.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What time do West End rush tickets go on sale?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Most West End box offices open at 10 AM Monday\u2013Saturday for day seats. Digital rush on TodayTix usually drops at 9 AM. For sold-out shows, queues form well before the box office opens.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How are West End rush and day seats different?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'On the West End, \u201Cday seats\u201D and \u201Crush\u201D often mean the same thing: a limited number of heavily discounted seats released in person at the box office on the morning of a performance. Digital rush tickets are sold through apps instead.',
+      },
+    },
+  ],
+};
+
+function TicketIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className || 'w-4 h-4'} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+    </svg>
+  );
+}
+
+function LocationIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  );
+}
+
+interface RushShowCardProps {
+  show: ComputedShow;
+  rushData: ShowLotteryRush;
+  index: number;
+}
+
+function RushShowCard({ show, rushData, index }: RushShowCardProps) {
+  const score = show.criticScore?.score;
+  const rush = rushData.rush;
+  const digitalRush = rushData.digitalRush;
+  const studentRush = rushData.studentRush;
+
+  return (
+    <Link
+      href={`/show/${show.slug}`}
+      className="group card-interactive flex flex-row gap-4 p-4 animate-in"
+      style={{ animationDelay: `${index * 30}ms` }}
+    >
+      <div className="relative flex-shrink-0 w-24 sm:w-28 aspect-[2/3] sm:aspect-square sm:h-28 rounded-lg overflow-hidden bg-surface-overlay">
+        {(show.images?.poster || show.images?.thumbnail) ? (
+          <img
+            src={getOptimizedImageUrl((show.images.poster || show.images.thumbnail)!, 'thumbnail')}
+            alt={`${show.title} ${getMarketLabel(show.category)} ${show.type}`}
+            loading={index < 6 ? 'eager' : 'lazy'}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-500">
+            <div className="text-3xl">🎭</div>
+          </div>
+        )}
+        <div className="absolute bottom-1.5 right-1.5 sm:hidden">
+          <ScoreBadge score={score} size="sm" showCrown />
+        </div>
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <h3 className="font-bold text-white text-lg group-hover:text-brand transition-colors">
+          {show.title}
+        </h3>
+
+        <div className="flex flex-wrap items-center gap-2 mt-2">
+          {rush && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold text-sm">
+              <TicketIcon className="w-4 h-4" />
+              {formatTicketPrice(rush.price, 'west-end')} Day Seat
+            </span>
+          )}
+          {digitalRush && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-300 font-semibold text-sm">
+              <TicketIcon className="w-4 h-4" />
+              {formatTicketPrice(digitalRush.price, 'west-end')} Digital Rush
+            </span>
+          )}
+          {studentRush && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-pink-500/15 border border-pink-500/30 text-pink-300 font-semibold text-sm">
+              <TicketIcon className="w-4 h-4" />
+              {formatTicketPrice(studentRush.price, 'west-end')} Student Standby
+            </span>
+          )}
+        </div>
+
+        <div className="mt-2 text-sm text-gray-400 space-y-1">
+          {rush && (
+            <p className="flex items-start gap-1.5">
+              <LocationIcon />
+              <span className="truncate">{rush.location || 'Box office'} · {rush.time?.split(',')[0]}</span>
+            </p>
+          )}
+          {digitalRush && !rush && (
+            <p className="truncate">
+              <span className="text-gray-300">{digitalRush.platform}</span>
+              <span className="text-gray-500"> · {digitalRush.time}</span>
+            </p>
+          )}
+        </div>
+
+        {(rushData.lottery || rushData.standingRoom) && (
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {rushData.lottery && (
+              <span className="text-xs px-2 py-0.5 rounded bg-purple-500/10 text-purple-400">
+                + Lottery {formatTicketPrice(rushData.lottery.price, 'west-end')}
+              </span>
+            )}
+            {rushData.standingRoom && (
+              <span className="text-xs px-2 py-0.5 rounded bg-gray-500/10 text-gray-400">
+                + SRO {formatTicketPrice(rushData.standingRoom.price, 'west-end')}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="flex-shrink-0 hidden sm:flex flex-col items-center justify-center gap-2 w-20">
+        <ScoreBadge score={score} size="md" showCrown />
+        <span className="text-xs text-gray-500">
+          {show.criticScore?.reviewCount || 0} reviews
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+export default function WestEndRushPage() {
+  const allShows = getWestEndShows();
+  const lastUpdated = getLotteryRushLastUpdated();
+
+  const showsWithRush = allShows
+    .filter(show => show.status === 'open' || show.status === 'previews')
+    .map(show => ({
+      show,
+      rushData: getLotteryRush(show.id),
+    }))
+    .filter(item => item.rushData?.rush || item.rushData?.digitalRush || item.rushData?.studentRush)
+    .sort((a, b) => {
+      const priceA = Math.min(
+        a.rushData?.rush?.price ?? 999,
+        a.rushData?.digitalRush?.price ?? 999,
+        a.rushData?.studentRush?.price ?? 999
+      );
+      const priceB = Math.min(
+        b.rushData?.rush?.price ?? 999,
+        b.rushData?.digitalRush?.price ?? 999,
+        b.rushData?.studentRush?.price ?? 999
+      );
+      return priceA - priceB;
+    });
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: BASE_URL },
+    { name: 'West End', url: `${BASE_URL}/west-end` },
+    { name: 'Rush Tickets', url: `${BASE_URL}/west-end/rush` },
+  ]);
+
+  const cheapestRush = showsWithRush.length > 0 ? showsWithRush[0] : null;
+  const cheapestPrice = cheapestRush
+    ? Math.min(
+        cheapestRush.rushData?.rush?.price ?? 999,
+        cheapestRush.rushData?.digitalRush?.price ?? 999,
+        cheapestRush.rushData?.studentRush?.price ?? 999
+      )
+    : null;
+
+  const boxOfficeRushCount = showsWithRush.filter(item => item.rushData?.rush?.type === 'general').length;
+  const digitalRushCount = showsWithRush.filter(item => item.rushData?.digitalRush || item.rushData?.rush?.type === 'digital').length;
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([faqSchema, breadcrumbSchema]) }}
+      />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <Link href="/west-end" className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-4 transition-colors">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          All West End Shows
+        </Link>
+
+        <div className="mb-6">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white">West End Rush Tickets</h1>
+          <p className="text-gray-400 mt-2">
+            Same-day discounted tickets available at the box office or through digital apps. First-come, first-served — arrive early enough and you&apos;re guaranteed a seat.
+          </p>
+          <p className="text-sm text-gray-500 mt-1">
+            {showsWithRush.length} shows with rush tickets · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
+          </p>
+        </div>
+
+        <DiscountTicketsNav active="rush" market="west-end" />
+
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="card p-4 text-center">
+            <div className="text-2xl font-bold text-emerald-400">{formatTicketPrice(cheapestPrice, 'west-end')}</div>
+            <div className="text-xs text-gray-500 mt-1">Cheapest Rush</div>
+            <div className="text-xs text-gray-400 truncate">{cheapestRush?.show.title ?? '—'}</div>
+          </div>
+          <div className="card p-4 text-center">
+            <div className="text-2xl font-bold text-white">{boxOfficeRushCount}</div>
+            <div className="text-xs text-gray-500 mt-1">Day Seats</div>
+          </div>
+          <div className="card p-4 text-center">
+            <div className="text-2xl font-bold text-blue-400">{digitalRushCount}</div>
+            <div className="text-xs text-gray-500 mt-1">Digital Rush</div>
+          </div>
+        </div>
+
+        <div className="card p-5 mb-8 bg-emerald-500/5 border-emerald-500/20">
+          <h2 className="font-bold text-white mb-2">How West End Rush Tickets Work</h2>
+          <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-400">
+            <div>
+              <h3 className="font-semibold text-emerald-300 mb-1">Box Office Day Seats</h3>
+              <ul className="space-y-1 list-disc list-inside">
+                <li>Queue when the box office opens (usually 10 AM)</li>
+                <li>First-come, first-served — arrive early for popular shows</li>
+                <li>Usually limited to 2 tickets per person</li>
+                <li>Photo ID may be required</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-blue-300 mb-1">Digital Rush</h3>
+              <ul className="space-y-1 list-disc list-inside">
+                <li>Opens at 9–10 AM on apps like TodayTix</li>
+                <li>Tickets sell out quickly for popular shows</li>
+                <li>E-tickets sent directly to your phone</li>
+                <li>Pick up from the box office with photo ID</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-white mb-3">All Rush Tickets</h2>
+          {showsWithRush.length > 0 ? (
+            <RushTable
+              data={showsWithRush.map(item => ({ show: item.show, rushData: item.rushData! }))}
+              market="west-end"
+            />
+          ) : (
+            <p className="text-sm text-gray-500">No rush tickets available right now. Check back tomorrow — day seats open daily at the box office.</p>
+          )}
+        </div>
+
+        {showsWithRush.length > 0 && (
+          <>
+            <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
+            <div className="space-y-3">
+              {showsWithRush.map((item, index) => (
+                <RushShowCard
+                  key={item.show.slug}
+                  show={item.show}
+                  rushData={item.rushData!}
+                  index={index}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+          <p>
+            Rush ticket information sourced from TodayTix and official show websites.
+            Prices and availability subject to change. Always verify details with the venue or platform.
+          </p>
+        </div>
+      </div>
+    </>
+  );
+}

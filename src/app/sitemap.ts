@@ -266,6 +266,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.85,
     },
+    // West End discount ticket pages — new for WE launch 2026-04-13
+    {
+      url: `${BASE_URL}/west-end/discount-tickets`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/west-end/lotteries`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/west-end/rush`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/west-end/standing-room`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/west-end/best-value`,
+      lastModified: latestDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
     // Audience data pages
     {
       url: `${BASE_URL}/audience-buzz`,
