@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-11T11:40:08.707Z",
+  "updatedAt": "2026-04-11T11:43:01.991Z",
   "processed": 50,
-  "failed": 482,
-  "successRate": "9.4%",
+  "failed": 492,
+  "successRate": "9.2%",
   "tierBreakdown": {
     "playwright": 19,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 8,
-    "archiveToday": 19,
+    "archiveToday": 21,
     "archive": 13
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-11T10:51:31.649Z",
@@ -67,6 +67,28 @@
     },
     {
       "t": "2026-04-11T11:39:43.520Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-11T11:41:13.090Z",
+      "event": "bb-session",
+      "session": "df8aeecd",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-richard-greenbe"
+    },
+    {
+      "t": "2026-04-11T11:41:14.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-11T11:42:38.771Z",
+      "event": "bb-session",
+      "session": "900db7fc",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-musical-hands-on-a-hard"
+    },
+    {
+      "t": "2026-04-11T11:42:39.580Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
