@@ -52,6 +52,8 @@ import ShowPageWatchlistButton from '@/components/user/ShowPageWatchlistButton';
 import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
+import SocialPulseCard from '@/components/show-page/SocialPulseCard';
+import { getSocialPulse } from '@/lib/data-social-pulse';
 
 export const revalidate = 86400;
 
@@ -284,6 +286,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
   const showSchedule = getShowSchedule(show.id);
+  const socialPulse = getSocialPulse(show.id);
   const commercial = getShowCommercial(show.slug);
   const sortedTicketLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
@@ -942,6 +945,12 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             market={show.category}
           />
         )}
+
+        {/* Social Buzz — weekly X+TikTok+Instagram mention tiering */}
+        {/* Positioned below Audience Grade and below Show times per product */}
+        {/* spec; renders nothing if no data, tier=Hidden, or flag disabled. */}
+        <div id="social-buzz" className="scroll-mt-20" />
+        <SocialPulseCard sp={socialPulse} />
 
         {/* Theater Scorecard (Broadway only) */}
         {theater?.venueScores && (

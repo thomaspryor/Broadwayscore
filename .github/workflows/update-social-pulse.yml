@@ -1,0 +1,143 @@
+name: Update Social Pulse
+
+on:
+  schedule:
+    # Monday 06:00 UTC (1 AM EST) — deliberately Monday, NOT Sunday. The
+    # Sunday cron storm (rebuild at 04:00, audience scrapers 12:00–16:00)
+    # could race this workflow. Monday is empty.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Single show ID to update (e.g., maybe-happy-ending-2024). Leave blank for all running shows.'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no file writes, no commits)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: social-pulse-weekly
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update-social-pulse:
+    name: Fetch + score social mentions for running shows
+    runs-on: ubuntu-latest
+    # Timeout generous enough for 93 shows × ~60s each (parallel platform
+    # fetches within each show) + rank aggregation + commit. Typical run
+    # ~30-40 min; 90 gives headroom for slow Apify runs.
+    timeout-minutes: 90
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Fetch social pulse for running shows
+        id: fetch
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+
+          # Build argv as an array to avoid shellcheck SC2086 word-split
+          ARGS=()
+          if [ -n "$INPUT_SHOW" ]; then
+            ARGS+=("--show-id=$INPUT_SHOW")
+          else
+            ARGS+=("--all-running")
+          fi
+          if [ "$INPUT_DRY_RUN" = "true" ]; then
+            ARGS+=("--dry-run")
+          fi
+
+          echo "Running: node scripts/fetch-social-pulse.js ${ARGS[*]}"
+          node scripts/fetch-social-pulse.js "${ARGS[@]}"
+
+      - name: Compute cross-show ranks
+        if: inputs.dry_run != 'true'
+        run: |
+          set -euo pipefail
+          node scripts/compute-social-pulse-ranks.js
+
+      - name: Stage and commit pulse data
+        if: inputs.dry_run != 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stage only the files this workflow is responsible for:
+          #   - data/social-pulse/*.json (canonical per-show files + _budget.json)
+          #   - public/data/shows/*.social.json (sibling public files)
+          # We do NOT touch the main public/data/shows/{id}.json files — those
+          # are owned by rebuild-all-reviews.js (see CLAUDE.md "Public Show
+          # JSON Safety"). This workflow is race-free by design.
+          git add data/social-pulse/ public/data/shows/*.social.json 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "No pulse data changes to commit."
+            exit 0
+          fi
+
+          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
+          git commit -m "chore(social-pulse): weekly update ($CHANGED files) [skip ci]"
+
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Weekly smoke test — verify 3 known-high-volume shows have data
+        if: inputs.dry_run != 'true' && inputs.show == ''
+        run: |
+          set -euo pipefail
+          # Canary: if these 3 buzzy shows all got 0 mentions, something broke
+          # even if the overall health check passed. These are Tony contenders
+          # / long-runners expected to have double-digit mentions every week.
+          CANARIES=(
+            "maybe-happy-ending-2024"
+            "hamilton-2015"
+            "wicked-west-end-2006"
+          )
+          FAILED=0
+          for id in "${CANARIES[@]}"; do
+            FILE="data/social-pulse/$id.json"
+            if [ ! -f "$FILE" ]; then
+              echo "::warning::Canary file missing: $FILE (show may not be in running list)"
+              continue
+            fi
+            VOL=$(node -e "try { console.log(JSON.parse(require('fs').readFileSync('$FILE','utf-8')).volume || 0) } catch(e) { console.log(0) }")
+            echo "Canary $id: volume=$VOL"
+            if [ "$VOL" = "0" ]; then
+              FAILED=$((FAILED + 1))
+            fi
+          done
+          if [ "$FAILED" -ge 2 ]; then
+            echo "::error::$FAILED of ${#CANARIES[@]} canary shows returned 0 mentions — scrapers likely broken"
+            exit 1
+          fi
+          echo "Smoke test passed: $((${#CANARIES[@]} - FAILED))/${#CANARIES[@]} canaries have data"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Social Pulse Weekly Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
