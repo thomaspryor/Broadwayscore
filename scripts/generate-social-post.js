@@ -67,6 +67,7 @@ function loadShows() {
 
 // Canonical tier-weighted score (matches engine.ts: dedup + OUTLET_TIERS + designation bumps + confidence weights)
 const { computeCriticScore } = require('./lib/compute-critic-score');
+const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const _outletRegistryData = loadJSON('outlet-registry.json');
 const _outletRegistry = _outletRegistryData?.outlets || _outletRegistryData || {};
 
@@ -77,11 +78,13 @@ const _outletRegistry = _outletRegistryData?.outlets || _outletRegistryData || {
  * Returns { [showId]: { compositeScore, reviewCount, title } }
  */
 function computeShowScores() {
-  const data = loadJSON('reviews.json');
-  if (!data?.reviews) return {};
+  // Shared loader appends blog-reviews-for-scoring.json so social post scores
+  // match the Next.js show page (src/lib/data-core.ts).
+  const allReviews = loadReviewsWithBlog();
+  if (allReviews.length === 0) return {};
 
   const byShow = {};
-  for (const r of data.reviews) {
+  for (const r of allReviews) {
     if (!r.showId || r.assignedScore == null) continue;
     if (!byShow[r.showId]) byShow[r.showId] = { reviews: [], title: r.showTitle || r.showId };
     byShow[r.showId].reviews.push(r); // full review object — do NOT project
