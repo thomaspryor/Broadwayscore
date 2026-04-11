@@ -38,7 +38,7 @@ jobs:
       historical_slugs: ${{ steps.discover.outputs.historical_slugs }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to read pending shows
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 

@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: main
 
@@ -160,7 +160,7 @@ jobs:
       fail-fast: false  # Don't cancel other batches if one fails
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
@@ -317,7 +317,7 @@ jobs:
 
     steps:
       - name: Checkout (latest, after gather pushes)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
@@ -405,7 +405,7 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Checkout (latest, after all batches pushed)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 

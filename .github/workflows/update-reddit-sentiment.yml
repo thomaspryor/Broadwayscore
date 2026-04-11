@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 240  # 4 hour timeout - 29 shows × ~8 min each
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 

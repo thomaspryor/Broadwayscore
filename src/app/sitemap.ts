@@ -222,6 +222,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    {
+      url: `${BASE_URL}/olivier-awards`,
+      lastModified: showsDate,
+      changeFrequency: 'monthly',
+      priority: 0.75,
+    },
     // Data pages - high value for AI citations
     {
       url: `${BASE_URL}/box-office`,

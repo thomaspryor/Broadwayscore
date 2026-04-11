@@ -12,7 +12,7 @@ jobs:
       cancel-in-progress: true  # only latest watermark matters
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data

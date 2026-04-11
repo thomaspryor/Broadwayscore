@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-11T17:04:56.999Z",
+  "timestamp": "2026-04-11T17:28:09.801Z",
   "stats": {
     "totalReviews": 34737,
-    "alreadyFlagged": 13930,
+    "alreadyFlagged": 13927,
     "dateGuardCatches": 60,
     "directorMismatch": 930,
-    "tvFilmSignals": 3385,
+    "tvFilmSignals": 3382,
     "londonSignals": 1105,
     "offBroadwaySignals": 960,
     "yearMismatch": 72,
@@ -19235,20 +19235,6 @@
       "score": 78,
       "publishDate": "February 24, 2020",
       "url": "https://www.theatermania.com/news/grand-horizons-explores-divorce-in-your-golden-years_90482/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "grease-2007",
-      "file": "amny--matt-windman.json",
-      "score": 66,
-      "publishDate": null,
-      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -51452,20 +51438,6 @@
     },
     {
       "showId": "the-importance-of-being-earnest-2011",
-      "file": "bloomberg--jeremy-gerard.json",
-      "score": 45,
-      "publishDate": "2011-01-14",
-      "url": "https://www.bloomberg.com/news/2011-01-14/dark-secrets-roil-desert-wilde-s-too-tame-earnest-review.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-importance-of-being-earnest-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
       "publishDate": "January 14, 2011",
@@ -53977,19 +53949,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-peewee-herman-show-2010",
-      "file": "ap--david-rooney.json",
-      "publishDate": "2010-11-12T09:41:38-05:00",
-      "url": "https://abcnews.go.com/Entertainment/wireStory?id=12128098",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
