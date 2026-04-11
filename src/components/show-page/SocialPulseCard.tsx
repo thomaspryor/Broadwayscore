@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 /**
  * <SocialPulseCard> — renders the "SOCIALS SCORECARD" card on show pages.
  *
@@ -391,9 +393,18 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
         </div>
       )}
 
-      {/* Footer */}
-      <div className="text-xs text-gray-500 pt-2 border-t border-white/5">
-        Updated {formatUpdatedDate(sp.u)} · refreshed weekly
+      {/* Footer — "Updated" metadata + discovery link to the full leaderboard.
+          Keeps the card self-contained for readers who see it on a single show
+          page, while surfacing the sibling /trending page for anyone curious
+          how this show ranks against everyone else. */}
+      <div className="flex items-center justify-between gap-3 text-xs text-gray-500 pt-2 border-t border-white/5">
+        <span>Updated {formatUpdatedDate(sp.u)} · refreshed weekly</span>
+        <Link
+          href="/trending"
+          className="shrink-0 text-brand hover:text-brand-hover transition-colors font-medium"
+        >
+          See all trending →
+        </Link>
       </div>
     </div>
   );
