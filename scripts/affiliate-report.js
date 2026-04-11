@@ -54,8 +54,13 @@ async function main() {
       `https://api.impact.com/Mediapartners/${impactSid}/Actions.json?StartDate=${fmtISO(startDate)}&EndDate=${fmtISO(endDateBuffered)}`,
       impactSid, impactToken
     );
-    impactActions = data.Actions || [];
     console.log('\n── Impact (TodayTix, Ticketmaster, SeatPlan, Vivid Seats) ──');
+    // Impact limits range to 45 days and returns an error instead of Actions
+    // when you exceed it. Surface the error instead of silently reporting 0.
+    if (data.Status === 'ERROR') {
+      console.log(`Impact API error: ${data.Message}`);
+    }
+    impactActions = data.Actions || [];
     console.log(`Conversions: ${impactActions.length}`);
 
     if (impactActions.length > 0) {
@@ -76,6 +81,57 @@ async function main() {
       Object.entries(byCampaign).forEach(([name, d]) => {
         console.log(`  ${name}: ${d.count} sales, $${d.revenue.toFixed(2)} revenue, $${d.payout.toFixed(2)} commission`);
       });
+
+      // TodayTix: infer new vs existing customer mix from payout rate.
+      // Impact API does not expose CustomerStatus on Actions, but TodayTix's contract
+      // ties payout rate directly to status:
+      //   - 1% of sale = existing (all contracts)
+      //   - 2% of sale = new (old contract, before 2026-04-07)
+      //   - 5% of sale = new (new contract "5%/1%" 243224, from 2026-04-07)
+      // See memory/feedback_todaytix_affiliate_tracking.md
+      const ttActions = impactActions.filter(a => a.CampaignName === 'TodayTix');
+      if (ttActions.length > 0) {
+        const RATE_BUMP_DATE = new Date('2026-04-07T00:00:00Z');
+        let newCount = 0, existingCount = 0, unknownCount = 0;
+        let newRevenue = 0, existingRevenue = 0;
+        let newPayout = 0, existingPayout = 0;
+        let uplift = 0; // counterfactual gain from the 2%→5% rate bump on new customers post-cutover
+        for (const a of ttActions) {
+          const amount = parseFloat(a.Amount || 0);
+          const payout = parseFloat(a.Payout || 0);
+          if (amount <= 0) { unknownCount++; continue; }
+          const ratePct = (payout / amount) * 100;
+          // Tolerance for rounding
+          const near = (r, t) => Math.abs(r - t) < 0.2;
+          const isNew = near(ratePct, 5) || near(ratePct, 2);
+          const isExisting = near(ratePct, 1);
+          if (isNew) {
+            newCount++;
+            newRevenue += amount;
+            newPayout += payout;
+            if (new Date(a.EventDate) >= RATE_BUMP_DATE && near(ratePct, 5)) {
+              uplift += amount * 0.03; // 5% - 2% = 3pp gain vs old contract
+            }
+          } else if (isExisting) {
+            existingCount++;
+            existingRevenue += amount;
+            existingPayout += payout;
+          } else {
+            unknownCount++;
+          }
+        }
+        const total = newCount + existingCount;
+        if (total > 0) {
+          const newPct = (newCount / total * 100).toFixed(0);
+          console.log('TodayTix customer mix (inferred from payout rate):');
+          console.log(`  New: ${newCount} (${newPct}%), $${newRevenue.toFixed(2)} revenue, $${newPayout.toFixed(2)} commission`);
+          console.log(`  Existing: ${existingCount} (${100 - newPct}%), $${existingRevenue.toFixed(2)} revenue, $${existingPayout.toFixed(2)} commission`);
+          if (unknownCount > 0) console.log(`  Unknown rate: ${unknownCount}`);
+          if (uplift > 0) {
+            console.log(`  Rate-bump uplift (vs old 2%/1% contract): +$${uplift.toFixed(2)} commission this period`);
+          }
+        }
+      }
     } else {
       console.log('No conversions yet.');
     }
