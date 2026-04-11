@@ -1,8 +1,18 @@
 name: Audit Touring Contamination (LLM)
 
 on:
+  schedule:
+    # Weekly dry-run, Sunday 09:07 UTC (off-round minute per workflow guidance).
+    # Scheduled runs always dry-run — apply is manual-only via workflow_dispatch.
+    - cron: '7 9 * * 0'
   workflow_dispatch:
     inputs:
+      market:
+        description: 'Market to audit'
+        required: false
+        type: choice
+        default: 'broadway'
+        options: ['broadway', 'west-end']
       mode:
         description: 'Run mode'
         required: false
@@ -27,20 +37,27 @@ on:
         description: 'Single show ID or partial match (optional)'
         required: false
         default: ''
+      allow_tbd_regressions:
+        description: 'Required in apply mode if any shows would fall below hasEnoughReviews() threshold'
+        required: false
+        type: boolean
+        default: false
 
-# Detects reviews filed under Broadway show IDs that are actually about
-# tour/regional/non-NYC productions (e.g. SF Cursed Child, Beetlejuice tour,
-# Pretty Woman Cape Cod, Mean Girls Oklahoma).
+# Detects reviews filed under a show ID that are actually about a different
+# production — tour/regional/out-of-market/pre-transfer tryout. Supports
+# --market=broadway (default) and --market=west-end.
 #
 # Distinct from verify-existing-reviews.yml: that workflow skips reviews already
 # stamped verifiedBy:llm:* (so Gemini-classified-clean reviews are never re-checked).
 # This workflow re-verifies the heuristic-suspect set regardless of prior stamps.
 #
 # Apply mode writes wrongProduction:true to high-confidence verdicts and chains
-# a rebuild to refresh reviews.json + scoring filters.
+# a rebuild to refresh reviews.json + scoring filters. The score-impact preflight
+# aborts apply if any shows would fall below hasEnoughReviews() threshold unless
+# allow_tbd_regressions is set.
 
 concurrency:
-  group: audit-touring-contamination
+  group: audit-touring-contamination-${{ github.event.inputs.market || 'broadway' }}
   cancel-in-progress: false
 
 jobs:
@@ -81,65 +98,105 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
+      - name: Determine effective inputs
+        id: inputs
+        run: |
+          # Scheduled runs always dry-run. Manual runs use workflow inputs.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "market=broadway" >> $GITHUB_OUTPUT
+            echo "mode=dry-run" >> $GITHUB_OUTPUT
+            echo "provider=claude" >> $GITHUB_OUTPUT
+            echo "limit=0" >> $GITHUB_OUTPUT
+            echo "concurrency=5" >> $GITHUB_OUTPUT
+            echo "show_filter=" >> $GITHUB_OUTPUT
+            echo "allow_tbd_regressions=false" >> $GITHUB_OUTPUT
+          else
+            echo "market=${{ inputs.market || 'broadway' }}" >> $GITHUB_OUTPUT
+            echo "mode=${{ inputs.mode || 'dry-run' }}" >> $GITHUB_OUTPUT
+            echo "provider=${{ inputs.provider || 'claude' }}" >> $GITHUB_OUTPUT
+            echo "limit=${{ inputs.limit || '0' }}" >> $GITHUB_OUTPUT
+            echo "concurrency=${{ inputs.concurrency || '5' }}" >> $GITHUB_OUTPUT
+            echo "show_filter=${{ inputs.show_filter || '' }}" >> $GITHUB_OUTPUT
+            echo "allow_tbd_regressions=${{ inputs.allow_tbd_regressions || 'false' }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run touring contamination audit
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MARKET: ${{ steps.inputs.outputs.market }}
+          MODE: ${{ steps.inputs.outputs.mode }}
+          PROVIDER: ${{ steps.inputs.outputs.provider }}
+          LIMIT: ${{ steps.inputs.outputs.limit }}
+          CONCURRENCY: ${{ steps.inputs.outputs.concurrency }}
+          SHOW_FILTER: ${{ steps.inputs.outputs.show_filter }}
+          ALLOW_TBD_REGRESSIONS: ${{ steps.inputs.outputs.allow_tbd_regressions }}
         run: |
-          ARGS="--provider=${{ inputs.provider }} --concurrency=${{ inputs.concurrency }}"
-          if [ "${{ inputs.mode }}" = "apply" ]; then
+          ARGS="--market=$MARKET --provider=$PROVIDER --concurrency=$CONCURRENCY"
+          if [ "$MODE" = "apply" ]; then
             ARGS="$ARGS --apply"
           fi
-          if [ "${{ inputs.limit }}" != "0" ]; then
-            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          if [ "$ALLOW_TBD_REGRESSIONS" = "true" ]; then
+            ARGS="$ARGS --allow-tbd-regressions"
           fi
-          if [ -n "${{ inputs.show_filter }}" ]; then
-            ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          if [ "$LIMIT" != "0" ]; then
+            ARGS="$ARGS --limit=$LIMIT"
           fi
-          echo "Running: node scripts/audit-touring-broadway-contamination.js $ARGS"
-          node scripts/audit-touring-broadway-contamination.js $ARGS
+          if [ -n "$SHOW_FILTER" ]; then
+            ARGS="$ARGS --show=$SHOW_FILTER"
+          fi
+          echo "Running: node scripts/audit-touring-contamination.js $ARGS"
+          node scripts/audit-touring-contamination.js $ARGS
 
       - name: Upload audit report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: touring-contamination-report
-          path: data/audit/touring-contamination-report.json
+          name: touring-contamination-report-${{ steps.inputs.outputs.market }}
+          path: data/audit/touring-contamination-report.${{ steps.inputs.outputs.market }}.json
           retention-days: 30
 
       - name: Push review-texts to private repo
-        if: ${{ inputs.mode == 'apply' && always() }}
+        if: ${{ steps.inputs.outputs.mode == 'apply' && always() }}
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: "data: Touring contamination audit — flag wrongProduction"
+          message: "data: Touring contamination audit (${{ steps.inputs.outputs.market }}) — flag wrongProduction"
 
       - name: Trigger rebuild
-        if: ${{ inputs.mode == 'apply' && success() }}
+        if: ${{ steps.inputs.outputs.mode == 'apply' && success() }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           echo "Triggering rebuild to refresh reviews.json with new wrongProduction flags..."
-          gh workflow run "Rebuild Reviews Data" -f reason="Touring contamination audit applied flags"
+          gh workflow run "Rebuild Reviews Data" -f reason="Touring contamination audit (${{ steps.inputs.outputs.market }}) applied flags"
 
       - name: Summary
         if: always()
+        env:
+          MARKET: ${{ steps.inputs.outputs.market }}
+          MODE: ${{ steps.inputs.outputs.mode }}
+          PROVIDER: ${{ steps.inputs.outputs.provider }}
+          LIMIT: ${{ steps.inputs.outputs.limit }}
+          SHOW_FILTER: ${{ steps.inputs.outputs.show_filter }}
         run: |
           {
             echo "## Touring Contamination Audit"
             echo ""
-            echo "- **Mode:** ${{ inputs.mode }}"
-            echo "- **Provider:** ${{ inputs.provider }}"
-            echo "- **Limit:** ${{ inputs.limit }}"
-            if [ -n "${{ inputs.show_filter }}" ]; then
-              echo "- **Show filter:** ${{ inputs.show_filter }}"
+            echo "- **Market:** $MARKET"
+            echo "- **Mode:** $MODE"
+            echo "- **Provider:** $PROVIDER"
+            echo "- **Limit:** $LIMIT"
+            if [ -n "$SHOW_FILTER" ]; then
+              echo "- **Show filter:** $SHOW_FILTER"
             fi
-            if [ -f data/audit/touring-contamination-report.json ]; then
+            REPORT_PATH="data/audit/touring-contamination-report.$MARKET.json"
+            if [ -f "$REPORT_PATH" ]; then
               echo ""
               echo "### Stats"
               echo '```json'
-              node -e "const r = require('./data/audit/touring-contamination-report.json'); console.log(JSON.stringify(r._meta, null, 2));"
+              node -e "const r = require('./$REPORT_PATH'); console.log(JSON.stringify(r._meta, null, 2));"
               echo '```'
             fi
           } >> $GITHUB_STEP_SUMMARY
@@ -148,6 +205,6 @@ jobs:
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Audit Touring Contamination Failed'
+          title: 'Audit Touring Contamination Failed (${{ steps.inputs.outputs.market }})'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
