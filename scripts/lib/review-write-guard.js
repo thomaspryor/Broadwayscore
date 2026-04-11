@@ -71,6 +71,13 @@ const PROTECTED_FIELDS = [
   'urlVerified',
   'urlManualOverride',
   'urlManualOverrideNote',
+  // SERP retry state — set by collect-review-texts.js + gather-reviews.js lifecycle guard.
+  // Losing these on rebase causes the cooldown to reset, which means a single
+  // rebase can re-trigger 13K stuck wrong_content files. See sprint-plan-serp-cost-reduction.md S1-T1.
+  'serpRetryAfter',
+  'serpRetryCount',
+  'serpDiscoveryAbandoned',
+  'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
 ];
 
 /**

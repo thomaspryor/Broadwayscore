@@ -50,12 +50,19 @@ async function main() {
   for (const filePath of allFiles) {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      // Skip files we already tried explicit extraction on — once extraction
+      // has failed, re-running it will just fail again. The file is now the
+      // LLM ensemble scorer's responsibility (picked up via !llmScore filter).
+      if (data.explicitExtractionTried) continue;
       if (data.scoreExtractionPending && !data.originalScore && data.fullText && data.fullText.length > 200) {
         // Skip outlets that are marked noScoreExtractor — clear the pending flag and move on
         const outletId = (data.outletId || '').toLowerCase();
         const extractor = OUTLET_EXTRACTORS[outletId];
         if (extractor && extractor.name === 'noScoreExtractor') {
           delete data.scoreExtractionPending;
+          data.explicitExtractionTried = true;
+          data.explicitExtractionTriedAt = new Date().toISOString();
+          data.explicitExtractionReason = 'noScoreExtractor';
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
           continue;
         }
@@ -98,14 +105,33 @@ async function main() {
           source: result.source,
         });
         delete data.scoreExtractionPending;
+        data.explicitExtractionTried = true;
+        data.explicitExtractionTriedAt = new Date().toISOString();
+        data.explicitExtractionReason = 'found';
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         found++;
         console.log(`  [${i + 1}/${toProcess.length}] ✓ ${rel}: ${result.originalScore} (${result.normalizedScore}) → ${routed.field}`);
       } else {
-        delete data.scoreExtractionPending; // Clear flag even if no score found
+        // Explicit extraction failed — no stars, letter grade, or numeric rating
+        // in the text. DO NOT silently orphan the file: clear the pending flag
+        // so retry-pending-scores doesn't re-process it (explicit extraction
+        // will fail every time for the same text), but leave the file visible
+        // to the LLM ensemble scorer. The scorer picks up files via !llmScore
+        // so we don't need to set a positive marker — the absence of llmScore
+        // after this pass is enough.
+        //
+        // Historical bug (2026-04-11): this block used to simply `delete
+        // data.scoreExtractionPending` with no marker. When the LLM ensemble
+        // scheduler's 5-review threshold rejected small batches, those files
+        // sat unscored indefinitely — 70 orphans accumulated across 57 shows
+        // with a median age of 57 days.
+        delete data.scoreExtractionPending;
+        data.explicitExtractionTried = true;
+        data.explicitExtractionTriedAt = new Date().toISOString();
+        data.explicitExtractionReason = 'no-explicit-rating-found';
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         notFound++;
-        if (VERBOSE) console.log(`  [${i + 1}/${toProcess.length}] - ${rel}: no score found`);
+        if (VERBOSE) console.log(`  [${i + 1}/${toProcess.length}] - ${rel}: no score found (LLM ensemble will handle)`);
       }
 
       // Rate limit: 0.5s between Gemini calls

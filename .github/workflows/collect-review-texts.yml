@@ -96,9 +96,9 @@ on:
         required: false
         default: ''
       url_discovery_limit:
-        description: 'Max SERP URL discovery attempts per run (default 1000)'
+        description: 'Max SERP URL discovery attempts per run (default 300; raise for bulk runs)'
         required: false
-        default: '1000'
+        default: '300'
 
 ## PARALLEL RUNS: Max 5 simultaneous runs recommended.
 ## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
@@ -274,7 +274,7 @@ jobs:
           INCOMPLETE_REASON_FILTER: ${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}
           MARKET_FILTER: ${{ steps.sched.outputs.market_filter || inputs.market_filter }}
           REVIEW_FILTER: ${{ inputs.review_filter }}
-          URL_DISCOVERY_LIMIT: ${{ inputs.url_discovery_limit || '1000' }}
+          URL_DISCOVERY_LIMIT: ${{ inputs.url_discovery_limit || '300' }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
@@ -616,7 +616,7 @@ jobs:
           INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
           MARKET_FILTER: ${{ inputs.market_filter }}
           REVIEW_FILTER: ${{ inputs.review_filter }}
-          URL_DISCOVERY_LIMIT: ${{ inputs.url_discovery_limit || '1000' }}
+          URL_DISCOVERY_LIMIT: ${{ inputs.url_discovery_limit || '300' }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           ARGS=""
