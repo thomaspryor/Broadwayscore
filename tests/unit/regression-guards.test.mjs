@@ -58,18 +58,28 @@ const CRITICAL_PATTERNS = [
   // Market detection: use show.category field, not ID string matching.
   // compute-gold-lists.js previously used .id.includes('west-end') which broke
   // when ID naming conventions changed. category field is the canonical source.
+  // Post April 2026 refactor: classification splits WE / OWE / OB / BW into
+  // disjoint sets — each is matched via an explicit category equality.
   {
     file: 'scripts/compute-gold-lists.js',
-    pattern: "isLondonMarket(s.category)",
+    pattern: "s.category === 'west-end'",
     description:
-      'Must use isLondonMarket(s.category) for WE detection, not ID string matching. ' +
+      'Must use explicit category equality for WE detection, not ID string matching. ' +
       'ID-based detection breaks when naming conventions change.',
   },
   {
     file: 'scripts/compute-gold-lists.js',
-    pattern: "s.category && s.category !== 'broadway'",
+    pattern: "s.category === 'off-west-end'",
     description:
-      'isBroadway() must exclude non-Broadway categories via category field, not ID matching.',
+      'Off-West End must be its OWN set (not bundled with WE). Bundling caused ' +
+      'OWE shows to appear on the West End Critical Gold list incorrectly.',
+  },
+  {
+    file: 'scripts/compute-gold-lists.js',
+    pattern: "s.category === 'off-broadway'",
+    description:
+      'Off-Broadway must be a distinct category set so the OB Critical Gold list ' +
+      'only contains OB shows (added April 2026).',
   },
   // titleFamilies must include all markets (WE/OB), not just Broadway.
   // classify-wrong-production.js and audit-pre2005-reviews.js previously filtered

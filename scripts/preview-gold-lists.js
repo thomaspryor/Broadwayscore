@@ -28,9 +28,12 @@ const slugMap = {};
 shows.forEach(s => { if (s.slug) slugMap[s.slug] = s; });
 
 // ============================================
-// Outlet tier lookup — from outlet-registry.json (single source of truth)
+// Tier-weighted scoring — use the shared computeCriticScore() so preview
+// matches the actual compute-gold-lists.js output exactly.
 // ============================================
-const { getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
+const { computeCriticScore } = require('./lib/compute-critic-score');
+const outletRegistryData = require(path.join(dataDir, 'outlet-registry.json'));
+const outletRegistry = outletRegistryData.outlets || outletRegistryData;
 
 // ============================================
 // Season logic (matches data-commercial.ts getSeason())
@@ -79,20 +82,15 @@ function computeCriticalGold() {
       if (!show || getSeason(show.openingDate) !== season) continue;
       if (revs.length < 5) continue;
 
-      let weightedSum = 0, weightSum = 0;
-      revs.forEach(r => {
-        const w = getTierWeight(r.outletId);
-        weightedSum += r.assignedScore * w;
-        weightSum += w;
-      });
-
-      const score = weightedSum / weightSum;
-      if (score < 73) continue;
+      // Canonical tier-weighted score (matches engine.ts + gold list computer)
+      const scoreResult = computeCriticScore(revs, outletRegistry);
+      if (!scoreResult || scoreResult.rc < 5) continue;
+      if (scoreResult.s < 73) continue;
 
       results.push({
         title: show.title,
-        score: Math.round(score * 10) / 10,
-        reviews: revs.length,
+        score: Math.round(scoreResult.s * 10) / 10,
+        reviews: scoreResult.rc,
         type: show.type || '?',
       });
     }
