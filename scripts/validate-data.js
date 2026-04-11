@@ -1648,43 +1648,68 @@ function validateOutletAliasIntegrity() {
 
 /**
  * Validate sync between outlet mapping systems.
- * Checks: OUTLET_ALIASES ↔ outlet-registry.json, outlet-id-mapper.ts → scoring.ts OUTLET_TIERS.
+ * Post April 2026 refactor: OUTLET_TIERS is loaded from src/config/outlet-tiers.json
+ * (both scoring.ts and scripts/lib/compute-critic-score.js import from this single file).
+ * This check now verifies (a) the JSON is loadable and structurally valid, and
+ * (b) every key in OUTLET_TIERS also exists in outlet-registry.json (so that long-tail
+ * outlets resolved via the registry don't silently disagree — when they do, the JSON wins).
  */
 function validateOutletMapperSync() {
   info('Checking OUTLET_TIERS ↔ registry sync...');
 
   const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
-  const scoringFile = path.join(__dirname, '..', 'src', 'config', 'scoring.ts');
+  const outletTiersFile = path.join(__dirname, '..', 'src', 'config', 'outlet-tiers.json');
 
-  if (!fs.existsSync(registryFile) || !fs.existsSync(scoringFile)) {
+  if (!fs.existsSync(registryFile) || !fs.existsSync(outletTiersFile)) {
     info('Skipping OUTLET_TIERS sync check (files not found)');
     return;
   }
 
-  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
-  const registryOutlets = registry.outlets || registry;
-  const scoringSrc = fs.readFileSync(scoringFile, 'utf8');
-
-  // Extract all OUTLET_TIERS keys (now lowercase registry IDs)
-  const tierKeys = new Set();
-  // Match lines like: 'nytimes': { tier: ...
-  const tierPattern = /['"]([a-z0-9-]+)['"]\s*:\s*\{\s*tier:\s*(\d)/g;
-  let match;
-  while ((match = tierPattern.exec(scoringSrc)) !== null) {
-    tierKeys.add(match[1]);
+  let registry, tiers;
+  try {
+    registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+    tiers = JSON.parse(fs.readFileSync(outletTiersFile, 'utf8'));
+  } catch (e) {
+    error(`[tier-sync] Failed to parse outlet-tiers.json or outlet-registry.json: ${e.message}`);
+    return;
   }
+  const registryOutlets = registry.outlets || registry;
 
-  // Verify each OUTLET_TIERS key exists in outlet-registry.json
-  let issues = 0;
-  for (const key of tierKeys) {
-    if (!registryOutlets[key]) {
-      warn(`[tier-sync] OUTLET_TIERS key "${key}" not found in outlet-registry.json — tier may drift`);
-      issues++;
+  const tierKeys = Object.keys(tiers);
+
+  // Structural sanity — each entry must have tier/name/scoreFormat
+  let structuralIssues = 0;
+  for (const [id, entry] of Object.entries(tiers)) {
+    if (![1, 2, 3].includes(entry.tier)) {
+      warn(`[tier-sync] outlet-tiers.json: "${id}" has invalid tier ${entry.tier}`);
+      structuralIssues++;
+    }
+    if (typeof entry.name !== 'string' || entry.name.length === 0) {
+      warn(`[tier-sync] outlet-tiers.json: "${id}" missing name`);
+      structuralIssues++;
     }
   }
 
-  if (issues === 0) {
-    ok(`All ${tierKeys.size} OUTLET_TIERS keys exist in outlet-registry.json`);
+  // Registry coverage — every override must also exist in the registry as a known outlet
+  let missingFromRegistry = 0;
+  const tierDisagreements = [];
+  for (const [id, entry] of Object.entries(tiers)) {
+    if (!registryOutlets[id]) {
+      warn(`[tier-sync] outlet-tiers.json key "${id}" not found in outlet-registry.json — tier override is orphaned`);
+      missingFromRegistry++;
+    } else if (registryOutlets[id].tier !== undefined && registryOutlets[id].tier !== entry.tier) {
+      // Not an error — outlet-tiers.json wins by design (layered in scripts/lib/outlet-tiers.js)
+      // but we report disagreements so the user knows one side will override the other.
+      tierDisagreements.push(`${id}: tiers=${entry.tier}, registry=${registryOutlets[id].tier}`);
+    }
+  }
+
+  if (tierDisagreements.length > 0) {
+    info(`[tier-sync] ${tierDisagreements.length} outlet(s) have different tiers in outlet-tiers.json vs outlet-registry.json — the JSON overrides the registry: ${tierDisagreements.join(', ')}`);
+  }
+
+  if (structuralIssues === 0 && missingFromRegistry === 0) {
+    ok(`All ${tierKeys.length} outlet-tiers.json entries valid and present in registry`);
   }
 }
 

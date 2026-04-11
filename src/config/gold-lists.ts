@@ -47,8 +47,8 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
   {
     type: 'critical-gold',
     title: 'Critical Gold List™',
-    shortTitle: 'Critics',
-    description: 'The highest-rated shows by professional critics',
+    shortTitle: 'Broadway',
+    description: 'The highest-rated Broadway shows by professional critics',
     color: 'text-amber-400',
     bgClass: 'bg-amber-500/15',
     borderClass: 'border-amber-500/30',

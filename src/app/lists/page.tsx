@@ -5,8 +5,8 @@
 
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
-import { getGoldListSeasons } from '@/lib/data-gold-list-badges';
+import { GOLD_LIST_CONFIGS, marketLabelFromListType } from '@/config/gold-lists';
+import { getGoldListSeasons, getSeasonsForList } from '@/lib/data-gold-list-badges';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -60,44 +60,61 @@ export default function GoldListsIndex() {
 
         {/* List Type Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          {GOLD_LIST_CONFIGS.map(config => (
-            <div
-              key={config.type}
-              className={`${config.bgClass} border ${config.borderClass} rounded-xl p-5 sm:p-6`}
-            >
-              <div className="flex items-start gap-3 mb-3">
-                <GoldListBadge type={config.type} size="md" />
-                <div>
-                  <h2 className={`text-lg font-bold ${config.color}`}>
-                    {config.title}
-                  </h2>
-                  <p className="text-gray-400 text-sm mt-1">
-                    {config.description}
-                  </p>
+          {GOLD_LIST_CONFIGS.map(config => {
+            // Per-list latest season with data — Off-Broadway/Off-West End may not have
+            // 2024-2025 entries even when the Broadway list does, so link each card to
+            // its own most-recent non-empty season rather than a global currentSeason.
+            const listSeasons = getSeasonsForList(config.type);
+            const latestSeason = listSeasons[0]; // sorted descending in data-gold-list-badges
+            const marketLabel = marketLabelFromListType(config.type);
+            // Only critic lists get a market label — audience/box-office/hot-ticket are Broadway-only.
+            const showMarketLabel = config.type.startsWith('critical-gold');
+            return (
+              <div
+                key={config.type}
+                className={`${config.bgClass} border ${config.borderClass} rounded-xl p-5 sm:p-6`}
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <GoldListBadge type={config.type} size="md" />
+                  <div>
+                    <h2 className={`text-lg font-bold ${config.color}`}>
+                      {config.title}
+                    </h2>
+                    {showMarketLabel && (
+                      <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide mt-0.5">
+                        {marketLabel}
+                      </div>
+                    )}
+                    <p className="text-gray-400 text-sm mt-1">
+                      {config.description}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {latestSeason && (
+                    <Link
+                      href={`/lists/${config.type}/${latestSeason}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-gray-300 hover:text-white transition-colors"
+                    >
+                      {latestSeason}
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  )}
+                  <Link
+                    href={`/lists/${config.type}/all-time`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-gray-300 hover:text-white transition-colors"
+                  >
+                    All-Time
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-2 mt-4">
-                <Link
-                  href={`/lists/${config.type}/${currentSeason}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-gray-300 hover:text-white transition-colors"
-                >
-                  {currentSeason}
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-                <Link
-                  href={`/lists/${config.type}/all-time`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-gray-300 hover:text-white transition-colors"
-                >
-                  All-Time
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Season Navigation */}
