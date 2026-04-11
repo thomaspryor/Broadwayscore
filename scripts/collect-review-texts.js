@@ -96,7 +96,7 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
+const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords } = require('./lib/review-guards');
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
 // Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
@@ -4284,19 +4284,51 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // ========================================
 
   // 1A. Show title mention check
-  // If LLM verified the content → clear any stale showNotMentioned flag (LLM is a stronger signal)
+  // If LLM verified the content → trust LLM BUT still run keyword gate (LLM hallucinates
+  // isValid:true ~48% of the time on garbage pages — browser-update prompts, paywall walls,
+  // sidebar lists, wrong-show content). See feedback_llm_verifier_hallucinates.md and
+  // checkLlmVerificationAgainstKeywords() in scripts/lib/review-guards.js.
   // If no LLM verification → fall back to heuristic title check
   // Uses effectiveVerification which falls back to existing JSON contentVerification when LLM was
   // skipped this run (word count < 200), preventing the heuristic from wiping valid paywalled text.
   if (effectiveVerification && effectiveVerification.verifiedBy?.startsWith('llm:')) {
-    // LLM confirmed content is correct — clear stale flag from previous bad fetches
-    if (data.showNotMentioned) {
-      console.log(`    ✓ LLM verified correct show — clearing stale showNotMentioned flag`);
-      delete data.showNotMentioned;
-      delete data._showNotMentionedDiscoveryAttempted;
-      if (data.wrongFullText) {
-        delete data.wrongFullText;
-        console.log(`    → Cleared stale wrongFullText (LLM-verified content restored to fullText)`);
+    // Keyword final-mile gate against hallucinated LLM verdicts.
+    // Check data.fullText (the freshly-scraped content). If LLM said valid but no show
+    // keyword appears in the text, quarantine: move fullText → wrongFullText, set
+    // showNotMentioned:true. Mirrors rebuild-all-reviews.js auto-clear protection.
+    let llmKwCheck = null;
+    try {
+      const showIdForKw = data.showId || review.showId || '';
+      if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      const showForKw = _showsJsonCache.shows.find(s => s.id === showIdForKw) || null;
+      if (showForKw) {
+        llmKwCheck = checkLlmVerificationAgainstKeywords(showForKw, data.fullText, effectiveVerification);
+      }
+    } catch (e) { /* shows.json unavailable — skip check */ }
+
+    if (llmKwCheck && !llmKwCheck.passed) {
+      // LLM said isValid:true but no show keyword in fullText — high-confidence hallucination.
+      console.log(`    ⚠ LLM-verified but no show keyword in text — quarantining as suspected hallucination`);
+      console.log(`       keywords checked: ${llmKwCheck.keywordsChecked.slice(0, 8).join(', ')}${llmKwCheck.keywordsChecked.length > 8 ? '…' : ''}`);
+      data.wrongFullText = data.fullText;
+      data.fullText = null;
+      data.showNotMentioned = true;
+      data.suspectedLlmHallucination = true;
+      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
+    } else {
+      // LLM confirmed content is correct AND keyword gate passed (or was inapplicable).
+      // Clear stale flag from previous bad fetches.
+      if (data.showNotMentioned) {
+        console.log(`    ✓ LLM verified correct show — clearing stale showNotMentioned flag`);
+        delete data.showNotMentioned;
+        delete data._showNotMentionedDiscoveryAttempted;
+        if (data.wrongFullText) {
+          delete data.wrongFullText;
+          console.log(`    → Cleared stale wrongFullText (LLM-verified content restored to fullText)`);
+        }
+      }
+      if (data.suspectedLlmHallucination) {
+        delete data.suspectedLlmHallucination;
       }
     }
   } else {

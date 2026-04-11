@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -2311,8 +2311,8 @@ showDirs.forEach(showId => {
             // actual text is sidebar junk / wrong-show content / browser-update prompts.
             // See scripts/lib/review-guards.js for the shared implementation + tests.
             const show = showsData.shows.find(s => s.id === (data.showId || showId));
-            const keywords = buildShowKeywordSet(show);
-            const matchedKeyword = findShowKeywordInText(data.wrongFullText, keywords);
+            const kwCheck = checkLlmVerificationAgainstKeywords(show, data.wrongFullText, cv);
+            const matchedKeyword = kwCheck && kwCheck.passed ? kwCheck.matchedKeyword : null;
 
             if (matchedKeyword) {
               data.showNotMentioned = false;

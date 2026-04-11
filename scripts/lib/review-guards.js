@@ -663,6 +663,48 @@ function findShowKeywordInText(text, keywordSet) {
   return null;
 }
 
+/**
+ * Check whether LLM-verified content also passes the keyword-mention gate.
+ *
+ * Why: LLM contentVerification hallucinates `isValid:true` ~48% of the time on
+ * garbage pages (browser-update prompts, paywall walls, sidebar story lists,
+ * wrong-show content). Trusting the LLM verdict alone has corrupted scoring
+ * multiple times. See feedback_llm_verifier_hallucinates.md + the 15 ship-check
+ * cases in Notion card 33f637c5-416f-814c-9102-f10a0849d986.
+ *
+ * Contract:
+ *   - Returns `null` when the check is not applicable (no LLM verification,
+ *     too-short text, no keywords available, LLM already flagged wrongArticle).
+ *     Callers should fall through.
+ *   - Returns `{ passed, matchedKeyword, keywordsChecked }` otherwise.
+ *     `passed:false` means the LLM said valid but no show-identifying keyword
+ *     appears in the text — high-confidence hallucination signal.
+ *
+ * Used by:
+ *   - scripts/rebuild-all-reviews.js (auto-clear of stale showNotMentioned)
+ *   - scripts/collect-review-texts.js (write-path quarantine)
+ *   - scripts/audit-llm-hallucinations.js (corpus sweep)
+ *
+ * @param {Object} show - shows.json entry for the show this review belongs to
+ * @param {string} text - Text to validate (fullText or wrongFullText)
+ * @param {Object} cv - contentVerification object from the review file
+ * @returns {null | { passed: boolean, matchedKeyword: string|null, keywordsChecked: string[] }}
+ */
+function checkLlmVerificationAgainstKeywords(show, text, cv) {
+  if (!cv || typeof cv.verifiedBy !== 'string' || !cv.verifiedBy.startsWith('llm:')) return null;
+  if (cv.isValid !== true) return null;
+  if (cv.wrongArticle === true) return null;
+  if (!text || typeof text !== 'string' || text.length < 100) return null;
+  const keywords = buildShowKeywordSet(show);
+  if (keywords.size === 0) return null;
+  const matched = findShowKeywordInText(text, keywords);
+  return {
+    passed: matched !== null,
+    matchedKeyword: matched,
+    keywordsChecked: Array.from(keywords),
+  };
+}
+
 // ---------------------------------------------------------------------------
 // SERP retry guard — splits by incompleteReason
 // ---------------------------------------------------------------------------
@@ -902,6 +944,7 @@ module.exports = {
   pickShowTitleForHeuristic,
   buildShowKeywordSet,
   findShowKeywordInText,
+  checkLlmVerificationAgainstKeywords,
   classifyLifecycle,
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
