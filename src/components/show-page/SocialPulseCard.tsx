@@ -293,10 +293,16 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
       {/* Hero block: rank badge (LEFT, AudienceGrade-style) + tier label (RIGHT) */}
       <div className={`rounded-xl p-4 sm:p-5 border mb-4 ${display.bgClass} ${display.borderClass}`}>
         <div className="flex items-stretch gap-4">
-          {/* Rank badge — the AudienceGrade-style scorecard square */}
+          {/* Rank badge — the AudienceGrade-style scorecard square. Linked to
+              the full /trending leaderboard so the badge itself becomes a
+              second entry point (beyond the footer link) for the discovery
+              loop. `no-underline` prevents the global `a { text-decoration }`
+              from leaking onto the big white rank number. */}
           {rank && rankColors ? (
-            <div
-              className="shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 min-w-[72px] shadow-sm"
+            <Link
+              href="/trending"
+              aria-label={`Ranked ${rank.position} of ${rank.total} in ${rank.market} social buzz — see all trending shows`}
+              className="shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 min-w-[72px] shadow-sm no-underline transition-transform hover:-translate-y-0.5"
               style={{
                 backgroundColor: rankColors.bg,
                 color: rankColors.text,
@@ -306,7 +312,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
               <div className="text-[10px] font-semibold uppercase tracking-wider opacity-80">Rank</div>
               <div className="text-3xl font-extrabold leading-none mt-0.5">#{rank.position}</div>
               <div className="text-[11px] font-medium opacity-90 mt-0.5">of {rank.total}</div>
-            </div>
+            </Link>
           ) : (
             // Fallback when rank is suppressed (small market) — show emoji badge
             <div
