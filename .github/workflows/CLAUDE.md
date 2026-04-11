@@ -163,7 +163,11 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Budget gate:** Cap at 60 sends/market (Broadway) and 35 sends/market (West End) per run
 - **Multi-show coalescing:** If 2+ shows open same night in a market, sends single email with multiple score cards
 - **Resume:** Tracks `sentCount` in `data/opening-night-sent.json` (gitignored but `git add --force` in commit step). If interrupted, next cron run picks up where it left off.
-- **Double-send prevention:** `opening-night-sent.json` is force-added to git (`git add --force`) to persist across cron runs despite being gitignored.
+- **Double-send prevention (3 layers as of PR #233, 2026-04-11):**
+  1. `completed: true` flag per show in `opening-night-sent.json` short-circuits both the "Check already broadcast" workflow step and the script's pendingShows filter.
+  2. Rolling-window dedup via `scripts/lib/preview-dedup.js`: `checkPreviewDedup` (script-side, 24h + 3-new-review exception) and `hasRecentPreviewForShow` (workflow-side "Check already broadcast" step, 24h). Replaced the old UTC-day key that failed at UTC rollover (2026-04-11 incident). Overdue alerts use `hasRecentOverdueAlert`.
+  3. Cross-session advisory lock via `scripts/lib/send-lock.js`. All 3 audience-facing email paths (Resend preview `--send-to`, Buttondown draft creation, Resend owner notification) acquire a sha-CAS'd lock at `data/email-send.lock` before the network call and release on success + failure. Workflow's broadcast step MUST have `GH_TOKEN: ${{ github.token }}` in env or the lock helper exits(1) and blocks the send (fail-safe).
+  4. `opening-night-sent.json` is force-added to git (`git add --force`) to persist across cron runs despite being gitignored. CLI preview runs additionally sync it to origin/main via `gh api contents PUT` through `syncTrackerToOrigin()`.
 - **Preview mode:** Cron runs always send to owner only. Manual dispatch with `send_to_all=true` sends to all subscribers.
 - **Scripts:** `scripts/send-opening-night-broadcast.js`, `scripts/generate-critic-consensus.js`
 - **Requires:** ANTHROPIC_API_KEY, RESEND_API_KEY, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_FOLLOW_FORM_ID, FORMSPREE_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_API_KEY
