@@ -73,6 +73,20 @@ function saveSentData(data) {
 }
 
 /**
+ * Pure merge helper — exposed for unit tests. Remote entries are preserved, local
+ * entries win on conflict (the CLI just sent, so its entries are newest).
+ */
+function mergeTrackerEntries(remoteParsed, localParsed) {
+  const merged = { ...(remoteParsed || {}) };
+  if (!merged.shows) merged.shows = {};
+  const localShows = (localParsed && localParsed.shows) || {};
+  for (const [k, v] of Object.entries(localShows)) {
+    merged.shows[k] = v;
+  }
+  return merged;
+}
+
+/**
  * Push data/opening-night-sent.json to origin/main via the GitHub Contents API.
  *
  * Why: when the script is invoked from a local shell (e.g. manual CLI preview), it
@@ -156,21 +170,9 @@ function syncTrackerToOrigin(localData) {
     }
   };
 
-  const mergeEntries = (remoteParsed, localParsed) => {
-    const merged = { ...(remoteParsed || {}) };
-    if (!merged.shows) merged.shows = {};
-    const localShows = (localParsed && localParsed.shows) || {};
-    for (const [k, v] of Object.entries(localShows)) {
-      // CLI just wrote these — prefer them on conflict. Workflow-written entries that
-      // aren't in the CLI's in-memory state are preserved by the spread above.
-      merged.shows[k] = v;
-    }
-    return merged;
-  };
-
   const attempt = () => {
     const remote = fetchRemote();
-    const merged = mergeEntries(remote.parsed, localData);
+    const merged = mergeTrackerEntries(remote.parsed, localData);
     putRemote(remote.sha, merged);
   };
 
@@ -605,7 +607,12 @@ ${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast.
   }
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err.message);
-  process.exit(1);
-});
+// Exported for unit testing. Only run main() when invoked as a CLI.
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err.message);
+    process.exit(1);
+  });
+}
