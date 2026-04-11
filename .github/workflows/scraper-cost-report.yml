@@ -40,21 +40,27 @@ jobs:
           done
 
           # --- Collect [Scraper Summary] data ---
+          # Iterates ALL workflows (no head cap — repo has 100+) and scans up
+          # to 100 recent runs per workflow, summing EVERY [Scraper Summary]
+          # line in each log (not just the first — some long-running scripts
+          # emit the summary multiple times per run).
           PW_TOTAL=0; BD_TOTAL=0; SB_TOTAL=0; SB_CREDITS_TOTAL=0
-          for wf_id in $(gh api repos/$GITHUB_REPOSITORY/actions/workflows --jq '.workflows[].id' 2>/dev/null | head -50); do
-            for run_id in $(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$wf_id/runs?created=>$SINCE&per_page=10&status=completed" --jq '.workflow_runs[].id' 2>/dev/null); do
-              SUMMARY=$(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' 2>/dev/null || true)
-              if [ -n "$SUMMARY" ]; then
+          for wf_id in $(gh api --paginate repos/$GITHUB_REPOSITORY/actions/workflows --jq '.workflows[].id' 2>/dev/null); do
+            for run_id in $(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$wf_id/runs?created=>$SINCE&per_page=100&status=completed" --jq '.workflow_runs[].id' 2>/dev/null); do
+              # Sum ALL summary lines per log (multi-call scripts emit multiple)
+              while IFS= read -r SUMMARY; do
+                [ -z "$SUMMARY" ] && continue
                 PW=$(echo "$SUMMARY" | grep -oP '\d+/\d+ Playwright' | head -1 | grep -oP '^\d+' || echo "0")
                 BD=$(echo "$SUMMARY" | grep -oP '\d+ BD' | head -1 | grep -oP '^\d+' || echo "0")
                 SB=$(echo "$SUMMARY" | grep -oP '\d+ SB' | head -1 | grep -oP '^\d+' || echo "0")
                 SB_CR=$(echo "$SUMMARY" | grep -oP '\d+ credits' | head -1 | grep -oP '^\d+' || echo "0")
                 PW_TOTAL=$((PW_TOTAL + PW)); BD_TOTAL=$((BD_TOTAL + BD))
                 SB_TOTAL=$((SB_TOTAL + SB)); SB_CREDITS_TOTAL=$((SB_CREDITS_TOTAL + SB_CR))
-              fi
+              done < <(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' || true)
             done
           done
-          BD_COST=$(echo "scale=2; $BD_TOTAL * 0.001" | bc)
+          # Real BD Web Unlocker pricing: $0.0015/req (was 0.001 — 50% under-report)
+          BD_COST=$(echo "scale=2; $BD_TOTAL * 0.0015" | bc)
 
           # --- SB credit status ---
           HEALTH_RUN=$(gh run list --workflow=check-secrets-health.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
