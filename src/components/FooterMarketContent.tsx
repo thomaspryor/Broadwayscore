@@ -47,6 +47,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href="/browse/west-end-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
               <li><Link href="/west-end/audience-buzz" className="hover:text-white transition-colors">Audience Buzz</Link></li>
+              <li><Link href="/west-end/theater" className="hover:text-white transition-colors">West End Theatres</Link></li>
             </ul>
           </div>
           <div>

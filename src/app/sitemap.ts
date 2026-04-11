@@ -4,6 +4,7 @@ import {
   getShowBySlug,
   getAllBestOfCategories,
   getAllTheaterSlugs,
+  getAllLondonTheaterSlugs,
   getAllBrowseSlugs,
   getDataFreshness,
 } from '@/lib/data-core';
@@ -24,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const showSlugs = getAllShowSlugs();
   const bestOfCategories = getAllBestOfCategories();
   const theaterSlugs = getAllTheaterSlugs();
+  const londonTheaterSlugs = getAllLondonTheaterSlugs();
   const browseSlugs = getAllBrowseSlugs();
   const guideSlugs = getAllGuideSlugs();
   const currentYear = new Date().getFullYear();
@@ -76,6 +78,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Theater pages - medium priority
   const theaterPages = theaterSlugs.map((slug) => ({
     url: `${BASE_URL}/theater/${slug}`,
+    lastModified: showsDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  // London theater pages (West End + Off-West End) - medium priority
+  const londonTheaterPages = londonTheaterSlugs.map((slug) => ({
+    url: `${BASE_URL}/west-end/theater/${slug}`,
     lastModified: showsDate,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
@@ -191,6 +201,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...showPages,
     // Theater pages
     ...theaterPages,
+    {
+      url: `${BASE_URL}/west-end/theater`,
+      lastModified: showsDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    // London theater pages
+    ...londonTheaterPages,
     // Static pages
     {
       url: `${BASE_URL}/methodology`,

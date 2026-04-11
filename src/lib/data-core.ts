@@ -419,6 +419,69 @@ export function getAllTheaterSlugs(): string[] {
   return getAllTheaters().map(t => t.slug);
 }
 
+/**
+ * Get all London venues (West End + Off-West End) as Theater objects.
+ *
+ * Stub implementation for the WE launch (2026-04-13): unlike Broadway theaters
+ * we have no curated metadata (capacity, tips, structuredTips, venueScores),
+ * so every field outside of `name`, `slug`, `address`, `currentShow`,
+ * `allShows`, and `showCount` is left undefined and the UI renders "—".
+ * Enrichment (Wikipedia/IBDB/curated tips) tracked as follow-up.
+ */
+let _londonTheatersCache: Theater[] | null = null;
+export function getAllLondonTheaters(): Theater[] {
+  if (_londonTheatersCache) return _londonTheatersCache;
+
+  const allShows = getWestEndShows(); // includes off-west-end, excludes hidden
+  const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
+
+  for (const show of allShows) {
+    if (!show.venue) continue;
+    const existing = theaterMap.get(show.venue) || { shows: [], address: show.theaterAddress };
+    existing.shows.push(show);
+    if (show.theaterAddress) existing.address = show.theaterAddress;
+    theaterMap.set(show.venue, existing);
+  }
+
+  _londonTheatersCache = Array.from(theaterMap.entries())
+    .filter(([name]) => !name.startsWith('_'))
+    .map(([name, data]) => {
+      const currentShow = data.shows.find(
+        s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming'
+      );
+      return {
+        name,
+        slug: slugify(name),
+        address: data.address,
+        currentShow,
+        allShows: data.shows.sort((a, b) => {
+          if (!a.openingDate && !b.openingDate) return 0;
+          if (!a.openingDate) return 1;
+          if (!b.openingDate) return -1;
+          return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
+        }),
+        showCount: data.shows.length,
+      };
+    })
+    .sort((a, b) => b.showCount - a.showCount);
+
+  return _londonTheatersCache;
+}
+
+/**
+ * Get a single London venue by slug
+ */
+export function getLondonTheaterBySlug(slug: string): Theater | undefined {
+  return getAllLondonTheaters().find(t => t.slug === slug);
+}
+
+/**
+ * Get all London theater slugs (for static generation)
+ */
+export function getAllLondonTheaterSlugs(): string[] {
+  return getAllLondonTheaters().map(t => t.slug);
+}
+
 // ============================================
 // Best-of List Queries
 // ============================================

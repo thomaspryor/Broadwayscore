@@ -404,7 +404,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 </h1>
                 {/* Meta — stacked for clarity */}
                 <div className="text-gray-400 text-sm space-y-0.5 leading-relaxed">
-                  {isWestEnd || isOffBroadway ? (
+                  {isWestEnd ? (
+                    <div><Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 font-medium hover:text-brand transition-colors">{show.venue}</Link></div>
+                  ) : isOffBroadway ? (
                     <div className="text-gray-300 font-medium">{show.venue}</div>
                   ) : (
                     <div><Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 font-medium hover:text-brand transition-colors">{show.venue}</Link></div>
@@ -574,7 +576,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
               {/* Meta line — inline text so it wraps naturally on mobile */}
               <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed" data-testid="show-meta-line">
-                {isWestEnd || isOffBroadway ? (
+                {isWestEnd ? (
+                  <Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
+                ) : isOffBroadway ? (
                   <span className="text-gray-300">{show.venue}</span>
                 ) : (
                   <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
@@ -1134,7 +1138,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             <div className="sm:col-span-2">
               <dt className="text-gray-500">Theater</dt>
               <dd className="text-white mt-0.5">
-                {isWestEnd || isOffBroadway ? (
+                {isWestEnd ? (
+                  <Link href={`/west-end/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
+                ) : isOffBroadway ? (
                   <span>{show.venue}</span>
                 ) : (
                   <Link href={`/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
