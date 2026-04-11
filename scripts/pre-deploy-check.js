@@ -185,8 +185,26 @@ try {
     ok(`Auto-removed ${toRemove.size} duplicate London show(s): ${[...toRemove].join(', ')}`);
   }
 
+  // LLM refusal synopsis guard: strip any synopsis that looks like a Claude
+  // refusal ("I do not have enough information...") before the UI renders it.
+  // The UI at src/app/show/[slug]/page.tsx:126 leaks show.synopsis into the SEO
+  // meta description, so a refusal on prod is a double hit: bad show page +
+  // bad Google snippet. Shared detector lives in lib/synopsis-validation.js.
+  const { detectRefusalPattern } = require('./lib/synopsis-validation');
+  let refusalStripped = 0;
+  for (const show of shows) {
+    if (!show || typeof show.synopsis !== 'string') continue;
+    const hit = detectRefusalPattern(show.synopsis);
+    if (hit) {
+      console.log(`   Stripped refusal synopsis from "${show.title}" (${show.id}) — matched ${hit}`);
+      show.synopsis = null;
+      refusalStripped++;
+    }
+  }
+  if (refusalStripped > 0) ok(`Auto-stripped ${refusalStripped} LLM refusal synopsis(es)`);
+
   // Write shows.json if any fixes were applied
-  if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0) {
+  if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0) {
     fs.writeFileSync(SHOWS_PATH, JSON.stringify(showsData, null, 2));
   }
 

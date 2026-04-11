@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isValidSynopsis } = require('./lib/synopsis-validation');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
@@ -69,34 +70,9 @@ function fetchUrl(url) {
   });
 }
 
-/**
- * Validate whether text is a genuine synopsis (not accessibility info,
- * marketing copy, or truncated text).
- *
- * @param {string} text - Synopsis text to validate
- * @returns {boolean} true if the text is a valid synopsis
- */
-function isValidSynopsis(text) {
-  if (!text || typeof text !== 'string') return false;
-
-  const trimmed = text.trim();
-
-  // Reject text shorter than 50 characters
-  if (trimmed.length < 50) return false;
-
-  // Reject accessibility keywords (word-boundary to avoid "adaptation" matching "ada")
-  const accessibilityPattern = /\bwheelchair\b|\bhearing assist\b|\belevator access\b|\baccessible seating\b|\bada seating\b|\brestrooms\b|\bclosed captioning\b|\bassistive listening\b/i;
-  if (accessibilityPattern.test(trimmed)) return false;
-
-  // Reject marketing openers
-  if (/^(See |Get tickets|Don't miss|Experience the|Come discover)/i.test(trimmed)) return false;
-
-  // Reject text that ends mid-sentence (ends with comma, or ends with lowercase letter without period)
-  if (/,\s*$/.test(trimmed)) return false;
-  if (/[a-z]$/.test(trimmed) && !/[.!?'")\]]$/.test(trimmed)) return false;
-
-  return true;
-}
+// isValidSynopsis is imported from ./lib/synopsis-validation
+// (extracted so pre-deploy-check.js and tests can share the exact same rules,
+// including the LLM-refusal guard that caught the Graham100 incident).
 
 // Extract synopsis from TodayTix page HTML
 function extractSynopsisFromHtml(html) {
