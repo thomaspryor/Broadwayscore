@@ -147,7 +147,10 @@ async function searchBWWRoundup(show) {
     console.log(`  Using manual URL override: ${url}`);
     const result = await httpGet(url);
     if (result.found && result.html) {
-      const validation = await validatePageMatchesShow(result.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+      const validation = await validatePageMatchesShow(result.html, show.title, {
+        openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+        pageUrl: url,
+      });
       if (validation.valid) {
         return { url, html: result.html };
       }
@@ -212,7 +215,10 @@ async function searchBWWRoundup(show) {
 
       if (result.html.includes('Review Roundup') && (isBroadway || isRightYear)) {
         // Validate page matches target show (LLM tiebreaker for edge cases)
-        const validation = await validatePageMatchesShow(result.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+        const validation = await validatePageMatchesShow(result.html, show.title, {
+        openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+        pageUrl: url,
+      });
         if (validation.valid) {
           console.log(`  ✓ Found at: ${url}`);
           return { url, html: result.html };
@@ -254,7 +260,10 @@ async function searchWebForBWWRoundup(show) {
 
         if (pageResult.found && pageResult.html && pageResult.html.includes('Review Roundup')) {
           // Validate page matches target show (LLM tiebreaker for edge cases)
-          const validation = await validatePageMatchesShow(pageResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+          const validation = await validatePageMatchesShow(pageResult.html, show.title, {
+            openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+            pageUrl: url,
+          });
           if (validation.valid) {
             console.log(`  ✓ Found via Google search: ${url}`);
             saveUrlOverride(show.id, url);
@@ -707,18 +716,23 @@ async function processShow(show) {
   if (fs.existsSync(archivePath)) {
     console.log(`  Using archived page...`);
     const archiveContent = fs.readFileSync(archivePath, 'utf8');
+    // Extract URL from archive header before validation so URL-date check
+    // can catch wrong-year contamination (e.g., a cached Big Fish 2013
+    // roundup mistakenly written to a Bigfoot 2026 archive slot).
+    const urlMatch = archiveContent.match(/Source:\s*(https?:\/\/[^\n]+)/);
+    const archivedUrl = urlMatch ? urlMatch[1].trim() : null;
     // Validate cached page is about the right show
-    const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM, openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+    const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, {
+      skipLlm: !!process.env.SKIP_LLM,
+      openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+      pageUrl: archivedUrl,
+    });
     if (!cacheValidation.valid) {
       console.log(`  [CACHE] Cached page is WRONG show — ${cacheValidation.reason}. Deleting cache.`);
       fs.unlinkSync(archivePath);
       // Fall through to re-fetch below
     } else {
-      // Extract URL from archive header
-      const urlMatch = archiveContent.match(/Source:\s*(https?:\/\/[^\n]+)/);
-      if (urlMatch) {
-        bwwUrl = urlMatch[1].trim();
-      }
+      bwwUrl = archivedUrl;
       html = archiveContent;
     }
   }

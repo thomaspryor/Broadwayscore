@@ -171,6 +171,32 @@ async function llmValidatePageMatch(headingText, showTitle, options = {}) {
 // ============================================================
 
 /**
+ * Extract a YYYY (year) from a URL's trailing date suffix.
+ * BroadwayWorld URLs reliably encode the article publish date as YYYYMMDD
+ * at the end of the slug (optionally followed by a 1-2 digit dedup suffix):
+ *   .../article/Review-Roundup-BIG-FISH-Opens-on-Broadway-20131005
+ *   .../article/BWW-Review-Charming-CATS-Revival-20160731
+ *   .../article/Review-BIG-FISH-Makes-Wholesome-The-New-Hip-201310061
+ *
+ * Returns year as a number, or null if no recognizable date pattern.
+ */
+function extractYearFromUrl(url) {
+  if (!url || typeof url !== 'string') return null;
+  // Match YYYYMMDD at end of slug, optionally followed by 1-2 dedup digits
+  // and optional trailing slash/query/hash
+  const m = url.match(/-(\d{4})(\d{2})(\d{2})\d{0,2}(?:[/?#]|$)/);
+  if (!m) return null;
+  const year = parseInt(m[1], 10);
+  const month = parseInt(m[2], 10);
+  const day = parseInt(m[3], 10);
+  // Sanity bounds: 1990-2100, valid month/day
+  if (year < 1990 || year > 2100) return null;
+  if (month < 1 || month > 12) return null;
+  if (day < 1 || day > 31) return null;
+  return year;
+}
+
+/**
  * Validate that a fetched HTML page is about the target show.
  * Checks page title + headings (NOT body text — too noisy for roundup pages).
  * Uses LLM tiebreaker when word-match confidence is low.
@@ -180,6 +206,7 @@ async function llmValidatePageMatch(headingText, showTitle, options = {}) {
  * @param {object} [options] - Optional configuration
  * @param {boolean} [options.skipLlm] - Skip LLM tiebreaker (for testing)
  * @param {number} [options.openingYear] - Show's opening year for year-mismatch detection
+ * @param {string} [options.pageUrl] - URL of the fetched page for URL-based date extraction
  * @returns {Promise<{ valid: boolean, confidence: number, reason: string, provider?: string }>}
  */
 async function validatePageMatchesShow(html, showTitle, options = {}) {
@@ -191,7 +218,21 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
   const h2Text = $('h2').first().text() || '';
   const headingText = `${pageTitle} ${h1Text} ${h2Text}`.trim();
 
-  // Layer 0: Year-mismatch detection (fast, pre-word-match)
+  // Layer 0a: URL date extraction (fastest check, no network/LLM)
+  // BWW URLs reliably encode the article publish date. If that date's year
+  // is 4+ years off the show's opening year, this is almost certainly a
+  // different production — catches Big Fish (2013) roundup being matched to
+  // Bigfoot (2026) when the heading doesn't contain a disambiguating year.
+  // Runs BEFORE heading-year check because URL dates are more reliable
+  // (headings may omit year or mention future festival dates).
+  if (options.openingYear && options.pageUrl) {
+    const urlYear = extractYearFromUrl(options.pageUrl);
+    if (urlYear && Math.abs(urlYear - options.openingYear) >= 4) {
+      return { valid: false, confidence: 0, reason: `URL date mismatch: article year ${urlYear} vs show opened ${options.openingYear}` };
+    }
+  }
+
+  // Layer 0b: Heading year-mismatch detection (fast, pre-word-match)
   // If headings mention a specific year that's far from the show's opening year,
   // this is very likely the wrong production or wrong show entirely.
   if (options.openingYear) {
@@ -258,5 +299,6 @@ module.exports = {
   validatePageMatchesShow,
   titleWordsMatchWithConfidence,
   parseYesNo,
+  extractYearFromUrl,
   LLM_CONFIDENCE_THRESHOLD,
 };

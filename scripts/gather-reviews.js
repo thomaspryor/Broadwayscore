@@ -3026,7 +3026,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   let bwwResult = isOffBroadway ? null : await searchBWWRoundup(show, year);
   // Validate page matches target show (prevents cross-show contamination)
   if (bwwResult && bwwResult.html) {
-    const validation = await validatePageMatchesShow(bwwResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+    const validation = await validatePageMatchesShow(bwwResult.html, show.title, {
+      openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+      pageUrl: bwwResult.url,
+    });
     if (!validation.valid) {
       console.log(`    ✗ BWW roundup page doesn't match "${show.title}": ${validation.reason}`);
       bwwResult = null;
