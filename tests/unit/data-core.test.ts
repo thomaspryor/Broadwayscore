@@ -169,7 +169,7 @@ describe('market partitioning', () => {
     for (const s of getBroadwayShows()) partitioned.add(s.id);
     for (const s of getWestEndShows()) partitioned.add(s.id);
     for (const s of getOffBroadwayShows()) partitioned.add(s.id);
-    const missing = [...allIds].filter(id => !partitioned.has(id));
+    const missing = Array.from(allIds).filter(id => !partitioned.has(id));
     // Known hidden IDs the public hubs deliberately exclude.
     const HIDDEN = new Set(['abba-voyage-off-west-end-2026']);
     const unexpected = missing.filter(id => !HIDDEN.has(id));
