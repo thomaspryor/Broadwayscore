@@ -64,7 +64,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
               {featureFlags.criticPages && <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>}
-              <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
+              <li><Link href="/west-end/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
               <li><Link href="/" className="hover:text-white transition-colors">Broadway Shows</Link></li>
               <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
               <li><Link href="/feedback" className="hover:text-white transition-colors">Feedback</Link></li>

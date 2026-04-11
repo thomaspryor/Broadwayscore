@@ -201,7 +201,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
             {theater.capacity && (
               <div className="card p-3 sm:p-4 text-center">
                 <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Seats</p>
-                <p className="text-xl sm:text-2xl font-bold text-white">{theater.capacity.toLocaleString()}</p>
+                <p className="text-xl sm:text-2xl font-bold text-white">{theater.capacity.toLocaleString('en-US')}</p>
               </div>
             )}
             <div className="card p-3 sm:p-4 text-center">

@@ -250,7 +250,7 @@ export default function HomePage() {
             Every show. Every review. One score.
           </p>
           <p className="text-gray-500 text-sm sm:text-base mt-1">
-            {stats.totalShows.toLocaleString()} shows. {stats.totalReviews.toLocaleString()} critic reviews. And counting.
+            {stats.totalShows.toLocaleString('en-US')} shows. {stats.totalReviews.toLocaleString('en-US')} critic reviews. And counting.
           </p>
         </div>
         <FeaturedRowServer shows={bestRecentShows} />

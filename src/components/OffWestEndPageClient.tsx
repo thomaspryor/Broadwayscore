@@ -434,7 +434,7 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews }: OffWestEndPage
 
       <div className="mt-8 flex items-baseline justify-between text-sm text-gray-400">
         <span>{filteredAndSortedShows.length} shows</span>
-        <Link href="/methodology" prefetch={false} className="text-violet-400 hover:text-violet-300 transition-colors">
+        <Link href="/west-end/methodology" prefetch={false} className="text-violet-400 hover:text-violet-300 transition-colors">
           How scores work →
         </Link>
       </div>

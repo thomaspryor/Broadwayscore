@@ -177,7 +177,7 @@ export default function WestEndAudienceBuzzPage() {
             <Link href="/audience-buzz" className="text-brand hover:text-brand-hover transition-colors text-sm">
               Broadway Audience Scorecard →
             </Link>
-            <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors text-sm">
+            <Link href="/west-end/methodology" className="text-brand hover:text-brand-hover transition-colors text-sm">
               How Scoring Works →
             </Link>
           </div>

@@ -648,7 +648,9 @@ export function computeShowData(
   const showReviews = reviews.filter(r => r.showId === show.id);
 
   // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
-  const hideReviews = shouldHideReviews(show);
+  // Announced shows: never surface a composite score — any reviews present belong
+  // to a prior production and would mislead ("upcoming show with 82 score").
+  const hideReviews = shouldHideReviews(show) || show.status === 'announced';
   let criticScore = hideReviews ? null : computeCriticScore(showReviews);
 
   // V1: composite score = critic score (audience/buzz coming later)

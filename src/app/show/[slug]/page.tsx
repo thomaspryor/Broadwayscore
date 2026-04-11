@@ -460,7 +460,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     <div className="min-w-0">
                       <div className="text-base font-bold truncate" style={{ color: audienceGrade.color }}>{audienceGrade.label}</div>
                       <div className="text-xs text-gray-500 leading-snug truncate">
-                        {totalAudienceCount.toLocaleString()} audience reviews
+                        {totalAudienceCount.toLocaleString('en-US')} audience reviews
                       </div>
                     </div>
                   </a>

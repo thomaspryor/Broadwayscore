@@ -129,7 +129,7 @@ export default function OutletIndexClient({ outlets, totalReviews }: { outlets: 
       <div className="mb-6">
         <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Broadway Review Outlets</h1>
         <p className="text-gray-400">
-          {outlets.length} publications with {totalReviews.toLocaleString()} reviews
+          {outlets.length} publications with {totalReviews.toLocaleString('en-US')} reviews
         </p>
       </div>
 

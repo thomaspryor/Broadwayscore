@@ -2,12 +2,15 @@
 // This file helps AI systems understand our site structure
 // See: https://llmstxt.org/
 
-import { getBroadwayShows, getAllBrowseSlugs } from '@/lib/data-core';
+import { getBroadwayShows, getWestEndShows, getOffWestEndShows, getAllBrowseSlugs } from '@/lib/data-core';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export async function GET() {
-  const shows = getBroadwayShows();
+  const broadwayShows = getBroadwayShows();
+  const westEndShows = getWestEndShows();
+  const offWestEndShows = getOffWestEndShows();
+  const shows = [...broadwayShows, ...westEndShows, ...offWestEndShows];
   const browseSlugs = getAllBrowseSlugs();
 
   // Count shows by status
@@ -15,26 +18,31 @@ export async function GET() {
   const closedShows = shows.filter(s => s.status === 'closed');
   const previewShows = shows.filter(s => s.status === 'previews' || s.status === 'upcoming');
 
-  // Get top-rated shows for highlighting
+  // Broadway-specific counts (for the top-rated list we include all markets)
+  const broadwayOpen = broadwayShows.filter(s => s.status === 'open').length;
+  const westEndOpen = westEndShows.filter(s => s.status === 'open').length;
+  const offWestEndOpen = offWestEndShows.filter(s => s.status === 'open').length;
+
+  // Get top-rated shows for highlighting (across all markets)
   const topShows = shows
     .filter(s => s.criticScore?.score && s.criticScore.reviewCount >= 5)
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .slice(0, 5);
 
-  const content = `# Broadway Scorecard™
+  const content = `# Broadway Scorecard™ & West End Scorecard
 
-> The independent Broadway review aggregator. We combine critic reviews from major publications into a single composite score for every Broadway show.
+> The independent theatre review aggregator. We combine critic reviews from major publications into a single composite score for every Broadway, West End, and Off-West End show.
 
 ## What We Do
 
-Broadway Scorecard™ aggregates reviews from professional theater critics (New York Times, Vulture, Variety, The Hollywood Reporter, and more) and calculates a weighted score (0-100) for each Broadway show. Think "Rotten Tomatoes for Broadway."
+Broadway Scorecard™ aggregates reviews from professional theatre critics (New York Times, Vulture, Variety, The Guardian, The Times, Evening Standard, The Stage, and more) and calculates a weighted score (0-100) for each show across Broadway (NYC), the West End (London), Off-Broadway, and Off-West End. Think "Rotten Tomatoes for theatre."
 
 ## Current Inventory
 
-- **${openShows.length} shows currently running** on Broadway
+- **${openShows.length} shows currently running** (Broadway: ${broadwayOpen} · West End: ${westEndOpen} · Off-West End: ${offWestEndOpen})
 - **${closedShows.length} closed shows** with historical data
 - **${previewShows.length} upcoming shows** in previews
-- **${shows.reduce((acc, s) => acc + (s.criticScore?.reviewCount || 0), 0)}+ critic reviews** aggregated
+- **${shows.reduce((acc, s) => acc + (s.criticScore?.reviewCount || 0), 0)}+ critic reviews** aggregated across Broadway and the West End
 
 ## How Scoring Works
 
@@ -79,6 +87,12 @@ ${browseSlugs.slice(0, 12).map(slug => {
 - [Broadway Theater Map](${BASE_URL}/broadway-theaters-map): Interactive map of all Broadway theaters
 - [Directors Index](${BASE_URL}/director): Browse shows by director
 - [Theaters Index](${BASE_URL}/theater): Browse shows by theater
+
+### West End (London)
+- [West End Scorecard](${BASE_URL}/west-end): London theatre ratings and reviews
+- [West End Audience Buzz](${BASE_URL}/west-end/audience-buzz): What London audiences think
+- [Tony Awards](${BASE_URL}/tony-awards): Broadway's highest honor — winners, nominations, leaderboard
+- [Olivier Awards](${BASE_URL}/olivier-awards): London's highest theatre honor (if available)
 
 ## Data We Provide For Each Show
 

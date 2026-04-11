@@ -65,7 +65,7 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
       {/* Capacity — desktop only */}
       <div className="w-14 flex items-center justify-center flex-shrink-0 hidden sm:flex">
         <p className="text-sm font-medium text-gray-400">
-          {theater.capacity ? theater.capacity.toLocaleString() : '—'}
+          {theater.capacity ? theater.capacity.toLocaleString('en-US') : '—'}
         </p>
       </div>
 
