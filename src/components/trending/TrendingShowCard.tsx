@@ -103,11 +103,13 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
     <div
       className={`card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 border ${style.borderClass} ${style.bgClass} transition-transform hover:-translate-y-0.5`}
     >
-      {/* Rank badge */}
+      {/* Rank badge — the parent <ol> communicates ordering to AT, and the
+          visible number is read naturally when focused, so we hide it from
+          screen readers here to avoid double-announcing (aria-label + text). */}
       <div
         className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center font-extrabold text-lg sm:text-xl"
         style={{ backgroundColor: rankColor.bg, color: rankColor.text }}
-        aria-label={`Rank ${rank}`}
+        aria-hidden="true"
       >
         {rank}
       </div>
@@ -132,7 +134,12 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
 
       {/* Title + tier */}
       <div className="flex-1 min-w-0">
-        <div className="text-white font-semibold truncate text-sm sm:text-base">{title}</div>
+        <div
+          className="text-white font-semibold truncate text-sm sm:text-base"
+          title={title}
+        >
+          {title}
+        </div>
         <div className="flex items-center gap-2 mt-1">
           <span className={`text-[10px] sm:text-xs font-bold tracking-wide ${style.textClass}`}>
             {style.label}
