@@ -192,6 +192,12 @@ jobs:
           node --test tests/unit/regression-guards.test.mjs tests/unit/sample.test.mjs tests/unit/sanity.test.mjs tests/unit/score-conversion-rules.test.mjs tests/unit/email-capture-integrity.test.mjs tests/unit/placeholder-images.test.mjs
           npx tsx --test tests/unit/engine.test.ts
 
+      - name: Run review-guards regression tests
+        # Tests opening-night fix #12-#14 + Times UK heuristic guard + rebuild auto-clear keyword check.
+        # All tests require() the real functions from scripts/lib/review-guards.js per CLAUDE.md §15.
+        # If this fails, a guard regression slipped through — fix the underlying logic, not the test.
+        run: node scripts/test-opening-night-fixes.js
+
   data-validation:
     name: Data Validation
     runs-on: ubuntu-latest

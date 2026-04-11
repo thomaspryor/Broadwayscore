@@ -1105,9 +1105,27 @@ assert(
   'Entry without hyperlink (Guardian): has excerpt text'
 );
 
-// --- Fix #18: URL slug validation rejects cross-show URLs ---
+// --- Fix #18 / DoaS Apr 9-10 #6: BWW Roundup is trustedSource ---
+//
+// IMPORTANT: BWW Review Roundup is manually curated by BWW editors. Critics
+// often use creative review titles where the show name doesn't appear in the
+// URL slug — Theater Pizzazz Ron Fassler's DoaS review URL was
+// "hes-back-but-has-willy-loman-ever-left-us" with no "death-of-a-salesman"
+// in the slug. The strict urlLooksLikeReview rejected the legit review on
+// opening night.
+//
+// Resolution: gather-reviews.js extractBWWRoundupReviews now passes
+// `trustedSource: true` to urlOrTitleLooksLikeReview, which accepts any
+// article-shaped URL from a trusted aggregator. The cross-show URL slug guard
+// in createReviewFile (detectCrossShowUrlMismatch) catches genuine
+// misattributions downstream.
+//
+// These tests verify the trustedSource bypass works — Monte Cristo URLs
+// flowing through BWW for Becky Shaw are accepted by the extractor (the
+// downstream guard handles them). DO NOT revert these tests to "url should
+// be null" without first checking with the team — see commit 47702cbab3.
 
-// Build HTML where all links point to WRONG show (Monte Cristo URLs)
+// Build HTML where all links point to a different show (Monte Cristo URLs)
 const wrongUrlHtml = `<html><head><title>Review Roundup: BECKY SHAW Opens-on-Broadway-20260406</title></head><body>
 <script type="application/ld+json">{
   "@type": "LiveBlogPosting",
@@ -1127,17 +1145,28 @@ const wrongUrlNyt = wrongUrlReviews.find(r =>
   (r.outletId || '').includes('nytimes') || (r.outlet || '').toLowerCase().includes('new york times')
 );
 assert(
-  wrongUrlNyt && !wrongUrlNyt.url,
-  'URL slug guard: NYT Monte Cristo URL rejected for Becky Shaw (url should be null)'
+  wrongUrlNyt && wrongUrlNyt.url && wrongUrlNyt.url.includes('monte-cristo'),
+  'BWW trustedSource: NYT URL accepted even when slug does not match show title (creative-titled URLs)'
 );
 
 const wrongUrlCulture = wrongUrlReviews.find(r =>
   (r.outletId || '').includes('culturesauce') || (r.outlet || '').toLowerCase().includes('culture sauce')
 );
 assert(
-  wrongUrlCulture && !wrongUrlCulture.url,
-  'URL slug guard: Culture Sauce Monte Cristo URL rejected for Becky Shaw (url should be null)'
+  wrongUrlCulture && wrongUrlCulture.url && wrongUrlCulture.url.includes('monte-cristo'),
+  'BWW trustedSource: Culture Sauce URL accepted even when slug does not match show title'
 );
+
+// The strict guard is still tested directly via urlLooksLikeReview — see the
+// urlLooksLikeReview tests later in this file. The trustedSource bypass only
+// applies to BWW Roundup-sourced URLs.
+{
+  const { urlLooksLikeReview } = require('./lib/review-guards');
+  assert(
+    urlLooksLikeReview('https://nytimes.com/2026/04/06/theater/monte-cristo-review.html', 'Becky Shaw') === false,
+    'urlLooksLikeReview (strict) still rejects Monte Cristo URL for Becky Shaw'
+  );
+}
 
 // --- Fix #18: correct URLs are accepted ---
 
@@ -1194,7 +1223,9 @@ assert(
   'Short title "Cats": URL with "cats" in slug accepted'
 );
 
-// Short title: wrong-show URL should be rejected
+// Short title: BWW trustedSource accepts even creative-titled URLs.
+// (The downstream cross-show URL slug guard in createReviewFile catches
+// genuine misattributions — see DoaS Apr 9-10 #6.)
 const shortTitleWrongHtml = `<html><head><title>Review Roundup: CATS Opens-on-Broadway-20260406</title></head><body>
 <script type="application/ld+json">{
   "@type": "LiveBlogPosting",
@@ -1211,8 +1242,8 @@ const shortTitleWrongVariety = shortTitleWrongReviews.find(r =>
   (r.outletId || '').includes('variety')
 );
 assert(
-  shortTitleWrongVariety && !shortTitleWrongVariety.url,
-  'Short title "Cats": URL without "cats" in slug rejected'
+  shortTitleWrongVariety && shortTitleWrongVariety.url && shortTitleWrongVariety.url.includes('hamilton'),
+  'BWW trustedSource: short-title "Cats" — Hamilton URL accepted (creative-titled URL bypass; downstream guard handles cross-show)'
 );
 
 // ============================================================
