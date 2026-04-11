@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-11T00:07:18.248Z",
+    "generatedAt": "2026-04-11T00:38:11.266Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 86,
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review is about the Australian production of Wicked, specifically the Sydney Lyric production. It mentions the 2008 Australian premiere and a 2014 return season, and discusses the current production's cast and venue in Sydney."
+      "reasoning": "This review discusses a Sydney production of Wicked, mentioning its previous stagings in 2008 and 2014. It also references the 2004 Tony Awards, but in the context of the original Broadway production's reception, not a revival."
     },
     {
       "showId": "the-lion-king-1997",
@@ -44,24 +44,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review is about an Atlanta production at the Fox Theatre, not the Broadway production filed under. It mentions specific performers in that production."
-    },
-    {
-      "showId": "broadway-1987",
-      "showTitle": "Broadway",
-      "showYear": 1987,
-      "file": "vulture--jackson-mchenry.json",
-      "outlet": "Vulture",
-      "criticName": "Jackson McHenry",
-      "publishDate": "2024-04-22",
-      "originalSignals": [
-        "publishDate 2024 is 37 years after original opening 1987",
-        "revival text signals: revival, this production"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review discusses a revival starring Adam Driver and Keri Russell, directed by Michael Mayer. This is not the original 1987 production."
+      "reasoning": "The review is about an Atlanta production at the Fox Theatre, not the Broadway production filed under. It mentions the Fox Theatre in Atlanta and specific performers in that production."
     },
     {
       "showId": "master-class-1995",
@@ -82,6 +65,23 @@
       "reasoning": "The review mentions Tyne Daly, Stephen Wadsworth, and the Samuel J. Friedman Theatre, all associated with the 2011 revival. It also mentions the Kennedy Center's 2010 tribute to Terrence McNally, where this production originated."
     },
     {
+      "showId": "broadway-1987",
+      "showTitle": "Broadway",
+      "showYear": 1987,
+      "file": "vulture--jackson-mchenry.json",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "publishDate": "2024-04-22",
+      "originalSignals": [
+        "publishDate 2024 is 37 years after original opening 1987",
+        "revival text signals: revival, this production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This,\" not the original 1987 production. The review also mentions the director, Mic, and the set designer, Derek McLane, who were involved in the 2019 production."
+    },
+    {
       "showId": "the-house-of-blue-leaves-1986",
       "showTitle": "The House of Blue Leaves",
       "showYear": 1986,
@@ -96,7 +96,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-house-of-blue-leaves-2011",
-      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, and Alison Pill, who were all in the 2011 Broadway revival. It also refers to the production as a 'new Broadway revival'."
+      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, and Christopher Abbott, all of whom were in the 2011 production. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which is incorrect if this review was about the 1986 production."
     },
     {
       "showId": "how-to-succeed-in-business-without-really-trying-1995",
@@ -114,7 +114,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
-      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also mentions the 2010 production of 'Promises, Promises' by the same director, further indicating it's about the 2011 revival."
+      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival, and references a '2010 production of Promises, Promises' by the same director. It also mentions Matthew Broderick's 1995 production, indicating this review is about a different production."
     },
     {
       "showId": "the-gin-game-1977",
@@ -130,7 +130,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia."
     },
     {
       "showId": "the-real-thing-2000",
@@ -146,7 +146,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the American Airlines Theatre, which is associated with the 2014 production. It also mentions the 1984 and 2000 productions."
+      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the American Airlines Theatre, which matches the 2014 production. It also mentions the 1984 and 2000 productions."
     },
     {
       "showId": "old-times-1971",
@@ -162,7 +162,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play is running through Nov. 29, which aligns with the 2015 production's dates."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, indicating it's a current production."
     }
   ]
 }
