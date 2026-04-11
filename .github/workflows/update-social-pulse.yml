@@ -29,10 +29,12 @@ jobs:
   update-social-pulse:
     name: Fetch + score social mentions for running shows
     runs-on: ubuntu-latest
-    # Timeout generous enough for 93 shows × ~60s each (parallel platform
-    # fetches within each show) + rank aggregation + commit. Typical run
-    # ~30-40 min; 90 gives headroom for slow Apify runs.
-    timeout-minutes: 90
+    # Timeout generous enough for 93 shows × ~70s each (parallel platform
+    # fetches within each show + 2s spacing) + rank aggregation + commit.
+    # Empirically observed ~67s/show on first real run, so 93 × 70s = 108
+    # min for processing alone. 180 gives headroom for slower Apify runs
+    # and the rank aggregation + commit + push retry tail.
+    timeout-minutes: 180
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
