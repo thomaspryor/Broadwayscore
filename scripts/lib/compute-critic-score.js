@@ -55,20 +55,34 @@ const TOP_CRITICS = new Set([
 function computeCriticScore(showReviews, outletRegistry = {}) {
   if (!showReviews || showReviews.length === 0) return null;
 
-  // Outlet-level dedup: keep only one review per outlet (most recent by publishDate).
-  // MUST match src/lib/engine.ts::computeCriticScore(). Long-running shows accumulate
-  // multiple critics at the same outlet, which gives that outlet disproportionate
-  // weight in the tier-weighted composite. Without this, the homepage/mobile score
-  // (computed here) drifts away from the show-page score (computed in engine.ts).
-  const byOutlet = new Map();
+  // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
+  // publishDate. MUST match src/lib/engine.ts::computeCriticScore().
+  //
+  // Multi-critic outlets (NYSR, NYT, Variety, Vulture, EW, etc.) routinely
+  // publish multiple critic reviews per show — distinct critics, distinct voices.
+  // Earlier outlet-level dedup silently dropped all but one of these (~530 cases
+  // across the corpus). Critic-level dedup keeps each critic but normalizes their
+  // weight by 1/N where N is the count of distinct critics that outlet has on
+  // this show. This preserves the original "one outlet = one tier vote" intent
+  // while exposing every critic to the UI and SEO schema.
+  const byCritic = new Map();
   for (const review of showReviews) {
     const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    const existing = byOutlet.get(outletKey);
+    const criticKey = (review.criticName || '__unknown__').toLowerCase();
+    const key = `${outletKey}|${criticKey}`;
+    const existing = byCritic.get(key);
     if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
-      byOutlet.set(outletKey, review);
+      byCritic.set(key, review);
     }
   }
-  const dedupedReviews = Array.from(byOutlet.values());
+  const dedupedReviews = Array.from(byCritic.values());
+
+  // Count distinct critics per outlet for per-outlet weight normalization.
+  const criticCountByOutlet = new Map();
+  for (const review of dedupedReviews) {
+    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
+    criticCountByOutlet.set(outletKey, (criticCountByOutlet.get(outletKey) || 0) + 1);
+  }
 
   let weightedSum = 0;
   let totalWeight = 0;
@@ -115,8 +129,15 @@ function computeCriticScore(showReviews, outletRegistry = {}) {
       confidenceWeight = 0.85;
     }
 
-    weightedSum += score * tierWeight * confidenceWeight;
-    totalWeight += tierWeight * confidenceWeight;
+    // Per-outlet share: divides each critic's effective weight by the number of
+    // distinct critics that outlet has on this show, so the outlet still
+    // contributes one full tier-vote (not N). Equivalent to averaging within
+    // outlet then tier-weighting that average.
+    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
+    const outletShare = 1 / (criticCountByOutlet.get(outletKey) || 1);
+
+    weightedSum += score * tierWeight * confidenceWeight * outletShare;
+    totalWeight += tierWeight * confidenceWeight * outletShare;
 
     if (tier === 1) tier1Count++;
   }

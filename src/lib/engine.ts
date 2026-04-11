@@ -154,7 +154,10 @@ export interface ComputedReview {
   thumbScore?: number;
   reviewScore: number;      // The computed score used for averaging
   confidenceWeight: number; // Content quality multiplier (1.0 for full text, lower for excerpts)
-  weightedScore: number;    // reviewScore × tierWeight × confidenceWeight
+  weightedScore: number;    // reviewScore × tierWeight × confidenceWeight × outletShare
+  outletShare?: number;     // 1/criticCount for this outlet on this show — preserves
+                            // one-vote-per-outlet weighting when an outlet publishes
+                            // multiple critic reviews
   designation?: string;
   quote?: string;               // Direct quote from the review
   summary?: string;             // Third-person summary of the review
@@ -323,18 +326,37 @@ function parseOriginalRating(rating: string): number | null {
 export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | null {
   if (reviews.length === 0) return null;
 
-  // Outlet-level dedup: keep only one review per outlet (most recent by publishDate).
-  // Long-running shows accumulate multiple critics at the same outlet, which gives
-  // that outlet disproportionate weight in the tier-weighted composite score.
-  const byOutlet = new Map<string, RawReview>();
+  // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
+  // publishDate. This dedups the case where the same critic re-reviews after a cast
+  // change (legitimate) but KEEPS distinct critics from the same outlet (NYSR, NYT,
+  // Variety, Vulture, EW, etc. routinely publish multiple critic reviews per show).
+  //
+  // To prevent multi-critic outlets from getting disproportionate weight, each
+  // critic's effective weight is divided by the count of distinct critics that
+  // outlet has on this show. NYSR with 3 critics → each contributes (1/3) × T2,
+  // summing to NYSR's full T2 vote — same total weight as a single-critic outlet.
+  // Reviews with no criticName fall back to a per-outlet bucket so an unknown-author
+  // review still counts as the outlet's vote.
+  const byCritic = new Map<string, RawReview>();
   for (const review of reviews) {
     const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    const existing = byOutlet.get(outletKey);
+    const criticKey = (review.criticName || '__unknown__').toLowerCase();
+    const key = `${outletKey}|${criticKey}`;
+    const existing = byCritic.get(key);
     if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
-      byOutlet.set(outletKey, review);
+      byCritic.set(key, review);
     }
   }
-  const dedupedReviews = Array.from(byOutlet.values());
+  const dedupedReviews = Array.from(byCritic.values());
+
+  // Count distinct critics per outlet for per-outlet weight normalization.
+  // Reviews missing criticName all share the synthetic '__unknown__' bucket so an
+  // outlet that publishes one anonymous review still counts as one vote.
+  const criticCountByOutlet = new Map<string, number>();
+  for (const review of dedupedReviews) {
+    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
+    criticCountByOutlet.set(outletKey, (criticCountByOutlet.get(outletKey) || 0) + 1);
+  }
 
   const computedReviews: ComputedReview[] = dedupedReviews.map(review => {
     const outletConfig = getOutletConfig(review.outletId, review.outlet);
@@ -395,8 +417,17 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
       confidenceWeight = 0.85;
     }
 
-    // Calculate weighted score
-    const weightedScore = reviewScore * tierWeight * confidenceWeight;
+    // Per-outlet share: when an outlet has multiple critics on this show, each
+    // critic's effective weight is divided by the count so the outlet still
+    // contributes one full tier-weight vote (not N votes). Equivalent to
+    // averaging critic scores within the outlet then tier-weighting that average.
+    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
+    const outletCriticCount = criticCountByOutlet.get(outletKey) || 1;
+    const outletShare = 1 / outletCriticCount;
+
+    // Calculate weighted score (per-outlet share applied so multi-critic outlets
+    // sum to one full tier vote)
+    const weightedScore = reviewScore * tierWeight * confidenceWeight * outletShare;
 
     return {
       showId: review.showId,
@@ -418,12 +449,18 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
       summary: review.summary,
       pullQuote: review.pullQuote,
       originalRating: review.originalRating,
+      outletShare,
     };
   });
 
   // Weighted average using tier weights
+  // The denominator must include the same outletShare so the math collapses to a
+  // proper outlet-level weighted mean (not an inflated count).
   const weightedSum = computedReviews.reduce((sum, r) => sum + r.weightedScore, 0);
-  const totalWeight = computedReviews.reduce((sum, r) => sum + r.tierWeight * r.confidenceWeight, 0);
+  const totalWeight = computedReviews.reduce(
+    (sum, r) => sum + r.tierWeight * r.confidenceWeight * (r.outletShare ?? 1),
+    0,
+  );
   const weightedScore = Math.round((weightedSum / totalWeight) * 100) / 100;
 
   const tier1Count = computedReviews.filter(r => r.tier === 1).length;
