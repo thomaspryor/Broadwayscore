@@ -8,7 +8,7 @@
 
 ### 1. Git Workflow
 Global rules apply (worktree-first, branch check, commit frequently). Project additions:
-- **Worktree scope:** `src/` or config files → worktree. Pure data/CI/docs → skip.
+- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree.** Memory files and data files can skip (data has its own rule, see §1 last bullet). **Rationale:** local git hooks (pull --rebase, checkout main) and parallel CI commits silently revert uncommitted tracked-file edits. Documented in `memory/feedback_worktree_code_changes.md` after a parallel session lost page.tsx/index.ts work on 2026-04-11, AND after THIS session lost a CLAUDE.md edit to a linter revert on the same day. If your session will touch any of the above, call EnterWorktree FIRST, before the first edit. Advisory warnings are in place (session-start.sh, script-edit-check.sh) but they're advisory only — act on them.
 - **Push** every ~30 min or after milestones.
 - **15+ min without committing** → stop and commit NOW.
 - **`git pull` before every shows.json edit.** CI commits to shows.json every ~30 min. In long sessions, your local copy goes stale and `git rebase` silently re-introduces deleted entries. Always pull immediately before reading shows.json for edits, and verify fixes survived after rebase.
