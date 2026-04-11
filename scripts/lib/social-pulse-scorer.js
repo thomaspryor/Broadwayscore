@@ -267,11 +267,12 @@ function computePositivePct(mentions) {
  * Groups relevant mentions by platform and returns counts.
  */
 function computePlatformBreakdown(mentions) {
-  const out = { x: 0, tiktok: 0 };
+  const out = { x: 0, tiktok: 0, instagram: 0 };
   for (const m of mentions) {
     if (!m.relevant) continue;
     if (m.platform === 'x' || m.platform === 'twitter') out.x++;
     else if (m.platform === 'tiktok') out.tiktok++;
+    else if (m.platform === 'instagram') out.instagram++;
   }
   return out;
 }

@@ -181,6 +181,67 @@ async function fetchTikToks({ showTitle, marketQualifier, maxItems, token }) {
   return { mentions, rawCount: items.length };
 }
 
+// ---------- Instagram ----------
+
+/**
+ * Normalizes an Instagram post from apify/instagram-scraper into our common
+ * mention shape.
+ *
+ * Engagement = likes + comments*3 — comments are higher-intent than likes on IG.
+ */
+function normalizeInstagramPost(p) {
+  if (!p || typeof p.caption !== 'string') return null;
+  const author = p.ownerUsername ? `@${p.ownerUsername}` : null;
+  return {
+    text: p.caption,
+    platform: 'instagram',
+    author,
+    url: p.url || null,
+    createdAt: p.timestamp || null,
+    engagement: (p.likesCount || 0) + (p.commentsCount || 0) * 3,
+    relevant: null,
+    sentiment: null,
+  };
+}
+
+/**
+ * Fetches Instagram posts tagged with the show's hashtag.
+ *
+ * IMPORTANT: The `search` + `searchType=hashtag` field uses Google SERP to
+ * discover hashtag pages, which is broken (Google no longer reliably indexes
+ * Instagram tag URLs). We use `directUrls` with the actual Instagram hashtag
+ * page URL, which queries Instagram directly. Trial-verified 2026-04-10.
+ *
+ * The hashtag is derived from the show title: lowercased, alphanumeric only.
+ * "Maybe Happy Ending" → #maybehappyending. This matches real fan tagging
+ * conventions on Broadway Instagram.
+ */
+async function fetchInstagramPosts({ showTitle, maxItems, token }) {
+  const hashtag = showTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (hashtag.length < 3) {
+    return { mentions: [], rawCount: 0 };
+  }
+  const url = `https://www.instagram.com/explore/tags/${hashtag}/`;
+
+  const { items } = await runApifyActor({
+    actorId: 'apify~instagram-scraper',
+    input: {
+      directUrls: [url],
+      resultsType: 'posts',
+      resultsLimit: maxItems,
+    },
+    token,
+  });
+
+  // The scraper returns error-shape items for failed hashtag pages
+  // ({ error: "no_items", ... }). Filter those out.
+  const mentions = items
+    .filter((i) => !i.error)
+    .map(normalizeInstagramPost)
+    .filter(Boolean);
+  return { mentions, rawCount: items.length };
+}
+
 // ---------- Orchestrator ----------
 
 /**
@@ -198,18 +259,19 @@ async function fetchTikToks({ showTitle, marketQualifier, maxItems, token }) {
  * than none. Per-platform errors are logged and the affected platform's
  * mentions array is empty.
  */
-async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, tiktokMax, token, logger = console }) {
+async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, tiktokMax, instagramMax, token, logger = console }) {
   const result = {
     mentions: [],
     costUsd: 0,
-    rawCounts: { twitter: 0, tiktok: 0 },
+    rawCounts: { twitter: 0, tiktok: 0, instagram: 0 },
     errors: [],
   };
 
-  // Run both fetches in parallel for speed
-  const [twitterRes, tiktokRes] = await Promise.allSettled([
+  // Run all three fetches in parallel for speed
+  const [twitterRes, tiktokRes, instagramRes] = await Promise.allSettled([
     fetchTweets({ showTitle, marketQualifier, maxItems: twitterMax, token }),
     fetchTikToks({ showTitle, marketQualifier, maxItems: tiktokMax, token }),
+    fetchInstagramPosts({ showTitle, maxItems: instagramMax, token }),
   ]);
 
   if (twitterRes.status === 'fulfilled') {
@@ -228,14 +290,26 @@ async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, 
     result.errors.push({ platform: 'tiktok', error: tiktokRes.reason.message });
   }
 
-  // Fetch usage for both actors. This is a best-effort cost estimate;
+  if (instagramRes.status === 'fulfilled') {
+    result.mentions.push(...instagramRes.value.mentions);
+    result.rawCounts.instagram = instagramRes.value.rawCount;
+  } else {
+    logger.warn(`[${showTitle}] Instagram fetch failed: ${instagramRes.reason.message}`);
+    result.errors.push({ platform: 'instagram', error: instagramRes.reason.message });
+  }
+
+  // Fetch usage for all three actors. This is a best-effort cost estimate;
   // the cumulative-budget check in the workflow is the hard gate.
   try {
-    const [twitterUsage, tiktokUsage] = await Promise.all([
+    const [twitterUsage, tiktokUsage, instagramUsage] = await Promise.all([
       fetchLatestRunUsage({ actorId: 'kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest', token }),
       fetchLatestRunUsage({ actorId: 'clockworks~tiktok-scraper', token }),
+      fetchLatestRunUsage({ actorId: 'apify~instagram-scraper', token }),
     ]);
-    result.costUsd = (twitterUsage?.usageTotalUsd || 0) + (tiktokUsage?.usageTotalUsd || 0);
+    result.costUsd =
+      (twitterUsage?.usageTotalUsd || 0) +
+      (tiktokUsage?.usageTotalUsd || 0) +
+      (instagramUsage?.usageTotalUsd || 0);
   } catch (err) {
     logger.warn(`[${showTitle}] Could not fetch run usage: ${err.message}`);
   }
@@ -247,8 +321,10 @@ module.exports = {
   fetchAllSocialMentions,
   fetchTweets,
   fetchTikToks,
+  fetchInstagramPosts,
   normalizeTweet,
   normalizeTikTok,
+  normalizeInstagramPost,
   runApifyActor,
   fetchLatestRunUsage,
 };

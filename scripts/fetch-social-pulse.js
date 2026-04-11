@@ -174,6 +174,7 @@ function writePublicFile(showId, scored) {
     pl: {
       x: scored.platformBreakdown.x,
       tt: scored.platformBreakdown.tiktok,
+      ig: scored.platformBreakdown.instagram,
     },
     q: scored.topQuotes.map((q) => ({
       t: q.text,
@@ -197,18 +198,19 @@ async function processShow({ show, apifyToken, openaiApiKey, dryRun, logger = co
 
   logger.log(`[${showId}] Fetching mentions for "${showTitle}" (${marketLabel})...`);
 
-  // Step 1: Fetch mentions from both platforms
+  // Step 1: Fetch mentions from all three platforms
   const fetchResult = await fetchAllSocialMentions({
     showTitle,
     marketQualifier,
     twitterMax: TWITTER_MAX,
     tiktokMax: TIKTOK_MAX,
+    instagramMax: INSTAGRAM_MAX,
     token: apifyToken,
     logger,
   });
 
   logger.log(
-    `[${showId}]   X=${fetchResult.rawCounts.twitter} TikTok=${fetchResult.rawCounts.tiktok} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
+    `[${showId}]   X=${fetchResult.rawCounts.twitter} TikTok=${fetchResult.rawCounts.tiktok} IG=${fetchResult.rawCounts.instagram} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
   );
 
   if (fetchResult.errors.length > 0) {
