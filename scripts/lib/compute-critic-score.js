@@ -103,9 +103,13 @@ function computeCriticScore(showReviews, outletRegistry = {}) {
     const tier = isTopCritic ? 1 : (overrideTier || registryTier || DEFAULT_TIER);
     const tierWeight = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
 
-    // Determine score (same priority as engine.ts)
+    // Determine score. assignedScore is the canonical scoring output written by
+    // scripts/rebuild-all-reviews.js (via getBestScore in scripts/lib/rebuild-helpers.js),
+    // which is the single source of truth for per-review scoring including LLM
+    // calibration. There is intentionally no llmScore fallback here: reviews.json
+    // does not carry an llmScore object, and any future change that adds one would
+    // silently bypass calibration if a fallback existed.
     let score = review.assignedScore;
-    if (score == null && review.llmScore?.score != null) score = review.llmScore.score;
     if (score == null) continue; // Skip unscored reviews
 
     scoredCount++;

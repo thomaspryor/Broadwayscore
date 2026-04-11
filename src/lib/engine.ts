@@ -100,13 +100,6 @@ export interface RawReview {
   quote?: string;                  // Direct quote from the review
   summary?: string;                // Third-person summary of the review
   pullQuote?: string;              // Legacy field - use quote/summary instead
-  // LLM-generated score
-  llmScore?: {
-    score: number;
-    confidence?: string;
-    bucket?: string;
-    thumb?: string;
-  };
   // Scoring confidence metadata (from rebuild)
   scoreSource?: string;        // llmScore, llmScore-lowconf, llmScore-thumb-boosted, originalScore-priority0, human-review, thumb, bwwScore-fallback
   contentTier?: string;        // complete, truncated, excerpt, stub, invalid
@@ -364,17 +357,18 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
     const tier = isTopCritic ? 1 : outletConfig.tier;
     const tierWeight = TIER_WEIGHTS[tier];
 
-    // Determine the review score
-    // Priority: assignedScore > llmScore > originalRating > bucket > thumb
+    // Determine the review score.
+    // assignedScore is the canonical scoring output from scripts/rebuild-all-reviews.js
+    // (via getBestScore in scripts/lib/rebuild-helpers.js), which is the single source
+    // of truth for per-review scoring including LLM calibration. There is intentionally
+    // no llmScore fallback here: reviews.json does not carry an llmScore object, and
+    // any future change that adds one would silently bypass calibration.
     let assignedScore: number;
     let bucketScore: number | undefined;
     let thumbScore: number | undefined;
 
     if (review.assignedScore !== undefined) {
       assignedScore = review.assignedScore;
-    } else if (review.llmScore?.score !== undefined) {
-      // Use LLM-generated score if available
-      assignedScore = review.llmScore.score;
     } else if (review.originalRating) {
       const parsed = parseOriginalRating(review.originalRating);
       assignedScore = parsed ?? 50;

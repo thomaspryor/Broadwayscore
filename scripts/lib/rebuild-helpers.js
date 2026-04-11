@@ -9,6 +9,7 @@ const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIE
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
+const { maybeCalibrate } = require('../llm-scoring/score-calibration');
 
 // ===================================================
 // TEXT CLEANING
@@ -428,6 +429,12 @@ function getBestScore(data, opts = {}) {
           // second is a sidebar related article. 33/33 recollections matched.
         ]);
         const isHighReliability = !LOW_RELIABILITY_EXTRACTION.has(data.scoreSource);
+        // RAW-vs-RAW comparison: this 25-point bucket-jump guard decides whether
+        // to TRUST the LLM over a low-reliability star extraction. The decision
+        // must be made on the raw LLM score, BEFORE calibration, so the threshold
+        // semantics match the historical behavior the guard was tuned for.
+        // Calibration via maybeCalibrate() is applied only at the very last step,
+        // when we actually return below.
         if (llm && llmConf !== 'low' && Math.abs(parsed - llm) > 25) {
           const parsedBucket = parsed >= 70 ? 'positive' : parsed <= 40 ? 'negative' : 'mixed';
           const llmBucket = llm >= 70 ? 'positive' : llm <= 40 ? 'negative' : 'mixed';
@@ -441,7 +448,7 @@ function getBestScore(data, opts = {}) {
             // published rating and must be kept.
             if (llmConf === 'high' && !isHighReliability) {
               inc('originalScoreOverriddenByLLM');
-              return { score: llm, source: 'llmScore-override-star-conflict' };
+              return { score: maybeCalibrate(llm), source: 'llmScore-override-star-conflict' };
             }
           }
         }
@@ -467,7 +474,7 @@ function getBestScore(data, opts = {}) {
       if (!hasEnsemble) {
         inc('blockedSingleModel');
       } else {
-        return { score: data.llmScore.score, source: 'llmScore' };
+        return { score: maybeCalibrate(data.llmScore.score), source: 'llmScore' };
       }
     }
   }
@@ -510,7 +517,7 @@ function getBestScore(data, opts = {}) {
 
     if (agreeing > 0 && disagreeing === 0) {
       inc('thumbValidatedLlm');
-      return { score: llmScore, source: agreeing >= 2 ? 'llmScore-thumb-validated' : 'llmScore-thumb-boosted' };
+      return { score: maybeCalibrate(llmScore), source: agreeing >= 2 ? 'llmScore-thumb-validated' : 'llmScore-thumb-boosted' };
     }
 
     if (disagreeing > 0 && agreeing === 0) {
@@ -540,9 +547,9 @@ function getBestScore(data, opts = {}) {
     if (!hasEnsemble) {
       inc('blockedSingleModel');
     } else if (confidence === 'low' || isExcerptOnly) {
-      return { score: data.llmScore.score, source: 'llmScore-lowconf' };
+      return { score: maybeCalibrate(data.llmScore.score), source: 'llmScore-lowconf' };
     } else if (needsReview) {
-      return { score: data.llmScore.score, source: 'llmScore-review' };
+      return { score: maybeCalibrate(data.llmScore.score), source: 'llmScore-review' };
     }
   }
 
