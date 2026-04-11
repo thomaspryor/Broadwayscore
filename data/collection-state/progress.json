@@ -44,7 +44,8 @@
     "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
     "the-peewee-herman-show-2010/theatermania--unknown.json",
     "fences-2010/wsj--christopher-john-farley.json",
-    "million-dollar-quartet-2010/theatermania--unknown.json"
+    "million-dollar-quartet-2010/theatermania--unknown.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "death-of-a-salesman-2026/talkinbroadway--howard-miller.json",
@@ -403,7 +404,16 @@
     "a-behanding-in-spokane-2010/backstage--david-sheward.json",
     "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
     "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
-    "race-2009/theatermania--charles-isherwood.json"
+    "race-2009/theatermania--charles-isherwood.json",
+    "fela-2009/new-jersey-newsroom--michael-sommers.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+    "the-royal-family-2009/washpost--peter-marks.json",
+    "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "9-to-5-2009/wsj--terry-teachout.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -433,7 +443,8 @@
       "the-lyons-2012/theatermania--dan-bacalzo.json",
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
-      "million-dollar-quartet-2010/theatermania--unknown.json"
+      "million-dollar-quartet-2010/theatermania--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -460,7 +471,8 @@
     ],
     "archiveToday": [
       "data/review-texts/death-of-a-salesman-2026/talkinbroadway--howard-miller.json",
-      "data/review-texts/1984-2017/chicagotribune--chris-jones-bway.json"
+      "data/review-texts/1984-2017/chicagotribune--chris-jones-bway.json",
+      "data/review-texts/9-to-5-2009/wsj--terry-teachout.json"
     ],
     "archive": [
       "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
@@ -469,7 +481,7 @@
     ]
   },
   "startTime": "2026-04-11T01:57:10.377Z",
-  "lastProcessed": "race-2009/theatermania--charles-isherwood.json",
+  "lastProcessed": "waiting-for-godot-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-11T03:16:48.340Z",
@@ -479,6 +491,28 @@
     },
     {
       "t": "2026-04-11T03:16:48.754Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T03:18:56.858Z",
+      "event": "bb-session",
+      "session": "b6c96db6",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-11T03:18:57.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T03:23:49.900Z",
+      "event": "bb-session",
+      "session": "6811ad90",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
+    },
+    {
+      "t": "2026-04-11T03:23:50.334Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
