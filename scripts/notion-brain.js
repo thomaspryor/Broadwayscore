@@ -212,9 +212,25 @@ function validateCardNotes({ notes, status, force, context }) {
   return { ok: true };
 }
 
-function truncateRichText(text, limit = 2000) {
-  if (text.length <= limit) return text;
-  return text.slice(0, limit - 20) + '\n\n[...truncated]';
+// Notion rich_text property values have a hard total cap of ~2000 characters.
+// Empirically verified 2026-04-11: splitting across multiple rich_text objects
+// does NOT work — Notion accepts the API call but silently keeps only ~2000
+// chars of the first object. For genuinely long content, use page children
+// (block body) instead of the property — that's a backlog card, not shipped yet.
+//
+// When truncation happens here, we print a LOUD stderr warning so sessions
+// know they're losing data instead of silently shipping incomplete cards.
+function truncateRichText(text, limit = 2000, fieldName = 'content') {
+  const s = String(text || '');
+  if (s.length <= limit) return s;
+  const lost = s.length - limit + 20;
+  console.error(
+    `⚠️  TRUNCATION WARNING: ${fieldName} was ${s.length} chars; Notion caps ` +
+    `rich_text at ~${limit}. Truncated; ~${lost} chars LOST. ` +
+    `To preserve full content, split across multiple fields or write to a file ` +
+    `referenced in the card. (See backlog: "Overflow long notes/outcome to page children".)`
+  );
+  return s.slice(0, limit - 20) + '\n\n[...truncated]';
 }
 
 // ── Commands ────────────────────────────────────────────────────────────
@@ -274,7 +290,7 @@ async function createCard(args) {
 
   if (args.notes) {
     properties.Notes = {
-      rich_text: [{ text: { content: truncateRichText(args.notes) } }],
+      rich_text: [{ text: { content: truncateRichText(args.notes, 2000, 'notes') } }],
     };
   }
 
@@ -321,7 +337,7 @@ async function updateCard(args) {
 
   if (args.notes) {
     properties.Notes = {
-      rich_text: [{ text: { content: truncateRichText(args.notes) } }],
+      rich_text: [{ text: { content: truncateRichText(args.notes, 2000, 'notes') } }],
     };
   }
 
@@ -342,13 +358,13 @@ async function updateCard(args) {
     }
 
     properties.Outcome = {
-      rich_text: [{ text: { content: truncateRichText(outcomeText) } }],
+      rich_text: [{ text: { content: truncateRichText(outcomeText, 2000, 'outcome') } }],
     };
   }
 
   if (args['key-files']) {
     properties['Key Files'] = {
-      rich_text: [{ text: { content: truncateRichText(args['key-files']) } }],
+      rich_text: [{ text: { content: truncateRichText(args['key-files'], 2000, 'key-files') } }],
     };
   }
 
@@ -375,6 +391,14 @@ async function updateCard(args) {
 
 async function searchCards(args) {
   const filters = [];
+
+  // Treat the positional arg as a text query if no --text was provided.
+  // Previously `notion-brain search "Hook:"` silently returned all cards
+  // because the positional argument was ignored. Now it's auto-mapped to
+  // --text. Explicit --text still wins if both are given.
+  if (!args.text && args._positional[1]) {
+    args.text = args._positional[1];
+  }
 
   if (args.status) {
     filters.push({
