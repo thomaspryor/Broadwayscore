@@ -26,6 +26,7 @@ const {
   postJSON, buildBroadcastOpeningNightHtml, buildUnsubscribeUrl,
 } = require('./lib/email-templates');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { checkPreviewDedup } = require('./lib/preview-dedup');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
@@ -321,23 +322,27 @@ async function main() {
   }
 
   if (SEND_TO) {
-    // Preview mode: send single transactional email (with custom unsubscribe link)
-    // Dedup: skip if we already previewed this show combination today with the same review count.
-    // Re-send if 3+ more reviews have been scored since last preview (meaningful new data).
-    const today = new Date().toISOString().slice(0, 10);
-    const previewKey = `preview:${broadcastKey}:${today}`;
+    // Preview mode: send single transactional email (with custom unsubscribe link).
+    //
+    // Dedup lives in scripts/lib/preview-dedup.js — scans every tracked
+    // preview:{market}:{showId}:* entry, picks the most recent, applies a rolling
+    // 24h window + 3-new-review threshold. Previously this was a UTC-date-keyed
+    // lookup that double-sent at UTC rollover (incident 2026-04-11 02:09 UTC —
+    // 10:09 PM ET — a second preview re-sent because its key was
+    // ...:2026-04-11 instead of ...:2026-04-10).
     const currentReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
-    const previousPreview = sentData.shows[previewKey];
-    if (previousPreview?.sentAt) {
-      const previousReviewCount = previousPreview.reviewCount || 0;
-      const newReviews = currentReviewCount - previousReviewCount;
-      if (newReviews < 3) {
-        console.log(`\nPreview already sent today for this show combination — skipping`);
-        console.log(`  Previous preview: ${previousPreview.sentAt} (${previousReviewCount} reviews)`);
-        console.log(`  Current: ${currentReviewCount} reviews (+${newReviews}, need +3 to re-send)`);
-        process.exit(0);
-      }
-      console.log(`\nRe-sending preview — ${newReviews} new reviews since last preview (${previousReviewCount} → ${currentReviewCount})`);
+    const dedup = checkPreviewDedup(sentData, broadcastKey, currentReviewCount);
+
+    if (dedup.action === 'skip') {
+      const prev = dedup.lastPreview;
+      console.log(`\nPreview already sent ${dedup.hoursSince.toFixed(1)}h ago for this show combination — skipping`);
+      console.log(`  Previous preview: ${prev.sentAt} (${prev.reviewCount || 0} reviews, sent to ${prev.previewTo || 'unknown'})`);
+      console.log(`  Current: ${currentReviewCount} reviews (+${dedup.newReviews}, need +3 to re-send within 24h)`);
+      process.exit(0);
+    }
+    if (dedup.action === 'resend') {
+      const prev = dedup.lastPreview;
+      console.log(`\nRe-sending preview — ${dedup.newReviews} new reviews since last preview ${dedup.hoursSince.toFixed(1)}h ago (${prev.reviewCount || 0} → ${currentReviewCount})`);
     }
 
     console.log(`\nSending preview to ${SEND_TO}...`);
