@@ -181,7 +181,12 @@ jobs:
             cat /tmp/readiness_log
             echo 'blocked=true' >> $GITHUB_OUTPUT
             echo 'ready_shows=' >> $GITHUB_OUTPUT
-            exit 0
+            # Exit 1 (not 0) so the job fails and notify-failure fires.
+            # Otherwise blocked=true silently short-circuits everything downstream
+            # and a persistently broken gate would prevent broadcasts forever
+            # without alerting. The legitimate "no shows ready" case (line ~190)
+            # uses exit 0 and is unaffected.
+            exit 1
           }
           cat /tmp/readiness_log
           READY_SHOWS=$(cat /tmp/ready_shows)
@@ -252,9 +257,32 @@ jobs:
           if [ -z "$PENDING" ]; then
             echo "All shows already broadcast"
             echo "pending_shows=" >> $GITHUB_OUTPUT
+            echo "broadway=" >> $GITHUB_OUTPUT
+            echo "westend=" >> $GITHUB_OUTPUT
           else
             echo "Pending shows: $PENDING"
             echo "pending_shows=$PENDING" >> $GITHUB_OUTPUT
+
+            # Split PENDING (post-readiness-gate) by market for the broadcast/push steps.
+            # CRITICAL: must derive from PENDING — not from steps.find.outputs.{broadway,westend} —
+            # otherwise shows that failed the workflow's stricter 15-review readiness gate
+            # would still get broadcast via the script's looser internal MIN_REVIEWS=8 (WE).
+            node -e "
+              const shows = require('./data/shows.json').shows;
+              const ids = '$PENDING'.split(',');
+              const broadway = [], westend = [];
+              for (const id of ids) {
+                const s = shows.find(x => x.id === id);
+                if (s && s.category === 'west-end') westend.push(id);
+                else if (!s || !s.category || s.category === 'broadway') broadway.push(id);
+              }
+              if (broadway.length) console.log('broadway=' + broadway.join(','));
+              else console.log('broadway=');
+              if (westend.length) console.log('westend=' + westend.join(','));
+              else console.log('westend=');
+            " | while IFS= read -r line; do
+              echo "$line" >> $GITHUB_OUTPUT
+            done
           fi
 
       - uses: actions/setup-node@v4
@@ -322,10 +350,13 @@ jobs:
 
           SENT="false"
 
-          # Broadway draft (skip if no Broadway shows)
-          if [ -n "${{ steps.find.outputs.broadway }}" ]; then
+          # Broadway draft (skip if no Broadway shows passed the readiness gate).
+          # Uses steps.check.outputs.broadway (post-gate filtered), NOT steps.find.outputs.broadway.
+          # Passing --shows=ID,ID restricts the script to the exact ready set so its looser
+          # internal MIN_REVIEWS threshold can't bypass the workflow's stricter gate.
+          if [ -n "${{ steps.check.outputs.broadway }}" ]; then
             echo "--- Broadway draft ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=broadway --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=broadway --lookback=$LOOKBACK --shows="${{ steps.check.outputs.broadway }}" $SEND_TO_FLAG 2>&1) || true
             echo "$OUTPUT"
             if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
               SENT="true"
@@ -334,10 +365,10 @@ jobs:
             echo "No Broadway shows to draft"
           fi
 
-          # West End draft (skip if no WE shows)
-          if [ -n "${{ steps.find.outputs.westend }}" ]; then
+          # West End draft (skip if no WE shows passed the readiness gate)
+          if [ -n "${{ steps.check.outputs.westend }}" ]; then
             echo "--- West End draft ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=west-end --lookback=$LOOKBACK $SEND_TO_FLAG 2>&1) || true
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=west-end --lookback=$LOOKBACK --shows="${{ steps.check.outputs.westend }}" $SEND_TO_FLAG 2>&1) || true
             echo "$OUTPUT"
             if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
               SENT="true"
@@ -486,13 +517,14 @@ jobs:
           fi
 
       - name: Send push notifications (mobile app)
-        if: steps.check.outputs.pending_shows != '' && steps.find.outputs.broadway != ''
+        if: steps.check.outputs.broadway != ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          # Dispatch push notification to mobile app for each Broadway show
-          IFS=',' read -ra SHOW_IDS <<< "${{ steps.find.outputs.broadway }}"
+          # Dispatch push notification to mobile app for each Broadway show that
+          # actually broadcast (post-readiness-gate set, NOT steps.find.outputs.broadway).
+          IFS=',' read -ra SHOW_IDS <<< "${{ steps.check.outputs.broadway }}"
           for SHOW_ID in "${SHOW_IDS[@]}"; do
             # Look up slug and title from shows.json
             SHOW_INFO=$(node -e "

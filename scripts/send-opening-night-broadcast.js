@@ -35,6 +35,13 @@ const MARKET_ARG = process.argv.find(a => a.startsWith('--market='));
 const MARKET = MARKET_ARG ? MARKET_ARG.split('=')[1] : 'broadway'; // 'broadway' or 'west-end'
 const SEND_TO_ARG = process.argv.find(a => a.startsWith('--send-to='));
 const SEND_TO = SEND_TO_ARG ? SEND_TO_ARG.split('=')[1] : null; // Preview mode: send to single email only
+// --shows=ID1,ID2,... — restrict broadcast to this exact set of show IDs.
+// Used by opening-night-broadcast.yml to enforce its readiness gate (15+ reviews) which is
+// stricter than this script's internal MIN_REVIEWS. Without this allow-list, a workflow run
+// triggered for one ready show would re-discover and broadcast every other recently-opened
+// show in the same market that meets only the looser internal threshold.
+const SHOWS_ARG = process.argv.find(a => a.startsWith('--shows='));
+const ALLOWED_SHOW_IDS = SHOWS_ARG ? new Set(SHOWS_ARG.split('=')[1].split(',').map(s => s.trim()).filter(Boolean)) : null;
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -157,10 +164,22 @@ async function main() {
   }
 
   // Find recently opened shows
-  const recentlyOpened = findRecentlyOpenedShows(showsList, LOOKBACK_DAYS);
+  let recentlyOpened = findRecentlyOpenedShows(showsList, LOOKBACK_DAYS);
   if (recentlyOpened.length === 0) {
     console.log('No recently opened shows — nothing to broadcast');
     process.exit(0);
+  }
+
+  // Apply --shows allow-list (if provided). The workflow uses this to enforce its
+  // stricter readiness gate (15+ scored reviews) — see SHOWS_ARG comment above.
+  if (ALLOWED_SHOW_IDS) {
+    const before = recentlyOpened.length;
+    recentlyOpened = recentlyOpened.filter(s => ALLOWED_SHOW_IDS.has(s.id || s.slug));
+    console.log(`--shows allow-list: ${recentlyOpened.length}/${before} shows passed (allowed: ${[...ALLOWED_SHOW_IDS].join(',')})`);
+    if (recentlyOpened.length === 0) {
+      console.log('No allowed shows match recently opened set — nothing to broadcast');
+      process.exit(0);
+    }
   }
 
   console.log(`Found ${recentlyOpened.length} recently opened show(s):`);
