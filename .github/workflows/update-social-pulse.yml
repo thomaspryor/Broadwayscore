@@ -110,17 +110,27 @@ jobs:
 
           bash scripts/lib/push-with-retry.sh 5 main
 
-      - name: Weekly smoke test — verify 3 known-high-volume shows have data
+      - name: Weekly smoke test — verify known-high-volume shows have data
         if: inputs.dry_run != 'true' && inputs.show == ''
         run: |
           set -euo pipefail
-          # Canary: if these 3 buzzy shows all got 0 mentions, something broke
-          # even if the overall health check passed. These are Tony contenders
-          # / long-runners expected to have double-digit mentions every week.
+          # Canary: if these high-buzz shows all got 0 mentions, something
+          # broke even if the overall health check passed. Mix of Broadway
+          # AND West End so a market-specific scraper failure can't go
+          # undetected. Each one is a long-runner / Tony contender expected
+          # to have double-digit mentions every week.
+          # First-run baseline volumes (2026-04-11): MHE=118, Hamilton=109,
+          # Hamilton WE=84, Hadestown WE=115, Cabaret KKC=124. The previous
+          # canary "wicked-west-end-2006" was missing from the running list
+          # — replaced with these confirmed live entries.
           CANARIES=(
+            # Broadway
             "maybe-happy-ending-2024"
             "hamilton-2015"
-            "wicked-west-end-2006"
+            # West End
+            "hamilton-west-end-2021"
+            "hadestown-west-end-2024"
+            "cabaret-at-the-kit-kat-club-west-end-2021"
           )
           FAILED=0
           for id in "${CANARIES[@]}"; do
@@ -135,7 +145,10 @@ jobs:
               FAILED=$((FAILED + 1))
             fi
           done
-          if [ "$FAILED" -ge 2 ]; then
+          # Threshold: majority of canaries must fail before we ring the
+          # alarm. With 5 canaries, ≥3 failures = scrapers likely broken
+          # (1 missing file is normal, 2 might be transient, 3+ is real).
+          if [ "$FAILED" -ge 3 ]; then
             echo "::error::$FAILED of ${#CANARIES[@]} canary shows returned 0 mentions — scrapers likely broken"
             exit 1
           fi
