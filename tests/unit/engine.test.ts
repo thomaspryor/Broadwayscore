@@ -110,21 +110,13 @@ describe('computeCriticScore', () => {
     assert.strictEqual(result.weightedScore, expected);
   });
 
-  test('llmScore used when no assignedScore', () => {
-    const result = computeCriticScore([
-      makeReview({ llmScore: { score: 72, confidence: 'high', bucket: 'Positive' } }),
-    ]);
-    assert.ok(result);
-    assert.strictEqual(result.reviews[0].reviewScore, 72);
-  });
-
-  test('assignedScore takes priority over llmScore', () => {
-    const result = computeCriticScore([
-      makeReview({ assignedScore: 85, llmScore: { score: 72 } }),
-    ]);
-    assert.ok(result);
-    assert.strictEqual(result.reviews[0].reviewScore, 85);
-  });
+  // NOTE: `llmScore` fallback was removed from RawReview and computeCriticScore
+  // in commit 3c11ddd675 (Phase A LLM calibration curve). assignedScore is now
+  // the single source of truth — rebuild-all-reviews.js writes the calibrated
+  // LLM score directly into assignedScore via getBestScore(), so there is no
+  // runtime code path that reads llmScore. The two tests that lived here
+  // asserting llmScore fallback behavior have been deleted because the
+  // behavior they covered no longer exists.
 
   test('originalRating letter grade parsed correctly', () => {
     const result = computeCriticScore([
