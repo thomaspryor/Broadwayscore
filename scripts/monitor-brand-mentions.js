@@ -2,19 +2,22 @@
 /**
  * monitor-brand-mentions.js
  *
- * Fetches new mentions of "broadwayscorecard" from free sources (Reddit,
- * HN, Bluesky), filters owner self-posts, dedups against state, and
- * persists. In dry-run mode, prints what would happen without writing.
+ * Fetches new mentions of "broadwayscorecard" from all configured sources
+ * (Reddit, HN, Bluesky, X via SERP, Google web SERP, Google News SERP),
+ * filters owner self-posts, dedups against state, drafts responses via
+ * Claude Sonnet, and persists.
  *
- * This is the "fetch + filter + dedup" half of the brand mention monitor.
- * A separate /schedule remote Claude agent (see memory/plan-brand-mention-monitor.md)
- * will read the state file and handle drafting + Buffer/Notion/Discord
- * dispatch using MCP tools.
+ * A separate /schedule remote Claude agent reads the state file and
+ * dispatches to Buffer / Notion / Discord via MCP. This script itself
+ * runs pure Node + HTTP, so it can be called from any context (CI,
+ * remote agent, local CLI).
  *
  * Usage:
- *   node scripts/monitor-brand-mentions.js --dry-run    # fetch, print, no writes
- *   node scripts/monitor-brand-mentions.js              # fetch + write state
- *   node scripts/monitor-brand-mentions.js --verbose    # extra logging
+ *   node scripts/monitor-brand-mentions.js --dry-run            # fetch, print, no writes
+ *   node scripts/monitor-brand-mentions.js --dry-run --verbose  # extra logging
+ *   node scripts/monitor-brand-mentions.js                      # fetch + draft + write state
+ *   node scripts/monitor-brand-mentions.js --free-only          # skip paid SERP sources
+ *   node scripts/monitor-brand-mentions.js --no-draft           # skip drafter (fetch/dedup only)
  *
  * Exit codes:
  *   0 - success (0+ new mentions)
@@ -29,16 +32,98 @@ const fs = require('fs');
 const path = require('path');
 
 const { fetchFreeSources, DEFAULT_KEYWORDS } = require('./lib/brand-mention-sources');
+const { fetchPaidSources } = require('./lib/brand-mention-serp');
 const { filterOwnerAccounts } = require('./lib/owner-accounts');
+const { draftMentions } = require('./lib/brand-mention-drafter');
+
+// Discord notifier is lazy-loaded because it pulls in https/http
+// and we want the module to work in environments without it.
+let _sendAlert = null;
+function getSendAlert() {
+  if (_sendAlert === null) {
+    try {
+      _sendAlert = require('./lib/discord-notify').sendAlert;
+    } catch (e) {
+      _sendAlert = false;
+      console.warn(`[monitor] discord-notify unavailable: ${e.message}`);
+    }
+  }
+  return _sendAlert || null;
+}
 
 // ── Config ────────────────────────────────────────────────────────────────
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
+const FREE_ONLY = process.argv.includes('--free-only');
+const NO_DRAFT = process.argv.includes('--no-draft');
+const NO_DISPATCH = process.argv.includes('--no-dispatch');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const STATE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'brand-mentions.json');
 const MAX_MENTIONS = 500;
+
+// ── Discord dispatch ──────────────────────────────────────────────────────
+
+const SENTIMENT_EMOJI = {
+  positive: '👍',
+  neutral: '🔍',
+  negative: '⚠️',
+  hostile: '🚨',
+};
+
+const SENTIMENT_SEVERITY = {
+  positive: 'info',
+  neutral: 'info',
+  negative: 'warning',
+  hostile: 'error',
+};
+
+async function dispatchToDiscord(mention, verdict) {
+  const sendAlert = getSendAlert();
+  if (!sendAlert) return { dispatched: false, reason: 'discord-notify unavailable' };
+  if (!process.env.DISCORD_WEBHOOK_ALERTS) {
+    return { dispatched: false, reason: 'DISCORD_WEBHOOK_ALERTS not set' };
+  }
+
+  const sentiment = (verdict && verdict.sentiment) || 'neutral';
+  const severity = SENTIMENT_SEVERITY[sentiment] || 'info';
+  const emoji = SENTIMENT_EMOJI[sentiment] || '🔍';
+
+  const title = `${emoji} ${mention.source.toUpperCase()} — ${mention.author || 'unknown'}`;
+  const description = (mention.title || '').slice(0, 200) || '(no title)';
+
+  const fields = [
+    { name: 'Sentiment', value: sentiment, inline: true },
+    { name: 'Respond?', value: verdict && verdict.shouldRespond ? '✏️ yes' : '· no', inline: true },
+    { name: 'Confidence', value: (verdict && verdict.confidence) || '—', inline: true },
+  ];
+
+  if (verdict && verdict.reason) {
+    fields.push({ name: 'Reason', value: verdict.reason.slice(0, 500), inline: false });
+  }
+  if (verdict && verdict.draftResponse) {
+    fields.push({ name: 'Draft', value: verdict.draftResponse.slice(0, 1000), inline: false });
+  }
+  if (mention.excerpt) {
+    fields.push({ name: 'Excerpt', value: mention.excerpt.slice(0, 500), inline: false });
+  }
+
+  try {
+    await sendAlert({
+      title,
+      description,
+      severity,
+      fields,
+      url: mention.url,
+      email: false,
+    });
+    return { dispatched: true };
+  } catch (e) {
+    console.warn(`[monitor] Discord dispatch failed: ${e.message}`);
+    return { dispatched: false, reason: e.message };
+  }
+}
 
 // ── State helpers ─────────────────────────────────────────────────────────
 
@@ -77,9 +162,16 @@ async function main() {
   const beforeCount = state.mentions.length;
   console.log(`[monitor] loaded state: ${beforeCount} mentions, ${Object.keys(state.seenIds).length} seen IDs, lastRun=${state.lastRunAt || 'never'}`);
 
-  // 1. Fetch from free sources
+  // 1. Fetch from all sources (free + paid in parallel)
   const fetchStart = Date.now();
-  const { mentions: fetched, counts } = await fetchFreeSources(DEFAULT_KEYWORDS);
+  const [freeRes, paidRes] = await Promise.all([
+    fetchFreeSources(DEFAULT_KEYWORDS),
+    FREE_ONLY
+      ? Promise.resolve({ mentions: [], counts: { x: 0, google: 0, news: 0 } })
+      : fetchPaidSources(DEFAULT_KEYWORDS, { verbose: VERBOSE }),
+  ]);
+  const fetched = [...freeRes.mentions, ...paidRes.mentions];
+  const counts = { ...freeRes.counts, ...paidRes.counts };
   const fetchMs = Date.now() - fetchStart;
   console.log(`[monitor] fetched ${fetched.length} candidates in ${fetchMs}ms`);
   console.log(`[monitor]   by source: ${JSON.stringify(counts)}`);
@@ -109,14 +201,35 @@ async function main() {
   }
   console.log(`[monitor] dedup: ${newMentions.length} NEW mentions (${organic.length - newMentions.length} already seen)`);
 
-  // 4. Report
+  // 4. Draft responses for each new mention (skippable via --no-draft)
+  let draftedPairs = [];
   if (newMentions.length === 0) {
     console.log('[monitor] ✓ no new third-party mentions this run');
-  } else {
-    console.log(`[monitor] 🔔 ${newMentions.length} new mention(s):`);
+  } else if (NO_DRAFT || !process.env.ANTHROPIC_API_KEY) {
+    console.log(`[monitor] 🔔 ${newMentions.length} new mention(s) — drafter skipped (${NO_DRAFT ? '--no-draft' : 'no ANTHROPIC_API_KEY'}):`);
     for (const m of newMentions) {
       console.log(`  [${m.source}] ${m.author ? '/u/' + m.author + ' | ' : ''}${(m.title || '').slice(0, 100)}`);
       console.log(`         ${m.url}`);
+    }
+    draftedPairs = newMentions.map((m) => ({ mention: m, verdict: null }));
+  } else {
+    console.log(`[monitor] 🔔 ${newMentions.length} new mention(s) — drafting responses via Claude Sonnet...`);
+    const draftStart = Date.now();
+    draftedPairs = await draftMentions(newMentions, { verbose: VERBOSE });
+    console.log(`[monitor] drafter done in ${Date.now() - draftStart}ms`);
+
+    for (const { mention: m, verdict } of draftedPairs) {
+      const icon = verdict.shouldRespond ? '✏️' : '·';
+      console.log(`  ${icon} [${m.source}] ${m.author ? '/u/' + m.author + ' | ' : ''}${(m.title || '').slice(0, 80)}`);
+      console.log(`         ${m.url}`);
+      console.log(`         sentiment=${verdict.sentiment} respond=${verdict.shouldRespond} confidence=${verdict.confidence}`);
+      if (verdict.reason) console.log(`         reason: ${verdict.reason}`);
+      if (verdict.draftResponse) {
+        const preview = verdict.draftResponse.length > 200
+          ? verdict.draftResponse.slice(0, 200) + '...'
+          : verdict.draftResponse;
+        console.log(`         draft: ${preview}`);
+      }
     }
   }
 
@@ -124,12 +237,43 @@ async function main() {
   if (DRY_RUN) {
     console.log('[monitor] DRY RUN — not writing state');
     console.log(`[monitor] would add ${newMentions.length} mentions, update lastRunAt to ${new Date().toISOString()}`);
-    return { newCount: newMentions.length, dropped: dropped.length, totalFetched: fetched.length };
+    return {
+      newCount: newMentions.length,
+      dropped: dropped.length,
+      totalFetched: fetched.length,
+      drafted: draftedPairs.filter((p) => p.verdict && p.verdict.shouldRespond).length,
+    };
   }
 
-  for (const m of newMentions) {
+  // 6. Dispatch to Discord (unless --no-dispatch or no webhook)
+  let dispatchedCount = 0;
+  if (NO_DISPATCH) {
+    console.log('[monitor] --no-dispatch set, skipping Discord');
+  } else if (!process.env.DISCORD_WEBHOOK_ALERTS) {
+    console.log('[monitor] DISCORD_WEBHOOK_ALERTS not set, skipping Discord dispatch');
+  } else {
+    console.log('[monitor] dispatching new mentions to Discord...');
+    for (const { mention: m, verdict } of draftedPairs) {
+      const result = await dispatchToDiscord(m, verdict);
+      if (result.dispatched) dispatchedCount++;
+      else if (VERBOSE) console.log(`  [discord] skipped ${m.id}: ${result.reason}`);
+    }
+    console.log(`[monitor] dispatched ${dispatchedCount}/${draftedPairs.length} to Discord`);
+  }
+
+  // 7. Persist
+  for (const { mention: m, verdict } of draftedPairs) {
     state.seenIds[m.id] = true;
-    state.mentions.push({ ...m, status: 'new' });
+    state.mentions.push({
+      ...m,
+      status: 'new',
+      sentiment: verdict ? verdict.sentiment : 'neutral',
+      shouldRespond: verdict ? verdict.shouldRespond : false,
+      confidence: verdict ? verdict.confidence : null,
+      draftReason: verdict ? verdict.reason : null,
+      draftResponse: verdict ? verdict.draftResponse : null,
+      dispatched: dispatchedCount > 0 ? new Date().toISOString() : null,
+    });
   }
 
   // Cap rolling window

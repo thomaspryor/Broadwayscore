@@ -23,14 +23,43 @@
  * All entries are lowercased for case-insensitive matching.
  */
 const OWNER_ACCOUNTS = {
-  reddit: ['thomaspryor', 'thepinkmusical', 'broadwayscorecard'],
-  x: ['broadwayscorecard', 'thomaspryor', 'thepinkmusical'],
-  bluesky: ['broadwayscorecard.bsky.social', 'thomaspryor.bsky.social'],
+  reddit: ['thomaspryor', 'thepinkmusical', 'broadwayscorecard', 'bwayscorecard'],
+  x: ['broadwayscorecard', 'bwayscorecard', 'thomaspryor', 'thepinkmusical'],
+  bluesky: ['broadwayscorecard.bsky.social', 'bwayscorecard.bsky.social', 'thomaspryor.bsky.social'],
   hn: ['thomaspryor', 'thepinkmusical'],
   github: ['thomaspryor'],
+  instagram: ['bwayscorecard', 'broadwayscorecard', 'thomaspryor'],
   // Safety net — matched on every platform in addition to the platform-specific list
-  generic: ['broadwayscorecard', 'thomaspryor', 'thepinkmusical'],
+  generic: ['broadwayscorecard', 'bwayscorecard', 'thomaspryor', 'thepinkmusical'],
 };
+
+/**
+ * Owner-controlled URL patterns. Some SERP results (Instagram posts,
+ * GitHub issues) don't surface an author field — so we filter by URL
+ * path as a second safety net.
+ */
+// NOTE: Instagram post URLs (/p/POSTID/) don't surface the author in the
+// path, so we cannot filter Instagram POSTS by URL alone. We filter the
+// *profile* URL pattern only (instagram.com/bwayscorecard/…). If Instagram
+// becomes a significant signal source, we'll need a scraper that resolves
+// the post's owner handle. For now, non-profile Instagram URLs fall through
+// to the content-based keyword check and are evaluated by the drafter.
+const OWNER_URL_PATTERNS = [
+  /^https?:\/\/(?:www\.)?instagram\.com\/(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
+  /^https?:\/\/(?:www\.)?broadwayscorecard\.com(?:\/|$)/i,
+  /^https?:\/\/github\.com\/thomaspryor\/Broadwayscore(?:\/|$)/i,
+  /^https?:\/\/bsky\.app\/profile\/(?:broadwayscorecard|bwayscorecard|thomaspryor)/i,
+  /^https?:\/\/x\.com\/(?:broadwayscorecard|bwayscorecard|thepinkmusical|thomaspryor)(?:\/|$)/i,
+  /^https?:\/\/twitter\.com\/(?:broadwayscorecard|bwayscorecard|thepinkmusical|thomaspryor)(?:\/|$)/i,
+];
+
+/**
+ * Test if a URL belongs to an owner-controlled account/site.
+ */
+function isOwnerUrl(url) {
+  if (!url) return false;
+  return OWNER_URL_PATTERNS.some((re) => re.test(url));
+}
 
 /**
  * Test whether a given (platform, author) pair is an owner account.
@@ -71,7 +100,7 @@ function filterOwnerAccounts(mentions) {
   const kept = [];
   const dropped = [];
   for (const m of mentions || []) {
-    if (isOwnerAccount(m.source, m.author)) {
+    if (isOwnerAccount(m.source, m.author) || isOwnerUrl(m.url)) {
       dropped.push(m);
     } else {
       kept.push(m);
@@ -82,6 +111,8 @@ function filterOwnerAccounts(mentions) {
 
 module.exports = {
   OWNER_ACCOUNTS,
+  OWNER_URL_PATTERNS,
   isOwnerAccount,
+  isOwnerUrl,
   filterOwnerAccounts,
 };

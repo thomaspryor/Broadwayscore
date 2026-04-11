@@ -1,0 +1,131 @@
+name: Brand Mention Monitor
+
+on:
+  schedule:
+    # Every 2 hours at minute 17 (avoids 0/30 hotspot)
+    - cron: '17 */2 * * *'
+
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Fetch + print, do not write state or dispatch'
+        required: false
+        default: 'false'
+        type: boolean
+      free_only:
+        description: 'Skip paid SERP sources (Reddit + HN + Bluesky only)'
+        required: false
+        default: 'false'
+        type: boolean
+      no_draft:
+        description: 'Skip Claude Sonnet drafter'
+        required: false
+        default: 'false'
+        type: boolean
+      no_dispatch:
+        description: 'Skip Discord dispatch (for test runs)'
+        required: false
+        default: 'false'
+        type: boolean
+
+concurrency:
+  group: brand-mention-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run brand mention monitor
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.free_only }}" = "true" ]; then ARGS="$ARGS --free-only"; fi
+          if [ "${{ inputs.no_draft }}" = "true" ]; then ARGS="$ARGS --no-draft"; fi
+          if [ "${{ inputs.no_dispatch }}" = "true" ]; then ARGS="$ARGS --no-dispatch"; fi
+          echo "Running: node scripts/monitor-brand-mentions.js $ARGS"
+          node scripts/monitor-brand-mentions.js $ARGS
+
+      - name: Commit state
+        if: success() && inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          if [ -f data/audit/brand-mentions.json ]; then
+            git add data/audit/brand-mentions.json
+            if ! git diff --cached --quiet; then
+              git commit -m "data: Brand mention monitor run [skip ci]"
+              bash scripts/lib/push-with-retry.sh
+            else
+              echo "No changes to brand-mentions.json"
+            fi
+          else
+            echo "No state file to commit"
+          fi
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## Brand Mention Monitor" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/audit/brand-mentions.json ]; then
+            node -e "
+              const s = require('./data/audit/brand-mentions.json');
+              const newToday = s.mentions.filter(m => {
+                if (!m.detectedAt) return false;
+                return (Date.now() - new Date(m.detectedAt).getTime()) < 24 * 60 * 60 * 1000;
+              });
+              const respondable = newToday.filter(m => m.shouldRespond);
+              console.log('**Last run:** ' + (s.lastRunAt || 'never'));
+              console.log('');
+              console.log('- Total mentions tracked: ' + s.mentions.length);
+              console.log('- New in last 24h: ' + newToday.length);
+              console.log('- Respondable (shouldRespond=true): ' + respondable.length);
+              if (respondable.length > 0) {
+                console.log('');
+                console.log('### 🔔 Respondable mentions (last 24h)');
+                respondable.slice(0, 10).forEach(m => {
+                  console.log('- [' + m.source + '] ' + (m.author ? '@' + m.author + ' — ' : '') + (m.title || '').slice(0, 100));
+                  console.log('  ' + m.url);
+                });
+              }
+            " >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No state file" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Brand Mention Monitor Failed'
+          description: 'Check run logs. The monitor failing is not critical — F5Bot + Talkwalker Alerts run in parallel as safety nets.'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
