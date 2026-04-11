@@ -5,9 +5,15 @@
     "flyby-off-west-end-2026/artsdesk--unknown.json",
     "flyby-off-west-end-2026/londontheatre1--unknown.json",
     "flyby-off-west-end-2026/south-london--unknown.json",
-    "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
+    "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+    "inter-alia-west-end-2026/timeout--caroline-mcginn.json",
+    "copenhagen-west-end-2026/times-uk--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "inter-alia-west-end-2026/new-statesman--unknown.json",
+    "inter-alia-west-end-2026/british-theatre--unknown.json",
+    "copenhagen-west-end-2026/thestage--tom-wicker.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -18,16 +24,21 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "inter-alia-west-end-2026/timeout--caroline-mcginn.json",
+      "copenhagen-west-end-2026/times-uk--unknown.json"
+    ],
     "brightdata": [
       "death-of-a-salesman-2026/variety--unknown.json",
       "lost-in-del-valle-off-broadway-2026/variety--unknown.json",
       "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/inter-alia-west-end-2026/british-theatre--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-04-11T06:37:47.882Z",
-  "lastProcessed": "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+  "lastProcessed": "copenhagen-west-end-2026/thestage--tom-wicker.json",
   "log": []
 }
