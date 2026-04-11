@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T10:33:52.161Z",
+  "timestamp": "2026-04-11T10:52:31.750Z",
   "stats": {
-    "totalReviews": 34740,
+    "totalReviews": 34739,
     "alreadyFlagged": 13924,
     "dateGuardCatches": 60,
     "directorMismatch": 933,
-    "tvFilmSignals": 3384,
+    "tvFilmSignals": 3385,
     "londonSignals": 1108,
     "offBroadwaySignals": 959,
     "yearMismatch": 71,
-    "noPublishDate": 4259
+    "noPublishDate": 4258
   },
   "findings": [
     {
@@ -38609,6 +38609,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+      "file": "variety--helen-shaw.json",
+      "score": 79,
+      "publishDate": "April 27, 2022",
+      "url": "https://variety.com/2022/legit/reviews/potus-review-play-broadway-1235253436/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
