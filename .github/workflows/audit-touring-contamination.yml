@@ -1,0 +1,153 @@
+name: Audit Touring Contamination (LLM)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode'
+        required: false
+        type: choice
+        default: 'dry-run'
+        options: ['dry-run', 'apply']
+      provider:
+        description: 'LLM provider'
+        required: false
+        type: choice
+        default: 'claude'
+        options: ['claude', 'openai', 'gemini']
+      limit:
+        description: 'Max LLM calls (0 = unlimited)'
+        required: false
+        default: '0'
+      concurrency:
+        description: 'Parallel LLM calls'
+        required: false
+        default: '5'
+      show_filter:
+        description: 'Single show ID or partial match (optional)'
+        required: false
+        default: ''
+
+# Detects reviews filed under Broadway show IDs that are actually about
+# tour/regional/non-NYC productions (e.g. SF Cursed Child, Beetlejuice tour,
+# Pretty Woman Cape Cod, Mean Girls Oklahoma).
+#
+# Distinct from verify-existing-reviews.yml: that workflow skips reviews already
+# stamped verifiedBy:llm:* (so Gemini-classified-clean reviews are never re-checked).
+# This workflow re-verifies the heuristic-suspect set regardless of prior stamps.
+#
+# Apply mode writes wrongProduction:true to high-confidence verdicts and chains
+# a rebuild to refresh reviews.json + scoring filters.
+
+concurrency:
+  group: audit-touring-contamination
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Run touring contamination audit
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          ARGS="--provider=${{ inputs.provider }} --concurrency=${{ inputs.concurrency }}"
+          if [ "${{ inputs.mode }}" = "apply" ]; then
+            ARGS="$ARGS --apply"
+          fi
+          if [ "${{ inputs.limit }}" != "0" ]; then
+            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          fi
+          if [ -n "${{ inputs.show_filter }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          fi
+          echo "Running: node scripts/audit-touring-broadway-contamination.js $ARGS"
+          node scripts/audit-touring-broadway-contamination.js $ARGS
+
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: touring-contamination-report
+          path: data/audit/touring-contamination-report.json
+          retention-days: 30
+
+      - name: Push review-texts to private repo
+        if: ${{ inputs.mode == 'apply' && always() }}
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Touring contamination audit — flag wrongProduction"
+
+      - name: Trigger rebuild
+        if: ${{ inputs.mode == 'apply' && success() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Triggering rebuild to refresh reviews.json with new wrongProduction flags..."
+          gh workflow run "Rebuild Reviews Data" -f reason="Touring contamination audit applied flags"
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Touring Contamination Audit"
+            echo ""
+            echo "- **Mode:** ${{ inputs.mode }}"
+            echo "- **Provider:** ${{ inputs.provider }}"
+            echo "- **Limit:** ${{ inputs.limit }}"
+            if [ -n "${{ inputs.show_filter }}" ]; then
+              echo "- **Show filter:** ${{ inputs.show_filter }}"
+            fi
+            if [ -f data/audit/touring-contamination-report.json ]; then
+              echo ""
+              echo "### Stats"
+              echo '```json'
+              node -e "const r = require('./data/audit/touring-contamination-report.json'); console.log(JSON.stringify(r._meta, null, 2));"
+              echo '```'
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Touring Contamination Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
