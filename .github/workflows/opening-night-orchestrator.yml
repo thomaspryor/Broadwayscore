@@ -69,7 +69,7 @@ jobs:
     timeout-minutes: 360  # GitHub max — allows ~6 hours of polling
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 

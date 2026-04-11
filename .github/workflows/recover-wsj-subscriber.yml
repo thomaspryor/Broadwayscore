@@ -60,7 +60,7 @@ jobs:
 
       - name: Checkout repository
         if: env.SKIP != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
 
 
