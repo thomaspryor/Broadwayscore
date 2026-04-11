@@ -194,7 +194,7 @@ jobs:
         run: npm ci --prefer-offline --no-audit
       - name: Run unit tests (no-data-dependency)
         run: |
-          node --test tests/unit/regression-guards.test.mjs tests/unit/sample.test.mjs tests/unit/sanity.test.mjs tests/unit/score-conversion-rules.test.mjs tests/unit/email-capture-integrity.test.mjs tests/unit/placeholder-images.test.mjs
+          node --test tests/unit/regression-guards.test.mjs tests/unit/sample.test.mjs tests/unit/sanity.test.mjs tests/unit/score-conversion-rules.test.mjs tests/unit/score-routing.test.mjs tests/unit/email-capture-integrity.test.mjs tests/unit/placeholder-images.test.mjs
           npx tsx --test tests/unit/engine.test.ts
 
       - name: Run review-guards regression tests

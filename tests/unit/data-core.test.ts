@@ -155,12 +155,28 @@ describe('getOffBroadwayShows', () => {
 });
 
 describe('market partitioning', () => {
-  test('broadway + west-end + off-broadway covers all shows', () => {
-    const all = getAllShows().length;
-    const bw = getBroadwayShows().length;
-    const we = getWestEndShows().length;
-    const ob = getOffBroadwayShows().length;
-    assert.strictEqual(bw + we + ob, all, 'Market partitions should sum to total shows');
+  test('broadway + west-end + off-broadway covers all shows (modulo hidden)', () => {
+    // The three market filters are expected to partition all shows EXCEPT
+    // entries that the public listings deliberately hide (e.g. ABBA Voyage —
+    // a hologram concert, not theatre — is in the data set but excluded from
+    // every market hub via HIDDEN_LONDON_IDS in src/lib/data-core.ts).
+    //
+    // We check the partition by IDs, not just counts: if any non-hidden show
+    // is missing from all three market filters the assertion message says
+    // exactly which one, so a future regression is debuggable in one read.
+    const allIds = new Set(getAllShows().map(s => s.id));
+    const partitioned = new Set<string>();
+    for (const s of getBroadwayShows()) partitioned.add(s.id);
+    for (const s of getWestEndShows()) partitioned.add(s.id);
+    for (const s of getOffBroadwayShows()) partitioned.add(s.id);
+    const missing = [...allIds].filter(id => !partitioned.has(id));
+    // Known hidden IDs the public hubs deliberately exclude.
+    const HIDDEN = new Set(['abba-voyage-off-west-end-2026']);
+    const unexpected = missing.filter(id => !HIDDEN.has(id));
+    assert.deepStrictEqual(
+      unexpected, [],
+      `Shows missing from every market partition (and not in the known-hidden list): ${unexpected.join(', ')}`
+    );
   });
 
   test('each market function returns unique show IDs (no duplicates)', () => {
