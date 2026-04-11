@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-11T02:05:15.297Z",
+    "generatedAt": "2026-04-11T02:23:19.097Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 119,
+    "totalFlagged": 118,
     "highConfidence": 33,
-    "mediumConfidence": 86,
+    "mediumConfidence": 85,
     "lowConfidence": 0,
-    "reassignable": 62
+    "reassignable": 61
   },
   "results": [
     {
@@ -1286,24 +1286,6 @@
       "textSnippet": "The ache for an absent artist permeates Lanford Wilson’s “Burn This,” now receiving a finely-tuned Broadway revival that features incendiary performances by Adam Driver and Keri Russell, playing two l"
     },
     {
-      "showId": "into-the-woods-1987",
-      "showTitle": "Into the Woods",
-      "showYear": 1987,
-      "file": "theatermania--hayley-levitt.json",
-      "outlet": "TheaterMania",
-      "criticName": "Hayley Levitt",
-      "publishDate": null,
-      "confidence": "high",
-      "suggestedShowId": "into-the-woods-2022",
-      "signals": [
-        "revival cast/director match for into-the-woods-2022: Sara Bareilles, Brian d'Arcy James, St. James Theatre, Lear deBessonet, director: Lear deBessonet",
-        "revival text signals: revival, this production",
-        "year 2026 in text matches revival into-the-woods-west-end-2025",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "Lear deBessonet’s concert production of Stephen Sondheim and James Lapine’s fairytale musical has transferred to Broadway’s St. James Theatre. Who would have thought back in 1987 that in 35 years we'd"
-    },
-    {
       "showId": "the-house-of-blue-leaves-1986",
       "showTitle": "The House of Blue Leaves",
       "showYear": 1986,
@@ -1740,10 +1722,11 @@
       "file": "thewrap--robert-hofler.json",
       "outlet": "The Wrap",
       "criticName": "Robert Hofler",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "the-real-thing-1984",
+      "publishDate": "2014-10-31",
+      "confidence": "high",
+      "suggestedShowId": "the-real-thing-2014",
       "signals": [
+        "publishDate 2014 matches revival the-real-thing-2014 (opened 2014)",
         "year 1984 in text matches revival the-real-thing-1984"
       ],
       "textSnippet": "Actors’ chemistry is like Hepburn and Tracy’s only in reverse; she’s solid and implacable, he’s high-strung and nervously pecking around for a way to chip into her guarded world It takes real guts for"
