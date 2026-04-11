@@ -50,6 +50,10 @@ const BUDGET_FILE = path.join(SOCIAL_PULSE_DIR, '_budget.json');
 const TWITTER_MAX = 150;
 const TIKTOK_MAX = 20;
 const INSTAGRAM_MAX = 15;
+// Reddit via brand-mention-sources.js fetchRedditMentions. 100 is Reddit's
+// own API ceiling per query (not ours). Effectively uncapped for theater
+// volumes — hot shows typically return 20-80 posts.
+const REDDIT_MAX = 100;
 
 // Soft cap for cumulative monthly Apify spend. Creator plan gives $39 in
 // credits. Targeting ~$33/mo expected with new caps, $35 cap leaves a few
@@ -203,19 +207,20 @@ async function processShow({ show, apifyToken, openaiApiKey, dryRun, logger = co
 
   logger.log(`[${showId}] Fetching mentions for "${showTitle}" (${marketLabel})...`);
 
-  // Step 1: Fetch mentions from all three platforms
+  // Step 1: Fetch mentions from all four platforms (Reddit + 3 Apify)
   const fetchResult = await fetchAllSocialMentions({
     showTitle,
     marketQualifier,
     twitterMax: TWITTER_MAX,
     tiktokMax: TIKTOK_MAX,
     instagramMax: INSTAGRAM_MAX,
+    redditMax: REDDIT_MAX,
     token: apifyToken,
     logger,
   });
 
   logger.log(
-    `[${showId}]   X=${fetchResult.rawCounts.twitter} TikTok=${fetchResult.rawCounts.tiktok} IG=${fetchResult.rawCounts.instagram} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
+    `[${showId}]   Reddit=${fetchResult.rawCounts.reddit || 0} X=${fetchResult.rawCounts.twitter} TikTok=${fetchResult.rawCounts.tiktok} IG=${fetchResult.rawCounts.instagram} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
   );
 
   if (fetchResult.errors.length > 0) {
