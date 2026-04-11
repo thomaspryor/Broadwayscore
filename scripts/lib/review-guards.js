@@ -737,6 +737,20 @@ function checkLlmVerificationAgainstKeywords(show, text, cv) {
 
 const DAY_MS = 86400000;
 
+// urlDiscoveryMethod values that represent a REAL SERP call. Other methods
+// like 'protocol-upgrade' (HTTP→HTTPS), 'http-redirect', and 'domain-redirect'
+// are routine URL normalizations that don't prove SERP cycle pathology and
+// shouldn't count as evidence of a SERP attempt. Keep in sync with
+// scripts/lib/url-discovery.js writers and SERP-writing paths in
+// collect-review-texts.js. Consumed by backfill-serp-abandonment.js and
+// unabandon-non-serp-cycles.js.
+const SERP_DISCOVERY_METHODS = Object.freeze(new Set([
+  'google-serp',
+  'google-serp-reason-recovery',
+  'show-not-mentioned-recovery',
+  'wrongUrl-serp-retry',
+]));
+
 // Max SERP retries for `wrong_content` reviews keyed by show lifecycle.
 // closedOld = 0 because the SERP window is frozen and retries are futile.
 // openWindow = 3 because outlet content is still churning during the

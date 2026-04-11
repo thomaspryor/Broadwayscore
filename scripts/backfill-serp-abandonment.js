@@ -36,23 +36,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyLifecycle } = require('./lib/review-guards');
+const { classifyLifecycle, SERP_DISCOVERY_METHODS } = require('./lib/review-guards');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const limitIdx = args.indexOf('--limit');
 const LIMIT = limitIdx >= 0 && args[limitIdx + 1] ? parseInt(args[limitIdx + 1], 10) : Infinity;
-
-// Only these urlDiscoveryMethod values indicate a real SERP cycle. Others
-// like 'protocol-upgrade' / 'http-redirect' / 'domain-redirect' are URL
-// normalizations that don't prove cycle pathology — they don't cost SERP
-// credits to reproduce.
-const SERP_DISCOVERY_METHODS = new Set([
-  'google-serp',
-  'google-serp-reason-recovery',
-  'show-not-mentioned-recovery',
-  'wrongUrl-serp-retry',
-]);
 
 // ---------------------------------------------------------------------------
 // Load shows.json once so classifyLifecycle can look up each show

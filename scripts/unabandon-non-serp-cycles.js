@@ -25,15 +25,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { SERP_DISCOVERY_METHODS } = require('./lib/review-guards');
 
 const DRY_RUN = process.argv.includes('--dry-run');
-
-const SERP_DISCOVERY_METHODS = new Set([
-  'google-serp',
-  'google-serp-reason-recovery',
-  'show-not-mentioned-recovery',
-  'wrongUrl-serp-retry',
-]);
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 
