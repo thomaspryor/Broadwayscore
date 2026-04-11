@@ -160,13 +160,16 @@ function writeCanonicalFile(showId, data) {
  * conditions with generate-mobile-show-details.js).
  *
  * Schema uses short keys to keep the payload tiny:
- *   { _v: 1, t: tier, v: volume, p: positive%, wow: WoW%, bm: baselineMultiple,
- *     pl: {x, tt}, q: [{t, p, a, u}], u: updated_date }
+ *   { _v: 2, t: tier, v: volume, p: positive%, wow: WoW%, bm: baselineMultiple,
+ *     pl: {x, tt, ig, r}, q: [{t, p, a, u}], u: updated_date, r: rank }
+ *
+ * Schema v2 (2026-04-11): added pl.r (reddit count). Legacy v1 files
+ * still parse — the card defaults missing pl.r to 0.
  */
 function writePublicFile(showId, scored) {
   ensureDir(PUBLIC_SHOWS_DIR);
   const compact = {
-    _v: 1,
+    _v: 2,
     t: scored.tier,
     v: scored.volume,
     p: scored.positivePct,
@@ -176,6 +179,7 @@ function writePublicFile(showId, scored) {
       x: scored.platformBreakdown.x,
       tt: scored.platformBreakdown.tiktok,
       ig: scored.platformBreakdown.instagram,
+      r: scored.platformBreakdown.reddit,
     },
     q: scored.topQuotes.map((q) => ({
       t: q.text,
