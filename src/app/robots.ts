@@ -14,14 +14,14 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      // Search engines (ALLOWED — index us, but not BTC co-branded page)
-      { userAgent: 'Googlebot', allow: '/', disallow: ['/beat-the-critics', '/status.html', '/opening-night-status.json'] },
-      { userAgent: 'Bingbot', allow: '/', disallow: '/beat-the-critics' },
-      { userAgent: 'Slurp', allow: '/', disallow: '/beat-the-critics' },
-      { userAgent: 'DuckDuckBot', allow: '/', disallow: '/beat-the-critics' },
+      // Search engines (ALLOWED — index us, but not BTC co-branded page or admin)
+      { userAgent: 'Googlebot', allow: '/', disallow: ['/beat-the-critics', '/status.html', '/opening-night-status.json', '/admin/'] },
+      { userAgent: 'Bingbot', allow: '/', disallow: ['/beat-the-critics', '/admin/'] },
+      { userAgent: 'Slurp', allow: '/', disallow: ['/beat-the-critics', '/admin/'] },
+      { userAgent: 'DuckDuckBot', allow: '/', disallow: ['/beat-the-critics', '/admin/'] },
       // AI search bots (ALLOWED — shows us in AI search results with citations)
-      { userAgent: 'OAI-SearchBot', allow: '/' },
-      { userAgent: 'PerplexityBot', allow: '/' },
+      { userAgent: 'OAI-SearchBot', allow: '/', disallow: '/admin/' },
+      { userAgent: 'PerplexityBot', allow: '/', disallow: '/admin/' },
       // AI training crawlers (BLOCKED — prevent content from training AI models)
       { userAgent: 'GPTBot', disallow: '/' },
       { userAgent: 'Google-Extended', disallow: '/' },
@@ -31,8 +31,8 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'Bytespider', disallow: '/' },
       { userAgent: 'Cohere-ai', disallow: '/' },
       { userAgent: 'Meta-ExternalAgent', disallow: '/' },
-      // Default: allow everything else
-      { userAgent: '*', allow: '/' },
+      // Default: allow everything else (except admin surface)
+      { userAgent: '*', allow: '/', disallow: '/admin/' },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,
   };
