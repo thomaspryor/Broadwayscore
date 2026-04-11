@@ -2734,14 +2734,10 @@ showDirs.forEach(showId => {
             }
             return urlDate.date;
           }
-          // Final fallback: use show's OPENING date (not previewsStartDate) as approximate publish date
-          // Most reviews are published around opening night, not during previews
-          const showOpen = showOpeningDateMap[showId];
-          if (showOpen) {
-            const openStr = showOpen.toISOString().substring(0, 10);
-            stats.openingDateFallbacks = (stats.openingDateFallbacks || 0) + 1;
-            return openStr;
-          }
+          // NO opening-date fallback — see memory/feedback_no_opening_date_fallback.md
+          // Stamping the show's opening date on undated reviews would mask wrong-production
+          // issues (e.g., a tour review would look like a legitimate Broadway review).
+          // Honest state: leave undated if no verifiable source found.
           return null;
         })(),
         originalRating: (source === 'originalScore-priority0' || source === 'originalScore-showscore-downgraded')
