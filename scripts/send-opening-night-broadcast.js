@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const { sendAlert } = require('./lib/discord-notify');
 const {
   postJSON, buildBroadcastOpeningNightHtml, buildUnsubscribeUrl,
@@ -68,6 +69,131 @@ function saveSentData(data) {
   } catch (err) {
     console.error(`ERROR: Failed to save sent-tracking data to ${SENT_PATH}: ${err.message}`);
     console.error('WARNING: Sent-tracking state may be lost — risk of duplicate sends on next run');
+  }
+}
+
+/**
+ * Push data/opening-night-sent.json to origin/main via the GitHub Contents API.
+ *
+ * Why: when the script is invoked from a local shell (e.g. manual CLI preview), it
+ * writes the tracker to disk but the running-in-CI workflow reads origin/main. Without
+ * a sync step, the workflow can't see the CLI write and will double-send on its next
+ * run. This is what caused the 2026-04-11 duplicate-preview incident (CLI sent at
+ * 02:09 UTC but never committed; workflow fired at 12:21 UTC reading stale origin).
+ *
+ * Strategy: fetch the current file from origin/main, parse it, merge in our in-memory
+ * entries (CLI write wins on conflict — the CLI just sent, so our entries are newest),
+ * PUT back with the fetched sha. If the sha is stale due to concurrent write, retry
+ * once with a fresh fetch.
+ *
+ * Skipped when:
+ *   - Running in GitHub Actions (the workflow commits separately).
+ *   - DRY_RUN (never write to origin).
+ *   - `gh` CLI is missing or the user isn't authenticated (logged loudly).
+ *
+ * Exits non-zero on failure after one retry, so the user knows dedup is at risk.
+ */
+function syncTrackerToOrigin(localData) {
+  if (process.env.GITHUB_ACTIONS === 'true') {
+    // Workflow's dedicated commit step handles this path.
+    return;
+  }
+  if (DRY_RUN) return;
+
+  // Check gh is available and authed.
+  try {
+    execSync('gh auth status', { stdio: 'ignore' });
+  } catch {
+    console.error('\nWARNING: `gh` CLI missing or not authenticated — cannot sync opening-night-sent.json to origin.');
+    console.error('         The next workflow run will not see this preview send. Run `gh auth login`, then manually');
+    console.error('         push data/opening-night-sent.json to main, or live with a possible duplicate.');
+    process.exitCode = 1;
+    return;
+  }
+
+  const REPO = 'thomaspryor/Broadwayscore';
+  const REMOTE_PATH = 'data/opening-night-sent.json';
+  const BRANCH = 'main';
+
+  const fetchRemote = () => {
+    // gh api errors (incl. 404) throw; treat 404 as "file doesn't exist yet".
+    try {
+      const raw = execSync(
+        `gh api repos/${REPO}/contents/${REMOTE_PATH}?ref=${BRANCH}`,
+        { encoding: 'utf8' }
+      );
+      const meta = JSON.parse(raw);
+      const content = Buffer.from(meta.content, 'base64').toString('utf8');
+      let parsed = {};
+      try { parsed = JSON.parse(content); } catch { parsed = {}; }
+      return { sha: meta.sha, parsed };
+    } catch (err) {
+      if (String(err.stderr || err.message || '').includes('404')) {
+        return { sha: null, parsed: { shows: {} } };
+      }
+      throw err;
+    }
+  };
+
+  const putRemote = (sha, parsed) => {
+    const content = Buffer.from(JSON.stringify(parsed, null, 2) + '\n', 'utf8').toString('base64');
+    const payload = {
+      message: 'data: Sync opening-night-sent tracking from CLI preview',
+      content,
+      branch: BRANCH,
+    };
+    if (sha) payload.sha = sha;
+    // Write payload via stdin so the filename doesn't leak into shell expansion.
+    const tmpPath = path.join(require('os').tmpdir(), `ons-${Date.now()}.json`);
+    fs.writeFileSync(tmpPath, JSON.stringify(payload));
+    try {
+      execSync(
+        `gh api --method PUT repos/${REPO}/contents/${REMOTE_PATH} --input ${JSON.stringify(tmpPath)}`,
+        { stdio: ['ignore', 'pipe', 'pipe'] }
+      );
+    } finally {
+      try { fs.unlinkSync(tmpPath); } catch {}
+    }
+  };
+
+  const mergeEntries = (remoteParsed, localParsed) => {
+    const merged = { ...(remoteParsed || {}) };
+    if (!merged.shows) merged.shows = {};
+    const localShows = (localParsed && localParsed.shows) || {};
+    for (const [k, v] of Object.entries(localShows)) {
+      // CLI just wrote these — prefer them on conflict. Workflow-written entries that
+      // aren't in the CLI's in-memory state are preserved by the spread above.
+      merged.shows[k] = v;
+    }
+    return merged;
+  };
+
+  const attempt = () => {
+    const remote = fetchRemote();
+    const merged = mergeEntries(remote.parsed, localData);
+    putRemote(remote.sha, merged);
+  };
+
+  try {
+    attempt();
+    console.log(`  Synced opening-night-sent.json to origin/${BRANCH} via gh api`);
+  } catch (err) {
+    const msg = String(err.stderr || err.message || '');
+    // Retry once on sha conflict (409/422) — remote may have changed between fetch and PUT.
+    if (msg.includes('409') || msg.includes('422') || msg.includes('sha')) {
+      console.error(`  Sync retry after remote conflict: ${msg.trim().slice(0, 200)}`);
+      try {
+        attempt();
+        console.log(`  Synced opening-night-sent.json to origin/${BRANCH} (after retry)`);
+        return;
+      } catch (err2) {
+        console.error(`\nWARNING: Sync retry failed: ${(err2.stderr || err2.message || '').toString().trim().slice(0, 300)}`);
+      }
+    } else {
+      console.error(`\nWARNING: Failed to sync opening-night-sent.json to origin: ${msg.trim().slice(0, 300)}`);
+    }
+    console.error('         The next workflow run may not see this preview and could duplicate the send.');
+    process.exitCode = 1;
   }
 }
 
@@ -455,13 +581,26 @@ ${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast.
     }
   }
 
-  // Track preview send
+  // Track preview send.
+  //
+  // The key still carries a UTC-date suffix for debugging/history, but the READER
+  // (checkPreviewDedup) scans the whole `preview:{broadcastKey}:*` prefix and picks
+  // the most recent by `sentAt`. The suffix is no longer load-bearing for dedup —
+  // rolling time windows are. See scripts/lib/preview-dedup.js for the full story.
   if (SEND_TO) {
-    const today2 = new Date().toISOString().slice(0, 10);
-    const previewKey2 = `preview:${broadcastKey}:${today2}`;
+    const previewTimestamp = new Date().toISOString();
+    const previewKey = `preview:${broadcastKey}:${previewTimestamp.slice(0, 10)}`;
     const previewReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
-    sentData.shows[previewKey2] = { sentAt: new Date().toISOString(), previewTo: SEND_TO, reviewCount: previewReviewCount };
+    sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: previewReviewCount };
     saveSentData(sentData);
+
+    // Sync to origin/main so a concurrent workflow run can see the write.
+    // Without this, local CLI previews are invisible to CI and cause duplicate sends
+    // (2026-04-11 incident: 02:09 UTC local preview never reached origin, 12:21 UTC
+    // workflow re-sent because its origin/main checkout had no record of the CLI run).
+    // No-ops when running under GitHub Actions — the workflow commits separately.
+    syncTrackerToOrigin(sentData);
+
     console.log(`\nPreview sent to ${SEND_TO}`);
   }
 }

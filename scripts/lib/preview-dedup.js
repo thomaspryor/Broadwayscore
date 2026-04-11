@@ -60,4 +60,60 @@ function checkPreviewDedup(sentData, broadcastKey, currentReviewCount, now = Dat
   return { action: 'resend', lastPreview, hoursSince, newReviews };
 }
 
-module.exports = { checkPreviewDedup };
+/**
+ * Workflow-side gate: "should this show be blocked because a preview was already
+ * sent for it within the rolling window?" Used by opening-night-broadcast.yml's
+ * "Check already broadcast" step, which previously checked `sentAt.startsWith(today)`
+ * and silently double-sent at UTC rollover (2026-04-11 02:09 UTC incident).
+ *
+ * This is the "per-show in a batch" check — different semantics from
+ * checkPreviewDedup, which compares review counts for a whole broadcastKey combo.
+ * Here we just need: "has any preview for this showId gone out recently?"
+ *
+ * Default window is 24h — matches the script-side checkPreviewDedup hard gate. The
+ * 2026-04-11 incident had a 14h gap between the first and duplicate preview, so a
+ * shorter window wouldn't have caught it.
+ *
+ * @param {object} sentData - Parsed opening-night-sent.json (either {shows:{...}} or {...}).
+ * @param {string} showId   - Show ID to check (matched as a substring of any preview key).
+ * @param {number} windowMs - Rolling window in ms. Default 24h.
+ * @param {number} now      - Clock override for tests.
+ * @returns {boolean} true if a recent preview exists and the show should be skipped.
+ */
+function hasRecentPreviewForShow(sentData, showId, windowMs = 24 * 3_600_000, now = Date.now()) {
+  const shows = (sentData && sentData.shows) || sentData || {};
+  for (const [key, value] of Object.entries(shows)) {
+    if (!key.startsWith('preview:')) continue;
+    if (!key.includes(showId)) continue;
+    const sentAt = value && value.sentAt;
+    if (!sentAt) continue;
+    const ageMs = now - new Date(sentAt).getTime();
+    if (ageMs >= 0 && ageMs < windowMs) return true;
+  }
+  return false;
+}
+
+/**
+ * Workflow-side gate: "have we already fired the overdue alert for this show
+ * within the rolling window?" Previously `sent[alertKey].sentAt.startsWith(today)`,
+ * same UTC-rollover bug class.
+ *
+ * The alert writes use a stable key (`overdue-alert:${id}`, no date suffix), so
+ * there's always at most one entry per show. We just check the age of that entry.
+ *
+ * @param {object} sentData - Parsed opening-night-sent.json.
+ * @param {string} showId   - Show ID.
+ * @param {number} windowMs - Rolling window. Default 24h.
+ * @param {number} now      - Clock override for tests.
+ * @returns {boolean} true if a recent alert exists and the alert should be skipped.
+ */
+function hasRecentOverdueAlert(sentData, showId, windowMs = 24 * 3_600_000, now = Date.now()) {
+  const shows = (sentData && sentData.shows) || sentData || {};
+  const entry = shows['overdue-alert:' + showId];
+  const sentAt = entry && entry.sentAt;
+  if (!sentAt) return false;
+  const ageMs = now - new Date(sentAt).getTime();
+  return ageMs >= 0 && ageMs < windowMs;
+}
+
+module.exports = { checkPreviewDedup, hasRecentPreviewForShow, hasRecentOverdueAlert };
