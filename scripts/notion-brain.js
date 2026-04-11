@@ -117,6 +117,162 @@ function formatCard(page) {
   };
 }
 
+// ── Page-body overflow ──────────────────────────────────────────────────
+// Notion's rich_text property cap is ~2000 chars and cannot be bypassed via
+// multiple rich_text objects (Notion silently drops all but the first ~2000
+// chars). To preserve long content, we store a preview + marker in the
+// property and write the full text to the page body (block children), which
+// has no total cap. Each field gets its own auto-managed heading section
+// keyed by `[auto:<field>] full content`; rewrites are idempotent (find and
+// delete the old section, append the new one).
+
+const PROP_CHUNK = 1800;       // safe under Notion's 2000-char property cap
+const BODY_CHUNK = 1900;       // safe under Notion's 2000-char rich_text object cap
+const OVERFLOW_NOTE = '\n\n[Full content in page body below ↓]';
+const OVERFLOW_MARKER_SUBSTR = '[Full content in page body below';
+const BODY_HEADING_PREFIX = '[auto:';
+const BODY_HEADING_SUFFIX = '] full content';
+
+function bodyHeadingText(field) {
+  return `${BODY_HEADING_PREFIX}${field}${BODY_HEADING_SUFFIX}`;
+}
+
+function getHeadingText(block) {
+  if (!block || block.type !== 'heading_2') return null;
+  const rt = block.heading_2?.rich_text || [];
+  return rt.map(t => t.plain_text).join('');
+}
+
+function isAutoHeading(block) {
+  const t = getHeadingText(block);
+  return !!(t && t.startsWith(BODY_HEADING_PREFIX) && t.endsWith(BODY_HEADING_SUFFIX));
+}
+
+// Break text into chunks <= size, preferring newline boundaries.
+function chunkText(text, size) {
+  const chunks = [];
+  let remaining = String(text || '');
+  while (remaining.length > size) {
+    let cut = remaining.lastIndexOf('\n', size);
+    if (cut < size * 0.5) cut = size;  // no good break — hard-cut
+    chunks.push(remaining.slice(0, cut));
+    remaining = remaining.slice(cut).replace(/^\n+/, '');
+  }
+  if (remaining.length || chunks.length === 0) chunks.push(remaining);
+  return chunks;
+}
+
+// Build a rich_text property value for a field. If content is short, returns
+// the property with the full value and bodyText=null. If long, returns a
+// preview-plus-marker property value and the full text as bodyText for the
+// caller to write via writeBodySection().
+function buildRichTextWithOverflow(text) {
+  const s = String(text || '');
+  if (s.length <= PROP_CHUNK) {
+    return {
+      propertyValue: { rich_text: [{ text: { content: s } }] },
+      bodyText: null,
+    };
+  }
+  const maxPreview = PROP_CHUNK - OVERFLOW_NOTE.length - 10;
+  let cut = s.lastIndexOf('\n\n', maxPreview);
+  if (cut < maxPreview * 0.5) cut = s.lastIndexOf('\n', maxPreview);
+  if (cut < maxPreview * 0.5) cut = maxPreview;
+  const preview = s.slice(0, cut) + OVERFLOW_NOTE;
+  return {
+    propertyValue: { rich_text: [{ text: { content: preview } }] },
+    bodyText: s,
+  };
+}
+
+async function listAllChildren(pageId) {
+  const all = [];
+  let cursor;
+  do {
+    const resp = await notion.blocks.children.list({
+      block_id: pageId,
+      start_cursor: cursor,
+      page_size: 100,
+    });
+    all.push(...resp.results);
+    cursor = resp.has_more ? resp.next_cursor : undefined;
+  } while (cursor);
+  return all;
+}
+
+// Write or replace the `[auto:<field>] full content` section in the page body.
+// Idempotent: if a section for this field already exists, delete it and every
+// block up to (but not including) the next auto heading, then append the new
+// heading + paragraph chunks at the end.
+async function writeBodySection(pageId, field, text, opts = {}) {
+  const targetHeading = bodyHeadingText(field);
+  const children = opts.children || await listAllChildren(pageId);
+
+  const startIdx = children.findIndex(b => getHeadingText(b) === targetHeading);
+  if (startIdx !== -1) {
+    let endIdx = children.length;
+    for (let i = startIdx + 1; i < children.length; i++) {
+      if (isAutoHeading(children[i])) { endIdx = i; break; }
+    }
+    for (const block of children.slice(startIdx, endIdx)) {
+      try {
+        await notion.blocks.delete({ block_id: block.id });
+      } catch (err) {
+        console.error(`Warning: failed to delete block ${block.id}: ${err.message}`);
+      }
+    }
+  }
+
+  const blocks = [
+    {
+      object: 'block',
+      type: 'heading_2',
+      heading_2: {
+        rich_text: [{ type: 'text', text: { content: targetHeading } }],
+      },
+    },
+  ];
+  for (const chunk of chunkText(text, BODY_CHUNK)) {
+    blocks.push({
+      object: 'block',
+      type: 'paragraph',
+      paragraph: {
+        rich_text: [{ type: 'text', text: { content: chunk } }],
+      },
+    });
+  }
+
+  // Notion caps append at 100 blocks per call.
+  const BATCH = 100;
+  for (let i = 0; i < blocks.length; i += BATCH) {
+    await notion.blocks.children.append({
+      block_id: pageId,
+      children: blocks.slice(i, i + BATCH),
+    });
+  }
+}
+
+// Read a field's full content. If the property value contains the overflow
+// marker, fetch the page body and stitch together the matching auto section.
+// `propertyText` is the already-joined rich_text string for the field.
+async function readFieldWithOverflow(pageId, propertyText, field, opts = {}) {
+  const s = String(propertyText || '');
+  if (!s.includes(OVERFLOW_MARKER_SUBSTR)) return s;
+  const children = opts.children || await listAllChildren(pageId);
+  const targetHeading = bodyHeadingText(field);
+  const startIdx = children.findIndex(b => getHeadingText(b) === targetHeading);
+  if (startIdx === -1) return s;
+  const parts = [];
+  for (let i = startIdx + 1; i < children.length; i++) {
+    const b = children[i];
+    if (isAutoHeading(b)) break;
+    if (b.type === 'paragraph') {
+      parts.push((b.paragraph.rich_text || []).map(t => t.plain_text).join(''));
+    }
+  }
+  return parts.length ? parts.join('\n') : s;
+}
+
 // Truncate to Notion's 2000-char rich_text limit
 // ── Card quality validation ─────────────────────────────────────────────
 // Added 2026-04-11 after audit showed 3 of 5 active cards had 0 notes.
@@ -212,27 +368,6 @@ function validateCardNotes({ notes, status, force, context }) {
   return { ok: true };
 }
 
-// Notion rich_text property values have a hard total cap of ~2000 characters.
-// Empirically verified 2026-04-11: splitting across multiple rich_text objects
-// does NOT work — Notion accepts the API call but silently keeps only ~2000
-// chars of the first object. For genuinely long content, use page children
-// (block body) instead of the property — that's a backlog card, not shipped yet.
-//
-// When truncation happens here, we print a LOUD stderr warning so sessions
-// know they're losing data instead of silently shipping incomplete cards.
-function truncateRichText(text, limit = 2000, fieldName = 'content') {
-  const s = String(text || '');
-  if (s.length <= limit) return s;
-  const lost = s.length - limit + 20;
-  console.error(
-    `⚠️  TRUNCATION WARNING: ${fieldName} was ${s.length} chars; Notion caps ` +
-    `rich_text at ~${limit}. Truncated; ~${lost} chars LOST. ` +
-    `To preserve full content, split across multiple fields or write to a file ` +
-    `referenced in the card. (See backlog: "Overflow long notes/outcome to page children".)`
-  );
-  return s.slice(0, limit - 20) + '\n\n[...truncated]';
-}
-
 // ── Commands ────────────────────────────────────────────────────────────
 
 async function createCard(args) {
@@ -288,10 +423,12 @@ async function createCard(args) {
     };
   }
 
+  // Collect per-field overflow so we can write body sections after create.
+  const overflow = {};
   if (args.notes) {
-    properties.Notes = {
-      rich_text: [{ text: { content: truncateRichText(args.notes, 2000, 'notes') } }],
-    };
+    const { propertyValue, bodyText } = buildRichTextWithOverflow(args.notes);
+    properties.Notes = propertyValue;
+    if (bodyText) overflow.notes = bodyText;
   }
 
   const page = await notion.pages.create({
@@ -299,7 +436,16 @@ async function createCard(args) {
     properties,
   });
 
+  for (const [field, text] of Object.entries(overflow)) {
+    await writeBodySection(page.id, field, text);
+  }
+
   const card = formatCard(page);
+  // If anything overflowed, expand the in-memory card so stdout shows the
+  // full value (not the property preview).
+  for (const field of Object.keys(overflow)) {
+    card[field] = overflow[field];
+  }
   console.log(JSON.stringify(card, null, 2));
   return card;
 }
@@ -335,20 +481,29 @@ async function updateCard(args) {
     };
   }
 
+  // Collect per-field overflow so we can write body sections after update.
+  const overflow = {};
+
   if (args.notes) {
-    properties.Notes = {
-      rich_text: [{ text: { content: truncateRichText(args.notes, 2000, 'notes') } }],
-    };
+    const { propertyValue, bodyText } = buildRichTextWithOverflow(args.notes);
+    properties.Notes = propertyValue;
+    if (bodyText) overflow.notes = bodyText;
   }
 
   if (args.outcome) {
-    // Read existing outcome first, prepend new content
+    // Read existing outcome first, prepend new content. Use the full value
+    // (including any page-body overflow) so prepends don't clobber history.
     let outcomeText = args.outcome;
 
     if (args['append-outcome'] !== undefined || !args['overwrite-outcome']) {
       try {
         const existing = await notion.pages.retrieve({ page_id: pageId });
-        const existingOutcome = getRichTextValue(existing.properties.Outcome);
+        const existingPropText = getRichTextValue(existing.properties.Outcome);
+        const existingOutcome = await readFieldWithOverflow(
+          pageId,
+          existingPropText,
+          'outcome'
+        );
         if (existingOutcome) {
           outcomeText = outcomeText + '\n\n---\n\n' + existingOutcome;
         }
@@ -357,15 +512,15 @@ async function updateCard(args) {
       }
     }
 
-    properties.Outcome = {
-      rich_text: [{ text: { content: truncateRichText(outcomeText, 2000, 'outcome') } }],
-    };
+    const { propertyValue, bodyText } = buildRichTextWithOverflow(outcomeText);
+    properties.Outcome = propertyValue;
+    if (bodyText) overflow.outcome = bodyText;
   }
 
   if (args['key-files']) {
-    properties['Key Files'] = {
-      rich_text: [{ text: { content: truncateRichText(args['key-files'], 2000, 'key-files') } }],
-    };
+    const { propertyValue, bodyText } = buildRichTextWithOverflow(args['key-files']);
+    properties['Key Files'] = propertyValue;
+    if (bodyText) overflow['key-files'] = bodyText;
   }
 
   if (args['completed-date']) {
@@ -384,7 +539,17 @@ async function updateCard(args) {
     properties,
   });
 
+  for (const [field, text] of Object.entries(overflow)) {
+    await writeBodySection(page.id, field, text);
+  }
+
   const card = formatCard(page);
+  // Expand the in-memory card so stdout shows the full value for any field
+  // that overflowed (keyed to the formatCard field names).
+  const fieldToCardKey = { notes: 'notes', outcome: 'outcome', 'key-files': 'keyFiles' };
+  for (const [field, text] of Object.entries(overflow)) {
+    card[fieldToCardKey[field]] = text;
+  }
   console.log(JSON.stringify(card, null, 2));
   return card;
 }
@@ -507,6 +672,21 @@ async function getCard(args) {
 
   const page = await notion.pages.retrieve({ page_id: pageId });
   const card = formatCard(page);
+
+  // If any of the long-text fields contain the overflow marker, fetch the
+  // page body once and stitch the full content back in.
+  const needsBody =
+    (card.notes && card.notes.includes(OVERFLOW_MARKER_SUBSTR)) ||
+    (card.outcome && card.outcome.includes(OVERFLOW_MARKER_SUBSTR)) ||
+    (card.keyFiles && card.keyFiles.includes(OVERFLOW_MARKER_SUBSTR));
+
+  if (needsBody) {
+    const children = await listAllChildren(pageId);
+    card.notes = await readFieldWithOverflow(pageId, card.notes, 'notes', { children });
+    card.outcome = await readFieldWithOverflow(pageId, card.outcome, 'outcome', { children });
+    card.keyFiles = await readFieldWithOverflow(pageId, card.keyFiles, 'key-files', { children });
+  }
+
   console.log(JSON.stringify(card, null, 2));
   return card;
 }
