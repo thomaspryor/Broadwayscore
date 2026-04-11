@@ -28,6 +28,7 @@ const {
 } = require('./lib/email-templates');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { checkPreviewDedup } = require('./lib/preview-dedup');
+const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
@@ -480,6 +481,20 @@ async function main() {
     // Must point to /api/unsubscribe (handles POST) — NOT /unsubscribe (GET-only client page)
     const unsubUrl = `https://broadwayscorecard.com/api/unsubscribe?email=${encodeURIComponent(SEND_TO)}${MARKET === 'west-end' ? '&market=west-end' : ''}`;
 
+    // Acquire cross-session send lock BEFORE calling Resend. Closes the narrow
+    // race where a concurrent CLI or workflow run could double-send between
+    // dedup check and network call. See scripts/lib/send-lock.js for details.
+    const lock = acquireSendLock({
+      purpose: `${MARKET}-preview-${broadcastKey.replace(`${MARKET}:`, '')}`,
+    });
+    if (!lock.acquired) {
+      console.error(`\nSEND LOCK REFUSED: ${lock.reason}`);
+      console.error('Another session is currently sending, or recently sent, for this path.');
+      console.error('Not sending. Retry in a minute if you still need the preview.');
+      process.exit(1);
+    }
+    console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
+
     try {
       await postJSON('https://api.resend.com/emails', {
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
@@ -496,8 +511,16 @@ async function main() {
       console.log(`Preview sent to ${SEND_TO}`);
     } catch (err) {
       console.error(`ERROR sending preview: ${err.message}`);
+      // Best-effort release before bailing.
+      const rel = releaseSendLock(lock);
+      if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
       process.exit(1);
     }
+
+    // Release the lock on success.
+    const rel = releaseSendLock(lock);
+    if (!rel.released) console.error(`  WARNING: lock release failed: ${rel.reason}`);
+    else console.log(`  Send lock released`);
   } else {
     // Create a Buttondown DRAFT — owner reviews and clicks Send manually from Buttondown UI.
     // Code never pushes the Send button. This prevents any repeat of the March 2026 incidents.
@@ -512,6 +535,21 @@ async function main() {
     // Build HTML — uses {{ unsubscribe_url }} (Buttondown's template variable)
     const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
     const marketLabel = isLondonMarket(MARKET) ? '[West End] ' : '';
+
+    // Acquire cross-session send lock before creating the Buttondown draft.
+    // The Buttondown draft itself is not a subscriber send — the owner clicks
+    // Send manually — but two sessions racing would create two drafts for the
+    // same show, one of which the owner could accidentally send. Lock here
+    // matches the --send-to preview path.
+    const lock = acquireSendLock({
+      purpose: `${MARKET}-draft-${broadcastKey.replace(`${MARKET}:`, '')}`,
+    });
+    if (!lock.acquired) {
+      console.error(`\nSEND LOCK REFUSED: ${lock.reason}`);
+      console.error('Another session is creating a draft right now. Not creating a duplicate.');
+      process.exit(1);
+    }
+    console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
 
     try {
       const result = await postJSON('https://api.buttondown.com/v1/emails', {
@@ -572,8 +610,16 @@ ${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast.
       saveSentData(sentData);
 
       console.log(`\nDraft ready — log into Buttondown to send: ${draftUrl}`);
+
+      // Release the lock on success.
+      const rel = releaseSendLock(lock);
+      if (!rel.released) console.error(`  WARNING: lock release failed: ${rel.reason}`);
+      else console.log(`  Send lock released`);
     } catch (err) {
       console.error(`ERROR creating Buttondown draft: ${err.message}`);
+      // Best-effort release before bailing.
+      const rel = releaseSendLock(lock);
+      if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
       await sendAlert({
         title: 'Opening Night Draft Creation Failed',
         description: `Buttondown draft error: ${err.message}`,

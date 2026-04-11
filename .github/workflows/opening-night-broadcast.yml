@@ -306,6 +306,12 @@ jobs:
           BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Required by scripts/lib/send-lock.js — it acquires a cross-session
+          # advisory lock via the GitHub Contents API before any Resend/Buttondown
+          # call, to prevent double-sends when a CLI session and this workflow run
+          # in parallel. Without GH_TOKEN, `gh api` in CI would fail auth and the
+          # lock helper would exit(1), blocking the send rather than risking a race.
+          GH_TOKEN: ${{ github.token }}
         run: |
           # Code creates a Buttondown DRAFT — owner logs in and clicks Send manually.
           # Use send_to input for preview testing (sends single transactional email, no draft).
