@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T20:26:42.780Z",
+  "timestamp": "2026-04-11T20:39:28.324Z",
   "stats": {
     "totalReviews": 34736,
-    "alreadyFlagged": 14062,
-    "dateGuardCatches": 60,
+    "alreadyFlagged": 14083,
+    "dateGuardCatches": 59,
     "directorMismatch": 926,
-    "tvFilmSignals": 3347,
-    "londonSignals": 1086,
+    "tvFilmSignals": 3343,
+    "londonSignals": 1077,
     "offBroadwaySignals": 955,
     "yearMismatch": 71,
-    "noPublishDate": 4148
+    "noPublishDate": 4145
   },
   "findings": [
     {
@@ -20236,25 +20236,6 @@
       ]
     },
     {
-      "showId": "hamilton-west-end-2021",
-      "file": "whatsonstage--rachel-agyekum.json",
-      "score": 84,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"film review\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "hamlet-2009",
       "file": "theater-life--eric-march.json",
       "score": 42,
@@ -37097,20 +37078,6 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "file": "london-theatre--matt-wolf.json",
-      "score": 66,
-      "publishDate": "2025-12-16",
-      "url": "https://www.londontheatre.co.uk/reviews/paranormal-activity-review-ambassadors-theatre",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
       "file": "lost-in-theatreland--amy-rye.json",
       "score": 63,
       "publishDate": "2025-12-16",
@@ -37134,20 +37101,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
-      "file": "thestage--tom-wicker.json",
-      "score": 87,
-      "publishDate": "December 16th, 2025",
-      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatre-london-felix-barrett",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -51871,20 +51824,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "the-scotsman--joyce-mcmillan.json",
-      "score": 78,
-      "publishDate": "2019-12-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -70765,20 +70704,6 @@
       ]
     },
     {
-      "showId": "les-miserables-west-end-2021",
-      "file": "guardian--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
       "showId": "liberation-2025",
       "file": "front-row-center--tulis-mccall.json",
       "score": 82,
@@ -71342,20 +71267,6 @@
       "score": 79,
       "publishDate": "2025-07-01",
       "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "marie-and-rosetta-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 79,
-      "publishDate": "2025-07-01",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/marie-and-rosetta-review-a-tribute-to-the-godmother-of-rocknroll-jkml0xmrh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73209,38 +73120,10 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "file": "thestage--sam-marlowe.json",
-      "score": 82,
-      "publishDate": "January 15th, 2025",
-      "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
       "score": 79,
       "publishDate": "2025-01-19",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "whatsonstage--gareth-carr.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/oliver-at-chichester-festival-theatre-review-revival-glorious-revival_1616946/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -77758,25 +77641,6 @@
       ]
     },
     {
-      "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
-      "file": "whatsonstage--michael-davies.json",
-      "score": 78,
-      "publishDate": "2026-02-20",
-      "url": "https://www.whatsonstage.com/news/the-boy-who-harnessed-the-wind-musical-at-the-rsc-and-in-the-west-end-review_1712861/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 64d before show (2026-02-20 vs 2026-04-25)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-caretaker-2003",
       "file": "theatermania--unknown.json",
       "score": 66,
@@ -80103,19 +79967,6 @@
     },
     {
       "showId": "the-mousetrap-west-end-2021",
-      "file": "express-uk--moira-petty.json",
-      "publishDate": "2017-11-25",
-      "url": "https://www.express.co.uk/entertainment/theatre/346239/Theatre-review-Hedda-Gabler-The-Mousetrap-and-Julius-Caesar",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-mousetrap-west-end-2021",
       "file": "guardian--guardian-staff.json",
       "score": 62,
       "publishDate": null,
@@ -80826,38 +80677,10 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "file": "standard--paul-raven.json",
-      "score": 100,
-      "publishDate": "2025-09-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 94,
       "publishDate": "2025-09-15",
       "url": "https://theatreweekly.com/review-the-producers-at-garrick-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "file": "thereviewshub--sonny-waheed.json",
-      "score": 75,
-      "publishDate": "2025-09-17",
-      "url": "https://www.thereviewshub.com/the-producers-garrick-theatre-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

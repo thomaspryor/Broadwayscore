@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-11T20:22:11.267Z",
+    "generatedAt": "2026-04-11T20:34:47.980Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 93,
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review is about a Sydney, Australia production of Wicked. It mentions the 2008 Australian premiere and a 2014 return season, and the Sydney Lyric."
+      "reasoning": "This review is about the Australian production of Wicked, specifically the Sydney Lyric production. It mentions the 2008 Australian premiere and a 2014 return season, and discusses the current production's cast in Sydney."
     },
     {
       "showId": "the-elephant-man-1979",
@@ -44,7 +44,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-elephant-man-2014",
-      "reasoning": "The review mentions Bradley Cooper, Alessandro Nivola, Scott Ellis, and the Booth Theatre, all associated with the 2014 revival."
+      "reasoning": "The review mentions Bradley Cooper, Scott Ellis, and the Booth Theatre, all associated with the 2014 revival."
     },
     {
       "showId": "on-the-twentieth-century-1978",
@@ -61,23 +61,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "on-the-twentieth-century-2015",
-      "reasoning": "The review mentions Kristin Chenoweth, Peter Gallagher, and Scott Ellis, who were all involved in the 2015 revival. It also mentions the Roundabout Theatre Company, which presented the 2015 revival."
-    },
-    {
-      "showId": "the-heiress-1995",
-      "showTitle": "The Heiress",
-      "showYear": 1995,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": null,
-      "originalSignals": [
-        "modern references: masks"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-heiress-2012",
-      "reasoning": "The review mentions Jessica Chastain, Dan Stevens, and director Moisés Kaufman, who were all involved in the 2012 production. It also mentions the Walter Kerr Theatre, where the 2012 production played."
+      "reasoning": "The review mentions Kristin Chenoweth, Peter Gallagher, and Scott Ellis, who were all involved in the 2015 revival. It also mentions the Roundabout Theatre Company, which produced the 2015 revival."
     },
     {
       "showId": "broadway-1987",
@@ -94,23 +78,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This,\" not the original 1987 production. The review also mentions the director, Mic, and the set designer, Derek McLane, who were involved in the 2019 production."
-    },
-    {
-      "showId": "the-gin-game-1977",
-      "showTitle": "The Gin Game",
-      "showYear": 1977,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2015 in text matches revival the-gin-game-2015"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
+      "reasoning": "The review discusses a revival starring Adam Driver and Keri Russell, directed by Michael Mayer. This is not the original 1987 production."
     },
     {
       "showId": "ragtime-1998",
@@ -131,6 +99,38 @@
       "reasoning": "The review explicitly mentions \"Now in its second Broadway revival at Lincoln Center’s Vivian Beaumont Theater\" and discusses director Lear deBessonet, which aligns with the 2025 production. It also mentions the set design by David Korins, which is associated with the 2025 production."
     },
     {
+      "showId": "the-heiress-1995",
+      "showTitle": "The Heiress",
+      "showYear": 1995,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "originalSignals": [
+        "modern references: masks"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-heiress-2012",
+      "reasoning": "The review mentions Jessica Chastain, Dan Stevens, and director Moisés Kaufman, who were all involved in the 2012 production. It also mentions the Walter Kerr Theatre, where the 2012 production played."
+    },
+    {
+      "showId": "the-gin-game-1977",
+      "showTitle": "The Gin Game",
+      "showYear": 1977,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2015 in text matches revival the-gin-game-2015"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-gin-game-2015",
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
+    },
+    {
       "showId": "the-house-of-blue-leaves-1986",
       "showTitle": "The House of Blue Leaves",
       "showYear": 1986,
@@ -145,7 +145,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-house-of-blue-leaves-2011",
-      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, and Alison Pill, who were all in the 2011 Broadway revival. It also mentions Christopher Abbott and Thomas Sadoski, who were in the 2011 production."
+      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, and Christopher Abbott, who were all in the 2011 Broadway revival. It also refers to this production as a 'new Broadway revival'."
     },
     {
       "showId": "the-mystery-of-edwin-drood-1985",
@@ -163,24 +163,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-mystery-of-edwin-drood-2012",
-      "reasoning": "The review mentions cast members (Betsy Wolfe, Will Chase, Stephanie J. Block, Jim Norton, Chita Rivera, Andy Karl, Jessie Mueller, Gregg Edelman, Robert Creighton), director (Scott Ellis), and choreographer (Warren Carlyle) from the 2012 Broadway revival. It also mentions the Roundabout Theatre Com"
-    },
-    {
-      "showId": "that-championship-season-1972",
-      "showTitle": "That Championship Season",
-      "showYear": 1972,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "The Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "that-championship-season-2011",
-      "reasoning": "The review mentions the director (Gregory Mosher), set designer (Michael Yeargan), venue (Bernard B. Jacobs Theatre), and cast (Brian Cox, Jim Gaffigan, Chris Noth, Jason Patric, Kiefer Sutherland) of the 2011 revival."
+      "reasoning": "The review mentions cast members (Betsy Wolfe, Will Chase, Stephanie J. Block, Jim Norton, Chita Rivera, Andy Karl, Jessie Mueller, Gregg Edelman, Robert Creighton), director (Scott Ellis), choreographer (Warren Carlyle), and music director (Paul Gemignani) all associated with the 2012 Broadway revi"
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2003",
@@ -198,7 +181,24 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "cat-on-a-hot-tin-roof-2013",
-      "reasoning": "The review discusses the 2003 production, then the 2008 production, and then describes a new production starring Scarlett Johansson and Benjamin Walker, directed by Rob Ashford, playing at the Richard Rodgers Theatre. This matches the 2013 production."
+      "reasoning": "The review discusses the 2003 production with Ashley Judd and Jason Patric, then the 2008 all-black production, and then discusses a \"new staging directed by Rob Ashford\" starring Scarlett Johansson and Benjamin Walker, which is the 2013 production."
+    },
+    {
+      "showId": "that-championship-season-1972",
+      "showTitle": "That Championship Season",
+      "showYear": 1972,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "that-championship-season-2011",
+      "reasoning": "The review mentions the director (Gregory Mosher), set designer (Michael Yeargan), venue (Bernard B. Jacobs Theatre), and cast (Brian Cox, Jim Gaffigan, Chris Noth, Jason Patric, Kiefer Sutherland) of the 2011 revival. It also mentions the limited run ending May 29."
     },
     {
       "showId": "the-real-thing-2000",
@@ -233,7 +233,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 revival. It also mentions Cynthia Nixon, who was in the 1984 production but also appeared in the 2014 production."
+      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 revival. It also mentions Cynthia Nixon, who was in the 1984 production but also in this one."
     },
     {
       "showId": "the-real-thing-2000",
@@ -252,22 +252,6 @@
       "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 production. It also mentions Cynthia Nixon, who was in the 1984 production but also appeared in the 2014 production."
     },
     {
-      "showId": "macbeth-2000",
-      "showTitle": "Macbeth",
-      "showYear": 2000,
-      "file": "theatrely--juan-a-ramirez.json",
-      "outlet": "Theatrely",
-      "criticName": "Juan A. Ramirez",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2022 in text matches revival macbeth-2022"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "macbeth-2022",
-      "reasoning": "The review mentions Daniel Craig and Ruth Negga as the leads, Sam Gold as the director, and the Longacre Theatre as the venue, all of which are associated with the 2022 production of Macbeth. The review also mentions the closing date of July 10, 2022."
-    },
-    {
       "showId": "born-yesterday-1989",
       "showTitle": "Born Yesterday",
       "showYear": 1989,
@@ -282,7 +266,23 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "born-yesterday-2011",
-      "reasoning": "The review mentions the Cort Theatre, Jim Belushi, Nina Arianda, and Robert Sean Leonard, who were all in the 2011 revival. It also mentions Doug Hughes as the director, who directed the 2011 revival."
+      "reasoning": "The review mentions the Cort Theatre, Jim Belushi, Nina Arianda, Robert Sean Leonard, and director Doug Hughes, all of whom were involved in the 2011 revival, not the 1989 production."
+    },
+    {
+      "showId": "macbeth-2000",
+      "showTitle": "Macbeth",
+      "showYear": 2000,
+      "file": "theatrely--juan-a-ramirez.json",
+      "outlet": "Theatrely",
+      "criticName": "Juan A. Ramirez",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2022 in text matches revival macbeth-2022"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "macbeth-2022",
+      "reasoning": "The review mentions Daniel Craig and Ruth Negga as the leads, Sam Gold as the director, and the Longacre Theatre as the venue, all of which are associated with the 2022 production of Macbeth. The review also mentions the production is playing through July 10, 2022."
     },
     {
       "showId": "glengarry-glen-ross-1984",
@@ -300,7 +300,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "glengarry-glen-ross-2012",
-      "reasoning": "The review mentions Al Pacino, Daniel Sullivan as director, and Jeffrey Richards as producer, which all align with the 2012 Broadway revival. The review also mentions the 1984 production winning the Pulitzer Prize."
+      "reasoning": "The review mentions Al Pacino, Daniel Sullivan as director, and Jeffrey Richards as producer, which all align with the 2012 Broadway revival. It also mentions other cast members from that production (David Harbour, John C. McGinley, Richard Schiff, Bobby Cannavale)."
     },
     {
       "showId": "old-times-1971",
@@ -333,7 +333,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, indicating a recent production."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of which are associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, which aligns with the 2015 production's run."
     }
   ]
 }
