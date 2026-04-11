@@ -40,7 +40,7 @@ import CastSection from '@/components/CastSection';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
-import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
+import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
@@ -665,47 +665,10 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         })()}
                       </div>
                     </div>
-                    {/* Review breakdown bar */}
-                    {(() => {
-                      const revs = show.criticScore?.reviews || [];
-                      const pos = revs.filter(r => r.reviewScore >= 75).length;
-                      const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 75).length;
-                      const neg = revs.filter(r => r.reviewScore < 55).length;
-                      const tot = revs.length;
-                      if (tot === 0 || showTBD) return null;
-                      const posPct = Math.round((pos / tot) * 100);
-                      const mixPct = Math.round((mix / tot) * 100);
-                      const negPct = 100 - posPct - mixPct;
-                      return (
-                        <div className="space-y-1">
-                          <div className="h-2 rounded-full overflow-hidden flex bg-surface-overlay">
-                            {posPct > 0 && <div className="bg-score-great h-full" style={{ width: `${posPct}%` }} />}
-                            {mixPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixPct}%` }} />}
-                            {negPct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negPct}%` }} />}
-                          </div>
-                          <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs">
-                            {pos > 0 && (
-                              <div className="flex items-center gap-1">
-                                <div className="w-2 h-2 rounded-sm bg-score-great" />
-                                <span className="text-gray-400">{pos} Positive</span>
-                              </div>
-                            )}
-                            {mix > 0 && (
-                              <div className="flex items-center gap-1">
-                                <div className="w-2 h-2 rounded-sm bg-score-tepid" />
-                                <span className="text-gray-400">{mix} Mixed</span>
-                              </div>
-                            )}
-                            {neg > 0 && (
-                              <div className="flex items-center gap-1">
-                                <div className="w-2 h-2 rounded-sm bg-score-skip" />
-                                <span className="text-gray-400">{neg} Negative</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })()}
+                    {/* Review breakdown bar — Rave / Positive / Mixed / Negative */}
+                    {!showTBD && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
+                      <ScoreBreakdownBar reviews={show.criticScore.reviews} category={show.category} />
+                    )}
                     {/* Audience chip — below breakdown bar on mobile */}
                     {hasAudience && audienceGrade && (
                       <a href="#audience" className="sm:hidden inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold hover:brightness-125 transition-all" style={{ background: `${audienceGrade.color}15`, color: audienceGrade.color }}>
@@ -870,46 +833,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             </div>
 
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
-            {featureFlags.showPageRedesign && (() => {
-              const revs = show.criticScore?.reviews || [];
-              const pos = revs.filter(r => r.reviewScore >= 75).length;
-              const mix = revs.filter(r => r.reviewScore >= 55 && r.reviewScore < 75).length;
-              const neg = revs.filter(r => r.reviewScore < 55).length;
-              const tot = revs.length;
-              if (tot === 0) return null;
-              const posPct = Math.round((pos / tot) * 100);
-              const mixPct = Math.round((mix / tot) * 100);
-              const negPct = 100 - posPct - mixPct;
-              return (
-                <div className="sm:hidden space-y-1.5 mb-4">
-                  <div className="h-2.5 rounded-full overflow-hidden flex bg-surface-overlay">
-                    {posPct > 0 && <div className="bg-score-great h-full" style={{ width: `${posPct}%` }} />}
-                    {mixPct > 0 && <div className="bg-score-tepid h-full" style={{ width: `${mixPct}%` }} />}
-                    {negPct > 0 && <div className="bg-score-skip h-full" style={{ width: `${negPct}%` }} />}
-                  </div>
-                  <div className="flex items-center gap-3 text-xs">
-                    {pos > 0 && (
-                      <div className="flex items-center gap-1">
-                        <div className="w-2.5 h-2.5 rounded-sm bg-score-great" />
-                        <span className="text-gray-400">{pos} Positive</span>
-                      </div>
-                    )}
-                    {mix > 0 && (
-                      <div className="flex items-center gap-1">
-                        <div className="w-2.5 h-2.5 rounded-sm bg-score-tepid" />
-                        <span className="text-gray-400">{mix} Mixed</span>
-                      </div>
-                    )}
-                    {neg > 0 && (
-                      <div className="flex items-center gap-1">
-                        <div className="w-2.5 h-2.5 rounded-sm bg-score-skip" />
-                        <span className="text-gray-400">{neg} Negative</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
+            {featureFlags.showPageRedesign && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
+              <ScoreBreakdownBar
+                reviews={show.criticScore.reviews}
+                category={show.category}
+                className="sm:hidden mb-4"
+              />
+            )}
 
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
               ...r,

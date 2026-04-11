@@ -1,5 +1,7 @@
 export { SCORE_TIERS, getScoreTier, getScoreColorClass, getScoreTextColorClass, ScoreBadge, MustSeeCrown } from './ScoreBadge';
 export type { ScoreTier, ScoreBadgeProps } from './ScoreBadge';
+export { ScoreBreakdownBar, getBreakdownTier } from './ScoreBreakdownBar';
+export type { BreakdownTier } from './ScoreBreakdownBar';
 export { StatusBadge, FormatPill, ProductionPill, AudienceChip, CategoryBadge } from './ShowPills';
 export { ToggleBar } from './ToggleBar';
 export { ScoreToggle } from './ScoreToggle';
