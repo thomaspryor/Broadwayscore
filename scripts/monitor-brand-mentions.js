@@ -32,10 +32,12 @@ const fs = require('fs');
 const path = require('path');
 
 const { fetchFreeSources, DEFAULT_KEYWORDS } = require('./lib/brand-mention-sources');
-const { fetchPaidSources } = require('./lib/brand-mention-serp');
+const { fetchPaidSources, _internal: serpInternal } = require('./lib/brand-mention-serp');
 const { filterOwnerAccounts } = require('./lib/owner-accounts');
 const { draftMentions } = require('./lib/brand-mention-drafter');
 const { sendBrandMentionDigest } = require('./lib/brand-mention-email');
+
+const { canonicalizeUrl } = serpInternal;
 
 // ── Config ────────────────────────────────────────────────────────────────
 
@@ -52,20 +54,48 @@ const MAX_MENTIONS = 500;
 // ── State helpers ─────────────────────────────────────────────────────────
 
 function loadState() {
+  let state;
   try {
     const raw = fs.readFileSync(STATE_PATH, 'utf8');
-    return JSON.parse(raw);
+    state = JSON.parse(raw);
   } catch (e) {
     if (e.code !== 'ENOENT') {
       console.warn(`[state] could not read ${STATE_PATH}: ${e.message}`);
     }
-    return {
+    state = {
       lastRunAt: null,
       seenIds: {},
+      seenUrls: {},
       mentions: [],
       stats: { totalSeen: 0, totalDispatched: 0, lastCalibration: null },
     };
   }
+  // Migration: older state files may lack seenUrls — backfill from existing
+  // mentions so cross-source dedup works immediately on the first run after
+  // upgrade. Also deduplicates mentions that share a canonical URL but were
+  // stored under different source prefixes (google: vs news: vs forum:).
+  if (!state.seenUrls) state.seenUrls = {};
+  const urlKeyCount = Object.keys(state.seenUrls).length;
+  if (urlKeyCount === 0 && state.mentions.length > 0) {
+    const dedupedMentions = [];
+    for (const m of state.mentions) {
+      if (!m || !m.url) {
+        dedupedMentions.push(m);
+        continue;
+      }
+      const canonical = canonicalizeUrl(m.url);
+      if (state.seenUrls[canonical]) {
+        // Duplicate across sources — drop
+        console.log(`[state] migration: dropping cross-source duplicate ${m.id} (${canonical})`);
+        continue;
+      }
+      state.seenUrls[canonical] = true;
+      dedupedMentions.push(m);
+    }
+    state.mentions = dedupedMentions;
+    console.log(`[state] migration: built seenUrls with ${Object.keys(state.seenUrls).length} canonical URLs`);
+  }
+  return state;
 }
 
 function saveState(state) {
@@ -114,16 +144,34 @@ async function main() {
     dropped.forEach((m) => console.log(`  [owner-filtered] ${m.source} /u/${m.author} — ${(m.title || '').slice(0, 60)}`));
   }
 
-  // 3. Dedup against state
+  // 3. Dedup against state — TWO checks:
+  //    (a) source:id — catches same-source duplicates (Reddit post seen before)
+  //    (b) canonical URL — catches CROSS-source duplicates (same URL surfacing
+  //        under both google: and news: prefixes on different SERP calls)
+  //
+  // Within the current run, also dedup by canonical URL so two SERP adapters
+  // (e.g. fetchGoogleWebMentions + fetchGoogleNewsMentions) that both surface
+  // the same URL don't produce two entries.
   const newMentions = [];
+  const seenThisRun = new Set();
   for (const m of organic) {
     if (state.seenIds[m.id]) {
-      if (VERBOSE) console.log(`  [seen] ${m.id}`);
+      if (VERBOSE) console.log(`  [seen-id] ${m.id}`);
       continue;
     }
+    const canonical = m.url ? canonicalizeUrl(m.url) : null;
+    if (canonical && state.seenUrls[canonical]) {
+      if (VERBOSE) console.log(`  [seen-url] ${m.id} (canonical: ${canonical})`);
+      continue;
+    }
+    if (canonical && seenThisRun.has(canonical)) {
+      if (VERBOSE) console.log(`  [dup-this-run] ${m.id} (canonical: ${canonical})`);
+      continue;
+    }
+    if (canonical) seenThisRun.add(canonical);
     newMentions.push(m);
   }
-  console.log(`[monitor] dedup: ${newMentions.length} NEW mentions (${organic.length - newMentions.length} already seen)`);
+  console.log(`[monitor] dedup: ${newMentions.length} NEW mentions (${organic.length - newMentions.length} already seen or cross-source duplicates)`);
 
   // 4. Draft responses for each new mention (skippable via --no-draft)
   let draftedPairs = [];
@@ -196,6 +244,9 @@ async function main() {
   const dispatchTs = emailResult.sent ? new Date().toISOString() : null;
   for (const { mention: m, verdict } of draftedPairs) {
     state.seenIds[m.id] = true;
+    if (m.url) {
+      state.seenUrls[canonicalizeUrl(m.url)] = true;
+    }
     state.mentions.push({
       ...m,
       status: 'new',
