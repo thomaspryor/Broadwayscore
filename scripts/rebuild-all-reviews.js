@@ -2118,7 +2118,12 @@ showDirs.forEach(showId => {
       // URL-year cross-production guard for multi-production shows
       // If a review's URL or publish date contains a year clearly closer to a sibling production,
       // skip it (likely filed in the wrong directory by aggregator scrapers)
-      if (multiProdYearGuard[showId]) {
+      // Bypass: wrongProductionManualClear, wrongProductionOverride, allowEarlyDate, allowLateDate
+      if (multiProdYearGuard[showId]
+          && !data.wrongProductionManualClear
+          && !data.wrongProductionOverride
+          && !data.allowEarlyDate
+          && !data.allowLateDate) {
         const guard = multiProdYearGuard[showId];
         let detectedYear = null;
         let yearSource = null;
