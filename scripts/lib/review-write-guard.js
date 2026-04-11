@@ -68,6 +68,9 @@ const PROTECTED_FIELDS = [
   'publishDateVerified',
   'publishDateSource',
   'allowEarlyDate',
+  'urlVerified',
+  'urlManualOverride',
+  'urlManualOverrideNote',
 ];
 
 /**
