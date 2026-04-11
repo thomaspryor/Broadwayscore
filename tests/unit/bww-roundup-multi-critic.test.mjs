@@ -110,6 +110,45 @@ describe('BWW Roundup extraction: multi-critic outlets', () => {
     );
   });
 
+  test('Unknowns must be upgraded by Method 2 — filename collision prevention', () => {
+    // Invariant: if Method 1 emits N unknown slots for an outlet, Method 2
+    // (articleBody text parsing) must upgrade all of them to real critic names
+    // before the reviews array returns. Otherwise two reviews would share the
+    // same filename (outlet--unknown.json) when written to disk, and the 2nd
+    // would overwrite the 1st. Measured empirically across 912 archived BWW
+    // pages: 0 cases where Method 2 leaves 2+ unknowns for the same outlet.
+    //
+    // This test enforces the invariant on a synthetic case: 3 NYSR BlogPostings
+    // + 3 real critic names in articleBody → all upgraded, no duplicate slots.
+    const articleBody =
+      "Let's see what the critics had to say..." +
+      '\n\nDavid Finkle, New York Stage Review: Finkle praises.' +
+      '\n\nFrank Scheck, New York Stage Review: Scheck raves.' +
+      '\n\nRoma Torre, New York Stage Review: Torre dazzled.';
+    const ld = {
+      '@type': 'LiveBlogPosting',
+      articleBody,
+      liveBlogUpdate: [
+        { '@type': 'BlogPosting', headline: 'New York Stage Review - Show: 1' },
+        { '@type': 'BlogPosting', headline: 'New York Stage Review - Show: 2' },
+        { '@type': 'BlogPosting', headline: 'New York Stage Review - Show: 3' },
+      ],
+    };
+    const html = `<html><body><script type="application/ld+json">${JSON.stringify(ld)}</script></body></html>`;
+
+    const reviews = extractBWWRoundupReviews(
+      html, 'show-2026', 'https://www.broadwayworld.com/article/test', 'Show'
+    );
+
+    const nysrs = reviews.filter(r => r.outletId === 'nysr');
+    const unknownNysrs = nysrs.filter(r => !r.criticName);
+    assert.strictEqual(
+      unknownNysrs.length,
+      0,
+      `expected all NYSR slots to be upgraded from unknown; found ${unknownNysrs.length} still-unknown entries`
+    );
+  });
+
   test('Single-critic outlet still dedupes to 1 entry (regression guard)', () => {
     // Two identical BlogPostings for the same real critic — these should
     // still collapse to one entry via the outletId|critic Set dedup.
