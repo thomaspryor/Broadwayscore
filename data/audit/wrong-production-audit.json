@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T02:33:20.022Z",
+  "timestamp": "2026-04-11T03:05:09.129Z",
   "stats": {
     "totalReviews": 34705,
-    "alreadyFlagged": 13857,
+    "alreadyFlagged": 13858,
     "dateGuardCatches": 60,
-    "directorMismatch": 934,
+    "directorMismatch": 933,
     "tvFilmSignals": 3398,
     "londonSignals": 1114,
     "offBroadwaySignals": 964,
     "yearMismatch": 71,
-    "noPublishDate": 4303
+    "noPublishDate": 4291
   },
   "findings": [
     {
@@ -21442,20 +21442,6 @@
     },
     {
       "showId": "hello-dolly-1995",
-      "file": "newsday--barbara-schuler.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "https://www.newsday.com/entertainment/theater/bernadette-peters-hello-dolly-1.16901309",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1995",
       "file": "theater-in-the-now--michael-block.json",
       "score": 78,
       "publishDate": null,
@@ -23914,7 +23900,7 @@
       "showId": "ink-2019",
       "file": "newsday--barbara-schuler.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2019-04-24",
       "url": "https://www.newsday.com/entertainment/theater/ink-review-1.30153878",
       "findings": [
         {
@@ -28240,7 +28226,7 @@
       "showId": "les-miserables-2014",
       "file": "huffpost--david-finkle.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2014-03-24",
       "url": "https://www.huffpost.com/david-finkle/first-nighter-les-miserab_b_5020357.html",
       "findings": [
         {
@@ -70876,7 +70862,7 @@
       "showId": "king-charles-iii-2015",
       "file": "huffpost--michael-giltz.json",
       "score": 75,
-      "publishDate": null,
+      "publishDate": "2015-11-09",
       "url": "https://www.huffpost.com/michael-giltz/theater-king-charles-iii_b_8508852.html",
       "findings": [
         {
