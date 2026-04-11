@@ -611,6 +611,7 @@ console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\
 // Load show dates and status for production-date guard
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
 const showDateMap = {};
+const showOpeningDateMap = {};  // showId -> opening date only (NOT previewsStartDate) — for publishDate fallback
 const showClosingDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
@@ -620,6 +621,7 @@ const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team n
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
+  if (s.openingDate) showOpeningDateMap[s.id] = new Date(s.openingDate);
   if (s.closingDate && s.status === 'closed') showClosingDateMap[s.id] = new Date(s.closingDate);
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
@@ -2712,9 +2714,9 @@ showDirs.forEach(showId => {
             }
             return urlDate.date;
           }
-          // Final fallback: use show's opening date as approximate publish date
-          // Most reviews are published within a few days of opening night
-          const showOpen = showDateMap[showId];
+          // Final fallback: use show's OPENING date (not previewsStartDate) as approximate publish date
+          // Most reviews are published around opening night, not during previews
+          const showOpen = showOpeningDateMap[showId];
           if (showOpen) {
             const openStr = showOpen.toISOString().substring(0, 10);
             stats.openingDateFallbacks = (stats.openingDateFallbacks || 0) + 1;
