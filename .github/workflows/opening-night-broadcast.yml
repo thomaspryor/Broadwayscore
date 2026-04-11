@@ -139,46 +139,71 @@ jobs:
         if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && inputs.send_to_all != 'true'
         id: readiness_gate
         run: |
-          # Require 15+ scored reviews AND reviews from at least 2 aggregator sources
-          # (BWW roundup + DTLI/Show Score). This prevents thin broadcasts.
+          # Require 15+ scored reviews AND at least 1 aggregator source (BWW or DTLI).
+          # PER-SHOW filter — shows that aren't ready are excluded, but ready shows
+          # continue. Previously a single not-ready show blocked the entire batch
+          # (e.g. a WE show with 0 reviews held Broadway hostage on Cats opening day
+          # 2026-04-08: cats-the-jellicle-ball-2026 was ready but midnight-in-the-
+          # toyshop-west-end-2026 had 0 reviews and failed the gate for both).
           SHOWS="${{ steps.find.outputs.shows }}"
-          RESULT=$(node -e "
-            const reviews = require('./data/reviews.json').reviews || require('./data/reviews.json');
-            const allReviews = Array.isArray(reviews) ? reviews : [];
-            const shows = '$SHOWS'.split(',');
-            for (const id of shows) {
-              const showReviews = allReviews.filter(r => r.showId === id && r.assignedScore != null);
-              const count = showReviews.length;
-              // Check aggregator coverage via thumb fields in reviews.json
-              const hasDtli = showReviews.some(r => r.dtliThumb);
-              const hasBww = showReviews.some(r => r.bwwThumb);
-              const aggCount = [hasDtli, hasBww].filter(Boolean).length;
-              if (count < 15) {
-                console.error(id + ': only ' + count + '/15 scored reviews — not ready');
-                process.exit(1);
+          node -e "
+            try {
+              const raw = require('./data/reviews.json');
+              const reviews = raw.reviews || raw;
+              const allReviews = Array.isArray(reviews) ? reviews : [];
+              const shows = '$SHOWS'.split(',');
+              const ready = [];
+              for (const id of shows) {
+                const showReviews = allReviews.filter(r => r.showId === id && r.assignedScore != null);
+                const count = showReviews.length;
+                const hasDtli = showReviews.some(r => r.dtliThumb);
+                const hasBww = showReviews.some(r => r.bwwThumb);
+                const aggCount = [hasDtli, hasBww].filter(Boolean).length;
+                if (count < 15) {
+                  process.stderr.write(id + ': only ' + count + '/15 scored reviews — not ready (excluded)\n');
+                  continue;
+                }
+                if (aggCount < 1) {
+                  process.stderr.write(id + ': 0/2 aggregator sources — need at least 1 (excluded)\n');
+                  continue;
+                }
+                const aggNames = [hasDtli && 'DTLI', hasBww && 'BWW'].filter(Boolean);
+                process.stderr.write(id + ': ' + count + ' scored reviews, aggregators: ' + aggNames.join('+') + ' — ready\n');
+                ready.push(id);
               }
-              if (aggCount < 1) {
-                console.error(id + ': 0/2 aggregator sources — need at least 1 (DTLI or BWW)');
-                process.exit(1);
-              }
-              const aggNames = [hasDtli && 'DTLI', hasBww && 'BWW'].filter(Boolean);
-              console.log(id + ': ' + count + ' scored reviews, aggregators: ' + aggNames.join('+') + ' — ready');
+              if (ready.length > 0) process.stdout.write(ready.join(','));
+            } catch (err) {
+              process.stderr.write('Readiness gate error: ' + err.message + '\n');
+              process.exit(2);
             }
-          " 2>&1) || {
-            echo "$RESULT"
-            echo "::notice::Readiness gate: not enough reviews or aggregator coverage yet. Will retry on next scoring cycle."
-            echo "blocked=true" >> $GITHUB_OUTPUT
+          " 2>/tmp/readiness_log 1>/tmp/ready_shows || {
+            echo '::error::Readiness gate crashed — see log below'
+            cat /tmp/readiness_log
+            echo 'blocked=true' >> $GITHUB_OUTPUT
+            echo 'ready_shows=' >> $GITHUB_OUTPUT
             exit 0
           }
-          echo "$RESULT"
-          echo "blocked=false" >> $GITHUB_OUTPUT
+          cat /tmp/readiness_log
+          READY_SHOWS=$(cat /tmp/ready_shows)
+          if [ -z "$READY_SHOWS" ]; then
+            echo "::notice::Readiness gate: no shows ready for broadcast. Will retry on next scoring cycle."
+            echo "blocked=true" >> $GITHUB_OUTPUT
+            echo "ready_shows=" >> $GITHUB_OUTPUT
+          else
+            echo "Ready shows: $READY_SHOWS"
+            echo "blocked=false" >> $GITHUB_OUTPUT
+            echo "ready_shows=$READY_SHOWS" >> $GITHUB_OUTPUT
+          fi
 
       - name: Check already broadcast
         if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && steps.readiness_gate.outputs.blocked != 'true'
         id: check
         run: |
-          # Read opening-night-sent.json if it exists, filter out completed shows
-          SHOWS="${{ steps.find.outputs.shows }}"
+          # Read opening-night-sent.json if it exists, filter out completed shows.
+          # SHOWS = only shows that passed the readiness gate (per-show filter) —
+          # NOT steps.find.outputs.shows (which would include not-ready shows that
+          # would poison the broadcast run).
+          SHOWS="${{ steps.readiness_gate.outputs.ready_shows }}"
           PENDING=$(node -e "
             const fs = require('fs');
             const sentPath = 'data/opening-night-sent.json';
