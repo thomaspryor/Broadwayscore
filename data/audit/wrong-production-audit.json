@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T11:18:31.557Z",
+  "timestamp": "2026-04-11T11:58:16.611Z",
   "stats": {
-    "totalReviews": 34741,
+    "totalReviews": 34740,
     "alreadyFlagged": 13924,
     "dateGuardCatches": 60,
     "directorMismatch": 933,
     "tvFilmSignals": 3385,
-    "londonSignals": 1110,
+    "londonSignals": 1111,
     "offBroadwaySignals": 959,
     "yearMismatch": 71,
-    "noPublishDate": 4259
+    "noPublishDate": 4260
   },
   "findings": [
     {
@@ -82449,6 +82449,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-winslow-boy-2013",
+      "file": "abc-news--mark-kennedy.json",
+      "score": 73,
+      "publishDate": "October 17, 2013",
+      "url": "http://abcnews.go.com/Entertainment/wireStory/review-winslow-boy-tonic-stubborn-20606540",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },

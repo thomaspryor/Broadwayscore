@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-11T11:17:02.710Z",
+  "generatedAt": "2026-04-11T11:56:47.816Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 4,
-    "newlyFlagged": 3,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 0,
     "alreadyFlagged": 1,
-    "criticsAffected": 2,
-    "showsAffected": 3,
-    "avgSimilarity": 100,
-    "avgScoreDiff": 4.3
+    "criticsAffected": 0,
+    "showsAffected": 0,
+    "avgSimilarity": 0,
+    "avgScoreDiff": 0
   },
   "syndicationPairs": [
     {
@@ -84,7 +84,7 @@
         "washington-times",
         "minneapolis-star-tribune"
       ],
-      "count": 2
+      "count": 0
     },
     {
       "critic": "jennifer farrar",
@@ -96,44 +96,7 @@
       "count": 0
     }
   ],
-  "flagged": [
-    {
-      "critic": "AP wire",
-      "showId": "all-the-way-2014",
-      "primaryOutlet": "ap",
-      "secondaryOutlet": "abc-news",
-      "primaryFile": "ap--mark-kennedy.json",
-      "secondaryFile": "abc-news--mark-kennedy.json",
-      "similarity": 100,
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0
-    },
-    {
-      "critic": "Mark Kennedy",
-      "showId": "allegiance-2015",
-      "primaryOutlet": "ap",
-      "secondaryOutlet": "seattle-post-intelligencer",
-      "primaryFile": "ap--mark-kennedy.json",
-      "secondaryFile": "seattle-post-intelligencer--mark-kennedy.json",
-      "similarity": 100,
-      "primaryScore": 38,
-      "secondaryScore": 39,
-      "scoreDiff": 1
-    },
-    {
-      "critic": "Mark Kennedy",
-      "showId": "les-liaisons-dangereuses-2016",
-      "primaryOutlet": "ap",
-      "secondaryOutlet": "washpost",
-      "primaryFile": "ap--mark-kennedy.json",
-      "secondaryFile": "washpost--mark-kennedy.json",
-      "similarity": 100,
-      "primaryScore": 85,
-      "secondaryScore": 73,
-      "scoreDiff": 12
-    }
-  ],
+  "flagged": [],
   "authorMismatches": [
     {
       "showId": "frozen-2018",
