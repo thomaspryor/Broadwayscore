@@ -26,7 +26,12 @@
 const https = require('https');
 const { fetchWithFallback, flattenComments } = require('./reddit-api');
 
-const DEFAULT_KEYWORDS = ['broadwayscorecard', 'broadway scorecard'];
+// NOTE: we intentionally use only the single-word form "broadwayscorecard"
+// plus the domain form. The 2-word phrase "broadway scorecard" is too noisy —
+// it matches random 2012 blog posts, Google Books results, and BWW forum
+// threads that happen to contain the phrase without being about us.
+// F5Bot runs the 2-word form in parallel as an independent safety net.
+const DEFAULT_KEYWORDS = ['broadwayscorecard', 'broadwayscorecard.com'];
 
 // ──────────────────────────────────────────────────────────────────────────
 // Shared helpers
@@ -76,6 +81,48 @@ function fetchJson(url, opts = {}) {
       req.destroy();
       reject(new Error(`Timeout for ${url}`));
     });
+  });
+}
+
+function postJson(url, body, opts = {}) {
+  return new Promise((resolve, reject) => {
+    const payload = Buffer.from(JSON.stringify(body), 'utf8');
+    const u = new URL(url);
+    const req = https.request(
+      {
+        method: 'POST',
+        hostname: u.hostname,
+        path: u.pathname + u.search,
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': payload.length,
+          'User-Agent': opts.userAgent || 'BroadwayScorecard-BrandMonitor/1.0',
+          ...(opts.headers || {}),
+        },
+        timeout: opts.timeout || 15000,
+      },
+      (res) => {
+        let data = '';
+        res.on('data', (chunk) => (data += chunk));
+        res.on('end', () => {
+          if (res.statusCode !== 200) {
+            return reject(new Error(`HTTP ${res.statusCode} for ${url}: ${data.slice(0, 200)}`));
+          }
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(new Error(`Invalid JSON from ${url}: ${e.message}`));
+          }
+        });
+      }
+    );
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error(`Timeout for ${url}`));
+    });
+    req.write(payload);
+    req.end();
   });
 }
 
@@ -217,20 +264,46 @@ async function fetchHackerNewsMentions(keywords = DEFAULT_KEYWORDS, { sinceTs = 
 // ──────────────────────────────────────────────────────────────────────────
 
 /**
- * Bluesky public search: https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=X
- * Free, no auth. Returns posts matching query.
+ * Bluesky search. The `public.api.bsky.app/xrpc/app.bsky.feed.searchPosts`
+ * endpoint is now auth-gated (returns 403 without a session token) — Bluesky
+ * tightened WAF rules in 2025. To enable this source, set BSKY_HANDLE and
+ * BSKY_APP_PASSWORD in GH secrets; the adapter will use them to create an
+ * AT Protocol session via `com.atproto.server.createSession` and search as
+ * that user.
  *
- * Empty results are common for niche brand names — handled gracefully.
+ * If creds are not set, this adapter logs a one-time warning and returns [].
+ * It is NEVER a fatal error — the monitor keeps running on Reddit + HN.
  */
 async function fetchBlueskyMentions(keywords = DEFAULT_KEYWORDS, { limit = 25 } = {}) {
   const mentions = [];
   const detected = nowIso();
 
+  const handle = process.env.BSKY_HANDLE;
+  const appPassword = process.env.BSKY_APP_PASSWORD;
+  if (!handle || !appPassword) {
+    console.warn('[bluesky] BSKY_HANDLE + BSKY_APP_PASSWORD not set — skipping Bluesky (endpoint is auth-gated as of 2025)');
+    return [];
+  }
+
+  // Create session (short-lived access token)
+  let accessJwt;
+  try {
+    const session = await postJson(
+      'https://bsky.social/xrpc/com.atproto.server.createSession',
+      { identifier: handle, password: appPassword }
+    );
+    accessJwt = session.accessJwt;
+    if (!accessJwt) throw new Error('no accessJwt in session response');
+  } catch (e) {
+    console.warn(`[bluesky] session creation failed: ${e.message}`);
+    return [];
+  }
+
   for (const keyword of keywords) {
-    const url = `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${encodeURIComponent(keyword)}&limit=${limit}&sort=latest`;
+    const url = `https://bsky.social/xrpc/app.bsky.feed.searchPosts?q=${encodeURIComponent(keyword)}&limit=${limit}&sort=latest`;
     let data;
     try {
-      data = await fetchJson(url);
+      data = await fetchJson(url, { headers: { Authorization: `Bearer ${accessJwt}` } });
     } catch (e) {
       console.warn(`[bluesky] search failed for "${keyword}": ${e.message}`);
       continue;
