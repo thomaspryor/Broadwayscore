@@ -164,6 +164,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 /data/audit/*.md
 /data/*.md
 !/data/integrity-report.md
+# Auto-regenerated audit outputs — local only, not versioned.
+# These rules come AFTER the !negation above so they win (last match wins).
+/data/audit/score-integrity.json
+/data/integrity-report.md
 /data/review-reports/
 
 # Scripts documentation (internal)
