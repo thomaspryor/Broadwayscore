@@ -986,6 +986,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             showName={show.title}
             showId={show.id}
             showSlug={show.slug}
+            market={show.category}
           />
         )}
 

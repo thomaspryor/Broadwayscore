@@ -15,6 +15,7 @@ interface ShowtimesCardProps {
   showName?: string;
   showId?: string;
   showSlug?: string;
+  market?: string;
 }
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -78,7 +79,7 @@ function getTodayIndex(mondayStr: string, now: Date): number {
   return -1;
 }
 
-export default function ShowtimesCard({ schedule, currentMonday, showStatus, ticketLinks, todaytixShowtimes, showName, showId, showSlug }: ShowtimesCardProps) {
+export default function ShowtimesCard({ schedule, currentMonday, showStatus, ticketLinks, todaytixShowtimes, showName, showId, showSlug, market }: ShowtimesCardProps) {
   // Don't render for closed shows or if no weeks data
   const weekKeys = useMemo(() => Object.keys(schedule.weeks).sort(), [schedule.weeks]);
 
@@ -116,6 +117,9 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
   const hasTicketLink = !!primaryLink;
   const isTodayTixPrimary = primaryLink?.platform === 'TodayTix' && !!todaytixShowtimes;
 
+  // Schedule data source: Broadway uses bwayrush, WE/OB uses TodayTix
+  const isBwayrushSchedule = !market || market === 'broadway';
+
   /** Build a deep-link URL for a specific time slot, or fall back to the generic ticket page */
   function getTicketUrl(dayIndex: number, slot: 'm' | 'e'): string | undefined {
     if (!hasTicketLink) return undefined;
@@ -127,6 +131,13 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
     }
     return primaryLink!.url;
   }
+
+  // Button text: "Get Tickets from $X" when price available, else "Get Tickets on {Platform}"
+  const buttonText = primaryLink?.priceFrom
+    ? `Get Tickets from $${primaryLink.priceFrom}`
+    : hasTicketLink
+    ? `Get Tickets on ${primaryLink!.platform}`
+    : '';
 
   return (
     <section className="card p-5 sm:p-6 mb-6 scroll-mt-20">
@@ -235,8 +246,8 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
         })}
       </div>}
 
-      {/* Footer */}
-      <div className="mt-3 text-center">
+      {/* Footer: filled gold CTA button + schedule source attribution */}
+      <div className="mt-4 text-center">
         {hasTicketLink && (
           <TicketLink
             showName={showName ?? ''}
@@ -245,20 +256,22 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
             platform={primaryLink!.platform}
             url={primaryLink!.url}
             pageType="showtimes"
-            className="inline-flex items-center gap-1.5 text-brand hover:text-brand/80 text-sm font-medium transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-accent-gold hover:bg-accent-gold/80 text-gray-900 hover:text-gray-900 text-sm font-bold shadow-sm shadow-accent-gold/20 transition-colors border border-accent-gold whitespace-nowrap mb-2"
           >
-            Get Tickets on {primaryLink!.platform}
+            {buttonText}
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </TicketLink>
         )}
-        <p className="text-gray-600 text-[11px]">
-          via{' '}
-          <a href={todaytixShowtimes ? 'https://www.todaytix.com/' : 'https://bwayrush.com/'} target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 underline underline-offset-2">
-            {todaytixShowtimes ? 'TodayTix' : 'bwayrush.com'}
-          </a>
-        </p>
+        {isBwayrushSchedule && (
+          <p className="text-gray-600 text-[11px]">
+            Schedule via{' '}
+            <a href="https://bwayrush.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 underline underline-offset-2">
+              bwayrush.com
+            </a>
+          </p>
+        )}
       </div>
     </section>
   );
