@@ -1045,12 +1045,22 @@ async function main(): Promise<void> {
     // Pre-scoring content quality check
     const scorableText = getScorableText(reviewFile, filePath);
     if (scorableText && reviewFile.fullText && reviewFile.fullText.length >= 100) {
-      // Get show title for context
-      const showTitle = reviewFile.showId
-        ? reviewFile.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ')
-        : '';
-
-      const qualityResult: ContentQualityResult = assessTextQuality(reviewFile.fullText, showTitle);
+      // Use the REAL show title from shows.json (not a hyphens-to-spaces synthesis
+      // of the showId). This mirrors the call in getScorableText() a few lines up.
+      //
+      // Pre-2026-04-11 bug: this block used to synthesize a fake title from
+      // showId (e.g. "caroline-or-change-2004" → "caroline or change") and pass
+      // it as the SECOND argument (where the function expects showId, not
+      // showTitle). Inside assessTextQuality → validateShowMentioned, the
+      // synthesized string "caroline or change" wouldn't match the text's
+      // actual "caroline, or change" (with the comma), so the show appeared
+      // to not be mentioned, which triggered the multi-show garbage branch
+      // and rejected the review. Every review whose real title contained
+      // punctuation the showId didn't carry (commas, apostrophes, "&", etc.)
+      // got silently dropped. Measured impact: 13 of 68 orphans unblocked by
+      // this one-line fix.
+      const realShowTitle = showTitles.get(reviewFile.showId) || undefined;
+      const qualityResult: ContentQualityResult = assessTextQuality(reviewFile.fullText, reviewFile.showId, realShowTitle);
 
       if (qualityResult.quality === 'garbage' && qualityResult.confidence === 'high') {
         // Check if we have good excerpts to fall back to

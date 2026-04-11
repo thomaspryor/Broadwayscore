@@ -2544,9 +2544,18 @@ function validateUnscoredReviewTexts() {
         continue; // JSON parse errors caught elsewhere
       }
 
-      // Mirror of rebuild-all-reviews.js skip logic. Anything rebuild would
-      // skip legitimately is not a silent gap — we only care about files
-      // that WOULD be included but have no score to contribute.
+      // Mirror of rebuild-all-reviews.js skip logic AND scripts/lib/is-scoreable.js.
+      // Anything rebuild or the LLM scorer would skip legitimately is not a silent
+      // gap — we only care about files that WOULD be included but have no score.
+      //
+      // NOTE: the dedup field naming is inconsistent across the codebase. Two
+      // separate dedup paths set DIFFERENT fields:
+      //   - `duplicateOf`    (used by scripts/lib/is-scoreable.js — older)
+      //   - `duplicateTextOf` (used by rebuild-all-reviews.js — newer)
+      // A file can have either or both. This validator must check BOTH or it
+      // undercounts legitimate skips and surfaces false orphans. The original
+      // version only checked duplicateTextOf and falsely flagged 39 `duplicateOf`
+      // files across the site as silent gaps (2026-04-11 discovery).
       if (r.rejectionReason) continue;
       if (Array.isArray(r.rejectedBy) && r.rejectedBy.length >= 2) continue;
       if (r.isRoundupArticle === true) continue;
@@ -2554,9 +2563,19 @@ function validateUnscoredReviewTexts() {
       if (r.wrongProduction) continue;
       if (r.wrongShow) continue;
       if (r.duplicateTextOf) continue;
+      if (r.duplicateOf) continue; // NEW 2026-04-11: scorer's dedup field
       if (r.humanReviewedWrongProduction) continue;
       if (r.contentTier === 'invalid' || r.contentTier === 'stub') continue;
       if (r.scoreStatus === 'TO_BE_CALCULATED') continue;
+      // showNotMentioned only skips when there are no aggregator excerpts to fall back on.
+      // Mirrors is-scoreable.js logic.
+      if (r.showNotMentioned) {
+        const hasExcerpt = !!(
+          r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt ||
+          r.nycTheatreExcerpt || r.stagedoorExcerpt || r.lboRoundupExcerpt
+        );
+        if (!hasExcerpt) continue;
+      }
       // fullTextWrongAuthor only skips when there are no aggregator excerpts to fall back on
       if (r.fullTextWrongAuthor === true) {
         const hasExcerpt = !!(
