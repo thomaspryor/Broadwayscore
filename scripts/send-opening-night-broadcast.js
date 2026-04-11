@@ -21,12 +21,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const { sendAlert } = require('./lib/discord-notify');
 const {
   postJSON, buildBroadcastOpeningNightHtml, buildUnsubscribeUrl,
 } = require('./lib/email-templates');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { checkPreviewDedup } = require('./lib/preview-dedup');
+const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
@@ -75,6 +77,133 @@ function saveSentData(data) {
   } catch (err) {
     console.error(`ERROR: Failed to save sent-tracking data to ${SENT_PATH}: ${err.message}`);
     console.error('WARNING: Sent-tracking state may be lost — risk of duplicate sends on next run');
+  }
+}
+
+/**
+ * Pure merge helper — exposed for unit tests. Remote entries are preserved, local
+ * entries win on conflict (the CLI just sent, so its entries are newest).
+ */
+function mergeTrackerEntries(remoteParsed, localParsed) {
+  const merged = { ...(remoteParsed || {}) };
+  if (!merged.shows) merged.shows = {};
+  const localShows = (localParsed && localParsed.shows) || {};
+  for (const [k, v] of Object.entries(localShows)) {
+    merged.shows[k] = v;
+  }
+  return merged;
+}
+
+/**
+ * Push data/opening-night-sent.json to origin/main via the GitHub Contents API.
+ *
+ * Why: when the script is invoked from a local shell (e.g. manual CLI preview), it
+ * writes the tracker to disk but the running-in-CI workflow reads origin/main. Without
+ * a sync step, the workflow can't see the CLI write and will double-send on its next
+ * run. This is what caused the 2026-04-11 duplicate-preview incident (CLI sent at
+ * 02:09 UTC but never committed; workflow fired at 12:21 UTC reading stale origin).
+ *
+ * Strategy: fetch the current file from origin/main, parse it, merge in our in-memory
+ * entries (CLI write wins on conflict — the CLI just sent, so our entries are newest),
+ * PUT back with the fetched sha. If the sha is stale due to concurrent write, retry
+ * once with a fresh fetch.
+ *
+ * Skipped when:
+ *   - Running in GitHub Actions (the workflow commits separately).
+ *   - DRY_RUN (never write to origin).
+ *   - `gh` CLI is missing or the user isn't authenticated (logged loudly).
+ *
+ * Exits non-zero on failure after one retry, so the user knows dedup is at risk.
+ */
+function syncTrackerToOrigin(localData) {
+  if (process.env.GITHUB_ACTIONS === 'true') {
+    // Workflow's dedicated commit step handles this path.
+    return;
+  }
+  if (DRY_RUN) return;
+
+  // Check gh is available and authed.
+  try {
+    execSync('gh auth status', { stdio: 'ignore' });
+  } catch {
+    console.error('\nWARNING: `gh` CLI missing or not authenticated — cannot sync opening-night-sent.json to origin.');
+    console.error('         The next workflow run will not see this preview send. Run `gh auth login`, then manually');
+    console.error('         push data/opening-night-sent.json to main, or live with a possible duplicate.');
+    process.exitCode = 1;
+    return;
+  }
+
+  const REPO = 'thomaspryor/Broadwayscore';
+  const REMOTE_PATH = 'data/opening-night-sent.json';
+  const BRANCH = 'main';
+
+  const fetchRemote = () => {
+    // gh api errors (incl. 404) throw; treat 404 as "file doesn't exist yet".
+    try {
+      const raw = execSync(
+        `gh api repos/${REPO}/contents/${REMOTE_PATH}?ref=${BRANCH}`,
+        { encoding: 'utf8' }
+      );
+      const meta = JSON.parse(raw);
+      const content = Buffer.from(meta.content, 'base64').toString('utf8');
+      let parsed = {};
+      try { parsed = JSON.parse(content); } catch { parsed = {}; }
+      return { sha: meta.sha, parsed };
+    } catch (err) {
+      if (String(err.stderr || err.message || '').includes('404')) {
+        return { sha: null, parsed: { shows: {} } };
+      }
+      throw err;
+    }
+  };
+
+  const putRemote = (sha, parsed) => {
+    const content = Buffer.from(JSON.stringify(parsed, null, 2) + '\n', 'utf8').toString('base64');
+    const payload = {
+      message: 'data: Sync opening-night-sent tracking from CLI preview',
+      content,
+      branch: BRANCH,
+    };
+    if (sha) payload.sha = sha;
+    // Write payload via stdin so the filename doesn't leak into shell expansion.
+    const tmpPath = path.join(require('os').tmpdir(), `ons-${Date.now()}.json`);
+    fs.writeFileSync(tmpPath, JSON.stringify(payload));
+    try {
+      execSync(
+        `gh api --method PUT repos/${REPO}/contents/${REMOTE_PATH} --input ${JSON.stringify(tmpPath)}`,
+        { stdio: ['ignore', 'pipe', 'pipe'] }
+      );
+    } finally {
+      try { fs.unlinkSync(tmpPath); } catch {}
+    }
+  };
+
+  const attempt = () => {
+    const remote = fetchRemote();
+    const merged = mergeTrackerEntries(remote.parsed, localData);
+    putRemote(remote.sha, merged);
+  };
+
+  try {
+    attempt();
+    console.log(`  Synced opening-night-sent.json to origin/${BRANCH} via gh api`);
+  } catch (err) {
+    const msg = String(err.stderr || err.message || '');
+    // Retry once on sha conflict (409/422) — remote may have changed between fetch and PUT.
+    if (msg.includes('409') || msg.includes('422') || msg.includes('sha')) {
+      console.error(`  Sync retry after remote conflict: ${msg.trim().slice(0, 200)}`);
+      try {
+        attempt();
+        console.log(`  Synced opening-night-sent.json to origin/${BRANCH} (after retry)`);
+        return;
+      } catch (err2) {
+        console.error(`\nWARNING: Sync retry failed: ${(err2.stderr || err2.message || '').toString().trim().slice(0, 300)}`);
+      }
+    } else {
+      console.error(`\nWARNING: Failed to sync opening-night-sent.json to origin: ${msg.trim().slice(0, 300)}`);
+    }
+    console.error('         The next workflow run may not see this preview and could duplicate the send.');
+    process.exitCode = 1;
   }
 }
 
@@ -371,6 +500,20 @@ async function main() {
     // Must point to /api/unsubscribe (handles POST) — NOT /unsubscribe (GET-only client page)
     const unsubUrl = `https://broadwayscorecard.com/api/unsubscribe?email=${encodeURIComponent(SEND_TO)}${MARKET === 'west-end' ? '&market=west-end' : ''}`;
 
+    // Acquire cross-session send lock BEFORE calling Resend. Closes the narrow
+    // race where a concurrent CLI or workflow run could double-send between
+    // dedup check and network call. See scripts/lib/send-lock.js for details.
+    const lock = acquireSendLock({
+      purpose: `${MARKET}-preview-${broadcastKey.replace(`${MARKET}:`, '')}`,
+    });
+    if (!lock.acquired) {
+      console.error(`\nSEND LOCK REFUSED: ${lock.reason}`);
+      console.error('Another session is currently sending, or recently sent, for this path.');
+      console.error('Not sending. Retry in a minute if you still need the preview.');
+      process.exit(1);
+    }
+    console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
+
     try {
       await postJSON('https://api.resend.com/emails', {
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
@@ -387,8 +530,16 @@ async function main() {
       console.log(`Preview sent to ${SEND_TO}`);
     } catch (err) {
       console.error(`ERROR sending preview: ${err.message}`);
+      // Best-effort release before bailing.
+      const rel = releaseSendLock(lock);
+      if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
       process.exit(1);
     }
+
+    // Release the lock on success.
+    const rel = releaseSendLock(lock);
+    if (!rel.released) console.error(`  WARNING: lock release failed: ${rel.reason}`);
+    else console.log(`  Send lock released`);
   } else {
     // Create a Buttondown DRAFT — owner reviews and clicks Send manually from Buttondown UI.
     // Code never pushes the Send button. This prevents any repeat of the March 2026 incidents.
@@ -403,6 +554,21 @@ async function main() {
     // Build HTML — uses {{ unsubscribe_url }} (Buttondown's template variable)
     const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
     const marketLabel = isLondonMarket(MARKET) ? '[West End] ' : '';
+
+    // Acquire cross-session send lock before creating the Buttondown draft.
+    // The Buttondown draft itself is not a subscriber send — the owner clicks
+    // Send manually — but two sessions racing would create two drafts for the
+    // same show, one of which the owner could accidentally send. Lock here
+    // matches the --send-to preview path.
+    const lock = acquireSendLock({
+      purpose: `${MARKET}-draft-${broadcastKey.replace(`${MARKET}:`, '')}`,
+    });
+    if (!lock.acquired) {
+      console.error(`\nSEND LOCK REFUSED: ${lock.reason}`);
+      console.error('Another session is creating a draft right now. Not creating a duplicate.');
+      process.exit(1);
+    }
+    console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
 
     try {
       const result = await postJSON('https://api.buttondown.com/v1/emails', {
@@ -463,8 +629,16 @@ ${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast.
       saveSentData(sentData);
 
       console.log(`\nDraft ready — log into Buttondown to send: ${draftUrl}`);
+
+      // Release the lock on success.
+      const rel = releaseSendLock(lock);
+      if (!rel.released) console.error(`  WARNING: lock release failed: ${rel.reason}`);
+      else console.log(`  Send lock released`);
     } catch (err) {
       console.error(`ERROR creating Buttondown draft: ${err.message}`);
+      // Best-effort release before bailing.
+      const rel = releaseSendLock(lock);
+      if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
       await sendAlert({
         title: 'Opening Night Draft Creation Failed',
         description: `Buttondown draft error: ${err.message}`,
@@ -474,18 +648,36 @@ ${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast.
     }
   }
 
-  // Track preview send
+  // Track preview send.
+  //
+  // The key still carries a UTC-date suffix for debugging/history, but the READER
+  // (checkPreviewDedup) scans the whole `preview:{broadcastKey}:*` prefix and picks
+  // the most recent by `sentAt`. The suffix is no longer load-bearing for dedup —
+  // rolling time windows are. See scripts/lib/preview-dedup.js for the full story.
   if (SEND_TO) {
-    const today2 = new Date().toISOString().slice(0, 10);
-    const previewKey2 = `preview:${broadcastKey}:${today2}`;
+    const previewTimestamp = new Date().toISOString();
+    const previewKey = `preview:${broadcastKey}:${previewTimestamp.slice(0, 10)}`;
     const previewReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
-    sentData.shows[previewKey2] = { sentAt: new Date().toISOString(), previewTo: SEND_TO, reviewCount: previewReviewCount };
+    sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: previewReviewCount };
     saveSentData(sentData);
+
+    // Sync to origin/main so a concurrent workflow run can see the write.
+    // Without this, local CLI previews are invisible to CI and cause duplicate sends
+    // (2026-04-11 incident: 02:09 UTC local preview never reached origin, 12:21 UTC
+    // workflow re-sent because its origin/main checkout had no record of the CLI run).
+    // No-ops when running under GitHub Actions — the workflow commits separately.
+    syncTrackerToOrigin(sentData);
+
     console.log(`\nPreview sent to ${SEND_TO}`);
   }
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err.message);
-  process.exit(1);
-});
+// Exported for unit testing. Only run main() when invoked as a CLI.
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err.message);
+    process.exit(1);
+  });
+}

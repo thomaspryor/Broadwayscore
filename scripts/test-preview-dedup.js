@@ -6,7 +6,11 @@
  * Run: node scripts/test-preview-dedup.js
  */
 
-const { checkPreviewDedup } = require('./lib/preview-dedup');
+const {
+  checkPreviewDedup,
+  hasRecentPreviewForShow,
+  hasRecentOverdueAlert,
+} = require('./lib/preview-dedup');
 
 const tests = [
   {
@@ -193,8 +197,200 @@ for (const t of tests) {
 }
 
 console.log('');
-console.log(`${passed}/${tests.length} passed`);
-if (failed > 0) {
-  console.error(`${failed} test(s) FAILED`);
+console.log(`checkPreviewDedup: ${passed}/${tests.length} passed`);
+
+// ---------------------------------------------------------------------------
+// hasRecentPreviewForShow — the workflow's "Check already broadcast" gate.
+// Mirrors the semantics of the workflow step at opening-night-broadcast.yml.
+// Regression lock for the 2026-04-11 UTC-rollover incident (startsWith(today)).
+// ---------------------------------------------------------------------------
+
+const workflowTests = [
+  {
+    name: 'no entries → not blocked',
+    sent: {},
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T14:00:00Z').getTime(),
+    expected: false,
+  },
+  {
+    name: 'preview sent 2h ago → blocked',
+    sent: {
+      'preview:broadway:titanique-2026:2026-04-11': {
+        sentAt: '2026-04-11T12:00:00Z',
+        reviewCount: 20,
+      },
+    },
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T14:00:00Z').getTime(),
+    expected: true,
+  },
+  {
+    name: 'UTC ROLLOVER INCIDENT — preview at 12:16 UTC Apr 10, workflow check at 02:09 UTC Apr 11 → blocked',
+    sent: {
+      'preview:broadway:death-of-a-salesman-2026:2026-04-10': {
+        sentAt: '2026-04-10T12:16:02.177Z',
+        previewTo: 'thomas.pryor@gmail.com',
+        reviewCount: 24,
+      },
+    },
+    showId: 'death-of-a-salesman-2026',
+    now: new Date('2026-04-11T02:09:30Z').getTime(),
+    expected: true,
+  },
+  {
+    name: 'UTC ROLLOVER INCIDENT — preview at 02:09 UTC Apr 11, workflow check at 12:21 UTC Apr 11 → blocked (the actual incident reverse)',
+    sent: {
+      'preview:broadway:death-of-a-salesman-2026:2026-04-11': {
+        sentAt: '2026-04-11T02:09:00Z',
+        previewTo: 'thomas.pryor@gmail.com',
+        reviewCount: 24,
+      },
+    },
+    showId: 'death-of-a-salesman-2026',
+    now: new Date('2026-04-11T12:21:00Z').getTime(),
+    expected: true,
+  },
+  {
+    name: 'preview sent 14h ago → still blocked (within 24h default window)',
+    sent: {
+      'preview:broadway:titanique-2026:2026-04-10': {
+        sentAt: '2026-04-10T22:00:00Z',
+        reviewCount: 20,
+      },
+    },
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T12:30:00Z').getTime(),
+    expected: true,
+  },
+  {
+    name: 'preview sent 25h ago → not blocked (outside 24h window)',
+    sent: {
+      'preview:broadway:titanique-2026:2026-04-10': {
+        sentAt: '2026-04-10T11:00:00Z',
+        reviewCount: 20,
+      },
+    },
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T12:30:00Z').getTime(),
+    expected: false,
+  },
+  {
+    name: 'preview for a different show → not blocked',
+    sent: {
+      'preview:broadway:other-show-2026:2026-04-11': {
+        sentAt: '2026-04-11T12:00:00Z',
+        reviewCount: 20,
+      },
+    },
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T14:00:00Z').getTime(),
+    expected: false,
+  },
+  {
+    name: 'preview entry with null sentAt → ignored (not blocked)',
+    sent: {
+      'preview:broadway:titanique-2026:2026-04-11': {
+        sentAt: null,
+        reviewCount: 20,
+      },
+    },
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T14:00:00Z').getTime(),
+    expected: false,
+  },
+];
+
+let wfPassed = 0, wfFailed = 0;
+for (const t of workflowTests) {
+  // Default 24h window — matches workflow caller.
+  const got = hasRecentPreviewForShow(t.sent, t.showId, 24 * 3600 * 1000, t.now);
+  const ok = got === t.expected;
+  console.log(`${ok ? '\u2713' : '\u2717'} [workflow preview] ${t.name}`);
+  if (!ok) {
+    console.log(`  expected ${t.expected}, got ${got}`);
+    wfFailed++;
+  } else {
+    wfPassed++;
+  }
+}
+
+console.log('');
+console.log(`hasRecentPreviewForShow: ${wfPassed}/${workflowTests.length} passed`);
+
+// ---------------------------------------------------------------------------
+// hasRecentOverdueAlert — the workflow's "Alert if broadcast overdue" gate.
+// Stable key (`overdue-alert:${id}`), so the test is simpler than the preview one.
+// ---------------------------------------------------------------------------
+
+const alertTests = [
+  {
+    name: 'no alert entry → not blocked',
+    sent: {},
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T14:00:00Z').getTime(),
+    expected: false,
+  },
+  {
+    name: 'alert fired 1h ago → blocked',
+    sent: {
+      'overdue-alert:titanique-2026': { sentAt: '2026-04-11T13:00:00Z' },
+    },
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T14:00:00Z').getTime(),
+    expected: true,
+  },
+  {
+    name: 'UTC ROLLOVER — alert fired 2h ago but across UTC midnight → blocked',
+    sent: {
+      'overdue-alert:death-of-a-salesman-2026': { sentAt: '2026-04-10T23:30:00Z' },
+    },
+    showId: 'death-of-a-salesman-2026',
+    now: new Date('2026-04-11T01:30:00Z').getTime(),
+    expected: true,
+  },
+  {
+    name: 'alert fired 25h ago → not blocked (outside 24h window)',
+    sent: {
+      'overdue-alert:titanique-2026': { sentAt: '2026-04-10T13:00:00Z' },
+    },
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T14:00:00Z').getTime(),
+    expected: false,
+  },
+  {
+    name: 'alert entry exists for different show → not blocked',
+    sent: {
+      'overdue-alert:other-show-2026': { sentAt: '2026-04-11T13:00:00Z' },
+    },
+    showId: 'titanique-2026',
+    now: new Date('2026-04-11T14:00:00Z').getTime(),
+    expected: false,
+  },
+];
+
+let alertPassed = 0, alertFailed = 0;
+for (const t of alertTests) {
+  const got = hasRecentOverdueAlert(t.sent, t.showId, 24 * 3600 * 1000, t.now);
+  const ok = got === t.expected;
+  console.log(`${ok ? '\u2713' : '\u2717'} [workflow overdue] ${t.name}`);
+  if (!ok) {
+    console.log(`  expected ${t.expected}, got ${got}`);
+    alertFailed++;
+  } else {
+    alertPassed++;
+  }
+}
+
+console.log('');
+console.log(`hasRecentOverdueAlert: ${alertPassed}/${alertTests.length} passed`);
+
+const totalFailed = failed + wfFailed + alertFailed;
+const totalPassed = passed + wfPassed + alertPassed;
+const totalTests = tests.length + workflowTests.length + alertTests.length;
+console.log('');
+console.log(`TOTAL: ${totalPassed}/${totalTests} passed`);
+if (totalFailed > 0) {
+  console.error(`${totalFailed} test(s) FAILED`);
   process.exit(1);
 }

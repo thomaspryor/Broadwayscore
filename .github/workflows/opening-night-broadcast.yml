@@ -211,14 +211,14 @@ jobs:
           SHOWS="${{ steps.readiness_gate.outputs.ready_shows }}"
           PENDING=$(node -e "
             const fs = require('fs');
+            const { hasRecentPreviewForShow } = require('./scripts/lib/preview-dedup');
             const sentPath = 'data/opening-night-sent.json';
             let sent = {};
             try { sent = JSON.parse(fs.readFileSync(sentPath, 'utf8')).shows || {}; } catch {}
 
             const shows = '$SHOWS'.split(',');
-            const today = new Date().toISOString().slice(0, 10);
-            // When send_to_all=true (approval dispatch), skip the preview-today dedup check.
-            // The preview is expected to have already been sent today — that's the whole point.
+            // When send_to_all=true (approval dispatch), skip the preview dedup check.
+            // The preview is expected to have already been sent recently — that's the whole point.
             const sendToAll = '${{ inputs.send_to_all }}' === 'true';
 
             // Load reviews once for readiness pre-check
@@ -242,11 +242,14 @@ jobs:
                   return false;
                 }
               }
-              // Skip if preview already sent today — but NOT in approval/send_to_all mode
-              if (!sendToAll) {
-                const previewKeys = Object.keys(sent).filter(k => k.startsWith('preview:') && k.includes(id));
-                const previewedToday = previewKeys.some(k => sent[k]?.sentAt?.startsWith(today));
-                if (previewedToday) return false;
+              // Skip if a preview for this show went out within the rolling 24h window —
+              // but NOT in approval/send_to_all mode. Previously used sentAt.startsWith(today),
+              // which silently double-sent at UTC rollover (2026-04-11 incident had a 14h gap
+              // between duplicate sends — UTC-day check and short windows both missed it).
+              // Rolling window + prefix scan lives in scripts/lib/preview-dedup.js.
+              if (!sendToAll && hasRecentPreviewForShow(sent, id)) {
+                process.stderr.write('Skipping ' + id + ' — preview sent within the last 24h\n');
+                return false;
               }
               return true;
             });
@@ -331,6 +334,12 @@ jobs:
           BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Required by scripts/lib/send-lock.js — it acquires a cross-session
+          # advisory lock via the GitHub Contents API before any Resend/Buttondown
+          # call, to prevent double-sends when a CLI session and this workflow run
+          # in parallel. Without GH_TOKEN, `gh api` in CI would fail auth and the
+          # lock helper would exit(1), blocking the send rather than risking a race.
+          GH_TOKEN: ${{ github.token }}
         run: |
           # Code creates a Buttondown DRAFT — owner logs in and clicks Send manually.
           # Use send_to input for preview testing (sends single transactional email, no draft).
@@ -446,12 +455,12 @@ jobs:
           # Dedup: only alert once per show per day via opening-night-sent.json.
           OVERDUE=$(node -e "
             const fs = require('fs');
+            const { hasRecentOverdueAlert } = require('./scripts/lib/preview-dedup');
             const shows = require('./data/shows.json').shows;
             const ids = '${{ steps.check.outputs.pending_shows }}'.split(',');
             const now = Date.now();
-            const today = new Date().toISOString().slice(0, 10);
 
-            // Dedup: read sent tracking to skip shows already alerted today
+            // Dedup: read sent tracking to skip shows already alerted within 24h
             let sent = {};
             try { sent = JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8')).shows || {}; } catch {}
 
@@ -463,9 +472,10 @@ jobs:
               const overdueAfter = new Date(s.openingDate + 'T04:00:00Z');
               overdueAfter.setDate(overdueAfter.getDate() + 1); // day AFTER opening
               if (now <= overdueAfter.getTime()) return false;
-              // Skip if overdue alert already sent today for this show
-              const alertKey = 'overdue-alert:' + id;
-              if (sent[alertKey] && sent[alertKey].sentAt && sent[alertKey].sentAt.startsWith(today)) return false;
+              // Skip if overdue alert already sent within the rolling 24h window for this show.
+              // Previously startsWith(today) against UTC date — silently re-alerted across UTC
+              // midnight (2026-04-11 bug class). Helper lives in scripts/lib/preview-dedup.js.
+              if (hasRecentOverdueAlert(sent, id, 24 * 3600 * 1000, now)) return false;
               return true;
             }).map(id => {
               const s = shows.find(x => x.id === id);
