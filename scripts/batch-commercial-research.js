@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
+const { normalizeSources } = require('./lib/commercial-sources');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -464,7 +465,7 @@ function applyPending() {
       recoupedDate: entry.recoupedDate || null,
       recoupedSource: entry.recoupedSource || null,
       notes: entry.notes || '',
-      sources: entry.sources || [],
+      sources: normalizeSources(entry.sources || []),
       lastUpdated: new Date().toISOString(),
       firstAdded: new Date().toISOString(),
     };
