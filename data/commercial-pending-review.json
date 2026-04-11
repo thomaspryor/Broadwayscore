@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-29T22:50:41.922Z",
+  "generatedAt": "2026-04-11T09:35:10.499Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -3031,6 +3031,124 @@
       ],
       "confidence": "medium",
       "researchedAt": "2026-03-29T22:50:41.922Z"
+    },
+    "calf-scramble-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No official budget or weekly nut was reported for this Off-Broadway show. It was produced by Primary Stages (a 501(c)(3) nonprofit) with major donor support ([www.59e59.org](https://www.59e59.org/shows/show-detail/calf-scramble/#:~:text=Produced%20by%3A%20Primary%20Stages%20Dates%3A,April%2012%2C%202026)) ([www.59e59.org](https://www.59e59.org/shows/show-detail/calf-scramble/#:~:text=,Legacy%20Project%20at%20Primary%20Stages)), and its short run suggests it did not recoup. No public data on recoupment is available.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.59e59.org/shows/show-detail/calf-scramble/",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://projects.propublica.org/nonprofits/organizations/133258765",
+          "date": null
+        }
+      ],
+      "title": "Calf Scramble",
+      "slug": "calf-scramble-off-broadway",
+      "openingDate": "2026-03-15",
+      "status": "open",
+      "researchedAt": "2026-04-11T09:24:40.899Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "kenrex-off-broadway": {
+      "capitalization": 3000000,
+      "capitalizationSource": "SEC Form D filing for Jeff Ross Broadway LLC ([www.sec.gov](https://www.sec.gov/Archives/edgar/data/2075901/000207590125000001/xslFormDX08/primary_doc.xml#:~:text=Total%20Offering%20Amount%20%20,%24))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Fizzle",
+      "notes": "Production raised $3.0M (per SEC filing) but closed after a short 10-week run with no public report of recoupment ([www.sec.gov](https://www.sec.gov/Archives/edgar/data/2075901/000207590125000001/xslFormDX08/primary_doc.xml#:~:text=Total%20Offering%20Amount%20%20,%24)).",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2075901/000207590125000001/xslFormDX08/primary_doc.xml",
+          "date": "2025-07-07"
+        }
+      ],
+      "title": "KENREX",
+      "slug": "kenrex-off-broadway",
+      "openingDate": "2026-04-15",
+      "status": "previews",
+      "researchedAt": "2026-04-11T09:28:20.339Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "into-the-woods-west-end-2025": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No public data found for this production; industry sources note West End musicals typically cost £5–15M (5–15 million) to stage and ~£300–600K per week to run ([www.tickadoo.com](https://www.tickadoo.com/blogs-and-news/economics-of-west-end-show#:~:text=A%20brand,from%20rehearsal%20room%20to%20stage)) ([www.tickadoo.com](https://www.tickadoo.com/blogs-and-news/economics-of-west-end-show#:~:text=Once%20a%20show%20opens%2C%20the,%C2%A380%2C000%20and%20%C2%A3200%2C000%20per%20week)), but nothing specific to this show.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.tickadoo.com/blogs-and-news/economics-of-west-end-show",
+          "date": "2026-01-16"
+        }
+      ],
+      "title": "Into the Woods",
+      "slug": "into-the-woods-west-end-2025",
+      "openingDate": "2025-12-11",
+      "status": "open",
+      "researchedAt": "2026-04-11T09:31:31.267Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "the-saviors-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public budget or weekly cost data found; short run at nonprofit Atlantic Theater Company without recoupment reports.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/bubba-weilers-the-saviors-will-make-world-premiere-at-atlantic-theater-company",
+          "date": "2026-01-28"
+        },
+        {
+          "type": "manual",
+          "url": "https://projects.propublica.org/nonprofits/organizations/133218253",
+          "date": null
+        }
+      ],
+      "title": "The Saviors",
+      "slug": "the-saviors-off-broadway",
+      "openingDate": "2026-06-11",
+      "status": "previews",
+      "researchedAt": "2026-04-11T09:35:10.499Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
     }
   }
 }
