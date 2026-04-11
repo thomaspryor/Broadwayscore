@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T17:28:09.801Z",
+  "timestamp": "2026-04-11T17:42:12.251Z",
   "stats": {
     "totalReviews": 34737,
-    "alreadyFlagged": 13927,
+    "alreadyFlagged": 13935,
     "dateGuardCatches": 60,
     "directorMismatch": 930,
-    "tvFilmSignals": 3382,
-    "londonSignals": 1105,
-    "offBroadwaySignals": 960,
+    "tvFilmSignals": 3381,
+    "londonSignals": 1106,
+    "offBroadwaySignals": 962,
     "yearMismatch": 72,
-    "noPublishDate": 4182
+    "noPublishDate": 4179
   },
   "findings": [
     {
@@ -35571,20 +35571,6 @@
     },
     {
       "showId": "oh-mary-2024",
-      "file": "washpost--shane-oneill.json",
-      "score": 83,
-      "publishDate": "2024-07-06",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2024/07/06/cole-escola-oh-mary-broadway/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
       "file": "wsj--charles-isherwood.json",
       "score": 81,
       "publishDate": "2024-07-11T21:03:24-04:00",
@@ -69729,6 +69715,20 @@
     },
     {
       "showId": "ink-2019",
+      "file": "thestage--naveen-kumar.json",
+      "score": 77,
+      "publishDate": "2019-04-25",
+      "url": "https://www.thestage.co.uk/reviews/2019/ink-review-james-graham-bertie-carvel-jonny-lee-miller-samuel-j-friedman-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "ink-2019",
       "file": "variety--christopher-kelly.json",
       "score": 42,
       "publishDate": "April 24, 2019",
@@ -73455,6 +73455,34 @@
       "score": 78,
       "publishDate": "2024-07-11T20:56:05",
       "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "nytg--austin-fimmano.json",
+      "score": 88,
+      "publishDate": "July 11, 2024",
+      "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "observer--david-cote.json",
+      "score": 86,
+      "publishDate": "July 11, 2024",
+      "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
