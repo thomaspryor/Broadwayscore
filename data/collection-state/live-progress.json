@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-11T11:43:01.991Z",
-  "processed": 50,
-  "failed": 492,
+  "updatedAt": "2026-04-11T11:46:18.025Z",
+  "processed": 51,
+  "failed": 501,
   "successRate": "9.2%",
   "tierBreakdown": {
     "playwright": 19,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 8,
-    "archiveToday": 21,
-    "archive": 13
+    "archiveToday": 22,
+    "archive": 14
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-11T10:51:31.649Z",
@@ -89,6 +89,17 @@
     },
     {
       "t": "2026-04-11T11:42:39.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-11T11:45:17.279Z",
+      "event": "bb-session",
+      "session": "de0e1d93",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadways-the-p"
+    },
+    {
+      "t": "2026-04-11T11:45:18.003Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }

@@ -48,7 +48,9 @@
     "the-lyons-2012/theatermania--dan-bacalzo.json",
     "clybourne-park-2012/theatermania--dan-bacalzo.json",
     "cinderella-west-end-2026/london-box-office--isabella-james.json",
-    "death-of-a-salesman-2026/ew--unknown.json"
+    "sylvia-2015/abc-news--mark-kennedy.json",
+    "the-winslow-boy-2013/abc-news--mark-kennedy.json",
+    "golden-boy-2012/seattle-post-intelligencer--mark-kennedy.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -542,7 +544,16 @@
     "hands-on-a-hardbody-2013/washpost--mark-kennedy.json",
     "hands-on-a-hardbody-2013/newsday--linda-winer.json",
     "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json"
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "picnic-2013/bloomberg--jeremy-gerard.json",
+    "the-anarchist-2012/variety--marilyn-stasio.json",
+    "dead-accounts-2012/variety--marilyn-stasio.json",
+    "a-christmas-story-the-musical-2012/huffpost--mark-kennedy.json",
+    "the-performers-2012/washpost--mark-kennedy.json",
+    "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -613,7 +624,8 @@
       "data/review-texts/a-night-with-janis-joplin-2013/abc-news--jennifer-farrar.json",
       "data/review-texts/orphans-2013/washpost--associated-press.json",
       "data/review-texts/the-assembled-parties-2013/washpost--mark-kennedy.json",
-      "data/review-texts/hands-on-a-hardbody-2013/washpost--mark-kennedy.json"
+      "data/review-texts/hands-on-a-hardbody-2013/washpost--mark-kennedy.json",
+      "data/review-texts/the-performers-2012/washpost--mark-kennedy.json"
     ],
     "archive": [
       "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
@@ -627,11 +639,13 @@
       "violet-2014/npr--mark-kennedy.json",
       "all-the-way-2014/abc-news--mark-kennedy.json",
       "leap-of-faith-2012/huffpost--mark-kennedy.json",
-      "death-of-a-salesman-2026/ew--unknown.json"
+      "sylvia-2015/abc-news--mark-kennedy.json",
+      "the-winslow-boy-2013/abc-news--mark-kennedy.json",
+      "golden-boy-2012/seattle-post-intelligencer--mark-kennedy.json"
     ]
   },
   "startTime": "2026-04-11T08:59:41.327Z",
-  "lastProcessed": "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-11T10:51:31.649Z",
@@ -707,6 +721,17 @@
     },
     {
       "t": "2026-04-11T11:42:39.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-11T11:45:17.279Z",
+      "event": "bb-session",
+      "session": "de0e1d93",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadways-the-p"
+    },
+    {
+      "t": "2026-04-11T11:45:18.003Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
