@@ -24,9 +24,101 @@ function nowIso() {
   return new Date().toISOString();
 }
 
-// Stable hash for Google web URLs (where we have no native ID)
+/**
+ * Canonicalize a URL so the same logical resource always hashes to the
+ * same key, even when SERP returns localized / parameterized variants.
+ *
+ * Specifically handles:
+ *   - Apple Podcasts: strip country code (in/dk/us/uk/de/...). Google SERP
+ *     rotates which country it surfaces; same podcast hashes differently
+ *     without normalization. Pattern: /podcasts.apple.com/{cc}/podcast/...
+ *   - Apple Music: same locale prefix
+ *   - Wikipedia: strip language subdomain (en./es./de./...) — same article
+ *   - YouTube: normalize /shorts/{id} → /watch?v={id}
+ *   - Trailing slashes, lowercase hostname
+ *   - Tracking query params (utm_*, fbclid, gclid, ref, source, igshid, ...)
+ *   - URL fragments
+ *
+ * Returns the original URL string on any parse error (graceful fallback).
+ */
+function canonicalizeUrl(rawUrl) {
+  if (!rawUrl) return '';
+  let url;
+  try {
+    url = new URL(String(rawUrl));
+  } catch {
+    return String(rawUrl);
+  }
+
+  url.hostname = url.hostname.toLowerCase();
+
+  // Apple Podcasts country code: /{cc}/podcast/... → /podcast/...
+  if (/(^|\.)podcasts\.apple\.com$/.test(url.hostname)) {
+    url.pathname = url.pathname.replace(/^\/[a-z]{2}\/podcast\//i, '/podcast/');
+  }
+
+  // Apple Music: /{cc}/... → /...
+  if (/(^|\.)music\.apple\.com$/.test(url.hostname)) {
+    url.pathname = url.pathname.replace(/^\/[a-z]{2}\//i, '/');
+  }
+
+  // Wikipedia language subdomain: en.wikipedia.org → wikipedia.org
+  if (/\.wikipedia\.org$/.test(url.hostname)) {
+    url.hostname = 'wikipedia.org';
+  }
+
+  // YouTube /shorts/{id} → canonical /watch?v={id}
+  if (/(^|\.)youtube\.com$/.test(url.hostname)) {
+    const m = url.pathname.match(/^\/shorts\/([\w-]+)/);
+    if (m) {
+      url.pathname = '/watch';
+      url.searchParams.set('v', m[1]);
+    }
+  }
+
+  // Strip tracking query params
+  const tracking = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+                    'fbclid', 'gclid', 'mc_cid', 'mc_eid', 'ref', 'ref_src', 'ref_url',
+                    'source', '_ga', 'igshid', 'si', '__twitter_impression', 'cmp'];
+  for (const p of tracking) url.searchParams.delete(p);
+
+  url.hash = '';
+
+  // Normalize trailing slash on pathname (but keep root /)
+  if (url.pathname.length > 1) {
+    url.pathname = url.pathname.replace(/\/+$/, '');
+  }
+
+  return url.toString();
+}
+
+// Stable hash for Google web URLs (where we have no native ID).
+// Hashes the canonical form so SERP variants of the same resource collapse.
 function urlHash(url) {
-  return crypto.createHash('sha1').update(String(url)).digest('hex').slice(0, 16);
+  return crypto.createHash('sha1').update(canonicalizeUrl(url)).digest('hex').slice(0, 16);
+}
+
+/**
+ * Drop SERP results that we can't reliably attribute or that are owner-controlled
+ * but appear under bare URLs that the standard owner filter misses.
+ *
+ * - Instagram /p/{id}/ and /reel/{id}/ — Google strips username from these,
+ *   so we can't tell if it's the owner's @bwayscorecard post or someone else's.
+ *   100% of Instagram bare URLs seen so far have been owner posts. Drop them.
+ * - TikTok /video/{id} without @user — same problem
+ *
+ * Real Instagram/TikTok mentions of broadwayscorecard would appear in the
+ * user's own platform notifications anyway. SERP coverage is unreliable.
+ */
+function isUnattributableSocialUrl(url) {
+  if (!url) return false;
+  // Bare Instagram post / reel without username path
+  if (/^https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel)\/[^/]+/i.test(url)) return true;
+  // Bare TikTok video without @username
+  if (/^https?:\/\/(?:www\.)?tiktok\.com\/video\/\d+/i.test(url)) return true;
+  // Threads bare post URL
+  if (/^https?:\/\/(?:www\.)?threads\.(?:net|com)\/post\/[^/]+/i.test(url)) return true;
+  return false;
 }
 
 // Parse X/Twitter tweet ID + handle from a status URL
@@ -122,6 +214,8 @@ async function fetchGoogleWebMentions(keywords = DEFAULT_KEYWORDS, opts = {}) {
       if (!r.url) continue;
       // Skip sources we already cover natively
       if (/reddit\.com|news\.ycombinator\.com|bsky\.app|x\.com|twitter\.com/i.test(r.url)) continue;
+      // Skip Instagram/TikTok/Threads bare URLs we can't attribute
+      if (isUnattributableSocialUrl(r.url)) continue;
       // Confirm keyword appears in title or snippet
       const blob = `${r.title || ''} ${r.snippet || ''}`.toLowerCase();
       if (!blob.includes(keyword.toLowerCase())) continue;
@@ -244,5 +338,5 @@ module.exports = {
   fetchGoogleNewsMentions,
   fetchPaidSources,
   // exported for tests
-  _internal: { parseXUrl, buildQuery, urlHash },
+  _internal: { parseXUrl, buildQuery, urlHash, canonicalizeUrl, isUnattributableSocialUrl },
 };
