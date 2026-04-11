@@ -111,6 +111,29 @@ function isOneNightShow(show) {
   return show.startDate === show.endDate;
 }
 
+// Validate TodayTix startDate against ID recycling. TodayTix sometimes reuses
+// show IDs for new productions, returning a future date that looks legitimate
+// but is months off from the actual current production. Caused Pen Pals
+// (Aug 2025 listed vs Jan 2025 actual, 8 months off) and Take Me Out
+// (Nov 2022 listed vs Apr 2022 actual, 7 months off) to break the pre-opening
+// guard and exclude valid reviews.
+//
+// Rule: if the startDate is more than 120 days in the future, it's almost
+// certainly wrong — genuine Broadway shows rarely list tickets 4+ months
+// before previews start. Drop the date; IBDB or manual enrichment fills in.
+const TODAYTIX_RECYCLING_THRESHOLD_MS = 120 * 86400000;
+function sanitizeTodayTixDate(startDate, showTitle) {
+  if (!startDate) return null;
+  const parsed = new Date(startDate);
+  if (isNaN(parsed.getTime())) return null;
+  const diffMs = parsed - new Date();
+  if (diffMs > TODAYTIX_RECYCLING_THRESHOLD_MS) {
+    console.warn(`  ⚠ TodayTix startDate for "${showTitle}" is ${Math.round(diffMs / 86400000)}d in the future — suspected ID recycling, dropping date`);
+    return null;
+  }
+  return startDate;
+}
+
 function isNonTheaterContent(show) {
   const title = (show.displayName || show.name || '').toLowerCase();
   if (EXCLUDED_TITLES.some(excluded => title.includes(excluded))) return true;
@@ -193,11 +216,17 @@ async function fetchShowsFromTodayTix() {
     if (!title || title.length < 3 || seen.has(title)) continue;
     seen.add(title);
 
+    // TodayTix startDate = first preview, NOT opening night. Treat as
+    // previewsStartDate; IBDB enrichment (runs later in update-show-status.yml)
+    // fills in the real openingDate.
+    const previewsStart = sanitizeTodayTixDate(show.startDate, title);
+
     showsList.push({
       title,
       venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-      openingDate: show.startDate || null,
+      openingDate: null,
+      previewsStartDate: previewsStart,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
@@ -210,11 +239,14 @@ async function fetchShowsFromTodayTix() {
     if (!title || title.length < 3 || seen.has(title)) continue;
     seen.add(title);
 
+    const previewsStart = sanitizeTodayTixDate(show.startDate, title);
+
     showsList.push({
       title,
       venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-      openingDate: show.startDate || null,
+      openingDate: null,
+      previewsStartDate: previewsStart,
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       category: 'off-broadway',
       description: show.description || '',
@@ -315,7 +347,7 @@ async function fetchShowsFromTodayTixLondon() {
       venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: null,
-      previewsStartDate: show.startDate || null,
+      previewsStartDate: sanitizeTodayTixDate(show.startDate, title),
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
       category: isOffWestEndVenue(
         (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA'
