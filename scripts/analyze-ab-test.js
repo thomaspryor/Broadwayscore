@@ -30,8 +30,29 @@ const DAYS = (() => {
   return idx >= 0 ? parseInt(process.argv[idx + 1], 10) : 14;
 })();
 
+/**
+ * Restart markers: timestamp after which each flag's current test run began.
+ * Events before this date are excluded from analysis because they belong to
+ * a previous, distinct test run (different traffic split, different variant
+ * definition, or contaminated baseline). When restarting a test, add/update
+ * the entry here.
+ *
+ * ticket-single-button: restarted 2026-04-11 ~19:00 UTC after the first run
+ *   (Mar 28 - Apr 11) was invalidated by the StubHub hide mid-flight changing
+ *   the `multi` condition. Also fixed sticky-bucket gap during the Apr 11
+ *   flag flip. Fresh clock, 50/50 split.
+ */
+const FLAG_RESTART_DATES = {
+  'ticket-single-button': new Date('2026-04-11T19:00:00Z'),
+};
+
 const endDate = new Date();
-const startDate = new Date(endDate.getTime() - DAYS * 24 * 60 * 60 * 1000);
+const requestedStart = new Date(endDate.getTime() - DAYS * 24 * 60 * 60 * 1000);
+// Clamp startDate to the most recent restart marker for this flag — events
+// before the restart were generated under a different test and must not
+// pollute the current analysis.
+const restartDate = FLAG_RESTART_DATES[FLAG];
+const startDate = restartDate && restartDate > requestedStart ? restartDate : requestedStart;
 const fmtISO = d => d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 async function fetchPostHog(url) {
@@ -74,6 +95,9 @@ async function main() {
 
   console.log(`\n📊 A/B Test Analysis: ${FLAG}`);
   console.log(`Date range: ${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`);
+  if (restartDate && restartDate > requestedStart) {
+    console.log(`  (clamped to restart date ${restartDate.toISOString().split('T')[0]}; pre-restart data excluded)`);
+  }
   console.log('='.repeat(70));
 
   // ── Fetch all ticket_click events ──
