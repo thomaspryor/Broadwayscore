@@ -27,16 +27,19 @@
  *   node scripts/audit-touring-broadway-contamination.js [options]
  *
  * Options:
- *   --dry-run         Run candidates + LLM, do not write files (default)
- *   --candidates-only Generate candidate list only, no LLM calls
- *   --apply           Write wrongProduction flag for high-confidence verdicts
- *   --limit=N         Cap LLM calls (default: 0 = unlimited)
- *   --concurrency=N   Parallel LLM calls (default: 5)
- *   --provider=NAME   claude (default) | openai | gemini
- *   --show=SLUG       Filter to single show
- *   --resume          Continue from checkpoint
- *   --verbose         Per-file output
- *   --report=PATH     Output report path (default: data/audit/touring-contamination-report.json)
+ *   --dry-run                    Run candidates + LLM, do not write files (default)
+ *   --candidates-only            Generate candidate list only, no LLM calls
+ *   --apply                      Write wrongProduction flag for high-confidence verdicts
+ *   --allow-tbd-regressions      Required with --apply if any shows would fall below
+ *                                hasEnoughReviews() threshold (5 for Broadway, 3 for OB).
+ *                                Without it, apply aborts to prevent losing displayed scores.
+ *   --limit=N                    Cap LLM calls (default: 0 = unlimited)
+ *   --concurrency=N              Parallel LLM calls (default: 5)
+ *   --provider=NAME              claude (default) | openai | gemini
+ *   --show=SLUG                  Filter to single show
+ *   --resume                     Continue from checkpoint
+ *   --verbose                    Per-file output
+ *   --report=PATH                Output report path (default: data/audit/touring-contamination-report.json)
  *
  * Env:
  *   ANTHROPIC_API_KEY   Required for claude (default)
@@ -77,6 +80,7 @@ try {
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
 const DRY_RUN = !APPLY; // dry-run unless --apply
+const ALLOW_TBD_REGRESSIONS = args.includes('--allow-tbd-regressions');
 const CANDIDATES_ONLY = args.includes('--candidates-only');
 const RESUME = args.includes('--resume');
 const VERBOSE = args.includes('--verbose');
@@ -573,6 +577,72 @@ function generateCandidates() {
 }
 
 // ============================================================
+// Score-Impact Preflight
+// ============================================================
+
+// Mirrors src/config/score-buckets.ts MIN_REVIEWS_FOR_SCORE_*. Kept inline so the
+// audit script doesn't need a TS import. If those constants change, update here too.
+const MIN_REVIEWS = {
+  broadway: 5,
+  'west-end': 5,
+  'off-broadway': 3,
+  'off-west-end': 3,
+};
+
+function getScoreableCount(showId) {
+  const dir = path.join(REVIEW_TEXTS_DIR, showId);
+  if (!fs.existsSync(dir)) return 0;
+  let count = 0;
+  let files;
+  try { files = fs.readdirSync(dir); } catch { return 0; }
+  for (const f of files) {
+    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    try {
+      const r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      // Mirror isScoreable() filter — these flags exclude reviews from scoring
+      if (r.wrongProduction || r.wrongShow || r.wrongAttribution) continue;
+      if (r.duplicateOf) continue;
+      if (r.contentTier === 'invalid') continue;
+      if (r.isRoundupArticle) continue;
+      count++;
+    } catch {}
+  }
+  return count;
+}
+
+function computeScoreImpact(wrongVerdicts) {
+  // Group by show
+  const byShow = {};
+  for (const v of wrongVerdicts) {
+    if (!byShow[v.showId]) byShow[v.showId] = [];
+    byShow[v.showId].push(v);
+  }
+
+  const wouldRemainScored = [];
+  const alreadyTBD = [];
+  const wouldBecomeTBD = [];
+
+  for (const [showId, flags] of Object.entries(byShow)) {
+    const show = showById.get(showId);
+    if (!show) continue;
+    const cat = show.category || 'broadway';
+    const threshold = MIN_REVIEWS[cat] ?? 5;
+
+    const before = getScoreableCount(showId);
+    const after = Math.max(0, before - flags.length);
+    const wasScored = before >= threshold;
+    const willBeScored = after >= threshold;
+
+    const entry = { showId, category: cat, threshold, before, after, flagsApplied: flags.length };
+    if (!wasScored) alreadyTBD.push(entry);
+    else if (willBeScored) wouldRemainScored.push(entry);
+    else wouldBecomeTBD.push(entry);
+  }
+
+  return { wouldRemainScored, alreadyTBD, wouldBecomeTBD };
+}
+
+// ============================================================
 // Apply
 // ============================================================
 
@@ -695,9 +765,8 @@ async function main() {
           if (VERBOSE || parsed.confidence === 'high') {
             console.log(`  WRONG[${parsed.confidence}] ${key}: ${parsed.tourLabel || ''}${parsed.venue ? ' @ ' + parsed.venue : ''} — ${parsed.reasoning}`);
           }
-          if (APPLY && parsed.confidence === 'high') {
-            if (applyFlag(item, parsed)) stats.appliedFlag++;
-          }
+          // Note: apply moved to after-loop second pass so the score-impact
+          // preflight can run on the full verdict set first.
         } else if (parsed.verdict === 'CORRECT') {
           stats.correct++;
           if (VERBOSE) console.log(`  OK ${key}`);
@@ -722,10 +791,49 @@ async function main() {
     console.log(`  ${done}/${items.length} (${pct}%) — wrong=${stats.wrongProduction} correct=${stats.correct} uncertain=${stats.uncertain}`);
   }
 
-  // Write report
+  // ============================================================
+  // Score-impact preflight + apply pass
+  // ============================================================
   const wrongHigh = results.filter(r => r.verdict === 'WRONG_PRODUCTION' && r.confidence === 'high');
   const wrongMed = results.filter(r => r.verdict === 'WRONG_PRODUCTION' && r.confidence === 'medium');
   const wrongLow = results.filter(r => r.verdict === 'WRONG_PRODUCTION' && r.confidence === 'low');
+
+  const impact = computeScoreImpact(wrongHigh);
+  console.log('\n=== SCORE IMPACT (high-confidence verdicts only) ===');
+  console.log(`Affected shows total:               ${impact.wouldRemainScored.length + impact.alreadyTBD.length + impact.wouldBecomeTBD.length}`);
+  console.log(`  Will remain scored:               ${impact.wouldRemainScored.length}`);
+  console.log(`  Already TBD (no visible change):  ${impact.alreadyTBD.length}`);
+  console.log(`  Newly TBD (regression):           ${impact.wouldBecomeTBD.length}`);
+  if (impact.wouldBecomeTBD.length > 0) {
+    console.log('\nShows that would lose their displayed score:');
+    impact.wouldBecomeTBD
+      .sort((a, b) => (b.before - b.after) - (a.before - a.after))
+      .forEach(e => console.log(`  ${e.showId} [${e.category}]: ${e.before} → ${e.after} reviews (need ${e.threshold}+, dropping ${e.flagsApplied})`));
+  }
+
+  if (APPLY && impact.wouldBecomeTBD.length > 0 && !ALLOW_TBD_REGRESSIONS) {
+    console.error(`\nERROR: --apply blocked. ${impact.wouldBecomeTBD.length} shows would fall below the hasEnoughReviews() threshold and lose their displayed score.`);
+    console.error('To proceed, either:');
+    console.error('  1. Re-run with --allow-tbd-regressions to accept the regressions');
+    console.error('  2. Use --show=ID to apply per-show, manually backfilling reviews for affected shows first');
+    console.error('  3. Inspect the verdicts for those shows in the report and confirm they are legitimate before allowing');
+    process.exit(2);
+  }
+
+  // Apply pass — high-confidence verdicts only
+  if (APPLY) {
+    for (const v of wrongHigh) {
+      // Need an item-shaped object for applyFlag (it expects { showId, file })
+      if (applyFlag({ showId: v.showId, file: v.file }, {
+        venue: v.venue,
+        tourLabel: v.tourLabel,
+        reasoning: v.reasoning,
+      })) {
+        stats.appliedFlag++;
+      }
+    }
+  }
+
   const byShow = {};
   for (const r of results.filter(x => x.verdict === 'WRONG_PRODUCTION')) {
     if (!byShow[r.showId]) byShow[r.showId] = [];
@@ -744,6 +852,12 @@ async function main() {
         wrongLow: wrongLow.length,
         correct: stats.correct,
         uncertain: stats.uncertain,
+      },
+      scoreImpact: {
+        wouldRemainScoredCount: impact.wouldRemainScored.length,
+        alreadyTBDCount: impact.alreadyTBD.length,
+        wouldBecomeTBDCount: impact.wouldBecomeTBD.length,
+        wouldBecomeTBDShows: impact.wouldBecomeTBD,
       },
     },
     byShow,
