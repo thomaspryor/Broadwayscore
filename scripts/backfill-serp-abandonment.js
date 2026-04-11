@@ -159,7 +159,7 @@ if (LIMIT < Infinity && limited.length < toProcess.length) {
 if (DRY_RUN) {
   console.log('DRY RUN — sample of first 5 candidates:');
   for (const c of limited.slice(0, 5)) {
-    console.log(`  ${c.filePath.replace(REVIEW_TEXTS_DIR + '/', '')} [${c.lifecycle}${c.hasPriorDiscovery ? ', prior-discovery' : ''}]`);
+    console.log(`  ${c.filePath.replace(REVIEW_TEXTS_DIR + '/', '')} [${c.lifecycle}${c.hasPriorSerpCycle ? ', prior-serp-cycle' : ''}]`);
   }
   console.log('');
   console.log(`Would write: ${limited.length} files with serpDiscoveryAbandoned=true`);

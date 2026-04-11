@@ -20,18 +20,32 @@
 const fs = require('fs');
 const { execSync } = require('child_process');
 
-// Fields that are ONLY set by manual human corrections, never by CI pipelines.
-// If the remote has these and local doesn't, it's ALWAYS correct to restore them.
-// humanReviewedWrongProduction: false is the linchpin guard for opening night —
-// CI rebases dropped it during DoaS Apr 9-10, causing CV-promotion to re-flag
-// human-verified files as wrongProduction. See memory/project_doas_opening_night_issues.md.
+// Fields that must be preserved across rebases. Two categories:
+//   (a) MANUAL human corrections CI should never touch — see DoaS Apr 9-10
+//       postmortem (humanReviewedWrongProduction: false was dropped and
+//       CV-promotion re-flagged human-verified files as wrongProduction).
+//   (b) DURABLE CI state that must survive rebase even when the content-aware
+//       merge in push-review-texts/action.yml picks "theirs" on the file. The
+//       SERP retry tracking fields are in this category — the backfill marked
+//       ~10,466 wrong_content files as abandoned, and dropping those flags via
+//       rebase resurrects them into the retry pool and burns BD credits we
+//       just committed to not spending. See sprint-plan-serp-cost-reduction.md.
+// If the remote has these and local doesn't, always restore from remote.
 const MANUAL_FIELDS = [
+  // (a) Human-only corrections
   'humanReviewScore',
   'manualContentTier',
   'wrongProductionManualClear',
   'wrongProductionOverride',
   'humanReviewedWrongProduction',
   'allowEarlyDate',
+  // (b) Durable SERP retry state — must survive rebase
+  'serpDiscoveryAbandoned',
+  'serpAbandonmentReason',
+  'serpAbandonmentDate',
+  'serpRetryCount',
+  'serpRetryAfter',
+  'wrongShowRetryAt',
 ];
 
 // Nested fields under contentVerification that are manually set
