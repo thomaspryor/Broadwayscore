@@ -20,6 +20,13 @@
  *   --max-tier 3                             Include up to tier 3 (default: 2)
  *   --dry-run                                Show what would be searched, don't write files
  *   --no-skip-existing                       Search even if outlet already has a review
+ *                                            (NOTE: use --retry-urlless instead for the
+ *                                            common case of re-searching outlets with
+ *                                            url:null files — 90% less SERP waste)
+ *   --retry-urlless                          Re-search outlets whose existing file has
+ *                                            no URL (e.g., theatre.reviews, BWW roundups
+ *                                            that provide scores without URLs). Honors
+ *                                            skip-existing for outlets with healthy files.
  *   --max-shows N                            Limit to N shows (for testing)
  *   --max-searches N                         Limit total SERP searches (for cost control)
  *   --max-outlets N                           Max outlets per show (default: 60, T1/T2 first)
@@ -81,6 +88,7 @@ function parseArgs() {
     maxTier: 2,
     dryRun: false,
     skipExisting: true,
+    retryUrlless: false,
     maxShows: Infinity,
     maxSearches: Infinity,
     maxOutlets: 60,       // Cap outlets per show (T1/T2 first, T3 fills remainder)
@@ -97,6 +105,7 @@ function parseArgs() {
       case '--max-tier': opts.maxTier = parseInt(args[++i]); break;
       case '--dry-run': opts.dryRun = true; break;
       case '--no-skip-existing': opts.skipExisting = false; break;
+      case '--retry-urlless': opts.retryUrlless = true; break;
       case '--max-shows': opts.maxShows = parseInt(args[++i]); break;
       case '--max-searches': opts.maxSearches = parseInt(args[++i]); break;
       case '--max-outlets': opts.maxOutlets = parseInt(args[++i]); break;
@@ -173,10 +182,25 @@ function getTargetOutlets(market, minTier, maxTier, registry, maxOutlets) {
   return capped;
 }
 
-function getExistingOutlets(showId, registry) {
+/**
+ * Return outlets that already have review files for this show.
+ *
+ * When `retryUrlless` is true, outlets are EXCLUDED from the set if all their
+ * files lack a URL (incompleteReason='no_url' or url===null). Those outlets
+ * become eligible for re-search — this covers theatre.reviews and BWW roundup
+ * reviews that provide scores without URLs and need SERP to find the review
+ * article. Replaces --no-skip-existing which wastefully re-searched every
+ * outlet regardless of file state.
+ */
+function getExistingOutlets(showId, registry, options = {}) {
+  const { retryUrlless = false } = options;
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   const existing = new Set();
   if (!fs.existsSync(showDir)) return existing;
+
+  // Accumulate by outletId → { hasUrl: bool, aliases: string[] } so we can
+  // decide per outlet whether any of its files has a URL worth preserving.
+  const outletState = new Map();
 
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
   for (const f of files) {
@@ -184,15 +208,27 @@ function getExistingOutlets(showId, registry) {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
       if (data.fabricatedEntry || data.wrongProduction) continue;
       const oid = (data.outletId || data.outlet || '').toLowerCase();
-      existing.add(oid);
-      // Also add aliases
-      if (registry.outlets[oid] && registry.outlets[oid].aliases) {
-        for (const alias of registry.outlets[oid].aliases) {
-          existing.add(alias.toLowerCase());
-        }
-      }
+      if (!oid) continue;
+      const hasUrl = !!(data.url && typeof data.url === 'string' && data.url.length > 0);
+      const prev = outletState.get(oid) || { hasAnyWithUrl: false };
+      prev.hasAnyWithUrl = prev.hasAnyWithUrl || hasUrl;
+      outletState.set(oid, prev);
     } catch (e) {}
   }
+
+  for (const [oid, state] of outletState) {
+    // Under retryUrlless, skip outlets where NO file has a URL — those should
+    // be re-searched. Keep outlets with at least one URL-having file.
+    if (retryUrlless && !state.hasAnyWithUrl) continue;
+    existing.add(oid);
+    // Also add aliases so the "missing" filter downstream treats them uniformly
+    if (registry.outlets[oid] && registry.outlets[oid].aliases) {
+      for (const alias of registry.outlets[oid].aliases) {
+        existing.add(alias.toLowerCase());
+      }
+    }
+  }
+
   return existing;
 }
 
@@ -394,7 +430,9 @@ async function main() {
       continue;
     }
 
-    const existingOutlets = opts.skipExisting ? getExistingOutlets(show.id, registry) : new Set();
+    const existingOutlets = opts.skipExisting
+      ? getExistingOutlets(show.id, registry, { retryUrlless: opts.retryUrlless })
+      : new Set();
 
     // Find which target outlets are missing
     const missing = targetOutlets.filter(o => {
