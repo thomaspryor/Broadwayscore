@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-11T08:30:35.347Z",
+  "lastRunAt": "2026-04-11T10:29:29.602Z",
   "seenIds": {
     "hn:47523414": true,
     "google:7e6f0102d0e7b70d": true,
@@ -20,7 +20,8 @@
     "news:2988e48372642d9a": true,
     "google:306e96f00e30bba6": true,
     "google:74c61cb7330984f8": true,
-    "google:f2a3af491df9ec86": true
+    "google:f2a3af491df9ec86": true,
+    "google:372f12eb79f58ba9": true
   },
   "mentions": [
     {
@@ -425,10 +426,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-11T06:41:21.128Z"
+    },
+    {
+      "id": "google:372f12eb79f58ba9",
+      "source": "google",
+      "url": "https://podcasts.apple.com/dk/podcast/broadway-breakdown/id1260430031",
+      "title": "Broadway Breakdown - Podcast",
+      "excerpt": "... BroadwayScoreCard.Com This is a public episode. If you would like to discuss this with other subscribers or get access to bonus episodes, visit ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-11T10:29:08.818Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-11T10:29:29.602Z"
     }
   ],
   "stats": {
-    "totalSeen": 20,
+    "totalSeen": 21,
     "totalDispatched": 0,
     "lastCalibration": null
   }
