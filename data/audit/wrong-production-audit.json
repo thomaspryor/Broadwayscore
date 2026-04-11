@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-04-11T16:48:27.838Z",
+  "timestamp": "2026-04-11T17:04:56.999Z",
   "stats": {
-    "totalReviews": 34738,
-    "alreadyFlagged": 13936,
+    "totalReviews": 34737,
+    "alreadyFlagged": 13930,
     "dateGuardCatches": 60,
     "directorMismatch": 930,
-    "tvFilmSignals": 3384,
+    "tvFilmSignals": 3385,
     "londonSignals": 1105,
-    "offBroadwaySignals": 959,
-    "yearMismatch": 71,
+    "offBroadwaySignals": 960,
+    "yearMismatch": 72,
     "noPublishDate": 4182
   },
   "findings": [
@@ -594,6 +594,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-2022",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 61,
+      "publishDate": "November 22nd, 2022",
+      "url": "https://www.vulture.com/2022/11/theater-review-christmas-carol-jefferson-mays-2022.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (4x) more than 2022 (2x). 2019 matches production: a-christmas-carol-2019"
         }
       ]
     },
@@ -65486,6 +65505,20 @@
       "score": 78,
       "publishDate": "2016-03-08T09:41:27",
       "url": "https://thefrontrowcenter.com/2016/03/eclipsed/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-2016",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 78,
+      "publishDate": "March 6th, 2016",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/lupita-nyong-powerful-danai-gurira-eclipsed-review-article-1.2553317",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
