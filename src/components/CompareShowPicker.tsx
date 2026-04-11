@@ -165,11 +165,11 @@ export default function CompareShowPicker() {
   };
 
   return (
-    <div className="card p-4 sm:p-6 mb-8" data-compare-picker>
-      <h2 className="font-bold text-white text-lg mb-1">Compare Any Two Shows</h2>
-      <p className="text-gray-400 text-sm mb-4">Pick two shows to see a detailed side-by-side comparison.</p>
+    <div className="card p-5 sm:p-7 mb-8 border-brand/20" data-compare-picker>
+      <h2 className="font-bold text-white text-xl mb-1">Compare Any Two Shows</h2>
+      <p className="text-gray-400 text-sm mb-5">Hamilton vs Wicked? Type any two shows to see which critics prefer.</p>
 
-      <div className="flex flex-col sm:flex-row gap-3 items-end" onFocus={() => { searchA.ensureData(); searchB.ensureData(); }}>
+      <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end" onFocus={() => { searchA.ensureData(); searchB.ensureData(); }}>
         <ShowInput
           label="Show 1"
           id="compare-show-a"
@@ -199,7 +199,7 @@ export default function CompareShowPicker() {
         <button
           onClick={handleCompare}
           disabled={!canCompare}
-          className="px-5 py-2.5 rounded-lg bg-brand text-black font-semibold text-sm transition-colors hover:bg-brand-hover disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap"
+          className="px-6 py-3 rounded-lg bg-brand text-black font-bold text-base transition-all hover:bg-brand-hover disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap shadow-lg shadow-brand/20 hover:shadow-brand/30"
         >
           Compare
         </button>
