@@ -1,13 +1,31 @@
 {
-  "timestamp": "2026-04-11T17:42:04.059Z",
+  "timestamp": "2026-04-11T21:05:48.653Z",
   "regressions": [
     {
-      "showId": "oh-mary-2024",
-      "oldCount": 41,
-      "newCount": 34,
-      "dropped": 7,
-      "scoredOnDisk": 38,
-      "flaggedScored": 17,
+      "showId": "hadestown-2019",
+      "oldCount": 47,
+      "newCount": 41,
+      "dropped": 6,
+      "scoredOnDisk": 47,
+      "flaggedScored": 22,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "oldCount": 10,
+      "newCount": 7,
+      "dropped": 3,
+      "scoredOnDisk": 10,
+      "flaggedScored": 10,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "wicked-2003",
+      "oldCount": 30,
+      "newCount": 27,
+      "dropped": 3,
+      "scoredOnDisk": 30,
+      "flaggedScored": 18,
       "reason": "scored files exist but being dropped"
     }
   ]
