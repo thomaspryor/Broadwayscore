@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-11T10:02:19.963Z",
+    "lastUpdated": "2026-04-11T10:33:54.675Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 35111,
-    "skippedFiles": 14235,
-    "totalCritics": 1498,
-    "registryCritics": 523,
+    "totalFilesScanned": 35142,
+    "skippedFiles": 14236,
+    "totalCritics": 1500,
+    "registryCritics": 524,
     "flaggedReviews": 35
   },
   "flaggedReviews": [
@@ -53,6 +53,17 @@
       "primaryOutlet": "ew",
       "primaryShare": 97,
       "totalReviews": 30
+    },
+    {
+      "critic": "Gillian Russo",
+      "criticSlug": "gillian-russo",
+      "outlet": "dtli",
+      "showId": "bob-fosses-dancin-2023",
+      "file": "dtli--gillian-russo.json",
+      "outletShare": 3,
+      "primaryOutlet": "nytg",
+      "primaryShare": 97,
+      "totalReviews": 39
     },
     {
       "critic": "Howard Miller",
@@ -229,17 +240,6 @@
       "primaryOutlet": "frontmezzjunkies",
       "primaryShare": 99,
       "totalReviews": 85
-    },
-    {
-      "critic": "Jennifer Farrar",
-      "criticSlug": "jennifer-farrar",
-      "outlet": "reading-eagle",
-      "showId": "on-the-twentieth-century-2015",
-      "file": "reading-eagle--jennifer-farrar.json",
-      "outletShare": 4,
-      "primaryOutlet": "ap",
-      "primaryShare": 96,
-      "totalReviews": 28
     },
     {
       "critic": "Andy Propst",
@@ -444,13 +444,16 @@
       "outlets": [
         "ap",
         "abc-news",
-        "washington-times",
         "huffpost",
         "washpost",
+        "washington-times",
+        "seattle-post-intelligencer",
         "news-tribune",
-        "canadian-press"
+        "sfgate",
+        "canadian-press",
+        "npr"
       ],
-      "totalReviews": 232
+      "totalReviews": 250
     },
     {
       "critic": "Chris Jones",
@@ -633,7 +636,7 @@
         "bamorg",
         "kenny-leon"
       ],
-      "totalReviews": 552
+      "totalReviews": 551
     },
     {
       "critic": "Brittani Samuel",
@@ -657,7 +660,7 @@
         "theatermania",
         "nytg"
       ],
-      "totalReviews": 247
+      "totalReviews": 246
     },
     {
       "critic": "Tim Teeman",
@@ -724,9 +727,10 @@
         "nytimes",
         "4columns",
         "timeout",
-        "timeout-london"
+        "timeout-london",
+        "variety"
       ],
-      "totalReviews": 132
+      "totalReviews": 133
     },
     {
       "critic": "Michael Dale",
@@ -992,9 +996,10 @@
         "nytg",
         "nypost",
         "reuters",
+        "dtli",
         "theatermania"
       ],
-      "totalReviews": 187
+      "totalReviews": 188
     },
     {
       "critic": "Elyse Trevers",
@@ -1187,6 +1192,16 @@
         "theater-scene"
       ],
       "totalReviews": 21
+    },
+    {
+      "critic": "Jennifer Farrar",
+      "slug": "jennifer-farrar",
+      "outlets": [
+        "ap",
+        "abc-news",
+        "reading-eagle"
+      ],
+      "totalReviews": 30
     },
     {
       "critic": "Robert Sholiton",
@@ -2067,6 +2082,15 @@
       "outlets": [
         "nytg",
         "whatsonstage"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Associated Press",
+      "slug": "associated-press",
+      "outlets": [
+        "ap",
+        "washpost"
       ],
       "totalReviews": 3
     },

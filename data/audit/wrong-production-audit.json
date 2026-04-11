@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-11T10:02:17.469Z",
+  "timestamp": "2026-04-11T10:33:52.161Z",
   "stats": {
-    "totalReviews": 34709,
-    "alreadyFlagged": 13923,
+    "totalReviews": 34740,
+    "alreadyFlagged": 13924,
     "dateGuardCatches": 60,
     "directorMismatch": 933,
     "tvFilmSignals": 3384,
-    "londonSignals": 1107,
+    "londonSignals": 1108,
     "offBroadwaySignals": 959,
     "yearMismatch": 71,
     "noPublishDate": 4259
@@ -11927,6 +11927,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "file": "thestage--alistair-smith.json",
+      "score": 80,
+      "publishDate": "June 21st, 2023",
+      "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -30791,20 +30810,6 @@
       "score": 70,
       "publishDate": "November 16, 2006",
       "url": "https://www.timeout.com/newyork/theater/mary-poppins-1",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "mary-poppins-2006",
-      "file": "variety--charles-isherwood.json",
-      "score": 78,
-      "publishDate": "November 16, 2006",
-      "url": "https://variety.com/2006/legit/reviews/mary-poppins-5-1200511933/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
