@@ -522,7 +522,17 @@
     "machinal-2014/timeout--david-cote.json",
     "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
     "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
-    "a-time-to-kill-2013/abc-news--mark-kennedy.json"
+    "a-time-to-kill-2013/abc-news--mark-kennedy.json",
+    "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
+    "the-winslow-boy-2013/bloomberg--unknown.json",
+    "a-night-with-janis-joplin-2013/abc-news--jennifer-farrar.json",
+    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "pippin-2013/new-jersey-newsroom--michael-sommers.json",
+    "orphans-2013/washpost--associated-press.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-assembled-parties-2013/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -589,7 +599,9 @@
       "data/review-texts/patriots-2024/dtli--frank-scheck.json",
       "data/review-texts/bob-fosses-dancin-2023/dtli--gillian-russo.json",
       "data/review-texts/misery-2015/abc-news--mark-kennedy.json",
-      "data/review-texts/a-time-to-kill-2013/abc-news--mark-kennedy.json"
+      "data/review-texts/a-time-to-kill-2013/abc-news--mark-kennedy.json",
+      "data/review-texts/a-night-with-janis-joplin-2013/abc-news--jennifer-farrar.json",
+      "data/review-texts/orphans-2013/washpost--associated-press.json"
     ],
     "archive": [
       "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
@@ -607,7 +619,7 @@
     ]
   },
   "startTime": "2026-04-11T08:59:41.327Z",
-  "lastProcessed": "death-of-a-salesman-2026/ew--unknown.json",
+  "lastProcessed": "the-assembled-parties-2013/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-04-11T10:51:31.649Z",
@@ -650,6 +662,17 @@
     },
     {
       "t": "2026-04-11T10:57:42.193Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-11T11:39:42.704Z",
+      "event": "bb-session",
+      "session": "bba5bae7",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadways-orpha"
+    },
+    {
+      "t": "2026-04-11T11:39:43.520Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
