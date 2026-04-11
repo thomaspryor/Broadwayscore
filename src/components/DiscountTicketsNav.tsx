@@ -1,7 +1,10 @@
 import Link from 'next/link';
 
 type DiscountPage = 'all' | 'lotteries' | 'rush' | 'standing-room' | 'best-value';
-type DiscountMarket = 'broadway' | 'west-end';
+// Off-West-End shares the /west-end/* discount routes — there is no separate
+// /off-west-end/lotteries hub. OWE shows appear on the West End hub alongside
+// WE shows. Accept both market IDs and route them identically.
+type DiscountMarket = 'broadway' | 'west-end' | 'off-west-end';
 
 const tabs: { id: DiscountPage; label: string; shortLabel: string; path: string }[] = [
   { id: 'all', label: 'All Discounts', shortLabel: 'All', path: '/discount-tickets' },
@@ -22,7 +25,7 @@ interface DiscountTicketsNavProps {
 }
 
 export function DiscountTicketsNav({ active, market = 'broadway' }: DiscountTicketsNavProps) {
-  const prefix = market === 'west-end' ? '/west-end' : '';
+  const prefix = (market === 'west-end' || market === 'off-west-end') ? '/west-end' : '';
   return (
     <nav className="flex gap-1 overflow-x-auto scrollbar-hide mb-6 -mx-4 px-4 sm:mx-0 sm:px-0" aria-label="Discount ticket categories">
       {tabs.map(tab => {
