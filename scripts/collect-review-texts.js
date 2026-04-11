@@ -4600,6 +4600,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.wrongFullText = data.fullText;
         data.fullText = null;
         data.wrongProduction = true;
+        // Record the diagnostic reason so future audits can distinguish LLM-detected
+        // wrong-production from silent (reason-less) guard fires. Before this line was
+        // added, this code path stamped wrongProduction=true with no trail — reviews
+        // were invisible in the composite with no way to tell why. See Notion card
+        // "Recover wrongProduction false positives — 722 reviews invisible" (Apr 11 2026).
+        data.wrongProductionReason = `Collector LLM: wrong production (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
         data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
         console.log(`    ✗ LLM: Wrong production (${contentVerification.confidence}) — fullText nulled`);
       }
