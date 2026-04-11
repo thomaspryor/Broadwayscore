@@ -1,41 +1,30 @@
 'use client';
 
 /**
- * <SocialPulseCard> — renders the "Social Buzz" card on show pages.
+ * <SocialPulseCard> — renders the "SOCIALS SCORECARD" card on show pages.
  *
  * Data source: public/data/shows/{show-id}.social.json (a SIBLING file to
  * the main show JSON, intentionally separate to avoid race conditions with
- * the nightly rebuild — see generate-mobile-show-details.js comment).
+ * the nightly rebuild).
  *
- * The parent show page fetches both files at build time and passes the
- * social-pulse payload (or null) as a prop. The card returns null for:
+ * Returns null for:
  *   - missing payload (show never scraped)
  *   - feature flag off (NEXT_PUBLIC_SOCIAL_PULSE !== 'true')
  *   - tier === 'Hidden' (below MIN_MENTIONS_FOR_CARD threshold)
  */
 
-// Compact schema written by fetch-social-pulse.js. Short keys keep the
-// per-show payload tiny (<1KB typical).
+// Compact schema written by fetch-social-pulse.js + compute-social-pulse-ranks.js
 export interface SocialPulsePayload {
   _v: number;
   t: 'Buzzing' | 'Rising' | 'Steady' | 'Troubled' | 'BuildingBaseline' | 'Hidden';
   v: number;              // volume (relevant mention count)
   p: number;              // positive %, 0-100
   wow: number | null;     // week-over-week %
-  bm: number | null;      // baseline multiple (e.g., 2.8)
-  pl: {                   // platform breakdown
-    x: number;
-    tt: number;
-    ig: number;
-  };
-  q: Array<{              // top quotes (0-2 items)
-    t: string;            // quote text
-    p: string;            // platform
-    a: string | null;     // author handle
-    u: string | null;     // post URL
-  }>;
+  bm: number | null;      // baseline multiple (legacy, may be null)
+  pl: { x: number; tt: number; ig: number };
+  q: Array<{ t: string; p: string; a: string | null; u: string | null }>;
   u: string;              // updated ISO date
-  r?: string;             // rank string like "3/33 Broadway"
+  r?: string;             // rank string like "3/42 Broadway"
 }
 
 interface SocialPulseCardProps {
@@ -47,85 +36,134 @@ interface SocialPulseCardProps {
 interface TierDisplay {
   label: string;
   emoji: string;
-  /** Tailwind classes for the tier badge color scheme */
+  /** Hex for the tier color (used for inline styles where dynamic values matter) */
+  color: string;
+  textColor: string;
+  /** Tailwind classes for static elements */
   bgClass: string;
   borderClass: string;
   textClass: string;
-  /** Sentiment bar color */
-  barClass: string;
+  /** Subtitle line under the tier label */
+  subtitle: string;
 }
 
 const TIER_DISPLAY: Record<SocialPulsePayload['t'], TierDisplay | null> = {
   Buzzing: {
     label: 'BUZZING',
     emoji: '🔥',
+    color: '#f97316',
+    textColor: '#ffffff',
     bgClass: 'bg-orange-500/10',
-    borderClass: 'border-orange-500/30',
+    borderClass: 'border-orange-500/40',
     textClass: 'text-orange-400',
-    barClass: 'bg-orange-500',
+    subtitle: 'Trending hot right now',
   },
   Rising: {
     label: 'RISING',
     emoji: '📈',
+    color: '#10b981',
+    textColor: '#ffffff',
     bgClass: 'bg-emerald-500/10',
-    borderClass: 'border-emerald-500/30',
+    borderClass: 'border-emerald-500/40',
     textClass: 'text-emerald-400',
-    barClass: 'bg-emerald-500',
+    subtitle: 'Picking up momentum',
   },
   Steady: {
     label: 'STEADY',
-    emoji: '😐',
+    emoji: '⚪',
+    color: '#3b82f6',
+    textColor: '#ffffff',
     bgClass: 'bg-blue-500/10',
-    borderClass: 'border-blue-500/30',
+    borderClass: 'border-blue-500/40',
     textClass: 'text-blue-400',
-    barClass: 'bg-blue-500',
+    subtitle: 'Consistent buzz',
   },
   Troubled: {
     label: 'TROUBLED',
     emoji: '💔',
+    color: '#ef4444',
+    textColor: '#ffffff',
     bgClass: 'bg-red-500/10',
-    borderClass: 'border-red-500/30',
+    borderClass: 'border-red-500/40',
     textClass: 'text-red-400',
-    barClass: 'bg-red-500',
+    subtitle: 'Negative chatter outweighs positive',
   },
   BuildingBaseline: {
-    label: 'BUILDING BASELINE',
-    emoji: '⏳',
-    bgClass: 'bg-gray-500/10',
-    borderClass: 'border-gray-500/30',
-    textClass: 'text-gray-400',
-    barClass: 'bg-gray-500',
+    // Legacy state — old data files may still have this. Now treated as Steady.
+    label: 'STEADY',
+    emoji: '⚪',
+    color: '#3b82f6',
+    textColor: '#ffffff',
+    bgClass: 'bg-blue-500/10',
+    borderClass: 'border-blue-500/40',
+    textClass: 'text-blue-400',
+    subtitle: 'Consistent buzz',
   },
   Hidden: null, // never rendered
 };
 
-// ---------- Platform icons ----------
+// ---------- Brand-colored platform icons ----------
+//
+// Real brand colors. X is white-on-black, TikTok uses cyan + magenta accent,
+// Instagram uses the warm gradient. These render at 18px so the icons feel
+// like the right visual weight next to the count text.
 
-function XIcon({ className }: { className?: string }) {
+function XIcon() {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-label="X">
+      <rect width="24" height="24" rx="4" fill="#000000" />
+      <path
+        fill="#ffffff"
+        d="M17.95 5.5h2.213l-4.835 5.527 5.687 7.516h-4.453l-3.488-4.561-3.992 4.561H6.864l5.171-5.913L6.55 5.5h4.567l3.154 4.17zm-.776 11.731h1.226L9.875 6.708H8.559z"
+      />
     </svg>
   );
 }
 
-function TikTokIcon({ className }: { className?: string }) {
+function TikTokIcon() {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z" />
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-label="TikTok">
+      <rect width="24" height="24" rx="4" fill="#000000" />
+      {/* Magenta back-shadow */}
+      <path
+        fill="#ff0050"
+        d="M17.5 8.4c-1.13 0-2.13-.6-2.7-1.5v6.7c0 2.65-2.15 4.8-4.8 4.8a4.8 4.8 0 1 1 0-9.6c.18 0 .35.02.5.04v2.4a2.4 2.4 0 1 0 1.9 2.36V4h2.4a3.6 3.6 0 0 0 2.7 3.5z"
+      />
+      {/* Cyan front-shadow, offset */}
+      <path
+        fill="#00f2ea"
+        d="M18.1 7.8c-1.13 0-2.13-.6-2.7-1.5V13c0 2.65-2.15 4.8-4.8 4.8a4.8 4.8 0 1 1 0-9.6c.18 0 .35.02.5.04v2.4a2.4 2.4 0 1 0 1.9 2.36V3.4h2.4a3.6 3.6 0 0 0 2.7 3.5z"
+      />
+      {/* White foreground (the actual recognizable note) */}
+      <path
+        fill="#ffffff"
+        d="M17.8 8.1c-1.13 0-2.13-.6-2.7-1.5v6.7c0 2.65-2.15 4.8-4.8 4.8a4.8 4.8 0 1 1 0-9.6c.18 0 .35.02.5.04v2.4a2.4 2.4 0 1 0 1.9 2.36V3.7h2.4a3.6 3.6 0 0 0 2.7 3.5z"
+      />
     </svg>
   );
 }
 
-function InstagramIcon({ className }: { className?: string }) {
+function InstagramIcon() {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-label="Instagram">
+      <defs>
+        <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#feda75" />
+          <stop offset="25%" stopColor="#fa7e1e" />
+          <stop offset="50%" stopColor="#d62976" />
+          <stop offset="75%" stopColor="#962fbf" />
+          <stop offset="100%" stopColor="#4f5bd5" />
+        </linearGradient>
+      </defs>
+      <rect width="24" height="24" rx="6" fill="url(#ig-grad)" />
+      <rect x="5" y="5" width="14" height="14" rx="4" fill="none" stroke="#ffffff" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="3.4" fill="none" stroke="#ffffff" strokeWidth="1.6" />
+      <circle cx="16.4" cy="7.6" r="0.9" fill="#ffffff" />
     </svg>
   );
 }
 
-const PLATFORM_META: Record<string, { Icon: (props: { className?: string }) => JSX.Element; label: string }> = {
+const PLATFORM_META: Record<string, { Icon: () => JSX.Element; label: string }> = {
   x: { Icon: XIcon, label: 'X' },
   twitter: { Icon: XIcon, label: 'X' },
   tiktok: { Icon: TikTokIcon, label: 'TikTok' },
@@ -150,24 +188,28 @@ function formatUpdatedDate(iso: string): string {
 }
 
 /**
- * Builds the tier subtitle — short status line under the tier label.
- * Different per tier to communicate the right thing:
- *   - Buzzing/Rising/Troubled: baseline comparison (e.g., "▲ 2.8× 8-week average")
- *   - Steady: "Running at typical volume"
- *   - BuildingBaseline: "Not enough history yet"
+ * Splits a rank string like "3/42 Broadway" into ["3", "42", "Broadway"].
+ * Returns null if the rank doesn't match the expected shape.
  */
-function buildTierSubtitle(sp: SocialPulsePayload): string {
-  if (sp.t === 'Steady') return 'Running at typical volume';
-  if (sp.t === 'BuildingBaseline') return 'Not enough history yet';
-  if (sp.bm != null) {
-    const arrow = sp.bm >= 1 ? '▲' : '▼';
-    return `${arrow} ${sp.bm.toFixed(1)}× 8-week average`;
-  }
-  if (sp.wow != null) {
-    const arrow = sp.wow >= 0 ? '▲' : '▼';
-    return `${arrow} ${Math.abs(sp.wow)}% vs last week`;
-  }
-  return '';
+function parseRank(r: string | undefined): { position: string; total: string; market: string } | null {
+  if (!r) return null;
+  const m = /^(\d+)\/(\d+)\s+(.+)$/.exec(r);
+  if (!m) return null;
+  return { position: m[1], total: m[2], market: m[3] };
+}
+
+/**
+ * Calculates a relative "rank tier" from position/total — used to color the
+ * rank badge. Top 20% = gold-ish, top 40% = orange, then desaturating.
+ */
+function rankBadgeColor(position: number, total: number): { bg: string; text: string } {
+  if (total === 0) return { bg: '#374151', text: '#9ca3af' };
+  const percentile = position / total;
+  if (percentile <= 0.1) return { bg: '#f59e0b', text: '#1f2937' }; // top 10% — gold
+  if (percentile <= 0.2) return { bg: '#f97316', text: '#ffffff' }; // top 20% — orange
+  if (percentile <= 0.4) return { bg: '#10b981', text: '#ffffff' }; // top 40% — emerald
+  if (percentile <= 0.6) return { bg: '#3b82f6', text: '#ffffff' }; // middle — blue
+  return { bg: '#475569', text: '#cbd5e1' };                       // lower — slate
 }
 
 // ---------- Main component ----------
@@ -177,16 +219,25 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
   // Next.js because it's NEXT_PUBLIC_*, so this check is essentially free.
   if (process.env.NEXT_PUBLIC_SOCIAL_PULSE !== 'true') return null;
 
-  // No data — show never scraped, or still BuildingBaseline and we chose
-  // to hide until mature. Here we render BuildingBaseline as a muted card.
   if (!sp) return null;
   if (sp.t === 'Hidden') return null;
 
   const display = TIER_DISPLAY[sp.t];
   if (!display) return null;
 
+  const rank = parseRank(sp.r);
+  const rankColors = rank
+    ? rankBadgeColor(parseInt(rank.position, 10), parseInt(rank.total, 10))
+    : null;
   const posBarWidth = Math.max(0, Math.min(100, sp.p));
-  const subtitle = buildTierSubtitle(sp);
+
+  // Sentiment bar gradient: red (negative) → yellow (mixed) → green (positive)
+  // The bar fill width represents the positive %.
+  const sentimentBarStyle = {
+    width: `${posBarWidth}%`,
+    background: 'linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%)',
+    backgroundSize: `${(100 / Math.max(posBarWidth, 1)) * 100}% 100%`,
+  };
 
   const platformEntries: Array<{ key: string; count: number }> = [
     { key: 'x', count: sp.pl.x || 0 },
@@ -199,54 +250,83 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
-          Social Buzz
+          Socials Scorecard
         </h2>
         <span className="text-xs text-gray-500">last 7 days</span>
       </div>
 
-      {/* Tier badge */}
-      <div className={`rounded-xl p-4 border mb-4 ${display.bgClass} ${display.borderClass}`}>
-        <div className="flex items-center gap-3">
-          <div className="text-3xl leading-none" aria-hidden="true">
-            {display.emoji}
+      {/* Hero block: rank badge (LEFT, AudienceGrade-style) + tier label (RIGHT) */}
+      <div className={`rounded-xl p-4 sm:p-5 border mb-4 ${display.bgClass} ${display.borderClass}`}>
+        <div className="flex items-stretch gap-4">
+          {/* Rank badge — the AudienceGrade-style scorecard square */}
+          {rank && rankColors ? (
+            <div
+              className="shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 min-w-[72px] shadow-sm"
+              style={{
+                backgroundColor: rankColors.bg,
+                color: rankColors.text,
+                boxShadow: `0 2px 12px ${rankColors.bg}40`,
+              }}
+            >
+              <div className="text-[10px] font-semibold uppercase tracking-wider opacity-80">Rank</div>
+              <div className="text-3xl font-extrabold leading-none mt-0.5">#{rank.position}</div>
+              <div className="text-[11px] font-medium opacity-90 mt-0.5">of {rank.total}</div>
+            </div>
+          ) : (
+            // Fallback when rank is suppressed (small market) — show emoji badge
+            <div
+              className="shrink-0 flex items-center justify-center rounded-lg w-[72px] h-[72px] text-4xl"
+              style={{ backgroundColor: display.color + '22' }}
+              aria-hidden="true"
+            >
+              {display.emoji}
+            </div>
+          )}
+
+          {/* Right side: tier label + market context + supporting stats */}
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
+            <div className="flex items-center gap-2">
+              <span className={`text-xl sm:text-2xl font-bold ${display.textClass}`}>
+                {display.label}
+              </span>
+              <span className="text-xl" aria-hidden="true">{display.emoji}</span>
+            </div>
+            <div className="text-sm text-gray-400 mt-1">
+              {rank ? (
+                <>
+                  in <span className="font-semibold text-gray-300">{rank.market}</span>{' '}
+                  social buzz
+                </>
+              ) : (
+                display.subtitle
+              )}
+            </div>
           </div>
-          <div className="min-w-0">
-            <div className={`text-lg font-bold ${display.textClass}`}>{display.label}</div>
-            {subtitle && <div className="text-sm text-gray-400">{subtitle}</div>}
+        </div>
+
+        {/* Sentiment bar — full-width, colorful, prominent */}
+        <div className="mt-4">
+          <div className="flex items-baseline justify-between mb-1.5">
+            <span className="text-sm font-semibold text-gray-200">{sp.p}% positive</span>
+            <span className="text-xs text-gray-500">{formatVolume(sp.v)} mentions</span>
+          </div>
+          <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+            <div className="h-full rounded-full transition-all" style={sentimentBarStyle} />
           </div>
         </div>
       </div>
 
-      {/* Stats row: volume + positive % + rank */}
-      <div className="flex items-baseline justify-between mb-3 gap-3 flex-wrap">
-        <div>
-          <span className="text-2xl font-bold text-white">{formatVolume(sp.v)}</span>{' '}
-          <span className="text-sm text-gray-400">mentions</span>
-          <span className="text-sm text-gray-500 mx-1">·</span>
-          <span className="text-sm text-gray-300">{sp.p}% positive</span>
-        </div>
-        {sp.r && <div className="text-xs text-gray-500 shrink-0">#{sp.r}</div>}
-      </div>
-
-      {/* Sentiment bar */}
-      <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-4">
-        <div
-          className={`h-full rounded-full transition-all ${display.barClass}`}
-          style={{ width: `${posBarWidth}%` }}
-        />
-      </div>
-
-      {/* Platform breakdown */}
+      {/* Platform breakdown with brand-colored logos */}
       {platformEntries.length > 0 && (
-        <div className="flex items-center gap-3 sm:gap-4 text-xs text-gray-400 mb-4 flex-wrap">
+        <div className="flex items-center gap-4 sm:gap-5 mb-4 flex-wrap">
           {platformEntries.map(({ key, count }) => {
             const meta = PLATFORM_META[key];
             if (!meta) return null;
             const { Icon } = meta;
             return (
-              <div key={key} className="flex items-center gap-1.5">
-                <Icon className="text-gray-500" />
-                <span>{formatVolume(count)}</span>
+              <div key={key} className="flex items-center gap-2">
+                <Icon />
+                <span className="text-sm font-semibold text-gray-200">{formatVolume(count)}</span>
               </div>
             );
           })}
@@ -255,7 +335,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
 
       {/* Top quotes */}
       {sp.q && sp.q.length > 0 && (
-        <div className="space-y-2 mb-3">
+        <div className="space-y-2.5 mb-3">
           {sp.q.map((quote, i) => {
             const meta = PLATFORM_META[quote.p];
             return (
@@ -263,9 +343,13 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
                 <span className="text-gray-500">&ldquo;</span>
                 {quote.t}
                 <span className="text-gray-500">&rdquo;</span>{' '}
-                <span className="text-xs text-gray-500 inline-flex items-center gap-1">
+                <span className="text-xs text-gray-500 inline-flex items-center gap-1.5 ml-1">
                   —{' '}
-                  {meta && <meta.Icon className="text-gray-600 inline" />}
+                  {meta && (
+                    <span className="inline-block scale-75 -my-1">
+                      <meta.Icon />
+                    </span>
+                  )}
                   {quote.a || meta?.label || quote.p}
                 </span>
               </div>
@@ -276,7 +360,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
 
       {/* Footer */}
       <div className="text-xs text-gray-500 pt-2 border-t border-white/5">
-        Updated {formatUpdatedDate(sp.u)} · weekly
+        Updated {formatUpdatedDate(sp.u)} · refreshed weekly
       </div>
     </div>
   );

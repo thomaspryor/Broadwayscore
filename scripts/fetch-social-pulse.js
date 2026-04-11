@@ -41,19 +41,20 @@ const SOCIAL_PULSE_DIR = path.join(REPO_ROOT, 'data', 'social-pulse');
 const PUBLIC_SHOWS_DIR = path.join(REPO_ROOT, 'public', 'data', 'shows');
 const BUDGET_FILE = path.join(SOCIAL_PULSE_DIR, '_budget.json');
 
-// Volume limits. Uncapped would be ideal but we use high-ish ceilings to
-// bound runaway cost on mega-shows. 100 tweets is well above typical weekly
-// volume for all but the top ~5 shows (Hamilton, Wicked, etc.). The tier
-// logic only breaks if BOTH the baseline AND current week saturate the cap,
-// which is rare.
-const TWITTER_MAX = 100;
-const TIKTOK_MAX = 10;
+// Volume limits. Bumped 2026-04-11 after the user noted "only 10 TikToks for
+// Cats feels off" — the old caps were saturating on hot shows. New caps:
+//   X:         100 → 150  (+$9.10/mo, cheap at $0.00025/tweet)
+//   TikTok:    10 → 20    (+$10.92/mo, the expensive platform)
+//   Instagram: 15 (unchanged — already plenty for the platform's signal)
+// Total est ~$33/mo, comfortably under $39 Creator plan credits.
+const TWITTER_MAX = 150;
+const TIKTOK_MAX = 20;
 const INSTAGRAM_MAX = 15;
 
 // Soft cap for cumulative monthly Apify spend. Creator plan gives $39 in
-// credits; we aim to use ~40% of that ($15), leaving $24 headroom for
-// mega-show spikes and growth. Workflow aborts before hitting this cap.
-const BUDGET_SOFT_CAP_USD = 25.0;
+// credits. Targeting ~$33/mo expected with new caps, $35 cap leaves a few
+// dollars of headroom. Workflow aborts before hitting this cap.
+const BUDGET_SOFT_CAP_USD = 35.0;
 
 // ---------- CLI argument parsing ----------
 
