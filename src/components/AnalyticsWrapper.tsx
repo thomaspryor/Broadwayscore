@@ -38,14 +38,17 @@ export default function AnalyticsWrapper() {
     }
   }, []);
 
-  // PostHog — 10% sampled session recordings + pageviews + manual events (replaces Clarity)
-  // Autocapture/heatmaps/person profiles disabled to stay within free tier.
+  // PostHog — 10% sampled session recordings + pageviews + autocapture + manual events
+  // Heatmaps + person profiles disabled. Audited 2026-04-10: 74K events/30d = 7.4%
+  // of 1M free tier with autocapture ON. Turn autocapture back OFF if monthly
+  // events approach 700K (10x current traffic). Recording cost is capped by the
+  // 10% sample rate — leave it alone, Sentry covers error debugging.
   useEffect(() => {
     import('posthog-js').then(({ default: posthog }) => {
       if (!posthog.__loaded) {
         posthog.init(POSTHOG_KEY, {
           api_host: 'https://us.i.posthog.com',
-          autocapture: false,
+          autocapture: true,
           // 'history_change' captures $pageview on client-side route changes
           // (pushState/popstate). `true` only fires on initial load, which
           // caused PostHog to miss ~63% of pageviews in Apr 2026 comparison
