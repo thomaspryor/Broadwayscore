@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "warn",
-  "lastChecked": "2026-04-10T08:20:35.371Z",
+  "status": "pass",
+  "lastChecked": "2026-04-11T07:48:17.034Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -17,9 +17,14 @@
       "message": "30 open shows all have reviews and grosses"
     },
     {
+      "name": "Sync: phantom show detection",
+      "status": "pass",
+      "message": "No phantom show candidates found"
+    },
+    {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Reviews dropped: 17390 vs baseline 17391"
+      "status": "pass",
+      "message": "2433 shows, 152 open, 17303 reviews (all at or above baseline)"
     }
   ]
 }
