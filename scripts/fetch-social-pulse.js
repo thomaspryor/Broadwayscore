@@ -50,6 +50,10 @@ const BUDGET_FILE = path.join(SOCIAL_PULSE_DIR, '_budget.json');
 const TWITTER_MAX = 150;
 const TIKTOK_MAX = 20;
 const INSTAGRAM_MAX = 15;
+// Reddit via brand-mention-sources.js fetchRedditMentions. 100 is Reddit's
+// own API ceiling per query (not ours). Effectively uncapped for theater
+// volumes — hot shows typically return 20-80 posts.
+const REDDIT_MAX = 100;
 
 // Soft cap for cumulative monthly Apify spend. Creator plan gives $39 in
 // credits. Targeting ~$33/mo expected with new caps, $35 cap leaves a few
@@ -160,13 +164,16 @@ function writeCanonicalFile(showId, data) {
  * conditions with generate-mobile-show-details.js).
  *
  * Schema uses short keys to keep the payload tiny:
- *   { _v: 1, t: tier, v: volume, p: positive%, wow: WoW%, bm: baselineMultiple,
- *     pl: {x, tt}, q: [{t, p, a, u}], u: updated_date }
+ *   { _v: 2, t: tier, v: volume, p: positive%, wow: WoW%, bm: baselineMultiple,
+ *     pl: {x, tt, ig, r}, q: [{t, p, a, u}], u: updated_date, r: rank }
+ *
+ * Schema v2 (2026-04-11): added pl.r (reddit count). Legacy v1 files
+ * still parse — the card defaults missing pl.r to 0.
  */
 function writePublicFile(showId, scored) {
   ensureDir(PUBLIC_SHOWS_DIR);
   const compact = {
-    _v: 1,
+    _v: 2,
     t: scored.tier,
     v: scored.volume,
     p: scored.positivePct,
@@ -176,6 +183,7 @@ function writePublicFile(showId, scored) {
       x: scored.platformBreakdown.x,
       tt: scored.platformBreakdown.tiktok,
       ig: scored.platformBreakdown.instagram,
+      r: scored.platformBreakdown.reddit,
     },
     q: scored.topQuotes.map((q) => ({
       t: q.text,
@@ -199,19 +207,20 @@ async function processShow({ show, apifyToken, openaiApiKey, dryRun, logger = co
 
   logger.log(`[${showId}] Fetching mentions for "${showTitle}" (${marketLabel})...`);
 
-  // Step 1: Fetch mentions from all three platforms
+  // Step 1: Fetch mentions from all four platforms (Reddit + 3 Apify)
   const fetchResult = await fetchAllSocialMentions({
     showTitle,
     marketQualifier,
     twitterMax: TWITTER_MAX,
     tiktokMax: TIKTOK_MAX,
     instagramMax: INSTAGRAM_MAX,
+    redditMax: REDDIT_MAX,
     token: apifyToken,
     logger,
   });
 
   logger.log(
-    `[${showId}]   X=${fetchResult.rawCounts.twitter} TikTok=${fetchResult.rawCounts.tiktok} IG=${fetchResult.rawCounts.instagram} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
+    `[${showId}]   Reddit=${fetchResult.rawCounts.reddit || 0} X=${fetchResult.rawCounts.twitter} TikTok=${fetchResult.rawCounts.tiktok} IG=${fetchResult.rawCounts.instagram} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
   );
 
   if (fetchResult.errors.length > 0) {

@@ -144,13 +144,19 @@ function containsKeyword(text, keywords) {
  * Note: Reddit's web search is flaky for comments. Threads are reliable.
  * For comment coverage we'll also search Pushshift-alternative services
  * in a future revision.
+ *
+ * Options:
+ *   - limit: max results per keyword (Reddit caps at 100). Default 50.
+ *   - timeWindow: Reddit's `t=` param ('hour'|'day'|'week'|'month'|'year'|'all').
+ *     Default 'month' for backwards compat with brand-mention-monitor. The
+ *     Socials Scorecard pipeline passes 'week' for rolling 7-day volume.
  */
-async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50 } = {}) {
+async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, timeWindow = 'month' } = {}) {
   const mentions = [];
   const detected = nowIso();
 
   for (const keyword of keywords) {
-    const url = `https://old.reddit.com/search.json?q=${encodeURIComponent(keyword)}&sort=new&restrict_sr=off&limit=${limit}&t=month&raw_json=1`;
+    const url = `https://old.reddit.com/search.json?q=${encodeURIComponent(keyword)}&sort=new&restrict_sr=off&limit=${limit}&t=${encodeURIComponent(timeWindow)}&raw_json=1`;
     let data;
     try {
       data = await fetchWithFallback(url);

@@ -21,10 +21,15 @@ export interface SocialPulsePayload {
   p: number;              // positive %, 0-100
   wow: number | null;     // week-over-week %
   bm: number | null;      // baseline multiple (legacy, may be null)
-  pl: { x: number; tt: number; ig: number };
+  pl: {
+    x: number;            // X/Twitter count
+    tt: number;           // TikTok count
+    ig: number;           // Instagram count
+    r?: number;           // Reddit count (schema v2, 2026-04-11 — optional for back-compat with v1 files)
+  };
   q: Array<{ t: string; p: string; a: string | null; u: string | null }>;
   u: string;              // updated ISO date
-  r?: string;             // rank string like "3/42 Broadway"
+  r?: string;             // rank string like "3/42 Broadway" (top-level, NOT to be confused with pl.r)
 }
 
 interface SocialPulseCardProps {
@@ -163,11 +168,35 @@ function InstagramIcon() {
   );
 }
 
+/**
+ * Reddit — orange roundrect with white snoo (the Reddit mascot/alien).
+ * Matches Reddit's real brand color (#ff4500) and reads distinctly at
+ * 18px alongside the other platform icons.
+ */
+function RedditIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-label="Reddit">
+      <rect width="24" height="24" rx="4" fill="#ff4500" />
+      {/* Snoo body */}
+      <circle cx="12" cy="13" r="6" fill="#ffffff" />
+      {/* Antenna */}
+      <circle cx="16.2" cy="5.6" r="1.3" fill="#ffffff" />
+      <line x1="12" y1="7" x2="15.3" y2="6.5" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" />
+      {/* Eyes */}
+      <circle cx="9.5" cy="12.2" r="1.1" fill="#ff4500" />
+      <circle cx="14.5" cy="12.2" r="1.1" fill="#ff4500" />
+      {/* Smile */}
+      <path d="M9 15 Q12 17 15 15" stroke="#ff4500" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+    </svg>
+  );
+}
+
 const PLATFORM_META: Record<string, { Icon: () => JSX.Element; label: string }> = {
   x: { Icon: XIcon, label: 'X' },
   twitter: { Icon: XIcon, label: 'X' },
   tiktok: { Icon: TikTokIcon, label: 'TikTok' },
   instagram: { Icon: InstagramIcon, label: 'Instagram' },
+  reddit: { Icon: RedditIcon, label: 'Reddit' },
 };
 
 // ---------- Helpers ----------
@@ -239,7 +268,11 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
     backgroundSize: `${(100 / Math.max(posBarWidth, 1)) * 100}% 100%`,
   };
 
+  // Platform breakdown row. Order: Reddit first (primary uncapped signal
+  // as of 2026-04-11), then X, TikTok, Instagram. `sp.pl.r` is optional
+  // for back-compat with legacy v1 files that predate Reddit.
   const platformEntries: Array<{ key: string; count: number }> = [
+    { key: 'reddit', count: sp.pl.r || 0 },
     { key: 'x', count: sp.pl.x || 0 },
     { key: 'tiktok', count: sp.pl.tt || 0 },
     { key: 'instagram', count: sp.pl.ig || 0 },
