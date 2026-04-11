@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T01:57:40.318Z",
+  "timestamp": "2026-04-11T02:15:02.017Z",
   "stats": {
-    "totalReviews": 34705,
-    "alreadyFlagged": 13841,
+    "totalReviews": 34704,
+    "alreadyFlagged": 13846,
     "dateGuardCatches": 60,
-    "directorMismatch": 936,
-    "tvFilmSignals": 3401,
-    "londonSignals": 1115,
-    "offBroadwaySignals": 966,
+    "directorMismatch": 935,
+    "tvFilmSignals": 3399,
+    "londonSignals": 1114,
+    "offBroadwaySignals": 964,
     "yearMismatch": 71,
-    "noPublishDate": 4412
+    "noPublishDate": 4379
   },
   "findings": [
     {
@@ -12249,25 +12249,6 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
-      "file": "newsday--linda-winer.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.newsday.com/entertainment/theater/death-of-a-salesman-wendell-pierce-upng6orn",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2022",
       "file": "newsweek--joe-westerfield.json",
       "score": 82,
       "publishDate": null,
@@ -12526,20 +12507,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
-      "file": "variety--naveen-kumar.json",
-      "score": 66,
-      "publishDate": "2026-04-07",
-      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-lead-disappointing-revival-1236711360/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -13009,7 +12976,7 @@
       "showId": "disgraced-2014",
       "file": "newsday--linda-winer.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "2014-10-23",
       "url": "http://www.newsday.com/entertainment/theater/disgraced-on-broadway-explosive-islamic-politics-1.9534608",
       "findings": [
         {
@@ -14770,20 +14737,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "fences-2010",
-      "file": "newsday--linda-winer.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.newsday.com/entertainment/movies/denzel-washington-s-fences-brings-august-wilson-play-to-non-theater-audience-b20534",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -16860,7 +16813,7 @@
       "showId": "frozen-2018",
       "file": "newsday--barbara-schuler.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2018-03-23",
       "url": "https://www.newsday.com/entertainment/theater/frozen-review-c84558",
       "findings": [
         {
@@ -22341,7 +22294,7 @@
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
       "file": "huffpost--steven-suskin.json",
       "score": 58,
-      "publishDate": null,
+      "publishDate": "2016-10-07",
       "url": "https://www.huffpost.com/steven-suskin/aisle-view-soggy-firecrac_b_12380734.html",
       "findings": [
         {
@@ -63669,7 +63622,7 @@
       "showId": "bloody-bloody-andrew-jackson-2010",
       "file": "newsday--linda-winer.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2010-10-13",
       "url": "http://www.newsday.com/entertainment/theater/bloody-bloody-andrew-jackson-moves-to-broadway-1.2357264",
       "findings": [
         {
@@ -67540,7 +67493,7 @@
       "showId": "groundhog-day-2017",
       "file": "huffpost--steven-suskin.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2017-04-18",
       "url": "https://www.huffpost.com/entry/58f560e8e4b048372700daec",
       "findings": [
         {
@@ -68457,20 +68410,6 @@
     },
     {
       "showId": "hand-to-god-2015",
-      "file": "huffpost--michael-giltz.json",
-      "score": 76,
-      "publishDate": null,
-      "url": "https://www.huffpost.com/michael-giltz/theater-hand-to-god-has-d_b_1082238.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "hand-to-god-2015",
       "file": "njcom--ronni-reich.json",
       "score": 86,
       "publishDate": "2015-04-08",
@@ -68876,20 +68815,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 108d before show (June 4, 2016 vs 2016-09-20)"
-        }
-      ]
-    },
-    {
-      "showId": "heisenberg-2016",
-      "file": "huffpost--michael-giltz.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "https://www.huffpost.com/michael-giltz/theater-heisenberg-be-certain_b_7506510.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"csc\""
         }
       ]
     },
@@ -69901,7 +69826,7 @@
       "showId": "indecent-2017",
       "file": "huffpost--steven-suskin.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2017-04-19",
       "url": "https://www.huffpost.com/entry/58f6921fe4b0f5cf16c7ba60",
       "findings": [
         {
