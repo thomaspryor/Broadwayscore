@@ -172,19 +172,118 @@ function filterTopQuotes(mentions, targetSentiment, maxQuotes = QUOTES_ON_CARD) 
 }
 
 /**
- * Derives the show's social-pulse tier from volume + sentiment + baseline.
+ * Composite score blending raw volume with positive sentiment %. Used for
+ * peer ranking. A loud-but-hated show shouldn't outrank a smaller positive one.
+ *
+ *   composite = volume × (positivePct / 100)
+ *
+ * Examples:
+ *   122 mentions × 78% = 95.2  (Cats — buzzy and well-liked)
+ *   200 mentions × 30% = 60.0  (a flop with high volume)
+ *   80 mentions × 90%  = 72.0  (a quiet darling)
+ */
+function computeCompositeScore(volume, positivePct) {
+  const v = Number.isFinite(volume) ? volume : 0;
+  const p = Number.isFinite(positivePct) ? positivePct : 0;
+  return v * (p / 100);
+}
+
+/**
+ * PEER-RELATIVE tier derivation. Works on day 1 without any historical
+ * baseline by comparing each show to its peers in the same market.
  *
  * Arguments:
- *   currentVolume  — total relevant mentions in the last 7 days
- *   baseline       — { mean: number, weeksOfHistory: number } from prior runs (null OK)
- *   positivePct    — % of relevant mentions classified as 'positive' (0-100)
- *   weekOverWeekPct — % change from previous week's volume (null if no prior data)
+ *   show         — { volume, positivePct, market }
+ *   peerStats    — { compositeP80, compositeP60, volumeP50, marketCount }
+ *                  (computed once across all shows in the same market)
  *
- * Returns one of: 'Buzzing' | 'Rising' | 'Steady' | 'Troubled' | 'BuildingBaseline'
+ * Tier rules:
+ *   🔥 Buzzing  — composite ≥ market 80th percentile AND positivePct ≥ 65
+ *   📈 Rising   — composite ≥ market 60th percentile AND positivePct ≥ 60 (and not Buzzing)
+ *   💔 Troubled — volume ≥ market 50th percentile (i.e., loud) AND positivePct < 40
+ *   😐 Steady   — anything else with volume ≥ MIN_MENTIONS_FOR_CARD
+ *   (Hidden)    — volume < MIN_MENTIONS_FOR_CARD
  *
- * BuildingBaseline is a system state (not a user tier) that renders as a
- * muted card with raw volume only — no comparison claims until the show has
- * at least 8 weeks of data collected.
+ * No 8-week baseline required. Self-baseline can be added later as a
+ * SECONDARY signal (e.g., to flag risers based on WoW growth) but is no
+ * longer the primary tier driver.
+ */
+function derivePeerTier({ volume, positivePct, peerStats }) {
+  if (!Number.isFinite(volume) || volume < MIN_MENTIONS_FOR_CARD) {
+    return 'Hidden';
+  }
+
+  const composite = computeCompositeScore(volume, positivePct);
+  const pct = typeof positivePct === 'number' ? positivePct : 0;
+  const stats = peerStats || {};
+
+  // Troubled first: high volume + bad sentiment trumps everything else
+  if (
+    Number.isFinite(stats.volumeP50) &&
+    volume >= stats.volumeP50 &&
+    pct < 40
+  ) {
+    return 'Troubled';
+  }
+
+  // Buzzing: top quintile by composite + clearly positive
+  if (
+    Number.isFinite(stats.compositeP80) &&
+    composite >= stats.compositeP80 &&
+    pct >= 65
+  ) {
+    return 'Buzzing';
+  }
+
+  // Rising: top 40% by composite + still positive
+  if (
+    Number.isFinite(stats.compositeP60) &&
+    composite >= stats.compositeP60 &&
+    pct >= 60
+  ) {
+    return 'Rising';
+  }
+
+  return 'Steady';
+}
+
+/**
+ * Computes a percentile cutoff from a list of numeric values. Used for
+ * peer-stats calculation in derivePeerTier.
+ *
+ * percentile=80 means "the value at the 80th percentile" — 80% of the
+ * dataset is BELOW this number, 20% is at or above. Returns 0 for empty
+ * input. Uses nearest-rank method (simple, no interpolation).
+ */
+function percentile(values, percentileRank) {
+  if (!Array.isArray(values) || values.length === 0) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const idx = Math.ceil((percentileRank / 100) * sorted.length) - 1;
+  return sorted[Math.max(0, Math.min(sorted.length - 1, idx))];
+}
+
+/**
+ * Computes the peer-stats object for a list of shows in the same market.
+ * Pass to derivePeerTier as peerStats.
+ */
+function computePeerStats(shows) {
+  if (!Array.isArray(shows) || shows.length === 0) {
+    return { compositeP80: 0, compositeP60: 0, volumeP50: 0, marketCount: 0 };
+  }
+  const composites = shows.map((s) => computeCompositeScore(s.volume || 0, s.positivePct || 0));
+  const volumes = shows.map((s) => s.volume || 0);
+  return {
+    compositeP80: percentile(composites, 80),
+    compositeP60: percentile(composites, 60),
+    volumeP50: percentile(volumes, 50),
+    marketCount: shows.length,
+  };
+}
+
+/**
+ * LEGACY tier derivation using a self-baseline. Still exported for
+ * compatibility but NOT the primary tier driver after 2026-04-11. Use
+ * derivePeerTier instead. Will be removed once any callers are migrated.
  */
 function deriveTier({ currentVolume, baseline, positivePct, weekOverWeekPct }) {
   // Gate: too few mentions to say anything
@@ -350,7 +449,12 @@ function computeSocialPulse({ mentions, baseline, priorVolume }) {
 module.exports = {
   // Main entrypoint
   computeSocialPulse,
-  // Exposed for unit tests and tier validation
+  // Peer-relative tier (the new primary path)
+  derivePeerTier,
+  computeCompositeScore,
+  computePeerStats,
+  percentile,
+  // Legacy self-baseline tier (still exported, not primary)
   deriveTier,
   filterTopQuotes,
   truncateQuote,

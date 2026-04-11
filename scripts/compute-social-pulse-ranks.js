@@ -22,6 +22,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+  computeCompositeScore,
+  computePeerStats,
+  derivePeerTier,
+} = require('./lib/social-pulse-scorer');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const SOCIAL_PULSE_DIR = path.join(REPO_ROOT, 'data', 'social-pulse');
@@ -88,18 +93,37 @@ function groupByMarket(pulseData) {
 const MIN_SHOWS_FOR_RANK_DISPLAY = 10;
 
 /**
- * For each market, sort shows by volume desc. Only assigns rank display if
- * the market has enough ranked shows — below that, rank is null and the
- * card hides the "#N/M" line entirely (handled in SocialPulseCard.tsx).
+ * For each market:
+ *   1. Sort shows by COMPOSITE SCORE (volume × positive%/100) descending.
+ *      A loud-but-hated show shouldn't outrank a smaller positive one.
+ *   2. Assign 1-based rank.
+ *   3. Compute peer stats (composite p80/p60, volume p50) and re-tier
+ *      every show using derivePeerTier — so tiers are PEER-RELATIVE,
+ *      no 8-week baseline required.
  *
- * Sort still happens regardless, so we can capture raw position for future
- * use / debugging even when display is suppressed.
+ * Below MIN_SHOWS_FOR_RANK_DISPLAY the rank text is null and the card
+ * hides the "#N/M" line. Tier still gets recomputed regardless.
  */
-function assignRanks(groups) {
+function assignRanksAndTiers(groups) {
   for (const [, entries] of groups) {
-    entries.sort((a, b) => (b.data.volume || 0) - (a.data.volume || 0));
+    // Sort by composite (blended) score, not raw volume
+    entries.sort((a, b) => {
+      const aScore = computeCompositeScore(a.data.volume || 0, a.data.positivePct || 0);
+      const bScore = computeCompositeScore(b.data.volume || 0, b.data.positivePct || 0);
+      return bScore - aScore;
+    });
+
+    // Compute peer stats once for the whole market
+    const peerStats = computePeerStats(
+      entries.map((e) => ({
+        volume: e.data.volume || 0,
+        positivePct: e.data.positivePct || 0,
+      })),
+    );
+
     const displayable = entries.length >= MIN_SHOWS_FOR_RANK_DISPLAY;
     entries.forEach((entry, i) => {
+      // Rank
       if (displayable) {
         entry.newRank = {
           position: i + 1,
@@ -107,17 +131,31 @@ function assignRanks(groups) {
           text: `${i + 1}/${entries.length} ${marketShortLabel(entry.data.market)}`,
         };
       } else {
-        // Market too small to rank — store position for debugging but null
-        // the display text so the card hides the rank line.
         entry.newRank = {
           position: i + 1,
           total: entries.length,
           text: null,
         };
       }
+
+      // Re-tier using peer-relative rules
+      entry.newTier = derivePeerTier({
+        volume: entry.data.volume || 0,
+        positivePct: entry.data.positivePct || 0,
+        peerStats,
+      });
+
+      // Composite score is useful as a debug field too
+      entry.newCompositeScore = computeCompositeScore(
+        entry.data.volume || 0,
+        entry.data.positivePct || 0,
+      );
     });
   }
 }
+
+// Backwards-compat alias — old callers expect assignRanks
+const assignRanks = assignRanksAndTiers;
 
 function marketShortLabel(market) {
   if (!market) return 'Broadway';
@@ -129,8 +167,8 @@ function marketShortLabel(market) {
 }
 
 /**
- * Writes the rank back into both files. Matches the public file's compact
- * schema: adds `r` as the short rank string (e.g., "3/33 Broadway").
+ * Writes the rank AND new tier back into both files.
+ * Public compact schema: `r` = rank string, `t` = tier label.
  */
 function writeRanks(pulseData, dryRun, logger = console) {
   let writeCount = 0;
@@ -138,18 +176,20 @@ function writeRanks(pulseData, dryRun, logger = console) {
     const canonicalPath = entry.filePath;
     const publicPath = path.join(PUBLIC_SHOWS_DIR, `${entry.data.showId}.social.json`);
 
-    // Update canonical
+    // Update canonical with rank, tier, composite score
     entry.data.rank = entry.newRank;
+    entry.data.tier = entry.newTier;
+    entry.data.compositeScore = Number(entry.newCompositeScore.toFixed(2));
     if (!dryRun) {
       fs.writeFileSync(canonicalPath, JSON.stringify(entry.data, null, 2));
     }
 
-    // Update public compact file if it exists. Only write the `r` key if
-    // the market has enough shows to make a rank meaningful — otherwise
-    // omit it so the card doesn't render a misleading "#1/3 Broadway".
+    // Update public compact file if it exists. Tier is always written;
+    // rank is only written when the market has enough shows.
     if (fs.existsSync(publicPath)) {
       try {
         const publicData = JSON.parse(fs.readFileSync(publicPath, 'utf-8'));
+        publicData.t = entry.newTier;
         if (entry.newRank.text) {
           publicData.r = entry.newRank.text;
         } else {
@@ -193,10 +233,22 @@ function main() {
     console.log(`\n${market}:`);
     for (const entry of entries.slice(0, 5)) {
       console.log(
-        `  #${entry.newRank.position}/${entry.newRank.total}  ${entry.data.showId.padEnd(40)}  vol=${String(entry.data.volume).padStart(4)}  tier=${entry.data.tier}`,
+        `  #${entry.newRank.position}/${entry.newRank.total}  ${entry.data.showId.padEnd(40)}  ` +
+          `vol=${String(entry.data.volume).padStart(4)}  ` +
+          `pos=${String(entry.data.positivePct || 0).padStart(3)}%  ` +
+          `cs=${String(Math.round(entry.newCompositeScore)).padStart(4)}  ` +
+          `tier=${entry.newTier}`,
       );
     }
   }
+  // Tier distribution
+  const tierCounts = {};
+  for (const [, entries] of groups) {
+    for (const entry of entries) {
+      tierCounts[entry.newTier] = (tierCounts[entry.newTier] || 0) + 1;
+    }
+  }
+  console.log('\nTier distribution:', tierCounts);
 
   const writeCount = writeRanks(pulseData, args.dryRun);
   console.log(`\n${args.dryRun ? '[dry-run] would write' : 'Wrote'} ${writeCount} files`);
