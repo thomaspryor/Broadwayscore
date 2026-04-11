@@ -161,6 +161,41 @@ const CRITICAL_PATTERNS = [
       'collect-review-texts must skip re-extraction when originalScoreCleared is set. ' +
       'Without this, cleared scores get re-extracted from the same wrong page elements.',
   },
+  // Blog review injection parity (April 2026): any script that computes critic
+  // scores must load reviews via loadReviewsWithBlog() instead of reading
+  // reviews.json directly. Otherwise its output diverges from the show page
+  // (which injects blog reviews via src/lib/data-core.ts). Class bug surfaced
+  // on Putnam County Spelling Bee (OB Critical Gold showed 89, show page 88).
+  {
+    file: 'scripts/compute-gold-lists.js',
+    pattern: 'loadReviewsWithBlog',
+    description: 'compute-gold-lists must use loadReviewsWithBlog() so gold list scores match show-page scores.',
+  },
+  {
+    file: 'scripts/generate-mobile-show-details.js',
+    pattern: 'loadReviewsWithBlog',
+    description: 'generate-mobile-show-details must use loadReviewsWithBlog() so mobile per-show JSON matches show-page scores.',
+  },
+  {
+    file: 'scripts/generate-mobile-data.js',
+    pattern: 'loadReviewsWithBlog',
+    description: 'generate-mobile-data must use loadReviewsWithBlog() so mobile-shows.json matches show-page scores.',
+  },
+  {
+    file: 'scripts/generate-homepage-archive.js',
+    pattern: 'loadReviewsWithBlog',
+    description: 'generate-homepage-archive must use loadReviewsWithBlog() so homepage archive matches show-page scores.',
+  },
+  {
+    file: 'scripts/generate-social-post.js',
+    pattern: 'loadReviewsWithBlog',
+    description: 'generate-social-post must use loadReviewsWithBlog() so social post scores match show-page scores.',
+  },
+  {
+    file: 'scripts/generate-status-page.js',
+    pattern: 'loadReviewsWithBlog',
+    description: 'generate-status-page must use loadReviewsWithBlog() so public/opening-night-status.json scores match show-page scores.',
+  },
 ];
 
 /**

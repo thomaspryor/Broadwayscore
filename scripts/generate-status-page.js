@@ -46,9 +46,13 @@ function main() {
   if (!showsData) { console.error('Cannot load shows.json'); process.exit(1); }
   const showsList = Array.isArray(showsData.shows || showsData) ? (showsData.shows || showsData) : Object.values(showsData.shows || showsData);
 
-  const reviewsData = loadJSON(path.join(DATA_DIR, 'reviews.json'));
-  const reviews = reviewsData ? (reviewsData.reviews || reviewsData) : [];
-  const reviewsArr = Array.isArray(reviews) ? reviews : Object.values(reviews);
+  // Use shared loader so status-page scores match data-core.ts / show-page scoring.
+  // Without this, any blog-reviewed show that appears on the opening night status
+  // page would show a different score here vs. on its /show/{slug} page — same
+  // class bug as Putnam County Spelling Bee on the OB Critical Gold List (fixed
+  // separately in Apr 2026 via `loadReviewsWithBlog`).
+  const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
+  const reviewsArr = loadReviewsWithBlog();
 
   const outletRegistry = loadJSON(path.join(DATA_DIR, 'outlet-registry.json')) || {};
   const outlets = outletRegistry.outlets || outletRegistry;
