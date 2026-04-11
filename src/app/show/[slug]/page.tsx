@@ -1103,7 +1103,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               ) : null;
             })()}
             {show.status === 'open' && (() => {
-              const durationSuffix = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+              const durationSuffix = isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
               const dur = getBroadwayDuration(show.openingDate, durationSuffix);
               return dur ? (
                 <div>
