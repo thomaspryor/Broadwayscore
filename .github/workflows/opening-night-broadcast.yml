@@ -285,7 +285,7 @@ jobs:
             done
           fi
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         if: steps.check.outputs.pending_shows != ''
         with:
           node-version: 20

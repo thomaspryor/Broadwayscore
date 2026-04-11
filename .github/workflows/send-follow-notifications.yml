@@ -36,7 +36,7 @@ jobs:
             echo "has_followers=true" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         if: steps.check.outputs.has_followers == 'true'
         with:
           node-version: 20

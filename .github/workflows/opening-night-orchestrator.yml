@@ -421,7 +421,7 @@ jobs:
 
       - name: Setup Node for status notification
         if: always() && steps.find.outputs.has_shows == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
 

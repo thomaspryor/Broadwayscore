@@ -140,7 +140,7 @@ jobs:
         if: steps.find.outputs.has_shows != 'true'
         run: echo "No shows to poll. Exiting."
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         if: steps.find.outputs.has_shows == 'true'
         with:
           node-version: 20
