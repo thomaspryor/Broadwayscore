@@ -41,31 +41,70 @@ fi
 
 # Setup core data files
 echo ""
-echo "--- Core Data (9 files from broadway-scorecard-data) ---"
+echo "--- Core Data (from broadway-scorecard-data) ---"
 
-TEMP_DIR=$(mktemp -d)
-trap "rm -rf $TEMP_DIR" EXIT
+# Clone the private core-data repo to a STABLE local path so we can symlink
+# data/shows.json and data/reviews.json to it. The symlinks mean local edits
+# write directly to the private repo — avoiding the dual-repo sync gotcha
+# where CI's "Checkout core data" step silently overwrites public-repo edits.
+# See memory/feedback_dual_repo_data_files.md for full context.
+CORE_DATA_DIR="$HOME/broadway-scorecard-data"
 
-if [ "$AUTH_METHOD" = "gh" ]; then
-  if ! gh repo clone thomaspryor/broadway-scorecard-data "$TEMP_DIR/core-data" -- --depth 1 2>/dev/null; then
-    echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
+if [ -d "$CORE_DATA_DIR/.git" ]; then
+  echo "Updating existing core-data clone at $CORE_DATA_DIR..."
+  (cd "$CORE_DATA_DIR" && git fetch origin main --depth 1 && git reset --hard origin/main) >/dev/null 2>&1 || {
+    echo "ERROR: Failed to update existing $CORE_DATA_DIR — delete it and re-run."
     exit 1
-  fi
+  }
 else
-  if ! git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" "$TEMP_DIR/core-data" 2>/dev/null; then
-    echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
-    exit 1
+  echo "Cloning broadway-scorecard-data to $CORE_DATA_DIR..."
+  if [ "$AUTH_METHOD" = "gh" ]; then
+    if ! gh repo clone thomaspryor/broadway-scorecard-data "$CORE_DATA_DIR" -- --depth 1 2>/dev/null; then
+      echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
+      exit 1
+    fi
+  else
+    if ! git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR" 2>/dev/null; then
+      echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
+      exit 1
+    fi
   fi
 fi
 
-COUNT=0
-for f in "$TEMP_DIR/core-data"/*.json; do
-  [ -f "$f" ] || continue
-  cp -f "$f" "$DATA_DIR/"
-  COUNT=$((COUNT + 1))
-  echo "  Copied $(basename "$f")"
+# Files that should be symlinks (so local edits write through to private repo)
+SYMLINK_FILES=(shows.json reviews.json)
+
+# Files that should be regular copies (read-only for most purposes)
+COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json commercial.json critic-consensus.json critic-registry.json diary-shows.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json outlet-registry.json)
+
+SYMLINK_COUNT=0
+for f in "${SYMLINK_FILES[@]}"; do
+  src="$CORE_DATA_DIR/$f"
+  dst="$DATA_DIR/$f"
+  if [ ! -f "$src" ]; then
+    echo "  WARN: $f missing in core-data repo, skipping"
+    continue
+  fi
+  # If there's a regular file at the destination, back it up first (don't trash tracked data).
+  if [ -f "$dst" ] && [ ! -L "$dst" ]; then
+    mv "$dst" "${dst}.pre-symlink-backup"
+    echo "  Backed up existing $f → ${f}.pre-symlink-backup"
+  elif [ -L "$dst" ]; then
+    rm "$dst"
+  fi
+  ln -s "$src" "$dst"
+  SYMLINK_COUNT=$((SYMLINK_COUNT + 1))
+  echo "  Linked $f → $src"
 done
-echo "Core data: $COUNT files copied to data/"
+
+COPY_COUNT=0
+for f in "${COPY_FILES[@]}"; do
+  src="$CORE_DATA_DIR/$f"
+  [ -f "$src" ] || continue
+  cp -f "$src" "$DATA_DIR/"
+  COPY_COUNT=$((COPY_COUNT + 1))
+done
+echo "Core data: $SYMLINK_COUNT symlinked, $COPY_COUNT copied to data/"
 
 # Verify key files
 if [ ! -f "$DATA_DIR/shows.json" ] || [ ! -f "$DATA_DIR/reviews.json" ]; then
