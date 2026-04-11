@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const { extractScore } = require('./lib/score-extractors');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
+const { setExtractedScore } = require('./lib/score-routing');
 
 // Configuration
 const CONFIG = {
@@ -520,11 +521,18 @@ async function updateReviewJson(review, text, archivePath, method) {
     // Use LLM result if available, otherwise fall back to regex
     const scoreResult = llmResult || regexResult;
     if (scoreResult) {
-      updatedData.originalScore = scoreResult.originalScore;
-      updatedData.originalScoreNormalized = scoreResult.normalizedScore;
-      updatedData.scoreSource = scoreResult.source;
-      updatedData.originalScoreSource = scoreResult.source;
-      console.log(`    ★ Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
+      // Routes to originalScore unless EITHER the incoming source OR the
+      // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+      const routed = setExtractedScore(updatedData, {
+        value: scoreResult.originalScore,
+        normalizedValue: scoreResult.normalizedScore,
+        source: scoreResult.source,
+      });
+      // Backward-compat: keep scoreSource updated on non-aggregator writes.
+      if (!routed.wasAggregator) {
+        updatedData.scoreSource = scoreResult.source;
+      }
+      console.log(`    ★ Extracted ${routed.field}: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
     } else {
       updatedData.scoreExtractionPending = true;
     }

@@ -33,7 +33,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { isScoreable } = require('./lib/is-scoreable');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
-const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -242,22 +242,20 @@ async function phase1ExtractLocal(reviews) {
       stats.phase1Recovered++;
       trackOutlet(review.data.outletId, 'phase1');
 
-      // If EITHER the incoming extraction OR the file's existing scoreSource is
-      // an aggregator, the rating belongs in aggregatorStars (not originalScore).
-      const isAggregatorSource = AGGREGATOR_SCORE_SOURCES.has(result.source) || AGGREGATOR_SCORE_SOURCES.has(review.data.scoreSource);
-      console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]${isAggregatorSource ? ' → aggregatorStars' : ''}`);
-
       if (!DRY_RUN) {
-        if (isAggregatorSource) {
-          review.data.aggregatorStars = result.originalScore;
-        } else {
-          review.data.originalScore = result.originalScore;
-        }
-        review.data.originalScoreNormalized = result.normalizedScore;
-        review.data.originalScoreSource = result.source;
+        // Routes to originalScore unless EITHER the incoming source OR the
+        // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+        const routed = setExtractedScore(review.data, {
+          value: result.originalScore,
+          normalizedValue: result.normalizedScore,
+          source: result.source,
+        });
         review.data.scoreExtractedFrom = 'local-text';
         review.data.scoreRecoveredAt = new Date().toISOString();
+        console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}] → ${routed.field}`);
         fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+      } else {
+        console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]`);
       }
 
       // Remove from pending list
@@ -622,21 +620,20 @@ async function phase3ScrapeURLs(reviews) {
           stats.phase3Recovered++;
           trackOutlet(review.data.outletId, 'phase3');
 
-          // Incoming source OR existing scoreSource = aggregator → use aggregatorStars.
-          const isAggSource = AGGREGATOR_SCORE_SOURCES.has(result.source) || AGGREGATOR_SCORE_SOURCES.has(review.data.scoreSource);
-          console.log(`    ★ ${review.showId}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]${isAggSource ? ' → aggregatorStars' : ''}`);
-
           if (!DRY_RUN) {
-            if (isAggSource) {
-              review.data.aggregatorStars = result.originalScore;
-            } else {
-              review.data.originalScore = result.originalScore;
-            }
-            review.data.originalScoreNormalized = result.normalizedScore;
-            review.data.originalScoreSource = result.source;
+            // Routes to originalScore unless EITHER the incoming source OR the
+            // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+            const routed = setExtractedScore(review.data, {
+              value: result.originalScore,
+              normalizedValue: result.normalizedScore,
+              source: result.source,
+            });
             review.data.scoreExtractedFrom = 'scraped-html';
             review.data.scoreRecoveredAt = new Date().toISOString();
+            console.log(`    ★ ${review.showId}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}] → ${routed.field}`);
             fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+          } else {
+            console.log(`    ★ ${review.showId}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]`);
           }
           review.recovered = true;
         } else {

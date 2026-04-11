@@ -22,7 +22,7 @@ const path = require('path');
 const https = require('https');
 const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
-const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -342,15 +342,16 @@ async function main() {
           if (t.data.originalScore) {
             t.data.previousShowScoreRating = t.data.originalScore;
           }
-          const isAggSource = AGGREGATOR_SCORE_SOURCES.has(result.source);
-          if (isAggSource) {
-            t.data.aggregatorStars = result.originalScore;
-          } else {
-            t.data.originalScore = result.originalScore;
+          // Routes to originalScore unless EITHER the incoming source OR the
+          // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+          const routed = setExtractedScore(t.data, {
+            value: result.originalScore,
+            normalizedValue: result.normalizedScore,
+            source: result.source,
+          });
+          if (!routed.wasAggregator) {
+            t.data.scoreSource = result.source;
           }
-          t.data.originalScoreNormalized = result.normalizedScore;
-          t.data.scoreSource = result.source;
-          t.data.originalScoreSource = result.source;
           t.data._scoreNote = `Re-collected for score extraction (${new Date().toISOString().split('T')[0]})`;
           // Save archive of the HTML
           if (!t.data.htmlContent && html.length > 1000) {

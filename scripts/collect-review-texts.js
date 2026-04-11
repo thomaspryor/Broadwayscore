@@ -92,6 +92,7 @@ const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 // Content quality detection (garbage/invalid content filter)
 const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -4165,10 +4166,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       } else {
         console.log(`    → Extracted score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100) [${scoreResult.source}]`);
       }
-      data.originalScore = scoreResult.originalScore;
-      data.originalScoreNormalized = scoreResult.normalizedScore;
-      data.scoreSource = scoreResult.source;
-      data.originalScoreSource = scoreResult.source;
+      // Routes to originalScore unless EITHER the incoming source OR the
+      // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+      const routed = setExtractedScore(data, {
+        value: scoreResult.originalScore,
+        normalizedValue: scoreResult.normalizedScore,
+        source: scoreResult.source,
+      });
+      // Backward-compat: this script historically also wrote scoreSource so
+      // downstream consumers see the new source on non-aggregator writes.
+      if (!routed.wasAggregator) {
+        data.scoreSource = scoreResult.source;
+      }
       if (scoreResult.confidence) {
         data.scoreConfidence = scoreResult.confidence;
       }

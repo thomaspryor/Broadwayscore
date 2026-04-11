@@ -28,7 +28,7 @@ const path = require('path');
 const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { normalizeLlmResult, LETTER_GRADES } = require('./lib/score-parsers');
-const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -570,15 +570,14 @@ async function processReview(entry) {
   console.log(`  FOUND: [${showId}] ${reviewer} → ${result.originalScore} (=${result.normalizedScore}) [was: ${currentScoreStr}]${delta} raw: "${result.raw}"`);
 
   if (!DRY_RUN) {
-    // Write human-readable string to originalScore, numeric to originalScoreNormalized
-    if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
-      data.aggregatorStars = result.originalScore;
-    } else {
-      data.originalScore = result.originalScore;
-    }
-    data.originalScoreNormalized = result.normalizedScore;
+    // Routes to originalScore unless EITHER the incoming source OR the file's
+    // existing scoreSource is an aggregator. See lib/score-routing.js.
+    setExtractedScore(data, {
+      value: result.originalScore,
+      normalizedValue: result.normalizedScore,
+      source: result.source,
+    });
     data.originalRating = result.originalScore;
-    data.originalScoreSource = result.source;
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
     stats.written++;
   }
