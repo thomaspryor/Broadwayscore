@@ -1,15 +1,15 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-11T02:05:20.376Z",
+    "generatedAt": "2026-04-11T02:23:24.205Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 86,
-    "classified": 9,
-    "wrongProduction": 9,
+    "total": 85,
+    "classified": 8,
+    "wrongProduction": 8,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 9,
+    "wrongHighConfidence": 8,
     "wrongMediumConfidence": 0
   },
   "results": [
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review is about a Sydney, Australia production of Wicked. It mentions the 2008 Australian premiere and a 2014 return season, as well as the current production at the Sydney Lyric."
+      "reasoning": "The review discusses a Sydney production of Wicked, mentioning specific Australian cast members and opening nights in Sydney. It also mentions a Brazilian production. This is not a review of the 2003 Broadway production."
     },
     {
       "showId": "the-lion-king-1997",
@@ -45,23 +45,6 @@
       "confidence": "high",
       "targetShowId": null,
       "reasoning": "The review is about an Atlanta production at the Fox Theatre, not the Broadway production filed under. It mentions the Fox Theatre in Atlanta and specific performers in that production."
-    },
-    {
-      "showId": "broadway-1987",
-      "showTitle": "Broadway",
-      "showYear": 1987,
-      "file": "vulture--jackson-mchenry.json",
-      "outlet": "Vulture",
-      "criticName": "Jackson McHenry",
-      "publishDate": "2024-04-22",
-      "originalSignals": [
-        "publishDate 2024 is 37 years after original opening 1987",
-        "revival text signals: revival, this production"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": null,
-      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This,\" not the original 1987 production. The review also mentions the director Michael Mayer and set designer Derek McLane, who were involved in the 2019 production."
     },
     {
       "showId": "master-class-1995",
@@ -82,22 +65,21 @@
       "reasoning": "The review mentions Tyne Daly, Stephen Wadsworth, and the Samuel J. Friedman Theatre, all associated with the 2011 revival. It also mentions the Kennedy Center's 2010 tribute to Terrence McNally, where this production originated."
     },
     {
-      "showId": "how-to-succeed-in-business-without-really-trying-1995",
-      "showTitle": "How to Succeed in Business Without Really Trying",
-      "showYear": 1995,
-      "file": "variety--steven-suskin.json",
-      "outlet": "Variety",
-      "criticName": "Steven Suskin",
-      "publishDate": null,
+      "showId": "broadway-1987",
+      "showTitle": "Broadway",
+      "showYear": 1987,
+      "file": "vulture--jackson-mchenry.json",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "publishDate": "2024-04-22",
       "originalSignals": [
-        "revival text signals: revival, reinvented",
-        "year 2010 in text matches revival how-to-succeed-in-business-without-really-trying-2011",
-        "no publishDate + revival signals + revivals exist"
+        "publishDate 2024 is 37 years after original opening 1987",
+        "revival text signals: revival, this production"
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
-      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also references a '2010 production of Promises, Promises' by the same director, further indicating it's about the 2011 production."
+      "targetShowId": null,
+      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This\", not the original 1987 production. The review also mentions the director, Michael Mayer, and set designer, Derek McLane, who were part of the 2019 production."
     },
     {
       "showId": "the-house-of-blue-leaves-1986",
@@ -114,7 +96,25 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-house-of-blue-leaves-2011",
-      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which implies he was not in the 1"
+      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, indicating this is a different pr"
+    },
+    {
+      "showId": "how-to-succeed-in-business-without-really-trying-1995",
+      "showTitle": "How to Succeed in Business Without Really Trying",
+      "showYear": 1995,
+      "file": "variety--steven-suskin.json",
+      "outlet": "Variety",
+      "criticName": "Steven Suskin",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, reinvented",
+        "year 2010 in text matches revival how-to-succeed-in-business-without-really-trying-2011",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
+      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also mentions the 2010 production of 'Promises, Promises' by the same director, further indicating it's about the 2011 production."
     },
     {
       "showId": "the-gin-game-1977",
@@ -130,23 +130,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
-    },
-    {
-      "showId": "the-real-thing-2000",
-      "showTitle": "The Real Thing",
-      "showYear": 2000,
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "criticName": "Robert Hofler",
-      "publishDate": null,
-      "originalSignals": [
-        "year 1984 in text matches revival the-real-thing-1984"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the American Airlines Theatre, which is the 2014 production. It also mentions the 1984 and 2000 productions."
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
     },
     {
       "showId": "old-times-1971",
@@ -162,7 +146,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of which are associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of which are associated with the 2015 revival. It also mentions the production running through Nov. 29 at the American Airlines Theatre."
     }
   ]
 }

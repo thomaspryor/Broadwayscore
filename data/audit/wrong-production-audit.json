@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T02:15:02.017Z",
+  "timestamp": "2026-04-11T02:33:20.022Z",
   "stats": {
-    "totalReviews": 34704,
-    "alreadyFlagged": 13846,
+    "totalReviews": 34705,
+    "alreadyFlagged": 13857,
     "dateGuardCatches": 60,
-    "directorMismatch": 935,
-    "tvFilmSignals": 3399,
+    "directorMismatch": 934,
+    "tvFilmSignals": 3398,
     "londonSignals": 1114,
     "offBroadwaySignals": 964,
     "yearMismatch": 71,
-    "noPublishDate": 4379
+    "noPublishDate": 4303
   },
   "findings": [
     {
@@ -24100,20 +24100,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-1987",
-      "file": "theatermania--hayley-levitt.json",
-      "score": 87,
-      "publishDate": null,
-      "url": "https://www.theatermania.com/broadway/reviews/review-into-the-woods-delivers-perfection_94015.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-2022",
       "file": "amny--matt-windman.json",
       "score": 78,
@@ -25685,7 +25671,7 @@
       "showId": "jitney-2017",
       "file": "theatermania--zachary-stewart.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2017-01-19",
       "url": "https://www.theatermania.com/broadway/reviews/jitney_79744.html",
       "findings": [
         {
@@ -27198,7 +27184,7 @@
       "showId": "kinky-boots-off-broadway-2026",
       "file": "theatermania--david-gordon.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2022-08-26",
       "url": "https://www.theatermania.com/news/review-nyc-revival-of-kinky-boots-is-off-broadways-best-night-out_94214/",
       "findings": [
         {
@@ -29158,7 +29144,7 @@
       "showId": "little-bear-ridge-road-2025",
       "file": "theatermania--zachary-stewart.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2025-10-31",
       "url": "https://www.theatermania.com/news/review-little-bear-ridge-road-samuel-d-hunters-must-see-broadway-debut_1809721/",
       "findings": [
         {
@@ -30527,7 +30513,7 @@
       "showId": "martin-short-fame-becomes-me-2006",
       "file": "theatermania--unknown.json",
       "score": 61,
-      "publishDate": null,
+      "publishDate": "2006-08-17",
       "url": "https://www.theatermania.com/news/martin-short-fame-becomes-me_8823/",
       "findings": [
         {
@@ -30644,7 +30630,7 @@
       "showId": "marvins-room-2017",
       "file": "theatermania--pete-hempstead.json",
       "score": 58,
-      "publishDate": null,
+      "publishDate": "2017-06-29",
       "url": "https://www.theatermania.com/broadway/reviews/marvins-room_81601.html",
       "findings": [
         {
@@ -33891,7 +33877,7 @@
       "showId": "my-joy-is-heavy-off-broadway-2025",
       "file": "theatermania--zachary-stewart.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2026-03-17",
       "url": "https://www.theatermania.com/news/review-my-joy-is-heavy-asks-can-grief-and-happiness-coexist_1828198/",
       "findings": [
         {
@@ -33994,7 +33980,7 @@
       "showId": "my-name-is-lucy-barton-2020",
       "file": "theatermania--hayley-levitt.json",
       "score": 67,
-      "publishDate": null,
+      "publishDate": "2020-01-15",
       "url": "https://www.theatermania.com/broadway/news/laura-linney-my-name-is-lucy-barton_90440.html",
       "findings": [
         {
@@ -38269,20 +38255,6 @@
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
-      "file": "nytg--unknown.json",
-      "score": null,
-      "publishDate": "February 8, 2026",
-      "url": "https://www.newyorktheatreguide.com/show/46093-pied-a-terre",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "pied-a-terre-off-broadway-2026",
       "file": "playbill--margaret-hall.json",
       "publishDate": "2026-02-03",
       "url": "https://playbill.com/article/pied-a-terre-finds-off-broadway-company",
@@ -38415,7 +38387,7 @@
       "showId": "pippin-2013",
       "file": "nbcny--robert-kahn.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2013-04-26",
       "url": "http://www.nbcnewyork.com/entertainment/the-scene/pippin-revival-review-kahn-204698881.html",
       "findings": [
         {
@@ -51993,7 +51965,7 @@
       "showId": "the-lightning-thief-2019",
       "file": "thewrap--robert-hofler.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2019-10-17",
       "url": "https://www.thewrap.com/lightning-thief-broadway-review-percy-jackson-musical-rick-riordan/",
       "findings": [
         {
@@ -54523,7 +54495,7 @@
       "showId": "the-piano-lesson-2022",
       "file": "thewrap--robert-hofler.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2022-10-14",
       "url": "https://www.thewrap.com/piano-lesson-broadway-review-john-david-washington-samuel-l-jackson/",
       "findings": [
         {
@@ -69896,7 +69868,7 @@
       "showId": "indecent-2017",
       "file": "theatermania--pete-hempstead.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2017-04-18",
       "url": "http://www.theatermania.com/broadway/reviews/indecent_80762.html",
       "findings": [
         {
@@ -71105,7 +71077,7 @@
       "showId": "king-lear-2019",
       "file": "theatermania--david-gordon.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2019-04-04",
       "url": "https://www.theatermania.com/broadway/news/king-lear_88326.html",
       "findings": [
         {
@@ -81072,7 +81044,7 @@
       "showId": "the-lehman-trilogy-2021",
       "file": "thewrap--robert-hofler.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2021-10-15",
       "url": "https://www.thewrap.com/lehman-trilogy-broadway-review-sam-mendes/",
       "findings": [
         {
@@ -81613,7 +81585,7 @@
       "showId": "the-parisian-woman-2017",
       "file": "thewrap--robert-hofler.json",
       "score": 38,
-      "publishDate": null,
+      "publishDate": "2017-12-01",
       "url": "https://www.thewrap.com/parisian-woman-broadway-review-uma-thurman-beau-willimon/",
       "findings": [
         {
