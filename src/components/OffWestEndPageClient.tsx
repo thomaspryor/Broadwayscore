@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import type { ScoreModeParam } from '@/components/show-cards';
+import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
@@ -316,6 +317,9 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews }: OffWestEndPage
           {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
+
+      {/* Gold List discovery CTA */}
+      <GoldListCTA listType="critical-gold-off-west-end" />
 
       {/* Top Recent Shows - Featured Shelf */}
       {topRecentShows.length > 3 && (

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import type { ScoreModeParam } from '@/components/show-cards';
+import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
@@ -408,6 +409,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
           {scoredShows} scored shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
+
+      {/* Gold List discovery CTA */}
+      <GoldListCTA listType="critical-gold-west-end" />
 
       {/* Top Musicals - Featured Shelf */}
       {topMusicals.length > 0 && (

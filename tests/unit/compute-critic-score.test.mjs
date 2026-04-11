@@ -144,36 +144,83 @@ describe('computeCriticScore — tier weighting (regression coverage)', () => {
 });
 
 describe('Gold-list compute parity with engine.ts', () => {
-  it('compute-gold-lists.js score for a real show matches shared computeCriticScore', () => {
-    // Golden case: feed Stereophonic's reviews (a show with NYSR multi-critic
-    // coverage + OUTLET_TIERS overrides in play) through the shared module the
-    // way compute-gold-lists.js does. The resulting score MUST match the
-    // show-page score computed by engine.ts. If this test ever fails, gold
-    // list scoring has drifted from engine.ts again.
+  it('OUTLET_TIERS override wins over registry tier (synthetic, no real data required)', () => {
+    // Locks in the April 10, 2026 Stereophonic fix. The scenario: an outlet
+    // is listed in src/config/outlet-tiers.json (the authoritative override)
+    // as T1, but the same outlet is T2 in outlet-registry.json. The shared
+    // module must use T1 — otherwise the homepage and show page scores drift
+    // for any show whose reviews include that outlet (5 UK outlets today).
+    //
+    // Stage review (assigned 100) + a T2 baseline review.
+    // If override works (Stage T1, TheaterMania T2):
+    //   (100 * 1.0 + 80 * 0.75) / (1.0 + 0.75) = 160/1.75 ≈ 91.43
+    // If override fails (Stage treated as T2):
+    //   (100 * 0.75 + 80 * 0.75) / 1.5 = 90.00
+    // The 1.43-point gap is enough to prove which path ran.
+    const registryWithWrongTier = {
+      'thestage':     { tier: 2, displayName: 'The Stage' }, // intentionally wrong — outlet-tiers.json must win
+      'theatermania': { tier: 2, displayName: 'TheaterMania' },
+    };
+    const reviews = [
+      { criticName: 'Critic A', outletId: 'thestage',     assignedScore: 100, publishDate: '2024-01-01' },
+      { criticName: 'Critic B', outletId: 'theatermania', assignedScore: 80,  publishDate: '2024-01-01' },
+    ];
+    const result = computeCriticScore(reviews, registryWithWrongTier);
+    assert.ok(result, 'should compute a score');
+    assert.equal(result.t1, 1, 'The Stage should be promoted to T1 by outlet-tiers.json override');
+    // Floating-point tolerant compare. The key assertion: the result must be
+    // closer to 91.43 (override applied) than to 90.00 (override ignored).
+    assert.ok(
+      Math.abs(result.s - 91.43) < 0.05,
+      `expected ~91.43 (override applied), got ${result.s} — if ~90, the override is being ignored`
+    );
+  });
+
+  it('real-data smoke test — a Gold-List-worthy show produces a plausible score', () => {
+    // Lighter-weight sanity check using whichever show currently tops the
+    // Broadway Critical Gold List. Avoids hardcoding Stereophonic-specific
+    // numbers (rc, t1, rounded score) that break when reviews are cleaned
+    // up or re-scored. If the #1 show on the live gold list ever computes
+    // to a score outside [70, 100] with fewer than 5 reviews, something is
+    // fundamentally broken and the test will fail informatively.
     const fs = require('fs');
     const path = require('path');
     const reviewsPath = path.resolve('data/reviews.json');
     const registryPath = path.resolve('data/outlet-registry.json');
-    if (!fs.existsSync(reviewsPath) || !fs.existsSync(registryPath)) {
+    const goldListPath = path.resolve('data/gold-lists-computed.json');
+    if (!fs.existsSync(reviewsPath) || !fs.existsSync(registryPath) || !fs.existsSync(goldListPath)) {
       // Data files optional in CI runners that don't check out core data.
       return;
     }
+    const gl = JSON.parse(fs.readFileSync(goldListPath, 'utf8'));
+    // Find a recent Broadway top-10 show from any season
+    let topShow = null;
+    for (const season of Object.keys(gl.lists['critical-gold'] || {})) {
+      const entries = gl.lists['critical-gold'][season];
+      if (entries && entries.length > 0) {
+        topShow = entries[0]; // rank 1
+        break;
+      }
+    }
+    if (!topShow) return; // empty gold list in test env — skip
+
     const reviews = JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews;
     const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8')).outlets;
-    const stereoRevs = reviews.filter(r => r.showId === 'stereophonic-2024');
-    if (stereoRevs.length < 5) return; // tolerate data shifts
-    const result = computeCriticScore(stereoRevs, registry);
+    const showRevs = reviews.filter(r => r.showId === topShow.showId);
+    if (showRevs.length < 5) return; // tolerate data shifts
+
+    const result = computeCriticScore(showRevs, registry);
     assert.ok(result, 'should compute a score');
-    // Critic-level dedup (Apr 11, 2026) keeps multi-critic outlets like NYSR.
-    // Distinct (outlet, critic) pairs are all surfaced; only same-critic
-    // re-reviews dedup. Stereophonic has NYSR with Bernardo + Verini — both
-    // should appear, so rc equals the raw count.
-    assert.equal(result.rc, stereoRevs.length, 'should keep all distinct critics including the NYSR pair');
-    // Expect The Stage promoted to T1 via OUTLET_TIER_OVERRIDES → tier1Count >= 12
-    assert.ok(result.t1 >= 12, `expected >=12 T1 reviews, got ${result.t1}`);
-    // Score should round to 88 (same as show page — locks in the fix from Apr 10, 2026
-    // and confirms multi-critic dedup change of Apr 11 didn't break parity)
-    assert.equal(Math.round(result.s), 88, `expected rounded 88, got ${result.s}`);
+    // Behavioral assertions (robust to review count shifts):
+    assert.ok(result.s >= 70 && result.s <= 100, `expected Gold-List #1 score in [70,100], got ${result.s} for ${topShow.showId}`);
+    assert.ok(result.rc >= 5, `expected rc >= 5 for a gold-list-worthy show, got ${result.rc} for ${topShow.showId}`);
+    assert.ok(result.t1 >= 1, `expected at least 1 tier-1 review for a top Broadway show, got ${result.t1} for ${topShow.showId}`);
+    // The gold-list entry value matches what our shared module computes (within 0.5 — gold list rounds to 1 decimal).
+    // This is the real parity assertion: gold list pipeline ↔ live compute agree.
+    assert.ok(
+      Math.abs(result.s - topShow.value) < 0.5,
+      `parity drift: gold-list has ${topShow.value} but compute now gives ${result.s} for ${topShow.showId}`
+    );
   });
 });
 

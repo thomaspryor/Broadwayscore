@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import type { ScoreModeParam } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
@@ -316,6 +317,9 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
           {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
       </div>
+
+      {/* Gold List discovery CTA */}
+      <GoldListCTA listType="critical-gold-off-broadway" />
 
       {/* Top Recent Shows - Featured Shelf */}
       {topRecentShows.length > 3 && (
