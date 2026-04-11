@@ -242,37 +242,116 @@ async function fetchInstagramPosts({ showTitle, maxItems, token }) {
   return { mentions, rawCount: items.length };
 }
 
+// ---------- Reddit ----------
+//
+// Reddit is the 4th platform for the Socials Scorecard — added 2026-04-11.
+// Unlike X/TikTok/Instagram, Reddit uses the FREE reddit JSON search API
+// (routed through ScrapingBee fallback for 403 resilience) via the existing
+// brand-mention-sources.js fetcher. No Apify cost — adds ~$0.50/mo for
+// occasional fallback proxy usage only.
+//
+// Reddit is the closest thing to an "uncapped" platform in the scorecard:
+// the limit of 100 per query is Reddit's own API ceiling, which almost
+// never binds for Broadway content (typical hot show: 20-80 relevant
+// posts per week across all subreddits).
+
+const { fetchRedditMentions } = require('./brand-mention-sources');
+
+/**
+ * Normalizes a Reddit post from fetchRedditMentions() into our common
+ * mention shape. The brand-mention shape and the socials-pulse mention
+ * shape differ slightly — this adapter bridges them.
+ *
+ * Engagement = score (upvotes - downvotes) + numComments × 3.
+ * Comments are 3× weighted because a comment reply is a stronger signal
+ * than a passive upvote on Reddit's voting culture.
+ *
+ * `text` combines title + excerpt so the LLM has the fullest context
+ * available when classifying relevance + sentiment. Most Reddit theater
+ * discussion lives in the title (which is often the full hot take) plus
+ * the selftext body. 500-char excerpt cap is inherited from the source.
+ */
+function normalizeRedditPost(p) {
+  if (!p || !p.title) return null;
+  const text = p.excerpt ? `${p.title}\n${p.excerpt}` : p.title;
+  const author = p.author ? `u/${p.author}` : null;
+  return {
+    text,
+    platform: 'reddit',
+    author,
+    url: p.url || null,
+    createdAt: p.publishedAt || null,
+    engagement: (p.score || 0) + (p.numComments || 0) * 3,
+    relevant: null,
+    sentiment: null,
+  };
+}
+
+/**
+ * Fetches Reddit mentions for a show title via the existing
+ * brand-mention-sources.js#fetchRedditMentions. Uses 'week' time window
+ * (vs brand-monitor's default 'month') and Reddit's 100-post ceiling.
+ *
+ * Failures are non-fatal — if Reddit search 403s and ScrapingBee fallback
+ * also fails, we return an empty array and let the other platforms carry.
+ */
+async function fetchRedditForShow({ showTitle, maxItems, logger = console }) {
+  try {
+    const rawMentions = await fetchRedditMentions([showTitle], {
+      limit: Math.min(maxItems || 100, 100),
+      timeWindow: 'week',
+    });
+    const mentions = rawMentions.map(normalizeRedditPost).filter(Boolean);
+    return { mentions, rawCount: rawMentions.length };
+  } catch (err) {
+    logger.warn(`[${showTitle}] Reddit fetch failed: ${err.message}`);
+    return { mentions: [], rawCount: 0 };
+  }
+}
+
 // ---------- Orchestrator ----------
 
 /**
- * Fetches mentions from BOTH platforms for a single show and returns the
- * combined list plus cost estimate.
+ * Fetches mentions from ALL FOUR platforms for a single show and returns
+ * the combined list plus cost estimate.
  *
  * Returns:
  *   {
  *     mentions: NormalizedMention[],
- *     costUsd: number,
- *     rawCounts: { twitter: number, tiktok: number },
+ *     costUsd: number,        // Apify portion only — Reddit is free
+ *     rawCounts: { reddit, twitter, tiktok, instagram },
+ *     errors: [{ platform, error }],
  *   }
  *
- * Failures on ONE platform do not block the other — partial data is better
- * than none. Per-platform errors are logged and the affected platform's
- * mentions array is empty.
+ * Failures on ONE platform do not block the others — partial data is
+ * better than none. Per-platform errors are logged and the affected
+ * platform's mentions array is empty.
  */
-async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, tiktokMax, instagramMax, token, logger = console }) {
+async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, tiktokMax, instagramMax, redditMax, token, logger = console }) {
   const result = {
     mentions: [],
     costUsd: 0,
-    rawCounts: { twitter: 0, tiktok: 0, instagram: 0 },
+    rawCounts: { reddit: 0, twitter: 0, tiktok: 0, instagram: 0 },
     errors: [],
   };
 
-  // Run all three fetches in parallel for speed
-  const [twitterRes, tiktokRes, instagramRes] = await Promise.allSettled([
+  // Run all four fetches in parallel for speed. Reddit is fastest
+  // (direct JSON API), so adding it doesn't extend the slowest-wins
+  // wall-clock time of the batch.
+  const [redditRes, twitterRes, tiktokRes, instagramRes] = await Promise.allSettled([
+    fetchRedditForShow({ showTitle, maxItems: redditMax, logger }),
     fetchTweets({ showTitle, marketQualifier, maxItems: twitterMax, token }),
     fetchTikToks({ showTitle, marketQualifier, maxItems: tiktokMax, token }),
     fetchInstagramPosts({ showTitle, maxItems: instagramMax, token }),
   ]);
+
+  if (redditRes.status === 'fulfilled') {
+    result.mentions.push(...redditRes.value.mentions);
+    result.rawCounts.reddit = redditRes.value.rawCount;
+  } else {
+    logger.warn(`[${showTitle}] Reddit fetch failed: ${redditRes.reason.message}`);
+    result.errors.push({ platform: 'reddit', error: redditRes.reason.message });
+  }
 
   if (twitterRes.status === 'fulfilled') {
     result.mentions.push(...twitterRes.value.mentions);
@@ -298,8 +377,9 @@ async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, 
     result.errors.push({ platform: 'instagram', error: instagramRes.reason.message });
   }
 
-  // Fetch usage for all three actors. This is a best-effort cost estimate;
-  // the cumulative-budget check in the workflow is the hard gate.
+  // Fetch usage for the three Apify actors only. Reddit is free. This is
+  // a best-effort cost estimate; the cumulative-budget check in the
+  // workflow is the hard gate.
   try {
     const [twitterUsage, tiktokUsage, instagramUsage] = await Promise.all([
       fetchLatestRunUsage({ actorId: 'kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest', token }),
@@ -322,9 +402,11 @@ module.exports = {
   fetchTweets,
   fetchTikToks,
   fetchInstagramPosts,
+  fetchRedditForShow,
   normalizeTweet,
   normalizeTikTok,
   normalizeInstagramPost,
+  normalizeRedditPost,
   runApifyActor,
   fetchLatestRunUsage,
 };
