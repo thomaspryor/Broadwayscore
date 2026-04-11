@@ -53,7 +53,8 @@ const CRITIC_NAME_FIXES: Record<string, string> = {
   'CSA.     Naveen Kumar': 'Naveen Kumar',
   'Reviews Karen Galindo': 'Karen Galindo',
   'Michael Glitz': 'Michael Giltz',
-  'Nancy Sasso Janis': 'Sasso Janis',
+  // 'Nancy Sasso Janis' is the correct byline (Patch.com); was previously remapped
+  // to 'Sasso Janis' which is wrong. Removed 2026-04-11 after /ship-check audit.
 };
 
 // Variant outletIds → canonical outletId (merges split profiles)
