@@ -93,9 +93,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
   const isLondonMeta = isLondonMarket(show.category);
+  const isOffWestEndMeta = show.category === 'off-west-end';
   const isOffBroadwayMeta = show.category === 'off-broadway';
-  const siteName = isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
-  const marketLabel = isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
+  const siteName = isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
+  const marketLabel = isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
 
   // Sentiment label maps tier → SEO-friendly phrase used in title + description
@@ -257,6 +258,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     .map(m => ({ name: m.name }));
   const showSchema = generateShowSchema(show, lastUpdated || undefined, performers);
   const isWestEnd = isLondonMarket(show.category);
+  const isOffWestEnd = show.category === 'off-west-end';
   const isOffBroadway = show.category === 'off-broadway';
 
   // Theater scorecard lookup (Broadway only)
@@ -592,7 +594,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   <>
                     <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
                     {(() => {
-                      const durationSuffix = isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+                      const durationSuffix = isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
                       const dur = getBroadwayDuration(show.openingDate, durationSuffix);
                       return dur ? <span> <span className="text-gray-500">·</span> {dur}</span> : null;
                     })()}
