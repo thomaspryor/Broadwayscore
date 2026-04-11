@@ -30,21 +30,33 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
     <>
       {/* Browse Categories */}
       {isLondon ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-8 pb-8 border-b border-white/5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-white/5">
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Category</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href="/west-end" className="hover:text-white transition-colors">All West End Shows</Link></li>
-              <li><Link href="/west-end/audience-buzz" className="hover:text-white transition-colors">Audience Buzz</Link></li>
-              <li><Link href="/off-west-end" className="hover:text-white transition-colors">Off-West End</Link></li>
+              <li><Link href="/browse/best-west-end-musicals" className="hover:text-white transition-colors">Best Musicals</Link></li>
+              <li><Link href="/browse/best-west-end-plays" className="hover:text-white transition-colors">Best Plays</Link></li>
+              <li><Link href="/browse/longest-running-west-end-shows" className="hover:text-white transition-colors">Longest-Running</Link></li>
+              <li><Link href="/browse/upcoming-west-end-shows" className="hover:text-white transition-colors">Upcoming Shows</Link></li>
+              <li><Link href="/browse/new-west-end-shows-2026" className="hover:text-white transition-colors">New in 2026</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Also on the Site</h4>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Audience</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="/" className="hover:text-white transition-colors">Broadway Shows</Link></li>
-              <li><Link href="/off-broadway" className="hover:text-white transition-colors">Off-Broadway</Link></li>
-              <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
+              <li><Link href="/browse/west-end-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
+              <li><Link href="/west-end/audience-buzz" className="hover:text-white transition-colors">Audience Buzz</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Off-West End</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li><Link href="/off-west-end" className="hover:text-white transition-colors">All Off-West End</Link></li>
+              <li><Link href="/browse/best-off-west-end-shows" className="hover:text-white transition-colors">Best Off-West End</Link></li>
+              <li><Link href="/browse/best-off-west-end-musicals" className="hover:text-white transition-colors">Best OWE Musicals</Link></li>
+              <li><Link href="/browse/best-off-west-end-plays" className="hover:text-white transition-colors">Best OWE Plays</Link></li>
+              <li><Link href="/browse/upcoming-off-west-end-shows" className="hover:text-white transition-colors">Upcoming OWE</Link></li>
             </ul>
           </div>
           <div>
@@ -52,7 +64,10 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
               {featureFlags.criticPages && <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>}
+              <li><Link href="/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
+              <li><Link href="/" className="hover:text-white transition-colors">Broadway Shows</Link></li>
               <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+              <li><Link href="/feedback" className="hover:text-white transition-colors">Feedback</Link></li>
             </ul>
           </div>
         </div>

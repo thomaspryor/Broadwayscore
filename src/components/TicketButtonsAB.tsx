@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import TicketLink from '@/components/TicketLink';
 import { sortTicketLinks, type TicketLinkData } from '@/lib/ticket-utils';
+import { getCurrencySymbol } from '@/lib/market-utils';
 
 interface TicketButtonsABProps {
   showName: string;
@@ -127,7 +128,7 @@ export default function TicketButtonsAB({
           className={buttonClassName}
         >
           {i === 0 ? (
-            link.priceFrom ? `Get Tickets from $${link.priceFrom}` : `Get Tickets on ${link.platform}`
+            link.priceFrom ? `Get Tickets from ${getCurrencySymbol(showCategory)}${link.priceFrom}` : `Get Tickets on ${link.platform}`
           ) : (
             <>
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

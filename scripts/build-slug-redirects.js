@@ -52,6 +52,20 @@ for (const [base, productions] of Object.entries(groups)) {
   };
 }
 
+// ALSO add id → slug redirects whenever the show's id has a year suffix that
+// the slug omits (e.g. id=hamilton-west-end-2021, slug=hamilton-west-end).
+// These canonical id-based URLs appear in scraped SERPs, share links, and bookmarks.
+// Without this, /show/hamilton-west-end-2021 returns 404.
+// Found in WE pre-Reddit-launch audit (2026-04-10): 8/10 marquee WE shows had this.
+for (const show of shows) {
+  if (show.id !== show.slug && !existingSlugs.has(show.id) && !redirects[show.id]) {
+    redirects[show.id] = {
+      target: show.slug,
+      permanent: true,
+    };
+  }
+}
+
 // Full version (for debugging / inspection)
 const output = {
   _meta: {

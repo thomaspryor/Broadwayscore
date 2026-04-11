@@ -74,10 +74,23 @@ export function getBroadwayShows(): ComputedShow[] {
 }
 
 /**
+ * IDs to exclude from London listings — non-theatre experiences that crept into
+ * the data set (e.g. ABBA Voyage is a hologram concert at a purpose-built arena,
+ * not theatre). These shows still exist as detail pages but are filtered out of
+ * the West End / Off-West End hubs and OG data.
+ */
+const HIDDEN_LONDON_IDS = new Set<string>([
+  'abba-voyage-off-west-end-2026',
+]);
+
+/**
  * Get all London shows (West End + Off-West End)
  */
 export function getWestEndShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'west-end' || show.category === 'off-west-end');
+  return getAllShows().filter(show =>
+    (show.category === 'west-end' || show.category === 'off-west-end') &&
+    !HIDDEN_LONDON_IDS.has(show.id)
+  );
 }
 
 /**
@@ -91,7 +104,9 @@ export function getOffBroadwayShows(): ComputedShow[] {
  * Get Off-West End shows only (excludes West End proper)
  */
 export function getOffWestEndShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'off-west-end');
+  return getAllShows().filter(show =>
+    show.category === 'off-west-end' && !HIDDEN_LONDON_IDS.has(show.id)
+  );
 }
 
 /**

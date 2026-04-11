@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getAllShows } from '@/lib/data-core';
-import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade, MIN_AUDIENCE_REVIEWS } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
 import { featureFlags } from '@/config/feature-flags';
@@ -10,7 +10,9 @@ import { getSourcesForMarket, getSourceNames, SOURCE_DESCRIPTIONS } from '@/conf
 const weSourceNames = getSourceNames('west-end');
 
 export const metadata: Metadata = {
-  title: 'West End Audience Scorecard - What Real Theatregoers Think',
+  title: {
+    absolute: 'West End Audience Scorecard - What Real Theatregoers Think | West End Scorecard',
+  },
   description: `AudienceGrade ratings for West End shows from ${weSourceNames}. See which shows audiences love based on verified reviews.`,
   alternates: {
     canonical: `${BASE_URL}/west-end/audience-buzz`,
@@ -22,6 +24,11 @@ export const metadata: Metadata = {
     type: 'article',
   },
 };
+
+// West End audience-buzz needs a higher threshold than Broadway to avoid Garry-Starr-ranks-#1
+// embarrassment. Marquee WE shows have thousands of reviews; small fringe shows with 15-20
+// reviews shouldn't outrank Hamilton.
+const MIN_WE_AUDIENCE_REVIEWS = 50;
 
 const gradeScale = [
   { grade: 'A+', color: '#22c55e' },
@@ -52,7 +59,7 @@ export default function WestEndAudienceBuzzPage() {
     .filter(item => {
       if (!item.buzz || item.buzz.combinedScore <= 0) return false;
       const total = Object.values(item.buzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
-      return total >= MIN_AUDIENCE_REVIEWS;
+      return total >= MIN_WE_AUDIENCE_REVIEWS;
     })
     .sort((a, b) => (b.buzz?.combinedScore || 0) - (a.buzz?.combinedScore || 0));
 

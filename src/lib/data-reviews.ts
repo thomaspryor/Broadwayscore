@@ -271,8 +271,9 @@ const reviews = (reviewsData as { reviews: RawReviewEntry[] }).reviews;
 for (const review of reviews) {
   const show = showMetaMap.get(review.showId);
   if (!show) continue;
-  // Critic/outlet pages are Broadway-only — skip off-broadway and west-end reviews
-  if (show.category !== 'broadway') continue;
+  // Include Broadway, West End, and Off-West End reviews on critic/outlet pages.
+  // Off-Broadway is excluded for now (separate audience, separate critic pool).
+  if (show.category !== 'broadway' && show.category !== 'west-end' && show.category !== 'off-west-end') continue;
 
   // Normalize outletId — skip garbage entries
   const rawOutletId = review.outletId;

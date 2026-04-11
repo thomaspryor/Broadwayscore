@@ -7,15 +7,15 @@ export function generateMetadata(): Metadata {
   const allCritics = getAllCritics();
   const totalReviews = allCritics.reduce((sum, c) => sum + c.reviewCount, 0);
 
-  const title = `${allCritics.length} Broadway Critics & Reviewers`;
-  const description = `Browse ${allCritics.length} Broadway critics with ${totalReviews.toLocaleString()} reviews. See average scores, review counts, and full review histories for every theater critic.`;
+  const title = `${allCritics.length} Theatre Critics & Reviewers`;
+  const description = `Browse ${allCritics.length} theatre critics covering Broadway and the West End, with ${totalReviews.toLocaleString()} reviews. See average scores, review counts, and full review histories for every critic.`;
 
   return {
     title,
     description,
     alternates: { canonical: `${BASE_URL}/critics` },
     openGraph: {
-      title: 'Broadway Critics & Reviewers',
+      title: 'Theatre Critics & Reviewers',
       description,
       url: `${BASE_URL}/critics`,
       type: 'website',
@@ -23,7 +23,7 @@ export function generateMetadata(): Metadata {
     },
     twitter: {
       card: 'summary',
-      title: 'Broadway Critics & Reviewers',
+      title: 'Theatre Critics & Reviewers',
       description,
     },
   };

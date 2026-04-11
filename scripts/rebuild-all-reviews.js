@@ -1141,7 +1141,14 @@ const KNOWN_SYNDICATION_PAIRS = {
           const h = crypto.createHash('md5').update(d.fullText.substring(0, 2500)).digest('hex');
           if (cv.contentHash !== h) stale = true;
         }
-        if (stale) continue;
+        // EXCEPTION: never skip staleness for high-confidence wrongArticle findings.
+        // Hash mismatch means the text was re-fetched, but if the LLM said with high
+        // confidence "this is the wrong show", that judgment is almost always still valid
+        // (we re-fetch the same URL, which yields the same wrong page). Found in WE
+        // pre-Reddit-launch audit (2026-04-10): Matilda was rendering a TimeOut
+        // Paddington review at 100, Harry Potter rendering a David Lan play, etc.
+        const trustWrongArticleDespiteStale = cv.wrongArticle === true && cv.confidence === 'high';
+        if (stale && !trustWrongArticleDespiteStale) continue;
         let promoted = false;
         if (cv.wrongProduction === true && d.wrongProduction !== true
             && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate) {
@@ -1496,6 +1503,14 @@ showDirs.forEach(showId => {
           }
         }
 
+        // EXCEPTION (mirrors pre-pass): high-confidence wrongArticle is trusted even on
+        // stale CV. The hash mismatched but the LLM was right that this URL points to a
+        // different show — re-fetching the same URL almost always gives the same wrong page.
+        const trustWrongArticleDespiteStale = cv.wrongArticle === true && cv.confidence === 'high';
+        if (cvIsStale && trustWrongArticleDespiteStale) {
+          cvIsStale = false;
+        }
+
         let promoted = false;
         if (!cvIsStale) {
           // Only promote wrongProduction if:
@@ -1580,11 +1595,16 @@ showDirs.forEach(showId => {
             if (isUkUrl || outletIsDualOrUk) {
               // UK/dual-market outlet + London URL → clear false positive
               // BUT: Do NOT auto-clear if contentVerification explicitly confirmed wrongProduction
-              // (e.g., touring/outdoor production reviewed by UK outlet) or if manual reason is set
+              // (e.g., touring/outdoor production reviewed by UK outlet) or if manual reason is set.
+              // ALSO: Do NOT auto-clear if cv flagged wrongArticle (review is about a completely
+              // different show) — that's the bug found in WE pre-Reddit-launch audit (2026-04-10).
+              // Matilda was rendering a TimeOut Paddington review at 100/100, etc.
               const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
                 && data.contentVerification?.confidence === 'high';
+              const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
+                && data.contentVerification?.confidence === 'high';
               const hasManualReason = !!data.wrongProductionReason;
-              if (isUkUrl && !cvConfirmedWrong && !hasManualReason) {
+              if (isUkUrl && !cvConfirmedWrong && !cvConfirmedWrongArticle && !hasManualReason) {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
                 data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
