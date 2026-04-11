@@ -63,6 +63,7 @@ const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
@@ -3508,21 +3509,51 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           const outletName = data.outlet || outletId;
           process.stdout.write(`  ${outletName} (${file})... `);
 
-          // Build review object for discoverCorrectUrl with critic name for better targeting
+          // Build review object for discoverCorrectUrl with critic name for better targeting.
+          // Merge in file state (incompleteReason, serpRetryCount, serpRetryAfter,
+          // serpDiscoveryAbandoned, filePath) so the lifecycle gate has what it needs.
           const reviewObj = {
+            ...data,
             showId,
             outletId,
             outlet: outletName,
             criticName: (data.criticName && data.criticName !== 'Unknown') ? data.criticName : 'Unknown',
             source: 'wrongUrl-retry',
             url: data.url || '', // pass current (bad) URL so SERP skips it
+            filePath: path.join(showDir, file),
           };
+
+          // Lifecycle SERP retry gate (defense-in-depth). The wrongUrl filter at
+          // line 3489 currently excludes wrongShow/wrongProduction, so gated files
+          // (incompleteReason='wrong_content') can't reach here today — but if that
+          // filter relaxes, this gate prevents the pathology from recurring here.
+          const gate = shouldRetryUrlDiscovery(show, reviewObj);
+          if (!gate.shouldRetry) {
+            console.log(`✗ gated: ${gate.reason}`);
+            if (gate.updates) {
+              try {
+                Object.assign(data, gate.updates);
+                fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+              } catch (e) { /* non-fatal */ }
+            }
+            continue;
+          }
 
           health.wrongUrlRetry.retried++;
           const result = await discoverCorrectUrl(reviewObj, scrapingBeeKey, {
             brightDataKey,
             log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
           });
+
+          // Advance SERP attempt state even on failure so perpetually-null responses
+          // progress toward abandonment instead of retrying forever.
+          try {
+            const attemptUpdates = recordSerpAttempt(show, reviewObj);
+            if (Object.keys(attemptUpdates).length > 0) {
+              Object.assign(data, attemptUpdates);
+              fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+            }
+          } catch (e) { /* non-fatal */ }
 
           if (result && result !== '__SERP_UNAVAILABLE__' && result !== data.url) {
             console.log(`✓ Found: ${result}`);
