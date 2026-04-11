@@ -46,6 +46,24 @@ export interface RawSocialPulse {
 }
 
 /**
+ * A social-pulse row that has been materialized with a guaranteed numeric
+ * composite score — returned by `getTopTrendingShows`. Consumers can rely on
+ * `compositeScore: number` without the `?? 0` dance at the call site.
+ */
+export type TrendingPick = RawSocialPulse & { compositeScore: number };
+
+/**
+ * Minimum 7-day mention volume required for a show to be eligible for the
+ * /trending leaderboard. The underlying scorer only hides shows below 20
+ * mentions (MIN_MENTIONS_FOR_CARD in social-pulse-scorer.js), which is fine
+ * for per-show cards but would surface low-signal noise on a "buzziest
+ * shows" page. 50 keeps every current top-10 entry comfortably in-bounds
+ * while filtering out the long tail. Tune higher if top-10s start looking
+ * thin; lower if markets don't fill.
+ */
+export const MIN_TRENDING_VOLUME = 50;
+
+/**
  * Synchronously reads the social pulse payload for a show. Safe to call
  * from React server components and getStaticProps equivalents.
  *
@@ -78,9 +96,31 @@ export function getSocialPulse(showId: string): SocialPulsePayload | null {
 }
 
 /**
+ * Lightweight runtime-shape guard for a parsed social-pulse file. A file
+ * missing any of these required fields would otherwise blow up `sort`
+ * (NaN) or crash the card component at render time. We'd rather skip a
+ * malformed file than render the page as broken.
+ */
+function isValidRawPulse(raw: unknown): raw is RawSocialPulse {
+  if (!raw || typeof raw !== 'object') return false;
+  const r = raw as Record<string, unknown>;
+  return (
+    typeof r.showId === 'string' &&
+    typeof r.showTitle === 'string' &&
+    typeof r.market === 'string' &&
+    typeof r.tier === 'string' &&
+    typeof r.volume === 'number' &&
+    typeof r.positivePct === 'number' &&
+    !Number.isNaN(r.volume) &&
+    !Number.isNaN(r.positivePct)
+  );
+}
+
+/**
  * Read every RAW social-pulse file in data/social-pulse/ and return the
  * parsed payloads. Files beginning with `_` (like `_budget.json`) are
- * treated as internal bookkeeping and skipped.
+ * treated as internal bookkeeping and skipped. Malformed files are
+ * warned-and-skipped rather than crashing the build.
  *
  * Safe to call from React server components at build time.
  */
@@ -98,7 +138,13 @@ function readAllRawSocialPulses(): RawSocialPulse[] {
     if (name.startsWith('_')) continue; // _budget.json and similar
     try {
       const raw = fs.readFileSync(path.join(SOCIAL_PULSE_DIR, name), 'utf-8');
-      out.push(JSON.parse(raw) as RawSocialPulse);
+      const parsed = JSON.parse(raw);
+      if (!isValidRawPulse(parsed)) {
+        // eslint-disable-next-line no-console
+        console.warn(`[data-social-pulse] Skipping ${name}: missing required fields`);
+        continue;
+      }
+      out.push(parsed);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn(`[data-social-pulse] Failed to parse ${name}: ${(err as Error).message}`);
@@ -109,29 +155,53 @@ function readAllRawSocialPulses(): RawSocialPulse[] {
 
 /**
  * Returns the top N trending shows for a given market, ranked by
- * `compositeScore` (volume × positivePct — computed by compute-social-pulse-ranks.js).
+ * `compositeScore` (volume × positivePct / 100 — computed by
+ * compute-social-pulse-ranks.js, or recomputed here if that field is
+ * missing).
  *
- * Shows with tier === 'Hidden' are excluded (below the MIN_MENTIONS_FOR_CARD
- * threshold — not enough data to rank honestly). All other tiers are included,
- * even `BuildingBaseline`, since those have real volume but no WoW history yet.
+ * Exclusions:
+ *   - tier === 'Hidden' (below MIN_MENTIONS_FOR_CARD — not enough signal)
+ *   - volume < MIN_TRENDING_VOLUME (see constant doc — page-specific floor)
+ *   - showIds not present in `knownShowIds` (prevents dead-end rows for
+ *     shows in the pulse corpus but missing from shows.json — e.g. an
+ *     upcoming show the social scraper picked up before the show record
+ *     was created)
  *
- * `compositeScore` falls back to `volume * positivePct / 100` if the rank
- * script hasn't run yet — keeps the page functional if ranks are stale.
+ * Tie-breaking: sort is `compositeScore` desc, `volume` desc, `showId` asc —
+ * fully deterministic across OSes so SSR output is stable between CI and
+ * local builds.
+ *
+ * Callers MUST pass `knownShowIds` (typically from `getAllShows()`) so the
+ * orphan filter can run. To allow over-fetching so the caller can safely
+ * take the top N even if a handful are filtered downstream, the function
+ * returns up to `limit` results — but the `knownShowIds` filter already
+ * runs internally, so the top-N slice is already orphan-free.
  */
 export function getTopTrendingShows(
   market: 'Broadway' | 'West End',
+  knownShowIds: ReadonlySet<string>,
   limit: number = 10,
-): RawSocialPulse[] {
+): TrendingPick[] {
   return readAllRawSocialPulses()
-    .filter((p) => p.market === market && p.tier !== 'Hidden')
-    .map((p) => ({
+    .filter(
+      (p) =>
+        p.market === market &&
+        p.tier !== 'Hidden' &&
+        p.volume >= MIN_TRENDING_VOLUME &&
+        knownShowIds.has(p.showId),
+    )
+    .map<TrendingPick>((p) => ({
       ...p,
       compositeScore:
         typeof p.compositeScore === 'number'
           ? p.compositeScore
           : (p.volume * p.positivePct) / 100,
     }))
-    .sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0))
+    .sort((a, b) => {
+      if (b.compositeScore !== a.compositeScore) return b.compositeScore - a.compositeScore;
+      if (b.volume !== a.volume) return b.volume - a.volume;
+      return a.showId.localeCompare(b.showId);
+    })
     .slice(0, limit);
 }
 

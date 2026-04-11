@@ -4,7 +4,7 @@ import { getAllShows } from '@/lib/data-core';
 import {
   getTopTrendingShows,
   getTrendingLastUpdated,
-  type RawSocialPulse,
+  type TrendingPick,
 } from '@/lib/data-social-pulse';
 import type { ComputedShow } from '@/lib/engine';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
@@ -58,7 +58,7 @@ function buildShowLookup(): Map<string, ComputedShow> {
 interface TrendingColumnProps {
   heading: string;
   subheading: string;
-  picks: RawSocialPulse[];
+  picks: TrendingPick[];
   showLookup: Map<string, ComputedShow>;
   emptyMessage: string;
   accentColor: string;
@@ -77,12 +77,14 @@ function TrendingColumn({
       <div className="mb-4 pb-3 border-b border-white/10">
         <div className="flex items-baseline gap-3">
           <h2 className="text-2xl sm:text-3xl font-bold text-white">{heading}</h2>
-          <span
-            className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded"
-            style={{ color: accentColor, backgroundColor: `${accentColor}22` }}
-          >
-            Top 10
-          </span>
+          {picks.length > 0 && (
+            <span
+              className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+              style={{ color: accentColor, backgroundColor: `${accentColor}22` }}
+            >
+              Top {picks.length}
+            </span>
+          )}
         </div>
         <p className="text-sm text-gray-400 mt-1">{subheading}</p>
       </div>
@@ -90,7 +92,10 @@ function TrendingColumn({
       {picks.length === 0 ? (
         <p className="text-sm text-gray-500 italic">{emptyMessage}</p>
       ) : (
-        <ol className="space-y-2.5 list-none p-0">
+        // `role="list"` is explicit: Tailwind's `list-none` strips default list
+        // semantics in Safari VoiceOver, which drops AT list navigation. Forcing
+        // the role back keeps the ordered-list structure for screen readers.
+        <ol role="list" className="space-y-2.5 list-none p-0">
           {picks.map((pulse, idx) => (
             <li key={pulse.showId}>
               <TrendingShowCard
@@ -106,10 +111,40 @@ function TrendingColumn({
   );
 }
 
+function buildItemListSchema(
+  name: string,
+  description: string,
+  picks: TrendingPick[],
+  showLookup: Map<string, ComputedShow>,
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name,
+    description,
+    itemListOrder: 'https://schema.org/ItemListOrderDescending',
+    numberOfItems: picks.length,
+    itemListElement: picks.map((p, i) => {
+      // `knownShowIds` filter in getTopTrendingShows guarantees every pick
+      // has a slug in showLookup, so the `!` here is intentional — if it
+      // ever fires as undefined, it means the orphan filter regressed and
+      // we want to catch it in dev/SSR rather than silently 404 in schema.
+      const show = showLookup.get(p.showId)!;
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${BASE_URL}/show/${show.slug}`,
+        name: show.title,
+      };
+    }),
+  };
+}
+
 export default function TrendingPage() {
   const showLookup = buildShowLookup();
-  const broadwayPicks = getTopTrendingShows('Broadway', 10);
-  const westEndPicks = getTopTrendingShows('West End', 10);
+  const knownShowIds: ReadonlySet<string> = new Set(showLookup.keys());
+  const broadwayPicks = getTopTrendingShows('Broadway', knownShowIds, 10);
+  const westEndPicks = getTopTrendingShows('West End', knownShowIds, 10);
   const lastUpdated = getTrendingLastUpdated();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -117,38 +152,26 @@ export default function TrendingPage() {
     { name: 'Trending', url: `${BASE_URL}/trending` },
   ]);
 
-  // ItemList schema — two lists, Broadway first. Helps Google treat this as
-  // a ranked leaderboard (rich result eligible).
+  // ItemList schemas — only emit when the list has entries. An empty
+  // itemListElement array is a common Search Console warning.
   const itemListSchemas = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      name: 'Trending Broadway Shows',
-      description: 'Top 10 buzziest Broadway shows right now',
-      itemListOrder: 'https://schema.org/ItemListOrderDescending',
-      numberOfItems: broadwayPicks.length,
-      itemListElement: broadwayPicks.map((p, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        url: `${BASE_URL}/show/${showLookup.get(p.showId)?.slug || p.showId}`,
-        name: showLookup.get(p.showId)?.title || p.showTitle,
-      })),
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      name: 'Trending West End Shows',
-      description: 'Top 10 buzziest West End shows right now',
-      itemListOrder: 'https://schema.org/ItemListOrderDescending',
-      numberOfItems: westEndPicks.length,
-      itemListElement: westEndPicks.map((p, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        url: `${BASE_URL}/show/${showLookup.get(p.showId)?.slug || p.showId}`,
-        name: showLookup.get(p.showId)?.title || p.showTitle,
-      })),
-    },
-  ];
+    broadwayPicks.length > 0
+      ? buildItemListSchema(
+          'Trending Broadway Shows',
+          'Top 10 buzziest Broadway shows right now',
+          broadwayPicks,
+          showLookup,
+        )
+      : null,
+    westEndPicks.length > 0
+      ? buildItemListSchema(
+          'Trending West End Shows',
+          'Top 10 buzziest West End shows right now',
+          westEndPicks,
+          showLookup,
+        )
+      : null,
+  ].filter(Boolean);
 
   const updatedLabel = lastUpdated
     ? new Date(lastUpdated).toLocaleDateString('en-US', {
@@ -210,11 +233,13 @@ export default function TrendingPage() {
           </p>
         </div>
 
-        {/* Two columns — Broadway + West End */}
+        {/* Two columns — Broadway + West End. Counts are picks-driven rather
+            than hardcoded so the subheading stays honest if the market grows
+            or if the orphan filter drops a pick. */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
           <TrendingColumn
             heading="Broadway"
-            subheading="New York · 42 shows tracked"
+            subheading={`New York · ${broadwayPicks.length} shows ranked`}
             picks={broadwayPicks}
             showLookup={showLookup}
             emptyMessage="No trending Broadway shows yet — check back after the next weekly refresh."
@@ -222,7 +247,7 @@ export default function TrendingPage() {
           />
           <TrendingColumn
             heading="West End"
-            subheading="London · 49 shows tracked"
+            subheading={`London · ${westEndPicks.length} shows ranked`}
             picks={westEndPicks}
             showLookup={showLookup}
             emptyMessage="No trending West End shows yet — check back after the next weekly refresh."
