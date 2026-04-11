@@ -8,12 +8,18 @@
  *      → serpDiscoveryAbandoned: true (tier max = 0 retries; SERP date
  *      windows are frozen, re-querying deterministic queries is pure waste)
  *
- *   2. Any wrong_content file where urlDiscoveredAt is already set — proof
- *      that SERP already found a "replacement" URL once and the replacement
- *      ALSO ended up wrong_content (the cycle pathology). These files have
- *      demonstrably exhausted the "one retry might help" grace.
- *      → serpDiscoveryAbandoned: true (regardless of lifecycle, except
- *      openWindow where opening-night signal pickup still matters)
+ *   2. Any wrong_content file where urlDiscoveredAt is already set AND the
+ *      discovery method was a REAL SERP call (not a protocol upgrade or HTTP
+ *      redirect follow, which are routine URL normalizations unrelated to
+ *      SERP cycle pathology). These files have proven that SERP already found
+ *      a "replacement" URL once and the replacement ALSO ended up wrong_content.
+ *      → serpDiscoveryAbandoned: true (except openWindow where opening-night
+ *      signal pickup still matters)
+ *
+ *   Ship-check 2026-04-11 found that the original rule #2 incorrectly marked
+ *   934 files with urlDiscoveryMethod in {protocol-upgrade, http-redirect,
+ *   domain-redirect} — those are HTTP→HTTPS upgrades and redirect-follows, not
+ *   SERP cycles. The SERP_DISCOVERY_METHODS whitelist below fixes that.
  *
  * This captures ~83% of the forecasted SERP savings in one atomic sweep.
  * Without it, the lifecycle gate still works — but savings trickle in over
@@ -36,6 +42,17 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const limitIdx = args.indexOf('--limit');
 const LIMIT = limitIdx >= 0 && args[limitIdx + 1] ? parseInt(args[limitIdx + 1], 10) : Infinity;
+
+// Only these urlDiscoveryMethod values indicate a real SERP cycle. Others
+// like 'protocol-upgrade' / 'http-redirect' / 'domain-redirect' are URL
+// normalizations that don't prove cycle pathology — they don't cost SERP
+// credits to reproduce.
+const SERP_DISCOVERY_METHODS = new Set([
+  'google-serp',
+  'google-serp-reason-recovery',
+  'show-not-mentioned-recovery',
+  'wrongUrl-serp-retry',
+]);
 
 // ---------------------------------------------------------------------------
 // Load shows.json once so classifyLifecycle can look up each show
@@ -91,22 +108,25 @@ for (const showId of fs.readdirSync(REVIEW_TEXTS_DIR)) {
       continue;
     }
 
-    const hasPriorDiscovery = !!review.urlDiscoveredAt;
+    // A "cycled" file has BOTH urlDiscoveredAt AND a method that represents a
+    // real SERP call. Protocol upgrades and HTTP redirects don't count.
+    const hasPriorSerpCycle = !!review.urlDiscoveredAt
+      && SERP_DISCOVERY_METHODS.has(review.urlDiscoveryMethod);
 
     // Rule 1: closedOld → abandon
     if (lifecycle === 'closedOld') {
-      candidates.closedOld.push({ filePath, showId, lifecycle, hasPriorDiscovery });
+      candidates.closedOld.push({ filePath, showId, lifecycle, hasPriorSerpCycle });
       continue;
     }
 
-    // Rule 2: has urlDiscoveredAt AND not in openWindow → abandon (cycle proven)
-    if (hasPriorDiscovery && lifecycle !== 'openWindow') {
-      candidates.cycledNonOpening.push({ filePath, showId, lifecycle, hasPriorDiscovery });
+    // Rule 2: has real SERP cycle AND not in openWindow → abandon (cycle proven)
+    if (hasPriorSerpCycle && lifecycle !== 'openWindow') {
+      candidates.cycledNonOpening.push({ filePath, showId, lifecycle, hasPriorSerpCycle });
       continue;
     }
 
-    // Rule 2b (skipped): openWindow with urlDiscoveredAt — keep the retries
-    if (hasPriorDiscovery && lifecycle === 'openWindow') {
+    // Rule 2b (skipped): openWindow with SERP cycle — keep the retries
+    if (hasPriorSerpCycle && lifecycle === 'openWindow') {
       candidates.skippedOpeningCycled.push({ filePath, showId, lifecycle });
     }
   }
@@ -160,14 +180,14 @@ for (const c of limited) {
     const review = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
     review.serpDiscoveryAbandoned = true;
     // Record intent in a new field so we can audit later
-    review.serpAbandonmentReason = c.hasPriorDiscovery
+    review.serpAbandonmentReason = c.hasPriorSerpCycle
       ? 'backfill:cycled'
       : 'backfill:closedOld';
     review.serpAbandonmentDate = new Date().toISOString().slice(0, 10);
     // Preserve serpRetryCount if it's set; otherwise record that this is a
     // backfilled abandonment (never actually attempted via the new guard)
     if (typeof review.serpRetryCount !== 'number') {
-      review.serpRetryCount = c.hasPriorDiscovery ? 1 : 0;
+      review.serpRetryCount = c.hasPriorSerpCycle ? 1 : 0;
     }
     fs.writeFileSync(c.filePath, JSON.stringify(review, null, 2) + '\n');
     written++;
