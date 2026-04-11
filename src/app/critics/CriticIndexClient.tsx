@@ -113,9 +113,9 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
 
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Broadway Critics</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Theatre Critics</h1>
         <p className="text-gray-400">
-          {critics.length} critics with {totalReviews.toLocaleString()} reviews
+          {critics.length} critics covering Broadway and the West End with {totalReviews.toLocaleString('en-US')} reviews
         </p>
       </div>
 
