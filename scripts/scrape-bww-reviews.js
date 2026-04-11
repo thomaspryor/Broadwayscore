@@ -263,7 +263,10 @@ async function fetchBwwReviewsPage(show, showId, options = {}) {
       const html = await fetchHtml(url);
       if (html && html.includes('feedbacks')) {
         // Validate page is actually about this show
-        const validation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+        const validation = await validatePageMatchesShow(html, show.title, {
+          openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+          pageUrl: url,
+        });
         if (!validation.valid) {
           console.log(`  [SKIP] /reviews/${slug} wrong show: ${validation.reason}`);
           continue;
@@ -451,7 +454,10 @@ async function discoverBwwRoundup(show, showId, options = {}) {
       const html = await fetchHtml(url);
       if (html && isBWWRoundupContent(html)) {
         // Validate page actually matches show (LLM tiebreaker for edge cases)
-        const validation = await validatePageMatchesShow(html, searchTitle, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+        const validation = await validatePageMatchesShow(html, searchTitle, {
+          openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+          pageUrl: url,
+        });
         if (!validation.valid) {
           console.log(`  [SKIP] roundup page doesn't match "${searchTitle}": ${validation.reason}`);
           continue;
