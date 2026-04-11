@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-04-11T17:30:56.636Z",
-  "processed": 17,
-  "failed": 21,
-  "successRate": "44.7%",
+  "updatedAt": "2026-04-11T18:20:12.799Z",
+  "processed": 23,
+  "failed": 25,
+  "successRate": "47.9%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 2,
-    "browserbase": 2,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 9,
     "archive": 10
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-11T17:14:48.679Z",
-      "event": "bb-session",
-      "session": "afae61d2",
-      "url": "https://www.wsj.com/articles/an-act-of-god-review-the-almighty-as-a-third-rate-c"
-    },
-    {
-      "t": "2026-04-11T17:14:50.580Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-11T17:15:35.411Z",
-      "event": "bb-session",
-      "session": "c6cfc8d4",
-      "url": "https://www.wsj.com/articles/theater-review-the-last-ship-1414020603"
-    },
-    {
-      "t": "2026-04-11T17:15:36.100Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-11T17:17:32.210Z",
-      "event": "bb-session",
-      "session": "fd8ddfcf",
-      "url": "https://www.wsj.com/articles/SB10001424127887324345804578426070326683684"
-    },
-    {
-      "t": "2026-04-11T17:17:32.961Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-11T17:18:53.153Z",
-      "event": "bb-session",
-      "session": "35a148fb",
-      "url": "https://www.wsj.com/articles/SB10001424052970203315804577207312073674502"
-    },
-    {
-      "t": "2026-04-11T17:18:53.892Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-11T17:21:00.719Z",
       "event": "bb-session",
@@ -122,6 +78,50 @@
     },
     {
       "t": "2026-04-11T17:30:25.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:18:16.321Z",
+      "event": "bb-session",
+      "session": "e975c8a8",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-11T18:18:17.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:18:34.274Z",
+      "event": "bb-session",
+      "session": "9f3d8aef",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-04-11T18:18:35.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:18:49.734Z",
+      "event": "bb-session",
+      "session": "d6b327fd",
+      "url": "https://variety.com/2026/legit/news/tom-cavanagh-tony-danza-michael-longfellow-b"
+    },
+    {
+      "t": "2026-04-11T18:18:50.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:19:09.509Z",
+      "event": "bb-session",
+      "session": "56a4bc14",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-11T18:19:10.224Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

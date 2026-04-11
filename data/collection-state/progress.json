@@ -16,7 +16,13 @@
     "the-scottsboro-boys-2010/time--richard-zoglin.json",
     "time-stands-still-2010/bloomberg--john-simon.json",
     "memphis-2009/variety--charles-isherwood.json",
-    "rent-1996/newyorker--john-lahr-1996.json"
+    "rent-1996/newyorker--john-lahr-1996.json",
+    "death-of-a-salesman-2026/variety--unknown.json",
+    "death-of-a-salesman-2026/variety--clayton-davis.json",
+    "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+    "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+    "copenhagen-west-end-2026/times-uk--unknown.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -39,25 +45,40 @@
     "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
     "time-stands-still-2010/wsj--terry-teachout.json",
     "time-stands-still-2010/chicagotribune--chris-jones.json",
-    "memphis-2009/wsj--terry-teachout.json"
+    "memphis-2009/wsj--terry-teachout.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
+    ],
     "amp": [
       "data/review-texts/the-scottsboro-boys-2010/time--richard-zoglin.json",
       "the-scottsboro-boys-2010/time--richard-zoglin.json"
     ],
     "browserbase": [
       "data/review-texts/memphis-2009/variety--charles-isherwood.json",
-      "memphis-2009/variety--charles-isherwood.json"
+      "memphis-2009/variety--charles-isherwood.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--unknown.json",
+      "death-of-a-salesman-2026/variety--unknown.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--clayton-davis.json",
+      "death-of-a-salesman-2026/variety--clayton-davis.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+      "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+      "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "lucky-guy-2013/backstage--erik-haagensen.json",
       "wit-2012/bloomberg--jeremy-gerard.json",
       "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
-      "rent-1996/newyorker--john-lahr-1996.json"
+      "rent-1996/newyorker--john-lahr-1996.json",
+      "copenhagen-west-end-2026/times-uk--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -85,7 +106,7 @@
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "rent-1996/newyorker--john-lahr-1996.json",
+  "lastProcessed": "pied-a-terre-off-broadway-2026/nytg--unknown.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -222,6 +243,50 @@
     },
     {
       "t": "2026-04-11T17:30:25.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:18:16.321Z",
+      "event": "bb-session",
+      "session": "e975c8a8",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-11T18:18:17.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:18:34.274Z",
+      "event": "bb-session",
+      "session": "9f3d8aef",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-04-11T18:18:35.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:18:49.734Z",
+      "event": "bb-session",
+      "session": "d6b327fd",
+      "url": "https://variety.com/2026/legit/news/tom-cavanagh-tony-danza-michael-longfellow-b"
+    },
+    {
+      "t": "2026-04-11T18:18:50.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-11T18:19:09.509Z",
+      "event": "bb-session",
+      "session": "56a4bc14",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-11T18:19:10.224Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
