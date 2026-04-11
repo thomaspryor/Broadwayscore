@@ -17,6 +17,7 @@
  *   --domains=a.com,b.com  Only process specific domains
  *   --prioritize         Sort high-yield domains first (even without --domains filter)
  *   --free-only          Only use free sources (cookies + Archive.org), no paid scrapers
+ *   --retry-failed       Re-try reviews that previously failed (ignores dateBackfillAttempted marker)
  *
  * Source priority:
  *   1. URL pattern extraction (free, no fetch)
@@ -40,6 +41,7 @@ const offset = parseInt(args.find(a => a.startsWith('--offset='))?.split('=')[1]
 const domainMode = args.find(a => a.startsWith('--domains='))?.split('=')[1]; // high-yield, custom list, or omit for all
 const prioritize = args.includes('--prioritize'); // sort by high-yield domains first
 const freeOnly = args.includes('--free-only'); // skip paid scrapers (Archive.org + direct fetch only)
+const retryFailed = args.includes('--retry-failed'); // re-try reviews that previously failed backfill
 
 // Rate limit Archive.org to ~6 req/min (CDX limit is ~15/min)
 let lastArchiveRequest = 0;
@@ -186,6 +188,17 @@ function extractDateFromText(text) {
   return null;
 }
 
+// Mark a review file as "attempted but failed" to skip on future runs.
+// Writes dateBackfillAttempted + reason to avoid wasted re-processing.
+function markAttempted(filePath, reason) {
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    data.dateBackfillAttempted = new Date().toISOString();
+    data.dateBackfillAttemptReason = reason;
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+  } catch (e) { /* don't fail the whole run over this */ }
+}
+
 // --- Free fetchers (no API credits) ---
 
 /**
@@ -261,6 +274,7 @@ async function main() {
 
   const candidates = [];
   let skippedDomain = 0;
+  let skippedAttempted = 0;
   for (const show of shows) {
     if (showFilter && show !== showFilter) continue;
     const dir = path.join(baseDir, show);
@@ -269,6 +283,9 @@ async function main() {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
         if (!data.publishDate && data.url && !data.wrongProduction && !data.wrongShow) {
+          // Skip previously-attempted files unless --retry-failed is set
+          if (data.dateBackfillAttempted && !retryFailed) { skippedAttempted++; continue; }
+
           let domain;
           try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
 
@@ -301,6 +318,7 @@ async function main() {
 
   console.log(`Found ${candidates.length} undated reviews with URLs`);
   if (skippedDomain > 0) console.log(`Skipped ${skippedDomain} reviews from zero-yield domains`);
+  if (skippedAttempted > 0) console.log(`Skipped ${skippedAttempted} reviews already attempted (use --retry-failed to retry)`);
   if (domainMode) console.log(`Domain filter: ${domainMode}`);
   if (offset > 0) console.log(`Skipping first ${offset}`);
 
@@ -403,15 +421,18 @@ async function main() {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           data.publishDate = date;
           data.dateSource = dateSource;
+          delete data.dateBackfillAttempted; // clear failed marker on success
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
         }
       } else {
         console.log('  ✗ No date in HTML metadata');
         failed++;
+        if (!dryRun) markAttempted(filePath, 'no-date-in-html');
       }
     } catch (e) {
       console.log(`  ✗ Error: ${e.message}`);
       errors++;
+      if (!dryRun) markAttempted(filePath, `error:${e.message.substring(0, 50)}`);
     }
 
     // Rate limiting: 2 seconds between fetches
