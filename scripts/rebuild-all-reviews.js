@@ -1297,6 +1297,38 @@ showDirs.forEach(showId => {
       }
 
       const data = JSON.parse(rawContent);
+
+      // Auto-migrate aggregator-sourced originalScore → aggregatorStars.
+      // Defense-in-depth for the aggregator-score guard: no matter which extractor
+      // wrote originalScore with a scoreSource in AGGREGATOR_SCORE_SOURCES (show-score-stars,
+      // lbo-star-rating, theatre-reviews-star-rating, etc.), move the value to aggregatorStars
+      // and clear originalScore. Show Score / LBO / TR are aggregators — their "stars" are
+      // their own interpretation and must not be treated as the outlet's published rating.
+      //
+      // MUST run BEFORE every skip check (wrongProduction, duplicateOf, isNotReview, etc.)
+      // because contaminated files are usually flagged with one of those, which would skip
+      // the migration via early return otherwise. Pure data normalization — runs on every
+      // file regardless of whether it contributes to the final score.
+      // See memory/feedback_aggregator_score_guard.md.
+      if (data.originalScore && data.scoreSource && AGGREGATOR_SCORE_SOURCES.has(data.scoreSource)) {
+        if (!data.aggregatorStars) {
+          data.aggregatorStars = data.originalScore;
+        }
+        data.originalScore = null;
+        if (data.originalScoreNormalized != null) {
+          data.originalScoreNormalized = null;
+        }
+        if (data.originalScoreSource && AGGREGATOR_SCORE_SOURCES.has(data.originalScoreSource)) {
+          data.originalScoreSource = null;
+        }
+        try {
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+          stats.migratedAggregatorScore = (stats.migratedAggregatorScore || 0) + 1;
+        } catch (e) {
+          console.warn('  Failed to write back aggregator-score migration:', file, e.message);
+        }
+      }
+
       // Recover review text from garbageFullText when fullText is missing
       // Some reviews were flagged as garbage only due to trailing junk (newsletters, copyright)
       // but contain valid review text that can be cleaned and promoted
@@ -1708,32 +1740,6 @@ showDirs.forEach(showId => {
         if (!hasAggregatorScore && !hasExcerpt) {
           stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
           return;
-        }
-      }
-
-      // Auto-migrate aggregator-sourced originalScore → aggregatorStars.
-      // Defense-in-depth for the aggregator-score guard: no matter which extractor
-      // wrote originalScore with a scoreSource in AGGREGATOR_SCORE_SOURCES (show-score-stars,
-      // lbo-star-rating, theatre-reviews-star-rating, etc.), move the value to aggregatorStars
-      // and clear originalScore. Show Score / LBO / TR are aggregators — their "stars" are
-      // their own interpretation and must not be treated as the outlet's published rating.
-      // See memory/feedback_aggregator_score_guard.md.
-      if (data.originalScore && data.scoreSource && AGGREGATOR_SCORE_SOURCES.has(data.scoreSource)) {
-        if (!data.aggregatorStars) {
-          data.aggregatorStars = data.originalScore;
-        }
-        data.originalScore = null;
-        if (data.originalScoreNormalized != null) {
-          data.originalScoreNormalized = null;
-        }
-        if (data.originalScoreSource && AGGREGATOR_SCORE_SOURCES.has(data.originalScoreSource)) {
-          data.originalScoreSource = null;
-        }
-        try {
-          fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
-          stats.migratedAggregatorScore = (stats.migratedAggregatorScore || 0) + 1;
-        } catch (e) {
-          console.warn('  Failed to write back aggregator-score migration:', file, e.message);
         }
       }
 
