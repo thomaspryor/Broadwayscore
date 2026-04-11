@@ -538,9 +538,20 @@ function mergeReviews(existing, incoming) {
 
   // Prefer valid URLs — and when URL changes, clear stale content flags.
   // This handles preview-article stubs being replaced by real review URLs.
+  //
+  // EXCEPTION: if existing URL is marked urlVerified or urlManualOverride,
+  // don't auto-overwrite with a different URL. First-URL-set (existing.url
+  // is null/undefined) is still allowed — the protection only blocks CHANGES.
+  // See: Boy at the Back of the Class thestage URL oscillation (2026-04-10).
+  const urlIsProtected = existing.urlVerified === true || existing.urlManualOverride === true;
+  const existingUrlLooksBroken = !existing.url || existing.url.includes('undefined');
   const urlChanged = incoming.url && existing.url
     && normalizeUrl(incoming.url) !== normalizeUrl(existing.url);
-  if (incoming.url && (!existing.url || existing.url.includes('undefined') || urlChanged)) {
+  // Block URL changes only when the existing URL is protected AND not
+  // obviously broken. First-URL-set and undefined-repair always proceed.
+  const blockUrlChange = urlIsProtected && !existingUrlLooksBroken && urlChanged;
+  if (incoming.url && (!existing.url || existing.url.includes('undefined') || urlChanged)
+      && !blockUrlChange) {
     merged.url = incoming.url;
     if (urlChanged) {
       // URL fundamentally changed — old content flags are stale

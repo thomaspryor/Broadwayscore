@@ -1134,3 +1134,99 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
     // (Both paths only apply when wrongProductionManualClear is not set.)
   });
 });
+
+// ============================================================================
+// mergeReviews — URL protection (urlVerified / urlManualOverride)
+// Regression tests for the Boy at the Back of the Class thestage URL
+// oscillation: manually-corrected long URL was being reverted to a known-
+// broken short URL on every poller re-scrape. Fix: respect urlVerified /
+// urlManualOverride as don't-auto-overwrite markers.
+// ============================================================================
+
+describe('mergeReviews — URL protection', () => {
+  test('preserves URL when existing.urlVerified = true', () => {
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'thestage',
+      url: 'https://www.thestage.co.uk/reviews/long-verified-url',
+      urlVerified: true,
+    };
+    const incoming = {
+      ...existing,
+      url: 'https://www.thestage.co.uk/reviews/short--url',  // scrape returned a different URL
+      source: 'show-score',
+    };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(
+      merged.url,
+      'https://www.thestage.co.uk/reviews/long-verified-url',
+      'verified URL should not be overwritten by re-scrape'
+    );
+  });
+
+  test('preserves URL when existing.urlManualOverride = true', () => {
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'thestage',
+      url: 'https://www.thestage.co.uk/reviews/manually-corrected',
+      urlManualOverride: true,
+    };
+    const incoming = {
+      ...existing,
+      url: 'https://www.thestage.co.uk/reviews/aggregator-returned',
+      source: 'show-score',
+    };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(merged.url, 'https://www.thestage.co.uk/reviews/manually-corrected');
+  });
+
+  test('still updates URL when existing is unverified and incoming differs', () => {
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'thestage',
+      url: 'https://www.thestage.co.uk/reviews/old',
+    };
+    const incoming = {
+      ...existing,
+      url: 'https://www.thestage.co.uk/reviews/new',
+      source: 'show-score',
+    };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(merged.url, 'https://www.thestage.co.uk/reviews/new',
+      'unprotected URLs should still be updated by merge');
+  });
+
+  test('still upgrades null URL even when urlVerified present (first URL allowed)', () => {
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'thestage',
+      url: null,
+      urlVerified: true,
+    };
+    const incoming = {
+      ...existing,
+      url: 'https://www.thestage.co.uk/reviews/first-url',
+      source: 'show-score',
+    };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(merged.url, 'https://www.thestage.co.uk/reviews/first-url',
+      'first URL set should succeed even when urlVerified is pre-set');
+  });
+
+  test('still repairs undefined URL even when urlVerified present', () => {
+    const existing = {
+      showId: 'example-show-2026',
+      outletId: 'thestage',
+      url: 'https://www.thestage.co.uk/undefined/review',
+      urlVerified: true,
+    };
+    const incoming = {
+      ...existing,
+      url: 'https://www.thestage.co.uk/reviews/real-review',
+      source: 'show-score',
+    };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(merged.url, 'https://www.thestage.co.uk/reviews/real-review',
+      'URLs containing "undefined" should be repaired');
+  });
+});
