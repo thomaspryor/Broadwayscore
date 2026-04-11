@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { shouldRejectAsReservation } = require('./lib/pull-quote-guards');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -52,13 +53,15 @@ const stats = {
   tooShort: 0,
   tooLong: 0,
   notInText: 0,
-  upgraded: 0
+  upgraded: 0,
+  reservationRejected: 0,
+  reservationRetried: 0
 };
 
 // ============================================================
 // LLM Prompt
 // ============================================================
-const SYSTEM_PROMPT = `You are a pull quote editor for a Broadway review aggregation website. Given a critic's full review, extract the single most quotable sentence that best captures the critic's verdict on the show.
+const SYSTEM_PROMPT = `You are a pull quote editor for a Broadway review aggregation website. Given a critic's full review AND that review's overall verdict direction, extract the single most quotable sentence that best captures the critic's verdict on the show.
 
 RULES:
 1. Return ONLY the exact sentence from the review — no paraphrasing, no additions, no attribution
@@ -68,8 +71,11 @@ RULES:
 5. Prefer sentences from the MIDDLE or END of the review where critics typically deliver their verdict, not opening scene-setting paragraphs
 6. The sentence must make sense WITHOUT the surrounding context — a reader should understand the critic's view from this one sentence alone
 7. Choose the most VIVID, memorable phrasing — strong verbs, clear judgment, specific language
-8. If the review is negative, pick the most representative negative verdict — don't cherry-pick a rare positive aside
-9. If the review is positive, pick the strongest praise that captures WHY it's good
+8. VERDICT ALIGNMENT — this is the most important rule: the pull quote's tone MUST match the review's overall verdict direction, which is given in the user prompt.
+   - POSITIVE review (score ≥ 70): pick a sentence that is clearly an endorsement. NEVER pick a sentence that opens with "But", "Yet", "Still", "Though", "Although", "However", "Despite", or "While" — those almost always introduce a reservation that contradicts a positive verdict. NYT critics especially like to bury a mid-review caveat in a positive review; do not pick it.
+   - MIXED review (40-69): prefer the sentence that best captures the critic's hedged position — pick something that conveys both the merit and the limitation if the review actually hedges.
+   - NEGATIVE review (< 40): pick the most representative negative verdict. Don't cherry-pick a rare positive aside.
+9. If the verdict direction is POSITIVE, the pull quote must feel like a THUMBS-UP when read in isolation. If it starts with a word that introduces a caveat, you have picked the wrong sentence — pick a different one.
 
 AVOID:
 - Opening sentences that set the scene ("When the curtain rises on...")
@@ -77,18 +83,31 @@ AVOID:
 - Sentences that are mostly about a single actor unless the whole review focuses on that performance
 - Generic praise/criticism that could apply to any show ("It's worth seeing", "Don't miss it")
 - Sentences with parenthetical asides, em-dashes creating subclauses, or other structures that make them hard to read out of context
+- MOST IMPORTANTLY: on a POSITIVE review, any sentence that starts with But / Yet / Still / Though / Although / However / Despite / While — these are reservation markers and will misrepresent the critic's verdict.
 
 Return ONLY the extracted sentence. Nothing else — no quotes, no attribution, no explanation.
 If the review has no suitable quotable sentence (e.g., it's all plot summary or too fragmented), return exactly: NONE`;
 
-function buildUserPrompt(text) {
+function describeVerdict(score) {
+  if (score == null || typeof score !== 'number' || Number.isNaN(score)) {
+    return 'UNKNOWN (pick the strongest-voiced sentence that captures the critic\'s judgment)';
+  }
+  if (score >= 85) return `POSITIVE / RAVE (score ${score}/100) — the critic loved it`;
+  if (score >= 70) return `POSITIVE (score ${score}/100) — the critic recommends it`;
+  if (score >= 40) return `MIXED (score ${score}/100) — the critic has reservations`;
+  return `NEGATIVE (score ${score}/100) — the critic does not recommend it`;
+}
+
+function buildUserPrompt(text, score, hint) {
   // Truncate very long reviews — the verdict is almost always in the first
   // or last third, not deep in a plot synopsis in the middle
   let excerpt = text;
   if (text.length > 4000) {
     excerpt = text.substring(0, 2000) + '\n\n[...middle truncated...]\n\n' + text.substring(text.length - 2000);
   }
-  return excerpt;
+  const verdictLine = `Overall verdict direction: ${describeVerdict(score)}`;
+  const hintLine = hint ? `\nNOTE: ${hint}\n` : '';
+  return `${verdictLine}\n${hintLine}\nReview text:\n${excerpt}`;
 }
 
 // ============================================================
@@ -101,7 +120,7 @@ function callGemini(systemPrompt, userPrompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [
-      { role: 'user', parts: [{ text: systemPrompt + '\n\n---\n\nReview text:\n' + userPrompt }] }
+      { role: 'user', parts: [{ text: systemPrompt + '\n\n---\n\n' + userPrompt }] }
     ],
     generationConfig: { temperature: 0.1, maxOutputTokens: 300 }
   });
@@ -145,7 +164,7 @@ function callOpenAI(systemPrompt, userPrompt) {
     max_tokens: 300,
     messages: [
       { role: 'system', content: systemPrompt },
-      { role: 'user', content: 'Review text:\n' + userPrompt }
+      { role: 'user', content: userPrompt }
     ]
   });
 
@@ -320,28 +339,64 @@ async function processReview(entry) {
   const { filePath, data } = entry;
   stats.scanned++;
 
-  const userPrompt = buildUserPrompt(data.fullText);
+  // Pass assignedScore to the LLM so it can align the pull quote with the
+  // review's overall verdict direction. See NYT hedge-opener bug — middle-
+  // paragraph reservations were getting picked for positive reviews.
+  const score = typeof data.assignedScore === 'number' ? data.assignedScore : null;
   const hadPrevious = !!data.llmPullQuote;
 
-  let responseText;
-  try {
-    responseText = await callLLMWithRetry(SYSTEM_PROMPT, userPrompt);
-  } catch (e) {
-    stats.errors++;
-    if (VERBOSE) console.log(`  Error for ${path.basename(filePath)}: ${e.message}`);
-    return;
+  // Try up to 2 times: if the first response is a hedge-opener on a
+  // positive review, retry with a stronger hint.
+  let quote = null;
+  let responseText = null;
+  let attempt = 0;
+  let hint = null;
+
+  while (attempt < 2) {
+    attempt++;
+    const userPrompt = buildUserPrompt(data.fullText, score, hint);
+
+    try {
+      responseText = await callLLMWithRetry(SYSTEM_PROMPT, userPrompt);
+    } catch (e) {
+      stats.errors++;
+      if (VERBOSE) console.log(`  Error for ${path.basename(filePath)}: ${e.message}`);
+      return;
+    }
+
+    if (!responseText) { stats.errors++; return; }
+
+    quote = cleanResponse(responseText);
+    if (!quote) {
+      stats.notFound++;
+      if (VERBOSE) console.log(`  No quote: ${path.basename(filePath)} — response: "${(responseText || '').slice(0, 80)}"`);
+      return;
+    }
+
+    stats.extracted++;
+
+    // Reservation check: if the review is positive and the quote opens
+    // with a hedge word, reject and retry once with a stronger hint.
+    if (shouldRejectAsReservation(quote, score)) {
+      if (attempt === 1) {
+        stats.reservationRetried++;
+        if (VERBOSE) {
+          console.log(`  HEDGE on score=${score}: "${quote.slice(0, 80)}..." — retrying`);
+        }
+        hint = `Your previous attempt opened with a hedge word ("${quote.split(/\s+/)[0]}") and read as a reservation, but this is a POSITIVE review. Pick a DIFFERENT sentence that clearly endorses the show. Do not start with But/Yet/Still/Though/Although/However/Despite/While.`;
+        continue;
+      }
+      // Second attempt still a hedge — give up and don't overwrite.
+      stats.reservationRejected++;
+      if (VERBOSE) {
+        console.log(`  HEDGE (rejected after retry): "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
+      }
+      return;
+    }
+
+    // Accepted.
+    break;
   }
-
-  if (!responseText) { stats.errors++; return; }
-
-  const quote = cleanResponse(responseText);
-  if (!quote) {
-    stats.notFound++;
-    if (VERBOSE) console.log(`  No quote: ${path.basename(filePath)} — response: "${(responseText || '').slice(0, 80)}"`);
-    return;
-  }
-
-  stats.extracted++;
 
   // Validate length
   if (quote.length < 30) {
@@ -444,6 +499,8 @@ async function main() {
   console.log(`Errors: ${stats.errors}`);
   console.log(`Written: ${stats.written}`);
   if (stats.upgraded) console.log(`Upgraded (replaced existing): ${stats.upgraded}`);
+  if (stats.reservationRetried) console.log(`Hedge-opener retries: ${stats.reservationRetried}`);
+  if (stats.reservationRejected) console.log(`Hedge-opener rejects (after retry): ${stats.reservationRejected}`);
   console.log(`Time: ${elapsed}s`);
 
   if (DRY_RUN) {

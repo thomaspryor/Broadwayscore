@@ -1769,6 +1769,15 @@ async function scrapeBWWRoundupWithPlaywright(url) {
 function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   let reviews = [];
   const method1Seen = new Set();
+  // Track how many criticName=null entries we've kept per outlet. Multi-critic
+  // outlets (NYSR, NYT, TimeOut, Variety) routinely get 2-3 BlogPostings for
+  // the same show, but BWW's JSON-LD often only has the outlet in the headline
+  // ("New York Stage Review - Show Title") with no author name. Without this
+  // counter, the simple outletId|unknown dedup collapsed all of them to one
+  // entry and silently dropped 2nd/3rd critics — Method 2's text parsing
+  // could only recover partially. See "a-wonderful-world" (3 NYSR headlines,
+  // only 2 review files) as the canonical repro.
+  const method1UnknownCountByOutlet = new Map();
 
   // Method 1: Extract from JSON-LD entries (newer BWW articles)
   // Newer articles use LiveBlogPosting with liveBlogUpdate[] containing BlogPosting entries
@@ -1852,8 +1861,20 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const quote = posting.articleBody || posting.description || '';
 
         // Dedup within Method 1: BWW sometimes has duplicate BlogPosting entries
-        const dedupKey = `${outletId}|${normalizeCritic(criticName)}`;
-        if (method1Seen.has(dedupKey)) continue;
+        // with real critic names — those we legitimately dedup. But for
+        // criticName=null (outlet-only headlines), we keep every occurrence as
+        // its own slot via a per-outlet counter, so multi-critic outlets don't
+        // collapse to a single entry. Method 2's text parsing will upgrade
+        // each slot as it finds names in articleBody.
+        let dedupKey;
+        if (criticName) {
+          dedupKey = `${outletId}|${normalizeCritic(criticName)}`;
+          if (method1Seen.has(dedupKey)) continue;
+        } else {
+          const idx = (method1UnknownCountByOutlet.get(outletId) || 0) + 1;
+          method1UnknownCountByOutlet.set(outletId, idx);
+          dedupKey = `${outletId}|__unknown-${idx}`;
+        }
         method1Seen.add(dedupKey);
 
         reviews.push({
@@ -1954,10 +1975,17 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         // Also track outlet-only keys for Method 1 entries with Unknown critic.
         // Method 1 (JSON-LD) often has Unknown critic; Method 2 (text) parses the real name.
         // Without this, NYSR|unknown and NYSR|frank-scheck both pass → duplicate in reviews.json.
-        const existingOutletOnly = new Set(
-          reviews.filter(r => normalizeCritic(r.criticName) === 'unknown')
-            .map(r => (r.outletId || normalizeOutlet(r.outlet)).toLowerCase())
-        );
+        //
+        // Map<outletId, count>: counts unknown entries per outlet so Method 2 can
+        // upgrade multiple unknowns per outlet (one per Method 2 match). A Set
+        // would drop the count after the first upgrade, losing 2nd/3rd critics
+        // on multi-critic outlets (NYSR, TimeOut, etc).
+        const existingOutletOnly = new Map();
+        for (const r of reviews) {
+          if (normalizeCritic(r.criticName) !== 'unknown') continue;
+          const oid = (r.outletId || normalizeOutlet(r.outlet)).toLowerCase();
+          existingOutletOnly.set(oid, (existingOutletOnly.get(oid) || 0) + 1);
+        }
 
         // Find where reviews start
         const reviewStart = articleBody.indexOf("Let's see what the critics had to say");
@@ -1998,11 +2026,15 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           const dedupKey = `${outletId.toLowerCase()}|${normalizeCritic(criticName)}`;
           if (existingKeys.has(dedupKey)) continue;
 
-          // If Method 1 found this outlet with Unknown critic, upgrade it with the real name
-          // instead of adding a duplicate entry
-          if (existingOutletOnly.has(outletId.toLowerCase())) {
+          // If Method 1 found this outlet with one or more Unknown critic slots,
+          // upgrade the next available slot to this real name. Decrement the
+          // per-outlet count each time so multi-critic outlets get all their
+          // critics upgraded (not just the first).
+          const oidLower = outletId.toLowerCase();
+          const remainingUnknowns = existingOutletOnly.get(oidLower) || 0;
+          if (remainingUnknowns > 0) {
             const existing = reviews.find(r =>
-              (r.outletId || normalizeOutlet(r.outlet)).toLowerCase() === outletId.toLowerCase()
+              (r.outletId || normalizeOutlet(r.outlet)).toLowerCase() === oidLower
               && normalizeCritic(r.criticName) === 'unknown'
             );
             if (existing) {
@@ -2010,7 +2042,9 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
               if (quote && (!existing.bwwExcerpt || existing.bwwExcerpt.length < quote.length)) {
                 existing.bwwExcerpt = quote.substring(0, 300) + (quote.length > 300 ? '...' : '');
               }
-              existingOutletOnly.delete(outletId.toLowerCase());
+              existingKeys.add(dedupKey);
+              if (remainingUnknowns - 1 <= 0) existingOutletOnly.delete(oidLower);
+              else existingOutletOnly.set(oidLower, remainingUnknowns - 1);
               continue;
             }
           }

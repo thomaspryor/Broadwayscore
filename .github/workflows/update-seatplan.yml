@@ -21,7 +21,12 @@ on:
         default: false
 
 concurrency:
-  group: seatplan
+  # Per-run concurrency prevents the orchestrator's back-to-back dispatches from
+  # dropping each other at GitHub's 1-pending-queue limit. Shared groups silently
+  # discard the middle runs — same class of bug as the Cats 2026-04-07 poller
+  # postmortem (scheduled opening-night orchestrator fires 2 BW runs in parallel
+  # and each audience scraper dispatch must survive independently).
+  group: seatplan-${{ github.run_id }}
   cancel-in-progress: false
 
 permissions:

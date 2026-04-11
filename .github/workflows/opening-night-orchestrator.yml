@@ -223,21 +223,35 @@ jobs:
         run: |
           # Dispatch audience scrapers at the START of the orchestrator so data is
           # ready before the broadcast window (~11:30 PM ET). Runs once per session,
-          # not per polling iteration. All dispatches are fire-and-forget.
+          # not per polling iteration. All dispatches are fire-and-forget: we don't
+          # block polling on them, but we DO surface dispatch failures as warnings
+          # (see memory/feedback_silent_workflow_failures.md — never swallow dispatch
+          # errors with `|| true`).
+          #
+          # Each target audience-scraper workflow now uses per-run concurrency groups
+          # so back-to-back dispatches (especially the Broadway.com per-show loop) no
+          # longer lose middle dispatches to GitHub's 1-pending-queue limit.
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
           echo "Dispatching audience scrapers for: $SHOWS (market: ${MARKET:-all})"
 
+          dispatch() {
+            local label="$1"; shift
+            if ! gh workflow run "$@"; then
+              echo "::warning::Failed to dispatch $label (dispatch call returned non-zero)"
+            fi
+          }
+
           if [ "$MARKET" = "west-end" ] || [ -z "$MARKET" ]; then
             # West End audience scrapers (also dispatched when market is empty = all markets)
             echo "  → Dispatching SeatPlan for: $SHOWS"
-            gh workflow run update-seatplan.yml -f shows="$SHOWS" 2>/dev/null || true
+            dispatch "update-seatplan" update-seatplan.yml -f shows="$SHOWS"
 
             echo "  → Dispatching LBO for: $SHOWS"
-            gh workflow run update-lbo.yml -f shows="$SHOWS" 2>/dev/null || true
+            dispatch "update-lbo" update-lbo.yml -f shows="$SHOWS"
 
             echo "  → Dispatching Guardian API for: $SHOWS"
-            gh workflow run fetch-guardian-reviews.yml -f shows="$SHOWS" 2>/dev/null || true
+            dispatch "fetch-guardian-reviews" fetch-guardian-reviews.yml -f shows="$SHOWS"
           fi
 
           if [ "$MARKET" != "west-end" ]; then
@@ -245,22 +259,22 @@ jobs:
             IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
             for SHOW_ID in "${SHOW_ARRAY[@]}"; do
               echo "  → Dispatching Broadway.com scraper for $SHOW_ID"
-              gh workflow run update-broadway-com.yml -f show="$SHOW_ID" 2>/dev/null || true
+              dispatch "update-broadway-com[$SHOW_ID]" update-broadway-com.yml -f show="$SHOW_ID"
             done
 
             echo "  → Dispatching Mezzanine for: $SHOWS"
-            gh workflow run update-mezzanine.yml -f shows="$SHOWS" 2>/dev/null || true
+            dispatch "update-mezzanine" update-mezzanine.yml -f shows="$SHOWS"
 
             echo "  → Dispatching Theatr for: $SHOWS"
-            gh workflow run update-theatr.yml -f shows="$SHOWS" 2>/dev/null || true
+            dispatch "update-theatr" update-theatr.yml -f shows="$SHOWS"
           fi
 
           # These work for both markets (Reddit uses r/TheWestEnd for WE, r/Broadway for BW)
           echo "  → Dispatching Reddit sentiment for: $SHOWS"
-          gh workflow run update-reddit-sentiment.yml -f shows="$SHOWS" 2>/dev/null || true
+          dispatch "update-reddit-sentiment" update-reddit-sentiment.yml -f shows="$SHOWS"
 
           echo "  → Dispatching Show Score for: $SHOWS"
-          gh workflow run update-show-score.yml -f shows="$SHOWS" 2>/dev/null || true
+          dispatch "update-show-score" update-show-score.yml -f shows="$SHOWS"
 
           echo "Audience scrapers dispatched — they will run concurrently with review polling."
 
