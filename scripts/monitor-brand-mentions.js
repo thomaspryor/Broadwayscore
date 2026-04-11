@@ -36,16 +36,94 @@ const { fetchPaidSources } = require('./lib/brand-mention-serp');
 const { filterOwnerAccounts } = require('./lib/owner-accounts');
 const { draftMentions } = require('./lib/brand-mention-drafter');
 
+// Discord notifier is lazy-loaded because it pulls in https/http
+// and we want the module to work in environments without it.
+let _sendAlert = null;
+function getSendAlert() {
+  if (_sendAlert === null) {
+    try {
+      _sendAlert = require('./lib/discord-notify').sendAlert;
+    } catch (e) {
+      _sendAlert = false;
+      console.warn(`[monitor] discord-notify unavailable: ${e.message}`);
+    }
+  }
+  return _sendAlert || null;
+}
+
 // ── Config ────────────────────────────────────────────────────────────────
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
 const FREE_ONLY = process.argv.includes('--free-only');
 const NO_DRAFT = process.argv.includes('--no-draft');
+const NO_DISPATCH = process.argv.includes('--no-dispatch');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const STATE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'brand-mentions.json');
 const MAX_MENTIONS = 500;
+
+// ── Discord dispatch ──────────────────────────────────────────────────────
+
+const SENTIMENT_EMOJI = {
+  positive: '👍',
+  neutral: '🔍',
+  negative: '⚠️',
+  hostile: '🚨',
+};
+
+const SENTIMENT_SEVERITY = {
+  positive: 'info',
+  neutral: 'info',
+  negative: 'warning',
+  hostile: 'error',
+};
+
+async function dispatchToDiscord(mention, verdict) {
+  const sendAlert = getSendAlert();
+  if (!sendAlert) return { dispatched: false, reason: 'discord-notify unavailable' };
+  if (!process.env.DISCORD_WEBHOOK_ALERTS) {
+    return { dispatched: false, reason: 'DISCORD_WEBHOOK_ALERTS not set' };
+  }
+
+  const sentiment = (verdict && verdict.sentiment) || 'neutral';
+  const severity = SENTIMENT_SEVERITY[sentiment] || 'info';
+  const emoji = SENTIMENT_EMOJI[sentiment] || '🔍';
+
+  const title = `${emoji} ${mention.source.toUpperCase()} — ${mention.author || 'unknown'}`;
+  const description = (mention.title || '').slice(0, 200) || '(no title)';
+
+  const fields = [
+    { name: 'Sentiment', value: sentiment, inline: true },
+    { name: 'Respond?', value: verdict && verdict.shouldRespond ? '✏️ yes' : '· no', inline: true },
+    { name: 'Confidence', value: (verdict && verdict.confidence) || '—', inline: true },
+  ];
+
+  if (verdict && verdict.reason) {
+    fields.push({ name: 'Reason', value: verdict.reason.slice(0, 500), inline: false });
+  }
+  if (verdict && verdict.draftResponse) {
+    fields.push({ name: 'Draft', value: verdict.draftResponse.slice(0, 1000), inline: false });
+  }
+  if (mention.excerpt) {
+    fields.push({ name: 'Excerpt', value: mention.excerpt.slice(0, 500), inline: false });
+  }
+
+  try {
+    await sendAlert({
+      title,
+      description,
+      severity,
+      fields,
+      url: mention.url,
+      email: false,
+    });
+    return { dispatched: true };
+  } catch (e) {
+    console.warn(`[monitor] Discord dispatch failed: ${e.message}`);
+    return { dispatched: false, reason: e.message };
+  }
+}
 
 // ── State helpers ─────────────────────────────────────────────────────────
 
@@ -167,6 +245,23 @@ async function main() {
     };
   }
 
+  // 6. Dispatch to Discord (unless --no-dispatch or no webhook)
+  let dispatchedCount = 0;
+  if (NO_DISPATCH) {
+    console.log('[monitor] --no-dispatch set, skipping Discord');
+  } else if (!process.env.DISCORD_WEBHOOK_ALERTS) {
+    console.log('[monitor] DISCORD_WEBHOOK_ALERTS not set, skipping Discord dispatch');
+  } else {
+    console.log('[monitor] dispatching new mentions to Discord...');
+    for (const { mention: m, verdict } of draftedPairs) {
+      const result = await dispatchToDiscord(m, verdict);
+      if (result.dispatched) dispatchedCount++;
+      else if (VERBOSE) console.log(`  [discord] skipped ${m.id}: ${result.reason}`);
+    }
+    console.log(`[monitor] dispatched ${dispatchedCount}/${draftedPairs.length} to Discord`);
+  }
+
+  // 7. Persist
   for (const { mention: m, verdict } of draftedPairs) {
     state.seenIds[m.id] = true;
     state.mentions.push({
@@ -177,6 +272,7 @@ async function main() {
       confidence: verdict ? verdict.confidence : null,
       draftReason: verdict ? verdict.reason : null,
       draftResponse: verdict ? verdict.draftResponse : null,
+      dispatched: dispatchedCount > 0 ? new Date().toISOString() : null,
     });
   }
 
