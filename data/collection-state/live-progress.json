@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-11T10:48:01.642Z",
+  "updatedAt": "2026-04-11T10:51:40.432Z",
   "processed": 44,
-  "failed": 198,
-  "successRate": "18.2%",
+  "failed": 208,
+  "successRate": "17.5%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
@@ -10,9 +10,21 @@
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 8,
-    "archiveToday": 4,
+    "archiveToday": 8,
     "archive": 10
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-11T10:51:31.649Z",
+      "event": "bb-session",
+      "session": "606c7ae6",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadways-orpha"
+    },
+    {
+      "t": "2026-04-11T10:51:32.405Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
