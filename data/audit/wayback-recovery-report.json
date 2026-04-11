@@ -1,23 +1,26 @@
 {
-  "totalCandidates": 24,
-  "cdxFound": 3,
-  "cdxNotFound": 6,
-  "recovered": 2,
+  "totalCandidates": 19,
+  "cdxFound": 4,
+  "cdxNotFound": 8,
+  "recovered": 3,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 2
+    "3": 3
   },
   "recoveredByDomain": {
-    "dailymail.co.uk": 1,
-    "newyorktheater.me": 1
+    "thetimes.com": 1,
+    "newyorktheater.me": 1,
+    "abcnews.go.com": 1
   },
-  "tooShort": 3,
+  "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 15,
-  "notInArchive": 6,
-  "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "errors": 4,
+  "notInArchive": 8,
+  "domainSkipped": 3,
+  "circuitBrokenDomains": [
+    "newspapers.com"
+  ]
 }
