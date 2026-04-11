@@ -4,7 +4,16 @@
  * All Gold List components should import from here.
  */
 
-export type GoldListType = 'critical-gold' | 'critical-gold-west-end' | 'audience-gold' | 'box-office-gold' | 'hot-ticket-gold';
+import type { ShowCategory } from '@/lib/market-utils';
+
+export type GoldListType =
+  | 'critical-gold'
+  | 'critical-gold-west-end'
+  | 'critical-gold-off-broadway'
+  | 'critical-gold-off-west-end'
+  | 'audience-gold'
+  | 'box-office-gold'
+  | 'hot-ticket-gold';
 
 export interface GoldListConfig {
   type: GoldListType;
@@ -64,6 +73,36 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     metricLabel: 'CriticScore',
     metricSuffix: '',
     minDataRequirement: '5+ scored reviews',
+  },
+  {
+    type: 'critical-gold-off-broadway',
+    title: 'Off-Broadway Critical Gold List\u2122',
+    shortTitle: 'Off-Broadway',
+    description: 'The highest-rated Off-Broadway shows by professional critics',
+    color: 'text-teal-400',
+    bgClass: 'bg-teal-500/15',
+    borderClass: 'border-teal-500/30',
+    threshold: 73,
+    maxPerSeason: 10,
+    maxAllTime: 25,
+    metricLabel: 'CriticScore',
+    metricSuffix: '',
+    minDataRequirement: '3+ scored reviews',
+  },
+  {
+    type: 'critical-gold-off-west-end',
+    title: 'Off-West End Critical Gold List\u2122',
+    shortTitle: 'Off-West End',
+    description: 'The highest-rated Off-West End shows by professional critics',
+    color: 'text-indigo-400',
+    bgClass: 'bg-indigo-500/15',
+    borderClass: 'border-indigo-500/30',
+    threshold: 73,
+    maxPerSeason: 10,
+    maxAllTime: 25,
+    metricLabel: 'CriticScore',
+    metricSuffix: '',
+    minDataRequirement: '3+ scored reviews',
   },
   {
     type: 'audience-gold',
@@ -127,4 +166,40 @@ export function getGoldListConfig(type: string): GoldListConfig | undefined {
 /** Check if a string is a valid Gold List type */
 export function isValidGoldListType(type: string): type is GoldListType {
   return GOLD_LIST_TYPES.includes(type as GoldListType);
+}
+
+/**
+ * Map a list type to the ShowCategory its entries belong to.
+ * Returns undefined for Broadway-only lists (which use venue-based membership, not `category`).
+ * Use this for scoring tier thresholds, metadata strings, and `listCategory` props
+ * — NEVER derive market from `listType.includes('west-end')`, which incorrectly
+ * matches 'critical-gold-off-west-end' as West End.
+ */
+export function marketFromListType(listType: GoldListType): ShowCategory | undefined {
+  switch (listType) {
+    case 'critical-gold-off-broadway':
+      return 'off-broadway';
+    case 'critical-gold-west-end':
+      return 'west-end';
+    case 'critical-gold-off-west-end':
+      return 'off-west-end';
+    case 'critical-gold':
+    case 'audience-gold':
+    case 'box-office-gold':
+    case 'hot-ticket-gold':
+      return undefined; // Broadway (venue-based membership)
+  }
+}
+
+/** Human-readable market label for a list type — used in metadata/breadcrumbs. */
+export function marketLabelFromListType(listType: GoldListType): string {
+  const market = marketFromListType(listType);
+  switch (market) {
+    case 'off-broadway': return 'Off-Broadway';
+    case 'west-end': return 'West End';
+    case 'off-west-end': return 'Off-West End';
+    case 'broadway':
+    case undefined:
+      return 'Broadway';
+  }
 }

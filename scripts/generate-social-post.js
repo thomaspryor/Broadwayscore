@@ -65,13 +65,15 @@ function loadShows() {
   return Object.values(data).filter(v => v && typeof v === 'object' && v.title);
 }
 
-// Outlet tier lookup — reads from outlet-registry.json (source of truth)
-const { getTier: getOutletTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
+// Canonical tier-weighted score (matches engine.ts: dedup + OUTLET_TIERS + designation bumps + confidence weights)
+const { computeCriticScore } = require('./lib/compute-critic-score');
+const _outletRegistryData = loadJSON('outlet-registry.json');
+const _outletRegistry = _outletRegistryData?.outlets || _outletRegistryData || {};
 
 /**
- * Compute per-show scores from flat reviews array using tier-weighted averaging.
- * Matches the website's engine.ts:computeCriticScore() → weightedScore methodology.
- * reviews.json is { _meta, reviews: [ {showId, assignedScore, outletId, ...}, ... ] }
+ * Compute per-show scores using the shared engine-parity module.
+ * Pass FULL review objects (not projections) so designation bumps, content-tier confidence
+ * weights, dedup by outlet, and top-critic promotion all work correctly.
  * Returns { [showId]: { compositeScore, reviewCount, title } }
  */
 function computeShowScores() {
@@ -82,23 +84,19 @@ function computeShowScores() {
   for (const r of data.reviews) {
     if (!r.showId || r.assignedScore == null) continue;
     if (!byShow[r.showId]) byShow[r.showId] = { reviews: [], title: r.showTitle || r.showId };
-    byShow[r.showId].reviews.push({ score: r.assignedScore, outletId: r.outletId });
+    byShow[r.showId].reviews.push(r); // full review object — do NOT project
   }
 
   const result = {};
   for (const [showId, { reviews, title }] of Object.entries(byShow)) {
     if (reviews.length === 0) continue;
-    // Tier-weighted average (matching engine.ts)
-    let weightedSum = 0;
-    let totalWeight = 0;
-    for (const r of reviews) {
-      const tier = getOutletTier(r.outletId);
-      const weight = TIER_WEIGHTS[tier];
-      weightedSum += r.score * weight;
-      totalWeight += weight;
-    }
-    const weightedScore = totalWeight > 0 ? Math.round((weightedSum / totalWeight) * 10) / 10 : 0;
-    result[showId] = { compositeScore: weightedScore, reviewCount: reviews.length, title };
+    const scoreResult = computeCriticScore(reviews, _outletRegistry);
+    if (!scoreResult) continue;
+    result[showId] = {
+      compositeScore: Math.round(scoreResult.s * 10) / 10,
+      reviewCount: scoreResult.rc,
+      title,
+    };
   }
   return result;
 }

@@ -111,6 +111,36 @@ describe('computeCriticScore — tier weighting (regression coverage)', () => {
   });
 });
 
+describe('Gold-list compute parity with engine.ts', () => {
+  it('compute-gold-lists.js score for a real show matches shared computeCriticScore', () => {
+    // Golden case: feed Stereophonic's reviews (a show we know has
+    // outlet dedup + OUTLET_TIERS overrides in play) through the shared
+    // module the way compute-gold-lists.js does. The resulting score MUST
+    // match the show-page score computed by engine.ts. If this test ever
+    // fails, gold list scoring has drifted from engine.ts again.
+    const fs = require('fs');
+    const path = require('path');
+    const reviewsPath = path.resolve('data/reviews.json');
+    const registryPath = path.resolve('data/outlet-registry.json');
+    if (!fs.existsSync(reviewsPath) || !fs.existsSync(registryPath)) {
+      // Data files optional in CI runners that don't check out core data.
+      return;
+    }
+    const reviews = JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews;
+    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8')).outlets;
+    const stereoRevs = reviews.filter(r => r.showId === 'stereophonic-2024');
+    if (stereoRevs.length < 5) return; // tolerate data shifts
+    const result = computeCriticScore(stereoRevs, registry);
+    assert.ok(result, 'should compute a score');
+    // Expect dedup to drop at least one review (NYSR has two critics)
+    assert.ok(result.rc < stereoRevs.length, 'should dedup NYSR duplicate');
+    // Expect The Stage promoted to T1 via OUTLET_TIER_OVERRIDES → tier1Count >= 12
+    assert.ok(result.t1 >= 12, `expected >=12 T1 reviews, got ${result.t1}`);
+    // Score should round to 88 (same as show page — locks in the fix from Apr 10, 2026)
+    assert.equal(Math.round(result.s), 88, `expected rounded 88, got ${result.s}`);
+  });
+});
+
 describe('OUTLET_TIER_OVERRIDES parity with scoring.ts', () => {
   it('outlet-tier-overrides.json matches src/config/scoring.ts OUTLET_TIERS', () => {
     // Drift detection: scoring.ts OUTLET_TIERS is the source of truth for

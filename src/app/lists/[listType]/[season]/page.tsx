@@ -8,7 +8,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { GOLD_LIST_CONFIGS, GOLD_LIST_MAP, isValidGoldListType } from '@/config/gold-lists';
+import { GOLD_LIST_CONFIGS, GOLD_LIST_MAP, isValidGoldListType, marketFromListType, marketLabelFromListType } from '@/config/gold-lists';
 import type { GoldListType } from '@/config/gold-lists';
 import {
   getComputedGoldList,
@@ -44,7 +44,7 @@ export function generateMetadata({ params }: { params: { listType: string; seaso
   if (!config) return {};
 
   const title = `${config.title} — ${params.season}`;
-  const market = params.listType.includes('west-end') ? 'West End' : 'Broadway';
+  const market = marketLabelFromListType(params.listType as GoldListType);
   const description = `${config.description}. See the top ${market} shows for the ${params.season} season.`;
 
   return {
@@ -83,8 +83,11 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
   const allSeasons = getSeasonsForList(listType);
   const isCurrent = isCurrentSeason(season);
   const isAudienceList = listType === 'audience-gold';
-  const isCriticList = listType === 'critical-gold' || listType === 'critical-gold-west-end';
-  const listCategory = listType.includes('west-end') ? 'west-end' : undefined;
+  const isCriticList = listType === 'critical-gold'
+    || listType === 'critical-gold-west-end'
+    || listType === 'critical-gold-off-broadway'
+    || listType === 'critical-gold-off-west-end';
+  const listCategory = marketFromListType(listType as GoldListType);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
