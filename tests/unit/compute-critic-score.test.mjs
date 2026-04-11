@@ -145,11 +145,11 @@ describe('computeCriticScore — tier weighting (regression coverage)', () => {
 
 describe('Gold-list compute parity with engine.ts', () => {
   it('compute-gold-lists.js score for a real show matches shared computeCriticScore', () => {
-    // Golden case: feed Stereophonic's reviews (a show we know has
-    // outlet dedup + OUTLET_TIERS overrides in play) through the shared
-    // module the way compute-gold-lists.js does. The resulting score MUST
-    // match the show-page score computed by engine.ts. If this test ever
-    // fails, gold list scoring has drifted from engine.ts again.
+    // Golden case: feed Stereophonic's reviews (a show with NYSR multi-critic
+    // coverage + OUTLET_TIERS overrides in play) through the shared module the
+    // way compute-gold-lists.js does. The resulting score MUST match the
+    // show-page score computed by engine.ts. If this test ever fails, gold
+    // list scoring has drifted from engine.ts again.
     const fs = require('fs');
     const path = require('path');
     const reviewsPath = path.resolve('data/reviews.json');
@@ -164,11 +164,15 @@ describe('Gold-list compute parity with engine.ts', () => {
     if (stereoRevs.length < 5) return; // tolerate data shifts
     const result = computeCriticScore(stereoRevs, registry);
     assert.ok(result, 'should compute a score');
-    // Expect dedup to drop at least one review (NYSR has two critics)
-    assert.ok(result.rc < stereoRevs.length, 'should dedup NYSR duplicate');
+    // Critic-level dedup (Apr 11, 2026) keeps multi-critic outlets like NYSR.
+    // Distinct (outlet, critic) pairs are all surfaced; only same-critic
+    // re-reviews dedup. Stereophonic has NYSR with Bernardo + Verini — both
+    // should appear, so rc equals the raw count.
+    assert.equal(result.rc, stereoRevs.length, 'should keep all distinct critics including the NYSR pair');
     // Expect The Stage promoted to T1 via OUTLET_TIER_OVERRIDES → tier1Count >= 12
     assert.ok(result.t1 >= 12, `expected >=12 T1 reviews, got ${result.t1}`);
-    // Score should round to 88 (same as show page — locks in the fix from Apr 10, 2026)
+    // Score should round to 88 (same as show page — locks in the fix from Apr 10, 2026
+    // and confirms multi-critic dedup change of Apr 11 didn't break parity)
     assert.equal(Math.round(result.s), 88, `expected rounded 88, got ${result.s}`);
   });
 });
