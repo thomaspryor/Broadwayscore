@@ -209,6 +209,23 @@ function main() {
     }
   }
 
+  // Final sweep: normalize sources[] for every show. LLM-generated source entries
+  // frequently have type="other" or non-YYYY-MM-DD dates that fail validation.
+  // This runs AFTER all other commercial pipeline steps, catching any bad records
+  // that slipped through earlier normalization. Idempotent on already-clean data.
+  const { normalizeSources } = require('./lib/commercial-sources');
+  let normalizedCount = 0;
+  for (const entry of Object.values(commercial.shows || {})) {
+    if (Array.isArray(entry.sources) && entry.sources.length > 0) {
+      const before = JSON.stringify(entry.sources);
+      entry.sources = normalizeSources(entry.sources);
+      if (JSON.stringify(entry.sources) !== before) normalizedCount++;
+    }
+  }
+  if (normalizedCount > 0) {
+    console.log(`Normalized sources[] for ${normalizedCount} shows (type/date coercion)`);
+  }
+
   // Save
   if (!DRY_RUN) {
     commercial.modelLastRun = today;

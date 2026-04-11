@@ -25,6 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeSources } = require('./lib/commercial-sources');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -682,6 +683,13 @@ async function main() {
       }
       if (analysis.weeklyRunningCost != null && analysis.weeklyRunningCost > 0 && analysis.weeklyRunningCost < 10000) {
         analysis.weeklyRunningCost = analysis.weeklyRunningCost * 1000;
+      }
+
+      // Normalize sources — LLMs routinely emit `type: "other"` and malformed dates
+      // even when the prompt specifies allowed values. Normalize before storing in
+      // pending so downstream apply steps receive valid data.
+      if (Array.isArray(analysis.sources)) {
+        analysis.sources = normalizeSources(analysis.sources);
       }
 
       // SAFETY: Never auto-set recouped:true — always flag for review
