@@ -691,7 +691,9 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           </div>
 
           {/* Mobile-only breakdown bar — rendered full card width below the poster/score row
-              so the legend labels don't truncate inside the narrow right column on mobile */}
+              so the legend labels don't truncate inside the narrow right column on mobile.
+              ariaHidden=true because the desktop copy (rendered inside the right column) already
+              has the aria-label; we don't want screen readers reading the same distribution twice. */}
           {(() => {
             const reviewCount = show.criticScore?.reviewCount || 0;
             const tier1Count = show.criticScore?.tier1Count || 0;
@@ -703,6 +705,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 reviews={show.criticScore.reviews}
                 category={show.category}
                 className="sm:hidden mt-3"
+                ariaHidden
               />
             );
           })()}
