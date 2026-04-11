@@ -2562,9 +2562,22 @@ function createReviewFile(showId, reviewData, options = {}) {
             console.log(`    ⊘ wrongShow lock: refusing to reassign URL on ${existingFile} (both critics unknown)`);
             return false;
           }
+          // Date-based wrongProduction flags ('Pre-opening guard', 'Date guard',
+          // 'Dateless show', 'Tour transfer') are independent of the URL — a
+          // fresh URL doesn't change when the review was published. Skip the
+          // replacement branch entirely for these so the merge branch below
+          // preserves the flag.
+          const existingWpNote = existingReview.wrongProductionNote || '';
+          const existingIsDateBasedWrongProd = existingReview.wrongProduction && (
+            existingWpNote.startsWith('Pre-opening guard')
+            || existingWpNote.startsWith('Date guard')
+            || existingWpNote.startsWith('Dateless show')
+            || existingWpNote.startsWith('Tour transfer')
+          );
           if ((existingReview.wrongShow || existingReview.wrongProduction) && reviewData.url
               && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))
-              && !isHumanFlagged) {
+              && !isHumanFlagged
+              && !existingIsDateBasedWrongProd) {
             const preserved = {};
             for (const key of ['bwwScore', 'bwwExcerpt', 'showScoreRating', 'showScoreExcerpt', 'dtliThumb', 'dtliExcerpt']) {
               if (existingReview[key] !== undefined) preserved[key] = existingReview[key];

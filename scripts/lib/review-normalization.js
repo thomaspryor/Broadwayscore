@@ -547,8 +547,14 @@ function mergeReviews(existing, incoming) {
       if (incoming.publishDate) merged.publishDate = incoming.publishDate;
       // Preserve manual flags: if a human reviewed and flagged this file
       // (humanReviewedWrongProduction === false means "verified correct"),
-      // do NOT clear the wrong-production/wrong-show state
-      if (existing.humanReviewedWrongProduction !== false) {
+      // do NOT clear the wrong-production/wrong-show state.
+      // Also preserve date-based flags ('Pre-opening guard', 'Date guard',
+      // 'Dateless show', 'Tour transfer') — a URL refresh doesn't change the
+      // underlying date facts. Only URL-based flags ('Same URL') are eligible
+      // for clearing here.
+      const existingNote = existing.wrongProductionNote || '';
+      const isUrlBasedFlag = !existingNote || existingNote.startsWith('Same URL');
+      if (existing.humanReviewedWrongProduction !== false && isUrlBasedFlag) {
         delete merged.wrongProduction;
         delete merged.wrongProductionNote;
       }
@@ -627,16 +633,19 @@ function mergeReviews(existing, incoming) {
   merged.source = merged.sources[0]; // Keep primary source
 
   // Clear wrongProduction if incoming data has a valid URL and the flag
-  // was auto-set (no manual note). This allows venue transfers to self-heal
-  // when new aggregator data arrives with a correct URL for the current production.
-  const isAutoSetWrongProd = !merged.wrongProductionNote
-    || merged.wrongProductionNote.startsWith('Same URL')
-    || merged.wrongProductionNote.startsWith('Dateless show')
-    || merged.wrongProductionNote.startsWith('Date guard')
-    || merged.wrongProductionNote.startsWith('Pre-opening guard');
+  // was URL-based (venue transfer self-heal). Date-based flags persist —
+  // a URL refresh doesn't change when the review was published. The rebuild's
+  // pre-opening guard re-evaluates date-based flags fresh each run, so clearing
+  // them here just creates an oscillation loop with the rebuild.
+  //
+  // Only 'Same URL' (URL-based) auto-clears here. Date-based flag prefixes
+  // ('Pre-opening guard', 'Date guard', 'Dateless show') and 'Tour transfer'
+  // manual flags must persist until a new valid date or manual override.
+  const isUrlBasedWrongProd = !merged.wrongProductionNote
+    || merged.wrongProductionNote.startsWith('Same URL');
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && !merged.wrongProductionManualClear
-      && isAutoSetWrongProd) {
+      && isUrlBasedWrongProd) {
     delete merged.wrongProduction;
     delete merged.wrongProductionNote;
     merged.wrongProductionAutoCleared = true;
