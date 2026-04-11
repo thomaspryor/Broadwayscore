@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { computeCriticScore } = require('./lib/compute-critic-score');
+const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -43,10 +44,11 @@ try {
   process.exit(1);
 }
 
-try {
-  reviews = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf-8')).reviews || [];
-} catch (err) {
-  console.warn('⚠ reviews.json not found');
+// Uses shared loader so mobile/public show JSON scores exactly match the
+// Next.js show page (src/lib/data-core.ts). See scripts/lib/load-reviews-with-blog.js.
+reviews = loadReviewsWithBlog();
+if (reviews.length === 0) {
+  console.warn('⚠ reviews.json not found or empty');
 }
 
 try {

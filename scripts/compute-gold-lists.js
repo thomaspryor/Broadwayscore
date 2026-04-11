@@ -29,10 +29,15 @@ const outputPath = path.join(dataDir, 'gold-lists-computed.json');
 
 // Load data
 const showsRaw = require(path.join(dataDir, 'shows.json'));
-const reviewsData = require(path.join(dataDir, 'reviews.json'));
 const audienceBuzz = require(path.join(dataDir, 'audience-buzz.json'));
 const grosses = require(path.join(dataDir, 'grosses.json'));
 const grossesHistory = require(path.join(dataDir, 'grosses-history.json'));
+
+// reviews.json + blog-reviews-for-scoring.json concatenated.
+// Uses shared helper so gold list scores stay in lock-step with show page
+// scores (src/lib/data-core.ts). See scripts/lib/load-reviews-with-blog.js.
+const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
+const reviewsList = loadReviewsWithBlog();
 
 const shows = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || Object.values(showsRaw));
 const showById = {};
@@ -111,7 +116,7 @@ function getAllSeasons() {
 // Pre-compute reviews grouped by show (avoids re-iterating 14K+ reviews per season)
 // ============================================
 const reviewsByShow = {};
-Object.values(reviewsData.reviews).forEach(r => {
+reviewsList.forEach(r => {
   if (!r.showId || r.assignedScore == null) return;
   if (!reviewsByShow[r.showId]) reviewsByShow[r.showId] = [];
   reviewsByShow[r.showId].push(r);

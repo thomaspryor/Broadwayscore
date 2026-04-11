@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { computeCriticScore: _computeRaw } = require('./lib/compute-critic-score');
+const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -75,10 +76,10 @@ try {
   console.warn('⚠ shows.json not found — generating empty homepage-archive.json');
 }
 
-try {
-  const reviewsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf-8'));
-  reviews = reviewsData.reviews || [];
-} catch (err) {
+// Shared loader appends blog-reviews-for-scoring.json so homepage scores match
+// the Next.js show page (src/lib/data-core.ts does the same concatenation).
+reviews = loadReviewsWithBlog();
+if (reviews.length === 0) {
   console.warn('⚠ reviews.json not found — scores will be null');
 }
 
