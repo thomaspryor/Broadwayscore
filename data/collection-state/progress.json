@@ -253,7 +253,17 @@
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
     "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
     "pippin-2013/new-jersey-newsroom--michael-sommers.json",
-    "orphans-2013/washpost--associated-press.json"
+    "orphans-2013/washpost--associated-press.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-assembled-parties-2013/wsj--terry-teachout.json",
+    "the-assembled-parties-2013/washpost--mark-kennedy.json",
+    "the-nance-2013/hollywood-reporter--david-rooney.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "hands-on-a-hardbody-2013/washpost--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -308,7 +318,9 @@
       "data/review-texts/a-time-to-kill-2013/abc-news--mark-kennedy.json",
       "data/review-texts/the-winslow-boy-2013/abc-news--mark-kennedy.json",
       "data/review-texts/a-night-with-janis-joplin-2013/abc-news--jennifer-farrar.json",
-      "data/review-texts/orphans-2013/washpost--associated-press.json"
+      "data/review-texts/orphans-2013/washpost--associated-press.json",
+      "data/review-texts/the-assembled-parties-2013/washpost--mark-kennedy.json",
+      "data/review-texts/hands-on-a-hardbody-2013/washpost--mark-kennedy.json"
     ],
     "archive": [
       "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
@@ -324,7 +336,7 @@
     ]
   },
   "startTime": "2026-04-11T08:59:41.327Z",
-  "lastProcessed": "orphans-2013/washpost--associated-press.json",
+  "lastProcessed": "hands-on-a-hardbody-2013/washpost--mark-kennedy.json",
   "log": [
     {
       "t": "2026-04-11T10:51:31.649Z",
@@ -334,6 +346,28 @@
     },
     {
       "t": "2026-04-11T10:51:32.405Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-11T10:52:33.597Z",
+      "event": "bb-session",
+      "session": "1a867eeb",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-richard-greenbe"
+    },
+    {
+      "t": "2026-04-11T10:52:34.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-11T10:54:21.861Z",
+      "event": "bb-session",
+      "session": "4ae901de",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-musical-hands-on-a-hard"
+    },
+    {
+      "t": "2026-04-11T10:54:22.648Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
