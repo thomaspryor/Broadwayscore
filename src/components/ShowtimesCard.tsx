@@ -5,6 +5,7 @@ import type { ShowSchedule, WeekSchedule } from '@/lib/data-types';
 import TicketLink from '@/components/TicketLink';
 import type { TicketLinkData } from '@/lib/ticket-utils';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
+import { getCurrencySymbol } from '@/lib/market-utils';
 
 interface ShowtimesCardProps {
   schedule: ShowSchedule;
@@ -132,9 +133,10 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
     return primaryLink!.url;
   }
 
-  // Button text: "Get Tickets from $X" when price available, else "Get Tickets on {Platform}"
+  // Button text: "Get Tickets from $X" / "£X" when price available, else "Get Tickets on {Platform}"
+  const currencySymbol = getCurrencySymbol(market);
   const buttonText = primaryLink?.priceFrom
-    ? `Get Tickets from $${primaryLink.priceFrom}`
+    ? `Get Tickets from ${currencySymbol}${primaryLink.priceFrom}`
     : hasTicketLink
     ? `Get Tickets on ${primaryLink!.platform}`
     : '';
@@ -259,7 +261,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
             className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-accent-gold hover:bg-accent-gold/80 text-gray-900 hover:text-gray-900 text-sm font-bold shadow-sm shadow-accent-gold/20 transition-colors border border-accent-gold whitespace-nowrap mb-2"
           >
             {buttonText}
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </TicketLink>
