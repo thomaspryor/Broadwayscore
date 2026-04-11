@@ -46,6 +46,8 @@ function loadShows(): void {
 function findMatchingSlug(title: string): string | null {
   const result = matchTitleToShow(title, allShows, { market: 'broadway', prefer: 'open' });
   if (!result?.show) return null;
+  // Require high confidence — medium (word-based fuzzy) causes wrong-show contamination
+  if (result.confidence !== 'high') return null;
   const show = result.show;
   // Double-check: reject WE/OB matches (safety net)
   if (show.id?.includes('west-end') || show.id?.includes('off-broadway') || show.id?.includes('off-west-end')) {

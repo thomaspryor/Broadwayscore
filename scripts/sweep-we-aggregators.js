@@ -457,19 +457,9 @@ async function _buildTRIndex(weShows) {
       if (match && match.show && match.confidence === 'high') { bestMatch = match; break; }
     }
 
-    // Fallback: check if any show title words appear in raw slug
-    if (!bestMatch) {
-      for (const show of weShows) {
-        const showWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/)
-          .filter(w => w.length > 2);
-        const slugLower = rawSlug.toLowerCase();
-        const matchCount = showWords.filter(w => slugLower.includes(w)).length;
-        if (matchCount >= Math.min(2, showWords.length) && matchCount > 0) {
-          bestMatch = { show };
-          break;
-        }
-      }
-    }
+    // NOTE: Word-overlap fallback removed 2026-04-10 — single-word shows like
+    // "Six" matched any slug containing "six", causing wrong-show contamination.
+    // If the slug variants don't produce a high-confidence match, skip the URL.
 
     if (bestMatch && bestMatch.show && !_trIndex.has(bestMatch.show.id)) {
       _trIndex.set(bestMatch.show.id, url);
@@ -756,19 +746,7 @@ async function _buildTSIndex(weShows) {
         if (match && match.show && match.confidence === 'high') { bestMatch = match; break; }
       }
 
-      // Fallback: check if any show title words appear in raw slug
-      if (!bestMatch) {
-        for (const show of weShows) {
-          const showWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/)
-            .filter(w => w.length > 2);
-          const slugLower = rawSlug.toLowerCase();
-          const matchCount = showWords.filter(w => slugLower.includes(w)).length;
-          if (matchCount >= Math.min(2, showWords.length) && matchCount > 0) {
-            bestMatch = { show };
-            break;
-          }
-        }
-      }
+      // NOTE: Word-overlap fallback removed 2026-04-10 (see _buildTRIndex above).
 
       if (bestMatch && bestMatch.show && !_tsIndex.has(bestMatch.show.id)) {
         _tsIndex.set(bestMatch.show.id, url);

@@ -584,6 +584,13 @@ async function scrapePlaybillVerdict() {
   stats.articlesFound = uniqueArticles.length;
   console.log(`\nTotal unique articles found: ${uniqueArticles.length}\n`);
 
+  // Zero-data guard: if no articles found on the category page, scraping failed
+  // (blocked, page structure change). Fail fast before Google fallback wastes API credits.
+  if (stats.articlesFound === 0) {
+    console.error('❌ ZERO articles found on Playbill category page — likely page structure change. Failing.');
+    process.exit(1);
+  }
+
   // Step 2: Match articles to shows
   const matchedArticles = [];
   const unmatchedShows = new Set(shows.map(s => s.id));
@@ -715,13 +722,6 @@ async function scrapePlaybillVerdict() {
   }
 
   printSummary();
-
-  // Zero-data guard: if no articles found, Playbill page structure may have changed
-  if (stats.articlesFound === 0) {
-    console.error('❌ ZERO articles found on Playbill — likely page structure change. Failing.');
-    process.exit(1);
-  }
-
   return stats;
 }
 

@@ -463,14 +463,8 @@ async function scrapeSite(site, shows) {
       continue;
     }
 
-    const { show, confidence } = match;
+    const { show } = match;
     const showId = show.slug || show.id;
-
-    // Skip low-confidence matches
-    if (confidence === 'medium') {
-      siteStats.skippedNoMatch++;
-      continue;
-    }
 
     siteStats.matchedShows++;
 

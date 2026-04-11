@@ -396,15 +396,8 @@ async function scrapeNYSRReviews() {
       continue;
     }
 
-    const { show, confidence } = match;
+    const { show } = match;
     const showId = show.slug || show.id;
-
-    // Skip low-confidence matches
-    if (confidence === 'medium') {
-      console.log(`  [SKIP] Low-confidence match: "${cleanTitle}" → ${showId}`);
-      stats.skippedNoMatch++;
-      continue;
-    }
 
     stats.matchedShows++;
 
