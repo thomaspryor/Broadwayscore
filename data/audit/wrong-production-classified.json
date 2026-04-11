@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-11T00:38:11.266Z",
+    "generatedAt": "2026-04-11T01:08:43.655Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 86,
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review discusses a Sydney production of Wicked, mentioning its previous stagings in 2008 and 2014. It also references the 2004 Tony Awards, but in the context of the original Broadway production's reception, not a revival."
+      "reasoning": "This review is about a production in Sydney, Australia. It mentions previous Australian productions in 2008 and 2014, and the current production is playing at the Sydney Lyric."
     },
     {
       "showId": "the-lion-king-1997",
@@ -44,7 +44,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review is about an Atlanta production at the Fox Theatre, not the Broadway production filed under. It mentions the Fox Theatre in Atlanta and specific performers in that production."
+      "reasoning": "The review is about an Atlanta production at the Fox Theatre, not the Broadway production filed under. It mentions the Fox Theatre in Atlanta and provides ticket information specific to that venue."
     },
     {
       "showId": "master-class-1995",
@@ -65,6 +65,24 @@
       "reasoning": "The review mentions Tyne Daly, Stephen Wadsworth, and the Samuel J. Friedman Theatre, all associated with the 2011 revival. It also mentions the Kennedy Center's 2010 tribute to Terrence McNally, where this production originated."
     },
     {
+      "showId": "how-to-succeed-in-business-without-really-trying-1995",
+      "showTitle": "How to Succeed in Business Without Really Trying",
+      "showYear": 1995,
+      "file": "variety--steven-suskin.json",
+      "outlet": "Variety",
+      "criticName": "Steven Suskin",
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: revival, reinvented",
+        "year 2010 in text matches revival how-to-succeed-in-business-without-really-trying-2011",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
+      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival. It also mentions the 2010 production of \"Promises, Promises\" which is a reference to Rob Ashford's previous work before the 2011 revival."
+    },
+    {
       "showId": "broadway-1987",
       "showTitle": "Broadway",
       "showYear": 1987,
@@ -79,7 +97,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This,\" not the original 1987 production. The review also mentions the director, Mic, and the set designer, Derek McLane, who were involved in the 2019 production."
+      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This,\" not the original 1987 production. The review also mentions the director, Michael Mayer, and set designer, Derek McLane, who were involved in the 2019 production."
     },
     {
       "showId": "the-house-of-blue-leaves-1986",
@@ -96,25 +114,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-house-of-blue-leaves-2011",
-      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, and Christopher Abbott, all of whom were in the 2011 production. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which is incorrect if this review was about the 1986 production."
-    },
-    {
-      "showId": "how-to-succeed-in-business-without-really-trying-1995",
-      "showTitle": "How to Succeed in Business Without Really Trying",
-      "showYear": 1995,
-      "file": "variety--steven-suskin.json",
-      "outlet": "Variety",
-      "criticName": "Steven Suskin",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, reinvented",
-        "year 2010 in text matches revival how-to-succeed-in-business-without-really-trying-2011",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "how-to-succeed-in-business-without-really-trying-2011",
-      "reasoning": "The review mentions Daniel Radcliffe and John Larroquette, who starred in the 2011 revival, and references a '2010 production of Promises, Promises' by the same director. It also mentions Matthew Broderick's 1995 production, indicating this review is about a different production."
+      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 production. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which is incorrect if this review was a"
     },
     {
       "showId": "the-gin-game-1977",
@@ -130,23 +130,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia."
-    },
-    {
-      "showId": "the-real-thing-2000",
-      "showTitle": "The Real Thing",
-      "showYear": 2000,
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "criticName": "Robert Hofler",
-      "publishDate": null,
-      "originalSignals": [
-        "year 1984 in text matches revival the-real-thing-1984"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the American Airlines Theatre, which matches the 2014 production. It also mentions the 1984 and 2000 productions."
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
     },
     {
       "showId": "old-times-1971",
@@ -162,7 +146,23 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, indicating it's a current production."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of which are associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre."
+    },
+    {
+      "showId": "the-real-thing-2000",
+      "showTitle": "The Real Thing",
+      "showYear": 2000,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": null,
+      "originalSignals": [
+        "year 1984 in text matches revival the-real-thing-1984"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-real-thing-2014",
+      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal making their Broadway debuts at the American Airlines Theatre, which matches the 2014 production. It also mentions the 1984 and 2000 productions, but the current production being reviewed is the 2014 one."
     }
   ]
 }
