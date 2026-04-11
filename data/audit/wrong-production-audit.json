@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T10:52:31.750Z",
+  "timestamp": "2026-04-11T11:18:31.557Z",
   "stats": {
-    "totalReviews": 34739,
+    "totalReviews": 34741,
     "alreadyFlagged": 13924,
     "dateGuardCatches": 60,
     "directorMismatch": 933,
     "tvFilmSignals": 3385,
-    "londonSignals": 1108,
+    "londonSignals": 1110,
     "offBroadwaySignals": 959,
     "yearMismatch": 71,
-    "noPublishDate": 4258
+    "noPublishDate": 4259
   },
   "findings": [
     {
@@ -71358,6 +71358,20 @@
       ]
     },
     {
+      "showId": "les-liaisons-dangereuses-2016",
+      "file": "washpost--mark-kennedy.json",
+      "score": 73,
+      "publishDate": "October 30, 2016",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-nyc-revival-of-les-liaisons-dangereuses-crackles/2016/10/30/3d47319e-9f06-11e6-8864-6f892cad0865_story.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "afridiziak-theatre-news--mark-arbouine.json",
       "score": 80,
@@ -79333,6 +79347,20 @@
       "score": 85,
       "publishDate": "March 31, 2016",
       "url": "https://www.vulture.com/2016/03/theater-review-the-crucible.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
+      "file": "abc-news--jennifer-farrar.json",
+      "score": 80,
+      "publishDate": "October 5, 2014",
+      "url": "http://abcnews.go.com/Entertainment/wireStory/review-bways-curious-incident-dazzling-25982943",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
