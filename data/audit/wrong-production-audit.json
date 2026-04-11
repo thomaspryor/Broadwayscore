@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-11T23:13:25.667Z",
+  "timestamp": "2026-04-11T23:27:23.260Z",
   "stats": {
-    "totalReviews": 34616,
+    "totalReviews": 34617,
     "alreadyFlagged": 14079,
     "dateGuardCatches": 58,
     "directorMismatch": 926,
-    "tvFilmSignals": 3337,
-    "londonSignals": 1073,
-    "offBroadwaySignals": 953,
+    "tvFilmSignals": 3338,
+    "londonSignals": 1074,
+    "offBroadwaySignals": 954,
     "yearMismatch": 71,
     "noPublishDate": 4084
   },
@@ -33560,6 +33560,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2025-11-01",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/wendy-and-peter-pan-review-a-jumble-of-good-ideas-sntv0grd3",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -76075,6 +76093,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "summer-2018",
+      "file": "nyt-theater--david-bowie.json",
+      "score": 39,
+      "publishDate": "2018-05-29",
+      "url": "https://newyorktheater.me/2018/05/29/hair-live-broadways-summer-surprises-in-memoriam-2018-week-in-new-york-theater/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
