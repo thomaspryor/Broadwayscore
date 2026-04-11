@@ -77,15 +77,44 @@ function groupByMarket(pulseData) {
 }
 
 /**
- * For each market, sort shows by volume desc and assign 1-based rank.
- * Mutates the entries in-place.
+ * Minimum shows per market required to display a rank.
+ *
+ * Without this, "#1/3 Broadway" would be shown when only 3 shows have been
+ * processed — which passes the "Reddit screenshot test" not at all. Ranks
+ * should only appear once the market has enough coverage that "#N of M"
+ * genuinely means something. 10 is a judgment call: large enough to feel
+ * like a real ranking, small enough to activate during cold-start weeks.
+ */
+const MIN_SHOWS_FOR_RANK_DISPLAY = 10;
+
+/**
+ * For each market, sort shows by volume desc. Only assigns rank display if
+ * the market has enough ranked shows — below that, rank is null and the
+ * card hides the "#N/M" line entirely (handled in SocialPulseCard.tsx).
+ *
+ * Sort still happens regardless, so we can capture raw position for future
+ * use / debugging even when display is suppressed.
  */
 function assignRanks(groups) {
   for (const [, entries] of groups) {
     entries.sort((a, b) => (b.data.volume || 0) - (a.data.volume || 0));
+    const displayable = entries.length >= MIN_SHOWS_FOR_RANK_DISPLAY;
     entries.forEach((entry, i) => {
-      const rankText = `${i + 1}/${entries.length} ${marketShortLabel(entry.data.market)}`;
-      entry.newRank = { position: i + 1, total: entries.length, text: rankText };
+      if (displayable) {
+        entry.newRank = {
+          position: i + 1,
+          total: entries.length,
+          text: `${i + 1}/${entries.length} ${marketShortLabel(entry.data.market)}`,
+        };
+      } else {
+        // Market too small to rank — store position for debugging but null
+        // the display text so the card hides the rank line.
+        entry.newRank = {
+          position: i + 1,
+          total: entries.length,
+          text: null,
+        };
+      }
     });
   }
 }
@@ -115,11 +144,17 @@ function writeRanks(pulseData, dryRun, logger = console) {
       fs.writeFileSync(canonicalPath, JSON.stringify(entry.data, null, 2));
     }
 
-    // Update public compact file if it exists
+    // Update public compact file if it exists. Only write the `r` key if
+    // the market has enough shows to make a rank meaningful — otherwise
+    // omit it so the card doesn't render a misleading "#1/3 Broadway".
     if (fs.existsSync(publicPath)) {
       try {
         const publicData = JSON.parse(fs.readFileSync(publicPath, 'utf-8'));
-        publicData.r = entry.newRank.text;
+        if (entry.newRank.text) {
+          publicData.r = entry.newRank.text;
+        } else {
+          delete publicData.r;
+        }
         if (!dryRun) {
           fs.writeFileSync(publicPath, JSON.stringify(publicData));
         }
