@@ -29,15 +29,31 @@ const outletRegistry = {
   'blog-a': { tier: 3, displayName: 'Blog A' },
 };
 
-describe('computeCriticScore — outlet-level dedup', () => {
-  it('keeps the MOST RECENT review when an outlet has multiple reviews (by publishDate)', () => {
+describe('computeCriticScore — critic-level dedup', () => {
+  it('KEEPS distinct critics from the same outlet (multi-critic outlets like NYSR)', () => {
     const reviews = [
       { criticName: 'Critic A', outletId: 'nysr', assignedScore: 100, publishDate: '2024-04-19' },
       { criticName: 'Critic B', outletId: 'nysr', assignedScore: 60,  publishDate: '2024-04-20' },
     ];
     const result = computeCriticScore(reviews, outletRegistry);
-    assert.equal(result.rc, 1, 'should dedup to 1 review');
-    // The most-recent review (Critic B, 60) is kept, not the older one (100)
+    // Both critics counted — each at outletShare=0.5 — but outlet still
+    // contributes one full T2 vote total.
+    assert.equal(result.rc, 2, 'distinct critics at same outlet both count');
+    // Critic A: 100 * 0.75 (T2) * 1.0 (conf) * 0.5 (share) = 37.5
+    // Critic B:  60 * 0.75       * 1.0       * 0.5         = 22.5
+    // Total weighted: 60. Total weight: 0.75 * 0.5 + 0.75 * 0.5 = 0.75
+    // 60 / 0.75 = 80 — equivalent to averaging the two critics
+    assert.equal(result.s, 80);
+  });
+
+  it('dedups when the SAME critic re-reviews at the same outlet (most recent wins)', () => {
+    // Critic A re-reviews after a cast change — only the most recent should count
+    const reviews = [
+      { criticName: 'Same Critic', outletId: 'nysr', assignedScore: 100, publishDate: '2024-04-19' },
+      { criticName: 'Same Critic', outletId: 'nysr', assignedScore: 60,  publishDate: '2024-04-20' },
+    ];
+    const result = computeCriticScore(reviews, outletRegistry);
+    assert.equal(result.rc, 1, 'same critic deduped to most recent');
     assert.equal(result.s, 60);
   });
 
@@ -52,29 +68,45 @@ describe('computeCriticScore — outlet-level dedup', () => {
     assert.equal(result.s, 85);
   });
 
-  it('drops the older duplicate so composite score changes accordingly', () => {
-    // Two NYSR reviews: 100 (older) + 60 (newer). Without dedup, avg would be 80.
-    // With dedup, only 60 counts.
+  it('multi-critic outlet contributes one full tier-vote, not N votes', () => {
+    // Vulture (T1, 80) + NYSR (T2, two critics: 100 and 60)
+    // OLD behavior: NYSR deduped to 60 → (80 * 1.0 + 60 * 0.75) / 1.75 = 71.43
+    // NEW behavior: NYSR keeps both, each at half-weight → outlet still counts as one T2 vote
+    //   Vulture:  80 * 1.0 * 1.0 * 1.0  = 80     weight 1.0
+    //   NYSR-A:  100 * 0.75 * 1.0 * 0.5 = 37.5   weight 0.375
+    //   NYSR-B:   60 * 0.75 * 1.0 * 0.5 = 22.5   weight 0.375
+    //   total:   140 / 1.75 = 80
+    // The NYSR average (80) is what NYSR contributes — same total weight as before
     const reviews = [
       { criticName: 'A', outletId: 'vulture', assignedScore: 80, publishDate: '2024-04-19' },
       { criticName: 'B', outletId: 'nysr',    assignedScore: 100, publishDate: '2024-04-19' },
       { criticName: 'C', outletId: 'nysr',    assignedScore: 60,  publishDate: '2024-04-20' },
     ];
     const result = computeCriticScore(reviews, outletRegistry);
-    assert.equal(result.rc, 2, 'two outlets after dedup');
-    // Vulture (T1, w=1.0, score=80) + NYSR (T2, w=0.75, score=60)
-    // weighted = (80 * 1.0 + 60 * 0.75) / (1.0 + 0.75) = (80 + 45) / 1.75 ≈ 71.43
-    assert.equal(result.s, 71.43);
+    assert.equal(result.rc, 3, 'all three critics surfaced');
+    assert.equal(result.s, 80);
   });
 
-  it('handles missing publishDate — newer defined date wins over null', () => {
+  it('handles missing publishDate — newer defined date wins over null for same critic', () => {
     const reviews = [
-      { criticName: 'A', outletId: 'nysr', assignedScore: 50, publishDate: null },
-      { criticName: 'B', outletId: 'nysr', assignedScore: 90, publishDate: '2024-04-20' },
+      { criticName: 'Same A', outletId: 'nysr', assignedScore: 50, publishDate: null },
+      { criticName: 'Same A', outletId: 'nysr', assignedScore: 90, publishDate: '2024-04-20' },
     ];
     const result = computeCriticScore(reviews, outletRegistry);
     assert.equal(result.rc, 1);
     assert.equal(result.s, 90);
+  });
+
+  it('treats reviews with no criticName as one shared "unknown" bucket per outlet', () => {
+    // Two reviews from same outlet with no criticName — treated as the same author,
+    // dedup picks most recent. This preserves single-vote semantics for anonymous reviews.
+    const reviews = [
+      { criticName: null, outletId: 'nysr', assignedScore: 100, publishDate: '2024-04-19' },
+      { criticName: null, outletId: 'nysr', assignedScore: 60,  publishDate: '2024-04-20' },
+    ];
+    const result = computeCriticScore(reviews, outletRegistry);
+    assert.equal(result.rc, 1, 'anonymous reviews share one bucket');
+    assert.equal(result.s, 60);
   });
 });
 
