@@ -212,7 +212,6 @@ const CO_OCCURRENCE_PATTERNS = [
       'src/app/unsubscribe/UnsubscribeClient.tsx', // Unsubscribe UI
       'src/components/HeaderSubscribeButton.tsx', // Subscribe button market label
       'src/components/FooterEmailCapture.tsx',    // Uses Market type ('broadway'|'west-end'), OWE routed via hook
-      'src/components/DiscountTicketsNav.tsx',    // Uses DiscountMarket type ('broadway'|'west-end'), pure UI nav, no category logic
       'src/lib/market-utils.ts',                  // Source of truth — defines isLondonMarket() itself
       'src/lib/venue-classification.ts',           // Re-exports from market-utils + venue-specific logic
     ],
