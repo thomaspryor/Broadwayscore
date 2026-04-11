@@ -16,14 +16,14 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   const canonicalUrl = `${BASE_URL}/critics/outlets/${params.slug}`;
   const tierLabel = outlet.tier === 1 ? 'Tier 1' : outlet.tier === 2 ? 'Tier 2' : 'Tier 3';
-  const description = `${outlet.name} (${tierLabel}) has published ${outlet.reviewCount} Broadway reviews with an average score of ${outlet.avgScore}/100. ${outlet.criticCount} critics, full review history.`;
+  const description = `${outlet.name} (${tierLabel}) has published ${outlet.reviewCount} theatre reviews with an average score of ${outlet.avgScore}/100. ${outlet.criticCount} critics, full review history covering Broadway and the West End.`;
 
   return {
-    title: `${outlet.name} - Broadway Reviews (${tierLabel})`,
+    title: `${outlet.name} - Theatre Reviews (${tierLabel})`,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${outlet.name} - Broadway Reviews`,
+      title: `${outlet.name} - Theatre Reviews`,
       description,
       url: canonicalUrl,
       type: 'website',
@@ -31,7 +31,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     },
     twitter: {
       card: 'summary',
-      title: `${outlet.name} - Broadway Reviews`,
+      title: `${outlet.name} - Theatre Reviews`,
       description,
     },
   };
