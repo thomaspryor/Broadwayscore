@@ -17,6 +17,33 @@ import path from 'path';
 import type { SocialPulsePayload } from '@/components/show-page/SocialPulseCard';
 
 const PUBLIC_SHOWS_DIR = path.join(process.cwd(), 'public', 'data', 'shows');
+const SOCIAL_PULSE_DIR = path.join(process.cwd(), 'data', 'social-pulse');
+
+/**
+ * Raw social pulse file written by scripts/fetch-social-pulse.js — lives in
+ * data/social-pulse/{show-id}.json. Unlike the compact public sibling file,
+ * this uses the full field names and has `compositeScore` + `rank` computed
+ * by compute-social-pulse-ranks.js.
+ *
+ * Consumed by the /trending page at build time. Only a subset of fields
+ * is typed here — enough for ranking, tier display, and top-quote cards.
+ */
+export interface RawSocialPulse {
+  _v: number;
+  showId: string;
+  showTitle: string;
+  market: 'Broadway' | 'West End' | 'Off-Broadway' | 'Off-West End';
+  fetchedAt: string;
+  tier: 'Buzzing' | 'Rising' | 'Steady' | 'Troubled' | 'BuildingBaseline' | 'Hidden';
+  volume: number;
+  positivePct: number;
+  weekOverWeekPct: number | null;
+  baselineMultiple: number | null;
+  platformBreakdown: { x: number; tiktok: number; instagram: number };
+  topQuotes: Array<{ text: string; platform: string; author: string | null; url: string | null }>;
+  rank?: { position: number; total: number; text: string } | null;
+  compositeScore?: number;
+}
 
 /**
  * Synchronously reads the social pulse payload for a show. Safe to call
@@ -48,4 +75,77 @@ export function getSocialPulse(showId: string): SocialPulsePayload | null {
     console.warn(`[data-social-pulse] Failed to parse ${filePath}: ${(err as Error).message}`);
     return null;
   }
+}
+
+/**
+ * Read every RAW social-pulse file in data/social-pulse/ and return the
+ * parsed payloads. Files beginning with `_` (like `_budget.json`) are
+ * treated as internal bookkeeping and skipped.
+ *
+ * Safe to call from React server components at build time.
+ */
+function readAllRawSocialPulses(): RawSocialPulse[] {
+  let files: string[];
+  try {
+    files = fs.readdirSync(SOCIAL_PULSE_DIR);
+  } catch {
+    return [];
+  }
+
+  const out: RawSocialPulse[] = [];
+  for (const name of files) {
+    if (!name.endsWith('.json')) continue;
+    if (name.startsWith('_')) continue; // _budget.json and similar
+    try {
+      const raw = fs.readFileSync(path.join(SOCIAL_PULSE_DIR, name), 'utf-8');
+      out.push(JSON.parse(raw) as RawSocialPulse);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn(`[data-social-pulse] Failed to parse ${name}: ${(err as Error).message}`);
+    }
+  }
+  return out;
+}
+
+/**
+ * Returns the top N trending shows for a given market, ranked by
+ * `compositeScore` (volume × positivePct — computed by compute-social-pulse-ranks.js).
+ *
+ * Shows with tier === 'Hidden' are excluded (below the MIN_MENTIONS_FOR_CARD
+ * threshold — not enough data to rank honestly). All other tiers are included,
+ * even `BuildingBaseline`, since those have real volume but no WoW history yet.
+ *
+ * `compositeScore` falls back to `volume * positivePct / 100` if the rank
+ * script hasn't run yet — keeps the page functional if ranks are stale.
+ */
+export function getTopTrendingShows(
+  market: 'Broadway' | 'West End',
+  limit: number = 10,
+): RawSocialPulse[] {
+  return readAllRawSocialPulses()
+    .filter((p) => p.market === market && p.tier !== 'Hidden')
+    .map((p) => ({
+      ...p,
+      compositeScore:
+        typeof p.compositeScore === 'number'
+          ? p.compositeScore
+          : (p.volume * p.positivePct) / 100,
+    }))
+    .sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0))
+    .slice(0, limit);
+}
+
+/**
+ * Most recent `fetchedAt` across all social-pulse files — used to display
+ * an "Updated X" line on the /trending page. Returns null if there's no data.
+ */
+export function getTrendingLastUpdated(): string | null {
+  const all = readAllRawSocialPulses();
+  if (all.length === 0) return null;
+  let latest = 0;
+  for (const p of all) {
+    const t = Date.parse(p.fetchedAt || '');
+    if (!Number.isNaN(t) && t > latest) latest = t;
+  }
+  return latest > 0 ? new Date(latest).toISOString() : null;
 }
