@@ -500,7 +500,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5 whitespace-nowrap flex-shrink-0"
                       >
                         <TicketIcon />
-                        {lotteryRush.lottery ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                        {lotteryRush.lottery ? (lotteryRush.lottery.price ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery` : 'Lottery Tickets') : lotteryRush.rush ? (lotteryRush.rush.price ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush` : 'Rush Tickets') : 'Discount Tickets'}
                       </a>
                     )}
                   </div>
@@ -665,9 +665,13 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                         })()}
                       </div>
                     </div>
-                    {/* Review breakdown bar — Rave / Positive / Mixed / Negative */}
+                    {/* Review breakdown bar (desktop only — mobile version is rendered full-width below the flex row) */}
                     {!showTBD && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
-                      <ScoreBreakdownBar reviews={show.criticScore.reviews} category={show.category} />
+                      <ScoreBreakdownBar
+                        reviews={show.criticScore.reviews}
+                        category={show.category}
+                        className="hidden sm:block"
+                      />
                     )}
                     {/* Audience chip — below breakdown bar on mobile */}
                     {hasAudience && audienceGrade && (
@@ -680,6 +684,23 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               })()}
             </div>
           </div>
+
+          {/* Mobile-only breakdown bar — rendered full card width below the poster/score row
+              so the legend labels don't truncate inside the narrow right column on mobile */}
+          {(() => {
+            const reviewCount = show.criticScore?.reviewCount || 0;
+            const tier1Count = show.criticScore?.tier1Count || 0;
+            const tier2Count = show.criticScore?.tier2Count || 0;
+            const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
+            if (showTBD || !show.criticScore?.reviews || show.criticScore.reviews.length === 0) return null;
+            return (
+              <ScoreBreakdownBar
+                reviews={show.criticScore.reviews}
+                category={show.category}
+                className="sm:hidden mt-3"
+              />
+            );
+          })()}
 
           {/* Critics' Take - inline below the poster/score row */}
           {consensus && show.criticScore ? (
@@ -717,7 +738,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5"
                 >
                   <TicketIcon />
-                  {lotteryRush.lottery ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                  {lotteryRush.lottery ? (lotteryRush.lottery.price ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery` : 'Lottery Tickets') : lotteryRush.rush ? (lotteryRush.rush.price ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush` : 'Rush Tickets') : 'Discount Tickets'}
                 </a>
               )}
             </div>
