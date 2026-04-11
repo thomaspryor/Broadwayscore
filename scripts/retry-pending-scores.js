@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
-const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 const { OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -90,24 +90,17 @@ async function main() {
       });
 
       if (result) {
-        // If EITHER the incoming extraction OR the file's existing scoreSource
-        // is an aggregator, the rating belongs in aggregatorStars — not in
-        // originalScore. Checking only result.source missed files already
-        // tagged with an aggregator scoreSource by upstream gather/classify
-        // steps (see contamination on high-noon/oliver, Apr 2026).
-        const incomingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(result.source);
-        const existingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(data.scoreSource);
-        if (incomingIsAggregator || existingIsAggregator) {
-          data.aggregatorStars = result.originalScore;
-        } else {
-          data.originalScore = result.originalScore;
-        }
-        data.originalScoreNormalized = result.normalizedScore;
-        data.originalScoreSource = result.source;
+        // Routes to originalScore unless EITHER the incoming source OR the
+        // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+        const routed = setExtractedScore(data, {
+          value: result.originalScore,
+          normalizedValue: result.normalizedScore,
+          source: result.source,
+        });
         delete data.scoreExtractionPending;
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         found++;
-        console.log(`  [${i + 1}/${toProcess.length}] ✓ ${rel}: ${result.originalScore} (${result.normalizedScore})`);
+        console.log(`  [${i + 1}/${toProcess.length}] ✓ ${rel}: ${result.originalScore} (${result.normalizedScore}) → ${routed.field}`);
       } else {
         delete data.scoreExtractionPending; // Clear flag even if no score found
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));

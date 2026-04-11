@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { extractScore } = require('./lib/score-extractors');
 const { fetchPage } = require('./lib/scraper');
-const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'archives', 'reviews');
@@ -80,13 +80,16 @@ async function main() {
 
         if (result && result.originalScore) {
           console.log(`  ✓ ${label}: ${result.originalScore} [${result.source}]`);
-          if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
-            data.aggregatorStars = result.originalScore;
-          } else {
-            data.originalScore = result.originalScore;
+          // Routes to originalScore unless EITHER the incoming source OR the
+          // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+          const routed = setExtractedScore(data, {
+            value: result.originalScore,
+            normalizedValue: result.normalizedScore,
+            source: result.source,
+          });
+          if (!routed.wasAggregator) {
+            data.scoreSource = result.source;
           }
-          data.originalScoreNormalized = result.normalizedScore;
-          data.scoreSource = result.source;
 
           // Save archive
           const archDir = path.join(ARCHIVE_DIR, show);

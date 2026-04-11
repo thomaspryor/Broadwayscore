@@ -31,6 +31,7 @@ const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 
 // ============================================================================
 // Configuration
@@ -1330,10 +1331,17 @@ async function processRecoveredText(candidate, text, html, archiveData) {
         outletId: candidate.outletId
       });
       if (scoreResult) {
-        data.originalScore = scoreResult.originalScore;
-        data.originalScoreNormalized = scoreResult.normalizedScore;
-        data.originalScoreSource = scoreResult.source;
-        console.log(`    Found original score: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
+        // Routes to originalScore unless EITHER the incoming source OR the
+        // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+        // Wayback recovery often hits files already tagged by an aggregator
+        // scrape (lbo-css-stars, show-score-stars, …) — without this routing
+        // the recovered text-extracted score contaminates originalScore.
+        const { field } = setExtractedScore(data, {
+          value: scoreResult.originalScore,
+          normalizedValue: scoreResult.normalizedScore,
+          source: scoreResult.source,
+        });
+        console.log(`    Found ${field}: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
       }
     } catch {}
   }

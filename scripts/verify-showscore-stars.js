@@ -28,7 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
-const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -457,16 +457,16 @@ function applyResult(review, result, extractedFrom) {
   review.verifiedSource = result.source;
 
   if (!DRY_RUN) {
-    if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
-      review.data.aggregatorStars = result.originalScore;
-    } else {
-      review.data.originalScore = result.originalScore;
+    // Routes to originalScore unless EITHER the incoming source OR the
+    // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+    const routed = setExtractedScore(review.data, {
+      value: result.originalScore,
+      normalizedValue: result.normalizedScore,
+      source: result.source,
+    });
+    if (!routed.wasAggregator) {
+      review.data.scoreSource = result.source;
     }
-    if (result.normalizedScore) {
-      review.data.originalScoreNormalized = result.normalizedScore;
-    }
-    review.data.scoreSource = result.source;
-    review.data.originalScoreSource = result.source;
     review.data.scoreExtractedFrom = extractedFrom;
     review.data.scoreVerifiedAt = new Date().toISOString();
     review.data.previousShowScoreRating = review.ssOriginal;

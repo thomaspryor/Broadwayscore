@@ -20,7 +20,7 @@ const path = require('path');
 
 const { extractScore, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 const { parseOriginalScore } = require('./lib/score-parsers');
-const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const execute = process.argv.includes('--execute');
@@ -114,12 +114,13 @@ for (const dir of showDirs) {
       }
 
       if (execute) {
-        if (AGGREGATOR_SCORE_SOURCES.has(result.source)) {
-          data.aggregatorStars = result.originalScore;
-        } else {
-          data.originalScore = result.originalScore;
-        }
-        data.originalScoreNormalized = result.normalizedScore;
+        // Routes to originalScore unless EITHER the incoming source OR the
+        // file's existing scoreSource is an aggregator. See lib/score-routing.js.
+        setExtractedScore(data, {
+          value: result.originalScore,
+          normalizedValue: result.normalizedScore,
+          source: result.source,
+        });
         data._scoreNote = `Extracted from archived HTML (${new Date().toISOString().split('T')[0]})`;
         fs.writeFileSync(fp, JSON.stringify(data, null, 2) + '\n');
       }
