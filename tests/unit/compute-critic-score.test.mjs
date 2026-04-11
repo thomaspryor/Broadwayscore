@@ -141,44 +141,34 @@ describe('Gold-list compute parity with engine.ts', () => {
   });
 });
 
-describe('OUTLET_TIER_OVERRIDES parity with scoring.ts', () => {
-  it('outlet-tier-overrides.json matches src/config/scoring.ts OUTLET_TIERS', () => {
-    // Drift detection: scoring.ts OUTLET_TIERS is the source of truth for
-    // tier assignments on the show page (engine.ts uses it). scripts/lib
-    // cannot import TS directly, so we mirror the tier data into a JSON
-    // file. This test parses scoring.ts and diffs it against the JSON.
-    // If they drift, regenerate the JSON with:
-    //   node -e 'const s=require("fs").readFileSync("src/config/scoring.ts","utf8");const m=s.match(/export const OUTLET_TIERS[^{]*{([\\s\\S]*?)^};/m);const r={};const re=/[\\x27"]([a-z0-9_-]+)[\\x27"]:\\s*{\\s*tier:\\s*(\\d)/g;let x;while((x=re.exec(m[1]))!==null)r[x[1]]=Number(x[2]);require("fs").writeFileSync("scripts/lib/outlet-tier-overrides.json", JSON.stringify(Object.keys(r).sort().reduce((a,k)=>(a[k]=r[k],a),{}), null, 2)+"\\n")'
-    const fs = require('fs');
-    const path = require('path');
-    const overrides = require('../../scripts/lib/outlet-tier-overrides.json');
+describe('OUTLET_TIERS source-of-truth sanity checks', () => {
+  it('src/config/outlet-tiers.json is loadable and has expected shape', () => {
+    // Post April 2026: outlet-tiers.json is THE single source of truth for
+    // outlet tier data. Both scoring.ts (TypeScript side) and
+    // compute-critic-score.js (JS side) load from the same file — drift
+    // between the two code paths is impossible by construction. This test
+    // just verifies the JSON is well-formed and contains the 5 UK outlets
+    // that used to be silently wrong (thestage, timeout-london, financialtimes,
+    // daily-mail, artsdesk).
+    const tiers = require('../../src/config/outlet-tiers.json');
 
-    const src = fs.readFileSync(path.resolve('src/config/scoring.ts'), 'utf8');
-    const match = src.match(/export const OUTLET_TIERS[^{]*{([\s\S]*?)^};/m);
-    assert.ok(match, 'OUTLET_TIERS block not found in scoring.ts');
+    assert.ok(Object.keys(tiers).length >= 80, `expected 80+ outlets, got ${Object.keys(tiers).length}`);
 
-    const parsedFromSource = {};
-    const lineRe = /['"]([a-z0-9_-]+)['"]:\s*{\s*tier:\s*(\d)/g;
-    let m;
-    while ((m = lineRe.exec(match[1])) !== null) {
-      parsedFromSource[m[1]] = Number(m[2]);
+    // Sanity: every entry has tier/name/scoreFormat
+    for (const [id, entry] of Object.entries(tiers)) {
+      assert.ok([1, 2, 3].includes(entry.tier), `${id}: invalid tier ${entry.tier}`);
+      assert.ok(typeof entry.name === 'string' && entry.name.length > 0, `${id}: missing name`);
+      assert.ok(typeof entry.scoreFormat === 'string', `${id}: missing scoreFormat`);
     }
 
-    // Every source entry must be in the JSON with the same tier
-    for (const [outletId, tier] of Object.entries(parsedFromSource)) {
-      assert.equal(
-        overrides[outletId],
-        tier,
-        `OUTLET drift: scoring.ts has ${outletId}=T${tier} but outlet-tier-overrides.json has T${overrides[outletId]}. Regenerate the JSON.`
-      );
-    }
-    // And no extra entries in the JSON that scoring.ts doesn't have
-    for (const outletId of Object.keys(overrides)) {
-      assert.ok(
-        parsedFromSource[outletId] !== undefined,
-        `OUTLET drift: outlet-tier-overrides.json has ${outletId} but scoring.ts does not. Regenerate the JSON.`
-      );
-    }
+    // Regression guard: the 5 UK outlets the April 2026 Stereophonic
+    // incident surfaced. These had wrong tiers in outlet-registry.json
+    // but correct tiers here — ensure they're still here and correct.
+    assert.equal(tiers['thestage']?.tier, 1, 'The Stage must be T1');
+    assert.equal(tiers['timeout-london']?.tier, 1, 'Time Out London must be T1');
+    assert.equal(tiers['financialtimes']?.tier, 1, 'Financial Times must be T1');
+    assert.equal(tiers['daily-mail']?.tier, 2, 'Daily Mail must be T2');
+    assert.equal(tiers['artsdesk']?.tier, 2, 'The Arts Desk must be T2');
   });
 });
 

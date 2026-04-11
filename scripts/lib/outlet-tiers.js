@@ -1,12 +1,21 @@
 /**
- * Shared outlet tier lookup — reads from outlet-registry.json (source of truth).
+ * Shared outlet tier lookup helper for scripts.
  *
- * Replaces hardcoded OUTLET_TIERS in individual scripts to prevent drift.
- * OUTLET_TIERS in scoring.ts now uses the same lowercase registry IDs.
+ * Lookup priority (mirrors src/lib/engine.ts::getOutletConfig()):
+ *   1. src/config/outlet-tiers.json — 81 authoritative overrides (single source of truth)
+ *   2. data/outlet-registry.json — ~775 long-tail outlets
+ *   3. DEFAULT_TIER (3)
+ *
+ * Before April 2026 this module only consulted outlet-registry.json,
+ * which had the wrong tier for 5 UK outlets (thestage, timeout-london,
+ * financialtimes, daily-mail, artsdesk). Any consumer using getTier()
+ * for scoring-adjacent work (gold lists, dedup priority, LLM scoring
+ * config) silently produced wrong results for West End shows. Fixed by
+ * layering the authoritative overrides on top of the registry.
  *
  * Usage:
  *   const { getTier, getTierWeight, TIER_WEIGHTS } = require('./outlet-tiers');
- *   const tier = getTier('nytimes');       // 1
+ *   const tier = getTier('thestage');       // 1 (was wrongly 2 pre-fix)
  *   const weight = getTierWeight('vulture'); // 1.0
  */
 
@@ -23,19 +32,33 @@ function _loadTiers() {
   if (_tiers) return;
   _tiers = {};
 
-  // Load outlet-registry.json (single source of truth for all tiers)
+  // Layer 2 (lower priority): outlet-registry.json — long-tail outlets (~775)
   const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
-  if (!fs.existsSync(registryPath)) {
-    console.warn('[outlet-tiers] WARNING: outlet-registry.json not found, all outlets will default to Tier 3');
-    return;
+  if (fs.existsSync(registryPath)) {
+    try {
+      const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+      const outlets = registry.outlets || registry;
+      for (const [id, entry] of Object.entries(outlets)) {
+        _tiers[id] = entry.tier || DEFAULT_TIER;
+      }
+    } catch {
+      console.warn('[outlet-tiers] WARNING: could not parse outlet-registry.json');
+    }
   }
 
-  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-  const outlets = registry.outlets || registry;
-
-  for (const [id, entry] of Object.entries(outlets)) {
-    const tier = entry.tier || DEFAULT_TIER;
-    _tiers[id] = tier;
+  // Layer 1 (higher priority): src/config/outlet-tiers.json — overrides registry
+  const overridesPath = path.join(__dirname, '..', '..', 'src', 'config', 'outlet-tiers.json');
+  if (fs.existsSync(overridesPath)) {
+    try {
+      const overrides = JSON.parse(fs.readFileSync(overridesPath, 'utf8'));
+      for (const [id, entry] of Object.entries(overrides)) {
+        _tiers[id] = entry.tier; // authoritative override
+      }
+    } catch {
+      console.warn('[outlet-tiers] WARNING: could not parse src/config/outlet-tiers.json');
+    }
+  } else {
+    console.warn('[outlet-tiers] WARNING: src/config/outlet-tiers.json missing — UK outlet tiers may be wrong');
   }
 }
 

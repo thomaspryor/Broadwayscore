@@ -1,12 +1,20 @@
 /**
  * Shared critic score computation for build-time scripts.
  *
- * SINGLE SOURCE OF TRUTH for the tier-weighted scoring formula.
- * Mirrors src/lib/engine.ts computeCriticScore() — if you change
- * the formula there, change it here too (or better: add a validation
- * step that catches drift).
+ * This is the JS-side mirror of src/lib/engine.ts::computeCriticScore().
+ * Both implementations load tier data from src/config/outlet-tiers.json
+ * so they cannot drift. If you change the SCORING FORMULA (dedup rules,
+ * tier weights, designation bumps, confidence weights), you must update
+ * BOTH this file AND engine.ts, and tests/unit/compute-critic-score.test.mjs
+ * will fail if they disagree on a real show.
  *
- * Used by: generate-mobile-data.js, generate-mobile-show-details.js
+ * Used by:
+ *   - scripts/generate-mobile-data.js
+ *   - scripts/generate-mobile-show-details.js
+ *   - scripts/generate-homepage-archive.js
+ *   - scripts/compute-gold-lists.js
+ *   - scripts/preview-gold-lists.js
+ *   - scripts/generate-social-post.js
  */
 
 const path = require('path');
@@ -17,14 +25,18 @@ const DEFAULT_TIER = 3;
 const DESIGNATION_BUMPS = { 'Critics_Pick': 3, 'Critics_Choice': 2 };
 const DESIGNATION_FLOORS = { 'Critics_Pick': 70 };
 
-// Tier overrides mirrored from src/config/scoring.ts::OUTLET_TIERS so JS
-// scripts see the same tier data as engine.ts::getOutletConfig(). Without
-// this, outlets like The Stage (T1 in scoring.ts, T2 in outlet-registry.json)
-// get the wrong tier here — which caused ~68 shows to have rounded-score
-// drift between the show page and homepage before this fix.
-// A parity test in tests/unit/compute-critic-score.test.mjs fails if the
-// JSON and scoring.ts ever diverge.
-const OUTLET_TIER_OVERRIDES = require(path.join(__dirname, 'outlet-tier-overrides.json'));
+// Tier overrides loaded from src/config/outlet-tiers.json — THE single
+// source of truth for outlet tiers. Both scoring.ts (TypeScript side,
+// via import) and this module (JS side, via require) load from the same
+// file, so drift between the two code paths is impossible by construction.
+// Before April 2026, a duplicate copy of this data in multiple files
+// caused silent score drift — see memory/feedback_outlet_tiers_two_sources.md.
+const OUTLET_TIERS_DATA = require(path.join(__dirname, '..', '..', 'src', 'config', 'outlet-tiers.json'));
+// Flatten to { id: tier } for fast lookup in the scoring loop
+const OUTLET_TIER_OVERRIDES = {};
+for (const [id, entry] of Object.entries(OUTLET_TIERS_DATA)) {
+  OUTLET_TIER_OVERRIDES[id] = entry.tier;
+}
 
 const TOP_CRITICS = new Set([
   'Jesse Green', 'Ben Brantley', 'Charles Isherwood', 'David Rooney',
