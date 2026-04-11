@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-11T03:36:13.334Z",
+  "lastRunAt": "2026-04-11T04:58:02.384Z",
   "seenIds": {
     "hn:47523414": true,
     "google:7e6f0102d0e7b70d": true,
@@ -17,7 +17,8 @@
     "news:4b6d350441917096": true,
     "news:951c50f7edba2581": true,
     "news:cb58af962ea121f8": true,
-    "news:2988e48372642d9a": true
+    "news:2988e48372642d9a": true,
+    "google:306e96f00e30bba6": true
   },
   "mentions": [
     {
@@ -362,10 +363,30 @@
       "draftReason": "This is just a user profile page snippet showing a link to BWSC in their post history, not a direct mention or discussion requiring a response.",
       "draftResponse": null,
       "dispatched": "2026-04-11T03:36:13.334Z"
+    },
+    {
+      "id": "google:306e96f00e30bba6",
+      "source": "google",
+      "url": "https://www.instagram.com/p/DOwMcsFDp3O/",
+      "title": "Sign up for our newsletter to stay in the loop on future ...",
+      "excerpt": "Surprised by what's missing? Check the full rankings at broadwayscorecard.com. #Broadway #BroadwayMusicals #Theater #Hamilton. more.Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-11T04:57:50.283Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-11T04:58:02.384Z"
     }
   ],
   "stats": {
-    "totalSeen": 17,
+    "totalSeen": 18,
     "totalDispatched": 0,
     "lastCalibration": null
   }
