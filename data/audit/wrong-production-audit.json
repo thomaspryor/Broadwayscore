@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T11:58:16.611Z",
+  "timestamp": "2026-04-11T12:11:43.102Z",
   "stats": {
-    "totalReviews": 34740,
-    "alreadyFlagged": 13924,
+    "totalReviews": 34738,
+    "alreadyFlagged": 13923,
     "dateGuardCatches": 60,
     "directorMismatch": 933,
     "tvFilmSignals": 3385,
     "londonSignals": 1111,
-    "offBroadwaySignals": 959,
+    "offBroadwaySignals": 960,
     "yearMismatch": 71,
-    "noPublishDate": 4260
+    "noPublishDate": 4259
   },
   "findings": [
     {
@@ -80378,6 +80378,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-house-of-blue-leaves-2011",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": 25,
+      "publishDate": null,
+      "url": "http://www.newjerseynewsroom.com/new-york-theater/review-the-house-of-blue-leaves-leaves-everything-to-be-desired",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
