@@ -21,7 +21,10 @@ on:
         default: false
 
 concurrency:
-  group: lbo
+  # Per-run concurrency prevents the orchestrator's back-to-back dispatches from
+  # dropping each other at GitHub's 1-pending-queue limit. See Cats 2026-04-07
+  # poller postmortem — shared groups silently discard the middle runs.
+  group: lbo-${{ github.run_id }}
   cancel-in-progress: false
 
 permissions:
