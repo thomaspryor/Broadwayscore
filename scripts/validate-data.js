@@ -2489,6 +2489,173 @@ function validateBlogReviews() {
 // Catches garbage reviews, LLM artifacts, encoding issues
 // ===========================================
 
+/**
+ * Find review-text files that WOULD be included by rebuild-all-reviews.js
+ * (pass every skip filter) but have no score from any priority path.
+ *
+ * Such files are silent data-integrity gaps: the review text is present,
+ * nothing has flagged it as wrong production / duplicate / non-review / roundup,
+ * but the scorer either never ran on it, or ran and failed without leaving a
+ * trace. The rebuild silently skips these via stats.skippedNoScore and the
+ * affected outlet disappears from the show's composite score with no warning.
+ *
+ * Discovered 2026-04-11 during a ship-check audit of death-of-a-salesman-2026
+ * when I saw People magazine in the review-texts pool but missing from the
+ * breakdown bar. That specific file turned out to be correctly rejected
+ * (ensemble-scoreability-check flagged it as 'not_a_review', a preview
+ * interview with Nathan Lane, not a review) — but running the same query
+ * site-wide surfaced 82 truly-orphaned files across 66 shows with a median
+ * age of 57 days. This validator prevents that class of gap from growing
+ * silently in the future.
+ *
+ * The filter mirrors rebuild-all-reviews.js skip logic as of 2026-04-11.
+ * If rebuild adds a new skip flag, mirror it here or this validator will
+ * start surfacing files that rebuild correctly excludes.
+ */
+function validateUnscoredReviewTexts() {
+  info('Checking for unscored review-text files (silent gaps)...');
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  if (!fs.existsSync(reviewTextsDir)) {
+    info('No review-texts directory, skipping');
+    return;
+  }
+
+  let filesScanned = 0;
+  const gaps = [];
+
+  const showDirs = fs.readdirSync(reviewTextsDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && !d.name.startsWith('.'))
+    .map((d) => d.name);
+
+  for (const showDir of showDirs) {
+    const dirPath = path.join(reviewTextsDir, showDir);
+    let files;
+    try {
+      files = fs.readdirSync(dirPath).filter((f) => f.endsWith('.json'));
+    } catch {
+      continue;
+    }
+    for (const file of files) {
+      filesScanned++;
+      let r;
+      try {
+        r = JSON.parse(fs.readFileSync(path.join(dirPath, file), 'utf8'));
+      } catch {
+        continue; // JSON parse errors caught elsewhere
+      }
+
+      // Mirror of rebuild-all-reviews.js skip logic. Anything rebuild would
+      // skip legitimately is not a silent gap — we only care about files
+      // that WOULD be included but have no score to contribute.
+      if (r.rejectionReason) continue;
+      if (Array.isArray(r.rejectedBy) && r.rejectedBy.length >= 2) continue;
+      if (r.isRoundupArticle === true) continue;
+      if (r.wrongAttribution === true) continue;
+      if (r.wrongProduction) continue;
+      if (r.wrongShow) continue;
+      if (r.duplicateTextOf) continue;
+      if (r.humanReviewedWrongProduction) continue;
+      if (r.contentTier === 'invalid' || r.contentTier === 'stub') continue;
+      if (r.scoreStatus === 'TO_BE_CALCULATED') continue;
+      // fullTextWrongAuthor only skips when there are no aggregator excerpts to fall back on
+      if (r.fullTextWrongAuthor === true) {
+        const hasExcerpt = !!(
+          r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt ||
+          r.nycTheatreExcerpt || r.stagedoorExcerpt || r.lboRoundupExcerpt
+        );
+        if (!hasExcerpt) continue;
+      }
+
+      // Any valid score path satisfies rebuild's getBestScore() — these are
+      // the same priority paths as scripts/lib/rebuild-helpers.js:getBestScore
+      const hasHuman = r.humanReviewScore >= 1 && r.humanReviewScore <= 100;
+      const hasAdj = r.adjudicatedScore >= 1 && r.adjudicatedScore <= 100;
+      const hasOrig = r.originalScore && !r.originalScoreCleared;
+      const hasLlm = r.llmScore && r.llmScore.score >= 1 && r.llmScore.score <= 100;
+      const hasAssigned = r.assignedScore >= 1 && r.assignedScore <= 100;
+      const hasAggStars = !!r.aggregatorStars;
+      if (hasHuman || hasAdj || hasOrig || hasLlm || hasAssigned || hasAggStars) continue;
+
+      // This file passes every skip filter and has no score — silent gap.
+      const ageDays = r.textFetchedAt
+        ? (Date.now() - new Date(r.textFetchedAt).getTime()) / 86400000
+        : null;
+      gaps.push({
+        showDir,
+        file,
+        outlet: r.outlet || r.outletId || '?',
+        critic: r.criticName || '-',
+        tier: r.contentTier || '?',
+        words: r.textWordCount || r.wordCount || null,
+        pending: r.scoreExtractionPending === true,
+        ageDays: ageDays != null && Number.isFinite(ageDays) ? Math.round(ageDays) : null,
+      });
+    }
+  }
+
+  if (gaps.length === 0) {
+    ok(`No silent scoring gaps — all ${filesScanned} review-text files are scored or legitimately skipped`);
+    return;
+  }
+
+  // Split by whether the file is actively waiting for scoring. Pending files
+  // (scoreExtractionPending=true) are a warn — they'll likely get scored on
+  // the next pipeline run. Orphaned files (no pending flag) are an error —
+  // nothing is going to pick them up without human intervention.
+  const pendingGaps = gaps.filter((g) => g.pending);
+  const orphanedGaps = gaps.filter((g) => !g.pending);
+
+  if (pendingGaps.length > 0) {
+    console.log('');
+    console.log('  Pending scoring (scoreExtractionPending=true) — first 5:');
+    for (const g of pendingGaps.slice(0, 5)) {
+      console.log(`    ${g.showDir}/${g.file} | ${g.outlet} / ${g.critic} | tier=${g.tier} age=${g.ageDays}d`);
+    }
+    if (pendingGaps.length > 5) console.log(`    ... and ${pendingGaps.length - 5} more`);
+    console.log('');
+    warn(
+      `${pendingGaps.length} review-text file(s) marked scoreExtractionPending ` +
+      `but not yet scored — pipeline should pick them up on next run`
+    );
+  }
+
+  if (orphanedGaps.length > 0) {
+    // Orphaned gaps are reported as a SINGLE warn() (not error) so CI doesn't
+    // break on the existing backlog. The backlog is real but known — the point
+    // of this validator is to stop it from GROWING silently. The full per-show
+    // breakdown is printed inline (not via warn) so the final summary stays
+    // readable, but CI logs still show the blast radius.
+    //
+    // To escalate: change the single warn() below to error() once the backlog
+    // has been triaged. Or gate on an env flag like STRICT_UNSCORED_GUARD=1.
+    const byShow = {};
+    for (const g of orphanedGaps) {
+      (byShow[g.showDir] = byShow[g.showDir] || []).push(g);
+    }
+    const shownShows = Object.keys(byShow).sort().slice(0, 15);
+    console.log('');
+    console.log('  Orphaned silent gaps by show (first 15):');
+    for (const showDir of shownShows) {
+      const list = byShow[showDir];
+      console.log(`    ${showDir} (${list.length}):`);
+      for (const g of list.slice(0, 3)) {
+        console.log(`      ${g.file} | ${g.outlet} / ${g.critic} | tier=${g.tier} words=${g.words || '?'} age=${g.ageDays != null ? g.ageDays + 'd' : '?'}`);
+      }
+      if (list.length > 3) console.log(`      ... and ${list.length - 3} more in this show`);
+    }
+    const remaining = Object.keys(byShow).length - shownShows.length;
+    if (remaining > 0) console.log(`    ... and ${remaining} more shows with orphaned gaps`);
+    console.log('');
+    warn(
+      `${orphanedGaps.length} review-text file(s) would be included by rebuild but have no score ` +
+      `(spanning ${Object.keys(byShow).length} shows, median age will grow over time). ` +
+      `These reviews are silently missing from their show's composite score. ` +
+      `Fix: run the ensemble scorer on each file, or flag rejections (rejectionReason, wrongProduction, etc.). ` +
+      `Do NOT leave them in limbo — they accumulate.`
+    );
+  }
+}
+
 function validateReviewTextQuality(shows) {
   info('Checking review text quality (garbage detection)...');
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
@@ -3577,6 +3744,8 @@ function runValidation() {
   validateP0ScoreCoverage();
   console.log('');
   validateReviewTextDuplicates(shows);
+  console.log('');
+  validateUnscoredReviewTexts();
   console.log('');
   validateNoHardcodedOutletLists();
   console.log('');
