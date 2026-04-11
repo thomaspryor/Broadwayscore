@@ -99,7 +99,12 @@ jobs:
           fi
 
           CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
-          git commit -m "chore(social-pulse): weekly update ($CHANGED files) [skip ci]"
+          # Do NOT use [skip ci] — the new public/data/shows/*.social.json
+          # files need to trigger a Vercel rebuild so the static pages pick
+          # them up at build time (Next.js static export reads fs at build,
+          # not at runtime). Without a deploy, the card would never render
+          # real data.
+          git commit -m "chore(social-pulse): weekly update ($CHANGED files)"
 
           bash scripts/lib/push-with-retry.sh 5 main
 
