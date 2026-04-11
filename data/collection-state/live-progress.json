@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-11T17:14:18.713Z",
-  "processed": 4,
-  "failed": 6,
-  "successRate": "40.0%",
+  "updatedAt": "2026-04-11T17:21:29.605Z",
+  "processed": 10,
+  "failed": 10,
+  "successRate": "50.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 4
+    "archiveToday": 5,
+    "archive": 6
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -42,6 +42,61 @@
       "t": "2026-04-11T17:13:37.715Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:14:48.679Z",
+      "event": "bb-session",
+      "session": "afae61d2",
+      "url": "https://www.wsj.com/articles/an-act-of-god-review-the-almighty-as-a-third-rate-c"
+    },
+    {
+      "t": "2026-04-11T17:14:50.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:15:35.411Z",
+      "event": "bb-session",
+      "session": "c6cfc8d4",
+      "url": "https://www.wsj.com/articles/theater-review-the-last-ship-1414020603"
+    },
+    {
+      "t": "2026-04-11T17:15:36.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:17:32.210Z",
+      "event": "bb-session",
+      "session": "fd8ddfcf",
+      "url": "https://www.wsj.com/articles/SB10001424127887324345804578426070326683684"
+    },
+    {
+      "t": "2026-04-11T17:17:32.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:18:53.153Z",
+      "event": "bb-session",
+      "session": "35a148fb",
+      "url": "https://www.wsj.com/articles/SB10001424052970203315804577207312073674502"
+    },
+    {
+      "t": "2026-04-11T17:18:53.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:21:00.719Z",
+      "event": "bb-session",
+      "session": "402f6169",
+      "url": "https://www.usatoday.com/life/theater/reviews/story/2012-01-26/wit-cynthia-nixon"
+    },
+    {
+      "t": "2026-04-11T17:21:01.449Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }

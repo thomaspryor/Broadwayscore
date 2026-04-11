@@ -3,7 +3,13 @@
     "starlight-express-west-end-2024/thestage--paul-vale.json",
     "hamilton-2015/chicagotribune--chris-jones.json",
     "ink-2019/thestage--naveen-kumar.json",
-    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json"
+    "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+    "sweat-2017/axscom--kyle-osborne.json",
+    "an-act-of-god-2016/wsj--terry-teachout.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "wit-2012/bloomberg--jeremy-gerard.json",
+    "wit-2012/usatoday--elysa-gardner.json",
+    "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -11,7 +17,11 @@
     "ink-2019/wsj--terry-teachout.json",
     "choir-boy-2019/out-magazine--trevell-anderson.json",
     "escape-to-margaritaville-2018/talkinbroadway--matthew-murray.json",
-    "sweat-2017/wsj--terry-teachout.json"
+    "sweat-2017/wsj--terry-teachout.json",
+    "the-last-ship-2014/wsj--terry-teachout.json",
+    "the-last-ship-2014/talkinbroadway--matthew-murray.json",
+    "lucky-guy-2013/wsj--terry-teachout.json",
+    "wit-2012/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,22 +29,30 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "lucky-guy-2013/backstage--erik-haagensen.json",
+      "wit-2012/bloomberg--jeremy-gerard.json",
+      "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/here-lies-love-2023/talkinbroadway--matthew-murray.json",
       "data/review-texts/the-kite-runner-2022/thewrap--robert-hofler.json",
-      "data/review-texts/escape-to-margaritaville-2018/talkinbroadway--matthew-murray.json"
+      "data/review-texts/escape-to-margaritaville-2018/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-last-ship-2014/talkinbroadway--matthew-murray.json",
+      "data/review-texts/wit-2012/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
       "hamilton-2015/chicagotribune--chris-jones.json",
       "ink-2019/thestage--naveen-kumar.json",
-      "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json"
+      "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
+      "sweat-2017/axscom--kyle-osborne.json",
+      "an-act-of-god-2016/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "sweat-2017/wsj--terry-teachout.json",
+  "lastProcessed": "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -63,6 +81,61 @@
       "t": "2026-04-11T17:13:37.715Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:14:48.679Z",
+      "event": "bb-session",
+      "session": "afae61d2",
+      "url": "https://www.wsj.com/articles/an-act-of-god-review-the-almighty-as-a-third-rate-c"
+    },
+    {
+      "t": "2026-04-11T17:14:50.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:15:35.411Z",
+      "event": "bb-session",
+      "session": "c6cfc8d4",
+      "url": "https://www.wsj.com/articles/theater-review-the-last-ship-1414020603"
+    },
+    {
+      "t": "2026-04-11T17:15:36.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:17:32.210Z",
+      "event": "bb-session",
+      "session": "fd8ddfcf",
+      "url": "https://www.wsj.com/articles/SB10001424127887324345804578426070326683684"
+    },
+    {
+      "t": "2026-04-11T17:17:32.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:18:53.153Z",
+      "event": "bb-session",
+      "session": "35a148fb",
+      "url": "https://www.wsj.com/articles/SB10001424052970203315804577207312073674502"
+    },
+    {
+      "t": "2026-04-11T17:18:53.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:21:00.719Z",
+      "event": "bb-session",
+      "session": "402f6169",
+      "url": "https://www.usatoday.com/life/theater/reviews/story/2012-01-26/wit-cynthia-nixon"
+    },
+    {
+      "t": "2026-04-11T17:21:01.449Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
