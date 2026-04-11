@@ -165,6 +165,17 @@ async function phase0DiscoverUrls(reviews) {
     return reviews;
   }
 
+  // Lifecycle SERP gate — stops re-SERPing stuck wrong_content files on
+  // closed-old shows. See sprint-plan-serp-cost-reduction.md S3-T4.
+  const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
+  // Load shows.json once so the gate can look up lifecycle per review
+  let _showsById = null;
+  try {
+    const showsData = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    _showsById = {};
+    for (const s of showsData.shows) _showsById[s.id] = s;
+  } catch (e) { /* shows.json unavailable — gate will treat as 'unknown' */ }
+
   const sbKey = process.env.SCRAPINGBEE_API_KEY || '';
   const bdKey = process.env.BRIGHTDATA_TOKEN || '';
   if (!sbKey && !bdKey) {
@@ -180,10 +191,35 @@ async function phase0DiscoverUrls(reviews) {
     try {
       console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${review.data.outletId} / ${review.data.criticName || 'Unknown'}`);
 
+      // Lifecycle gate — skip stuck wrong_content files on closed-old shows
+      const showMeta = _showsById ? _showsById[review.showId] : null;
+      const gate = shouldRetryUrlDiscovery(showMeta, { ...review.data, filePath: review.filePath });
+      if (!gate.shouldRetry) {
+        console.log(`    [serp-gate] Skipping: ${gate.reason}`);
+        if (gate.updates && !DRY_RUN) {
+          try {
+            Object.assign(review.data, gate.updates);
+            fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+          } catch (e) { /* non-fatal */ }
+        }
+        continue;
+      }
+
       const result = await discoverCorrectUrl(review.data, sbKey, {
         brightDataKey: bdKey,
         log: (msg) => console.log(`    ${msg.trim()}`),
       });
+
+      // Advance SERP attempt state even on failure
+      if (!DRY_RUN) {
+        try {
+          const attemptUpdates = recordSerpAttempt(showMeta, review.data);
+          if (Object.keys(attemptUpdates).length > 0) {
+            Object.assign(review.data, attemptUpdates);
+            fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+          }
+        } catch (e) { /* non-fatal */ }
+      }
 
       if (result && result !== '__SERP_UNAVAILABLE__') {
         found++;

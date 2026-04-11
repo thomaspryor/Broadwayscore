@@ -986,6 +986,12 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
         dateMax: new Date(Date.now() + 7 * DAY),
       };
 
+      // NOTE: No lifecycle SERP gate here — this is a FRESH per-outlet
+      // discovery during opening night polling, not a retry of an existing
+      // review file. reviewObj has no incompleteReason/serpRetryCount/
+      // serpRetryAfter so shouldRetryUrlDiscovery would return not_gated
+      // regardless. The tight date range (±14d/7d) and showCoverageBudget
+      // in the caller are the cost controls here.
       const result = await discoverCorrectUrl(
         reviewObj,
         process.env.SCRAPINGBEE_API_KEY || '',
