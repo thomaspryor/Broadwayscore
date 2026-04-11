@@ -21,6 +21,7 @@ const {
   filterTopQuotes,
   truncateQuote,
   containsBlockedContent,
+  meaningfulContentLength,
   updateBaseline,
   computePositivePct,
   computePlatformBreakdown,
@@ -156,7 +157,7 @@ describe('filterTopQuotes', () => {
     assert.ok(quotes[0].text.startsWith('wonderful show'));
   });
 
-  test('excludes quotes shorter than 15 chars', () => {
+  test('excludes quotes with <15 chars of meaningful content', () => {
     const mentions = [
       mention({ text: '🔥🔥🔥', engagement: 1000 }),
       mention({ text: 'omg', engagement: 500 }),
@@ -165,6 +166,62 @@ describe('filterTopQuotes', () => {
     const quotes = filterTopQuotes(mentions, 'positive');
     assert.strictEqual(quotes.length, 1);
     assert.strictEqual(quotes[0].text, 'this is a full meaningful quote');
+  });
+
+  test('excludes hashtag-only TikTok descriptions', () => {
+    const mentions = [
+      // Real pattern from Apify trial: pure hashtag spam, no sentence
+      mention({
+        text: '#maybehappyending #mhe #maybehappyendingbway #darrencriss #helenjshen #edit #capcut',
+        platform: 'tiktok',
+        engagement: 9999,
+      }),
+      mention({
+        text: 'absolutely loved this show, incredible performances',
+        engagement: 10,
+      }),
+    ];
+    const quotes = filterTopQuotes(mentions, 'positive');
+    assert.strictEqual(quotes.length, 1);
+    assert.ok(quotes[0].text.startsWith('absolutely loved'));
+  });
+
+  test('hashtag-heavy but still substantive text IS kept', () => {
+    // "Loading: MAYBE HAPPY ENDING Broadway Sneak Peek starring Darren Criss..."
+    // followed by hashtags should still qualify because the lead text is real
+    const mentions = [
+      mention({
+        text: 'Loading: MAYBE HAPPY ENDING Broadway Sneak Peek starring Darren Criss #maybehappyending #broadway',
+        platform: 'tiktok',
+        engagement: 500,
+      }),
+    ];
+    const quotes = filterTopQuotes(mentions, 'positive');
+    assert.strictEqual(quotes.length, 1);
+    assert.ok(quotes[0].text.includes('Darren Criss'));
+  });
+});
+
+describe('meaningfulContentLength', () => {
+  test('strips hashtags', () => {
+    assert.strictEqual(meaningfulContentLength('#foo #bar #baz'), 0);
+  });
+
+  test('strips mentions', () => {
+    assert.strictEqual(meaningfulContentLength('@user1 @user2'), 0);
+  });
+
+  test('strips URLs', () => {
+    assert.strictEqual(meaningfulContentLength('https://t.co/abc123'), 0);
+  });
+
+  test('keeps real content', () => {
+    assert.strictEqual(meaningfulContentLength('loved this show'), 15);
+  });
+
+  test('preserves mixed content', () => {
+    const len = meaningfulContentLength('loved this show #broadway #musical');
+    assert.ok(len >= 14 && len <= 16);
   });
 
   test('filters to target sentiment only', () => {

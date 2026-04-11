@@ -121,11 +121,28 @@ function containsBlockedContent(text) {
 }
 
 /**
+ * Returns the length of "meaningful" content in a string — i.e., characters
+ * that are NOT part of a hashtag (#foo), a mention (@bar), or a URL. Used to
+ * reject quotes that are pure hashtag-spam (a common pattern on TikTok where
+ * the real content is the video and the text is just tags).
+ */
+function meaningfulContentLength(text) {
+  if (typeof text !== 'string') return 0;
+  const stripped = text
+    .replace(/https?:\/\/\S+/gi, '') // URLs
+    .replace(/#\S+/g, '')             // hashtags
+    .replace(/@\S+/g, '')             // mentions
+    .replace(/\s+/g, ' ')
+    .trim();
+  return stripped.length;
+}
+
+/**
  * Selects up to maxQuotes mentions from a list, preferring:
- *   1. The target sentiment bucket (so Buzzing shows positive quotes, Troubled shows negative)
+ *   1. The target sentiment bucket (Buzzing → positive, Troubled → negative)
  *   2. Higher engagement (likes/plays/diggs)
  *   3. Non-blocklisted content
- *   4. Minimum length of 15 chars (filters "🔥🔥🔥" and pure emoji replies)
+ *   4. ≥15 chars of MEANINGFUL text (excludes pure hashtag spam and emoji replies)
  *
  * Returns an array of { text: <truncated>, platform, author, url }.
  */
@@ -133,7 +150,7 @@ function filterTopQuotes(mentions, targetSentiment, maxQuotes = QUOTES_ON_CARD) 
   if (!Array.isArray(mentions)) return [];
   const candidates = mentions
     .filter((m) => m && m.relevant)
-    .filter((m) => typeof m.text === 'string' && m.text.replace(/\s+/g, ' ').trim().length >= 15)
+    .filter((m) => meaningfulContentLength(m.text) >= 15)
     .filter((m) => !containsBlockedContent(m.text))
     .filter((m) => m.sentiment === targetSentiment);
 
@@ -337,6 +354,7 @@ module.exports = {
   filterTopQuotes,
   truncateQuote,
   containsBlockedContent,
+  meaningfulContentLength,
   updateBaseline,
   computePositivePct,
   computePlatformBreakdown,
