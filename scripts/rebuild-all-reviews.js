@@ -2158,6 +2158,7 @@ showDirs.forEach(showId => {
             stats.skippedUrlYearMismatch = (stats.skippedUrlYearMismatch || 0) + 1;
             return;
           }
+          let targetWritten = false;
           try {
             if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
             // Re-read source fresh to avoid clobbering concurrent updates, then stamp
@@ -2168,11 +2169,17 @@ showDirs.forEach(showId => {
             sourceData.routedReason = `${yearSource}=${detectedYear} closer to ${targetShowId} (${decision.targetYear}) than ${showId} (${guard.showYear})`;
             sourceData.routedAt = new Date().toISOString();
             fs.writeFileSync(targetPath, JSON.stringify(sourceData, null, 2) + '\n');
+            targetWritten = true;
             fs.unlinkSync(sourcePath);
             console.log(`  [REROUTE] ${showId}/${file} → ${targetShowId}/${file} (${yearSource}=${detectedYear}, dist ${decision.distance})`);
             stats.reroutedToSibling = (stats.reroutedToSibling || 0) + 1;
           } catch (e) {
             console.warn(`  [REROUTE FAIL] ${showId}/${file} → ${targetShowId}: ${e.message} — falling back to drop`);
+            // If we wrote the target but the source unlink failed, roll back the
+            // target to avoid leaving a duplicate file in two directories.
+            if (targetWritten) {
+              try { fs.unlinkSync(targetPath); } catch { /* best-effort rollback */ }
+            }
             stats.rerouteFailedDropped = (stats.rerouteFailedDropped || 0) + 1;
             stats.skippedUrlYearMismatch = (stats.skippedUrlYearMismatch || 0) + 1;
           }
@@ -3541,6 +3548,13 @@ console.log(`  Skipped (film/TV contamination): ${stats.skippedFilmTvContaminati
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
 console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
+console.log(`  Rerouted to sibling (URL-year): ${stats.reroutedToSibling || 0}`);
+if (stats.rerouteCollisionDropped > 0) {
+  console.log(`  Reroute collision dropped: ${stats.rerouteCollisionDropped}`);
+}
+if (stats.rerouteFailedDropped > 0) {
+  console.log(`  Reroute failed dropped: ${stats.rerouteFailedDropped}`);
+}
 console.log(`  Skipped (URL-year standalone): ${stats.skippedUrlYearStandalone || 0}`);
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 if (stats.skippedFullTextWrongAuthor > 0) {
