@@ -3,9 +3,11 @@
 import { Fragment, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge } from '@/components/show-cards';
+import { formatTicketPrice } from '@/lib/formatting';
 
 type SortDirection = 'asc' | 'desc';
 type SortColumn = 'show' | 'bestPrice' | 'options' | 'score';
+type TicketMarket = 'broadway' | 'west-end';
 
 export interface BestValueRow {
   slug: string;
@@ -47,9 +49,10 @@ function ChevronIcon({ open }: { open: boolean }) {
 
 interface BestValueTableProps {
   rows: BestValueRow[];
+  market?: TicketMarket;
 }
 
-export function BestValueTable({ rows }: BestValueTableProps) {
+export function BestValueTable({ rows, market = 'broadway' }: BestValueTableProps) {
   const [sortColumn, setSortColumn] = useState<SortColumn>('bestPrice');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -164,7 +167,7 @@ export function BestValueTable({ rows }: BestValueTableProps) {
                     </td>
                     <td className="py-3 px-2 sm:px-3 text-center whitespace-nowrap">
                       <span className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md sm:rounded-lg border text-xs sm:text-sm font-semibold ${row.bestBgColor} ${row.bestColor}`}>
-                        ${row.bestPrice}
+                        {formatTicketPrice(row.bestPrice, market)}
                       </span>
                     </td>
                     <td className="py-3 px-2 sm:px-3 text-center text-gray-300">
@@ -183,7 +186,7 @@ export function BestValueTable({ rows }: BestValueTableProps) {
                               key={i}
                               className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg border text-sm font-medium ${opt.bgColor} ${opt.color} ${i === 0 ? 'ring-1 ring-white/20' : ''}`}
                             >
-                              ${opt.price} {opt.label}
+                              {formatTicketPrice(opt.price, market)} {opt.label}
                             </span>
                           ))}
                         </div>

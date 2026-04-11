@@ -10,6 +10,7 @@ import { ComputedShow } from '@/lib/engine';
 import { ScoreBadge } from '@/components/show-cards';
 import { StandingRoomTable } from '@/components/SortableLotteryRushTables';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
+import { formatTicketPrice } from '@/lib/formatting';
 
 export const metadata: Metadata = {
   title: 'Broadway Standing Room Only (SRO) Tickets',
@@ -109,7 +110,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
         <div className="flex flex-wrap items-center gap-2 mt-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-500/15 border border-gray-500/30 text-gray-300 font-semibold text-sm">
             <TicketIcon className="w-4 h-4" />
-            ${sro.price} Standing Room
+            {formatTicketPrice(sro.price, 'broadway')} Standing Room
           </span>
         </div>
 
@@ -124,12 +125,12 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
           <div className="flex flex-wrap gap-1.5 mt-2">
             {sroData.lottery && (
               <span className="text-xs px-2 py-0.5 rounded bg-purple-500/10 text-purple-400">
-                + Lottery ${sroData.lottery.price}
+                + Lottery {formatTicketPrice(sroData.lottery.price, 'broadway')}
               </span>
             )}
             {sroData.rush && (
               <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">
-                + Rush ${sroData.rush.price}
+                + Rush {formatTicketPrice(sroData.rush.price, 'broadway')}
               </span>
             )}
           </div>
@@ -203,7 +204,7 @@ export default function StandingRoomPage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-300">{cheapestSRO ? `$${cheapestSRO.sroData?.standingRoom?.price}` : '—'}</div>
+            <div className="text-2xl font-bold text-gray-300">{cheapestSRO ? formatTicketPrice(cheapestSRO.sroData?.standingRoom?.price, 'broadway') : '—'}</div>
             <div className="text-xs text-gray-500 mt-1">Cheapest SRO</div>
             <div className="text-xs text-gray-400 truncate">{cheapestSRO?.show.title ?? '—'}</div>
           </div>
@@ -212,7 +213,7 @@ export default function StandingRoomPage() {
             <div className="text-xs text-gray-500 mt-1">Shows with SRO</div>
           </div>
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-400">{avgPrice !== null ? `$${avgPrice}` : '—'}</div>
+            <div className="text-2xl font-bold text-gray-400">{avgPrice !== null ? formatTicketPrice(avgPrice, 'broadway') : '—'}</div>
             <div className="text-xs text-gray-500 mt-1">Average Price</div>
           </div>
         </div>

@@ -17,3 +17,59 @@ export function formatPercent(pct: number | null | undefined): string {
   if (pct === null || pct === undefined) return '\u2014';
   return `${pct.toFixed(1)}%`;
 }
+
+/**
+ * Market used when rendering a ticket price. Broadway / Off-Broadway use USD ($);
+ * West End / Off-West End use GBP (£). The data/lottery-rush.json file stores raw
+ * numbers (e.g. 29.5 for £29.50) — this helper is the single place that knows
+ * how to render them with the right symbol and decimal handling.
+ *
+ * Keep the API narrow: callers pass the show's `category` or a `MarketKey`-like
+ * string; null/undefined is treated as USD (default Broadway) so legacy call
+ * sites that don't thread market through stay safe.
+ */
+export type TicketPriceMarket =
+  | 'broadway'
+  | 'off-broadway'
+  | 'west-end'
+  | 'off-west-end'
+  | 'london'
+  | undefined
+  | null;
+
+export function isLondonTicketMarket(market: TicketPriceMarket): boolean {
+  return market === 'west-end' || market === 'off-west-end' || market === 'london';
+}
+
+/**
+ * Format a ticket price (lottery/rush/SRO/face-value) with the correct currency.
+ * London uses £ with 2 decimals when non-integer (£29.50), integer otherwise (£25).
+ * US uses $ with no decimals for whole numbers, 2 decimals otherwise ($12.50).
+ *
+ *   formatTicketPrice(45, 'broadway')         // "$45"
+ *   formatTicketPrice(29.5, 'west-end')       // "£29.50"
+ *   formatTicketPrice(12, 'off-west-end')     // "£12"
+ *   formatTicketPrice(null, 'broadway')       // "—"
+ */
+export function formatTicketPrice(
+  amount: number | null | undefined,
+  market: TicketPriceMarket = 'broadway'
+): string {
+  if (amount === null || amount === undefined) return '\u2014';
+  const symbol = isLondonTicketMarket(market) ? '£' : '$';
+  const isInteger = Number.isInteger(amount);
+  return `${symbol}${isInteger ? amount.toString() : amount.toFixed(2)}`;
+}
+
+/**
+ * Format a range of ticket prices with the correct currency (e.g. "$10-60" /
+ * "£15-45"). Used in FAQ schema and intro copy.
+ */
+export function formatTicketPriceRange(
+  low: number,
+  high: number,
+  market: TicketPriceMarket = 'broadway'
+): string {
+  const symbol = isLondonTicketMarket(market) ? '£' : '$';
+  return `${symbol}${low}-${high}`;
+}

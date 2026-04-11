@@ -5,9 +5,11 @@ import Link from 'next/link';
 import { ScoreBadge } from '@/components/show-cards';
 import { ensureHttps } from '@/lib/url-utils';
 import { buildAffiliateUrl } from '@/lib/affiliate-utils';
+import { formatTicketPrice } from '@/lib/formatting';
 
 type SortDirection = 'asc' | 'desc';
 type SortColumn = 'show' | 'lottery' | 'rush' | 'sro' | 'score';
+type TicketMarket = 'broadway' | 'west-end';
 
 export interface DiscountShowRow {
   slug: string;
@@ -71,10 +73,10 @@ function ExternalLinkIcon() {
   );
 }
 
-function PriceCell({ price, url, platform, color, bgColor }: { price: number; url?: string; platform?: string; color: string; bgColor: string }) {
+function PriceCell({ price, url, platform, color, bgColor, market }: { price: number; url?: string; platform?: string; color: string; bgColor: string; market: TicketMarket }) {
   const badge = (
     <span className={`inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md sm:rounded-lg border text-xs sm:text-sm font-semibold ${bgColor} ${color}`}>
-      ${price}
+      {formatTicketPrice(price, market)}
       {url && <ExternalLinkIcon />}
     </span>
   );
@@ -106,7 +108,7 @@ function ActionLinkIcon() {
   );
 }
 
-function DetailPanel({ row }: { row: DiscountShowRow }) {
+function DetailPanel({ row, market }: { row: DiscountShowRow; market: TicketMarket }) {
   const hasSections = row.lottery || row.rush || row.sro;
   if (!hasSections) return null;
 
@@ -118,7 +120,7 @@ function DetailPanel({ row }: { row: DiscountShowRow }) {
             <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <span className="font-semibold text-purple-300 text-sm">{row.lottery.label}</span>
-                <span className="font-bold text-white text-lg">${row.lottery.price}</span>
+                <span className="font-bold text-white text-lg">{formatTicketPrice(row.lottery.price, market)}</span>
               </div>
               {row.lottery.time && (
                 <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
@@ -148,7 +150,7 @@ function DetailPanel({ row }: { row: DiscountShowRow }) {
             <div className="flex-1 bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <span className="font-semibold text-emerald-300 text-sm">{row.rush.label}</span>
-                <span className="font-bold text-white text-lg">${row.rush.price}</span>
+                <span className="font-bold text-white text-lg">{formatTicketPrice(row.rush.price, market)}</span>
               </div>
               {row.rush.time && (
                 <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
@@ -181,7 +183,7 @@ function DetailPanel({ row }: { row: DiscountShowRow }) {
             <div className="flex-1 bg-gray-500/10 border border-gray-500/20 rounded-lg p-3">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <span className="font-semibold text-gray-300 text-sm">Standing Room</span>
-                <span className="font-bold text-white text-lg">${row.sro.price}</span>
+                <span className="font-bold text-white text-lg">{formatTicketPrice(row.sro.price, market)}</span>
               </div>
               {row.sro.time && (
                 <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
@@ -202,9 +204,10 @@ function DetailPanel({ row }: { row: DiscountShowRow }) {
 
 interface DiscountTicketsTableProps {
   rows: DiscountShowRow[];
+  market?: TicketMarket;
 }
 
-export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
+export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTicketsTableProps) {
   const [sortColumn, setSortColumn] = useState<SortColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -332,6 +335,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                           platform={row.lottery.platform || undefined}
                           color="text-purple-300"
                           bgColor="bg-purple-500/15 border-purple-500/30"
+                          market={market}
                         />
                       ) : (
                         <span className="text-gray-600">—</span>
@@ -345,6 +349,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                           platform={row.rush.platform || undefined}
                           color="text-emerald-300"
                           bgColor="bg-emerald-500/15 border-emerald-500/30"
+                          market={market}
                         />
                       ) : (
                         <span className="text-gray-600">—</span>
@@ -357,6 +362,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                           url={undefined}
                           color="text-gray-300"
                           bgColor="bg-gray-500/15 border-gray-500/30"
+                          market={market}
                         />
                       ) : (
                         <span className="text-gray-600">—</span>
@@ -366,7 +372,7 @@ export function DiscountTicketsTable({ rows }: DiscountTicketsTableProps) {
                       <ScoreBadge score={row.score} size="sm" showCrown />
                     </td>
                   </tr>
-                  {isExpanded && <DetailPanel row={row} />}
+                  {isExpanded && <DetailPanel row={row} market={market} />}
                 </Fragment>
               );
             })}

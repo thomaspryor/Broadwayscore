@@ -10,6 +10,7 @@ import { ComputedShow } from '@/lib/engine';
 import { LotteryTable } from '@/components/SortableLotteryRushTables';
 import { ScoreBadge } from '@/components/show-cards';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
+import { formatTicketPrice } from '@/lib/formatting';
 
 export const metadata: Metadata = {
   title: 'Broadway Lottery Tickets - Win Cheap Broadway Tickets',
@@ -124,13 +125,13 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
           {lottery && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-500/15 border border-purple-500/30 text-purple-300 font-semibold text-sm">
               <TicketIcon className="w-4 h-4" />
-              ${lottery.price} Lottery
+              {formatTicketPrice(lottery.price, 'broadway')} Lottery
             </span>
           )}
           {specialLottery && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 font-semibold text-sm">
               <TicketIcon className="w-4 h-4" />
-              ${specialLottery.price} {specialLottery.name}
+              {formatTicketPrice(specialLottery.price, 'broadway')} {specialLottery.name}
             </span>
           )}
         </div>
@@ -148,17 +149,17 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
           <div className="flex flex-wrap gap-1.5 mt-2">
             {(lotteryData.rush || lotteryData.digitalRush) && (
               <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">
-                + Rush ${lotteryData.rush?.price || lotteryData.digitalRush?.price}
+                + Rush {formatTicketPrice(lotteryData.rush?.price ?? lotteryData.digitalRush?.price, 'broadway')}
               </span>
             )}
             {lotteryData.studentRush && (
               <span className="text-xs px-2 py-0.5 rounded bg-pink-500/10 text-pink-400">
-                + Student Rush ${lotteryData.studentRush.price}
+                + Student Rush {formatTicketPrice(lotteryData.studentRush.price, 'broadway')}
               </span>
             )}
             {lotteryData.standingRoom && (
               <span className="text-xs px-2 py-0.5 rounded bg-gray-500/10 text-gray-400">
-                + SRO ${lotteryData.standingRoom.price}
+                + SRO {formatTicketPrice(lotteryData.standingRoom.price, 'broadway')}
               </span>
             )}
           </div>
@@ -239,7 +240,13 @@ export default function LotteriesPage() {
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-purple-400">
-              {cheapestLottery ? `$${cheapestLottery.lotteryData?.specialLottery?.price ?? cheapestLottery.lotteryData?.lottery?.price}` : '—'}
+              {cheapestLottery
+                ? formatTicketPrice(
+                    cheapestLottery.lotteryData?.specialLottery?.price ??
+                      cheapestLottery.lotteryData?.lottery?.price,
+                    'broadway'
+                  )
+                : '—'}
             </div>
             <div className="text-xs text-gray-500 mt-1">Cheapest Lottery</div>
             <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title ?? '—'}</div>
@@ -249,7 +256,7 @@ export default function LotteriesPage() {
             <div className="text-xs text-gray-500 mt-1">Shows with Lotteries</div>
           </div>
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-gray-300">{avgPrice !== null ? `$${Math.round(avgPrice)}` : '—'}</div>
+            <div className="text-2xl font-bold text-gray-300">{avgPrice !== null ? formatTicketPrice(Math.round(avgPrice), 'broadway') : '—'}</div>
             <div className="text-xs text-gray-500 mt-1">Avg Lottery Price</div>
           </div>
         </div>

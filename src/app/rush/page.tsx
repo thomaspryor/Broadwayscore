@@ -10,6 +10,7 @@ import { ComputedShow } from '@/lib/engine';
 import { RushTable } from '@/components/SortableLotteryRushTables';
 import { ScoreBadge } from '@/components/show-cards';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
+import { formatTicketPrice } from '@/lib/formatting';
 
 export const metadata: Metadata = {
   title: 'Broadway Rush Tickets - Same-Day Discount Tickets',
@@ -134,19 +135,19 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
           {rush && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold text-sm">
               <TicketIcon className="w-4 h-4" />
-              ${rush.price} Rush
+              {formatTicketPrice(rush.price, 'broadway')} Rush
             </span>
           )}
           {digitalRush && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-300 font-semibold text-sm">
               <TicketIcon className="w-4 h-4" />
-              ${digitalRush.price} Digital Rush
+              {formatTicketPrice(digitalRush.price, 'broadway')} Digital Rush
             </span>
           )}
           {studentRush && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-pink-500/15 border border-pink-500/30 text-pink-300 font-semibold text-sm">
               <TicketIcon className="w-4 h-4" />
-              ${studentRush.price} Student Rush
+              {formatTicketPrice(studentRush.price, 'broadway')} Student Rush
             </span>
           )}
         </div>
@@ -172,12 +173,12 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
           <div className="flex flex-wrap gap-1.5 mt-2">
             {rushData.lottery && (
               <span className="text-xs px-2 py-0.5 rounded bg-purple-500/10 text-purple-400">
-                + Lottery ${rushData.lottery.price}
+                + Lottery {formatTicketPrice(rushData.lottery.price, 'broadway')}
               </span>
             )}
             {rushData.standingRoom && (
               <span className="text-xs px-2 py-0.5 rounded bg-gray-500/10 text-gray-400">
-                + SRO ${rushData.standingRoom.price}
+                + SRO {formatTicketPrice(rushData.standingRoom.price, 'broadway')}
               </span>
             )}
           </div>
@@ -270,7 +271,7 @@ export default function RushPage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-emerald-400">{cheapestPrice !== null ? `$${cheapestPrice}` : '—'}</div>
+            <div className="text-2xl font-bold text-emerald-400">{formatTicketPrice(cheapestPrice, 'broadway')}</div>
             <div className="text-xs text-gray-500 mt-1">Cheapest Rush</div>
             <div className="text-xs text-gray-400 truncate">{cheapestRush?.show.title ?? '—'}</div>
           </div>

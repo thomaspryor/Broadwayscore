@@ -6,8 +6,10 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
 import { ensureHttps } from '@/lib/url-utils';
 import { buildAffiliateUrl } from '@/lib/affiliate-utils';
+import { formatTicketPrice } from '@/lib/formatting';
 
 type SortDirection = 'asc' | 'desc';
+type TicketMarket = 'broadway' | 'west-end';
 
 function TicketIcon({ className }: { className?: string }) {
   return (
@@ -110,9 +112,10 @@ type LotteryColumn = 'show' | 'price' | 'platform' | 'score';
 
 interface LotteryTableProps {
   data: ShowLotteryData[];
+  market?: TicketMarket;
 }
 
-export function LotteryTable({ data }: LotteryTableProps) {
+export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
   const [sortColumn, setSortColumn] = useState<LotteryColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -230,7 +233,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-500/15 border border-purple-500/30 text-purple-300 font-semibold">
                       <TicketIcon className="w-3.5 h-3.5" />
-                      {price != null ? `$${price}` : '—'}
+                      {formatTicketPrice(price, market)}
                     </span>
                   </td>
                   <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
@@ -278,7 +281,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                             <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
                               <div className="flex items-start justify-between gap-2 mb-2">
                                 <span className="font-semibold text-purple-300 text-sm">{lottery.type ? `${lottery.type.charAt(0).toUpperCase() + lottery.type.slice(1)} Lottery` : 'Digital Lottery'}</span>
-                                <span className="font-bold text-white text-lg">${lottery.price}</span>
+                                <span className="font-bold text-white text-lg">{formatTicketPrice(lottery.price, market)}</span>
                               </div>
                               {lottery.time && (
                                 <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
@@ -307,7 +310,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                             <div className="flex-1 bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
                               <div className="flex items-start justify-between gap-2 mb-2">
                                 <span className="font-semibold text-purple-300 text-sm">{special.name}</span>
-                                <span className="font-bold text-white text-lg">${special.price}</span>
+                                <span className="font-bold text-white text-lg">{formatTicketPrice(special.price, market)}</span>
                               </div>
                               {special.instructions && (
                                 <p className="text-gray-400 text-xs leading-relaxed">{special.instructions}</p>
@@ -365,9 +368,10 @@ type SROColumn = 'show' | 'price' | 'score';
 
 interface StandingRoomTableProps {
   data: ShowSROData[];
+  market?: TicketMarket;
 }
 
-export function StandingRoomTable({ data }: StandingRoomTableProps) {
+export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTableProps) {
   const [sortColumn, setSortColumn] = useState<SROColumn>('price');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -473,7 +477,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-500/15 border border-gray-500/30 text-gray-300 font-semibold">
                       <TicketIcon className="w-3.5 h-3.5" />
-                      {price != null ? `$${price}` : '—'}
+                      {formatTicketPrice(price, market)}
                     </span>
                   </td>
                   <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
@@ -497,7 +501,7 @@ export function StandingRoomTable({ data }: StandingRoomTableProps) {
                           <div className="flex-1 bg-gray-500/10 border border-gray-500/20 rounded-lg p-3">
                             <div className="flex items-start justify-between gap-2 mb-2">
                               <span className="font-semibold text-gray-300 text-sm">Standing Room</span>
-                              <span className="font-bold text-white text-lg">${sro.price}</span>
+                              <span className="font-bold text-white text-lg">{formatTicketPrice(sro.price, market)}</span>
                             </div>
                             {sro.time && (
                               <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
@@ -571,9 +575,10 @@ type RushColumn = 'show' | 'price' | 'type' | 'score';
 
 interface RushTableProps {
   data: ShowRushData[];
+  market?: TicketMarket;
 }
 
-export function RushTable({ data }: RushTableProps) {
+export function RushTable({ data, market = 'broadway' }: RushTableProps) {
   const [sortColumn, setSortColumn] = useState<RushColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -702,7 +707,7 @@ export function RushTable({ data }: RushTableProps) {
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold">
                       <TicketIcon className="w-3.5 h-3.5" />
-                      ${cheapestPrice}
+                      {formatTicketPrice(cheapestPrice, market)}
                     </span>
                   </td>
                   <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
@@ -758,7 +763,7 @@ export function RushTable({ data }: RushTableProps) {
                             <div className="flex-1 bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
                               <div className="flex items-start justify-between gap-2 mb-2">
                                 <span className="font-semibold text-emerald-300 text-sm">Box Office Rush</span>
-                                <span className="font-bold text-white text-lg">${rush.price}</span>
+                                <span className="font-bold text-white text-lg">{formatTicketPrice(rush.price, market)}</span>
                               </div>
                               {rush.time && (
                                 <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
@@ -797,7 +802,7 @@ export function RushTable({ data }: RushTableProps) {
                             <div className="flex-1 bg-blue-500/10 border border-blue-500/20 rounded-lg p-3">
                               <div className="flex items-start justify-between gap-2 mb-2">
                                 <span className="font-semibold text-blue-300 text-sm">Digital Rush</span>
-                                <span className="font-bold text-white text-lg">${digital.price}</span>
+                                <span className="font-bold text-white text-lg">{formatTicketPrice(digital.price, market)}</span>
                               </div>
                               {digital.time && (
                                 <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">
@@ -829,7 +834,7 @@ export function RushTable({ data }: RushTableProps) {
                             <div className="flex-1 bg-pink-500/10 border border-pink-500/20 rounded-lg p-3">
                               <div className="flex items-start justify-between gap-2 mb-2">
                                 <span className="font-semibold text-pink-300 text-sm">Student Rush</span>
-                                <span className="font-bold text-white text-lg">${student.price}</span>
+                                <span className="font-bold text-white text-lg">{formatTicketPrice(student.price, market)}</span>
                               </div>
                               {student.time && (
                                 <div className="flex items-start gap-1.5 text-gray-400 text-xs mb-1">

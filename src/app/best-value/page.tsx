@@ -10,6 +10,7 @@ import { ComputedShow } from '@/lib/engine';
 import { ScoreBadge } from '@/components/show-cards';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 import { BestValueTable, type BestValueRow } from './BestValueTable';
+import { formatTicketPrice } from '@/lib/formatting';
 
 export const metadata: Metadata = {
   title: 'Best Value Broadway Tickets - Cheapest Ways to See Shows',
@@ -186,7 +187,7 @@ function ValueShowCard({ show, discountData, cheapestPrice, index }: ValueShowCa
               key={option.type}
               className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg border text-sm font-medium ${option.bgColor} ${option.color} ${i === 0 ? 'ring-1 ring-white/20' : ''}`}
             >
-              ${option.price} {option.label}
+              {formatTicketPrice(option.price, 'broadway')} {option.label}
             </span>
           ))}
         </div>
@@ -194,7 +195,7 @@ function ValueShowCard({ show, discountData, cheapestPrice, index }: ValueShowCa
         {/* Best deal highlight */}
         {cheapest && (
           <p className="text-xs text-gray-500 mt-2">
-            Best deal: <span className={cheapest.color}>${cheapest.price} {cheapest.label}</span>
+            Best deal: <span className={cheapest.color}>{formatTicketPrice(cheapest.price, 'broadway')} {cheapest.label}</span>
           </p>
         )}
       </div>
@@ -279,12 +280,12 @@ export default function BestValuePage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-emerald-400">${cheapestShow?.cheapestPrice}</div>
+            <div className="text-2xl font-bold text-emerald-400">{formatTicketPrice(cheapestShow?.cheapestPrice, 'broadway')}</div>
             <div className="text-xs text-gray-500 mt-1">Cheapest Ticket</div>
             <div className="text-xs text-gray-400 truncate">{cheapestShow?.show.title}</div>
           </div>
           <div className="card p-4 text-center">
-            <div className="text-2xl font-bold text-white">${avgCheapestPrice}</div>
+            <div className="text-2xl font-bold text-white">{formatTicketPrice(avgCheapestPrice, 'broadway')}</div>
             <div className="text-xs text-gray-500 mt-1">Avg Cheapest Price</div>
           </div>
           <div className="card p-4 text-center">
