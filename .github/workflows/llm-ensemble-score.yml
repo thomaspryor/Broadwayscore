@@ -201,7 +201,15 @@ jobs:
           ")
           echo "Unscored reviews: $UNSCORED"
           echo "unscored=$UNSCORED" >> $GITHUB_OUTPUT
-          if [ "$UNSCORED" -ge 5 ]; then
+          # Lowered from 5 to 1 on 2026-04-11. The 5-review threshold meant
+          # 1-4 unscored reviews would sit indefinitely — combined with the
+          # retry-pending-scores bug (which cleared the pending flag on
+          # extraction failure without leaving a marker), this let 70 orphan
+          # reviews accumulate across 57 shows with a median age of 57 days
+          # before being caught by validate-data.js's new silent-gap guard.
+          # Running the scorer daily on even a single unscored review is fine
+          # — the script has its own rate limiting and per-run limit.
+          if [ "$UNSCORED" -ge 1 ]; then
             echo "skip=false" >> $GITHUB_OUTPUT
             echo "run_rescore=false" >> $GITHUB_OUTPUT
             echo "run_stale=false" >> $GITHUB_OUTPUT
