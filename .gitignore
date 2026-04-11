@@ -168,7 +168,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # These rules come AFTER the !negation above so they win (last match wins).
 /data/audit/score-integrity.json
 /data/audit/touring-contamination-report.json
+/data/audit/touring-contamination-report.*.json
 /data/audit/.touring-contamination-checkpoint.json
+/data/audit/.touring-contamination-checkpoint.*.json
 /data/integrity-report.md
 /data/review-reports/
 

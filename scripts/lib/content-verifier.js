@@ -352,6 +352,20 @@ ${wrongProdList}
 
 5. **Junk content**: Is this mostly navigation, footer, cookie notices, or non-article content?
 
+**CRITICAL NUANCES — avoid known false positives:**
+
+- **Outlet location does NOT determine production location.** Many out-of-town newspapers have critics who cover ${mc.label} reviews from NYC/London. Peter Marks (Washington Post), Chris Jones (Chicago Tribune), Charles McNulty (LA Times), Matt Wolf (London Theatre / International Herald Tribune), Dominic Cavendish (Telegraph), Michael Billington (Guardian), and many others file reviews of the ${mc.label} production from their home paper. The byline/outlet being "Washington Post" or "Chicago Tribune" or "Manchester Evening News" is NOT by itself evidence of wrong production — look at the VENUE named in the body.
+
+- **American Airlines Theatre / Todd Haimes Theatre** is on Broadway at 227 W 42nd Street (Roundabout's venue). It is NOT in Washington DC even if the review is in the Washington Post. Do not confuse it with the name.
+
+${effectiveMarket === 'broadway' ? `- **Touring company playing AT a Broadway venue (CRITICAL EDGE CASE):** Sometimes a Broadway show entry IS a touring company doing a limited engagement at a Broadway venue (e.g., Mamma Mia 2025 at Winter Garden, The Wiz 2024 at Marquis). Critics may write "the national tour has settled into the [Broadway theatre]" or "this is a touring production playing on Broadway." This is CORRECT (not wrongProduction) — the Broadway show entry represents that specific limited engagement. The KEY signal: if the venue named in the review is a known Broadway theatre (Winter Garden, Marquis, Imperial, Booth, Shubert, Music Box, Majestic, Palace, St. James, etc.), lean CORRECT regardless of whether the production is described as "touring." Only flag wrongProduction when the venue is explicitly non-NYC (Curran SF, Ahmanson LA, Kennedy Center DC, Goodman Chicago, Cadillac Palace Chicago, etc.).` : ''}
+
+${effectiveMarket === 'west-end' || effectiveMarket === 'off-west-end' ? `- **Touring company playing AT a West End venue:** Sometimes a West End show entry IS a touring company doing a limited run at a West End theatre. If the venue named is a West End theatre (Palace, Apollo, Lyceum London, Savoy, Dominion, etc.), lean CORRECT regardless of whether the production is described as "touring."
+
+- **Pre-West-End tryouts at Off-West-End / regional venues:** Reviews at the Almeida, Young Vic, Donmar Warehouse, Royal Court, Hampstead, Menier Chocolate Factory, Southwark Playhouse, Bridge Theatre, Chichester Festival Theatre, Sheffield Crucible, Bristol Old Vic, Manchester Royal Exchange, etc. BEFORE the West End transfer ARE wrong production for the West End entry. Even if the same show later moved to the West End, the tryout review describes the pre-transfer version.` : ''}
+
+${effectiveMarket === 'broadway' ? `- **Pre-Broadway tryouts at regional houses:** Reviews at Chicago Shakespeare, Goodman Theatre, Kennedy Center, La Jolla Playhouse, Old Globe, Mark Taper Forum, ART Cambridge, etc. BEFORE the Broadway transfer ARE wrong production for the Broadway entry. Even if the same show later moved to Broadway, the tryout review describes the pre-Broadway venue.` : ''}
+
 Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}`;
 
   const result = await callWithFallback(prompt);
