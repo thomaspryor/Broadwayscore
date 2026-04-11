@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-11T08:14:40.011Z",
+  "timestamp": "2026-04-11T08:52:02.340Z",
   "stats": {
-    "totalReviews": 34711,
-    "alreadyFlagged": 13923,
+    "totalReviews": 34710,
+    "alreadyFlagged": 13922,
     "dateGuardCatches": 60,
     "directorMismatch": 933,
-    "tvFilmSignals": 3383,
+    "tvFilmSignals": 3384,
     "londonSignals": 1107,
     "offBroadwaySignals": 959,
     "yearMismatch": 71,
-    "noPublishDate": 4261
+    "noPublishDate": 4260
   },
   "findings": [
     {
@@ -38156,6 +38156,20 @@
       "score": 25,
       "publishDate": "2023-02-09T21:54:48",
       "url": "https://nystagereview.com/2023/02/09/pictures-from-home-family-drama-not-fully-developed/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "pied-a-terre-off-broadway-2026",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": "February 8, 2026",
+      "url": "https://www.newyorktheatreguide.com/show/46093-pied-a-terre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
