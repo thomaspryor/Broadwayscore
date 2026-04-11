@@ -92,7 +92,10 @@ ${browseSlugs.slice(0, 12).map(slug => {
 - [West End Scorecard](${BASE_URL}/west-end): London theatre ratings and reviews
 - [West End Audience Buzz](${BASE_URL}/west-end/audience-buzz): What London audiences think
 - [Tony Awards](${BASE_URL}/tony-awards): Broadway's highest honor — winners, nominations, leaderboard
-- [Olivier Awards](${BASE_URL}/olivier-awards): London's highest theatre honor (if available)
+- [Olivier Awards](${BASE_URL}/olivier-awards): London's highest theatre honour — recent winners and their critic scores
+- [West End Theatres](${BASE_URL}/west-end/theater): Browse every West End and Off-West End venue
+- [West End Methodology](${BASE_URL}/west-end/methodology): How we score London theatre
+- [West End Discount Tickets](${BASE_URL}/west-end/discount-tickets): Lotteries, day seats, rush, standing room
 
 ## Data We Provide For Each Show
 
