@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-11T12:50:54.057Z",
+    "generatedAt": "2026-04-11T14:57:16.494Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 145,
-    "highConfidence": 45,
-    "mediumConfidence": 100,
+    "totalFlagged": 146,
+    "highConfidence": 49,
+    "mediumConfidence": 97,
     "lowConfidence": 0,
-    "reassignable": 83
+    "reassignable": 84
   },
   "results": [
     {
@@ -1213,12 +1213,11 @@
       "file": "variety--jeremy-gerard.json",
       "outlet": "Variety",
       "criticName": "Jeremy Gerard",
-      "publishDate": null,
+      "publishDate": "1995-03-27",
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
+        "revival text signals: revival, this production"
       ],
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
     },
@@ -1229,13 +1228,13 @@
       "file": "variety--steven-suskin.json",
       "outlet": "Variety",
       "criticName": "Steven Suskin",
-      "publishDate": null,
-      "confidence": "medium",
+      "publishDate": "2011-03-28",
+      "confidence": "high",
       "suggestedShowId": "how-to-succeed-in-business-without-really-trying-2011",
       "signals": [
+        "publishDate 2011 matches revival how-to-succeed-in-business-without-really-trying-2011 (opened 2011)",
         "revival text signals: revival, reinvented",
-        "year 2010 in text matches revival how-to-succeed-in-business-without-really-trying-2011",
-        "no publishDate + revival signals + revivals exist"
+        "year 2010 in text matches revival how-to-succeed-in-business-without-really-trying-2011"
       ],
       "textSnippet": "Bright and irresistible revival of the 1961 smash \"How to Succeed in Business Without Really Trying\" features a dazzling Daniel Radcliffe and a strong Broadway debut for John Larroquette.\n\nAfter their"
     },
@@ -1253,6 +1252,21 @@
         "revival cast/director match for sunday-in-the-park-with-george-2017: Jake Gyllenhaal, Annaleigh Ashford, Hudson Theatre, director: Sarna Lapine"
       ],
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
+    },
+    {
+      "showId": "falsettos-1992",
+      "showTitle": "Falsettos",
+      "showYear": 1992,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "2016-10-27",
+      "confidence": "high",
+      "suggestedShowId": "falsettos-2016",
+      "signals": [
+        "publishDate 2016 matches revival falsettos-2016 (opened 2016)"
+      ],
+      "textSnippet": "The four male characters in Falsettos, the joyously funny, shatteringly sad 1992 chamber musical forged out of two earlier one-acts by composer-lyricist William Finn and co-writer/director James Lapin"
     },
     {
       "showId": "six-degrees-of-separation-1990",
@@ -1311,10 +1325,11 @@
       "file": "hollywood-reporter--david-rooney.json",
       "outlet": "Hollywood Reporter",
       "criticName": "David Rooney",
-      "publishDate": null,
-      "confidence": "medium",
+      "publishDate": "2013-01-17",
+      "confidence": "high",
       "suggestedShowId": "cat-on-a-hot-tin-roof-2013",
       "signals": [
+        "publishDate 2013 matches revival cat-on-a-hot-tin-roof-2013 (opened 2013)",
         "year 2013 in text matches revival cat-on-a-hot-tin-roof-2013",
         "year 2003 in text matches revival cat-on-a-hot-tin-roof-2003",
         "year 2008 in text matches revival cat-on-a-hot-tin-roof-2008"
@@ -1794,10 +1809,11 @@
       "file": "hollywood-reporter--david-rooney.json",
       "outlet": "Hollywood Reporter",
       "criticName": "David Rooney",
-      "publishDate": null,
-      "confidence": "medium",
+      "publishDate": "2013-01-17",
+      "confidence": "high",
       "suggestedShowId": "cat-on-a-hot-tin-roof-2013",
       "signals": [
+        "publishDate 2013 matches revival cat-on-a-hot-tin-roof-2013 (opened 2013)",
         "year 2013 in text matches revival cat-on-a-hot-tin-roof-2013",
         "year 2008 in text matches revival cat-on-a-hot-tin-roof-2008"
       ],
@@ -1886,10 +1902,11 @@
       "file": "hollywood-reporter--david-rooney.json",
       "outlet": "Hollywood Reporter",
       "criticName": "David Rooney",
-      "publishDate": null,
+      "publishDate": "2014-04-03",
       "confidence": "high",
       "suggestedShowId": "a-raisin-in-the-sun-2014",
       "signals": [
+        "publishDate 2014 matches revival a-raisin-in-the-sun-2014 (opened 2014)",
         "revival cast/director match for a-raisin-in-the-sun-2014: Denzel Washington, LaTanya Richardson, Sophie Okonedo, director: Kenny Leon",
         "year 2013 in text matches revival a-raisin-in-the-sun-2014"
       ],
@@ -2000,7 +2017,7 @@
       "file": "variety--unknown.json",
       "outlet": "Variety",
       "criticName": "Unknown",
-      "publishDate": null,
+      "publishDate": "2000-04-24",
       "confidence": "medium",
       "suggestedShowId": "jesus-christ-superstar-1971",
       "signals": [
@@ -2253,10 +2270,11 @@
       "file": "nypost--elisabeth-vincentelli.json",
       "outlet": "NY Post",
       "criticName": "Elisabeth Vincentelli",
-      "publishDate": null,
+      "publishDate": "2012-03-23",
       "confidence": "high",
       "suggestedShowId": "jesus-christ-superstar-2012",
       "signals": [
+        "publishDate 2012 matches revival jesus-christ-superstar-2012 (opened 2012)",
         "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Chilina Kennedy, director: Des McAnuff"
       ],
       "textSnippet": "It’s hard to pin down Jesus in the 1971 rock musical “Jesus Christ Superstar.” Sometimes, co-creators Andrew Lloyd Webber and Tim Rice seem to agree with Mary Magdalene, who sings “He’s a man, he’s ju"
