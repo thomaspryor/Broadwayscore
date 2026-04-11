@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-11T17:21:29.605Z",
-  "processed": 10,
-  "failed": 10,
-  "successRate": "50.0%",
+  "updatedAt": "2026-04-11T17:26:53.467Z",
+  "processed": 13,
+  "failed": 17,
+  "successRate": "43.3%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 6
+    "archiveToday": 8,
+    "archive": 9
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -97,6 +97,28 @@
       "t": "2026-04-11T17:21:01.449Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-04-11T17:23:17.699Z",
+      "event": "bb-session",
+      "session": "dfb07d42",
+      "url": "https://online.wsj.com/article/SB10001424052748704462704575589953034368826.html"
+    },
+    {
+      "t": "2026-04-11T17:23:18.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:24:38.638Z",
+      "event": "bb-session",
+      "session": "655b61db",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-women-on-the-verge-of-a-ne"
+    },
+    {
+      "t": "2026-04-11T17:24:39.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

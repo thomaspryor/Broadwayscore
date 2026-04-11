@@ -9,7 +9,10 @@
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "wit-2012/bloomberg--jeremy-gerard.json",
     "wit-2012/usatoday--elysa-gardner.json",
-    "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json"
+    "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
+    "the-peewee-herman-show-2010/wsj--terry-teachout.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
+    "the-scottsboro-boys-2010/wsj--terry-teachout.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -21,7 +24,14 @@
     "the-last-ship-2014/wsj--terry-teachout.json",
     "the-last-ship-2014/talkinbroadway--matthew-murray.json",
     "lucky-guy-2013/wsj--terry-teachout.json",
-    "wit-2012/wsj--terry-teachout.json"
+    "wit-2012/wsj--terry-teachout.json",
+    "the-peewee-herman-show-2010/ap--david-rooney.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/wsj--terry-teachout.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/chicagotribune--chris-jones.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/talkinbroadway--matthew-murray.json",
+    "the-scottsboro-boys-2010/chicagotribune--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -40,7 +50,10 @@
       "data/review-texts/the-kite-runner-2022/thewrap--robert-hofler.json",
       "data/review-texts/escape-to-margaritaville-2018/talkinbroadway--matthew-murray.json",
       "data/review-texts/the-last-ship-2014/talkinbroadway--matthew-murray.json",
-      "data/review-texts/wit-2012/usatoday--elysa-gardner.json"
+      "data/review-texts/wit-2012/usatoday--elysa-gardner.json",
+      "data/review-texts/the-peewee-herman-show-2010/ap--david-rooney.json",
+      "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/wsj--terry-teachout.json",
+      "data/review-texts/women-on-the-verge-of-a-nervous-breakdown-2010/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -48,11 +61,14 @@
       "ink-2019/thestage--naveen-kumar.json",
       "escape-to-margaritaville-2018/bloomberg--chris-rovzar.json",
       "sweat-2017/axscom--kyle-osborne.json",
-      "an-act-of-god-2016/wsj--terry-teachout.json"
+      "an-act-of-god-2016/wsj--terry-teachout.json",
+      "the-peewee-herman-show-2010/wsj--terry-teachout.json",
+      "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
+      "the-scottsboro-boys-2010/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "the-scottsboro-boys-2010/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -136,6 +152,28 @@
       "t": "2026-04-11T17:21:01.449Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-04-11T17:23:17.699Z",
+      "event": "bb-session",
+      "session": "dfb07d42",
+      "url": "https://online.wsj.com/article/SB10001424052748704462704575589953034368826.html"
+    },
+    {
+      "t": "2026-04-11T17:23:18.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-11T17:24:38.638Z",
+      "event": "bb-session",
+      "session": "655b61db",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-women-on-the-verge-of-a-ne"
+    },
+    {
+      "t": "2026-04-11T17:24:39.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
