@@ -17,6 +17,20 @@ const PROVIDER_TIMEOUT_MS = 8000; // Each provider must return within 8s (Vercel
 const IMPACT_MAX_DAYS = 45;       // Impact API rejects date ranges > 45 days
 const RATE_BUMP_DATE = new Date('2026-04-07T00:00:00Z'); // TodayTix 2% -> 5% cutover
 
+// Platforms we have an affiliate program for — used to flag rows in the
+// per-platform table as revenue-producing vs unmonetized, even when a
+// platform has zero conversions in the current window. Mirror of
+// `enabled: true` entries in src/lib/affiliate-utils.ts AFFILIATE_CONFIG.
+// Keep both files in sync when adding or disabling an affiliate.
+const AFFILIATE_PLATFORMS = new Set([
+  'TodayTix',       // Impact (20944) — primary revenue source
+  'Ticketmaster',   // Impact (264167) — low coverage, 0 conv so far
+  'Vivid Seats',    // Impact (952533) — config on, no URLs in data
+  'SeatPlan',       // Impact (2219054) — WE venue tool, priority 3
+  'StubHub',        // Partnerize — hidden from rendering 2026-04-11 but
+                    //   still flagged so historical clicks show up correctly
+]);
+
 function fmtISO(d) {
   // Impact rejects millisecond precision
   return d.toISOString().replace(/\.\d{3}Z$/, 'Z');
@@ -356,6 +370,10 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
       for (const c of impact.byCampaign) impactByCampaign.set(c.name, c);
     }
     for (const p of posthog.byPlatform) {
+      // A platform is an affiliate if we have a program for it, regardless
+      // of whether it produced conversions in the current window. The old
+      // logic (affiliate: true only when byCampaign had a match) made
+      // zero-conversion affiliates like Ticketmaster display as non-affiliate.
       const row = {
         platform: p.platform,
         clicks: p.count,
@@ -364,22 +382,27 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
         revenue: null,
         conversionRate: null,
         epc: null,
-        affiliate: false,
+        affiliate: AFFILIATE_PLATFORMS.has(p.platform),
       };
-      // Try Impact match first (TodayTix, Ticketmaster, etc.)
+      // Impact match (TodayTix, Ticketmaster, Vivid Seats, SeatPlan) —
+      // only present if the campaign had conversions in the window
       const impactMatch = impactByCampaign.get(p.platform);
       if (impactMatch) {
         row.conversions = impactMatch.count;
         row.commission = impactMatch.payout;
         row.revenue = impactMatch.revenue;
-        row.affiliate = true;
+      } else if (row.affiliate && p.platform !== 'StubHub') {
+        // Affiliate with zero conversions in the window — show $0 not —
+        // so the EPC column reflects reality (zero, not unknown)
+        row.conversions = 0;
+        row.commission = 0;
+        row.revenue = 0;
       }
       // StubHub comes from Partnerize, not Impact
       if (p.platform === 'StubHub' && partnerize && !partnerize.skipped) {
         row.conversions = partnerize.conversions || 0;
         row.commission = 0; // Partnerize list API doesn't return commission
         row.revenue = null;
-        row.affiliate = true;
       }
       if (row.clicks > 0 && row.conversions != null) {
         row.conversionRate = row.conversions / row.clicks;

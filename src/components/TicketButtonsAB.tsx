@@ -23,9 +23,17 @@ interface TicketButtonsABProps {
 /**
  * A/B test wrapper for ticket buttons on show pages.
  *
- * Active tests:
- *   1. ticket-primary-platform — TodayTix first (WINNER, locked 100%)
- *   2. ticket-single-button — single CTA vs multiple buttons (50/50)
+ * Both tests have been resolved; kept here so PostHog flag reads still
+ * succeed and so re-opening either test is a single PostHog config change
+ * away. Expect every real user to get `multi` + `todaytix`.
+ *
+ *   1. ticket-primary-platform — winner: `todaytix`, locked 100% months ago.
+ *      The `stubhub` variant still exists at 0% rollout but is now doubly
+ *      inert: StubHub is in HIDDEN_PLATFORMS in ticket-utils.ts and
+ *      sortTicketLinks() strips it before the override below would apply.
+ *   2. ticket-single-button — winner: `multi`. Flipped to 100% multi on
+ *      2026-04-11 because the StubHub-hide changed the multi condition
+ *      mid-test, contaminating the 14-day sample (56 clicks, single -11%).
  */
 export default function TicketButtonsAB({
   showName, showId, showSlug, showStatus, showCategory, showScore,
@@ -83,13 +91,12 @@ export default function TicketButtonsAB({
     };
   }, []);
 
-  // Platform ordering (test 1 — locked to TodayTix)
-  let overridePlatform: string | undefined;
-  if (abPlatformVariant === 'stubhub' && ticketLinks.some(l => l.platform === 'StubHub')) {
-    overridePlatform = 'StubHub';
-  }
-
-  const sorted = sortTicketLinks(ticketLinks, overridePlatform);
+  // Platform ordering (test 1 — locked to `todaytix` in PostHog).
+  // The stale `stubhub` variant branch was removed 2026-04-11 when StubHub
+  // was added to HIDDEN_PLATFORMS — sortTicketLinks now filters StubHub
+  // regardless, so no override was reachable. If we ever re-test a forced
+  // primary platform, pass it via `overridePlatform` here.
+  const sorted = sortTicketLinks(ticketLinks);
   const isSingleButton = abButtonVariant === 'single';
 
   // Single-button variant: just show the primary CTA, nothing else
