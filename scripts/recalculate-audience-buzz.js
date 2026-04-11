@@ -3,16 +3,42 @@
  * Recalculate all Audience Buzz scores with dynamic weighting
  *
  * Run this after changing the weighting algorithm to update all existing scores.
+ *
+ * Data dir resolution order:
+ *   1. --data-dir=<path> CLI flag
+ *   2. DATA_DIR env var (used by CI to point at private repo checkout)
+ *   3. <repo>/data (default — public repo working directory)
+ *
+ * This lets the same script run locally against the public repo AND in
+ * CI against the private core-data checkout (/tmp/core-data-checkout/).
  */
 
 const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 
-const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
-const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+// Resolve data dir: --data-dir flag > DATA_DIR env > default
+const cliDataDir = process.argv.find(a => a.startsWith('--data-dir='));
+const dataDir = cliDataDir
+  ? cliDataDir.split('=').slice(1).join('=')
+  : (process.env.DATA_DIR || path.join(__dirname, '..', 'data'));
 
-const showsFile = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+const audienceBuzzPath = path.join(dataDir, 'audience-buzz.json');
+const showsPath = path.join(dataDir, 'shows.json');
+
+if (!fs.existsSync(audienceBuzzPath)) {
+  console.error(`audience-buzz.json not found at ${audienceBuzzPath}`);
+  console.error(`Set DATA_DIR or pass --data-dir=<path> to point at the correct directory.`);
+  process.exit(1);
+}
+if (!fs.existsSync(showsPath)) {
+  console.error(`shows.json not found at ${showsPath}`);
+  process.exit(1);
+}
+
+console.log(`Reading from: ${dataDir}`);
+const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+const showsFile = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showMap = {};
 for (const s of showsFile.shows) showMap[s.id] = s;
 
