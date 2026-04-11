@@ -1,0 +1,254 @@
+/**
+ * Apify per-platform fetchers for the Social Pulse feature.
+ *
+ * Calls proven Apify actors (not the broken sovereigntaylor/brand-monitor),
+ * normalizes their output into our common "mention" shape, and returns a
+ * uniform { mentions, usageUsd } response.
+ *
+ * Actors used:
+ *   - X/Twitter: kaitoeasyapi/twitter-x-data-tweet-scraper-pay-per-result-cheapest
+ *     (34.9M runs, $0.00025/tweet, trial-verified in T1)
+ *   - TikTok:    clockworks/tiktok-scraper
+ *     (75M runs, 96.5% success, $0.003/result + $0.005 actor-start)
+ *
+ * Both use the sync-get-dataset-items endpoint so the caller doesn't have to
+ * poll run status. Timeout is 300s per platform — each run typically takes
+ * 5-30 seconds.
+ *
+ * Cost is reported via the run stats endpoint after completion. The caller
+ * is responsible for aggregating costs against the cumulative budget.
+ */
+
+const APIFY_BASE = 'https://api.apify.com/v2';
+const DEFAULT_TIMEOUT_SECS = 300;
+
+/**
+ * Makes an Apify actor call via run-sync-get-dataset-items. Returns the
+ * dataset items (or throws if the run failed).
+ *
+ * Separately fetches the run metadata to get the final usageTotalUsd.
+ * The sync endpoint doesn't return it in the response.
+ */
+async function runApifyActor({ actorId, input, token, timeoutSecs = DEFAULT_TIMEOUT_SECS, buildTag }) {
+  const buildParam = buildTag ? `&build=${encodeURIComponent(buildTag)}` : '';
+  const url = `${APIFY_BASE}/acts/${encodeURIComponent(actorId)}/run-sync-get-dataset-items?token=${encodeURIComponent(token)}&timeout=${timeoutSecs}${buildParam}`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+
+  // The sync endpoint sets these headers after the run completes. Used to
+  // fetch usage metadata without a second round-trip.
+  const runId = res.headers.get('x-apify-pagination-total') || null;
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Apify run failed (${actorId}): ${res.status} ${body.slice(0, 500)}`);
+  }
+
+  const items = await res.json();
+
+  return {
+    items: Array.isArray(items) ? items : [],
+    runId,
+  };
+}
+
+/**
+ * Fetches the most recent run for an actor belonging to the current user.
+ * Used to retrieve usageTotalUsd after run-sync completes (which doesn't
+ * return it in the body).
+ */
+async function fetchLatestRunUsage({ actorId, token }) {
+  const url = `${APIFY_BASE}/acts/${encodeURIComponent(actorId)}/runs?token=${encodeURIComponent(token)}&limit=1&desc=1`;
+  const res = await fetch(url);
+  if (!res.ok) return null;
+  const data = await res.json();
+  const run = data?.data?.items?.[0];
+  if (!run) return null;
+  return {
+    runId: run.id,
+    status: run.status,
+    usageTotalUsd: run.usageTotalUsd || 0,
+    startedAt: run.startedAt,
+    finishedAt: run.finishedAt,
+  };
+}
+
+// ---------- X/Twitter ----------
+
+/**
+ * Normalizes a tweet from kaitoeasyapi/twitter-x-data-tweet-scraper into our
+ * common mention shape. Drops tweets missing core fields.
+ *
+ * Engagement = likes + retweets*2 + replies — weighted so retweets (which
+ * indicate active sharing) count more than passive likes.
+ */
+function normalizeTweet(t) {
+  if (!t || typeof t.text !== 'string' || !t.text.trim()) return null;
+  const author = t.author?.userName ? `@${t.author.userName}` : null;
+  return {
+    text: t.text,
+    platform: 'x',
+    author,
+    url: t.url || null,
+    createdAt: t.createdAt || null,
+    engagement:
+      (t.favoriteCount || 0) +
+      (t.retweetCount || 0) * 2 +
+      (t.replyCount || 0),
+    // relevant + sentiment are set by the LLM filter downstream
+    relevant: null,
+    sentiment: null,
+  };
+}
+
+/**
+ * Fetches up to maxItems tweets matching the search query.
+ *
+ * Query format uses Twitter/X advanced search syntax. We wrap the show title
+ * in quotes for exact-phrase match, then append `broadway` (or `"west end"`)
+ * to disambiguate from non-theatrical uses. `lang:en` filters to English.
+ */
+async function fetchTweets({ showTitle, marketQualifier, maxItems, token }) {
+  const phrase = `"${showTitle}"`;
+  const qualifier = marketQualifier || 'broadway';
+  const searchTerm = `${phrase} ${qualifier} lang:en`;
+
+  const { items } = await runApifyActor({
+    actorId: 'kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest',
+    input: {
+      searchTerms: [searchTerm],
+      maxItems: Math.max(20, maxItems), // actor enforces minimum 20
+      queryType: 'Latest',
+      lang: 'en',
+    },
+    token,
+  });
+
+  const mentions = items.map(normalizeTweet).filter(Boolean);
+  // Trim to the caller's requested max (actor's min=20 may return more)
+  const trimmed = mentions.slice(0, maxItems);
+
+  return { mentions: trimmed, rawCount: items.length };
+}
+
+// ---------- TikTok ----------
+
+/**
+ * Normalizes a TikTok post from clockworks/tiktok-scraper into our common
+ * mention shape.
+ *
+ * Engagement = diggs + plays/100. Plays are high-volume on TikTok (thousands
+ * per video is normal), so we scale down to keep it comparable to X's likes/RTs.
+ */
+function normalizeTikTok(t) {
+  if (!t || typeof t.text !== 'string') return null;
+  const author = t.authorMeta?.name ? `@${t.authorMeta.name}` : null;
+  return {
+    text: t.text,
+    platform: 'tiktok',
+    author,
+    url: t.webVideoUrl || null,
+    createdAt: t.createTimeISO || null,
+    engagement: (t.diggCount || 0) + Math.round((t.playCount || 0) / 100),
+    relevant: null,
+    sentiment: null,
+  };
+}
+
+/**
+ * Fetches up to maxItems TikToks matching the search query. TikTok's text
+ * field is often hashtag-dominated; the LLM + filterTopQuotes logic handles
+ * selection downstream.
+ */
+async function fetchTikToks({ showTitle, marketQualifier, maxItems, token }) {
+  const query = `${showTitle} ${marketQualifier || 'broadway'}`;
+
+  const { items } = await runApifyActor({
+    actorId: 'clockworks~tiktok-scraper',
+    input: {
+      searchQueries: [query],
+      resultsPerPage: maxItems,
+      // Don't set searchSorting — the default is "relevance" which is what we want
+    },
+    token,
+  });
+
+  const mentions = items.map(normalizeTikTok).filter(Boolean);
+  return { mentions, rawCount: items.length };
+}
+
+// ---------- Orchestrator ----------
+
+/**
+ * Fetches mentions from BOTH platforms for a single show and returns the
+ * combined list plus cost estimate.
+ *
+ * Returns:
+ *   {
+ *     mentions: NormalizedMention[],
+ *     costUsd: number,
+ *     rawCounts: { twitter: number, tiktok: number },
+ *   }
+ *
+ * Failures on ONE platform do not block the other — partial data is better
+ * than none. Per-platform errors are logged and the affected platform's
+ * mentions array is empty.
+ */
+async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, tiktokMax, token, logger = console }) {
+  const result = {
+    mentions: [],
+    costUsd: 0,
+    rawCounts: { twitter: 0, tiktok: 0 },
+    errors: [],
+  };
+
+  // Run both fetches in parallel for speed
+  const [twitterRes, tiktokRes] = await Promise.allSettled([
+    fetchTweets({ showTitle, marketQualifier, maxItems: twitterMax, token }),
+    fetchTikToks({ showTitle, marketQualifier, maxItems: tiktokMax, token }),
+  ]);
+
+  if (twitterRes.status === 'fulfilled') {
+    result.mentions.push(...twitterRes.value.mentions);
+    result.rawCounts.twitter = twitterRes.value.rawCount;
+  } else {
+    logger.warn(`[${showTitle}] Twitter fetch failed: ${twitterRes.reason.message}`);
+    result.errors.push({ platform: 'x', error: twitterRes.reason.message });
+  }
+
+  if (tiktokRes.status === 'fulfilled') {
+    result.mentions.push(...tiktokRes.value.mentions);
+    result.rawCounts.tiktok = tiktokRes.value.rawCount;
+  } else {
+    logger.warn(`[${showTitle}] TikTok fetch failed: ${tiktokRes.reason.message}`);
+    result.errors.push({ platform: 'tiktok', error: tiktokRes.reason.message });
+  }
+
+  // Fetch usage for both actors. This is a best-effort cost estimate;
+  // the cumulative-budget check in the workflow is the hard gate.
+  try {
+    const [twitterUsage, tiktokUsage] = await Promise.all([
+      fetchLatestRunUsage({ actorId: 'kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest', token }),
+      fetchLatestRunUsage({ actorId: 'clockworks~tiktok-scraper', token }),
+    ]);
+    result.costUsd = (twitterUsage?.usageTotalUsd || 0) + (tiktokUsage?.usageTotalUsd || 0);
+  } catch (err) {
+    logger.warn(`[${showTitle}] Could not fetch run usage: ${err.message}`);
+  }
+
+  return result;
+}
+
+module.exports = {
+  fetchAllSocialMentions,
+  fetchTweets,
+  fetchTikToks,
+  normalizeTweet,
+  normalizeTikTok,
+  runApifyActor,
+  fetchLatestRunUsage,
+};
