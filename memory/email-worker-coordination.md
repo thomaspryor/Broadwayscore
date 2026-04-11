@@ -78,6 +78,29 @@ is effectively zero (<1 collision per several years of operation), and
 `processed.json` on each machine catches a second-processing-attempt for
 messages a single worker has already seen. Good enough for this use case.
 
+## Why has_gmail_label exists (parser-failure black hole)
+
+The label-presence check uses `has_gmail_label()`, which tries the parsed
+label list FIRST and falls back to a substring search on the raw IMAP
+response. This dual path is not paranoia — it prevents a real silent-drop
+failure mode:
+
+> If `get_gmail_labels()` ever fails to parse the X-GM-LABELS response (label
+> name containing `)`, multi-line server response, imaplib tuple framing
+> quirk, etc.), the parsed list comes back empty. Without the fallback, the
+> verification step after STORE would see an empty list, conclude "label not
+> stamped, skip to be safe", and `continue` — but the STORE already
+> succeeded, so the label IS on the message in Gmail. The message is now
+> permanently invisible to all future polls (search filter excludes it) AND
+> the worker that stamped it walked away. Silent black hole.
+
+The substring fallback in `has_gmail_label` makes this impossible: even if
+the regex parser misses the label, the literal label name is still in the
+raw response bytes, so the verify step succeeds and processing proceeds.
+
+If you ever see `Label verification failed for ... — skipping to be safe`
+in the log, that's an actual STORE failure, not a parser glitch.
+
 ## Re-enabling the MacBook as hot standby
 
 The MacBook launchd plists are renamed to `.disabled` at
