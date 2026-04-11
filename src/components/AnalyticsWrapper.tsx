@@ -46,7 +46,11 @@ export default function AnalyticsWrapper() {
         posthog.init(POSTHOG_KEY, {
           api_host: 'https://us.i.posthog.com',
           autocapture: false,
-          capture_pageview: true,
+          // 'history_change' captures $pageview on client-side route changes
+          // (pushState/popstate). `true` only fires on initial load, which
+          // caused PostHog to miss ~63% of pageviews in Apr 2026 comparison
+          // (25K vs Vercel+GA 67K). App Router navigations need this.
+          capture_pageview: 'history_change',
           capture_pageleave: true,
           enable_heatmaps: false,
           person_profiles: 'identified_only',
