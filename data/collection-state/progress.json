@@ -131,7 +131,12 @@
     "aint-no-mo-2022/variety--naveen-kumar.json",
     "kpop-2022/variety--ad-amorosi.json",
     "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
-    "kimberly-akimbo-2022/variety--naveen-kumar.json"
+    "kimberly-akimbo-2022/variety--naveen-kumar.json",
+    "walking-with-ghosts-2022/nytg--joe-dziemianowicz.json",
+    "topdog-underdog-2022/variety--naveen-kumar.json",
+    "topdog-underdog-2022/vulture--rob-weinert-kendt.json",
+    "topdog-underdog-2022/deadline--greg-evans.json",
+    "1776-2022/variety--frank-rizzo.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1081,7 +1086,12 @@
     "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/talkinbroadway--nancy-grossman.json",
     "aint-no-mo-2022/observer--rex-reed.json",
-    "aint-no-mo-2022/usatoday--matthew-j-palm.json"
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "kimberly-akimbo-2022/vulture--jackson-mchenry.json",
+    "almost-famous-2022/timeout--adam-feldman.json",
+    "topdog-underdog-2022/hollywood-reporter--unknown.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1111,7 +1121,8 @@
       "marjorie-prime-2025/nytg--joe-dziemianowicz.json",
       "floyd-collins-2025/new-york-sun--elyse-sommer.json",
       "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
-      "mother-play-2024/theatermania--rachel-graham.json"
+      "mother-play-2024/theatermania--rachel-graham.json",
+      "walking-with-ghosts-2022/nytg--joe-dziemianowicz.json"
     ],
     "amp": [
       "data/review-texts/the-scottsboro-boys-2010/time--richard-zoglin.json",
@@ -1181,7 +1192,14 @@
       "data/review-texts/kpop-2022/variety--ad-amorosi.json",
       "kpop-2022/variety--ad-amorosi.json",
       "data/review-texts/kimberly-akimbo-2022/variety--naveen-kumar.json",
-      "kimberly-akimbo-2022/variety--naveen-kumar.json"
+      "kimberly-akimbo-2022/variety--naveen-kumar.json",
+      "data/review-texts/topdog-underdog-2022/hollywood-reporter--unknown.json",
+      "data/review-texts/topdog-underdog-2022/variety--naveen-kumar.json",
+      "topdog-underdog-2022/variety--naveen-kumar.json",
+      "data/review-texts/topdog-underdog-2022/deadline--greg-evans.json",
+      "topdog-underdog-2022/deadline--greg-evans.json",
+      "data/review-texts/1776-2022/variety--frank-rizzo.json",
+      "1776-2022/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1254,7 +1272,8 @@
       "data/review-texts/here-lies-love-2023/vulture--jackson-mchenry.json",
       "data/review-texts/new-york-new-york-2023/vulture--jackson-mchenry.json",
       "data/review-texts/shucked-2023/vulture--jackson-mchenry.json",
-      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/talkinbroadway--nancy-grossman.json"
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/talkinbroadway--nancy-grossman.json",
+      "data/review-texts/kimberly-akimbo-2022/vulture--jackson-mchenry.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -1296,11 +1315,12 @@
       "a-dolls-house-2023/vulture--jackson-mchenry.json",
       "some-like-it-hot-2022/vulture--jackson-mchenry.json",
       "ohio-state-murders-2022/vulture--jackson-mchenry.json",
-      "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json"
+      "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+      "topdog-underdog-2022/vulture--rob-weinert-kendt.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "kimberly-akimbo-2022/variety--naveen-kumar.json",
+  "lastProcessed": "1776-2022/variety--frank-rizzo.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1784,6 +1804,50 @@
     },
     {
       "t": "2026-04-12T02:54:42.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:58:15.777Z",
+      "event": "bb-session",
+      "session": "adfa3818",
+      "url": "https://www.hollywoodreporter.com/t/kenny-leon/"
+    },
+    {
+      "t": "2026-04-12T02:58:16.783Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-12T02:58:28.716Z",
+      "event": "bb-session",
+      "session": "0ea99663",
+      "url": "https://variety.com/2022/legit/reviews/topdog-underdog-review-broadway-yahya-abd"
+    },
+    {
+      "t": "2026-04-12T02:58:29.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:58:48.413Z",
+      "event": "bb-session",
+      "session": "311e76d6",
+      "url": "https://deadline.com/2022/10/topdog-underdog-broadway-review-corey-hawkins-yahya"
+    },
+    {
+      "t": "2026-04-12T02:58:49.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T02:59:09.494Z",
+      "event": "bb-session",
+      "session": "631d1978",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "t": "2026-04-12T02:59:10.479Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
