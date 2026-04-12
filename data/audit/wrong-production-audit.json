@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-12T17:56:48.157Z",
+  "timestamp": "2026-04-12T18:36:20.957Z",
   "stats": {
-    "totalReviews": 34696,
-    "alreadyFlagged": 13833,
+    "totalReviews": 34695,
+    "alreadyFlagged": 13834,
     "dateGuardCatches": 107,
-    "directorMismatch": 959,
+    "directorMismatch": 960,
     "tvFilmSignals": 3379,
     "londonSignals": 1105,
     "offBroadwaySignals": 966,
@@ -32899,6 +32899,20 @@
       "score": 55,
       "publishDate": "2024-03-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq?gaa_at=eafs&gaa_n=AWEtsqecj4sfDzFY29rAWDZxyWJ5U5_juFrt4gcVANYARjG5KVJVP9BTfA4K&gaa_ts=69bda2f1&gaa_sig=yhlVI0isLgHl0bTVELIkfh9e_cIO3k7CfJpbf6j94OTU_lwPAMdpqK6AqZX0Lk7mdmfcdL_6lIZNsyjavUujsA%3D%3D",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 66,
+      "publishDate": "2024-03-28",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
