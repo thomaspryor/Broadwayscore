@@ -1,0 +1,281 @@
+#!/usr/bin/env node
+/**
+ * generate-fantasy-config.js — Generates data/fantasy-league.json
+ *
+ * Reads shows.json + reviews.json, identifies eligible shows for the
+ * current fantasy season, computes prices based on scoring potential,
+ * and outputs the fantasy league configuration.
+ *
+ * Usage: node scripts/generate-fantasy-config.js [--dry-run]
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// ── Config (mirrors src/config/fantasy.ts) ──────────────────────────
+const SEASON = '2025-2026';
+const BUDGET = 100;
+const TEAM_SIZE = 8;
+const DRAFT_DEADLINE = '2026-02-07T05:00:00Z';
+const SCORING_START = '2026-02-01';
+const SCORING_END = '2026-06-15';
+
+// Shows that opened before this date have their CriticScore/AudienceGrade "locked in"
+// They can still earn box office and awards points
+const SCORE_LOCKOUT_DATE = SCORING_START;
+
+// ── Scoring tier thresholds (from src/config/scoring.ts) ────────────
+function getCriticLabel(score) {
+  if (score >= 83) return 'Critical Gold';
+  if (score >= 75) return 'Recommended';
+  if (score >= 65) return 'Worth Seeing';
+  if (score >= 55) return 'Skippable';
+  return 'Stay Away';
+}
+
+// ── Load data ───────────────────────────────────────────────────────
+const dataDir = path.join(__dirname, '..', 'data');
+const showsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf8'));
+const reviewsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf8'));
+
+const shows = showsRaw.shows;
+const reviews = reviewsRaw.reviews;
+
+// ── Load audience data ──────────────────────────────────────────────
+let audienceData = {};
+try {
+  const audienceRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'audience.json'), 'utf8'));
+  if (audienceRaw.audience) {
+    for (const entry of audienceRaw.audience) {
+      if (entry.showId) audienceData[entry.showId] = entry;
+    }
+  }
+} catch (e) {
+  console.error('Warning: Could not load audience.json:', e.message);
+}
+
+// ── Compute critic scores per show ──────────────────────────────────
+const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
+
+function computeCriticScore(showId) {
+  const showReviews = reviews.filter(r => r.showId === showId && r.assignedScore != null);
+  if (showReviews.length === 0) return null;
+
+  let weightedSum = 0;
+  let weightSum = 0;
+  for (const r of showReviews) {
+    const tier = r.tier || 3;
+    const weight = TIER_WEIGHTS[tier] || 0.35;
+    weightedSum += r.assignedScore * weight;
+    weightSum += weight;
+  }
+  return weightSum > 0 ? Math.round((weightedSum / weightSum) * 100) / 100 : null;
+}
+
+// ── Compute audience grade per show ─────────────────────────────────
+function getAudienceGrade(showId) {
+  const data = audienceData[showId];
+  if (!data || !data.sources) return null;
+
+  // Need enough reviews
+  let totalReviews = 0;
+  for (const source of Object.values(data.sources)) {
+    totalReviews += source?.reviewCount || 0;
+  }
+  if (totalReviews < 15) return null;
+
+  const combinedScore = data.combinedScore;
+  if (combinedScore == null) return null;
+
+  if (combinedScore >= 90) return 'A+';
+  if (combinedScore >= 88) return 'A';
+  if (combinedScore >= 83) return 'A-';
+  if (combinedScore >= 78) return 'B+';
+  if (combinedScore >= 73) return 'B';
+  if (combinedScore >= 68) return 'B-';
+  if (combinedScore >= 63) return 'C+';
+  if (combinedScore >= 58) return 'C';
+  if (combinedScore >= 53) return 'C-';
+  if (combinedScore >= 48) return 'D';
+  return 'F';
+}
+
+// ── Identify eligible shows ─────────────────────────────────────────
+function isEligible(show) {
+  const isBW = !show.category || show.category === 'broadway';
+  const isOB = show.category === 'off-broadway';
+  if (!isBW && !isOB) return false;
+  if (show.type === 'special') return false;
+
+  // Must be in current season or currently running
+  const openedThisSeason = show.openingDate && show.openingDate >= '2025-06-01';
+  const running = show.status === 'open' || show.status === 'opened' || show.status === 'previews';
+  return openedThisSeason || running;
+}
+
+// ── Pricing algorithm ───────────────────────────────────────────────
+// Price reflects projected point potential. Higher prices for shows
+// likely to score well across multiple pillars.
+function computePrice(show, criticScore) {
+  const isBW = !show.category || show.category === 'broadway';
+  const isOB = show.category === 'off-broadway';
+  const isMusical = show.type === 'musical';
+  const isOpen = show.status === 'open' || show.status === 'opened';
+  const isPreviews = show.status === 'previews';
+  const isClosed = show.status === 'closed';
+
+  // OB shows: $1-3 (no box office, no Tonys)
+  if (isOB) {
+    if (criticScore && criticScore >= 83) return 3;
+    if (criticScore && criticScore >= 70) return 2;
+    return 1;
+  }
+
+  // Broadway shows: base price by type
+  // Bump up from earlier version — budget needs to be tight ($100 for 8 shows)
+  let base = isMusical ? 16 : 12;
+
+  // Adjust for critic score
+  if (criticScore) {
+    if (criticScore >= 83) base += 4;      // Critical Gold
+    else if (criticScore >= 75) base += 2;  // Recommended
+    else if (criticScore >= 65) base += 0;  // Worth Seeing
+    else if (criticScore >= 55) base -= 2;  // Skippable
+    else base -= 4;                          // Stay Away
+  } else if (isPreviews) {
+    // Unknown score — moderate premium for potential
+    base += 1;
+  }
+
+  // Long-runners: lower price (critic/audience locked, less upside)
+  const openedBefore = show.openingDate && show.openingDate < SCORE_LOCKOUT_DATE;
+  if (openedBefore && isOpen) {
+    base -= 3;
+  }
+
+  // Closed shows: discount (no more box office)
+  if (isClosed) {
+    base -= 4;
+  }
+
+  // Previews shows with no score: excitement premium
+  if (isPreviews && !criticScore) {
+    base += 1;
+  }
+
+  // Clamp: BW $4-$22
+  return Math.max(4, Math.min(22, base));
+}
+
+// ── Main ────────────────────────────────────────────────────────────
+const dryRun = process.argv.includes('--dry-run');
+
+const allShows = Object.values(shows);
+const eligibleShows = allShows.filter(isEligible);
+
+console.error(`Found ${eligibleShows.length} eligible shows (${eligibleShows.filter(s => !s.category || s.category === 'broadway').length} BW, ${eligibleShows.filter(s => s.category === 'off-broadway').length} OB)`);
+
+// For prototype: limit OB to ~15 notable ones (highest scored, currently running)
+const bwShows = eligibleShows.filter(s => !s.category || s.category === 'broadway');
+const obShows = eligibleShows.filter(s => s.category === 'off-broadway');
+
+// Select OB shows: top scored ones that are still running, then top closed
+const obScored = obShows
+  .map(s => ({ ...s, _score: computeCriticScore(s.id) }))
+  .filter(s => s._score != null)
+  .sort((a, b) => b._score - a._score);
+
+const obOpen = obScored.filter(s => s.status === 'open' || s.status === 'previews');
+const obClosed = obScored.filter(s => s.status === 'closed');
+// Take up to 10 running + 5 best closed = ~15 max
+const selectedOB = [
+  ...obOpen.slice(0, 10),
+  ...obClosed.slice(0, 5),
+];
+
+console.error(`Selected ${selectedOB.length} OB shows (${obOpen.length} open, ${obClosed.length} closed with scores)`);
+
+const finalShows = [...bwShows, ...selectedOB];
+
+// Build config
+const showsConfig = {};
+for (const show of finalShows) {
+  const criticScore = computeCriticScore(show.id);
+  const audGrade = getAudienceGrade(show.id);
+  const isBW = !show.category || show.category === 'broadway';
+  const openedBefore = show.openingDate && show.openingDate < SCORE_LOCKOUT_DATE;
+
+  showsConfig[show.id] = {
+    price: computePrice(show, criticScore),
+    eligible: {
+      criticScore: !openedBefore || !criticScore, // eligible if no locked score
+      audienceGrade: !openedBefore || !audGrade,
+      boxOffice: isBW, // only Broadway shows report grosses
+      tonys: isBW,     // only Broadway shows eligible for Tonys
+    },
+    title: show.title,
+    type: show.type || 'play',
+    category: show.category || 'broadway',
+    status: show.status,
+    openingDate: show.openingDate || null,
+    criticScore: criticScore,
+    audienceGrade: audGrade,
+    slug: show.slug,
+  };
+}
+
+const config = {
+  _meta: {
+    season: SEASON,
+    draftDeadline: DRAFT_DEADLINE,
+    scoringStart: SCORING_START,
+    scoringEnd: SCORING_END,
+    budget: BUDGET,
+    teamSize: TEAM_SIZE,
+    generatedAt: new Date().toISOString(),
+  },
+  shows: showsConfig,
+  scoring: {
+    criticScore: {
+      'Critical Gold': 15,
+      'Recommended': 10,
+      'Worth Seeing': 6,
+      'Skippable': 2,
+      'Stay Away': 0,
+    },
+    audienceGrade: {
+      'A+': 12, 'A': 10, 'A-': 8,
+      'B+': 6, 'B': 4, 'B-': 2,
+      'C+': 1, 'C': 0, 'C-': 0,
+      'D': 0, 'F': 0,
+    },
+    boxOffice: { pointsPer100K: 0.5 },
+    awards: {
+      tonyNom: 8,
+      tonyWin: 15,
+      tonyBestMusical: 30,
+      tonyBestPlay: 30,
+    },
+  },
+};
+
+// Stats
+const prices = Object.values(showsConfig).map(s => s.price);
+const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+const bwPrices = Object.values(showsConfig).filter(s => s.category === 'broadway').map(s => s.price);
+const obPrices = Object.values(showsConfig).filter(s => s.category === 'off-broadway').map(s => s.price);
+
+console.error(`\nPricing summary:`);
+console.error(`  Total shows: ${Object.keys(showsConfig).length}`);
+console.error(`  BW: avg $${(bwPrices.reduce((a,b)=>a+b,0)/bwPrices.length).toFixed(0)}, range $${Math.min(...bwPrices)}-$${Math.max(...bwPrices)}`);
+if (obPrices.length) console.error(`  OB: avg $${(obPrices.reduce((a,b)=>a+b,0)/obPrices.length).toFixed(0)}, range $${Math.min(...obPrices)}-$${Math.max(...obPrices)}`);
+console.error(`  8-show avg cost: $${(avgPrice * 8).toFixed(0)}`);
+
+if (dryRun) {
+  console.log(JSON.stringify(config, null, 2));
+  console.error('\n--dry-run: output to stdout only');
+} else {
+  const outPath = path.join(dataDir, 'fantasy-league.json');
+  fs.writeFileSync(outPath, JSON.stringify(config, null, 2) + '\n');
+  console.error(`\nWrote ${outPath}`);
+}
