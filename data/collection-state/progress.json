@@ -201,7 +201,9 @@
     "king-kong-2018/nytimes--ben-brantleyjesse-green.json",
     "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json",
     "my-fair-lady-2018/vulture--sara-holdren.json",
-    "farinelli-and-the-king-2017/vulture--sara-holdren.json"
+    "farinelli-and-the-king-2017/vulture--sara-holdren.json",
+    "present-laughter-2017/timeout--david-cote.json",
+    "waitress-2016/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1302,7 +1304,15 @@
     "escape-to-margaritaville-2018/vulture--jesse-green.json",
     "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
     "farinelli-and-the-king-2017/observer--rex-reed.json",
-    "the-parisian-woman-2017/observer--rex-reed.json"
+    "the-parisian-woman-2017/observer--rex-reed.json",
+    "junk-2017/observer--rex-reed.json",
+    "indecent-2017/usatoday--elysa-gardner.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+    "tuck-everlasting-2016/usatoday--elysa-gardner.json",
+    "the-crucible-2016/observer--rex-reed.json",
+    "bright-star-2016/nytimes--charles-isherwood.json",
+    "eclipsed-2016/observer--rex-reed.json",
+    "our-mothers-brief-affair-2016/observer--rex-reed.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1503,7 +1513,9 @@
       "parade-2023/theatrely--kobi-kassal.json",
       "mr-saturday-night-2022/theatrely--juan-a-ramirez.json",
       "a-strange-loop-2022/nytimes--maya-phillips.json",
-      "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json"
+      "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json",
+      "present-laughter-2017/timeout--david-cote.json",
+      "waitress-2016/nytimes--charles-isherwood.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1589,7 +1601,8 @@
       "data/review-texts/hells-kitchen-2024/thewrap--robert-hofler.json",
       "data/review-texts/new-york-new-york-2023/vulture--jackson-mchenry.json",
       "data/review-texts/shucked-2023/vulture--jackson-mchenry.json",
-      "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sara-holdren.json"
+      "data/review-texts/the-lifespan-of-a-fact-2018/vulture--sara-holdren.json",
+      "data/review-texts/bright-star-2016/nytimes--charles-isherwood.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -1665,7 +1678,7 @@
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "the-parisian-woman-2017/observer--rex-reed.json",
+  "lastProcessed": "our-mothers-brief-affair-2016/observer--rex-reed.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -2226,6 +2239,17 @@
     },
     {
       "t": "2026-04-12T04:28:03.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-12T04:32:38.198Z",
+      "event": "bb-session",
+      "session": "87c3f1ef",
+      "url": "http://www.nytimes.com/2016/03/25/theater/review-bright-star-beams-nostalgia-und"
+    },
+    {
+      "t": "2026-04-12T04:32:38.972Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

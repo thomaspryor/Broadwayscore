@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-12T04:31:09.139Z",
-  "processed": 202,
-  "failed": 1099,
-  "successRate": "15.5%",
+  "updatedAt": "2026-04-12T04:34:23.217Z",
+  "processed": 204,
+  "failed": 1107,
+  "successRate": "15.6%",
   "tierBreakdown": {
     "playwright": 40,
     "amp": 36,
     "browserbase": 77,
     "directCookies": 0,
-    "scrapingbee": 37,
+    "scrapingbee": 39,
     "brightdata": 0,
-    "archiveToday": 83,
+    "archiveToday": 84,
     "archive": 70
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-12T02:53:54.659Z",
-      "event": "bb-session",
-      "session": "cb5c6583",
-      "url": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
-    },
-    {
-      "t": "2026-04-12T02:53:55.635Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-12T02:54:19.325Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-12T04:28:03.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-12T04:32:38.198Z",
+      "event": "bb-session",
+      "session": "87c3f1ef",
+      "url": "http://www.nytimes.com/2016/03/25/theater/review-bright-star-beams-nostalgia-und"
+    },
+    {
+      "t": "2026-04-12T04:32:38.972Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
