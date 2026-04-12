@@ -30,6 +30,7 @@ import {
   shouldHideReviews,
 } from '@/config/scoring';
 import { getRegistryTier } from './outlet-id-mapper';
+import { getMarketDate } from './date-utils';
 
 // ===========================================
 // TYPES
@@ -662,7 +663,11 @@ export function computeShowData(
   // Build-time status correction: safety net for stale data from concurrent pushes.
   // The source script (update-show-status.js) runs daily, but race conditions between
   // CI runs and local sessions can overwrite status changes.
-  const today = new Date().toISOString().slice(0, 10);
+  // Use market-local date: opening dates are calendar dates in the show's timezone
+  // (ET for Broadway/OB, London for WE/OWE). UTC comparison causes off-by-one when
+  // builds run after midnight UTC but before midnight local (e.g., Titanique 2026-04-12
+  // appeared "open" at 9pm ET April 11 because UTC was already April 12).
+  const today = getMarketDate(show.category);
   let normalizedStatus = show.status;
   if (normalizedStatus === 'previews' && show.openingDate && show.openingDate <= today) {
     normalizedStatus = 'open';

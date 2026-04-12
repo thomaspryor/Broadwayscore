@@ -1,19 +1,31 @@
 /**
+ * Get today's date (YYYY-MM-DD) in the market's local timezone.
+ * Opening dates are calendar dates in ET (Broadway/OB) or London (WE/OWE).
+ * Using UTC causes off-by-one when builds run after midnight UTC but before
+ * midnight local time (e.g., 1am UTC = 9pm ET the previous day).
+ */
+export function getMarketDate(category?: string): string {
+  const tz = (category === 'west-end' || category === 'off-west-end')
+    ? 'Europe/London'
+    : 'America/New_York';
+  return new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(new Date());
+}
+
+/**
  * Calculate a human-readable run duration from an opening date.
- * Returns null if openingDate is falsy.
+ * Returns null if openingDate is falsy or the show hasn't opened yet.
+ * Returns "Just opened" on opening day and for the first month.
  * @param suffix - e.g. "on Broadway" or "in the West End"
  */
 export function getBroadwayDuration(openingDate: string | null, suffix = 'on Broadway'): string | null {
   if (!openingDate) return null;
   const open = new Date(openingDate);
   const now = new Date();
-  // Don't show "Just opened" on opening day itself — Broadway shows open
-  // in the evening, so the show hasn't actually opened until the next day.
-  // Compare as UTC date strings to avoid timezone issues (new Date('YYYY-MM-DD')
-  // parses as UTC but setHours operates in local time, shifting the date).
+  // Compare as date strings. Show "Just opened" starting on opening day
+  // (the engine already gates status='open' to opening day in market-local time).
   const openDateStr = openingDate.slice(0, 10);
   const nowDateStr = now.toISOString().slice(0, 10);
-  if (openDateStr >= nowDateStr) return null;
+  if (openDateStr > nowDateStr) return null;
   const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
   if (months < 1) return 'Just opened';
   if (months < 12) return `${months} month${months === 1 ? '' : 's'} ${suffix}`;
