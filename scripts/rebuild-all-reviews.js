@@ -2578,20 +2578,43 @@ showDirs.forEach(showId => {
         // Use canonical outletId for URL dedup
         const urlOutletKey = normalizeOutletCanonical(data.outletId || data.outlet);
         const urlDedupKey = `${urlOutletKey}|${normalizedUrl}`;
+        const currentCritic = (data.criticName || '').toLowerCase().trim();
         if (seenUrlsByOutlet.has(urlDedupKey)) {
-          // Files are sorted so real critic names come before "unknown" — first wins
-          stats.skippedDuplicateUrl = (stats.skippedDuplicateUrl || 0) + 1;
-          return;
+          const winner = seenUrlsByOutlet.get(urlDedupKey);
+          // Allow through if BOTH files have different named critics — multi-critic pages
+          // (e.g., Daily Mail dual reviews, NYT multiple critics, Variety rotating reviewers).
+          // Content fingerprint dedup downstream catches cases where the text is identical.
+          const bothNamed = currentCritic && currentCritic !== 'unknown' &&
+                            winner.critic && winner.critic !== 'unknown';
+          const differentPeople = bothNamed && currentCritic !== winner.critic;
+          if (differentPeople) {
+            stats.allowedMultiCriticUrl = (stats.allowedMultiCriticUrl || 0) + 1;
+          } else {
+            // Files are sorted so real critic names come before "unknown" — first wins
+            stats.skippedDuplicateUrl = (stats.skippedDuplicateUrl || 0) + 1;
+            return;
+          }
+        } else {
+          seenUrlsByOutlet.set(urlDedupKey, { file, critic: currentCritic });
         }
-        seenUrlsByOutlet.set(urlDedupKey, file);
 
         // Cross-outlet URL dedup: same URL filed under different outlets (e.g., unknown + nytimes)
         // Files are sorted so real outlet names come before "unknown" — first wins
+        // Also allow through if both have different named critics (same multi-critic logic)
         if (seenUrlsGlobal.has(normalizedUrl)) {
-          stats.skippedCrossOutletDuplicateUrl = (stats.skippedCrossOutletDuplicateUrl || 0) + 1;
-          return;
+          const globalWinner = seenUrlsGlobal.get(normalizedUrl);
+          const bothNamedGlobal = currentCritic && currentCritic !== 'unknown' &&
+                                  globalWinner.critic && globalWinner.critic !== 'unknown';
+          const differentPeopleGlobal = bothNamedGlobal && currentCritic !== globalWinner.critic;
+          if (differentPeopleGlobal) {
+            stats.allowedMultiCriticUrlCrossOutlet = (stats.allowedMultiCriticUrlCrossOutlet || 0) + 1;
+          } else {
+            stats.skippedCrossOutletDuplicateUrl = (stats.skippedCrossOutletDuplicateUrl || 0) + 1;
+            return;
+          }
+        } else {
+          seenUrlsGlobal.set(normalizedUrl, { file, critic: currentCritic });
         }
-        seenUrlsGlobal.set(normalizedUrl, file);
       }
 
       // Content fingerprint dedup: same review text at same outlet under different critic names
@@ -3338,7 +3361,9 @@ const output = {
       skippedNoScore: stats.skippedNoScore,
       skippedDuplicate: stats.skippedDuplicate,
       skippedDuplicateUrl: stats.skippedDuplicateUrl || 0,
+      allowedMultiCriticUrl: stats.allowedMultiCriticUrl || 0,
       skippedCrossOutletDuplicateUrl: stats.skippedCrossOutletDuplicateUrl || 0,
+      allowedMultiCriticUrlCrossOutlet: stats.allowedMultiCriticUrlCrossOutlet || 0,
       skippedDuplicateText: stats.skippedDuplicateText || 0,
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
@@ -3532,7 +3557,9 @@ console.log(`Total reviews INCLUDED: ${stats.totalReviews}`);
 console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
+console.log(`  Allowed (multi-critic same URL): ${stats.allowedMultiCriticUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
+console.log(`  Allowed (multi-critic cross-outlet URL): ${stats.allowedMultiCriticUrlCrossOutlet || 0}`);
 console.log(`  Skipped (corrupted/invalid JSON): ${stats.skippedCorrupted || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 if (stats.contentVerificationPromoted > 0) {
