@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-12T18:36:20.957Z",
+  "timestamp": "2026-04-12T18:57:53.683Z",
   "stats": {
     "totalReviews": 34695,
     "alreadyFlagged": 13834,
     "dateGuardCatches": 107,
     "directorMismatch": 960,
     "tvFilmSignals": 3379,
-    "londonSignals": 1105,
+    "londonSignals": 1106,
     "offBroadwaySignals": 966,
     "yearMismatch": 75,
     "noPublishDate": 4129
@@ -30117,6 +30117,11 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 471d before show (July 11, 2012 vs 2013-10-25)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
