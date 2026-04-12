@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-12T12:30:01.687Z",
+  "generatedAt": "2026-04-12T12:38:31.759Z",
   "threshold": 50,
   "summary": {
     "totalSyndicatedPairs": 2,
-    "newlyFlagged": 1,
-    "alreadyFlagged": 1,
-    "criticsAffected": 1,
-    "showsAffected": 1,
-    "avgSimilarity": 76,
-    "avgScoreDiff": 1
+    "newlyFlagged": 0,
+    "alreadyFlagged": 2,
+    "criticsAffected": 0,
+    "showsAffected": 0,
+    "avgSimilarity": 0,
+    "avgScoreDiff": 0
   },
   "syndicationPairs": [
     {
@@ -84,7 +84,7 @@
         "washington-times",
         "minneapolis-star-tribune"
       ],
-      "count": 1
+      "count": 0
     },
     {
       "critic": "jennifer farrar",
@@ -96,20 +96,7 @@
       "count": 0
     }
   ],
-  "flagged": [
-    {
-      "critic": "Mark Kennedy",
-      "showId": "holler-if-ya-hear-me-2014",
-      "primaryOutlet": "ap",
-      "secondaryOutlet": "huffpost",
-      "primaryFile": "ap--mark-kennedy.json",
-      "secondaryFile": "huffpost--mark-kennedy.json",
-      "similarity": 76,
-      "primaryScore": 63,
-      "secondaryScore": 62,
-      "scoreDiff": 1
-    }
-  ],
+  "flagged": [],
   "authorMismatches": [
     {
       "showId": "frozen-2018",
