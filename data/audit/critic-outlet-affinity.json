@@ -1,15 +1,27 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-12T20:13:05.626Z",
+    "lastUpdated": "2026-04-12T20:22:01.589Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 35244,
-    "skippedFiles": 14583,
-    "totalCritics": 1432,
-    "registryCritics": 508,
-    "flaggedReviews": 0
+    "totalFilesScanned": 35249,
+    "skippedFiles": 14634,
+    "totalCritics": 1440,
+    "registryCritics": 509,
+    "flaggedReviews": 1
   },
-  "flaggedReviews": [],
+  "flaggedReviews": [
+    {
+      "critic": "Michael Kuchwara",
+      "criticSlug": "michael-kuchwara",
+      "outlet": "abc-news",
+      "showId": "la-cage-aux-folles-2010",
+      "file": "abc-news--michael-kuchwara.json",
+      "outletShare": 2,
+      "primaryOutlet": "ap",
+      "primaryShare": 98,
+      "totalReviews": 48
+    }
+  ],
   "freelancers": [
     {
       "critic": "Austin Fimmano",
@@ -58,15 +70,15 @@
         "timeout",
         "ap"
       ],
-      "totalReviews": 440
+      "totalReviews": 432
     },
     {
       "critic": "Mark Kennedy",
       "slug": "mark-kennedy",
       "outlets": [
         "ap",
-        "huffpost",
         "abc-news",
+        "huffpost",
         "washpost",
         "washington-times",
         "seattle-post-intelligencer",
@@ -75,7 +87,7 @@
         "canadian-press",
         "npr"
       ],
-      "totalReviews": 247
+      "totalReviews": 248
     },
     {
       "critic": "Chris Jones",
@@ -90,7 +102,7 @@
         "nytimes",
         "thestage"
       ],
-      "totalReviews": 501
+      "totalReviews": 499
     },
     {
       "critic": "Michael Sommers",
@@ -115,7 +127,7 @@
         "usatoday",
         "hollywood-reporter"
       ],
-      "totalReviews": 185
+      "totalReviews": 184
     },
     {
       "critic": "Elisabeth Vincentelli",
@@ -128,7 +140,7 @@
         "broadwayworld",
         "newyorker"
       ],
-      "totalReviews": 230
+      "totalReviews": 228
     },
     {
       "critic": "Charles Isherwood",
@@ -283,7 +295,7 @@
         "timteeman",
         "nytimes"
       ],
-      "totalReviews": 246
+      "totalReviews": 245
     },
     {
       "critic": "Greg Evans",
@@ -350,7 +362,7 @@
         "nysr",
         "talkinbroadway"
       ],
-      "totalReviews": 154
+      "totalReviews": 152
     },
     {
       "critic": "Steven Suskin",
@@ -361,7 +373,7 @@
         "variety",
         "stageandcinema"
       ],
-      "totalReviews": 158
+      "totalReviews": 157
     },
     {
       "critic": "Jonathan Mandell",
@@ -400,7 +412,7 @@
         "talkinbroadway",
         "upstage-downstage"
       ],
-      "totalReviews": 166
+      "totalReviews": 165
     },
     {
       "critic": "Joel Benjamin",
@@ -469,7 +481,7 @@
         "dailybeast",
         "off-script"
       ],
-      "totalReviews": 425
+      "totalReviews": 419
     },
     {
       "critic": "Jeremy Gerard",
@@ -505,7 +517,7 @@
         "variety",
         "newsday"
       ],
-      "totalReviews": 401
+      "totalReviews": 399
     },
     {
       "critic": "Thom Geier",
@@ -515,7 +527,7 @@
         "ew",
         "thewrap"
       ],
-      "totalReviews": 211
+      "totalReviews": 208
     },
     {
       "critic": "Marilyn Stasio.",
@@ -554,7 +566,7 @@
         "nbcny",
         "medium"
       ],
-      "totalReviews": 206
+      "totalReviews": 205
     },
     {
       "critic": "Dave Quinn",
@@ -599,7 +611,7 @@
         "timeout",
         "playbill"
       ],
-      "totalReviews": 135
+      "totalReviews": 134
     },
     {
       "critic": "Elyse Trevers",
@@ -632,7 +644,7 @@
         "theatrely",
         "theatermania"
       ],
-      "totalReviews": 94
+      "totalReviews": 93
     },
     {
       "critic": "David Sheward",
@@ -642,7 +654,7 @@
         "backstage",
         "cultural-weekly"
       ],
-      "totalReviews": 113
+      "totalReviews": 112
     },
     {
       "critic": "Martin Denton",
@@ -715,7 +727,7 @@
         "exeunt-magazine",
         "thestage"
       ],
-      "totalReviews": 31
+      "totalReviews": 30
     },
     {
       "critic": "Gloria Oladipo",
@@ -765,7 +777,7 @@
         "theatrely",
         "stageandcinema"
       ],
-      "totalReviews": 107
+      "totalReviews": 106
     },
     {
       "critic": "Matthew Wexler",
@@ -863,7 +875,7 @@
         "london-theatre",
         "variety"
       ],
-      "totalReviews": 35
+      "totalReviews": 33
     },
     {
       "critic": "Simon Saltzman",
