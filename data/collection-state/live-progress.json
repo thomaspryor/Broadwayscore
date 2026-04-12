@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-12T04:27:10.898Z",
-  "processed": 197,
-  "failed": 1084,
-  "successRate": "15.4%",
+  "updatedAt": "2026-04-12T04:28:33.686Z",
+  "processed": 200,
+  "failed": 1091,
+  "successRate": "15.5%",
   "tierBreakdown": {
     "playwright": 40,
     "amp": 36,
-    "browserbase": 75,
+    "browserbase": 77,
     "directCookies": 0,
-    "scrapingbee": 36,
+    "scrapingbee": 37,
     "brightdata": 0,
     "archiveToday": 82,
-    "archive": 67
+    "archive": 68
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-12T02:51:37.649Z",
-      "event": "bb-session",
-      "session": "845d12e9",
-      "url": "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-"
-    },
-    {
-      "t": "2026-04-12T02:51:38.743Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-12T02:53:54.659Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-12T04:26:56.048Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T04:28:02.901Z",
+      "event": "bb-session",
+      "session": "b38b41b9",
+      "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html"
+    },
+    {
+      "t": "2026-04-12T04:28:03.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

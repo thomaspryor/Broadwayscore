@@ -196,7 +196,10 @@
     "here-lies-love-2023/vulture--jackson-mchenry.json",
     "kimberly-akimbo-2022/vulture--jackson-mchenry.json",
     "plaza-suite-2022/vulture--helen-shaw.json",
-    "company-2021/deadline--greg-evans.json"
+    "company-2021/deadline--greg-evans.json",
+    "beetlejuice-2019/vulture--sara-holdren.json",
+    "king-kong-2018/nytimes--ben-brantleyjesse-green.json",
+    "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1282,7 +1285,14 @@
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "the-piano-lesson-2022/timeout--adam-feldman.json",
     "american-buffalo-2022/observer--jesse-green.json",
-    "waitress-2021/vulture--helen-shaw.json"
+    "waitress-2021/vulture--helen-shaw.json",
+    "the-inheritance-2019/usatoday--charles-isherwood.json",
+    "linda-vista-2019/variety--marilyn-stasio.json",
+    "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "kiss-me-kate-2019/usatoday--david-rooney.json",
+    "kiss-me-kate-2019/usatoday--elysa-gardner.json",
+    "the-waverly-gallery-2018/nypost--johnny-oleksinski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1441,7 +1451,9 @@
       "data/review-texts/leopoldstadt-2022/variety--marilyn-stasio.json",
       "leopoldstadt-2022/variety--marilyn-stasio.json",
       "data/review-texts/company-2021/deadline--greg-evans.json",
-      "company-2021/deadline--greg-evans.json"
+      "company-2021/deadline--greg-evans.json",
+      "data/review-texts/king-kong-2018/nytimes--ben-brantleyjesse-green.json",
+      "king-kong-2018/nytimes--ben-brantleyjesse-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1480,7 +1492,8 @@
       "life-of-pi-2023/theatrely--juan-a-ramirez.json",
       "parade-2023/theatrely--kobi-kassal.json",
       "mr-saturday-night-2022/theatrely--juan-a-ramirez.json",
-      "a-strange-loop-2022/nytimes--maya-phillips.json"
+      "a-strange-loop-2022/nytimes--maya-phillips.json",
+      "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1634,11 +1647,12 @@
       "purlie-victorious-2023/theater-pizzazz--ron-fassler-critic.json",
       "here-lies-love-2023/vulture--jackson-mchenry.json",
       "kimberly-akimbo-2022/vulture--jackson-mchenry.json",
-      "plaza-suite-2022/vulture--helen-shaw.json"
+      "plaza-suite-2022/vulture--helen-shaw.json",
+      "beetlejuice-2019/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "waitress-2021/vulture--helen-shaw.json",
+  "lastProcessed": "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -2190,6 +2204,17 @@
       "t": "2026-04-12T04:26:56.048Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T04:28:02.901Z",
+      "event": "bb-session",
+      "session": "b38b41b9",
+      "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html"
+    },
+    {
+      "t": "2026-04-12T04:28:03.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
