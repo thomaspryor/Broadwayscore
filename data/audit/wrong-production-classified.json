@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-12T08:26:16.721Z",
+    "generatedAt": "2026-04-12T08:39:04.276Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 79,
@@ -28,23 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review is about a Sydney production of Wicked. It mentions the 2008 Australian premiere and a 2014 return season, as well as the current production at the Sydney Lyric."
-    },
-    {
-      "showId": "the-gin-game-1977",
-      "showTitle": "The Gin Game",
-      "showYear": 1977,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2015 in text matches revival the-gin-game-2015"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
+      "reasoning": "This review discusses a Sydney production of Wicked, mentioning its 2008 and 2014 runs. It also mentions a new Brazilian production. It is not about the 2003 Broadway production."
     },
     {
       "showId": "broadway-1987",
@@ -61,7 +45,23 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This,\" not the original 1987 production. The review also mentions the director, Michael Mayer, and set designer, Derek McLane, who were part of the 2019 production."
+      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This\", not the 1987 original production."
+    },
+    {
+      "showId": "the-gin-game-1977",
+      "showTitle": "The Gin Game",
+      "showYear": 1977,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2015 in text matches revival the-gin-game-2015"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-gin-game-2015",
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
     },
     {
       "showId": "the-house-of-blue-leaves-1986",
@@ -94,7 +94,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, indicating it's a current production."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre and a production running through Nov. 29, which aligns with the 2015 revival starring Clive Owen, Kelly Reilly, and Eve Best. It also explicitly calls it a 'carefully cultivated revival'."
     }
   ]
 }

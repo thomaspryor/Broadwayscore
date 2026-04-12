@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-12T08:30:52.232Z",
+  "timestamp": "2026-04-12T08:43:22.191Z",
   "stats": {
     "totalReviews": 34602,
     "alreadyFlagged": 14090,
     "dateGuardCatches": 58,
-    "directorMismatch": 927,
+    "directorMismatch": 926,
     "tvFilmSignals": 3336,
     "londonSignals": 1077,
     "offBroadwaySignals": 951,
@@ -56242,20 +56242,6 @@
       "score": 82,
       "publishDate": "2022-09-29",
       "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tye blue\" from titanique-2026"
-        }
-      ]
-    },
-    {
-      "showId": "titanique-off-broadway-2022",
-      "file": "nytimes--elisabeth-vincentelli.json",
-      "score": 76,
-      "publishDate": "June 28th, 2022",
-      "url": "https://www.nytimes.com/2022/06/28/theater/titanique-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
