@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-12T10:38:13.882Z",
-  "processed": 42,
-  "failed": 23,
-  "successRate": "64.6%",
+  "updatedAt": "2026-04-12T10:43:05.874Z",
+  "processed": 47,
+  "failed": 28,
+  "successRate": "62.7%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 12
+    "archiveToday": 4,
+    "archive": 14
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-04-12T10:23:15.159Z",
-      "event": "bb-session",
-      "session": "2ceb3b19",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
-    },
-    {
-      "t": "2026-04-12T10:23:16.154Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-12T10:23:48.897Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-12T10:38:04.528Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-12T10:42:30.797Z",
+      "event": "bb-session",
+      "session": "f5dd6bab",
+      "url": "https://www.nytimes.com/2024/04/14/theater/lempicka-review-chavkin-espinosa.html"
+    },
+    {
+      "t": "2026-04-12T10:42:31.764Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
