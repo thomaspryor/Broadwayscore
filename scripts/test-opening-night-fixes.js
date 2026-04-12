@@ -1141,20 +1141,23 @@ const wrongUrlHtml = `<html><head><title>Review Roundup: BECKY SHAW Opens-on-Bro
 
 const wrongUrlReviews = extractBWWRoundupReviews(wrongUrlHtml, 'becky-shaw-2026', 'https://bww.com/roundup', 'Becky Shaw');
 
+// Cross-show URL guard now catches Monte Cristo URLs BEFORE assignment.
+// Previously these were accepted via trustedSource bypass and caught downstream
+// at createReviewFile. The earlier catch is better — prevents file creation.
 const wrongUrlNyt = wrongUrlReviews.find(r =>
   (r.outletId || '').includes('nytimes') || (r.outlet || '').toLowerCase().includes('new york times')
 );
 assert(
-  wrongUrlNyt && wrongUrlNyt.url && wrongUrlNyt.url.includes('monte-cristo'),
-  'BWW trustedSource: NYT URL accepted even when slug does not match show title (creative-titled URLs)'
+  wrongUrlNyt && !wrongUrlNyt.url,
+  'BWW cross-show guard: NYT Monte Cristo URL rejected for Becky Shaw (caught before file creation)'
 );
 
 const wrongUrlCulture = wrongUrlReviews.find(r =>
   (r.outletId || '').includes('culturesauce') || (r.outlet || '').toLowerCase().includes('culture sauce')
 );
 assert(
-  wrongUrlCulture && wrongUrlCulture.url && wrongUrlCulture.url.includes('monte-cristo'),
-  'BWW trustedSource: Culture Sauce URL accepted even when slug does not match show title'
+  wrongUrlCulture && !wrongUrlCulture.url,
+  'BWW cross-show guard: Culture Sauce Monte Cristo URL rejected for Becky Shaw'
 );
 
 // The strict guard is still tested directly via urlLooksLikeReview — see the
@@ -1223,9 +1226,9 @@ assert(
   'Short title "Cats": URL with "cats" in slug accepted'
 );
 
-// Short title: BWW trustedSource accepts even creative-titled URLs.
-// (The downstream cross-show URL slug guard in createReviewFile catches
-// genuine misattributions — see DoaS Apr 9-10 #6.)
+// Short title with synthetic show ID (cats-2026 not in shows.json): cross-show guard
+// degrades gracefully — returns null when showId not in index. URL still accepted.
+// For REAL show IDs (cats-the-jellicle-ball-2026), the guard would catch hamilton.
 const shortTitleWrongHtml = `<html><head><title>Review Roundup: CATS Opens-on-Broadway-20260406</title></head><body>
 <script type="application/ld+json">{
   "@type": "LiveBlogPosting",
@@ -1243,7 +1246,7 @@ const shortTitleWrongVariety = shortTitleWrongReviews.find(r =>
 );
 assert(
   shortTitleWrongVariety && shortTitleWrongVariety.url && shortTitleWrongVariety.url.includes('hamilton'),
-  'BWW trustedSource: short-title "Cats" — Hamilton URL accepted (creative-titled URL bypass; downstream guard handles cross-show)'
+  'BWW cross-show guard: graceful degradation — synthetic show ID not in index, URL accepted'
 );
 
 // ============================================================
