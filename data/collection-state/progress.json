@@ -136,7 +136,16 @@
     "topdog-underdog-2022/variety--naveen-kumar.json",
     "topdog-underdog-2022/vulture--rob-weinert-kendt.json",
     "topdog-underdog-2022/deadline--greg-evans.json",
-    "1776-2022/variety--frank-rizzo.json"
+    "1776-2022/variety--frank-rizzo.json",
+    "leopoldstadt-2022/variety--marilyn-stasio.json",
+    "leopoldstadt-2022/vulture--naveen-kumar.json",
+    "the-kite-runner-2022/variety--marilyn-stasio.json",
+    "mr-saturday-night-2022/theatrely--juan-a-ramirez.json",
+    "a-strange-loop-2022/nytimes--maya-phillips.json",
+    "the-skin-of-our-teeth-2022/nytimes--alexis-soloski.json",
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "funny-girl-2022/variety--frank-rizzo.json",
+    "hangmen-2022/dtli--bedatri-dchoudhury.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1091,7 +1100,8 @@
     "almost-famous-2022/timeout--adam-feldman.json",
     "topdog-underdog-2022/hollywood-reporter--unknown.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
-    "the-piano-lesson-2022/timeout--adam-feldman.json"
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "girl-from-the-north-country-2022/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1122,11 +1132,16 @@
       "floyd-collins-2025/new-york-sun--elyse-sommer.json",
       "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
       "mother-play-2024/theatermania--rachel-graham.json",
-      "walking-with-ghosts-2022/nytg--joe-dziemianowicz.json"
+      "walking-with-ghosts-2022/nytg--joe-dziemianowicz.json",
+      "hangmen-2022/dtli--bedatri-dchoudhury.json"
     ],
     "amp": [
       "data/review-texts/the-scottsboro-boys-2010/time--richard-zoglin.json",
-      "the-scottsboro-boys-2010/time--richard-zoglin.json"
+      "the-scottsboro-boys-2010/time--richard-zoglin.json",
+      "data/review-texts/the-kite-runner-2022/variety--marilyn-stasio.json",
+      "the-kite-runner-2022/variety--marilyn-stasio.json",
+      "data/review-texts/funny-girl-2022/variety--frank-rizzo.json",
+      "funny-girl-2022/variety--frank-rizzo.json"
     ],
     "browserbase": [
       "data/review-texts/memphis-2009/variety--charles-isherwood.json",
@@ -1199,7 +1214,9 @@
       "data/review-texts/topdog-underdog-2022/deadline--greg-evans.json",
       "topdog-underdog-2022/deadline--greg-evans.json",
       "data/review-texts/1776-2022/variety--frank-rizzo.json",
-      "1776-2022/variety--frank-rizzo.json"
+      "1776-2022/variety--frank-rizzo.json",
+      "data/review-texts/leopoldstadt-2022/variety--marilyn-stasio.json",
+      "leopoldstadt-2022/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1236,7 +1253,9 @@
       "fat-ham-2023/vulture--jackson-mchenry.json",
       "life-of-pi-2023/nytimes--alexis-soloski.json",
       "life-of-pi-2023/theatrely--juan-a-ramirez.json",
-      "parade-2023/theatrely--kobi-kassal.json"
+      "parade-2023/theatrely--kobi-kassal.json",
+      "mr-saturday-night-2022/theatrely--juan-a-ramirez.json",
+      "a-strange-loop-2022/nytimes--maya-phillips.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1273,7 +1292,8 @@
       "data/review-texts/new-york-new-york-2023/vulture--jackson-mchenry.json",
       "data/review-texts/shucked-2023/vulture--jackson-mchenry.json",
       "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/talkinbroadway--nancy-grossman.json",
-      "data/review-texts/kimberly-akimbo-2022/vulture--jackson-mchenry.json"
+      "data/review-texts/kimberly-akimbo-2022/vulture--jackson-mchenry.json",
+      "data/review-texts/girl-from-the-north-country-2022/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -1316,11 +1336,14 @@
       "some-like-it-hot-2022/vulture--jackson-mchenry.json",
       "ohio-state-murders-2022/vulture--jackson-mchenry.json",
       "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
-      "topdog-underdog-2022/vulture--rob-weinert-kendt.json"
+      "topdog-underdog-2022/vulture--rob-weinert-kendt.json",
+      "leopoldstadt-2022/vulture--naveen-kumar.json",
+      "the-skin-of-our-teeth-2022/nytimes--alexis-soloski.json",
+      "the-skin-of-our-teeth-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "1776-2022/variety--frank-rizzo.json",
+  "lastProcessed": "hangmen-2022/dtli--bedatri-dchoudhury.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1848,6 +1871,17 @@
     },
     {
       "t": "2026-04-12T02:59:10.479Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:59:26.050Z",
+      "event": "bb-session",
+      "session": "6c6f9a6c",
+      "url": "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard"
+    },
+    {
+      "t": "2026-04-12T02:59:27.055Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
