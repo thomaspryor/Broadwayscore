@@ -18,7 +18,7 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-collision-report.json');
 
-const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
+const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
 
 const args = process.argv.slice(2);
@@ -331,13 +331,37 @@ if (APPLY) {
   let highConfFlagged = 0;
   let revivalScoreFlagged = 0;
   let londonMarketSkipped = 0;
+  let urlMarketMatchSkipped = 0;
 
-  // Guard: skip wrongShow for London-market shows reviewed by UK outlets
+  // Guard: skip wrongShow when the URL's market signal matches the show's market.
+  // Prevents: NYT "cats-jellicle-ball-review-broadway.html" being flagged as wrongShow
+  // on the Broadway production just because cats-west-end-2026 has a more recent opening.
+  function urlMatchesShowMarket(showId, data) {
+    if (!data.url) return false;
+    const showInfo = showDateMap[showId];
+    const isWE = showId.includes('-west-end-') || (showInfo && isLondonMarket(showInfo.category));
+    const isBway = !isWE && !showId.includes('-off-broadway-') && !showId.includes('-off-west-end-');
+
+    // URL says "broadway" and show IS Broadway → match
+    if (isBway && isBroadwayUrl(data.url, data.outletId)) return true;
+    // URL says UK/London and show IS West End → match
+    if (isWE && isUkOutletUrl(data.url)) return true;
+
+    return false;
+  }
+
+  // Guard: skip wrongShow for London-market shows reviewed by UK outlets,
+  // OR when URL market signal matches the show's market
   function shouldSkipWrongShow(showId, data) {
     const showInfo = showDateMap[showId];
     if (showInfo && isLondonMarket(showInfo.category) && isUkOutletUrl(data.url)) {
       londonMarketSkipped++;
       log(`  SKIPPED (London market + UK outlet): ${showId}/${data.outletId || 'unknown'}`);
+      return true;
+    }
+    if (urlMatchesShowMarket(showId, data)) {
+      urlMarketMatchSkipped++;
+      log(`  SKIPPED (URL market signal matches show): ${showId}/${data.outletId || 'unknown'} — ${data.url}`);
       return true;
     }
     return false;
@@ -936,6 +960,7 @@ if (APPLY) {
   console.log(`Tier 14 - Profile URL rejection:       ${profileUrlFlagged}`);
   console.log(`Tier 15 - Catch-all revival:           ${catchAllFlagged}`);
   console.log(`London market skipped:                ${londonMarketSkipped}`);
+  console.log(`URL market match skipped:             ${urlMarketMatchSkipped}`);
   console.log(`Total files modified:                  ${totalFixed + showIdMismatchFlagged}`);
 } else {
   console.log(`\nRun with --apply to auto-fix collisions.`);
