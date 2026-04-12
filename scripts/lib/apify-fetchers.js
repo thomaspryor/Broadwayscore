@@ -216,7 +216,12 @@ function normalizeInstagramPost(p) {
  * "Maybe Happy Ending" → #maybehappyending. This matches real fan tagging
  * conventions on Broadway Instagram.
  */
-async function fetchInstagramPosts({ showTitle, maxItems, token }) {
+async function fetchInstagramPosts({ showTitle, marketQualifier, maxItems, token }) {
+  // Instagram hashtag search — keep the bare title as the hashtag.
+  // Unlike text search, adding "broadway" to the hashtag would be too
+  // restrictive (#hamiltonbroadway has almost no posts vs #hamilton).
+  // The LLM relevance classifier downstream handles noise, and IG is
+  // capped at 15 results so the signal-to-noise ratio is manageable.
   const hashtag = showTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
   if (hashtag.length < 3) {
     return { mentions: [], rawCount: 0 };
@@ -295,11 +300,15 @@ function normalizeRedditPost(p) {
  * Failures are non-fatal — if Reddit search 403s and ScrapingBee fallback
  * also fails, we return an empty array and let the other platforms carry.
  */
-async function fetchRedditForShow({ showTitle, maxItems, logger = console }) {
+async function fetchRedditForShow({ showTitle, marketQualifier, maxItems, logger = console }) {
   try {
+    // searchQualifier disambiguates the Reddit search (e.g., "Hamilton"
+    // alone returns F1/city results) without affecting the containsKeyword
+    // post-filter, which still checks for the bare show title in post text.
     const rawMentions = await fetchRedditMentions([showTitle], {
       limit: Math.min(maxItems || 100, 100),
       timeWindow: 'week',
+      searchQualifier: marketQualifier || 'broadway',
     });
     const mentions = rawMentions.map(normalizeRedditPost).filter(Boolean);
     return { mentions, rawCount: rawMentions.length };
@@ -339,10 +348,10 @@ async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, 
   // (direct JSON API), so adding it doesn't extend the slowest-wins
   // wall-clock time of the batch.
   const [redditRes, twitterRes, tiktokRes, instagramRes] = await Promise.allSettled([
-    fetchRedditForShow({ showTitle, maxItems: redditMax, logger }),
+    fetchRedditForShow({ showTitle, marketQualifier, maxItems: redditMax, logger }),
     fetchTweets({ showTitle, marketQualifier, maxItems: twitterMax, token }),
     fetchTikToks({ showTitle, marketQualifier, maxItems: tiktokMax, token }),
-    fetchInstagramPosts({ showTitle, maxItems: instagramMax, token }),
+    fetchInstagramPosts({ showTitle, marketQualifier, maxItems: instagramMax, token }),
   ]);
 
   if (redditRes.status === 'fulfilled') {
