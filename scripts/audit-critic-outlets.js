@@ -22,6 +22,7 @@ const REGISTRY_OUTPUT = path.join(__dirname, '..', 'data', 'critic-registry.json
 const AUDIT_OUTPUT = path.join(__dirname, '..', 'data', 'audit', 'critic-outlet-affinity.json');
 
 // Critics known to work at multiple outlets (not misattributions)
+// Verified 2026-04-12: URL domains match secondary outlets for all entries
 const KNOWN_FREELANCERS = [
   'charles-isherwood',  // NYT -> WSJ -> Variety
   'adam-feldman',       // Time Out -> TheaterMania -> Variety
@@ -29,6 +30,25 @@ const KNOWN_FREELANCERS = [
   'david-gordon',      // TheaterMania -> NYTG
   'jeremy-gerard',     // Deadline -> Bloomberg -> Variety
   'chris-jones',       // Chicago Tribune -> NY Daily News
+  'howard-miller',     // TalkinBroadway + Upstage Downstage blog
+  'david-roberts',     // Theatre Reviews Limited + NYTG
+  'rex-reed',          // Observer + HuffPost
+  'roger-friedman',    // Showbiz411 + Forbes
+  'scott-brown',       // Vulture + AMNY
+  'robert-gore-langton', // Daily Mail + Express UK (Theatre Record)
+  'donna-herman',      // Front Row Center + NYTG
+  'joel-benjamin',     // Theater Scene + Stage and Cinema
+  'victor-gluck',      // Theater Scene + Stage and Cinema
+  'juan-a-ramirez',    // Theatrely + Stage and Cinema
+  'steven-ross',       // FrontMezzJunkies + OutBuzz
+  'loren-noveck',      // Exeunt Magazine + The Stage
+  'amelia-merrill',    // NYTG + Vulture
+  'austin-fimmano',    // NYTG + Plays to See
+  'joey-sims',         // Theatrely + Broadway Blog
+  'andy-propst',       // TheaterMania + American Theater Web
+  'jonathan-warman',   // Drama Queen NYC + Gay Socialites
+  'kyle-turner',       // NYTG + Medium
+  'martin-denton',     // NYTheatre + TheaterMania
 ];
 
 const MIN_REVIEWS_FOR_REGISTRY = 3;
