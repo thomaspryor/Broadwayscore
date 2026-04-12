@@ -316,10 +316,21 @@ function cleanupSameShowUrlDupes() {
         return { ...e, score: s, outlet, critic };
       }).sort((a,b) => b.score - a.score);
       const best = scored[0];
+      const bestCritic = (best.data.criticName || '').toLowerCase().trim();
       for (const dupe of scored.slice(1)) {
         const bPath = path.join(showDir, best.file), dPath = path.join(showDir, dupe.file);
         const bData = readJsonFile(bPath), dData = readJsonFile(dPath);
         if (!bData || !dData || dData.duplicateOf) continue;
+        // Skip if both have different named critics — multi-critic pages (e.g., Daily Mail
+        // dual reviews, NYT/Variety multiple critics). The rebuild's fingerprint dedup
+        // catches cases where the text is actually identical.
+        const dupeCritic = (dData.criticName || '').toLowerCase().trim();
+        const bothNamed = bestCritic && bestCritic !== 'unknown' && dupeCritic && dupeCritic !== 'unknown';
+        if (bothNamed && bestCritic !== dupeCritic) {
+          console.log(`  ${showId}: ${dupe.file} — skipped: different critic (${dupeCritic} vs ${bestCritic})`);
+          stats.multiCriticSkipped = (stats.multiCriticSkipped || 0) + 1;
+          continue;
+        }
         console.log(`  ${showId}: ${dupe.file} → duplicate URL of ${best.file}`);
         mergeReviewData(bData, dData); writeJsonFile(bPath, bData);
         dData.duplicateOf = best.file; dData._mergedInto = best.file; dData._mergeReason = 'same-show-url-dedup';
