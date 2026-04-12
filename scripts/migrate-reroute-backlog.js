@@ -17,8 +17,9 @@
  *   node scripts/migrate-reroute-backlog.js --verify     # post-execute checks
  *
  * Flags:
- *   --limit N      Only process first N safe candidates
- *   --show SHOW_ID Only process a single source show
+ *   --cross-market  Rescue cross-market candidates (London outlets reviewing Broadway)
+ *   --limit N       Only process first N safe candidates
+ *   --show SHOW_ID  Only process a single source show
  */
 const fs = require('fs');
 const path = require('path');
@@ -30,46 +31,80 @@ const showsPath = path.join(REPO_ROOT, '.core-data-checkout', 'shows.json');
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showById = new Map(showsData.shows.map(s => [s.id, s]));
 
-const PLAN_PATH = path.join(REPO_ROOT, 'data', 'reroute-migration-plan.json');
-const LOG_PATH = path.join(REPO_ROOT, 'data', 'reroute-migration-log.json');
-
 const args = process.argv.slice(2);
 const MODE = args.includes('--execute') ? 'execute'
   : args.includes('--verify') ? 'verify' : 'dryrun';
+const CROSS_MARKET = args.includes('--cross-market');
 const limitIdx = args.indexOf('--limit');
 const LIMIT = limitIdx >= 0 ? parseInt(args[limitIdx + 1]) : Infinity;
 const showIdx = args.indexOf('--show');
 const SHOW_FILTER = showIdx >= 0 ? args[showIdx + 1] : null;
 
+const planSuffix = CROSS_MARKET ? '-cross-market' : '';
+const PLAN_PATH = path.join(REPO_ROOT, 'data', `reroute-migration-plan${planSuffix}.json`);
+const LOG_PATH = path.join(REPO_ROOT, 'data', `reroute-migration-log${planSuffix}.json`);
+
+// Load outlet registry for isDualMarket lookups
+const outletRegistryPath = path.join(REPO_ROOT, 'data', 'outlet-registry.json');
+const outletRegistry = JSON.parse(fs.readFileSync(outletRegistryPath, 'utf8'));
+const outletData = outletRegistry.outlets || outletRegistry;
+
 // ─── Build multiProdYearGuard identically to rebuild-all-reviews.js ───
+const titleGroups = {};
+for (const s of showsData.shows) {
+  const normTitle = s.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!titleGroups[normTitle]) titleGroups[normTitle] = [];
+  titleGroups[normTitle].push(s);
+}
 const multiProdYearGuard = {};
-{
-  const titleGroups = {};
-  for (const s of showsData.shows) {
-    const normTitle = s.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-    if (!titleGroups[normTitle]) titleGroups[normTitle] = [];
-    titleGroups[normTitle].push(s);
+for (const [, prods] of Object.entries(titleGroups)) {
+  if (prods.length < 2) continue;
+  for (const show of prods) {
+    const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
+      : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
+    if (!showYear) continue;
+    const showCat = show.category || 'broadway';
+    const nycMarket = showCat === 'broadway' || showCat === 'off-broadway';
+    const siblings = prods.filter(p => {
+      if (p.id === show.id) return false;
+      const pCat = p.category || 'broadway';
+      if (nycMarket) return pCat === 'broadway' || pCat === 'off-broadway';
+      return pCat === showCat;
+    }).map(p => ({
+      id: p.id,
+      year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null,
+    })).filter(p => p.year);
+    if (siblings.length > 0) multiProdYearGuard[show.id] = { showYear, siblings };
   }
-  for (const [, prods] of Object.entries(titleGroups)) {
-    if (prods.length < 2) continue;
-    for (const show of prods) {
-      const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
-        : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
-      if (!showYear) continue;
-      const showCat = show.category || 'broadway';
-      const nycMarket = showCat === 'broadway' || showCat === 'off-broadway';
-      const siblings = prods.filter(p => {
-        if (p.id === show.id) return false;
-        const pCat = p.category || 'broadway';
-        if (nycMarket) return pCat === 'broadway' || pCat === 'off-broadway';
-        return pCat === showCat;
-      }).map(p => ({
-        id: p.id,
-        year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null,
-      })).filter(p => p.year);
-      if (siblings.length > 0) multiProdYearGuard[show.id] = { showYear, siblings };
-    }
+}
+
+// ─── For --cross-market: WE sibling lookup ───
+function getWeSiblings(showId) {
+  const show = showById.get(showId);
+  if (!show) return [];
+  const normTitle = show.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const prods = titleGroups[normTitle] || [];
+  return prods.filter(p => p.id !== showId && p.category === 'west-end')
+    .map(p => ({
+      id: p.id,
+      year: p.openingDate ? parseInt(p.openingDate.slice(0, 4))
+        : p.previewsStartDate ? parseInt(p.previewsStartDate.slice(0, 4)) : null,
+    })).filter(p => p.year);
+}
+
+// ─── Date parsing for cross-market date proximity check ───
+function parseReviewDate(d) {
+  if (!d) return null;
+  const m1 = d.match(/(\w+)\s+(\d+)(?:st|nd|rd|th)?,?\s*(\d{4})/);
+  if (m1) {
+    const months = { january:0, february:1, march:2, april:3, may:4, june:5,
+      july:6, august:7, september:8, october:9, november:10, december:11 };
+    const mi = months[m1[1].toLowerCase()];
+    if (mi !== undefined) return new Date(parseInt(m1[3]), mi, parseInt(m1[2]));
   }
+  const m2 = d.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (m2) return new Date(d);
+  return null;
 }
 
 // ─── Build target directory (outlet, critic) index for dedup ───
@@ -88,6 +123,9 @@ function buildTargetOutletCriticIndex(targetShowId) {
 }
 
 // ─── Safety classifier (mirrors audit-reroute-backlog.js) ───
+// Returns { safe, reason, overrideTarget? }
+// overrideTarget is set when --cross-market reroutes to a WE sibling instead of
+// the same-market sibling that pickRerouteTarget() chose.
 function classifyCandidate(showId, file, data, guard, decision) {
   // Rule 1: Must be flagged wrongProduction or wrongShow
   if (!data.wrongProduction && !data.wrongShow) return { safe: false, reason: 'not_flagged' };
@@ -96,17 +134,81 @@ function classifyCandidate(showId, file, data, guard, decision) {
   if (data.wrongProductionManualClear || data.wrongProductionOverride
       || data.allowEarlyDate || data.allowLateDate) return { safe: false, reason: 'bypass_flag' };
 
-  // Rule 3: Distance to target must be <= 2
-  if (decision.distance > 2) return { safe: false, reason: 'distance_too_far' };
-
   // Rule 4: showNotMentioned is a title-level red flag
   if (data.showNotMentioned === true) return { safe: false, reason: 'show_not_mentioned' };
 
-  // Rule 5: Flag note must be year-based, not cross-market or other
+  // Rule 5: Flag note must be year-based OR cross-market (when --cross-market mode)
   const note = (data.wrongProductionNote || '').toLowerCase();
   const isYearBased = /date guard|url year|publishdate|url contains year|-year|closer to sibling/.test(note);
-  if (/cross-market|cross market/.test(note)) return { safe: false, reason: 'cross_market' };
-  if (!isYearBased) return { safe: false, reason: 'non_year_flag' };
+  const isCrossMarket = /cross-market|cross market/.test(note);
+  if (isCrossMarket && !CROSS_MARKET) return { safe: false, reason: 'cross_market' };
+  if (!isYearBased && !isCrossMarket) return { safe: false, reason: 'non_year_flag' };
+
+  // Rule 3: Distance to target must be <= 2
+  // Deferred after Rule 5 because cross-market candidates may override the target
+  // (London outlet → WE sibling with different distance)
+  if (!isCrossMarket && decision.distance > 2) return { safe: false, reason: 'distance_too_far' };
+
+  // ─── Cross-market specific routing (--cross-market mode) ───
+  // London outlets reviewing Broadway shows need special handling:
+  // Path A: Route to WE sibling if outlet is London and WE sibling exists + year match
+  // Path B: Route to Broadway sibling only if review date is within ±90 days of opening
+  if (isCrossMarket) {
+    const outletId = (data.outletId || data.outlet || '').toLowerCase();
+    const outletEntry = outletData[outletId];
+    const outletRegion = outletEntry && outletEntry.region ? outletEntry.region : null;
+    const reviewText = [data.fullText, data.wrongFullText, data.bwwExcerpt, data.dtliExcerpt,
+      data.showScoreExcerpt, data.llmPullQuote].filter(Boolean).join(' ');
+
+    if (reviewText.trim().length < 100) return { safe: false, reason: 'cross_market_no_text' };
+
+    // Path A: London outlet → try WE sibling
+    if (outletRegion === 'london') {
+      const weSibs = getWeSiblings(showId);
+      if (weSibs.length > 0) {
+        let detectedYear = null;
+        if (data.publishDate) { const m = data.publishDate.match(/(20\d\d|19\d\d)/); if (m) detectedYear = parseInt(m[0]); }
+        if (!detectedYear && data.url) { const m = data.url.match(/\/(20\d\d|19\d\d)\//); if (m) detectedYear = parseInt(m[1]); }
+
+        if (detectedYear) {
+          const weDecision = pickRerouteTarget(guard.showYear, weSibs, detectedYear);
+          if (weDecision.action === 'reroute' && weDecision.distance <= 2) {
+            // Keyword verify against WE target
+            const weTarget = showById.get(weDecision.targetShowId);
+            const weKeywords = weTarget ? buildShowKeywordSet(weTarget) : new Set();
+            const matched = weKeywords.size > 0 ? findShowKeywordInText(reviewText, weKeywords) : null;
+            if (matched) {
+              return {
+                safe: true,
+                overrideTarget: weDecision.targetShowId,
+                overrideDistance: weDecision.distance,
+              };
+            }
+          }
+        }
+      }
+    }
+
+    // Path B: Broadway sibling — only if review date within ±90 days of target opening
+    const targetShow = showById.get(decision.targetShowId);
+    const reviewDate = parseReviewDate(data.publishDate);
+    const openingDate = targetShow && targetShow.openingDate ? new Date(targetShow.openingDate) : null;
+    const previewDate = targetShow && targetShow.previewsStartDate ? new Date(targetShow.previewsStartDate) : null;
+    const refDate = previewDate || openingDate;
+    if (reviewDate && refDate) {
+      const daysDiff = Math.round((reviewDate - refDate) / (1000 * 60 * 60 * 24));
+      if (daysDiff >= -60 && daysDiff <= 180) {
+        // Keyword verify against Broadway target
+        const targetKeywords = targetShow ? buildShowKeywordSet(targetShow) : new Set();
+        const matched = findShowKeywordInText(reviewText, targetKeywords);
+        if (matched) return { safe: true };
+      }
+    }
+
+    return { safe: false, reason: 'cross_market_unresolvable' };
+  }
+
+  // ──�� Standard (non-cross-market) safety checks ───
 
   // Rule 6: URL must not contain tokens from other (non-sibling) show titles
   const targetShow = showById.get(decision.targetShowId);
@@ -130,11 +232,11 @@ function classifyCandidate(showId, file, data, guard, decision) {
   }
 
   // Rule 7: Target show keywords should appear in review text (if text exists)
-  const targetKeywords = targetShow ? buildShowKeywordSet(targetShow) : new Set();
-  const reviewText = [data.fullText, data.wrongFullText, data.bwwExcerpt, data.dtliExcerpt,
+  const targetKeywordsStd = targetShow ? buildShowKeywordSet(targetShow) : new Set();
+  const reviewTextStd = [data.fullText, data.wrongFullText, data.bwwExcerpt, data.dtliExcerpt,
     data.showScoreExcerpt, data.llmPullQuote].filter(Boolean).join(' ');
-  if (targetKeywords.size > 0 && reviewText.trim().length > 100) {
-    const matched = findShowKeywordInText(reviewText, targetKeywords);
+  if (targetKeywordsStd.size > 0 && reviewTextStd.trim().length > 100) {
+    const matched = findShowKeywordInText(reviewTextStd, targetKeywordsStd);
     if (!matched) return { safe: false, reason: 'keyword_mismatch' };
   }
 
@@ -144,16 +246,31 @@ function classifyCandidate(showId, file, data, guard, decision) {
   return { safe: true };
 }
 
+// ─── Build cross-market scan set (shows with any title sibling, any market) ───
+const crossMarketScanIds = new Set();
+if (CROSS_MARKET) {
+  for (const [, prods] of Object.entries(titleGroups)) {
+    if (prods.length < 2) continue;
+    for (const show of prods) {
+      crossMarketScanIds.add(show.id);
+    }
+  }
+}
+
 // ─── DRY-RUN MODE ───
 if (MODE === 'dryrun') {
   console.log('=== DRY-RUN: Building migration plan ===\n');
   const guardedShowIds = new Set(Object.keys(multiProdYearGuard));
+  // In --cross-market mode, also scan shows with cross-market siblings
+  const scanIds = CROSS_MARKET
+    ? new Set([...guardedShowIds, ...crossMarketScanIds])
+    : guardedShowIds;
   const showDirs = fs.readdirSync(reviewTextsDir).filter(f => {
     if (SHOW_FILTER && f !== SHOW_FILTER) return false;
     const fp = path.join(reviewTextsDir, f);
     try {
       if (fs.lstatSync(fp).isSymbolicLink()) return false;
-      return fs.statSync(fp).isDirectory() && guardedShowIds.has(f);
+      return fs.statSync(fp).isDirectory() && scanIds.has(f);
     } catch { return false; }
   });
 
@@ -165,6 +282,8 @@ if (MODE === 'dryrun') {
   for (const showId of showDirs) {
     const showDir = path.join(reviewTextsDir, showId);
     const guard = multiProdYearGuard[showId];
+    // In cross-market mode, shows may lack same-market siblings but have WE siblings
+    if (!guard && !CROSS_MARKET) continue;
     let files;
     try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json')); }
     catch { continue; }
@@ -188,41 +307,57 @@ if (MODE === 'dryrun') {
       }
       if (!detectedYear) continue;
 
-      const decision = pickRerouteTarget(guard.showYear, guard.siblings, detectedYear);
-      if (decision.action !== 'reroute') continue;
+      // For shows without same-market siblings, use a synthetic guard for cross-market routing
+      const show = showById.get(showId);
+      const showYear = show && show.openingDate ? parseInt(show.openingDate.slice(0, 4))
+        : show && show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
+      const effectiveGuard = guard || { showYear: showYear || 0, siblings: [] };
+
+      const decision = guard
+        ? pickRerouteTarget(guard.showYear, guard.siblings, detectedYear)
+        : { action: 'reroute', targetShowId: null, distance: Infinity };
+      // For cross-market-only shows (no guard), the classifier's Path A handles routing
+      if (!guard && !CROSS_MARKET) continue;
+      if (guard && decision.action !== 'reroute') continue;
 
       // Safety classifier
-      const classification = classifyCandidate(showId, file, data, guard, decision);
+      const classification = classifyCandidate(showId, file, data, effectiveGuard, decision);
       if (!classification.safe) {
         stats.unsafe[classification.reason] = (stats.unsafe[classification.reason] || 0) + 1;
         continue;
       }
 
+      // If classifier overrode the target (e.g., WE sibling), use that instead
+      const effectiveTargetId = classification.overrideTarget || decision.targetShowId;
+      if (!effectiveTargetId) continue; // No valid target resolved
+      const effectiveDistance = classification.overrideDistance != null
+        ? classification.overrideDistance : decision.distance;
+
       // Filename collision
-      const targetPath = path.join(reviewTextsDir, decision.targetShowId, file);
+      const targetPath = path.join(reviewTextsDir, effectiveTargetId, file);
       if (fs.existsSync(targetPath)) { stats.collision++; continue; }
 
       // (outlet, critic) dedup at target (BLOCKER fix from reviewer)
-      if (!targetIndexCache.has(decision.targetShowId)) {
-        targetIndexCache.set(decision.targetShowId, buildTargetOutletCriticIndex(decision.targetShowId));
+      if (!targetIndexCache.has(effectiveTargetId)) {
+        targetIndexCache.set(effectiveTargetId, buildTargetOutletCriticIndex(effectiveTargetId));
       }
-      const targetOC = targetIndexCache.get(decision.targetShowId);
+      const targetOC = targetIndexCache.get(effectiveTargetId);
       const myKey = `${(data.outletId || data.outlet || '').toLowerCase()}|${(data.criticName || '').toLowerCase()}`;
       if (myKey !== '|' && targetOC.has(myKey)) {
         stats.outletCriticDupe++;
         continue;
       }
 
-      const targetShow = showById.get(decision.targetShowId);
+      const targetShow = showById.get(effectiveTargetId);
       plan.push({
         sourceShowId: showId,
-        targetShowId: decision.targetShowId,
+        targetShowId: effectiveTargetId,
         file,
         sourcePath: path.join(showDir, file),
         targetPath,
         detectedYear,
         yearSource,
-        distance: decision.distance,
+        distance: effectiveDistance,
         assignedScore: data.assignedScore || null,
         outletId: data.outletId || data.outlet,
         criticName: data.criticName,
@@ -233,19 +368,30 @@ if (MODE === 'dryrun') {
     if (plan.length >= LIMIT) break;
   }
 
-  const scored = plan.filter(p => p.assignedScore >= 1 && p.assignedScore <= 100).length;
+  // Deduplicate: same file+target from multiple source dirs → keep first (earliest source)
+  const seenTargets = new Set();
+  const dedupPlan = [];
+  for (const p of plan) {
+    const key = `${p.file}|${p.targetShowId}`;
+    if (seenTargets.has(key)) { stats.collision++; continue; }
+    seenTargets.add(key);
+    dedupPlan.push(p);
+  }
+  const finalPlan = dedupPlan;
+
+  const scored = finalPlan.filter(p => p.assignedScore >= 1 && p.assignedScore <= 100).length;
   console.log(`Scanned: ${stats.scanned}`);
-  console.log(`Safe to migrate: ${plan.length} (${scored} already scored)`);
+  console.log(`Safe to migrate: ${finalPlan.length} (${scored} already scored)`);
   console.log(`Filename collision: ${stats.collision}`);
   console.log(`Outlet+critic dupe at target: ${stats.outletCriticDupe}`);
   console.log(`Unsafe breakdown:`, stats.unsafe);
   console.log(`\nWriting plan to ${PLAN_PATH}...`);
 
-  fs.writeFileSync(PLAN_PATH, JSON.stringify(plan, null, 2) + '\n');
+  fs.writeFileSync(PLAN_PATH, JSON.stringify(finalPlan, null, 2) + '\n');
 
   // Per-show summary
   const byTarget = {};
-  for (const p of plan) {
+  for (const p of finalPlan) {
     if (!byTarget[p.targetShowId]) byTarget[p.targetShowId] = { count: 0, scored: 0 };
     byTarget[p.targetShowId].count++;
     if (p.assignedScore >= 1 && p.assignedScore <= 100) byTarget[p.targetShowId].scored++;
@@ -299,15 +445,20 @@ if (MODE === 'execute') {
       // Apply migration transforms
       sourceData.showId = targetShowId;
       sourceData.routedFromShowId = sourceShowId;
-      sourceData.routedFromNote = sourceData.wrongProductionNote || null;
-      sourceData.routedReason = `backlog migration 2026-04-11: ${entry.yearSource}=${entry.detectedYear} matches sibling ${targetShowId} (distance ${distance})`;
+      sourceData.routedFromNote = sourceData.wrongProductionNote || sourceData.wrongProductionReason || null;
+      const migrationLabel = CROSS_MARKET ? 'cross-market rescue 2026-04-12' : 'backlog migration 2026-04-11';
+      sourceData.routedReason = `${migrationLabel}: ${entry.yearSource}=${entry.detectedYear} matches sibling ${targetShowId} (distance ${distance})`;
       sourceData.routedAt = new Date().toISOString();
       delete sourceData.wrongProduction;
       delete sourceData.wrongProductionNote;
+      delete sourceData.wrongProductionReason;
+      delete sourceData.wrongShow;
+      delete sourceData.wrongShowReason;
 
-      // Reviewer warning #2: stamp allowEarlyDate for distance > 0 to prevent
-      // the early-date guard from re-flagging at the target
-      if (distance > 0) {
+      // Stamp allowEarlyDate for distance >= 2 to prevent the early-date guard
+      // from re-flagging at the target. Distance 0-1 are close enough that
+      // date guards at the target should still apply normally.
+      if (distance >= 2) {
         sourceData.allowEarlyDate = true;
       }
 
