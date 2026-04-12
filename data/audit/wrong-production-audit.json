@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-12T23:07:26.200Z",
+  "timestamp": "2026-04-12T23:25:11.347Z",
   "stats": {
     "totalReviews": 34708,
     "alreadyFlagged": 13893,
     "dateGuardCatches": 107,
     "directorMismatch": 960,
-    "tvFilmSignals": 3377,
+    "tvFilmSignals": 3378,
     "londonSignals": 1108,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
@@ -53299,6 +53299,19 @@
       "score": 42,
       "publishDate": "March 4, 2010",
       "url": "https://www.nytimes.com/2010/03/04/theater/reviews/04miracle.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "file": "artsdesk--the-arts-desk.json",
+      "publishDate": "2018-03-27",
+      "url": "https://theartsdesk.com/theatre/theartsdesk-mot-mousetrap-st-martins-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
