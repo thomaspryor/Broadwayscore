@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T12:40:14.331Z",
+  "timestamp": "2026-04-12T13:06:25.204Z",
   "stats": {
     "totalReviews": 34716,
-    "alreadyFlagged": 14124,
+    "alreadyFlagged": 14129,
     "dateGuardCatches": 58,
-    "directorMismatch": 926,
-    "tvFilmSignals": 3339,
+    "directorMismatch": 927,
+    "tvFilmSignals": 3340,
     "londonSignals": 1077,
-    "offBroadwaySignals": 953,
+    "offBroadwaySignals": 955,
     "yearMismatch": 72,
-    "noPublishDate": 4142
+    "noPublishDate": 4132
   },
   "findings": [
     {
@@ -57054,6 +57054,25 @@
     },
     {
       "showId": "tru-off-broadway-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 78,
+      "publishDate": "2026-03-20",
+      "url": "https://www.nysun.com/article/jesse-tyler-ferguson-zings-tru-as-capote-in-a-poignant-revival",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-broadway-2026",
       "file": "nysr--frank-scheck.json",
       "score": 78,
       "publishDate": "2026-03-20",
@@ -72588,6 +72607,20 @@
     },
     {
       "showId": "oh-mary-2024",
+      "file": "digital-journal--markos-papadatos.json",
+      "score": 90,
+      "publishDate": "2024-07-12",
+      "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
       "file": "nypost--johnny-oleksinski.json",
       "score": 93,
       "publishDate": "July 11, 2024",
@@ -73269,6 +73302,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "washpost--naveen-kumar.json",
+      "score": 89,
+      "publishDate": "2025-03-21",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/20/operation-mincemeat-buena-vista-social-club/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },

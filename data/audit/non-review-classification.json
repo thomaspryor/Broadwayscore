@@ -1,49 +1,28 @@
 {
   "meta": {
-    "generatedAt": "2026-04-12T12:35:56.356Z",
+    "generatedAt": "2026-04-12T13:02:01.221Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 35260,
-      "inReviewsJson": 16740,
+      "totalFiles": 35258,
+      "inReviewsJson": 16738,
       "skippedExcluded": 42,
-      "withFullText": 22,
+      "withFullText": 20,
       "excerptOnly": 1549,
-      "llmClassified": 21,
+      "llmClassified": 19,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
-      "uncertainCases": 19,
-      "budgetUsed": 0.0022,
-      "llmCalls": 22,
+      "nonReviewsFound": 0,
+      "uncertainCases": 18,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
       "skippedAlreadyClassified": 15127
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "glengarry-glen-ross-2012/chicagotribune--contributed-content.json",
-      "showId": "glengarry-glen-ross-2012",
-      "outlet": "Chicago Tribune",
-      "outletId": "chicagotribune",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article discusses a business deal and does not mention the play \"Glengarry Glen Ross\" or offer any evaluation of a theatrical production.",
-      "currentScore": 60
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
-    {
-      "file": "american-buffalo-2022/dtli--ran-xia.json",
-      "showId": "american-buffalo-2022",
-      "outlet": "Did They Like It",
-      "outletId": "dtli",
-      "contentType": "feature",
-      "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"American Buffalo\" without offering a clear evaluation or recommendation. It also includes a paragraph about \"The Little Prince\" and \"Birthday Candles\".",
-      "currentScore": 63
-    },
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
       "showId": "eclipsed-2016",
@@ -51,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer an evaluation or opinion on the quality of the production. It also includes unrelated theater news, suggesting it's a general theater feature.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -59,9 +38,9 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "outlet": "The Telegraph",
       "outletId": "telegraph",
-      "contentType": "preview",
+      "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The text mentions the play 'Evening All Afternoon' and its themes, but it does not provide a critical evaluation or opinion on the production's quality. It seems to be setting the stage for a review or providing background information.",
+      "reasoning": "The text mentions the play 'Evening All Afternoon' and the theme of grief, but it does not contain an evaluation or opinion about the quality of the production. It seems to be setting up a feature article, but the full article is not present.",
       "currentScore": 100
     },
     {
@@ -71,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like Fences.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -81,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific show.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -91,7 +70,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical 'Groundhog Day' and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -101,7 +80,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -111,7 +90,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of the show itself.",
       "currentScore": 88
     },
     {
@@ -141,7 +120,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and contains elements of a news website, such as subscription prompts and time stamps. It does not contain any evaluative content about the show 'Parade'.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news item or advertisement related to the Wall Street Journal, not a review of \"Parade.\"",
       "currentScore": 78
     },
     {
@@ -151,7 +130,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -161,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -171,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or recommendation. It also includes an interview excerpt, further suggesting it's not solely a review.",
       "currentScore": 83
     },
     {
@@ -181,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theatre, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theatre, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -211,7 +190,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -221,19 +200,13 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it doesn't provide a review or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "glengarry-glen-ross-2012/hollywood-reporter--david-rooney.json"
+    "american-buffalo-2022/dtli--ran-xia.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "glengarry-glen-ross-2012",
-      "currentCount": 17,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
