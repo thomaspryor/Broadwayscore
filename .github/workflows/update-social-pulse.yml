@@ -55,6 +55,11 @@ jobs:
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Reddit fetcher needs ScrapingBee for 403 fallback (GitHub
+          # datacenter IPs are blocked by reddit.com). Without this,
+          # Reddit silently returns 0 mentions for every show.
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           INPUT_SHOW: ${{ inputs.show }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
