@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T19:33:19.736Z",
+  "timestamp": "2026-04-12T19:55:05.688Z",
   "stats": {
     "totalReviews": 34704,
     "alreadyFlagged": 13875,
     "dateGuardCatches": 107,
     "directorMismatch": 959,
-    "tvFilmSignals": 3377,
-    "londonSignals": 1106,
+    "tvFilmSignals": 3378,
+    "londonSignals": 1107,
     "offBroadwaySignals": 964,
     "yearMismatch": 75,
-    "noPublishDate": 4103
+    "noPublishDate": 4095
   },
   "findings": [
     {
@@ -30387,6 +30387,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "mrcarlwoodward--carl-woodward.json",
+      "score": 85,
+      "publishDate": "2022-08-11",
+      "url": "https://www.mrcarlwoodward.com/blog1/my-my-mamma-mia-abba-rule-london-the-musical-the-party-voyage/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
