@@ -272,6 +272,21 @@ function detectCrossShowUrlMismatch(showId, url) {
       if (urlPath.includes(other.slug)) {
         return { matchedTitle: other.title, showTitle: thisShow.title };
       }
+      // Also check a base-title slug (first significant words of the title, without
+      // parentheticals or subtitles). Catches shows with long qualified slugs like
+      // "monte-cristo-the-york-theatre-company-off-broadway" where a URL containing
+      // just "monte-cristo" wouldn't match the full slug.
+      const baseTitle = (other.title || '').replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '')
+        .trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      // Skip common URL-path words that would false-positive on nearly every URL
+      // (e.g., the show "Broadway" has baseTitle "broadway" which appears in ~90% of review URLs)
+      const URL_PATH_STOPWORDS = new Set(['broadway', 'musical', 'theater', 'theatre', 'review', 'reviews', 'london', 'west-end', 'off-broadway']);
+      if (baseTitle.length >= 6 && !URL_PATH_STOPWORDS.has(baseTitle)
+          && baseTitle !== idSlug
+          && !idSlug.startsWith(baseTitle) && !baseTitle.startsWith(idSlug)
+          && urlPath.includes(baseTitle)) {
+        return { matchedTitle: other.title, showTitle: thisShow.title };
+      }
     }
   } catch {}
   return null;
@@ -1943,6 +1958,18 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
           continue;
         }
+        // Guard: reject URLs that contain a DIFFERENT show's slug. BWW roundup
+        // HTML sometimes has links to multiple shows (e.g., same critic reviewed
+        // both Becky Shaw and Monte Cristo — roundup page has both URLs, wrong
+        // one gets assigned). detectCrossShowUrlMismatch already runs downstream
+        // at createReviewFile, but catching it here prevents creating the file
+        // at all and avoids wasting text-collection resources.
+        const crossShowMatch = detectCrossShowUrlMismatch(showId, candidateUrl);
+        if (crossShowMatch) {
+          urlsRejected++;
+          console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch.matchedTitle}" not "${crossShowMatch.showTitle}" — ${candidateUrl.substring(0, 80)}`);
+          continue;
+        }
         review.url = candidateUrl;
         urlsPopulated++;
       }
@@ -2097,6 +2124,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
           urlsRejected2++;
           console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
+          continue;
+        }
+        // Same cross-show guard as Method 1 — catch wrong-show URLs before file creation
+        const crossShowMatch2 = detectCrossShowUrlMismatch(showId, candidateUrl);
+        if (crossShowMatch2) {
+          urlsRejected2++;
+          console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch2.matchedTitle}" not "${crossShowMatch2.showTitle}" — ${candidateUrl.substring(0, 80)}`);
           continue;
         }
         review.url = candidateUrl;
