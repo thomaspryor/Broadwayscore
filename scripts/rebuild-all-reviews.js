@@ -2986,36 +2986,82 @@ if (fs.existsSync(reviewsJsonPath)) {
         // Count scored files on disk, separating unflagged from flagged.
         // Flagged files were excluded by audit steps (wrongProduction, wrongShow, etc.)
         // and their removal is intentional data cleanup, not corruption.
+        // Also count files that inline guards would exclude (cross-market, pre-opening date)
+        // even if the guard's fs.writeFileSync failed silently in CI (read-only checkout).
         const showDir = path.join(reviewTextsDir, showId);
         let scoredUnflagged = 0;
         let scoredFlagged = 0;
+        let inlineGuardWouldExclude = 0;
+        const sCat = showCategoryMap[showId] || 'broadway';
+        const sEarliest = showDateMap[showId];
         if (fs.existsSync(showDir)) {
           for (const f of fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
             try {
               const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
               if (d.assignedScore == null) continue;
-              if (d.wrongShow || d.wrongProduction || d.duplicateOf || d.isRoundupArticle) {
+              // Explicit exclusion flags (set by audit passes or guard writes that succeeded)
+              if (d.wrongShow || d.wrongProduction || d.duplicateOf || d.isRoundupArticle
+                  || d.incompleteReason === 'wrong_content' || d.contentTier === 'invalid') {
                 scoredFlagged++;
               } else {
-                scoredUnflagged++;
+                // Predict inline guard exclusions that don't persist flags to disk:
+                // 1. Reverse cross-market: London outlet on Broadway/off-Broadway show
+                let wouldBeExcluded = false;
+                if ((sCat === 'broadway' || sCat === 'off-broadway') && !d.allowCrossMarket) {
+                  const outlet = normalizeOutletCanonical(d.outletId || d.outlet || '');
+                  if (!DUAL_MARKET_OUTLETS.has(outlet)) {
+                    const region = outletRegionMap[outlet];
+                    let urlIsUK = false;
+                    if (!region && d.url) {
+                      try { const h = new URL(d.url).hostname; urlIsUK = h.endsWith('.co.uk') || h.endsWith('.org.uk'); } catch {}
+                    }
+                    if (region === 'london' || urlIsUK) wouldBeExcluded = true;
+                  }
+                }
+                // 2. Pre-opening date: review published well before show opened
+                if (!wouldBeExcluded && d.publishDate && sEarliest && !d.allowEarlyDate && !d.routedFromShowId && !showLongRunWE.has(showId)) {
+                  const pubDate = parseDate(d.publishDate);
+                  if (pubDate) {
+                    const daysBefore = Math.ceil((sEarliest - pubDate) / (1000 * 60 * 60 * 24));
+                    const threshold = (sCat === 'off-broadway' || isLondonMarket(sCat)) ? 90 : 14;
+                    if (daysBefore > threshold) wouldBeExcluded = true;
+                  }
+                }
+                // 3. Syndication dedup
+                if (!wouldBeExcluded) {
+                  const criticLc = (d.criticName || '').toLowerCase().trim();
+                  const outletLc = normalizeOutletCanonical(d.outletId || d.outlet || '');
+                  const syndConfig = KNOWN_SYNDICATION_PAIRS[criticLc];
+                  if (syndConfig && syndConfig.secondary.includes(outletLc)) wouldBeExcluded = true;
+                }
+                if (wouldBeExcluded) {
+                  inlineGuardWouldExclude++;
+                } else {
+                  scoredUnflagged++;
+                }
               }
             } catch {}
           }
         }
         // The disk-vs-build mismatch tells us if the rebuild is unexpectedly dropping reviews.
-        // A small mismatch (<=REGRESSION_DROP_THRESHOLD) is expected from inline guards
-        // (cross-market, URL-year, etc.) that can't be predicted from file flags alone.
+        // A small mismatch (<=REGRESSION_DROP_THRESHOLD) is expected from minor inline guards
+        // (URL-year, etc.) that can't be predicted from file flags alone.
+        const totalExcluded = scoredFlagged + inlineGuardWouldExclude;
         const diskMismatch = scoredUnflagged - newCount;
         if (diskMismatch <= REGRESSION_DROP_THRESHOLD) {
-          // Drop is explained by audit flags + inline guard tolerance
+          // Drop is explained by audit flags + inline guard predictions + small tolerance
           explainedByFlagging.add(showId);
-          console.log(`  ℹ️  ${showId}: ${oldCount}→${newCount} (explained: ${scoredFlagged} flagged, ${diskMismatch} inline guards)`);
-        } else if (scoredUnflagged + scoredFlagged <= newCount) {
+          const details = [];
+          if (scoredFlagged > 0) details.push(`${scoredFlagged} flagged`);
+          if (inlineGuardWouldExclude > 0) details.push(`${inlineGuardWouldExclude} inline guards`);
+          if (diskMismatch > 0) details.push(`${diskMismatch} tolerance`);
+          console.log(`  ℹ️  ${showId}: ${oldCount}→${newCount} (explained: ${details.join(', ')})`);
+        } else if (scoredUnflagged + totalExcluded <= newCount) {
           // Source files were deleted — fewer scored files exist than build output
           console.log(`  ℹ️  ${showId}: ${oldCount}→${newCount} (expected — only ${scoredUnflagged} unflagged scored files on disk)`);
         } else {
           // Unexplained regression — rebuild is dropping unflagged scored files
-          regressions.push({ showId, oldCount, newCount, dropped, scoredOnDisk: scoredUnflagged, flaggedScored: scoredFlagged, reason: 'scored files exist but being dropped' });
+          regressions.push({ showId, oldCount, newCount, dropped, scoredOnDisk: scoredUnflagged, flaggedScored: scoredFlagged, inlineGuardExcluded: inlineGuardWouldExclude, reason: 'scored files exist but being dropped' });
         }
       }
     }
