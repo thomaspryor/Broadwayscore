@@ -66,19 +66,7 @@ function getWeSiblings(showId) {
 }
 
 // ─── Date parsing for cross-market date proximity check ───
-function parseReviewDate(d) {
-  if (!d) return null;
-  const m1 = d.match(/(\w+)\s+(\d+)(?:st|nd|rd|th)?,?\s*(\d{4})/);
-  if (m1) {
-    const months = { january:0, february:1, march:2, april:3, may:4, june:5,
-      july:6, august:7, september:8, october:9, november:10, december:11 };
-    const mi = months[m1[1].toLowerCase()];
-    if (mi !== undefined) return new Date(parseInt(m1[3]), mi, parseInt(m1[2]));
-  }
-  const m2 = d.match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (m2) return new Date(d);
-  return null;
-}
+const { parseDate: parseReviewDate } = require('./lib/date-utils');
 
 // ─── Build target directory (outlet, critic) index for dedup ───
 function buildTargetOutletCriticIndex(targetShowId) {

@@ -52,12 +52,8 @@ for (const f of files) {
   }
 
   // Parse the review date
-  let reviewDate = null;
-  if (d.publishDate) {
-    const cleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-    reviewDate = new Date(cleaned);
-    if (isNaN(reviewDate.getTime())) reviewDate = null;
-  }
+  const { parseDate } = require('../lib/date-utils');
+  let reviewDate = parseDate(d.publishDate);
 
   if (reviewDate && reviewDate >= WE_PREVIEWS && reviewDate <= WE_CUTOFF) {
     delete d.wrongProduction;

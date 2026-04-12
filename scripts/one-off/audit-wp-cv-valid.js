@@ -91,11 +91,10 @@ function extractYearFromUrl(url) {
 }
 
 /** Parse a publishDate string into epoch ms (handles "July 24th, 2025" etc). */
+const { parseDate: _parseDateUtil } = require('../lib/date-utils');
 function parseDateLoose(s) {
-  if (!s) return null;
-  const cleaned = String(s).replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-  const t = new Date(cleaned).getTime();
-  return isNaN(t) ? null : t;
+  const d = _parseDateUtil(s);
+  return d ? d.getTime() : null;
 }
 
 /** Show run window — earliest of firstPreview/firstPerformance/opening → closing (or now). */
