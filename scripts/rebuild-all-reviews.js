@@ -880,8 +880,10 @@ const crossShowFingerprints = new Map();
         if (d.wrongProduction || d.wrongShow) continue;
         // allowEarlyDate bypasses all date-based flagging
         if (d.allowEarlyDate) continue;
-        // Respect manual clears UNLESS the date mismatch is large (>180 days) —
-        // a prior-production review is wrong regardless of manual override
+        // Respect manual clears UNLESS publishDate is >365 days before the show's
+        // earliest date — a prior-production review is wrong regardless of manual override.
+        // Threshold raised from 180→365 and requires publishDate specifically (no URL fallback)
+        // because the 180-day threshold combined with URL-extracted dates caused false overrides.
         if (d.wrongProductionManualClear) {
           let mcReviewDate = null;
           if (d.publishDate) {
@@ -889,8 +891,8 @@ const crossShowFingerprints = new Map();
             mcReviewDate = new Date(mcCleaned);
             if (isNaN(mcReviewDate.getTime())) mcReviewDate = null;
           }
-          if (!mcReviewDate || (showEarliest - mcReviewDate) <= 180 * 86400000) continue;
-          // Extreme date mismatch — override manual clear
+          if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) continue;
+          // Extreme date mismatch (>1 year with reliable publishDate) — override manual clear
         }
         let reviewDate = null;
         if (d.publishDate) {
@@ -905,11 +907,9 @@ const crossShowFingerprints = new Map();
             reviewDate = new Date(`${ymd[1]}-${ymd[2]}-${ymd[3]}`);
             if (isNaN(reviewDate.getTime())) reviewDate = null;
           }
-          // Try YYYY with delimiter pattern
-          if (!reviewDate) {
-            const ym = d.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.])/);
-            if (ym) reviewDate = new Date(`${ym[1]}-07-01`);
-          }
+          // YYYY-only URL fallback removed: a year alone defaults to July 1st,
+          // which is too imprecise for a 90-day guard. This caused 74 false positives
+          // in the Class B audit (2026-04-12). Only YYYYMMDD is specific enough.
         }
         if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && !shouldSkipWrongProductionAudit(d)) {
           console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is 90+ days before show ${showEarliest.toISOString().split('T')[0]}`);
