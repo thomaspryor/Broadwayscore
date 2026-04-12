@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T05:07:28.500Z",
+  "timestamp": "2026-04-12T06:03:22.050Z",
   "stats": {
-    "totalReviews": 34602,
-    "alreadyFlagged": 14087,
+    "totalReviews": 34604,
+    "alreadyFlagged": 14090,
     "dateGuardCatches": 58,
-    "directorMismatch": 926,
-    "tvFilmSignals": 3334,
+    "directorMismatch": 927,
+    "tvFilmSignals": 3336,
     "londonSignals": 1077,
     "offBroadwaySignals": 951,
     "yearMismatch": 71,
-    "noPublishDate": 4080
+    "noPublishDate": 4081
   },
   "findings": [
     {
@@ -30508,6 +30508,25 @@
       ]
     },
     {
+      "showId": "master-class-1995",
+      "file": "philadelphia-inquirer--howard-shapiro.json",
+      "score": 79,
+      "publishDate": "2026-04-09",
+      "url": "http://www.philly.com/philly/columnists/howard_shapiro/125108339.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen wadsworth\" from master-class-2011"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
       "showId": "master-class-2011",
       "file": "broadwayworld--michael-dale.json",
       "score": 79,
@@ -52849,6 +52868,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-parisian-woman-2017",
+      "file": "adriandimanlig--adrian-dimanlig.json",
+      "score": 73,
+      "publishDate": "December 1st, 2017",
+      "url": "https://www.adriandimanlig.com/viewpoints-amy-schumer-and-uma-thurman-make-solid-broadway-debuts-in-two-mediocre-new-plays-meteor-shower-and-the-parisian-woman/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
