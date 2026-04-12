@@ -35,7 +35,13 @@
     "othello-2025/theatrely--juan-a-ramirez.json",
     "elf-2024/nyt-theater--jonathan-mandell.json",
     "tammy-faye-2024/variety--frank-rizzo.json",
-    "sunset-boulevard-2024/nytg--joe-dziemianowicz.json"
+    "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
+    "our-town-2024/vulture--sara-holdren.json",
+    "yellow-face-2024/vulture--sara-holdren.json",
+    "the-roommate-2024/vulture--sara-holdren.json",
+    "mother-play-2024/theatermania--rachel-graham.json",
+    "illinoise-2024/vulture--sara-holdren.json",
+    "cabaret-2024/amny--matt-windman.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -56,7 +62,11 @@
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
     "swept-away-2024/vulture--sara-holdren.json",
-    "tammy-faye-2024/stageandcinema--mike-mineo.json"
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "the-hills-of-california-2024/vulture--sara-holdren.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "mary-jane-2024/ew--joey-nolfi.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -69,7 +79,8 @@
       "marjorie-prime-2025/nytg--joe-dziemianowicz.json",
       "floyd-collins-2025/new-york-sun--elyse-sommer.json",
       "elf-2024/nyt-theater--jonathan-mandell.json",
-      "sunset-boulevard-2024/nytg--joe-dziemianowicz.json"
+      "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
+      "mother-play-2024/theatermania--rachel-graham.json"
     ],
     "amp": [],
     "browserbase": [
@@ -96,7 +107,9 @@
       "data/review-texts/art-2025/nypost--johnny-oleksinski.json",
       "art-2025/nypost--johnny-oleksinski.json",
       "data/review-texts/tammy-faye-2024/variety--frank-rizzo.json",
-      "tammy-faye-2024/variety--frank-rizzo.json"
+      "tammy-faye-2024/variety--frank-rizzo.json",
+      "data/review-texts/cabaret-2024/amny--matt-windman.json",
+      "cabaret-2024/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -111,7 +124,8 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
-      "data/review-texts/swept-away-2024/vulture--sara-holdren.json"
+      "data/review-texts/swept-away-2024/vulture--sara-holdren.json",
+      "data/review-texts/the-hills-of-california-2024/vulture--sara-holdren.json"
     ],
     "archive": [
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
@@ -121,11 +135,15 @@
       "mj-2022/thewrap--robert-hofler.json",
       "moulin-rouge-2019/vulture--sara-holdren.json",
       "queen-versailles-2025/vulture--sara-holdren.json",
-      "liberation-2025/thewrap--robert-hofler.json"
+      "liberation-2025/thewrap--robert-hofler.json",
+      "our-town-2024/vulture--sara-holdren.json",
+      "yellow-face-2024/vulture--sara-holdren.json",
+      "the-roommate-2024/vulture--sara-holdren.json",
+      "illinoise-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
+  "lastProcessed": "cabaret-2024/amny--matt-windman.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -258,6 +276,17 @@
       "t": "2026-04-12T10:32:03.860Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:38:03.698Z",
+      "event": "bb-session",
+      "session": "f189dd69",
+      "url": "https://www.amny.com/news/review-cabaret-revival-2024/"
+    },
+    {
+      "t": "2026-04-12T10:38:04.528Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-12T10:32:33.872Z",
-  "processed": 36,
-  "failed": 19,
-  "successRate": "65.5%",
+  "updatedAt": "2026-04-12T10:38:13.882Z",
+  "processed": 42,
+  "failed": 23,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 24,
+    "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 8
+    "archiveToday": 3,
+    "archive": 12
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-04-12T10:22:47.977Z",
-      "event": "bb-session",
-      "session": "8473f81b",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
-    },
-    {
-      "t": "2026-04-12T10:22:48.803Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-04-12T10:23:15.159Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-12T10:32:03.860Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:38:03.698Z",
+      "event": "bb-session",
+      "session": "f189dd69",
+      "url": "https://www.amny.com/news/review-cabaret-revival-2024/"
+    },
+    {
+      "t": "2026-04-12T10:38:04.528Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
