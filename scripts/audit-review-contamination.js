@@ -41,10 +41,15 @@ const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json')
 const args = process.argv.slice(2);
 const STRICT = args.includes('--strict');
 const JSON_OUT = args.includes('--json');
-const classesArg = args.find(a => a.startsWith('--classes'));
-const ONLY_CLASSES = classesArg
-  ? new Set(classesArg.split('=')[1]?.split(',') || [])
-  : null;
+const classesIdx = args.findIndex(a => a.startsWith('--classes'));
+let ONLY_CLASSES = null;
+if (classesIdx >= 0) {
+  // Support both --classes=A,E,F and --classes A,E,F
+  const val = args[classesIdx].includes('=')
+    ? args[classesIdx].split('=')[1]
+    : args[classesIdx + 1];
+  if (val) ONLY_CLASSES = new Set(val.split(','));
+}
 function shouldRunClass(c) { return !ONLY_CLASSES || ONLY_CLASSES.has(c); }
 
 // ─────────────────────────────────────────────────
@@ -205,8 +210,9 @@ for (const showId of showDirs) {
     }
 
     // ─── E: Unflagged roundup pages ────
+    // Must match the same pattern as Guard E in review-file-writer.js
     if (shouldRunClass('E') && !d.isRoundupArticle && d.url) {
-      if (/\/article\/Review-Roundup-|\/review-roundup-[A-Z]/i.test(d.url)) {
+      if (/\/article\/Review-Roundup-/i.test(d.url)) {
         hits.E_unflagged_roundup.push({ showId, file: f, url: d.url });
       }
     }

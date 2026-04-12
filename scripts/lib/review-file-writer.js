@@ -103,7 +103,7 @@ function _getSiblingData() {
  * @returns {{ action: 'new'|'updated'|'skipped', reason?: string, filepath?: string }}
  */
 function createOrMergeReviewFile(showId, input, options = {}) {
-  const { dryRun = false, onMerge, reviewTextsDir = DEFAULT_REVIEW_TEXTS_DIR } = options;
+  const { dryRun = false, onMerge, reviewTextsDir = DEFAULT_REVIEW_TEXTS_DIR, _rerouteVisited } = options;
   const fields = input.fields || {};
 
   // --- Guard: normalize outlet ---
@@ -160,14 +160,20 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // Two-tier detection: (1) full-date comparison when opening dates available
   // (catches shows separated by <2 years, like oh-mary BW 2024 / WE 2025),
   // (2) year-level fallback via pickRerouteTarget for older shows without dates.
+  // _rerouteVisited prevents infinite recursion if two siblings point to each other.
   // Added 2026-04-12 after Oh Mary audit found 57 cross-market contamination cases.
   if (input.publishDate || (input.fields && input.fields.publishDate)) {
     const pubDateStr = input.publishDate || input.fields?.publishDate;
     const sibData = _getSiblingData().get(showId);
     if (sibData && sibData.siblings.length) {
-      const cleaned = String(pubDateStr || '').replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-      const reviewDate = new Date(cleaned);
-      const reviewValid = !isNaN(reviewDate.getTime());
+      // Guard: only accept string dates (not epoch numbers that would parse as 1970)
+      const pubStr = typeof pubDateStr === 'string' ? pubDateStr : null;
+      const cleaned = (pubStr || '').replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
+      const reviewDate = cleaned ? new Date(cleaned) : null;
+      const reviewValid = reviewDate && !isNaN(reviewDate.getTime()) && reviewDate.getFullYear() >= 1970;
+
+      const visited = _rerouteVisited || new Set();
+      visited.add(showId);
 
       // Tier 1: Full-date comparison (days-level precision)
       if (reviewValid && sibData.openingDate) {
@@ -175,7 +181,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
         const distToCurrent = Math.abs(reviewDate - sibData.openingDate) / DAY;
         let bestSib = null;
         for (const sib of sibData.siblings) {
-          if (!sib.openingDate) continue;
+          if (!sib.openingDate || visited.has(sib.id)) continue;
           const distToSib = Math.abs(reviewDate - sib.openingDate) / DAY;
           // Sibling is much closer (>90 day gap AND sibling within 30 days)
           if (distToSib <= 30 && distToCurrent > 90) {
@@ -186,7 +192,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
         }
         if (bestSib) {
           console.warn(`  ⚠️  Cross-market reroute: ${showId} → ${bestSib.id} (review ${pubDateStr} is ${Math.round(bestSib.dist)}d from sibling vs ${Math.round(bestSib.currentDist)}d from current)`);
-          return createOrMergeReviewFile(bestSib.id, input, options);
+          return createOrMergeReviewFile(bestSib.id, input, { ...options, _rerouteVisited: visited });
         }
       }
 
@@ -194,9 +200,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       if (reviewValid && sibData.showYear) {
         const reviewYear = reviewDate.getFullYear();
         const reroute = pickRerouteTarget(sibData.showYear, sibData.siblings, reviewYear);
-        if (reroute.action === 'reroute') {
+        if (reroute.action === 'reroute' && !visited.has(reroute.targetShowId)) {
           console.warn(`  ⚠️  Cross-market reroute (year): ${showId} → ${reroute.targetShowId} (review year ${reviewYear})`);
-          return createOrMergeReviewFile(reroute.targetShowId, input, options);
+          return createOrMergeReviewFile(reroute.targetShowId, input, { ...options, _rerouteVisited: visited });
         }
       }
     }
