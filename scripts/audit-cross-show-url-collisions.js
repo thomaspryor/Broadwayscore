@@ -105,6 +105,46 @@ for (const showId of showDirs) {
 }
 console.log(`ShowId mismatches: ${showIdMismatchFlagged} flagged, ${showIdMismatchSkipped} ID-migration skipped\n`);
 
+// --- Pre-pass 2: Orphaned generic directory detection ---
+// Directories like "aladdin/" that aren't in shows.json but have year-suffixed siblings
+// (e.g., "aladdin-2014/") are collision traps. Flag all unflagged files in them.
+console.log('Pre-pass 2: checking orphaned generic directories...');
+const showIdSet = new Set(showsData.shows.map(s => s.id));
+let orphanedDirFlagged = 0;
+let orphanedDirSkipped = 0;
+
+for (const dirId of showDirs) {
+  // Skip dirs that are in shows.json (they're real shows)
+  if (showIdSet.has(dirId)) continue;
+  // Skip year-suffixed, OB, WE dirs (they're specific productions, not generic)
+  if (dirId.match(/-\d{4}$/) || dirId.match(/-off-broadway/) || dirId.match(/-west-end/) || dirId.match(/-off-west-end/) || dirId.match(/-bway-/)) continue;
+  // Check if a year-suffixed sibling exists
+  const hasYearSibling = showDirs.some(d => d.startsWith(dirId + '-') && d.match(/-\d{4}$/));
+  if (!hasYearSibling) continue;
+
+  const showDir = path.join(REVIEW_TEXTS_DIR, dirId);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+    if (data.wrongShow || data.wrongProduction || data.duplicateOf) { orphanedDirSkipped++; continue; }
+
+    if (APPLY) {
+      data.wrongShow = true;
+      data.wrongShowReason = `Orphaned generic directory "${dirId}" is not in shows.json — year-suffixed siblings exist`;
+      atomicWriteJSON(filePath, data);
+      orphanedDirFlagged++;
+      log(`  [ORPHANED DIR] ${dirId}/${file}`);
+    } else {
+      orphanedDirFlagged++;
+      log(`  [ORPHANED DIR] ${dirId}/${file} (would flag)`);
+    }
+  }
+}
+console.log(`Orphaned generic dirs: ${orphanedDirFlagged} flagged, ${orphanedDirSkipped} already flagged\n`);
+
 // Build global URL → file map
 console.log('Scanning review-texts for cross-show URL collisions...\n');
 
