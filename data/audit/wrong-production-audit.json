@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T18:57:53.683Z",
+  "timestamp": "2026-04-12T19:33:19.736Z",
   "stats": {
-    "totalReviews": 34695,
-    "alreadyFlagged": 13834,
+    "totalReviews": 34704,
+    "alreadyFlagged": 13875,
     "dateGuardCatches": 107,
-    "directorMismatch": 960,
-    "tvFilmSignals": 3379,
+    "directorMismatch": 959,
+    "tvFilmSignals": 3377,
     "londonSignals": 1106,
-    "offBroadwaySignals": 966,
+    "offBroadwaySignals": 964,
     "yearMismatch": 75,
-    "noPublishDate": 4129
+    "noPublishDate": 4103
   },
   "findings": [
     {
@@ -9277,30 +9277,6 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
-      "file": "nytimes--helen-shaw.json",
-      "score": 90,
-      "publishDate": "April 7, 2026",
-      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"perelman\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
       "file": "people--dave-quinn.json",
       "score": 93,
       "publishDate": null,
@@ -14334,7 +14310,7 @@
       "file": "ap--unknown.json",
       "score": 78,
       "publishDate": "April 29, 2010",
-      "url": "http://abcnews.go.com/Entertainment/wireStory?id=10514074",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -14410,20 +14386,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael grandage\" from evita-2012"
-        }
-      ]
-    },
-    {
-      "showId": "evita-1979",
-      "file": "nytimes--ben-brantley.json",
-      "score": 62,
-      "publishDate": "1979-09-26",
-      "url": "https://www.nytimes.com/1979/09/26/archives/stage-evita-a-musical-peron-ambitions-progress.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"movie theater\""
         }
       ]
     },
@@ -20398,7 +20360,7 @@
       "file": "nytimes--ben-brantley.json",
       "score": 88,
       "publishDate": "August 16, 2002",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9F0CE1DA173DF935A2575BC0A9649C8B63",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24599,7 +24561,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 92,
       "publishDate": "2025-12-12",
-      "url": "https://www.ft.com/content/9da2a948-bb09-4c48-9cf3-969d00f35e62",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -54982,7 +54944,7 @@
       "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "london-theatre--unknown.json",
       "publishDate": "2020-12-14",
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26427",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -74243,20 +74205,6 @@
     },
     {
       "showId": "oh-mary-2024",
-      "file": "digital-journal--markos-papadatos.json",
-      "score": 90,
-      "publishDate": "2024-07-12",
-      "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
       "file": "nypost--johnny-oleksinski.json",
       "score": 93,
       "publishDate": "July 11, 2024",
@@ -80988,7 +80936,7 @@
     {
       "showId": "the-hills-of-california-2024",
       "file": "variety--peter-marks.json",
-      "score": 87,
+      "score": null,
       "publishDate": "September 26, 2024",
       "url": "https://variety.com/2024/legit/reviews/the-hills-of-california-review-broadway-sam-mendes-jez-butterworth-1236159482/",
       "findings": [

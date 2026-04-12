@@ -1,314 +1,25 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-12T19:19:13.896Z",
+    "lastUpdated": "2026-04-12T19:33:22.217Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 35235,
+    "totalFilesScanned": 35244,
     "skippedFiles": 14566,
-    "totalCritics": 1436,
-    "registryCritics": 509,
-    "flaggedReviews": 27
+    "totalCritics": 1444,
+    "registryCritics": 510,
+    "flaggedReviews": 0
   },
-  "flaggedReviews": [
+  "flaggedReviews": [],
+  "freelancers": [
     {
       "critic": "Austin Fimmano",
-      "criticSlug": "austin-fimmano",
-      "outlet": "plays-to-see",
-      "showId": "touch-2026",
-      "file": "plays-to-see--austin-fimmano.json",
-      "outletShare": 7,
-      "primaryOutlet": "nytg",
-      "primaryShare": 93,
+      "slug": "austin-fimmano",
+      "outlets": [
+        "nytg",
+        "plays-to-see"
+      ],
       "totalReviews": 15
     },
-    {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "upstage-downstage",
-      "showId": "bright-star-2016",
-      "file": "upstage-downstage--howard-miller.json",
-      "outletShare": 5,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 95,
-      "totalReviews": 166
-    },
-    {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "upstage-downstage",
-      "showId": "choir-boy-2019",
-      "file": "upstage-downstage--howard-miller.json",
-      "outletShare": 5,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 95,
-      "totalReviews": 166
-    },
-    {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "upstage-downstage",
-      "showId": "falsettos-2016",
-      "file": "upstage-downstage--howard-miller.json",
-      "outletShare": 5,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 95,
-      "totalReviews": 166
-    },
-    {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "upstage-downstage",
-      "showId": "groundhog-day-2017",
-      "file": "upstage-downstage--howard-miller.json",
-      "outletShare": 5,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 95,
-      "totalReviews": 166
-    },
-    {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "upstage-downstage",
-      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-      "file": "upstage-downstage--howard-miller.json",
-      "outletShare": 5,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 95,
-      "totalReviews": 166
-    },
-    {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "upstage-downstage",
-      "showId": "prince-of-broadway-2017",
-      "file": "upstage-downstage--howard-miller.json",
-      "outletShare": 5,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 95,
-      "totalReviews": 166
-    },
-    {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "upstage-downstage",
-      "showId": "the-play-that-goes-wrong-2019",
-      "file": "upstage-downstage--howard-miller.json",
-      "outletShare": 5,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 95,
-      "totalReviews": 166
-    },
-    {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "upstage-downstage",
-      "showId": "war-paint-2017",
-      "file": "upstage-downstage--howard-miller.json",
-      "outletShare": 5,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 95,
-      "totalReviews": 166
-    },
-    {
-      "critic": "Joel Benjamin",
-      "criticSlug": "joel-benjamin",
-      "outlet": "stageandcinema",
-      "showId": "the-big-knife-2013",
-      "file": "stageandcinema--joel-benjamin.json",
-      "outletShare": 2,
-      "primaryOutlet": "theater-scene",
-      "primaryShare": 98,
-      "totalReviews": 45
-    },
-    {
-      "critic": "Martin Denton",
-      "criticSlug": "martin-denton",
-      "outlet": "theatermania",
-      "showId": "the-phantom-of-the-opera-1988",
-      "file": "theatermania--martin-denton.json",
-      "outletShare": 7,
-      "primaryOutlet": "nytheatre",
-      "primaryShare": 93,
-      "totalReviews": 14
-    },
-    {
-      "critic": "Victor Gluck",
-      "criticSlug": "victor-gluck",
-      "outlet": "stageandcinema",
-      "showId": "picnic-2013",
-      "file": "stageandcinema--victor-gluck.json",
-      "outletShare": 1,
-      "primaryOutlet": "theater-scene",
-      "primaryShare": 99,
-      "totalReviews": 120
-    },
-    {
-      "critic": "Joey Sims",
-      "criticSlug": "joey-sims",
-      "outlet": "broadway-blog",
-      "showId": "and-juliet-2022",
-      "file": "broadway-blog--joey-sims.json",
-      "outletShare": 3,
-      "primaryOutlet": "theatrely",
-      "primaryShare": 97,
-      "totalReviews": 34
-    },
-    {
-      "critic": "Scott Brown",
-      "criticSlug": "scott-brown",
-      "outlet": "amny",
-      "showId": "a-night-with-janis-joplin-2013",
-      "file": "amny--scott-brown.json",
-      "outletShare": 4,
-      "primaryOutlet": "vulture",
-      "primaryShare": 96,
-      "totalReviews": 28
-    },
-    {
-      "critic": "Roger Friedman",
-      "criticSlug": "roger-friedman",
-      "outlet": "forbes",
-      "showId": "death-of-a-salesman-2012",
-      "file": "forbes--roger-friedman.json",
-      "outletShare": 3,
-      "primaryOutlet": "showbiz411",
-      "primaryShare": 97,
-      "totalReviews": 35
-    },
-    {
-      "critic": "Juan A. Ramirez",
-      "criticSlug": "juan-a-ramirez",
-      "outlet": "stageandcinema",
-      "showId": "beetlejuice-2019",
-      "file": "stageandcinema--juan-a-ramirez.json",
-      "outletShare": 1,
-      "primaryOutlet": "theatrely",
-      "primaryShare": 99,
-      "totalReviews": 107
-    },
-    {
-      "critic": "Steven Ross",
-      "criticSlug": "steven-ross",
-      "outlet": "outbuzz",
-      "showId": "six-degrees-of-separation-2017",
-      "file": "outbuzz--steven-ross.json",
-      "outletShare": 1,
-      "primaryOutlet": "frontmezzjunkies",
-      "primaryShare": 99,
-      "totalReviews": 91
-    },
-    {
-      "critic": "Andy Propst",
-      "criticSlug": "andy-propst",
-      "outlet": "american-theater-web",
-      "showId": "bright-star-2016",
-      "file": "american-theater-web--andy-propst.json",
-      "outletShare": 8,
-      "primaryOutlet": "theatermania",
-      "primaryShare": 92,
-      "totalReviews": 12
-    },
-    {
-      "critic": "Jonathan Warman",
-      "criticSlug": "jonathan-warman",
-      "outlet": "gay-socialites",
-      "showId": "king-charles-iii-2015",
-      "file": "gay-socialites--jonathan-warman.json",
-      "outletShare": 4,
-      "primaryOutlet": "drama-queen-nyc",
-      "primaryShare": 96,
-      "totalReviews": 26
-    },
-    {
-      "critic": "Kyle Turner",
-      "criticSlug": "kyle-turner",
-      "outlet": "medium",
-      "showId": "the-inheritance-2019",
-      "file": "medium--kyle-turner.json",
-      "outletShare": 6,
-      "primaryOutlet": "nytg",
-      "primaryShare": 94,
-      "totalReviews": 17
-    },
-    {
-      "critic": "David Roberts",
-      "criticSlug": "david-roberts",
-      "outlet": "nytg",
-      "showId": "act-one-2014",
-      "file": "nytg--david-roberts.json",
-      "outletShare": 3,
-      "primaryOutlet": "theatre-reviews-limited",
-      "primaryShare": 97,
-      "totalReviews": 72
-    },
-    {
-      "critic": "David Roberts",
-      "criticSlug": "david-roberts",
-      "outlet": "nytg",
-      "showId": "falsettos-2016",
-      "file": "nytg--david-roberts.json",
-      "outletShare": 3,
-      "primaryOutlet": "theatre-reviews-limited",
-      "primaryShare": 97,
-      "totalReviews": 72
-    },
-    {
-      "critic": "Rex Reed",
-      "criticSlug": "rex-reed",
-      "outlet": "huffpost",
-      "showId": "rocky-2014",
-      "file": "huffpost--rex-reed.json",
-      "outletShare": 3,
-      "primaryOutlet": "observer",
-      "primaryShare": 97,
-      "totalReviews": 36
-    },
-    {
-      "critic": "Donna Herman",
-      "criticSlug": "donna-herman",
-      "outlet": "nytg",
-      "showId": "hadestown-2019",
-      "file": "nytg--donna-herman.json",
-      "outletShare": 5,
-      "primaryOutlet": "front-row-center",
-      "primaryShare": 95,
-      "totalReviews": 21
-    },
-    {
-      "critic": "Robert Gore-Langton",
-      "criticSlug": "robert-gore-langton",
-      "outlet": "express-uk",
-      "showId": "the-lion-king-west-end-2021",
-      "file": "express-uk--robert-gore-langton.json",
-      "outletShare": 3,
-      "primaryOutlet": "daily-mail",
-      "primaryShare": 97,
-      "totalReviews": 31
-    },
-    {
-      "critic": "Loren Noveck",
-      "criticSlug": "loren-noveck",
-      "outlet": "thestage",
-      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-      "file": "thestage--loren-noveck.json",
-      "outletShare": 6,
-      "primaryOutlet": "exeunt-magazine",
-      "primaryShare": 94,
-      "totalReviews": 17
-    },
-    {
-      "critic": "Amelia Merrill",
-      "criticSlug": "amelia-merrill",
-      "outlet": "vulture",
-      "showId": "home-2024",
-      "file": "vulture--amelia-merrill.json",
-      "outletShare": 5,
-      "primaryOutlet": "nytg",
-      "primaryShare": 95,
-      "totalReviews": 22
-    }
-  ],
-  "freelancers": [
     {
       "critic": "Ben Brantley",
       "slug": "ben-brantley",
@@ -683,6 +394,24 @@
       "totalReviews": 551
     },
     {
+      "critic": "Howard Miller",
+      "slug": "howard-miller",
+      "outlets": [
+        "talkinbroadway",
+        "upstage-downstage"
+      ],
+      "totalReviews": 166
+    },
+    {
+      "critic": "Joel Benjamin",
+      "slug": "joel-benjamin",
+      "outlets": [
+        "theater-scene",
+        "stageandcinema"
+      ],
+      "totalReviews": 45
+    },
+    {
       "critic": "David Gordon",
       "slug": "david-gordon",
       "outlets": [
@@ -916,6 +645,33 @@
       "totalReviews": 113
     },
     {
+      "critic": "Martin Denton",
+      "slug": "martin-denton",
+      "outlets": [
+        "nytheatre",
+        "theatermania"
+      ],
+      "totalReviews": 14
+    },
+    {
+      "critic": "Victor Gluck",
+      "slug": "victor-gluck",
+      "outlets": [
+        "theater-scene",
+        "stageandcinema"
+      ],
+      "totalReviews": 120
+    },
+    {
+      "critic": "Joey Sims",
+      "slug": "joey-sims",
+      "outlets": [
+        "theatrely",
+        "broadway-blog"
+      ],
+      "totalReviews": 34
+    },
+    {
       "critic": "Maya Phillips",
       "slug": "maya-phillips",
       "outlets": [
@@ -933,6 +689,24 @@
         "huffpost"
       ],
       "totalReviews": 10
+    },
+    {
+      "critic": "Scott Brown",
+      "slug": "scott-brown",
+      "outlets": [
+        "vulture",
+        "amny"
+      ],
+      "totalReviews": 28
+    },
+    {
+      "critic": "Roger Friedman",
+      "slug": "roger-friedman",
+      "outlets": [
+        "showbiz411",
+        "forbes"
+      ],
+      "totalReviews": 35
     },
     {
       "critic": "Lane Williamson",
@@ -985,6 +759,15 @@
       "totalReviews": 161
     },
     {
+      "critic": "Juan A. Ramirez",
+      "slug": "juan-a-ramirez",
+      "outlets": [
+        "theatrely",
+        "stageandcinema"
+      ],
+      "totalReviews": 107
+    },
+    {
       "critic": "Matthew Wexler",
       "slug": "matthew-wexler",
       "outlets": [
@@ -1012,6 +795,15 @@
         "dc-metro-theater-arts"
       ],
       "totalReviews": 60
+    },
+    {
+      "critic": "Steven Ross",
+      "slug": "steven-ross",
+      "outlets": [
+        "frontmezzjunkies",
+        "outbuzz"
+      ],
+      "totalReviews": 91
     },
     {
       "critic": "Dan Dwyer",
@@ -1152,6 +944,15 @@
       "totalReviews": 6
     },
     {
+      "critic": "Andy Propst",
+      "slug": "andy-propst",
+      "outlets": [
+        "theatermania",
+        "american-theater-web"
+      ],
+      "totalReviews": 12
+    },
+    {
       "critic": "David Fox",
       "slug": "david-fox",
       "outlets": [
@@ -1161,6 +962,33 @@
         "df-reviews"
       ],
       "totalReviews": 8
+    },
+    {
+      "critic": "Jonathan Warman",
+      "slug": "jonathan-warman",
+      "outlets": [
+        "drama-queen-nyc",
+        "gay-socialites"
+      ],
+      "totalReviews": 26
+    },
+    {
+      "critic": "Kyle Turner",
+      "slug": "kyle-turner",
+      "outlets": [
+        "nytg",
+        "medium"
+      ],
+      "totalReviews": 17
+    },
+    {
+      "critic": "David Roberts",
+      "slug": "david-roberts",
+      "outlets": [
+        "theatre-reviews-limited",
+        "nytg"
+      ],
+      "totalReviews": 72
     },
     {
       "critic": "Nicole Serratore",
@@ -1183,6 +1011,15 @@
       "totalReviews": 14
     },
     {
+      "critic": "Rex Reed",
+      "slug": "rex-reed",
+      "outlets": [
+        "observer",
+        "huffpost"
+      ],
+      "totalReviews": 36
+    },
+    {
       "critic": "Deb Miller",
       "slug": "deb-miller",
       "outlets": [
@@ -1191,6 +1028,15 @@
         "dc-metro-theater-arts"
       ],
       "totalReviews": 39
+    },
+    {
+      "critic": "Donna Herman",
+      "slug": "donna-herman",
+      "outlets": [
+        "front-row-center",
+        "nytg"
+      ],
+      "totalReviews": 21
     },
     {
       "critic": "Lauren Yarger",
@@ -1212,6 +1058,15 @@
         "dread-central"
       ],
       "totalReviews": 25
+    },
+    {
+      "critic": "Robert Gore-Langton",
+      "slug": "robert-gore-langton",
+      "outlets": [
+        "daily-mail",
+        "express-uk"
+      ],
+      "totalReviews": 31
     },
     {
       "critic": "Fiona Mountford",
@@ -1417,6 +1272,15 @@
       "totalReviews": 6
     },
     {
+      "critic": "Loren Noveck",
+      "slug": "loren-noveck",
+      "outlets": [
+        "exeunt-magazine",
+        "thestage"
+      ],
+      "totalReviews": 17
+    },
+    {
       "critic": "Billy McEntee",
       "slug": "billy-mcentee",
       "outlets": [
@@ -1534,6 +1398,15 @@
         "thewrap"
       ],
       "totalReviews": 31
+    },
+    {
+      "critic": "Amelia Merrill",
+      "slug": "amelia-merrill",
+      "outlets": [
+        "nytg",
+        "vulture"
+      ],
+      "totalReviews": 22
     },
     {
       "critic": "Charles Wright",

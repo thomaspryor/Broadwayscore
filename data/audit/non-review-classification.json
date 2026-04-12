@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-12T18:53:28.414Z",
+    "generatedAt": "2026-04-12T19:28:11.987Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 35235,
-      "inReviewsJson": 17257,
+      "totalFiles": 35244,
+      "inReviewsJson": 17242,
       "skippedExcluded": 20,
-      "withFullText": 141,
-      "excerptOnly": 1579,
-      "llmClassified": 50,
+      "withFullText": 74,
+      "excerptOnly": 1575,
+      "llmClassified": 49,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
-      "uncertainCases": 14,
+      "nonReviewsFound": 0,
+      "uncertainCases": 17,
       "budgetUsed": 0.005,
       "llmCalls": 50,
       "rateLimitHits": 0,
-      "errors": 0,
-      "skippedAlreadyClassified": 15517
+      "errors": 1,
+      "skippedAlreadyClassified": 15573
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "silver-manhattan-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
-      "showId": "silver-manhattan-off-broadway-2026",
-      "outlet": "La Voce di New York",
-      "outletId": "la-voce-di-new-york",
-      "contentType": "review",
-      "confidence": "high",
-      "reasoning": "The article reviews multiple shows, including 'Bughouse' and 'Burnout Paradise,' providing evaluative commentary and star ratings. Although 'Silver Manhattan' is the target show, this is still a review.",
-      "currentScore": 79
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -49,9 +38,9 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "outlet": "The Telegraph",
       "outletId": "telegraph",
-      "contentType": "feature",
+      "contentType": "preview",
       "confidence": "low",
-      "reasoning": "The text mentions the play 'Evening All Afternoon' and discusses the theme of grief, suggesting a feature article about the play's subject matter rather than a review. The presence of a theatre critic's bio also points away from a review itself.",
+      "reasoning": "The text mentions the play 'Evening All Afternoon' and its themes, but it does not contain a critical evaluation or opinion about the quality of the production. It seems to be setting up the premise of the play, which is more characteristic of a preview.",
       "currentScore": 100
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences'.",
       "currentScore": 82
     },
     {
@@ -71,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -81,7 +70,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London and awards, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -101,7 +90,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief mentions of various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
       "currentScore": 88
     },
     {
@@ -111,7 +100,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -141,7 +130,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production. It seems to be setting the stage for a review, but is not one itself.",
       "currentScore": 80
     },
     {
@@ -151,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -161,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about the quality of the production. It includes interview snippets, but the overall focus is on the show's history and relevance.",
       "currentScore": 83
     },
     {
@@ -173,51 +162,72 @@
       "confidence": "low",
       "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
+    },
+    {
+      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "The Front Row Center",
+      "outletId": "front-row-center",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article consists of production credits and ticket information, which is more indicative of a news item or show listing than a review. There is no evaluative content.",
+      "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "currentScore": 78
+    },
+    {
+      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific show.",
+      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "sister-act-2011/nytimes--ben-brantley.json",
-    "skylight-2015/nbcny--robert-kahn.json",
-    "smash-2025/usatoday--patrick-ryan.json",
-    "some-like-it-hot-2022/theater-life--david-sheward.json",
-    "some-like-it-hot-2022/vulture--jackson-mchenry.json",
-    "spring-awakening-2015/huffpost--steven-suskin.json",
-    "stereophonic-2024/guardian--gloria-oladipo.json",
-    "stereophonic-2024/nytimes--naveen-kumar.json",
-    "suffs-2024/timeout--regina-robbins.json",
-    "suffs-2024/vulture--sara-holdren.json",
-    "summer-1976-2023/theater-life--barry-gordin.json",
-    "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
-    "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
-    "sweat-2017/deadline--matt-windman.json",
-    "sweat-2017/nbcny--matt-windman.json",
-    "sweat-2017/nydailynews--matt-windman.json",
-    "sweat-2017/timeout--david-cote.json",
-    "sweeney-todd-2005/variety--naveen-kumar.json",
-    "sweeney-todd-2023/variety--david-rooney.json",
-    "sweeney-todd-2023/variety--naveen-kumar.json",
-    "swept-away-2024/vulture--helen-shaw.json",
-    "take-me-out-2022/nysr--bob-verini.json",
-    "take-me-out-2022/theatermania--pete-hempstead.json",
-    "tammy-faye-2024/nytimes--jesse-green.json",
-    "tammy-faye-2024/variety--peter-marks.json",
-    "the-audience-2015/huffpost--steven-suskin.json",
-    "the-bands-visit-2017/musical-theatre-review--ron-cohen.json",
-    "the-bands-visit-2017/njcom--christopher-kelly.json",
-    "the-bands-visit-2017/reflections-in-the-light--lauren-yarger.json",
-    "the-bands-visit-2017/show-showdown--wendy-caster.json",
-    "the-bands-visit-2017/the-times-of-israel--jordan-hoffman.json",
-    "the-bands-visit-2017/theater-life--isa-goldberg.json",
-    "the-boys-in-the-band-2018/vulture--jesse-green.json",
-    "the-cher-show-2018/timeout--adam-feldman.json",
-    "the-columnist-2012/nytimes--charles-isherwood.json"
+    "into-the-woods-west-end-2025/financialtimes--sarah-hemming.json",
+    "the-devil-wears-prada-west-end-2024/observer--susannah-clapp.json",
+    "the-roommate-2024/vulture--sara-holdren.json",
+    "the-roommate-2024/washpost--naveen-kumar.json",
+    "the-scottsboro-boys-2010/vulture--scott-brown.json",
+    "the-sign-in-sidney-brusteins-window-2023/nytg--amelia-merrill.json",
+    "the-sign-in-sidney-brusteins-window-2023/vulture--jackson-mchenry.json",
+    "the-skin-of-our-teeth-2022/nytimes--alexis-soloski.json",
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "the-snow-geese-2013/huffpost--steven-suskin.json",
+    "the-sound-inside-2019/vulture--helen-shaw.json",
+    "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json",
+    "the-thanksgiving-play-2023/nysr--christian-holub.json",
+    "the-thanksgiving-play-2023/theatermania--hayley-levitt.json",
+    "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json",
+    "the-visit-2015/timeout--david-cote.json",
+    "the-visit-2015/variety--marilyn-stasio.json",
+    "the-waverly-gallery-2018/nysr--matt-windman.json",
+    "the-waverly-gallery-2018/variety--marilyn-stasio.json",
+    "the-waverly-gallery-2018/vulture--jesse-green.json",
+    "the-whos-tommy-2024/vulture--sara-holdren.json",
+    "this-is-my-favorite-song-off-broadway-2024/theater-scene--tony-marinelli.json",
+    "this-is-my-favorite-song-off-broadway-2024/theatermania--pete-hempstead.json",
+    "thoughts-of-a-colored-man-2021/hollywood-reporter--lovia-gyarkye.json",
+    "three-tall-women-2018/theater-life--barry-gordin.json",
+    "time-stands-still-2010/variety--marilyn-stasio.json",
+    "titanique-off-broadway-2022/nytimes--elisabeth-vincentelli.json",
+    "tootsie-2019/deadline--pete-hammond.json",
+    "tootsie-2019/musical-theatre-review--ron-cohen.json",
+    "topdog-underdog-2022/deadline--greg-evans.json",
+    "topdog-underdog-2022/variety--aramide-tinubu.json",
+    "topdog-underdog-2022/vulture--rob-weinert-kendt.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "silver-manhattan-off-broadway-2026",
-      "currentCount": 5,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }

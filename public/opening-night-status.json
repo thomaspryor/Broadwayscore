@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-12T18:57:57.464Z",
+  "generatedAt": "2026-04-12T19:33:23.451Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -394,14 +394,14 @@
       "status": "open",
       "slug": "death-of-a-salesman",
       "thumbnail": "/images/shows/death-of-a-salesman-2026/thumbnail.webp",
-      "siteScore": 85.38,
+      "siteScore": 85.05,
       "liveScore": 85,
-      "scoreDrift": -0.37999999999999545,
-      "total": 25,
-      "t1": 6,
+      "scoreDrift": -0.04999999999999716,
+      "total": 24,
+      "t1": 5,
       "t2": 15,
       "t3": 4,
-      "positive": 21,
+      "positive": 20,
       "mixed": 3,
       "negative": 1,
       "readiness": {
@@ -422,6 +422,10 @@
       "missingT1": [
         {
           "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -816,6 +820,18 @@
           "t2": 15,
           "t3": 4,
           "p": 21,
+          "m": 3,
+          "n": 1,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-04-12T19:33:23.451Z",
+          "rc": 24,
+          "s": 85.05,
+          "t1": 5,
+          "t2": 15,
+          "t3": 4,
+          "p": 20,
           "m": 3,
           "n": 1,
           "bc": "complete"
