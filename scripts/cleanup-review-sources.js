@@ -307,8 +307,17 @@ function pass4_sameShowDedup(reviews) {
       group.sort(compareReviewPriority);
       const winner = group[0];
 
+      const winnerCritic = (winner.data.criticName || '').toLowerCase().trim();
       for (let i = 1; i < group.length; i++) {
         const loser = group[i];
+        // Skip if both have different named critics — multi-critic pages
+        // (e.g., Daily Mail dual reviews, NYT/Variety multiple critics)
+        const loserCritic = (loser.data.criticName || '').toLowerCase().trim();
+        const bothNamed = winnerCritic && winnerCritic !== 'unknown' && loserCritic && loserCritic !== 'unknown';
+        if (bothNamed && winnerCritic !== loserCritic) {
+          log(`  ⊘ URL dupe skipped (multi-critic): ${showId}/${loser.file} (${loserCritic}) vs ${winner.file} (${winnerCritic})`);
+          continue;
+        }
         urlDupes++;
         alreadyFlaggedFiles.add(loser.filePath);
 
