@@ -39,7 +39,7 @@ export interface RawSocialPulse {
   positivePct: number;
   weekOverWeekPct: number | null;
   baselineMultiple: number | null;
-  platformBreakdown: { x: number; tiktok: number; instagram: number };
+  platformBreakdown: { x: number; tiktok: number; instagram: number; reddit?: number };
   topQuotes: Array<{ text: string; platform: string; author: string | null; url: string | null }>;
   rank?: { position: number; total: number; text: string } | null;
   compositeScore?: number;

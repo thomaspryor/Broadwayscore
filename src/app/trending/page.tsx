@@ -28,7 +28,7 @@ import TrendingShowCard from '@/components/trending/TrendingShowCard';
 // (Double-suffix bug observed 2026-04-11 when this was set to the full string.)
 const PAGE_TITLE = 'Trending Broadway & West End Shows';
 const PAGE_DESCRIPTION =
-  'The 10 buzziest shows on Broadway and the West End right now — ranked by social media volume and audience sentiment across X, TikTok, and Instagram. Updated weekly.';
+  'The 10 buzziest shows on Broadway and the West End right now — ranked by social media volume and audience sentiment across Reddit, X, TikTok, and Instagram. Updated weekly.';
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -207,7 +207,7 @@ export default function TrendingPage() {
           </h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
             The 10 buzziest shows on Broadway and the West End — ranked by social media
-            volume and audience sentiment across X, TikTok, and Instagram.
+            volume and audience sentiment across Reddit, X, TikTok, and Instagram.
           </p>
           {updatedLabel && (
             <p className="text-sm text-gray-500 mt-1">
@@ -222,7 +222,7 @@ export default function TrendingPage() {
             How the Socials Scorecard works
           </h2>
           <p className="text-sm text-gray-400">
-            Every week we scan X, TikTok, and Instagram for mentions of every show, classify each
+            Every week we scan Reddit, X, TikTok, and Instagram for mentions of every show, classify each
             post&rsquo;s sentiment, and rank shows by{' '}
             <span className="text-gray-300 font-semibold">volume × positive %</span>. More people
             talking <em>and</em> saying nice things wins. Tiers:{' '}
@@ -289,7 +289,7 @@ export default function TrendingPage() {
         {/* Data source note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
           <p>
-            Social data aggregated from X, TikTok, and Instagram via the Apify ecosystem.
+            Social data aggregated from Reddit, X, TikTok, and Instagram.
             Sentiment classified by LLM. Updated weekly.
           </p>
         </div>

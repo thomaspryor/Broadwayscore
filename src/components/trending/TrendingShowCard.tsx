@@ -52,8 +52,8 @@ const TIER_STYLES: Record<RawSocialPulse['tier'], TierStyle> = {
     borderClass: 'border-red-500/40',
   },
   BuildingBaseline: {
-    label: 'NEW',
-    emoji: '✨',
+    label: 'STEADY',
+    emoji: '⚪',
     textClass: 'text-blue-400',
     bgClass: 'bg-blue-500/10',
     borderClass: 'border-blue-500/40',
