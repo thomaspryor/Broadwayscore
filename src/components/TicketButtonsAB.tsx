@@ -1,5 +1,33 @@
 'use client';
 
+/*
+ * ═══════════════════════════════════════════════════════════════════════
+ *  LIVE A/B TEST — READ memory/feedback_ab_test_guardrails.md FIRST
+ * ═══════════════════════════════════════════════════════════════════════
+ *
+ *  This component renders two live PostHog experiments. DO NOT:
+ *    - Change PostHog flag rollouts without explicit user approval
+ *    - Remove variant branches because they're "currently at 0%"
+ *    - Declare a winner based on small samples or contaminated data
+ *    - Flip ensure_experience_continuity without understanding the trade-off
+ *
+ *  Before any change to this file, the PostHog flag, or analyze-ab-test.js,
+ *  run `node scripts/validate-ab-test.js` and confirm all 4 checks pass.
+ *
+ *  Active experiments (as of 2026-04-11):
+ *    1. ticket-single-button — 50/50 multi/single, sticky bucketing on,
+ *       restarted 2026-04-11 ~19:00 UTC after first run was invalidated.
+ *       At current traffic (~4 A/B clicks/day), 100-click-per-variant
+ *       threshold is ~50 days out. Do not declare early.
+ *    2. ticket-primary-platform — 100% todaytix, 0% stubhub. Winner
+ *       locked months ago. The stubhub branch below is intentionally
+ *       kept even though HIDDEN_PLATFORMS strips StubHub from
+ *       sortTicketLinks() — do not remove.
+ *
+ *  Full rules + history: memory/feedback_ab_test_guardrails.md
+ * ═══════════════════════════════════════════════════════════════════════
+ */
+
 import { useState, useEffect } from 'react';
 import TicketLink from '@/components/TicketLink';
 import { sortTicketLinks, type TicketLinkData } from '@/lib/ticket-utils';
@@ -23,17 +51,15 @@ interface TicketButtonsABProps {
 /**
  * A/B test wrapper for ticket buttons on show pages.
  *
- * Both tests have been resolved; kept here so PostHog flag reads still
- * succeed and so re-opening either test is a single PostHog config change
- * away. Expect every real user to get `multi` + `todaytix`.
- *
- *   1. ticket-primary-platform — winner: `todaytix`, locked 100% months ago.
- *      The `stubhub` variant still exists at 0% rollout but is now doubly
- *      inert: StubHub is in HIDDEN_PLATFORMS in ticket-utils.ts and
- *      sortTicketLinks() strips it before the override below would apply.
- *   2. ticket-single-button — winner: `multi`. Flipped to 100% multi on
- *      2026-04-11 because the StubHub-hide changed the multi condition
- *      mid-test, contaminating the 14-day sample (56 clicks, single -11%).
+ *   1. ticket-primary-platform — locked 100% `todaytix`. The `stubhub`
+ *      variant exists at 0% and its override branch is kept intentionally;
+ *      do not remove (see header comment).
+ *   2. ticket-single-button — 50/50 `multi` / `single`, sticky bucketing on.
+ *      Restarted fresh 2026-04-11 after the first run (Mar 28 – Apr 11) was
+ *      invalidated by the StubHub hide mid-flight. FLAG_RESTART_DATES in
+ *      scripts/analyze-ab-test.js excludes pre-restart events from analysis.
+ *      Never declare a winner from this file — run analyze-ab-test.js and
+ *      wait for the stat-sig verdict.
  */
 export default function TicketButtonsAB({
   showName, showId, showSlug, showStatus, showCategory, showScore,
@@ -91,12 +117,21 @@ export default function TicketButtonsAB({
     };
   }, []);
 
-  // Platform ordering (test 1 — locked to `todaytix` in PostHog).
-  // The stale `stubhub` variant branch was removed 2026-04-11 when StubHub
-  // was added to HIDDEN_PLATFORMS — sortTicketLinks now filters StubHub
-  // regardless, so no override was reachable. If we ever re-test a forced
-  // primary platform, pass it via `overridePlatform` here.
-  const sorted = sortTicketLinks(ticketLinks);
+  // Platform ordering (test 1 — locked to `todaytix` at 100% in PostHog).
+  //
+  // The `stubhub` variant branch is kept intentionally. Even though:
+  //   (a) PostHog rolls 0% to stubhub right now, and
+  //   (b) sortTicketLinks() filters StubHub via HIDDEN_PLATFORMS,
+  // removing this branch would make re-testing a forced primary platform
+  // require a code change instead of a PostHog config change. See
+  // memory/feedback_ab_test_guardrails.md rule #4: "Never delete A/B test
+  // code paths because 'one variant is at 0%'."
+  let overridePlatform: string | undefined;
+  if (abPlatformVariant === 'stubhub' && ticketLinks.some(l => l.platform === 'StubHub')) {
+    overridePlatform = 'StubHub';
+  }
+
+  const sorted = sortTicketLinks(ticketLinks, overridePlatform);
   const isSingleButton = abButtonVariant === 'single';
 
   // Single-button variant: just show the primary CTA, nothing else
