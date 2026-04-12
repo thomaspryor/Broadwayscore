@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-12T03:27:28.010Z",
+  "lastRunAt": "2026-04-12T05:12:24.066Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -14,7 +14,8 @@
     "news:4b6d350441917096": true,
     "news:951c50f7edba2581": true,
     "news:2988e48372642d9a": true,
-    "news:cb58af962ea121f8": true
+    "news:cb58af962ea121f8": true,
+    "google:02de594997ed5794": true
   },
   "mentions": [
     {
@@ -279,10 +280,30 @@
       "draftReason": "This is just a user profile page showing their post history with a BWSC link embedded — no discussion or question to respond to.",
       "draftResponse": null,
       "dispatched": null
+    },
+    {
+      "id": "google:02de594997ed5794",
+      "source": "google",
+      "url": "https://podcasts.apple.com/tr/podcast/broadway-breakdown/id1260430031?l=tr",
+      "title": "Broadway Breakdown - Podcast",
+      "excerpt": "... BroadwayScoreCard.Com This is a public episode. If you would like to discuss this with other subscribers or get access to bonus episodes, visit ...",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-12T05:12:11.121Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-12T05:12:24.066Z"
     }
   ],
   "stats": {
-    "totalSeen": 14,
+    "totalSeen": 15,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -299,6 +320,7 @@
     "https://forum.broadwayworld.com/thread/CATS-THE-JELLICLE-BALL-Reviews/2": true,
     "https://forum.broadwayworld.com/thread/EVERY-BRILLIANT-THING-Reviews": true,
     "https://forum.broadwayworld.com/newcsd.php?ID=102617": true,
-    "https://forum.broadwayworld.com/newcsd.php?ID=1479044": true
+    "https://forum.broadwayworld.com/newcsd.php?ID=1479044": true,
+    "https://podcasts.apple.com/podcast/broadway-breakdown/id1260430031?l=tr": true
   }
 }
