@@ -3,7 +3,7 @@ import FantasyLeaderboardTable from '@/components/fantasy/FantasyLeaderboardTabl
 import { getFantasySeasonInfo } from '@/lib/data-fantasy';
 
 export const metadata: Metadata = {
-  title: 'Fantasy League Leaderboard | Broadway Scorecard',
+  title: 'Fantasy League Leaderboard',
   description: 'See who\'s winning the Broadway Fantasy League. Rankings updated weekly with points from critics, audiences, box office, and Tony Awards.',
 };
 

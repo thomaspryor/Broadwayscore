@@ -8,7 +8,7 @@ import {
 } from '@/config/fantasy';
 
 export const metadata: Metadata = {
-  title: 'Broadway Fantasy League | Broadway Scorecard',
+  title: 'Broadway Fantasy League',
   description: 'Draft 8 Broadway shows within a $100 budget. Earn points from critics, audiences, box office, and Tony Awards. Free to play, no account needed.',
   openGraph: {
     title: 'Broadway Fantasy League',

@@ -3,7 +3,7 @@ import { getFantasyShowsSorted, getFantasyConfig, getShowScore } from '@/lib/dat
 import { getCriticLabel, ELIGIBILITY_MARKERS } from '@/config/fantasy';
 
 export const metadata: Metadata = {
-  title: 'Fantasy Draft Guide | Broadway Scorecard',
+  title: 'Fantasy Draft Guide',
   description: 'Every draftable show with prices, scores, and eligibility. Your cheat sheet for the Broadway Fantasy League draft.',
 };
 
