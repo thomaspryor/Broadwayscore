@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-12T04:20:14.667Z",
+  "timestamp": "2026-04-12T04:33:01.311Z",
   "stats": {
-    "totalReviews": 34625,
-    "alreadyFlagged": 14088,
+    "totalReviews": 34623,
+    "alreadyFlagged": 14087,
     "dateGuardCatches": 58,
     "directorMismatch": 926,
     "tvFilmSignals": 3339,
@@ -32192,6 +32192,20 @@
     },
     {
       "showId": "mj-the-musical-west-end-2024",
+      "file": "express-uk--neil-norman.json",
+      "score": 78,
+      "publishDate": "2024-03-28",
+      "url": "https://www.express.co.uk/entertainment/theatre/1882479/MJ-The-Musical-review-Michael-Jackson-Thriller",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
       "file": "financialtimes--financial-times.json",
       "score": 42,
       "publishDate": "2024-03-27",
@@ -32224,20 +32238,6 @@
       "score": 85,
       "publishDate": "2024-03-28",
       "url": "https://www.londontheatre.co.uk/reviews/mj-the-musical-review-prince-edward-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
-        }
-      ]
-    },
-    {
-      "showId": "mj-the-musical-west-end-2024",
-      "file": "sunday-express--neil-norman.json",
-      "score": 78,
-      "publishDate": "2024-03-28",
-      "url": "https://www.express.co.uk/entertainment/theatre/1882479/MJ-The-Musical-review-Michael-Jackson-Thriller",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52988,7 +52988,7 @@
       "file": "deadline--jeremy-gerard.json",
       "score": null,
       "publishDate": "November 30, 2017",
-      "url": "http://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/",
+      "url": "https://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -66908,7 +66908,7 @@
       "file": "variety--david-rooney.json",
       "score": 85,
       "publishDate": "March 31, 2011",
-      "url": "https://variety.com/2011/legit/reviews/hair-1117944760/",
+      "url": "https://variety.com/2011/film/reviews/the-burma-conspiracy-1117944760/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -73306,6 +73306,34 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "express-uk--neil-norman.json",
+      "score": 91,
+      "publishDate": "2023-05-11",
+      "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "express-uk--stefan-kyriazis.json",
+      "score": 92,
+      "publishDate": "2023-05-11",
+      "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "guardian--emma-john.json",
       "score": 79,
       "publishDate": "2023-05-10",
@@ -73338,34 +73366,6 @@
       "score": 92,
       "publishDate": "2023-05-10",
       "url": "https://lostintheatreland.co.uk/operation-mincemeat-review-fortune-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "sunday-express--neil-norman.json",
-      "score": 91,
-      "publishDate": "2023-05-11",
-      "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "sunday-express--stefan-kyriazis.json",
-      "score": 92,
-      "publishDate": "2023-05-11",
-      "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
