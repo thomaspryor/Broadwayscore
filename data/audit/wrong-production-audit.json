@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T19:55:05.688Z",
+  "timestamp": "2026-04-12T20:13:03.129Z",
   "stats": {
     "totalReviews": 34704,
-    "alreadyFlagged": 13875,
+    "alreadyFlagged": 13887,
     "dateGuardCatches": 107,
     "directorMismatch": 959,
     "tvFilmSignals": 3378,
-    "londonSignals": 1107,
+    "londonSignals": 1108,
     "offBroadwaySignals": 964,
     "yearMismatch": 75,
-    "noPublishDate": 4095
+    "noPublishDate": 4084
   },
   "findings": [
     {
@@ -2623,7 +2623,7 @@
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 74,
       "publishDate": "2014-03-20T20:56:08-04:00",
-      "url": "http://www.newjerseynewsroom.com/movies/aladdin-broadway-review-a-smooth-ride-for-the-family-crowd",
+      "url": "https://www.newjerseynewsroom.com/movies/aladdin-broadway-review-a-smooth-ride-for-the-family-crowd",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -72852,6 +72852,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2026",
+      "file": "whatsonstage--rachel-agyekum.json",
+      "score": 78,
+      "publishDate": "2025-05-12",
+      "url": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
