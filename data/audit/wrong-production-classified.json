@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-12T20:08:51.091Z",
+    "generatedAt": "2026-04-12T21:00:43.172Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 78,
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review discusses a Sydney production of Wicked, mentioning specific Australian cast members and opening nights in Sydney. It also mentions a Brazilian production. This is not a review of the 2003 Broadway production."
+      "reasoning": "The review discusses the Sydney production of Wicked, mentioning its opening nights in 2008 and 2014, and a third opening night in Sydney. It also mentions the cast of the Sydney production."
     },
     {
       "showId": "broadway-1987",
@@ -45,7 +45,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This,\" not the original 1987 production. The review also mentions the director, Michael Mayer, and set designer, Derek McLane, who were involved in the 2019 production."
+      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This\", not the original 1987 production."
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T20:13:03.129Z",
+  "timestamp": "2026-04-12T21:04:42.149Z",
   "stats": {
-    "totalReviews": 34704,
-    "alreadyFlagged": 13887,
+    "totalReviews": 34709,
+    "alreadyFlagged": 13886,
     "dateGuardCatches": 107,
-    "directorMismatch": 959,
-    "tvFilmSignals": 3378,
-    "londonSignals": 1108,
-    "offBroadwaySignals": 964,
+    "directorMismatch": 960,
+    "tvFilmSignals": 3380,
+    "londonSignals": 1109,
+    "offBroadwaySignals": 966,
     "yearMismatch": 75,
-    "noPublishDate": 4084
+    "noPublishDate": 4085
   },
   "findings": [
     {
@@ -9272,6 +9272,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": 90,
+      "publishDate": "April 7, 2026",
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"perelman\""
         }
       ]
     },
@@ -20360,7 +20384,7 @@
       "file": "nytimes--ben-brantley.json",
       "score": 88,
       "publishDate": "August 16, 2002",
-      "url": null,
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9F0CE1DA173DF935A2575BC0A9649C8B63",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -44308,6 +44332,20 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": 65,
+      "publishDate": "2015-09-27",
+      "url": "https://www.talkinbroadway.com/world/SpringAwakening2015.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "theater-life--david-sheward.json",
       "score": 81,
       "publishDate": null,
@@ -62230,6 +62268,20 @@
       ]
     },
     {
+      "showId": "airline-highway-2015",
+      "file": "vulture--jesse-green.json",
+      "score": 85,
+      "publishDate": "April 23rd, 2015",
+      "url": "https://www.vulture.com/2015/04/theater-reviews-the-visit.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "all-in-comedy-about-love-2024",
       "file": "nysr--frank-scheck.json",
       "score": 63,
@@ -63168,7 +63220,7 @@
       "file": "theatre-weekly--benedict-pignatelli.json",
       "score": 84,
       "publishDate": "2026-02-11",
-      "url": null,
+      "url": "https://theatreweekly.com/review-arcadia-at-the-old-vic/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -63182,7 +63234,7 @@
       "file": "thereviewshub--jane-darcy.json",
       "score": 66,
       "publishDate": "2026-02-07",
-      "url": null,
+      "url": "https://www.thereviewshub.com/arcadia-the-old-vic-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -72638,6 +72690,19 @@
       "score": 80,
       "publishDate": "2026-01-15",
       "url": "https://www.telegraph.co.uk/theatre/tickets/london/mamma-mia/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "file": "west-end-wilma--west-end-wilma.json",
+      "publishDate": "2019-06-19",
+      "url": "https://www.westendwilma.com/review-mamma-mia-novello-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
