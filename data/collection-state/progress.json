@@ -99,7 +99,15 @@
     "stereophonic-2024/nytimes--naveen-kumar.json",
     "suffs-2024/vulture--sara-holdren.json",
     "suffs-2024/timeout--regina-robbins.json",
-    "lempicka-2024/nytimes--jesse-green.json"
+    "lempicka-2024/nytimes--jesse-green.json",
+    "lempicka-2024/vulture--sara-holdren.json",
+    "the-whos-tommy-2024/vulture--sara-holdren.json",
+    "water-for-elephants-2024/variety--frank-rizzo.json",
+    "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
+    "prayer-for-the-french-republic-2024/variety--daniel-daddario.json",
+    "how-to-dance-in-ohio-2023/variety--frank-rizzo.json",
+    "harmony-2023/variety--trish-deitch.json",
+    "harmony-2023/vulture--jackson-mchenry.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1031,7 +1039,9 @@
     "stereophonic-2024/observer--jesse-green.json",
     "suffs-2024/guardian--adrian-horton.json",
     "suffs-2024/usatoday--melissa-ruggieri.json",
-    "the-wiz-2024/indiewire--sarah-shachat.json"
+    "the-wiz-2024/indiewire--sarah-shachat.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "appropriate-2023/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1103,7 +1113,17 @@
       "data/review-texts/tammy-faye-2024/variety--frank-rizzo.json",
       "tammy-faye-2024/variety--frank-rizzo.json",
       "data/review-texts/cabaret-2024/amny--matt-windman.json",
-      "cabaret-2024/amny--matt-windman.json"
+      "cabaret-2024/amny--matt-windman.json",
+      "data/review-texts/water-for-elephants-2024/variety--frank-rizzo.json",
+      "water-for-elephants-2024/variety--frank-rizzo.json",
+      "data/review-texts/an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
+      "an-enemy-of-the-people-2024/hollywood-reporter--david-rooney.json",
+      "data/review-texts/prayer-for-the-french-republic-2024/variety--daniel-daddario.json",
+      "prayer-for-the-french-republic-2024/variety--daniel-daddario.json",
+      "data/review-texts/how-to-dance-in-ohio-2023/variety--frank-rizzo.json",
+      "how-to-dance-in-ohio-2023/variety--frank-rizzo.json",
+      "data/review-texts/harmony-2023/variety--trish-deitch.json",
+      "harmony-2023/variety--trish-deitch.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1196,11 +1216,14 @@
       "yellow-face-2024/vulture--sara-holdren.json",
       "the-roommate-2024/vulture--sara-holdren.json",
       "illinoise-2024/vulture--sara-holdren.json",
-      "suffs-2024/vulture--sara-holdren.json"
+      "suffs-2024/vulture--sara-holdren.json",
+      "lempicka-2024/vulture--sara-holdren.json",
+      "the-whos-tommy-2024/vulture--sara-holdren.json",
+      "harmony-2023/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "lempicka-2024/nytimes--jesse-green.json",
+  "lastProcessed": "harmony-2023/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1532,6 +1555,61 @@
       "t": "2026-04-12T02:30:15.126Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-12T02:35:16.445Z",
+      "event": "bb-session",
+      "session": "24f6ced1",
+      "url": "https://variety.com/2024/legit/reviews/water-for-elephants-review-broadway-music"
+    },
+    {
+      "t": "2026-04-12T02:35:18.527Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:35:33.943Z",
+      "event": "bb-session",
+      "session": "27088d74",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/an-enemy-of-the-people-theater-"
+    },
+    {
+      "t": "2026-04-12T02:35:34.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-12T02:35:51.816Z",
+      "event": "bb-session",
+      "session": "3e087001",
+      "url": "https://variety.com/2024/legit/reviews/prayer-for-the-french-republic-review-bro"
+    },
+    {
+      "t": "2026-04-12T02:35:52.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:36:12.630Z",
+      "event": "bb-session",
+      "session": "fd4c5ae4",
+      "url": "https://variety.com/2023/legit/reviews/how-to-dance-in-ohio-review-broadway-musi"
+    },
+    {
+      "t": "2026-04-12T02:36:13.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:36:32.032Z",
+      "event": "bb-session",
+      "session": "d6406a8c",
+      "url": "https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-123"
+    },
+    {
+      "t": "2026-04-12T02:36:32.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
