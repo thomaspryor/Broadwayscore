@@ -131,7 +131,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, volumeLab
     <>
       <div className="flex items-center gap-1.5 mb-2 min-w-0">
         <span className="shrink-0">{icon}</span>
-        <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide leading-tight">{name}</span>
+        <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide leading-tight truncate">{name}</span>
       </div>
       <div className="text-xl font-bold text-white">
         {starRating != null ? `${starRating}/5` : `${score}%`}
