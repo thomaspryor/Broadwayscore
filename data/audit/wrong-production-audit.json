@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T01:15:47.629Z",
+  "timestamp": "2026-04-12T04:20:14.667Z",
   "stats": {
-    "totalReviews": 34623,
-    "alreadyFlagged": 14083,
+    "totalReviews": 34625,
+    "alreadyFlagged": 14088,
     "dateGuardCatches": 58,
     "directorMismatch": 926,
-    "tvFilmSignals": 3338,
-    "londonSignals": 1074,
-    "offBroadwaySignals": 954,
+    "tvFilmSignals": 3339,
+    "londonSignals": 1077,
+    "offBroadwaySignals": 953,
     "yearMismatch": 71,
-    "noPublishDate": 4086
+    "noPublishDate": 4087
   },
   "findings": [
     {
@@ -14219,6 +14219,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael grandage\" from evita-2012"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
+      "file": "nytimes--joyce-wadler.json",
+      "score": 43,
+      "publishDate": "2012-03-25",
+      "url": "https://www.nytimes.com/2012/03/25/theater/elena-roger-brings-native-touch-to-broadway-evita.html?_r=1&scp=1&sq=elena%20roger&st=cse",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -74561,6 +74580,20 @@
     },
     {
       "showId": "shadowlands-west-end-2026",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": 76,
+      "publishDate": "2026-02-22",
+      "url": "https://www.dailymail.co.uk/tv/article-15559075/PATRICK-MARMION-review-Shadowlands-London-Aldwych-Theatre-Hugh-Bonneville.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
       "file": "everything-theatre--lucy-boardman.json",
       "score": 87,
       "publishDate": "2026-02-16",
@@ -76093,20 +76126,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "summer-2018",
-      "file": "nyt-theater--david-bowie.json",
-      "score": 39,
-      "publishDate": "2018-05-29",
-      "url": "https://newyorktheater.me/2018/05/29/hair-live-broadways-summer-surprises-in-memoriam-2018-week-in-new-york-theater/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -81567,6 +81586,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "theatrely--andrew-martini.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/layton-williams-star-of-titanique-thinks-this-is-the-gayest-broadway-season-yet-and-hes-here-for-it",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

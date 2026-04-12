@@ -1,20 +1,20 @@
 {
   "meta": {
-    "generatedAt": "2026-04-12T01:11:30.040Z",
+    "generatedAt": "2026-04-12T04:15:53.237Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 35025,
+      "totalFiles": 35027,
       "inReviewsJson": 16738,
       "skippedExcluded": 36,
-      "withFullText": 19,
-      "excerptOnly": 1555,
-      "llmClassified": 18,
+      "withFullText": 21,
+      "excerptOnly": 1553,
+      "llmClassified": 20,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 18,
-      "budgetUsed": 0.0019000000000000006,
-      "llmCalls": 19,
+      "budgetUsed": 0.0021000000000000003,
+      "llmCalls": 21,
       "rateLimitHits": 0,
       "errors": 1,
       "skippedAlreadyClassified": 15128
@@ -38,9 +38,9 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "outlet": "The Telegraph",
       "outletId": "telegraph",
-      "contentType": "feature",
+      "contentType": "preview",
       "confidence": "low",
-      "reasoning": "The text mentions the play 'Evening All Afternoon' and the theme of grief, but it does not contain a review or evaluation of the production itself. It seems to be setting up a feature article, but the full content is missing.",
+      "reasoning": "The text mentions the play 'Evening All Afternoon' and its themes, but it does not contain a critical evaluation or opinion about the quality of the production. It seems to be setting up a review or feature, but is not evaluative itself.",
       "currentScore": 100
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The text discusses how to stage the play, suggesting a feature article rather than a review. The article does not evaluate the quality of the production.",
       "currentScore": 60
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no review content present.",
+      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no evaluative content about 'Parade'.",
       "currentScore": 78
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the history it represents.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of search terms or categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article provides production details and ticket information, resembling a news item or listing rather than a review with critical evaluation.",
       "currentScore": 64
     },
     {
@@ -180,7 +180,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show. It does not evaluate \"The Price\".",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -200,11 +200,14 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical elements, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events. However, it does not offer a critical evaluation or opinion on the quality of the production itself.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "angels-in-america-2018/ew--national-theatre.json",
+    "something-rotten-2015/culturesauce--pete-turo.json"
+  ],
   "perShowSummary": []
 }
