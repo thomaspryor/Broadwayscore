@@ -23,7 +23,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { pickRerouteTarget, buildShowKeywordSet, findShowKeywordInText } = require('./lib/review-guards');
+const { pickRerouteTarget, buildShowKeywordSet, findShowKeywordInText, buildMultiProdYearGuard } = require('./lib/review-guards');
 
 const REPO_ROOT = '/Users/tompryor/Broadwayscore';
 const reviewTextsDir = path.join(REPO_ROOT, 'data', 'review-texts');
@@ -49,34 +49,7 @@ const outletRegistryPath = path.join(REPO_ROOT, 'data', 'outlet-registry.json');
 const outletRegistry = JSON.parse(fs.readFileSync(outletRegistryPath, 'utf8'));
 const outletData = outletRegistry.outlets || outletRegistry;
 
-// ─── Build multiProdYearGuard identically to rebuild-all-reviews.js ───
-const titleGroups = {};
-for (const s of showsData.shows) {
-  const normTitle = s.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-  if (!titleGroups[normTitle]) titleGroups[normTitle] = [];
-  titleGroups[normTitle].push(s);
-}
-const multiProdYearGuard = {};
-for (const [, prods] of Object.entries(titleGroups)) {
-  if (prods.length < 2) continue;
-  for (const show of prods) {
-    const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
-      : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
-    if (!showYear) continue;
-    const showCat = show.category || 'broadway';
-    const nycMarket = showCat === 'broadway' || showCat === 'off-broadway';
-    const siblings = prods.filter(p => {
-      if (p.id === show.id) return false;
-      const pCat = p.category || 'broadway';
-      if (nycMarket) return pCat === 'broadway' || pCat === 'off-broadway';
-      return pCat === showCat;
-    }).map(p => ({
-      id: p.id,
-      year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null,
-    })).filter(p => p.year);
-    if (siblings.length > 0) multiProdYearGuard[show.id] = { showYear, siblings };
-  }
-}
+const multiProdYearGuard = buildMultiProdYearGuard(showsData.shows);
 
 // ─── For --cross-market: WE sibling lookup ───
 function getWeSiblings(showId) {

@@ -1005,7 +1005,50 @@ function pickRerouteTarget(currentShowYear, siblings, detectedYear, currentShowR
   return { action: 'reroute', ...best };
 }
 
+/**
+ * Build the multi-production year guard map from shows data.
+ * Groups shows by normalized title, then for each show with siblings in the
+ * same market, records { showYear, siblings: [{ id, year }] }.
+ *
+ * Broadway and off-broadway are treated as one NYC market.
+ * West End is a separate market — never cross-compared with Broadway/OB.
+ *
+ * @param {Array<Object>} shows - Array of show objects from shows.json
+ * @returns {Object} Map of showId → { showYear, siblings }
+ */
+function buildMultiProdYearGuard(shows) {
+  const titleGroups = {};
+  for (const s of shows) {
+    const normTitle = s.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (!titleGroups[normTitle]) titleGroups[normTitle] = [];
+    titleGroups[normTitle].push(s);
+  }
+  const guard = {};
+  for (const [, prods] of Object.entries(titleGroups)) {
+    if (prods.length < 2) continue;
+    for (const show of prods) {
+      const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
+        : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
+      if (!showYear) continue;
+      const showCat = show.category || 'broadway';
+      const nycMarket = showCat === 'broadway' || showCat === 'off-broadway';
+      const siblings = prods.filter(p => {
+        if (p.id === show.id) return false;
+        const pCat = p.category || 'broadway';
+        if (nycMarket) return pCat === 'broadway' || pCat === 'off-broadway';
+        return pCat === showCat;
+      }).map(p => ({
+        id: p.id,
+        year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null,
+      })).filter(p => p.year);
+      if (siblings.length > 0) guard[show.id] = { showYear, siblings };
+    }
+  }
+  return guard;
+}
+
 module.exports = {
+  buildMultiProdYearGuard,
   shouldSkipScoredReview,
   pickBestDtliSlug,
   applyTemporalOverrides,

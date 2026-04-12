@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -648,39 +648,8 @@ for (const s of showsData.shows) {
 
 // Build URL-year cross-production guard for multi-production shows
 // Pattern: review URL contains a year clearly closer to a sibling production = wrong directory
-const multiProdYearGuard = {};
+const multiProdYearGuard = buildMultiProdYearGuard(showsData.shows);
 {
-  const titleGroups = {};
-  for (const s of showsData.shows) {
-    const normTitle = s.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-    if (!titleGroups[normTitle]) titleGroups[normTitle] = [];
-    titleGroups[normTitle].push(s);
-  }
-  for (const [, prods] of Object.entries(titleGroups)) {
-    if (prods.length < 2) continue;
-    for (const show of prods) {
-      const showYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4))
-        : show.previewsStartDate ? parseInt(show.previewsStartDate.slice(0, 4)) : null;
-      if (!showYear) continue;
-      // Compare to siblings in the same market. Broadway and off-broadway are treated
-      // as the same NYC market (e.g., Kinky Boots 2013 broadway vs 2026 off-broadway).
-      // West End is a separate market — never cross-compare with Broadway/OB.
-      const showCat = show.category || 'broadway';
-      const nycMarket = showCat === 'broadway' || showCat === 'off-broadway';
-      const siblings = prods.filter(p => {
-        if (p.id === show.id) return false;
-        const pCat = p.category || 'broadway';
-        if (nycMarket) return pCat === 'broadway' || pCat === 'off-broadway';
-        return pCat === showCat;
-      }).map(p => ({
-        id: p.id,
-        year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null
-      })).filter(p => p.year);
-      if (siblings.length > 0) {
-        multiProdYearGuard[show.id] = { showYear, siblings };
-      }
-    }
-  }
   const guardedCount = Object.keys(multiProdYearGuard).length;
   if (guardedCount > 0) {
     console.log(`URL-year cross-production guard active for ${guardedCount} multi-production shows`);
@@ -2125,12 +2094,14 @@ showDirs.forEach(showId => {
       // If a review's URL or publish date contains a year clearly closer to a sibling
       // production, REROUTE it to the sibling's directory instead of dropping it.
       // Pure decision: pickRerouteTarget() in scripts/lib/review-guards.js (with tests).
-      // Bypass: wrongProductionManualClear, wrongProductionOverride, allowEarlyDate, allowLateDate
+      // Bypass: wrongProductionManualClear, wrongProductionOverride, allowEarlyDate, allowLateDate, routedFromShowId
+      // routedFromShowId: file was already rerouted to this directory by a prior rebuild — don't re-evaluate
       if (multiProdYearGuard[showId]
           && !data.wrongProductionManualClear
           && !data.wrongProductionOverride
           && !data.allowEarlyDate
-          && !data.allowLateDate) {
+          && !data.allowLateDate
+          && !data.routedFromShowId) {
         const guard = multiProdYearGuard[showId];
         let detectedYear = null;
         let yearSource = null;
@@ -2211,8 +2182,10 @@ showDirs.forEach(showId => {
       // This guard is independent of multiProdYearGuard (doesn't require sibling productions in DB).
       // WE/OB exempt: they commonly transfer from fringe/regional, so URL years mismatch legitimately
       // [GUARD:URL-YEAR-STANDALONE] outer-block guard
+      // routedFromShowId: already rerouted — URL year reflects the original show, not a mismatch
       if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
           && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate
+          && !data.routedFromShowId
           && !isLondonMarket(showCategory) && showCategory !== 'off-broadway') {
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
