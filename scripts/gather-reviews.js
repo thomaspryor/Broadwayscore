@@ -70,6 +70,7 @@ const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { parseDate } = require('./lib/date-utils');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -1187,9 +1188,7 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
       const datedReviews = reviews
         .map(r => {
           if (!r.date) return null;
-          // Strip ordinal suffixes (6th → 6, 1st → 1) before parsing
-          const clean = r.date.replace(/(\d+)(?:st|nd|rd|th)/i, '$1');
-          return new Date(clean);
+          return parseDate(r.date);
         })
         .filter(d => d && !isNaN(d.getTime()) && d.getFullYear() >= 2000);
 

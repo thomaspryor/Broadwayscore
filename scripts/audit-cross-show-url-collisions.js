@@ -19,6 +19,7 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-collision-report.json');
 
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
+const { parseDate } = require('./lib/date-utils');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -226,9 +227,9 @@ for (const collision of collisions) {
   if (withDates.length > 0) {
     // Calculate days between publish and opening for each candidate
     const scored = withDates.map(c => {
-      const pubDate = new Date(c.publishDate);
+      const pubDate = parseDate(c.publishDate);
       const openDate = new Date(c.openingDate);
-      const daysDiff = Math.abs((pubDate - openDate) / (1000 * 60 * 60 * 24));
+      const daysDiff = pubDate ? Math.abs((pubDate - openDate) / (1000 * 60 * 60 * 24)) : Infinity;
       return { ...c, daysDiff };
     });
 

@@ -1044,9 +1044,8 @@ function getOutletDisplayName(outletId) {
  */
 function normalizePublishDate(dateStr) {
   if (!dateStr) return dateStr;
-
-  // Strip ordinal suffixes (1st, 2nd, 3rd, 4th, 5th, etc.)
-  return dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
+  const { stripOrdinals } = require('./date-utils');
+  return stripOrdinals(dateStr);
 }
 
 /**

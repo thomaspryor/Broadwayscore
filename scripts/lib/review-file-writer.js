@@ -167,10 +167,10 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     const sibData = _getSiblingData().get(showId);
     if (sibData && sibData.siblings.length) {
       // Guard: only accept string dates (not epoch numbers that would parse as 1970)
+      const { parseDate } = require('./date-utils');
       const pubStr = typeof pubDateStr === 'string' ? pubDateStr : null;
-      const cleaned = (pubStr || '').replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-      const reviewDate = cleaned ? new Date(cleaned) : null;
-      const reviewValid = reviewDate && !isNaN(reviewDate.getTime()) && reviewDate.getFullYear() >= 1970;
+      const reviewDate = parseDate(pubStr);
+      const reviewValid = !!reviewDate;
 
       const visited = _rerouteVisited || new Set();
       visited.add(showId);

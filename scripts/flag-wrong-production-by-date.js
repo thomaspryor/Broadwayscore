@@ -36,14 +36,7 @@ function loadShows() {
   return map;
 }
 
-function parseDate(str) {
-  if (!str) return null;
-  // Strip ordinal suffixes
-  const cleaned = str.replace(/(\d+)(?:st|nd|rd|th)\b/gi, '$1');
-  const d = new Date(cleaned);
-  if (isNaN(d.getTime())) return null;
-  return d;
-}
+const { parseDate } = require('./lib/date-utils');
 
 function run() {
   const showMap = loadShows();

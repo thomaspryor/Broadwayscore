@@ -40,6 +40,7 @@ const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShow
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { parseDate } = require('./lib/date-utils');
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
@@ -887,21 +888,11 @@ const crossShowFingerprints = new Map();
         // Threshold raised from 180→365 and requires publishDate specifically (no URL fallback)
         // because the 180-day threshold combined with URL-extracted dates caused false overrides.
         if (d.wrongProductionManualClear) {
-          let mcReviewDate = null;
-          if (d.publishDate) {
-            const mcCleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-            mcReviewDate = new Date(mcCleaned);
-            if (isNaN(mcReviewDate.getTime())) mcReviewDate = null;
-          }
+          let mcReviewDate = parseDate(d.publishDate);
           if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) continue;
           // Extreme date mismatch (>1 year with reliable publishDate) — override manual clear
         }
-        let reviewDate = null;
-        if (d.publishDate) {
-          const cleaned = d.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-          const pd = new Date(cleaned);
-          if (!isNaN(pd.getTime())) reviewDate = pd;
-        }
+        let reviewDate = parseDate(d.publishDate);
         if (!reviewDate && d.url) {
           // Try YYYYMMDD pattern (e.g. chicagotribune URLs: 20231117)
           const ymd = d.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(?:\D|$)/);
@@ -1578,9 +1569,8 @@ showDirs.forEach(showId => {
         // from a prior production — do NOT auto-clear regardless of URL domain
         let isDateMismatch = false;
         if (data.publishDate && showDateMap[showId]) {
-          const cleaned = data.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-          const reviewDate = new Date(cleaned);
-          if (!isNaN(reviewDate.getTime()) && (showDateMap[showId] - reviewDate) > 90 * 86400000) {
+          const reviewDate = parseDate(data.publishDate);
+          if (reviewDate && (showDateMap[showId] - reviewDate) > 90 * 86400000) {
             isDateMismatch = true;
           }
         }
@@ -1663,9 +1653,8 @@ showDirs.forEach(showId => {
         || (data.wrongShowReason && /wrong|different|not a review|not the/i.test(data.wrongShowReason));
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
-        const wsCleaned = data.publishDate.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-        const wsReviewDate = new Date(wsCleaned);
-        if (!isNaN(wsReviewDate.getTime()) && (showDateMap[showId] - wsReviewDate) > 90 * 86400000) {
+        const wsReviewDate = parseDate(data.publishDate);
+        if (wsReviewDate && (showDateMap[showId] - wsReviewDate) > 90 * 86400000) {
           wsDateMismatch = true;
         }
       }
