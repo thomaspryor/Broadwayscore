@@ -449,7 +449,8 @@ function shouldSkipWrongProductionAudit(data) {
   return (
     data.humanReviewedWrongProduction === false ||
     data.wrongProductionManualClear === true ||
-    data.wrongProductionOverride === true
+    data.wrongProductionOverride === true ||
+    data.allowCrossMarket === true
   );
 }
 

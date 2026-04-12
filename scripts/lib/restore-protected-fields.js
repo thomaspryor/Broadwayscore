@@ -39,6 +39,7 @@ const MANUAL_FIELDS = [
   'wrongProductionOverride',
   'humanReviewedWrongProduction',
   'allowEarlyDate',
+  'allowCrossMarket',
   // (b) Durable SERP retry state — must survive rebase
   'serpDiscoveryAbandoned',
   'serpAbandonmentReason',

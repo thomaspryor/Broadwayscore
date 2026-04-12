@@ -14,6 +14,7 @@ const {
   isLikelyWrongProduction,
   checkLlmVerificationAgainstKeywords,
   pickRerouteTarget,
+  shouldSkipWrongProductionAudit,
 } = require('../../scripts/lib/review-guards.js');
 
 describe('isLikelyWrongProduction', () => {
@@ -264,5 +265,36 @@ describe('pickRerouteTarget — run-window guard', () => {
     // guard correctly falls through to year-distance logic.
     const result = pickRerouteTarget(2001, revivalSibling, 2014, [2015, 2001]);
     assert.strictEqual(result.action, 'reroute');
+  });
+});
+
+describe('shouldSkipWrongProductionAudit', () => {
+  test('returns false for null/undefined input', () => {
+    assert.strictEqual(shouldSkipWrongProductionAudit(null), false);
+    assert.strictEqual(shouldSkipWrongProductionAudit(undefined), false);
+  });
+
+  test('returns false for empty object', () => {
+    assert.strictEqual(shouldSkipWrongProductionAudit({}), false);
+  });
+
+  test('returns true for humanReviewedWrongProduction === false', () => {
+    assert.strictEqual(shouldSkipWrongProductionAudit({ humanReviewedWrongProduction: false }), true);
+  });
+
+  test('returns true for wrongProductionManualClear', () => {
+    assert.strictEqual(shouldSkipWrongProductionAudit({ wrongProductionManualClear: true }), true);
+  });
+
+  test('returns true for wrongProductionOverride', () => {
+    assert.strictEqual(shouldSkipWrongProductionAudit({ wrongProductionOverride: true }), true);
+  });
+
+  test('returns true for allowCrossMarket', () => {
+    assert.strictEqual(shouldSkipWrongProductionAudit({ allowCrossMarket: true }), true);
+  });
+
+  test('allowCrossMarket=false does not skip', () => {
+    assert.strictEqual(shouldSkipWrongProductionAudit({ allowCrossMarket: false }), false);
   });
 });

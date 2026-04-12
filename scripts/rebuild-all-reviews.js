@@ -1120,7 +1120,7 @@ const KNOWN_SYNDICATION_PAIRS = {
         if (stale && !trustWrongArticleDespiteStale) continue;
         let promoted = false;
         if (cv.wrongProduction === true && d.wrongProduction !== true
-            && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate) {
+            && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
           d.wrongProductionReason = d.wrongProductionReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
@@ -1128,12 +1128,12 @@ const KNOWN_SYNDICATION_PAIRS = {
         }
         const wpConf = cv.confidence || 'medium';
         const skipLondon = isLondonMarket(sCat) && isUkOutletUrl(d.url) && wpConf !== 'high';
-        if (cv.wrongArticle === true && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate) {
+        if (cv.wrongArticle === true && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
           d.wrongShow = true;
           d.wrongShowReason = d.wrongShowReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
         }
-        if (cv.isFilmTv === true && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate) {
+        if (cv.isFilmTv === true && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
           d.wrongShow = true;
           d.wrongShowReason = d.wrongShowReason || `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
@@ -1170,13 +1170,13 @@ showDirs.forEach(showId => {
           const ucv = ud.contentVerification;
           if (!ucv || (ucv.confidence !== 'high' && ucv.confidence !== 'medium')) continue;
           let promoted = false;
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate) {
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket) {
             // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
             ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-          if (ucv.wrongArticle === true && ud.wrongShow !== true && !ud.allowEarlyDate) {
+          if (ucv.wrongArticle === true && ud.wrongShow !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
             ud.wrongShow = true;
             ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -1521,7 +1521,7 @@ showDirs.forEach(showId => {
           const isHighMediumConfidence = wpConfidence === 'high' || wpConfidence === 'medium';
           if (cv.wrongProduction === true && data.wrongProduction !== true
               && !shouldSkipWrongProductionAudit(data)
-              && isHighMediumConfidence && !data.allowEarlyDate) {
+              && isHighMediumConfidence && !data.allowEarlyDate && !data.allowCrossMarket) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
             data.wrongProductionReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
@@ -1530,12 +1530,12 @@ showDirs.forEach(showId => {
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
           // wrongArticle means the fetched text is genuinely for a different show/venue)
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
-          if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate) {
+          if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
             data.wrongShow = true;
             data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-          if (cv.isFilmTv === true && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate) {
+          if (cv.isFilmTv === true && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
             data.wrongShow = true;
             data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -1616,11 +1616,12 @@ showDirs.forEach(showId => {
           } catch {}
         }
       }
-      // allowEarlyDate overrides wrongProduction — user explicitly approved the early date
-      if (data.wrongProduction === true && data.allowEarlyDate) {
+      // allowEarlyDate/allowCrossMarket override wrongProduction — user explicitly approved the review
+      if (data.wrongProduction === true && (data.allowEarlyDate || data.allowCrossMarket)) {
         delete data.wrongProduction;
         delete data.wrongProductionNote;
-        data.wrongProductionAutoCleared = `rebuild: allowEarlyDate bypasses wrongProduction`;
+        const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
+        data.wrongProductionAutoCleared = `rebuild: ${reason} bypasses wrongProduction`;
         try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
         stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
       }
@@ -1673,12 +1674,13 @@ showDirs.forEach(showId => {
         try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
-      // allowEarlyDate overrides wrongShow — user explicitly approved this review
-      if (data.wrongShow === true && data.allowEarlyDate) {
+      // allowEarlyDate/allowCrossMarket override wrongShow — user explicitly approved this review
+      if (data.wrongShow === true && (data.allowEarlyDate || data.allowCrossMarket)) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         delete data.wrongShowReason;
-        data.wrongShowAutoCleared = `rebuild: allowEarlyDate bypasses wrongShow`;
+        const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
+        data.wrongShowAutoCleared = `rebuild: ${reason} bypasses wrongShow`;
         try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
@@ -1805,7 +1807,7 @@ showDirs.forEach(showId => {
         } catch (e) {}
       }
 
-      if (isLondonMarket(showCategory) && !data.allowEarlyDate
+      if (isLondonMarket(showCategory) && !data.allowEarlyDate && !data.allowCrossMarket
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         // URL-domain fallback: if outlet has no region in registry, check if the URL is a UK domain
@@ -1837,7 +1839,7 @@ showDirs.forEach(showId => {
       // Unlike the forward guard, we DON'T exempt Tier 1/2 here — a London Tier 1 outlet like
       // Evening Standard never covers Broadway. Only explicitly dual-market outlets (Guardian, FT, Variety)
       // are allowed to cross markets. Tier 1/2 exemption was designed for US outlets reviewing WE.
-      if ((showCategory === 'broadway' || showCategory === 'off-broadway') && !data.allowEarlyDate
+      if ((showCategory === 'broadway' || showCategory === 'off-broadway') && !data.allowEarlyDate && !data.allowCrossMarket
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         // URL-domain fallback: if outlet has no region in registry, check if the URL is a .co.uk domain
@@ -1868,7 +1870,7 @@ showDirs.forEach(showId => {
       // but a URL containing "-broadway-review" or "on-broadway" is reviewing a specific production.
       // Excludes broadwayworld.com (outlet domain, not a production indicator).
       // [GUARD:URL-PATH-CROSS-MARKET] outer guard covers both inner sites
-      if (data.url && !data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate) {
+      if (data.url && !data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !data.allowCrossMarket) {
         try {
           const urlObj = new URL(data.url);
           const hostname = urlObj.hostname.replace(/^www\./, '');
