@@ -730,8 +730,8 @@ export function generateCriticFAQSchema(critic: {
   const faqs: { question: string; answer: string }[] = [];
 
   faqs.push({
-    question: `How many Broadway shows has ${critic.name} reviewed?`,
-    answer: `${critic.name} has reviewed ${critic.reviewCount} Broadway shows on Broadway Scorecard, with an average score of ${critic.avgScore}/100.`,
+    question: `How many shows has ${critic.name} reviewed?`,
+    answer: `${critic.name} has reviewed ${critic.reviewCount} shows on Broadway Scorecard, with an average score of ${critic.avgScore}/100.`,
   });
 
   faqs.push({
@@ -742,7 +742,7 @@ export function generateCriticFAQSchema(critic: {
   });
 
   faqs.push({
-    question: `What is ${critic.name}'s highest and lowest Broadway score?`,
+    question: `What is ${critic.name}'s highest and lowest score?`,
     answer: `${critic.name}'s highest score is ${critic.highScore}/100 and lowest score is ${critic.lowScore}/100, with an average of ${critic.avgScore}/100.`,
   });
 
@@ -771,8 +771,8 @@ export function generateOutletFAQSchema(outlet: {
   const faqs: { question: string; answer: string }[] = [];
 
   faqs.push({
-    question: `How many Broadway reviews has ${outlet.name} published?`,
-    answer: `${outlet.name} has published ${outlet.reviewCount} Broadway reviews on Broadway Scorecard, with an average score of ${outlet.avgScore}/100.`,
+    question: `How many reviews has ${outlet.name} published?`,
+    answer: `${outlet.name} has published ${outlet.reviewCount} reviews on Broadway Scorecard, with an average score of ${outlet.avgScore}/100.`,
   });
 
   faqs.push({
@@ -880,15 +880,15 @@ export function generateUnifiedCreativeFAQSchema(profile: {
   const faqs: { question: string; answer: string }[] = [];
 
   faqs.push({
-    question: `How many Broadway shows has ${profile.name} worked on?`,
-    answer: `${profile.name} has worked on ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''} as a ${rolesText}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    question: `How many shows has ${profile.name} worked on?`,
+    answer: `${profile.name} has worked on ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''} as a ${rolesText}${profile.avgScore !== null && profile.scoredShowCount >= 3 ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
   });
 
   if (profile.highScore !== null) {
     const best = profile.shows.filter(s => s.score !== null).sort((a, b) => (b.score || 0) - (a.score || 0))[0];
     if (best) {
       faqs.push({
-        question: `What is ${profile.name}'s highest-rated Broadway show?`,
+        question: `What is ${profile.name}'s highest-rated show?`,
         answer: `${profile.name}'s highest-rated show is ${best.title} with a critic score of ${best.score}/100.`,
       });
     }
@@ -897,13 +897,13 @@ export function generateUnifiedCreativeFAQSchema(profile: {
   if (profile.openShowCount > 0) {
     const running = profile.shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
     faqs.push({
-      question: `Does ${profile.name} have any shows currently on Broadway?`,
-      answer: `Yes, ${profile.name} currently has ${running.length} show${running.length !== 1 ? 's' : ''} on Broadway: ${running.map(s => s.title).join(', ')}.`,
+      question: `Does ${profile.name} have any shows currently running?`,
+      answer: `Yes, ${profile.name} currently has ${running.length} show${running.length !== 1 ? 's' : ''} running: ${running.map(s => s.title).join(', ')}.`,
     });
   } else {
     faqs.push({
-      question: `Does ${profile.name} have any shows currently on Broadway?`,
-      answer: `No, ${profile.name} does not currently have any shows running on Broadway.`,
+      question: `Does ${profile.name} have any shows currently running?`,
+      answer: `No, ${profile.name} does not currently have any shows running.`,
     });
   }
 
@@ -934,9 +934,9 @@ export function generateActorPersonSchema(profile: {
     '@type': 'Person',
     name: profile.name,
     url: `${BASE_URL}/cast/${profile.slug}`,
-    jobTitle: 'Broadway Actor',
-    knowsAbout: 'Broadway Theater',
-    description: `${profile.name} is a Broadway actor who has appeared in ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    jobTitle: 'Theatre Actor',
+    knowsAbout: 'Theatre',
+    description: `${profile.name} is a theatre actor who has appeared in ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? ` with an average critic score of ${profile.avgScore}/100` : ''}.`,
     sameAs: [`https://www.ibdb.com/broadway-cast-staff/${profile.ibdbPersonId}`],
   };
 }
@@ -952,13 +952,13 @@ export function generateActorFAQSchema(profile: {
   const faqs: { question: string; answer: string }[] = [];
 
   faqs.push({
-    question: `How many Broadway shows has ${profile.name} appeared in?`,
-    answer: `${profile.name} has appeared in ${profile.showCount} Broadway show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
+    question: `How many shows has ${profile.name} appeared in?`,
+    answer: `${profile.name} has appeared in ${profile.showCount} show${profile.showCount !== 1 ? 's' : ''}${profile.avgScore !== null ? `, with an average critic score of ${profile.avgScore}/100` : ''}.`,
   });
 
   if (profile.highScore) {
     faqs.push({
-      question: `What is ${profile.name}'s highest-rated Broadway show?`,
+      question: `What is ${profile.name}'s highest-rated show?`,
       answer: `${profile.name}'s highest-rated show is ${profile.highScore.showTitle} with a critic score of ${profile.highScore.score}/100.`,
     });
   }
@@ -969,8 +969,8 @@ export function generateActorFAQSchema(profile: {
   );
   if (currentlyIn.length > 0) {
     faqs.push({
-      question: `Is ${profile.name} currently on Broadway?`,
-      answer: `Yes, ${profile.name} is currently appearing in ${currentlyIn.map(s => s.title).join(', ')} on Broadway.`,
+      question: `Is ${profile.name} currently in a show?`,
+      answer: `Yes, ${profile.name} is currently appearing in ${currentlyIn.map(s => s.title).join(', ')}.`,
     });
   }
 

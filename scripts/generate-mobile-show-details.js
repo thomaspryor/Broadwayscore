@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
+const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -81,8 +82,8 @@ const TOP_CRITICS = new Set([
 
 function getOutletTier(outletId) {
   if (!outletId) return 3;
-  const entry = outletRegistry[outletId.toLowerCase().trim()];
-  return entry?.tier || 3;
+  // Use authoritative tier from outlet-tiers.js (outlet-tiers.json overrides → outlet-registry.json fallback)
+  return getAuthoritativeTier(outletId);
 }
 
 function getOutletDisplayName(outletId, fallback) {

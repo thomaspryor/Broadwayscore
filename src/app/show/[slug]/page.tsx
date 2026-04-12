@@ -1136,7 +1136,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               </div>
             )}
             <div className="sm:col-span-2">
-              <dt className="text-gray-500">Theater</dt>
+              <dt className="text-gray-500">{isWestEnd ? 'Theatre' : 'Theater'}</dt>
               <dd className="text-white mt-0.5">
                 {isWestEnd ? (
                   <Link href={`/west-end/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>

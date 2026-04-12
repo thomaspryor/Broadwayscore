@@ -1,4 +1,4 @@
-import { getBroadwayShows } from '@/lib/data-core';
+import { getBroadwayShows, getWestEndShows } from '@/lib/data-core';
 import { getAllGuideSlugs, GUIDE_PAGES } from '@/config/guide-pages';
 import { getAllBrowseSlugs, getBrowsePageConfig } from '@/config/browse-pages';
 
@@ -18,25 +18,29 @@ export function GET() {
   const items: string[] = [];
 
   // Recent show pages (opened in last 6 months, sorted by opening date)
-  const shows = getBroadwayShows();
+  const broadwayShows = getBroadwayShows();
+  const westEndShows = getWestEndShows();
+  const allShows = [...broadwayShows, ...westEndShows];
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
-  const recentShows = shows
+  const recentShows = allShows
     .filter(s => (s.status === 'open' || s.status === 'previews') && s.openingDate && new Date(s.openingDate) >= sixMonthsAgo)
     .sort((a, b) => new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime())
-    .slice(0, 20);
+    .slice(0, 30);
 
   for (const show of recentShows) {
+    const isWE = show.category === 'west-end' || show.category === 'off-west-end';
+    const brandName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
     const scoreText = show.criticScore?.score
       ? ` CriticScore: ${Math.round(show.criticScore.score)}/100 from ${show.criticScore.reviewCount} reviews.`
       : '';
     items.push(`
     <item>
-      <title>${escapeXml(show.title)} — Broadway Scorecard</title>
+      <title>${escapeXml(show.title)} — ${brandName}</title>
       <link>${BASE_URL}/show/${show.slug}</link>
       <guid isPermaLink="true">${BASE_URL}/show/${show.slug}</guid>
-      <description>${escapeXml(`${show.title} reviews and CriticScore on Broadway Scorecard.${scoreText} ${show.synopsis || ''}`.trim())}</description>
+      <description>${escapeXml(`${show.title} reviews and CriticScore on ${brandName}.${scoreText} ${show.synopsis || ''}`.trim())}</description>
       <pubDate>${new Date(show.openingDate).toUTCString()}</pubDate>
       <category>Shows</category>
     </item>`);
