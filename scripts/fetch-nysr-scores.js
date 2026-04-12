@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { setExtractedScore } = require('./lib/score-routing');
 
 const REVIEW_DIR = 'data/review-texts';
 
@@ -155,8 +156,11 @@ async function main() {
         console.log(`  ✓ Found: ${stars} → ${score.originalScore}`);
 
         // Update the review file
-        data.originalScore = score.originalScore;
-        data.originalScoreNormalized = score.normalizedScore;
+        setExtractedScore(data, {
+          value: score.originalScore,
+          normalizedValue: score.normalizedScore,
+          source: 'live-fetch',
+        });
         data.scoreSource = 'live-fetch';
         data._scoreFetchedAt = new Date().toISOString();
 

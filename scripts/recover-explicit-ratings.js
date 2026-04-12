@@ -383,8 +383,11 @@ async function fetchGuardianRatings(reviews) {
             console.log(`    [${i + 1}/${toProcess.length}] ★ ${review.showId}: ${rating}/5 stars`);
 
             if (!DRY_RUN) {
-              review.data.originalScore = `${rating}/5 stars`;
-              review.data.originalScoreNormalized = Math.round((rating / 5) * 100);
+              setExtractedScore(review.data, {
+                value: `${rating}/5 stars`,
+                normalizedValue: Math.round((rating / 5) * 100),
+                source: 'guardian-api',
+              });
               review.data.scoreSource = 'guardian-api';
               review.data.scoreExtractedFrom = 'api-metadata';
               review.data.scoreRecoveredAt = new Date().toISOString();
@@ -450,8 +453,11 @@ async function fetchTheaterLifeRatings(reviews) {
           console.log(`    [${i + 1}/${toProcess.length}] ★ ${review.showId}: ${total}/5 stars`);
 
           if (!DRY_RUN) {
-            review.data.originalScore = `${total}/5 stars`;
-            review.data.originalScoreNormalized = Math.round((total / 5) * 100);
+            setExtractedScore(review.data, {
+              value: `${total}/5 stars`,
+              normalizedValue: Math.round((total / 5) * 100),
+              source: 'wp-api-title',
+            });
             review.data.scoreSource = 'wp-api-title';
             review.data.scoreExtractedFrom = 'api-metadata';
             review.data.scoreRecoveredAt = new Date().toISOString();
@@ -505,8 +511,11 @@ async function fetchNYSRRatings(reviews) {
             console.log(`    [${i + 1}/${toProcess.length}] ★ ${review.showId}: ${filled}/${total} stars`);
 
             if (!DRY_RUN) {
-              review.data.originalScore = `${filled}/${total} stars`;
-              review.data.originalScoreNormalized = Math.round((filled / total) * 100);
+              setExtractedScore(review.data, {
+                value: `${filled}/${total} stars`,
+                normalizedValue: Math.round((filled / total) * 100),
+                source: 'wp-api-excerpt',
+              });
               review.data.scoreSource = 'wp-api-excerpt';
               review.data.scoreExtractedFrom = 'api-metadata';
               review.data.scoreRecoveredAt = new Date().toISOString();
