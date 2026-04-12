@@ -131,11 +131,14 @@ function computePrice(show, criticScore) {
   const isPreviews = show.status === 'previews';
   const isClosed = show.status === 'closed';
 
-  // OB shows: $1-3 (no box office, no Tonys)
+  // OB shows: $3-8 (no box office, no Tonys — but can earn CriticScore + AudienceGrade)
+  // Priced to prevent value-trap gaming (max ~55 pts from CS+AG, so $/pt is fair)
   if (isOB) {
-    if (criticScore && criticScore >= 83) return 3;
-    if (criticScore && criticScore >= 70) return 2;
-    return 1;
+    if (criticScore && criticScore >= 83) return 8;
+    if (criticScore && criticScore >= 75) return 6;
+    if (criticScore && criticScore >= 65) return 5;
+    if (criticScore) return 4;
+    return 3;
   }
 
   // Broadway shows: base price by type
@@ -157,11 +160,6 @@ function computePrice(show, criticScore) {
   // Closed shows: discount (no more box office)
   if (isClosed) {
     base -= 4;
-  }
-
-  // Previews shows with no score: excitement premium
-  if (isPreviews && !criticScore) {
-    base += 1;
   }
 
   // Clamp: BW $4-$22
@@ -237,24 +235,24 @@ const config = {
   shows: showsConfig,
   scoring: {
     criticScore: {
-      'Critical Gold': 15,
-      'Recommended': 10,
-      'Worth Seeing': 6,
-      'Skippable': 2,
+      'Critical Gold': 30,
+      'Recommended': 20,
+      'Worth Seeing': 12,
+      'Skippable': 4,
       'Stay Away': 0,
     },
     audienceGrade: {
-      'A+': 12, 'A': 10, 'A-': 8,
-      'B+': 6, 'B': 4, 'B-': 2,
+      'A+': 25, 'A': 20, 'A-': 16,
+      'B+': 10, 'B': 6, 'B-': 3,
       'C+': 1, 'C': 0, 'C-': 0,
       'D': 0, 'F': 0,
     },
-    boxOffice: { pointsPer100K: 0.5 },
+    boxOffice: { pointsPer100K: 0.15 },
     awards: {
-      tonyNom: 8,
-      tonyWin: 15,
-      tonyBestMusical: 30,
-      tonyBestPlay: 30,
+      tonyNom: 10,
+      tonyWin: 20,
+      tonyBestMusical: 40,
+      tonyBestPlay: 40,
     },
   },
 };

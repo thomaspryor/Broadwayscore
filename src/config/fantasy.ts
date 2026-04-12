@@ -27,23 +27,32 @@ export const SCORING_END = '2026-06-15'; // Tony Awards night
 // SCORING POINT MAPPINGS
 // ===========================================
 
-/** CriticScore tier → fantasy points. Labels must match getCriticLabel() output. */
+/**
+ * CriticScore tier → fantasy points. Labels must match getCriticLabel() output.
+ *
+ * Calibrated so CriticScore is ~15-18% of a strong show's total points.
+ * A "Critical Gold" show earns 30 pts (vs 180 possible from awards).
+ */
 export const CRITIC_SCORE_POINTS: Record<string, number> = {
-  'Critical Gold': 15,
-  'Recommended': 10,
-  'Worth Seeing': 6,
-  'Skippable': 2,
+  'Critical Gold': 30,
+  'Recommended': 20,
+  'Worth Seeing': 12,
+  'Skippable': 4,
   'Stay Away': 0,
 };
 
-/** AudienceGrade → fantasy points. Grades must match getAudienceGrade() output. */
+/**
+ * AudienceGrade → fantasy points. Grades must match getAudienceGrade() output.
+ *
+ * Calibrated so AudienceGrade is ~10-12% of a strong show's total.
+ */
 export const AUDIENCE_GRADE_POINTS: Record<string, number> = {
-  'A+': 12,
-  'A': 10,
-  'A-': 8,
-  'B+': 6,
-  'B': 4,
-  'B-': 2,
+  'A+': 25,
+  'A': 20,
+  'A-': 16,
+  'B+': 10,
+  'B': 6,
+  'B-': 3,
   'C+': 1,
   'C': 0,
   'C-': 0,
@@ -51,15 +60,25 @@ export const AUDIENCE_GRADE_POINTS: Record<string, number> = {
   'F': 0,
 };
 
-/** Box office: points per $100K weekly gross */
-export const BOX_OFFICE_POINTS_PER_100K = 0.5;
+/**
+ * Box office: points per $100K weekly gross.
+ *
+ * At 0.15, a strong musical ($1M/week over 20 weeks) earns ~30 pts.
+ * This makes box office ~11% of a Best Musical winner's total (vs 38% before).
+ */
+export const BOX_OFFICE_POINTS_PER_100K = 0.15;
 
-/** Awards point values — Tony Awards only for MVP */
+/**
+ * Awards point values — Tony Awards only for MVP.
+ *
+ * Awards are the majority of total points (~50-68%).
+ * Best Musical/Play winner with 8 noms + 4 wins earns ~180 pts from awards alone.
+ */
 export const AWARDS_POINTS = {
-  tonyNom: 8,
-  tonyWin: 15,
-  tonyBestMusical: 30, // doubled for the big two
-  tonyBestPlay: 30,
+  tonyNom: 10,
+  tonyWin: 20,
+  tonyBestMusical: 40,
+  tonyBestPlay: 40,
 };
 
 // ===========================================

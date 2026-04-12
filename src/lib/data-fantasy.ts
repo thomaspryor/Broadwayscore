@@ -109,10 +109,16 @@ export function computeLeaderboard(entries: FantasyEntry[]): LeaderboardEntry[] 
     };
   });
 
-  // Sort by total points descending, assign ranks
+  // Sort by total points descending, assign ranks (tied entries share a rank)
   leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
   leaderboard.forEach((entry, i) => {
-    entry.rank = i + 1;
+    if (i === 0) {
+      entry.rank = 1;
+    } else {
+      entry.rank = entry.totalPoints === leaderboard[i - 1].totalPoints
+        ? leaderboard[i - 1].rank
+        : i + 1;
+    }
   });
 
   return leaderboard;

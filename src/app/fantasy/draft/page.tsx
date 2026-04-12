@@ -134,12 +134,12 @@ export default function FantasyDraftPage() {
             >
               View Leaderboard
             </a>
-            <a
-              href="/fantasy"
+            <button
+              onClick={() => { setSubmitted(false); setPicks(Array(FANTASY_TEAM_SIZE).fill('')); }}
               className="px-6 py-3 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors"
             >
-              Back to Fantasy Home
-            </a>
+              Change My Picks
+            </button>
           </div>
         </div>
       </div>
@@ -249,9 +249,7 @@ export default function FantasyDraftPage() {
 
         {/* Legend */}
         <div className="text-xs text-zinc-600 mb-6 space-y-1">
-          <p>★ locked = CriticScore already set (points won&apos;t change)</p>
-          <p>† no box office = Off-Broadway shows don&apos;t report weekly grosses</p>
-          <p>OB = Off-Broadway (not Tony-eligible)</p>
+          <p>OB = Off-Broadway (no box office points, not Tony-eligible)</p>
         </div>
 
         {/* Error */}

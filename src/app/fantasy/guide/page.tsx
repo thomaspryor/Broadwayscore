@@ -46,7 +46,6 @@ export default function FantasyGuidePage() {
 
         {/* Legend */}
         <div className="bg-zinc-800/50 rounded-xl p-4 mb-8 text-sm text-zinc-400 space-y-1">
-          <p><span className="text-yellow-400">{ELIGIBILITY_MARKERS.criticScoreLocked}</span> = CriticScore already locked in (no critic points)</p>
           <p><span className="text-purple-400">{ELIGIBILITY_MARKERS.offBroadway}</span> = Off-Broadway (no box office, no Tony eligibility)</p>
           <p className="text-zinc-500">Shows with critic scores display them for your research. Scores may still change.</p>
         </div>
@@ -76,9 +75,6 @@ export default function FantasyGuidePage() {
                       <span className="font-medium text-white">{show.title}</span>
                       {show.type === 'musical' && (
                         <span className="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">Musical</span>
-                      )}
-                      {!show.eligible.criticScore && (
-                        <span className="text-yellow-400 text-xs" title="CriticScore locked">{ELIGIBILITY_MARKERS.criticScoreLocked}</span>
                       )}
                     </div>
                     <div className="flex items-center gap-2 mt-1 flex-wrap">
