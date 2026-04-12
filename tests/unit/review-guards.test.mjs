@@ -13,6 +13,7 @@ const require = createRequire(import.meta.url);
 const {
   isLikelyWrongProduction,
   checkLlmVerificationAgainstKeywords,
+  pickRerouteTarget,
 } = require('../../scripts/lib/review-guards.js');
 
 describe('isLikelyWrongProduction', () => {
@@ -145,5 +146,123 @@ describe('checkLlmVerificationAgainstKeywords', () => {
     const result = checkLlmVerificationAgainstKeywords(hamiltonShow, text, grokCv);
     assert.ok(result, 'should return a result object');
     assert.strictEqual(result.passed, false);
+  });
+});
+
+describe('pickRerouteTarget — run-window guard', () => {
+  // Real-world failure mode this fix addresses:
+  // mamma-mia-2001 ran on Broadway 2001–2015. A 2014 NYT Anita Gates review
+  // was being routed to mamma-mia-2025 (revival) because |2014-2025|=11
+  // is numerically closer than |2014-2001|=13. But 2014 is mid-run for
+  // the 2001 production — the review belongs there, not at the revival.
+  // Discovered via gh run view on 4 consecutive rebuilds, all dropping
+  // the same file via [REROUTE COLLISION]. See card 33f637c5-416f-8120.
+  const revivalSibling = [{ id: 'mamma-mia-2025', year: 2025 }];
+
+  test('mid-run review stays put when run window is passed', () => {
+    // current=mamma-mia-2001 (2001–2015), sibling=mamma-mia-2025, detected=2014
+    const result = pickRerouteTarget(2001, revivalSibling, 2014, [2001, 2015]);
+    assert.strictEqual(result.action, 'keep');
+  });
+
+  test('detected year exactly at run-window start → keep (inclusive)', () => {
+    const result = pickRerouteTarget(2001, revivalSibling, 2001, [2001, 2015]);
+    assert.strictEqual(result.action, 'keep');
+  });
+
+  test('detected year exactly at run-window end → keep (inclusive)', () => {
+    const result = pickRerouteTarget(2001, revivalSibling, 2015, [2001, 2015]);
+    assert.strictEqual(result.action, 'keep');
+  });
+
+  test('detected year AFTER run-window end → existing reroute logic applies', () => {
+    // 2020 is outside [2001, 2015], dist-to-current 19, dist-to-2025 sibling 5 → reroute
+    const result = pickRerouteTarget(2001, revivalSibling, 2020, [2001, 2015]);
+    assert.strictEqual(result.action, 'reroute');
+    assert.strictEqual(result.targetShowId, 'mamma-mia-2025');
+  });
+
+  test('detected year BEFORE run-window start → existing reroute logic applies', () => {
+    // Inverse case: chess-2025 holds a 1988 review, sibling chess-1988
+    const chessOriginal = [{ id: 'chess-1988', year: 1988 }];
+    const result = pickRerouteTarget(2025, chessOriginal, 1988, [2025, 2026]);
+    assert.strictEqual(result.action, 'reroute');
+    assert.strictEqual(result.targetShowId, 'chess-1988');
+  });
+
+  test('no run window passed → backward compatible (reroute still fires)', () => {
+    // Mamma Mia case WITHOUT run window — reproduces the legacy bug.
+    // Locks in that omitting the 4th arg preserves the pre-fix behavior
+    // for any caller that hasn't been updated yet.
+    const result = pickRerouteTarget(2001, revivalSibling, 2014);
+    assert.strictEqual(result.action, 'reroute');
+    assert.strictEqual(result.targetShowId, 'mamma-mia-2025');
+  });
+
+  test('null run window → backward compatible', () => {
+    const result = pickRerouteTarget(2001, revivalSibling, 2014, null);
+    assert.strictEqual(result.action, 'reroute');
+  });
+
+  test('malformed run window (not array) → ignored, old logic runs', () => {
+    const result = pickRerouteTarget(2001, revivalSibling, 2014, 'nope');
+    assert.strictEqual(result.action, 'reroute');
+  });
+
+  test('malformed run window (wrong length) → ignored, old logic runs', () => {
+    const result = pickRerouteTarget(2001, revivalSibling, 2014, [2001]);
+    assert.strictEqual(result.action, 'reroute');
+  });
+
+  test('non-finite years in window → ignored, old logic runs', () => {
+    const result = pickRerouteTarget(2001, revivalSibling, 2014, [NaN, 2015]);
+    assert.strictEqual(result.action, 'reroute');
+  });
+
+  test('currently-running show: endYear = current year protects recent reviews', () => {
+    // A show opened 2020, still running → window [2020, <current>]
+    // Detected 2023 should stay regardless of a 2026 sibling
+    const currentYear = new Date().getFullYear();
+    const sibling = [{ id: 'revival-2026', year: 2026 }];
+    const result = pickRerouteTarget(2020, sibling, 2023, [2020, currentYear]);
+    assert.strictEqual(result.action, 'keep');
+  });
+
+  test('run window does NOT override within-1-year keep logic', () => {
+    // Existing rule: |detected - current| <= 1 keeps. Ensure adding the window
+    // guard didn't break the early-return short-circuit.
+    const result = pickRerouteTarget(2025, [{ id: 'chess-1988', year: 1988 }], 2024, [2025, 2026]);
+    assert.strictEqual(result.action, 'keep');
+  });
+
+  test('null detectedYear still short-circuits even with window', () => {
+    const result = pickRerouteTarget(2001, revivalSibling, null, [2001, 2015]);
+    assert.strictEqual(result.action, 'keep');
+  });
+
+  test('empty siblings still short-circuits even with window', () => {
+    const result = pickRerouteTarget(2001, [], 2014, [2001, 2015]);
+    assert.strictEqual(result.action, 'keep');
+  });
+
+  test('single-year run: startYear === endYear keeps detectedYear match', () => {
+    // Show opens and closes in 2025 — a 2025 review should stay
+    const sibling = [{ id: 'show-2020', year: 2020 }];
+    const result = pickRerouteTarget(2025, sibling, 2025, [2025, 2025]);
+    assert.strictEqual(result.action, 'keep');
+  });
+
+  test('single-year run: detectedYear outside reroutes normally', () => {
+    const sibling = [{ id: 'show-2020', year: 2020 }];
+    const result = pickRerouteTarget(2025, sibling, 2020, [2025, 2025]);
+    assert.strictEqual(result.action, 'reroute');
+    assert.strictEqual(result.targetShowId, 'show-2020');
+  });
+
+  test('malformed window (endYear < startYear) falls through to legacy logic', () => {
+    // Bad data: closingDate year before openingDate year. Window is empty,
+    // guard correctly falls through to year-distance logic.
+    const result = pickRerouteTarget(2001, revivalSibling, 2014, [2015, 2001]);
+    assert.strictEqual(result.action, 'reroute');
   });
 });
