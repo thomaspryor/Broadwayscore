@@ -140,9 +140,12 @@ export default function OlivierAwardsHubPage() {
   const bestNewMusicalWinners = allWinners.filter(r => r.wins.some(w => /Best New Musical/i.test(w))).length;
   const bestNewPlayWinners = allWinners.filter(r => r.wins.some(w => /Best New Play/i.test(w))).length;
 
+  // Breadcrumb schema: /olivier-awards is a top-level route (not under /west-end/),
+  // so the structured-data breadcrumb should be Home > Olivier Awards — not
+  // Home > West End > Olivier Awards. The visual back-link still goes to /west-end
+  // for navigation UX, but Google's breadcrumb must match the URL hierarchy.
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: 'West End', url: `${BASE_URL}/west-end` },
     { name: 'Olivier Awards', url: `${BASE_URL}/olivier-awards` },
   ]);
 
@@ -170,19 +173,19 @@ export default function OlivierAwardsHubPage() {
           </p>
         </div>
 
-        {/* Quick Stats */}
+        {/* Quick Stats — scoped to the WE shows we can actually score */}
         <div className="grid grid-cols-3 gap-4 mb-10">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{totalWinners}</div>
-            <div className="text-xs text-gray-500 mt-1">Shows in our database</div>
+            <div className="text-xs text-gray-500 mt-1">Recent winning shows</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-brand">{totalWinTitles.toLocaleString('en-GB')}</div>
-            <div className="text-xs text-gray-500 mt-1">Total Olivier wins tracked</div>
+            <div className="text-xs text-gray-500 mt-1">Oliviers won by those shows</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-amber-300">{bestNewMusicalWinners + bestNewPlayWinners}</div>
-            <div className="text-xs text-gray-500 mt-1">Best New Musical / Play winners</div>
+            <div className="text-xs text-gray-500 mt-1">Best Musical / Play winners</div>
           </div>
         </div>
 

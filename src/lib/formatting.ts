@@ -55,7 +55,7 @@ export function formatTicketPrice(
   amount: number | null | undefined,
   market: TicketPriceMarket = 'broadway'
 ): string {
-  if (amount === null || amount === undefined) return '\u2014';
+  if (amount === null || amount === undefined || Number.isNaN(amount)) return '\u2014';
   const symbol = isLondonTicketMarket(market) ? '£' : '$';
   const isInteger = Number.isInteger(amount);
   return `${symbol}${isInteger ? amount.toString() : amount.toFixed(2)}`;

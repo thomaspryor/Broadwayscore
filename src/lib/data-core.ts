@@ -435,8 +435,12 @@ export function getAllLondonTheaters(): Theater[] {
   const allShows = getWestEndShows(); // includes off-west-end, excludes hidden
   const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
 
+  // Skip placeholder venues — 10 announced shows list "TBA" which would create
+  // a fake /west-end/theater/tba page with 10 "past shows."
+  const PLACEHOLDER_VENUES = new Set(['TBA', 'TBD', 'tba', 'tbd', 'Unknown', 'unknown']);
+
   for (const show of allShows) {
-    if (!show.venue) continue;
+    if (!show.venue || PLACEHOLDER_VENUES.has(show.venue)) continue;
     const existing = theaterMap.get(show.venue) || { shows: [], address: show.theaterAddress };
     existing.shows.push(show);
     if (show.theaterAddress) existing.address = show.theaterAddress;

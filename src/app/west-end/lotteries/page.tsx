@@ -198,7 +198,7 @@ export default function WestEndLotteriesPage() {
   const cheapestLottery = showsWithLottery.length > 0 ? showsWithLottery[0] : null;
   const avgPrice = showsWithLottery.length > 0
     ? showsWithLottery.reduce((sum, item) => {
-        return sum + (item.lotteryData?.lottery?.price ?? item.lotteryData?.specialLottery?.price ?? 0);
+        return sum + (item.lotteryData?.specialLottery?.price ?? item.lotteryData?.lottery?.price ?? 0);
       }, 0) / showsWithLottery.length
     : null;
 
