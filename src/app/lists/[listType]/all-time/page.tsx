@@ -133,7 +133,7 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
 
         {/* Season Selector */}
         <div className="flex items-center gap-2 mb-6">
-          <span className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white/10 text-white">
+          <span className="flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-white/10 text-white border border-transparent">
             All-Time
           </span>
           <span className="text-gray-600">|</span>

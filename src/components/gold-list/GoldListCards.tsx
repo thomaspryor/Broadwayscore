@@ -33,7 +33,7 @@ export function AudienceGradeBadge({ score }: { score: number }) {
   return (
     <div className="flex-shrink-0 flex flex-col items-center gap-0.5">
       <div
-        className={`score-badge w-11 h-11 text-lg rounded-lg font-bold${grade.grade === 'A+' ? ' audience-top-grade' : ''}`}
+        className={`score-badge w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl font-bold${grade.grade === 'A+' ? ' audience-top-grade' : ''}`}
         style={grade.grade === 'A+' ? {} : {
           backgroundColor: grade.color,
           color: grade.textColor,

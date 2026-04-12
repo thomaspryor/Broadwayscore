@@ -61,13 +61,13 @@ export function GoldListNav({ currentListType, seasonSlug }: GoldListNavProps) {
   return (
     <nav className="mb-6 space-y-3" aria-label="Gold List navigation">
       {/* Row 1: Market tabs */}
-      <div className="flex gap-1">
+      <div className="flex items-center gap-1">
         {markets.map(market => (
           <Link
             key={market}
             href={market === currentMarket ? '#' : marketUrl(market)}
             aria-current={market === currentMarket ? 'true' : undefined}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+            className={`flex items-center px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
               market === currentMarket
                 ? 'bg-white/10 text-white'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
@@ -79,16 +79,16 @@ export function GoldListNav({ currentListType, seasonSlug }: GoldListNavProps) {
       </div>
 
       {/* Row 2: Venue tier toggle */}
-      <div className="flex gap-1">
+      <div className="flex items-center gap-1">
         {tiers.map(tier => (
           <Link
             key={tier}
             href={tier === currentTier ? '#' : tierUrl(tier)}
             aria-current={tier === currentTier ? 'true' : undefined}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex items-center px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
               tier === currentTier
-                ? 'bg-brand/15 text-brand border border-brand/30'
-                : 'text-gray-400 hover:text-gray-300 hover:bg-white/5'
+                ? 'bg-brand/15 text-brand border-brand/30'
+                : 'text-gray-400 hover:text-gray-300 hover:bg-white/5 border-transparent'
             }`}
           >
             {venueTierLabel(tier)}
@@ -107,10 +107,10 @@ export function GoldListNav({ currentListType, seasonSlug }: GoldListNavProps) {
                 key={lt}
                 href={isActive ? '#' : listUrl(lt)}
                 aria-current={isActive ? 'true' : undefined}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
                   isActive
-                    ? `${c.bgClass} ${c.color} border ${c.borderClass}`
-                    : 'text-gray-400 hover:text-gray-300 hover:bg-white/5'
+                    ? `${c.bgClass} ${c.color} ${c.borderClass}`
+                    : 'text-gray-400 hover:text-gray-300 hover:bg-white/5 border-transparent'
                 }`}
               >
                 <GoldListBadge type={lt} size="sm" />
