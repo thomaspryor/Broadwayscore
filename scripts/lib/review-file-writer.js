@@ -48,8 +48,9 @@ function _getCriticRegistry() {
     const raw = JSON.parse(fs.readFileSync(CRITIC_REGISTRY_PATH, 'utf8'));
     _criticRegistryCache = raw.critics || {};
     return _criticRegistryCache;
-  } catch {
+  } catch (e) {
     // Registry not available (e.g. CI without data) — disable guard
+    console.warn(`  ⚠️  Critic registry not loaded (Guard G disabled): ${e.message}`);
     _criticRegistryCache = {};
     return _criticRegistryCache;
   }
@@ -258,10 +259,11 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // logic treats false as falsy and would overwrite it).
   let _misattributionDetected = false;
   let _misattributionReason = '';
-  if (criticSlug !== 'unknown') {
+  if (criticSlug !== 'unknown' && outletId) {
     const registry = _getCriticRegistry();
     const entry = registry[criticSlug];
-    if (entry && !entry.isFreelancer && !entry.knownOutlets.includes(outletId)) {
+    const knownOutlets = entry?.knownOutlets || [];
+    if (entry && !entry.isFreelancer && knownOutlets.length > 0 && !knownOutlets.includes(outletId)) {
       _misattributionDetected = true;
       _misattributionReason = `critic "${entry.displayName}" has primaryOutlet="${entry.primaryOutlet}" (${entry.totalReviews} reviews); found at "${outletId}" which is not in knownOutlets`;
       console.warn(`  ⚠️  Misattribution guard: ${entry.displayName} at ${outletId} (primary: ${entry.primaryOutlet}) for ${showId}`);
