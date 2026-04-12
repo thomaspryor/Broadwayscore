@@ -260,6 +260,9 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
   const rankColors = rank
     ? rankBadgeColor(parseInt(rank.position, 10), parseInt(rank.total, 10))
     : null;
+
+  // Market-aware trending link: /trending for Broadway, /west-end/trending for London
+  const trendingHref = rank?.market === 'West End' ? '/west-end/trending' : '/trending';
   const posBarWidth = Math.max(0, Math.min(100, sp.p));
 
   // Sentiment bar gradient: red (negative) → yellow (mixed) → green (positive)
@@ -300,7 +303,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
               from leaking onto the big white rank number. */}
           {rank && rankColors ? (
             <Link
-              href="/trending"
+              href={trendingHref}
               aria-label={`Ranked ${rank.position} of ${rank.total} in ${rank.market} social buzz — see all trending shows`}
               className="shrink-0 flex flex-col items-center justify-center rounded-lg px-3 py-2 min-w-[72px] shadow-sm no-underline transition-transform hover:-translate-y-0.5"
               style={{
@@ -406,7 +409,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
       <div className="flex items-center justify-between gap-3 text-xs text-gray-500 pt-2 border-t border-white/5">
         <span>Updated {formatUpdatedDate(sp.u)} · refreshed weekly</span>
         <Link
-          href="/trending"
+          href={trendingHref}
           className="shrink-0 text-brand hover:text-brand-hover transition-colors font-medium"
         >
           See all trending →
