@@ -1040,7 +1040,8 @@ function buildMultiProdYearGuard(shows) {
         return pCat === showCat;
       }).map(p => ({
         id: p.id,
-        year: p.openingDate ? parseInt(p.openingDate.slice(0, 4)) : null,
+        year: p.openingDate ? parseInt(p.openingDate.slice(0, 4))
+          : p.previewsStartDate ? parseInt(p.previewsStartDate.slice(0, 4)) : null,
       })).filter(p => p.year);
       if (siblings.length > 0) guard[show.id] = { showYear, siblings };
     }
