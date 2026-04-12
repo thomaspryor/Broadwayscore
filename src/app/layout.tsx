@@ -134,6 +134,14 @@ export default function RootLayout({
               <div className="flex items-center justify-between h-16 relative">
                 <MarketNav stats={marketStats} />
                 <div className="flex items-center gap-3">
+                  {featureFlags.fantasyLeague && (
+                    <a
+                      href="/fantasy"
+                      className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-400 hover:bg-amber-500/20 transition-colors whitespace-nowrap"
+                    >
+                      Fantasy
+                    </a>
+                  )}
                   <HeaderSecondaryMarketLink />
                   <div className="hidden sm:block">
                     <HeaderSubscribeButton />
