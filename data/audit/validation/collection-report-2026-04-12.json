@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-04-12T14:53:25.934Z",
+  "runDate": "2026-04-12T18:25:34.643Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 169,
-    "failed": 763,
+    "processed": 173,
+    "failed": 769,
     "skipped": 0,
-    "successRate": "18.1%"
+    "successRate": "18.4%"
   },
   "tierBreakdown": {
-    "playwright": 36,
+    "playwright": 39,
     "amp": 2,
     "browserbase": 76,
     "directCookies": 0,
-    "scrapingbee": 29,
+    "scrapingbee": 30,
     "brightdata": 0,
-    "archiveToday": 35,
+    "archiveToday": 39,
     "archive": 68
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 8,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 5,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 79,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 12,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 79,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -219,7 +219,11 @@
     "the-visit-2015/abc-news--mark-kennedy.json",
     "doctor-zhivago-2015/vulture--jesse-green.json",
     "fun-home-2015/stagebuddy--jose-solis.json",
-    "kiss-me-kate-2019/vulture--sara-holdren.json"
+    "kiss-me-kate-2019/vulture--sara-holdren.json",
+    "two-strangers-bway-2025/ew--unknown.json",
+    "sunset-boulevard-2024/the-interested-bystander--cary-wong.json",
+    "mj-the-musical-west-end-2024/times-uk--dominic-maxwell.json",
+    "frozen-2018/woman-around-town--alix-cohen.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -984,7 +988,13 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "all-my-sons-2019/gotham-playgoer--robert-sholiton.json",
+    "present-laughter-2017/broadway-blog--matthew-wexler.json",
+    "present-laughter-2017/curtainup--elyse-sommer.json",
+    "cats-2016/curtainup--elyse-sommer.json",
+    "waitress-2016/off-script-with-dan-dwyer--dan-dwyer.json",
+    "lend-me-a-tenor-2010/ap--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1023,7 +1033,10 @@
       "operation-mincemeat-2025/washpost--naveen-kumar.json",
       "oh-mary-2024/culturesauce--thom-geier.json",
       "oh-mary-2024/digital-journal--markos-papadatos.json",
-      "fun-home-2015/stagebuddy--jose-solis.json"
+      "fun-home-2015/stagebuddy--jose-solis.json",
+      "two-strangers-bway-2025/ew--unknown.json",
+      "sunset-boulevard-2024/the-interested-bystander--cary-wong.json",
+      "frozen-2018/woman-around-town--alix-cohen.json"
     ],
     "amp": [
       "data/review-texts/glengarry-glen-ross-2012/chicagotribune--unknown.json",
@@ -1137,7 +1150,8 @@
       "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json",
       "the-terms-of-my-surrender-2017/nytimes--jesse-green.json",
       "sweat-2017/nytimes--ben-brantley.json",
-      "kiss-me-kate-2019/vulture--sara-holdren.json"
+      "kiss-me-kate-2019/vulture--sara-holdren.json",
+      "mj-the-musical-west-end-2024/times-uk--dominic-maxwell.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1175,7 +1189,11 @@
       "data/review-texts/fat-ham-2023/vulture--jackson-mchenry.json",
       "data/review-texts/kiss-me-kate-2019/vulture--sara-holdren.json",
       "data/review-texts/hells-kitchen-2024/thewrap--robert-hofler.json",
-      "data/review-texts/fat-ham-2023/vulture--jackson-mchenry.json"
+      "data/review-texts/fat-ham-2023/vulture--jackson-mchenry.json",
+      "data/review-texts/present-laughter-2017/broadway-blog--matthew-wexler.json",
+      "data/review-texts/present-laughter-2017/curtainup--elyse-sommer.json",
+      "data/review-texts/cats-2016/curtainup--elyse-sommer.json",
+      "data/review-texts/waitress-2016/off-script-with-dan-dwyer--dan-dwyer.json"
     ],
     "archive": [
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
@@ -1248,6 +1266,14 @@
       "doctor-zhivago-2015/vulture--jesse-green.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Associated Press": {
+      "count": 1,
+      "domain": "google.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
