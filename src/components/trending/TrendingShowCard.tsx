@@ -7,64 +7,24 @@ import type { RawSocialPulse } from '@/lib/data-social-pulse';
 /**
  * <TrendingShowCard> — single row on the /trending leaderboard.
  *
- * Server component. Renders a clickable row with rank number, show image,
- * title, tier label, volume, and positive-sentiment percentage. Score logic
- * and data loading happen upstream in `/trending/page.tsx`.
+ * Follows the ShowListCard compact-variant pattern:
+ *   - Round `RankBadge` circles (gold top-3, neutral 4+) — same as browse pages
+ *   - Standard `card` + `hover:bg-surface-raised/80` — no tier-colored borders
+ *   - Thumbnail at poster ratio matching MiniShowCard
+ *   - Tier label as a small inline pill, not a row-wrapping border
+ *   - Stats column in the same ~w-20/w-24 zone as score badges
+ *
+ * Server component. Score logic and data loading happen upstream.
  */
 
-interface TierStyle {
-  label: string;
-  emoji: string;
-  textClass: string;
-  bgClass: string;
-  borderClass: string;
-}
-
-// Trimmed version of the card tier map — we only need label + color for a list row.
-// Keep in sync with SocialPulseCard's TIER_DISPLAY if tiers are ever renamed.
-const TIER_STYLES: Record<RawSocialPulse['tier'], TierStyle> = {
-  Buzzing: {
-    label: 'BUZZING',
-    emoji: '🔥',
-    textClass: 'text-orange-400',
-    bgClass: 'bg-orange-500/10',
-    borderClass: 'border-orange-500/40',
-  },
-  Rising: {
-    label: 'RISING',
-    emoji: '📈',
-    textClass: 'text-emerald-400',
-    bgClass: 'bg-emerald-500/10',
-    borderClass: 'border-emerald-500/40',
-  },
-  Steady: {
-    label: 'STEADY',
-    emoji: '⚪',
-    textClass: 'text-blue-400',
-    bgClass: 'bg-blue-500/10',
-    borderClass: 'border-blue-500/40',
-  },
-  Troubled: {
-    label: 'TROUBLED',
-    emoji: '💔',
-    textClass: 'text-red-400',
-    bgClass: 'bg-red-500/10',
-    borderClass: 'border-red-500/40',
-  },
-  BuildingBaseline: {
-    label: 'STEADY',
-    emoji: '⚪',
-    textClass: 'text-blue-400',
-    bgClass: 'bg-blue-500/10',
-    borderClass: 'border-blue-500/40',
-  },
-  Hidden: {
-    label: '',
-    emoji: '',
-    textClass: 'text-gray-500',
-    bgClass: 'bg-white/5',
-    borderClass: 'border-white/10',
-  },
+// ---------- Tier display (label + color only) ----------
+// Keep in sync with SocialPulseCard's TIER_DISPLAY.
+const TIER_LABEL: Record<string, { label: string; color: string }> = {
+  Buzzing:          { label: 'Buzzing',  color: '#f97316' }, // orange-500
+  Rising:           { label: 'Rising',   color: '#10b981' }, // emerald-500
+  Steady:           { label: 'Steady',   color: '#3b82f6' }, // blue-500
+  Troubled:         { label: 'Troubled', color: '#ef4444' }, // red-500
+  BuildingBaseline: { label: 'Steady',   color: '#3b82f6' }, // matches show-page card
 };
 
 function formatVolume(v: number): string {
@@ -73,101 +33,117 @@ function formatVolume(v: number): string {
   return v.toLocaleString();
 }
 
+// ---------- RankBadge — reuses the exact ShowListCard pattern ----------
+// Round circle, gold for top 3, neutral for 4+.
+// Matches ShowListCard.tsx:39-48 so the visual language is identical
+// to ranked browse pages.
+function RankBadge({ rank }: { rank: number }) {
+  const isTop3 = rank <= 3;
+  return (
+    <div
+      className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${
+        isTop3
+          ? 'bg-accent-gold text-gray-900'
+          : 'bg-surface-overlay text-gray-400 border border-white/10'
+      }`}
+      aria-hidden="true"
+    >
+      {rank}
+    </div>
+  );
+}
+
 interface TrendingShowCardProps {
-  rank: number; // 1-based display rank (not the market-wide rank)
+  rank: number;
   pulse: RawSocialPulse;
   show: ComputedShow | undefined;
 }
 
 export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCardProps) {
-  const style = TIER_STYLES[pulse.tier] || TIER_STYLES.Steady;
+  const tier = TIER_LABEL[pulse.tier] || TIER_LABEL.Steady;
   const href = show?.slug ? `/show/${show.slug}` : null;
   const title = show?.title || pulse.showTitle;
 
   const posterCandidates = [
     getOptimizedImageUrl(show?.images?.poster, 'thumbnail'),
+    getOptimizedImageUrl(show?.images?.thumbnail, 'thumbnail'),
     getOptimizedImageUrl(show?.images?.hero, 'thumbnail'),
   ].filter(Boolean) as string[];
 
-  // Rank color — gold for #1, silver for #2, bronze for #3, slate for the rest
-  const rankColor =
-    rank === 1
-      ? { bg: '#f59e0b', text: '#1f2937' }
-      : rank === 2
-      ? { bg: '#cbd5e1', text: '#1f2937' }
-      : rank === 3
-      ? { bg: '#d97706', text: '#ffffff' }
-      : { bg: '#374151', text: '#e5e7eb' };
-
-  const row = (
-    <div
-      className={`card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 border ${style.borderClass} ${style.bgClass} transition-transform hover:-translate-y-0.5`}
-    >
-      {/* Rank badge — the parent <ol> communicates ordering to AT, and the
-          visible number is read naturally when focused, so we hide it from
-          screen readers here to avoid double-announcing (aria-label + text). */}
-      <div
-        className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center font-extrabold text-lg sm:text-xl"
-        style={{ backgroundColor: rankColor.bg, color: rankColor.text }}
-        aria-hidden="true"
-      >
-        {rank}
+  const card = (
+    <div className="flex items-center gap-3">
+      {/* Rank circle (hidden on mobile, mirroring ShowListCard compact+rank variant) */}
+      <div className="hidden sm:block">
+        <RankBadge rank={rank} />
       </div>
 
-      {/* Show poster */}
-      <div className="shrink-0 w-12 h-16 sm:w-14 sm:h-20 rounded-md overflow-hidden bg-white/5">
-        <ShowImage
-          sources={posterCandidates}
-          alt={`${title} poster`}
-          width={56}
-          height={80}
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover"
-          fallback={
-            <div className="w-full h-full flex items-center justify-center text-xs text-gray-500">
-              {title.slice(0, 2).toUpperCase()}
-            </div>
-          }
-        />
-      </div>
-
-      {/* Title + tier */}
-      <div className="flex-1 min-w-0">
-        <div
-          className="text-white font-semibold truncate text-sm sm:text-base"
-          title={title}
+      {/* Card row — standard card styling, hover treatment matches ShowListCard */}
+      <div className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0">
+        {/* Mobile rank (visible < sm since the circle is hidden) */}
+        <span
+          className="sm:hidden shrink-0 w-6 text-center text-sm font-bold text-gray-500"
+          aria-hidden="true"
         >
-          {title}
-        </div>
-        <div className="flex items-center gap-2 mt-1">
-          <span className={`text-[10px] sm:text-xs font-bold tracking-wide ${style.textClass}`}>
-            {style.label}
-          </span>
-          <span className="text-[10px] sm:text-xs" aria-hidden="true">
-            {style.emoji}
-          </span>
-        </div>
-      </div>
+          {rank}
+        </span>
 
-      {/* Stats */}
-      <div className="shrink-0 text-right">
-        <div className="text-sm sm:text-base font-bold text-white leading-none">
-          {formatVolume(pulse.volume)}
+        {/* Show poster — poster ratio like MiniShowCard */}
+        <div className="shrink-0 w-12 h-16 sm:w-14 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay">
+          <ShowImage
+            sources={posterCandidates}
+            alt={`${title} poster`}
+            width={56}
+            height={80}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fallback={
+              <div className="w-full h-full flex items-center justify-center text-gray-500" aria-hidden="true">
+                <span className="text-2xl">🎭</span>
+              </div>
+            }
+          />
         </div>
-        <div className="text-[10px] sm:text-xs text-gray-500 mt-0.5 uppercase tracking-wide">
-          mentions
+
+        {/* Title + tier pill */}
+        <div className="flex-1 min-w-0">
+          <div
+            className="font-bold text-white text-sm sm:text-base group-hover:text-brand transition-colors line-clamp-2"
+            title={title}
+          >
+            {title}
+          </div>
+          <div className="flex items-center gap-2 mt-1">
+            <span
+              className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded"
+              style={{ color: tier.color, backgroundColor: `${tier.color}15` }}
+            >
+              {tier.label}
+            </span>
+            <span className="text-[10px] text-gray-500">
+              {formatVolume(pulse.volume)} mentions
+            </span>
+          </div>
         </div>
-        <div className="text-[11px] sm:text-xs text-gray-400 mt-1">{pulse.positivePct}% positive</div>
+
+        {/* Stats column — same w-20/w-24 zone as score badges on ShowListCard */}
+        <div className="shrink-0 flex flex-col items-center justify-center w-16 sm:w-20">
+          <div className="text-lg sm:text-xl font-bold text-white leading-none">
+            {pulse.positivePct}%
+          </div>
+          <div className="text-[9px] font-semibold uppercase tracking-wide text-gray-500 mt-0.5">
+            positive
+          </div>
+        </div>
       </div>
     </div>
   );
 
-  if (!href) return row;
+  if (!href) return card;
 
   return (
     <Link href={href} className="block no-underline">
-      {row}
+      {card}
     </Link>
   );
 }

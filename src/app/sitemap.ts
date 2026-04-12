@@ -303,9 +303,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.85,
     },
-    // Socials Scorecard trending leaderboard — Top 10 buzziest per market
+    // Socials Scorecard trending leaderboards — separate per market
     {
       url: `${BASE_URL}/trending`,
+      lastModified: latestDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/west-end/trending`,
       lastModified: latestDate,
       changeFrequency: 'weekly',
       priority: 0.9,

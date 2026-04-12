@@ -7,24 +7,25 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import TrendingList from '@/components/trending/TrendingList';
 
 /**
- * /trending — Top 10 buzziest Broadway shows.
+ * /west-end/trending — Top 10 buzziest West End shows.
  *
- * Broadway-specific page. West End has its own at /west-end/trending.
- * Data source: data/social-pulse/*.json ranked by compositeScore.
+ * London-specific page. Broadway has its own at /trending.
  */
 
-const PAGE_TITLE = 'Trending Broadway Shows';
+const PAGE_TITLE = 'Trending West End Shows';
 const PAGE_DESCRIPTION =
-  'The 10 buzziest Broadway shows right now — ranked by social media volume and audience sentiment across Reddit, X, TikTok, and Instagram. Updated weekly.';
+  'The 10 buzziest West End shows in London right now — ranked by social media volume and audience sentiment across Reddit, X, TikTok, and Instagram. Updated weekly.';
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  title: {
+    absolute: `${PAGE_TITLE} | West End Scorecard`,
+  },
   description: PAGE_DESCRIPTION,
-  alternates: { canonical: `${BASE_URL}/trending` },
+  alternates: { canonical: `${BASE_URL}/west-end/trending` },
   openGraph: {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    url: `${BASE_URL}/trending`,
+    url: `${BASE_URL}/west-end/trending`,
     type: 'article',
   },
   twitter: {
@@ -40,23 +41,24 @@ function buildShowLookup(): Map<string, ComputedShow> {
   return map;
 }
 
-export default function TrendingPage() {
+export default function WestEndTrendingPage() {
   const showLookup = buildShowLookup();
   const knownShowIds: ReadonlySet<string> = new Set(showLookup.keys());
-  const picks = getTopTrendingShows('Broadway', knownShowIds, 10);
+  const picks = getTopTrendingShows('West End', knownShowIds, 10);
   const lastUpdated = getTrendingLastUpdated();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: 'Trending', url: `${BASE_URL}/trending` },
+    { name: 'West End', url: `${BASE_URL}/west-end` },
+    { name: 'Trending', url: `${BASE_URL}/west-end/trending` },
   ]);
 
   const itemListSchema = picks.length > 0
     ? {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
-        name: 'Trending Broadway Shows',
-        description: 'Top 10 buzziest Broadway shows right now',
+        name: 'Trending West End Shows',
+        description: 'Top 10 buzziest West End shows in London right now',
         itemListOrder: 'https://schema.org/ItemListOrderDescending',
         numberOfItems: picks.length,
         itemListElement: picks.map((p, i) => {
@@ -84,21 +86,21 @@ export default function TrendingPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <Link
-          href="/"
+          href="/west-end"
           className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-4 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          All Shows
+          West End Shows
         </Link>
 
         <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">
-            Trending Broadway Shows
+            Trending West End Shows
           </h1>
           <p className="text-gray-400 mt-2">
-            The 10 buzziest shows on Broadway — ranked by social media volume and audience
+            The 10 buzziest shows in London — ranked by social media volume and audience
             sentiment across Reddit, X, TikTok, and Instagram.
           </p>
           {updatedLabel && (
@@ -132,7 +134,7 @@ export default function TrendingPage() {
         <div className="mb-8">
           {picks.length > 0 && (
             <div className="flex items-baseline gap-3 mb-4 pb-3 border-b border-white/10">
-              <h2 className="text-xl sm:text-2xl font-bold text-white">Broadway</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-white">West End</h2>
               <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
                 Top {picks.length}
               </span>
@@ -141,21 +143,21 @@ export default function TrendingPage() {
           <TrendingList
             picks={picks}
             showLookup={showLookup}
-            emptyMessage="No trending Broadway shows yet — check back after the next weekly refresh."
+            emptyMessage="No trending West End shows yet — check back after the next weekly refresh."
           />
         </div>
 
         {/* Cross-market link */}
         <div className="card p-4 sm:p-5 mb-8 flex items-center justify-between">
           <div>
-            <div className="text-sm font-bold text-white">West End Trending</div>
-            <div className="text-xs text-gray-500 mt-0.5">See the buzziest London shows</div>
+            <div className="text-sm font-bold text-white">Broadway Trending</div>
+            <div className="text-xs text-gray-500 mt-0.5">See the buzziest New York shows</div>
           </div>
           <Link
-            href="/west-end/trending"
+            href="/trending"
             className="text-brand hover:text-brand-hover transition-colors text-sm font-medium"
           >
-            View West End →
+            View Broadway →
           </Link>
         </div>
 
@@ -163,14 +165,14 @@ export default function TrendingPage() {
         <div className="pt-6 border-t border-white/5">
           <h2 className="text-lg font-bold text-white mb-3">Related</h2>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
-            <Link href="/audience-buzz" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              AudienceGrade →
+            <Link href="/west-end/audience-buzz" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              West End AudienceGrade →
             </Link>
-            <Link href="/rankings" className="text-brand hover:text-brand-hover transition-colors text-sm">
-              Critic Rankings →
-            </Link>
-            <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors text-sm">
+            <Link href="/west-end/methodology" className="text-brand hover:text-brand-hover transition-colors text-sm">
               How Scoring Works →
+            </Link>
+            <Link href="/west-end" className="text-brand hover:text-brand-hover transition-colors text-sm">
+              All West End Shows →
             </Link>
           </div>
         </div>
