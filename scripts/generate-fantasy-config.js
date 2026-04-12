@@ -100,6 +100,12 @@ function getAudienceGrade(showId) {
   return 'F';
 }
 
+// ── Tony Season Window ──────────────────────────────────────────────
+// Must match src/lib/data-tony-predictions.ts getTonySeasonWindow()
+// 2025-2026: April 28, 2025 to April 27, 2026
+const TONY_SEASON_START = '2025-04-28';
+const TONY_SEASON_END = '2026-04-27';
+
 // ── Identify eligible shows ─────────────────────────────────────────
 function isEligible(show) {
   const isBW = !show.category || show.category === 'broadway';
@@ -107,10 +113,11 @@ function isEligible(show) {
   if (!isBW && !isOB) return false;
   if (show.type === 'special') return false;
 
-  // Must be in current season or currently running
-  const openedThisSeason = show.openingDate && show.openingDate >= '2025-06-01';
-  const running = show.status === 'open' || show.status === 'opened' || show.status === 'previews';
-  return openedThisSeason || running;
+  // Must have opened within the Tony season window
+  if (!show.openingDate) return false;
+  if (show.openingDate < TONY_SEASON_START || show.openingDate > TONY_SEASON_END) return false;
+
+  return true;
 }
 
 // ── Pricing algorithm ───────────────────────────────────────────────
@@ -145,12 +152,6 @@ function computePrice(show, criticScore) {
   } else if (isPreviews) {
     // Unknown score — moderate premium for potential
     base += 1;
-  }
-
-  // Long-runners: lower price (critic/audience locked, less upside)
-  const openedBefore = show.openingDate && show.openingDate < SCORE_LOCKOUT_DATE;
-  if (openedBefore && isOpen) {
-    base -= 3;
   }
 
   // Closed shows: discount (no more box office)
@@ -203,13 +204,12 @@ for (const show of finalShows) {
   const criticScore = computeCriticScore(show.id);
   const audGrade = getAudienceGrade(show.id);
   const isBW = !show.category || show.category === 'broadway';
-  const openedBefore = show.openingDate && show.openingDate < SCORE_LOCKOUT_DATE;
 
   showsConfig[show.id] = {
     price: computePrice(show, criticScore),
     eligible: {
-      criticScore: !openedBefore || !criticScore, // eligible if no locked score
-      audienceGrade: !openedBefore || !audGrade,
+      criticScore: true, // all shows opened this season — score not locked
+      audienceGrade: true,
       boxOffice: isBW, // only Broadway shows report grosses
       tonys: isBW,     // only Broadway shows eligible for Tonys
     },
