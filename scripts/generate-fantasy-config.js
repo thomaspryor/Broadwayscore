@@ -100,6 +100,12 @@ function getAudienceGrade(showId) {
   return 'F';
 }
 
+// ── Tony Season Window ──────────────────────────────────────────────
+// Must match src/lib/data-tony-predictions.ts getTonySeasonWindow()
+// 2025-2026: April 28, 2025 to April 27, 2026
+const TONY_SEASON_START = '2025-04-28';
+const TONY_SEASON_END = '2026-04-27';
+
 // ── Identify eligible shows ─────────────────────────────────────────
 function isEligible(show) {
   const isBW = !show.category || show.category === 'broadway';
@@ -107,10 +113,11 @@ function isEligible(show) {
   if (!isBW && !isOB) return false;
   if (show.type === 'special') return false;
 
-  // Must be in current season or currently running
-  const openedThisSeason = show.openingDate && show.openingDate >= '2025-06-01';
-  const running = show.status === 'open' || show.status === 'opened' || show.status === 'previews';
-  return openedThisSeason || running;
+  // Must have opened within the Tony season window
+  if (!show.openingDate) return false;
+  if (show.openingDate < TONY_SEASON_START || show.openingDate > TONY_SEASON_END) return false;
+
+  return true;
 }
 
 // ── Pricing algorithm ───────────────────────────────────────────────
@@ -124,11 +131,14 @@ function computePrice(show, criticScore) {
   const isPreviews = show.status === 'previews';
   const isClosed = show.status === 'closed';
 
-  // OB shows: $1-3 (no box office, no Tonys)
+  // OB shows: $3-8 (no box office, no Tonys — but can earn CriticScore + AudienceGrade)
+  // Priced to prevent value-trap gaming (max ~55 pts from CS+AG, so $/pt is fair)
   if (isOB) {
-    if (criticScore && criticScore >= 83) return 3;
-    if (criticScore && criticScore >= 70) return 2;
-    return 1;
+    if (criticScore && criticScore >= 83) return 8;
+    if (criticScore && criticScore >= 75) return 6;
+    if (criticScore && criticScore >= 65) return 5;
+    if (criticScore) return 4;
+    return 3;
   }
 
   // Broadway shows: base price by type
@@ -147,20 +157,9 @@ function computePrice(show, criticScore) {
     base += 1;
   }
 
-  // Long-runners: lower price (critic/audience locked, less upside)
-  const openedBefore = show.openingDate && show.openingDate < SCORE_LOCKOUT_DATE;
-  if (openedBefore && isOpen) {
-    base -= 3;
-  }
-
   // Closed shows: discount (no more box office)
   if (isClosed) {
     base -= 4;
-  }
-
-  // Previews shows with no score: excitement premium
-  if (isPreviews && !criticScore) {
-    base += 1;
   }
 
   // Clamp: BW $4-$22
@@ -203,13 +202,12 @@ for (const show of finalShows) {
   const criticScore = computeCriticScore(show.id);
   const audGrade = getAudienceGrade(show.id);
   const isBW = !show.category || show.category === 'broadway';
-  const openedBefore = show.openingDate && show.openingDate < SCORE_LOCKOUT_DATE;
 
   showsConfig[show.id] = {
     price: computePrice(show, criticScore),
     eligible: {
-      criticScore: !openedBefore || !criticScore, // eligible if no locked score
-      audienceGrade: !openedBefore || !audGrade,
+      criticScore: true, // all shows opened this season — score not locked
+      audienceGrade: true,
       boxOffice: isBW, // only Broadway shows report grosses
       tonys: isBW,     // only Broadway shows eligible for Tonys
     },
@@ -237,24 +235,24 @@ const config = {
   shows: showsConfig,
   scoring: {
     criticScore: {
-      'Critical Gold': 15,
-      'Recommended': 10,
-      'Worth Seeing': 6,
-      'Skippable': 2,
+      'Critical Gold': 30,
+      'Recommended': 20,
+      'Worth Seeing': 12,
+      'Skippable': 4,
       'Stay Away': 0,
     },
     audienceGrade: {
-      'A+': 12, 'A': 10, 'A-': 8,
-      'B+': 6, 'B': 4, 'B-': 2,
+      'A+': 25, 'A': 20, 'A-': 16,
+      'B+': 10, 'B': 6, 'B-': 3,
       'C+': 1, 'C': 0, 'C-': 0,
       'D': 0, 'F': 0,
     },
-    boxOffice: { pointsPer100K: 0.5 },
+    boxOffice: { pointsPer100K: 0.15 },
     awards: {
-      tonyNom: 8,
-      tonyWin: 15,
-      tonyBestMusical: 30,
-      tonyBestPlay: 30,
+      tonyNom: 10,
+      tonyWin: 20,
+      tonyBestMusical: 40,
+      tonyBestPlay: 40,
     },
   },
 };

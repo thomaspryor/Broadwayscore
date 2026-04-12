@@ -69,9 +69,6 @@ export default function FantasyShowPicker({
             {selectedShow.criticScore && (
               <span className="text-yellow-400">Score: {Math.round(selectedShow.criticScore)}</span>
             )}
-            {!selectedShow.eligible.criticScore && selectedShow.criticScore && (
-              <span className="text-zinc-500">★ locked</span>
-            )}
           </div>
         </div>
         <span className="font-bold text-emerald-400">${selectedShow.price}</span>
@@ -145,9 +142,6 @@ export default function FantasyShowPicker({
                       <span>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
                       {show.criticScore && (
                         <span className="text-yellow-400">Score: {Math.round(show.criticScore)}</span>
-                      )}
-                      {!show.eligible.criticScore && show.criticScore && (
-                        <span className="text-zinc-500">★ locked</span>
                       )}
                       {!show.eligible.boxOffice && (
                         <span className="text-zinc-500">† no box office</span>
