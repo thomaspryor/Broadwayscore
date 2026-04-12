@@ -126,7 +126,12 @@
     "sweeney-todd-2023/variety--naveen-kumar.json",
     "parade-2023/theatrely--kobi-kassal.json",
     "a-dolls-house-2023/vulture--jackson-mchenry.json",
-    "some-like-it-hot-2022/vulture--jackson-mchenry.json"
+    "some-like-it-hot-2022/vulture--jackson-mchenry.json",
+    "ohio-state-murders-2022/vulture--jackson-mchenry.json",
+    "aint-no-mo-2022/variety--naveen-kumar.json",
+    "kpop-2022/variety--ad-amorosi.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+    "kimberly-akimbo-2022/variety--naveen-kumar.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1071,7 +1076,12 @@
     "shucked-2023/vulture--jackson-mchenry.json",
     "parade-2023/observer--jesse-green.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
-    "the-collaboration-2022/times-uk--jesse-green.json"
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/talkinbroadway--nancy-grossman.json",
+    "aint-no-mo-2022/observer--rex-reed.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1165,7 +1175,13 @@
       "data/review-texts/shucked-2023/variety--frank-rizzo.json",
       "shucked-2023/variety--frank-rizzo.json",
       "data/review-texts/sweeney-todd-2023/variety--naveen-kumar.json",
-      "sweeney-todd-2023/variety--naveen-kumar.json"
+      "sweeney-todd-2023/variety--naveen-kumar.json",
+      "data/review-texts/aint-no-mo-2022/variety--naveen-kumar.json",
+      "aint-no-mo-2022/variety--naveen-kumar.json",
+      "data/review-texts/kpop-2022/variety--ad-amorosi.json",
+      "kpop-2022/variety--ad-amorosi.json",
+      "data/review-texts/kimberly-akimbo-2022/variety--naveen-kumar.json",
+      "kimberly-akimbo-2022/variety--naveen-kumar.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1237,7 +1253,8 @@
       "data/review-texts/hells-kitchen-2024/thewrap--robert-hofler.json",
       "data/review-texts/here-lies-love-2023/vulture--jackson-mchenry.json",
       "data/review-texts/new-york-new-york-2023/vulture--jackson-mchenry.json",
-      "data/review-texts/shucked-2023/vulture--jackson-mchenry.json"
+      "data/review-texts/shucked-2023/vulture--jackson-mchenry.json",
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/talkinbroadway--nancy-grossman.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -1277,11 +1294,13 @@
       "just-for-us-2023/vulture--jackson-mchenry.json",
       "peter-pan-goes-wrong-2023/nydailynews--chris-jones.json",
       "a-dolls-house-2023/vulture--jackson-mchenry.json",
-      "some-like-it-hot-2022/vulture--jackson-mchenry.json"
+      "some-like-it-hot-2022/vulture--jackson-mchenry.json",
+      "ohio-state-murders-2022/vulture--jackson-mchenry.json",
+      "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "some-like-it-hot-2022/vulture--jackson-mchenry.json",
+  "lastProcessed": "kimberly-akimbo-2022/variety--naveen-kumar.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1732,6 +1751,39 @@
     },
     {
       "t": "2026-04-12T02:51:38.743Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:53:54.659Z",
+      "event": "bb-session",
+      "session": "cb5c6583",
+      "url": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
+    },
+    {
+      "t": "2026-04-12T02:53:55.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:54:19.325Z",
+      "event": "bb-session",
+      "session": "89ac170d",
+      "url": "https://variety.com/2022/legit/reviews/kpop-review-south-broadway-musical-123544"
+    },
+    {
+      "t": "2026-04-12T02:54:20.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:54:41.968Z",
+      "event": "bb-session",
+      "session": "f2dae1b8",
+      "url": "https://variety.com/2022/legit/reviews/kimberly-akimbo-review-broadway-musical-1"
+    },
+    {
+      "t": "2026-04-12T02:54:42.924Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
