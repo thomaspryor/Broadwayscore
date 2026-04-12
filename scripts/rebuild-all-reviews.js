@@ -1380,7 +1380,7 @@ showDirs.forEach(showId => {
           refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
           // Check if reference would be excluded by later guards
           refExcluded = !!(refData.wrongProduction || refData.wrongShow ||
-            refData.wrongAttribution || refData.fabricatedEntry || refData.isNotReview ||
+            refData.wrongAttribution || refData.suspectedMisattribution || refData.fabricatedEntry || refData.isNotReview ||
             refData.isNonReview || refData.nonReviewFlag || refData.nonReviewContent ||
             refData.isSyndicatedDuplicate || refData.crossOutletDuplicate);
           if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
@@ -1417,7 +1417,7 @@ showDirs.forEach(showId => {
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
           // Check if reference would be excluded by later guards
           refWouldBeExcluded = !!(refData.wrongProduction || refData.wrongShow ||
-            refData.wrongAttribution || refData.fabricatedEntry || refData.isNotReview ||
+            refData.wrongAttribution || refData.suspectedMisattribution || refData.fabricatedEntry || refData.isNotReview ||
             refData.isNonReview || refData.nonReviewFlag || refData.nonReviewContent ||
             refData.isSyndicatedDuplicate || refData.crossOutletDuplicate);
           if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
@@ -1987,6 +1987,13 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Skip reviews flagged as suspected misattribution by critic-registry guard
+      // (critic at an outlet outside their known affiliation, and not a freelancer)
+      if (data.suspectedMisattribution === true) {
+        stats.skippedSuspectedMisattribution = (stats.skippedSuspectedMisattribution || 0) + 1;
+        return;
+      }
+
       // Garbage review guard: skip reviews where critic name matches a creative team member
       // of the SAME show (indicates scraped cast/crew info, not a real review)
       const criticLower = (data.criticName || '').toLowerCase().trim();
@@ -2237,6 +2244,12 @@ showDirs.forEach(showId => {
       // Skip misattributed reviews (LLM-hallucinated critic/outlet combos)
       if (data.wrongAttribution === true) {
         stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
+        return;
+      }
+
+      // Skip suspected misattributions (critic-registry guard)
+      if (data.suspectedMisattribution === true) {
+        stats.skippedSuspectedMisattribution = (stats.skippedSuspectedMisattribution || 0) + 1;
         return;
       }
 
@@ -3566,6 +3579,9 @@ console.log(`  Skipped (URL-year standalone): ${stats.skippedUrlYearStandalone |
 console.log(`  Skipped (wrong content/reasoning): ${stats.skippedWrongContent || 0}`);
 if (stats.skippedFullTextWrongAuthor > 0) {
   console.log(`  Skipped (fullTextWrongAuthor, no excerpts): ${stats.skippedFullTextWrongAuthor}`);
+}
+if (stats.skippedSuspectedMisattribution > 0) {
+  console.log(`  Skipped (suspected misattribution via critic-registry): ${stats.skippedSuspectedMisattribution}`);
 }
 if (stats.fullTextWrongAuthorKeptAsExcerpt > 0) {
   console.log(`  Kept as excerpt (fullTextWrongAuthor with excerpts): ${stats.fullTextWrongAuthorKeptAsExcerpt}`);

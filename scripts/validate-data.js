@@ -2560,6 +2560,7 @@ function validateUnscoredReviewTexts() {
       if (Array.isArray(r.rejectedBy) && r.rejectedBy.length >= 2) continue;
       if (r.isRoundupArticle === true) continue;
       if (r.wrongAttribution === true) continue;
+      if (r.suspectedMisattribution === true) continue;
       if (r.wrongProduction) continue;
       if (r.wrongShow) continue;
       if (r.duplicateTextOf) continue;
