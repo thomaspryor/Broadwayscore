@@ -44,10 +44,11 @@ function usesFormspree(content) {
   );
 }
 
-// Files where type="email" is used for non-capture purposes (lookup, display)
+// Files where type="email" is used for non-capture purposes (lookup, display, own API)
 const EXCLUDED_PATHS = [
   'src/app/unsubscribe/',    // email for unsubscribe lookup
   'src/app/unfollow/',       // email for unfollow lookup
+  'src/app/fantasy/',        // fantasy draft uses own /api/fantasy/draft endpoint, not Formspree
 ];
 
 describe('Email Capture Integrity', () => {
