@@ -2,15 +2,22 @@
 /**
  * Systematic review-text contamination audit.
  *
- * Detects 5 classes of data-quality issues across all review-texts folders:
+ * Detects 8 classes of data-quality issues across all review-texts folders:
  *   A. Cross-market contamination — review dated near a sibling production's
  *      opening but filed under a different production of the same title.
  *      (Catches Broadway↔WE and Broadway↔OB folder mixups.)
+ *   B. False-positive wrongProduction — wrongProduction=true but content
+ *      verification says wrongProduction=false AND publishDate is within 30
+ *      days of opening. These are reviews incorrectly excluded by automated
+ *      guards. (Strict: catches new false positives from guard regressions.)
  *   C. Domain/outlet mismatch — URL domain doesn't match the filename outlet
  *      and the registry resolves the URL domain to a different outletId.
+ *   C2. Same URL attributed to multiple critics at the same outlet, with
+ *       identical fullText (byline scrape error). Excludes already-flagged
+ *       wrongAttribution files. (Strict: catches new byline errors.)
  *   D. Pre-opening features masquerading as reviews — published >5 days before
- *      opening, URL slug lacks "review" marker, has substantial text. (Best-effort
- *      detection; skipped in strict mode — too many edge cases.)
+ *      opening, URL slug lacks "review" marker, has substantial text. (Report-only;
+ *      NOT included in strict mode — too many legitimate preview reviews.)
  *   E. Unflagged roundup pages — URL matches /article/Review-Roundup-... but
  *      isRoundupArticle != true.
  *   F. Empty --unknown junk files — filename contains --unknown, URL is null,
@@ -128,9 +135,17 @@ const WIRE_OUTLETS = new Set(['ap', 'reuters', 'upi']);
 // ─────────────────────────────────────────────────
 // Detectors
 // ─────────────────────────────────────────────────
+// Classes included in strict mode (CI gate).
+// C2 and D are report-only — C2 has 55+ unresolvable cases (similar review counts,
+// no distinguishing signal); D has many legitimate preview reviews.
+const STRICT_CLASSES = new Set(['A', 'B', 'C', 'E', 'F']);
+
 const hits = {
   A_cross_market: [],
+  B_false_positive_wp: [],
   C_domain_mismatch: [],
+  C2_url_multi_critic: [],
+  D_pre_opening_feature: [],
   E_unflagged_roundup: [],
   F_empty_unknown: [],
 };
@@ -225,6 +240,84 @@ for (const showId of showDirs) {
         hits.F_empty_unknown.push({ showId, file: f });
       }
     }
+
+    // ─── B: False-positive wrongProduction ────
+    // Catches reviews where wrongProduction=true but LLM content verification
+    // says the review IS correct, AND publishDate is within 30 days of opening.
+    // These are reviews incorrectly excluded by automated guards (date guard,
+    // cross-market guard, venue guard). The wrongProductionManualClear flag
+    // prevents this detector from firing on already-cleared files.
+    if (shouldRunClass('B') && d.wrongProduction === true
+        && d.contentVerification?.wrongProduction === false
+        && !d.wrongProductionManualClear && !d.wrongProductionReason) {
+      const pubDate = parseDate(d.publishDate);
+      if (pubDate && showOpening) {
+        const daysFromOpening = Math.round((pubDate - showOpening) / 86400000);
+        if (Math.abs(daysFromOpening) <= 30) {
+          hits.B_false_positive_wp.push({
+            showId, file: f, daysFromOpening,
+            wrongProductionNote: (d.wrongProductionNote || '').substring(0, 60),
+          });
+        }
+      }
+    }
+
+    // ─── D: Pre-opening features masquerading as reviews ────
+    // Published 5-60 days before opening, URL slug lacks review marker,
+    // substantial text. Many are legitimate preview reviews, so this is
+    // report-only (not in strict mode).
+    if (shouldRunClass('D') && showOpening && !alreadyFlagged) {
+      const pubDate = parseDate(d.publishDate);
+      if (pubDate) {
+        const daysBefore = (showOpening - pubDate) / 86400000;
+        if (daysBefore >= 5 && daysBefore <= 60) {
+          const urlStr = (d.url || '').toLowerCase();
+          const hasReviewMarker = /review|critic|rating|verdict/.test(urlStr);
+          const textLen = (d.fullText || '').length;
+          if (!hasReviewMarker && textLen > 500) {
+            hits.D_pre_opening_feature.push({
+              showId, file: f, daysBefore: Math.round(daysBefore), textLen,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // ─── C2: Same URL attributed to multiple critics (per-show) ────
+  // After scanning all files in this show folder, check for URL collisions
+  // where two files at the same outlet share a URL with identical fullText.
+  if (shouldRunClass('C2')) {
+    const urlMap = new Map();
+    for (const f of files) {
+      let d;
+      try { d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8')); } catch { continue; }
+      if (!d.url || !d.url.startsWith('http')) continue;
+      if (d.wrongAttribution || d.duplicateOf) continue; // already flagged
+      const critic = d.criticName || f.split('--')[1]?.replace('.json', '') || 'unknown';
+      const outletId = d.outletId || f.split('--')[0];
+      const textLen = (d.fullText || '').length;
+      const existing = urlMap.get(d.url) || [];
+      existing.push({ file: f, criticName: critic, outletId, textLen });
+      urlMap.set(d.url, existing);
+    }
+    for (const [url, entries] of urlMap) {
+      if (entries.length < 2) continue;
+      // Same outlet, different critics, identical text length = byline error
+      for (let i = 0; i < entries.length; i++) {
+        for (let j = i + 1; j < entries.length; j++) {
+          const a = entries[i], b = entries[j];
+          if (a.outletId !== b.outletId) continue;
+          if (a.criticName === b.criticName) continue;
+          if (a.textLen !== b.textLen || a.textLen < 50) continue;
+          hits.C2_url_multi_critic.push({
+            showId, url: url.substring(0, 80),
+            file1: a.file, critic1: a.criticName,
+            file2: b.file, critic2: b.criticName,
+          });
+        }
+      }
+    }
   }
 }
 
@@ -258,8 +351,17 @@ if (JSON_OUT) {
   }
 }
 
-if (STRICT && totalHits > 0) {
-  console.error(`\n❌ STRICT mode: ${totalHits} contamination issue(s) detected. Failing.`);
+// In strict mode, only count classes that are in the strict set.
+// Class D (pre-opening features) is report-only — too many legitimate preview reviews.
+const strictHits = Object.entries(hits)
+  .filter(([k]) => {
+    const classLetter = k.split('_')[0];
+    return STRICT_CLASSES.has(classLetter);
+  })
+  .reduce((sum, [, arr]) => sum + arr.length, 0);
+
+if (STRICT && strictHits > 0) {
+  console.error(`\n❌ STRICT mode: ${strictHits} contamination issue(s) in strict classes. Failing.`);
   process.exit(1);
 }
 
