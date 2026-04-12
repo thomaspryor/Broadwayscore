@@ -79,7 +79,16 @@
     "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
     "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
     "marjorie-prime-2025/nytg--joe-dziemianowicz.json",
-    "queen-versailles-2025/vulture--sara-holdren.json"
+    "queen-versailles-2025/vulture--sara-holdren.json",
+    "liberation-2025/thewrap--robert-hofler.json",
+    "art-2025/nypost--johnny-oleksinski.json",
+    "floyd-collins-2025/new-york-sun--elyse-sommer.json",
+    "good-night-and-good-luck-2025/theatrely--juan-a-ramirez.json",
+    "othello-2025/vulture--sara-holdren.json",
+    "othello-2025/theatrely--juan-a-ramirez.json",
+    "swept-away-2024/vulture--sara-holdren.json",
+    "tammy-faye-2024/variety--frank-rizzo.json",
+    "sunset-boulevard-2024/nytg--joe-dziemianowicz.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1001,7 +1010,8 @@
     "maybe-happy-ending-2024/vulture--sara-holdren.json",
     "mj-2022/thewrap--robert-hofler.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
-    "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json"
+    "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1028,7 +1038,9 @@
       "the-play-that-goes-wrong-off-broadway-2019/thestage--natasha-tripney.json",
       "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
       "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
-      "marjorie-prime-2025/nytg--joe-dziemianowicz.json"
+      "marjorie-prime-2025/nytg--joe-dziemianowicz.json",
+      "floyd-collins-2025/new-york-sun--elyse-sommer.json",
+      "sunset-boulevard-2024/nytg--joe-dziemianowicz.json"
     ],
     "amp": [
       "data/review-texts/the-scottsboro-boys-2010/time--richard-zoglin.json",
@@ -1064,7 +1076,11 @@
       "data/review-texts/mj-2022/deadline--greg-evans.json",
       "mj-2022/deadline--greg-evans.json",
       "data/review-texts/hamilton-2015/variety--marilyn-stasio.json",
-      "hamilton-2015/variety--marilyn-stasio.json"
+      "hamilton-2015/variety--marilyn-stasio.json",
+      "data/review-texts/art-2025/nypost--johnny-oleksinski.json",
+      "art-2025/nypost--johnny-oleksinski.json",
+      "data/review-texts/tammy-faye-2024/variety--frank-rizzo.json",
+      "tammy-faye-2024/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1088,7 +1104,9 @@
       "buena-vista-social-club-2025/theatrely--kobi-kassal.json",
       "the-outsiders-2024/theatrely--kobi-kassal.json",
       "and-juliet-2022/cititour--brian-scott-lipton.json",
-      "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json"
+      "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
+      "good-night-and-good-luck-2025/theatrely--juan-a-ramirez.json",
+      "othello-2025/theatrely--juan-a-ramirez.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1141,11 +1159,14 @@
       "mj-2022/vulture--helen-shaw.json",
       "moulin-rouge-2019/vulture--sara-holdren.json",
       "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
-      "queen-versailles-2025/vulture--sara-holdren.json"
+      "queen-versailles-2025/vulture--sara-holdren.json",
+      "liberation-2025/thewrap--robert-hofler.json",
+      "othello-2025/vulture--sara-holdren.json",
+      "swept-away-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "queen-versailles-2025/vulture--sara-holdren.json",
+  "lastProcessed": "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1442,6 +1463,28 @@
     },
     {
       "t": "2026-04-12T02:16:12.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:23:05.482Z",
+      "event": "bb-session",
+      "session": "98e9acd1",
+      "url": "https://nypost.com/2025/09/16/entertainment/art-review-james-corden-and-neil-pat"
+    },
+    {
+      "t": "2026-04-12T02:23:06.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-12T02:24:06.924Z",
+      "event": "bb-session",
+      "session": "3cbbefa5",
+      "url": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-"
+    },
+    {
+      "t": "2026-04-12T02:24:07.874Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
