@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "pass",
-  "lastChecked": "2026-04-11T07:48:17.034Z",
+  "status": "warn",
+  "lastChecked": "2026-04-12T07:31:58.416Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -23,8 +23,8 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "pass",
-      "message": "2433 shows, 152 open, 17303 reviews (all at or above baseline)"
+      "status": "warn",
+      "message": "Reviews dropped: 17204 vs baseline 17205"
     }
   ]
 }
