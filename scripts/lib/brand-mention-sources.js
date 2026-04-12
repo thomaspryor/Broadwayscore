@@ -151,12 +151,16 @@ function containsKeyword(text, keywords) {
  *     Default 'month' for backwards compat with brand-mention-monitor. The
  *     Socials Scorecard pipeline passes 'week' for rolling 7-day volume.
  */
-async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, timeWindow = 'month' } = {}) {
+async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, timeWindow = 'month', searchQualifier } = {}) {
   const mentions = [];
   const detected = nowIso();
 
   for (const keyword of keywords) {
-    const url = `https://old.reddit.com/search.json?q=${encodeURIComponent(keyword)}&sort=new&restrict_sr=off&limit=${limit}&t=${encodeURIComponent(timeWindow)}&raw_json=1`;
+    // searchQualifier appends to the Reddit search query for disambiguation
+    // (e.g., "broadway" or "west end") but does NOT affect the containsKeyword
+    // check — we still verify the show title itself appears in the post text.
+    const searchQuery = searchQualifier ? `"${keyword}" ${searchQualifier}` : keyword;
+    const url = `https://old.reddit.com/search.json?q=${encodeURIComponent(searchQuery)}&sort=new&restrict_sr=off&limit=${limit}&t=${encodeURIComponent(timeWindow)}&raw_json=1`;
     let data;
     try {
       data = await fetchWithFallback(url);
