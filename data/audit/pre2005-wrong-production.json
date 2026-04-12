@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-12T14:59:45.818Z",
+    "generatedAt": "2026-04-12T15:56:54.286Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 93,
-    "highConfidence": 14,
-    "mediumConfidence": 79,
+    "totalFlagged": 137,
+    "highConfidence": 41,
+    "mediumConfidence": 96,
     "lowConfidence": 0,
-    "reassignable": 38
+    "reassignable": 74
   },
   "results": [
     {
@@ -38,6 +38,21 @@
         "modern references: twitter"
       ],
       "textSnippet": "Something 'Wicked' comes to Broadway - Score: 9\n\nFrom: USA Today By: Elysa Gardner Publication Date: 10/30/2003\n\nIt's too soon to tell whether Schwartz's score for Wicked, which opened Thursday at the"
+    },
+    {
+      "showId": "wicked-2003",
+      "showTitle": "Wicked",
+      "showYear": 2003,
+      "file": "chicago-sun-times--sheri-flanders.json",
+      "outlet": "Chicago Sun-Times",
+      "criticName": "Sheri Flanders",
+      "publishDate": "2022-09-30",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2022 is 19 years after original opening 2003"
+      ],
+      "textSnippet": " The camaraderie between deGuzman and Newberry is palpable, and they're a fun pair to watch, sparring and sniping across the stage as Elphaba is brutally bullied by, well, everyone. Eventually Galinda"
     },
     {
       "showId": "wicked-2003",
@@ -971,6 +986,40 @@
       "textSnippet": "Upon walking into the new production of \"Once On This Island,\" which opened on Sunday at the Circle in the Square Theatre, you are greeted by trash, old tee-shirts hanging on the walls, a small pool o"
     },
     {
+      "showId": "ragtime-1998",
+      "showTitle": "Ragtime",
+      "showYear": 1998,
+      "file": "exeunt-magazine--lane-williamson.json",
+      "outlet": "Exeunt",
+      "criticName": "Lane Williamson",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "ragtime-2025",
+      "signals": [
+        "revival text signals: revival, this production",
+        "year 2024 in text matches revival ragtime-2025",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "“Ragtime” at the Vivian Beaumont Theater (Photo: Matthew Murphy) It remains the best musical about America. Within its sweeping scope, Ragtime puts disparate, often opposing viewpoints in direct confr"
+    },
+    {
+      "showId": "master-class-1995",
+      "showTitle": "Master Class",
+      "showYear": 1995,
+      "file": "philadelphia-inquirer--howard-shapiro.json",
+      "outlet": "The Philadelphia Inquirer",
+      "criticName": "Howard Shapiro",
+      "publishDate": "2026-04-09",
+      "confidence": "medium",
+      "suggestedShowId": "master-class-2011",
+      "signals": [
+        "publishDate 2026 is 31 years after original opening 1995",
+        "revival text signals: revival, this production, new revival",
+        "year 2010 in text matches revival master-class-2011"
+      ],
+      "textSnippet": "McNally’s play may be a bit schematic, punctuated by soul-searching monologues about the diva’s tortured affair with Greek billionaire Aristotle Onassis, but it’s an entertaining vehicle for Daly, and"
+    },
+    {
       "showId": "a-delicate-balance-1996",
       "showTitle": "A Delicate Balance",
       "showYear": 1996,
@@ -984,6 +1033,21 @@
         "revival text signals: revival, revived"
       ],
       "textSnippet": "https://www.nytimes.com/1996/05/27/theater/for-rosemary-harris-a-delicate-balance-of-her-art-and-life.htmlShare full articleAdvertisement\n\nSitting gracefully on a couch, with her silvery hair swept ne"
+    },
+    {
+      "showId": "the-heiress-1995",
+      "showTitle": "The Heiress",
+      "showYear": 1995,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: masks"
+      ],
+      "textSnippet": "NEW YORK – The gasps of pleasure that accompanied the stage entrance of Dan Stevens in The Heiress on press night indicated a large contingent of Downton Abbey fans in the audience. And the actor is a"
     },
     {
       "showId": "how-to-succeed-in-business-without-really-trying-1995",
@@ -1001,6 +1065,23 @@
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
     },
     {
+      "showId": "how-to-succeed-in-business-without-really-trying-1995",
+      "showTitle": "How to Succeed in Business Without Really Trying",
+      "showYear": 1995,
+      "file": "variety--steven-suskin.json",
+      "outlet": "Variety",
+      "criticName": "Steven Suskin",
+      "publishDate": "2011-03-28",
+      "confidence": "high",
+      "suggestedShowId": "how-to-succeed-in-business-without-really-trying-2011",
+      "signals": [
+        "publishDate 2011 matches revival how-to-succeed-in-business-without-really-trying-2011 (opened 2011)",
+        "revival text signals: revival, reinvented",
+        "year 2010 in text matches revival how-to-succeed-in-business-without-really-trying-2011"
+      ],
+      "textSnippet": "Bright and irresistible revival of the 1961 smash \"How to Succeed in Business Without Really Trying\" features a dazzling Daniel Radcliffe and a strong Broadway debut for John Larroquette.\n\nAfter their"
+    },
+    {
       "showId": "sunday-in-the-park-with-george-1994",
       "showTitle": "Sunday in the Park with George",
       "showYear": 1994,
@@ -1014,6 +1095,89 @@
         "revival cast/director match for sunday-in-the-park-with-george-2017: Jake Gyllenhaal, Annaleigh Ashford, Hudson Theatre, director: Sarna Lapine"
       ],
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
+    },
+    {
+      "showId": "falsettos-1992",
+      "showTitle": "Falsettos",
+      "showYear": 1992,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "2016-10-27",
+      "confidence": "high",
+      "suggestedShowId": "falsettos-2016",
+      "signals": [
+        "publishDate 2016 matches revival falsettos-2016 (opened 2016)"
+      ],
+      "textSnippet": "The four male characters in Falsettos, the joyously funny, shatteringly sad 1992 chamber musical forged out of two earlier one-acts by composer-lyricist William Finn and co-writer/director James Lapin"
+    },
+    {
+      "showId": "six-degrees-of-separation-1990",
+      "showTitle": "Six Degrees of Separation",
+      "showYear": 1990,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": "2017-04-26",
+      "confidence": "high",
+      "suggestedShowId": "six-degrees-of-separation-2017",
+      "signals": [
+        "publishDate 2017 matches revival six-degrees-of-separation-2017 (opened 2017)",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "The good news on the Broadway revival of “Six Degrees of Separation” is great news. Twenty-seven years after the debut of John Guare’s comedy of manners and mores in Manhattan, “Six Degrees” retains i"
+    },
+    {
+      "showId": "miss-saigon-1991",
+      "showTitle": "Miss Saigon",
+      "showYear": 1991,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": "2017-03-24",
+      "confidence": "high",
+      "suggestedShowId": "miss-saigon-2017",
+      "signals": [
+        "publishDate 2017 matches revival miss-saigon-2017 (opened 2017)",
+        "revival text signals: revival, new revival"
+      ],
+      "textSnippet": "Claude-Michel Schonberg and Alain Boublil have a lot to answer for. Under the umbrella of producer Cameron Mackintosh, their back-to-back hits “Les Miserables” and “Miss Saigon” were part of the Briti"
+    },
+    {
+      "showId": "gypsy-1989",
+      "showTitle": "Gypsy",
+      "showYear": 1989,
+      "file": "usatoday--patrick-ryan.json",
+      "outlet": "USA Today",
+      "criticName": "Patrick Ryan",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "gypsy-2008",
+      "signals": [
+        "revival cast/director match for gypsy-2008: Patti LuPone, director: Arthur Laurents",
+        "revival cast/director match for gypsy-2024: Audra McDonald, Camille A. Brown, Danny Burstein, Majestic Theatre, director: George C. Wolfe",
+        "year 2024 in text matches revival gypsy-2024",
+        "year 2025 in text matches revival gypsy-2024"
+      ],
+      "textSnippet": "NEW YORK – You gotta get a gimmick. In “Gypsy,” that’s the cheeky mantra of a trio of warworn strippers, who use lights, trumpets and pointe shoes to stand out from the G-stringed throng. But it’s als"
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-1990",
+      "showTitle": "Cat on a Hot Tin Roof",
+      "showYear": 1990,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "2013-01-17",
+      "confidence": "high",
+      "suggestedShowId": "cat-on-a-hot-tin-roof-2013",
+      "signals": [
+        "publishDate 2013 matches revival cat-on-a-hot-tin-roof-2013 (opened 2013)",
+        "year 2013 in text matches revival cat-on-a-hot-tin-roof-2013",
+        "year 2003 in text matches revival cat-on-a-hot-tin-roof-2003",
+        "year 2008 in text matches revival cat-on-a-hot-tin-roof-2008"
+      ],
+      "textSnippet": "Cat on a Hot Tin Roof Johannson Walker - P 2013\n\nNEW YORK – Somebody spayed the cat. And it wasn't the hardworking main attraction Scarlett Johansson, who plays Tennessee Williams' tenacious feline ti"
     },
     {
       "showId": "broadway-1987",
@@ -1030,6 +1194,88 @@
         "revival text signals: revival, this production"
       ],
       "textSnippet": "The ache for an absent artist permeates Lanford Wilson’s “Burn This,” now receiving a finely-tuned Broadway revival that features incendiary performances by Adam Driver and Keri Russell, playing two l"
+    },
+    {
+      "showId": "burn-this-1987",
+      "showTitle": "Burn This",
+      "showYear": 1987,
+      "file": "broadwayworld--michael-dale.json",
+      "outlet": "BroadwayWorld",
+      "criticName": "Michael Dale",
+      "publishDate": "2019-04-17",
+      "confidence": "high",
+      "suggestedShowId": "burn-this-2019",
+      "signals": [
+        "publishDate 2019 matches revival burn-this-2019 (opened 2019)",
+        "year 2019 in text matches revival burn-this-2019"
+      ],
+      "textSnippet": "The phrase \"toxic masculinity\" wasn't exactly in the vernacular in 1987, when Circle Rep's buzz-producing mounting of Lanford Wilson's Burn This moved uptown to Broadway. So perhaps coked-up, homophob"
+    },
+    {
+      "showId": "chess-1988",
+      "showTitle": "Chess",
+      "showYear": 1988,
+      "file": "dailybeast--tim-teeman.json",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "publishDate": "2025-11-17",
+      "confidence": "high",
+      "suggestedShowId": "chess-2025",
+      "signals": [
+        "publishDate 2025 matches revival chess-2025 (opened 2025)",
+        "year 2026 in text matches revival chess-2025"
+      ],
+      "textSnippet": "The received wisdom is that the book has always been the problem with Chess, if only—as so many have attempted—the book could be fixed…\n\nBut, as the much-anticipated revival of Sir Tim Rice and Abba’s"
+    },
+    {
+      "showId": "chess-1988",
+      "showTitle": "Chess",
+      "showYear": 1988,
+      "file": "ew--shania-russell.json",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Shania Russell",
+      "publishDate": "2025-11-16",
+      "confidence": "high",
+      "suggestedShowId": "chess-2025",
+      "signals": [
+        "publishDate 2025 matches revival chess-2025 (opened 2025)",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "When chess master Johannes Zukertort described the game as \"a struggle against error,\" he may as well have been talking about this musical. Chess is a show constantly at war with its past, and 37 year"
+    },
+    {
+      "showId": "chess-1988",
+      "showTitle": "Chess",
+      "showYear": 1988,
+      "file": "vulture--sara-holdren.json",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren",
+      "publishDate": "2025-11-16",
+      "confidence": "high",
+      "suggestedShowId": "chess-2025",
+      "signals": [
+        "publishDate 2025 matches revival chess-2025 (opened 2025)",
+        "revival text signals: revival, back on broadway",
+        "year 2025 in text matches revival chess-2025"
+      ],
+      "textSnippet": "Photo: Matthew Murphy/Matthew Murphy\n \n \n \n Grab your sleeping bags and bug spray, people. It’s time for camp. Chess is back on Broadway after 37 years, as big and weird as ever, with as much late-’80"
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-1985",
+      "showTitle": "The Mystery of Edwin Drood",
+      "showYear": 1985,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "modern references: twitter",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Photo credit: Betsy Wolfe, left, and Will Chase in “The Mystery of Edwin Drood”\n\nThe Mystery of Edwin Drood 4 stars\n\n\"The Mystery of Edwin Drood,\" inspired by an unfinished Charles Dickens novel, is o"
     },
     {
       "showId": "the-house-of-blue-leaves-1986",
@@ -1078,6 +1324,70 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "“No danger.” That's what I kept writing in my notebook while watching the new revival of “Evita,” Andrew Lloyd Webber and Tim Rice’s international hit centered on the charismatic and egotistical spiri"
+    },
+    {
+      "showId": "evita-1979",
+      "showTitle": "Evita",
+      "showYear": 1979,
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "outlet": "NY Daily News",
+      "criticName": "Joe Dziemianowicz",
+      "publishDate": "2012-04-05",
+      "confidence": "high",
+      "suggestedShowId": "evita-2012",
+      "signals": [
+        "publishDate 2012 matches revival evita-2012 (opened 2012)",
+        "revival cast/director match for evita-2012: Ricky Martin, Elena Roger, Michael Cerveris, director: Michael Grandage",
+        "revival text signals: revival, this production",
+        "modern references: social media"
+      ],
+      "textSnippet": "Ricky Martin gives a great big touch of star quality to the seductive revival of “Evita” at the Marquis. He also gives an appealing performance in the role of Che, which, like the show, has been re-im"
+    },
+    {
+      "showId": "evita-1979",
+      "showTitle": "Evita",
+      "showYear": 1979,
+      "file": "nypost--elisabeth-vincentelli.json",
+      "outlet": "NY Post",
+      "criticName": "Elisabeth Vincentelli",
+      "publishDate": "2012-04-06",
+      "confidence": "high",
+      "suggestedShowId": "evita-2012",
+      "signals": [
+        "publishDate 2012 matches revival evita-2012 (opened 2012)",
+        "revival cast/director match for evita-2012: Ricky Martin, Elena Roger, Michael Cerveris, director: Michael Grandage"
+      ],
+      "textSnippet": "Last night, “Evita” returned after a 30-year absence from Broadway. The wait was worth it: This is a big, fat, juicy blockbuster of a show. Naturally, everybody’s flipping out over the hot new bombshe"
+    },
+    {
+      "showId": "children-of-a-lesser-god-1980",
+      "showTitle": "Children of a Lesser God",
+      "showYear": 1980,
+      "file": "broadwayworld--michael-dale.json",
+      "outlet": "BroadwayWorld",
+      "criticName": "Michael Dale",
+      "publishDate": "2018-04-12",
+      "confidence": "high",
+      "suggestedShowId": "children-of-a-lesser-god-2018",
+      "signals": [
+        "publishDate 2018 matches revival children-of-a-lesser-god-2018 (opened 2018)"
+      ],
+      "textSnippet": "Tickets\n\nCast\n\nPhotos\n\nVideos\n\nInfo\n\nWhile audiences gather at Lincoln Center to see Lerner and Lowe's musical adaptation of George Bernard Shaw's classic, there's a different kind of Pygmalion story "
+    },
+    {
+      "showId": "children-of-a-lesser-god-1980",
+      "showTitle": "Children of a Lesser God",
+      "showYear": 1980,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": "2018-04-12",
+      "confidence": "high",
+      "suggestedShowId": "children-of-a-lesser-god-2018",
+      "signals": [
+        "publishDate 2018 matches revival children-of-a-lesser-god-2018 (opened 2018)"
+      ],
+      "textSnippet": "As issue plays go, “Children of a Lesser God” has sprouted a brand new one. Back in 1980, Mark Medoff’s play was all about an instructor-therapist who can’t fathom the silent reality of the deaf femal"
     },
     {
       "showId": "sweeney-todd-1979",
@@ -1148,6 +1458,21 @@
       "textSnippet": "Josh Groban and Annaleigh Ashford | Photo: Matthew Murphy & Evan Zimmerman At long last, a full-scale production of Sweeney Todd returns to Broadway, allowing Stephen Sondheim’s gorgeous music and lyr"
     },
     {
+      "showId": "the-elephant-man-1979",
+      "showTitle": "The Elephant Man",
+      "showYear": 1979,
+      "file": "nbcny--robert-kahn.json",
+      "outlet": "NBC New York",
+      "criticName": "Robert Kahn",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: twitter"
+      ],
+      "textSnippet": "Two-time Oscar nominee Bradley Cooper transforms so methodically into the disfigured Joseph Merrick at the start of “The Elephant Man,” now in the midst of a limited engagement at the Booth Theatre, t"
+    },
+    {
       "showId": "the-gin-game-1977",
       "showTitle": "The Gin Game",
       "showYear": 1977,
@@ -1161,6 +1486,54 @@
         "year 2015 in text matches revival the-gin-game-2015"
       ],
       "textSnippet": "Published: 2015-10-14 22:01:58 \n Updated: 2015-10-14 22:01:58\n\nBy MARK KENNEDY, AP Drama Writer\n\nNEW YORK — One thing you should probably not bet against at \"The Gin Game\" on Broadway is the little ol"
+    },
+    {
+      "showId": "on-the-twentieth-century-1978",
+      "showTitle": "On the Twentieth Century",
+      "showYear": 1978,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": "2015-03-15",
+      "confidence": "high",
+      "suggestedShowId": "on-the-twentieth-century-2015",
+      "signals": [
+        "publishDate 2015 matches revival on-the-twentieth-century-2015 (opened 2015)",
+        "revival text signals: revival, new production"
+      ],
+      "textSnippet": "I have waited for years for a Broadway revival of the 1978 musical “On the Twentieth Century,” a screwball comedy about a down-on-his-luck Broadway producer and the Hollywood actress he needs to star "
+    },
+    {
+      "showId": "on-the-twentieth-century-1978",
+      "showTitle": "On the Twentieth Century",
+      "showYear": 1978,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "on-the-twentieth-century-2015",
+      "signals": [
+        "year 2015 in text matches revival on-the-twentieth-century-2015",
+        "year 2014 in text matches revival on-the-twentieth-century-2015"
+      ],
+      "textSnippet": "At the top of Act II in On the Twentieth Century, four tap-dancing redcap Pullman porters work overtime to funnel syncopated energy into the facile analogy of “Life is Like a Train.” But this strained"
+    },
+    {
+      "showId": "that-championship-season-1972",
+      "showTitle": "That Championship Season",
+      "showYear": 1972,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "A drama about the bitter recriminations of a generation of men stung by the reality of their diminished promise and feeling let down by both their leaders and their peers should strike chords in this "
     },
     {
       "showId": "democracy-2004",
@@ -1191,6 +1564,23 @@
         "year 1976 in text matches revival pacific-overtures-1976"
       ],
       "textSnippet": "https://www.nytimes.com/2004/12/03/theater/reviews/repatriating-the-japanese-sondheim.htmlShare full articleAdvertisement\n\nBY rights, this should be the moment to announce that a Japanese director nam"
+    },
+    {
+      "showId": "700-sundays-2004",
+      "showTitle": "700 Sundays",
+      "showYear": 2004,
+      "file": "broadwayworld--michael-dale.json",
+      "outlet": "BroadwayWorld",
+      "criticName": "Michael Dale",
+      "publishDate": "2013-11-13",
+      "confidence": "high",
+      "suggestedShowId": "700-sundays-2013",
+      "signals": [
+        "publishDate 2013 matches revival 700-sundays-2013 (opened 2013)",
+        "revival text signals: revival, returns to broadway",
+        "modern references: twitter"
+      ],
+      "textSnippet": "Faster than a speeding Les Misérables revival, Billy Crystal's solo performance piece, 700 Sundays, returns to Broadway a mere 386 Sundays after its Tony-winning original production gave its regards.\n"
     },
     {
       "showId": "gem-of-the-ocean-2004",
@@ -1237,6 +1627,40 @@
         "revival text signals: revival, new production, new revival"
       ],
       "textSnippet": "Much like the horticultural aberration that it celebrates, the little musical “Little Shop of Horrors” seems to have mutated in the 20 years since it first set down roots in a tiny space off Off Broad"
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2003",
+      "showTitle": "Cat on a Hot Tin Roof",
+      "showYear": 2003,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "cat-on-a-hot-tin-roof-2008",
+      "signals": [
+        "revival text signals: revival, new staging, this production",
+        "year 2008 in text matches revival cat-on-a-hot-tin-roof-2008",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Photo credit: Scarlett Johansson during a performance of \"Cat on a Hot Tin Roof\"\n\nTennessee Williams' 1955 bedroom drama \"Cat on a Hot Tin Roof,\" one of the sexist, most riveting American plays ever w"
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2003",
+      "showTitle": "Cat on a Hot Tin Roof",
+      "showYear": 2003,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "2013-01-17",
+      "confidence": "high",
+      "suggestedShowId": "cat-on-a-hot-tin-roof-2013",
+      "signals": [
+        "publishDate 2013 matches revival cat-on-a-hot-tin-roof-2013 (opened 2013)",
+        "year 2013 in text matches revival cat-on-a-hot-tin-roof-2013",
+        "year 2008 in text matches revival cat-on-a-hot-tin-roof-2008"
+      ],
+      "textSnippet": "Cat on a Hot Tin Roof Johannson Walker - P 2013\n\nNEW YORK – Somebody spayed the cat. And it wasn't the hardworking main attraction Scarlett Johansson, who plays Tennessee Williams' tenacious feline ti"
     },
     {
       "showId": "the-caretaker-2003",
@@ -1302,6 +1726,39 @@
       "showId": "a-raisin-in-the-sun-2004",
       "showTitle": "A Raisin in the Sun",
       "showYear": 2004,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": "2014-04-03",
+      "confidence": "high",
+      "suggestedShowId": "a-raisin-in-the-sun-2014",
+      "signals": [
+        "publishDate 2014 matches revival a-raisin-in-the-sun-2014 (opened 2014)",
+        "revival cast/director match for a-raisin-in-the-sun-2014: Denzel Washington, LaTanya Richardson, Sophie Okonedo, director: Kenny Leon"
+      ],
+      "textSnippet": "It’s too bad Denzel Washington didn’t play Walter Lee, the dissatisfied 35-year-old protagonist of Lorraine Hansberry’s monumental 1959 African-American family drama “A Raisin in the Sun,” 25 years ag"
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2004",
+      "showTitle": "A Raisin in the Sun",
+      "showYear": 2004,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": "2014-04-03",
+      "confidence": "high",
+      "suggestedShowId": "a-raisin-in-the-sun-2014",
+      "signals": [
+        "publishDate 2014 matches revival a-raisin-in-the-sun-2014 (opened 2014)",
+        "revival cast/director match for a-raisin-in-the-sun-2014: Denzel Washington, LaTanya Richardson, Sophie Okonedo, director: Kenny Leon",
+        "year 2013 in text matches revival a-raisin-in-the-sun-2014"
+      ],
+      "textSnippet": "NEW YORK — Denzel Washington is the star attraction, but it’s the harmonious balance of an impeccably matched ensemble that makes Kenny Leon‘s lovingly staged revival of A Raisin in the Sun so alive w"
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2004",
+      "showTitle": "A Raisin in the Sun",
+      "showYear": 2004,
       "file": "huffpost--david-finkle.json",
       "outlet": "Huffington Post",
       "criticName": "David Finkle",
@@ -1315,6 +1772,53 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Judging by the ubiquitous ads, Denzel Washington is the star attraction of “A Raisin in the Sun,” which has just opened for a 14-week run at the Barrymore Theatre. Perhaps so, but it’s the performance"
+    },
+    {
+      "showId": "caroline-or-change-2004",
+      "showTitle": "Caroline, or Change",
+      "showYear": 2004,
+      "file": "nydailynews--chris-jones.json",
+      "outlet": "The New York Daily News",
+      "criticName": "Chris Jones",
+      "publishDate": "2021-10-28",
+      "confidence": "high",
+      "suggestedShowId": "caroline-or-change-2021",
+      "signals": [
+        "publishDate 2021 matches revival caroline-or-change-2021 (opened 2021)",
+        "revival text signals: new production, this production"
+      ],
+      "textSnippet": "Tony Kushner, the author of “Caroline, or Change,” was examining the sociopolitical intersection of racism and American capitalism long before it became theatrically fashionable. His prescient early w"
+    },
+    {
+      "showId": "macbeth-2000",
+      "showTitle": "Macbeth",
+      "showYear": 2000,
+      "file": "theatrely--juan-a-ramirez.json",
+      "outlet": "Theatrely",
+      "criticName": "Juan A. Ramirez",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "macbeth-2022",
+      "signals": [
+        "year 2022 in text matches revival macbeth-2022"
+      ],
+      "textSnippet": "Company of Macbeth | Photo: Joan Marcus The Macbeths are chilling at the start of the play—the couple, laidback on a couch upstage as a man is hung upside-down, are both relaxed and off-putting. Playe"
+    },
+    {
+      "showId": "the-rocky-horror-show-2000",
+      "showTitle": "The Rocky Horror Show",
+      "showYear": 2000,
+      "file": "times-uk--benedict-nightingale.json",
+      "outlet": "The Times (UK)",
+      "criticName": "Benedict Nightingale",
+      "publishDate": "1999-04-13",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revived, restaged",
+        "modern references: masks"
+      ],
+      "textSnippet": "Whydosomedeliber ately naff, jokily\nself-parodying musi\ncals end up as cult successes\nwhile others getquickly forgot\nten? Thequestion surfaced last\nyear when Birmingham Rep\nrestaged The Rocky Horror\nS"
     },
     {
       "showId": "true-west-2000",
@@ -1382,6 +1886,118 @@
       "textSnippet": "Andrew Lloyd Webber and Tim Rice’s “Jesus Christ Superstar” is remembered with deep affection by a wide cross-section of Americans of a certain age, even many who’ve never been avid theatergoers. Fans"
     },
     {
+      "showId": "the-real-thing-2000",
+      "showTitle": "The Real Thing",
+      "showYear": 2000,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-real-thing-2014",
+      "signals": [
+        "revival text signals: revival, this production",
+        "year 2014 in text matches revival the-real-thing-2014",
+        "modern references: hamilton",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "The Real Thing Production Still - H 2014\n\nEwan McGregor makes an assured Broadway debut as Tom Stoppard‘s semi-autobiographical stand-in, an erudite playwright struggling to tame the slippery concept "
+    },
+    {
+      "showId": "the-real-thing-2000",
+      "showTitle": "The Real Thing",
+      "showYear": 2000,
+      "file": "telegraph--matt-wolf.json",
+      "outlet": "Telegraph",
+      "criticName": "Matt Wolf",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-real-thing-1984",
+      "signals": [
+        "year 1984 in text matches revival the-real-thing-1984"
+      ],
+      "textSnippet": "We no longer check to see whether Telegraph.co.uk displays properly in Internet Explorer version 6 or earlier.\n\nTo see our content at its best we recommend upgrading if you wish to continue using IE o"
+    },
+    {
+      "showId": "the-real-thing-2000",
+      "showTitle": "The Real Thing",
+      "showYear": 2000,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": "2014-10-31",
+      "confidence": "high",
+      "suggestedShowId": "the-real-thing-2014",
+      "signals": [
+        "publishDate 2014 matches revival the-real-thing-2014 (opened 2014)",
+        "year 1984 in text matches revival the-real-thing-1984"
+      ],
+      "textSnippet": "Actors’ chemistry is like Hepburn and Tracy’s only in reverse; she’s solid and implacable, he’s high-strung and nervously pecking around for a way to chip into her guarded world It takes real guts for"
+    },
+    {
+      "showId": "born-yesterday-1989",
+      "showTitle": "Born Yesterday",
+      "showYear": 1989,
+      "file": "northjerseycom--robert-feldberg.json",
+      "outlet": "The Bergen Record",
+      "criticName": "Robert Feldberg",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, revived",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "The comedy, which opened Sunday at the Cort Theatre, was a huge hit when it debuted just after World War II had ended. Its message, about the importance of democracy and the value of the individual, p"
+    },
+    {
+      "showId": "the-king-and-i-1985",
+      "showTitle": "The King and I",
+      "showYear": 1985,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "the-king-and-i-2015",
+      "signals": [
+        "revival cast/director match for the-king-and-i-2015: Ken Watanabe, Lincoln Center, Beaumont, director: Bartlett Sher"
+      ],
+      "textSnippet": "Two decades ago, Lincoln Center Theater won acclaim for its rethought, rejuvenated revival of Rodgers and Hammerstein’s “Carousel.” In 2008, magic struck again with its Tony-winning revival of R&H’s “"
+    },
+    {
+      "showId": "the-king-and-i-1985",
+      "showTitle": "The King and I",
+      "showYear": 1985,
+      "file": "thewrap--robert-hofler.json",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "the-king-and-i-2015",
+      "signals": [
+        "revival cast/director match for the-king-and-i-2015: Kelli O'Hara, Ken Watanabe, Lincoln Center, Beaumont, director: Bartlett Sher"
+      ],
+      "textSnippet": "It has been seven years since Lincoln Center Theater presented Bartlett Sher’s definitive staging of Rodgers and Hammerstein’s “South Pacific.” Now comes Sher’s take on “The King and I,” which opened "
+    },
+    {
+      "showId": "la-cage-aux-folles-1983",
+      "showTitle": "La Cage aux Folles",
+      "showYear": 1983,
+      "file": "ew--thom-geier.json",
+      "outlet": "Entertainment  Weekly",
+      "criticName": "Thom Geier",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "la-cage-aux-folles-2010",
+      "signals": [
+        "revival cast/director match for la-cage-aux-folles-2010: Kelsey Grammer, Douglas Hodge, director: Terry Johnson",
+        "revival text signals: revival, revived",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Much has changed since composer-lyricist Jerry Herman's musical La Cage aux Folles debuted on Broadway in 1983. The material, based on a 1973 French play (and subsequent French movie), has been mainst"
+    },
+    {
       "showId": "la-cage-aux-folles-1983",
       "showTitle": "La Cage aux Folles",
       "showYear": 1983,
@@ -1428,6 +2044,53 @@
       "textSnippet": "Among the many events involved in the reopening of the theater industry following the industrywide shutdown, one of the most significant – at least for passionate devotees of musical theater – occurre"
     },
     {
+      "showId": "the-real-thing-1984",
+      "showTitle": "The Real Thing",
+      "showYear": 1984,
+      "file": "telegraph--matt-wolf.json",
+      "outlet": "Telegraph",
+      "criticName": "Matt Wolf",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-real-thing-2000",
+      "signals": [
+        "year 2000 in text matches revival the-real-thing-2000"
+      ],
+      "textSnippet": "We no longer check to see whether Telegraph.co.uk displays properly in Internet Explorer version 6 or earlier.\n\nTo see our content at its best we recommend upgrading if you wish to continue using IE o"
+    },
+    {
+      "showId": "glengarry-glen-ross-1984",
+      "showTitle": "Glengarry Glen Ross",
+      "showYear": 1984,
+      "file": "backstage--erik-haagensen.json",
+      "outlet": "Backstage",
+      "criticName": "Erik Haagensen",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "glengarry-glen-ross-2025",
+      "signals": [
+        "year 2026 in text matches revival glengarry-glen-ross-2025",
+        "year 2025 in text matches revival glengarry-glen-ross-2025",
+        "modern references: twitter, netflix"
+      ],
+      "textSnippet": "David Mamet’s “Glengarry Glen Ross,” winner of the 1984 Pulitzer Prize for drama, was on Broadway a mere seven years ago, in a terrific production directed by Joe Mantello and produced by Jeffrey Rich"
+    },
+    {
+      "showId": "glengarry-glen-ross-1984",
+      "showTitle": "Glengarry Glen Ross",
+      "showYear": 1984,
+      "file": "financialtimes--brendan-lemon.json",
+      "outlet": "Financial Times",
+      "criticName": "Brendan Lemon",
+      "publishDate": "2012-12-09",
+      "confidence": "high",
+      "suggestedShowId": "glengarry-glen-ross-2012",
+      "signals": [
+        "publishDate 2012 matches revival glengarry-glen-ross-2012 (opened 2012)"
+      ],
+      "textSnippet": "David Mamet-bashing is so rife right now in New York that it is reassuring to be reminded why he presents such a large target in the first place: his masterpiece, Glengarry Glen Ross. Even in an only "
+    },
+    {
       "showId": "sunday-in-the-park-with-george-1984",
       "showTitle": "Sunday in the Park with George",
       "showYear": 1984,
@@ -1441,6 +2104,55 @@
         "revival text signals: revival, back on broadway"
       ],
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
+    },
+    {
+      "showId": "jesus-christ-superstar-1971",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 1971,
+      "file": "financialtimes--brendan-lemon.json",
+      "outlet": "Financial Times",
+      "criticName": "Brendan Lemon",
+      "publishDate": "2012-03-22",
+      "confidence": "high",
+      "suggestedShowId": "jesus-christ-superstar-2012",
+      "signals": [
+        "publishDate 2012 matches revival jesus-christ-superstar-2012 (opened 2012)",
+        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Stratford, director: Des McAnuff",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "It comes as no surprise that this revival of Andrew Lloyd Webber and Tim Rice’s Jesus Christ Superstar provides a measure of enjoyment. Like the hit Four Seasons musical Jersey Boys, which faces it at"
+    },
+    {
+      "showId": "jesus-christ-superstar-1971",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 1971,
+      "file": "nypost--elisabeth-vincentelli.json",
+      "outlet": "NY Post",
+      "criticName": "Elisabeth Vincentelli",
+      "publishDate": "2012-03-23",
+      "confidence": "high",
+      "suggestedShowId": "jesus-christ-superstar-2012",
+      "signals": [
+        "publishDate 2012 matches revival jesus-christ-superstar-2012 (opened 2012)",
+        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Chilina Kennedy, director: Des McAnuff"
+      ],
+      "textSnippet": "It’s hard to pin down Jesus in the 1971 rock musical “Jesus Christ Superstar.” Sometimes, co-creators Andrew Lloyd Webber and Tim Rice seem to agree with Mary Magdalene, who sings “He’s a man, he’s ju"
+    },
+    {
+      "showId": "old-times-1971",
+      "showTitle": "Old Times",
+      "showYear": 1971,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new revival",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "There’s really no middle ground when it comes to the late English playwright Harold Pinter. You’re either mesmerized by his mysterious, menacing, pause-filled psychological dramas or you find them puz"
     },
     {
       "showId": "old-times-1971",
