@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-12T02:36:53.541Z",
-  "processed": 108,
-  "failed": 932,
-  "successRate": "10.4%",
+  "updatedAt": "2026-04-12T02:42:54.258Z",
+  "processed": 113,
+  "failed": 937,
+  "successRate": "10.8%",
   "tierBreakdown": {
     "playwright": 26,
     "amp": 2,
-    "browserbase": 46,
+    "browserbase": 48,
     "directCookies": 0,
-    "scrapingbee": 27,
+    "scrapingbee": 29,
     "brightdata": 0,
     "archiveToday": 29,
-    "archive": 32
+    "archive": 34
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-04-12T02:12:20.815Z",
-      "event": "bb-session",
-      "session": "783b2fca",
-      "url": "https://deadline.com/2022/02/mj-broadway-review-michael-jackson-musical-12349229"
-    },
-    {
-      "t": "2026-04-12T02:12:21.947Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-04-12T02:16:11.343Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-12T02:36:32.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:36:59.812Z",
+      "event": "bb-session",
+      "session": "fdffad61",
+      "url": "https://variety.com/2023/legit/reviews/gutenberg-the-musical-review-broadway-jos"
+    },
+    {
+      "t": "2026-04-12T02:37:00.844Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

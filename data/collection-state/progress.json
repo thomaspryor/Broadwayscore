@@ -107,7 +107,12 @@
     "prayer-for-the-french-republic-2024/variety--daniel-daddario.json",
     "how-to-dance-in-ohio-2023/variety--frank-rizzo.json",
     "harmony-2023/variety--trish-deitch.json",
-    "harmony-2023/vulture--jackson-mchenry.json"
+    "harmony-2023/vulture--jackson-mchenry.json",
+    "gutenberg-2023/variety--frank-rizzo.json",
+    "gutenberg-2023/vulture--sara-holdren.json",
+    "jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
+    "the-shark-is-broken-2023/nydailynews--new-york-daily-news.json",
+    "here-lies-love-2023/nytimes--jesse-green.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1041,7 +1046,12 @@
     "suffs-2024/usatoday--melissa-ruggieri.json",
     "the-wiz-2024/indiewire--sarah-shachat.json",
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
-    "appropriate-2023/timeout--adam-feldman.json"
+    "appropriate-2023/timeout--adam-feldman.json",
+    "harmony-2023/usatoday--david-rooney.json",
+    "purlie-victorious-2023/theater-pizzazz--ron-fassler-critic.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "here-lies-love-2023/vulture--jackson-mchenry.json",
+    "here-lies-love-2023/observer--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1123,7 +1133,9 @@
       "data/review-texts/how-to-dance-in-ohio-2023/variety--frank-rizzo.json",
       "how-to-dance-in-ohio-2023/variety--frank-rizzo.json",
       "data/review-texts/harmony-2023/variety--trish-deitch.json",
-      "harmony-2023/variety--trish-deitch.json"
+      "harmony-2023/variety--trish-deitch.json",
+      "data/review-texts/gutenberg-2023/variety--frank-rizzo.json",
+      "gutenberg-2023/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1153,7 +1165,9 @@
       "once-upon-a-mattress-2024/timeout--adam-feldman.json",
       "stereophonic-2024/nytimes--naveen-kumar.json",
       "suffs-2024/timeout--regina-robbins.json",
-      "lempicka-2024/nytimes--jesse-green.json"
+      "lempicka-2024/nytimes--jesse-green.json",
+      "the-shark-is-broken-2023/nydailynews--new-york-daily-news.json",
+      "here-lies-love-2023/nytimes--jesse-green.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1219,11 +1233,13 @@
       "suffs-2024/vulture--sara-holdren.json",
       "lempicka-2024/vulture--sara-holdren.json",
       "the-whos-tommy-2024/vulture--sara-holdren.json",
-      "harmony-2023/vulture--jackson-mchenry.json"
+      "harmony-2023/vulture--jackson-mchenry.json",
+      "gutenberg-2023/vulture--sara-holdren.json",
+      "jajas-african-hair-braiding-2023/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "harmony-2023/vulture--jackson-mchenry.json",
+  "lastProcessed": "here-lies-love-2023/observer--jesse-green.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1608,6 +1624,17 @@
     },
     {
       "t": "2026-04-12T02:36:32.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:36:59.812Z",
+      "event": "bb-session",
+      "session": "fdffad61",
+      "url": "https://variety.com/2023/legit/reviews/gutenberg-the-musical-review-broadway-jos"
+    },
+    {
+      "t": "2026-04-12T02:37:00.844Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
