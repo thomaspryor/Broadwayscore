@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-12T08:39:04.276Z",
+    "generatedAt": "2026-04-12T09:07:25.565Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 79,
@@ -28,7 +28,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "This review discusses a Sydney production of Wicked, mentioning its 2008 and 2014 runs. It also mentions a new Brazilian production. It is not about the 2003 Broadway production."
+      "reasoning": "The review discusses a Sydney production of Wicked, mentioning specific Australian cast members and opening nights in Sydney. It also mentions a Brazilian production. This is not a review of the 2003 Broadway production."
     },
     {
       "showId": "broadway-1987",
@@ -45,7 +45,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": null,
-      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This\", not the 1987 original production."
+      "reasoning": "The review explicitly mentions Adam Driver and Keri Russell, who starred in the 2019 revival of \"Burn This\", not the original 1987 production."
     },
     {
       "showId": "the-gin-game-1977",
@@ -61,7 +61,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
+      "reasoning": "The review mentions James Earl Jones and Cicely Tyson, who starred in the 2015 revival. It also mentions the John Golden Theatre, where the 2015 production opened, and the review's publish date is in 2015."
     },
     {
       "showId": "the-house-of-blue-leaves-1986",
@@ -78,7 +78,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-house-of-blue-leaves-2011",
-      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which confirms it is about the 20"
+      "reasoning": "The review mentions Edie Falco, Ben Stiller, Jennifer Jason Leigh, David Cromer, Christopher Abbott, Alison Pill, and Thomas Sadoski, who were all in the 2011 Broadway revival. It also mentions that this is Stiller's first Broadway production since the 1986 revival, which implies that this is a new "
     },
     {
       "showId": "old-times-1971",
@@ -94,7 +94,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre and a production running through Nov. 29, which aligns with the 2015 revival starring Clive Owen, Kelly Reilly, and Eve Best. It also explicitly calls it a 'carefully cultivated revival'."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre and a production running through Nov. 29, which matches the 2015 revival. It also mentions Clive Owen, Kelly Reilly, and Eve Best, who starred in the 2015 production."
     }
   ]
 }
