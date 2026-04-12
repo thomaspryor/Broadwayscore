@@ -295,14 +295,17 @@ jobs:
         run: |
           echo "Running cross-show URL collision audit with auto-fix..."
           node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
-          # Stage any collision fixes (review-texts changes + audit report)
-          git add data/review-texts/ data/audit/url-collision-report.json || true
-          if ! git diff --staged --quiet; then
-            FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "?")
+          FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "0")
+          if [ "$FIXED" -gt 0 ] 2>/dev/null; then
             echo "Collision auto-fix applied ($FIXED files modified)"
-            git commit -m "data: Auto-fix URL collisions ($FIXED files)
+            # Review-texts changes flow through push-review-texts action below.
+            # Only stage the audit report for the public repo commit.
+            git add data/audit/url-collision-report.json || true
+            if ! git diff --staged --quiet; then
+              git commit -m "data: Auto-fix $FIXED URL collisions
 
           Co-Authored-By: GitHub Action <action@github.com>"
+            fi
           else
             echo "No collisions to fix"
           fi
@@ -655,13 +658,15 @@ jobs:
         run: |
           echo "Running cross-show URL collision audit with auto-fix..."
           node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
-          git add data/review-texts/ data/audit/url-collision-report.json || true
-          if ! git diff --staged --quiet; then
-            FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "?")
+          FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "0")
+          if [ "$FIXED" -gt 0 ] 2>/dev/null; then
             echo "Collision auto-fix applied ($FIXED files modified)"
-            git commit -m "data: Auto-fix URL collisions — ${{ matrix.outlet_tier }} ($FIXED files)
+            git add data/audit/url-collision-report.json || true
+            if ! git diff --staged --quiet; then
+              git commit -m "data: Auto-fix $FIXED URL collisions — ${{ matrix.outlet_tier }}
 
           Co-Authored-By: GitHub Action <action@github.com>"
+            fi
           else
             echo "No collisions to fix"
           fi
