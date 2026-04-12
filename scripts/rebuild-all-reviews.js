@@ -878,6 +878,8 @@ const crossShowFingerprints = new Map();
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
         if (d.wrongProduction || d.wrongShow) continue;
+        // routedFromShowId: already rerouted — publish date reflects the original show's era
+        if (d.routedFromShowId) continue;
         // allowEarlyDate bypasses all date-based flagging
         if (d.allowEarlyDate) continue;
         // Respect manual clears UNLESS the date mismatch is large (>180 days) —
@@ -1905,7 +1907,8 @@ showDirs.forEach(showId => {
       // A review >90 days before the show opened is almost certainly a different production.
       // Long-run WE shows (opened before 2015): skip this guard entirely — decades of valid reviews.
       // Reviews with allowEarlyDate: true bypass all date checks.
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !showLongRunWE.has(showId)) {
+      // routedFromShowId: already rerouted — publish date reflects the original show's era
+      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId && !showLongRunWE.has(showId)) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
