@@ -290,6 +290,24 @@ jobs:
         run: node scripts/validate-data.js
         continue-on-error: true
 
+      - name: Fix URL collisions
+        if: steps.sched.outputs.skip != 'true'
+        run: |
+          echo "Running cross-show URL collision audit with auto-fix..."
+          node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
+          # Stage any collision fixes (review-texts changes + audit report)
+          git add data/review-texts/ data/audit/url-collision-report.json || true
+          if ! git diff --staged --quiet; then
+            FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "?")
+            echo "Collision auto-fix applied ($FIXED files modified)"
+            git commit -m "data: Auto-fix URL collisions ($FIXED files)
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+          else
+            echo "No collisions to fix"
+          fi
+        continue-on-error: true
+
       - name: Check for large files
         if: always()
         uses: ./.github/actions/check-file-sizes
@@ -633,6 +651,21 @@ jobs:
         run: node scripts/validate-data.js
         continue-on-error: true
 
+      - name: Fix URL collisions
+        run: |
+          echo "Running cross-show URL collision audit with auto-fix..."
+          node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
+          git add data/review-texts/ data/audit/url-collision-report.json || true
+          if ! git diff --staged --quiet; then
+            FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "?")
+            echo "Collision auto-fix applied ($FIXED files modified)"
+            git commit -m "data: Auto-fix URL collisions — ${{ matrix.outlet_tier }} ($FIXED files)
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+          else
+            echo "No collisions to fix"
+          fi
+        continue-on-error: true
 
       - name: Push review-texts to private repo
         if: always()
