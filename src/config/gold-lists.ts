@@ -12,6 +12,9 @@ export type GoldListType =
   | 'critical-gold-off-broadway'
   | 'critical-gold-off-west-end'
   | 'audience-gold'
+  | 'audience-gold-off-broadway'
+  | 'audience-gold-west-end'
+  | 'audience-gold-off-west-end'
   | 'box-office-gold'
   | 'hot-ticket-gold';
 
@@ -120,6 +123,51 @@ export const GOLD_LIST_CONFIGS: GoldListConfig[] = [
     minDataRequirement: 'AudienceGrade data available',
   },
   {
+    type: 'audience-gold-off-broadway',
+    title: 'Off-Broadway Audience Gold List\u2122',
+    shortTitle: 'OB Audiences',
+    description: 'The Off-Broadway shows audiences love most, based on combined audience platform scores',
+    color: 'text-rose-400',
+    bgClass: 'bg-rose-500/15',
+    borderClass: 'border-rose-500/30',
+    threshold: 78,
+    maxPerSeason: 10,
+    maxAllTime: 25,
+    metricLabel: 'AudienceGrade',
+    metricSuffix: '',
+    minDataRequirement: 'AudienceGrade data available',
+  },
+  {
+    type: 'audience-gold-west-end',
+    title: 'West End Audience Gold List\u2122',
+    shortTitle: 'WE Audiences',
+    description: 'The West End shows audiences love most, based on combined audience platform scores',
+    color: 'text-rose-400',
+    bgClass: 'bg-rose-500/15',
+    borderClass: 'border-rose-500/30',
+    threshold: 78,
+    maxPerSeason: 10,
+    maxAllTime: 25,
+    metricLabel: 'AudienceGrade',
+    metricSuffix: '',
+    minDataRequirement: 'AudienceGrade data available',
+  },
+  {
+    type: 'audience-gold-off-west-end',
+    title: 'Off-West End Audience Gold List\u2122',
+    shortTitle: 'OWE Audiences',
+    description: 'The Off-West End shows audiences love most, based on combined audience platform scores',
+    color: 'text-rose-400',
+    bgClass: 'bg-rose-500/15',
+    borderClass: 'border-rose-500/30',
+    threshold: 78,
+    maxPerSeason: 10,
+    maxAllTime: 25,
+    metricLabel: 'AudienceGrade',
+    metricSuffix: '',
+    minDataRequirement: 'AudienceGrade data available',
+  },
+  {
     type: 'box-office-gold',
     title: 'Box Office Gold List™',
     shortTitle: 'Box Office',
@@ -178,10 +226,13 @@ export function isValidGoldListType(type: string): type is GoldListType {
 export function marketFromListType(listType: GoldListType): ShowCategory | undefined {
   switch (listType) {
     case 'critical-gold-off-broadway':
+    case 'audience-gold-off-broadway':
       return 'off-broadway';
     case 'critical-gold-west-end':
+    case 'audience-gold-west-end':
       return 'west-end';
     case 'critical-gold-off-west-end':
+    case 'audience-gold-off-west-end':
       return 'off-west-end';
     case 'critical-gold':
     case 'audience-gold':
@@ -214,6 +265,8 @@ export function getMarketForListType(listType: GoldListType): GoldListMarket {
   switch (listType) {
     case 'critical-gold-west-end':
     case 'critical-gold-off-west-end':
+    case 'audience-gold-west-end':
+    case 'audience-gold-off-west-end':
       return 'london';
     default:
       return 'new-york';
@@ -230,9 +283,15 @@ export function getVenueTiersForMarket(market: GoldListMarket): VenueTier[] {
 /** Which venue tier does this list type belong to? */
 export function getVenueTierForListType(listType: GoldListType): VenueTier {
   switch (listType) {
-    case 'critical-gold-off-broadway': return 'off-broadway';
-    case 'critical-gold-west-end': return 'west-end';
-    case 'critical-gold-off-west-end': return 'off-west-end';
+    case 'critical-gold-off-broadway':
+    case 'audience-gold-off-broadway':
+      return 'off-broadway';
+    case 'critical-gold-west-end':
+    case 'audience-gold-west-end':
+      return 'west-end';
+    case 'critical-gold-off-west-end':
+    case 'audience-gold-off-west-end':
+      return 'off-west-end';
     default: return 'broadway'; // critical-gold, audience-gold, box-office-gold, hot-ticket-gold
   }
 }
@@ -243,11 +302,11 @@ export function getListTypesForVenueTier(tier: VenueTier): GoldListType[] {
     case 'broadway':
       return ['critical-gold', 'audience-gold', 'box-office-gold', 'hot-ticket-gold'];
     case 'off-broadway':
-      return ['critical-gold-off-broadway'];
+      return ['critical-gold-off-broadway', 'audience-gold-off-broadway'];
     case 'west-end':
-      return ['critical-gold-west-end'];
+      return ['critical-gold-west-end', 'audience-gold-west-end'];
     case 'off-west-end':
-      return ['critical-gold-off-west-end'];
+      return ['critical-gold-off-west-end', 'audience-gold-off-west-end'];
   }
 }
 

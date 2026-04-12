@@ -68,11 +68,8 @@ export default function GoldListAllTimePage({ params }: { params: { listType: st
   const config = GOLD_LIST_MAP[listType as GoldListType];
   const entries = getComputedGoldList(listType, 'all-time');
   const allSeasons = getSeasonsForList(listType);
-  const isAudienceList = listType === 'audience-gold';
-  const isCriticList = listType === 'critical-gold'
-    || listType === 'critical-gold-west-end'
-    || listType === 'critical-gold-off-broadway'
-    || listType === 'critical-gold-off-west-end';
+  const isAudienceList = listType.startsWith('audience-gold');
+  const isCriticList = listType.startsWith('critical-gold');
   const listCategory = marketFromListType(listType as GoldListType);
 
   const breadcrumbSchema = generateBreadcrumbSchema([

@@ -83,11 +83,8 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
   const entries = getComputedGoldList(listType, season);
   const allSeasons = getSeasonsForList(listType);
   const isCurrent = isCurrentSeason(season);
-  const isAudienceList = listType === 'audience-gold';
-  const isCriticList = listType === 'critical-gold'
-    || listType === 'critical-gold-west-end'
-    || listType === 'critical-gold-off-broadway'
-    || listType === 'critical-gold-off-west-end';
+  const isAudienceList = listType.startsWith('audience-gold');
+  const isCriticList = listType.startsWith('critical-gold');
   const listCategory = marketFromListType(listType as GoldListType);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
