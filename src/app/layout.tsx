@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Link from 'next/link';
 import ScrollToTop from '@/components/ScrollToTop';
 import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import FooterMarketContent from '@/components/FooterMarketContent';
+import FooterExploreCards from '@/components/FooterExploreCards';
 import FooterBranding from '@/components/FooterBranding';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
 import { getDataStats, getMarketStats } from '@/lib/data-core';
@@ -151,34 +151,9 @@ export default function RootLayout({
         </UserProviders>
         <footer className="border-t border-white/5 mt-6 sm:mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-            {/* Explore More Theatre — promoted market cards */}
+            {/* Explore More Theatre — promoted market cards, reordered by current market */}
             {(featureFlags.offBroadway || featureFlags.westEnd) && (
-              <div className="mb-8 pb-8 border-b border-white/5">
-                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Explore More Theatre</h4>
-                <div className="flex gap-3">
-                  {featureFlags.offBroadway && (
-                    <Link href="/off-broadway" className="flex-1 p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-brand/30 hover:bg-brand/[0.03] transition-colors text-center group">
-                      <div className="text-xl mb-1">&#127914;</div>
-                      <div className="text-sm font-bold text-white group-hover:text-brand transition-colors">Off-Broadway</div>
-                      <div className="text-[10px] text-gray-500">NYC</div>
-                    </Link>
-                  )}
-                  {featureFlags.westEnd && (
-                    <Link href="/west-end" className="flex-1 p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-pink-400/30 hover:bg-pink-400/[0.03] transition-colors text-center group">
-                      <div className="text-xl mb-1">&#127468;&#127463;</div>
-                      <div className="text-sm font-bold text-white group-hover:text-pink-400 transition-colors">West End</div>
-                      <div className="text-[10px] text-gray-500">London</div>
-                    </Link>
-                  )}
-                  {featureFlags.westEnd && (
-                    <Link href="/off-west-end" className="flex-1 p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-violet-400/30 hover:bg-violet-400/[0.03] transition-colors text-center group">
-                      <div className="text-xl mb-1">&#127917;</div>
-                      <div className="text-sm font-bold text-white group-hover:text-violet-400 transition-colors">Off-West End</div>
-                      <div className="text-[10px] text-gray-500">London</div>
-                    </Link>
-                  )}
-                </div>
-              </div>
+              <FooterExploreCards />
             )}
 
             <FooterMarketContent
