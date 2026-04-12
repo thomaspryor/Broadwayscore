@@ -252,14 +252,18 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // outletId isn't in their knownOutlets, this is likely a misattribution
   // from an aggregator or SERP. Flag the file rather than skipping, so we
   // don't lose data — the flag causes rebuild to exclude it from scoring.
-  let suspectedMisattribution = false;
+  // Note: _misattributionDetected is set here but the flag is only written to
+  // NEW files (below). On merge, we skip setting it to avoid re-flagging files
+  // where suspectedMisattribution was manually cleared to false (the merge
+  // logic treats false as falsy and would overwrite it).
+  let _misattributionDetected = false;
+  let _misattributionReason = '';
   if (criticSlug !== 'unknown') {
     const registry = _getCriticRegistry();
     const entry = registry[criticSlug];
     if (entry && !entry.isFreelancer && !entry.knownOutlets.includes(outletId)) {
-      suspectedMisattribution = true;
-      fields.suspectedMisattribution = true;
-      fields.misattributionReason = `critic "${entry.displayName}" has primaryOutlet="${entry.primaryOutlet}" (${entry.totalReviews} reviews); found at "${outletId}" which is not in knownOutlets`;
+      _misattributionDetected = true;
+      _misattributionReason = `critic "${entry.displayName}" has primaryOutlet="${entry.primaryOutlet}" (${entry.totalReviews} reviews); found at "${outletId}" which is not in knownOutlets`;
       console.warn(`  ⚠️  Misattribution guard: ${entry.displayName} at ${outletId} (primary: ${entry.primaryOutlet}) for ${showId}`);
     }
   }
@@ -300,6 +304,12 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     sources: [input.source],
     ...fields,
   };
+
+  // Apply misattribution flag to new files only (not merges — see Guard G note)
+  if (_misattributionDetected) {
+    newReview.suspectedMisattribution = true;
+    newReview.misattributionReason = _misattributionReason;
+  }
 
   // Classify content tier
   const tierResult = classifyContentTier(newReview);
