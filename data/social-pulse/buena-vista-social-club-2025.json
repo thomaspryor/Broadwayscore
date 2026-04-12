@@ -3,48 +3,53 @@
   "showId": "buena-vista-social-club-2025",
   "showTitle": "Buena Vista Social Club",
   "market": "Broadway",
-  "fetchedAt": "2026-04-11T20:26:28.303Z",
-  "tier": "Rising",
-  "volume": 174,
-  "positivePct": 65,
-  "weekOverWeekPct": 54,
-  "baselineMultiple": 1.54,
+  "fetchedAt": "2026-04-12T19:23:29.190Z",
+  "tier": "Steady",
+  "volume": 157,
+  "positivePct": 54,
+  "weekOverWeekPct": -10,
+  "baselineMultiple": 1.09,
   "platformBreakdown": {
     "x": 148,
-    "tiktok": 20,
-    "instagram": 6,
-    "reddit": 0
+    "tiktok": 0,
+    "instagram": 8,
+    "reddit": 1
   },
   "topQuotes": [
     {
-      "text": "Leonardo Reyna throwing some spice on the keys 🔥 #BuenaVistaSocialClub",
-      "platform": "tiktok",
-      "author": "@buenavistamusical",
-      "url": "https://www.tiktok.com/@buenavistamusical/video/7535995408733064503"
+      "text": "🎉 Natalie Venetia Belcon just won the Tony for Best Featured Actress in a Musical for Buena Vista Social Club—and…",
+      "platform": "x",
+      "author": "@BroadwayBlack",
+      "url": "https://x.com/BroadwayBlack/status/1931882981687271500"
     },
     {
-      "text": "Our Broadway queen! 🤩 From rehearsals to showtime, come behind the scenes for Ana Navarro's Broadway debut for one…",
-      "platform": "tiktok",
-      "author": "@theviewabc",
-      "url": "https://www.tiktok.com/@theviewabc/video/7615388103594806541"
+      "text": "What an incredible experience playing at @buenavistamusical last night. It’s always an honor to represent and pay…",
+      "platform": "instagram",
+      "author": "@roysuarezmusic",
+      "url": "https://www.instagram.com/p/DW7JQL7lPSe/"
     }
   ],
   "baseline": {
-    "mean": 143.5,
-    "weeksOfHistory": 2
+    "mean": 148,
+    "weeksOfHistory": 3
   },
   "costUsd": 0.1305,
   "rawCounts": {
-    "reddit": 0,
+    "reddit": 3,
     "twitter": 160,
-    "tiktok": 20,
+    "tiktok": 0,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 502 <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n</body>\r\n</html>\r\n"
+    }
+  ],
   "rank": {
-    "position": 16,
+    "position": 34,
     "total": 42,
-    "text": "16/42 Broadway"
+    "text": "34/42 Broadway"
   },
-  "compositeScore": 113.1
+  "compositeScore": 84.78
 }
