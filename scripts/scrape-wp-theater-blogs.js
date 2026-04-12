@@ -23,6 +23,7 @@ const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeCritic, generateReviewFilename } = require('./lib/review-normalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { cleanText } = require('./lib/text-cleaning');
+const { setExtractedScore } = require('./lib/score-routing');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -299,7 +300,14 @@ function saveReviewFile(showId, outletId, criticSlug, reviewData) {
       updated = true;
     }
     if (reviewData.originalScore && !existing.originalScore) {
-      existing.originalScore = reviewData.originalScore;
+      const routed = setExtractedScore(existing, {
+        value: reviewData.originalScore,
+        normalizedValue: reviewData.originalScoreNormalized || null,
+        source: reviewData.scoreSource || 'wp-api',
+      });
+      if (!routed.wasAggregator) {
+        existing.scoreSource = reviewData.scoreSource || 'wp-api';
+      }
       updated = true;
     }
     if (reviewData.url && !existing.url) {

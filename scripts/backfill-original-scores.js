@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractDesignation } = require('./lib/score-extractors');
+const { setExtractedScore } = require('./lib/score-routing');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -130,8 +131,11 @@ async function processReview(filePath, showId) {
       stats.byOutlet[outletId].found++;
 
       if (!DRY_RUN) {
-        data.originalScore = scoreResult.originalScore;
-        data.originalScoreNormalized = scoreResult.normalizedScore;
+        setExtractedScore(data, {
+          value: scoreResult.originalScore,
+          normalizedValue: scoreResult.normalizedScore,
+          source: scoreResult.source,
+        });
         data.scoreSource = scoreResult.source;
         data.scoreExtractedFrom = scoreSource;
       }

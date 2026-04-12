@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { LETTER_GRADES } = require('./lib/score-extractors');
+const { setExtractedScore } = require('./lib/score-routing');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
@@ -93,11 +94,11 @@ for (const filePath of allFiles) {
     }
 
     if (!DRY_RUN) {
-      data.originalScore = newScore;
-      // Also set normalizedScore if not present
-      if (!data.originalScoreNormalized) {
-        data.originalScoreNormalized = os; // The old numeric value IS the normalized score
-      }
+      setExtractedScore(data, {
+        value: newScore,
+        normalizedValue: data.originalScoreNormalized || os, // The old numeric value IS the normalized score
+        source: data.scoreSource || 'migrated-numeric',
+      });
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     }
     migrated++;

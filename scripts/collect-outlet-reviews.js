@@ -71,13 +71,8 @@ const MARKET_OUTLETS_FALLBACK = {
 
 const VALID_MARKETS = ['broadway', 'off-broadway', 'west-end', 'off-west-end'];
 
-// Domains to exclude from broad T3 search results (aggregators, not outlets)
-const AGGREGATOR_DOMAINS = new Set([
-  'broadwayworld.com', 'showscore.com', 'didtheylikeit.com', 'playbill.com',
-  'wikipedia.org', 'ibdb.com', 'nyctheatre.com', 'reddit.com', 'twitter.com',
-  'facebook.com', 'instagram.com', 'youtube.com', 'tiktok.com',
-  'todaytix.com', 'telecharge.com', 'ticketmaster.com', 'seatgeek.com',
-]);
+// Domain filtering removed — was dead code (defined but never referenced).
+// If needed in the future, import from scripts/lib/domain-filters.js.
 
 function parseArgs() {
   const args = process.argv.slice(2);

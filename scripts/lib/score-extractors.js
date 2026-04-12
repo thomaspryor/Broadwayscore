@@ -1250,10 +1250,13 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'telegraph-svg', 'telegraph-svg-stars', 'dailymail-rating-img', 'dailymail-css-stars', 'fivestar-widget',
   'star-class', 'unicode-stars', 'numeric-stars', 'original-star-rating',
   'timeout-star-widget', 'timeout-svg-stars',
-  'lbo-star-rating', 'express-star-count', 'standard-star-count', 'dailymail-star-count',
+  // NOTE: lbo-star-rating removed — LBO is an aggregator (in AGGREGATOR_SCORE_SOURCES),
+  // its ratings are third-party interpretations, not outlet-published scores.
+  'express-star-count', 'standard-star-count', 'dailymail-star-count',
   'text-pattern-verified', 'bww-star-image',
   'theatre-weekly-star-image', 'radiotimes-page-json', 'radiotimes-svg-stars',
-  'lbo-css-stars', 'atd-emoji-stars',
+  // NOTE: lbo-css-stars removed — LBO is an aggregator (in AGGREGATOR_SCORE_SOURCES).
+  'atd-emoji-stars',
   'text-pattern', 'css-stars', 'word-stars', 'star-rating',
   'reviewshub-percentage', 'explicit-rating', 'afridiziak-star-image', 'manual-verified',
 ]);

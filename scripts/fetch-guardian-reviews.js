@@ -32,6 +32,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { setExtractedScore } = require('./lib/score-routing');
 
 // Configuration
 const CONFIG = {
@@ -276,11 +277,14 @@ function updateReviewFile(review, apiResult) {
 
   // Extract star rating from API (Guardian uses 1-5 stars)
   if (apiResult.starRating && !data.originalScore) {
-    data.originalScore = `${apiResult.starRating}/5 stars`;
-    data.originalScoreNormalized = Math.round((apiResult.starRating / 5) * 100);
+    const routed = setExtractedScore(data, {
+      value: `${apiResult.starRating}/5 stars`,
+      normalizedValue: Math.round((apiResult.starRating / 5) * 100),
+      source: 'guardian-api',
+    });
     data.scoreSource = 'guardian-api';
     data.scoreExtractedFrom = 'api-metadata';
-    console.log(`  ★ Star rating: ${apiResult.starRating}/5 → ${data.originalScoreNormalized}/100`);
+    console.log(`  ★ Star rating: ${apiResult.starRating}/5 → ${Math.round((apiResult.starRating / 5) * 100)}/100 [${routed.field}]`);
   }
 
   // Store API metadata

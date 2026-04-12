@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { setExtractedScore } = require('./lib/score-routing');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const REVIEW_DIR = 'data/review-texts';
@@ -169,8 +170,11 @@ async function main() {
 
         if (!DRY_RUN) {
           // Update the review file
-          data.originalScore = extracted.originalScore;
-          data.originalScoreNormalized = extracted.normalizedScore;
+          setExtractedScore(data, {
+            value: extracted.originalScore,
+            normalizedValue: extracted.normalizedScore,
+            source: extracted.source,
+          });
           data.scoreSource = extracted.source;
           data._scoreFixedFrom = oldScore;
           data._scoreFixedAt = new Date().toISOString();

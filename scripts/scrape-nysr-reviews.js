@@ -22,6 +22,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { setExtractedScore } = require('./lib/score-routing');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -275,7 +276,14 @@ function saveReviewFile(showId, criticSlug, reviewData) {
       updated = true;
     }
     if (reviewData.originalScore && !existing.originalScore) {
-      existing.originalScore = reviewData.originalScore;
+      const routed = setExtractedScore(existing, {
+        value: reviewData.originalScore,
+        normalizedValue: reviewData.originalScoreNormalized || null,
+        source: reviewData.scoreSource || 'nysr-scrape',
+      });
+      if (!routed.wasAggregator) {
+        existing.scoreSource = reviewData.scoreSource || 'nysr-scrape';
+      }
       updated = true;
     }
     if (reviewData.url && !existing.url) {

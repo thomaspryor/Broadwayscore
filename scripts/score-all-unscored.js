@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { setExtractedScore } = require('./lib/score-routing');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -148,7 +149,11 @@ showDirs.forEach(showId => {
       const textToCheck = data.fullText || data.dtliExcerpt || data.bwwExcerpt || '';
       const gradeResult = extractLetterGrade(textToCheck);
       if (gradeResult) {
-        data.originalScore = gradeResult.grade;
+        setExtractedScore(data, {
+          value: gradeResult.grade,
+          normalizedValue: gradeResult.score,
+          source: 'extracted-grade',
+        });
         data.assignedScore = gradeResult.score;
         data.scoreSource = 'extracted-grade';
         delete data.scoreStatus;

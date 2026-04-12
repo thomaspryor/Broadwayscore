@@ -74,11 +74,8 @@ for (const [id, info] of Object.entries(_reg.outlets || {})) {
   }
 }
 
-// Aggregator domains to exclude from News results
-const AGGREGATOR_DOMAINS = [
-  'broadwayworld.com', 'didtheylikeit.com', 'show-score.com',
-  'playbill.com', 'nyctheatre.com', 'wikipedia.org',
-];
+// Domain filtering — use canonical source from domain-filters.js
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
 
 function loadJSON(filePath) {
   try {
@@ -290,12 +287,7 @@ function extractCriticFromTitle(title) {
 }
 
 function isAggregatorUrl(url) {
-  try {
-    const hostname = new URL(url).hostname.replace(/^www\./, '');
-    return AGGREGATOR_DOMAINS.some(d => hostname === d || hostname.endsWith(`.${d}`));
-  } catch {
-    return false;
-  }
+  return isBlockedReviewUrl(url);
 }
 
 function isReviewUrl(url, title) {
