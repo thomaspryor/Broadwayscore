@@ -78,7 +78,14 @@
     "aint-no-mo-2022/variety--naveen-kumar.json",
     "kpop-2022/variety--ad-amorosi.json",
     "kimberly-akimbo-2022/variety--naveen-kumar.json",
-    "kimberly-akimbo-2022/vulture--jackson-mchenry.json"
+    "kimberly-akimbo-2022/vulture--jackson-mchenry.json",
+    "walking-with-ghosts-2022/nytg--joe-dziemianowicz.json",
+    "topdog-underdog-2022/variety--naveen-kumar.json",
+    "topdog-underdog-2022/vulture--rob-weinert-kendt.json",
+    "topdog-underdog-2022/deadline--greg-evans.json",
+    "1776-2022/variety--frank-rizzo.json",
+    "leopoldstadt-2022/vulture--naveen-kumar.json",
+    "the-kite-runner-2022/variety--marilyn-stasio.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -126,7 +133,10 @@
     "aint-no-mo-2022/observer--rex-reed.json",
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
     "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
-    "almost-famous-2022/timeout--adam-feldman.json"
+    "almost-famous-2022/timeout--adam-feldman.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "leopoldstadt-2022/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -142,7 +152,8 @@
       "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
       "mother-play-2024/theatermania--rachel-graham.json",
       "suffs-2024/timeout--regina-robbins.json",
-      "aint-no-mo-2022/nyt-theater--jonathan-mandell.json"
+      "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
+      "walking-with-ghosts-2022/nytg--joe-dziemianowicz.json"
     ],
     "amp": [],
     "browserbase": [
@@ -199,7 +210,13 @@
       "data/review-texts/kpop-2022/variety--ad-amorosi.json",
       "kpop-2022/variety--ad-amorosi.json",
       "data/review-texts/kimberly-akimbo-2022/variety--naveen-kumar.json",
-      "kimberly-akimbo-2022/variety--naveen-kumar.json"
+      "kimberly-akimbo-2022/variety--naveen-kumar.json",
+      "data/review-texts/topdog-underdog-2022/variety--naveen-kumar.json",
+      "topdog-underdog-2022/variety--naveen-kumar.json",
+      "data/review-texts/topdog-underdog-2022/deadline--greg-evans.json",
+      "topdog-underdog-2022/deadline--greg-evans.json",
+      "data/review-texts/1776-2022/variety--frank-rizzo.json",
+      "1776-2022/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -255,11 +272,14 @@
       "a-dolls-house-2023/vulture--jackson-mchenry.json",
       "some-like-it-hot-2022/vulture--jackson-mchenry.json",
       "ohio-state-murders-2022/vulture--jackson-mchenry.json",
-      "kimberly-akimbo-2022/vulture--jackson-mchenry.json"
+      "kimberly-akimbo-2022/vulture--jackson-mchenry.json",
+      "topdog-underdog-2022/vulture--rob-weinert-kendt.json",
+      "leopoldstadt-2022/vulture--naveen-kumar.json",
+      "the-kite-runner-2022/variety--marilyn-stasio.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "almost-famous-2022/timeout--adam-feldman.json",
+  "lastProcessed": "the-kite-runner-2022/variety--marilyn-stasio.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -555,6 +575,39 @@
     },
     {
       "t": "2026-04-12T11:04:09.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T11:04:39.207Z",
+      "event": "bb-session",
+      "session": "96c0fc3c",
+      "url": "https://variety.com/2022/legit/reviews/topdog-underdog-review-broadway-yahya-abd"
+    },
+    {
+      "t": "2026-04-12T11:04:40.372Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T11:05:20.347Z",
+      "event": "bb-session",
+      "session": "320a8dad",
+      "url": "https://deadline.com/2022/10/topdog-underdog-broadway-review-corey-hawkins-yahya"
+    },
+    {
+      "t": "2026-04-12T11:05:21.158Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T11:05:36.686Z",
+      "event": "bb-session",
+      "session": "d4cd187b",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "t": "2026-04-12T11:05:37.412Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
