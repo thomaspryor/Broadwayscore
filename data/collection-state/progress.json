@@ -94,7 +94,12 @@
     "the-roommate-2024/vulture--sara-holdren.json",
     "once-upon-a-mattress-2024/timeout--adam-feldman.json",
     "mother-play-2024/theatermania--rachel-graham.json",
-    "illinoise-2024/vulture--sara-holdren.json"
+    "illinoise-2024/vulture--sara-holdren.json",
+    "cabaret-2024/amny--matt-windman.json",
+    "stereophonic-2024/nytimes--naveen-kumar.json",
+    "suffs-2024/vulture--sara-holdren.json",
+    "suffs-2024/timeout--regina-robbins.json",
+    "lempicka-2024/nytimes--jesse-green.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1021,7 +1026,12 @@
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "the-hills-of-california-2024/vulture--sara-holdren.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
-    "mary-jane-2024/ew--joey-nolfi.json"
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "hells-kitchen-2024/thewrap--robert-hofler.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1091,7 +1101,9 @@
       "data/review-texts/art-2025/nypost--johnny-oleksinski.json",
       "art-2025/nypost--johnny-oleksinski.json",
       "data/review-texts/tammy-faye-2024/variety--frank-rizzo.json",
-      "tammy-faye-2024/variety--frank-rizzo.json"
+      "tammy-faye-2024/variety--frank-rizzo.json",
+      "data/review-texts/cabaret-2024/amny--matt-windman.json",
+      "cabaret-2024/amny--matt-windman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1118,7 +1130,10 @@
       "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
       "good-night-and-good-luck-2025/theatrely--juan-a-ramirez.json",
       "othello-2025/theatrely--juan-a-ramirez.json",
-      "once-upon-a-mattress-2024/timeout--adam-feldman.json"
+      "once-upon-a-mattress-2024/timeout--adam-feldman.json",
+      "stereophonic-2024/nytimes--naveen-kumar.json",
+      "suffs-2024/timeout--regina-robbins.json",
+      "lempicka-2024/nytimes--jesse-green.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1149,7 +1164,8 @@
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
       "data/review-texts/maybe-happy-ending-2024/vulture--sara-holdren.json",
       "data/review-texts/mj-2022/thewrap--robert-hofler.json",
-      "data/review-texts/the-hills-of-california-2024/vulture--sara-holdren.json"
+      "data/review-texts/the-hills-of-california-2024/vulture--sara-holdren.json",
+      "data/review-texts/hells-kitchen-2024/thewrap--robert-hofler.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -1179,11 +1195,12 @@
       "our-town-2024/vulture--sara-holdren.json",
       "yellow-face-2024/vulture--sara-holdren.json",
       "the-roommate-2024/vulture--sara-holdren.json",
-      "illinoise-2024/vulture--sara-holdren.json"
+      "illinoise-2024/vulture--sara-holdren.json",
+      "suffs-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "mary-jane-2024/ew--joey-nolfi.json",
+  "lastProcessed": "lempicka-2024/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1504,6 +1521,17 @@
       "t": "2026-04-12T02:24:07.874Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:30:14.036Z",
+      "event": "bb-session",
+      "session": "e5761377",
+      "url": "https://www.amny.com/news/review-cabaret-revival-2024/"
+    },
+    {
+      "t": "2026-04-12T02:30:15.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

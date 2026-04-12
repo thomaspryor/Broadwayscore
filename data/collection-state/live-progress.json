@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-12T02:30:10.161Z",
-  "processed": 95,
-  "failed": 925,
-  "successRate": "9.3%",
+  "updatedAt": "2026-04-12T02:34:57.266Z",
+  "processed": 100,
+  "failed": 930,
+  "successRate": "9.7%",
   "tierBreakdown": {
     "playwright": 26,
     "amp": 2,
-    "browserbase": 34,
+    "browserbase": 36,
     "directCookies": 0,
-    "scrapingbee": 24,
+    "scrapingbee": 27,
     "brightdata": 0,
-    "archiveToday": 28,
-    "archive": 28
+    "archiveToday": 29,
+    "archive": 29
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-04-12T02:05:32.742Z",
-      "event": "bb-session",
-      "session": "aff02169",
-      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
-    },
-    {
-      "t": "2026-04-12T02:05:33.820Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-12T02:06:38.058Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-12T02:24:07.874Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:30:14.036Z",
+      "event": "bb-session",
+      "session": "e5761377",
+      "url": "https://www.amny.com/news/review-cabaret-revival-2024/"
+    },
+    {
+      "t": "2026-04-12T02:30:15.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
