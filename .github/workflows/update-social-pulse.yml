@@ -29,12 +29,11 @@ jobs:
   update-social-pulse:
     name: Fetch + score social mentions for running shows
     runs-on: ubuntu-latest
-    # Timeout generous enough for 93 shows × ~70s each (parallel platform
-    # fetches within each show + 2s spacing) + rank aggregation + commit.
-    # Empirically observed ~67s/show on first real run, so 93 × 70s = 108
-    # min for processing alone. 180 gives headroom for slower Apify runs
-    # and the rank aggregation + commit + push retry tail.
-    timeout-minutes: 180
+    # With 4 platforms (X, TikTok, IG via Apify + Reddit via ScrapingBee),
+    # each show takes ~2 min. 93 shows × 2 min = 186 min fetch + ~15 min
+    # for LLM classification + rank computation + commit. 240 min observed
+    # on run 24309696021 (timed out at 180). 300 gives safe headroom.
+    timeout-minutes: 300
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
