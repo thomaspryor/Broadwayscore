@@ -193,7 +193,10 @@
     "maybe-happy-ending-2024/vulture--sara-holdren.json",
     "the-hills-of-california-2024/vulture--sara-holdren.json",
     "purlie-victorious-2023/theater-pizzazz--ron-fassler-critic.json",
-    "here-lies-love-2023/vulture--jackson-mchenry.json"
+    "here-lies-love-2023/vulture--jackson-mchenry.json",
+    "kimberly-akimbo-2022/vulture--jackson-mchenry.json",
+    "plaza-suite-2022/vulture--helen-shaw.json",
+    "company-2021/deadline--greg-evans.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1272,7 +1275,14 @@
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "the-collaboration-2022/times-uk--jesse-green.json",
     "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json"
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "aint-no-mo-2022/observer--rex-reed.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "almost-famous-2022/timeout--adam-feldman.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "american-buffalo-2022/observer--jesse-green.json",
+    "waitress-2021/vulture--helen-shaw.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1429,7 +1439,9 @@
       "data/review-texts/1776-2022/variety--frank-rizzo.json",
       "1776-2022/variety--frank-rizzo.json",
       "data/review-texts/leopoldstadt-2022/variety--marilyn-stasio.json",
-      "leopoldstadt-2022/variety--marilyn-stasio.json"
+      "leopoldstadt-2022/variety--marilyn-stasio.json",
+      "data/review-texts/company-2021/deadline--greg-evans.json",
+      "company-2021/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1620,11 +1632,13 @@
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
       "the-hills-of-california-2024/vulture--sara-holdren.json",
       "purlie-victorious-2023/theater-pizzazz--ron-fassler-critic.json",
-      "here-lies-love-2023/vulture--jackson-mchenry.json"
+      "here-lies-love-2023/vulture--jackson-mchenry.json",
+      "kimberly-akimbo-2022/vulture--jackson-mchenry.json",
+      "plaza-suite-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+  "lastProcessed": "waitress-2021/vulture--helen-shaw.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -2165,6 +2179,17 @@
       "t": "2026-04-12T02:59:27.055Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T04:26:55.218Z",
+      "event": "bb-session",
+      "session": "36106da7",
+      "url": "https://deadline.com/2021/12/company-broadway-review-stephen-sondheim-katrina-le"
+    },
+    {
+      "t": "2026-04-12T04:26:56.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
