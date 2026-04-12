@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T04:33:01.311Z",
+  "timestamp": "2026-04-12T04:47:08.866Z",
   "stats": {
-    "totalReviews": 34623,
-    "alreadyFlagged": 14087,
+    "totalReviews": 34602,
+    "alreadyFlagged": 14084,
     "dateGuardCatches": 58,
     "directorMismatch": 926,
-    "tvFilmSignals": 3339,
+    "tvFilmSignals": 3335,
     "londonSignals": 1077,
-    "offBroadwaySignals": 953,
+    "offBroadwaySignals": 951,
     "yearMismatch": 71,
-    "noPublishDate": 4087
+    "noPublishDate": 4081
   },
   "findings": [
     {
@@ -1509,7 +1509,7 @@
     {
       "showId": "a-strange-loop-2022",
       "file": "latimes--charles-mcnulty.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2022-04-26",
       "url": "https://www.latimes.com/entertainment-arts/story/2022-04-26/review-a-strange-loop-michael-r-jackson-musical-broadway",
       "findings": [
@@ -1578,25 +1578,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "a-strange-loop-2022",
-      "file": "the-la-times--charles-mcnulty.json",
-      "score": 93,
-      "publishDate": "2022-04-26",
-      "url": "https://www.latimes.com/entertainment-arts/story/2022-04-26/review-a-strange-loop-michael-r-jackson-musical-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -1780,7 +1761,7 @@
     },
     {
       "showId": "a-view-from-the-bridge-2010",
-      "file": "show-buzz-nyc--laura-heller.json",
+      "file": "broadwaycom--laura-heller.json",
       "score": 92,
       "publishDate": null,
       "url": "https://www.broadway.com/buzz/143335/after-onstage-injury-santino-fontana-misses-performances-in-a-view-from-the-bridge/",
@@ -1893,6 +1874,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "file": "timeout--david-cote.json",
+      "score": 94,
+      "publishDate": "November 12, 2015",
+      "url": "http://www.timeout.com/newyork/theater/a-view-from-the-bridge",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
         }
       ]
     },
@@ -3268,20 +3263,6 @@
     },
     {
       "showId": "all-the-way-2014",
-      "file": "nbcnews--robert-kahn.json",
-      "score": 58,
-      "publishDate": null,
-      "url": "http://www.nbcnewyork.com/entertainment/the-scene/cranston-alltheway-review-248571221.html%20%20",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 1\""
-        }
-      ]
-    },
-    {
-      "showId": "all-the-way-2014",
       "file": "nbcny--robert-kahn.json",
       "score": 62,
       "publishDate": "March 6, 2014",
@@ -3777,20 +3758,6 @@
     },
     {
       "showId": "american-idiot-2010",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "score": 66,
-      "publishDate": null,
-      "url": "https://www.reuters.com/article/idUSTRE63J6IO20100420",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "american-idiot-2010",
       "file": "nytimes--ben-brantley.json",
       "score": 88,
       "publishDate": "April 20, 2010",
@@ -3823,6 +3790,20 @@
       "score": 62,
       "publishDate": null,
       "url": "https://www.onoffbroadway.com/2010/04/american-idiot.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "american-idiot-2010",
+      "file": "reuters--frank-scheck.json",
+      "score": 66,
+      "publishDate": null,
+      "url": "https://www.reuters.com/article/idUSTRE63J6IO20100420",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -5876,7 +5857,7 @@
     },
     {
       "showId": "beautiful-the-carole-king-musical-2014",
-      "file": "frequent-business-traveler--jonathan-spira.json",
+      "file": "frequentbusinesstraveler--jonathan-spira.json",
       "score": 65,
       "publishDate": "February 26th, 2015",
       "url": "http://www.frequentbusinesstraveler.com/2015/02/beautiful-the-carole-king-musical-at-stephen-sondheim-theatre-review/",
@@ -8786,7 +8767,7 @@
     },
     {
       "showId": "casa-valentina-2014",
-      "file": "huffpost--playbill-staff.json",
+      "file": "playbill--playbill-staff.json",
       "score": 82,
       "publishDate": "2014-04-24",
       "url": "https://playbill.com/article/the-verdict-critics-review-harvey-fiersteins-new-broadway-play-casa-valentina-com-217574",
@@ -9655,7 +9636,7 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "file": "frequent-business-traveler--jonathan-spira.json",
+      "file": "frequentbusinesstraveler--jonathan-spira.json",
       "score": 43,
       "publishDate": "April 29th, 2017",
       "url": "http://www.frequentbusinesstraveler.com/2017/04/review-charlie-and-the-chocolate-factory-at-lunt-fontanne-theatre/",
@@ -10708,7 +10689,7 @@
     },
     {
       "showId": "come-from-away-2017",
-      "file": "frequent-business-traveler--jonathan-spira.json",
+      "file": "frequentbusinesstraveler--jonathan-spira.json",
       "score": 91,
       "publishDate": "March 17th, 2017",
       "url": "http://www.frequentbusinesstraveler.com/2017/03/review-come-from-away-at-gerald-schoenfeld-theater/",
@@ -14669,30 +14650,6 @@
     },
     {
       "showId": "fiddler-on-the-roof-2015",
-      "file": "financialtimes--unknown.json",
-      "score": 65,
-      "publishDate": null,
-      "url": "https://playbill.com/article/the-verdict-read-reviews-for-the-broadway-revival-of-fiddler-on-the-roof-starring-danny-burstein-com-376292",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
-      "showId": "fiddler-on-the-roof-2015",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 72,
       "publishDate": "2015-12-17",
@@ -14843,6 +14800,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "file": "playbill--unknown.json",
+      "score": 65,
+      "publishDate": null,
+      "url": "https://playbill.com/article/the-verdict-read-reviews-for-the-broadway-revival-of-fiddler-on-the-roof-starring-danny-burstein-com-376292",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
@@ -19466,7 +19447,7 @@
     },
     {
       "showId": "gypsy-2008",
-      "file": "nysr--melissa-rose-bernardo.json",
+      "file": "playbill--melissa-rose-bernardo.json",
       "score": 81,
       "publishDate": null,
       "url": "https://playbill.com/article/read-the-reviews-gypsy-on-broadway-starring-audra-mcdonald",
@@ -21110,7 +21091,7 @@
     },
     {
       "showId": "hello-dolly-2017",
-      "file": "frequent-business-traveler--jonathan-spira.json",
+      "file": "frequentbusinesstraveler--jonathan-spira.json",
       "score": 85,
       "publishDate": "April 27th, 2017",
       "url": "http://www.frequentbusinesstraveler.com/2017/04/review-hello-dolly-at-shubert-theater/",
@@ -26825,7 +26806,7 @@
     },
     {
       "showId": "kiss-me-kate-2019",
-      "file": "adrian-dim-anlig--adrian-dimanlig.json",
+      "file": "adriandimanlig--adrian-dimanlig.json",
       "score": 88,
       "publishDate": "March 15th, 2019",
       "url": "http://www.adriandimanlig.com/the-hangover-report-roundabouts-smashing-recalibrated-kiss-me-kate-puts-the-emphasis-on-real-love/",
@@ -28570,20 +28551,6 @@
     },
     {
       "showId": "little-bear-ridge-road-2025",
-      "file": "dailybeast--logan-culwell-block.json",
-      "score": 71,
-      "publishDate": null,
-      "url": "https://playbill.com/article/reviews-are-in-for-little-bear-ridge-road-on-broadway",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "little-bear-ridge-road-2025",
       "file": "dailybeast--tim-teeman.json",
       "score": 86,
       "publishDate": null,
@@ -28691,6 +28658,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-2025",
+      "file": "playbill--logan-culwell-block.json",
+      "score": 71,
+      "publishDate": null,
+      "url": "https://playbill.com/article/reviews-are-in-for-little-bear-ridge-road-on-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -31757,20 +31738,6 @@
     },
     {
       "showId": "million-dollar-quartet-2010",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "score": 82,
-      "publishDate": "April 12, 2010",
-      "url": "http://www.reuters.com/article/2010/04/12/us-stage-million-idUSTRE63B0I520100412",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "million-dollar-quartet-2010",
       "file": "on-off-broadway--matt-windman.json",
       "score": 82,
       "publishDate": null,
@@ -31780,6 +31747,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-2010",
+      "file": "reuters--frank-scheck.json",
+      "score": 82,
+      "publishDate": "April 12, 2010",
+      "url": "http://www.reuters.com/article/2010/04/12/us-stage-million-idUSTRE63B0I520100412",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -34203,7 +34184,21 @@
     },
     {
       "showId": "network-2018",
-      "file": "tim-teeman--tim-teeman.json",
+      "file": "timeout--adam-feldman.json",
+      "score": 45,
+      "publishDate": "December 7, 2018",
+      "url": "https://www.timeout.com/newyork/theater/network",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "network-2018",
+      "file": "timteeman--tim-teeman.json",
       "score": 81,
       "publishDate": "December 6th, 2018",
       "url": "http://www.timteeman.com/2018/12/06/network-on-broadway-bryan-cranstons-must-see-media-meltdown/",
@@ -34217,20 +34212,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "network-2018",
-      "file": "timeout--adam-feldman.json",
-      "score": 45,
-      "publishDate": "December 7, 2018",
-      "url": "https://www.timeout.com/newyork/theater/network",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -38574,20 +38555,6 @@
     },
     {
       "showId": "pretty-woman-the-musical-2018",
-      "file": "the-saratogian--bob-goepfert.json",
-      "score": 75,
-      "publishDate": "August 22nd, 2018",
-      "url": "http://www.troyrecord.com/article/TR/20180822/NEWS/180829940",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"motion picture\""
-        }
-      ]
-    },
-    {
-      "showId": "pretty-woman-the-musical-2018",
       "file": "theater-scene--darryl-reilly.json",
       "score": 25,
       "publishDate": "2018-08-26",
@@ -39997,7 +39964,7 @@
     },
     {
       "showId": "rocky-2014",
-      "file": "philadelphia-daily-news--chuck-darron.json",
+      "file": "philadelphia-inquirer--chuck-darron.json",
       "score": 82,
       "publishDate": "2014-03-14",
       "url": "https://www.philly.com/philly/entertainment/20140314__Rocky__looks_like_Broadway_s_next_heavyweight_champ.html",
@@ -41734,7 +41701,7 @@
     },
     {
       "showId": "six-2021",
-      "file": "theatres-leiter-side--samuel-l-leiter.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 74,
       "publishDate": "2021-10-07",
       "url": "https://theaterlife.com/six-the-musical/",
@@ -44881,20 +44848,6 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "file": "thestage--jose-solis.json",
-      "score": 87,
-      "publishDate": "February 23rd, 2017",
-      "url": "https://stagebuddy.com/reviews/review-sunday-park-george",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
       "file": "thestage--nicole-serratore.json",
       "score": 78,
       "publishDate": "February 23rd, 2017",
@@ -46112,7 +46065,7 @@
     },
     {
       "showId": "tammy-faye-2024",
-      "file": "new-york-sun--unknown.json",
+      "file": "new-york-city-theatre--unknown.json",
       "score": 36,
       "publishDate": "2024-11-15",
       "url": "https://www.newyorkcitytheatre.com/news/reviews/494736",
@@ -47216,20 +47169,6 @@
       ]
     },
     {
-      "showId": "the-bands-visit-2017",
-      "file": "times-uk--jordan-hoffman.json",
-      "score": 86,
-      "publishDate": "November 9th, 2017",
-      "url": "https://www.timesofisrael.com/broadway-welcomes-israeli-cinema-with-acclaimed-production-of-the-bands-visit/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "the-big-knife-2013",
       "file": "ew--lisa-schwarzbaum.json",
       "score": 75,
@@ -47463,7 +47402,7 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
-      "file": "metro--claire-allfree.json",
+      "file": "metro-uk--claire-allfree.json",
       "score": 86,
       "publishDate": "2013-03-22",
       "url": "https://metro.co.uk/2013/03/22/the-book-of-mormon-is-helplessly-funny-and-terrifically-entertaining-3554008/",
@@ -53083,6 +53022,20 @@
     },
     {
       "showId": "the-parisian-woman-2017",
+      "file": "huffpost--huffpost-steven-suskin.json",
+      "score": 25,
+      "publishDate": null,
+      "url": "https://www.huffpost.com/entry/aisle-review-on-the-boulevard_us_5a2081f4e4b05072e8b5676a",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-parisian-woman-2017",
       "file": "lilith-magazine--aileen-jacobson.json",
       "score": 76,
       "publishDate": "2017-12-01",
@@ -53134,20 +53087,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-parisian-woman-2017",
-      "file": "nysr--huffpost-steven-suskin.json",
-      "score": 25,
-      "publishDate": null,
-      "url": "https://www.huffpost.com/entry/aisle-review-on-the-boulevard_us_5a2081f4e4b05072e8b5676a",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -60876,20 +60815,6 @@
     },
     {
       "showId": "a-view-from-the-bridge-2015",
-      "file": "timeout--david-cote.json",
-      "score": 94,
-      "publishDate": "November 12, 2015",
-      "url": "http://www.timeout.com/newyork/theater/a-view-from-the-bridge",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "a-view-from-the-bridge-2015",
       "file": "wsj--terry-teachout.json",
       "score": 42,
       "publishDate": "2015-11-13",
@@ -64825,7 +64750,7 @@
     },
     {
       "showId": "elf-2024",
-      "file": "new-york-sun--unknown.json",
+      "file": "new-york-city-theatre--unknown.json",
       "score": 82,
       "publishDate": "2024-11-19",
       "url": "https://www.newyorkcitytheatre.com/news/reviews/495284",
@@ -70149,7 +70074,7 @@
     },
     {
       "showId": "latin-history-for-morons-2017",
-      "file": "adrian-dim-anlig--adrian-dimanlig.json",
+      "file": "adriandimanlig--adrian-dimanlig.json",
       "score": 76,
       "publishDate": "November 19th, 2017",
       "url": "http://www.adriandimanlig.com/viewpoints-two-more-solo-shows-continue-to-demonstrate-the-astonishing-versatility-of-the-form-transport-groups-strange-interlude-and-john-leguizamos-latin-history-for-morons/",
@@ -74888,19 +74813,6 @@
     },
     {
       "showId": "skylight-2015",
-      "file": "dailybeast--robert-kahn.json",
-      "publishDate": "April 2, 2015",
-      "url": "https://www.nbcnewyork.com/entertainment/the-scene/skylight-mulligan-review-298149311.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "skylight-2015",
       "file": "guardian--alexis-soloski.json",
       "score": 77,
       "publishDate": "April 3, 2015",
@@ -74919,6 +74831,19 @@
       "score": 86,
       "publishDate": "April 2nd, 2015",
       "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-peering-throug_b_6997542.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-2015",
+      "file": "nbcny--robert-kahn.json",
+      "publishDate": "April 2, 2015",
+      "url": "https://www.nbcnewyork.com/entertainment/the-scene/skylight-mulligan-review-298149311.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -78585,7 +78510,7 @@
     },
     {
       "showId": "the-ferryman-2018",
-      "file": "american-theater-web--rob-weinert-kendt.json",
+      "file": "america-magazine--rob-weinert-kendt.json",
       "score": 72,
       "publishDate": "2018-10-22",
       "url": "https://www.americamagazine.org/arts-culture/2018/10/22/review-troubles-bring-trouble-farm-family-northern-ireland/",
@@ -79729,7 +79654,7 @@
     },
     {
       "showId": "the-lightning-thief-2019",
-      "file": "nysr--theatrenewsonlinecom-sandy-macdonald.json",
+      "file": "theater-news-online--theatrenewsonlinecom-sandy-macdonald.json",
       "score": 58,
       "publishDate": null,
       "url": "https://theaternewsonline.com/NYTheaterReviews/HALFDIVINE.cfm",
@@ -80299,10 +80224,10 @@
     },
     {
       "showId": "the-play-that-goes-wrong-2017",
-      "file": "nbcny--robert-kahn.json",
-      "score": 45,
+      "file": "huffpost--huffington-post-steven-suskin.json",
+      "score": 86,
       "publishDate": null,
-      "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-JJAbrams-Play-Goes-Wrong-417864353.html",
+      "url": "https://www.huffpost.com/entry/58e00fdee4b0d804fbbb7394",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80313,10 +80238,10 @@
     },
     {
       "showId": "the-play-that-goes-wrong-2017",
-      "file": "nysr--huffington-post-steven-suskin.json",
-      "score": 86,
+      "file": "nbcny--robert-kahn.json",
+      "score": 45,
       "publishDate": null,
-      "url": "https://www.huffpost.com/entry/58e00fdee4b0d804fbbb7394",
+      "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-JJAbrams-Play-Goes-Wrong-417864353.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -82431,20 +82356,6 @@
     },
     {
       "showId": "what-the-constitution-means-to-me-2019",
-      "file": "tim-teeman--tim-teeman.json",
-      "score": 83,
-      "publishDate": "March 31st, 2019",
-      "url": "http://www.timteeman.com/2019/03/31/what-the-constitution-means-to-me-how-heidi-schreck-wins-the-argument-on-broadway/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "what-the-constitution-means-to-me-2019",
       "file": "timeout--adam-feldman.json",
       "score": 88,
       "publishDate": "March 14, 2019",
@@ -82463,6 +82374,20 @@
       "score": 92,
       "publishDate": null,
       "url": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me-broadway-review-heidi-schreck",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "what-the-constitution-means-to-me-2019",
+      "file": "timteeman--tim-teeman.json",
+      "score": 83,
+      "publishDate": "March 31st, 2019",
+      "url": "http://www.timteeman.com/2019/03/31/what-the-constitution-means-to-me-how-heidi-schreck-wins-the-argument-on-broadway/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
