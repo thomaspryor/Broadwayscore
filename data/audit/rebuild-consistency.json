@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-12T16:12:12.274Z",
+  "generatedAt": "2026-04-12T16:05:32.921Z",
   "issues": [
     {
       "type": "designation-score-mismatch",
@@ -8,14 +8,6 @@
       "outlet": "nytimes",
       "critic": "Ben Brantley",
       "detail": "Critics_Pick but score=38 (source: llmScore)"
-    },
-    {
-      "type": "designation-score-mismatch",
-      "severity": "medium",
-      "showId": "les-miserables-2006",
-      "outlet": "nytimes",
-      "critic": "Ben Brantley",
-      "detail": "Critics_Pick but score=54 (source: llmScore-lowconf)"
     },
     {
       "type": "designation-score-mismatch",
@@ -34,14 +26,8 @@
     {
       "type": "score-clustering",
       "severity": "low",
-      "showId": "take-me-out-2022",
-      "detail": "12/21 reviews (57%) scored exactly 80"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
       "showId": "the-phantom-of-the-opera-west-end-1986",
-      "detail": "10/17 reviews (59%) scored exactly 80"
+      "detail": "8/15 reviews (53%) scored exactly 80"
     }
   ]
 }
