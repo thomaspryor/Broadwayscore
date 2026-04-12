@@ -73,7 +73,12 @@
     "parade-2023/theatrely--kobi-kassal.json",
     "a-dolls-house-2023/vulture--jackson-mchenry.json",
     "some-like-it-hot-2022/vulture--jackson-mchenry.json",
-    "ohio-state-murders-2022/vulture--jackson-mchenry.json"
+    "ohio-state-murders-2022/vulture--jackson-mchenry.json",
+    "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
+    "aint-no-mo-2022/variety--naveen-kumar.json",
+    "kpop-2022/variety--ad-amorosi.json",
+    "kimberly-akimbo-2022/variety--naveen-kumar.json",
+    "kimberly-akimbo-2022/vulture--jackson-mchenry.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -99,7 +104,29 @@
     "the-hills-of-california-2024/vulture--sara-holdren.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
     "mary-jane-2024/ew--joey-nolfi.json",
-    "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
+    "hells-kitchen-2024/thewrap--robert-hofler.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "appropriate-2023/timeout--adam-feldman.json",
+    "harmony-2023/usatoday--david-rooney.json",
+    "jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "here-lies-love-2023/observer--jesse-green.json",
+    "just-for-us-2023/vulture--jackson-mchenry.json",
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
+    "fat-ham-2023/vulture--jackson-mchenry.json",
+    "parade-2023/observer--jesse-green.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "aint-no-mo-2022/observer--rex-reed.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+    "almost-famous-2022/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -114,7 +141,8 @@
       "elf-2024/nyt-theater--jonathan-mandell.json",
       "sunset-boulevard-2024/nytg--joe-dziemianowicz.json",
       "mother-play-2024/theatermania--rachel-graham.json",
-      "suffs-2024/timeout--regina-robbins.json"
+      "suffs-2024/timeout--regina-robbins.json",
+      "aint-no-mo-2022/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -165,7 +193,13 @@
       "data/review-texts/shucked-2023/variety--frank-rizzo.json",
       "shucked-2023/variety--frank-rizzo.json",
       "data/review-texts/sweeney-todd-2023/variety--naveen-kumar.json",
-      "sweeney-todd-2023/variety--naveen-kumar.json"
+      "sweeney-todd-2023/variety--naveen-kumar.json",
+      "data/review-texts/aint-no-mo-2022/variety--naveen-kumar.json",
+      "aint-no-mo-2022/variety--naveen-kumar.json",
+      "data/review-texts/kpop-2022/variety--ad-amorosi.json",
+      "kpop-2022/variety--ad-amorosi.json",
+      "data/review-texts/kimberly-akimbo-2022/variety--naveen-kumar.json",
+      "kimberly-akimbo-2022/variety--naveen-kumar.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -192,7 +226,8 @@
       "data/review-texts/hells-kitchen-2024/thewrap--robert-hofler.json",
       "data/review-texts/jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
       "data/review-texts/just-for-us-2023/vulture--jackson-mchenry.json",
-      "data/review-texts/fat-ham-2023/vulture--jackson-mchenry.json"
+      "data/review-texts/fat-ham-2023/vulture--jackson-mchenry.json",
+      "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json"
     ],
     "archive": [
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
@@ -219,11 +254,12 @@
       "shucked-2023/vulture--jackson-mchenry.json",
       "a-dolls-house-2023/vulture--jackson-mchenry.json",
       "some-like-it-hot-2022/vulture--jackson-mchenry.json",
-      "ohio-state-murders-2022/vulture--jackson-mchenry.json"
+      "ohio-state-murders-2022/vulture--jackson-mchenry.json",
+      "kimberly-akimbo-2022/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+  "lastProcessed": "almost-famous-2022/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -486,6 +522,39 @@
     },
     {
       "t": "2026-04-12T10:58:18.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T11:00:29.213Z",
+      "event": "bb-session",
+      "session": "3eb1de32",
+      "url": "https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/"
+    },
+    {
+      "t": "2026-04-12T11:00:30.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T11:00:52.247Z",
+      "event": "bb-session",
+      "session": "da18c5cc",
+      "url": "https://variety.com/2022/legit/reviews/kpop-review-south-broadway-musical-123544"
+    },
+    {
+      "t": "2026-04-12T11:00:53.056Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T11:04:08.366Z",
+      "event": "bb-session",
+      "session": "3dfe1f05",
+      "url": "https://variety.com/2022/legit/reviews/kimberly-akimbo-review-broadway-musical-1"
+    },
+    {
+      "t": "2026-04-12T11:04:09.275Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
