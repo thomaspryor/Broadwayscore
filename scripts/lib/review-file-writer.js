@@ -33,8 +33,57 @@ const {
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
+const { pickRerouteTarget } = require('./review-guards');
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
+const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
+
+// ─── Lazy-loaded sibling lookup for cross-market contamination prevention ───
+// Loaded once on first use, cached for the process lifetime.
+let _siblingCache = null;
+function _getSiblingData() {
+  if (_siblingCache) return _siblingCache;
+  try {
+    const shows = require(SHOWS_PATH).shows;
+    // Group by normalized title
+    const byTitle = {};
+    for (const s of shows) {
+      const t = (s.title || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
+      if (!t) continue;
+      (byTitle[t] = byTitle[t] || []).push(s);
+    }
+    // Build map: showId → {openingDate, siblings: [{id, openingDate}]}
+    const map = new Map();
+    for (const s of shows) {
+      const t = (s.title || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
+      const sibs = (byTitle[t] || []).filter(x => x.id !== s.id);
+      if (sibs.length) {
+        const yearMatch = s.id.match(/-(\d{4})$/);
+        const showYear = yearMatch ? parseInt(yearMatch[1]) : null;
+        const opening = s.openingDate ? new Date(s.openingDate) : null;
+        map.set(s.id, {
+          showYear,
+          openingDate: opening && !isNaN(opening.getTime()) ? opening : null,
+          siblings: sibs.map(x => {
+            const ym = x.id.match(/-(\d{4})$/);
+            const sibOpening = x.openingDate ? new Date(x.openingDate) : null;
+            return {
+              id: x.id,
+              year: ym ? parseInt(ym[1]) : null,
+              openingDate: sibOpening && !isNaN(sibOpening.getTime()) ? sibOpening : null,
+            };
+          }).filter(x => x.year || x.openingDate),
+        });
+      }
+    }
+    _siblingCache = map;
+    return map;
+  } catch {
+    // shows.json not available (e.g. CI without core data) — disable guard
+    _siblingCache = new Map();
+    return _siblingCache;
+  }
+}
 
 /**
  * Create or merge a review file with consistent guards.
@@ -104,7 +153,75 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     return { action: 'skipped', reason: `domain-mismatch: ${domainCheck.reason}` };
   }
 
+  // --- Guard A: Cross-market sibling reroute ---
+  // If this review's publish date matches a sibling production's opening better
+  // than the target show, reroute it. Prevents WE reviews from landing in BW
+  // folders (and vice versa).
+  // Two-tier detection: (1) full-date comparison when opening dates available
+  // (catches shows separated by <2 years, like oh-mary BW 2024 / WE 2025),
+  // (2) year-level fallback via pickRerouteTarget for older shows without dates.
+  // Added 2026-04-12 after Oh Mary audit found 57 cross-market contamination cases.
+  if (input.publishDate || (input.fields && input.fields.publishDate)) {
+    const pubDateStr = input.publishDate || input.fields?.publishDate;
+    const sibData = _getSiblingData().get(showId);
+    if (sibData && sibData.siblings.length) {
+      const cleaned = String(pubDateStr || '').replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
+      const reviewDate = new Date(cleaned);
+      const reviewValid = !isNaN(reviewDate.getTime());
+
+      // Tier 1: Full-date comparison (days-level precision)
+      if (reviewValid && sibData.openingDate) {
+        const DAY = 86400000;
+        const distToCurrent = Math.abs(reviewDate - sibData.openingDate) / DAY;
+        let bestSib = null;
+        for (const sib of sibData.siblings) {
+          if (!sib.openingDate) continue;
+          const distToSib = Math.abs(reviewDate - sib.openingDate) / DAY;
+          // Sibling is much closer (>90 day gap AND sibling within 30 days)
+          if (distToSib <= 30 && distToCurrent > 90) {
+            if (!bestSib || distToSib < bestSib.dist) {
+              bestSib = { id: sib.id, dist: distToSib, currentDist: distToCurrent };
+            }
+          }
+        }
+        if (bestSib) {
+          console.warn(`  ⚠️  Cross-market reroute: ${showId} → ${bestSib.id} (review ${pubDateStr} is ${Math.round(bestSib.dist)}d from sibling vs ${Math.round(bestSib.currentDist)}d from current)`);
+          return createOrMergeReviewFile(bestSib.id, input, options);
+        }
+      }
+
+      // Tier 2: Year-level fallback (for shows without opening dates)
+      if (reviewValid && sibData.showYear) {
+        const reviewYear = reviewDate.getFullYear();
+        const reroute = pickRerouteTarget(sibData.showYear, sibData.siblings, reviewYear);
+        if (reroute.action === 'reroute') {
+          console.warn(`  ⚠️  Cross-market reroute (year): ${showId} → ${reroute.targetShowId} (review year ${reviewYear})`);
+          return createOrMergeReviewFile(reroute.targetShowId, input, options);
+        }
+      }
+    }
+  }
+
+  // --- Guard E: BWW Review-Roundup page detection ---
+  // If the URL IS a BWW Review-Roundup page itself (not a review discovered FROM
+  // a roundup), auto-flag it. The CI audit (audit-review-contamination.js) catches
+  // these after the fact, but this prevents them at write time.
+  // Distinct from isRoundupUrl() which handles site-specific aggregator roundup pages.
+  if (input.url && /\/article\/Review-Roundup-/i.test(input.url)) {
+    // Allow through but mark as roundup so rebuild excludes from scoring
+    fields.isRoundupArticle = true;
+    fields.roundupArticleReason = 'auto: URL matches BWW Review-Roundup page pattern';
+  }
+
+  // --- Guard F: Empty unknown rejection ---
+  // Don't create files for unknown critics with no URL and no text content.
+  // These are pure scrape garbage that clutter the directory.
   const criticName = input.criticName || 'Unknown';
+  if (criticName === 'Unknown' && !input.url && !fields.fullText && !fields.bwwExcerpt
+      && !fields.dtliExcerpt && !fields.showScoreExcerpt && !fields.nycTheatreExcerpt
+      && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {
+    return { action: 'skipped', reason: 'empty-unknown: no URL, no text, unknown critic' };
+  }
   const criticSlug = normalizeCritic(criticName);
   const showDir = path.join(reviewTextsDir, showId);
 
