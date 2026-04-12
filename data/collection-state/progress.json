@@ -1,5 +1,15 @@
 {
-  "processed": [],
+  "processed": [
+    "death-of-a-salesman-2026/variety--unknown.json",
+    "cats-the-jellicle-ball-2026/guardian--richard-lawson.json",
+    "becky-shaw-2026/variety--brent-lang.json",
+    "chess-2025/hollywood-reporter--richard-lawson.json",
+    "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json",
+    "buena-vista-social-club-2025/theatrely--kobi-kassal.json",
+    "maybe-happy-ending-2024/variety--christian-lewis.json",
+    "maybe-happy-ending-2024/vulture--sara-holdren.json",
+    "oh-mary-2024/variety--christian-lewis.json"
+  ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -16,22 +26,96 @@
     "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
+    "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "cats-the-jellicle-ball-2026/guardian--richard-lawson.json",
+      "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/death-of-a-salesman-2026/variety--unknown.json",
+      "death-of-a-salesman-2026/variety--unknown.json",
+      "data/review-texts/becky-shaw-2026/variety--brent-lang.json",
+      "becky-shaw-2026/variety--brent-lang.json",
+      "data/review-texts/chess-2025/hollywood-reporter--richard-lawson.json",
+      "chess-2025/hollywood-reporter--richard-lawson.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--christian-lewis.json",
+      "maybe-happy-ending-2024/variety--christian-lewis.json",
+      "data/review-texts/oh-mary-2024/variety--christian-lewis.json",
+      "oh-mary-2024/variety--christian-lewis.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "buena-vista-social-club-2025/theatrely--kobi-kassal.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "maybe-happy-ending-2024/vulture--sara-holdren.json"
+    ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-  "log": []
+  "lastProcessed": "oh-mary-2024/variety--christian-lewis.json",
+  "log": [
+    {
+      "t": "2026-04-12T10:21:59.282Z",
+      "event": "bb-session",
+      "session": "dc458f8f",
+      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/"
+    },
+    {
+      "t": "2026-04-12T10:22:00.191Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:22:23.199Z",
+      "event": "bb-session",
+      "session": "c999d9ed",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-04-12T10:22:24.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:22:47.977Z",
+      "event": "bb-session",
+      "session": "8473f81b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-04-12T10:22:48.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-12T10:23:15.159Z",
+      "event": "bb-session",
+      "session": "2ceb3b19",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-04-12T10:23:16.154Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:23:48.897Z",
+      "event": "bb-session",
+      "session": "e5152a1c",
+      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
+    },
+    {
+      "t": "2026-04-12T10:23:49.718Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

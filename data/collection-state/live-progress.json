@@ -1,18 +1,74 @@
 {
-  "updatedAt": "2026-04-12T10:33:28.260Z",
-  "processed": 0,
+  "updatedAt": "2026-04-12T10:24:04.166Z",
+  "processed": 9,
   "failed": 16,
-  "successRate": "0%",
+  "successRate": "36.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-04-12T10:21:59.282Z",
+      "event": "bb-session",
+      "session": "dc458f8f",
+      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/"
+    },
+    {
+      "t": "2026-04-12T10:22:00.191Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:22:23.199Z",
+      "event": "bb-session",
+      "session": "c999d9ed",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-04-12T10:22:24.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:22:47.977Z",
+      "event": "bb-session",
+      "session": "8473f81b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-04-12T10:22:48.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-12T10:23:15.159Z",
+      "event": "bb-session",
+      "session": "2ceb3b19",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-04-12T10:23:16.154Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:23:48.897Z",
+      "event": "bb-session",
+      "session": "e5152a1c",
+      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
+    },
+    {
+      "t": "2026-04-12T10:23:49.718Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
