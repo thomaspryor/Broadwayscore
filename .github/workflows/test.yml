@@ -326,6 +326,13 @@ jobs:
       - name: Run data validation
         run: node scripts/validate-data.js
 
+      - name: Audit review contamination
+        run: node scripts/audit-review-contamination.js --strict
+        # Catches cross-market contamination (WE/OB reviews in BW folders),
+        # domain/outlet mismatches, unflagged roundup pages, and junk --unknown files.
+        # Added 2026-04-11 after Oh Mary! BW audit found 18 issues in one folder,
+        # systematic scan found 291 across all shows.
+
       - name: Validate market expansion
         run: node scripts/validate-market-expansion.js
         # Catches slug, threshold, display, and copy issues for WE/OB markets
