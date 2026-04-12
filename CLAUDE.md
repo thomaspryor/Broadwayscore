@@ -111,6 +111,7 @@ Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mar
 
 ### Content Quality
 5 tiers: complete→truncated→excerpt→stub→invalid. Flags: `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded.
+**After ANY manual review recovery** (clearing flags, creating stubs, ingesting URLs): run `node scripts/verify-review-recovery.js --show=SHOW_ID --production`. The pipeline has 5 steps that silently fail independently (conflict markers, scoring cancellation, rebuild timing). This script checks all of them and prints the exact fix command for each failure.
 
 ### Web Scraping
 Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
