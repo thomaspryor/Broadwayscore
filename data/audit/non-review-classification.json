@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-04-12T10:39:25.466Z",
+    "generatedAt": "2026-04-12T11:10:41.687Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 35158,
-      "inReviewsJson": 16737,
-      "skippedExcluded": 43,
-      "withFullText": 22,
-      "excerptOnly": 1555,
-      "llmClassified": 21,
+      "totalFiles": 35157,
+      "inReviewsJson": 16741,
+      "skippedExcluded": 42,
+      "withFullText": 24,
+      "excerptOnly": 1556,
+      "llmClassified": 23,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 18,
-      "budgetUsed": 0.0022,
-      "llmCalls": 22,
+      "budgetUsed": 0.0024,
+      "llmCalls": 24,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 15117
+      "skippedAlreadyClassified": 15119
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "death-of-a-salesman-2026/variety--clayton-davis.json",
+      "showId": "death-of-a-salesman-2026",
+      "outlet": "Variety",
+      "outletId": "variety",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This article is a news announcement about Pink hosting the Tony Awards, not a review of \"Death of a Salesman\" or any other show.",
+      "currentScore": 74
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -30,7 +41,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -39,8 +50,8 @@
       "outlet": "The Telegraph",
       "outletId": "telegraph",
       "contentType": "preview",
-      "confidence": "medium",
-      "reasoning": "The text mentions the theme of the play and includes a photo, but does not contain an evaluation or opinion of the production itself. It appears to be a preview or promotional piece rather than a review.",
+      "confidence": "low",
+      "reasoning": "The text mentions the play 'Evening All Afternoon' and its themes, but it does not provide a critical evaluation or opinion on the production's quality. It seems to be setting the stage for a review or feature, but it is not a review itself.",
       "currentScore": 100
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, but it does not contain any evaluative content or opinion about a specific production. It seems to be a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself.",
       "currentScore": 81
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The text discusses how to stage the play, which is more of a feature or commentary than a review. The article does not evaluate the quality of a specific production.",
       "currentScore": 60
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater and music, rather than a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, rather than a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -130,7 +141,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
       "currentScore": 80
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, including the history of Hal Prince's work and the show's unique narrative form. While it contains some evaluative language, it primarily functions as a feature article exploring the show's themes and significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -160,7 +171,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -170,7 +181,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review or other content type. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review that would evaluate the show's quality.",
       "currentScore": 64
     },
     {
@@ -180,7 +191,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
       "currentScore": 78
     },
     {
@@ -200,15 +211,22 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion about the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature and connection to real events. However, it does not offer a critical evaluation or opinion on the quality of the production itself.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "king-kong-2018/nytimes--ben-brantleyjesse-green.json",
-    "summer-2018/nysr--jesse-oxfeld.json",
-    "the-rose-tattoo-2019/nysr--melissa-rose-bernardo.json"
+    "copenhagen-west-end-2026/daily-mail--robert-gore-langton.json",
+    "les-liaisons-dangereuses-west-end-2026/daily-mail--robert-gore-langton.json",
+    "saint-joan-2018/nysr--elysa-gardner.json",
+    "the-book-of-mormon-west-end-2024/metro--claire-allfree.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "death-of-a-salesman-2026",
+      "currentCount": 25,
+      "removed": 1
+    }
+  ]
 }

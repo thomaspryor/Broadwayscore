@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-12T10:42:05.237Z",
+  "generatedAt": "2026-04-12T11:13:19.999Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 1,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 2,
+    "newlyFlagged": 1,
     "alreadyFlagged": 1,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 61,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Claire Allfree",
+      "showId": "the-book-of-mormon-west-end-2024",
+      "primaryOutlet": "metro",
+      "secondaryOutlet": "metro-uk",
+      "primaryFile": "metro--claire-allfree.json",
+      "secondaryFile": "metro-uk--claire-allfree.json",
+      "similarity": 61,
+      "primaryScore": 85,
+      "secondaryScore": 86,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "frozen-2018",

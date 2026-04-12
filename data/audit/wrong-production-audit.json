@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-12T10:43:33.430Z",
+  "timestamp": "2026-04-12T11:15:00.530Z",
   "stats": {
-    "totalReviews": 34618,
-    "alreadyFlagged": 14088,
+    "totalReviews": 34617,
+    "alreadyFlagged": 14089,
     "dateGuardCatches": 58,
-    "directorMismatch": 928,
+    "directorMismatch": 927,
     "tvFilmSignals": 3337,
     "londonSignals": 1077,
     "offBroadwaySignals": 951,
@@ -12264,20 +12264,6 @@
       "score": 84,
       "publishDate": "2026-04-09",
       "url": "https://theaterpizzazz.com/hes-back-but-has-willy-loman-ever-left-us/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
-      "file": "variety--unknown.json",
-      "score": 89,
-      "publishDate": "2026-04-09",
-      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
