@@ -1479,6 +1479,57 @@ assert(
 );
 
 // ============================================================
+// mergeReviews — URL change clears stale incompleteReason + fetch state
+// Bug: gather-reviews updated a URL but incompleteReason: 'wrong_content'
+// from the OLD URL persisted → collect-review-texts.js skipped the file forever
+// ============================================================
+console.log('\n--- mergeReviews URL change clears incomplete/fetch state ---');
+
+const mergedUrlChange = mergeReviews(
+  {
+    outletId: 'variety', criticName: 'David Rooney', source: 'serp-discovery',
+    url: 'https://variety.com/old-wrong-url',
+    incompleteReason: 'wrong_content',
+    incompleteDetail: 'Content does not match show',
+    fetchAttempts: [{ at: '2026-04-09', method: 'scrapingbee', status: 'wrong_content' }],
+    lastFetchDate: '2026-04-09',
+    contentTier: 'invalid',
+  },
+  { outletId: 'variety', criticName: 'David Rooney', source: 'bww',
+    url: 'https://variety.com/correct-review-url' }
+);
+assert(!mergedUrlChange.incompleteReason,
+  `mergeReviews URL change: incompleteReason cleared (got: "${mergedUrlChange.incompleteReason}")`);
+assert(!mergedUrlChange.incompleteDetail,
+  `mergeReviews URL change: incompleteDetail cleared (got: "${mergedUrlChange.incompleteDetail}")`);
+assert(!mergedUrlChange.fetchAttempts,
+  `mergeReviews URL change: fetchAttempts cleared (got: ${JSON.stringify(mergedUrlChange.fetchAttempts)})`);
+assert(!mergedUrlChange.lastFetchDate,
+  `mergeReviews URL change: lastFetchDate cleared (got: "${mergedUrlChange.lastFetchDate}")`);
+assert(!mergedUrlChange.contentTier,
+  `mergeReviews URL change: contentTier cleared (was 'invalid')`);
+assert(mergedUrlChange.url === 'https://variety.com/correct-review-url',
+  `mergeReviews URL change: URL updated (got: "${mergedUrlChange.url}")`);
+assert(mergedUrlChange.urlUpdatedFrom === 'https://variety.com/old-wrong-url',
+  `mergeReviews URL change: urlUpdatedFrom set`);
+
+// Same URL should NOT clear these fields
+const mergedSameUrl = mergeReviews(
+  {
+    outletId: 'variety', criticName: 'David Rooney', source: 'serp-discovery',
+    url: 'https://variety.com/same-url',
+    incompleteReason: 'paywall',
+    fetchAttempts: [{ at: '2026-04-09' }],
+  },
+  { outletId: 'variety', criticName: 'David Rooney', source: 'bww',
+    url: 'https://variety.com/same-url' }
+);
+assert(mergedSameUrl.incompleteReason === 'paywall',
+  `mergeReviews same URL: incompleteReason preserved (got: "${mergedSameUrl.incompleteReason}")`);
+assert(mergedSameUrl.fetchAttempts,
+  `mergeReviews same URL: fetchAttempts preserved`);
+
+// ============================================================
 // Times UK heuristic guard — see scripts/lib/review-guards.js evaluateShowMentionGuard
 //
 // Bug context: paywalled outlets like Times UK return only the lede (~136 words),

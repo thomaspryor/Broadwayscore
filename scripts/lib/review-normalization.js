@@ -587,6 +587,14 @@ function mergeReviews(existing, incoming) {
       delete merged.rejectedBy;
       delete merged.rejectionReason;
       delete merged.rejectionReasoning;
+      // Clear incomplete/fetch state so collector retries from the new URL.
+      // Without this, a file with incompleteReason: 'wrong_content' from the
+      // OLD URL keeps that flag forever and collect-review-texts.js skips it.
+      // Matches the clearing done in collect-review-texts.js SERP-discovery path.
+      delete merged.incompleteReason;
+      delete merged.incompleteDetail;
+      delete merged.fetchAttempts;
+      delete merged.lastFetchDate;
       merged.urlUpdatedFrom = existing.url;
       merged.urlUpdatedAt = new Date().toISOString();
     }
