@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-12T10:25:55.207Z",
-  "processed": 19,
-  "failed": 16,
-  "successRate": "54.3%",
+  "updatedAt": "2026-04-12T10:27:26.732Z",
+  "processed": 28,
+  "failed": 17,
+  "successRate": "62.2%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 6
+    "archive": 8
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -113,6 +113,17 @@
       "t": "2026-04-12T10:25:18.613Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T10:25:56.215Z",
+      "event": "bb-session",
+      "session": "f0ea0fd9",
+      "url": "http://variety.com/2015/legit/reviews/hamilton-review-broadway-1201557679/"
+    },
+    {
+      "t": "2026-04-12T10:25:57.021Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
