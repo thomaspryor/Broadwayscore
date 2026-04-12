@@ -67,7 +67,13 @@
     "fat-ham-2023/variety--naveen-kumar.json",
     "shucked-2023/variety--frank-rizzo.json",
     "shucked-2023/vulture--jackson-mchenry.json",
-    "life-of-pi-2023/nytimes--alexis-soloski.json"
+    "life-of-pi-2023/nytimes--alexis-soloski.json",
+    "life-of-pi-2023/theatrely--juan-a-ramirez.json",
+    "sweeney-todd-2023/variety--naveen-kumar.json",
+    "parade-2023/theatrely--kobi-kassal.json",
+    "a-dolls-house-2023/vulture--jackson-mchenry.json",
+    "some-like-it-hot-2022/vulture--jackson-mchenry.json",
+    "ohio-state-murders-2022/vulture--jackson-mchenry.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -106,7 +112,11 @@
     "here-lies-love-2023/observer--jesse-green.json",
     "just-for-us-2023/vulture--jackson-mchenry.json",
     "grey-house-2023/stageandcinema--simi-horwitz.json",
-    "fat-ham-2023/vulture--jackson-mchenry.json"
+    "fat-ham-2023/vulture--jackson-mchenry.json",
+    "parade-2023/observer--jesse-green.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -170,7 +180,9 @@
       "data/review-texts/fat-ham-2023/variety--naveen-kumar.json",
       "fat-ham-2023/variety--naveen-kumar.json",
       "data/review-texts/shucked-2023/variety--frank-rizzo.json",
-      "shucked-2023/variety--frank-rizzo.json"
+      "shucked-2023/variety--frank-rizzo.json",
+      "data/review-texts/sweeney-todd-2023/variety--naveen-kumar.json",
+      "sweeney-todd-2023/variety--naveen-kumar.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -185,7 +197,9 @@
       "here-lies-love-2023/nytimes--jesse-green.json",
       "grey-house-2023/chicagotribune--chris-jones.json",
       "peter-pan-goes-wrong-2023/nydailynews--chris-jones.json",
-      "life-of-pi-2023/nytimes--alexis-soloski.json"
+      "life-of-pi-2023/nytimes--alexis-soloski.json",
+      "life-of-pi-2023/theatrely--juan-a-ramirez.json",
+      "parade-2023/theatrely--kobi-kassal.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -219,11 +233,14 @@
       "the-shark-is-broken-2023/nydailynews--new-york-daily-news.json",
       "here-lies-love-2023/vulture--jackson-mchenry.json",
       "new-york-new-york-2023/vulture--jackson-mchenry.json",
-      "shucked-2023/vulture--jackson-mchenry.json"
+      "shucked-2023/vulture--jackson-mchenry.json",
+      "a-dolls-house-2023/vulture--jackson-mchenry.json",
+      "some-like-it-hot-2022/vulture--jackson-mchenry.json",
+      "ohio-state-murders-2022/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "life-of-pi-2023/nytimes--alexis-soloski.json",
+  "lastProcessed": "ohio-state-murders-2022/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -475,6 +492,17 @@
     },
     {
       "t": "2026-04-12T10:57:30.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:58:17.000Z",
+      "event": "bb-session",
+      "session": "3f45c0dc",
+      "url": "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-"
+    },
+    {
+      "t": "2026-04-12T10:58:18.003Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

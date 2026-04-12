@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-12T10:58:13.004Z",
-  "processed": 68,
-  "failed": 37,
-  "successRate": "64.8%",
+  "updatedAt": "2026-04-12T11:00:13.016Z",
+  "processed": 74,
+  "failed": 41,
+  "successRate": "64.3%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 46,
+    "browserbase": 48,
     "directCookies": 0,
-    "scrapingbee": 12,
+    "scrapingbee": 14,
     "brightdata": 0,
     "archiveToday": 7,
-    "archive": 22
+    "archive": 25
   },
-  "browserbaseSessions": 23,
+  "browserbaseSessions": 24,
   "recentActivity": [
-    {
-      "t": "2026-04-12T10:42:30.797Z",
-      "event": "bb-session",
-      "session": "f5dd6bab",
-      "url": "https://www.nytimes.com/2024/04/14/theater/lempicka-review-chavkin-espinosa.html"
-    },
-    {
-      "t": "2026-04-12T10:42:31.764Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-12T10:43:16.367Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-12T10:57:30.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:58:17.000Z",
+      "event": "bb-session",
+      "session": "3f45c0dc",
+      "url": "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-"
+    },
+    {
+      "t": "2026-04-12T10:58:18.003Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
