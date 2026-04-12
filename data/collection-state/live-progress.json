@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-12T02:15:35.551Z",
-  "processed": 72,
-  "failed": 918,
-  "successRate": "7.3%",
+  "updatedAt": "2026-04-12T02:22:54.022Z",
+  "processed": 80,
+  "failed": 920,
+  "successRate": "8.0%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 23,
     "amp": 2,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
-    "scrapingbee": 20,
+    "scrapingbee": 21,
     "brightdata": 0,
-    "archiveToday": 26,
-    "archive": 18
+    "archiveToday": 27,
+    "archive": 21
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-04-11T18:19:10.224Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-11T18:58:27.158Z",
-      "event": "bb-session",
-      "session": "66ec6f63",
-      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
-    },
     {
       "t": "2026-04-11T18:58:28.343Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-04-12T02:12:21.947Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T02:16:11.343Z",
+      "event": "bb-session",
+      "session": "18562136",
+      "url": "http://variety.com/2015/legit/reviews/hamilton-review-broadway-1201557679/"
+    },
+    {
+      "t": "2026-04-12T02:16:12.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

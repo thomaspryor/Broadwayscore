@@ -71,7 +71,15 @@
     "and-juliet-2022/cititour--brian-scott-lipton.json",
     "mj-2022/hollywood-reporter--lovia-gyarkye.json",
     "mj-2022/vulture--helen-shaw.json",
-    "mj-2022/deadline--greg-evans.json"
+    "mj-2022/deadline--greg-evans.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json",
+    "the-play-that-goes-wrong-off-broadway-2019/thestage--natasha-tripney.json",
+    "hamilton-2015/variety--marilyn-stasio.json",
+    "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+    "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "marjorie-prime-2025/nytg--joe-dziemianowicz.json",
+    "queen-versailles-2025/vulture--sara-holdren.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -991,7 +999,9 @@
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "my-neighbour-totoro-west-end-2025/times-uk--dominic-maxwell.json",
     "maybe-happy-ending-2024/vulture--sara-holdren.json",
-    "mj-2022/thewrap--robert-hofler.json"
+    "mj-2022/thewrap--robert-hofler.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1014,7 +1024,11 @@
       "titanique-2026/guardian--chris-wiegand.json",
       "cats-the-jellicle-ball-2026/guardian--richard-lawson.json",
       "giant-2026/nysr--david-finkle.json",
-      "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json"
+      "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json",
+      "the-play-that-goes-wrong-off-broadway-2019/thestage--natasha-tripney.json",
+      "wicked-2003/theatermania--barbara-siegelscott-siegel.json",
+      "the-reservoir-off-broadway-2026/theatermania--zachary-stewart.json",
+      "marjorie-prime-2025/nytg--joe-dziemianowicz.json"
     ],
     "amp": [
       "data/review-texts/the-scottsboro-boys-2010/time--richard-zoglin.json",
@@ -1048,7 +1062,9 @@
       "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "mj-2022/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/mj-2022/deadline--greg-evans.json",
-      "mj-2022/deadline--greg-evans.json"
+      "mj-2022/deadline--greg-evans.json",
+      "data/review-texts/hamilton-2015/variety--marilyn-stasio.json",
+      "hamilton-2015/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1071,7 +1087,8 @@
       "titanique-2026/theatrely--unknown.json",
       "buena-vista-social-club-2025/theatrely--kobi-kassal.json",
       "the-outsiders-2024/theatrely--kobi-kassal.json",
-      "and-juliet-2022/cititour--brian-scott-lipton.json"
+      "and-juliet-2022/cititour--brian-scott-lipton.json",
+      "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1100,7 +1117,8 @@
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
-      "data/review-texts/maybe-happy-ending-2024/vulture--sara-holdren.json"
+      "data/review-texts/maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "data/review-texts/mj-2022/thewrap--robert-hofler.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -1120,11 +1138,14 @@
       "titanique-2026/billboard--unknown.json",
       "shadowlands-west-end-2026/daily-mail--robert-gore-langton.json",
       "the-outsiders-2024/vulture--sara-holdren.json",
-      "mj-2022/vulture--helen-shaw.json"
+      "mj-2022/vulture--helen-shaw.json",
+      "moulin-rouge-2019/vulture--sara-holdren.json",
+      "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "queen-versailles-2025/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "mj-2022/thewrap--robert-hofler.json",
+  "lastProcessed": "queen-versailles-2025/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1412,6 +1433,17 @@
       "t": "2026-04-12T02:12:21.947Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T02:16:11.343Z",
+      "event": "bb-session",
+      "session": "18562136",
+      "url": "http://variety.com/2015/legit/reviews/hamilton-review-broadway-1201557679/"
+    },
+    {
+      "t": "2026-04-12T02:16:12.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
