@@ -55,7 +55,15 @@
     "titanique-2026/thewrap--unknown.json",
     "titanique-2026/guardian--chris-wiegand.json",
     "titanique-2026/theatrely--unknown.json",
-    "titanique-2026/billboard--unknown.json"
+    "titanique-2026/billboard--unknown.json",
+    "cats-the-jellicle-ball-2026/guardian--richard-lawson.json",
+    "becky-shaw-2026/variety--brent-lang.json",
+    "giant-2026/nysr--david-finkle.json",
+    "shadowlands-west-end-2026/daily-mail--robert-gore-langton.json",
+    "chess-2025/hollywood-reporter--richard-lawson.json",
+    "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json",
+    "buena-vista-social-club-2025/theatrely--kobi-kassal.json",
+    "maybe-happy-ending-2024/variety--christian-lewis.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -971,7 +979,9 @@
     "titanique-2026/talkinbroadway--unknown.json",
     "titanique-2026/talkinbroadway--unknown.json",
     "titanique-2026/talkinbroadway--unknown.json",
-    "titanique-2026/talkinbroadway--unknown.json"
+    "titanique-2026/talkinbroadway--unknown.json",
+    "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
+    "my-neighbour-totoro-west-end-2025/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -991,7 +1001,10 @@
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
       "once-2012/theatermania--dan-bacalzo.json",
       "titanique-2026/guardian--unknown.json",
-      "titanique-2026/guardian--chris-wiegand.json"
+      "titanique-2026/guardian--chris-wiegand.json",
+      "cats-the-jellicle-ball-2026/guardian--richard-lawson.json",
+      "giant-2026/nysr--david-finkle.json",
+      "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json"
     ],
     "amp": [
       "data/review-texts/the-scottsboro-boys-2010/time--richard-zoglin.json",
@@ -1011,7 +1024,13 @@
       "data/review-texts/death-of-a-salesman-2026/variety--payton-turkeltaub.json",
       "death-of-a-salesman-2026/variety--payton-turkeltaub.json",
       "data/review-texts/titanique-2026/nypost--unknown.json",
-      "titanique-2026/nypost--unknown.json"
+      "titanique-2026/nypost--unknown.json",
+      "data/review-texts/becky-shaw-2026/variety--brent-lang.json",
+      "becky-shaw-2026/variety--brent-lang.json",
+      "data/review-texts/chess-2025/hollywood-reporter--richard-lawson.json",
+      "chess-2025/hollywood-reporter--richard-lawson.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--christian-lewis.json",
+      "maybe-happy-ending-2024/variety--christian-lewis.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1031,7 +1050,8 @@
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
       "that-championship-season-2011/reuters--unknown.json",
       "myras-story-west-end-2026/whatsonstage--unknown.json",
-      "titanique-2026/theatrely--unknown.json"
+      "titanique-2026/theatrely--unknown.json",
+      "buena-vista-social-club-2025/theatrely--kobi-kassal.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1076,11 +1096,12 @@
       "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
       "inter-alia-west-end-2026/timeout--caroline-mcginn.json",
       "titanique-2026/thewrap--unknown.json",
-      "titanique-2026/billboard--unknown.json"
+      "titanique-2026/billboard--unknown.json",
+      "shadowlands-west-end-2026/daily-mail--robert-gore-langton.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "titanique-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "maybe-happy-ending-2024/variety--christian-lewis.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1291,6 +1312,39 @@
       "t": "2026-04-12T00:17:24.480Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-12T02:05:32.742Z",
+      "event": "bb-session",
+      "session": "aff02169",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-04-12T02:05:33.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:06:38.058Z",
+      "event": "bb-session",
+      "session": "2efcd2cf",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-04-12T02:06:39.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-12T02:07:16.875Z",
+      "event": "bb-session",
+      "session": "26e9b2aa",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-04-12T02:07:17.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

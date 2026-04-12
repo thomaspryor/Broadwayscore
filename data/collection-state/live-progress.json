@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-12T01:54:30.663Z",
-  "processed": 56,
-  "failed": 914,
-  "successRate": "5.8%",
+  "updatedAt": "2026-04-12T02:07:38.453Z",
+  "processed": 64,
+  "failed": 916,
+  "successRate": "6.5%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 19,
     "amp": 2,
-    "browserbase": 14,
+    "browserbase": 20,
     "directCookies": 0,
-    "scrapingbee": 17,
+    "scrapingbee": 18,
     "brightdata": 0,
     "archiveToday": 25,
-    "archive": 15
+    "archive": 16
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-11T17:24:39.360Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-04-11T17:27:15.759Z",
-      "event": "bb-session",
-      "session": "23631bfa",
-      "url": "https://www.wsj.com/articles/SB10001424052748704621204575013853169167814"
-    },
-    {
-      "t": "2026-04-11T17:27:16.651Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-11T17:29:37.809Z",
-      "event": "bb-session",
-      "session": "ec8cd983",
-      "url": "https://www.wsj.com/articles/SB125782678542851645"
-    },
-    {
-      "t": "2026-04-11T17:29:38.558Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-11T17:30:25.106Z",
-      "event": "bb-session",
-      "session": "49610006",
-      "url": "https://variety.com/2009/legit/reviews/memphis-3-1200476779/"
-    },
     {
       "t": "2026-04-11T17:30:25.852Z",
       "event": "bb-cookie-inject",
@@ -124,6 +91,39 @@
       "t": "2026-04-12T00:17:24.480Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-12T02:05:32.742Z",
+      "event": "bb-session",
+      "session": "aff02169",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-04-12T02:05:33.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:06:38.058Z",
+      "event": "bb-session",
+      "session": "2efcd2cf",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-04-12T02:06:39.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-12T02:07:16.875Z",
+      "event": "bb-session",
+      "session": "26e9b2aa",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-04-12T02:07:17.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
