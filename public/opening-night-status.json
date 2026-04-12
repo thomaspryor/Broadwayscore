@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-12T16:13:27.519Z",
+  "generatedAt": "2026-04-12T16:46:58.469Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -155,7 +155,7 @@
         },
         {
           "name": "Observer",
-          "isDualMarket": false
+          "isDualMarket": true
         },
         {
           "name": "Playbill",
@@ -359,6 +359,10 @@
       ],
       "missingT2": [
         {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
           "name": "New York Theatre Guide",
           "isDualMarket": true
         },
@@ -472,7 +476,7 @@
         },
         {
           "name": "Observer",
-          "isDualMarket": false
+          "isDualMarket": true
         },
         {
           "name": "The Daily Beast",
@@ -971,7 +975,7 @@
         },
         {
           "name": "Observer",
-          "isDualMarket": false
+          "isDualMarket": true
         },
         {
           "name": "Playbill",
@@ -1129,14 +1133,14 @@
       "status": "open",
       "slug": "flyby-off-west-end",
       "thumbnail": "/images/shows/flyby-off-west-end-2026/thumbnail.webp",
-      "siteScore": 67.5,
-      "liveScore": 68,
-      "scoreDrift": 0.5,
-      "total": 11,
+      "siteScore": 63.03,
+      "liveScore": 63,
+      "scoreDrift": -0.030000000000001137,
+      "total": 10,
       "t1": 2,
-      "t2": 3,
+      "t2": 2,
       "t3": 6,
-      "positive": 4,
+      "positive": 3,
       "mixed": 5,
       "negative": 2,
       "readiness": {
@@ -1179,6 +1183,10 @@
         }
       ],
       "missingT2": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
@@ -1253,6 +1261,18 @@
           "t2": 3,
           "t3": 6,
           "p": 4,
+          "m": 5,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-12T16:46:58.469Z",
+          "rc": 10,
+          "s": 63.03,
+          "t1": 2,
+          "t2": 2,
+          "t3": 6,
+          "p": 3,
           "m": 5,
           "n": 2,
           "bc": "waiting"
