@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-12T22:07:44.564Z",
+  "timestamp": "2026-04-12T22:21:54.500Z",
   "stats": {
     "totalReviews": 34708,
-    "alreadyFlagged": 13888,
+    "alreadyFlagged": 13892,
     "dateGuardCatches": 107,
     "directorMismatch": 960,
-    "tvFilmSignals": 3379,
-    "londonSignals": 1109,
+    "tvFilmSignals": 3377,
+    "londonSignals": 1108,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
     "noPublishDate": 4085
@@ -57035,20 +57035,6 @@
       ]
     },
     {
-      "showId": "this-is-not-about-me-off-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 53,
-      "publishDate": "2023-05-17",
-      "url": "https://www.timeout.com/london/theatre/once-on-this-island-1-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
       "showId": "this-is-our-youth-2014",
       "file": "newsday--linda-winer.json",
       "score": 78,
@@ -58652,20 +58638,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"movie theater\""
-        }
-      ]
-    },
-    {
-      "showId": "ulster-american-irish-repertory-theatre-off-broadway-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 67,
-      "publishDate": "2023-12-14",
-      "url": "https://www.thetimes.co.uk/article/ulster-american-review-an-exuberant-woody-harrelson-in-over-the-top-satire-lglr0bcnt",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -70731,20 +70703,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "jackals-off-broadway-2026",
-      "file": "guardian--michael-billington.json",
-      "score": 66,
-      "publishDate": "2017-05-24",
-      "url": "https://www.theguardian.com/stage/2017/may/24/woyzeck-review-john-boyega-jack-thorne-georg-buchner-old-vic-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
