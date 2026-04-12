@@ -158,7 +158,11 @@
     "king-lear-2019/vulture--sara-holdren.json",
     "to-kill-a-mockingbird-2018/nytimes--jesse-green.json",
     "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json",
-    "farinelli-and-the-king-2017/vulture--sara-holdren.json"
+    "farinelli-and-the-king-2017/vulture--sara-holdren.json",
+    "time-and-the-conways-2017/deadline--jeremy-gerard.json",
+    "the-terms-of-my-surrender-2017/nytimes--jesse-green.json",
+    "sweat-2017/nytimes--ben-brantley.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/variety--frank-rizzo.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -328,7 +332,13 @@
     "the-nap-2018/nypost--johnny-oleksinski.json",
     "angels-in-america-2018/rollingstone--peter-travers.json",
     "escape-to-margaritaville-2018/vulture--jesse-green.json",
-    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json"
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/observer--rex-reed.json",
+    "the-parisian-woman-2017/observer--rex-reed.json",
+    "junk-2017/observer--rex-reed.json",
+    "indecent-2017/usatoday--elysa-gardner.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+    "tuck-everlasting-2016/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -441,7 +451,11 @@
       "data/review-texts/company-2021/deadline--greg-evans.json",
       "company-2021/deadline--greg-evans.json",
       "data/review-texts/jagged-little-pill-2019/deadline--greg-evans.json",
-      "jagged-little-pill-2019/deadline--greg-evans.json"
+      "jagged-little-pill-2019/deadline--greg-evans.json",
+      "data/review-texts/time-and-the-conways-2017/deadline--jeremy-gerard.json",
+      "time-and-the-conways-2017/deadline--jeremy-gerard.json",
+      "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/variety--frank-rizzo.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -470,7 +484,9 @@
       "public-charge-off-broadway-2026/nytimes--unknown.json",
       "public-charge-off-broadway-2026/front-row-center--david-walters.json",
       "to-kill-a-mockingbird-2018/nytimes--jesse-green.json",
-      "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json"
+      "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json",
+      "the-terms-of-my-surrender-2017/nytimes--jesse-green.json",
+      "sweat-2017/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -578,7 +594,7 @@
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "farinelli-and-the-king-2017/vulture--sara-holdren.json",
+  "lastProcessed": "tuck-everlasting-2016/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -953,6 +969,28 @@
       "t": "2026-04-12T12:44:25.421Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T12:50:31.524Z",
+      "event": "bb-session",
+      "session": "b7f61d4d",
+      "url": "http://deadline.com/2017/10/time-and-the-conways-elizabeth-mcgovern-measure-for-"
+    },
+    {
+      "t": "2026-04-12T12:50:32.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T12:51:17.465Z",
+      "event": "bb-session",
+      "session": "88de3d7e",
+      "url": "http://variety.com/2016/legit/reviews/holiday-inn-review-broadway-1201880340/"
+    },
+    {
+      "t": "2026-04-12T12:51:18.113Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
