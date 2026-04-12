@@ -6,6 +6,25 @@
  * joins with conversion data from Impact, computes per-variant metrics
  * with statistical significance.
  *
+ * ═══════════════════════════════════════════════════════════════════════
+ *  LIVE A/B TEST ANALYZER — READ BEFORE MODIFYING
+ * ═══════════════════════════════════════════════════════════════════════
+ *
+ *  Rules (see memory/feedback_ab_test_guardrails.md):
+ *    1. Never change PostHog flag rollouts based on this script's output
+ *       without explicit user approval. "Direction looks clear" ≠ winner.
+ *    2. Never remove filter logic. memory/feedback_ab_test_analysis.md
+ *       explains why each exclusion exists.
+ *    3. When a test restarts, ADD to FLAG_RESTART_DATES before re-running.
+ *       Pre-restart events are contaminated and must be excluded.
+ *    4. Small samples deserve skepticism. At current traffic, 100 clicks
+ *       per variant takes ~50 days. Don't declare early.
+ *
+ *  Companion validator: scripts/validate-ab-test.js (proves the flag is
+ *  actually serving variants, DOM renders correctly, and click tracking
+ *  fires with the right ab_variant). Run that first when debugging.
+ * ═══════════════════════════════════════════════════════════════════════
+ *
  * Usage:
  *   node scripts/analyze-ab-test.js                  # default: ticket-single-button
  *   node scripts/analyze-ab-test.js --flag <key>     # specific flag
