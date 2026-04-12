@@ -162,7 +162,12 @@
     "time-and-the-conways-2017/deadline--jeremy-gerard.json",
     "the-terms-of-my-surrender-2017/nytimes--jesse-green.json",
     "sweat-2017/nytimes--ben-brantley.json",
-    "holiday-inn-the-new-irving-berlin-musical-2016/variety--frank-rizzo.json"
+    "holiday-inn-the-new-irving-berlin-musical-2016/variety--frank-rizzo.json",
+    "bright-star-2016/variety--marilyn-stasio.json",
+    "the-visit-2015/variety--marilyn-stasio.json",
+    "the-visit-2015/abc-news--mark-kennedy.json",
+    "doctor-zhivago-2015/vulture--jesse-green.json",
+    "fun-home-2015/stagebuddy--jose-solis.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -338,7 +343,12 @@
     "junk-2017/observer--rex-reed.json",
     "indecent-2017/usatoday--elysa-gardner.json",
     "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
-    "tuck-everlasting-2016/usatoday--elysa-gardner.json"
+    "tuck-everlasting-2016/usatoday--elysa-gardner.json",
+    "the-crucible-2016/observer--rex-reed.json",
+    "eclipsed-2016/observer--rex-reed.json",
+    "our-mothers-brief-affair-2016/observer--rex-reed.json",
+    "old-times-2015/observer--rex-reed.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -377,7 +387,8 @@
       "just-in-time-2025/timeout--adam-feldman.json",
       "operation-mincemeat-2025/washpost--naveen-kumar.json",
       "oh-mary-2024/culturesauce--thom-geier.json",
-      "oh-mary-2024/digital-journal--markos-papadatos.json"
+      "oh-mary-2024/digital-journal--markos-papadatos.json",
+      "fun-home-2015/stagebuddy--jose-solis.json"
     ],
     "amp": [
       "data/review-texts/glengarry-glen-ross-2012/chicagotribune--unknown.json",
@@ -455,7 +466,11 @@
       "data/review-texts/time-and-the-conways-2017/deadline--jeremy-gerard.json",
       "time-and-the-conways-2017/deadline--jeremy-gerard.json",
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/variety--frank-rizzo.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/variety--frank-rizzo.json"
+      "holiday-inn-the-new-irving-berlin-musical-2016/variety--frank-rizzo.json",
+      "data/review-texts/bright-star-2016/variety--marilyn-stasio.json",
+      "bright-star-2016/variety--marilyn-stasio.json",
+      "data/review-texts/the-visit-2015/variety--marilyn-stasio.json",
+      "the-visit-2015/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -590,11 +605,13 @@
       "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
       "all-my-sons-2019/vulture--sara-holdren.json",
       "king-lear-2019/vulture--sara-holdren.json",
-      "farinelli-and-the-king-2017/vulture--sara-holdren.json"
+      "farinelli-and-the-king-2017/vulture--sara-holdren.json",
+      "the-visit-2015/abc-news--mark-kennedy.json",
+      "doctor-zhivago-2015/vulture--jesse-green.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "tuck-everlasting-2016/usatoday--elysa-gardner.json",
+  "lastProcessed": "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -989,6 +1006,28 @@
     },
     {
       "t": "2026-04-12T12:51:18.113Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T12:51:38.766Z",
+      "event": "bb-session",
+      "session": "243de97f",
+      "url": "http://variety.com/2016/legit/reviews/bright-star-review-steve-martin-edie-brick"
+    },
+    {
+      "t": "2026-04-12T12:51:39.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T12:52:00.100Z",
+      "event": "bb-session",
+      "session": "5966b1e5",
+      "url": "http://variety.com/2015/legit/reviews/visit-review-broadway-chita-rivera-1201478"
+    },
+    {
+      "t": "2026-04-12T12:52:00.719Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
