@@ -226,3 +226,33 @@ CREATE TRIGGER reviews_updated_at
   BEFORE UPDATE ON reviews
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at();
+
+-- =========================================
+-- FANTASY LEAGUE
+-- =========================================
+
+-- Fantasy draft entries (no auth required — email-based)
+CREATE TABLE fantasy_entries (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  email TEXT NOT NULL,
+  team_name TEXT,
+  league_name TEXT,
+  picks JSONB NOT NULL,
+  total_cost INTEGER NOT NULL,
+  season TEXT NOT NULL DEFAULT '2025-2026',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(email, season)
+);
+
+-- RLS: allow public insert (via API route validation) and select (for leaderboard)
+ALTER TABLE fantasy_entries ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can insert fantasy entries"
+  ON fantasy_entries FOR INSERT
+  TO anon
+  WITH CHECK (true);
+
+CREATE POLICY "Anyone can read fantasy entries"
+  ON fantasy_entries FOR SELECT
+  TO anon
+  USING (true);
