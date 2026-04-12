@@ -2112,13 +2112,13 @@ function validateReviewTextDuplicates(shows) {
   }
 
   // Thresholds — non-aggregator cross-show dupes are the real concern.
-  // Baseline ~53 after auto-dedup pass (Mar 2026) — remaining are low-confidence
-  // revival pairs and cross-market shows that need manual review.
-  // New dupes above baseline indicate collection scripts creating slug directories.
-  if (crossShowDupesNonAgg > 80) {
-    error(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicates (baseline ~53, spike suggests data issue)`);
-  } else if (crossShowDupesNonAgg > 60) {
-    warn(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicate(s) found (baseline ~53)`);
+  // Baseline ~144 after multi-critic URL dedup fix (Apr 2026) — previously ~53 when
+  // aggressive URL dedup masked cross-show duplicates by dropping multi-critic reviews.
+  // Remaining are revival pairs and cross-market shows needing manual review.
+  if (crossShowDupesNonAgg > 180) {
+    error(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicates (baseline ~144, spike suggests data issue)`);
+  } else if (crossShowDupesNonAgg > 160) {
+    warn(`${crossShowDupesNonAgg} non-aggregator cross-show URL duplicate(s) found (baseline ~144)`);
   }
   // Baseline ~0 after consolidation (Feb 2026). New dupes come from collection scripts using non-canonical outlet IDs.
   if (dupeGroups > 50) {
