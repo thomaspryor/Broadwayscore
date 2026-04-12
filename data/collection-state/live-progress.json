@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-12T12:44:02.875Z",
-  "processed": 152,
-  "failed": 155,
-  "successRate": "49.5%",
+  "updatedAt": "2026-04-12T12:49:02.219Z",
+  "processed": 156,
+  "failed": 161,
+  "successRate": "49.2%",
   "tierBreakdown": {
     "playwright": 35,
     "amp": 2,
-    "browserbase": 64,
+    "browserbase": 68,
     "directCookies": 0,
     "scrapingbee": 24,
     "brightdata": 0,
     "archiveToday": 32,
-    "archive": 63
+    "archive": 65
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-12T10:57:30.005Z",
-      "event": "bb-session",
-      "session": "5dd224db",
-      "url": "https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-bran"
-    },
-    {
-      "t": "2026-04-12T10:57:30.784Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-12T10:58:17.000Z",
-      "event": "bb-session",
-      "session": "3f45c0dc",
-      "url": "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-"
-    },
-    {
-      "t": "2026-04-12T10:58:18.003Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-12T11:00:29.213Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-12T12:43:41.751Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T12:44:10.271Z",
+      "event": "bb-session",
+      "session": "173cd3e2",
+      "url": "https://deadline.com/2021/12/company-broadway-review-stephen-sondheim-katrina-le"
+    },
+    {
+      "t": "2026-04-12T12:44:10.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T12:44:24.807Z",
+      "event": "bb-session",
+      "session": "f405c0a0",
+      "url": "https://deadline.com/2019/12/jagged-little-pill-broadway-review-alanis-morissett"
+    },
+    {
+      "t": "2026-04-12T12:44:25.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

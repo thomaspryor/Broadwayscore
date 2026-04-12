@@ -151,7 +151,11 @@
     "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
     "leopoldstadt-2022/variety--marilyn-stasio.json",
     "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
-    "funny-girl-2022/variety--frank-rizzo.json"
+    "funny-girl-2022/variety--frank-rizzo.json",
+    "company-2021/deadline--greg-evans.json",
+    "jagged-little-pill-2019/deadline--greg-evans.json",
+    "all-my-sons-2019/vulture--sara-holdren.json",
+    "king-lear-2019/vulture--sara-holdren.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -308,7 +312,13 @@
     "almost-famous-2022/timeout--adam-feldman.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "the-piano-lesson-2022/timeout--adam-feldman.json",
-    "american-buffalo-2022/observer--jesse-green.json"
+    "american-buffalo-2022/observer--jesse-green.json",
+    "waitress-2021/vulture--helen-shaw.json",
+    "the-inheritance-2019/usatoday--charles-isherwood.json",
+    "linda-vista-2019/variety--marilyn-stasio.json",
+    "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "kiss-me-kate-2019/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -417,7 +427,11 @@
       "data/review-texts/leopoldstadt-2022/variety--marilyn-stasio.json",
       "leopoldstadt-2022/variety--marilyn-stasio.json",
       "data/review-texts/funny-girl-2022/variety--frank-rizzo.json",
-      "funny-girl-2022/variety--frank-rizzo.json"
+      "funny-girl-2022/variety--frank-rizzo.json",
+      "data/review-texts/company-2021/deadline--greg-evans.json",
+      "company-2021/deadline--greg-evans.json",
+      "data/review-texts/jagged-little-pill-2019/deadline--greg-evans.json",
+      "jagged-little-pill-2019/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -544,11 +558,13 @@
       "jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
       "just-for-us-2023/vulture--jackson-mchenry.json",
       "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
-      "the-skin-of-our-teeth-2022/vulture--helen-shaw.json"
+      "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+      "all-my-sons-2019/vulture--sara-holdren.json",
+      "king-lear-2019/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "american-buffalo-2022/observer--jesse-green.json",
+  "lastProcessed": "kiss-me-kate-2019/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -901,6 +917,28 @@
       "t": "2026-04-12T12:43:41.751Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T12:44:10.271Z",
+      "event": "bb-session",
+      "session": "173cd3e2",
+      "url": "https://deadline.com/2021/12/company-broadway-review-stephen-sondheim-katrina-le"
+    },
+    {
+      "t": "2026-04-12T12:44:10.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-12T12:44:24.807Z",
+      "event": "bb-session",
+      "session": "f405c0a0",
+      "url": "https://deadline.com/2019/12/jagged-little-pill-broadway-review-alanis-morissett"
+    },
+    {
+      "t": "2026-04-12T12:44:25.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
