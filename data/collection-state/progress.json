@@ -147,7 +147,11 @@
     "swept-away-2024/vulture--sara-holdren.json",
     "the-hills-of-california-2024/vulture--sara-holdren.json",
     "jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
-    "just-for-us-2023/vulture--jackson-mchenry.json"
+    "just-for-us-2023/vulture--jackson-mchenry.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+    "leopoldstadt-2022/variety--marilyn-stasio.json",
+    "the-skin-of-our-teeth-2022/vulture--helen-shaw.json",
+    "funny-girl-2022/variety--frank-rizzo.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -298,7 +302,13 @@
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "the-collaboration-2022/times-uk--jesse-green.json",
     "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json"
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "aint-no-mo-2022/observer--rex-reed.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "almost-famous-2022/timeout--adam-feldman.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "the-piano-lesson-2022/timeout--adam-feldman.json",
+    "american-buffalo-2022/observer--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -403,7 +413,11 @@
       "data/review-texts/topdog-underdog-2022/deadline--greg-evans.json",
       "topdog-underdog-2022/deadline--greg-evans.json",
       "data/review-texts/1776-2022/variety--frank-rizzo.json",
-      "1776-2022/variety--frank-rizzo.json"
+      "1776-2022/variety--frank-rizzo.json",
+      "data/review-texts/leopoldstadt-2022/variety--marilyn-stasio.json",
+      "leopoldstadt-2022/variety--marilyn-stasio.json",
+      "data/review-texts/funny-girl-2022/variety--frank-rizzo.json",
+      "funny-girl-2022/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -528,11 +542,13 @@
       "swept-away-2024/vulture--sara-holdren.json",
       "the-hills-of-california-2024/vulture--sara-holdren.json",
       "jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
-      "just-for-us-2023/vulture--jackson-mchenry.json"
+      "just-for-us-2023/vulture--jackson-mchenry.json",
+      "mike-birbiglia-the-old-man-and-the-pool-2022/vulture--kathryn-vanarendonk.json",
+      "the-skin-of-our-teeth-2022/vulture--helen-shaw.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+  "lastProcessed": "american-buffalo-2022/observer--jesse-green.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -861,6 +877,28 @@
     },
     {
       "t": "2026-04-12T11:05:37.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T12:43:20.337Z",
+      "event": "bb-session",
+      "session": "a4cb0b4b",
+      "url": "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard"
+    },
+    {
+      "t": "2026-04-12T12:43:21.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T12:43:41.149Z",
+      "event": "bb-session",
+      "session": "30faf43d",
+      "url": "https://variety.com/2022/legit/reviews/funny-girl-review-broadway-beanie-feldste"
+    },
+    {
+      "t": "2026-04-12T12:43:41.751Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
