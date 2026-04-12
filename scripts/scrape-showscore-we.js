@@ -129,14 +129,7 @@ function outletNameToId(name) {
     .replace(/^-|-$/g, '');
 }
 
-function parseDate(dateStr) {
-  if (!dateStr) return null;
-  // "December 15th, 2023" → "2023-12-15"
-  const cleaned = dateStr.replace(/(\d+)(st|nd|rd|th)/, '$1');
-  const d = new Date(cleaned);
-  if (isNaN(d.getTime())) return null;
-  return d.toISOString().split('T')[0];
-}
+const { normalizeDate: parseDate } = require('./lib/date-utils');
 
 function starRatingToScore(rating) {
   // ShowScore CSS variables --rating and --gaps represent the star count

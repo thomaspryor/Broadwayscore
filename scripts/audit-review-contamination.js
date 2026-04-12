@@ -77,12 +77,7 @@ function normalizeTitle(t) {
   return (t || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
 }
 
-function parseDate(d) {
-  if (!d || typeof d !== 'string') return null;
-  const cleaned = d.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-  const t = new Date(cleaned);
-  return isNaN(t.getTime()) ? null : t;
-}
+const { parseDate } = require('./lib/date-utils');
 
 function parseDomain(url) {
   if (!url || typeof url !== 'string') return null;

@@ -20,20 +20,9 @@ function normalizeThumb(thumb) {
   return thumb; // 'Up' or 'Down'
 }
 
-const MONTH_TO_NUM = { january:'01', february:'02', march:'03', april:'04', may:'05', june:'06', july:'07', august:'08', september:'09', october:'10', november:'11', december:'12' };
+const { normalizeDate } = require('./date-utils');
 function normalizePublishDate(dateStr) {
-  if (!dateStr) return null;
-  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
-  const isoTs = dateStr.match(/^(\d{4}-\d{2}-\d{2})T/);
-  if (isoTs) return isoTs[1];
-  const mdy = dateStr.match(/^(\w+)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$/i);
-  if (mdy && MONTH_TO_NUM[mdy[1].toLowerCase()]) {
-    return `${mdy[3]}-${MONTH_TO_NUM[mdy[1].toLowerCase()]}-${mdy[2].padStart(2, '0')}`;
-  }
-  if (/previous production/i.test(dateStr)) return null;
-  const d = new Date(dateStr);
-  if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
-  return null;
+  return normalizeDate(dateStr);
 }
 
 function fixMojibake(text) {

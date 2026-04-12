@@ -145,11 +145,10 @@ function validateUrlWithArchive(url, show) {
   const datePattern = /(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}(?:st|nd|rd|th)?,?\s*\d{4}/gi;
   const rawDates = archiveHtml.match(datePattern) || [];
   const dates = [];
+  const { parseDate: parseDateUtil } = require('./lib/date-utils');
   for (const m of rawDates) {
-    // Strip ordinal suffixes before parsing
-    const clean = m.replace(/(\d+)(?:st|nd|rd|th)/i, '$1');
-    const d = new Date(clean);
-    if (!isNaN(d.getTime()) && d.getFullYear() >= 2000 && d.getFullYear() <= 2030) {
+    const d = parseDateUtil(m);
+    if (d && d.getFullYear() >= 2000 && d.getFullYear() <= 2030) {
       dates.push(d);
     }
   }

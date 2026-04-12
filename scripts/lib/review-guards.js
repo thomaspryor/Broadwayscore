@@ -152,10 +152,10 @@ function urlLooksLikeReview(url, showTitle) {
  */
 function isLikelyWrongProduction(reviewDateStr, showEarliestDateStr, thresholdDays = 90) {
   if (!reviewDateStr || !showEarliestDateStr) return false;
-  const cleaned = reviewDateStr.replace(/(\d+)(?:st|nd|rd|th)\b/g, '$1');
-  const reviewDate = new Date(cleaned);
+  const { parseDate } = require('./date-utils');
+  const reviewDate = parseDate(reviewDateStr);
   const showDate = new Date(showEarliestDateStr);
-  if (isNaN(reviewDate.getTime()) || isNaN(showDate.getTime())) return false;
+  if (!reviewDate || isNaN(showDate.getTime())) return false;
   return (showDate - reviewDate) > thresholdDays * 86400000;
 }
 
