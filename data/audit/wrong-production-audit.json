@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T04:47:08.866Z",
+  "timestamp": "2026-04-12T05:07:28.500Z",
   "stats": {
     "totalReviews": 34602,
-    "alreadyFlagged": 14084,
+    "alreadyFlagged": 14087,
     "dateGuardCatches": 58,
     "directorMismatch": 926,
-    "tvFilmSignals": 3335,
+    "tvFilmSignals": 3334,
     "londonSignals": 1077,
     "offBroadwaySignals": 951,
     "yearMismatch": 71,
-    "noPublishDate": 4081
+    "noPublishDate": 4080
   },
   "findings": [
     {
@@ -59568,20 +59568,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-west-end-2021",
-      "file": "variety--charles-isherwood.json",
-      "score": 60,
-      "publishDate": "2020-07-30",
-      "url": "https://www.variety.com/review/VE1117922308?categoryid=33&cs=1",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
