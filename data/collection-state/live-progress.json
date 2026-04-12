@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-12T10:24:04.166Z",
-  "processed": 9,
+  "updatedAt": "2026-04-12T10:25:55.207Z",
+  "processed": 19,
   "failed": 16,
-  "successRate": "36.0%",
+  "successRate": "54.3%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 1
+    "archive": 6
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -69,6 +69,50 @@
       "t": "2026-04-12T10:23:49.718Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:24:05.617Z",
+      "event": "bb-session",
+      "session": "de0e77b0",
+      "url": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-123"
+    },
+    {
+      "t": "2026-04-12T10:24:06.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:24:29.956Z",
+      "event": "bb-session",
+      "session": "9f74ef13",
+      "url": "https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-123543"
+    },
+    {
+      "t": "2026-04-12T10:24:30.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:24:52.847Z",
+      "event": "bb-session",
+      "session": "97537ed0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-04-12T10:24:53.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-12T10:25:17.771Z",
+      "event": "bb-session",
+      "session": "9f4ba99b",
+      "url": "https://deadline.com/2022/02/mj-broadway-review-michael-jackson-musical-12349229"
+    },
+    {
+      "t": "2026-04-12T10:25:18.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

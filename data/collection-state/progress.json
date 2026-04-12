@@ -8,7 +8,17 @@
     "buena-vista-social-club-2025/theatrely--kobi-kassal.json",
     "maybe-happy-ending-2024/variety--christian-lewis.json",
     "maybe-happy-ending-2024/vulture--sara-holdren.json",
-    "oh-mary-2024/variety--christian-lewis.json"
+    "oh-mary-2024/variety--christian-lewis.json",
+    "the-outsiders-2024/variety--naveen-kumar.json",
+    "the-outsiders-2024/vulture--sara-holdren.json",
+    "the-outsiders-2024/theatrely--kobi-kassal.json",
+    "and-juliet-2022/variety--christian-lewis.json",
+    "and-juliet-2022/cititour--brian-scott-lipton.json",
+    "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+    "mj-2022/vulture--helen-shaw.json",
+    "mj-2022/deadline--greg-evans.json",
+    "mj-2022/thewrap--robert-hofler.json",
+    "moulin-rouge-2019/vulture--sara-holdren.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -45,22 +55,36 @@
       "data/review-texts/maybe-happy-ending-2024/variety--christian-lewis.json",
       "maybe-happy-ending-2024/variety--christian-lewis.json",
       "data/review-texts/oh-mary-2024/variety--christian-lewis.json",
-      "oh-mary-2024/variety--christian-lewis.json"
+      "oh-mary-2024/variety--christian-lewis.json",
+      "data/review-texts/the-outsiders-2024/variety--naveen-kumar.json",
+      "the-outsiders-2024/variety--naveen-kumar.json",
+      "data/review-texts/and-juliet-2022/variety--christian-lewis.json",
+      "and-juliet-2022/variety--christian-lewis.json",
+      "data/review-texts/mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "mj-2022/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/mj-2022/deadline--greg-evans.json",
+      "mj-2022/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "buena-vista-social-club-2025/theatrely--kobi-kassal.json"
+      "buena-vista-social-club-2025/theatrely--kobi-kassal.json",
+      "the-outsiders-2024/theatrely--kobi-kassal.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
-      "maybe-happy-ending-2024/vulture--sara-holdren.json"
+      "maybe-happy-ending-2024/vulture--sara-holdren.json",
+      "the-outsiders-2024/vulture--sara-holdren.json",
+      "and-juliet-2022/cititour--brian-scott-lipton.json",
+      "mj-2022/vulture--helen-shaw.json",
+      "mj-2022/thewrap--robert-hofler.json",
+      "moulin-rouge-2019/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "oh-mary-2024/variety--christian-lewis.json",
+  "lastProcessed": "moulin-rouge-2019/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -116,6 +140,50 @@
       "t": "2026-04-12T10:23:49.718Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:24:05.617Z",
+      "event": "bb-session",
+      "session": "de0e77b0",
+      "url": "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-123"
+    },
+    {
+      "t": "2026-04-12T10:24:06.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:24:29.956Z",
+      "event": "bb-session",
+      "session": "9f74ef13",
+      "url": "https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-123543"
+    },
+    {
+      "t": "2026-04-12T10:24:30.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T10:24:52.847Z",
+      "event": "bb-session",
+      "session": "97537ed0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage"
+    },
+    {
+      "t": "2026-04-12T10:24:53.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-12T10:25:17.771Z",
+      "event": "bb-session",
+      "session": "9f4ba99b",
+      "url": "https://deadline.com/2022/02/mj-broadway-review-michael-jackson-musical-12349229"
+    },
+    {
+      "t": "2026-04-12T10:25:18.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
