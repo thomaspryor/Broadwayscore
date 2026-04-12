@@ -2144,7 +2144,19 @@ showDirs.forEach(showId => {
           const m = data.url.match(/\/(20\d\d|19\d\d)\//);
           if (m) { detectedYear = parseInt(m[1]); yearSource = 'urlYear'; }
         }
-        const decision = pickRerouteTarget(guard.showYear, guard.siblings, detectedYear);
+        // Build run-window [startYear, endYear] from show data so pickRerouteTarget
+        // can protect mid-run reviews of long-running shows from being misrouted
+        // to a revival just because the revival is year-distance closer.
+        // Fixes: mamma-mia-2001 (ran 2001–2015) had a 2014 NYT review being routed
+        // to mamma-mia-2025 because |2014-2025|=11 < |2014-2001|=13.
+        const startYear = showOpeningDateMap[showId]
+          ? showOpeningDateMap[showId].getFullYear()
+          : guard.showYear;
+        const endYear = showClosingDateMap[showId]
+          ? showClosingDateMap[showId].getFullYear()
+          : new Date().getFullYear(); // still running → accept up to today
+        const runWindow = [startYear, endYear];
+        const decision = pickRerouteTarget(guard.showYear, guard.siblings, detectedYear, runWindow);
         if (decision.action === 'reroute') {
           const targetShowId = decision.targetShowId;
           const targetDir = path.join(reviewTextsDir, targetShowId);

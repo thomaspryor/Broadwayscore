@@ -953,6 +953,11 @@ function recordSerpAttempt(show, review) {
  * under the wrong sibling, we hand them to the correct one.
  *
  * Decision rules:
+ *   - If detectedYear falls inside currentShowRunWindow [startYear, endYear] → keep.
+ *     Prevents mid-run reviews of long-running shows from being misrouted to a
+ *     revival just because the revival's year is numerically closer. E.g., a 2014
+ *     NYT review of mamma-mia-2001 (which ran 2001–2015) must NOT route to
+ *     mamma-mia-2025 because 2014 is dist-11 from 2025 vs dist-13 from 2001.
  *   - If detectedYear is within 1 year of currentShowYear → keep (not a mismatch).
  *   - Otherwise pick the sibling with the SMALLEST distance to detectedYear.
  *   - That distance must be strictly less than the distance to the current show.
@@ -963,11 +968,22 @@ function recordSerpAttempt(show, review) {
  * @param {number} currentShowYear - Opening year of the show whose directory holds the file
  * @param {Array<{id: string, year: number}>} siblings - Other productions in the same market
  * @param {number|null} detectedYear - Year extracted from publishDate or URL (null = no signal)
+ * @param {[number, number]|null|undefined} [currentShowRunWindow] - Inclusive [startYear, endYear]
+ *   of the current show's active run. If omitted, behaves exactly as before (backward compat).
  * @returns {{action: 'keep'} | {action: 'reroute', targetShowId: string, targetYear: number, distance: number}}
  */
-function pickRerouteTarget(currentShowYear, siblings, detectedYear) {
+function pickRerouteTarget(currentShowYear, siblings, detectedYear, currentShowRunWindow) {
   if (!detectedYear || !currentShowYear || !siblings || siblings.length === 0) {
     return { action: 'keep' };
+  }
+  // Run-window guard: if detectedYear is inside the current show's active run,
+  // the review belongs here regardless of sibling distance.
+  if (Array.isArray(currentShowRunWindow) && currentShowRunWindow.length === 2) {
+    const [startYear, endYear] = currentShowRunWindow;
+    if (Number.isFinite(startYear) && Number.isFinite(endYear)
+        && detectedYear >= startYear && detectedYear <= endYear) {
+      return { action: 'keep' };
+    }
   }
   const distToCurrent = Math.abs(detectedYear - currentShowYear);
   if (distToCurrent <= 1) return { action: 'keep' };

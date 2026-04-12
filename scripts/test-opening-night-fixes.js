@@ -1845,6 +1845,19 @@ console.log('\n=== pickRerouteTarget: URL-year reroute decision ===\n');
     r11.action === 'reroute' && r11.targetShowId === 'show-2010' && r11.distance === 2,
     'three-way: detected 2008 closer to 2010 than 1990 or 2026'
   );
+
+  // Run-window guard: prevents mid-run reviews of long-running shows from
+  // being misrouted to a revival. See tests/unit/review-guards.test.mjs for
+  // the full suite + the Mamma Mia failure mode this fixes.
+  const mammaMiaRevivalSibling = [{ id: 'mamma-mia-2025', year: 2025 }];
+  const r12 = pickRerouteTarget(2001, mammaMiaRevivalSibling, 2014, [2001, 2015]);
+  assert(r12.action === 'keep', 'run-window: 2014 mid-run review of mamma-mia-2001 stays put');
+  // And without run window, legacy behavior still reroutes (locks in backward compat)
+  const r13 = pickRerouteTarget(2001, mammaMiaRevivalSibling, 2014);
+  assert(
+    r13.action === 'reroute' && r13.targetShowId === 'mamma-mia-2025',
+    'run-window: legacy 3-arg call still reroutes (backward compat)'
+  );
 }
 
 // ============================================================
