@@ -203,3 +203,70 @@ export function marketLabelFromListType(listType: GoldListType): string {
       return 'Broadway';
   }
 }
+
+/* ─── Market / venue-tier navigation helpers ─── */
+
+export type GoldListMarket = 'new-york' | 'london';
+export type VenueTier = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end';
+
+/** Which top-level market does this list belong to? */
+export function getMarketForListType(listType: GoldListType): GoldListMarket {
+  switch (listType) {
+    case 'critical-gold-west-end':
+    case 'critical-gold-off-west-end':
+      return 'london';
+    default:
+      return 'new-york';
+  }
+}
+
+/** Venue tiers available for a market, in display order. */
+export function getVenueTiersForMarket(market: GoldListMarket): VenueTier[] {
+  return market === 'london'
+    ? ['west-end', 'off-west-end']
+    : ['broadway', 'off-broadway'];
+}
+
+/** Which venue tier does this list type belong to? */
+export function getVenueTierForListType(listType: GoldListType): VenueTier {
+  switch (listType) {
+    case 'critical-gold-off-broadway': return 'off-broadway';
+    case 'critical-gold-west-end': return 'west-end';
+    case 'critical-gold-off-west-end': return 'off-west-end';
+    default: return 'broadway'; // critical-gold, audience-gold, box-office-gold, hot-ticket-gold
+  }
+}
+
+/** All list types available for a venue tier, in display order. */
+export function getListTypesForVenueTier(tier: VenueTier): GoldListType[] {
+  switch (tier) {
+    case 'broadway':
+      return ['critical-gold', 'audience-gold', 'box-office-gold', 'hot-ticket-gold'];
+    case 'off-broadway':
+      return ['critical-gold-off-broadway'];
+    case 'west-end':
+      return ['critical-gold-west-end'];
+    case 'off-west-end':
+      return ['critical-gold-off-west-end'];
+  }
+}
+
+/** Default list type when switching to a venue tier. */
+export function getDefaultListTypeForVenueTier(tier: VenueTier): GoldListType {
+  return getListTypesForVenueTier(tier)[0];
+}
+
+/** Human-readable label for a venue tier. */
+export function venueTierLabel(tier: VenueTier): string {
+  switch (tier) {
+    case 'broadway': return 'Broadway';
+    case 'off-broadway': return 'Off-Broadway';
+    case 'west-end': return 'West End';
+    case 'off-west-end': return 'Off-West End';
+  }
+}
+
+/** Human-readable label for a market. */
+export function marketLabel(market: GoldListMarket): string {
+  return market === 'london' ? 'London' : 'New York';
+}

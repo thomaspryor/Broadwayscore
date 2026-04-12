@@ -22,6 +22,7 @@ import { generateBreadcrumbSchema, generateItemListSchema, generateGoldListFAQSc
 import { SeasonSelect } from '@/components/SeasonSelect';
 import { formatGoldListDate, RankBadge, ValueBadge, AudienceGradeBadge } from '@/components/gold-list/GoldListCards';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
+import { GoldListNav } from '@/components/gold-list/GoldListNav';
 import Breadcrumb from '@/components/Breadcrumb';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -146,29 +147,8 @@ export default function GoldListSeasonPage({ params }: { params: { listType: str
           </p>
         </div>
 
-        {/* List Type Tabs — 7 lists, overflows on mobile; right-edge gradient fade signals scroll */}
-        <div className="relative mb-4">
-          <div className="flex overflow-x-auto gap-1 pb-1 -mx-1 px-1 scrollbar-thin">
-            {GOLD_LIST_CONFIGS.map(c => (
-              <Link
-                key={c.type}
-                href={`/lists/${c.type}/${season}`}
-                className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  c.type === listType
-                    ? `${c.bgClass} ${c.color} border ${c.borderClass}`
-                    : 'text-gray-400 hover:text-gray-300 hover:bg-white/5'
-                }`}
-              >
-                <GoldListBadge type={c.type} size="sm" /> {c.shortTitle}
-              </Link>
-            ))}
-          </div>
-          {/* Scroll-hint gradient — only visible when horizontal overflow exists */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-surface to-transparent sm:hidden"
-          />
-        </div>
+        {/* Market → Venue Tier → List Type navigation */}
+        <GoldListNav currentListType={listType as GoldListType} seasonSlug={season} />
 
         {/* Season Selector */}
         <div className="flex items-center gap-2 mb-6">
