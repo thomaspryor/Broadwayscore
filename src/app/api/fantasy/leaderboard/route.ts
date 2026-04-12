@@ -1,0 +1,64 @@
+import { NextResponse } from 'next/server';
+import { getServerSupabaseClient } from '@/lib/supabase-server';
+import { computeLeaderboard } from '@/lib/data-fantasy';
+import { FANTASY_SEASON } from '@/config/fantasy';
+import type { FantasyEntry } from '@/config/fantasy';
+
+/**
+ * GET /api/fantasy/leaderboard — Fetch leaderboard data
+ *
+ * Returns ranked entries with computed fantasy points.
+ * Emails are masked in the response (privacy).
+ */
+export async function GET() {
+  try {
+    const supabase = getServerSupabaseClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { entries: [], error: 'Database unavailable' },
+        { status: 200 } // still 200 — show empty leaderboard, not error page
+      );
+    }
+
+    const { data: entries, error: dbError } = await supabase
+      .from('fantasy_entries')
+      .select('*')
+      .eq('season', FANTASY_SEASON)
+      .order('created_at', { ascending: true });
+
+    if (dbError) {
+      console.error('Fantasy leaderboard fetch error:', dbError);
+      return NextResponse.json(
+        { entries: [], error: 'Failed to load entries' },
+        { status: 200 }
+      );
+    }
+
+    const typedEntries: FantasyEntry[] = (entries || []).map(e => ({
+      id: e.id,
+      email: e.email,
+      team_name: e.team_name,
+      league_name: e.league_name,
+      picks: e.picks,
+      total_cost: e.total_cost,
+      season: e.season,
+      created_at: e.created_at,
+    }));
+
+    const leaderboard = computeLeaderboard(typedEntries);
+
+    return NextResponse.json({
+      entries: leaderboard,
+      meta: {
+        totalEntries: leaderboard.length,
+        season: FANTASY_SEASON,
+      },
+    });
+  } catch (err) {
+    console.error('Fantasy leaderboard error:', err);
+    return NextResponse.json(
+      { entries: [], error: 'An unexpected error occurred' },
+      { status: 200 }
+    );
+  }
+}
