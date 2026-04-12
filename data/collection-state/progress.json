@@ -112,7 +112,15 @@
     "gutenberg-2023/vulture--sara-holdren.json",
     "jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
     "the-shark-is-broken-2023/nydailynews--new-york-daily-news.json",
-    "here-lies-love-2023/nytimes--jesse-green.json"
+    "here-lies-love-2023/nytimes--jesse-green.json",
+    "just-for-us-2023/vulture--jackson-mchenry.json",
+    "grey-house-2023/chicagotribune--chris-jones.json",
+    "peter-pan-goes-wrong-2023/variety--ad-amorosi.json",
+    "peter-pan-goes-wrong-2023/nydailynews--chris-jones.json",
+    "camelot-2023/variety--frank-rizzo.json",
+    "fat-ham-2023/variety--naveen-kumar.json",
+    "fat-ham-2023/vulture--jackson-mchenry.json",
+    "shucked-2023/variety--frank-rizzo.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -1051,7 +1059,9 @@
     "purlie-victorious-2023/theater-pizzazz--ron-fassler-critic.json",
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
     "here-lies-love-2023/vulture--jackson-mchenry.json",
-    "here-lies-love-2023/observer--jesse-green.json"
+    "here-lies-love-2023/observer--jesse-green.json",
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
+    "new-york-new-york-2023/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1135,7 +1145,15 @@
       "data/review-texts/harmony-2023/variety--trish-deitch.json",
       "harmony-2023/variety--trish-deitch.json",
       "data/review-texts/gutenberg-2023/variety--frank-rizzo.json",
-      "gutenberg-2023/variety--frank-rizzo.json"
+      "gutenberg-2023/variety--frank-rizzo.json",
+      "data/review-texts/peter-pan-goes-wrong-2023/variety--ad-amorosi.json",
+      "peter-pan-goes-wrong-2023/variety--ad-amorosi.json",
+      "data/review-texts/camelot-2023/variety--frank-rizzo.json",
+      "camelot-2023/variety--frank-rizzo.json",
+      "data/review-texts/fat-ham-2023/variety--naveen-kumar.json",
+      "fat-ham-2023/variety--naveen-kumar.json",
+      "data/review-texts/shucked-2023/variety--frank-rizzo.json",
+      "shucked-2023/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1167,7 +1185,9 @@
       "suffs-2024/timeout--regina-robbins.json",
       "lempicka-2024/nytimes--jesse-green.json",
       "the-shark-is-broken-2023/nydailynews--new-york-daily-news.json",
-      "here-lies-love-2023/nytimes--jesse-green.json"
+      "here-lies-love-2023/nytimes--jesse-green.json",
+      "grey-house-2023/chicagotribune--chris-jones.json",
+      "fat-ham-2023/vulture--jackson-mchenry.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1199,7 +1219,9 @@
       "data/review-texts/maybe-happy-ending-2024/vulture--sara-holdren.json",
       "data/review-texts/mj-2022/thewrap--robert-hofler.json",
       "data/review-texts/the-hills-of-california-2024/vulture--sara-holdren.json",
-      "data/review-texts/hells-kitchen-2024/thewrap--robert-hofler.json"
+      "data/review-texts/hells-kitchen-2024/thewrap--robert-hofler.json",
+      "data/review-texts/here-lies-love-2023/vulture--jackson-mchenry.json",
+      "data/review-texts/new-york-new-york-2023/vulture--jackson-mchenry.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -1235,11 +1257,13 @@
       "the-whos-tommy-2024/vulture--sara-holdren.json",
       "harmony-2023/vulture--jackson-mchenry.json",
       "gutenberg-2023/vulture--sara-holdren.json",
-      "jajas-african-hair-braiding-2023/vulture--sara-holdren.json"
+      "jajas-african-hair-braiding-2023/vulture--sara-holdren.json",
+      "just-for-us-2023/vulture--jackson-mchenry.json",
+      "peter-pan-goes-wrong-2023/nydailynews--chris-jones.json"
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "here-lies-love-2023/observer--jesse-green.json",
+  "lastProcessed": "shucked-2023/variety--frank-rizzo.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1635,6 +1659,50 @@
     },
     {
       "t": "2026-04-12T02:37:00.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:46:33.535Z",
+      "event": "bb-session",
+      "session": "9aabceec",
+      "url": "https://variety.com/2023/legit/reviews/peter-pan-goes-wrong-review-broadway-1235"
+    },
+    {
+      "t": "2026-04-12T02:46:34.526Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:47:00.371Z",
+      "event": "bb-session",
+      "session": "9ac90e61",
+      "url": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235"
+    },
+    {
+      "t": "2026-04-12T02:47:01.341Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:47:17.163Z",
+      "event": "bb-session",
+      "session": "a0a1da8d",
+      "url": "https://variety.com/2023/legit/reviews/fat-ham-review-broadway-1235580536/"
+    },
+    {
+      "t": "2026-04-12T02:47:18.119Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-12T02:48:03.320Z",
+      "event": "bb-session",
+      "session": "2bb2e655",
+      "url": "https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-bran"
+    },
+    {
+      "t": "2026-04-12T02:48:04.305Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
