@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-12T16:13:26.156Z",
+    "lastUpdated": "2026-04-12T16:33:56.402Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 35216,
-    "skippedFiles": 14265,
-    "totalCritics": 1469,
-    "registryCritics": 514,
-    "flaggedReviews": 63
+    "totalFilesScanned": 35236,
+    "skippedFiles": 14337,
+    "totalCritics": 1438,
+    "registryCritics": 509,
+    "flaggedReviews": 62
   },
   "flaggedReviews": [
     {
@@ -418,17 +418,6 @@
       "totalReviews": 14
     },
     {
-      "critic": "Elyse Sommer",
-      "criticSlug": "elyse-sommer",
-      "outlet": "new-york-sun",
-      "showId": "floyd-collins-2025",
-      "file": "new-york-sun--elyse-sommer.json",
-      "outletShare": 1,
-      "primaryOutlet": "curtainup",
-      "primaryShare": 99,
-      "totalReviews": 98
-    },
-    {
       "critic": "Bob Verini",
       "criticSlug": "bob-verini",
       "outlet": "variety",
@@ -635,7 +624,7 @@
       "outletShare": 5,
       "primaryOutlet": "observer",
       "primaryShare": 95,
-      "totalReviews": 20
+      "totalReviews": 21
     },
     {
       "critic": "Dominic Cavendish",
@@ -646,7 +635,7 @@
       "outletShare": 2,
       "primaryOutlet": "telegraph",
       "primaryShare": 98,
-      "totalReviews": 44
+      "totalReviews": 45
     },
     {
       "critic": "Sarah Crompton",
@@ -1122,6 +1111,7 @@
         "newsday",
         "nytimes",
         "vulture",
+        "theater-news-online",
         "wsj",
         "deadline",
         "nbcny",
@@ -1131,12 +1121,11 @@
         "chicagotribune",
         "hollywood-reporter",
         "nysr",
-        "theater-news-online",
         "timeout",
         "dailybeast",
         "off-script"
       ],
-      "totalReviews": 425
+      "totalReviews": 426
     },
     {
       "critic": "Jeremy Gerard",
@@ -1309,7 +1298,7 @@
         "backstage",
         "cultural-weekly"
       ],
-      "totalReviews": 113
+      "totalReviews": 114
     },
     {
       "critic": "Maya Phillips",
@@ -1319,17 +1308,6 @@
         "variety"
       ],
       "totalReviews": 15
-    },
-    {
-      "critic": "Anya Ryan",
-      "slug": "anya-ryan",
-      "outlets": [
-        "london-theatre",
-        "timeout-london",
-        "guardian",
-        "timeout"
-      ],
-      "totalReviews": 14
     },
     {
       "critic": "Steve Suskin",
@@ -1389,7 +1367,7 @@
         "theatrely",
         "nytg"
       ],
-      "totalReviews": 161
+      "totalReviews": 162
     },
     {
       "critic": "Matthew Wexler",
@@ -1399,7 +1377,7 @@
         "one-minute-critic",
         "queerty"
       ],
-      "totalReviews": 108
+      "totalReviews": 107
     },
     {
       "critic": "Elizabeth Ahlfors",
@@ -1447,7 +1425,7 @@
         "musical-theatre-review",
         "theater-scene"
       ],
-      "totalReviews": 23
+      "totalReviews": 24
     },
     {
       "critic": "Jennifer Farrar",
@@ -1522,15 +1500,6 @@
         "playbill"
       ],
       "totalReviews": 13
-    },
-    {
-      "critic": "David Quinn",
-      "slug": "david-quinn",
-      "outlets": [
-        "nbcny",
-        "ew"
-      ],
-      "totalReviews": 3
     },
     {
       "critic": "Dan Rubins",
@@ -1654,11 +1623,12 @@
       "outlets": [
         "thestage",
         "i-paper",
+        "times-uk",
         "timeout",
         "timeout-london",
         "london-theatre"
       ],
-      "totalReviews": 27
+      "totalReviews": 28
     },
     {
       "critic": "Tim Bano",
@@ -1909,7 +1879,7 @@
         "artsdesk",
         "broadwayworld"
       ],
-      "totalReviews": 16
+      "totalReviews": 17
     },
     {
       "critic": "Marianka Swain",
@@ -2072,7 +2042,7 @@
         "daily-mail",
         "times-uk"
       ],
-      "totalReviews": 14
+      "totalReviews": 15
     },
     {
       "critic": "Bobby McGuire",
@@ -2172,6 +2142,16 @@
       "totalReviews": 4
     },
     {
+      "critic": "David Jays",
+      "slug": "david-jays",
+      "outlets": [
+        "guardian",
+        "financialtimes",
+        "times-uk"
+      ],
+      "totalReviews": 6
+    },
+    {
       "critic": "Wilborn Hampton",
       "slug": "wilborn-hampton",
       "outlets": [
@@ -2207,6 +2187,17 @@
         "the-sun"
       ],
       "totalReviews": 9
+    },
+    {
+      "critic": "Anya Ryan",
+      "slug": "anya-ryan",
+      "outlets": [
+        "london-theatre",
+        "timeout-london",
+        "guardian",
+        "timeout"
+      ],
+      "totalReviews": 13
     },
     {
       "critic": "Mark Fisher",
