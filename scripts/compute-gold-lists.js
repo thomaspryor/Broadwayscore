@@ -86,7 +86,10 @@ const THRESHOLDS = {
   'critical-gold-west-end':     { minScore: 73, minReviews: 3, maxPerSeason: 10, maxAllTime: 25 },
   'critical-gold-off-broadway': { minScore: 73, minReviews: 3, maxPerSeason: 10, maxAllTime: 25 },
   'critical-gold-off-west-end': { minScore: 73, minReviews: 3, maxPerSeason: 10, maxAllTime: 25 },
-  'audience-gold':     { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },
+  'audience-gold':              { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },
+  'audience-gold-off-broadway': { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },
+  'audience-gold-west-end':     { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },
+  'audience-gold-off-west-end': { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },
   'box-office-gold':   { minPerformances: 50, maxPerSeason: 10, maxAllTime: 25 },
   'hot-ticket-gold':   { minCapacity: 85, minWeeks: 8, maxPerSeason: 10, maxAllTime: 25 },
 };
@@ -168,14 +171,14 @@ function computeCriticalGold(season, uncapped = false) {
   return computeCriticalGoldForMarket('critical-gold', isBroadway, season, uncapped);
 }
 
-function computeAudienceGold(season, uncapped = false) {
-  const cfg = THRESHOLDS['audience-gold'];
+function computeAudienceGoldForMarket(listType, membershipFilter, season, uncapped = false) {
+  const cfg = THRESHOLDS[listType];
   const abShows = audienceBuzz.shows || {};
   const results = [];
 
   for (const [showId, data] of Object.entries(abShows)) {
     const show = showById[showId];
-    if (!show || !isBroadway(show) || getSeason(show.openingDate) !== season) continue;
+    if (!show || !membershipFilter(show) || getSeason(show.openingDate) !== season) continue;
     if (data.combinedScore == null || data.combinedScore < cfg.minScore) continue;
 
     results.push({
@@ -192,6 +195,19 @@ function computeAudienceGold(season, uncapped = false) {
   results.sort((a, b) => b.value - a.value);
   if (!uncapped) results.splice(cfg.maxPerSeason);
   return results.map((e, i) => ({ ...e, rank: i + 1 }));
+}
+
+function computeAudienceGold(season, uncapped = false) {
+  return computeAudienceGoldForMarket('audience-gold', isBroadway, season, uncapped);
+}
+function computeAudienceGoldOffBroadway(season, uncapped = false) {
+  return computeAudienceGoldForMarket('audience-gold-off-broadway', isOffBroadway, season, uncapped);
+}
+function computeAudienceGoldWestEnd(season, uncapped = false) {
+  return computeAudienceGoldForMarket('audience-gold-west-end', isWestEnd, season, uncapped);
+}
+function computeAudienceGoldOffWestEnd(season, uncapped = false) {
+  return computeAudienceGoldForMarket('audience-gold-off-west-end', isOffWestEnd, season, uncapped);
 }
 
 function computeBoxOfficeGold(season, uncapped = false) {
@@ -292,6 +308,9 @@ function computeAllTime(type) {
     'critical-gold-off-broadway': computeCriticalGoldOffBroadway,
     'critical-gold-off-west-end': computeCriticalGoldOffWestEnd,
     'audience-gold': computeAudienceGold,
+    'audience-gold-off-broadway': computeAudienceGoldOffBroadway,
+    'audience-gold-west-end': computeAudienceGoldWestEnd,
+    'audience-gold-off-west-end': computeAudienceGoldOffWestEnd,
     'box-office-gold': computeBoxOfficeGold,
     'hot-ticket-gold': computeHotTicketGold,
   };
@@ -320,6 +339,9 @@ const listTypes = [
   'critical-gold-off-broadway',
   'critical-gold-off-west-end',
   'audience-gold',
+  'audience-gold-off-broadway',
+  'audience-gold-west-end',
+  'audience-gold-off-west-end',
   'box-office-gold',
   'hot-ticket-gold',
 ];
@@ -337,6 +359,9 @@ for (const type of listTypes) {
       'critical-gold-off-broadway': computeCriticalGoldOffBroadway,
       'critical-gold-off-west-end': computeCriticalGoldOffWestEnd,
       'audience-gold': computeAudienceGold,
+      'audience-gold-off-broadway': computeAudienceGoldOffBroadway,
+      'audience-gold-west-end': computeAudienceGoldWestEnd,
+      'audience-gold-off-west-end': computeAudienceGoldOffWestEnd,
       'box-office-gold': computeBoxOfficeGold,
       'hot-ticket-gold': computeHotTicketGold,
     };

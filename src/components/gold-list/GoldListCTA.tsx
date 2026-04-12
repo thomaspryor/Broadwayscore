@@ -43,6 +43,9 @@ export function GoldListCTA({ listType }: { listType: GoldListType }) {
     // Non-critic lists reuse this component too if anyone ever wants to
     // surface them on market landing pages. Currently unused.
     'audience-gold': null,
+    'audience-gold-off-broadway': null,
+    'audience-gold-west-end': null,
+    'audience-gold-off-west-end': null,
     'box-office-gold': null,
     'hot-ticket-gold': null,
   };

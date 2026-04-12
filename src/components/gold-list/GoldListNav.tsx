@@ -22,7 +22,7 @@ import { GoldListBadge } from './GoldListBadge';
 /** Pill label for list type — strips market prefix, shows the *kind* of list. */
 function pillLabel(lt: GoldListType): string {
   if (lt.startsWith('critical-gold')) return 'Critics';
-  if (lt === 'audience-gold') return 'Audiences';
+  if (lt.startsWith('audience-gold')) return 'Audiences';
   if (lt === 'box-office-gold') return 'Box Office';
   if (lt === 'hot-ticket-gold') return 'Hot Tickets';
   return GOLD_LIST_MAP[lt].shortTitle;

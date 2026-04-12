@@ -49,6 +49,9 @@ export function GoldListBadge({ type, size = 'sm' }: { type: GoldListType; size?
       case 'critical-gold-off-west-end':
         return <StarIcon className={svgSize} />;
       case 'audience-gold':
+      case 'audience-gold-off-broadway':
+      case 'audience-gold-west-end':
+      case 'audience-gold-off-west-end':
         return (
           <span className={`${ts.aplus} font-black text-[#1a1a1a] relative z-[1] leading-none tracking-tight`}>
             A<sup className="text-[0.5em] font-black leading-none">+</sup>
