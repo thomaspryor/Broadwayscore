@@ -19,7 +19,7 @@ export { getCriticLabel };
 export const FANTASY_SEASON = '2025-2026';
 export const FANTASY_BUDGET = 100;
 export const FANTASY_TEAM_SIZE = 8;
-export const DRAFT_DEADLINE = '2026-02-07T05:00:00Z'; // midnight ET
+export const DRAFT_DEADLINE = '2026-12-31T05:00:00Z'; // extended for prototype testing
 export const SCORING_START = '2026-02-01';
 export const SCORING_END = '2026-06-15'; // Tony Awards night
 
