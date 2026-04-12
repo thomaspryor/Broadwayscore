@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-11T23:45:27.254Z",
-  "processed": 50,
-  "failed": 909,
-  "successRate": "5.2%",
+  "updatedAt": "2026-04-12T00:18:38.338Z",
+  "processed": 52,
+  "failed": 911,
+  "successRate": "5.4%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 15,
     "amp": 2,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 20,
+    "archiveToday": 22,
     "archive": 13
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-11T17:23:18.462Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-11T17:24:38.638Z",
-      "event": "bb-session",
-      "session": "655b61db",
-      "url": "https://www.amny.com/urbanite-1.812039/theater-review-women-on-the-verge-of-a-ne"
-    },
     {
       "t": "2026-04-11T17:24:39.360Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "event": "bb-session",
       "session": "d7bb8a50",
       "url": "https://bway.ly/4o28ux#https://www.thewrap.com/the-kite-runner-broadway-review-k"
+    },
+    {
+      "t": "2026-04-12T00:13:52.480Z",
+      "event": "bb-session",
+      "session": "90348c7a",
+      "url": "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-t"
+    },
+    {
+      "t": "2026-04-12T00:13:53.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

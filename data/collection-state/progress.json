@@ -49,7 +49,9 @@
     "death-of-a-salesman-2026/variety--payton-turkeltaub.json",
     "once-2012/theatermania--dan-bacalzo.json",
     "that-championship-season-2011/reuters--unknown.json",
-    "inter-alia-west-end-2026/timeout--caroline-mcginn.json"
+    "inter-alia-west-end-2026/timeout--caroline-mcginn.json",
+    "titanique-2026/guardian--unknown.json",
+    "titanique-2026/nypost--unknown.json"
   ],
   "failed": [
     "here-lies-love-2023/talkinbroadway--matthew-murray.json",
@@ -960,7 +962,9 @@
     "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "inter-alia-west-end-2026/new-statesman--unknown.json",
     "inter-alia-west-end-2026/british-theatre--unknown.json",
-    "copenhagen-west-end-2026/thestage--tom-wicker.json"
+    "copenhagen-west-end-2026/thestage--tom-wicker.json",
+    "titanique-2026/thewrap--unknown.json",
+    "titanique-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -978,7 +982,8 @@
       "the-bands-visit-2017/off-script-with-dan-dwyer--wendy-caster.json",
       "the-lyons-2012/theatermania--dan-bacalzo.json",
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
-      "once-2012/theatermania--dan-bacalzo.json"
+      "once-2012/theatermania--dan-bacalzo.json",
+      "titanique-2026/guardian--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-scottsboro-boys-2010/time--richard-zoglin.json",
@@ -996,7 +1001,9 @@
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
       "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
       "data/review-texts/death-of-a-salesman-2026/variety--payton-turkeltaub.json",
-      "death-of-a-salesman-2026/variety--payton-turkeltaub.json"
+      "death-of-a-salesman-2026/variety--payton-turkeltaub.json",
+      "data/review-texts/titanique-2026/nypost--unknown.json",
+      "titanique-2026/nypost--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1037,7 +1044,9 @@
       "data/review-texts/inter-alia-west-end-2026/british-theatre--unknown.json",
       "data/review-texts/inter-alia-west-end-2026/british-theatre--unknown.json",
       "data/review-texts/inter-alia-west-end-2026/british-theatre--unknown.json",
-      "data/review-texts/inter-alia-west-end-2026/british-theatre--unknown.json"
+      "data/review-texts/inter-alia-west-end-2026/british-theatre--unknown.json",
+      "data/review-texts/titanique-2026/thewrap--unknown.json",
+      "data/review-texts/titanique-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "starlight-express-west-end-2024/thestage--paul-vale.json",
@@ -1056,7 +1065,7 @@
     ]
   },
   "startTime": "2026-04-11T17:07:39.357Z",
-  "lastProcessed": "copenhagen-west-end-2026/thestage--tom-wicker.json",
+  "lastProcessed": "titanique-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-04-11T17:09:47.062Z",
@@ -1256,6 +1265,17 @@
       "event": "bb-session",
       "session": "d7bb8a50",
       "url": "https://bway.ly/4o28ux#https://www.thewrap.com/the-kite-runner-broadway-review-k"
+    },
+    {
+      "t": "2026-04-12T00:13:52.480Z",
+      "event": "bb-session",
+      "session": "90348c7a",
+      "url": "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-t"
+    },
+    {
+      "t": "2026-04-12T00:13:53.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
