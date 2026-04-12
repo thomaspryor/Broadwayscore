@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-12T09:11:49.045Z",
+  "timestamp": "2026-04-12T10:12:02.372Z",
   "stats": {
-    "totalReviews": 34603,
-    "alreadyFlagged": 14091,
+    "totalReviews": 34617,
+    "alreadyFlagged": 14086,
     "dateGuardCatches": 58,
-    "directorMismatch": 926,
-    "tvFilmSignals": 3336,
+    "directorMismatch": 928,
+    "tvFilmSignals": 3337,
     "londonSignals": 1077,
     "offBroadwaySignals": 951,
     "yearMismatch": 71,
-    "noPublishDate": 4078
+    "noPublishDate": 4077
   },
   "findings": [
     {
@@ -9150,7 +9150,7 @@
       "showId": "cats-the-jellicle-ball-2026",
       "file": "nytg--unknown.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "April 7, 2026",
       "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
       "findings": [
         {
@@ -12264,6 +12264,20 @@
       "score": 84,
       "publishDate": "2026-04-09",
       "url": "https://theaterpizzazz.com/hes-back-but-has-willy-loman-ever-left-us/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-09",
+      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -25851,6 +25865,20 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 82,
+      "publishDate": "March 27th, 2026",
+      "url": "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "observer--katherine-cowles.json",
       "score": 87,
       "publishDate": "2026-04-02",
@@ -37063,6 +37091,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "thestage--tom-wicker.json",
+      "score": 87,
+      "publishDate": "December 16th, 2025",
+      "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatre-london-felix-barrett",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -74847,8 +74889,9 @@
     {
       "showId": "skylight-2015",
       "file": "nbcny--robert-kahn.json",
+      "score": null,
       "publishDate": "April 2, 2015",
-      "url": "https://www.nbcnewyork.com/entertainment/the-scene/skylight-mulligan-review-298149311.html",
+      "url": "http://www.nbcnewyork.com/entertainment/the-scene/skylight-mulligan-review-298149311.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
