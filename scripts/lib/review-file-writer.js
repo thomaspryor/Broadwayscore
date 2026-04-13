@@ -8,6 +8,7 @@
  * - isJunkOutlet() — reject garbage outlet names
  * - validateUrlDomain() — reject URLs that don't match outlet's registered domain
  * - normalizeOutlet() — consistent outlet ID (skipped when input.outletId provided)
+ * - isBroadwayUrl() — reject Broadway/US reviews on WE/OWE shows (Guard H)
  * - safeWriteReview() — preserve scored/collected fields on overwrite
  * - classifyContentTier() — tag new files with content tier
  *
@@ -34,6 +35,7 @@ const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { pickRerouteTarget } = require('./review-guards');
+const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
@@ -101,6 +103,27 @@ function _getSiblingData() {
     _siblingCache = new Map();
     return _siblingCache;
   }
+}
+
+// ─── Lazy-loaded show category map for cross-market guard ───
+let _showCategoryCache = null;
+function _getShowCategory(showId) {
+  if (!_showCategoryCache) {
+    try {
+      const shows = require(SHOWS_PATH).shows;
+      _showCategoryCache = {};
+      for (const s of shows) {
+        if (s.id && s.category) _showCategoryCache[s.id] = s.category;
+      }
+    } catch {
+      _showCategoryCache = {};
+    }
+  }
+  // Fallback: infer from show ID if not in shows.json (e.g. new shows)
+  if (_showCategoryCache[showId]) return _showCategoryCache[showId];
+  if (showId.includes('-west-end-')) return 'west-end';
+  if (showId.includes('-off-west-end-')) return 'off-west-end';
+  return null;
 }
 
 /**
@@ -267,6 +290,22 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       _misattributionDetected = true;
       _misattributionReason = `critic "${entry.displayName}" has primaryOutlet="${entry.primaryOutlet}" (${entry.totalReviews} reviews); found at "${outletId}" which is not in knownOutlets`;
       console.warn(`  ⚠️  Misattribution guard: ${entry.displayName} at ${outletId} (primary: ${entry.primaryOutlet}) for ${showId}`);
+    }
+  }
+
+  // --- Guard H: Cross-market URL/outlet rejection for WE shows ---
+  // Reject reviews at ingestion that are clearly Broadway content being filed
+  // under a WE show. Uses the same URL patterns + US-only outlet list that
+  // validate-data.js uses post-hoc, but applied at write time so contamination
+  // never enters the data directory. Only fires for WE/OWE shows.
+  // Safe: only checks URL path patterns and outlet IDs — never review text
+  // (which legitimately mentions "Broadway" for transfer productions).
+  const showCategory = _getShowCategory(showId);
+  if (showCategory && isLondonMarket(showCategory) && !fields.allowCrossMarket) {
+    const crossMarketReason = isBroadwayUrl(input.url, outletId);
+    if (crossMarketReason) {
+      console.warn(`  ⛔ Cross-market guard: rejecting ${outletId}/${criticSlug} for WE show ${showId} — ${crossMarketReason}`);
+      return { action: 'skipped', reason: `cross-market: ${crossMarketReason}` };
     }
   }
 
