@@ -5,7 +5,7 @@
  * Scoring thresholds and constants come from score-extractors.js (single source of truth).
  */
 
-const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES } = require('./score-extractors');
+const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES, extractScore: extractScoreFromText } = require('./score-extractors');
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
@@ -443,6 +443,18 @@ function getBestScore(data, opts = {}) {
         }
         return { score: parsed, source: 'originalScore-priority0' };
       }
+    }
+  }
+
+  // P0.75: Inline star extraction for known star outlets missing originalScore.
+  // If the outlet publishes star ratings but originalScore wasn't set during collection,
+  // try to extract it from fullText now. Catches gaps without waiting for the weekly
+  // recover-explicit-ratings cron — critical for opening night accuracy.
+  if (!effectiveOriginalScore && isKnownStarOutlet && data.fullText && data.fullText.length > 100) {
+    const extracted = extractScoreFromText('', data.fullText, data.outletId || '');
+    if (extracted && extracted.normalizedScore != null) {
+      inc('inlineStarRecovered');
+      return { score: extracted.normalizedScore, source: 'originalScore-priority0' };
     }
   }
 
