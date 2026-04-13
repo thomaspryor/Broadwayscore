@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-13T05:54:41.774Z",
+  "timestamp": "2026-04-13T06:19:32.800Z",
   "stats": {
-    "totalReviews": 34724,
-    "alreadyFlagged": 13892,
+    "totalReviews": 34728,
+    "alreadyFlagged": 13894,
     "dateGuardCatches": 107,
-    "directorMismatch": 960,
-    "tvFilmSignals": 3384,
+    "directorMismatch": 959,
+    "tvFilmSignals": 3383,
     "londonSignals": 1114,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
-    "noPublishDate": 4082
+    "noPublishDate": 4086
   },
   "findings": [
     {
@@ -15997,20 +15997,6 @@
     },
     {
       "showId": "follies-2011",
-      "file": "backstage--erik-haagensen.json",
-      "score": 63,
-      "publishDate": "September 12, 2011",
-      "url": "http://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3i9ec87ea310027fdad394a07eda6e83d4",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince and michael bennett\" from follies-1971"
-        }
-      ]
-    },
-    {
-      "showId": "follies-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
       "publishDate": "September 12, 2011",
@@ -28846,20 +28832,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "liberation-2025",
-      "file": "latimes--charles-mcnulty.json",
-      "score": 82,
-      "publishDate": "2025-11-05",
-      "url": "https://www.latimes.com/opinion/story/2025-11-19/wicked-liberation-ms-hollywood-broadway-feminism",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
