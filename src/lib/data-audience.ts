@@ -93,7 +93,7 @@ export function getAudienceBuzzColor(designation: AudienceBuzzDesignation): {
       return {
         bgClass: 'bg-gray-500/15',
         textClass: 'text-gray-400',
-        borderClass: 'border-gray-500/25',
+        borderClass: 'border-white/10',
       };
   }
 }

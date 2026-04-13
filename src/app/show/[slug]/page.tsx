@@ -391,7 +391,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                     {show.type === 'musical' ? 'Musical' : 'Play'}
                   </span>
                   {show.isRevival && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide bg-gray-500/15 text-gray-400 border border-gray-500/30">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide bg-gray-500/15 text-gray-400 border border-white/15">
                       Revival
                     </span>
                   )}

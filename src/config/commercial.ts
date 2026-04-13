@@ -86,7 +86,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     showInLegend: false,
     icon: '⏳',
     bgClass: 'bg-gray-500/15',
-    borderClass: 'border-gray-500/25',
+    borderClass: 'border-white/10',
   },
   {
     name: 'Fizzle',
@@ -126,7 +126,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     showInLegend: true,
     icon: '🚌',
     bgClass: 'bg-slate-500/15',
-    borderClass: 'border-slate-500/25',
+    borderClass: 'border-white/10',
   },
 ];
 
@@ -162,7 +162,7 @@ export function getDesignationBadgeStyle(designation: string): {
     return {
       bgClass: 'bg-gray-500/15',
       textClass: 'text-gray-400',
-      borderClass: 'border-gray-500/25',
+      borderClass: 'border-white/10',
       icon: '?',
       description: 'Unknown',
     };

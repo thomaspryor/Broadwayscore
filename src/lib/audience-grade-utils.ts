@@ -67,5 +67,5 @@ export function getAudienceGradeClasses(score: number | null | undefined): {
   if (grade === 'B') return { bgClass: 'bg-amber-500/15', textClass: 'text-amber-400', borderClass: 'border-amber-500/25' };
   if (grade === 'B-') return { bgClass: 'bg-orange-500/15', textClass: 'text-orange-400', borderClass: 'border-orange-500/25' };
   if (grade.startsWith('C')) return { bgClass: 'bg-red-500/15', textClass: 'text-red-400', borderClass: 'border-red-500/25' };
-  return { bgClass: 'bg-gray-500/15', textClass: 'text-gray-400', borderClass: 'border-gray-500/25' };
+  return { bgClass: 'bg-gray-500/15', textClass: 'text-gray-400', borderClass: 'border-white/10' };
 }
