@@ -27,10 +27,8 @@ jobs:
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
           POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
         run: |
+          node scripts/affiliate-report.js --days 7 --html > /tmp/report.html 2>/tmp/report-stderr.txt
           node scripts/affiliate-report.js --days 7 > /tmp/report.txt 2>&1
-          echo "report<<REPORT_EOF" >> $GITHUB_OUTPUT
-          cat /tmp/report.txt >> $GITHUB_OUTPUT
-          echo "REPORT_EOF" >> $GITHUB_OUTPUT
           cat /tmp/report.txt
 
       - name: Send email via Resend
@@ -38,13 +36,14 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           SUBJECT="Affiliate Report — Week of $(date -u +'%B %d, %Y')"
-          # Use jq to safely build JSON with the report text
+          # Send HTML email with plain-text fallback
           jq -n \
             --arg from "Broadway Scorecard <notifications@broadwayscorecard.com>" \
             --arg to "thomas.pryor@gmail.com" \
             --arg subject "$SUBJECT" \
+            --arg html "$(cat /tmp/report.html)" \
             --arg text "$(cat /tmp/report.txt)" \
-            '{from: $from, to: $to, subject: $subject, text: $text}' \
+            '{from: $from, to: $to, subject: $subject, html: $html, text: $text}' \
           | curl -s -X POST "https://api.resend.com/emails" \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
