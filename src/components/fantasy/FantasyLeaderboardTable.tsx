@@ -136,7 +136,7 @@ export default function FantasyLeaderboardTable() {
 
           {/* Expanded picks */}
           {expandedRank === idx && (
-            <div className="ml-12 mr-4 mb-2 mt-1 bg-surface/50 rounded-lg p-3 space-y-1.5">
+            <div className="ml-12 mr-4 mb-2 mt-1 bg-surface-raised/50 rounded-lg p-3 space-y-1.5">
               <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Picks</p>
               {entry.picks.map((pick, i) => (
                 <div key={pick.showId} className="flex items-center justify-between text-sm">
