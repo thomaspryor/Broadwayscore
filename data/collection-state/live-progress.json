@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-13T11:54:21.510Z",
+  "updatedAt": "2026-04-13T11:55:59.752Z",
   "processed": 50,
-  "failed": 533,
-  "successRate": "8.6%",
+  "failed": 543,
+  "successRate": "8.4%",
   "tierBreakdown": {
     "playwright": 28,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 8,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -47,6 +47,17 @@
       "t": "2026-04-13T10:53:32.682Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-13T11:55:21.642Z",
+      "event": "bb-session",
+      "session": "2f2cfd84",
+      "url": "http://www.newsday.com/entertainment/theater/born-yesterday-revival-has-stellar-"
+    },
+    {
+      "t": "2026-04-13T11:55:22.475Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }

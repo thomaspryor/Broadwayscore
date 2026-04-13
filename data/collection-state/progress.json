@@ -584,7 +584,17 @@
     "relatively-speaking-2011/backstage--david-sheward.json",
     "the-mountaintop-2011/backstage--david-sheward.json",
     "the-mountaintop-2011/yonkers-tribune--john-simon.json",
-    "man-and-boy-2011/backstage--david-sheward.json"
+    "man-and-boy-2011/backstage--david-sheward.json",
+    "man-and-boy-2011/yonkers-tribune--john-simon.json",
+    "the-people-in-the-picture-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/wsj--unknown.json",
+    "baby-its-you-2011/variety--david-rooney.json",
+    "baby-its-you-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/backstage--unknown.json",
+    "the-normal-heart-2011/bloomberg--jeremy-gerard.json",
+    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+    "born-yesterday-2011/newsday--unknown.json",
+    "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -663,7 +673,7 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "man-and-boy-2011/backstage--david-sheward.json",
+  "lastProcessed": "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -697,6 +707,17 @@
       "t": "2026-04-13T10:53:32.682Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-13T11:55:21.642Z",
+      "event": "bb-session",
+      "session": "2f2cfd84",
+      "url": "http://www.newsday.com/entertainment/theater/born-yesterday-revival-has-stellar-"
+    },
+    {
+      "t": "2026-04-13T11:55:22.475Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
