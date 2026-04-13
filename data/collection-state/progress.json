@@ -1,29 +1,50 @@
 {
   "processed": [
-    "titanique-2026/nytimes--alex-marshall.json",
-    "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json"
+    "innocence-off-broadway-2026/wsj--unknown.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+    "bigfoot-off-broadway-2026/timeout--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json"
   ],
   "failed": [
-    "titanique-2026/theatermania--zachary-stewart.json",
-    "titanique-2026/talkinbroadway--unknown.json"
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+      "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "titanique-2026/nytimes--alex-marshall.json",
-      "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json"
+      "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+      "bigfoot-off-broadway-2026/timeout--unknown.json"
     ],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/titanique-2026/talkinbroadway--unknown.json"
-    ],
-    "archive": []
+    "archiveToday": [],
+    "archive": [
+      "innocence-off-broadway-2026/wsj--unknown.json"
+    ]
   },
-  "startTime": "2026-04-13T08:43:03.212Z",
-  "lastProcessed": "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json",
-  "log": []
+  "startTime": "2026-04-13T08:42:58.862Z",
+  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-13T08:43:02.415Z",
+      "event": "bb-session",
+      "session": "42378be8",
+      "url": "https://www.wsj.com/arts-culture/theater/innocence-review-an-attacks-aftermath-a"
+    },
+    {
+      "t": "2026-04-13T08:43:03.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
