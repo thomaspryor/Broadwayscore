@@ -2354,11 +2354,14 @@ function createReviewFile(showId, reviewData, options = {}) {
   }
 
   // Use centralized normalization for consistent file naming
-  const normalizedOutletId = normalizeOutlet(reviewData.outlet || reviewData.outletId);
+  // Prefer outletId (canonical ID like "nytimes") over outlet (display name like "NYT Theater")
+  // to avoid misattribution — normalizeOutlet("NYT Theater") → "nyt-theater" (wrong outlet)
+  const outletForNormalization = reviewData.outletId || reviewData.outlet;
+  const normalizedOutletId = normalizeOutlet(outletForNormalization);
   const normalizedCriticName = normalizeCritic(reviewData.criticName);
-  const filename = generateReviewFilename(reviewData.outlet || reviewData.outletId, reviewData.criticName);
+  const filename = generateReviewFilename(outletForNormalization, reviewData.criticName);
   const filepath = path.join(showDir, filename);
-  const reviewKey = generateReviewKey(reviewData.outlet || reviewData.outletId, reviewData.criticName);
+  const reviewKey = generateReviewKey(outletForNormalization, reviewData.criticName);
 
   // JUNK OUTLET GUARD: Reject scraping artifacts (ad images, etc.)
   if (isJunkOutlet(normalizedOutletId)) {
