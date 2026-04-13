@@ -997,7 +997,17 @@
     "fela-2009/new-jersey-newsroom--michael-sommers.json",
     "the-royal-family-2009/washpost--peter-marks.json",
     "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
-    "burn-the-floor-2009/ew--jennifer-armstrong.json"
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "9-to-5-2009/wsj--terry-teachout.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "the-norman-conquests-2009/variety--charles-isherwood.json",
+    "mary-stuart-2009/variety--marilyn-stasio.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1095,7 +1105,7 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "burn-the-floor-2009/ew--jennifer-armstrong.json",
+  "lastProcessed": "next-to-normal-2009/ap--unknown.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1182,6 +1192,17 @@
     },
     {
       "t": "2026-04-13T18:54:09.374Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-13T18:57:47.736Z",
+      "event": "bb-session",
+      "session": "7db391e6",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
+    },
+    {
+      "t": "2026-04-13T18:57:48.314Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
