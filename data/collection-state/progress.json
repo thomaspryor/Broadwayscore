@@ -76,7 +76,8 @@
     "oliver-west-end-2024/standard--nick-curtis.json",
     "magic-mike-live-west-end-2021/daily-mail--ali-daher.json",
     "flyby-off-west-end-2026/theupcoming--the-editorial-unit.json",
-    "flyby-off-west-end-2026/monstagigz--unknown.json"
+    "flyby-off-west-end-2026/monstagigz--unknown.json",
+    "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/variety--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1714,7 +1715,9 @@
       "data/review-texts/a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
       "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
-      "by-jeeves-2001/nytimes--bruce-weber.json"
+      "by-jeeves-2001/nytimes--bruce-weber.json",
+      "data/review-texts/yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/variety--unknown.json",
+      "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1777,7 +1780,7 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "flyby-off-west-end-2026/london-box-office--stuart-king.json",
+  "lastProcessed": "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/variety--unknown.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1932,6 +1935,17 @@
       "t": "2026-04-13T19:17:46.657Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-13T23:28:54.576Z",
+      "event": "bb-session",
+      "session": "419123cc",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-13T23:28:55.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
