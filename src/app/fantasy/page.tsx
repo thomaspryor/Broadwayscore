@@ -50,19 +50,23 @@ export default function FantasyLandingPage() {
           Draft {info.teamSize} shows. ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
         </p>
-        <div className="inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-1.5 mb-8">
-          <span className="text-brand text-sm font-bold">Winner gets $500 to spend on TodayTix</span>
+        <div className="mb-8">
+          <span className="inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-1.5">
+            <span className="text-brand text-sm font-bold">Winner gets $500 to spend on TodayTix</span>
+          </span>
         </div>
-        <a
-          href="/fantasy/draft"
-          className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5 mb-3"
-        >
-          Draft Your Team
-        </a>
+        <div className="mb-3">
+          <a
+            href="/fantasy/draft"
+            className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
+          >
+            Draft Your Team
+          </a>
+        </div>
         <div>
           <a
             href="/fantasy/leaderboard"
-            className="inline-block px-6 py-3 text-gray-400 font-medium hover:text-white transition-colors text-sm"
+            className="text-gray-400 font-medium hover:text-white transition-colors text-sm"
           >
             View Leaderboard &rarr;
           </a>
@@ -288,18 +292,20 @@ export default function FantasyLandingPage() {
       {/* Bottom CTA */}
       <section className="max-w-3xl mx-auto px-4 py-16 text-center">
         <p className="text-gray-400 mb-4">Ready to play?</p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <div className="mb-3">
           <a
             href="/fantasy/draft"
             className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
           >
             Draft Your Team
           </a>
+        </div>
+        <div>
           <a
             href="/fantasy/guide"
-            className="inline-block px-6 py-4 bg-surface-raised text-gray-300 font-medium rounded-xl hover:text-white hover:bg-surface-overlay transition-all border border-white/10"
+            className="text-gray-400 font-medium hover:text-white transition-colors text-sm"
           >
-            Read the Draft Guide
+            Read the Draft Guide &rarr;
           </a>
         </div>
       </section>
