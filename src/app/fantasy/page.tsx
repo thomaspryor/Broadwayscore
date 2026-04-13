@@ -40,18 +40,18 @@ export default function FantasyLandingPage() {
           Draft {info.teamSize} shows. ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a
-            href="/fantasy/draft"
-            className="px-8 py-3.5 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors text-lg"
-          >
-            Draft Your Team
-          </a>
+        <a
+          href="/fantasy/draft"
+          className="inline-block px-10 py-4 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors text-lg"
+        >
+          Draft Your Team
+        </a>
+        <div className="mt-4">
           <a
             href="/fantasy/leaderboard"
-            className="px-8 py-3.5 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors text-lg"
+            className="text-sm text-zinc-400 hover:text-white transition-colors"
           >
-            View Leaderboard
+            View Leaderboard &rarr;
           </a>
         </div>
       </section>
@@ -225,18 +225,18 @@ export default function FantasyLandingPage() {
 
       {/* Bottom CTA */}
       <section className="max-w-3xl mx-auto px-4 py-12 text-center">
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a
-            href="/fantasy/draft"
-            className="px-8 py-3 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors"
-          >
-            Draft Your Team
-          </a>
+        <a
+          href="/fantasy/draft"
+          className="inline-block px-10 py-4 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors text-lg"
+        >
+          Draft Your Team
+        </a>
+        <div className="mt-4">
           <a
             href="/fantasy/guide"
-            className="px-8 py-3 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors"
+            className="text-sm text-zinc-400 hover:text-white transition-colors"
           >
-            Read the Draft Guide
+            Read the Draft Guide &rarr;
           </a>
         </div>
       </section>
