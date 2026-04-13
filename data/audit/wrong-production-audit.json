@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-13T11:24:36.476Z",
+  "timestamp": "2026-04-13T11:40:51.665Z",
   "stats": {
-    "totalReviews": 34843,
-    "alreadyFlagged": 13928,
+    "totalReviews": 34844,
+    "alreadyFlagged": 13930,
     "dateGuardCatches": 107,
     "directorMismatch": 975,
-    "tvFilmSignals": 3385,
-    "londonSignals": 1115,
+    "tvFilmSignals": 3384,
+    "londonSignals": 1116,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
     "noPublishDate": 4161
@@ -28350,20 +28350,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-1987",
-      "file": "timeout--unknown.json",
-      "score": 74,
-      "publishDate": null,
-      "url": "http://www.timeout.com/newyork/theater/les-miserables",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"cineplex\""
         }
       ]
     },
@@ -67240,6 +67226,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "flyby-off-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/flyby-review-southwark-playhouse-borough-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
