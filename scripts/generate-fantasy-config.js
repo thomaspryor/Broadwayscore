@@ -223,6 +223,7 @@ for (const show of finalShows) {
     criticScore: criticScore,
     audienceGrade: audGrade,
     slug: show.slug,
+    image: show.images?.thumbnail || show.images?.poster || null,
   };
 }
 

@@ -144,6 +144,8 @@ export interface FantasyShow {
   /** Current AudienceGrade if available (for draft research) */
   audienceGrade?: string | null;
   slug: string;
+  /** Thumbnail image path */
+  image?: string | null;
 }
 
 export interface FantasyLeagueConfig {
