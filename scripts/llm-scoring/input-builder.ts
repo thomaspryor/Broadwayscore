@@ -23,6 +23,10 @@ export interface ReviewInputData {
   criticName?: string;
   publishDate?: string;
 
+  // Show context (for cross-market detection)
+  category?: string;   // 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'
+  venue?: string;      // e.g. 'Lyric Theatre' or 'Broadhurst Theatre'
+
   // Text sources
   fullText?: string | null;
   bwwExcerpt?: string | null;
@@ -147,7 +151,12 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
   }
 
   if (review.showTitle) {
-    contextParts.push(`Show: ${review.showTitle}`);
+    const marketLabel = review.category === 'west-end' ? 'West End'
+      : review.category === 'off-west-end' ? 'Off-West End'
+      : review.category === 'off-broadway' ? 'Off-Broadway'
+      : 'Broadway';
+    const venueInfo = review.venue ? ` at ${review.venue}` : '';
+    contextParts.push(`Show: ${review.showTitle}${venueInfo} (${marketLabel})`);
   }
 
   // 2. Original rating (if present)
