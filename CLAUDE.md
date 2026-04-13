@@ -24,11 +24,15 @@ Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **Copyrighted text, PII, API keys** → private repos, all gitignored (see §11).
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
 
-### 4. Design System
+### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
 Use shared components from `src/components/show-cards/` — never create custom versions.
-- Components: `ScoreBadge`, `StatusBadge`, `FormatPill`, `ProductionPill`, `ShowImage`, `getOptimizedImageUrl()`, `getScoreTier()`
-- Import from `@/components/show-cards`. Add new components to barrel, never inline.
+- **Components:** ScoreBadge, ScoreBreakdownBar, ShowListCard, MiniShowCard, StatusBadge, FormatPill, ProductionPill, AudienceChip, CategoryBadge, ToggleBar, ScoreToggle, StatGrid, ColumnHeader, Modal, ShowSearchDropdown. Import from `@/components/show-cards`.
+- **Surface colors:** `bg-surface` (page), `bg-surface-raised` (cards), `bg-surface-overlay` (hover), `bg-surface-elevated` (modals). **NEVER use `zinc-*`, `slate-*`, or hardcoded dark hex values.**
+- **Score colors:** Always use `getScoreBucket()` from `score-buckets.ts` or `getScoreTier()` from show-cards. Never hardcode tier colors.
+- **Cards:** Use `.card` / `.card-interactive` / `.card-premium` CSS classes. Never build custom card borders/backgrounds.
+- **Status colors:** Use domain tokens — `status-open` (success), `score-tepid` (warning), `score-skip` (danger). Never invent custom red/yellow/green.
 - **Per-market branding:** `src/config/branding.ts` is single source of truth. Never hardcode brand colors.
+- **When adding new shared components or tokens**, update `memory/design-system.md`.
 
 ### 5. Visual QA (MANDATORY for UI Changes)
 **Never deploy UI changes without visual verification.** Playwright screenshots at 390px + 1440px → confirm before commit.
