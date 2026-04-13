@@ -156,6 +156,7 @@ export default function MethodologyPage() {
         <a href="#normalization" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Normalization</a>
         <a href="#audience-grade" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">AudienceGrade</a>
         {featureFlags.boxOffice && <a href="#box-office-data" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Box Office</a>}
+        {featureFlags.videoReviews && <a href="#video-reviews" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">VideoScore</a>}
         <a href="#unique" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">What&apos;s Unique</a>
         <a href="#transparency" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Transparency</a>
       </nav>
@@ -476,6 +477,42 @@ export default function MethodologyPage() {
             Box office data provides important context for understanding a show&apos;s commercial viability and audience appeal, complementing critical reviews and audience sentiment.
           </p>
         </section>}
+
+        {/* VideoScore — Video Reviews */}
+        {featureFlags.videoReviews && (
+        <section id="video-reviews" className="card p-5 sm:p-6 scroll-mt-20">
+          <h2 className="text-xl font-bold text-white mb-4">VideoScore™ <span className="text-sm font-normal text-gray-400">Beta</span></h2>
+          <p className="text-gray-300 text-sm mb-4">
+            VideoScore aggregates opinions from a curated group of theater video critics on TikTok and YouTube. Unlike traditional text critics, these creators share their reactions and reviews through video — and we score them using AI transcript analysis.
+          </p>
+          <h3 className="text-base font-semibold text-white mt-4 mb-3">How it works</h3>
+          <ol className="text-gray-300 space-y-2 text-sm list-decimal list-inside">
+            <li>We monitor a curated list of verified video critics who regularly review Broadway and Off-Broadway shows</li>
+            <li>When a creator posts a review video, we extract the transcript using platform captions</li>
+            <li>The transcript is analyzed by AI (Claude) to determine the creator&apos;s overall sentiment — positive, mixed, or negative</li>
+            <li>A score from 0&ndash;100 is assigned using the same bucket system as CriticScore (Critical Gold, Recommended, Worth Seeing, Skippable, Stay Away)</li>
+          </ol>
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Important differences from CriticScore</h3>
+          <ul className="text-gray-300 space-y-2 text-sm">
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>VideoScores are <strong className="text-white">AI-estimated</strong> from transcripts, not human-assigned ratings. They reflect the sentiment of what the creator said, not a score the creator chose.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>The creator pool is small (currently ~7 video critics) compared to 420+ text outlets. VideoScore averages are based on fewer data points.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>Auto-generated captions can be imperfect, especially with accents, music, or crosstalk. This may occasionally affect score accuracy.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>VideoScore is separate from CriticScore and does not affect the composite score shown in the show header.</span>
+            </li>
+          </ul>
+        </section>
+        )}
 
         {/* What Makes Us Different */}
         <section id="unique" className="card p-5 sm:p-6 scroll-mt-20">
