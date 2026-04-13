@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-13T09:29:42.175Z",
+  "timestamp": "2026-04-13T10:07:39.174Z",
   "stats": {
-    "totalReviews": 34848,
+    "totalReviews": 34849,
     "alreadyFlagged": 13928,
     "dateGuardCatches": 107,
     "directorMismatch": 975,
-    "tvFilmSignals": 3383,
+    "tvFilmSignals": 3384,
     "londonSignals": 1114,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
@@ -57612,6 +57612,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "pages-on-stages--mason-pilevsky.json",
+      "score": 77,
+      "publishDate": "2026-04-13",
+      "url": "https://pagesonstages.com/2026/04/12/titanique/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
