@@ -382,8 +382,11 @@ function getBestScore(data, opts = {}) {
   const { OUTLET_EXTRACTORS } = require('./score-extractors');
   const outletExtractor = OUTLET_EXTRACTORS[data.outletId];
   const isNoScoreOutlet = outletExtractor && outletExtractor('', '')?.__skipGeneric;
+  // Also override for outlets with real extractors (not noScoreExtractor) — they're
+  // recognized star-rating outlets whose scores were incorrectly cleared.
+  const hasRealExtractor = outletExtractor && !isNoScoreOutlet;
   const isTier15Override = isTier15Cleared && !isNoScoreOutlet &&
-    (isKnownStarOutlet || UNAMBIGUOUS_STAR_SOURCES.has(data.scoreSource));
+    (isKnownStarOutlet || UNAMBIGUOUS_STAR_SOURCES.has(data.scoreSource) || hasRealExtractor);
   const scoreCleared = data.originalScoreCleared === true && !isTier15Override;
   // Also skip if scoreSource is a known aggregator source — these should be in
   // aggregatorStars, not originalScore (prevents re-contamination even if
