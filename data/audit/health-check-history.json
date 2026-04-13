@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-04-12T07:31:58.415Z",
+  "lastRun": "2026-04-13T07:36:46.179Z",
   "consecutiveErrorDays": 0,
   "results": [
     {
@@ -15,27 +15,27 @@
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "warn",
-      "message": "17d old (warn threshold: 14d)"
+      "message": "18d old (warn threshold: 14d)"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "4d old"
     },
     {
       "name": "Push verify: shows.json",
@@ -50,7 +50,7 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "30 open shows all have reviews and grosses"
+      "message": "31 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: phantom show detection",
@@ -60,12 +60,12 @@
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 17204 vs baseline 17205"
+      "message": "Reviews dropped: 17762 vs baseline 17763"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Pipeline: update-show-status",
@@ -75,27 +75,27 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 1h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "warn",
-      "message": "Last success 12d ago (threshold: 10d)"
+      "message": "Last success 13d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "warn",
-      "message": "Last success 28d ago (threshold: 10d)"
+      "message": "Last success 29d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 2h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "99.7% scored (17204/17253)"
+      "message": "99.7% scored (17762/17815)"
     },
     {
       "name": "Cookies: expiration",
@@ -105,12 +105,12 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (7d ago)"
+      "message": "All metrics within thresholds (22h ago)"
     },
     {
       "name": "SEO: health",
       "status": "pass",
-      "message": "Healthy (7d ago)"
+      "message": "Healthy (1d ago)"
     },
     {
       "name": "Cron: Update Show Status",
@@ -120,12 +120,12 @@
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
@@ -134,8 +134,8 @@
     },
     {
       "name": "Cron: Test Suite",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
     },
     {
       "name": "Cron: Opening Night Broadcast",
@@ -145,13 +145,13 @@
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (2d ago)"
+      "message": "Last check passed (7h ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "2497k credits left (47%) · 437k/day burn · exhausts in ~6d (renews May 5)"
+      "message": "2416k credits left (45%) · 389k/day burn · exhausts in ~6d (renews May 5)"
     }
   ],
-  "lastCleanStreak": 7
+  "lastCleanStreak": 8
 }
