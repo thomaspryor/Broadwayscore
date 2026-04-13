@@ -198,7 +198,14 @@
     "just-in-time-2025/billboard--rebecca-milzoff.json",
     "stranger-things-2024/thestage--unknown.json",
     "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
-    "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
+    "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+    "the-mousetrap-west-end-2021/theatre-south-east--theatre-south-east.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
+    "a-christmas-carol-west-end-2026/nytg--tulis-mccall.json",
+    "a-christmas-carol-west-end-2026/dailybeast--tim-teeman.json",
+    "cats-west-end-2026/thewrap--robert-hofler.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -1475,7 +1482,10 @@
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
-    "wicked-2003/the-journal-news--jacques-le-sourd.json"
+    "wicked-2003/the-journal-news--jacques-le-sourd.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "perfect-crime-off-broadway-1987/woman-around-town--quan-lam.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1532,7 +1542,10 @@
       "titanique-2026/the-recs--david-cook.json",
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "stranger-things-2024/thestage--unknown.json",
-      "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json"
+      "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
+      "the-mousetrap-west-end-2021/theatre-south-east--theatre-south-east.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+      "a-christmas-carol-west-end-2026/nytg--tulis-mccall.json"
     ],
     "amp": [
       "data/review-texts/glengarry-glen-ross-2012/chicagotribune--unknown.json",
@@ -1622,7 +1635,9 @@
       "data/review-texts/titanique-2026/amny--unknown.json",
       "titanique-2026/amny--unknown.json",
       "data/review-texts/every-brilliant-thing-2026/nypost--unknown.json",
-      "every-brilliant-thing-2026/nypost--unknown.json"
+      "every-brilliant-thing-2026/nypost--unknown.json",
+      "data/review-texts/a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
+      "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1784,14 +1799,17 @@
       "schmigadoon-2026/paste-magazine--amy-amatangelo.json",
       "schmigadoon-2026/rollingstone--alan-sepinwall.json",
       "just-in-time-2025/billboard--rebecca-milzoff.json",
-      "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
+      "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+      "a-midsummer-nights-dream-west-end-2026/ew--unknown.json"
     ],
     "brightdata": [
-      "titanique-2026/vulture--unknown.json"
+      "titanique-2026/vulture--unknown.json",
+      "a-christmas-carol-west-end-2026/dailybeast--tim-teeman.json",
+      "cats-west-end-2026/thewrap--robert-hofler.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "wicked-2003/the-journal-news--jacques-le-sourd.json",
+  "lastProcessed": "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -2254,6 +2272,17 @@
       "t": "2026-04-13T03:16:17.784Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-13T03:21:34.077Z",
+      "event": "bb-session",
+      "session": "f410fc46",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
+    },
+    {
+      "t": "2026-04-13T03:21:34.824Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
