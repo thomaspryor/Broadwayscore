@@ -186,7 +186,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   <tr><td style="padding:16px 24px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
       <tr>
-        ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#d4a574;"></td>` : ''}
+        ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#FFD700;"></td>` : ''}
         ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
         ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#f59e0b;"></td>` : ''}
         ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
@@ -197,7 +197,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
         ${rave > 0 ? `<td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-          <span style="color:#d4a574;font-weight:600;">${rave}</span> Rave
+          <span style="color:#FFD700;font-weight:600;">${rave}</span> Rave
         </td>` : ''}
         <td ${rave > 0 ? 'align="center"' : ''} style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
           <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive
@@ -341,7 +341,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       <tr><td style="padding:16px 24px 0;">
         <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
           <tr>
-            ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#d4a574;"></td>` : ''}
+            ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#FFD700;"></td>` : ''}
             ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
             ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#f59e0b;"></td>` : ''}
             ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
@@ -352,7 +352,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
             ${rave > 0 ? `<td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-              <span style="color:#d4a574;font-weight:600;">${rave}</span> Rave
+              <span style="color:#FFD700;font-weight:600;">${rave}</span> Rave
             </td>` : ''}
             <td ${rave > 0 ? 'align="center"' : ''} style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
               <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive

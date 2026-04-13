@@ -270,7 +270,7 @@ function poll() {
   if (checkSite()) return;
   if (Date.now() - start > maxWait) {
     console.log('\n⚠️  Timed out waiting for deploy. Check manually:');
-    console.log(`   https://broadwayscorecard.com/shows/${showId}`);
+    console.log(`   https://broadwayscorecard.com/show/${showId}`);
     return;
   }
   setTimeout(poll, checkInterval);
