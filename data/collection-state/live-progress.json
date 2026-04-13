@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-13T04:51:46.646Z",
-  "processed": 228,
-  "failed": 1746,
-  "successRate": "11.6%",
+  "updatedAt": "2026-04-13T04:53:01.924Z",
+  "processed": 229,
+  "failed": 1755,
+  "successRate": "11.5%",
   "tierBreakdown": {
     "playwright": 65,
     "amp": 2,
-    "browserbase": 87,
+    "browserbase": 89,
     "directCookies": 0,
     "scrapingbee": 42,
     "brightdata": 5,
     "archiveToday": 71,
     "archive": 81
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-13T03:21:34.824Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-13T03:26:24.218Z",
-      "event": "bb-session",
-      "session": "3594b9af",
-      "url": "https://www.hollywoodreporter.com/t/kenny-leon/"
-    },
     {
       "t": "2026-04-13T03:26:24.889Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-04-13T04:32:05.515Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-13T04:52:46.477Z",
+      "event": "bb-session",
+      "session": "2bbf59d7",
+      "url": "https://variety.com/2012/legit/reviews/end-of-the-rainbow-2-1117947353/"
+    },
+    {
+      "t": "2026-04-13T04:52:47.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

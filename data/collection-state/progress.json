@@ -227,7 +227,8 @@
     "once-2012/theatermania--dan-bacalzo.json",
     "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json",
     "oklahoma-2019/nydailynews--chris-jones.json",
-    "the-last-ship-2014/talkinbroadway--matthew-murray.json"
+    "the-last-ship-2014/talkinbroadway--matthew-murray.json",
+    "end-of-the-rainbow-2012/variety--marilyn-stasio.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -1975,7 +1976,16 @@
     "fela-2012/backstage--david-sheward.json",
     "leap-of-faith-2012/variety--marilyn-stasio.json",
     "dont-dress-for-dinner-2012/backstage--david-sheward.json",
-    "leap-of-faith-2012/backstage--erik-haagensen.json"
+    "leap-of-faith-2012/backstage--erik-haagensen.json",
+    "the-columnist-2012/backstage--erik-haagensen.json",
+    "nice-work-if-you-can-get-it-2012/backstage--david-sheward.json",
+    "ghost-the-musical-2012/variety--steven-suskin.json",
+    "ghost-the-musical-2012/talkinbroadway--matthew-murray.json",
+    "the-lyons-2012/backstage--david-sheward.json",
+    "clybourne-park-2012/new-jersey-newsroom--michael-sommers.json",
+    "magicbird-2012/new-jersey-newsroom--michael-sommers.json",
+    "magicbird-2012/backstage--suzy-evans.json",
+    "evita-2012/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2137,7 +2147,9 @@
       "every-brilliant-thing-2026/nypost--unknown.json",
       "data/review-texts/a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
       "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
-      "data/review-texts/topdog-underdog-2022/hollywood-reporter--unknown.json"
+      "data/review-texts/topdog-underdog-2022/hollywood-reporter--unknown.json",
+      "data/review-texts/end-of-the-rainbow-2012/variety--marilyn-stasio.json",
+      "end-of-the-rainbow-2012/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2349,7 +2361,7 @@
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "leap-of-faith-2012/backstage--erik-haagensen.json",
+  "lastProcessed": "end-of-the-rainbow-2012/variety--marilyn-stasio.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -2928,6 +2940,17 @@
       "t": "2026-04-13T04:32:05.515Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-13T04:52:46.477Z",
+      "event": "bb-session",
+      "session": "2bbf59d7",
+      "url": "https://variety.com/2012/legit/reviews/end-of-the-rainbow-2-1117947353/"
+    },
+    {
+      "t": "2026-04-13T04:52:47.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
