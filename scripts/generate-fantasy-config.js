@@ -258,6 +258,9 @@ const config = {
       dramaLeagueNom: 2, dramaLeagueWin: 5,
       outerCriticsNom: 2, outerCriticsWin: 5,
       dramaDeskNom: 3, dramaDeskWin: 6,
+      nydccWin: 5,
+      lortelNom: 2, lortelWin: 5,
+      obieAward: 4,
     },
   },
 };

@@ -31,40 +31,40 @@ export default function FantasyLandingPage() {
     <div className="min-h-screen bg-surface text-white">
       {/* Hero */}
       <section className="max-w-3xl mx-auto px-4 pt-12 sm:pt-20 pb-12 text-center">
-        {/* BFL Shield Logo */}
-        <div className="mb-5 flex justify-center">
+        {/* BFL Shield Logo — extra padding prevents crown clip on mobile */}
+        <div className="mb-5 flex justify-center pt-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/fantasy/bfl-logo.png"
-            alt="BFL"
+            alt="Broadway Fantasy League"
             width={600}
             height={387}
-            className="w-[140px] sm:w-[180px] h-auto"
+            className="w-[160px] sm:w-[200px] h-auto drop-shadow-[0_0_20px_rgba(212,165,116,0.3)]"
           />
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
+        <h1 className="text-4xl sm:text-5xl font-black mb-3 tracking-tight">
           <span className="text-white">Broadway</span>{' '}
           <span className="text-gradient">Fantasy League</span>
         </h1>
-        <p className="text-lg sm:text-xl text-gray-400 max-w-xl mx-auto mb-4">
+        <p className="text-lg sm:text-xl text-gray-300 max-w-xl mx-auto mb-3">
           Draft {info.teamSize} shows. ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
         </p>
-        <p className="text-sm text-brand font-semibold mb-8">
-          Winner gets a $500 TodayTix voucher
-        </p>
-        <a
-          href="/fantasy/draft"
-          className="inline-block px-10 py-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors text-lg"
-        >
-          Draft Your Team
-        </a>
-        <div className="mt-4">
+        <div className="inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-1.5 mb-8">
+          <span className="text-brand text-sm font-bold">Winner gets a $500 TodayTix voucher</span>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="/fantasy/draft"
+            className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
+          >
+            Draft Your Team
+          </a>
           <a
             href="/fantasy/leaderboard"
-            className="text-sm text-gray-400 hover:text-white transition-colors"
+            className="inline-block px-6 py-4 bg-surface-raised text-gray-300 font-medium rounded-xl hover:text-white hover:bg-surface-overlay transition-all border border-white/10"
           >
-            View Leaderboard &rarr;
+            View Leaderboard
           </a>
         </div>
       </section>
@@ -73,29 +73,29 @@ export default function FantasyLandingPage() {
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-8 text-center">How It Works</h2>
         <div className="grid sm:grid-cols-3 gap-6">
-          <div className="bg-surface-raised/50 rounded-xl p-6 text-center">
-            <div className="text-3xl mb-3">1</div>
-            <h3 className="font-semibold mb-2">Draft</h3>
+          <div className="bg-surface-raised/50 rounded-xl p-6 text-center border border-white/5 hover:border-brand/20 transition-colors">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">1</div>
+            <h3 className="font-semibold mb-2 text-white">Draft</h3>
             <p className="text-sm text-gray-400">
               Pick {info.teamSize} shows from {info.totalShows} options.
               Stay within your ${info.budget} budget.
-              One entry per email — no account needed.
+              No account needed.
             </p>
           </div>
-          <div className="bg-surface-raised/50 rounded-xl p-6 text-center">
-            <div className="text-3xl mb-3">2</div>
-            <h3 className="font-semibold mb-2">Score</h3>
+          <div className="bg-surface-raised/50 rounded-xl p-6 text-center border border-white/5 hover:border-brand/20 transition-colors">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">2</div>
+            <h3 className="font-semibold mb-2 text-white">Score</h3>
             <p className="text-sm text-gray-400">
-              Points accumulate automatically from four pillars:
-              critic reviews, audience grades, weekly box office, and award nominations & wins.
+              Points accumulate from four pillars:
+              critics, audiences, box office, and awards.
             </p>
           </div>
-          <div className="bg-surface-raised/50 rounded-xl p-6 text-center">
-            <div className="text-3xl mb-3">3</div>
-            <h3 className="font-semibold mb-2">Win</h3>
+          <div className="bg-surface-raised/50 rounded-xl p-6 text-center border border-white/5 hover:border-brand/20 transition-colors">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">3</div>
+            <h3 className="font-semibold mb-2 text-white">Win</h3>
             <p className="text-sm text-gray-400">
-              The season runs through Tony Awards night.
-              Most points wins. Check the leaderboard weekly to track your ranking.
+              Season runs through Tony Awards night.
+              Most points wins. Check the leaderboard weekly.
             </p>
           </div>
         </div>
@@ -103,12 +103,12 @@ export default function FantasyLandingPage() {
 
       {/* Scoring */}
       <section className="max-w-3xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-8 text-center">Scoring</h2>
+        <h2 className="text-2xl font-bold mb-8 text-center">Four Ways to Score</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           {/* CriticScore */}
-          <div className="bg-surface-raised/50 rounded-xl p-5">
+          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="text-yellow-400">★</span> CriticScore
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-yellow-400/15 text-yellow-400 text-sm">★</span> CriticScore
             </h3>
             <div className="space-y-1.5 text-sm">
               {Object.entries(CRITIC_SCORE_POINTS).map(([tier, pts]) => (
@@ -125,9 +125,9 @@ export default function FantasyLandingPage() {
           </div>
 
           {/* AudienceGrade */}
-          <div className="bg-surface-raised/50 rounded-xl p-5">
+          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="text-emerald-400">♥</span> Audience Grade
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-400/15 text-emerald-400 text-sm">♥</span> Audience Grade
             </h3>
             <div className="space-y-1.5 text-sm">
               {Object.entries(AUDIENCE_GRADE_POINTS)
@@ -142,9 +142,9 @@ export default function FantasyLandingPage() {
           </div>
 
           {/* Box Office */}
-          <div className="bg-surface-raised/50 rounded-xl p-5">
+          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="text-green-400">$</span> Box Office
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-green-400/15 text-green-400 text-sm font-bold">$</span> Box Office
             </h3>
             <p className="text-sm text-gray-400">
               A hit musical grossing $1M/week earns about 3 pts per week.
@@ -156,23 +156,19 @@ export default function FantasyLandingPage() {
           </div>
 
           {/* Awards */}
-          <div className="bg-surface-raised/50 rounded-xl p-5">
+          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="text-brand">🏆</span> Awards
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-brand/15 text-brand text-sm">🏆</span> Awards
             </h3>
-            <p className="text-xs text-gray-500 mb-2">Tony Awards (biggest), Drama Desk, Outer Critics Circle, Drama League</p>
+            <p className="text-xs text-gray-500 mb-2">7 ceremonies: Tonys, Drama Desk, Outer Critics, Drama League, NYDCC, Lortel, Obie</p>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-400">Tony Best Musical / Play</span>
                 <span className="font-mono text-gray-300">{AWARDS_POINTS.tonyBestMusical} pts</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Tony Win</span>
-                <span className="font-mono text-gray-300">{AWARDS_POINTS.tonyWin} pts</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Tony Nomination</span>
-                <span className="font-mono text-gray-300">{AWARDS_POINTS.tonyNom} pts</span>
+                <span className="text-gray-400">Tony Win / Nom</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.tonyWin} / {AWARDS_POINTS.tonyNom} pts</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">Drama Desk Win / Nom</span>
@@ -181,6 +177,18 @@ export default function FantasyLandingPage() {
               <div className="flex justify-between">
                 <span className="text-gray-400">Outer Critics Win / Nom</span>
                 <span className="font-mono text-gray-300">{AWARDS_POINTS.outerCriticsWin} / {AWARDS_POINTS.outerCriticsNom} pts</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">NYDCC Win</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.nydccWin} pts</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">Lortel Win / Nom</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.lortelWin} / {AWARDS_POINTS.lortelNom} pts</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">Obie Award</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.obieAward} pts</span>
               </div>
             </div>
             <p className="text-xs text-gray-600 mt-2">
@@ -254,19 +262,20 @@ export default function FantasyLandingPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="max-w-3xl mx-auto px-4 py-12 text-center">
-        <a
-          href="/fantasy/draft"
-          className="inline-block px-10 py-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors text-lg"
-        >
-          Draft Your Team
-        </a>
-        <div className="mt-4">
+      <section className="max-w-3xl mx-auto px-4 py-16 text-center">
+        <p className="text-gray-400 mb-4">Ready to play?</p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="/fantasy/draft"
+            className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
+          >
+            Draft Your Team
+          </a>
           <a
             href="/fantasy/guide"
-            className="text-sm text-gray-400 hover:text-white transition-colors"
+            className="inline-block px-6 py-4 bg-surface-raised text-gray-300 font-medium rounded-xl hover:text-white hover:bg-surface-overlay transition-all border border-white/10"
           >
-            Read the Draft Guide &rarr;
+            Read the Draft Guide
           </a>
         </div>
       </section>
