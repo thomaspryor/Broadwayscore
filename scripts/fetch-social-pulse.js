@@ -55,10 +55,10 @@ const INSTAGRAM_MAX = 15;
 // volumes — hot shows typically return 20-80 posts.
 const REDDIT_MAX = 100;
 
-// Soft cap for cumulative monthly Apify spend. Creator plan gives $39 in
-// credits. Targeting ~$33/mo expected with new caps, $35 cap leaves a few
-// dollars of headroom. Workflow aborts before hitting this cap.
-const BUDGET_SOFT_CAP_USD = 35.0;
+// Soft cap for cumulative monthly Apify spend. Apify ceiling raised to $75
+// (2026-04-12). Weekly runs cost ~$10 each, 4 runs/mo = ~$40. $65 cap
+// leaves $10 headroom for retries and ad-hoc single-show runs.
+const BUDGET_SOFT_CAP_USD = 65.0;
 
 // ---------- CLI argument parsing ----------
 
