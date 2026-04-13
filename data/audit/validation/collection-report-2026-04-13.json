@@ -1,0 +1,92 @@
+{
+  "runDate": "2026-04-13T03:28:30.761Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 10,
+    "priority": "all",
+    "showFilter": "titanique-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 8,
+    "failed": 1,
+    "skipped": 0,
+    "successRate": "88.9%"
+  },
+  "tierBreakdown": {
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 4,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 4,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 4,
+    "tier2Success": 4,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 40,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "titanique-2026/nytimes--unknown.json",
+    "titanique-2026/ew--unknown.json",
+    "titanique-2026/amny--unknown.json",
+    "titanique-2026/chicagotribune--unknown.json",
+    "titanique-2026/nysr--unknown.json",
+    "titanique-2026/playbill--unknown.json",
+    "titanique-2026/nytimes--alex-marshall.json",
+    "titanique-2026/chicagotribune--chris-jones.json"
+  ],
+  "failed": [
+    "titanique-2026/talkinbroadway--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "titanique-2026/ew--unknown.json",
+      "titanique-2026/nysr--unknown.json",
+      "titanique-2026/playbill--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/titanique-2026/amny--unknown.json",
+      "titanique-2026/amny--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [
+      "titanique-2026/nytimes--unknown.json",
+      "titanique-2026/chicagotribune--unknown.json",
+      "titanique-2026/nytimes--alex-marshall.json",
+      "titanique-2026/chicagotribune--chris-jones.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/titanique-2026/talkinbroadway--unknown.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
