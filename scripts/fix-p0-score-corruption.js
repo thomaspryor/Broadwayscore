@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { KNOWN_STAR_OUTLETS, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const WEST_END_ONLY = !process.argv.includes('--all-markets');
@@ -110,7 +111,19 @@ for (const show of shows) {
         stats.tier1c++;
       }
       // Tier 1.5: Extraction source with no evidence in text
+      // SKIP for KNOWN_STAR_OUTLETS and outlets with real extractors — their star ratings
+      // are in HTML structure (CSS, JSON-LD, SVG), not in fullText. Clearing them was
+      // incorrect; getBestScore() now overrides at rebuild time, but we also prevent
+      // re-clearing here at the source.
       else if (scoreSource && VERIFY_IN_TEXT_SOURCES.has(scoreSource)) {
+        const outletId = (data.outletId || '').toLowerCase();
+        const outletExtractor = OUTLET_EXTRACTORS[outletId];
+        const isNoScoreOutlet = outletExtractor && outletExtractor('', '')?.__skipGeneric;
+        const isStarOutlet = KNOWN_STAR_OUTLETS.has(outletId) || (outletExtractor && !isNoScoreOutlet);
+        if (isStarOutlet) {
+          stats.skipped++;
+          continue;
+        }
         const text = data.fullText || '';
         if (!textContainsStarRating(text, String(data.originalScore))) {
           tier = '1.5';
