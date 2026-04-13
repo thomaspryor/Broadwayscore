@@ -1297,7 +1297,8 @@ const KNOWN_STAR_OUTLETS = new Set([
   'tim-talks-theatre-uk', 'city-am', 'plays-international',
   'theatreandtonic', 'the-recs', 'broadwayworld',
   // Additional WE star outlets discovered during SERP expansion
-  'londontheatre1', 'everything-theatre', 'thereviewshub',
+  // NOTE: londontheatre1 REMOVED — has noScoreExtractor (same as london-theatre, no star ratings)
+  'everything-theatre', 'thereviewshub',
   'shy-strange-manic', 'express-uk', 'theatre-weekly',
 ]);
 
