@@ -64,7 +64,9 @@
     "million-dollar-quartet-2010/theatermania--unknown.json",
     "all-about-me-2010/talkinbroadway--unknown.json",
     "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
-    "oleanna-2009/theatermania--unknown.json"
+    "oleanna-2009/theatermania--unknown.json",
+    "by-jeeves-2001/nytimes--bruce-weber.json",
+    "barnum-1980/nytimes--frank-rich.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1037,7 +1039,15 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
     "festen-2006/variety--charles-isherwood.json",
-    "the-pajama-game-2006/talkinbroadway--matthew-murray.json"
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "frozen-2004/curtainup--charles-wright.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
+    "falsettos-1992/ap--jennifer-farrar.json",
+    "falsettos-1992/zeal-nyc--chris-caggiano.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "working-1978/theater-news-online--joe-dziemianowicz.json",
+    "a-little-night-music-1973/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1079,7 +1089,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
-      "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json"
+      "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
+      "by-jeeves-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1122,7 +1134,9 @@
       "data/review-texts/driving-miss-daisy-2010/backstage--unknown.json",
       "data/review-texts/driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/a-little-night-music-2009/ap--ben-brantley.json",
-      "data/review-texts/guys-and-dolls-2009/northjerseycom--robert-feldberg.json"
+      "data/review-texts/guys-and-dolls-2009/northjerseycom--robert-feldberg.json",
+      "data/review-texts/frozen-2004/curtainup--charles-wright.json",
+      "data/review-texts/falsettos-1992/ap--jennifer-farrar.json"
     ],
     "archive": [
       "schmigadoon-2026/rollingstone--alan-sepinwall.json",
@@ -1132,11 +1146,12 @@
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
       "baby-its-you-2011/abc-news--mark-kennedy.json",
       "born-yesterday-2011/newsday--unknown.json",
-      "fences-2010/hollywood-reporter--unknown.json"
+      "fences-2010/hollywood-reporter--unknown.json",
+      "barnum-1980/nytimes--frank-rich.json"
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "a-little-night-music-1973/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1258,6 +1273,28 @@
       "t": "2026-04-13T19:00:45.431Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-13T19:03:43.656Z",
+      "event": "bb-session",
+      "session": "2f17edfe",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-04-13T19:03:44.231Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-13T19:05:19.156Z",
+      "event": "bb-session",
+      "session": "13b783e4",
+      "url": "https://www.nytimes.com/1980/05/01/archives/theater-barnum-a-circus-musical-ring"
+    },
+    {
+      "t": "2026-04-13T19:05:19.748Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

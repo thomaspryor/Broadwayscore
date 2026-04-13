@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-13T19:02:42.238Z",
-  "processed": 65,
-  "failed": 971,
-  "successRate": "6.3%",
+  "updatedAt": "2026-04-13T19:06:13.931Z",
+  "processed": 67,
+  "failed": 979,
+  "successRate": "6.4%",
   "tierBreakdown": {
     "playwright": 33,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 15,
     "brightdata": 8,
-    "archiveToday": 13,
-    "archive": 8
+    "archiveToday": 15,
+    "archive": 9
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-04-13T10:51:13.096Z",
-      "event": "bb-session",
-      "session": "2b107fc0",
-      "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-ju"
-    },
-    {
-      "t": "2026-04-13T10:51:14.017Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
-    {
-      "t": "2026-04-13T10:53:31.776Z",
-      "event": "bb-session",
-      "session": "b133c60c",
-      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
-    },
-    {
-      "t": "2026-04-13T10:53:32.682Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-13T11:55:21.642Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-13T19:00:45.431Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-13T19:03:43.656Z",
+      "event": "bb-session",
+      "session": "2f17edfe",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-04-13T19:03:44.231Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-13T19:05:19.156Z",
+      "event": "bb-session",
+      "session": "13b783e4",
+      "url": "https://www.nytimes.com/1980/05/01/archives/theater-barnum-a-circus-musical-ring"
+    },
+    {
+      "t": "2026-04-13T19:05:19.748Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
