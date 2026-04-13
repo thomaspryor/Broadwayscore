@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-13T06:50:51.772Z",
+  "timestamp": "2026-04-13T07:14:00.014Z",
   "stats": {
-    "totalReviews": 34729,
-    "alreadyFlagged": 13894,
+    "totalReviews": 34728,
+    "alreadyFlagged": 13895,
     "dateGuardCatches": 107,
-    "directorMismatch": 959,
+    "directorMismatch": 975,
     "tvFilmSignals": 3383,
     "londonSignals": 1114,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
-    "noPublishDate": 4086
+    "noPublishDate": 4084
   },
   "findings": [
     {
@@ -23973,6 +23973,11 @@
       "url": "https://theartsdesk.com/theatre/inter-alia-national-theatre-review-dazzling-performance-questionable-writing",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
@@ -23986,15 +23991,266 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "score": 74,
+      "publishDate": "2026-04-07",
+      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "broadwayworld--harlan-clementine-scott.json",
+      "score": 73,
+      "publishDate": "2026-04-07",
+      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 81,
+      "publishDate": "2026-04-08",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15713891/PATRICK-MARMION-reviews-Inter-Alia.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "daily-mail--sean-ogrady.json",
+      "score": 82,
+      "publishDate": "2026-04-08",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15714271/Rosamund-Pike-breaks-tears-emotional-curtain-call-Inter-Alia-press-night-West-End-performance-receives-rave-reviews.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "everything-theatre--gabriel-wilding.json",
+      "score": 89,
+      "publishDate": null,
+      "url": "https://everything-theatre.co.uk/2026/04/review-inter-alia-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 75,
+      "publishDate": "2026-04-07",
+      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 79,
+      "publishDate": "2026-04-08",
+      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-national-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 74,
+      "publishDate": "2026-04-08",
+      "url": "https://www.standard.co.uk/culture/theatre/rosamund-pike-inter-alia-review-national-theatre-lyttelton-b1239772.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 81,
       "publishDate": "2026-04-08",
       "url": "https://theatreandtonic.co.uk/blog/inter-alia-at-wyndhams-theatre-review",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "thereviewshub--daniel-spicer-cusack.json",
+      "score": 77,
+      "publishDate": "2026-04-08",
+      "url": "https://www.thereviewshub.com/inter-alia-wyndhams-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 53,
+      "publishDate": "2026-04-08",
+      "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "timeout-london--caroline-mcginn.json",
+      "score": 78,
+      "publishDate": "2026-04-07",
+      "url": "https://www.timeout.com/london/news/review-inter-alia-starring-rosamund-pike-at-the-national-theatre-072425",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 66,
+      "publishDate": "2026-04-08",
+      "url": "https://www.thetimes.com/article/9e0d6a06-e200-437a-87f7-09d8a94a5039",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 81,
+      "publishDate": "2026-04-07",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -70592,34 +70848,6 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
-      "file": "broadwayworld--clementine-scott.json",
-      "score": 74,
-      "publishDate": "2026-04-07",
-      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "broadwayworld--harlan-clementine-scott.json",
-      "score": 73,
-      "publishDate": "2026-04-07",
-      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
       "score": 80,
       "publishDate": "2026-04-09",
@@ -70634,122 +70862,10 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 81,
-      "publishDate": "2026-04-08",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15713891/PATRICK-MARMION-reviews-Inter-Alia.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "daily-mail--sean-ogrady.json",
-      "score": 82,
-      "publishDate": "2026-04-08",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15714271/Rosamund-Pike-breaks-tears-emotional-curtain-call-Inter-Alia-press-night-West-End-performance-receives-rave-reviews.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "everything-theatre--gabriel-wilding.json",
-      "score": 89,
-      "publishDate": null,
-      "url": "https://everything-theatre.co.uk/2026/04/review-inter-alia-wyndhams-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "london-theatre--olivia-rook.json",
-      "score": 75,
-      "publishDate": "2026-04-07",
-      "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "thestage--unknown.json",
-      "score": 53,
-      "publishDate": "2026-04-08",
-      "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 66,
-      "publishDate": "2026-04-08",
-      "url": "https://www.thetimes.com/article/9e0d6a06-e200-437a-87f7-09d8a94a5039",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 81,
-      "publishDate": "2026-04-07",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
       "file": "west-end-best-friend--cara-brazier.json",
       "score": 89,
       "publishDate": "2026-04-08",
       "url": "https://www.westendbestfriend.co.uk/news/review-inter-alia-the-wyndhams-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
