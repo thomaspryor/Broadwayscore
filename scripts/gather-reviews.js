@@ -3153,6 +3153,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
       let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url, show.title);
+      // LLM fallback: if regex extracted 0 but page has roundup content markers
+      if (bwwReviews.length === 0 && hasStructuralMarkers(bwwResult.html, 'bww')) {
+        bwwReviews = await llmFallbackExtract(bwwResult.html, {
+          aggregator: 'bww', showTitle: show.title, showId,
+        });
+      }
       // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
       // Validate publish year — reject roundups from older productions of the same title

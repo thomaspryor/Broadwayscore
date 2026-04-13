@@ -271,6 +271,11 @@ async function runAggregators(show) {
       const bww = await searchBWWRoundup(show, year, bwwOptions);
       if (bww && bww.html) {
         let reviews = extractBWWRoundupReviews(bww.html, show.id, bww.url, show.title);
+        if (reviews.length === 0 && hasStructuralMarkers(bww.html, 'bww')) {
+          reviews = await llmFallbackExtract(bww.html, {
+            aggregator: 'bww', showTitle: show.title, showId: show.id,
+          });
+        }
         // Validate roundup year — reject if from older production (e.g., OB roundup for Broadway show)
         reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate, show.id, bww.url);
         console.log(`  BWW RR: ${reviews.length} reviews found`);
