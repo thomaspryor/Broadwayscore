@@ -63,6 +63,7 @@ const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
@@ -2968,7 +2969,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   }
   if (dtliResult) {
     health.dtli.found = true;
-    const dtliReviews = extractDTLIReviews(dtliResult.html, showId, dtliResult.url, show.title);
+    let dtliReviews = extractDTLIReviews(dtliResult.html, showId, dtliResult.url, show.title);
+    // LLM fallback: if regex extracted 0 but page has review content markers
+    if (dtliReviews.length === 0 && hasStructuralMarkers(dtliResult.html, 'dtli')) {
+      dtliReviews = await llmFallbackExtract(dtliResult.html, {
+        aggregator: 'dtli', showTitle: show.title, showId,
+      });
+    }
     health.dtli.extracted = dtliReviews.length;
     foundReviews.push(...dtliReviews);
     // Archive the page
