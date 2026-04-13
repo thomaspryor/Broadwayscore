@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T03:45:38.151Z",
+  "generatedAt": "2026-04-13T04:40:55.814Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -313,20 +313,20 @@
       "status": "open",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "siteScore": 78.03,
-      "liveScore": 79,
-      "scoreDrift": 0.9699999999999989,
-      "total": 17,
-      "t1": 3,
-      "t2": 10,
+      "siteScore": 76.38,
+      "liveScore": 76,
+      "scoreDrift": -0.37999999999999545,
+      "total": 19,
+      "t1": 4,
+      "t2": 11,
       "t3": 4,
       "positive": 13,
-      "mixed": 2,
-      "negative": 2,
+      "mixed": 3,
+      "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 12,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -335,8 +335,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "preview-sent",
+        "detail": "Preview sent (18 reviews)"
       },
       "missingT1": [
         {
@@ -366,10 +366,6 @@
         {
           "name": "Los Angeles Times",
           "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -586,6 +582,18 @@
           "m": 2,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-13T04:40:55.814Z",
+          "rc": 19,
+          "s": 76.38,
+          "t1": 4,
+          "t2": 11,
+          "t3": 4,
+          "p": 13,
+          "m": 3,
+          "n": 3,
+          "bc": "preview-sent"
         }
       ]
     },
