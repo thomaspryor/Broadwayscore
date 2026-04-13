@@ -1,0 +1,96 @@
+name: Fantasy Weekly Pipeline
+
+on:
+  schedule:
+    - cron: '0 18 * * 3'  # Wednesday 6 PM UTC (1 PM EST)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no draft created, no data committed)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: fantasy-weekly
+  cancel-in-progress: false
+
+jobs:
+  fantasy-weekly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Season date guard
+        id: season-check
+        run: |
+          SCORING_START=$(node -e "const c=require('./data/fantasy-league.json'); console.log(c._meta.scoringStart)")
+          SCORING_END=$(node -e "const c=require('./data/fantasy-league.json'); console.log(c._meta.scoringEnd)")
+          TODAY=$(date -u +%Y-%m-%d)
+          echo "today=$TODAY scoring_start=$SCORING_START scoring_end=$SCORING_END"
+          if [[ "$TODAY" < "$SCORING_START" ]] || [[ "$TODAY" > "$SCORING_END" ]]; then
+            echo "Outside fantasy season ($SCORING_START to $SCORING_END). Skipping."
+            echo "in_season=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "in_season=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Regenerate fantasy config
+        if: steps.season-check.outputs.in_season == 'true'
+        run: node scripts/generate-fantasy-config.js
+
+      - name: Compute fantasy scores
+        if: steps.season-check.outputs.in_season == 'true'
+        run: node scripts/compute-fantasy-scores.js
+
+      - name: Commit updated fantasy data
+        if: steps.season-check.outputs.in_season == 'true' && inputs.dry_run != true
+        run: |
+          git add data/fantasy-league.json data/fantasy-scores.json
+          if git diff --staged --quiet; then
+            echo "No fantasy data changes to commit"
+          else
+            git commit -m "data: Update fantasy scores (week of $(date -u +%Y-%m-%d))"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Create email draft
+        if: steps.season-check.outputs.in_season == 'true' && inputs.dry_run != true
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/fantasy-weekly-email.js --draft
+
+      - name: Dry run summary
+        if: steps.season-check.outputs.in_season == 'true' && inputs.dry_run == true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          echo "## Fantasy Weekly Dry Run" >> $GITHUB_STEP_SUMMARY
+          node scripts/fantasy-weekly-email.js --dry-run 2>&1 | tail -5 >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fantasy Weekly Pipeline Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
