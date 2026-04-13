@@ -93,16 +93,16 @@ export default function FantasyLeaderboardTable() {
         <span className="text-right font-bold">Total</span>
       </div>
 
-      {entries.map(entry => (
-        <div key={entry.rank}>
+      {entries.map((entry, idx) => (
+        <div key={`${entry.rank}-${entry.displayName}`}>
           {/* Main row */}
           <button
             className={`w-full grid grid-cols-[3rem_1fr_auto] sm:grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_5rem] gap-2 items-center px-4 py-3 rounded-lg transition-colors text-left ${
-              expandedRank === entry.rank
+              expandedRank === idx
                 ? 'bg-zinc-800 border border-zinc-600'
                 : 'bg-zinc-800/50 hover:bg-zinc-800 border border-transparent'
             } ${entry.rank <= 3 ? 'border-l-2 border-l-brand/50' : ''}`}
-            onClick={() => setExpandedRank(expandedRank === entry.rank ? null : entry.rank)}
+            onClick={() => setExpandedRank(expandedRank === idx ? null : idx)}
           >
             {/* Rank */}
             <span className={`text-lg font-bold ${
@@ -135,7 +135,7 @@ export default function FantasyLeaderboardTable() {
           </button>
 
           {/* Expanded picks */}
-          {expandedRank === entry.rank && (
+          {expandedRank === idx && (
             <div className="ml-12 mr-4 mb-2 mt-1 bg-zinc-900/50 rounded-lg p-3 space-y-1.5">
               <p className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Picks</p>
               {entry.picks.map((pick, i) => (

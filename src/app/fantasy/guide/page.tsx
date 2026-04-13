@@ -51,7 +51,7 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
           )}
         </div>
         <div className="flex items-center gap-2 mt-1 flex-wrap">
-          {show.criticScore && <ScorePill score={show.criticScore} />}
+          {show.criticScore != null && <ScorePill score={show.criticScore} />}
           {show.audienceGrade && (
             <span className="text-xs text-zinc-400">Audience: {show.audienceGrade}</span>
           )}

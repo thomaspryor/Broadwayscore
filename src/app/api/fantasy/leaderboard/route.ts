@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const leagueName = request.nextUrl.searchParams.get('league');
+    const leagueName = request.nextUrl.searchParams.get('league')?.toLowerCase().trim() || null;
 
     let query = supabase
       .from('fantasy_entries')

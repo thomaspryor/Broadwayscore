@@ -74,7 +74,7 @@ export default function FantasyShowPicker({
           </div>
           <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5">
             <span>{selectedShow.type === 'musical' ? 'Musical' : 'Play'}</span>
-            {selectedShow.criticScore && (
+            {selectedShow.criticScore != null && (
               <span className="text-yellow-400">Score: {Math.round(selectedShow.criticScore)}</span>
             )}
           </div>
@@ -172,7 +172,7 @@ export default function FantasyShowPicker({
                     </div>
                     <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5">
                       <span>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
-                      {show.criticScore && (
+                      {show.criticScore != null && (
                         <span className="text-yellow-400">Score: {Math.round(show.criticScore)}</span>
                       )}
                       {!show.eligible.boxOffice && (

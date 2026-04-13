@@ -9,7 +9,9 @@ import {
   validatePicks,
 } from '@/config/fantasy';
 
-// Simple in-memory rate limiting (per IP, 5 submissions per hour)
+// In-memory rate limiting — resets per Vercel serverless instance.
+// Effective for burst protection but not persistent across deploys.
+// For production: use Vercel KV or Upstash Redis.
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 5;
 const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
@@ -57,7 +59,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const { email, team_name, league_name, picks } = body;
+    const { email, team_name, league_name, picks, tiebreakers } = body;
 
     // Validate email
     if (!email || typeof email !== 'string') {
@@ -70,7 +72,8 @@ export async function POST(request: NextRequest) {
 
     // Validate team_name and league_name (length limits, alphanumeric)
     const cleanTeamName = team_name ? String(team_name).trim().slice(0, 50) : null;
-    const cleanLeagueName = league_name ? String(league_name).trim().slice(0, 50) : null;
+    const cleanLeagueName = league_name ? String(league_name).trim().toLowerCase().slice(0, 50) : null;
+    // Fix P1: normalize league name to lowercase for case-insensitive matching
 
     // Validate picks
     if (!Array.isArray(picks)) {
@@ -103,6 +106,7 @@ export async function POST(request: NextRequest) {
           team_name: cleanTeamName,
           league_name: cleanLeagueName,
           picks,
+          tiebreakers: tiebreakers && typeof tiebreakers === 'object' ? tiebreakers : null,
           total_cost: totalCost,
           season: FANTASY_SEASON,
         },
