@@ -21,7 +21,6 @@ function YouTubeIcon() {
 function formatDate(dateStr: string | undefined | null): string | null {
   if (!dateStr || dateStr === 'NA') return null;
   try {
-    // Normalize YYYYMMDD to YYYY-MM-DD
     const normalized = dateStr.length === 8 && /^\d{8}$/.test(dateStr)
       ? `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`
       : dateStr;
@@ -40,9 +39,9 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
   const tier = getScoreTier(avgScore);
 
   return (
-    <section className="card p-5 sm:p-6 mb-6">
-      {/* Header — title left, tier label + score badge right */}
-      <div className="flex items-center justify-between mb-4">
+    <section className="card p-4 sm:p-5 mb-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
         <h2 className="text-lg font-bold text-white">Video Reviews</h2>
         <div className="flex items-center gap-2.5">
           <div className="text-right">
@@ -57,19 +56,12 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
         </div>
       </div>
 
-      {/* Subtle methodology link */}
-      <a href="/methodology#video-reviews" className="text-gray-500 hover:text-gray-400 text-xs mb-3 -mt-2 block transition-colors">How does this work?</a>
-
-      {/* Horizontal shelf with right fade when overflowing */}
-      <div className="relative">
-        {reviews.length > 3 && (
-          <div className="absolute right-0 top-0 bottom-1 w-12 bg-gradient-to-l from-surface-raised to-transparent z-10 pointer-events-none rounded-r-lg" />
-        )}
-        <div
-          className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide"
-          aria-label="Video reviews"
-          role="list"
-        >
+      {/* Horizontal shelf */}
+      <div
+        className="flex gap-3 overflow-x-auto pb-1 -mx-4 px-4 sm:-mx-5 sm:px-5 scrollbar-hide"
+        aria-label="Video reviews"
+        role="list"
+      >
         {reviews.map((review) => {
           const date = formatDate(review.publishedAt);
           return (
@@ -126,7 +118,6 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
             </a>
           );
         })}
-        </div>
       </div>
     </section>
   );
