@@ -1017,7 +1017,17 @@
     "impressionism-2009/newsday--linda-winer.json",
     "33-variations-2009/variety--charles-isherwood.json",
     "33-variations-2009/newsday--unknown.json",
-    "guys-and-dolls-2009/northjerseycom--robert-feldberg.json"
+    "guys-and-dolls-2009/northjerseycom--robert-feldberg.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "a-tale-of-two-cities-2008/variety--david-rooney.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "south-pacific-2008/ap--michael-kuchwara.json",
+    "in-the-heights-2008/nypost--unknown.json",
+    "in-the-heights-2008/ap--michael-kuchwara.json",
+    "the-little-mermaid-2008/variety--david-rooney.json",
+    "august-osage-county-2007/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1116,7 +1126,7 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "guys-and-dolls-2009/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "august-osage-county-2007/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1227,6 +1237,17 @@
       "t": "2026-04-13T18:59:59.428Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-13T19:00:44.896Z",
+      "event": "bb-session",
+      "session": "cba9202f",
+      "url": "https://www.nypost.com/seven/03102008/entertainment/theater/uptown_upstaged_1012"
+    },
+    {
+      "t": "2026-04-13T19:00:45.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
