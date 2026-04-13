@@ -53,7 +53,7 @@ function main() {
       });
     }
 
-    if (reviews.length > 0) {
+    if (reviews.length >= 2) { // Minimum 2 reviews to display
       reviews.sort((a, b) => b.score - a.score);
       output[showId] = reviews;
       console.log(`${showId}: ${reviews.length} reviews — avg ${Math.round(reviews.reduce((s, r) => s + r.score, 0) / reviews.length)}`);
