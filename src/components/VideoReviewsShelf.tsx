@@ -17,87 +17,75 @@ function YouTubeIcon() {
   );
 }
 
-const THUMB_GRADIENTS = [
-  'linear-gradient(145deg, #2d1b4e 0%, #1a1a2e 40%, #16213e 100%)',
-  'linear-gradient(145deg, #1a2a1a 0%, #1a1a2e 40%, #2d1b3e 100%)',
-  'linear-gradient(145deg, #2e1a1a 0%, #1a1a2e 40%, #1a2e2e 100%)',
-  'linear-gradient(145deg, #1a1a3e 0%, #2e2a1a 40%, #1a2a2a 100%)',
-  'linear-gradient(145deg, #1e2a1e 0%, #1a1a2e 40%, #2e1a2e 100%)',
-  'linear-gradient(145deg, #2a1a2a 0%, #1a2a1a 40%, #1a1a3e 100%)',
-];
-
 export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: VideoReview[]; showTitle: string }) {
   if (!reviews || reviews.length === 0) return null;
 
   const avgScore = Math.round(reviews.reduce((sum, r) => sum + r.score, 0) / reviews.length);
 
   return (
-    <section className="mt-8 pt-6 border-t border-white/5">
-      <div className="flex items-center justify-between mb-3">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <h2 className="text-base font-bold text-white">Video Reviews</h2>
-            <div className={`score-badge w-9 h-9 text-sm rounded-lg font-bold ${getScoreColorClass(avgScore)}`}>
-              {avgScore}
-            </div>
+    <section className="card p-5 sm:p-6 mb-6">
+      {/* Header — matches Critic Reviews / Audience Grade card headers */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2.5">
+          <h2 className="text-lg font-bold text-white">Video Reviews</h2>
+          <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(avgScore)}`}>
+            {avgScore}
           </div>
-          <p className="text-gray-400 text-xs mt-0.5">
-            {reviews.length} video {reviews.length === 1 ? 'review' : 'reviews'} &middot; scored from transcripts
-          </p>
         </div>
+        <span className="text-gray-400 text-sm">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</span>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-        {reviews.map((review, i) => {
-          const gradient = THUMB_GRADIENTS[i % THUMB_GRADIENTS.length];
-          return (
-            <a
-              key={review.handle + i}
-              href={review.videoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-shrink-0 w-28 sm:w-32 group"
-            >
-              {/* Thumbnail */}
-              <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
-                <div className="absolute inset-0 opacity-70" style={{ background: gradient }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-[1]" />
+      {/* Horizontal shelf — same scroll pattern as RelatedShows */}
+      <div className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide">
+        {reviews.map((review, i) => (
+          <a
+            key={review.handle + i}
+            href={review.videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 w-28 sm:w-32 group"
+          >
+            {/* Thumbnail */}
+            <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
+              {review.thumbnail ? (
+                <img
+                  src={review.thumbnail}
+                  alt={`${review.creatorName} video review`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-surface-elevated" />
+              )}
+              {/* Gradient overlay for score readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-[1]" />
 
-                {/* Play button */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white/15 backdrop-blur-sm rounded-full flex items-center justify-center z-[2] opacity-60 group-hover:opacity-100 transition-opacity">
-                  <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5">
-                    <polygon points="6,3 20,12 6,21" />
-                  </svg>
-                </div>
-
-                {/* Platform badge */}
-                <div className={`absolute top-2 right-2 w-5 h-5 rounded flex items-center justify-center z-[3] ${review.platform === 'youtube' ? 'bg-red-600/80' : 'bg-black/60'}`}>
-                  {review.platform === 'youtube' ? <YouTubeIcon /> : <TikTokIcon />}
-                </div>
-
-                {/* Score badge — bottom-right, matching homepage shelf pattern */}
-                <div className="absolute bottom-1.5 right-1.5 z-[3]">
-                  <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(review.score)}`}>
-                    {review.score}
-                  </div>
-                </div>
+              {/* Play button */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center z-[2] opacity-70 group-hover:opacity-100 transition-opacity">
+                <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5">
+                  <polygon points="6,3 20,12 6,21" />
+                </svg>
               </div>
 
-              {/* Info */}
-              <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors leading-tight truncate">
-                {review.creatorName}
-              </h3>
-              {review.views && (
-                <div className="flex items-center gap-1 mt-0.5">
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 text-gray-500">
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
-                  </svg>
-                  <span className="text-gray-400 text-xs">{review.views}</span>
+              {/* Platform badge */}
+              <div className={`absolute top-2 right-2 w-5 h-5 rounded flex items-center justify-center z-[3] ${review.platform === 'youtube' ? 'bg-red-600/80' : 'bg-black/60'}`}>
+                {review.platform === 'youtube' ? <YouTubeIcon /> : <TikTokIcon />}
+              </div>
+
+              {/* Score badge — bottom-right, matching homepage pattern */}
+              <div className="absolute bottom-1.5 right-1.5 z-[3]">
+                <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(review.score)}`}>
+                  {review.score}
                 </div>
-              )}
-            </a>
-          );
-        })}
+              </div>
+            </div>
+
+            {/* Creator name */}
+            <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
+              {review.creatorName}
+            </h3>
+          </a>
+        ))}
       </div>
     </section>
   );

@@ -939,6 +939,11 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           ) : null;
         })()}
 
+        {/* Video Reviews — below Audience Grade */}
+        {videoReviews.length > 0 && (
+          <VideoReviewsShelf reviews={videoReviews} showTitle={show.title} />
+        )}
+
         {/* Showtimes — all markets (Broadway via bwayrush, WE/OB via TodayTix) */}
         <div id="showtimes" className="scroll-mt-20" />
         {showSchedule &&
@@ -1206,11 +1211,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
               })}
             </div>
           </div>
-        )}
-
-        {/* Video Reviews */}
-        {videoReviews.length > 0 && (
-          <VideoReviewsShelf reviews={videoReviews} showTitle={show.title} />
         )}
 
         {/* Related Shows */}

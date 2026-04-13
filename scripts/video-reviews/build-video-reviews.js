@@ -47,7 +47,8 @@ function main() {
         bucket: data.bucket,
         confidence: data.confidence,
         reasoning: data.reasoning,
-        keyQuote: data.keyQuote
+        keyQuote: data.keyQuote,
+        thumbnail: data.thumbnail || null
       });
     }
 
