@@ -406,7 +406,7 @@ function starRatingToScore(ratingValue) {
 
 // ---- Audience buzz update ----
 
-function updateAudienceBuzz(showId, title, score, reviewCount, starRating) {
+function updateAudienceBuzz(showId, title, score, reviewCount, starRating, url) {
   if (!audienceBuzz.shows[showId]) {
     audienceBuzz.shows[showId] = {
       title,
@@ -432,6 +432,7 @@ function updateAudienceBuzz(showId, title, score, reviewCount, starRating) {
     score,
     reviewCount,
     starRating,
+    ...(url ? { url } : {}),
   };
 
   // Score drop detection
@@ -608,7 +609,7 @@ async function main() {
       const score = starRatingToScore(rating.ratingValue);
 
       if (!dryRun) {
-        updateAudienceBuzz(show.id, show.title, score, rating.ratingCount, rating.ratingValue);
+        updateAudienceBuzz(show.id, show.title, score, rating.ratingCount, rating.ratingValue, bc.url);
         updated++;
       } else {
         updated++;
