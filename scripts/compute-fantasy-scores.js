@@ -16,12 +16,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { computeAwardsPoints } = require('./lib/fantasy-helpers');
 
 // ── Load data ───────────────────────────────────────────────────────
 const dataDir = path.join(__dirname, '..', 'data');
 
 const fantasyConfig = JSON.parse(fs.readFileSync(path.join(dataDir, 'fantasy-league.json'), 'utf8'));
 const grossesRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'grosses-history.json'), 'utf8'));
+const awardsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'), 'utf8'));
 
 const { scoring, shows: fantasyShows, _meta: meta } = fantasyConfig;
 const weeks = grossesRaw.weeks || {};
@@ -122,11 +124,10 @@ for (const [showId, show] of Object.entries(fantasyShows)) {
     boxOfficeTotal = bo.totalGross;
   }
 
-  // Awards points (manually populated — check for tonyNoms/tonyWins fields)
-  let awardsPoints = 0;
-  const awardsList = [];
-  // Awards will be manually added to fantasy-league.json when they happen
-  // For now, all shows start at 0 awards points
+  // Awards points (auto-computed from awards.json)
+  const awardsResult = computeAwardsPoints(showId, awardsData, scoring.awards);
+  let awardsPoints = awardsResult.points;
+  const awardsList = awardsResult.awardsList;
 
   const totalPoints = Math.round((criticScorePoints + audienceGradePoints + boxOfficePoints + awardsPoints) * 100) / 100;
 
