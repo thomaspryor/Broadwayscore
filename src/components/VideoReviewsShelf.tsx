@@ -54,12 +54,16 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
       {/* Methodology note */}
       <p className="text-gray-500 text-xs mb-3 -mt-2">Scores estimated from video transcript analysis</p>
 
-      {/* Horizontal shelf */}
-      <div
-        className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide"
-        aria-label="Video reviews"
-        role="list"
-      >
+      {/* Horizontal shelf with right fade when overflowing */}
+      <div className="relative">
+        {reviews.length > 3 && (
+          <div className="absolute right-0 top-0 bottom-1 w-12 bg-gradient-to-l from-surface-raised to-transparent z-10 pointer-events-none rounded-r-lg" />
+        )}
+        <div
+          className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide"
+          aria-label="Video reviews"
+          role="list"
+        >
         {reviews.map((review) => {
           const date = formatDate(review.publishedAt);
           return (
@@ -116,6 +120,7 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
             </a>
           );
         })}
+        </div>
       </div>
     </section>
   );
