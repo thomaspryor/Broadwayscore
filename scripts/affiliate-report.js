@@ -4,14 +4,14 @@
  *
  * Pulls data from Impact, Partnerize, and PostHog APIs via the shared
  * scripts/lib/affiliate-stats.js module (same source used by the admin
- * dashboard at /admin/affiliate), then prints a text summary. Can be
- * piped to email or run in CI.
+ * dashboard at /admin/affiliate), then prints a text summary or styled
+ * HTML email. Can be piped to email or run in CI.
  *
  * Usage:
- *   node scripts/affiliate-report.js                    # last 7 days
+ *   node scripts/affiliate-report.js                    # last 7 days, text
+ *   node scripts/affiliate-report.js --html             # last 7 days, HTML
  *   node scripts/affiliate-report.js --days 30          # last 30 days
  *   node scripts/affiliate-report.js --json             # raw JSON
- *   node scripts/affiliate-report.js --email            # (legacy flag, unused)
  *
  * Requires env vars:
  *   IMPACT_ACCOUNT_SID, IMPACT_AUTH_TOKEN
@@ -20,6 +20,7 @@
  */
 
 const { getAffiliateStats } = require('./lib/affiliate-stats');
+const { buildAffiliateReportHtml } = require('./lib/affiliate-email');
 
 const args = process.argv.slice(2);
 const DAYS = (() => {
@@ -27,12 +28,18 @@ const DAYS = (() => {
   return idx >= 0 ? parseInt(args[idx + 1], 10) : 7;
 })();
 const JSON_MODE = args.includes('--json');
+const HTML_MODE = args.includes('--html');
 
 async function main() {
   const stats = await getAffiliateStats({ days: DAYS, includeWoW: false });
 
   if (JSON_MODE) {
     console.log(JSON.stringify(stats, null, 2));
+    return;
+  }
+
+  if (HTML_MODE) {
+    console.log(buildAffiliateReportHtml(stats));
     return;
   }
 
