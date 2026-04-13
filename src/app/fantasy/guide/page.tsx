@@ -28,7 +28,7 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
   const score = getShowScore(show.id);
   return (
     <div className={`flex items-center gap-3 rounded-lg p-3 transition-colors ${
-      variant === 'muted' ? 'bg-zinc-800/30 hover:bg-zinc-800/50' : 'bg-zinc-800/50 hover:bg-zinc-800/80'
+      variant === 'muted' ? 'bg-surface-raised/30 hover:bg-surface-raised/50' : 'bg-surface-raised/50 hover:bg-surface-raised/80'
     }`}>
       <div className="w-12 text-center shrink-0">
         <span className="text-lg font-bold text-emerald-400">${show.price}</span>
@@ -47,20 +47,20 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
             <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">OB</span>
           )}
           {show.status === 'closed' && (
-            <span className="text-[10px] bg-zinc-600/30 text-zinc-400 px-1.5 py-0.5 rounded">Closed</span>
+            <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
           )}
         </div>
         <div className="flex items-center gap-2 mt-1 flex-wrap">
           {show.criticScore != null && <ScorePill score={show.criticScore} />}
           {show.audienceGrade && (
-            <span className="text-xs text-zinc-400">Audience: {show.audienceGrade}</span>
+            <span className="text-xs text-gray-400">Audience: {show.audienceGrade}</span>
           )}
         </div>
       </div>
       {score && score.totalPoints > 0 && (
         <div className="text-right shrink-0">
           <span className="text-sm font-bold text-brand">{score.totalPoints.toFixed(1)}</span>
-          <span className="text-xs text-zinc-500 ml-1">pts</span>
+          <span className="text-xs text-gray-500 ml-1">pts</span>
         </div>
       )}
     </div>
@@ -77,9 +77,9 @@ function TierSection({ title, subtitle, description, shows }: {
       <div className="flex items-baseline gap-2 mb-1">
         <h2 className="text-lg font-semibold">{title}</h2>
         <span className="text-sm text-brand font-medium">{subtitle}</span>
-        <span className="text-sm text-zinc-500 font-normal">({shows.length})</span>
+        <span className="text-sm text-gray-500 font-normal">({shows.length})</span>
       </div>
-      <p className="text-xs text-zinc-500 mb-3">{description}</p>
+      <p className="text-xs text-gray-500 mb-3">{description}</p>
       <div className="space-y-2">
         {shows.map(show => <ShowCard key={show.id} show={show} />)}
       </div>
@@ -100,23 +100,23 @@ export default function FantasyGuidePage() {
   const valueBW = bwShows.filter(s => s.price < 12);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen bg-surface text-white">
       <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
         {/* Header */}
         <div className="mb-8">
-          <a href="/fantasy" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+          <a href="/fantasy" className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
             &larr; Fantasy League
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Draft Guide</h1>
-          <p className="text-zinc-400 mt-1">
+          <p className="text-gray-400 mt-1">
             {allShows.length} draftable shows &middot; ${config._meta.budget} budget &middot; {config._meta.teamSize} picks
           </p>
         </div>
 
         {/* Legend */}
-        <div className="bg-zinc-800/50 rounded-xl p-4 mb-8 text-sm text-zinc-400 space-y-1">
+        <div className="bg-surface-raised/50 rounded-xl p-4 mb-8 text-sm text-gray-400 space-y-1">
           <p><span className="text-purple-400">{ELIGIBILITY_MARKERS.offBroadway}</span> = Off-Broadway (no box office, no Tony eligibility)</p>
-          <p className="text-zinc-500">Shows with critic scores display them for your research. Scores may still change.</p>
+          <p className="text-gray-500">Shows with critic scores display them for your research. Scores may still change.</p>
         </div>
 
         {/* Premium Broadway ($17+) */}

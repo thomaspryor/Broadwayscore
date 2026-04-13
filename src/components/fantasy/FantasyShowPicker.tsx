@@ -56,8 +56,8 @@ export default function FantasyShowPicker({
 
   if (selectedShow && !isOpen) {
     return (
-      <div className="flex items-center gap-3 rounded-lg bg-zinc-800 border border-zinc-600 p-3">
-        <span className="text-xs text-zinc-500 font-mono w-5">{slotIndex + 1}</span>
+      <div className="flex items-center gap-3 rounded-lg bg-surface-raised border border-white/10 p-3">
+        <span className="text-xs text-gray-500 font-mono w-5">{slotIndex + 1}</span>
         {selectedShow.image && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img src={getOptimizedImageUrl(selectedShow.image, 'thumbnail')} alt="" className="w-8 h-8 rounded object-cover shrink-0" />
@@ -69,10 +69,10 @@ export default function FantasyShowPicker({
               <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">OB</span>
             )}
             {selectedShow.status === 'closed' && (
-              <span className="text-[10px] bg-zinc-600/30 text-zinc-400 px-1.5 py-0.5 rounded">Closed</span>
+              <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
             )}
           </div>
-          <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5">
+          <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
             <span>{selectedShow.type === 'musical' ? 'Musical' : 'Play'}</span>
             {selectedShow.criticScore != null && (
               <span className="text-yellow-400">Score: {Math.round(selectedShow.criticScore)}</span>
@@ -82,7 +82,7 @@ export default function FantasyShowPicker({
         <span className="font-bold text-emerald-400">${selectedShow.price}</span>
         <button
           onClick={() => onRemove(selectedShow.id)}
-          className="text-zinc-500 hover:text-red-400 transition-colors p-1"
+          className="text-gray-500 hover:text-red-400 transition-colors p-1"
           aria-label="Remove pick"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -97,22 +97,22 @@ export default function FantasyShowPicker({
     <div ref={ref} className="relative">
       <div
         className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${
-          isOpen ? 'bg-zinc-700 border-brand/50' : 'bg-zinc-800/50 border-zinc-700 border-dashed hover:border-zinc-500'
+          isOpen ? 'bg-surface-overlay border-brand/50' : 'bg-surface-raised/50 border-white/10 border-dashed hover:border-white/20'
         }`}
         onClick={() => setIsOpen(true)}
       >
-        <span className="text-xs text-zinc-500 font-mono w-5">{slotIndex + 1}</span>
+        <span className="text-xs text-gray-500 font-mono w-5">{slotIndex + 1}</span>
         {isOpen ? (
           <input
             type="text"
-            className="flex-1 bg-transparent text-white placeholder-zinc-500 outline-none text-sm"
+            className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none text-sm"
             placeholder="Search shows..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             autoFocus
           />
         ) : (
-          <span className="flex-1 text-sm text-zinc-500">Pick a show...</span>
+          <span className="flex-1 text-sm text-gray-500">Pick a show...</span>
         )}
       </div>
 
@@ -123,12 +123,12 @@ export default function FantasyShowPicker({
             className="fixed inset-0 bg-black/60 z-40 sm:hidden"
             onClick={() => { setIsOpen(false); setSearch(''); }}
           />
-          <div className="fixed sm:absolute inset-x-0 bottom-0 sm:bottom-auto sm:inset-x-auto sm:left-0 sm:right-0 sm:mt-1 z-50 max-h-[70vh] sm:max-h-80 overflow-y-auto rounded-t-xl sm:rounded-lg bg-zinc-800 border border-zinc-600 shadow-xl">
+          <div className="fixed sm:absolute inset-x-0 bottom-0 sm:bottom-auto sm:inset-x-auto sm:left-0 sm:right-0 sm:mt-1 z-50 max-h-[70vh] sm:max-h-80 overflow-y-auto rounded-t-xl sm:rounded-lg bg-surface-raised border border-white/10 shadow-xl">
             {/* Mobile search header (sticky) */}
-            <div className="sticky top-0 bg-zinc-800 border-b border-zinc-700 p-3 sm:hidden">
+            <div className="sticky top-0 bg-surface-raised border-b border-white/10 p-3 sm:hidden">
               <input
                 type="text"
-                className="w-full bg-zinc-700 text-white placeholder-zinc-400 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-brand/50"
+                className="w-full bg-surface-overlay text-white placeholder-gray-400 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-brand/50"
                 placeholder="Search shows..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
@@ -136,17 +136,17 @@ export default function FantasyShowPicker({
               />
             </div>
             {sorted.length === 0 ? (
-              <div className="p-3 text-sm text-zinc-500 text-center">No matching shows</div>
+              <div className="p-3 text-sm text-gray-500 text-center">No matching shows</div>
             ) : (
             sorted.map(show => {
               const affordable = show.price <= remainingBudget + (selectedShow?.price ?? 0);
               return (
                 <button
                   key={show.id}
-                  className={`w-full flex items-center gap-3 p-3 text-left transition-colors border-b border-zinc-700/50 last:border-0 ${
+                  className={`w-full flex items-center gap-3 p-3 text-left transition-colors border-b border-white/5 last:border-0 ${
                     affordable
-                      ? 'hover:bg-zinc-700 text-white'
-                      : 'opacity-40 cursor-not-allowed text-zinc-500'
+                      ? 'hover:bg-surface-overlay text-white'
+                      : 'opacity-40 cursor-not-allowed text-gray-500'
                   }`}
                   onClick={() => {
                     if (!affordable) return;
@@ -167,20 +167,20 @@ export default function FantasyShowPicker({
                         <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded shrink-0">OB</span>
                       )}
                       {show.status === 'closed' && (
-                        <span className="text-[10px] bg-zinc-600/30 text-zinc-400 px-1.5 py-0.5 rounded shrink-0">Closed</span>
+                        <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded shrink-0">Closed</span>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5">
+                    <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
                       <span>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
                       {show.criticScore != null && (
                         <span className="text-yellow-400">Score: {Math.round(show.criticScore)}</span>
                       )}
                       {!show.eligible.boxOffice && (
-                        <span className="text-zinc-500">† no box office</span>
+                        <span className="text-gray-500">† no box office</span>
                       )}
                     </div>
                   </div>
-                  <span className={`font-bold shrink-0 ${affordable ? 'text-emerald-400' : 'text-zinc-600'}`}>
+                  <span className={`font-bold shrink-0 ${affordable ? 'text-emerald-400' : 'text-gray-600'}`}>
                     ${show.price}
                   </span>
                 </button>

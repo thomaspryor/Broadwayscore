@@ -23,14 +23,14 @@ export default function FantasyBudgetBar({ spent, budget, picksCount, teamSize }
     : 'bg-emerald-400';
 
   return (
-    <div className="rounded-xl bg-zinc-800/80 border border-zinc-700 p-4">
+    <div className="rounded-xl bg-surface-raised/80 border border-white/10 p-4">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm text-zinc-400">Budget</span>
-        <span className="text-sm text-zinc-400">{picksCount}/{teamSize} picks</span>
+        <span className="text-sm text-gray-400">Budget</span>
+        <span className="text-sm text-gray-400">{picksCount}/{teamSize} picks</span>
       </div>
 
       {/* Progress bar */}
-      <div className="h-3 bg-zinc-700 rounded-full overflow-hidden mb-2">
+      <div className="h-3 bg-surface-overlay rounded-full overflow-hidden mb-2">
         <div
           className={`h-full rounded-full transition-all duration-300 ${barColor}`}
           style={{ width: `${Math.min(percentage, 100)}%` }}
