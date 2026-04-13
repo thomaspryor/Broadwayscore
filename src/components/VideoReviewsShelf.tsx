@@ -57,8 +57,8 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
         </div>
       </div>
 
-      {/* Methodology note */}
-      <p className="text-gray-500 text-xs mb-3 -mt-2">Scores estimated from video transcript analysis</p>
+      {/* Subtle methodology link */}
+      <a href="/methodology#video-reviews" className="text-gray-500 hover:text-gray-400 text-xs mb-3 -mt-2 block transition-colors">How does this work?</a>
 
       {/* Horizontal shelf with right fade when overflowing */}
       <div className="relative">
