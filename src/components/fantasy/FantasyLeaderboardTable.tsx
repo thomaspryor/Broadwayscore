@@ -8,11 +8,23 @@ export default function FantasyLeaderboardTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedRank, setExpandedRank] = useState<number | null>(null);
+  const [leagueFilter, setLeagueFilter] = useState('');
+  const [debouncedLeague, setDebouncedLeague] = useState('');
+
+  // Debounce league filter (500ms)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedLeague(leagueFilter), 500);
+    return () => clearTimeout(timer);
+  }, [leagueFilter]);
 
   useEffect(() => {
     async function fetchLeaderboard() {
+      setLoading(true);
       try {
-        const res = await fetch('/api/fantasy/leaderboard');
+        const url = debouncedLeague
+          ? `/api/fantasy/leaderboard?league=${encodeURIComponent(debouncedLeague)}`
+          : '/api/fantasy/leaderboard';
+        const res = await fetch(url);
         const data = await res.json();
         setEntries(data.entries || []);
         if (data.error) setError(data.error);
@@ -23,7 +35,7 @@ export default function FantasyLeaderboardTable() {
       }
     }
     fetchLeaderboard();
-  }, []);
+  }, [debouncedLeague]);
 
   if (loading) {
     return (
@@ -51,6 +63,25 @@ export default function FantasyLeaderboardTable() {
 
   return (
     <div className="space-y-2">
+      {/* League filter */}
+      <div className="flex items-center gap-2 mb-2">
+        <input
+          type="text"
+          className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:border-brand/50 focus:outline-none transition-colors"
+          placeholder="Filter by league name..."
+          value={leagueFilter}
+          onChange={e => setLeagueFilter(e.target.value)}
+        />
+        {leagueFilter && (
+          <button
+            onClick={() => setLeagueFilter('')}
+            className="text-xs text-zinc-500 hover:text-white transition-colors"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+
       {/* Header row */}
       <div className="hidden sm:grid grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_5rem] gap-2 px-4 py-2 text-xs text-zinc-500 uppercase tracking-wider">
         <span>#</span>

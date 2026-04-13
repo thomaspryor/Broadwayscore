@@ -8,6 +8,7 @@ import {
   FANTASY_TEAM_SIZE,
   DRAFT_DEADLINE,
   isDraftClosed,
+  TIEBREAKER_QUESTIONS,
 } from '@/config/fantasy';
 import type { FantasyShow } from '@/config/fantasy';
 
@@ -26,6 +27,7 @@ export default function FantasyDraftPage() {
   const [teamName, setTeamName] = useState('');
   const [leagueName, setLeagueName] = useState('');
   const [picks, setPicks] = useState<string[]>(Array(FANTASY_TEAM_SIZE).fill(''));
+  const [tiebreakers, setTiebreakers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,6 +82,7 @@ export default function FantasyDraftPage() {
           team_name: teamName.trim() || null,
           league_name: leagueName.trim() || null,
           picks: selectedIds,
+          tiebreakers: Object.keys(tiebreakers).length > 0 ? tiebreakers : null,
         }),
       });
 
@@ -250,6 +253,24 @@ export default function FantasyDraftPage() {
         {/* Legend */}
         <div className="text-xs text-zinc-600 mb-6 space-y-1">
           <p>OB = Off-Broadway (no box office points, not Tony-eligible)</p>
+        </div>
+
+        {/* Tiebreakers */}
+        <div className="space-y-3 mb-8">
+          <h2 className="text-sm text-zinc-500 uppercase tracking-wider">Tiebreakers</h2>
+          <p className="text-xs text-zinc-600">Used to break ties on Tony night. Closest answer wins.</p>
+          {TIEBREAKER_QUESTIONS.map(q => (
+            <div key={q.id}>
+              <label className="block text-sm text-zinc-400 mb-1">{q.question}</label>
+              <input
+                type={q.type === 'number' ? 'number' : 'text'}
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:border-brand/50 focus:outline-none transition-colors"
+                placeholder={q.type === 'number' ? 'Your guess' : 'Your answer'}
+                value={tiebreakers[q.id] || ''}
+                onChange={e => setTiebreakers(prev => ({ ...prev, [q.id]: e.target.value }))}
+              />
+            </div>
+          ))}
         </div>
 
         {/* Error */}

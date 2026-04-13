@@ -41,17 +41,21 @@ const reviewsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json')
 const shows = showsRaw.shows;
 const reviews = reviewsRaw.reviews;
 
-// ── Load audience data ──────────────────────────────────────────────
+// ── Load audience data (from audience-buzz.json, NOT audience.json) ─
+// audience-buzz.json has combinedScore per show. audience.json is raw per-platform data.
 let audienceData = {};
 try {
-  const audienceRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'audience.json'), 'utf8'));
-  if (audienceRaw.audience) {
-    for (const entry of audienceRaw.audience) {
-      if (entry.showId) audienceData[entry.showId] = entry;
+  const buzzRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'audience-buzz.json'), 'utf8'));
+  const buzzShows = buzzRaw.shows || buzzRaw;
+  for (const [showId, data] of Object.entries(buzzShows)) {
+    if (showId === '_meta' || showId === 'lastUpdated') continue;
+    if (data && data.combinedScore != null) {
+      audienceData[showId] = data;
     }
   }
+  console.error(`Loaded audience data for ${Object.keys(audienceData).length} shows`);
 } catch (e) {
-  console.error('Warning: Could not load audience.json:', e.message);
+  console.error('Warning: Could not load audience-buzz.json:', e.message);
 }
 
 // ── Compute critic scores per show ──────────────────────────────────
@@ -131,14 +135,14 @@ function computePrice(show, criticScore) {
   const isPreviews = show.status === 'previews';
   const isClosed = show.status === 'closed';
 
-  // OB shows: $3-8 (no box office, no Tonys — but can earn CriticScore + AudienceGrade)
-  // Priced to prevent value-trap gaming (max ~55 pts from CS+AG, so $/pt is fair)
+  // OB shows: $6-12 (no box office, no Tonys — but earn CS + AG + Drama Desk/Outer Critics)
+  // Max OB ceiling ~65 pts (30 CS + 25 AG + ~10 awards). Priced so pts/$ is comparable to BW.
   if (isOB) {
-    if (criticScore && criticScore >= 83) return 8;
-    if (criticScore && criticScore >= 75) return 6;
-    if (criticScore && criticScore >= 65) return 5;
-    if (criticScore) return 4;
-    return 3;
+    if (criticScore && criticScore >= 83) return 12;
+    if (criticScore && criticScore >= 75) return 10;
+    if (criticScore && criticScore >= 65) return 8;
+    if (criticScore) return 7;
+    return 6;
   }
 
   // Broadway shows: base price by type
@@ -249,10 +253,10 @@ const config = {
     },
     boxOffice: { pointsPer100K: 0.30 },
     awards: {
-      tonyNom: 7,
-      tonyWin: 14,
-      tonyBestMusical: 30,
-      tonyBestPlay: 30,
+      tonyNom: 7, tonyWin: 14, tonyBestMusical: 30, tonyBestPlay: 30,
+      dramaLeagueNom: 2, dramaLeagueWin: 5,
+      outerCriticsNom: 2, outerCriticsWin: 5,
+      dramaDeskNom: 3, dramaDeskWin: 6,
     },
   },
 };
