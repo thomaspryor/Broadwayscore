@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-13T02:48:55.413Z",
+  "timestamp": "2026-04-13T03:14:59.596Z",
   "stats": {
-    "totalReviews": 34725,
+    "totalReviews": 34729,
     "alreadyFlagged": 13891,
     "dateGuardCatches": 107,
     "directorMismatch": 960,
-    "tvFilmSignals": 3382,
+    "tvFilmSignals": 3383,
     "londonSignals": 1112,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
@@ -57342,7 +57342,7 @@
     {
       "showId": "titanique-2026",
       "file": "mashable--kristy-puchko.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2026-04-13",
       "url": "https://mashable.com/article/titanique-broadway-celine-dion-review",
       "findings": [
@@ -57356,7 +57356,7 @@
     {
       "showId": "titanique-2026",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2026-04-13",
       "url": "https://newyorktheater.me/2026/04/12/titanique-broadway-review/",
       "findings": [
@@ -57370,7 +57370,7 @@
     {
       "showId": "titanique-2026",
       "file": "people--dave-quinn.json",
-      "score": null,
+      "score": 93,
       "publishDate": "2026-04-12",
       "url": "https://people.com/titanique-broadway-review-11948233",
       "findings": [
@@ -57384,7 +57384,7 @@
     {
       "showId": "titanique-2026",
       "file": "the-recs--david-cook.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2026-04-13",
       "url": "https://therecs.co.uk/titanique-on-broadway/",
       "findings": [
@@ -57397,6 +57397,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "vulture--sara-holdren.json",
+      "score": 86,
+      "publishDate": "2026-04-12",
+      "url": "https://www.vulture.com/article/theater-review-titanique-broadway-mindell.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -83585,7 +83599,7 @@
     {
       "showId": "titanique-2026",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2026-04-13",
       "url": "https://culturesauce.com/2026/04/12/titanique-broadway-review/",
       "findings": [
@@ -83599,7 +83613,7 @@
     {
       "showId": "titanique-2026",
       "file": "nysr--david-finkle.json",
-      "score": null,
+      "score": 45,
       "publishDate": "2026-04-13",
       "url": "https://nystagereview.com/2026/04/12/titanique-movie-spoof-unfortunately-hits-musical-iceberg/",
       "findings": [
@@ -83613,6 +83627,7 @@
     {
       "showId": "titanique-2026",
       "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 66,
       "publishDate": "2026-04-13",
       "url": "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
       "findings": [

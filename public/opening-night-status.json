@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T02:48:59.294Z",
+  "generatedAt": "2026-04-13T03:15:03.367Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -43,10 +43,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -313,24 +309,20 @@
       "status": "open",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "siteScore": 71.79,
-      "liveScore": 73,
-      "scoreDrift": 1.2099999999999937,
-      "total": 9,
-      "t1": 1,
-      "t2": 6,
-      "t3": 2,
-      "positive": 6,
-      "mixed": 1,
+      "siteScore": 77,
+      "liveScore": 76,
+      "scoreDrift": -1,
+      "total": 16,
+      "t1": 3,
+      "t2": 9,
+      "t3": 4,
+      "positive": 11,
+      "mixed": 3,
       "negative": 2,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "9/12 total",
-          "T1:1/3",
-          "hi-conf:3/8"
-        ],
-        "highConfidence": 3,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -340,13 +332,9 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
         {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
@@ -568,6 +556,18 @@
           "t3": 2,
           "p": 6,
           "m": 1,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-13T03:15:03.367Z",
+          "rc": 16,
+          "s": 77,
+          "t1": 3,
+          "t2": 9,
+          "t3": 4,
+          "p": 11,
+          "m": 3,
           "n": 2,
           "bc": "waiting"
         }
