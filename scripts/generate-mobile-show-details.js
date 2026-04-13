@@ -111,19 +111,22 @@ let totalSize = 0;
 for (const show of visibleShows) {
   const allShowReviews = reviewsByShow[show.id] || [];
 
-  // Outlet-level dedup: keep most-recent review per outlet. MUST match
-  // src/lib/engine.ts and scripts/lib/compute-critic-score.js. Without this,
-  // shows with multiple reviews from the same outlet (e.g. Stereophonic's two
-  // NYSR reviews) get a different score/count here than on the show page.
-  const byOutlet = new Map();
+  // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
+  // publishDate. Matches src/lib/engine.ts computeCriticScore() which keeps
+  // distinct critics from the same outlet (NYSR, NYT, etc. publish multiple critics).
+  // Previous outlet-level dedup was wrong — it dropped second critics (e.g. Sommers
+  // when Finkle existed for NYSR on Titanique opening night 2026-04-12).
+  const byCriticKey = new Map();
   for (const review of allShowReviews) {
     const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    const existing = byOutlet.get(outletKey);
+    const criticKey = (review.criticName || 'unknown').toLowerCase();
+    const key = `${outletKey}|${criticKey}`;
+    const existing = byCriticKey.get(key);
     if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
-      byOutlet.set(outletKey, review);
+      byCriticKey.set(key, review);
     }
   }
-  const showReviews = Array.from(byOutlet.values());
+  const showReviews = Array.from(byCriticKey.values());
   const buzz = audienceBuzz[show.id];
 
   // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Stay Away (<55)
