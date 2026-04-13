@@ -121,6 +121,31 @@ function isUnattributableSocialUrl(url) {
   return false;
 }
 
+/**
+ * Detect Google's opaque redirect/AMP cache URLs that can't be resolved.
+ * Google SGE/AI Overview results sometimes return /goto?url=CAE... or
+ * webcache.googleusercontent.com URLs instead of the actual destination.
+ * These break dedup (each redirect URL is unique) and owner filtering
+ * (no real hostname to match). Skip them — the same content should
+ * appear with a real URL in a different SERP call or free source.
+ */
+function isUnresolvableRedirectUrl(url) {
+  if (!url) return true;
+  const s = String(url);
+  // Relative paths (Google's /goto?url=... redirect)
+  if (s.startsWith('/')) return true;
+  // Google cache/AMP wrappers
+  if (/^https?:\/\/(?:webcache\.googleusercontent\.com|google\.com\/amp)/i.test(s)) return true;
+  // Must have a proper HTTP(S) scheme
+  try {
+    const parsed = new URL(s);
+    if (!['http:', 'https:'].includes(parsed.protocol)) return true;
+  } catch {
+    return true;
+  }
+  return false;
+}
+
 // Parse X/Twitter tweet ID + handle from a status URL
 // Accepts: https://x.com/foo/status/123, https://twitter.com/foo/status/123
 function parseXUrl(url) {
@@ -212,6 +237,8 @@ async function fetchGoogleWebMentions(keywords = DEFAULT_KEYWORDS, opts = {}) {
     const results = await runSerp(keyword, '', opts);
     for (const r of results) {
       if (!r.url) continue;
+      // Skip Google's opaque redirect URLs (break dedup + owner filtering)
+      if (isUnresolvableRedirectUrl(r.url)) continue;
       // Skip sources we already cover natively
       if (/reddit\.com|news\.ycombinator\.com|bsky\.app|x\.com|twitter\.com/i.test(r.url)) continue;
       // Skip Instagram/TikTok/Threads bare URLs we can't attribute
@@ -269,6 +296,8 @@ async function fetchGoogleNewsMentions(keywords = DEFAULT_KEYWORDS, opts = {}) {
     const results = await runSerp(keyword, `(site:${NEWS_SITE_FILTER})`, opts);
     for (const r of results) {
       if (!r.url) continue;
+      // Skip Google's opaque redirect URLs (break dedup + owner filtering)
+      if (isUnresolvableRedirectUrl(r.url)) continue;
       const blob = `${r.title || ''} ${r.snippet || ''}`.toLowerCase();
       if (!blob.includes(keyword.toLowerCase())) continue;
 
@@ -338,5 +367,5 @@ module.exports = {
   fetchGoogleNewsMentions,
   fetchPaidSources,
   // exported for tests
-  _internal: { parseXUrl, buildQuery, urlHash, canonicalizeUrl, isUnattributableSocialUrl },
+  _internal: { parseXUrl, buildQuery, urlHash, canonicalizeUrl, isUnattributableSocialUrl, isUnresolvableRedirectUrl },
 };
