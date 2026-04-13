@@ -88,7 +88,7 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
                   <img
                     src={review.thumbnail}
                     alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className={`absolute inset-0 w-full h-full object-cover ${review.platform === 'youtube' ? 'object-top' : ''}`}
                     loading="lazy"
                   />
                 ) : (
