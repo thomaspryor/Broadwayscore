@@ -22,7 +22,13 @@
     "stranger-things-2024/thestage--unknown.json",
     "my-neighbour-totoro-west-end-2025/standard--unknown.json",
     "abba-voyage-off-west-end-2026/guardian--kitty-empire.json",
-    "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
+    "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "billy-elliot-the-musical-west-end-2027/timeout--unknown.json",
+    "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
+    "a-christmas-carol-west-end-2026/nytg--tulis-mccall.json",
+    "a-christmas-carol-west-end-2026/dailybeast--tim-teeman.json",
+    "the-comedy-about-spies-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -54,7 +60,11 @@
     "aladdin-2014/ap--mark-kennedy.json",
     "book-of-mormon-2011/variety--david-rooney.json",
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json"
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "wicked-2003/the-journal-news--jacques-le-sourd.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-comedy-about-spies-west-end-2026/telegraph--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -71,10 +81,16 @@
       "dracula-west-end-2025/london-theatre--unknown.json",
       "stranger-things-2024/thestage--unknown.json",
       "my-neighbour-totoro-west-end-2025/standard--unknown.json",
-      "abba-voyage-off-west-end-2026/guardian--kitty-empire.json"
+      "abba-voyage-off-west-end-2026/guardian--kitty-empire.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+      "a-christmas-carol-west-end-2026/nytg--tulis-mccall.json",
+      "the-comedy-about-spies-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
+      "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
@@ -83,10 +99,12 @@
       "titanique-2026/nytimes--alex-marshall.json",
       "giant-2026/times-uk--clive-davis.json",
       "giant-2026/whatsonstage--sarah-crompton.json",
-      "dracula-west-end-2025/metro--unknown.json"
+      "dracula-west-end-2025/metro--unknown.json",
+      "billy-elliot-the-musical-west-end-2027/timeout--unknown.json"
     ],
     "brightdata": [
-      "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
+      "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+      "a-christmas-carol-west-end-2026/dailybeast--tim-teeman.json"
     ],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
@@ -99,6 +117,18 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "book-of-mormon-2011/ap--mark-kennedy.json",
-  "log": []
+  "lastProcessed": "the-comedy-about-spies-west-end-2026/telegraph--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-13T10:48:04.835Z",
+      "event": "bb-session",
+      "session": "b0cc6c47",
+      "url": "https://www.hollywoodreporter.com/news/general-news/a-christmas-carol-theater-re"
+    },
+    {
+      "t": "2026-04-13T10:48:05.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
