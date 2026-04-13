@@ -61,7 +61,8 @@
     "magic-mike-live-west-end-2021/daily-mail--unknown.json",
     "fences-2010/hollywood-reporter--unknown.json",
     "fences-2010/wsj--christopher-john-farley.json",
-    "million-dollar-quartet-2010/theatermania--unknown.json"
+    "million-dollar-quartet-2010/theatermania--unknown.json",
+    "all-about-me-2010/talkinbroadway--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -977,7 +978,16 @@
     "red-2010/backstage--erik-haagensen.json",
     "red-2010/washpost--peter-marks.json",
     "come-fly-away-2010/wsj--unknown.json",
-    "come-fly-away-2010/nytheatre--martin-denton.json"
+    "come-fly-away-2010/nytheatre--martin-denton.json",
+    "come-fly-away-2010/new-jersey-newsroom--michael-sommers.json",
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "looped-2010/ny1--roma-torre.json",
+    "next-fall-2010/new-jersey-newsroom--michael-sommers.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "a-behanding-in-spokane-2010/new-jersey-newsroom--michael-sommers.json",
+    "a-behanding-in-spokane-2010/backstage--david-sheward.json",
+    "time-stands-still-2010/hollywood-reporter--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1044,7 +1054,8 @@
       "cats-west-end-2026/thewrap--robert-hofler.json",
       "titanique-2026/thewrap--unknown.json",
       "titanique-2026/talkinbroadway--unknown.json",
-      "fences-2010/wsj--christopher-john-farley.json"
+      "fences-2010/wsj--christopher-john-farley.json",
+      "all-about-me-2010/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
@@ -1071,7 +1082,7 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "come-fly-away-2010/nytheatre--martin-denton.json",
+  "lastProcessed": "time-stands-still-2010/hollywood-reporter--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1138,6 +1149,17 @@
       "t": "2026-04-13T18:45:40.036Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-13T18:51:13.421Z",
+      "event": "bb-session",
+      "session": "b8c6b098",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/time-stands-still-theater-revi"
+    },
+    {
+      "t": "2026-04-13T18:51:14.043Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

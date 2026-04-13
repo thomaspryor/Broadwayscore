@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-13T18:49:45.971Z",
-  "processed": 62,
-  "failed": 914,
+  "updatedAt": "2026-04-13T18:52:38.093Z",
+  "processed": 63,
+  "failed": 923,
   "successRate": "6.4%",
   "tierBreakdown": {
     "playwright": 32,
@@ -9,11 +9,11 @@
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 15,
-    "brightdata": 6,
+    "brightdata": 7,
     "archiveToday": 11,
     "archive": 8
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -80,6 +80,17 @@
       "t": "2026-04-13T18:45:40.036Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-13T18:51:13.421Z",
+      "event": "bb-session",
+      "session": "b8c6b098",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/time-stands-still-theater-revi"
+    },
+    {
+      "t": "2026-04-13T18:51:14.043Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
