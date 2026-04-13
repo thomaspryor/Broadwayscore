@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T11:40:55.432Z",
+  "generatedAt": "2026-04-13T12:19:49.090Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -313,20 +313,20 @@
       "status": "open",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "siteScore": 76.4,
+      "siteScore": 75.6,
       "liveScore": 76,
-      "scoreDrift": -0.4000000000000057,
-      "total": 20,
+      "scoreDrift": 0.4000000000000057,
+      "total": 21,
       "t1": 4,
-      "t2": 11,
+      "t2": 12,
       "t3": 5,
       "positive": 14,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -389,10 +389,6 @@
         }
       ],
       "missingT2": [
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
         {
           "name": "USA Today",
           "isDualMarket": false
@@ -604,6 +600,18 @@
           "t3": 5,
           "p": 14,
           "m": 3,
+          "n": 3,
+          "bc": "preview-sent"
+        },
+        {
+          "t": "2026-04-13T12:19:49.090Z",
+          "rc": 21,
+          "s": 75.6,
+          "t1": 4,
+          "t2": 12,
+          "t3": 5,
+          "p": 14,
+          "m": 4,
           "n": 3,
           "bc": "preview-sent"
         }

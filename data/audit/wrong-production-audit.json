@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-13T11:40:51.665Z",
+  "timestamp": "2026-04-13T12:19:45.154Z",
   "stats": {
-    "totalReviews": 34844,
-    "alreadyFlagged": 13930,
+    "totalReviews": 34843,
+    "alreadyFlagged": 13929,
     "dateGuardCatches": 107,
     "directorMismatch": 975,
-    "tvFilmSignals": 3384,
+    "tvFilmSignals": 3385,
     "londonSignals": 1116,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
-    "noPublishDate": 4161
+    "noPublishDate": 4160
   },
   "findings": [
     {
@@ -57659,6 +57659,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 85,
+      "publishDate": "2026-04-13",
+      "url": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"series finale\""
         }
       ]
     },
