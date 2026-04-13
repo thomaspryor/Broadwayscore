@@ -171,6 +171,7 @@ const THEATR_OVERRIDES = {
   'BOOP! The Betty Boop Musical': 'boop-2025',
   'A Wonderful World': 'a-wonderful-world-the-louis-armstrong-musical-2024',
   'Buena Vista Social Club™': 'buena-vista-social-club-2025',
+  "Arthur Miller's Death of a Salesman": 'death-of-a-salesman-2026',
   // 'Ben Platt: Live at the Palace' — not in shows.json (special engagement)
 };
 
@@ -253,7 +254,19 @@ function matchTheatrToShows(theatrShows, ourShows) {
     }
   }
 
-  return matches;
+  // Deduplicate: when multiple Theatr entries map to the same show ID,
+  // keep only the one with the most watched users. Without this, the last
+  // match silently overwrites the first — which killed DoaS 2026 (42-vote
+  // entry overwritten by a 1-vote duplicate listing).
+  const byShowId = new Map();
+  for (const m of matches) {
+    const id = m.show.id;
+    const watched = m.theatr.totalWatchedUsers || 0;
+    if (!byShowId.has(id) || watched > (byShowId.get(id).theatr.totalWatchedUsers || 0)) {
+      byShowId.set(id, m);
+    }
+  }
+  return [...byShowId.values()];
 }
 
 // ---- Score conversion ----
