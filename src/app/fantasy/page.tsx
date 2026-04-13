@@ -30,9 +30,9 @@ export default function FantasyLandingPage() {
           <img
             src="/images/fantasy/bfl-logo.png"
             alt="BFL"
-            width={800}
-            height={191}
-            className="w-[200px] sm:w-[260px] h-auto"
+            width={600}
+            height={387}
+            className="w-[140px] sm:w-[180px] h-auto"
           />
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
