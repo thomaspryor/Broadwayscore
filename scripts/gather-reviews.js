@@ -2654,11 +2654,36 @@ function createReviewFile(showId, reviewData, options = {}) {
               if (existingReview[key] !== undefined) preserved[key] = existingReview[key];
             }
             const replacement = { ...reviewData, ...preserved, source: reviewData.source || 'gather-reviews' };
+            // Explicitly clear ALL blocking metadata — the old file's flags are about
+            // the wrong production/show and must not survive into the replacement.
+            // (Titanique postmortem: TheaterMania had contentTier:invalid from old production,
+            // 5+ flags had to be manually cleared on 4 reviews, each independently blocked scoring.)
+            delete replacement.wrongProduction;
+            delete replacement.wrongProductionReason;
+            delete replacement.wrongProductionNote;
+            delete replacement.wrongShow;
+            delete replacement.wrongShowReason;
+            delete replacement.wrongShowNote;
+            delete replacement.wrongShowAutoCleared;
+            delete replacement.contentTier;
+            delete replacement.contentTierReason;
+            delete replacement.incompleteReason;
+            delete replacement.incompleteDetail;
+            delete replacement.rejectionReason;
+            delete replacement.rejectedBy;
+            delete replacement.rejectionReasoning;
+            delete replacement.contentVerification;
+            delete replacement.fetchAttempts;
+            delete replacement.lastFetchDate;
+            // Signal that text needs to be collected from the new URL
+            if (!replacement.fullText) {
+              replacement.needsRecollection = true;
+            }
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(replacement, null, 2) + '\n');
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
             }
-            console.log(`    ♻ Replaced wrongShow/wrongProd file ${existingFile} with fresh URL`);
+            console.log(`    ♻ Replaced wrongShow/wrongProd file ${existingFile} with fresh URL (all blocking flags cleared)`);
             return true;
           }
 
