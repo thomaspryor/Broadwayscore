@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-13T03:46:53.828Z",
+  "updatedAt": "2026-04-13T03:51:16.393Z",
   "processed": 221,
-  "failed": 1403,
-  "successRate": "13.6%",
+  "failed": 1413,
+  "successRate": "13.5%",
   "tierBreakdown": {
     "playwright": 62,
     "amp": 2,
@@ -13,19 +13,8 @@
     "archiveToday": 50,
     "archive": 79
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-04-12T12:51:38.766Z",
-      "event": "bb-session",
-      "session": "243de97f",
-      "url": "http://variety.com/2016/legit/reviews/bright-star-review-steve-martin-edie-brick"
-    },
-    {
-      "t": "2026-04-12T12:51:39.481Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-12T12:52:00.100Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-13T03:38:21.770Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-13T03:48:11.721Z",
+      "event": "bb-session",
+      "session": "e0e3240a",
+      "url": "https://www.hollywoodreporter.com/review/significant-theater-review-982582"
+    },
+    {
+      "t": "2026-04-13T03:48:12.424Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
