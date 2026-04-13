@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-13T10:49:11.794Z",
-  "processed": 29,
-  "failed": 34,
-  "successRate": "46.0%",
+  "updatedAt": "2026-04-13T10:52:34.862Z",
+  "processed": 36,
+  "failed": 37,
+  "successRate": "49.3%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 20,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 8,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 3,
-    "archive": 2
+    "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -25,6 +25,17 @@
       "t": "2026-04-13T10:48:05.811Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T10:51:13.096Z",
+      "event": "bb-session",
+      "session": "2b107fc0",
+      "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-ju"
+    },
+    {
+      "t": "2026-04-13T10:51:14.017Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
