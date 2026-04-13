@@ -107,6 +107,43 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
     }
   }
 
+  // ── NY Drama Critics' Circle ──────────────────────────────────
+  if (showAwards.nydcc) {
+    const nydcc = showAwards.nydcc;
+    const wins = nydcc.wins || [];
+    if (wins.length > 0) {
+      points += wins.length * (scoringConfig.nydccWin || 0);
+      awardsList.push(`NYDCC: ${wins.length} win${wins.length > 1 ? 's' : ''}`);
+    }
+  }
+
+  // ── Lucille Lortel Awards ────────────────────────────────────
+  if (showAwards.lortel) {
+    const lortel = showAwards.lortel;
+    const wins = lortel.wins || [];
+    const totalNoms = lortel.nominations ?? wins.length;
+    const nomOnly = Math.max(0, totalNoms - wins.length);
+
+    if (nomOnly > 0) {
+      points += nomOnly * (scoringConfig.lortelNom || 0);
+      awardsList.push(`Lortel: ${nomOnly} nom${nomOnly > 1 ? 's' : ''}`);
+    }
+    if (wins.length > 0) {
+      points += wins.length * (scoringConfig.lortelWin || 0);
+      awardsList.push(`Lortel: ${wins.length} win${wins.length > 1 ? 's' : ''}`);
+    }
+  }
+
+  // ── Obie Awards ──────────────────────────────────────────────
+  if (showAwards.obie) {
+    const obie = showAwards.obie;
+    const awards = obie.awards || obie.wins || [];
+    if (awards.length > 0) {
+      points += awards.length * (scoringConfig.obieAward || 0);
+      awardsList.push(`Obie: ${awards.length} award${awards.length > 1 ? 's' : ''}`);
+    }
+  }
+
   return { points: Math.round(points * 100) / 100, awardsList };
 }
 

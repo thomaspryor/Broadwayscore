@@ -78,6 +78,9 @@ export const BOX_OFFICE_POINTS_PER_100K = 0.30;
  * Drama League (mid-May): noms + wins
  * Outer Critics Circle (late May): noms + wins, covers BW + OB
  * Drama Desk (late May/early June): noms + wins, covers BW + OB
+ * NY Drama Critics' Circle (early May): wins only (best play, best musical)
+ * Lucille Lortel Awards (early May): noms + wins, OB only
+ * Obie Awards (late May): special citations, no nom/win format, OB + experimental
  */
 export const AWARDS_POINTS = {
   // Tony Awards
@@ -92,6 +95,11 @@ export const AWARDS_POINTS = {
   outerCriticsWin: 5,
   dramaDeskNom: 3,
   dramaDeskWin: 6,
+  // Additional ceremonies
+  nydccWin: 5,         // NY Drama Critics' Circle — wins only, very prestigious
+  lortelNom: 2,        // Lucille Lortel — OB awards, noms + wins
+  lortelWin: 5,
+  obieAward: 4,        // Obie — citations (no nom/win structure)
 };
 
 // ===========================================
