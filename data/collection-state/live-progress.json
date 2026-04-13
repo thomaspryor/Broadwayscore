@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-13T18:58:49.441Z",
+  "updatedAt": "2026-04-13T19:00:16.808Z",
   "processed": 65,
-  "failed": 941,
-  "successRate": "6.5%",
+  "failed": 951,
+  "successRate": "6.4%",
   "tierBreakdown": {
     "playwright": 33,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 15,
     "brightdata": 8,
-    "archiveToday": 12,
+    "archiveToday": 13,
     "archive": 8
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -113,6 +113,17 @@
       "t": "2026-04-13T18:57:48.314Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-13T18:59:58.866Z",
+      "event": "bb-session",
+      "session": "4cf35654",
+      "url": "https://www.northjersey.com/entertainment/stage/40522532.html"
+    },
+    {
+      "t": "2026-04-13T18:59:59.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
