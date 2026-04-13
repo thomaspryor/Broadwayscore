@@ -24,18 +24,21 @@ export default function FantasyLandingPage() {
     <div className="min-h-screen bg-zinc-950 text-white">
       {/* Hero */}
       <section className="max-w-3xl mx-auto px-4 pt-12 sm:pt-20 pb-12 text-center">
-        {/* BFL Logo */}
-        <div className="mb-6 flex justify-center">
+        {/* BFL Shield Logo */}
+        <div className="mb-4 flex justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/fantasy/bfl-logo.png"
-            alt="Broadway Fantasy League"
-            width={360}
-            height={120}
-            className="w-[280px] sm:w-[360px] h-auto"
+            alt="BFL"
+            width={160}
+            height={73}
+            className="w-[120px] sm:w-[160px] h-auto"
           />
         </div>
-        <h1 className="sr-only">Broadway Fantasy League</h1>
+        <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
+          <span className="text-white">Broadway</span>{' '}
+          <span className="text-amber-400">Fantasy League</span>
+        </h1>
         <p className="text-lg sm:text-xl text-zinc-400 max-w-xl mx-auto mb-8">
           Draft {info.teamSize} shows. ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
