@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-13T03:45:34.297Z",
+  "timestamp": "2026-04-13T04:40:51.954Z",
   "stats": {
     "totalReviews": 34724,
-    "alreadyFlagged": 13894,
+    "alreadyFlagged": 13892,
     "dateGuardCatches": 107,
     "directorMismatch": 960,
-    "tvFilmSignals": 3383,
-    "londonSignals": 1112,
+    "tvFilmSignals": 3384,
+    "londonSignals": 1114,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
     "noPublishDate": 4082
@@ -57341,6 +57341,25 @@
     },
     {
       "showId": "titanique-2026",
+      "file": "guardian--adrian-horton.json",
+      "score": 77,
+      "publishDate": "2026-04-13",
+      "url": "https://www.theguardian.com/stage/2026/apr/12/titanique-review-broadway-celine-dion-musical",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
       "file": "mashable--kristy-puchko.json",
       "score": 90,
       "publishDate": "2026-04-13",
@@ -83629,6 +83648,20 @@
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 66,
       "publishDate": "2026-04-13",
+      "url": "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "nytimes--zimasa-matiwane.json",
+      "score": 64,
+      "publishDate": "2026-04-10",
       "url": "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
       "findings": [
         {
