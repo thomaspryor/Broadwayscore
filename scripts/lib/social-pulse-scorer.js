@@ -154,10 +154,32 @@ function filterTopQuotes(mentions, targetSentiment, maxQuotes = QUOTES_ON_CARD) 
     .filter((m) => !containsBlockedContent(m.text))
     .filter((m) => m.sentiment === targetSentiment);
 
-  // Sort by engagement desc, stable tiebreak by createdAt desc
+  // Normalize engagement per-platform so TikTok plays don't always
+  // dominate X likes. Compute percentile rank within each platform,
+  // then sort by that rank. This way the "most engaged X tweet" and
+  // "most engaged TikTok" compete fairly.
+  const byPlatform = new Map();
+  for (const c of candidates) {
+    const p = c.platform || 'unknown';
+    if (!byPlatform.has(p)) byPlatform.set(p, []);
+    byPlatform.get(p).push(c.engagement || 0);
+  }
+  // Sort each platform's engagement values for percentile lookup
+  for (const [, vals] of byPlatform) vals.sort((a, b) => a - b);
+
+  function normalizedEngagement(m) {
+    const vals = byPlatform.get(m.platform || 'unknown');
+    if (!vals || vals.length === 0) return 0;
+    const eng = m.engagement || 0;
+    // Percentile rank within platform (0-1)
+    const idx = vals.indexOf(eng);
+    return idx >= 0 ? idx / Math.max(vals.length - 1, 1) : 0;
+  }
+
+  // Sort by normalized engagement desc, tiebreak by createdAt desc
   candidates.sort((a, b) => {
-    const eng = (b.engagement || 0) - (a.engagement || 0);
-    if (eng !== 0) return eng;
+    const eng = normalizedEngagement(b) - normalizedEngagement(a);
+    if (Math.abs(eng) > 0.001) return eng;
     const aTime = a.createdAt ? Date.parse(a.createdAt) || 0 : 0;
     const bTime = b.createdAt ? Date.parse(b.createdAt) || 0 : 0;
     return bTime - aTime;
@@ -407,7 +429,7 @@ function computePlatformBreakdown(mentions) {
  *     nextBaseline: { mean, weeksOfHistory },  // to persist for next run
  *   }
  */
-function computeSocialPulse({ mentions, baseline, priorVolume }) {
+function computeSocialPulse({ mentions, baseline, priorVolume, peerStats }) {
   const relevant = Array.isArray(mentions) ? mentions.filter((m) => m && m.relevant) : [];
   const volume = relevant.length;
 
@@ -419,7 +441,12 @@ function computeSocialPulse({ mentions, baseline, priorVolume }) {
       ? Math.round(((volume - priorVolume) / priorVolume) * 100)
       : null;
 
-  const tier = deriveTier({ currentVolume: volume, baseline, positivePct, weekOverWeekPct });
+  // Use peer-relative tier when peer stats are available (the primary path
+  // after 2026-04-11). Fall back to legacy self-baseline tier for single-show
+  // runs where peer stats aren't computed.
+  const tier = peerStats
+    ? derivePeerTier({ volume, positivePct, peerStats })
+    : deriveTier({ currentVolume: volume, baseline, positivePct, weekOverWeekPct });
 
   // Pick quotes matching the tier's dominant sentiment
   let targetSentiment;

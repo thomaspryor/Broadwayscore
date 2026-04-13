@@ -170,7 +170,7 @@ function writeCanonicalFile(showId, data) {
  * Schema v2 (2026-04-11): added pl.r (reddit count). Legacy v1 files
  * still parse — the card defaults missing pl.r to 0.
  */
-function writePublicFile(showId, scored) {
+function writePublicFile(showId, scored, xTrueVolume) {
   ensureDir(PUBLIC_SHOWS_DIR);
   const compact = {
     _v: 2,
@@ -185,6 +185,9 @@ function writePublicFile(showId, scored) {
       ig: scored.platformBreakdown.instagram,
       r: scored.platformBreakdown.reddit,
     },
+    // True X volume from free X API (uncapped). The card uses this instead
+    // of pl.x (which is capped at 150 by Apify) for meaningful volume display.
+    xv: xTrueVolume ?? undefined,
     q: scored.topQuotes.map((q) => ({
       t: q.text,
       p: q.platform,
@@ -280,7 +283,7 @@ async function processShow({ show, apifyToken, openaiApiKey, dryRun, logger = co
 
   if (!dryRun) {
     writeCanonicalFile(showId, canonical);
-    writePublicFile(showId, scored);
+    writePublicFile(showId, scored, xTrueVolume);
   } else {
     logger.log(`[${showId}]   (dry run — not writing files)`);
   }

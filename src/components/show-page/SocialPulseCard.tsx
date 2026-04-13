@@ -24,11 +24,12 @@ export interface SocialPulsePayload {
   wow: number | null;     // week-over-week %
   bm: number | null;      // baseline multiple (legacy, may be null)
   pl: {
-    x: number;            // X/Twitter count
+    x: number;            // X/Twitter count (capped Apify sample)
     tt: number;           // TikTok count
     ig: number;           // Instagram count
     r?: number;           // Reddit count (schema v2, 2026-04-11 — optional for back-compat with v1 files)
   };
+  xv?: number;            // True X volume from X API (uncapped — schema v2, 2026-04-13)
   q: Array<{ t: string; p: string; a: string | null; u: string | null }>;
   u: string;              // updated ISO date
   r?: string;             // rank string like "3/42 Broadway" (top-level, NOT to be confused with pl.r)
@@ -265,20 +266,23 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
   const trendingHref = rank?.market === 'West End' ? '/west-end/trending' : '/trending';
   const posBarWidth = Math.max(0, Math.min(100, sp.p));
 
-  // Sentiment bar gradient: red (negative) → yellow (mixed) → green (positive)
-  // The bar fill width represents the positive %.
+  // Sentiment bar: colorblind-safe blue→brand gradient. The fill WIDTH
+  // is the primary signal (wider = more positive). Color reinforces but
+  // does not carry the signal alone — safe for deuteranopia/protanopia.
   const sentimentBarStyle = {
     width: `${posBarWidth}%`,
-    background: 'linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%)',
+    background: 'linear-gradient(90deg, #6366f1 0%, #3b82f6 50%, #10b981 100%)',
     backgroundSize: `${(100 / Math.max(posBarWidth, 1)) * 100}% 100%`,
   };
 
-  // Platform breakdown row. Order: Reddit first (primary uncapped signal
-  // as of 2026-04-11), then X, TikTok, Instagram. `sp.pl.r` is optional
-  // for back-compat with legacy v1 files that predate Reddit.
+  // Platform breakdown row. Use true X volume (sp.xv) when available —
+  // the Apify-capped count (sp.pl.x) maxes out at ~150 for every show,
+  // making it useless for differentiation. True volume from the free X API
+  // gives real numbers (Hamilton=163, Becky Shaw=263).
+  const xCount = sp.xv || sp.pl.x || 0;
   const platformEntries: Array<{ key: string; count: number }> = [
     { key: 'reddit', count: sp.pl.r || 0 },
-    { key: 'x', count: sp.pl.x || 0 },
+    { key: 'x', count: xCount },
     { key: 'tiktok', count: sp.pl.tt || 0 },
     { key: 'instagram', count: sp.pl.ig || 0 },
   ].filter((p) => p.count > 0);
@@ -351,7 +355,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
         {/* Sentiment bar — full-width, colorful, prominent */}
         <div className="mt-4">
           <div className="flex items-baseline justify-between mb-1.5">
-            <span className="text-sm font-semibold text-gray-200">{sp.p}% positive</span>
+            <span className="text-sm font-semibold text-gray-200" title="Percentage of opinion-bearing posts that are positive. Neutral/informational posts are excluded.">{sp.p}% positive</span>
             <span className="text-xs text-gray-500">{formatVolume(sp.v)} mentions</span>
           </div>
           <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">

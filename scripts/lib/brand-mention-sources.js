@@ -177,10 +177,21 @@ async function fetchRedditMentions(keywords = DEFAULT_KEYWORDS, { limit = 50, ti
       // Tombstone filter
       if (p.author === '[deleted]' || p.selftext === '[removed]') continue;
 
-      // Verify keyword actually appears in title + body (Reddit search can
-      // surface tangentially related hits; we want strict matches)
-      const blob = `${p.title || ''} ${p.selftext || ''}`;
-      if (!containsKeyword(blob, keywords)) continue;
+      // Posts from known theater subreddits are inherently relevant —
+      // a post in r/Broadway mentioning "Hamilton" is about the musical,
+      // even if the post text doesn't repeat the word "broadway."
+      const THEATER_SUBREDDITS = new Set([
+        'broadway', 'musicals', 'theater', 'theatre', 'thewestend',
+        'westend', 'offbroadway', 'broadwaymusicals',
+      ]);
+      const isTheaterSub = THEATER_SUBREDDITS.has((p.subreddit || '').toLowerCase());
+
+      // Verify keyword appears in title + body. Skip this check for
+      // theater subreddits where the context is already theatrical.
+      if (!isTheaterSub) {
+        const blob = `${p.title || ''} ${p.selftext || ''}`;
+        if (!containsKeyword(blob, keywords)) continue;
+      }
 
       mentions.push({
         id: `reddit:${p.name || `t3_${p.id}`}`,
