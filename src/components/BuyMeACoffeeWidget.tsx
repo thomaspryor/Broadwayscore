@@ -1,8 +1,8 @@
-export function BuyMeACoffeeWidget() {
+export function BuyMeACoffeeWidget({ siteName = 'Broadway Scorecard' }: { siteName?: string }) {
   return (
     <div className="card p-6 sm:p-8 mb-6 text-center">
       <p className="text-gray-300 mb-5">
-        If Broadway Scorecard has helped you pick your next show:
+        If {siteName} has helped you pick your next show:
       </p>
       <a
         href="https://buymeacoffee.com/broadwayscorecard"

@@ -444,7 +444,7 @@ export default function WestEndMethodologyPage() {
           </section>
 
           {/* Buy Me a Coffee */}
-          <BuyMeACoffeeWidget />
+          <BuyMeACoffeeWidget siteName="West End Scorecard" />
 
           {/* Version */}
           <div className="text-center text-gray-500 text-sm pt-4">

@@ -30,6 +30,10 @@ jobs:
             "commercial-weekly.yml|192|Commercial Weekly Orchestrator"
             "fetch-todaytix-showtimes.yml|36|Fetch TodayTix Showtimes"
             "recover-explicit-ratings.yml|200|Recover Explicit Ratings"
+            "collect-we-ob-reviews.yml|50|Collect WE/OB Reviews"
+            "sweep-we-aggregators.yml|192|Sweep WE Aggregators"
+            "enrich-west-end-dates.yml|50|Enrich West End Dates"
+            "scrape-westendtheatre.yml|192|Scrape WestEndTheatre"
           )
 
           FAILURES=""
