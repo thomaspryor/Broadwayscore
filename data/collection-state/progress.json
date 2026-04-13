@@ -71,7 +71,8 @@
     "the-reservoir-2026/nytg--allison-considine.json",
     "the-unknown-2026/theatermania--zachary-stewart.json",
     "pen-pals-2025/theater-scene--lydia-singer.json",
-    "hold-on-to-your-butts-2026/thestage--oliver-jones.json"
+    "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+    "titus-andronicus-off-broadway-2026/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1052,7 +1053,16 @@
     "falsettos-1992/zeal-nyc--chris-caggiano.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "working-1978/theater-news-online--joe-dziemianowicz.json",
-    "a-little-night-music-1973/backstage--erik-haagensen.json"
+    "a-little-night-music-1973/backstage--erik-haagensen.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1129,7 +1139,8 @@
       "titanique-2026/talkinbroadway--unknown.json",
       "fences-2010/wsj--christopher-john-farley.json",
       "all-about-me-2010/talkinbroadway--unknown.json",
-      "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
+      "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+      "titus-andronicus-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
@@ -1161,7 +1172,7 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1303,6 +1314,17 @@
     },
     {
       "t": "2026-04-13T19:05:19.748Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-13T19:17:45.537Z",
+      "event": "bb-session",
+      "session": "b76817d8",
+      "url": "https://www.nytimes.com/2026/04/01/theater/hamlet-titus-andronicus-review-shakes"
+    },
+    {
+      "t": "2026-04-13T19:17:46.657Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

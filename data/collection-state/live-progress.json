@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-13T19:07:06.330Z",
-  "processed": 72,
-  "failed": 979,
+  "updatedAt": "2026-04-13T19:18:29.582Z",
+  "processed": 73,
+  "failed": 988,
   "successRate": "6.9%",
   "tierBreakdown": {
     "playwright": 38,
@@ -9,23 +9,12 @@
     "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 15,
-    "brightdata": 8,
+    "brightdata": 9,
     "archiveToday": 15,
     "archive": 9
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-13T11:55:21.642Z",
-      "event": "bb-session",
-      "session": "2f2cfd84",
-      "url": "http://www.newsday.com/entertainment/theater/born-yesterday-revival-has-stellar-"
-    },
-    {
-      "t": "2026-04-13T11:55:22.475Z",
-      "event": "bb-cookie-inject",
-      "domain": "newsday.com"
-    },
     {
       "t": "2026-04-13T18:44:58.129Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-13T19:05:19.748Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-13T19:17:45.537Z",
+      "event": "bb-session",
+      "session": "b76817d8",
+      "url": "https://www.nytimes.com/2026/04/01/theater/hamlet-titus-andronicus-review-shakes"
+    },
+    {
+      "t": "2026-04-13T19:17:46.657Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
