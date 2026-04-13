@@ -49,4 +49,5 @@ export const featureFlags = {
   get showtimes() { return true; }, // launched — flag retained for cleanup
   get theaterScorecard() { return has('theaterScorecard'); },
   get fantasyLeague() { return has('fantasyLeague'); },
+  get videoReviews() { return has('videoReviews'); },
 };
