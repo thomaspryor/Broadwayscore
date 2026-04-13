@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-13T03:28:26.813Z",
-  "processed": 8,
-  "failed": 1,
-  "successRate": "88.9%",
+  "updatedAt": "2026-04-13T03:40:13.012Z",
+  "processed": 38,
+  "failed": 1330,
+  "successRate": "2.8%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingbee": 4,
-    "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "scrapingbee": 12,
+    "brightdata": 3,
+    "archiveToday": 46,
+    "archive": 79
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
       "t": "2026-04-13T03:25:18.380Z",
@@ -22,7 +22,7 @@
       "url": "https://www.amny.com/news/titanique-hits-broadway-runs-aground/"
     },
     {
-      "t": "2026-04-13T03:25:19.410Z",
+      "t": "2026-04-13T02:11:39.272Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
     },
@@ -47,6 +47,28 @@
       "t": "2026-04-13T03:21:34.824Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T03:26:24.218Z",
+      "event": "bb-session",
+      "session": "3594b9af",
+      "url": "https://www.hollywoodreporter.com/t/kenny-leon/"
+    },
+    {
+      "t": "2026-04-13T03:26:24.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T03:26:34.698Z",
+      "event": "bb-session",
+      "session": "c03bbf36",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-04-13T03:26:35.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
