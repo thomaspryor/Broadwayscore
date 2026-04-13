@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-13T04:15:06.550Z",
-  "processed": 225,
-  "failed": 1519,
-  "successRate": "12.9%",
+  "updatedAt": "2026-04-13T04:38:18.441Z",
+  "processed": 227,
+  "failed": 1617,
+  "successRate": "12.3%",
   "tierBreakdown": {
     "playwright": 65,
     "amp": 2,
     "browserbase": 87,
     "directCookies": 0,
-    "scrapingbee": 41,
+    "scrapingbee": 42,
     "brightdata": 4,
-    "archiveToday": 65,
-    "archive": 80
+    "archiveToday": 67,
+    "archive": 81
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-13T03:16:17.784Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-04-13T03:21:34.077Z",
-      "event": "bb-session",
-      "session": "f410fc46",
-      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
-    },
     {
       "t": "2026-04-13T03:21:34.824Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-04-13T04:11:21.563Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-13T04:32:04.263Z",
+      "event": "bb-session",
+      "session": "bf18ae43",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-04-13T04:32:05.515Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

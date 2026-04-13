@@ -941,7 +941,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Video Reviews — below Audience Grade, behind feature flag */}
         {featureFlags.videoReviews && videoReviews.length > 0 && (
-          <VideoReviewsShelf reviews={videoReviews} showTitle={show.title} />
+          <VideoReviewsShelf reviews={videoReviews} />
         )}
 
         {/* Showtimes — all markets (Broadway via bwayrush, WE/OB via TodayTix) */}
