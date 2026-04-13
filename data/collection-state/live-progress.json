@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-12T23:28:22.944Z",
-  "processed": 175,
-  "failed": 1248,
-  "successRate": "12.3%",
+  "updatedAt": "2026-04-13T02:14:18.622Z",
+  "processed": 183,
+  "failed": 1249,
+  "successRate": "12.8%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 44,
     "amp": 2,
-    "browserbase": 76,
+    "browserbase": 82,
     "directCookies": 0,
-    "scrapingbee": 30,
+    "scrapingbee": 31,
     "brightdata": 0,
-    "archiveToday": 39,
+    "archiveToday": 40,
     "archive": 69
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-12T11:05:20.347Z",
-      "event": "bb-session",
-      "session": "320a8dad",
-      "url": "https://deadline.com/2022/10/topdog-underdog-broadway-review-corey-hawkins-yahya"
-    },
-    {
-      "t": "2026-04-12T11:05:21.158Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-12T11:05:36.686Z",
-      "event": "bb-session",
-      "session": "d4cd187b",
-      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
-    },
-    {
-      "t": "2026-04-12T11:05:37.412Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-12T12:43:20.337Z",
-      "event": "bb-session",
-      "session": "a4cb0b4b",
-      "url": "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard"
-    },
-    {
-      "t": "2026-04-12T12:43:21.001Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-12T12:43:41.149Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-04-12T12:52:00.719Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-13T02:10:42.513Z",
+      "event": "bb-session",
+      "session": "730847c1",
+      "url": "https://variety.com/2026/legit/reviews/titanique-broadway-review-musical-campy-f"
+    },
+    {
+      "t": "2026-04-13T02:10:43.591Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-13T02:11:00.740Z",
+      "event": "bb-session",
+      "session": "4d974532",
+      "url": "https://deadline.com/2026/04/titanique-celine-dion-broadway-review-1236786429/"
+    },
+    {
+      "t": "2026-04-13T02:11:01.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-13T02:11:38.223Z",
+      "event": "bb-session",
+      "session": "bddbc0c1",
+      "url": "https://www.amny.com/news/titanique-hits-broadway-runs-aground/"
+    },
+    {
+      "t": "2026-04-13T02:11:39.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

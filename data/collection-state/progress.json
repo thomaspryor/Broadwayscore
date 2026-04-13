@@ -174,7 +174,15 @@
     "mj-the-musical-west-end-2024/times-uk--dominic-maxwell.json",
     "frozen-2018/woman-around-town--alix-cohen.json",
     "macbeth-2013/huffpost--gazelle-emami.json",
-    "mamma-mia-west-end-2021/mrcarlwoodward--carl-woodward.json"
+    "mamma-mia-west-end-2021/mrcarlwoodward--carl-woodward.json",
+    "titanique-2026/variety--unknown.json",
+    "titanique-2026/deadline--unknown.json",
+    "titanique-2026/ew--unknown.json",
+    "titanique-2026/theatermania--unknown.json",
+    "titanique-2026/amny--unknown.json",
+    "titanique-2026/chicagotribune--unknown.json",
+    "titanique-2026/nysr--unknown.json",
+    "titanique-2026/playbill--unknown.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -1424,7 +1432,8 @@
     "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
+    "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "titanique-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1468,7 +1477,11 @@
       "two-strangers-bway-2025/ew--unknown.json",
       "sunset-boulevard-2024/the-interested-bystander--cary-wong.json",
       "frozen-2018/woman-around-town--alix-cohen.json",
-      "mamma-mia-west-end-2021/mrcarlwoodward--carl-woodward.json"
+      "mamma-mia-west-end-2021/mrcarlwoodward--carl-woodward.json",
+      "titanique-2026/ew--unknown.json",
+      "titanique-2026/theatermania--unknown.json",
+      "titanique-2026/nysr--unknown.json",
+      "titanique-2026/playbill--unknown.json"
     ],
     "amp": [
       "data/review-texts/glengarry-glen-ross-2012/chicagotribune--unknown.json",
@@ -1550,7 +1563,13 @@
       "data/review-texts/bright-star-2016/variety--marilyn-stasio.json",
       "bright-star-2016/variety--marilyn-stasio.json",
       "data/review-texts/the-visit-2015/variety--marilyn-stasio.json",
-      "the-visit-2015/variety--marilyn-stasio.json"
+      "the-visit-2015/variety--marilyn-stasio.json",
+      "data/review-texts/titanique-2026/variety--unknown.json",
+      "titanique-2026/variety--unknown.json",
+      "data/review-texts/titanique-2026/deadline--unknown.json",
+      "titanique-2026/deadline--unknown.json",
+      "data/review-texts/titanique-2026/amny--unknown.json",
+      "titanique-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1583,7 +1602,8 @@
       "the-terms-of-my-surrender-2017/nytimes--jesse-green.json",
       "sweat-2017/nytimes--ben-brantley.json",
       "kiss-me-kate-2019/vulture--sara-holdren.json",
-      "mj-the-musical-west-end-2024/times-uk--dominic-maxwell.json"
+      "mj-the-musical-west-end-2024/times-uk--dominic-maxwell.json",
+      "titanique-2026/chicagotribune--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1625,7 +1645,8 @@
       "data/review-texts/present-laughter-2017/broadway-blog--matthew-wexler.json",
       "data/review-texts/present-laughter-2017/curtainup--elyse-sommer.json",
       "data/review-texts/cats-2016/curtainup--elyse-sommer.json",
-      "data/review-texts/waitress-2016/off-script-with-dan-dwyer--dan-dwyer.json"
+      "data/review-texts/waitress-2016/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/titanique-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
@@ -1700,7 +1721,7 @@
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "flyby-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+  "lastProcessed": "titanique-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -2119,6 +2140,39 @@
       "t": "2026-04-12T12:52:00.719Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-13T02:10:42.513Z",
+      "event": "bb-session",
+      "session": "730847c1",
+      "url": "https://variety.com/2026/legit/reviews/titanique-broadway-review-musical-campy-f"
+    },
+    {
+      "t": "2026-04-13T02:10:43.591Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-13T02:11:00.740Z",
+      "event": "bb-session",
+      "session": "4d974532",
+      "url": "https://deadline.com/2026/04/titanique-celine-dion-broadway-review-1236786429/"
+    },
+    {
+      "t": "2026-04-13T02:11:01.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-13T02:11:38.223Z",
+      "event": "bb-session",
+      "session": "bddbc0c1",
+      "url": "https://www.amny.com/news/titanique-hits-broadway-runs-aground/"
+    },
+    {
+      "t": "2026-04-13T02:11:39.272Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
