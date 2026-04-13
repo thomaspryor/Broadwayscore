@@ -1130,6 +1130,25 @@ function extractScore(html, text, outletId) {
     }
   }
 
+  // Fallthrough for known star-rating outlets: when their outlet-specific extractor
+  // returned null (e.g. no HTML available, only fullText), try unicode star extraction
+  // on text. This catches cases where stars are in the fullText but the outlet extractor
+  // only looks at HTML structure (JSON-LD, CSS selectors, etc.).
+  if (OUTLET_EXTRACTORS[outletId] && KNOWN_STAR_OUTLETS.has(outletId)) {
+    const unicodeStarMatch = text.match(/([★☆]{3,5})/);
+    if (unicodeStarMatch) {
+      const filled = (unicodeStarMatch[1].match(/★/g) || []).length;
+      const hasEmpty = unicodeStarMatch[1].includes('☆');
+      const total = hasEmpty ? unicodeStarMatch[1].length : 5;
+      return {
+        originalScore: `${filled}/${total} stars`,
+        normalizedScore: starsToNumeric(filled, total),
+        source: 'unicode-stars-fallthrough',
+        outlet: outletId
+      };
+    }
+  }
+
   // Generic extractors: ONLY use text (not HTML) to avoid CSS false positives
   // Only run these for outlets NOT in the explicit list
   if (!OUTLET_EXTRACTORS[outletId]) {
@@ -1261,6 +1280,27 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'reviewshub-percentage', 'explicit-rating', 'afridiziak-star-image', 'manual-verified',
 ]);
 
+// Outlets known to publish their own star ratings — shared between extractScore()
+// (for unicode-star fallthrough) and getBestScore() (for aggregator relay + inline recovery).
+// DO NOT add new outlets here without verifying they actually publish star ratings.
+// Changes here affect aggregator-relayed star treatment in getBestScore() P0.5.
+const KNOWN_STAR_OUTLETS = new Set([
+  'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
+  'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
+  'artsdesk', 'thestage', 'whatsonstage',
+  // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
+  // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet
+  'metro', 'the-sun', 'digital-spy', 'radio-times',
+  // WE outlets with verified star ratings (added 2026-04-03)
+  'all-that-dazzles-uk', 'musical-theatre-review',
+  'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',
+  'tim-talks-theatre-uk', 'city-am', 'plays-international',
+  'theatreandtonic', 'the-recs', 'broadwayworld',
+  // Additional WE star outlets discovered during SERP expansion
+  'londontheatre1', 'everything-theatre', 'thereviewshub',
+  'shy-strange-manic', 'express-uk', 'theatre-weekly',
+]);
+
 module.exports = {
   extractScore,
   extractDesignation,
@@ -1288,6 +1328,7 @@ module.exports = {
   scoreToBucket,
   scoreToThumb,
   OUTLET_VERIFIED_SOURCES,
+  KNOWN_STAR_OUTLETS,
   OUTLET_EXTRACTORS,
   EXTRACTOR_VERSION
 };
