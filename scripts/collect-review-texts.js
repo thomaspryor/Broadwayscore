@@ -3128,6 +3128,43 @@ async function fetchReviewText(review) {
   const ctx = buildTierContext(review);
   const url = ctx.url;
 
+  // Guardian Content API shortcut — clean body text without 64K page furniture.
+  // ScrapingBee grabs entire page HTML (nav, footer, JS, cookie banners).
+  // The Content API returns clean article body + starRating. Saves ~$0.13/review in scoring tokens.
+  // (Titanique postmortem: Guardian text was 64K garbage, scorer burned 40K tokens.)
+  if (url && url.includes('theguardian.com') && process.env.GUARDIAN_API_KEY) {
+    try {
+      const articlePath = url.replace(/^https?:\/\/(www\.)?theguardian\.com\//, '').replace(/\/$/, '');
+      const apiUrl = `https://content.guardianapis.com/${articlePath}?api-key=${process.env.GUARDIAN_API_KEY}&show-fields=body,starRating,bodyText`;
+      const resp = await fetch(apiUrl);
+      if (resp.ok) {
+        const json = await resp.json();
+        const fields = json.response?.content?.fields;
+        if (fields && (fields.bodyText || fields.body)) {
+          // Prefer bodyText (plain text) over body (HTML)
+          let text = fields.bodyText || '';
+          if (!text && fields.body) {
+            // Strip HTML tags from body field
+            text = fields.body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+          }
+          if (text.length > 200) {
+            console.log(`  ✓ Guardian Content API: ${text.length} chars` +
+              (fields.starRating ? ` (${fields.starRating}/5 stars)` : ''));
+            return {
+              fullText: text,
+              contentTier: 'complete',
+              collectedVia: 'guardian-api',
+              starRating: fields.starRating ? parseInt(fields.starRating) : undefined,
+            };
+          }
+        }
+      }
+      console.log(`  ⚠ Guardian API returned no usable body, falling back to scraper chain...`);
+    } catch (e) {
+      console.log(`  ⚠ Guardian API error: ${e.message}, falling back to scraper chain...`);
+    }
+  }
+
   // Force specific tier if requested (bypasses quality gate)
   if (CLI.forceTier) {
     return executeForcedTier(parseFloat(CLI.forceTier), url, review);

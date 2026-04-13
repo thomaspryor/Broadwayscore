@@ -1058,6 +1058,25 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
       continue;
     }
 
+    // Skip creating --unknown files when a named-critic file already exists for this outlet
+    // (Titanique postmortem: amny--unknown.json, chicagotribune--unknown.json alongside named files)
+    const criticName = review.criticName || '';
+    const isUnknownCritic = !criticName || criticName.toLowerCase() === 'unknown';
+    if (isUnknownCritic && review.outletId) {
+      const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+      if (fs.existsSync(showDir)) {
+        const outletSlug = (review.outletId || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+        const hasNamedFile = fs.readdirSync(showDir).some(f =>
+          f.startsWith(outletSlug + '--') && !f.includes('--unknown') && f.endsWith('.json')
+        );
+        if (hasNamedFile) {
+          console.log(`  [SKIP] ${outletSlug}--unknown: named-critic file already exists`);
+          skipped++;
+          continue;
+        }
+      }
+    }
+
     if (DRY_RUN) {
       console.log(`  [DRY RUN] Would create: ${review.outletId || review.outlet} — ${review.url}`);
       created++;
