@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-13T02:28:43.104Z",
+  "timestamp": "2026-04-13T02:48:55.413Z",
   "stats": {
-    "totalReviews": 34716,
+    "totalReviews": 34725,
     "alreadyFlagged": 13891,
     "dateGuardCatches": 107,
     "directorMismatch": 960,
-    "tvFilmSignals": 3378,
-    "londonSignals": 1108,
+    "tvFilmSignals": 3382,
+    "londonSignals": 1112,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
     "noPublishDate": 4091
@@ -57340,6 +57340,67 @@
       ]
     },
     {
+      "showId": "titanique-2026",
+      "file": "mashable--kristy-puchko.json",
+      "score": null,
+      "publishDate": "2026-04-13",
+      "url": "https://mashable.com/article/titanique-broadway-celine-dion-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2026-04-13",
+      "url": "https://newyorktheater.me/2026/04/12/titanique-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "people--dave-quinn.json",
+      "score": null,
+      "publishDate": "2026-04-12",
+      "url": "https://people.com/titanique-broadway-review-11948233",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "the-recs--david-cook.json",
+      "score": null,
+      "publishDate": "2026-04-13",
+      "url": "https://therecs.co.uk/titanique-on-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "titanique-off-broadway-2022",
       "file": "nytg--gillian-russo.json",
       "score": 82,
@@ -83518,6 +83579,47 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2026-04-13",
+      "url": "https://culturesauce.com/2026/04/12/titanique-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "nysr--david-finkle.json",
+      "score": null,
+      "publishDate": "2026-04-13",
+      "url": "https://nystagereview.com/2026/04/12/titanique-movie-spoof-unfortunately-hits-musical-iceberg/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "publishDate": "2026-04-13",
+      "url": "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

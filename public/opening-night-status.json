@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T02:28:46.831Z",
+  "generatedAt": "2026-04-13T02:48:59.294Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -313,25 +313,24 @@
       "status": "open",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 83,
-      "scoreDrift": null,
-      "total": 3,
+      "siteScore": 71.79,
+      "liveScore": 73,
+      "scoreDrift": 1.2099999999999937,
+      "total": 9,
       "t1": 1,
-      "t2": 2,
-      "t3": 0,
-      "positive": 3,
-      "mixed": 0,
-      "negative": 0,
+      "t2": 6,
+      "t3": 2,
+      "positive": 6,
+      "mixed": 1,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "9/12 total",
           "T1:1/3",
-          "T2:2/3",
-          "hi-conf:0/8"
+          "hi-conf:3/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -344,10 +343,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -411,6 +406,10 @@
           "isDualMarket": false
         },
         {
+          "name": "TheaterMania",
+          "isDualMarket": false
+        },
+        {
           "name": "USA Today",
           "isDualMarket": false
         },
@@ -432,14 +431,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
           "isDualMarket": false
         },
         {
@@ -519,10 +510,6 @@
           "isDualMarket": false
         },
         {
-          "name": "People",
-          "isDualMarket": false
-        },
-        {
           "name": "Slate",
           "isDualMarket": false
         },
@@ -570,6 +557,18 @@
           "p": 3,
           "m": 0,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-13T02:48:59.294Z",
+          "rc": 9,
+          "s": 71.79,
+          "t1": 1,
+          "t2": 6,
+          "t3": 2,
+          "p": 6,
+          "m": 1,
+          "n": 2,
           "bc": "waiting"
         }
       ]
