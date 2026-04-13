@@ -17,17 +17,23 @@ function YouTubeIcon() {
   );
 }
 
+/** Normalize dates: handles YYYYMMDD, YYYY-MM-DD, and NA/null */
 function formatDate(dateStr: string | undefined | null): string | null {
-  if (!dateStr) return null;
+  if (!dateStr || dateStr === 'NA') return null;
   try {
-    const d = new Date(dateStr + 'T00:00:00');
+    // Normalize YYYYMMDD to YYYY-MM-DD
+    const normalized = dateStr.length === 8 && /^\d{8}$/.test(dateStr)
+      ? `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`
+      : dateStr;
+    const d = new Date(normalized + 'T00:00:00');
+    if (isNaN(d.getTime())) return null;
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   } catch {
     return null;
   }
 }
 
-export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: VideoReview[]; showTitle: string }) {
+export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] }) {
   if (!reviews || reviews.length === 0) return null;
 
   const avgScore = Math.round(reviews.reduce((sum, r) => sum + r.score, 0) / reviews.length);
@@ -45,24 +51,33 @@ export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: Vid
         </div>
       </div>
 
+      {/* Methodology note */}
+      <p className="text-gray-500 text-xs mb-3 -mt-2">Scores estimated from video transcript analysis</p>
+
       {/* Horizontal shelf */}
-      <div className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide">
-        {reviews.map((review, i) => {
+      <div
+        className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide"
+        aria-label="Video reviews"
+        role="list"
+      >
+        {reviews.map((review) => {
           const date = formatDate(review.publishedAt);
           return (
             <a
-              key={review.handle + i}
+              key={review.videoUrl}
               href={review.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-shrink-0 w-28 sm:w-32 group"
+              role="listitem"
+              aria-label={`${review.creatorName} scored ${review.score} out of 100`}
             >
               {/* Thumbnail */}
               <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
                 {review.thumbnail ? (
                   <img
                     src={review.thumbnail}
-                    alt={`${review.creatorName} video review`}
+                    alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -73,7 +88,7 @@ export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: Vid
 
                 {/* Play button */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center z-[2] opacity-70 group-hover:opacity-100 transition-opacity">
-                  <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5">
+                  <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5" aria-hidden="true">
                     <polygon points="6,3 20,12 6,21" />
                   </svg>
                 </div>
