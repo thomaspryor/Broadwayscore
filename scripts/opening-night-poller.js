@@ -67,8 +67,10 @@ const SKIP_SERP = process.argv.includes('--skip-serp');
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
 // Escape hatches: bypass SERP discovery when discovery fails (wrong Google result, unindexed page)
-const BWW_ROUNDUP_URL = (process.argv.find(a => a.startsWith('--bww-roundup-url=')) || '').replace('--bww-roundup-url=', '') || '';
-const TB_REVIEW_URL = (process.argv.find(a => a.startsWith('--tb-review-url=')) || '').replace('--tb-review-url=', '') || '';
+// CLI args take priority; falls back to shows.json fields (bwwRoundupUrl, tbReviewUrl)
+// so orchestrator-dispatched pollers also get the URL without needing CLI args.
+const BWW_ROUNDUP_URL_CLI = (process.argv.find(a => a.startsWith('--bww-roundup-url=')) || '').replace('--bww-roundup-url=', '') || '';
+const TB_REVIEW_URL_CLI = (process.argv.find(a => a.startsWith('--tb-review-url=')) || '').replace('--tb-review-url=', '') || '';
 
 // Readiness thresholds — market-aware (must match send-opening-night-broadcast.js)
 function getThresholds(market) {
@@ -251,8 +253,11 @@ async function runAggregators(show) {
 
   // 1c. BWW Review Roundup (skip for off-Broadway; skip URL guessing for WE — BWW RR rare for WE)
   // For WE: only check if a manual --bww-roundup-url is provided (bypass discovery entirely)
+  // Resolve BWW RR URL: CLI arg > shows.json field > SERP discovery
+  const BWW_ROUNDUP_URL = BWW_ROUNDUP_URL_CLI || show.bwwRoundupUrl || '';
   if (!isOffBroadway && (!isWestEnd || BWW_ROUNDUP_URL)) {
     try {
+      if (BWW_ROUNDUP_URL) console.log(`  BWW RR URL: ${BWW_ROUNDUP_URL} (${BWW_ROUNDUP_URL_CLI ? 'CLI' : 'shows.json'})`);
       console.log('  Checking BWW Review Roundup...');
       // Pass runtime override when SERP discovery fails (unindexed page, wrong Google result).
       // On opening night: use --bww-roundup-url=<url> to bypass discovery entirely.
@@ -300,6 +305,7 @@ async function runAggregators(show) {
       const tbYear2 = String(year).slice(-2);
 
       // Try multiple URL variants — TB is inconsistent about year format
+      const TB_REVIEW_URL = TB_REVIEW_URL_CLI || show.tbReviewUrl || '';
       const tbUrls = TB_REVIEW_URL ? [TB_REVIEW_URL] : [
         `https://www.talkinbroadway.com/page/world/${tbCamelSlug}${year}.html`,
         `https://www.talkinbroadway.com/page/world/${tbCamelSlug}${tbYear2}.html`,
@@ -331,7 +337,7 @@ async function runAggregators(show) {
                 outlet: "Talkin' Broadway",
                 criticName: 'Unknown',
                 url: tbUrl,
-                source: TB_REVIEW_URL ? 'direct-url-override' : 'direct-url-construction',
+                source: (TB_REVIEW_URL_CLI || show.tbReviewUrl) ? 'direct-url-override' : 'direct-url-construction',
               });
               tbFound = true;
               break;
