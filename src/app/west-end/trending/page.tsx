@@ -110,7 +110,24 @@ export default function WestEndTrendingPage() {
           )}
         </div>
 
-        {/* How it works */}
+        {/* Top N badge + list */}
+        <div className="mb-8">
+          {picks.length > 0 && (
+            <div className="flex items-baseline gap-3 mb-4 pb-3 border-b border-white/10">
+              <h2 className="text-xl sm:text-2xl font-bold text-white">West End</h2>
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                Top {picks.length}
+              </span>
+            </div>
+          )}
+          <TrendingList
+            picks={picks}
+            showLookup={showLookup}
+            emptyMessage="No trending West End shows yet — check back after the next weekly refresh."
+          />
+        </div>
+
+        {/* How it works — below the list */}
         <details className="card p-4 sm:p-5 mb-8 group">
           <summary className="text-sm font-bold text-white uppercase tracking-wide cursor-pointer list-none flex items-center justify-between">
             How the Socials Scorecard works
@@ -129,23 +146,6 @@ export default function WestEndTrendingPage() {
             <span className="text-red-400 font-semibold">Troubled</span>.
           </p>
         </details>
-
-        {/* Top N badge + list */}
-        <div className="mb-8">
-          {picks.length > 0 && (
-            <div className="flex items-baseline gap-3 mb-4 pb-3 border-b border-white/10">
-              <h2 className="text-xl sm:text-2xl font-bold text-white">West End</h2>
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                Top {picks.length}
-              </span>
-            </div>
-          )}
-          <TrendingList
-            picks={picks}
-            showLookup={showLookup}
-            emptyMessage="No trending West End shows yet — check back after the next weekly refresh."
-          />
-        </div>
 
         {/* Cross-market link */}
         <div className="card p-4 sm:p-5 mb-8 flex items-center justify-between">
