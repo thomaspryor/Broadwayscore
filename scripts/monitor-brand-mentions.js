@@ -144,16 +144,21 @@ async function main() {
     dropped.forEach((m) => console.log(`  [owner-filtered] ${m.source} /u/${m.author} — ${(m.title || '').slice(0, 60)}`));
   }
 
-  // 3. Dedup against state — TWO checks:
+  // 3. Dedup against state — THREE checks:
   //    (a) source:id — catches same-source duplicates (Reddit post seen before)
   //    (b) canonical URL — catches CROSS-source duplicates (same URL surfacing
   //        under both google: and news: prefixes on different SERP calls)
+  //    (c) normalized title — catches same content from different aggregator URLs
+  //        (e.g. Broadway Breakdown podcast on Apple Podcasts vs podscan.fm vs
+  //        Google redirect). Only applies within the current run to avoid
+  //        blocking legitimately different content with similar titles across days.
   //
   // Within the current run, also dedup by canonical URL so two SERP adapters
   // (e.g. fetchGoogleWebMentions + fetchGoogleNewsMentions) that both surface
   // the same URL don't produce two entries.
   const newMentions = [];
-  const seenThisRun = new Set();
+  const seenThisRun = new Set();       // canonical URLs
+  const seenTitlesThisRun = new Set(); // normalized titles (within-run dedup only)
   for (const m of organic) {
     if (state.seenIds[m.id]) {
       if (VERBOSE) console.log(`  [seen-id] ${m.id}`);
@@ -168,7 +173,16 @@ async function main() {
       if (VERBOSE) console.log(`  [dup-this-run] ${m.id} (canonical: ${canonical})`);
       continue;
     }
+    // Title-based dedup: collapse "Broadway Breakdown - Podcast" appearing
+    // 3x from different aggregator URLs into a single mention per run.
+    // Only dedup Google/news sources (free sources have reliable URLs).
+    const normTitle = (m.title || '').trim().toLowerCase().replace(/\s+/g, ' ').replace(/[…\u2026]+$/, '').trim();
+    if (normTitle && ['google', 'news'].includes(m.source) && seenTitlesThisRun.has(normTitle)) {
+      if (VERBOSE) console.log(`  [dup-title] ${m.id} (title: "${normTitle}")`);
+      continue;
+    }
     if (canonical) seenThisRun.add(canonical);
+    if (normTitle) seenTitlesThisRun.add(normTitle);
     newMentions.push(m);
   }
   console.log(`[monitor] dedup: ${newMentions.length} NEW mentions (${organic.length - newMentions.length} already seen or cross-source duplicates)`);

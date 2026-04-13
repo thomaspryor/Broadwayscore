@@ -51,6 +51,33 @@ const OWNER_URL_PATTERNS = [
   /^https?:\/\/bsky\.app\/profile\/(?:broadwayscorecard|bwayscorecard|thomaspryor)/i,
   /^https?:\/\/x\.com\/(?:broadwayscorecard|bwayscorecard|thepinkmusical|thomaspryor)(?:\/|$)/i,
   /^https?:\/\/twitter\.com\/(?:broadwayscorecard|bwayscorecard|thepinkmusical|thomaspryor)(?:\/|$)/i,
+  // Owner Substack newsletter
+  /^https?:\/\/(?:www\.)?broadwayscorecard\.substack\.com(?:\/|$)/i,
+  // Owner podcast (Broadway Breakdown, Apple Podcasts ID 1260430031)
+  /^https?:\/\/(?:www\.)?podscan\.fm\/podcasts\/broadway-breakdown/i,
+  /^https?:\/\/podcasts\.apple\.com\/.*?(?:broadway-breakdown|id1260430031)/i,
+  /^https?:\/\/open\.spotify\.com\/show\/.*broadway.?breakdown/i,
+  // Owner social profiles on additional platforms
+  /^https?:\/\/(?:www\.)?facebook\.com\/(?:broadwayscorecard|bwayscorecard)(?:\/|$)/i,
+  /^https?:\/\/(?:www\.)?tiktok\.com\/@(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
+  /^https?:\/\/(?:www\.)?youtube\.com\/@(?:bwayscorecard|broadwayscorecard)(?:\/|$)/i,
+];
+
+/**
+ * Content fingerprints that identify owner-posted material even when the
+ * URL is opaque (Google redirect) or from a third-party aggregator.
+ * Matched case-insensitively against title + excerpt.
+ *
+ * Each entry is a regex. Keep patterns specific enough to avoid false
+ * positives on genuine third-party mentions that happen to quote BWSC.
+ */
+const OWNER_CONTENT_FINGERPRINTS = [
+  // Buffer social post CTA signature
+  /check the full rankings at broadwayscorecard\.com/i,
+  // Substack podcast boilerplate
+  /broadwayscorecard\.com\s+this is a public episode/i,
+  // Substack newsletter byline
+  /substack\s+[·•]\s+broadwayscorecard\.com/i,
 ];
 
 /**
@@ -59,6 +86,18 @@ const OWNER_URL_PATTERNS = [
 function isOwnerUrl(url) {
   if (!url) return false;
   return OWNER_URL_PATTERNS.some((re) => re.test(url));
+}
+
+/**
+ * Test if mention content matches a known owner-posted fingerprint.
+ * @param {string} title
+ * @param {string} excerpt
+ * @returns {boolean}
+ */
+function isOwnerContent(title, excerpt) {
+  const blob = `${title || ''} ${excerpt || ''}`;
+  if (!blob.trim()) return false;
+  return OWNER_CONTENT_FINGERPRINTS.some((re) => re.test(blob));
 }
 
 /**
@@ -100,7 +139,7 @@ function filterOwnerAccounts(mentions) {
   const kept = [];
   const dropped = [];
   for (const m of mentions || []) {
-    if (isOwnerAccount(m.source, m.author) || isOwnerUrl(m.url)) {
+    if (isOwnerAccount(m.source, m.author) || isOwnerUrl(m.url) || isOwnerContent(m.title, m.excerpt)) {
       dropped.push(m);
     } else {
       kept.push(m);
@@ -112,7 +151,9 @@ function filterOwnerAccounts(mentions) {
 module.exports = {
   OWNER_ACCOUNTS,
   OWNER_URL_PATTERNS,
+  OWNER_CONTENT_FINGERPRINTS,
   isOwnerAccount,
   isOwnerUrl,
+  isOwnerContent,
   filterOwnerAccounts,
 };
