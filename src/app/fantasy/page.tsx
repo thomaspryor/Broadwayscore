@@ -14,6 +14,13 @@ export const metadata: Metadata = {
     title: 'Broadway Fantasy League',
     description: 'Draft 8 shows. $100 budget. Critics + box office + Tonys. Who picks the best season?',
     url: 'https://broadwayscorecard.com/fantasy',
+    images: [{ url: 'https://broadwayscorecard.com/og/fantasy.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Broadway Fantasy League',
+    description: 'Draft 8 shows. $100 budget. Win on Tony night.',
+    images: ['https://broadwayscorecard.com/og/fantasy.png'],
   },
 };
 
