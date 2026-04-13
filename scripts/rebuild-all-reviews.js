@@ -3693,9 +3693,6 @@ if (stats.staleEnsembleCleared > 0) {
 if (stats.skippedLowConfidenceOriginal > 0) {
   console.log(`  Skipped low-confidence originalScores: ${stats.skippedLowConfidenceOriginal}`);
 }
-if (stats.inlineStarRecovered > 0) {
-  console.log(`  ⭐ Inline star ratings recovered at rebuild time: ${stats.inlineStarRecovered}`);
-}
 if (stats.excerptMismatches > 0) {
   console.log(`  Excerpt-fullText mismatches (report only): ${stats.excerptMismatches}`);
   if (stats.excerptMismatchDetails) {

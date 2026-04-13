@@ -1130,7 +1130,8 @@ function extractScore(html, text, outletId) {
     }
   }
 
-  // Generic extractors for outlets WITHOUT a specific extractor
+  // Generic extractors: ONLY use text (not HTML) to avoid CSS false positives
+  // Only run these for outlets NOT in the explicit list
   if (!OUTLET_EXTRACTORS[outletId]) {
     // Extract title/h1 text from HTML — many niche outlets put star ratings there
     // Title text is safe from CSS/JS false positives
@@ -1149,28 +1150,6 @@ function extractScore(html, text, outletId) {
     const gradeResult = extractGenericLetterGrade('', text);
     if (gradeResult) {
       return { ...gradeResult, outlet: outletId };
-    }
-  }
-
-  // Narrow fallthrough: outlet-specific extractor returned null (e.g., Guardian's
-  // JSON-LD/CSS extractor with no HTML). Only try unicode stars in text — these are
-  // unambiguous visual ratings (★★★★☆), safe for any outlet. Skip letter grades
-  // and word-based patterns which have higher false-positive risk.
-  if (OUTLET_EXTRACTORS[outletId] && text) {
-    const unicodeMatch = text.match(/((?:[★☆]\s*){3,5})/);
-    if (unicodeMatch) {
-      const stars = unicodeMatch[1].replace(/\s/g, '');
-      const filled = (stars.match(/★/g) || []).length;
-      const empty = (stars.match(/☆/g) || []).length;
-      const total = filled + (empty || (5 - filled));
-      if (total >= 3 && total <= 5 && filled >= 1) {
-        return {
-          originalScore: `${filled}/${total} stars`,
-          normalizedScore: starsToNumeric(filled, total),
-          source: 'unicode-stars',
-          outlet: outletId
-        };
-      }
     }
   }
 
