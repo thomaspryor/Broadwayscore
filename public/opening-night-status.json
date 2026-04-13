@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T12:54:47.904Z",
+  "generatedAt": "2026-04-13T14:26:18.482Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -313,20 +313,20 @@
       "status": "open",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "siteScore": 75.6,
+      "siteScore": 76.07,
       "liveScore": 76,
-      "scoreDrift": 0.4000000000000057,
-      "total": 21,
+      "scoreDrift": -0.06999999999999318,
+      "total": 22,
       "t1": 4,
-      "t2": 12,
+      "t2": 13,
       "t3": 5,
-      "positive": 14,
+      "positive": 15,
       "mixed": 4,
       "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -399,10 +399,6 @@
         },
         {
           "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -611,6 +607,18 @@
           "t2": 12,
           "t3": 5,
           "p": 14,
+          "m": 4,
+          "n": 3,
+          "bc": "preview-sent"
+        },
+        {
+          "t": "2026-04-13T14:26:18.482Z",
+          "rc": 22,
+          "s": 76.07,
+          "t1": 4,
+          "t2": 13,
+          "t3": 5,
+          "p": 15,
           "m": 4,
           "n": 3,
           "bc": "preview-sent"
