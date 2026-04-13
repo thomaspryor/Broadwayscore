@@ -37,7 +37,7 @@ export default function FantasyLandingPage() {
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
           <span className="text-white">Broadway</span>{' '}
-          <span className="text-amber-400">Fantasy League</span>
+          <span className="text-gradient">Fantasy League</span>
         </h1>
         <p className="text-lg sm:text-xl text-zinc-400 max-w-xl mx-auto mb-8">
           Draft {info.teamSize} shows. ${info.budget} budget.
@@ -45,7 +45,7 @@ export default function FantasyLandingPage() {
         </p>
         <a
           href="/fantasy/draft"
-          className="inline-block px-10 py-4 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors text-lg"
+          className="inline-block px-10 py-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors text-lg"
         >
           Draft Your Team
         </a>
@@ -148,7 +148,7 @@ export default function FantasyLandingPage() {
           {/* Awards */}
           <div className="bg-zinc-800/50 rounded-xl p-5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="text-amber-400">🏆</span> Tony Awards
+              <span className="text-brand">🏆</span> Tony Awards
             </h3>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
@@ -230,7 +230,7 @@ export default function FantasyLandingPage() {
       <section className="max-w-3xl mx-auto px-4 py-12 text-center">
         <a
           href="/fantasy/draft"
-          className="inline-block px-10 py-4 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors text-lg"
+          className="inline-block px-10 py-4 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors text-lg"
         >
           Draft Your Team
         </a>

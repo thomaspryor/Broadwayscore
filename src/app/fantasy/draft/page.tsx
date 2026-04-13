@@ -130,7 +130,7 @@ export default function FantasyDraftPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="/fantasy/leaderboard"
-              className="px-6 py-3 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors"
+              className="px-6 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
             >
               View Leaderboard
             </a>
@@ -157,7 +157,7 @@ export default function FantasyDraftPage() {
           </p>
           <a
             href="/fantasy/leaderboard"
-            className="px-6 py-3 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors"
+            className="px-6 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
           >
             View Leaderboard
           </a>
@@ -186,7 +186,7 @@ export default function FantasyDraftPage() {
             <label className="block text-sm text-zinc-400 mb-1">Email *</label>
             <input
               type="email"
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:border-amber-500/50 focus:outline-none transition-colors"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:border-brand/50 focus:outline-none transition-colors"
               placeholder="you@email.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -199,7 +199,7 @@ export default function FantasyDraftPage() {
               <label className="block text-sm text-zinc-400 mb-1">Team Name</label>
               <input
                 type="text"
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:border-amber-500/50 focus:outline-none transition-colors"
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:border-brand/50 focus:outline-none transition-colors"
                 placeholder="Optional"
                 value={teamName}
                 onChange={e => setTeamName(e.target.value)}
@@ -210,7 +210,7 @@ export default function FantasyDraftPage() {
               <label className="block text-sm text-zinc-400 mb-1">League Name</label>
               <input
                 type="text"
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:border-amber-500/50 focus:outline-none transition-colors"
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:border-brand/50 focus:outline-none transition-colors"
                 placeholder="Optional"
                 value={leagueName}
                 onChange={e => setLeagueName(e.target.value)}
@@ -265,7 +265,7 @@ export default function FantasyDraftPage() {
           disabled={!canSubmit}
           className={`w-full py-3.5 rounded-lg font-semibold text-lg transition-all ${
             canSubmit
-              ? 'bg-amber-500 text-black hover:bg-amber-400 active:scale-[0.98]'
+              ? 'bg-brand text-white hover:bg-brand-hover active:scale-[0.98]'
               : 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
           }`}
         >
@@ -288,7 +288,7 @@ export default function FantasyDraftPage() {
         <div className="text-center mt-8">
           <a
             href="/fantasy/guide"
-            className="text-sm text-amber-400/70 hover:text-amber-400 transition-colors"
+            className="text-sm text-brand/70 hover:text-brand transition-colors"
           >
             Need help picking? Check the Draft Guide &rarr;
           </a>

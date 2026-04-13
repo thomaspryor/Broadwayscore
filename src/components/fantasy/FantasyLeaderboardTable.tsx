@@ -28,7 +28,7 @@ export default function FantasyLeaderboardTable() {
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="inline-block w-6 h-6 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin" />
+        <div className="inline-block w-6 h-6 border-2 border-brand/30 border-t-brand rounded-full animate-spin" />
         <p className="text-zinc-500 text-sm mt-3">Loading leaderboard...</p>
       </div>
     );
@@ -41,7 +41,7 @@ export default function FantasyLeaderboardTable() {
         <p className="text-zinc-600 text-sm mb-6">Be the first to draft a team!</p>
         <a
           href="/fantasy/draft"
-          className="px-6 py-2.5 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors"
+          className="px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
         >
           Draft Now
         </a>
@@ -70,12 +70,12 @@ export default function FantasyLeaderboardTable() {
               expandedRank === entry.rank
                 ? 'bg-zinc-800 border border-zinc-600'
                 : 'bg-zinc-800/50 hover:bg-zinc-800 border border-transparent'
-            } ${entry.rank <= 3 ? 'border-l-2 border-l-amber-500/50' : ''}`}
+            } ${entry.rank <= 3 ? 'border-l-2 border-l-brand/50' : ''}`}
             onClick={() => setExpandedRank(expandedRank === entry.rank ? null : entry.rank)}
           >
             {/* Rank */}
             <span className={`text-lg font-bold ${
-              entry.rank === 1 ? 'text-amber-400' : entry.rank === 2 ? 'text-zinc-300' : entry.rank === 3 ? 'text-amber-700' : 'text-zinc-500'
+              entry.rank === 1 ? 'text-brand' : entry.rank === 2 ? 'text-zinc-300' : entry.rank === 3 ? 'text-brand-hover' : 'text-zinc-500'
             }`}>
               {entry.rank}
             </span>
@@ -98,7 +98,7 @@ export default function FantasyLeaderboardTable() {
             </span>
 
             {/* Total */}
-            <span className="text-right font-bold text-amber-400 sm:text-base">
+            <span className="text-right font-bold text-brand sm:text-base">
               {entry.totalPoints.toFixed(1)}
             </span>
           </button>

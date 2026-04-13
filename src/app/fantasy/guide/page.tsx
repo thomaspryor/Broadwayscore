@@ -92,7 +92,7 @@ export default function FantasyGuidePage() {
                   {/* Fantasy points so far */}
                   {score && score.totalPoints > 0 && (
                     <div className="text-right shrink-0">
-                      <span className="text-sm font-bold text-amber-400">{score.totalPoints.toFixed(1)}</span>
+                      <span className="text-sm font-bold text-brand">{score.totalPoints.toFixed(1)}</span>
                       <span className="text-xs text-zinc-500 ml-1">pts</span>
                     </div>
                   )}
@@ -137,7 +137,7 @@ export default function FantasyGuidePage() {
                   </div>
                   {score && score.totalPoints > 0 && (
                     <div className="text-right shrink-0">
-                      <span className="text-sm font-bold text-amber-400">{score.totalPoints.toFixed(1)}</span>
+                      <span className="text-sm font-bold text-brand">{score.totalPoints.toFixed(1)}</span>
                       <span className="text-xs text-zinc-500 ml-1">pts</span>
                     </div>
                   )}
@@ -151,7 +151,7 @@ export default function FantasyGuidePage() {
         <div className="text-center">
           <a
             href="/fantasy/draft"
-            className="inline-block px-8 py-3 bg-amber-500 text-black font-semibold rounded-lg hover:bg-amber-400 transition-colors"
+            className="inline-block px-8 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
           >
             Start Your Draft
           </a>

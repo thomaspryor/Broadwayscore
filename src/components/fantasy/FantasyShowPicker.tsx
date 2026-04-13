@@ -89,7 +89,7 @@ export default function FantasyShowPicker({
     <div ref={ref} className="relative">
       <div
         className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${
-          isOpen ? 'bg-zinc-700 border-amber-500/50' : 'bg-zinc-800/50 border-zinc-700 border-dashed hover:border-zinc-500'
+          isOpen ? 'bg-zinc-700 border-brand/50' : 'bg-zinc-800/50 border-zinc-700 border-dashed hover:border-zinc-500'
         }`}
         onClick={() => setIsOpen(true)}
       >
@@ -120,7 +120,7 @@ export default function FantasyShowPicker({
             <div className="sticky top-0 bg-zinc-800 border-b border-zinc-700 p-3 sm:hidden">
               <input
                 type="text"
-                className="w-full bg-zinc-700 text-white placeholder-zinc-400 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-amber-500/50"
+                className="w-full bg-zinc-700 text-white placeholder-zinc-400 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-brand/50"
                 placeholder="Search shows..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
