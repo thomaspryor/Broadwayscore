@@ -25,14 +25,14 @@ export default function FantasyLandingPage() {
       {/* Hero */}
       <section className="max-w-3xl mx-auto px-4 pt-12 sm:pt-20 pb-12 text-center">
         {/* BFL Shield Logo */}
-        <div className="mb-4 flex justify-center">
+        <div className="mb-5 flex justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/fantasy/bfl-logo.png"
             alt="BFL"
-            width={160}
-            height={73}
-            className="w-[120px] sm:w-[160px] h-auto"
+            width={800}
+            height={191}
+            className="w-[200px] sm:w-[260px] h-auto"
           />
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
