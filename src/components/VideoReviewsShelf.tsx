@@ -34,14 +34,14 @@ export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: Vid
 
   return (
     <section className="card p-5 sm:p-6 mb-6">
-      {/* Header — score badge top-right, review count left */}
+      {/* Header — title left, count + score badge right */}
       <div className="flex items-center justify-between mb-4">
-        <div>
-          <h2 className="text-lg font-bold text-white">Video Reviews</h2>
-          <p className="text-gray-400 text-sm">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</p>
-        </div>
-        <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(avgScore)}`}>
-          {avgScore}
+        <h2 className="text-lg font-bold text-white">Video Reviews</h2>
+        <div className="flex items-center gap-2">
+          <span className="text-gray-400 text-sm">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</span>
+          <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(avgScore)}`}>
+            {avgScore}
+          </div>
         </div>
       </div>
 
