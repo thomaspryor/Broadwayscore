@@ -186,7 +186,15 @@
     "titanique-2026/nytimes--unknown.json",
     "titanique-2026/vulture--unknown.json",
     "titanique-2026/nytimes--alex-marshall.json",
-    "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--unknown.json"
+    "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--unknown.json",
+    "schmigadoon-2026/vulture--kathryn-vanarendonk.json",
+    "schmigadoon-2026/av-club--shannon-miller.json",
+    "schmigadoon-2026/paste-magazine--amy-amatangelo.json",
+    "schmigadoon-2026/rollingstone--alan-sepinwall.json",
+    "every-brilliant-thing-2026/nypost--unknown.json",
+    "pied-a-terre-off-broadway-2026/nytg--unknown.json",
+    "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+    "bigfoot-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -1445,7 +1453,9 @@
     "titanique-2026/talkinbroadway--unknown.json",
     "titanique-2026/guardian--adrian-horton.json",
     "titanique-2026/theatermania--zachary-stewart.json",
-    "titanique-2026/talkinbroadway--unknown.json"
+    "titanique-2026/talkinbroadway--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1499,7 +1509,8 @@
       "titanique-2026/culturesauce--thom-geier.json",
       "titanique-2026/nysr--david-finkle.json",
       "titanique-2026/people--dave-quinn.json",
-      "titanique-2026/the-recs--david-cook.json"
+      "titanique-2026/the-recs--david-cook.json",
+      "pied-a-terre-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/glengarry-glen-ross-2012/chicagotribune--unknown.json",
@@ -1587,7 +1598,9 @@
       "data/review-texts/titanique-2026/deadline--unknown.json",
       "titanique-2026/deadline--unknown.json",
       "data/review-texts/titanique-2026/amny--unknown.json",
-      "titanique-2026/amny--unknown.json"
+      "titanique-2026/amny--unknown.json",
+      "data/review-texts/every-brilliant-thing-2026/nypost--unknown.json",
+      "every-brilliant-thing-2026/nypost--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1624,7 +1637,9 @@
       "titanique-2026/chicagotribune--unknown.json",
       "titanique-2026/nytimes--unknown.json",
       "titanique-2026/nytimes--alex-marshall.json",
-      "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--unknown.json"
+      "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--unknown.json",
+      "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
+      "bigfoot-off-broadway-2026/timeout--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
@@ -1740,14 +1755,18 @@
       "farinelli-and-the-king-2017/vulture--sara-holdren.json",
       "the-visit-2015/abc-news--mark-kennedy.json",
       "doctor-zhivago-2015/vulture--jesse-green.json",
-      "macbeth-2013/huffpost--gazelle-emami.json"
+      "macbeth-2013/huffpost--gazelle-emami.json",
+      "schmigadoon-2026/vulture--kathryn-vanarendonk.json",
+      "schmigadoon-2026/av-club--shannon-miller.json",
+      "schmigadoon-2026/paste-magazine--amy-amatangelo.json",
+      "schmigadoon-2026/rollingstone--alan-sepinwall.json"
     ],
     "brightdata": [
       "titanique-2026/vulture--unknown.json"
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "titanique-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "bigfoot-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -2199,6 +2218,17 @@
       "t": "2026-04-13T02:11:39.272Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-04-13T03:16:17.111Z",
+      "event": "bb-session",
+      "session": "b54e01c5",
+      "url": "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-"
+    },
+    {
+      "t": "2026-04-13T03:16:17.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
