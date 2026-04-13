@@ -100,6 +100,42 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
 
+      - name: Guard — no demo-only flags in production
+        run: |
+          # Extract DEMO_FEATURES from source code (single source of truth)
+          DEMO_FLAGS=$(node -e "
+            const src = require('fs').readFileSync('src/config/feature-flags.ts','utf8');
+            const m = src.match(/DEMO_FEATURES\s*=\s*new\s+Set\(\[([^\]]+)\]/);
+            if (!m) { console.error('Could not parse DEMO_FEATURES from feature-flags.ts'); process.exit(1); }
+            const flags = m[1].match(/'([^']+)'/g).map(s => s.replace(/'/g,''));
+            console.log(flags.join(','));
+          ")
+          echo "Demo-only flags: $DEMO_FLAGS"
+
+          # Read production NEXT_PUBLIC_FEATURES from pulled .vercel/.env.production.local
+          PROD_FEATURES=$(grep '^NEXT_PUBLIC_FEATURES=' .vercel/.env.production.local 2>/dev/null | cut -d= -f2- | tr -d '"' | tr -d '\n' || echo "")
+          echo "Production flags: $PROD_FEATURES"
+
+          LEAKED=""
+          IFS=',' read -ra DEMO_ARR <<< "$DEMO_FLAGS"
+          IFS=',' read -ra PROD_ARR <<< "$PROD_FEATURES"
+          for demo in "${DEMO_ARR[@]}"; do
+            for prod in "${PROD_ARR[@]}"; do
+              prod_clean=$(echo "$prod" | tr -d '[:space:]')
+              if [ "$demo" = "$prod_clean" ]; then
+                LEAKED="$LEAKED $demo"
+              fi
+            done
+          done
+
+          if [ -n "$LEAKED" ]; then
+            echo "::error::Demo-only feature flags found in production NEXT_PUBLIC_FEATURES:$LEAKED"
+            echo "::error::Remove them from Vercel production env vars before deploying."
+            echo "::error::Demo flags should only be enabled on demo.broadwayscorecard.com (auto-enabled via DEMO_FEATURES set in feature-flags.ts)"
+            exit 1
+          fi
+          echo "✓ No demo-only flags leaked to production"
+
       - name: Cache Next.js build
         uses: actions/cache@v4
         with:
