@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-13T10:32:08.778Z",
+  "timestamp": "2026-04-13T11:24:36.476Z",
   "stats": {
-    "totalReviews": 34850,
+    "totalReviews": 34843,
     "alreadyFlagged": 13928,
     "dateGuardCatches": 107,
     "directorMismatch": 975,
     "tvFilmSignals": 3385,
-    "londonSignals": 1114,
+    "londonSignals": 1115,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
-    "noPublishDate": 4171
+    "noPublishDate": 4161
   },
   "findings": [
     {
@@ -13094,7 +13094,7 @@
       "file": "ew--dalton-ross.json",
       "score": 78,
       "publishDate": "2026-03-31",
-      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173?srsltid=AfmBOootdXRFd26Clwu1JK20KHKtHPqMpMQlSl_XSTumsUI7dsJHA9Yv",
+      "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173?srsltid=AfmBOoo1fROmyzWoEmFCz38sGKhHhqyEOHaywdHWLQ8dvfH_GX7pcnk_",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -74104,6 +74104,20 @@
       "score": null,
       "publishDate": "January 30, 2026",
       "url": "https://www.telegraph.co.uk/theatre/tickets/london/my-neighbour-totoro/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "myras-story-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 76,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/promoted-content/myras-story-how-a-haunting-tale-of-homelessness-became-a-word-of-mouth-hit",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
