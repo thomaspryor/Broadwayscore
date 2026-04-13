@@ -135,14 +135,14 @@ function computePrice(show, criticScore) {
   const isPreviews = show.status === 'previews';
   const isClosed = show.status === 'closed';
 
-  // OB shows: $3-8 (no box office, no Tonys — but can earn CriticScore + AudienceGrade)
-  // Priced to prevent value-trap gaming (max ~55 pts from CS+AG, so $/pt is fair)
+  // OB shows: $6-12 (no box office, no Tonys — but earn CS + AG + Drama Desk/Outer Critics)
+  // Max OB ceiling ~65 pts (30 CS + 25 AG + ~10 awards). Priced so pts/$ is comparable to BW.
   if (isOB) {
-    if (criticScore && criticScore >= 83) return 8;
-    if (criticScore && criticScore >= 75) return 6;
-    if (criticScore && criticScore >= 65) return 5;
-    if (criticScore) return 4;
-    return 3;
+    if (criticScore && criticScore >= 83) return 12;
+    if (criticScore && criticScore >= 75) return 10;
+    if (criticScore && criticScore >= 65) return 8;
+    if (criticScore) return 7;
+    return 6;
   }
 
   // Broadway shows: base price by type
