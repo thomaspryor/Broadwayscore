@@ -24,7 +24,7 @@ function main() {
   };
 
   const showDirs = fs.readdirSync(TRANSCRIPTS_DIR).filter(d =>
-    d !== '.DS_Store' && fs.statSync(path.join(TRANSCRIPTS_DIR, d)).isDirectory());
+    d !== '.DS_Store' && d !== 'raw' && d !== 'classified' && fs.statSync(path.join(TRANSCRIPTS_DIR, d)).isDirectory());
 
   for (const showId of showDirs) {
     const showDir = path.join(TRANSCRIPTS_DIR, showId);
@@ -53,7 +53,7 @@ function main() {
       });
     }
 
-    if (reviews.length > 0) {
+    if (reviews.length >= 2) { // Minimum 2 reviews to display
       reviews.sort((a, b) => b.score - a.score);
       output[showId] = reviews;
       console.log(`${showId}: ${reviews.length} reviews — avg ${Math.round(reviews.reduce((s, r) => s + r.score, 0) / reviews.length)}`);
