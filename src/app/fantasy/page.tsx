@@ -28,7 +28,7 @@ export default function FantasyLandingPage() {
   const info = getFantasySeasonInfo();
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen bg-surface text-white">
       {/* Hero */}
       <section className="max-w-3xl mx-auto px-4 pt-12 sm:pt-20 pb-12 text-center">
         {/* BFL Shield Logo */}
@@ -46,7 +46,7 @@ export default function FantasyLandingPage() {
           <span className="text-white">Broadway</span>{' '}
           <span className="text-gradient">Fantasy League</span>
         </h1>
-        <p className="text-lg sm:text-xl text-zinc-400 max-w-xl mx-auto mb-4">
+        <p className="text-lg sm:text-xl text-gray-400 max-w-xl mx-auto mb-4">
           Draft {info.teamSize} shows. ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
         </p>
@@ -62,7 +62,7 @@ export default function FantasyLandingPage() {
         <div className="mt-4">
           <a
             href="/fantasy/leaderboard"
-            className="text-sm text-zinc-400 hover:text-white transition-colors"
+            className="text-sm text-gray-400 hover:text-white transition-colors"
           >
             View Leaderboard &rarr;
           </a>
@@ -73,27 +73,27 @@ export default function FantasyLandingPage() {
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-8 text-center">How It Works</h2>
         <div className="grid sm:grid-cols-3 gap-6">
-          <div className="bg-zinc-800/50 rounded-xl p-6 text-center">
+          <div className="bg-surface-raised/50 rounded-xl p-6 text-center">
             <div className="text-3xl mb-3">1</div>
             <h3 className="font-semibold mb-2">Draft</h3>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-400">
               Pick {info.teamSize} shows from {info.totalShows} options.
               Stay within your ${info.budget} budget.
               One entry per email — no account needed.
             </p>
           </div>
-          <div className="bg-zinc-800/50 rounded-xl p-6 text-center">
+          <div className="bg-surface-raised/50 rounded-xl p-6 text-center">
             <div className="text-3xl mb-3">2</div>
             <h3 className="font-semibold mb-2">Score</h3>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-400">
               Points accumulate automatically from four pillars:
               critic reviews, audience grades, weekly box office, and award nominations & wins.
             </p>
           </div>
-          <div className="bg-zinc-800/50 rounded-xl p-6 text-center">
+          <div className="bg-surface-raised/50 rounded-xl p-6 text-center">
             <div className="text-3xl mb-3">3</div>
             <h3 className="font-semibold mb-2">Win</h3>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-400">
               The season runs through Tony Awards night.
               Most points wins. Check the leaderboard weekly to track your ranking.
             </p>
@@ -106,26 +106,26 @@ export default function FantasyLandingPage() {
         <h2 className="text-2xl font-bold mb-8 text-center">Scoring</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           {/* CriticScore */}
-          <div className="bg-zinc-800/50 rounded-xl p-5">
+          <div className="bg-surface-raised/50 rounded-xl p-5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <span className="text-yellow-400">★</span> CriticScore
             </h3>
             <div className="space-y-1.5 text-sm">
               {Object.entries(CRITIC_SCORE_POINTS).map(([tier, pts]) => (
                 <div key={tier} className="flex justify-between">
-                  <span className="text-zinc-400">{tier}</span>
-                  <span className="font-mono text-zinc-300">{pts} pts</span>
+                  <span className="text-gray-400">{tier}</span>
+                  <span className="font-mono text-gray-300">{pts} pts</span>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-zinc-600 mt-3">
+            <p className="text-xs text-gray-600 mt-3">
               Based on Broadway Scorecard&apos;s critic composite score.
               Shows that opened before the season start don&apos;t earn critic points.
             </p>
           </div>
 
           {/* AudienceGrade */}
-          <div className="bg-zinc-800/50 rounded-xl p-5">
+          <div className="bg-surface-raised/50 rounded-xl p-5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <span className="text-emerald-400">♥</span> Audience Grade
             </h3>
@@ -134,56 +134,56 @@ export default function FantasyLandingPage() {
                 .filter(([, pts]) => pts > 0)
                 .map(([grade, pts]) => (
                   <div key={grade} className="flex justify-between">
-                    <span className="text-zinc-400">{grade}</span>
-                    <span className="font-mono text-zinc-300">{pts} pts</span>
+                    <span className="text-gray-400">{grade}</span>
+                    <span className="font-mono text-gray-300">{pts} pts</span>
                   </div>
                 ))}
             </div>
           </div>
 
           {/* Box Office */}
-          <div className="bg-zinc-800/50 rounded-xl p-5">
+          <div className="bg-surface-raised/50 rounded-xl p-5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <span className="text-green-400">$</span> Box Office
             </h3>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-400">
               A hit musical grossing $1M/week earns about 3 pts per week.
               Points accumulate every week through Tony Awards night.
             </p>
-            <p className="text-xs text-zinc-600 mt-2">
+            <p className="text-xs text-gray-600 mt-2">
               Broadway shows only. Off-Broadway shows don&apos;t report grosses.
             </p>
           </div>
 
           {/* Awards */}
-          <div className="bg-zinc-800/50 rounded-xl p-5">
+          <div className="bg-surface-raised/50 rounded-xl p-5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <span className="text-brand">🏆</span> Awards
             </h3>
-            <p className="text-xs text-zinc-500 mb-2">Tony Awards (biggest), Drama Desk, Outer Critics Circle, Drama League</p>
+            <p className="text-xs text-gray-500 mb-2">Tony Awards (biggest), Drama Desk, Outer Critics Circle, Drama League</p>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
-                <span className="text-zinc-400">Tony Best Musical / Play</span>
-                <span className="font-mono text-zinc-300">{AWARDS_POINTS.tonyBestMusical} pts</span>
+                <span className="text-gray-400">Tony Best Musical / Play</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.tonyBestMusical} pts</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Tony Win</span>
-                <span className="font-mono text-zinc-300">{AWARDS_POINTS.tonyWin} pts</span>
+                <span className="text-gray-400">Tony Win</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.tonyWin} pts</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Tony Nomination</span>
-                <span className="font-mono text-zinc-300">{AWARDS_POINTS.tonyNom} pts</span>
+                <span className="text-gray-400">Tony Nomination</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.tonyNom} pts</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Drama Desk Win / Nom</span>
-                <span className="font-mono text-zinc-300">{AWARDS_POINTS.dramaDeskWin} / {AWARDS_POINTS.dramaDeskNom} pts</span>
+                <span className="text-gray-400">Drama Desk Win / Nom</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.dramaDeskWin} / {AWARDS_POINTS.dramaDeskNom} pts</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Outer Critics Win / Nom</span>
-                <span className="font-mono text-zinc-300">{AWARDS_POINTS.outerCriticsWin} / {AWARDS_POINTS.outerCriticsNom} pts</span>
+                <span className="text-gray-400">Outer Critics Win / Nom</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.outerCriticsWin} / {AWARDS_POINTS.outerCriticsNom} pts</span>
               </div>
             </div>
-            <p className="text-xs text-zinc-600 mt-2">
+            <p className="text-xs text-gray-600 mt-2">
               Scoring events across 6 weeks from mid-May through Tony night in June.
             </p>
           </div>
@@ -193,22 +193,22 @@ export default function FantasyLandingPage() {
       {/* Season Info */}
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-6 text-center">Season Details</h2>
-        <div className="bg-zinc-800/50 rounded-xl p-6">
+        <div className="bg-surface-raised/50 rounded-xl p-6">
           <div className="grid sm:grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-zinc-500">Season</span>
+              <span className="text-gray-500">Season</span>
               <p className="text-white font-medium">{info.season}</p>
             </div>
             <div>
-              <span className="text-zinc-500">Budget</span>
+              <span className="text-gray-500">Budget</span>
               <p className="text-white font-medium">${info.budget} for {info.teamSize} shows</p>
             </div>
             <div>
-              <span className="text-zinc-500">Draftable Shows</span>
+              <span className="text-gray-500">Draftable Shows</span>
               <p className="text-white font-medium">{info.broadwayShows} Broadway + {info.offBroadwayShows} Off-Broadway</p>
             </div>
             <div>
-              <span className="text-zinc-500">Scoring Period</span>
+              <span className="text-gray-500">Scoring Period</span>
               <p className="text-white font-medium">{info.scoringStart} to {info.scoringEnd}</p>
             </div>
           </div>
@@ -245,9 +245,9 @@ export default function FantasyLandingPage() {
               a: 'Optional. Type the same league name as your friends on the draft form to create a private group. You can still see the overall leaderboard.',
             },
           ].map(({ q, a }) => (
-            <div key={q} className="bg-zinc-800/30 rounded-xl p-4">
+            <div key={q} className="bg-surface-raised/30 rounded-xl p-4">
               <h3 className="font-medium text-white mb-1">{q}</h3>
-              <p className="text-sm text-zinc-400">{a}</p>
+              <p className="text-sm text-gray-400">{a}</p>
             </div>
           ))}
         </div>
@@ -264,7 +264,7 @@ export default function FantasyLandingPage() {
         <div className="mt-4">
           <a
             href="/fantasy/guide"
-            className="text-sm text-zinc-400 hover:text-white transition-colors"
+            className="text-sm text-gray-400 hover:text-white transition-colors"
           >
             Read the Draft Guide &rarr;
           </a>
