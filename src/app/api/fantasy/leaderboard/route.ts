@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
 import { computeLeaderboard } from '@/lib/data-fantasy';
 import { FANTASY_SEASON } from '@/config/fantasy';
@@ -7,10 +7,13 @@ import type { FantasyEntry } from '@/config/fantasy';
 /**
  * GET /api/fantasy/leaderboard — Fetch leaderboard data
  *
+ * Query params:
+ *   ?league=NAME — filter by league name (case-sensitive)
+ *
  * Returns ranked entries with computed fantasy points.
  * Emails are masked in the response (privacy).
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const supabase = getServerSupabaseClient();
     if (!supabase) {
@@ -20,11 +23,18 @@ export async function GET() {
       );
     }
 
-    const { data: entries, error: dbError } = await supabase
+    const leagueName = request.nextUrl.searchParams.get('league');
+
+    let query = supabase
       .from('fantasy_entries')
       .select('*')
-      .eq('season', FANTASY_SEASON)
-      .order('created_at', { ascending: true });
+      .eq('season', FANTASY_SEASON);
+
+    if (leagueName) {
+      query = query.eq('league_name', leagueName);
+    }
+
+    const { data: entries, error: dbError } = await query.order('created_at', { ascending: true });
 
     if (dbError) {
       console.error('Fantasy leaderboard fetch error:', dbError);
