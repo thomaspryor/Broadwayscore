@@ -1705,7 +1705,17 @@
     "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
     "matilda-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
     "matilda-the-musical-2013/village-voice--michael-musto.json",
-    "lucky-guy-2013/backstage--erik-haagensen.json"
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "hands-on-a-hardbody-2013/washpost--mark-kennedy.json",
+    "hands-on-a-hardbody-2013/newsday--linda-winer.json",
+    "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "picnic-2013/bloomberg--jeremy-gerard.json",
+    "the-anarchist-2012/variety--marilyn-stasio.json",
+    "dead-accounts-2012/variety--marilyn-stasio.json",
+    "a-christmas-story-the-musical-2012/huffpost--mark-kennedy.json",
+    "the-performers-2012/washpost--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1972,7 +1982,9 @@
       "data/review-texts/a-time-to-kill-2013/abc-news--mark-kennedy.json",
       "data/review-texts/a-night-with-janis-joplin-2013/abc-news--jennifer-farrar.json",
       "data/review-texts/orphans-2013/washpost--associated-press.json",
-      "data/review-texts/the-assembled-parties-2013/washpost--mark-kennedy.json"
+      "data/review-texts/the-assembled-parties-2013/washpost--mark-kennedy.json",
+      "data/review-texts/hands-on-a-hardbody-2013/washpost--mark-kennedy.json",
+      "data/review-texts/the-performers-2012/washpost--mark-kennedy.json"
     ],
     "archive": [
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
@@ -2064,7 +2076,7 @@
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "lucky-guy-2013/backstage--erik-haagensen.json",
+  "lastProcessed": "the-performers-2012/washpost--mark-kennedy.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -2608,6 +2620,28 @@
     },
     {
       "t": "2026-04-13T04:07:47.680Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-13T04:08:57.158Z",
+      "event": "bb-session",
+      "session": "be6381cc",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-musical-hands-on-a-har"
+    },
+    {
+      "t": "2026-04-13T04:08:57.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-13T04:11:20.988Z",
+      "event": "bb-session",
+      "session": "86ea5a72",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadways-the-"
+    },
+    {
+      "t": "2026-04-13T04:11:21.563Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
