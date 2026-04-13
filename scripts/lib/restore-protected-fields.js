@@ -116,6 +116,42 @@ try {
         }
       }
 
+      // Guard: never overwrite local fullText with shorter/empty remote fullText.
+      // During rebase -X theirs, the remote (CI) version wins, but it may have
+      // old empty fullText while local has freshly-collected text. Keep the longer.
+      // (Titanique postmortem: restore-protected-fields re-applied old empty fullText
+      // over newly collected 5000+ char text during push rebase.)
+      const localText = local.fullText || '';
+      const remoteText = remote.fullText || '';
+      if (localText.length > 0 && localText.length > remoteText.length) {
+        // Local has better text — ensure it survives (it may have been overwritten by rebase)
+        // This is a no-op if the file already has local's fullText, but critical after -X theirs
+      } else if (remoteText.length > localText.length) {
+        // Remote has better text — this is the normal case, already handled by rebase
+      }
+      // After rebase -X theirs, local IS the theirs (remote) version. We need to check
+      // the pre-rebase local (HEAD before rebase). But we only have remote and post-rebase local.
+      // The real fix: read the pre-rebase version from the reflog.
+      // Simpler approach: if remote fullText is empty/shorter but local (post-rebase) also
+      // has the remote's empty fullText, we can't recover. The guard must be in the rebase
+      // strategy itself. Instead, add fullText as a "keep local" field:
+      // Check if OURS (pre-rebase HEAD) had a longer fullText than remote
+      try {
+        const oursContent = execSync(`git show ORIG_HEAD:${f}`, {
+          encoding: 'utf8',
+          stdio: ['pipe', 'pipe', 'pipe'],
+        });
+        const ours = JSON.parse(oursContent);
+        const oursText = ours.fullText || '';
+        if (oursText.length > 100 && oursText.length > (local.fullText || '').length) {
+          local.fullText = oursText;
+          modified = true;
+          process.stderr.write(`  Restored fullText (${oursText.length} chars) from pre-rebase HEAD in ${f}\n`);
+        }
+      } catch {
+        // ORIG_HEAD not available or file didn't exist — skip
+      }
+
       // Restore nested contentVerification manual fields
       if (remote.contentVerification) {
         for (const key of MANUAL_CV_FIELDS) {
