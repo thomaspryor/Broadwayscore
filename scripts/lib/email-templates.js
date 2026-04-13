@@ -159,22 +159,24 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   const sc = getScoreColor(openingChange.score);
   const scoreDisplay = openingChange.score != null ? Math.round(openingChange.score) : '?';
   const reviewCount = openingChange.reviewCount || 0;
+  const rave = openingChange.rave || 0;
   const positive = openingChange.positive || 0;
   const mixed = openingChange.mixed || 0;
   const negative = openingChange.negative || 0;
-  const total = positive + mixed + negative;
+  const total = rave + positive + mixed + negative;
 
   // Review subtitle
   const reviewSubtitle = reviewCount > 0
     ? `Based on ${reviewCount} Critic Review${reviewCount !== 1 ? 's' : ''}`
     : 'Reviews pending';
 
-  // Breakdown bar widths (percentage, min 1% if nonzero to stay visible)
-  let posW = 0, mixW = 0, negW = 0;
+  // 4-tier breakdown bar matching the live site
+  let raveW = 0, posW = 0, mixW = 0, negW = 0;
   if (total > 0) {
+    raveW = Math.max(Math.round(rave / total * 100), rave > 0 ? 1 : 0);
     posW = Math.max(Math.round(positive / total * 100), positive > 0 ? 1 : 0);
     negW = Math.max(Math.round(negative / total * 100), negative > 0 ? 1 : 0);
-    mixW = 100 - posW - negW;
+    mixW = 100 - raveW - posW - negW;
     if (mixW < 0) mixW = 0;
     if (mixed > 0 && mixW === 0) { mixW = 1; posW = Math.max(posW - 1, 0); }
   }
@@ -184,6 +186,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   <tr><td style="padding:16px 24px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
       <tr>
+        ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#d4a574;"></td>` : ''}
         ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
         ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#f59e0b;"></td>` : ''}
         ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
@@ -193,7 +196,10 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   <tr><td style="padding:8px 24px 0;">
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
-        <td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+        ${rave > 0 ? `<td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+          <span style="color:#d4a574;font-weight:600;">${rave}</span> Rave
+        </td>` : ''}
+        <td ${rave > 0 ? 'align="center"' : ''} style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
           <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive
         </td>
         <td align="center" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
@@ -210,7 +216,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   const consensusHtml = openingChange.consensusText ? `
   <tr><td style="padding:20px 24px 0;">
     <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Critics' Take</p>
-    <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.6;font-style:italic;font-family:${FONT};">"${escapeHtml(openingChange.consensusText)}"</p>
+    <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.6;font-family:${FONT};">${escapeHtml(openingChange.consensusText)}</p>
   </td></tr>` : '';
 
   // Show type + venue line
@@ -310,20 +316,23 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
     const sc = getScoreColor(show.score);
     const scoreDisplay = show.score != null ? Math.round(show.score) : '?';
     const reviewCount = show.reviewCount || 0;
+    const rave = show.rave || 0;
     const positive = show.positive || 0;
     const mixed = show.mixed || 0;
     const negative = show.negative || 0;
-    const total = positive + mixed + negative;
+    const total = rave + positive + mixed + negative;
 
     const reviewSubtitle = reviewCount > 0
       ? `Based on ${reviewCount} Critic Review${reviewCount !== 1 ? 's' : ''}`
       : 'Reviews pending';
 
-    let posW = 0, mixW = 0, negW = 0;
+    // 4-tier breakdown bar matching the live site
+    let raveW = 0, posW = 0, mixW = 0, negW = 0;
     if (total > 0) {
+      raveW = Math.max(Math.round(rave / total * 100), rave > 0 ? 1 : 0);
       posW = Math.max(Math.round(positive / total * 100), positive > 0 ? 1 : 0);
       negW = Math.max(Math.round(negative / total * 100), negative > 0 ? 1 : 0);
-      mixW = 100 - posW - negW;
+      mixW = 100 - raveW - posW - negW;
       if (mixW < 0) mixW = 0;
       if (mixed > 0 && mixW === 0) { mixW = 1; posW = Math.max(posW - 1, 0); }
     }
@@ -332,6 +341,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       <tr><td style="padding:16px 24px 0;">
         <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
           <tr>
+            ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#d4a574;"></td>` : ''}
             ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
             ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#f59e0b;"></td>` : ''}
             ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
@@ -341,7 +351,10 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       <tr><td style="padding:8px 24px 0;">
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
-            <td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+            ${rave > 0 ? `<td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+              <span style="color:#d4a574;font-weight:600;">${rave}</span> Rave
+            </td>` : ''}
+            <td ${rave > 0 ? 'align="center"' : ''} style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
               <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive
             </td>
             <td align="center" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
@@ -357,7 +370,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
     const consensusHtml = show.consensusText ? `
       <tr><td style="padding:20px 24px 0;">
         <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:${brandMuted};text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Critics' Take</p>
-        <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.6;font-style:italic;font-family:${FONT};">"${escapeHtml(show.consensusText)}"</p>
+        <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.6;font-family:${FONT};">${escapeHtml(show.consensusText)}</p>
       </td></tr>` : '';
 
     const metaParts = [];

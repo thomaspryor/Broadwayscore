@@ -232,20 +232,23 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
 }
 
 /**
- * Count scored reviews and compute positive/mixed/negative for a show.
+ * Count scored reviews and compute rave/positive/mixed/negative for a show.
+ * 4-tier breakdown matching the live site's ScoreBreakdownBar.
  */
 function getReviewStats(reviews, showId) {
   const showReviews = (reviews || []).filter(r => r.showId === showId && r.assignedScore != null);
-  let positive = 0, mixed = 0, negative = 0;
+  let rave = 0, positive = 0, mixed = 0, negative = 0;
 
   for (const r of showReviews) {
-    if (r.assignedScore >= 75) positive++;
+    if (r.assignedScore >= 85) rave++;
+    else if (r.assignedScore >= 70) positive++;
     else if (r.assignedScore >= 55) mixed++;
     else negative++;
   }
 
   return {
     reviewCount: showReviews.length,
+    rave,
     positive,
     mixed,
     negative,
