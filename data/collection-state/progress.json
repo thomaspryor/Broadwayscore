@@ -1695,7 +1695,17 @@
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
     "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
     "pippin-2013/new-jersey-newsroom--michael-sommers.json",
-    "orphans-2013/washpost--associated-press.json"
+    "orphans-2013/washpost--associated-press.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-assembled-parties-2013/wsj--terry-teachout.json",
+    "the-assembled-parties-2013/washpost--mark-kennedy.json",
+    "the-nance-2013/hollywood-reporter--david-rooney.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1947,6 +1957,7 @@
       "data/review-texts/the-play-that-goes-wrong-off-broadway-2019/theater-scene--eugene-paul.json",
       "data/review-texts/linda-vista-2019/curtainup--elyse-sommer.json",
       "data/review-texts/angels-in-america-2018/theater-in-the-now--michael-block.json",
+      "data/review-texts/the-bands-visit-2017/newnownextcom--michael-musto.json",
       "data/review-texts/the-parisian-woman-2017/deadline--jeremy-gerard.json",
       "data/review-texts/marvins-room-2017/theatres-leiter-side--samuel-l-leiter.json",
       "data/review-texts/charlie-and-the-chocolate-factory-2017/theater-in-the-now--michael-block.json",
@@ -1960,7 +1971,8 @@
       "data/review-texts/the-last-ship-2014/talkinbroadway--matthew-murray.json",
       "data/review-texts/a-time-to-kill-2013/abc-news--mark-kennedy.json",
       "data/review-texts/a-night-with-janis-joplin-2013/abc-news--jennifer-farrar.json",
-      "data/review-texts/orphans-2013/washpost--associated-press.json"
+      "data/review-texts/orphans-2013/washpost--associated-press.json",
+      "data/review-texts/the-assembled-parties-2013/washpost--mark-kennedy.json"
     ],
     "archive": [
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
@@ -2052,7 +2064,7 @@
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "orphans-2013/washpost--associated-press.json",
+  "lastProcessed": "lucky-guy-2013/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -2550,31 +2562,31 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-04-13T03:40:10.163Z",
+      "t": "2026-04-13T03:38:21.139Z",
       "event": "bb-session",
-      "session": "5fff1baa",
+      "session": "ccac1bb2",
       "url": "https://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-paris"
     },
     {
-      "t": "2026-04-13T03:40:11.735Z",
+      "t": "2026-04-13T03:38:21.770Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     },
     {
-      "t": "2026-04-13T03:48:57.733Z",
+      "t": "2026-04-13T03:48:11.721Z",
       "event": "bb-session",
-      "session": "3d4a5ef9",
+      "session": "e0e3240a",
       "url": "https://www.hollywoodreporter.com/review/significant-theater-review-982582"
     },
     {
-      "t": "2026-04-13T03:48:59.098Z",
+      "t": "2026-04-13T03:48:12.424Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     },
     {
-      "t": "2026-04-13T03:52:47.622Z",
+      "t": "2026-04-13T03:52:29.417Z",
       "event": "bb-session",
-      "session": "3f2809a3",
+      "session": "bbb59771",
       "url": "https://bway.ly/04r8b#http://nypost.com/2016/09/29/broadway-is-no-place-for-podc"
     },
     {
@@ -2585,6 +2597,17 @@
     },
     {
       "t": "2026-04-13T04:06:50.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-13T04:07:47.105Z",
+      "event": "bb-session",
+      "session": "ce355da9",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-richard-greenb"
+    },
+    {
+      "t": "2026-04-13T04:07:47.680Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
