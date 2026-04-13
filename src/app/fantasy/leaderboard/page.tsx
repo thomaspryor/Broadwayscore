@@ -42,13 +42,13 @@ export default function FantasyLeaderboardPage() {
           <div className="flex gap-4 justify-center mt-4">
             <a
               href="/fantasy/draft"
-              className="text-sm text-amber-400/70 hover:text-amber-400 transition-colors"
+              className="text-sm text-brand/70 hover:text-brand transition-colors"
             >
               Draft a Team
             </a>
             <a
               href="/fantasy/guide"
-              className="text-sm text-amber-400/70 hover:text-amber-400 transition-colors"
+              className="text-sm text-brand/70 hover:text-brand transition-colors"
             >
               Draft Guide
             </a>
