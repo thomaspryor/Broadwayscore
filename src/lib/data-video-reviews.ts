@@ -11,6 +11,7 @@ export interface VideoReview {
   confidence?: string;
   reasoning?: string;
   keyQuote?: string;
+  thumbnail?: string;
 }
 
 const { _meta, ...showReviews } = videoReviewsData;
