@@ -5,7 +5,7 @@
  * Scoring thresholds and constants come from score-extractors.js (single source of truth).
  */
 
-const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES } = require('./score-extractors');
+const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES, KNOWN_STAR_OUTLETS, extractScore } = require('./score-extractors');
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
@@ -359,24 +359,7 @@ function getBestScore(data, opts = {}) {
     'bww-roundup', 'bww-reviews', 'playbill-verdict',
     'lbo-roundup', 'lbo-individual', 'nyc-theatre',
   ]);
-  // Outlets known to publish their own star ratings — when an aggregator reports
-  // a star rating for one of these outlets, it's relaying the outlet's own score.
-  const KNOWN_STAR_OUTLETS = new Set([
-    'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
-    'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
-    'artsdesk', 'thestage', 'whatsonstage',
-    // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
-    // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet
-    'metro', 'the-sun', 'digital-spy', 'radio-times',
-    // WE outlets with verified star ratings (added 2026-04-03)
-    'all-that-dazzles-uk', 'musical-theatre-review',
-    'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',
-    'tim-talks-theatre-uk', 'city-am', 'plays-international',
-    'theatreandtonic', 'the-recs', 'broadwayworld',
-    // Additional WE star outlets discovered during SERP expansion
-    'londontheatre1', 'everything-theatre', 'thereviewshub',
-    'shy-strange-manic', 'express-uk', 'theatre-weekly',
-  ]);
+  // KNOWN_STAR_OUTLETS imported from score-extractors.js (single source of truth)
   const isAggregatorSource = AGGREGATOR_SOURCES.has(data.source);
   const isWestEnd = data._showCategory === 'west-end' || data._showCategory === 'off-west-end';
   const isOutletVerified = OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
@@ -385,8 +368,23 @@ function getBestScore(data, opts = {}) {
   const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified && !isKnownStarOutlet;
 
   // Skip P0 if score was deliberately cleared by audit (aggregator in wrong slot,
-  // extraction with no evidence, outlet doesn't publish star ratings)
-  const scoreCleared = data.originalScoreCleared === true;
+  // extraction with no evidence, outlet doesn't publish star ratings).
+  // EXCEPTION: Tier 1.5 clearing ("extraction-no-evidence-in-text") was incorrect when:
+  // (a) The outlet is a KNOWN_STAR_OUTLET — they DO publish star ratings
+  // (b) The scoreSource is unicode-stars or word-stars — these are unambiguous formats
+  //     that were correctly extracted but textContainsStarRating() couldn't find in fullText
+  //     because the stars were in HTML structure, not the article body text.
+  const isTier15Cleared = data.originalScoreCleared === true &&
+    data.originalScoreClearedReason && data.originalScoreClearedReason.startsWith('extraction-no-evidence');
+  const UNAMBIGUOUS_STAR_SOURCES = new Set(['unicode-stars', 'word-stars']);
+  // Don't override for outlets explicitly marked as no-score (noScoreExtractor).
+  // Their unicode-stars extractions came from aggregator page structure, not the outlet.
+  const { OUTLET_EXTRACTORS } = require('./score-extractors');
+  const outletExtractor = OUTLET_EXTRACTORS[data.outletId];
+  const isNoScoreOutlet = outletExtractor && outletExtractor('', '')?.__skipGeneric;
+  const isTier15Override = isTier15Cleared && !isNoScoreOutlet &&
+    (isKnownStarOutlet || UNAMBIGUOUS_STAR_SOURCES.has(data.scoreSource));
+  const scoreCleared = data.originalScoreCleared === true && !isTier15Override;
   // Also skip if scoreSource is a known aggregator source — these should be in
   // aggregatorStars, not originalScore (prevents re-contamination even if
   // originalScore gets re-set by a CI process that hasn't been updated yet)
@@ -394,7 +392,16 @@ function getBestScore(data, opts = {}) {
 
   // Effective score: use originalScore, or for known star outlets, treat aggregatorStars
   // as the outlet's own published rating (aggregators relay "Guardian: 4/5" etc.)
-  const effectiveOriginalScore = (!scoreCleared && !isAggregatorScoreSource && data.originalScore)
+  // When Tier 1.5 override is active, recover the original score:
+  // 1. If originalScore still populated: use it (unless previousOriginalScore differs significantly,
+  //    in which case prefer previousOriginalScore as ground truth from before clearing)
+  // 2. If originalScore was nulled: use previousOriginalScore (saved by P0 script before clearing)
+  let resolvedOriginalScore = data.originalScore;
+  if (isTier15Override && !data.originalScore && data.previousOriginalScore) {
+    // Score was nulled by P0 script — recover from previousOriginalScore
+    resolvedOriginalScore = String(data.previousOriginalScore);
+  }
+  const effectiveOriginalScore = (!scoreCleared && !isAggregatorScoreSource && resolvedOriginalScore)
     || (data.aggregatorStars && isKnownStarOutlet ? data.aggregatorStars : null);
   const effectiveScoreLabel = data.originalScore ? 'originalScore' : 'aggregatorStars (known star outlet)';
 
@@ -442,6 +449,23 @@ function getBestScore(data, opts = {}) {
           }
         }
         return { score: parsed, source: 'originalScore-priority0' };
+      }
+    }
+  }
+
+  // P0.75: Inline star recovery at rebuild time
+  // When originalScore is missing, try extracting from fullText. Two cases:
+  // (a) Non-KNOWN outlets with Tier 1.5 clearing (KNOWN outlets are handled above by P0.5 override)
+  // (b) KNOWN_STAR_OUTLETS that never had originalScore extracted (only fullText available)
+  // Respects scoreConfidence === 'low' (skip unreliable extractions).
+  if (!effectiveOriginalScore && (isKnownStarOutlet || isTier15Cleared) && data.fullText && data.scoreConfidence !== 'low') {
+    const recovered = extractScore('', data.fullText, data.outletId);
+    if (recovered && recovered.normalizedScore != null) {
+      // Only trust unicode-stars and word-stars sources — these are unambiguous
+      const TRUSTED_RECOVERY_SOURCES = new Set(['unicode-stars', 'unicode-stars-fallthrough', 'word-stars']);
+      if (TRUSTED_RECOVERY_SOURCES.has(recovered.source)) {
+        inc('inlineStarRecovery');
+        return { score: recovered.normalizedScore, source: 'originalScore-inline-recovery' };
       }
     }
   }
