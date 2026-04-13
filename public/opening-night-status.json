@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T03:15:03.367Z",
+  "generatedAt": "2026-04-13T03:45:38.151Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -43,6 +43,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -309,20 +313,20 @@
       "status": "open",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "siteScore": 77,
-      "liveScore": 76,
-      "scoreDrift": -1,
-      "total": 16,
+      "siteScore": 78.03,
+      "liveScore": 79,
+      "scoreDrift": 0.9699999999999989,
+      "total": 17,
       "t1": 3,
-      "t2": 9,
+      "t2": 10,
       "t3": 4,
-      "positive": 11,
-      "mixed": 3,
+      "positive": 13,
+      "mixed": 2,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -390,10 +394,6 @@
       ],
       "missingT2": [
         {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
           "name": "TheaterMania",
           "isDualMarket": false
         },
@@ -416,6 +416,10 @@
         {
           "name": "Observer",
           "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -568,6 +572,18 @@
           "t3": 4,
           "p": 11,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-13T03:45:38.151Z",
+          "rc": 17,
+          "s": 78.03,
+          "t1": 3,
+          "t2": 10,
+          "t3": 4,
+          "p": 13,
+          "m": 2,
           "n": 2,
           "bc": "waiting"
         }
