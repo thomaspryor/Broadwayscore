@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import type { FantasyShow } from '@/config/fantasy';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 interface FantasyShowPickerProps {
   shows: Array<{ id: string } & FantasyShow>;
@@ -57,11 +58,18 @@ export default function FantasyShowPicker({
     return (
       <div className="flex items-center gap-3 rounded-lg bg-zinc-800 border border-zinc-600 p-3">
         <span className="text-xs text-zinc-500 font-mono w-5">{slotIndex + 1}</span>
+        {selectedShow.image && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={getOptimizedImageUrl(selectedShow.image, 'thumbnail')} alt="" className="w-8 h-8 rounded object-cover shrink-0" />
+        )}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className="font-medium text-white truncate">{selectedShow.title}</span>
             {selectedShow.category === 'off-broadway' && (
               <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">OB</span>
+            )}
+            {selectedShow.status === 'closed' && (
+              <span className="text-[10px] bg-zinc-600/30 text-zinc-400 px-1.5 py-0.5 rounded">Closed</span>
             )}
           </div>
           <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5">
@@ -148,11 +156,18 @@ export default function FantasyShowPicker({
                   }}
                   disabled={!affordable}
                 >
+                  {show.image && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={getOptimizedImageUrl(show.image, 'thumbnail')} alt="" className="w-8 h-8 rounded object-cover shrink-0" />
+                  )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium truncate">{show.title}</span>
                       {show.category === 'off-broadway' && (
                         <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded shrink-0">OB</span>
+                      )}
+                      {show.status === 'closed' && (
+                        <span className="text-[10px] bg-zinc-600/30 text-zinc-400 px-1.5 py-0.5 rounded shrink-0">Closed</span>
                       )}
                     </div>
                     <div className="flex items-center gap-2 text-xs text-zinc-400 mt-0.5">
