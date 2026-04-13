@@ -14,7 +14,7 @@
  *     createdAt: string,     // ISO date
  *     engagement: number,    // platform-normalized score (likes+RT*2 for X, plays+diggs*5 for TikTok)
  *     relevant: boolean,     // LLM-filtered: is this about the target show?
- *     sentiment: 'positive' | 'mixed' | 'negative',  // LLM-assigned
+ *     sentiment: 'positive' | 'mixed' | 'negative' | 'neutral',  // LLM-assigned
  *   }
  */
 
@@ -344,8 +344,11 @@ function updateBaseline(oldBaseline, newWeeklyVolume) {
 }
 
 /**
- * Given a list of relevant mentions, compute the positive percentage
- * (relative to positive+mixed+negative, ignoring items with missing sentiment).
+ * Given a list of relevant mentions, compute the positive percentage.
+ * Denominator = positive + mixed + negative (i.e., posts with an opinion).
+ * "neutral" posts (informational, no opinion signal, official promos) are
+ * excluded from the denominator entirely — they're about the show but
+ * carry no sentiment signal, so including them drags every show toward 50%.
  */
 function computePositivePct(mentions) {
   let pos = 0;
@@ -358,6 +361,7 @@ function computePositivePct(mentions) {
     } else if (m.sentiment === 'mixed' || m.sentiment === 'negative') {
       total++;
     }
+    // 'neutral' intentionally excluded from both pos and total
   }
   return total === 0 ? 0 : Math.round((pos / total) * 100);
 }

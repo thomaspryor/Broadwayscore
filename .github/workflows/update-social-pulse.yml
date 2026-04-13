@@ -59,6 +59,8 @@ jobs:
           # Reddit silently returns 0 mentions for every show.
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          # Free X API for uncapped tweet volume counts (no Apify cost)
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           INPUT_SHOW: ${{ inputs.show }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
         run: |
