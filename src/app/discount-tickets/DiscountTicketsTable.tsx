@@ -180,7 +180,7 @@ function DetailPanel({ row, market }: { row: DiscountShowRow; market: TicketMark
           )}
 
           {row.sro && (
-            <div className="flex-1 bg-gray-500/10 border border-gray-500/20 rounded-lg p-3">
+            <div className="flex-1 bg-gray-500/10 border border-white/10 rounded-lg p-3">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <span className="font-semibold text-gray-300 text-sm">Standing Room</span>
                 <span className="font-bold text-white text-lg">{formatTicketPrice(row.sro.price, market)}</span>
@@ -361,7 +361,7 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                           price={row.sro.price}
                           url={undefined}
                           color="text-gray-300"
-                          bgColor="bg-gray-500/15 border-gray-500/30"
+                          bgColor="bg-gray-500/15 border-white/15"
                           market={market}
                         />
                       ) : (

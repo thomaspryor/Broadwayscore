@@ -475,7 +475,7 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
                     {item.show.venue && <span className="block text-xs text-gray-500 sm:hidden truncate">{item.show.venue}</span>}
                   </td>
                   <td className="py-3 px-4 text-right">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-500/15 border border-gray-500/30 text-gray-300 font-semibold">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-500/15 border border-white/15 text-gray-300 font-semibold">
                       <TicketIcon className="w-3.5 h-3.5" />
                       {formatTicketPrice(price, market)}
                     </span>
@@ -498,7 +498,7 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
                     <tr className="bg-white/[0.02] border-b border-white/5">
                       <td colSpan={5} className="px-4 py-2">
                         <div className="flex flex-col sm:flex-row gap-2">
-                          <div className="flex-1 bg-gray-500/10 border border-gray-500/20 rounded-lg p-3">
+                          <div className="flex-1 bg-gray-500/10 border border-white/10 rounded-lg p-3">
                             <div className="flex items-start justify-between gap-2 mb-2">
                               <span className="font-semibold text-gray-300 text-sm">Standing Room</span>
                               <span className="font-bold text-white text-lg">{formatTicketPrice(sro.price, market)}</span>

@@ -123,7 +123,7 @@ function getDiscountOptions(data: ShowLotteryRush): DiscountOption[] {
       price: data.standingRoom.price,
       label: 'Standing Room',
       color: 'text-gray-300',
-      bgColor: 'bg-gray-500/15 border-gray-500/30',
+      bgColor: 'bg-gray-500/15 border-white/15',
     });
   }
 
@@ -313,7 +313,7 @@ export default function WestEndBestValuePage() {
                   bestPrice: item.cheapestPrice,
                   bestType: best?.label ?? '',
                   bestColor: best?.color ?? 'text-gray-300',
-                  bestBgColor: best?.bgColor ?? 'bg-gray-500/15 border-gray-500/30',
+                  bestBgColor: best?.bgColor ?? 'bg-gray-500/15 border-white/15',
                   optionCount: item.optionCount,
                   allOptions: options.map(o => ({ price: o.price, label: o.label, color: o.color, bgColor: o.bgColor })),
                 } satisfies BestValueRow;

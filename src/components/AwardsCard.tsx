@@ -68,14 +68,14 @@ const DESIGNATION_CONFIG: Record<AwardsDesignation, {
     sublabel: 'Eligible but not nominated',
     bgClass: 'bg-gray-500/10',
     textClass: 'text-gray-400',
-    borderClass: 'border-gray-500/20',
+    borderClass: 'border-white/10',
   },
   'pre-season': {
     label: 'Awaiting Eligibility',
     sublabel: 'Not yet eligible for awards',
-    bgClass: 'bg-gray-700/30',
+    bgClass: 'bg-surface-overlay/30',
     textClass: 'text-gray-500',
-    borderClass: 'border-gray-600/20',
+    borderClass: 'border-white/10',
   },
 };
 

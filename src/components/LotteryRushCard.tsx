@@ -238,7 +238,7 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
 
         {/* Standing Room */}
         {data.standingRoom && (
-          <div className="bg-gray-500/15 border border-gray-500/20 rounded-lg p-4 hover:bg-gray-500/20 transition-colors">
+          <div className="bg-gray-500/15 border border-white/10 rounded-lg p-4 hover:bg-gray-500/20 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <TicketIcon />

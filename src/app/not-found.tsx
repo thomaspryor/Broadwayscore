@@ -24,7 +24,7 @@ export default function NotFound() {
         </Link>
         <Link
           href="/methodology"
-          className="px-6 py-3 border border-gray-600 text-gray-300 font-semibold rounded-lg hover:border-gray-500 hover:text-white transition-colors"
+          className="px-6 py-3 border border-white/20 text-gray-300 font-semibold rounded-lg hover:border-white/30 hover:text-white transition-colors"
         >
           How It Works
         </Link>

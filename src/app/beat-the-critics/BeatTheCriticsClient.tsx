@@ -155,7 +155,7 @@ function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; s
         <div className="text-[15px] font-bold truncate">{show.title}</div>
         <div className="text-xs text-gray-500">{show.venue}</div>
       </div>
-      <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-gray-600'}`}>
+      <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-white/20'}`}>
         {selected && (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5"><path d="M2.5 6l2.5 2.5 4.5-5" /></svg>)}
       </div>
     </button>
@@ -170,7 +170,7 @@ function ActorNomineeCard({ nominee, selected, onSelect }: { nominee: ActorNomin
         <div className="text-[15px] font-bold truncate">{nominee.name}</div>
         <div className="text-xs text-gray-500">{nominee.showTitle}</div>
       </div>
-      <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-gray-600'}`}>
+      <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-white/20'}`}>
         {selected && (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5"><path d="M2.5 6l2.5 2.5 4.5-5" /></svg>)}
       </div>
     </button>

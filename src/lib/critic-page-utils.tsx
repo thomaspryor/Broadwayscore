@@ -31,7 +31,7 @@ export function TierBadge({ tier }: { tier: 1 | 2 | 3 }) {
     ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
     : tier === 2
     ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-    : 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+    : 'bg-gray-500/20 text-gray-400 border-white/15';
   return (
     <span className={`text-xs font-medium px-2 py-0.5 rounded border ${cls}`}>
       Tier {tier}
@@ -44,7 +44,7 @@ export function TierBadgeSmall({ tier }: { tier: 1 | 2 | 3 }) {
     ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
     : tier === 2
     ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-    : 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+    : 'bg-gray-500/20 text-gray-400 border-white/15';
   return (
     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${cls}`}>
       T{tier}

@@ -117,7 +117,7 @@ const fmtPct = (n: number | undefined | null) =>
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-5">
+    <div className="bg-surface-raised border border-white/[0.06] rounded-lg p-4 sm:p-5">
       <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">{title}</h2>
       {children}
     </div>
@@ -147,7 +147,7 @@ function FunnelStage({
   accent?: boolean;
 }) {
   return (
-    <div className="bg-gray-950/60 border border-gray-800 rounded-md p-3">
+    <div className="bg-gray-950/60 border border-white/[0.06] rounded-md p-3">
       <div className="text-[10px] uppercase tracking-wide text-gray-500">{label}</div>
       <div className={`text-xl sm:text-2xl font-extrabold tabular-nums mt-1 ${accent ? 'text-green-400' : 'text-white'}`}>
         {value}
@@ -220,7 +220,7 @@ export default function Dashboard() {
     <div className="space-y-5">
       {/* Timeframe tabs + refresh */}
       <div className="flex items-center gap-2 flex-wrap">
-        <div className="inline-flex rounded-lg border border-gray-800 overflow-hidden">
+        <div className="inline-flex rounded-lg border border-white/[0.06] overflow-hidden">
           {([7, 30] as Timeframe[]).map(d => (
             <button
               key={d}
@@ -238,7 +238,7 @@ export default function Dashboard() {
         <button
           onClick={() => load(timeframe, true)}
           disabled={loading}
-          className="px-3 py-2 text-sm font-medium border border-gray-800 rounded-lg text-gray-300 hover:bg-gray-900 disabled:opacity-50"
+          className="px-3 py-2 text-sm font-medium border border-white/[0.06] rounded-lg text-gray-300 hover:bg-surface-raised disabled:opacity-50"
         >
           {loading ? 'Loading…' : 'Refresh'}
         </button>
@@ -362,7 +362,7 @@ export default function Dashboard() {
                   </thead>
                   <tbody>
                     {stats.perPlatform.map(r => (
-                      <tr key={r.platform} className="border-t border-gray-800">
+                      <tr key={r.platform} className="border-t border-white/[0.06]">
                         <td className="px-4 sm:px-5 py-2 text-white font-medium">
                           {r.platform}
                           {!r.affiliate && (

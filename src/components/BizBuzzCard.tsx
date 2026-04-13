@@ -57,7 +57,7 @@ function RecoupmentBadge({ recouped }: { recouped: boolean | null }) {
     );
   }
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/15 text-gray-400 border border-gray-500/25">
+    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/15 text-gray-400 border border-white/10">
       Unknown
     </span>
   );
@@ -85,10 +85,10 @@ function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   // Derive bg/border from trend color pattern
   const bgBorderMap: Record<string, { bgClass: string; borderClass: string }> = {
     improving: { bgClass: 'bg-emerald-500/15', borderClass: 'border-emerald-500/25' },
-    steady: { bgClass: 'bg-gray-500/15', borderClass: 'border-gray-500/25' },
+    steady: { bgClass: 'bg-gray-500/15', borderClass: 'border-white/10' },
     declining: { bgClass: 'bg-red-500/15', borderClass: 'border-red-500/25' },
   };
-  const { bgClass, borderClass } = bgBorderMap[trend] || { bgClass: 'bg-gray-500/15', borderClass: 'border-gray-500/25' };
+  const { bgClass, borderClass } = bgBorderMap[trend] || { bgClass: 'bg-gray-500/15', borderClass: 'border-white/10' };
 
   return (
     <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${bgClass} ${colorClass} border ${borderClass}`}>

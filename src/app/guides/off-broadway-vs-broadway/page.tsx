@@ -116,7 +116,7 @@ export default function OffBroadwayVsBroadwayGuide() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-gray-400 border-b border-gray-700">
+                <tr className="text-gray-400 border-b border-white/10">
                   <th className="text-left py-2 pr-4"></th>
                   <th className="text-left py-2 pr-4">Broadway</th>
                   <th className="text-left py-2 pr-4">Off-Broadway</th>
@@ -124,19 +124,19 @@ export default function OffBroadwayVsBroadwayGuide() {
                 </tr>
               </thead>
               <tbody className="text-gray-300">
-                <tr className="border-b border-gray-800">
+                <tr className="border-b border-white/[0.06]">
                   <td className="py-2 pr-4 font-medium text-white">Seats</td>
                   <td className="py-2 pr-4">500+</td>
                   <td className="py-2 pr-4">100-499</td>
                   <td className="py-2">Under 100</td>
                 </tr>
-                <tr className="border-b border-gray-800">
+                <tr className="border-b border-white/[0.06]">
                   <td className="py-2 pr-4 font-medium text-white">Ticket Price</td>
                   <td className="py-2 pr-4">$100-200+</td>
                   <td className="py-2 pr-4">$40-100</td>
                   <td className="py-2">$10-30</td>
                 </tr>
-                <tr className="border-b border-gray-800">
+                <tr className="border-b border-white/[0.06]">
                   <td className="py-2 pr-4 font-medium text-white">Location</td>
                   <td className="py-2 pr-4">Theater District</td>
                   <td className="py-2 pr-4">All over Manhattan</td>

@@ -42,7 +42,7 @@ export default function RecoupmentProgressBar({ estimatedPct, source, modelMetho
           <span className="text-[10px] text-gray-500">Range: {low}–{high}%</span>
         )}
       </div>
-      <div className="relative w-full bg-gray-700/50 rounded-full h-2.5">
+      <div className="relative w-full bg-surface-overlay/50 rounded-full h-2.5">
         {/* Main bar at central estimate */}
         <div
           role="progressbar"

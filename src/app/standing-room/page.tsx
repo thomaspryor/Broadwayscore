@@ -108,7 +108,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
 
         {/* SRO Badge */}
         <div className="flex flex-wrap items-center gap-2 mt-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-500/15 border border-gray-500/30 text-gray-300 font-semibold text-sm">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-500/15 border border-white/15 text-gray-300 font-semibold text-sm">
             <TicketIcon className="w-4 h-4" />
             {formatTicketPrice(sro.price, 'broadway')} Standing Room
           </span>
@@ -219,7 +219,7 @@ export default function StandingRoomPage() {
         </div>
 
         {/* How It Works */}
-        <div className="card p-5 mb-8 bg-gray-500/5 border-gray-500/20">
+        <div className="card p-5 mb-8 bg-gray-500/5 border-white/10">
           <h2 className="font-bold text-white mb-2">How Standing Room Works</h2>
           <ul className="text-sm text-gray-400 space-y-2">
             <li className="flex gap-2">
