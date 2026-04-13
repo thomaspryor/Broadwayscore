@@ -69,7 +69,7 @@ import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
-const { isLondonMarket, isUkOutletUrl } = require('../lib/venue-classification');
+// venue-classification import removed — market context now passed via input-builder
 
 // ========================================
 // SEMVER COMPARISON
@@ -250,6 +250,7 @@ interface ShowPriorityInfo {
   status: string;
   openingDate: string | null;
   category: string;
+  venue: string | null;
 }
 
 /**
@@ -265,6 +266,7 @@ function loadShowPriority(): Map<string, ShowPriorityInfo> {
         status: show.status || 'closed',
         openingDate: show.openingDate || null,
         category: show.category || 'broadway',
+        venue: show.venue || null,
       });
     }
   } catch {
@@ -1034,8 +1036,13 @@ async function main(): Promise<void> {
   for (let i = 0; i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
 
-    // Attach human-readable show title for LLM context (input-builder uses it)
+    // Attach show metadata for LLM context (input-builder uses these)
     reviewFile.showTitle = showTitles.get(reviewFile.showId) || undefined;
+    const showMeta = showPriority.get(reviewFile.showId);
+    if (showMeta) {
+      reviewFile.category = showMeta.category;
+      reviewFile.venue = showMeta.venue;
+    }
 
     // Progress
     const showName = reviewFile.showId;
@@ -1153,22 +1160,18 @@ async function main(): Promise<void> {
 
           // Route rejection to appropriate flags
           // Off-Broadway shows are exempt from wrongProduction flagging:
-          // OB and WE shows commonly transfer from regional/fringe theaters, so LLM often
+          // OB shows commonly transfer from regional/fringe theaters, so LLM often
           // misidentifies the production as "wrong" when it's actually correct.
-          // WE shows get flagged because the Broadway-centric prompt says "not the current Broadway run".
+          // WE shows now get market+venue context in the prompt (2026-04-13), so the
+          // LLM can correctly distinguish Broadway vs West End productions.
           const showInfo = showPriority.get(reviewFile.showId || '');
           const isOffBroadway = showInfo?.category === 'off-broadway';
-          const isWestEnd = isLondonMarket(showInfo?.category);
           if (rejection === 'wrong_show') {
-            if (isWestEnd && isUkOutletUrl(fileData.url)) {
-              console.log(` (WE exempt — skipping wrongShow flag for UK outlet on London show)`);
-            } else {
-              fileData.wrongShow = true;
-            }
-          } else if (rejection === 'wrong_production' && !isOffBroadway && !isWestEnd) {
+            fileData.wrongShow = true;
+          } else if (rejection === 'wrong_production' && !isOffBroadway) {
             fileData.wrongProduction = true;
-          } else if (rejection === 'wrong_production' && (isOffBroadway || isWestEnd)) {
-            console.log(` (${isWestEnd ? 'WE' : 'OB'} exempt — skipping wrongProduction flag)`);
+          } else if (rejection === 'wrong_production' && isOffBroadway) {
+            console.log(` (OB exempt — skipping wrongProduction flag)`);
           } else if (rejection === 'not_a_review') {
             fileData.contentTier = 'invalid';
           } else if (rejection === 'garbage_text') {
