@@ -450,7 +450,10 @@ function getBestScore(data, opts = {}) {
   // If the outlet publishes star ratings but originalScore wasn't set during collection,
   // try to extract it from fullText now. Catches gaps without waiting for the weekly
   // recover-explicit-ratings cron — critical for opening night accuracy.
-  if (!effectiveOriginalScore && isKnownStarOutlet && data.fullText && data.fullText.length > 100) {
+  // Guards: skip if score was deliberately cleared (low-reliability extraction that was
+  // reviewed and rejected) or if scoreSource is a known low-reliability method.
+  if (!effectiveOriginalScore && !scoreCleared && isKnownStarOutlet
+      && data.fullText && data.fullText.length > 100) {
     const extracted = extractScoreFromText('', data.fullText, data.outletId || '');
     if (extracted && extracted.normalizedScore != null) {
       inc('inlineStarRecovered');
