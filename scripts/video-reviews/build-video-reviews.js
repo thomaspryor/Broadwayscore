@@ -24,7 +24,7 @@ function main() {
   };
 
   const showDirs = fs.readdirSync(TRANSCRIPTS_DIR).filter(d =>
-    d !== '.DS_Store' && fs.statSync(path.join(TRANSCRIPTS_DIR, d)).isDirectory());
+    d !== '.DS_Store' && d !== 'raw' && d !== 'classified' && fs.statSync(path.join(TRANSCRIPTS_DIR, d)).isDirectory());
 
   for (const showId of showDirs) {
     const showDir = path.join(TRANSCRIPTS_DIR, showId);

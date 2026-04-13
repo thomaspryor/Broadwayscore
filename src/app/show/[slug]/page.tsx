@@ -939,8 +939,8 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           ) : null;
         })()}
 
-        {/* Video Reviews — below Audience Grade */}
-        {videoReviews.length > 0 && (
+        {/* Video Reviews — below Audience Grade, behind feature flag */}
+        {featureFlags.videoReviews && videoReviews.length > 0 && (
           <VideoReviewsShelf reviews={videoReviews} showTitle={show.title} />
         )}
 
