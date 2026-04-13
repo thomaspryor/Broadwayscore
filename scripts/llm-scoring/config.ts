@@ -279,7 +279,7 @@ Before scoring, check if this text is actually a scoreable review of the target 
 | Rejection Reason | Description |
 |-----------------|-------------|
 | wrong_show | Text is about a completely different show or topic |
-| wrong_production | Reviews a touring, regional, or previous production — not the current Broadway or West End run being scored |
+| wrong_production | Reviews a different production than the one specified in the Show context. **Check the venue and market carefully**: if the context says "at Lyric Theatre (West End)" but the review discusses a production at the National Theatre, a Broadway theatre, or any other venue, reject as wrong_production. Same show title at the wrong venue/market = wrong production. Also reject touring, regional, transfer, or preview/workshop productions at other venues. |
 | not_a_review | Press release, plot summary with no evaluation, cast listing, or promotional content |
 | garbage_text | Navigation menus, error pages, ad copy, login prompts, or other non-article content |
 
