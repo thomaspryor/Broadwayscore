@@ -41,17 +41,21 @@ const reviewsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json')
 const shows = showsRaw.shows;
 const reviews = reviewsRaw.reviews;
 
-// ── Load audience data ──────────────────────────────────────────────
+// ── Load audience data (from audience-buzz.json, NOT audience.json) ─
+// audience-buzz.json has combinedScore per show. audience.json is raw per-platform data.
 let audienceData = {};
 try {
-  const audienceRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'audience.json'), 'utf8'));
-  if (audienceRaw.audience) {
-    for (const entry of audienceRaw.audience) {
-      if (entry.showId) audienceData[entry.showId] = entry;
+  const buzzRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'audience-buzz.json'), 'utf8'));
+  const buzzShows = buzzRaw.shows || buzzRaw;
+  for (const [showId, data] of Object.entries(buzzShows)) {
+    if (showId === '_meta' || showId === 'lastUpdated') continue;
+    if (data && data.combinedScore != null) {
+      audienceData[showId] = data;
     }
   }
+  console.error(`Loaded audience data for ${Object.keys(audienceData).length} shows`);
 } catch (e) {
-  console.error('Warning: Could not load audience.json:', e.message);
+  console.error('Warning: Could not load audience-buzz.json:', e.message);
 }
 
 // ── Compute critic scores per show ──────────────────────────────────
@@ -249,10 +253,10 @@ const config = {
     },
     boxOffice: { pointsPer100K: 0.30 },
     awards: {
-      tonyNom: 7,
-      tonyWin: 14,
-      tonyBestMusical: 30,
-      tonyBestPlay: 30,
+      tonyNom: 7, tonyWin: 14, tonyBestMusical: 30, tonyBestPlay: 30,
+      dramaLeagueNom: 2, dramaLeagueWin: 5,
+      outerCriticsNom: 2, outerCriticsWin: 5,
+      dramaDeskNom: 3, dramaDeskWin: 6,
     },
   },
 };

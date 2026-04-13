@@ -69,21 +69,36 @@ export const AUDIENCE_GRADE_POINTS: Record<string, number> = {
 export const BOX_OFFICE_POINTS_PER_100K = 0.30;
 
 /**
- * Awards point values — Tony Awards only for MVP.
+ * Awards point values — Tonys + pre-Tony ceremonies.
  *
- * Awards are the majority of total points (~53% for a Best Musical winner).
- * Best Musical winner with 8 noms + 4 wins earns ~128 pts from awards.
+ * Multiple ceremonies create scoring events across 6 weeks (mid-May to mid-June),
+ * not just one Tony night. Awards still ~45-50% of a strong show's total.
  *
- * Calibrated distribution for a Best Musical winner:
- *   Awards: 128 pts (53%)  |  Box Office: 60 pts (25%)
- *   CriticScore: 30 pts (12%)  |  AudienceGrade: 25 pts (10%)
+ * Tony Awards (mid-June): biggest single event
+ * Drama League (mid-May): noms + wins
+ * Outer Critics Circle (late May): noms + wins, covers BW + OB
+ * Drama Desk (late May/early June): noms + wins, covers BW + OB
  */
 export const AWARDS_POINTS = {
+  // Tony Awards
   tonyNom: 7,
   tonyWin: 14,
   tonyBestMusical: 30,
   tonyBestPlay: 30,
+  // Pre-Tony ceremonies
+  dramaLeagueNom: 2,
+  dramaLeagueWin: 5,
+  outerCriticsNom: 2,
+  outerCriticsWin: 5,
+  dramaDeskNom: 3,
+  dramaDeskWin: 6,
 };
+
+// ===========================================
+// PRIZE
+// ===========================================
+
+export const PRIZE_DESCRIPTION = '$500 TodayTix voucher';
 
 // ===========================================
 // ELIGIBILITY MARKERS

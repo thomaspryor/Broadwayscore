@@ -46,9 +46,12 @@ export default function FantasyLandingPage() {
           <span className="text-white">Broadway</span>{' '}
           <span className="text-gradient">Fantasy League</span>
         </h1>
-        <p className="text-lg sm:text-xl text-zinc-400 max-w-xl mx-auto mb-8">
+        <p className="text-lg sm:text-xl text-zinc-400 max-w-xl mx-auto mb-4">
           Draft {info.teamSize} shows. ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
+        </p>
+        <p className="text-sm text-brand font-semibold mb-8">
+          Winner gets a $500 TodayTix voucher
         </p>
         <a
           href="/fantasy/draft"
@@ -144,7 +147,7 @@ export default function FantasyLandingPage() {
               <span className="text-green-400">$</span> Box Office
             </h3>
             <p className="text-sm text-zinc-400">
-              {BOX_OFFICE_POINTS_PER_100K} points per $100K in weekly Broadway League grosses.
+              A hit musical grossing $1M/week earns about 3 pts per week.
               Points accumulate every week through Tony Awards night.
             </p>
             <p className="text-xs text-zinc-600 mt-2">
@@ -155,24 +158,33 @@ export default function FantasyLandingPage() {
           {/* Awards */}
           <div className="bg-zinc-800/50 rounded-xl p-5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="text-brand">🏆</span> Tony Awards
+              <span className="text-brand">🏆</span> Awards
             </h3>
+            <p className="text-xs text-zinc-500 mb-2">Tony Awards (biggest), Drama Desk, Outer Critics Circle, Drama League</p>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
-                <span className="text-zinc-400">Best Musical / Best Play</span>
+                <span className="text-zinc-400">Tony Best Musical / Play</span>
                 <span className="font-mono text-zinc-300">{AWARDS_POINTS.tonyBestMusical} pts</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Other Tony Win</span>
+                <span className="text-zinc-400">Tony Win</span>
                 <span className="font-mono text-zinc-300">{AWARDS_POINTS.tonyWin} pts</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">Tony Nomination</span>
                 <span className="font-mono text-zinc-300">{AWARDS_POINTS.tonyNom} pts</span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Drama Desk Win / Nom</span>
+                <span className="font-mono text-zinc-300">{AWARDS_POINTS.dramaDeskWin} / {AWARDS_POINTS.dramaDeskNom} pts</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Outer Critics Win / Nom</span>
+                <span className="font-mono text-zinc-300">{AWARDS_POINTS.outerCriticsWin} / {AWARDS_POINTS.outerCriticsNom} pts</span>
+              </div>
             </div>
             <p className="text-xs text-zinc-600 mt-2">
-              Broadway shows only. Awards entered manually as ceremonies happen.
+              Scoring events across 6 weeks from mid-May through Tony night in June.
             </p>
           </div>
         </div>
@@ -209,6 +221,10 @@ export default function FantasyLandingPage() {
         <div className="space-y-4">
           {[
             {
+              q: 'What does the winner get?',
+              a: 'A $500 TodayTix voucher. Highest total points on Tony night wins.',
+            },
+            {
               q: 'Do I need an account?',
               a: 'No. Just enter your email. One entry per email per season.',
             },
@@ -217,12 +233,16 @@ export default function FantasyLandingPage() {
               a: 'Yes — re-submit with the same email before the draft deadline. Your new picks replace the old ones.',
             },
             {
-              q: 'What are leagues?',
-              a: 'Optional. Type the same league name as your friends on the draft form to create a private group. You can still see the overall leaderboard.',
+              q: 'What about closed shows?',
+              a: 'Shows that have already closed stop earning box office points, but they can still earn Tony nominations and wins. Some of the best Tony contenders closed early.',
             },
             {
               q: 'What about Off-Broadway shows?',
-              a: 'Priced $3-$8. They can earn CriticScore and AudienceGrade points, but no box office (they don\'t report grosses) and no Tony nominations.',
+              a: 'Priced $3-$8. They earn CriticScore and AudienceGrade points, plus Drama Desk and Outer Critics Circle awards. No box office and no Tony nominations.',
+            },
+            {
+              q: 'What are leagues?',
+              a: 'Optional. Type the same league name as your friends on the draft form to create a private group. You can still see the overall leaderboard.',
             },
           ].map(({ q, a }) => (
             <div key={q} className="bg-zinc-800/30 rounded-xl p-4">
