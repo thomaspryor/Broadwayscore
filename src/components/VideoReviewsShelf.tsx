@@ -1,4 +1,4 @@
-import { getScoreColorClass } from '@/components/show-cards';
+import { getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
 import type { VideoReview } from '@/lib/data-video-reviews';
 
 function TikTokIcon() {
@@ -37,15 +37,21 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
   if (!reviews || reviews.length === 0) return null;
 
   const avgScore = Math.round(reviews.reduce((sum, r) => sum + r.score, 0) / reviews.length);
+  const tier = getScoreTier(avgScore);
 
   return (
     <section className="card p-5 sm:p-6 mb-6">
-      {/* Header — title left, count + score badge right */}
+      {/* Header — title left, tier label + score badge right */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-bold text-white">Video Reviews</h2>
-        <div className="flex items-center gap-2">
-          <span className="text-gray-400 text-sm">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</span>
-          <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(avgScore)}`}>
+        <div className="flex items-center gap-2.5">
+          <div className="text-right">
+            {tier && (
+              <div className={`text-sm font-bold ${getScoreTextColorClass(avgScore)}`}>{tier.label}</div>
+            )}
+            <div className="text-xs text-gray-500">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</div>
+          </div>
+          <div className={`score-badge w-14 h-14 text-2xl rounded-xl font-extrabold ${getScoreColorClass(avgScore)}`}>
             {avgScore}
           </div>
         </div>
