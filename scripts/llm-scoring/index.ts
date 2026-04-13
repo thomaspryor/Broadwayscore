@@ -924,12 +924,26 @@ async function main(): Promise<void> {
 
   // Pre-filter: skip reviews already flagged as unscorable
   // Pre-filter: skip reviews flagged as unscorable (uses shared isScoreable utility)
+  // Per-file rejection logging added after Titanique postmortem ("0 valid files" with no explanation)
   let dataQualitySkipped = 0;
   let showNotMentionedWithExcerpts = 0;
   const scorableFiles = filesToProcess.filter(f => {
     const d = f.data as any;
     if (!isScoreable(d)) {
       dataQualitySkipped++;
+      // Log the specific reason for rejection
+      const reasons: string[] = [];
+      if (d.duplicateOf) reasons.push(`duplicateOf=${d.duplicateOf}`);
+      if (d.wrongShow) reasons.push('wrongShow');
+      if (d.wrongProduction) reasons.push('wrongProduction');
+      if (d.wrongAttribution) reasons.push('wrongAttribution');
+      if (d.contentTier === 'invalid') reasons.push('contentTier=invalid');
+      if (d.incompleteReason === 'scraper_garbage') reasons.push('scraper_garbage');
+      if (d.isRoundupArticle) reasons.push('isRoundupArticle');
+      if (d.rejectionReason) reasons.push(`rejectionReason=${d.rejectionReason}`);
+      if (d.showNotMentioned) reasons.push('showNotMentioned-no-excerpts');
+      if (d.fullTextWrongAuthor) reasons.push('fullTextWrongAuthor-no-excerpts');
+      console.log(`  [SKIP] ${f.path}: ${reasons.join(', ') || 'unknown'}`);
       return false;
     }
     // Count showNotMentioned reviews that passed (have valid excerpts)
@@ -946,7 +960,17 @@ async function main(): Promise<void> {
   }
 
   // Apply text length filter - now includes reviews with excerpts
-  const validFilesUnsorted = scorableFiles.filter(f => getScorableText(f.data, f.path) !== null);
+  let textTooShortSkipped = 0;
+  const validFilesUnsorted = scorableFiles.filter(f => {
+    if (getScorableText(f.data, f.path) !== null) return true;
+    textTooShortSkipped++;
+    const textLen = ((f.data as any).fullText || '').length;
+    console.log(`  [SKIP] ${f.path}: text too short (fullText=${textLen} chars, no valid excerpts)`);
+    return false;
+  });
+  if (textTooShortSkipped > 0) {
+    console.log(`Skipped ${textTooShortSkipped} reviews with insufficient text\n`);
+  }
 
   // Prioritize: full-text first, open shows first, newer shows first
   const showPriority = loadShowPriority();

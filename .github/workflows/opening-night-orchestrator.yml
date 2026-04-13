@@ -53,6 +53,16 @@ on:
         required: false
         type: number
         default: 45
+      fast_path:
+        description: 'Poller inlines rebuild+deploy after scoring (default true for opening nights)'
+        required: false
+        type: boolean
+        default: true
+      bww_roundup_url:
+        description: 'Direct BWW Review Roundup URL (pass to poller to bypass SERP discovery)'
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -363,6 +373,18 @@ jobs:
             POLLER_ARGS="$ITER_SKIP_SERP"
             if [ -n "$MARKET" ]; then
               POLLER_ARGS="$POLLER_ARGS -f market=$MARKET"
+            fi
+
+            # Fast path: inline rebuild+deploy (default true for orchestrator dispatches)
+            FAST_PATH="${{ inputs.fast_path }}"
+            if [ "$FAST_PATH" = "true" ] || [ -z "$FAST_PATH" ]; then
+              POLLER_ARGS="$POLLER_ARGS -f fast_path=true"
+            fi
+
+            # BWW roundup URL passthrough (only on first iteration — subsequent ones discover via shows.json)
+            BWW_URL="${{ inputs.bww_roundup_url }}"
+            if [ -n "$BWW_URL" ] && [ "$ITERATION" -eq 1 ]; then
+              POLLER_ARGS="$POLLER_ARGS -f bww_roundup_url=$BWW_URL"
             fi
 
             # Record the newest poller run ID BEFORE dispatch so we can detect the new one
