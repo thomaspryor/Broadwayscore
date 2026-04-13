@@ -47,6 +47,11 @@ on:
         required: false
         type: string
         default: ''
+      fast_path:
+        description: 'Inline rebuild+deploy after scoring (skips separate rebuild-reviews.yml dispatch)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -281,8 +286,92 @@ jobs:
           bash ../../scripts/lib/push-with-retry.sh 5 main
         continue-on-error: true
 
-      - name: Trigger rebuild + deploy
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+      # === FAST PATH: inline rebuild+deploy (skips separate rebuild-reviews.yml) ===
+      - name: Cancel competing rebuilds (fast_path)
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Fast path: cancelling any in-progress rebuilds..."
+          for id in $(gh run list --workflow=rebuild-reviews.yml --limit=5 --json databaseId,status \
+            -q '.[] | select(.status=="in_progress" or .status=="queued") | .databaseId'); do
+            echo "  Cancelling rebuild run $id"
+            gh run cancel "$id" 2>/dev/null || true
+          done
+          for id in $(gh run list --workflow=rebuild-fast.yml --limit=3 --json databaseId,status \
+            -q '.[] | select(.status=="in_progress" or .status=="queued") | .databaseId'); do
+            echo "  Cancelling fast rebuild run $id"
+            gh run cancel "$id" 2>/dev/null || true
+          done
+        continue-on-error: true
+
+      - name: Rebuild reviews.json (fast_path)
+        id: fast_rebuild
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "Fast path: rebuilding reviews.json inline..."
+          if node scripts/rebuild-all-reviews.js; then
+            echo "Rebuild succeeded"
+          else
+            echo "⚠️  Rebuild failed — re-cloning review-texts and retrying..."
+            rm -rf data/review-texts
+            git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+            node scripts/rebuild-all-reviews.js
+          fi
+        timeout-minutes: 5
+
+      - name: Snapshot core data for private repo push (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        run: |
+          for f in reviews.json shows.json critic-consensus.json critic-registry.json outlet-registry.json; do
+            if [ -f "data/$f" ]; then
+              cp -f "data/$f" /tmp/core-data-snapshot/
+            fi
+          done
+
+      - name: Update critic registry (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        run: node scripts/audit-critic-outlets.js
+        continue-on-error: true
+
+      - name: Regenerate mobile detail JSONs (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        run: node scripts/generate-mobile-show-details.js
+        continue-on-error: true
+
+      - name: Commit and push rebuilt data (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/*.json 2>/dev/null || true
+          git add public/opening-night-status.json public/status.html 2>/dev/null || true
+          git add public/data/shows/ 2>/dev/null || true
+          git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
+          git diff --cached --quiet && { echo "No public data changes to commit"; exit 0; }
+          git commit -m "data: Opening night poller (fast path) — inline rebuild"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Push core data to private repo (fast_path)
+        if: always() && inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Opening night poller (fast path) — inline rebuild'
+
+      - name: Trigger deploy (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "Fast path: triggering deploy..."
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+
+      # === LEGACY PATH: dispatch rebuild-reviews.yml (when fast_path is off) ===
+      - name: Trigger rebuild + deploy (legacy)
+        if: (!inputs.fast_path) && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
