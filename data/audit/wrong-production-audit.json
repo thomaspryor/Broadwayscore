@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-13T10:07:39.174Z",
+  "timestamp": "2026-04-13T10:32:08.778Z",
   "stats": {
-    "totalReviews": 34849,
+    "totalReviews": 34850,
     "alreadyFlagged": 13928,
     "dateGuardCatches": 107,
     "directorMismatch": 975,
-    "tvFilmSignals": 3384,
+    "tvFilmSignals": 3385,
     "londonSignals": 1114,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
@@ -28350,6 +28350,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-1987",
+      "file": "timeout--unknown.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "http://www.timeout.com/newyork/theater/les-miserables",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"cineplex\""
         }
       ]
     },
