@@ -62,7 +62,9 @@
     "fences-2010/hollywood-reporter--unknown.json",
     "fences-2010/wsj--christopher-john-farley.json",
     "million-dollar-quartet-2010/theatermania--unknown.json",
-    "all-about-me-2010/talkinbroadway--unknown.json"
+    "all-about-me-2010/talkinbroadway--unknown.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -987,7 +989,15 @@
     "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
     "a-behanding-in-spokane-2010/new-jersey-newsroom--michael-sommers.json",
     "a-behanding-in-spokane-2010/backstage--david-sheward.json",
-    "time-stands-still-2010/hollywood-reporter--charles-isherwood.json"
+    "time-stands-still-2010/hollywood-reporter--charles-isherwood.json",
+    "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
+    "a-little-night-music-2009/ap--ben-brantley.json",
+    "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "fela-2009/new-jersey-newsroom--michael-sommers.json",
+    "the-royal-family-2009/washpost--peter-marks.json",
+    "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1023,7 +1033,8 @@
       "the-peewee-herman-show-2010/theatermania--unknown.json",
       "titanique-2026/nyt-theater--unknown.json",
       "oliver-west-end-2024/standard--unknown.json",
-      "million-dollar-quartet-2010/theatermania--unknown.json"
+      "million-dollar-quartet-2010/theatermania--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1055,7 +1066,8 @@
       "titanique-2026/thewrap--unknown.json",
       "titanique-2026/talkinbroadway--unknown.json",
       "fences-2010/wsj--christopher-john-farley.json",
-      "all-about-me-2010/talkinbroadway--unknown.json"
+      "all-about-me-2010/talkinbroadway--unknown.json",
+      "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
     ],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
@@ -1068,7 +1080,8 @@
       "data/review-texts/follies-2011/abc-news--mark-kennedy.json",
       "data/review-texts/the-scottsboro-boys-2010/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/driving-miss-daisy-2010/backstage--unknown.json",
-      "data/review-texts/driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json"
+      "data/review-texts/driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
+      "data/review-texts/a-little-night-music-2009/ap--ben-brantley.json"
     ],
     "archive": [
       "schmigadoon-2026/rollingstone--alan-sepinwall.json",
@@ -1082,7 +1095,7 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "time-stands-still-2010/hollywood-reporter--charles-isherwood.json",
+  "lastProcessed": "burn-the-floor-2009/ew--jennifer-armstrong.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1160,6 +1173,17 @@
       "t": "2026-04-13T18:51:14.043Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T18:54:08.864Z",
+      "event": "bb-session",
+      "session": "90664f18",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-13T18:54:09.374Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-13T18:52:38.093Z",
-  "processed": 63,
-  "failed": 923,
-  "successRate": "6.4%",
+  "updatedAt": "2026-04-13T18:56:15.330Z",
+  "processed": 65,
+  "failed": 931,
+  "successRate": "6.5%",
   "tierBreakdown": {
-    "playwright": 32,
+    "playwright": 33,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 15,
-    "brightdata": 7,
-    "archiveToday": 11,
+    "brightdata": 8,
+    "archiveToday": 12,
     "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -91,6 +91,17 @@
       "t": "2026-04-13T18:51:14.043Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T18:54:08.864Z",
+      "event": "bb-session",
+      "session": "90664f18",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-13T18:54:09.374Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
