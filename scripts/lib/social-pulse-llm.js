@@ -34,11 +34,12 @@ For each input item (prefixed with its index [i=0], [i=1], etc.), return a class
 - i: the integer index from the input
 - relevant: true if the post is about the ${marketLabel} production of "${showTitle}" — INCLUDING casting news, cast photos, fan reposts, official show promos, user reactions. False only for unrelated uses of the phrase (e.g., "maybe a happy ending for this movie"), other unrelated productions, or noise.
 - sentiment:
-    "positive" — user enthusiasm ("loved it", "obsessed"), strong praise, promotional content from the show's own account (they're selling the show, that's positive signal), fan art/tribute posts, celebratory cast news
+    "positive" — genuine audience enthusiasm ("loved it", "obsessed"), strong praise, fan art/tribute posts, celebratory cast news
     "negative" — disappointment, criticism, warnings, reports of cast cuts / early closures, backlash
-    "mixed" — genuinely nuanced opinions, neutral factual news with no valence
+    "mixed" — genuinely nuanced opinions where the author expresses BOTH praise and criticism
+    "neutral" — factual/informational posts with NO opinion signal: news links, ticket listings, schedule announcements, cast announcements without commentary, retweets of official content without added opinion. Also: promotional content from the show's own official account (@HamiltonMusical, @CatsMusical, etc.) — marketing is not audience sentiment.
 
-IMPORTANT: Return a result for EVERY input index, in order. If you are unsure about an item, default to relevant=true + sentiment=mixed rather than skipping it.
+IMPORTANT: Return a result for EVERY input index, in order. If you are unsure about an item, default to relevant=true + sentiment=neutral rather than skipping it. Use "mixed" ONLY for genuinely mixed opinions, not for neutral/informational posts.
 
 Return JSON: {"results": [{"i": 0, "relevant": true, "sentiment": "positive"}, {"i": 1, ...}, ...]}`;
 }
@@ -74,7 +75,7 @@ async function classifyBatch({ openai, showTitle, marketLabel, batch, logger = c
     logger.warn(`[${showTitle}] LLM classify batch failed: ${err.message}`);
     // Conservative default: relevant=true, sentiment=mixed. Better than
     // dropping real content.
-    return batch.map((m) => ({ ...m, relevant: true, sentiment: 'mixed' }));
+    return batch.map((m) => ({ ...m, relevant: true, sentiment: 'neutral' }));
   }
 
   const raw = response.choices?.[0]?.message?.content || '';
@@ -83,7 +84,7 @@ async function classifyBatch({ openai, showTitle, marketLabel, batch, logger = c
     parsed = JSON.parse(raw);
   } catch (err) {
     logger.warn(`[${showTitle}] LLM returned invalid JSON: ${raw.slice(0, 200)}`);
-    return batch.map((m) => ({ ...m, relevant: true, sentiment: 'mixed' }));
+    return batch.map((m) => ({ ...m, relevant: true, sentiment: 'neutral' }));
   }
 
   const results = Array.isArray(parsed.results) ? parsed.results : Array.isArray(parsed) ? parsed : [];
@@ -99,19 +100,19 @@ async function classifyBatch({ openai, showTitle, marketLabel, batch, logger = c
 
   if (byIndex.size !== batch.length) {
     logger.warn(
-      `[${showTitle}] LLM returned ${byIndex.size}/${batch.length} classifications — defaulting missing to relevant=true mixed`,
+      `[${showTitle}] LLM returned ${byIndex.size}/${batch.length} classifications — defaulting missing to relevant=true neutral`,
     );
   }
 
   return batch.map((m, i) => {
     const r = byIndex.get(i);
     if (!r) {
-      return { ...m, relevant: true, sentiment: 'mixed' };
+      return { ...m, relevant: true, sentiment: 'neutral' };
     }
     const sentiment =
-      r.sentiment === 'positive' || r.sentiment === 'negative' || r.sentiment === 'mixed'
+      r.sentiment === 'positive' || r.sentiment === 'negative' || r.sentiment === 'mixed' || r.sentiment === 'neutral'
         ? r.sentiment
-        : 'mixed';
+        : 'neutral';
     return { ...m, relevant: Boolean(r.relevant), sentiment };
   });
 }
@@ -134,7 +135,7 @@ async function classifyMentions({ mentions, showTitle, marketLabel, openaiApiKey
   const output = mentions.map((m) => {
     const text = typeof m.text === 'string' ? m.text.trim() : '';
     if (text.length < 5) {
-      return { ...m, relevant: false, sentiment: 'mixed' };
+      return { ...m, relevant: false, sentiment: 'neutral' };
     }
     needsClassify.push(m);
     return m;

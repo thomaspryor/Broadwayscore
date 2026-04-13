@@ -31,7 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { fetchAllSocialMentions } = require('./lib/apify-fetchers');
+const { fetchAllSocialMentions, fetchXTweetCount } = require('./lib/apify-fetchers');
 const { classifyMentions } = require('./lib/social-pulse-llm');
 const { computeSocialPulse } = require('./lib/social-pulse-scorer');
 const { listRunningShows } = require('./lib/list-running-shows');
@@ -207,20 +207,25 @@ async function processShow({ show, apifyToken, openaiApiKey, dryRun, logger = co
 
   logger.log(`[${showId}] Fetching mentions for "${showTitle}" (${marketLabel})...`);
 
-  // Step 1: Fetch mentions from all four platforms (Reddit + 3 Apify)
-  const fetchResult = await fetchAllSocialMentions({
-    showTitle,
-    marketQualifier,
-    twitterMax: TWITTER_MAX,
-    tiktokMax: TIKTOK_MAX,
-    instagramMax: INSTAGRAM_MAX,
-    redditMax: REDDIT_MAX,
-    token: apifyToken,
-    logger,
-  });
+  // Step 1a: Fetch mentions from all four platforms (Reddit + 3 Apify)
+  // Step 1b: Fetch true X tweet count via free X API (runs in parallel)
+  const [fetchResult, xTrueVolume] = await Promise.all([
+    fetchAllSocialMentions({
+      showTitle,
+      marketQualifier,
+      twitterMax: TWITTER_MAX,
+      tiktokMax: TIKTOK_MAX,
+      instagramMax: INSTAGRAM_MAX,
+      redditMax: REDDIT_MAX,
+      token: apifyToken,
+      logger,
+    }),
+    fetchXTweetCount({ showTitle, marketQualifier, logger }),
+  ]);
 
+  const xVolLabel = xTrueVolume !== null ? `X.vol=${xTrueVolume}` : 'X.vol=n/a';
   logger.log(
-    `[${showId}]   Reddit=${fetchResult.rawCounts.reddit || 0} X=${fetchResult.rawCounts.twitter} TikTok=${fetchResult.rawCounts.tiktok} IG=${fetchResult.rawCounts.instagram} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
+    `[${showId}]   Reddit=${fetchResult.rawCounts.reddit || 0} X=${fetchResult.rawCounts.twitter} ${xVolLabel} TikTok=${fetchResult.rawCounts.tiktok} IG=${fetchResult.rawCounts.instagram} total=${fetchResult.mentions.length} cost=$${fetchResult.costUsd.toFixed(4)}`,
   );
 
   if (fetchResult.errors.length > 0) {
@@ -257,12 +262,14 @@ async function processShow({ show, apifyToken, openaiApiKey, dryRun, logger = co
 
   // Step 5: Persist
   const canonical = {
-    _v: 1,
+    _v: 2,
     showId,
     showTitle,
     market: marketLabel,
     fetchedAt: new Date().toISOString(),
     ...scored,
+    // True X volume from the free X API (uncapped, unlike Apify's capped sample)
+    xTrueVolume: xTrueVolume ?? null,
     baseline: scored.nextBaseline, // persist the UPDATED baseline for next run
     costUsd: fetchResult.costUsd,
     rawCounts: fetchResult.rawCounts,

@@ -406,12 +406,52 @@ async function fetchAllSocialMentions({ showTitle, marketQualifier, twitterMax, 
   return result;
 }
 
+// ---------- X Tweet Counts (free API) ----------
+//
+// Uses X API v2 tweet_counts/recent to get the TRUE weekly volume for a
+// show's search query. Free, uncapped, and returns the real number instead
+// of the Apify cap (which makes every show look like "~160 X mentions").
+//
+// Requires X_BEARER_TOKEN env var (app-only Bearer token from developer.x.com).
+// Falls back gracefully to null if the token is missing or the call fails.
+
+/**
+ * Fetches the total tweet count for a search query over the last 7 days
+ * using X API v2 tweet_counts/recent. Returns the total count or null on
+ * failure. Zero Apify cost — this is the free X API.
+ */
+async function fetchXTweetCount({ showTitle, marketQualifier, logger = console }) {
+  const bearerToken = process.env.X_BEARER_TOKEN;
+  if (!bearerToken) return null;
+
+  const qualifier = marketQualifier || 'broadway';
+  const query = `"${showTitle}" ${qualifier} lang:en`;
+  const url = `https://api.x.com/2/tweets/counts/recent?query=${encodeURIComponent(query)}&granularity=day`;
+
+  try {
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${bearerToken}` },
+    });
+    if (!res.ok) {
+      const body = await res.text();
+      logger.warn(`[${showTitle}] X counts API ${res.status}: ${body.slice(0, 200)}`);
+      return null;
+    }
+    const data = await res.json();
+    return data?.meta?.total_tweet_count ?? null;
+  } catch (err) {
+    logger.warn(`[${showTitle}] X counts API failed: ${err.message}`);
+    return null;
+  }
+}
+
 module.exports = {
   fetchAllSocialMentions,
   fetchTweets,
   fetchTikToks,
   fetchInstagramPosts,
   fetchRedditForShow,
+  fetchXTweetCount,
   normalizeTweet,
   normalizeTikTok,
   normalizeInstagramPost,
