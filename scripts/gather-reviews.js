@@ -638,8 +638,11 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId, 
 async function searchDTLI(show) {
   // Try slug map first (most reliable — discovered from DTLI sitemaps)
   const dtliSlugMap = getDtliSlugMap();
-  const mappedSlug = dtliSlugMap[show.id];
+  let mappedSlug = dtliSlugMap[show.id];
   if (mappedSlug) {
+    // Strip leading 'shows/' prefix if present — some entries have it from manual adds,
+    // but the URL template already includes /shows/
+    if (mappedSlug.startsWith('shows/')) mappedSlug = mappedSlug.slice(6);
     const url = `https://didtheylikeit.com/shows/${mappedSlug}/`;
     console.log(`  Searching Did They Like It (mapped: ${mappedSlug})...`);
     const result = await searchAggregator('DTLI', url);
