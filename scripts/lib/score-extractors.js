@@ -1130,28 +1130,27 @@ function extractScore(html, text, outletId) {
     }
   }
 
-  // Generic extractors: fall through for ALL outlets whose specific extractor
-  // returned null (or had no specific extractor). Catches unicode stars in fullText
-  // when outlet-specific extractors only handle HTML (e.g., Guardian JSON-LD/CSS).
-  // Outlets that explicitly don't have scores return __skipGeneric above.
-  //
-  // Extract title/h1 text from HTML — many niche outlets put star ratings there
-  // Title text is safe from CSS/JS false positives
-  const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
-  const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
-  const titleText = [titleMatch?.[1], h1Match?.[1], text].filter(Boolean).join(' ');
+  // Generic extractors: ONLY use text (not HTML) to avoid CSS false positives
+  // Only run these for outlets NOT in the explicit list
+  if (!OUTLET_EXTRACTORS[outletId]) {
+    // Extract title/h1 text from HTML — many niche outlets put star ratings there
+    // Title text is safe from CSS/JS false positives
+    const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+    const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
+    const titleText = [titleMatch?.[1], h1Match?.[1], text].filter(Boolean).join(' ');
 
-  // Try generic star rating - cleaned HTML + augmented text
-  // cleanedHtml is safe (script/style removed) for word-star and unicode-star patterns
-  const starResult = extractGenericStarRating(cleanedHtml, titleText);
-  if (starResult) {
-    return { ...starResult, outlet: outletId };
-  }
+    // Try generic star rating - cleaned HTML + augmented text
+    // cleanedHtml is safe (script/style removed) for word-star and unicode-star patterns
+    const starResult = extractGenericStarRating(cleanedHtml, titleText);
+    if (starResult) {
+      return { ...starResult, outlet: outletId };
+    }
 
-  // Try generic letter grade - TEXT ONLY
-  const gradeResult = extractGenericLetterGrade('', text);
-  if (gradeResult) {
-    return { ...gradeResult, outlet: outletId };
+    // Try generic letter grade - TEXT ONLY
+    const gradeResult = extractGenericLetterGrade('', text);
+    if (gradeResult) {
+      return { ...gradeResult, outlet: outletId };
+    }
   }
 
   return null;
