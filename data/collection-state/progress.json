@@ -58,7 +58,9 @@
     "cats-the-jellicle-ball-2026/whatsonstage--unknown.json",
     "titus-andronicus-off-broadway-2026/nytimes--unknown.json",
     "oliver-west-end-2024/standard--unknown.json",
-    "magic-mike-live-west-end-2021/daily-mail--unknown.json"
+    "magic-mike-live-west-end-2021/daily-mail--unknown.json",
+    "fences-2010/hollywood-reporter--unknown.json",
+    "fences-2010/wsj--christopher-john-farley.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -957,7 +959,15 @@
     "collected-stories-2010/ap--unknown.json",
     "collected-stories-2010/backstage--david-sheward.json",
     "enron-2010/new-jersey-newsroom--michael-sommers.json",
-    "enron-2010/backstage--erik-haagensen.json"
+    "enron-2010/backstage--erik-haagensen.json",
+    "fences-2010/backstage--erik-haagensen.json",
+    "promises-promises-2010/new-jersey-newsroom--michael-sommers.json",
+    "promises-promises-2010/toronto-star--richard-ouzounian.json",
+    "american-idiot-2010/variety--david-rooney.json",
+    "american-idiot-2010/bloomberg--jeremy-gerard.json",
+    "la-cage-aux-folles-2010/new-jersey-newsroom--michael-sommers.json",
+    "la-cage-aux-folles-2010/backstage--david-sheward.json",
+    "million-dollar-quartet-2010/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1022,7 +1032,8 @@
       "a-christmas-carol-west-end-2026/dailybeast--tim-teeman.json",
       "cats-west-end-2026/thewrap--robert-hofler.json",
       "titanique-2026/thewrap--unknown.json",
-      "titanique-2026/talkinbroadway--unknown.json"
+      "titanique-2026/talkinbroadway--unknown.json",
+      "fences-2010/wsj--christopher-john-farley.json"
     ],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
@@ -1044,11 +1055,12 @@
       "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json",
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
       "baby-its-you-2011/abc-news--mark-kennedy.json",
-      "born-yesterday-2011/newsday--unknown.json"
+      "born-yesterday-2011/newsday--unknown.json",
+      "fences-2010/hollywood-reporter--unknown.json"
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "enron-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "million-dollar-quartet-2010/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1093,6 +1105,28 @@
       "t": "2026-04-13T11:55:22.475Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-13T18:44:58.129Z",
+      "event": "bb-session",
+      "session": "43907e20",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-10040864"
+    },
+    {
+      "t": "2026-04-13T18:44:58.728Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T18:45:39.498Z",
+      "event": "bb-session",
+      "session": "a775c7e8",
+      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
+    },
+    {
+      "t": "2026-04-13T18:45:40.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

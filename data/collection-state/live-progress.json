@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-13T18:44:56.744Z",
-  "processed": 59,
-  "failed": 897,
-  "successRate": "6.2%",
+  "updatedAt": "2026-04-13T18:46:30.026Z",
+  "processed": 61,
+  "failed": 905,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 31,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 15,
-    "brightdata": 5,
+    "brightdata": 6,
     "archiveToday": 11,
-    "archive": 7
+    "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -58,6 +58,28 @@
       "t": "2026-04-13T11:55:22.475Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-13T18:44:58.129Z",
+      "event": "bb-session",
+      "session": "43907e20",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-10040864"
+    },
+    {
+      "t": "2026-04-13T18:44:58.728Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T18:45:39.498Z",
+      "event": "bb-session",
+      "session": "a775c7e8",
+      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
+    },
+    {
+      "t": "2026-04-13T18:45:40.036Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
