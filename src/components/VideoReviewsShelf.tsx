@@ -17,6 +17,16 @@ function YouTubeIcon() {
   );
 }
 
+function formatDate(dateStr: string | undefined | null): string | null {
+  if (!dateStr) return null;
+  try {
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch {
+    return null;
+  }
+}
+
 export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: VideoReview[]; showTitle: string }) {
   if (!reviews || reviews.length === 0) return null;
 
@@ -24,68 +34,73 @@ export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: Vid
 
   return (
     <section className="card p-5 sm:p-6 mb-6">
-      {/* Header — matches Critic Reviews / Audience Grade card headers */}
+      {/* Header — score badge top-right, review count left */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2.5">
+        <div>
           <h2 className="text-lg font-bold text-white">Video Reviews</h2>
-          <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(avgScore)}`}>
-            {avgScore}
-          </div>
+          <p className="text-gray-400 text-sm">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</p>
         </div>
-        <span className="text-gray-400 text-sm">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</span>
+        <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(avgScore)}`}>
+          {avgScore}
+        </div>
       </div>
 
-      {/* Horizontal shelf — same scroll pattern as RelatedShows */}
+      {/* Horizontal shelf */}
       <div className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide">
-        {reviews.map((review, i) => (
-          <a
-            key={review.handle + i}
-            href={review.videoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-shrink-0 w-28 sm:w-32 group"
-          >
-            {/* Thumbnail */}
-            <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
-              {review.thumbnail ? (
-                <img
-                  src={review.thumbnail}
-                  alt={`${review.creatorName} video review`}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="absolute inset-0 bg-surface-elevated" />
-              )}
-              {/* Gradient overlay for score readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-[1]" />
+        {reviews.map((review, i) => {
+          const date = formatDate(review.publishedAt);
+          return (
+            <a
+              key={review.handle + i}
+              href={review.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 w-28 sm:w-32 group"
+            >
+              {/* Thumbnail */}
+              <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
+                {review.thumbnail ? (
+                  <img
+                    src={review.thumbnail}
+                    alt={`${review.creatorName} video review`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-surface-elevated" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-[1]" />
 
-              {/* Play button */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center z-[2] opacity-70 group-hover:opacity-100 transition-opacity">
-                <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5">
-                  <polygon points="6,3 20,12 6,21" />
-                </svg>
-              </div>
+                {/* Play button */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center z-[2] opacity-70 group-hover:opacity-100 transition-opacity">
+                  <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5">
+                    <polygon points="6,3 20,12 6,21" />
+                  </svg>
+                </div>
 
-              {/* Platform badge */}
-              <div className={`absolute top-2 right-2 w-5 h-5 rounded flex items-center justify-center z-[3] ${review.platform === 'youtube' ? 'bg-red-600/80' : 'bg-black/60'}`}>
-                {review.platform === 'youtube' ? <YouTubeIcon /> : <TikTokIcon />}
-              </div>
+                {/* Platform badge */}
+                <div className={`absolute top-2 right-2 w-5 h-5 rounded flex items-center justify-center z-[3] ${review.platform === 'youtube' ? 'bg-red-600/80' : 'bg-black/60'}`}>
+                  {review.platform === 'youtube' ? <YouTubeIcon /> : <TikTokIcon />}
+                </div>
 
-              {/* Score badge — bottom-right, matching homepage pattern */}
-              <div className="absolute bottom-1.5 right-1.5 z-[3]">
-                <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(review.score)}`}>
-                  {review.score}
+                {/* Score badge — bottom-right */}
+                <div className="absolute bottom-1.5 right-1.5 z-[3]">
+                  <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(review.score)}`}>
+                    {review.score}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Creator name */}
-            <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
-              {review.creatorName}
-            </h3>
-          </a>
-        ))}
+              {/* Creator name + date */}
+              <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-1 leading-tight">
+                {review.creatorName}
+              </h3>
+              {date && (
+                <p className="text-gray-500 text-xs mt-0.5">{date}</p>
+              )}
+            </a>
+          );
+        })}
       </div>
     </section>
   );

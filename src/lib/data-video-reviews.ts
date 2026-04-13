@@ -12,6 +12,7 @@ export interface VideoReview {
   reasoning?: string;
   keyQuote?: string;
   thumbnail?: string;
+  publishedAt?: string;
 }
 
 const { _meta, ...showReviews } = videoReviewsData;

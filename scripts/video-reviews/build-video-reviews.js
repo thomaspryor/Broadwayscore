@@ -48,7 +48,8 @@ function main() {
         confidence: data.confidence,
         reasoning: data.reasoning,
         keyQuote: data.keyQuote,
-        thumbnail: data.thumbnail || null
+        thumbnail: data.thumbnail || null,
+        publishedAt: data.publishedAt || null
       });
     }
 
