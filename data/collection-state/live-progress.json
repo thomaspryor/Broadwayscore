@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-13T04:03:50.704Z",
+  "updatedAt": "2026-04-13T04:06:58.614Z",
   "processed": 222,
-  "failed": 1462,
-  "successRate": "13.2%",
+  "failed": 1472,
+  "successRate": "13.1%",
   "tierBreakdown": {
     "playwright": 62,
     "amp": 2,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 40,
     "brightdata": 4,
-    "archiveToday": 58,
+    "archiveToday": 61,
     "archive": 80
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-04-12T12:52:00.719Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-13T02:10:42.513Z",
-      "event": "bb-session",
-      "session": "730847c1",
-      "url": "https://variety.com/2026/legit/reviews/titanique-broadway-review-musical-campy-f"
-    },
     {
       "t": "2026-04-13T02:10:43.591Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "event": "bb-session",
       "session": "3f2809a3",
       "url": "https://bway.ly/04r8b#http://nypost.com/2016/09/29/broadway-is-no-place-for-podc"
+    },
+    {
+      "t": "2026-04-13T04:06:49.783Z",
+      "event": "bb-session",
+      "session": "17d98f95",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadways-orph"
+    },
+    {
+      "t": "2026-04-13T04:06:50.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }

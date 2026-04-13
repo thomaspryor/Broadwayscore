@@ -1685,7 +1685,17 @@
     "all-the-way-2014/ap--mark-kennedy.json",
     "all-the-way-2014/ap--unknown.json",
     "machinal-2014/timeout--david-cote.json",
-    "macbeth-2013/new-jersey-newsroom--michael-sommers.json"
+    "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
+    "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
+    "a-time-to-kill-2013/abc-news--mark-kennedy.json",
+    "a-time-to-kill-2013/ew--thom-geier.json",
+    "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
+    "the-winslow-boy-2013/bloomberg--unknown.json",
+    "a-night-with-janis-joplin-2013/abc-news--jennifer-farrar.json",
+    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "pippin-2013/new-jersey-newsroom--michael-sommers.json",
+    "orphans-2013/washpost--associated-press.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1947,7 +1957,10 @@
       "data/review-texts/misery-2015/abc-news--mark-kennedy.json",
       "data/review-texts/spring-awakening-2015/theater-in-the-now--michael-block.json",
       "data/review-texts/something-rotten-2015/zeal-nyc--brian-scott-lipton.json",
-      "data/review-texts/the-last-ship-2014/talkinbroadway--matthew-murray.json"
+      "data/review-texts/the-last-ship-2014/talkinbroadway--matthew-murray.json",
+      "data/review-texts/a-time-to-kill-2013/abc-news--mark-kennedy.json",
+      "data/review-texts/a-night-with-janis-joplin-2013/abc-news--jennifer-farrar.json",
+      "data/review-texts/orphans-2013/washpost--associated-press.json"
     ],
     "archive": [
       "maybe-happy-ending-2024/vulture--sara-holdren.json",
@@ -2039,7 +2052,7 @@
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "orphans-2013/washpost--associated-press.json",
   "log": [
     {
       "t": "2026-04-12T10:21:59.282Z",
@@ -2563,6 +2576,17 @@
       "event": "bb-session",
       "session": "3f2809a3",
       "url": "https://bway.ly/04r8b#http://nypost.com/2016/09/29/broadway-is-no-place-for-podc"
+    },
+    {
+      "t": "2026-04-13T04:06:49.783Z",
+      "event": "bb-session",
+      "session": "17d98f95",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-broadways-orph"
+    },
+    {
+      "t": "2026-04-13T04:06:50.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
