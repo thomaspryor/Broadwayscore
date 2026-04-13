@@ -109,10 +109,27 @@ export default function FantasyShowPicker({
       </div>
 
       {isOpen && (
-        <div className="absolute z-50 left-0 right-0 mt-1 max-h-64 overflow-y-auto rounded-lg bg-zinc-800 border border-zinc-600 shadow-xl">
-          {sorted.length === 0 ? (
-            <div className="p-3 text-sm text-zinc-500 text-center">No matching shows</div>
-          ) : (
+        <>
+          {/* Mobile backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 z-40 sm:hidden"
+            onClick={() => { setIsOpen(false); setSearch(''); }}
+          />
+          <div className="fixed sm:absolute inset-x-0 bottom-0 sm:bottom-auto sm:inset-x-auto sm:left-0 sm:right-0 sm:mt-1 z-50 max-h-[70vh] sm:max-h-80 overflow-y-auto rounded-t-xl sm:rounded-lg bg-zinc-800 border border-zinc-600 shadow-xl">
+            {/* Mobile search header (sticky) */}
+            <div className="sticky top-0 bg-zinc-800 border-b border-zinc-700 p-3 sm:hidden">
+              <input
+                type="text"
+                className="w-full bg-zinc-700 text-white placeholder-zinc-400 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-amber-500/50"
+                placeholder="Search shows..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                autoFocus
+              />
+            </div>
+            {sorted.length === 0 ? (
+              <div className="p-3 text-sm text-zinc-500 text-center">No matching shows</div>
+            ) : (
             sorted.map(show => {
               const affordable = show.price <= remainingBudget + (selectedShow?.price ?? 0);
               return (
@@ -156,6 +173,7 @@ export default function FantasyShowPicker({
             })
           )}
         </div>
+        </>
       )}
     </div>
   );
