@@ -46,6 +46,7 @@ const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
@@ -196,7 +197,12 @@ async function runAggregators(show) {
           openingYear: year,
         });
         if (validation.valid) {
-          const reviews = extractDTLIReviews(dtli.html, show.id, dtli.url, show.title);
+          let reviews = extractDTLIReviews(dtli.html, show.id, dtli.url, show.title);
+          if (reviews.length === 0 && hasStructuralMarkers(dtli.html, 'dtli')) {
+            reviews = await llmFallbackExtract(dtli.html, {
+              aggregator: 'dtli', showTitle: show.title, showId: show.id,
+            });
+          }
           console.log(`  DTLI: ${reviews.length} reviews found`);
           results.push(...reviews);
         } else {
@@ -265,6 +271,11 @@ async function runAggregators(show) {
       const bww = await searchBWWRoundup(show, year, bwwOptions);
       if (bww && bww.html) {
         let reviews = extractBWWRoundupReviews(bww.html, show.id, bww.url, show.title);
+        if (reviews.length === 0 && hasStructuralMarkers(bww.html, 'bww')) {
+          reviews = await llmFallbackExtract(bww.html, {
+            aggregator: 'bww', showTitle: show.title, showId: show.id,
+          });
+        }
         // Validate roundup year — reject if from older production (e.g., OB roundup for Broadway show)
         reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate, show.id, bww.url);
         console.log(`  BWW RR: ${reviews.length} reviews found`);
