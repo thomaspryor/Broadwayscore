@@ -1,4 +1,4 @@
-import { getScoreColorClass } from '@/components/show-cards';
+import { getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
 import type { VideoReview } from '@/lib/data-video-reviews';
 
 function TikTokIcon() {
@@ -37,29 +37,39 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
   if (!reviews || reviews.length === 0) return null;
 
   const avgScore = Math.round(reviews.reduce((sum, r) => sum + r.score, 0) / reviews.length);
+  const tier = getScoreTier(avgScore);
 
   return (
     <section className="card p-5 sm:p-6 mb-6">
-      {/* Header — title left, count + score badge right */}
+      {/* Header — title left, tier label + score badge right */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-bold text-white">Video Reviews</h2>
-        <div className="flex items-center gap-2">
-          <span className="text-gray-400 text-sm">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</span>
-          <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(avgScore)}`}>
+        <div className="flex items-center gap-2.5">
+          <div className="text-right">
+            {tier && (
+              <div className={`text-sm font-bold ${getScoreTextColorClass(avgScore)}`}>{tier.label}</div>
+            )}
+            <div className="text-xs text-gray-500">{reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}</div>
+          </div>
+          <div className={`score-badge w-14 h-14 text-2xl rounded-xl font-extrabold ${getScoreColorClass(avgScore)}`}>
             {avgScore}
           </div>
         </div>
       </div>
 
-      {/* Methodology note */}
-      <p className="text-gray-500 text-xs mb-3 -mt-2">Scores estimated from video transcript analysis</p>
+      {/* Subtle methodology link */}
+      <a href="/methodology#video-reviews" className="text-gray-500 hover:text-gray-400 text-xs mb-3 -mt-2 block transition-colors">How does this work?</a>
 
-      {/* Horizontal shelf */}
-      <div
-        className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide"
-        aria-label="Video reviews"
-        role="list"
-      >
+      {/* Horizontal shelf with right fade when overflowing */}
+      <div className="relative">
+        {reviews.length > 3 && (
+          <div className="absolute right-0 top-0 bottom-1 w-12 bg-gradient-to-l from-surface-raised to-transparent z-10 pointer-events-none rounded-r-lg" />
+        )}
+        <div
+          className="flex gap-3 overflow-x-auto pb-1 -mx-5 px-5 sm:-mx-6 sm:px-6 scrollbar-hide"
+          aria-label="Video reviews"
+          role="list"
+        >
         {reviews.map((review) => {
           const date = formatDate(review.publishedAt);
           return (
@@ -78,7 +88,7 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
                   <img
                     src={review.thumbnail}
                     alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className={`absolute inset-0 w-full h-full object-cover ${review.platform === 'youtube' ? 'object-top' : ''}`}
                     loading="lazy"
                   />
                 ) : (
@@ -116,6 +126,7 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
             </a>
           );
         })}
+        </div>
       </div>
     </section>
   );
