@@ -33,7 +33,8 @@
     "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json",
     "data-off-broadway-2026/timeout--unknown.json",
     "shucked-2023/albany-times-union--katherine-kiessling.json",
-    "life-of-pi-2023/newyorker--katy-waldman.json"
+    "life-of-pi-2023/newyorker--katy-waldman.json",
+    "some-like-it-hot-2022/newyorker--helen-shaw.json"
   ],
   "failed": [
     "myras-story-west-end-2026/whatsonstage--theo-bosanquet.json",
@@ -1326,7 +1327,16 @@
     "prima-facie-2023/newyorker--naomi-fry.json",
     "fat-ham-2023/newyorker--naomi-fry.json",
     "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
-    "the-collaboration-2022/hollywood-reporter--angie-han.json"
+    "the-collaboration-2022/hollywood-reporter--angie-han.json",
+    "the-collaboration-2022/hollywood-reporter--david-rooney.json",
+    "walking-with-ghosts-2022/dtli--ran-xia.json",
+    "topdog-underdog-2022/hollywood-reporter--unknown.json",
+    "death-of-a-salesman-2022/wsj--unknown.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "girl-from-the-north-country-2022/theater-news-online--david-cote.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "the-skin-of-our-teeth-2022/dtli--ran-xia.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1342,7 +1352,8 @@
       "data/review-texts/every-brilliant-thing-2026/nypost--unknown.json",
       "every-brilliant-thing-2026/nypost--unknown.json",
       "data/review-texts/a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
-      "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json"
+      "a-christmas-carol-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/topdog-underdog-2022/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1354,7 +1365,8 @@
       "bigfoot-off-broadway-2026/timeout--unknown.json",
       "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json",
       "data-off-broadway-2026/timeout--unknown.json",
-      "life-of-pi-2023/newyorker--katy-waldman.json"
+      "life-of-pi-2023/newyorker--katy-waldman.json",
+      "some-like-it-hot-2022/newyorker--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1448,7 +1460,7 @@
     ]
   },
   "startTime": "2026-04-12T08:42:31.841Z",
-  "lastProcessed": "the-collaboration-2022/hollywood-reporter--angie-han.json",
+  "lastProcessed": "the-skin-of-our-teeth-2022/dtli--ran-xia.json",
   "log": [
     {
       "t": "2026-04-13T03:25:18.380Z",
@@ -1482,6 +1494,28 @@
       "t": "2026-04-13T03:21:34.824Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T03:26:24.218Z",
+      "event": "bb-session",
+      "session": "3594b9af",
+      "url": "https://www.hollywoodreporter.com/t/kenny-leon/"
+    },
+    {
+      "t": "2026-04-13T03:26:24.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-13T03:26:34.698Z",
+      "event": "bb-session",
+      "session": "c03bbf36",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-04-13T03:26:35.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
