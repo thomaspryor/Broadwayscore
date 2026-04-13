@@ -247,12 +247,12 @@ const config = {
       'C+': 1, 'C': 0, 'C-': 0,
       'D': 0, 'F': 0,
     },
-    boxOffice: { pointsPer100K: 0.15 },
+    boxOffice: { pointsPer100K: 0.30 },
     awards: {
-      tonyNom: 10,
-      tonyWin: 20,
-      tonyBestMusical: 40,
-      tonyBestPlay: 40,
+      tonyNom: 7,
+      tonyWin: 14,
+      tonyBestMusical: 30,
+      tonyBestPlay: 30,
     },
   },
 };

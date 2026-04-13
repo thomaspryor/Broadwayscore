@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="100" y1="0" x2="100" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e2c47a"/>
+      <stop offset="50%" stop-color="#c9a24e"/>
+      <stop offset="100%" stop-color="#8b6914"/>
+    </linearGradient>
+    <linearGradient id="goldLight" x1="100" y1="0" x2="100" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f0d99a"/>
+      <stop offset="50%" stop-color="#d4ad5a"/>
+      <stop offset="100%" stop-color="#a07c28"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shield outline -->
+  <path d="M100 10 L185 45 L185 120 C185 165 150 195 100 210 C50 195 15 165 15 120 L15 45 Z"
+        stroke="url(#gold)" stroke-width="4" fill="none"/>
+
+  <!-- Inner shield -->
+  <path d="M100 22 L175 52 L175 118 C175 158 144 185 100 198 C56 185 25 158 25 118 L25 52 Z"
+        stroke="url(#gold)" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+  <!-- Top star (large) -->
+  <path d="M100 38 L104.5 49 L116 50 L107.5 57.5 L110 69 L100 63 L90 69 L92.5 57.5 L84 50 L95.5 49 Z"
+        fill="url(#goldLight)"/>
+
+  <!-- Bottom stars (smaller, flanking) -->
+  <path d="M68 72 L71 79 L78.5 79.5 L73 84 L74.5 91.5 L68 87.5 L61.5 91.5 L63 84 L57.5 79.5 L65 79 Z"
+        fill="url(#goldLight)" opacity="0.8"/>
+  <path d="M132 72 L135 79 L142.5 79.5 L137 84 L138.5 91.5 L132 87.5 L125.5 91.5 L127 84 L121.5 79.5 L129 79 Z"
+        fill="url(#goldLight)" opacity="0.8"/>
+
+  <!-- BFL text -->
+  <text x="100" y="135" text-anchor="middle" fill="url(#goldLight)"
+        font-family="'Georgia', 'Times New Roman', serif" font-size="48" font-weight="bold"
+        letter-spacing="6">BFL</text>
+
+  <!-- Decorative line under BFL -->
+  <line x1="55" y1="148" x2="145" y2="148" stroke="url(#gold)" stroke-width="1" opacity="0.5"/>
+
+  <!-- BROADWAY FANTASY LEAGUE text -->
+  <text x="100" y="232" text-anchor="middle" fill="url(#gold)"
+        font-family="'Georgia', 'Times New Roman', serif" font-size="14" font-weight="bold"
+        letter-spacing="3">BROADWAY</text>
+  <text x="100" y="250" text-anchor="middle" fill="url(#gold)"
+        font-family="'Georgia', 'Times New Roman', serif" font-size="14" font-weight="bold"
+        letter-spacing="3">FANTASY LEAGUE</text>
+</svg>

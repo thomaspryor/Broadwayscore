@@ -24,33 +24,18 @@ export default function FantasyLandingPage() {
     <div className="min-h-screen bg-zinc-950 text-white">
       {/* Hero */}
       <section className="max-w-3xl mx-auto px-4 pt-12 sm:pt-20 pb-12 text-center">
-        {/* Logo: playbill silhouette with spotlight */}
-        <div className="mb-4 flex justify-center">
-          <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-20 sm:h-20">
-            {/* Spotlight cone */}
-            <path d="M36 8 L16 56 L56 56 Z" fill="url(#spotlight)" opacity="0.15" />
-            {/* Stage curtain left */}
-            <path d="M12 16 C12 16 18 20 18 40 C18 52 14 56 14 56 L8 56 L8 16 Z" fill="#d97706" opacity="0.6" />
-            {/* Stage curtain right */}
-            <path d="M60 16 C60 16 54 20 54 40 C54 52 58 56 58 56 L64 56 L64 16 Z" fill="#d97706" opacity="0.6" />
-            {/* Curtain rod */}
-            <rect x="6" y="14" width="60" height="3" rx="1.5" fill="#f59e0b" />
-            {/* Star/trophy center */}
-            <path d="M36 26 L38.5 32 L45 32.5 L40 37 L41.5 43.5 L36 40 L30.5 43.5 L32 37 L27 32.5 L33.5 32 Z" fill="#f59e0b" />
-            {/* "8" badge */}
-            <circle cx="54" cy="50" r="9" fill="#18181b" stroke="#f59e0b" strokeWidth="1.5" />
-            <text x="54" y="54" textAnchor="middle" fill="#f59e0b" fontSize="12" fontWeight="bold" fontFamily="system-ui">8</text>
-            <defs>
-              <linearGradient id="spotlight" x1="36" y1="8" x2="36" y2="56" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#f59e0b" />
-                <stop offset="1" stopColor="#f59e0b" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-          </svg>
+        {/* BFL Shield Logo */}
+        <div className="mb-6 flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/fantasy/bfl-logo.svg"
+            alt="Broadway Fantasy League"
+            width={140}
+            height={182}
+            className="sm:w-[180px] sm:h-auto"
+          />
         </div>
-        <h1 className="text-3xl sm:text-5xl font-bold mb-4">
-          Broadway <span className="text-amber-400">Fantasy League</span>
-        </h1>
+        <h1 className="sr-only">Broadway Fantasy League</h1>
         <p className="text-lg sm:text-xl text-zinc-400 max-w-xl mx-auto mb-8">
           Draft {info.teamSize} shows. ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
