@@ -56,10 +56,10 @@ export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: Vid
               href={review.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-shrink-0 w-[140px] sm:w-[160px] group"
+              className="flex-shrink-0 w-28 sm:w-32 group"
             >
               {/* Thumbnail */}
-              <div className="relative aspect-[9/16] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
+              <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
                 <div className="absolute inset-0 opacity-70" style={{ background: gradient }} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-[1]" />
 
@@ -75,9 +75,9 @@ export default function VideoReviewsShelf({ reviews, showTitle }: { reviews: Vid
                   {review.platform === 'youtube' ? <YouTubeIcon /> : <TikTokIcon />}
                 </div>
 
-                {/* Score badge */}
-                <div className="absolute bottom-2 left-2 z-[3]">
-                  <div className={`score-badge w-9 h-9 text-sm rounded-lg font-bold ${getScoreColorClass(review.score)}`}>
+                {/* Score badge — bottom-right, matching homepage shelf pattern */}
+                <div className="absolute bottom-1.5 right-1.5 z-[3]">
+                  <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(review.score)}`}>
                     {review.score}
                   </div>
                 </div>
