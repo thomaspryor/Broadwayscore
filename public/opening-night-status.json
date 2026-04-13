@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T01:06:15.742Z",
+  "generatedAt": "2026-04-13T02:28:46.831Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -314,21 +314,21 @@
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 83,
       "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
+      "total": 3,
+      "t1": 1,
+      "t2": 2,
       "t3": 0,
-      "positive": 0,
+      "positive": 3,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
+          "3/12 total",
+          "T1:1/3",
+          "T2:2/3",
           "hi-conf:0/8"
         ],
         "highConfidence": 0,
@@ -351,10 +351,6 @@
         {
           "name": "Vulture",
           "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -411,31 +407,7 @@
       ],
       "missingT2": [
         {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
           "isDualMarket": false
         },
         {
@@ -457,10 +429,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -589,6 +557,20 @@
         {
           "name": "The Stage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-13T02:28:46.831Z",
+          "rc": 3,
+          "s": 83,
+          "t1": 1,
+          "t2": 2,
+          "t3": 0,
+          "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
