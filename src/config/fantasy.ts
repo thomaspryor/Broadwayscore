@@ -63,22 +63,26 @@ export const AUDIENCE_GRADE_POINTS: Record<string, number> = {
 /**
  * Box office: points per $100K weekly gross.
  *
- * At 0.15, a strong musical ($1M/week over 20 weeks) earns ~30 pts.
- * This makes box office ~11% of a Best Musical winner's total (vs 38% before).
+ * At 0.30, a strong musical ($1M/week over 20 weeks) earns ~60 pts.
+ * This makes box office ~25% of a Best Musical winner's total.
  */
-export const BOX_OFFICE_POINTS_PER_100K = 0.15;
+export const BOX_OFFICE_POINTS_PER_100K = 0.30;
 
 /**
  * Awards point values — Tony Awards only for MVP.
  *
- * Awards are the majority of total points (~50-68%).
- * Best Musical/Play winner with 8 noms + 4 wins earns ~180 pts from awards alone.
+ * Awards are the majority of total points (~53% for a Best Musical winner).
+ * Best Musical winner with 8 noms + 4 wins earns ~128 pts from awards.
+ *
+ * Calibrated distribution for a Best Musical winner:
+ *   Awards: 128 pts (53%)  |  Box Office: 60 pts (25%)
+ *   CriticScore: 30 pts (12%)  |  AudienceGrade: 25 pts (10%)
  */
 export const AWARDS_POINTS = {
-  tonyNom: 10,
-  tonyWin: 20,
-  tonyBestMusical: 40,
-  tonyBestPlay: 40,
+  tonyNom: 7,
+  tonyWin: 14,
+  tonyBestMusical: 30,
+  tonyBestPlay: 30,
 };
 
 // ===========================================
