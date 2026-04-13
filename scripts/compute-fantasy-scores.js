@@ -6,10 +6,10 @@
  * to compute points for each scoring pillar. Outputs data/fantasy-scores.json.
  *
  * Scoring pillars:
- * 1. CriticScore: points based on critic tier (Critical Gold = 15, etc.)
- * 2. AudienceGrade: points based on audience letter grade (A+ = 12, etc.)
- * 3. Box Office: 0.5 points per $100K weekly gross (Broadway only)
- * 4. Awards: Tony noms/wins (manually entered in fantasy-league.json)
+ * 1. CriticScore: points based on critic tier (Critical Gold = 30 pts)
+ * 2. AudienceGrade: points based on audience letter grade (A+ = 25 pts)
+ * 3. Box Office: 0.30 points per $100K weekly gross (Broadway only)
+ * 4. Awards: Tonys + Drama Desk + Outer Critics + Drama League
  *
  * Usage: node scripts/compute-fantasy-scores.js [--dry-run]
  */
