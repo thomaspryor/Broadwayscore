@@ -51,20 +51,20 @@ export default function FantasyLandingPage() {
           Earn points from critics, audiences, box office, and the Tony Awards.
         </p>
         <div className="inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-1.5 mb-8">
-          <span className="text-brand text-sm font-bold">Winner gets a $500 TodayTix voucher</span>
+          <span className="text-brand text-sm font-bold">Winner gets $500 to spend on TodayTix</span>
         </div>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a
-            href="/fantasy/draft"
-            className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5"
-          >
-            Draft Your Team
-          </a>
+        <a
+          href="/fantasy/draft"
+          className="inline-block px-10 py-4 bg-brand text-white font-bold rounded-xl hover:bg-brand-hover transition-all text-lg shadow-lg shadow-brand/20 hover:shadow-brand/40 hover:-translate-y-0.5 mb-3"
+        >
+          Draft Your Team
+        </a>
+        <div>
           <a
             href="/fantasy/leaderboard"
-            className="inline-block px-6 py-4 bg-surface-raised text-gray-300 font-medium rounded-xl hover:text-white hover:bg-surface-overlay transition-all border border-white/10"
+            className="inline-block px-6 py-3 text-gray-400 font-medium hover:text-white transition-colors text-sm"
           >
-            View Leaderboard
+            View Leaderboard &rarr;
           </a>
         </div>
       </section>
@@ -230,27 +230,51 @@ export default function FantasyLandingPage() {
           {[
             {
               q: 'What does the winner get?',
-              a: 'A $500 TodayTix voucher. Highest total points on Tony night wins.',
+              a: '$500 to spend on TodayTix. Highest total points on Tony Awards night wins.',
             },
             {
-              q: 'Do I need an account?',
-              a: 'No. Just enter your email. One entry per email per season.',
+              q: 'Is it free?',
+              a: 'Yes, completely free. No account needed — just enter your email to draft.',
+            },
+            {
+              q: 'When is the draft deadline?',
+              a: 'You can draft anytime during the season. The earlier you draft, the more weeks of box office points your shows accumulate.',
             },
             {
               q: 'Can I change my picks after submitting?',
               a: 'Yes — re-submit with the same email before the draft deadline. Your new picks replace the old ones.',
             },
             {
-              q: 'What about closed shows?',
-              a: 'Shows that have already closed stop earning box office points, but they can still earn Tony nominations and wins. Some of the best Tony contenders closed early.',
+              q: 'How do show prices work?',
+              a: 'Each show has a price ($3-$22) based on how likely it is to score well. Buzzy new musicals cost more. You have $100 to fill 8 slots, so you need a mix of big bets and value picks.',
+            },
+            {
+              q: 'What\'s the best strategy?',
+              a: 'Awards are worth the most points, so pick shows likely to earn Tony nominations. But don\'t ignore box office — a hit musical earning $1M/week accumulates points every week. A mix of a few premium contenders and some value sleepers usually beats going all-in on favorites.',
+            },
+            {
+              q: 'What about shows that close early?',
+              a: 'They stop earning box office points, but they can still earn Tony nominations and wins. Some of the best Tony contenders closed early — a $6 show that earns a Best Musical nom is a massive value pick.',
             },
             {
               q: 'What about Off-Broadway shows?',
-              a: 'Priced $3-$8. They earn CriticScore and AudienceGrade points, plus Drama Desk and Outer Critics Circle awards. No box office and no Tony nominations.',
+              a: 'Priced $3-$8. They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.',
+            },
+            {
+              q: 'When do scores update?',
+              a: 'Weekly. Box office data updates every Tuesday, and scores are recomputed every Wednesday. You\'ll get a weekly email with the latest standings.',
             },
             {
               q: 'What are leagues?',
-              a: 'Optional. Type the same league name as your friends on the draft form to create a private group. You can still see the overall leaderboard.',
+              a: 'Optional. Type the same league name as your friends on the draft form to create a private group. You\'ll see your league standings alongside the overall leaderboard.',
+            },
+            {
+              q: 'How are ties broken?',
+              a: 'Three tiebreaker questions on the draft form: how many nominations the most-nominated show will receive, which show will win Best Musical, and the total number of Tony nominations. Closest answers win.',
+            },
+            {
+              q: 'Where do the scores come from?',
+              a: 'CriticScore is Broadway Scorecard\'s composite of professional critic reviews. AudienceGrade comes from audience review platforms. Box office is weekly Broadway grosses. Awards are official nominations and wins from 7 major ceremonies.',
             },
           ].map(({ q, a }) => (
             <div key={q} className="bg-surface-raised/30 rounded-xl p-4">
