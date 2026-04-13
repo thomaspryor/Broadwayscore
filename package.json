@@ -47,14 +47,14 @@
     "grosses:alltime": "npx tsx scripts/scrape-alltime.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.82.0",
+    "@anthropic-ai/sdk": "^0.88.0",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@google-analytics/data": "^5.2.1",
     "@google/generative-ai": "^0.24.1",
-    "@notionhq/client": "^5.16.0",
-    "@supabase/supabase-js": "^2.101.1",
+    "@notionhq/client": "^5.17.0",
+    "@supabase/supabase-js": "^2.103.0",
     "@tailwindcss/typography": "^0.5.19",
     "@vercel/analytics": "^1.6.1",
     "@vercel/og": "^0.11.1",
@@ -63,7 +63,7 @@
     "fuse.js": "^7.3.0",
     "gray-matter": "^4.0.3",
     "next": "14.2.35",
-    "posthog-js": "^1.364.7",
+    "posthog-js": "^1.367.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "remark": "^15.0.1",
@@ -82,7 +82,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.35",
     "jsdom": "^27.4.0",
-    "openai": "^6.33.0",
+    "openai": "^6.34.0",
     "playwright": "^1.58.0",
     "playwright-extra": "^4.3.6",
     "postcss": "^8.5.9",
@@ -93,7 +93,7 @@
     "tsx": "^4.21.0",
     "twitter-api-v2": "^1.29.0",
     "typescript": "^5.4.5",
-    "vercel": "^50.43.0"
+    "vercel": "^50.44.0"
   },
   "overrides": {
     "cheerio": {
