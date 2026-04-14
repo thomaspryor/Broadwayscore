@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-04-14T06:37:25.597Z",
+  "generatedAt": "2026-04-14T23:18:28.272Z",
   "summary": {
-    "totalShows": 2436,
-    "openShows": 139,
-    "closedShows": 2057
+    "totalShows": 2438,
+    "openShows": 141,
+    "closedShows": 2058
   },
   "grosses": {
-    "lastUpdated": "2026-04-08T16:08:42.598Z",
+    "lastUpdated": "2026-04-14T16:16:47.725Z",
     "weekEnding": "4/05/2026",
     "showCount": 1175,
     "status": "ok",
-    "daysStale": 5
+    "daysStale": 0
   },
   "statusChanges": {
     "autoClosed": []
@@ -95,12 +95,6 @@
       "daysLeft": 12
     },
     {
-      "id": "you-got-older-off-broadway-2026",
-      "title": "You Got Older",
-      "closingDate": "2026-04-26",
-      "daysLeft": 12
-    },
-    {
       "id": "i-was-a-teenage-shedevil-west-end-2026",
       "title": "I Was a Teenage She-Devil",
       "closingDate": "2026-04-26",
@@ -167,6 +161,12 @@
       "daysLeft": 19
     },
     {
+      "id": "you-got-older-off-broadway-2026",
+      "title": "You Got Older",
+      "closingDate": "2026-05-03",
+      "daysLeft": 19
+    },
+    {
       "id": "starlight-express-west-end-2024",
       "title": "Starlight Express",
       "closingDate": "2026-05-03",
@@ -207,6 +207,12 @@
       "title": "Nicole Travolta is Doing Alright",
       "closingDate": "2026-05-10",
       "daysLeft": 26
+    },
+    {
+      "id": "rheology-off-broadway-2026",
+      "title": "Rheology",
+      "closingDate": "2026-05-16",
+      "daysLeft": 32
     },
     {
       "id": "heart-wall-west-end-2026",
@@ -308,18 +314,11 @@
       "the-lion-king-1997",
       "chicago-1996",
       "mexodus-off-broadway-2026",
-      "singfeld-a-musical-about-nothing-off-broadway-2023",
-      "pied-a-terre-off-broadway-2026",
       "friends-the-musical-parody-off-broadway-2022",
       "little-shop-of-horrors-off-broadway-2019",
       "heathers-the-musical-off-broadway-2025",
-      "dirty-books-off-broadway-2025",
-      "no-singing-in-the-navy-off-broadway-2026",
       "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
       "perfect-crime-off-broadway-1987",
-      "11-to-midnight-off-broadway-2026",
-      "heartbreak-hotel-off-broadway-2026",
-      "you-got-older-off-broadway-2026",
       "the-play-that-goes-wrong-west-end-2021",
       "the-devil-wears-prada-west-end-2024",
       "my-neighbour-totoro-west-end-2025",
@@ -346,12 +345,44 @@
         ]
       },
       {
+        "id": "singfeld-a-musical-about-nothing-off-broadway-2023",
+        "title": "Singfeld! A Musical About Nothing",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
+          }
+        ]
+      },
+      {
         "id": "titus-andronicus-off-broadway-2026",
         "title": "Titus Andronicus",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
+          }
+        ]
+      },
+      {
+        "id": "pied-a-terre-off-broadway-2026",
+        "title": "Pied à Terre",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
+            "type": "no_closing_date",
+            "severity": "info"
           }
         ]
       },
@@ -361,6 +392,10 @@
         "issues": [
           {
             "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
             "severity": "medium"
           },
           {
@@ -374,9 +409,23 @@
         ]
       },
       {
+        "id": "dirty-books-off-broadway-2025",
+        "title": "Dirty Books",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          }
+        ]
+      },
+      {
         "id": "the-adding-machine-off-broadway-2026",
         "title": "The Adding Machine",
         "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -402,6 +451,10 @@
             "severity": "medium"
           },
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_runtime",
             "severity": "low"
           },
@@ -416,6 +469,10 @@
         "title": "Music City",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -425,6 +482,10 @@
         "id": "spare-parts-off-broadway-2026",
         "title": "Spare Parts",
         "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -436,6 +497,10 @@
         "title": "La Llamada",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           },
@@ -446,11 +511,25 @@
         ]
       },
       {
+        "id": "no-singing-in-the-navy-off-broadway-2026",
+        "title": "No Singing in the Navy",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          }
+        ]
+      },
+      {
         "id": "drunk-romeo-and-juliet-off-broadway-2025",
         "title": "Drunk Romeo & Juliet",
         "issues": [
           {
             "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
             "severity": "medium"
           },
           {
@@ -464,6 +543,10 @@
         "title": "Masquerade",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -474,8 +557,22 @@
         "title": "Innocence",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
+          }
+        ]
+      },
+      {
+        "id": "11-to-midnight-off-broadway-2026",
+        "title": "11 to Midnight",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
           }
         ]
       },
@@ -483,6 +580,10 @@
         "id": "what-we-did-before-our-moth-days-off-broadway-2026",
         "title": "What We Did Before Our Moth Days",
         "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -494,6 +595,10 @@
         "title": "Seagull: True Story",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -503,6 +608,10 @@
         "id": "scorched-earth-off-broadway-2026",
         "title": "Scorched Earth",
         "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -518,6 +627,10 @@
             "severity": "medium"
           },
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -528,6 +641,10 @@
         "title": "How My Grandparents Fell in Love, A Musical",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -537,6 +654,10 @@
         "id": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
         "title": "La Breve y Maravillosa Vida de Oscar Wao",
         "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -556,6 +677,10 @@
             "severity": "medium"
           },
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -566,8 +691,22 @@
         "title": "BIGFOOT!",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
+          }
+        ]
+      },
+      {
+        "id": "heartbreak-hotel-off-broadway-2026",
+        "title": "Heartbreak Hotel",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
           }
         ]
       },
@@ -580,8 +719,32 @@
             "severity": "medium"
           },
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "no_closing_date",
             "severity": "info"
+          }
+        ]
+      },
+      {
+        "id": "rheology-off-broadway-2026",
+        "title": "Rheology",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          }
+        ]
+      },
+      {
+        "id": "you-got-older-off-broadway-2026",
+        "title": "You Got Older",
+        "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
           }
         ]
       },
@@ -591,6 +754,10 @@
         "issues": [
           {
             "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
             "severity": "medium"
           },
           {
@@ -626,6 +793,10 @@
             "severity": "medium"
           },
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           },
@@ -639,6 +810,10 @@
         "id": "tru-off-broadway-2026",
         "title": "TRU",
         "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
           {
             "type": "missing_age_rec",
             "severity": "low"
@@ -1096,6 +1271,10 @@
         "title": "Dracula",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -1166,6 +1345,10 @@
         "title": "Chamber Magic",
         "issues": [
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           },
@@ -1189,6 +1372,10 @@
         "id": "amaze-magic-off-broadway-2025",
         "title": "AMAZE Magic",
         "issues": [
+          {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
           {
             "type": "missing_runtime",
             "severity": "low"
@@ -1274,6 +1461,10 @@
             "severity": "medium"
           },
           {
+            "type": "missing_creative",
+            "severity": "medium"
+          },
+          {
             "type": "missing_age_rec",
             "severity": "low"
           }
@@ -1290,6 +1481,20 @@
           {
             "type": "missing_age_rec",
             "severity": "low"
+          }
+        ]
+      },
+      {
+        "id": "what-happened-was-off-broadway-2026",
+        "title": "What Happened Was",
+        "issues": [
+          {
+            "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
           }
         ]
       },
@@ -1331,6 +1536,10 @@
         "issues": [
           {
             "type": "missing_cast",
+            "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
             "severity": "medium"
           }
         ]
@@ -1396,6 +1605,10 @@
           {
             "type": "missing_cast",
             "severity": "medium"
+          },
+          {
+            "type": "missing_creative",
+            "severity": "medium"
           }
         ]
       },
@@ -1410,10 +1623,6 @@
           {
             "type": "missing_hero",
             "severity": "medium"
-          },
-          {
-            "type": "missing_synopsis",
-            "severity": "high"
           },
           {
             "type": "missing_cast",
@@ -1512,35 +1721,51 @@
         "R.O.I (Return On Investment)",
         "Yoko's Husband's Killer's Japanese Wife, Gloria"
       ],
-      "missing_cast": [
+      "missing_creative": [
+        "Singfeld! A Musical About Nothing",
+        "Titus Andronicus",
+        "Pied à Terre",
         "LOS SOLES TRUNCOS",
+        "Dirty Books",
+        "The Adding Machine",
         "Silver Manhattan",
+        "Music City",
+        "Spare Parts",
+        "La Llamada",
+        "No Singing in the Navy",
         "Drunk Romeo & Juliet",
+        "Masquerade",
+        "Innocence",
+        "11 to Midnight",
+        "What We Did Before Our Moth Days",
+        "Seagull: True Story",
+        "Scorched Earth",
         "Lost in Del Valle",
+        "How My Grandparents Fell in Love, A Musical",
+        "La Breve y Maravillosa Vida de Oscar Wao",
         "LA TERNURA",
+        "BIGFOOT!",
+        "Heartbreak Hotel",
         "Drunk Shakespeare",
+        "Rheology",
+        "You Got Older",
         "Burnout Paradise",
         "Age Is a Feeling",
-        "Showstopper! The Improvised Musical",
-        "Austentatious: An Improvised Jane Austen Novel",
-        "Murder, She Didn't Write",
-        "Consumed",
-        "Cabaret at the Kit Kat Club",
-        "Garry Starr: Classic Penguins",
-        "Here There Are Blueberries (Theatre Royal Stratford East)",
-        "I Was a Teenage She-Devil",
+        "TRU",
+        "I’m Sorry, Prime Minister",
+        "Dracula",
+        "Chamber Magic",
+        "AMAZE Magic",
+        "Inter Alia",
         "Nicole Travolta is Doing Alright",
-        "The Authenticator",
-        "FLYBY",
-        "Myra's Story",
+        "What Happened Was",
         "YOAH",
-        "Gotta Dance!",
-        "ABBA Voyage",
-        "R.O.I (Return On Investment)",
         "The Pushover by John Patrick Shanley",
         "Yoko's Husband's Killer's Japanese Wife, Gloria"
       ],
       "no_closing_date": [
+        "Singfeld! A Musical About Nothing",
+        "Pied à Terre",
         "LOS SOLES TRUNCOS",
         "La Llamada",
         "Drunk Romeo & Juliet",
@@ -1575,6 +1800,35 @@
         "ABBA Voyage",
         "R.O.I (Return On Investment)"
       ],
+      "missing_cast": [
+        "LOS SOLES TRUNCOS",
+        "Silver Manhattan",
+        "Drunk Romeo & Juliet",
+        "Lost in Del Valle",
+        "LA TERNURA",
+        "Drunk Shakespeare",
+        "Burnout Paradise",
+        "Age Is a Feeling",
+        "Showstopper! The Improvised Musical",
+        "Austentatious: An Improvised Jane Austen Novel",
+        "Murder, She Didn't Write",
+        "Consumed",
+        "Cabaret at the Kit Kat Club",
+        "Garry Starr: Classic Penguins",
+        "Here There Are Blueberries (Theatre Royal Stratford East)",
+        "I Was a Teenage She-Devil",
+        "Nicole Travolta is Doing Alright",
+        "The Authenticator",
+        "What Happened Was",
+        "FLYBY",
+        "Myra's Story",
+        "YOAH",
+        "Gotta Dance!",
+        "ABBA Voyage",
+        "R.O.I (Return On Investment)",
+        "The Pushover by John Patrick Shanley",
+        "Yoko's Husband's Killer's Japanese Wife, Gloria"
+      ],
       "missing_runtime": [
         "Silver Manhattan",
         "My Joy Is Heavy",
@@ -1584,11 +1838,6 @@
         "Myra's Story",
         "Yoko's Husband's Killer's Japanese Wife, Gloria"
       ],
-      "missing_creative": [
-        "I’m Sorry, Prime Minister",
-        "Inter Alia",
-        "Yoko's Husband's Killer's Japanese Wife, Gloria"
-      ],
       "missing_hero": [
         "Operation Mincemeat",
         "Here There Are Blueberries (Theatre Royal Stratford East)",
@@ -1596,9 +1845,6 @@
         "Yoko's Husband's Killer's Japanese Wife, Gloria"
       ],
       "missing_poster": [
-        "Yoko's Husband's Killer's Japanese Wife, Gloria"
-      ],
-      "missing_synopsis": [
         "Yoko's Husband's Killer's Japanese Wife, Gloria"
       ]
     }
