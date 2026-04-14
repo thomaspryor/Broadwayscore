@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-14T09:36:26.592Z",
+  "timestamp": "2026-04-14T09:59:25.853Z",
   "stats": {
-    "totalReviews": 34851,
-    "alreadyFlagged": 13937,
+    "totalReviews": 34859,
+    "alreadyFlagged": 13928,
     "dateGuardCatches": 107,
     "directorMismatch": 973,
-    "tvFilmSignals": 3385,
+    "tvFilmSignals": 3384,
     "londonSignals": 1116,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
-    "noPublishDate": 4160
+    "noPublishDate": 4177
   },
   "findings": [
     {
@@ -21841,6 +21841,19 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2026-01-15",
+      "url": "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 63,
       "publishDate": "2025-06-24",
@@ -21928,7 +21941,7 @@
       "file": "whatsonstage--unknown.json",
       "score": 75,
       "publishDate": null,
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/hamlet-starring-luke-thallon-at-the-rsc-review-shakespeare-meets-titanic_1665523/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24813,7 +24826,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 92,
       "publishDate": "2025-12-12",
-      "url": null,
+      "url": "https://www.ft.com/content/9da2a948-bb09-4c48-9cf3-969d00f35e62",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52780,7 +52793,7 @@
       "file": "daily-mail--michael-coveney.json",
       "score": 86,
       "publishDate": "1999-10-22",
-      "url": null,
+      "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -52823,20 +52836,6 @@
       "score": 82,
       "publishDate": "2011-01-04",
       "url": "https://www.theguardian.com/stage/2011/jan/04/lion-king-michael-billington-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "independent--paul-taylor.json",
-      "score": 77,
-      "publishDate": "1999-10-21",
-      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -52926,20 +52925,6 @@
       "score": 88,
       "publishDate": "1999-10-20",
       "url": "https://www.standard.co.uk/go/london/theatre/lion-king-is-a-roaring-success-7435263.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "telegraph--charles-spencer.json",
-      "score": 89,
-      "publishDate": "1999-10-20",
-      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -55197,7 +55182,7 @@
       "showId": "the-play-that-goes-wrong-west-end-2021",
       "file": "london-theatre--unknown.json",
       "publishDate": "2020-12-14",
-      "url": null,
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26427",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -73944,7 +73929,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 60,
       "publishDate": "2022-01-21",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
