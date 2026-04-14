@@ -37,12 +37,15 @@ If rejecting: {"scoreable": false, "rejection": "<reason>", "reasoning": "<expla
 Output JSON:
 {"scoreable": true, "score": <0-100>, "bucket": "<Rave|Positive|Mixed|Negative|Pan>", "confidence": "<high|medium|low>", "reasoning": "<1-2 sentences>", "keyQuote": "<most representative quote>"}`;
 
+const MODEL_ARG = process.argv.find(a => a.startsWith('--model='))?.split('=')[1];
+const MODEL = MODEL_ARG || process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514';
+
 async function scoreTranscript(transcript, showTitle, creatorName, platform) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514', max_tokens: 1024, system: PROMPT,
+      model: MODEL, max_tokens: 1024, system: PROMPT,
       messages: [{ role: 'user', content: `Score this video review of "${showTitle}" by ${creatorName} (${platform}):\n\n---\n${transcript}\n---` }]
     })
   });
@@ -93,7 +96,7 @@ async function main() {
         }
         const result = await scoreTranscript(transcript, showTitle, creator?.name || data.creatorId, data.platform);
         if (result.scoreable) {
-          Object.assign(data, { score: result.score, bucket: result.bucket, confidence: result.confidence, reasoning: result.reasoning, keyQuote: result.keyQuote, scoredAt: new Date().toISOString(), scoringModel: 'claude-sonnet-4-20250514' });
+          Object.assign(data, { score: result.score, bucket: result.bucket, confidence: result.confidence, reasoning: result.reasoning, keyQuote: result.keyQuote, scoredAt: new Date().toISOString(), scoringModel: MODEL });
           console.log(`    ✓ ${result.score} (${result.bucket}) — "${(result.keyQuote || '').substring(0, 80)}"`);
         } else {
           Object.assign(data, { scoreable: false, rejection: result.rejection, reasoning: result.reasoning, scoredAt: new Date().toISOString() });
