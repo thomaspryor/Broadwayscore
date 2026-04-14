@@ -24,6 +24,8 @@ export const metadata: Metadata = {
     canonical: BASE_URL,
   },
   openGraph: {
+    type: 'website',
+    siteName: 'Broadway Scorecard',
     title: `Broadway Scorecard — Best Broadway Shows ${currentYear}`,
     description: 'Find the best Broadway shows with scores aggregated from every major critic. Compare ratings from The New York Times, Vulture, Variety, and 400+ outlets.',
     url: BASE_URL,
