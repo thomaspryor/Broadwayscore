@@ -7,14 +7,14 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import TrendingList from '@/components/trending/TrendingList';
 
 /**
- * /west-end/trending — Top 10 buzziest West End shows.
+ * /west-end/trending — Every West End show ranked by social buzz.
  *
  * London-specific page. Broadway has its own at /trending.
  */
 
 const PAGE_TITLE = 'Trending West End Shows';
 const PAGE_DESCRIPTION =
-  'The 10 buzziest West End shows in London right now — ranked by social media volume and audience sentiment across Reddit, X, TikTok, and Instagram. Updated weekly.';
+  'Every West End show ranked by social media buzz — volume and audience sentiment across Reddit, X, TikTok, and Instagram. Updated weekly.';
 
 export const metadata: Metadata = {
   title: {
@@ -44,7 +44,7 @@ function buildShowLookup(): Map<string, ComputedShow> {
 export default function WestEndTrendingPage() {
   const showLookup = buildShowLookup();
   const knownShowIds: ReadonlySet<string> = new Set(showLookup.keys());
-  const picks = getTopTrendingShows('West End', knownShowIds, 10);
+  const picks = getTopTrendingShows('West End', knownShowIds, 1000);
   const lastUpdated = getTrendingLastUpdated();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -58,7 +58,7 @@ export default function WestEndTrendingPage() {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
         name: 'Trending West End Shows',
-        description: 'Top 10 buzziest West End shows in London right now',
+        description: 'West End shows in London ranked by social media buzz',
         itemListOrder: 'https://schema.org/ItemListOrderDescending',
         numberOfItems: picks.length,
         itemListElement: picks.map((p, i) => {
@@ -100,7 +100,7 @@ export default function WestEndTrendingPage() {
             Trending West End Shows
           </h1>
           <p className="text-gray-400 mt-2">
-            The 10 buzziest shows in London — ranked by social media volume and audience
+            Every West End show ranked by social media buzz — volume and audience
             sentiment across Reddit, X, TikTok, and Instagram.
           </p>
           {updatedLabel && (
@@ -116,7 +116,7 @@ export default function WestEndTrendingPage() {
             <div className="flex items-baseline gap-3 mb-4 pb-3 border-b border-white/10">
               <h2 className="text-xl sm:text-2xl font-bold text-white">West End</h2>
               <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                Top {picks.length}
+                {picks.length} shows
               </span>
             </div>
           )}
