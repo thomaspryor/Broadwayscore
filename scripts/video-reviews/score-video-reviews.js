@@ -61,8 +61,11 @@ async function main() {
   const creators = JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators;
   const creatorMap = Object.fromEntries(creators.map(c => [c.id, c]));
 
+  // Skip pipeline buckets (raw/, classified/) — they contain unsorted transcripts
+  // that aren't associated with a real show yet.
+  const EXCLUDE = new Set(['.DS_Store', 'raw', 'classified']);
   const showDirs = fs.readdirSync(TRANSCRIPTS_DIR).filter(d =>
-    d !== '.DS_Store' && fs.statSync(path.join(TRANSCRIPTS_DIR, d)).isDirectory());
+    !EXCLUDE.has(d) && fs.statSync(path.join(TRANSCRIPTS_DIR, d)).isDirectory());
 
   for (const showId of showDirs) {
     if (showFilter && showId !== showFilter) continue;

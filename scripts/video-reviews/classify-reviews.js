@@ -38,8 +38,18 @@ if (!ANTHROPIC_API_KEY) {
 
 function getOpenBroadwayShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  // Include open/previews shows plus closed shows from the last 3 seasons
+  // (June 2023 onward) so transcripts can be matched to historical productions.
+  // West End shows are excluded — video creators in the registry are US-centric.
+  const historyCutoff = new Date('2023-06-01');
   return data.shows
-    .filter(s => s && s.title && (s.status === 'open' || s.status === 'previews') && (!s.category || s.category === 'off-broadway'))
+    .filter(s => {
+      if (!s || !s.title) return false;
+      if (s.id.includes('west-end')) return false;
+      if (s.status === 'open' || s.status === 'previews') return true;
+      if (s.status === 'closed' && s.openingDate && new Date(s.openingDate) >= historyCutoff) return true;
+      return false;
+    })
     .map(s => ({ id: s.id, title: s.title, category: s.category || 'broadway' }));
 }
 
