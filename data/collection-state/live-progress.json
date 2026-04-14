@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-14T18:50:09.272Z",
-  "processed": 56,
-  "failed": 909,
-  "successRate": "5.8%",
+  "updatedAt": "2026-04-14T18:54:41.407Z",
+  "processed": 59,
+  "failed": 916,
+  "successRate": "6.1%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 10,
-    "brightdata": 1,
-    "archiveToday": 4,
-    "archive": 6
+    "brightdata": 2,
+    "archiveToday": 5,
+    "archive": 7
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-14T18:46:12.707Z",
@@ -23,6 +23,28 @@
     },
     {
       "t": "2026-04-14T18:46:13.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-14T18:50:26.129Z",
+      "event": "bb-session",
+      "session": "762ec217",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/time-stands-still-theater-revi"
+    },
+    {
+      "t": "2026-04-14T18:50:27.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-14T18:52:47.747Z",
+      "event": "bb-session",
+      "session": "97218dc8",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-14T18:52:48.967Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

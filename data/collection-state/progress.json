@@ -55,7 +55,10 @@
     "driving-miss-daisy-2010/backstage--unknown.json",
     "fences-2010/wsj--christopher-john-farley.json",
     "million-dollar-quartet-2010/theatermania--unknown.json",
-    "come-fly-away-2010/wsj--unknown.json"
+    "come-fly-away-2010/wsj--unknown.json",
+    "time-stands-still-2010/hollywood-reporter--charles-isherwood.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -966,7 +969,14 @@
     "looped-2010/ny1--roma-torre.json",
     "next-fall-2010/new-jersey-newsroom--michael-sommers.json",
     "next-fall-2010/backstage--david-sheward.json",
-    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json"
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "a-behanding-in-spokane-2010/new-jersey-newsroom--michael-sommers.json",
+    "a-behanding-in-spokane-2010/backstage--david-sheward.json",
+    "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
+    "a-little-night-music-2009/ap--ben-brantley.json",
+    "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "fela-2009/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1009,7 +1019,8 @@
       "once-2012/theatermania--dan-bacalzo.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
       "driving-miss-daisy-2010/backstage--unknown.json",
-      "million-dollar-quartet-2010/theatermania--unknown.json"
+      "million-dollar-quartet-2010/theatermania--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -1024,18 +1035,18 @@
       "data-off-broadway-2026/timeout--unknown.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
       "some-like-it-hot-2022/newyorker--helen-shaw.json",
-      "tina-2019/newyorker--michael-schulman.json",
-      "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--unknown.json",
-      "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--unknown.json"
+      "tina-2019/newyorker--michael-schulman.json"
     ],
     "brightdata": [
-      "fences-2010/wsj--christopher-john-farley.json"
+      "fences-2010/wsj--christopher-john-farley.json",
+      "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
     ],
     "archiveToday": [
       "data/review-texts/titanique-2026/talkinbroadway--unknown.json",
       "data/review-texts/follies-2011/abc-news--mark-kennedy.json",
       "data/review-texts/the-scottsboro-boys-2010/new-jersey-newsroom--michael-sommers.json",
-      "data/review-texts/driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json"
+      "data/review-texts/driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
+      "data/review-texts/a-little-night-music-2009/ap--ben-brantley.json"
     ],
     "archive": [
       "inter-alia-west-end-2026/telegraph--unknown.json",
@@ -1043,11 +1054,12 @@
       "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/broadwayworld--unknown.json",
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
-      "come-fly-away-2010/wsj--unknown.json"
+      "come-fly-away-2010/wsj--unknown.json",
+      "time-stands-still-2010/hollywood-reporter--charles-isherwood.json"
     ]
   },
   "startTime": "2026-04-14T09:09:56.218Z",
-  "lastProcessed": "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+  "lastProcessed": "oleanna-2009/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-04-14T18:46:12.707Z",
@@ -1057,6 +1069,28 @@
     },
     {
       "t": "2026-04-14T18:46:13.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-14T18:50:26.129Z",
+      "event": "bb-session",
+      "session": "762ec217",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/time-stands-still-theater-revi"
+    },
+    {
+      "t": "2026-04-14T18:50:27.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-14T18:52:47.747Z",
+      "event": "bb-session",
+      "session": "97218dc8",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-14T18:52:48.967Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
