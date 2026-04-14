@@ -43,6 +43,10 @@ export interface ReviewTextFile {
   isMultiShowReview?: boolean;
   /** Human-readable show title (injected at scoring time from shows.json) */
   showTitle?: string;
+  /** Market category (broadway / west-end / off-broadway) — injected at scoring time */
+  category?: string;
+  /** Venue name — injected at scoring time */
+  venue?: string;
 }
 
 /**
