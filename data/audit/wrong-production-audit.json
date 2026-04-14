@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-14T11:26:38.966Z",
+  "timestamp": "2026-04-14T19:23:10.596Z",
   "stats": {
-    "totalReviews": 34854,
-    "alreadyFlagged": 13938,
+    "totalReviews": 34855,
+    "alreadyFlagged": 13940,
     "dateGuardCatches": 107,
     "directorMismatch": 975,
-    "tvFilmSignals": 3386,
+    "tvFilmSignals": 3387,
     "londonSignals": 1118,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
@@ -57536,6 +57536,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "time-stands-still-2010",
+      "file": "hollywood-reporter--charles-isherwood.json",
+      "score": 83,
+      "publishDate": "January 28, 2010",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/time-stands-still-theater-review-1004063419.story",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },

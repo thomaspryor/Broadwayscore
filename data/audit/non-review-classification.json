@@ -1,27 +1,38 @@
 {
   "meta": {
-    "generatedAt": "2026-04-14T11:14:37.334Z",
+    "generatedAt": "2026-04-14T19:14:24.611Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 35402,
-      "inReviewsJson": 17318,
+      "totalFiles": 35395,
+      "inReviewsJson": 17312,
       "skippedExcluded": 44,
-      "withFullText": 35,
-      "excerptOnly": 1607,
-      "llmClassified": 34,
+      "withFullText": 22,
+      "excerptOnly": 1600,
+      "llmClassified": 21,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 18,
-      "budgetUsed": 0.003499999999999998,
-      "llmCalls": 35,
+      "budgetUsed": 0.0022,
+      "llmCalls": 22,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 15632
+      "skippedAlreadyClassified": 15646
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "come-fly-away-2010/wsj--unknown.json",
+      "showId": "come-fly-away-2010",
+      "outlet": "The Wall Street Journal",
+      "outletId": "wsj",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "The article is a collection of website content and a review of \"The Book of Grace,\" not \"Come Fly Away.\"",
+      "currentScore": 43
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -30,7 +41,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -38,9 +49,9 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "outlet": "The Telegraph",
       "outletId": "telegraph",
-      "contentType": "preview",
+      "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The text mentions the play 'Evening All Afternoon' and its themes, but it does not provide a critical evaluation or opinion on the production's quality. It seems to be setting up the premise of the play, suggesting it's a preview.",
+      "reasoning": "The text mentions the play 'Evening All Afternoon' and discusses the theme of grief, suggesting a feature article about the play's subject matter rather than a review. The presence of a critic's bio also suggests this is an introduction to a review that is not included in the provided text.",
       "currentScore": 100
     },
     {
@@ -50,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain any review content itself.",
       "currentScore": 82
     },
     {
@@ -60,7 +71,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered, so it's not a review.",
       "currentScore": 88
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and is displaying subscription prompts. Based on the available text, it seems to be a news article or a link to a news article, rather than a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -130,7 +141,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the premise of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for an evening of terror, suggesting a preview rather than a review.",
+      "reasoning": "The article describes the play's premise and setting the stage for an evening of terror, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
       "currentScore": 80
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
       "currentScore": 83
     },
     {
@@ -160,7 +171,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theatre, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -170,7 +181,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
       "currentScore": 64
     },
     {
@@ -180,7 +191,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -200,28 +211,20 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions its autobiographical nature, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play to the audience.",
+      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion on the quality of the production. It focuses on the play's themes and background, resembling a preview rather than a review.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "a-midsummer-nights-dream-unicorn-off-west-end-2026/everything-theatre--chris-elwell.json",
-    "a-midsummer-nights-dream-unicorn-off-west-end-2026/guardian--miriam-gillinson.json",
-    "a-midsummer-nights-dream-unicorn-off-west-end-2026/londontheatre1--mary-beer.json",
-    "a-midsummer-nights-dream-unicorn-off-west-end-2026/thereviewshub--jackie-simard.json",
-    "a-midsummer-nights-dream-unicorn-off-west-end-2026/thestage--oliver-jones.json",
-    "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
-    "cats-the-jellicle-ball-2026/ew--shania-russell.json",
-    "hercules-west-end-2025/the-sun--dominic-maxwell.json",
-    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
-    "into-the-woods-west-end-2025/timeout-london--andrzej-lukowski.json",
-    "paddington-the-musical-west-end-2025/radio-times--olivia-garrett.json",
-    "skylight-2015/nbcny--robert-kahn.json",
-    "the-bands-visit-2017/show-showdown--wendy-caster.json",
-    "the-bands-visit-2017/the-times-of-israel--jordan-hoffman.json",
-    "titanique-2026/one-minute-critic--matthew-wexler.json",
-    "titanique-2026/talkinbroadway--howard-miller.json"
+    "driving-miss-daisy-2010/backstage--erik-haagensen.json",
+    "time-stands-still-2010/hollywood-reporter--charles-isherwood.json"
   ],
-  "perShowSummary": []
+  "perShowSummary": [
+    {
+      "showId": "come-fly-away-2010",
+      "currentCount": 16,
+      "removed": 1
+    }
+  ]
 }
