@@ -230,25 +230,40 @@ function isValidCreativeTeamName(name) {
   // Normalize whitespace before checking
   const normalized = name.replace(/\s{2,}/g, ' ').trim();
 
-  // Reject names longer than 50 characters (real creative team names are short)
-  if (normalized.length > 50) return false;
+  // Reject names longer than 70 characters. This leaves room for legitimate
+  // multi-person design/orchestration credits like "SCK Sound Design, Walter
+  // Trarbach and Andrew Keister" (52 chars). Phrase rules below catch junk
+  // regardless of length.
+  if (normalized.length > 70) return false;
 
-  // Reject names that start with lowercase (real names are capitalized)
-  if (/^[a-z]/.test(normalized)) return false;
+  // Reject multi-word names that start with lowercase (sentence fragments like "of Disney")
+  // Single-word lowercase names are allowed (e.g. "dots" scenic-design collective, "beyoncé")
+  if (/^[a-z]/.test(normalized) && /\s/.test(normalized)) return false;
 
-  // Reject names that start with articles or prepositions
-  if (/^(The|A|An|For|With|In|On|At|By|From)\s/i.test(normalized)) return false;
+  // Reject names starting with prepositions (never valid creative-team members).
+  // Kept narrow: "Or" is a Hebrew first name (Or Matias), "But" is never a sentence start.
+  // "The"/"A"/"An" are allowed — band/collective names like "The Avett Brothers".
+  if (/^(For|With|In|On|At|By|From|Of|And)\s/i.test(normalized)) return false;
 
   // Reject sentence fragments: period followed by space and lowercase letter
   if (/\.\s+[a-z]/.test(normalized)) return false;
 
-  // Reject sentence fragment indicators (common sentence words as whole words)
-  const sentenceWords = /\b(is|are|was|were|has|have|had|will|shall|may|might|must|should|could|would)\b/i;
+  // Reject sentence fragment indicators (common sentence words as whole words).
+  // Case-sensitive — capitalized "Will" is a common first name (Will Butler, Will Van Dyke),
+  // but lowercase "will" in the middle of a name indicates a sentence fragment.
+  const sentenceWords = /\b(is|are|was|were|has|have|had|will|shall|may|might|must|should|could|would)\b/;
   if (sentenceWords.test(normalized)) return false;
 
-  // Reject award references and known garbage phrases from IBDB biography text
-  if (/\b(Tony|Grammy|Oscar|Emmy|Pulitzer|Obie)\b/.test(normalized)) return false;
-  if (/Tony Award|Pulitzer Prize winner/i.test(normalized)) return false;
+  // Reject award references — credit phrases and bare award labels, not first names.
+  // Matches: "Tony Award", "Oscar Winner", "Grammy Nominee", "Pulitzer Prize", "Lifetime Achievement".
+  // Preserves first names: "Tony Kushner", "Oscar Hammerstein II", "Tony Taccone", "Tony Meola".
+  if (/^(Tony|Oscar|Emmy|Grammy|Pulitzer|Obie|Olivier|Drama Desk)(\s+(Award|Winner|Nominee|Prize|nominated|winning))?$/i.test(normalized)) return false;
+  if (/^Lifetime Achievement$/i.test(normalized)) return false;
+  // Credit-phrase prefixes that leaked from TodayTix / IBDB blurbs:
+  // "Tony Award winner Alex Timbers", "Oscar-winning director John Doe", "Pulitzer Prize winner"
+  if (/^(Tony|Oscar|Emmy|Grammy|Pulitzer|Obie|Olivier)\s+(Award|Prize)\s+(winner|winning|nominee|nominated|recipient)\b/i.test(normalized)) return false;
+  if (/^(Tony|Oscar|Emmy|Grammy|Pulitzer|Obie|Olivier)[-\s](winning|winner|nominated|nominee)\b/i.test(normalized)) return false;
+  if (/\b(Award|Prize)\s+(winner|winning|recipient)\b/i.test(normalized)) return false;
   if (/based on the novel by/i.test(normalized)) return false;
   if (/and musical supervision/i.test(normalized)) return false;
   if (/\bfocused on\b/i.test(normalized)) return false;
