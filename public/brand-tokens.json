@@ -1,0 +1,158 @@
+{
+  "$schema": "https://broadwayscorecard.com/brand-tokens.schema.json",
+  "name": "Broadway Scorecard Brand Tokens",
+  "version": "1.0.0",
+  "description": "Canonical design system values for Broadway Scorecard. Suitable for Figma, Canva, email templates, and any tool that needs brand colors.",
+  "updated": "2026-04-14",
+  "site": "https://broadwayscorecard.com",
+  "brand": {
+    "gold": "#d4a574",
+    "goldHover": "#c4956a",
+    "goldLight": "#e4b584",
+    "goldMuted": "rgba(212, 165, 116, 0.2)"
+  },
+  "surface": {
+    "default": "#0f0f14",
+    "raised": "#1a1a24",
+    "overlay": "#2a2a38",
+    "elevated": "#32323f"
+  },
+  "market": {
+    "broadway": "#d4a574",
+    "westEnd": "#f472b6",
+    "westEndDeep": "#ec4899",
+    "offBroadway": "#d4a574"
+  },
+  "scores": {
+    "mustSee": {
+      "label": "Critical Gold",
+      "range": "83-100",
+      "gradient": "linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)",
+      "solid": "#FFD700",
+      "border": "#C8960E",
+      "text": "#1a1a1a"
+    },
+    "great": {
+      "label": "Recommended",
+      "range": "75-82",
+      "solid": "#22c55e",
+      "text": "#ffffff"
+    },
+    "good": {
+      "label": "Worth Seeing",
+      "range": "65-74",
+      "solid": "#14b8a6",
+      "text": "#ffffff"
+    },
+    "tepid": {
+      "label": "Skippable",
+      "range": "55-64",
+      "solid": "#d97706",
+      "text": "#1a1a1a"
+    },
+    "skip": {
+      "label": "Stay Away",
+      "range": "0-54",
+      "solid": "#ef4444",
+      "text": "#ffffff"
+    },
+    "pending": {
+      "label": "Pending",
+      "range": "null",
+      "solid": "#6b7280",
+      "text": "#9ca3af"
+    }
+  },
+  "accents": {
+    "amber": "#fbbf24",
+    "emerald": "#34d399",
+    "sky": "#38bdf8",
+    "orange": "#f97316",
+    "red": "#f87171",
+    "purple": "#a855f7",
+    "cream": "#f5e6d3"
+  },
+  "text": {
+    "primary": "#ffffff",
+    "secondary": "#d1d5db",
+    "muted": "#9ca3af",
+    "faint": "#6b7280",
+    "veryFaint": "#4b5563"
+  },
+  "status": {
+    "open": "#10b981",
+    "openBg": "rgba(16, 185, 129, 0.2)",
+    "closed": "#6b7280",
+    "closedBg": "rgba(107, 114, 128, 0.2)",
+    "previews": "#a855f7",
+    "previewsBg": "rgba(168, 85, 247, 0.2)"
+  },
+  "font": {
+    "family": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "familyShort": "Inter, sans-serif",
+    "name": "Inter",
+    "weights": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700,
+      "extrabold": 800
+    }
+  },
+  "gradients": {
+    "brand": "linear-gradient(135deg, #d4a574 0%, #b8956a 100%)",
+    "dark": "linear-gradient(180deg, #1a1a24 0%, #0f0f14 100%)",
+    "westEnd": "linear-gradient(135deg, #f472b6 0%, #ec4899 100%)"
+  },
+  "assets": {
+    "logoMain": "https://broadwayscorecard.com/images/logo-white.png",
+    "logoFantasy": "https://broadwayscorecard.com/images/fantasy/bfl-logo.png",
+    "paletteSvg": "https://broadwayscorecard.com/brand-kit/palette.svg",
+    "ogImage": "https://broadwayscorecard.com/og/home.png"
+  },
+  "canva": {
+    "instructions": "https://broadwayscorecard.com/brand#canva",
+    "brandKitColors": [
+      {
+        "name": "BWSC Gold",
+        "hex": "#d4a574"
+      },
+      {
+        "name": "BWSC Gold Hover",
+        "hex": "#c4956a"
+      },
+      {
+        "name": "BWSC Surface",
+        "hex": "#0f0f14"
+      },
+      {
+        "name": "BWSC Surface Raised",
+        "hex": "#1a1a24"
+      },
+      {
+        "name": "West End Pink",
+        "hex": "#f472b6"
+      },
+      {
+        "name": "Score: Must See",
+        "hex": "#FFD700"
+      },
+      {
+        "name": "Score: Recommended",
+        "hex": "#22c55e"
+      },
+      {
+        "name": "Score: Worth Seeing",
+        "hex": "#14b8a6"
+      },
+      {
+        "name": "Score: Skippable",
+        "hex": "#d97706"
+      },
+      {
+        "name": "Score: Stay Away",
+        "hex": "#ef4444"
+      }
+    ]
+  }
+}

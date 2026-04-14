@@ -18,6 +18,8 @@ node scripts/validate-shows-prebuild.js
 node scripts/generate-show-lookup.js
 node scripts/generate-diary-data.js
 node scripts/build-slug-redirects.js
+# Brand tokens — regenerate public/brand-tokens.json from canonical source
+node scripts/generate-brand-tokens.js
 # Always regenerate public show JSONs — they must match the reviews.json
 # used by show pages in THIS build. Skipping this causes 0.1-0.9 pt drift
 # when rebuild workflows commit stale public JSONs between deploys. (~30s)
