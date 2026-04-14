@@ -228,6 +228,37 @@ console.log(`✓ Generated mobile-shows.json: ${mobileShows.length} shows (${siz
 console.log(`  ${withScores} with scores, ${withAudience} with audience grades, ${excluded} unscored closed excluded`);
 
 // ===========================================
+// ANALYST ENDPOINTS
+// Two slim derivatives for external Claude Projects doing trend/scoring analysis.
+// Kept small enough (~350KB each) to survive claude.ai's web-fetch truncation.
+// ===========================================
+const ANALYST_FIELDS = ['id', 't', 's', 'v', 'st', 'ty', 'cat', 'od', 'cd', 'rt', 'ar', 'cs', 'cr', 'ag', 'tg'];
+
+const analystShows = mobileShows.map(s => {
+  const slim = {};
+  for (const k of ANALYST_FIELDS) if (s[k] !== undefined) slim[k] = s[k];
+  return slim;
+});
+
+const analystCreatives = {};
+for (const s of mobileShows) {
+  if (s.ct && s.ct.length > 0) analystCreatives[s.id] = s.ct;
+}
+
+const analystShowsOutput = { _v: SCHEMA_VERSION, _ts: output._ts, shows: analystShows };
+const analystCreativesOutput = { _v: SCHEMA_VERSION, _ts: output._ts, creatives: analystCreatives };
+
+const analystShowsPath = path.join(outputDir, 'analyst-shows.json');
+const analystCreativesPath = path.join(outputDir, 'analyst-creatives.json');
+fs.writeFileSync(analystShowsPath, JSON.stringify(analystShowsOutput));
+fs.writeFileSync(analystCreativesPath, JSON.stringify(analystCreativesOutput));
+
+const analystShowsKB = (fs.statSync(analystShowsPath).size / 1024).toFixed(0);
+const analystCreativesKB = (fs.statSync(analystCreativesPath).size / 1024).toFixed(0);
+console.log(`✓ Generated analyst-shows.json: ${analystShows.length} shows (${analystShowsKB}KB)`);
+console.log(`✓ Generated analyst-creatives.json: ${Object.keys(analystCreatives).length} shows (${analystCreativesKB}KB)`);
+
+// ===========================================
 // VALIDATION: Cross-check against search-shows.json
 // ===========================================
 const searchPath = path.join(outputDir, 'search-shows.json');
