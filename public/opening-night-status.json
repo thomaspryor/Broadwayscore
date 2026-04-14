@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-14T03:32:49.931Z",
+  "generatedAt": "2026-04-14T06:47:32.431Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -911,14 +911,14 @@
       "status": "open",
       "slug": "titanique",
       "thumbnail": "/images/shows/titanique-2026/thumbnail.webp",
-      "siteScore": 76.07,
+      "siteScore": 76.37,
       "liveScore": 76,
-      "scoreDrift": -0.06999999999999318,
-      "total": 22,
+      "scoreDrift": -0.37000000000000455,
+      "total": 23,
       "t1": 4,
       "t2": 13,
-      "t3": 5,
-      "positive": 15,
+      "t3": 6,
+      "positive": 16,
       "mixed": 4,
       "negative": 3,
       "readiness": {
@@ -989,10 +989,6 @@
       "missingT2": [
         {
           "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
           "isDualMarket": false
         },
         {
@@ -1220,6 +1216,18 @@
           "m": 4,
           "n": 3,
           "bc": "preview-sent"
+        },
+        {
+          "t": "2026-04-14T06:47:32.431Z",
+          "rc": 23,
+          "s": 76.37,
+          "t1": 4,
+          "t2": 13,
+          "t3": 6,
+          "p": 16,
+          "m": 4,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
