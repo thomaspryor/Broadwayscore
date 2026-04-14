@@ -127,7 +127,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const description = (score && roundedScore && tier
     ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
     : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.${statusLabel ? ` ${statusLabel} at ${show.venue}.` : ''} ${synopsisSnippet}`
-  ).trim().slice(0, 160);
+  ).trim();
+  const truncatedDescription = description.length > 160
+    ? description.slice(0, 157).replace(/\s\S*$/, '...')
+    : description;
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
@@ -144,15 +147,16 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
         ? `${show.title} — ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
         : `${show.title} Reviews ${marketLabel} — ${siteName}`,
     },
-    description,
+    description: truncatedDescription,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
       title: `${show.title} - ${siteName}`,
-      description,
+      description: truncatedDescription,
       url: canonicalUrl,
       type: 'article',
+      siteName,
       images: [{
         url: ogImageUrl,
         width: 1200,
@@ -163,7 +167,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     twitter: {
       card: 'summary_large_image',
       title: `${show.title} - CriticScore ${roundedScore ? `${roundedScore}/100` : 'TBD'}`,
-      description,
+      description: truncatedDescription,
       images: [{
         url: ogImageUrl,
         width: 1200,
