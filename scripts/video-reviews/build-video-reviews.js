@@ -56,7 +56,11 @@ function main() {
       });
     }
 
-    if (reviews.length >= 2) { // Minimum 2 reviews to display
+    // Show any show with 1+ reviews. Single-review shows still display — the
+    // VideoReviewsShelf header and profile pages show "N reviews" which is
+    // honest about sample size. Filtering to 2+ hid ~86 legit reviews because
+    // tylernabinger covers niche OB that other creators skip.
+    if (reviews.length >= 1) {
       reviews.sort((a, b) => b.score - a.score);
       output[showId] = reviews;
       console.log(`${showId}: ${reviews.length} reviews — avg ${Math.round(reviews.reduce((s, r) => s + r.score, 0) / reviews.length)}`);
