@@ -39,9 +39,22 @@ const RULES = [
     pattern: /\btext-(slate|zinc)-\d{2,3}\b/g,
     fix: 'Use text-gray-* (typography neutrals are not migrated yet) or a semantic token.',
   },
+  {
+    id: 'other-slate-zinc',
+    // Catches the same drift on ring/divide/outline/from/to/via/decoration/caret/
+    // accent/shadow/fill/stroke prefixes. Gray is NOT banned here (placeholder-gray-*
+    // is widely used for legit typography).
+    pattern: /\b(ring|divide|outline|from|to|via|decoration|caret|accent|shadow|fill|stroke|placeholder)-(slate|zinc)-\d{2,3}\b/g,
+    fix: 'Use a design-system token. Same neutrals ban applies to ring/divide/outline/gradient/shadow prefixes.',
+  },
 ];
 
-const EXEMPT_RE = /\/\/\s*design-lint-ok\b/;
+// Exemption format: `// design-lint-ok[rule-id,rule-id]: reason text`
+// - rule ids in brackets are required; an exemption without them is ignored
+// - reason after the colon must be non-empty
+// - only the listed rules are skipped; other violations on the same line still fire
+// This closes the "generic exempt comment silently skips every rule" loophole.
+const EXEMPT_RE = /\/\/\s*design-lint-ok\[([a-z0-9,\-\s]+)\]:\s*\S/i;
 const EXT_RE = /\.(ts|tsx|js|jsx|css|mdx)$/;
 
 function walk(dir, out = []) {
@@ -53,14 +66,21 @@ function walk(dir, out = []) {
   return out;
 }
 
+function parseExemption(line) {
+  const m = EXEMPT_RE.exec(line);
+  if (!m) return null;
+  return new Set(m[1].split(',').map((s) => s.trim()).filter(Boolean));
+}
+
 function lintFile(file) {
   const violations = [];
   const text = fs.readFileSync(file, 'utf8');
   const lines = text.split('\n');
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (EXEMPT_RE.test(line)) continue;
+    const exempt = parseExemption(line);
     for (const rule of RULES) {
+      if (exempt && exempt.has(rule.id)) continue;
       rule.pattern.lastIndex = 0;
       let m;
       while ((m = rule.pattern.exec(line)) !== null) {
@@ -101,7 +121,8 @@ function main() {
     }
     console.error('');
   }
-  console.error('Fix violations or add `// design-lint-ok: <reason>` to the offending line.');
+  console.error('Fix violations or add `// design-lint-ok[<rule-id>]: <reason>` to the offending line.');
+  console.error('Rule ids: ' + RULES.map((r) => r.id).join(', '));
   console.error('See memory/design-system.md for the canonical token list.');
   process.exit(1);
 }
