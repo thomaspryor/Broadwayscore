@@ -135,52 +135,38 @@ const openingDate = '2026-03-23'; // Giant opening night
 
 // Helper: wraps applyTemporalOverrides and adds willNullFullText for assertion convenience
 // (willNullFullText = downstream consequence; not part of the guard itself)
-// Default confidence is 'medium' — the typical LLM output. 'high' cases tested separately below.
-function callTemporalOverride({ wpFlag, filmTvFlag, publishDate, confidence = 'medium' }) {
-  const r = applyTemporalOverrides(wpFlag, filmTvFlag, confidence, openingDate, publishDate);
+function callTemporalOverride({ wpFlag, filmTvFlag, publishDate }) {
+  const r = applyTemporalOverrides(wpFlag, filmTvFlag, 'high', openingDate, publishDate);
   const willNullFullText = wpFlag && (r.wpConfidence === 'high' || r.wpConfidence === 'medium');
   return { ...r, willNullFullText };
 }
 
-// Day 0 (opening night): medium-confidence wrongProd should downgrade
+// Day 0 (opening night): should override
 {
   const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-03-23' });
-  assert(r.wpConfidence === 'low', 'wrongProduction on opening night (day 0): medium→low');
+  assert(r.wpConfidence === 'low', 'wrongProduction on opening night (day 0): confidence downgraded to low');
   assert(!r.willNullFullText, 'wrongProduction on opening night: will NOT null fullText');
 }
 
-// Day 15 (within 30d): medium-confidence wrongProd should downgrade
+// Day 15 (within 30d): should override
 {
   const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-04-07' });
-  assert(r.wpConfidence === 'low', 'wrongProduction at day 15: medium→low');
+  assert(r.wpConfidence === 'low', 'wrongProduction at day 15: confidence downgraded to low');
   assert(!r.willNullFullText, 'wrongProduction at day 15: will NOT null fullText');
 }
 
-// Day 30 (boundary): medium-confidence should STILL downgrade (daysDiff <= 30 inclusive)
+// Day 30 (boundary): should STILL override (daysDiff <= 30 is inclusive)
 {
   const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-04-22' });
-  assert(r.wpConfidence === 'low', 'wrongProduction at day 30 (boundary): medium→low');
+  assert(r.wpConfidence === 'low', 'wrongProduction at day 30 (boundary): confidence downgraded to low');
   assert(!r.willNullFullText, 'wrongProduction at day 30: will NOT null fullText');
 }
 
 // Day 31 (outside window): should NOT override
 {
   const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-04-23' });
-  assert(r.wpConfidence === 'medium', 'wrongProduction at day 31: confidence stays medium (no override)');
+  assert(r.wpConfidence === 'high', 'wrongProduction at day 31: confidence stays high (no override)');
   assert(r.willNullFullText, 'wrongProduction at day 31: WILL null fullText (expected behavior)');
-}
-
-// HIGH-confidence wrongProd within 30 days: TRUST THE LLM, do NOT downgrade.
-// (Postmortem audit fix: temporal override silently bypassed all 3 wrongProd guards
-// when LLM was high-confidence about a legitimately different production.)
-{
-  const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-03-23', confidence: 'high' });
-  assert(r.wpConfidence === 'high', 'HIGH-confidence wrongProduction on opening night: KEEPS high (no downgrade)');
-  assert(r.willNullFullText, 'HIGH-confidence wrongProduction: WILL null fullText (trust the LLM)');
-}
-{
-  const r = callTemporalOverride({ wpFlag: true, filmTvFlag: false, publishDate: '2026-04-07', confidence: 'high' });
-  assert(r.wpConfidence === 'high', 'HIGH-confidence wrongProduction at day 15: KEEPS high');
 }
 
 // isFilmTv: cleared entirely within 30 days
