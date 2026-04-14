@@ -18,7 +18,12 @@ name: Demo Alias Watchdog
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Every 5 minutes
+    - cron: '*/5 * * * *'  # Every 5 minutes (GHA cron lags 5-30 min in practice)
+  workflow_run:
+    # Fire immediately after any production deploy completes — that's the
+    # event that steals the demo alias. Cron alone is too laggy.
+    workflows: ['Deploy to Vercel']
+    types: [completed]
   workflow_dispatch:
 
 concurrency:
