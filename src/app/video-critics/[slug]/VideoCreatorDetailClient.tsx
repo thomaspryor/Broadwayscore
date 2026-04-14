@@ -4,8 +4,8 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { VideoCreatorProfile, VideoCreatorReview } from '@/lib/data-video-critics';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getScoreClass, getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
-import { ToggleBar, StatGrid } from '@/components/show-cards';
+import { getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
+import { ToggleBar, StatGrid, ScoreBadge } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
@@ -70,15 +70,15 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: VideoCreat
     <article className="card p-4 flex gap-4">
       <Link
         href={`/show/${review.showSlug}`}
-        className="w-14 h-14 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0 self-start"
+        className="w-14 h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0 self-start"
       >
         {review.showThumbnail ? (
           <img
-            src={getOptimizedImageUrl(review.showThumbnail, 'thumbnail')}
+            src={getOptimizedImageUrl(review.showThumbnail, 'poster')}
             alt={review.showTitle}
             className="w-full h-full object-cover"
             width={56}
-            height={56}
+            height={80}
             loading={loading}
           />
         ) : (
@@ -117,8 +117,8 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: VideoCreat
             </p>
           </div>
 
-          <div className={`w-10 h-10 text-sm rounded-lg ${getScoreClass(review.score)} flex items-center justify-center font-bold flex-shrink-0`}>
-            {review.score}
+          <div className="flex-shrink-0">
+            <ScoreBadge score={review.score} size="sm" />
           </div>
         </div>
 
@@ -187,10 +187,29 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white">{creator.name}</h1>
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <PlatformPill platform={creator.platform} />
+            <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-sm text-gray-400 mt-2">
+              <a
+                href={creator.profileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+                aria-label={`Visit ${creator.name} on ${creator.platform === 'youtube' ? 'YouTube' : 'TikTok'}`}
+              >
+                <PlatformPill platform={creator.platform} />
+              </a>
+              <a
+                href={creator.profileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-brand transition-colors"
+              >
+                @{creator.handle}
+              </a>
               {creator.subscribers && (
-                <span className="text-gray-500">{creator.subscribers} followers</span>
+                <>
+                  <span className="text-gray-600">·</span>
+                  <span className="text-gray-500">{creator.subscribers} followers</span>
+                </>
               )}
             </div>
           </div>

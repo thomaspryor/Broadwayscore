@@ -7,6 +7,8 @@ export interface VideoCreatorProfile {
   name: string;
   slug: string;
   platform: string;
+  handle: string;          // e.g. "tylernabinger" (no @)
+  profileUrl: string;      // e.g. "https://www.tiktok.com/@tylernabinger"
   subscribers: string | null;
   reviewCount: number;
   avgScore: number;
@@ -79,11 +81,20 @@ function buildCreatorProfile(creator: typeof creators[0]): VideoCreatorProfile |
   const highScore = reviews.reduce((m, r) => Math.max(m, r.score), 0);
   const lowScore = reviews.reduce((m, r) => Math.min(m, r.score), 100);
 
+  const primary = creator.primaryPlatform;
+  const platformData = (creator.platforms as any)?.[primary] || {};
+  const handle: string = platformData.handle || platformData.channelHandle || creator.id;
+  const profileUrl = primary === 'youtube'
+    ? `https://www.youtube.com/@${handle}`
+    : `https://www.tiktok.com/@${handle}`;
+
   return {
     id: creator.id,
     name: creator.name,
-    slug: creator.id, // use handle as slug
-    platform: creator.primaryPlatform,
+    slug: creator.id, // use id as slug
+    platform: primary,
+    handle,
+    profileUrl,
     subscribers: creator.subscribers || null,
     reviewCount: reviews.length,
     avgScore,
