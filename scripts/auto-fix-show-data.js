@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isValidSynopsis } = require('./lib/synopsis-validation');
+const { isValidCreativeTeamName } = require('./lib/ibdb-dates');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
@@ -138,40 +139,15 @@ function extractCreativeTeamFromHtml(html) {
     }
   }
 
-  // Try common HTML patterns for creative team sections
-  const creativePatterns = [
-    /(?:directed by|director)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
-    /(?:book by|written by)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
-    /(?:music by|composer)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
-    /(?:lyrics by|lyricist)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
-    /(?:choreography by|choreographer)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi,
-  ];
+  // Loose regex extraction removed (2026-04-14): scanning entire page HTML with
+  // patterns like /directed by ([A-Z][a-z]+ [A-Z][a-z]+)/ picked up credits from
+  // related-shows sidebars and captured "Tony Award" from "directed by Tony Award
+  // winner X". JSON-LD is the only reliable extraction path from TodayTix HTML.
+  // See tests/unit/creative-team-validator.test.mjs for the junk-name lock-in.
 
-  const roleMap = {
-    'directed by': 'Director',
-    'director': 'Director',
-    'book by': 'Book',
-    'written by': 'Book',
-    'music by': 'Music',
-    'composer': 'Music',
-    'lyrics by': 'Lyrics',
-    'lyricist': 'Lyrics',
-    'choreography by': 'Choreographer',
-    'choreographer': 'Choreographer',
-  };
-
-  for (const [key, role] of Object.entries(roleMap)) {
-    const regex = new RegExp(`${key}[:\\s]*([A-Z][a-z]+(?:\\s+[A-Z][a-z]+)+)`, 'gi');
-    let match;
-    while ((match = regex.exec(html)) !== null) {
-      const name = match[1].trim();
-      if (name && !creativeTeam.some(c => c.name === name && c.role === role)) {
-        creativeTeam.push({ name, role });
-      }
-    }
-  }
-
-  return creativeTeam.length > 0 ? creativeTeam : null;
+  // Filter JSON-LD results through the shared validator to catch any residual junk
+  const filtered = creativeTeam.filter(c => isValidCreativeTeamName(c.name));
+  return filtered.length > 0 ? filtered : null;
 }
 
 // Fetch synopsis from TodayTix
@@ -337,8 +313,8 @@ async function fixCreativeTeam(show, todayTixIds) {
   let creativeTeam = await fetchCreativeTeamFromTodayTix(show, todayTixInfo);
 
   if (creativeTeam && creativeTeam.length >= 2) {
-    // Filter out garbage names (marketing blurbs parsed as names)
-    creativeTeam = creativeTeam.filter(m => m.name && m.name.length <= 80);
+    // Filter through shared validator (rejects "Tony Award", "of Disney", bio-blurb fragments, etc.)
+    creativeTeam = creativeTeam.filter(m => isValidCreativeTeamName(m.name));
     if (creativeTeam.length >= 2) {
       show.creativeTeam = creativeTeam;
       return `Fetched creative team from TodayTix for ${show.title} (${creativeTeam.length} members)`;
@@ -350,8 +326,8 @@ async function fixCreativeTeam(show, todayTixIds) {
     console.log(`    Generating via Claude...`);
     creativeTeam = await generateCreativeTeamWithLLM(show);
     if (creativeTeam && creativeTeam.length >= 1) {
-      // Filter out garbage names (LLM sometimes returns descriptions)
-      creativeTeam = creativeTeam.filter(m => m.name && m.name.length <= 80);
+      // Filter through shared validator (LLMs sometimes return descriptions/hedges)
+      creativeTeam = creativeTeam.filter(m => isValidCreativeTeamName(m.name));
       // Dedup: if same person appears in multiple roles, keep only the first
       // (LLMs hallucinate people into roles — e.g. playwright listed as director)
       const seen = new Set();
