@@ -139,9 +139,10 @@ jobs:
         run: |
           node scripts/enrich-cast-from-files.js --force
           node scripts/generate-mobile-show-details.js
-          git add data/shows.json public/data/shows/ || true
+          # shows.json syncs via push-core-data; only stage public-repo files here.
+          git add public/data/shows/ || true
           if ! git diff --cached --quiet; then
-            git commit -m "data: Enrich shows.json cast after backfill"
+            git commit -m "data: Enrich mobile show details after cast backfill"
             bash scripts/lib/push-with-retry.sh 5
           fi
 

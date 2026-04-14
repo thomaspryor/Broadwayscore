@@ -92,23 +92,8 @@ jobs:
         run: |
           git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
 
-      - name: Commit and push changes
-        if: always() && steps.git-check.outputs.changes == 'true' && (inputs.mode || 'enrich') != 'verify'
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          SHOW_MSG=""
-          if [ -n "${{ inputs.show }}" ]; then
-            SHOW_MSG=" for ${{ inputs.show }}"
-          elif [ "${{ github.event_name }}" = "schedule" ]; then
-            SHOW_MSG=" (weekly scheduled)"
-          fi
-
-          git add data/shows.json
-          git commit -m "data: Enrich West End dates${SHOW_MSG}"
-
-          bash scripts/lib/push-with-retry.sh
+      # shows.json is gitignored in the public repo — see note in
+      # enrich-ibdb-dates.yml. push-core-data below handles the sync.
 
       - name: Push core data to private repo
         if: always()
