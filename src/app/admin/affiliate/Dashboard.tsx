@@ -147,7 +147,7 @@ function FunnelStage({
   accent?: boolean;
 }) {
   return (
-    <div className="bg-gray-950/60 border border-white/[0.06] rounded-md p-3">
+    <div className="bg-surface/60 border border-white/[0.06] rounded-md p-3">
       <div className="text-[10px] uppercase tracking-wide text-gray-500">{label}</div>
       <div className={`text-xl sm:text-2xl font-extrabold tabular-nums mt-1 ${accent ? 'text-green-400' : 'text-white'}`}>
         {value}

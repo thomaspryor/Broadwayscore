@@ -120,12 +120,12 @@ export const DESIGNATIONS: DesignationConfig[] = [
   },
   {
     name: 'Tour Stop',
-    color: 'text-slate-400',
+    color: 'text-gray-400',
     description: 'National tour engagement on Broadway',
     sortOrder: 9,
     showInLegend: true,
     icon: '🚌',
-    bgClass: 'bg-slate-500/15',
+    bgClass: 'bg-gray-500/15',
     borderClass: 'border-white/10',
   },
 ];

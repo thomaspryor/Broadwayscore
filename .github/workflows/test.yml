@@ -204,6 +204,25 @@ jobs:
       - name: npm audit (critical only)
         run: npm audit --audit-level=critical
 
+  design-tokens-lint:
+    name: Design Token Drift Guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Lint design tokens
+        # Forbids border-gray/slate/zinc-*, bg-gray-700/800/900/950, bg-slate/zinc-*,
+        # text-slate/zinc-* in src/. Prior sessions spent hours cleaning up drift
+        # (2026-04-12: 129 zinc refs, 2026-04-13: 44 gray/slate refs). Without a
+        # gate, drift reappears in ~2 weeks. Exemption: `// design-lint-ok: <reason>`.
+        # See memory/design-system.md for the canonical token list.
+        run: node scripts/lint-design-tokens.js
+
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
