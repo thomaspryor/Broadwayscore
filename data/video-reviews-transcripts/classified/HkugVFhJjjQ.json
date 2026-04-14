@@ -15,5 +15,9 @@
   "reviewType": "review",
   "classificationConfidence": "high",
   "classificationReason": "Creator clearly saw and reviewed multiple London theater productions, but none match the specified Broadway/Off-Broadway show list",
-  "classifiedAt": "2026-04-13T03:32:38.865Z"
+  "classifiedAt": "2026-04-13T03:32:38.865Z",
+  "scoreable": false,
+  "rejection": "Multi-show review video",
+  "reasoning": "This is a roundup review covering four different shows (Shadowlands, Deepure, Guess How Much I Love You, and Man and Boy). The instruction specifies to score only single-show reviews, and for multi-show videos, to score only the target show section. Since no specific target show was identified from the four shows discussed, this video cannot be scored.",
+  "scoredAt": "2026-04-14T03:42:20.891Z"
 }
