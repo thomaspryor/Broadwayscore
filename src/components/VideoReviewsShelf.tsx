@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
 import type { VideoReview } from '@/lib/data-video-reviews';
 
@@ -73,57 +74,64 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
           {reviews.map((review) => {
             const date = formatDate(review.publishedAt);
             return (
-              <a
+              <div
                 key={review.videoUrl}
-                href={review.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-shrink-0 w-28 sm:w-32 group"
+                className="flex-shrink-0 w-28 sm:w-32"
                 role="listitem"
-                aria-label={`${review.creatorName} scored ${review.score} out of 100`}
               >
-                {/* Thumbnail */}
-                <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
-                  {review.thumbnail ? (
-                    <img
-                      src={review.thumbnail}
-                      alt=""
-                      className={`absolute inset-0 w-full h-full object-cover ${review.platform === 'youtube' ? 'object-top' : ''}`}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-surface-elevated" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-[1]" />
+                {/* Thumbnail — links to the video */}
+                <a
+                  href={review.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
+                  aria-label={`Watch ${review.creatorName}'s video review (scored ${review.score} out of 100)`}
+                >
+                  <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
+                    {review.thumbnail ? (
+                      <img
+                        src={review.thumbnail}
+                        alt=""
+                        className={`absolute inset-0 w-full h-full object-cover ${review.platform === 'youtube' ? 'object-top' : ''}`}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-surface-elevated" />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-[1]" />
 
-                  {/* Play button */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center z-[2] opacity-70 group-hover:opacity-100 transition-opacity">
-                    <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5" aria-hidden="true">
-                      <polygon points="6,3 20,12 6,21" />
-                    </svg>
-                  </div>
+                    {/* Play button */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center z-[2] opacity-70 group-hover:opacity-100 transition-opacity">
+                      <svg viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5" aria-hidden="true">
+                        <polygon points="6,3 20,12 6,21" />
+                      </svg>
+                    </div>
 
-                  {/* Platform badge */}
-                  <div className={`absolute top-2 right-2 w-5 h-5 rounded flex items-center justify-center z-[3] ${review.platform === 'youtube' ? 'bg-red-600/80' : 'bg-black/60'}`}>
-                    {review.platform === 'youtube' ? <YouTubeIcon /> : <TikTokIcon />}
-                  </div>
+                    {/* Platform badge */}
+                    <div className={`absolute top-2 right-2 w-5 h-5 rounded flex items-center justify-center z-[3] ${review.platform === 'youtube' ? 'bg-red-600/80' : 'bg-black/60'}`}>
+                      {review.platform === 'youtube' ? <YouTubeIcon /> : <TikTokIcon />}
+                    </div>
 
-                  {/* Score badge — bottom-right */}
-                  <div className="absolute bottom-1.5 right-1.5 z-[3]">
-                    <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(review.score)}`}>
-                      {review.score}
+                    {/* Score badge — bottom-right */}
+                    <div className="absolute bottom-1.5 right-1.5 z-[3]">
+                      <div className={`score-badge w-11 h-11 text-lg rounded-lg font-bold ${getScoreColorClass(review.score)}`}>
+                        {review.score}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </a>
 
-                {/* Creator name + date */}
-                <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-1 leading-tight">
+                {/* Creator name — links to their profile page */}
+                <Link
+                  href={`/video-critics/${review.handle}`}
+                  className="block font-semibold text-white text-sm hover:text-brand transition-colors line-clamp-1 leading-tight"
+                >
                   {review.creatorName}
-                </h3>
+                </Link>
                 {date && (
                   <p className="text-gray-500 text-xs mt-0.5">{date}</p>
                 )}
-              </a>
+              </div>
             );
           })}
 

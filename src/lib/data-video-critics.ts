@@ -10,6 +10,10 @@ export interface VideoCreatorProfile {
   subscribers: string | null;
   reviewCount: number;
   avgScore: number;
+  highScore: number;
+  lowScore: number;
+  volumeRank: number;
+  generosityRank: number;
   reviews: VideoCreatorReview[];
 }
 
@@ -64,10 +68,16 @@ function buildCreatorProfile(creator: typeof creators[0]): VideoCreatorProfile |
 
   if (reviews.length === 0) return null;
 
-  // Sort by score descending (default)
-  reviews.sort((a, b) => b.score - a.score);
+  // Default sort: most recent first (matches /critics page default)
+  reviews.sort((a, b) => {
+    const da = a.publishedAt ? Date.parse(a.publishedAt) : 0;
+    const db = b.publishedAt ? Date.parse(b.publishedAt) : 0;
+    return db - da;
+  });
 
   const avgScore = Math.round(reviews.reduce((sum, r) => sum + r.score, 0) / reviews.length);
+  const highScore = reviews.reduce((m, r) => Math.max(m, r.score), 0);
+  const lowScore = reviews.reduce((m, r) => Math.min(m, r.score), 100);
 
   return {
     id: creator.id,
@@ -77,6 +87,10 @@ function buildCreatorProfile(creator: typeof creators[0]): VideoCreatorProfile |
     subscribers: creator.subscribers || null,
     reviewCount: reviews.length,
     avgScore,
+    highScore,
+    lowScore,
+    volumeRank: 0,
+    generosityRank: 0,
     reviews,
   };
 }
@@ -86,6 +100,18 @@ const profiles = new Map<string, VideoCreatorProfile>();
 for (const creator of creators) {
   const profile = buildCreatorProfile(creator);
   if (profile) profiles.set(profile.slug, profile);
+}
+
+// Compute ranks once across all profiles
+{
+  const all: VideoCreatorProfile[] = [];
+  profiles.forEach(p => all.push(p));
+
+  const byVolume = [...all].sort((a, b) => b.reviewCount - a.reviewCount);
+  byVolume.forEach((p, i) => { p.volumeRank = i + 1; });
+
+  const byGenerosity = [...all].sort((a, b) => b.avgScore - a.avgScore);
+  byGenerosity.forEach((p, i) => { p.generosityRank = i + 1; });
 }
 
 export function getVideoCreatorBySlug(slug: string): VideoCreatorProfile | null {
