@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-13T08:58:11.988Z",
+  "generatedAt": "2026-04-14T09:05:12.884Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -3432,6 +3432,53 @@
       "researchedAt": "2026-04-13T08:58:11.988Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "backlog"
+    },
+    "rheology-off-broadway-2026": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public data found on capitalization, weekly running cost, or recoupment for Rheology at Playwrights Horizons; produced by a nonprofit company that does not disclose detailed financials.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/broadway-s-key-tax-credit-has-run-dry-and-2025-2026-could-get-tough",
+          "date": "2025-07-19"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/offbroadwayNYC/comments/1s8no2v/rheology_at_playwrights_horizons/",
+          "date": "2026-03-31"
+        },
+        {
+          "type": "manual",
+          "url": "https://forum.broadwayworld.com/thread/Broadway-JournalWater-for-Elephants-running-cost--960-000-per-week",
+          "date": "2023-11-06"
+        },
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/playwrights-horizons-completes-2025-2026-season-with-works-by-shayok-misha-chowdhury-john-j-caswell-jr-more",
+          "date": "2025-06-24"
+        }
+      ],
+      "title": "Rheology",
+      "slug": "rheology-off-broadway-2026",
+      "openingDate": "2026-04-14",
+      "status": "open",
+      "researchedAt": "2026-04-14T09:05:12.884Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     }
   }
 }
