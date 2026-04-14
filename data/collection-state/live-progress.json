@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-14T18:54:41.407Z",
+  "updatedAt": "2026-04-14T18:57:23.651Z",
   "processed": 59,
-  "failed": 916,
-  "successRate": "6.1%",
+  "failed": 926,
+  "successRate": "6.0%",
   "tierBreakdown": {
     "playwright": 40,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 2,
-    "archiveToday": 5,
+    "archiveToday": 6,
     "archive": 7
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-14T18:46:12.707Z",
@@ -45,6 +45,17 @@
     },
     {
       "t": "2026-04-14T18:52:48.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-14T18:56:37.281Z",
+      "event": "bb-session",
+      "session": "f11d8145",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
+    },
+    {
+      "t": "2026-04-14T18:56:38.389Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

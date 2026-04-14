@@ -976,7 +976,17 @@
     "a-little-night-music-2009/ap--ben-brantley.json",
     "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
     "race-2009/theatermania--charles-isherwood.json",
-    "fela-2009/new-jersey-newsroom--michael-sommers.json"
+    "fela-2009/new-jersey-newsroom--michael-sommers.json",
+    "the-royal-family-2009/washpost--peter-marks.json",
+    "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "9-to-5-2009/wsj--terry-teachout.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "the-norman-conquests-2009/variety--charles-isherwood.json",
+    "mary-stuart-2009/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1046,7 +1056,8 @@
       "data/review-texts/follies-2011/abc-news--mark-kennedy.json",
       "data/review-texts/the-scottsboro-boys-2010/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
-      "data/review-texts/a-little-night-music-2009/ap--ben-brantley.json"
+      "data/review-texts/a-little-night-music-2009/ap--ben-brantley.json",
+      "data/review-texts/9-to-5-2009/wsj--terry-teachout.json"
     ],
     "archive": [
       "inter-alia-west-end-2026/telegraph--unknown.json",
@@ -1059,7 +1070,7 @@
     ]
   },
   "startTime": "2026-04-14T09:09:56.218Z",
-  "lastProcessed": "oleanna-2009/theatermania--unknown.json",
+  "lastProcessed": "mary-stuart-2009/variety--marilyn-stasio.json",
   "log": [
     {
       "t": "2026-04-14T18:46:12.707Z",
@@ -1091,6 +1102,17 @@
     },
     {
       "t": "2026-04-14T18:52:48.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-14T18:56:37.281Z",
+      "event": "bb-session",
+      "session": "f11d8145",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
+    },
+    {
+      "t": "2026-04-14T18:56:38.389Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
