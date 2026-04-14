@@ -232,7 +232,7 @@ async function generateShowOG(
                   style={{
                     fontSize: '32px',
                     fontWeight: 700,
-                    color: displayScore ? scoreColor.bg === SCORE_COLORS.mustSee.bg ? '#D4AF37' : scoreColor.bg : '#6b7280',
+                    color: displayScore ? scoreColor.bg === SCORE_COLORS.mustSee.bg ? '#DAA520' : scoreColor.bg : '#6b7280',
                   }}
                 >
                   {scoreLabel}
@@ -265,7 +265,7 @@ async function generateShowOG(
             style={{
               fontSize: '28px',
               fontWeight: 800,
-              background: 'linear-gradient(to right, #8b5cf6, #ec4899)',
+              background: 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
               backgroundClip: 'text',
               color: 'transparent',
             }}
@@ -391,7 +391,7 @@ async function generateBrowseOG(
               style={{
                 padding: '12px 24px',
                 borderRadius: '999px',
-                background: 'linear-gradient(to right, #8b5cf6, #ec4899)',
+                background: 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
                 color: 'white',
                 fontSize: '20px',
                 fontWeight: 600,
@@ -417,7 +417,7 @@ async function generateBrowseOG(
             style={{
               fontSize: '28px',
               fontWeight: 800,
-              background: 'linear-gradient(to right, #8b5cf6, #ec4899)',
+              background: 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
               backgroundClip: 'text',
               color: 'transparent',
             }}
@@ -486,7 +486,7 @@ async function generateHomeOG(posters: string[]) {
                 style={{
                   fontSize: '72px',
                   fontWeight: 800,
-                  background: 'linear-gradient(to right, #8b5cf6, #ec4899)',
+                  background: 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
                   backgroundClip: 'text',
                   color: 'transparent',
                 }}
@@ -517,7 +517,7 @@ async function generateHomeOG(posters: string[]) {
                 style={{
                   padding: '16px 32px',
                   borderRadius: '999px',
-                  background: 'linear-gradient(to right, #8b5cf6, #ec4899)',
+                  background: 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
                   color: 'white',
                   fontSize: '22px',
                   fontWeight: 600,
@@ -663,7 +663,7 @@ async function generateListOG(title: string, count: number, creator: string, ran
             style={{
               fontSize: '28px',
               fontWeight: 800,
-              background: 'linear-gradient(to right, #8b5cf6, #ec4899)',
+              background: 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
               backgroundClip: 'text',
               color: 'transparent',
             }}
@@ -712,7 +712,7 @@ async function generateDefaultOG() {
             style={{
               fontSize: '80px',
               fontWeight: 800,
-              background: 'linear-gradient(to right, #8b5cf6, #ec4899)',
+              background: 'linear-gradient(135deg, #d4a574 0%, #b8956a 100%)',
               backgroundClip: 'text',
               color: 'transparent',
             }}

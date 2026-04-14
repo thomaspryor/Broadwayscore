@@ -62,7 +62,7 @@ function getScoreColor(score) {
   if (score >= 83) return { bg: '#FFD700', bgGradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a', label: 'Critical Gold' };
   if (score >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
   if (score >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
-  if (score >= 55) return { bg: '#f59e0b', text: '#1a1a1a', label: 'Skippable' };
+  if (score >= 55) return { bg: '#d97706', text: '#1a1a1a', label: 'Skippable' };
   return { bg: '#ef4444', text: '#ffffff', label: 'Stay Away' };
 }
 
@@ -192,7 +192,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
       <tr>
         ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#FFD700;"></td>` : ''}
         ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
-        ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#f59e0b;"></td>` : ''}
+        ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#d97706;"></td>` : ''}
         ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
       </tr>
     </table>
@@ -207,7 +207,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
           <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive
         </td>
         <td align="center" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-          <span style="color:#f59e0b;font-weight:600;">${mixed}</span> Mixed
+          <span style="color:#d97706;font-weight:600;">${mixed}</span> Mixed
         </td>
         <td align="right" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
           <span style="color:#ef4444;font-weight:600;">${negative}</span> Negative
@@ -347,7 +347,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
           <tr>
             ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#FFD700;"></td>` : ''}
             ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
-            ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#f59e0b;"></td>` : ''}
+            ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#d97706;"></td>` : ''}
             ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
           </tr>
         </table>
@@ -362,7 +362,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
               <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive
             </td>
             <td align="center" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-              <span style="color:#f59e0b;font-weight:600;">${mixed}</span> Mixed
+              <span style="color:#d97706;font-weight:600;">${mixed}</span> Mixed
             </td>
             <td align="right" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
               <span style="color:#ef4444;font-weight:600;">${negative}</span> Negative
@@ -721,11 +721,11 @@ function buildDailyDigestHtml(changes, date) {
   // Review Spikes (>10 new reviews — possible tour contamination)
   if (changes.reviewSpikes && changes.reviewSpikes.length > 0) {
     let html = `<tr><td style="padding:20px 20px 8px;">
-      <p style="margin:0;font-size:11px;font-weight:600;color:#f59e0b;text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">&#9888; Review Spikes (${changes.reviewSpikes.length})</p>
+      <p style="margin:0;font-size:11px;font-weight:600;color:#d97706;text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">&#9888; Review Spikes (${changes.reviewSpikes.length})</p>
     </td></tr>`;
     html += `<tr><td style="padding:4px 20px;font-size:13px;color:#d97706;line-height:1.5;font-family:${FONT};">Shows with &gt;10 new reviews in a single day &mdash; check for tour or wrong-production reviews.</td></tr>`;
     for (const r of changes.reviewSpikes) {
-      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#d97706;line-height:1.5;font-family:${FONT};border-left:2px solid #f59e0b;">&#8226;&nbsp; ${showLink(r.title, r.slug, r)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
+      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#d97706;line-height:1.5;font-family:${FONT};border-left:2px solid #d97706;">&#8226;&nbsp; ${showLink(r.title, r.slug, r)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
     }
     sections.push(html);
   }

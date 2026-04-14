@@ -105,7 +105,7 @@ const brandSwatches: Swatch[] = [
   { name: 'Brand Gold', hex: '#d4a574', usage: 'Primary — buttons, links, logo', textOn: 'light' },
   { name: 'Brand Gold Hover', hex: '#c4956a', usage: 'Hover state', textOn: 'light' },
   { name: 'Brand Gold Light', hex: '#e4b584', usage: 'Light emphasis', textOn: 'light' },
-  { name: 'West End Pink', hex: '#f472b6', usage: 'WE market accent', textOn: 'dark' },
+  { name: 'West End Pink', hex: '#f472b6', usage: 'WE market accent', textOn: 'light' },
 ];
 
 const scoreSwatches: Swatch[] = [
@@ -113,7 +113,7 @@ const scoreSwatches: Swatch[] = [
   { name: 'Recommended (75-82)', hex: '#22c55e', usage: 'Green', textOn: 'dark' },
   { name: 'Worth Seeing (65-74)', hex: '#14b8a6', usage: 'Teal', textOn: 'dark' },
   { name: 'Skippable (55-64)', hex: '#d97706', usage: 'Amber/Orange', textOn: 'light' },
-  { name: 'Stay Away (0-54)', hex: '#ef4444', usage: 'Red', textOn: 'dark' },
+  { name: 'Stay Away (0-54)', hex: '#ef4444', usage: 'Red', textOn: 'light' },
 ];
 
 const textSwatches: Swatch[] = [
@@ -270,8 +270,8 @@ export default function BrandPageClient() {
                 <li className="flex gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand text-white text-xs font-bold flex items-center justify-center">1</span>
                   <div>
-                    <div className="font-semibold text-white">Open Canva → Brand Kit</div>
-                    <div className="text-gray-400 mt-1">In Canva, click your workspace name (top-left) → <span className="text-gray-300 font-medium">Brand</span> → <span className="text-gray-300 font-medium">Brand Kit</span>. Requires Canva Pro or Teams.</div>
+                    <div className="font-semibold text-white">Open Canva → Brand Hub</div>
+                    <div className="text-gray-400 mt-1">In Canva, click <span className="text-gray-300 font-medium">Brand</span> in the left sidebar → <span className="text-gray-300 font-medium">Brand Kits</span> → pick or create a kit. Requires Canva Pro or Teams. (Exact path may vary — search &quot;Brand Kit&quot; from the Canva homepage if you can&apos;t find it.)</div>
                   </div>
                 </li>
                 <li className="flex gap-3">

@@ -20,7 +20,6 @@ const BRAND = require('./lib/brand-colors');
 const OUTPUT_PATH = path.join(__dirname, '..', 'public', 'brand-tokens.json');
 
 const tokens = {
-  $schema: 'https://broadwayscorecard.com/brand-tokens.schema.json',
   name: 'Broadway Scorecard Brand Tokens',
   version: '1.0.0',
   description: 'Canonical design system values for Broadway Scorecard. Suitable for Figma, Canva, email templates, and any tool that needs brand colors.',
