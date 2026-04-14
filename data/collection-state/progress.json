@@ -996,7 +996,17 @@
     "exit-the-king-2009/variety--david-rooney.json",
     "exit-the-king-2009/newsday--linda-winer.json",
     "impressionism-2009/variety--david-rooney.json",
-    "impressionism-2009/newsday--linda-winer.json"
+    "impressionism-2009/newsday--linda-winer.json",
+    "33-variations-2009/variety--charles-isherwood.json",
+    "33-variations-2009/newsday--unknown.json",
+    "guys-and-dolls-2009/northjerseycom--robert-feldberg.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "a-tale-of-two-cities-2008/variety--david-rooney.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "south-pacific-2008/ap--michael-kuchwara.json",
+    "in-the-heights-2008/nypost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1067,7 +1077,8 @@
       "data/review-texts/the-scottsboro-boys-2010/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/a-little-night-music-2009/ap--ben-brantley.json",
-      "data/review-texts/9-to-5-2009/wsj--terry-teachout.json"
+      "data/review-texts/9-to-5-2009/wsj--terry-teachout.json",
+      "data/review-texts/guys-and-dolls-2009/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "inter-alia-west-end-2026/telegraph--unknown.json",
@@ -1080,7 +1091,7 @@
     ]
   },
   "startTime": "2026-04-14T09:09:56.218Z",
-  "lastProcessed": "impressionism-2009/newsday--linda-winer.json",
+  "lastProcessed": "in-the-heights-2008/nypost--unknown.json",
   "log": [
     {
       "t": "2026-04-14T18:46:12.707Z",
@@ -1125,6 +1136,28 @@
       "t": "2026-04-14T18:56:38.389Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-14T18:59:14.015Z",
+      "event": "bb-session",
+      "session": "f07514ff",
+      "url": "https://www.northjersey.com/entertainment/stage/40522532.html"
+    },
+    {
+      "t": "2026-04-14T18:59:15.196Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-14T19:00:07.338Z",
+      "event": "bb-session",
+      "session": "ff09f694",
+      "url": "https://www.nypost.com/seven/03102008/entertainment/theater/uptown_upstaged_1012"
+    },
+    {
+      "t": "2026-04-14T19:00:08.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }

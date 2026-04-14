@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-14T18:58:16.702Z",
+  "updatedAt": "2026-04-14T19:01:14.519Z",
   "processed": 59,
-  "failed": 936,
+  "failed": 946,
   "successRate": "5.9%",
   "tierBreakdown": {
     "playwright": 40,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 2,
-    "archiveToday": 6,
+    "archiveToday": 7,
     "archive": 7
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-04-14T18:46:12.707Z",
@@ -58,6 +58,28 @@
       "t": "2026-04-14T18:56:38.389Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-14T18:59:14.015Z",
+      "event": "bb-session",
+      "session": "f07514ff",
+      "url": "https://www.northjersey.com/entertainment/stage/40522532.html"
+    },
+    {
+      "t": "2026-04-14T18:59:15.196Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-14T19:00:07.338Z",
+      "event": "bb-session",
+      "session": "ff09f694",
+      "url": "https://www.nypost.com/seven/03102008/entertainment/theater/uptown_upstaged_1012"
+    },
+    {
+      "t": "2026-04-14T19:00:08.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
