@@ -21,7 +21,7 @@ import { GOLD_LIST_MAP } from '@/config/gold-lists';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
-import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
+import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL } from '@/lib/seo';
 import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
 import { getCurrencySymbol } from '@/lib/market-utils';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -134,12 +134,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
-  // Use show's hero/poster image for OG, or fallback to homepage OG
-  const ogImageUrl = show.images?.hero
-    ? toAbsoluteUrl(show.images.hero)
-    : show.images?.poster
-      ? toAbsoluteUrl(show.images.poster)
-      : `${BASE_URL}/og/home.png`;
+  // OG image is generated dynamically by opengraph-image.tsx in this route —
+  // Next.js auto-injects it into openGraph.images and twitter.images.
 
   return {
     title: {
@@ -157,23 +153,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       url: canonicalUrl,
       type: 'article',
       siteName,
-      images: [{
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - ${siteName}`,
-      }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${show.title} - CriticScore ${roundedScore ? `${roundedScore}/100` : 'TBD'}`,
       description: truncatedDescription,
-      images: [{
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: `${show.title} - Score: ${roundedScore ?? 'TBD'} - ${siteName}`,
-      }],
     },
   };
 }
