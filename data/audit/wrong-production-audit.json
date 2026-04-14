@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-14T09:59:25.853Z",
+  "timestamp": "2026-04-14T11:26:38.966Z",
   "stats": {
-    "totalReviews": 34859,
-    "alreadyFlagged": 13928,
+    "totalReviews": 34854,
+    "alreadyFlagged": 13938,
     "dateGuardCatches": 107,
-    "directorMismatch": 973,
-    "tvFilmSignals": 3384,
-    "londonSignals": 1116,
+    "directorMismatch": 975,
+    "tvFilmSignals": 3386,
+    "londonSignals": 1118,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
-    "noPublishDate": 4177
+    "noPublishDate": 4154
   },
   "findings": [
     {
@@ -21827,10 +21827,10 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 94,
-      "publishDate": "2025-06-26",
-      "url": "https://theatreweekly.com/review-disneys-hercules-at-theatre-royal-drury-lane-london/",
+      "file": "the-sun--dominic-maxwell.json",
+      "score": 24,
+      "publishDate": "2025-06-28",
+      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -21841,9 +21841,10 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "publishDate": "2026-01-15",
-      "url": "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 94,
+      "publishDate": "2025-06-26",
+      "url": "https://theatreweekly.com/review-disneys-hercules-at-theatre-royal-drury-lane-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24203,6 +24204,24 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "timeout--paul-raven.json",
+      "publishDate": "2026-04-08",
+      "url": "https://www.westendtheatre.com/348446/news/reviews/inter-alia-west-end-reviews-rosamund-pike/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "timeout-london--caroline-mcginn.json",
       "score": 78,
       "publishDate": "2026-04-07",
@@ -25081,6 +25100,20 @@
       "score": 63,
       "publishDate": "December 12th, 2025",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 93,
+      "publishDate": "2025-12-11",
+      "url": "https://www.timeout.com/london/theatre/into-the-woods-5",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42055,7 +42088,7 @@
       "file": "telegraph--unknown.json",
       "score": 73,
       "publishDate": "2026-02-15",
-      "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -52793,7 +52826,7 @@
       "file": "daily-mail--michael-coveney.json",
       "score": 86,
       "publishDate": "1999-10-22",
-      "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -57569,6 +57602,20 @@
     },
     {
       "showId": "titanique-2026",
+      "file": "nyt-theater--unknown.json",
+      "score": 61,
+      "publishDate": "2026-04-13",
+      "url": "https://newyorktheater.me/2026/04/12/titanique-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
       "file": "pages-on-stages--mason-pilevsky.json",
       "score": 77,
       "publishDate": "2026-04-13",
@@ -57592,6 +57639,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 64,
+      "publishDate": "2026-04-12",
+      "url": "https://www.talkinbroadway.com/page/world/Titanique.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"motion picture\""
         }
       ]
     },
@@ -73929,7 +73990,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 60,
       "publishDate": "2022-01-21",
-      "url": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -83774,6 +83835,20 @@
       "score": 64,
       "publishDate": "2026-04-10",
       "url": "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": 78,
+      "publishDate": "2026-04-13",
+      "url": "https://1minutecritic.com/titanique-broadway-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
