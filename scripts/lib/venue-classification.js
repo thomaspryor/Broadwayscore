@@ -84,6 +84,8 @@ const BROADWAY_URL_PATTERNS = [
   /\/new-york\//i,
   /newyork\.timeout\.com/i,
   /broadway-review/i,
+  /broadway-theater-review/i,  // Added 2026-04-13 — caught Booth Theatre Les Liaisons Broadway transfer
+  /broadway-theatre-review/i,  // UK spelling variant
   /broadway-musical-rev/i,
   /-broadway[\.\-\/]/i,
   /\/broadway\//i,
