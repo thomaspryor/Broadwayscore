@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-14T19:01:58.496Z",
-  "processed": 59,
-  "failed": 956,
-  "successRate": "5.8%",
+  "updatedAt": "2026-04-14T19:06:45.740Z",
+  "processed": 60,
+  "failed": 965,
+  "successRate": "5.9%",
   "tierBreakdown": {
     "playwright": 40,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 2,
-    "archiveToday": 7,
+    "archiveToday": 9,
     "archive": 7
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-04-14T18:46:12.707Z",
@@ -80,6 +80,17 @@
       "t": "2026-04-14T19:00:08.356Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-14T19:06:31.211Z",
+      "event": "bb-session",
+      "session": "7c2a1c96",
+      "url": "https://www.nytimes.com/1980/05/01/archives/theater-barnum-a-circus-musical-ring"
+    },
+    {
+      "t": "2026-04-14T19:06:32.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
