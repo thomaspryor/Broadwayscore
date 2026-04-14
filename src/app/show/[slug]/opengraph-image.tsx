@@ -23,14 +23,15 @@ export function generateStaticParams() {
     .map(s => ({ slug: s.slug }));
 }
 
-// Tier hex values — mirror src/app/globals.css .score-must-see / .score-great / etc.
-// Used for the homepage-shelf-style score badge overlay.
-const TIER_STYLE: Record<string, { bg: string; text: string }> = {
-  'Critical Gold': { bg: '#FFD700', text: '#1a1a1a' },
-  'Recommended':   { bg: '#22c55e', text: '#ffffff' },
-  'Worth Seeing':  { bg: '#14b8a6', text: '#ffffff' },
-  'Skippable':     { bg: '#d97706', text: '#1a1a1a' },
-  'Stay Away':     { bg: '#ef4444', text: '#ffffff' },
+// Tier hex values + tier-colored glow — mirrors src/app/globals.css
+// .score-must-see / .score-great / .score-good / .score-tepid / .score-skip.
+// The shadow uses the tier bg color (rgba) to match the site's glow.
+const TIER_STYLE: Record<string, { bg: string; text: string; glow: string }> = {
+  'Critical Gold': { bg: '#FFD700', text: '#1a1a1a', glow: 'rgba(255, 215, 0, 0.4)' },
+  'Recommended':   { bg: '#22c55e', text: '#ffffff', glow: 'rgba(34, 197, 94, 0.35)' },
+  'Worth Seeing':  { bg: '#14b8a6', text: '#ffffff', glow: 'rgba(20, 184, 166, 0.35)' },
+  'Skippable':     { bg: '#d97706', text: '#1a1a1a', glow: 'rgba(217, 119, 6, 0.35)' },
+  'Stay Away':     { bg: '#ef4444', text: '#ffffff', glow: 'rgba(239, 68, 68, 0.35)' },
 };
 
 export default async function OGImage({ params }: { params: { slug: string } }) {
@@ -108,28 +109,31 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
           }}
         />
 
-        {/* Score badge overlay — bottom-right, styled like MiniShowCard */}
+        {/* Score badge overlay — matches MiniShowCard exactly, scaled up.
+            Homepage: w-9 (36px) + rounded-lg (8px) + font-bold (700) + text-sm (14px)
+                      + box-shadow: 0 2px 8px rgba(tier,0.3) (from globals.css)
+            Ratios preserved here at 4× scale (144px box). */}
         {score != null && tierStyle && (
           <div
             style={{
               position: 'absolute',
-              bottom: 32,
-              right: 32,
+              bottom: 36,
+              right: 36,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: 140,
-              height: 140,
-              borderRadius: 20,
+              width: 144,
+              height: 144,
+              borderRadius: 32,
               background: badgeBackground,
               color: tierStyle.text,
-              fontSize: 80,
-              fontWeight: 800,
-              letterSpacing: '-0.04em',
-              border: isGold ? '4px solid #C8960E' : 'none',
+              fontSize: 72,
+              fontWeight: 700,
+              letterSpacing: '-0.03em',
+              border: isGold ? '3px solid #C8960E' : 'none',
               boxShadow: isGold
-                ? '0 0 40px rgba(255, 215, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.4)'
-                : '0 8px 24px rgba(0, 0, 0, 0.5)',
+                ? `0 8px 32px ${tierStyle.glow}, 0 0 24px ${tierStyle.glow}`
+                : `0 8px 32px ${tierStyle.glow}`,
             }}
           >
             {score}
