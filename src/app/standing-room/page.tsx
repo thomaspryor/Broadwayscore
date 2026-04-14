@@ -244,21 +244,29 @@ export default function StandingRoomPage() {
         {/* Sortable Table */}
         <div className="mb-8">
           <h2 className="text-lg font-bold text-white mb-3">All Standing Room</h2>
-          <StandingRoomTable data={showsWithSRO.map(item => ({ show: item.show, sroData: item.sroData! }))} />
+          {showsWithSRO.length > 0 ? (
+            <StandingRoomTable data={showsWithSRO.map(item => ({ show: item.show, sroData: item.sroData! }))} />
+          ) : (
+            <p className="text-sm text-gray-500">No standing-room information in our database right now. Call the box office directly if the show you want is sold out — many theaters offer SRO that we don&apos;t have on file.</p>
+          )}
         </div>
 
         {/* Detailed View */}
-        <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
-        <div className="space-y-3">
-          {showsWithSRO.map((item, index) => (
-            <SROShowCard
-              key={item.show.slug}
-              show={item.show}
-              sroData={item.sroData!}
-              index={index}
-            />
-          ))}
-        </div>
+        {showsWithSRO.length > 0 && (
+          <>
+            <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
+            <div className="space-y-3">
+              {showsWithSRO.map((item, index) => (
+                <SROShowCard
+                  key={item.show.slug}
+                  show={item.show}
+                  sroData={item.sroData!}
+                  index={index}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Data Source Note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">

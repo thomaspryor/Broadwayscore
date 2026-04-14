@@ -116,6 +116,9 @@ export default function BoxOfficePage() {
             Click any column header to sort. Shows are ranked by weekly gross by default.
           </p>
           <ThisWeekTable data={showsWithGrosses} />
+          <p className="text-xs text-gray-500 mt-3">
+            <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
+          </p>
         </section>
 
         {/* All-Time Leaders */}

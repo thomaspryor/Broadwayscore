@@ -44,7 +44,9 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if [[ -n $(git status --porcelain data/lottery-rush.json data/shows.json data/show-schedules.json) ]]; then
+          # shows.json lives in the private core-data repo; it is synced via
+          # push-core-data below, so we only add public-repo files here.
+          if [[ -n $(git status --porcelain data/lottery-rush.json data/show-schedules.json) ]]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
             echo "Changes detected in lottery/rush data"
           else
@@ -57,7 +59,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/lottery-rush.json data/show-schedules.json data/shows.json
+          git add data/lottery-rush.json data/show-schedules.json
           git commit -m "chore: Update lottery/rush data from BwayRush + Playbill + Twopenny
 
           Automated weekly update of Broadway + West End lottery/rush policies.

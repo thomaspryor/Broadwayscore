@@ -313,21 +313,29 @@ export default function RushPage() {
         {/* Sortable Table */}
         <div className="mb-8">
           <h2 className="text-lg font-bold text-white mb-3">All Rush Tickets</h2>
-          <RushTable data={showsWithRush.map(item => ({ show: item.show, rushData: item.rushData! }))} />
+          {showsWithRush.length > 0 ? (
+            <RushTable data={showsWithRush.map(item => ({ show: item.show, rushData: item.rushData! }))} />
+          ) : (
+            <p className="text-sm text-gray-500">No rush tickets available in our database right now. Many shows offer day-of rush at the box office — call ahead to confirm policies.</p>
+          )}
         </div>
 
         {/* Detailed Show Cards */}
-        <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
-        <div className="space-y-3">
-          {showsWithRush.map((item, index) => (
-            <RushShowCard
-              key={item.show.slug}
-              show={item.show}
-              rushData={item.rushData!}
-              index={index}
-            />
-          ))}
-        </div>
+        {showsWithRush.length > 0 && (
+          <>
+            <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
+            <div className="space-y-3">
+              {showsWithRush.map((item, index) => (
+                <RushShowCard
+                  key={item.show.slug}
+                  show={item.show}
+                  rushData={item.rushData!}
+                  index={index}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Data Source Note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">

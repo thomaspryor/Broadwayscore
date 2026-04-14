@@ -206,7 +206,7 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                     {index + 1}
                   </span>
                 </td>
-                <td className="py-3 px-2 sm:px-4 min-w-0">
+                <td className="py-3 px-2 sm:px-4 min-w-0 max-w-[140px] sm:max-w-none">
                   <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate block">
                     {item.show.title}
                   </Link>
@@ -218,8 +218,18 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                     previous={item.grosses?.thisWeek?.grossPrevWeek}
                   />
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap">
+                <td
+                  className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap"
+                  title={
+                    (item.grosses?.thisWeek?.capacity ?? 0) > 100
+                      ? 'Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.'
+                      : undefined
+                  }
+                >
                   {formatPercent(item.grosses?.thisWeek?.capacity)}
+                  {(item.grosses?.thisWeek?.capacity ?? 0) > 100 && (
+                    <span className="text-gray-500 ml-0.5" aria-hidden="true">*</span>
+                  )}
                   <ChangeIndicator
                     current={item.grosses?.thisWeek?.capacity}
                     previous={item.grosses?.thisWeek?.capacityPrevWeek}
@@ -364,7 +374,7 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
                     {index + 1}
                   </span>
                 </td>
-                <td className="py-3 px-2 sm:px-4 min-w-0">
+                <td className="py-3 px-2 sm:px-4 min-w-0 max-w-[140px] sm:max-w-none">
                   <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate block">
                     {item.show.title}
                   </Link>

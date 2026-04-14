@@ -276,21 +276,29 @@ export default function LotteriesPage() {
         {/* Sortable Table */}
         <div className="mb-8">
           <h2 className="text-lg font-bold text-white mb-3">All Lotteries</h2>
-          <LotteryTable data={showsWithLottery.map(item => ({ show: item.show, lotteryData: item.lotteryData! }))} />
+          {showsWithLottery.length > 0 ? (
+            <LotteryTable data={showsWithLottery.map(item => ({ show: item.show, lotteryData: item.lotteryData! }))} />
+          ) : (
+            <p className="text-sm text-gray-500">No lotteries running right now. Check back during the week — new lotteries open and close frequently.</p>
+          )}
         </div>
 
         {/* Detailed Show Cards */}
-        <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
-        <div className="space-y-3">
-          {showsWithLottery.map((item, index) => (
-            <LotteryShowCard
-              key={item.show.slug}
-              show={item.show}
-              lotteryData={item.lotteryData!}
-              index={index}
-            />
-          ))}
-        </div>
+        {showsWithLottery.length > 0 && (
+          <>
+            <h2 className="text-lg font-bold text-white mb-3">Detailed View</h2>
+            <div className="space-y-3">
+              {showsWithLottery.map((item, index) => (
+                <LotteryShowCard
+                  key={item.show.slug}
+                  show={item.show}
+                  lotteryData={item.lotteryData!}
+                  index={index}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Data Source Note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
