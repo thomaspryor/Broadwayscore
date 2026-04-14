@@ -14,17 +14,28 @@ const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 if (!ANTHROPIC_API_KEY) { console.error('Missing ANTHROPIC_API_KEY'); process.exit(1); }
 
-const PROMPT = `You are scoring a VIDEO REVIEW of a Broadway/West End show. The text is a transcript from a TikTok or YouTube video by a theater content creator.
+const PROMPT = `You are scoring a VIDEO REVIEW of a Broadway/West End STAGE production. The text is a transcript from a TikTok or YouTube video by a theater content creator.
 
-## REJECTION GATE (check first):
-If the transcript is about casting news, show announcements, Broadway tea/gossip, or anticipation for a show the creator HASN'T SEEN YET, reject it. Look for past-tense language ("I saw", "we went to", "after the show") to confirm they actually attended.
+## REJECTION GATE (check first — bias toward rejection if uncertain):
 
-If rejecting: {"scoreable": false, "rejection": "<reason>", "reasoning": "<explanation>"}
+Reject if ANY of these are true:
+
+1. **Not a first-hand review.** Casting news, show announcements, Broadway tea/gossip, closure/controversy reactions, or anticipation for a show the creator HASN'T SEEN YET. Accept past-tense attendance ("I saw", "after the show"), before-and-after vlog structure ("this is us before... this is us after"), or first-preview reactions. Reject pure commentary where the creator is reacting to news about a show without giving opinions on the production itself.
+
+2. **Film/TV adaptation, not the stage show.** If the transcript reviews the MOVIE or FILM adaptation of a musical (mentions "the movie", "the film", "in theaters", Oscar/Academy Award discussion, screen-only cast like Ariana Grande in Wicked 2024), reject — we only score live stage productions.
+
+3. **Reply or follow-up video.** If the transcript's primary purpose is responding to comments on a previous video or continuing a prior video's topic ("okay so a lot of you were mad that I said...", "replying to @username", "since my last video", "people in the comments said..."), reject — it's not a standalone review.
+
+4. **Roundup / list video.** If the transcript covers 3+ shows with no single focus ("here are the shows I've seen this year", "top 10 Broadway shows", "shows coming to NYC", "my favorites from 2025"), reject — the brief mention of the target show is not a review.
+
+5. **Casting announcement.** If the transcript opens with or centers on casting news ("what a casting announcement", "they just announced", "X is joining the cast"), reject — this is news/commentary, not a review of a performance the creator saw.
+
+If rejecting: {"scoreable": false, "rejection": "<short category>", "reasoning": "<which signal above triggered and what you saw>"}
 
 ## SCORING (if scoreable):
 - Ignore filler words, intros, subscriber plugs, sponsor segments
 - Focus on the RECOMMENDATION SIGNAL
-- For multi-show videos, score ONLY the target show section
+- For multi-show videos (2 shows max), score ONLY the target show section
 
 | Bucket | Score Range | Signal |
 |--------|------------|--------|

@@ -56,8 +56,11 @@ function getOpenBroadwayShows() {
 async function classifyBatch(transcripts, showList) {
   const showNames = showList.map(s => `${s.title} (${s.id})`).join(', ');
 
+  // Include a 1200-char snippet. Short TikTok vlogs often structure as
+  // "before the show ... after the show" — a 400-char snippet only captures
+  // the pre-show part and misclassifies legit reviews as non-attended.
   const items = transcripts.map((t, i) =>
-    `[${i + 1}] Creator: ${t.creatorId} | Title: "${t.title}" | ${t.wordCount}w\nTranscript (first 400 chars): ${t.transcript.substring(0, 400)}`
+    `[${i + 1}] Creator: ${t.creatorId} | Title: "${t.title}" | ${t.wordCount}w\nTranscript (first 1200 chars): ${t.transcript.substring(0, 1200)}`
   ).join('\n\n');
 
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
@@ -69,14 +72,33 @@ async function classifyBatch(transcripts, showList) {
       messages: [{
         role: 'user',
         content: `Classify these video transcripts. For each, determine:
-1. Which specific Broadway show is being reviewed (must be from this list: ${showNames})
-2. Type: "review" (creator SAW the show and gives opinion), "commentary" (casting news, anticipation, discussion without having seen it), or "other"
-3. If it's a review, did the creator clearly see THIS production (not a tour, movie, or different production)?
+1. Which specific Broadway/West End STAGE production is being reviewed (must be from this list: ${showNames})
+2. Type: "review" | "commentary" | "roundup" | "other"
+3. If it's a review, did the creator clearly see THIS stage production?
+
+Type definitions — we only score first-hand opinions about live stage productions:
+
+- **review**: Creator is sharing their OPINION about a specific live stage production in this list. Accept:
+  - Past-tense attendance ("I saw", "we went to", "after the show")
+  - Before-and-after vlog structure ("this is us before... this is us after... 10/10")
+  - Present-tense review/summary style ("X is the kind of play that...", "this is brilliant on every level")
+  - First-preview reaction videos (attended = still counts)
+
+  Require an OPINION about the production itself (acting, direction, writing, experience). A show summary alone is a review only if it leads to recommendation/critique.
+
+- **commentary**: Casting news, anticipation, cast announcements, show announcements, OR reactions to news/closure/controversy about a show the creator has NOT personally reviewed. Discussion without first-hand opinion on the production. Set showId if clear.
+
+- **roundup**: List of 3+ shows with no single focus ("here are the shows I've seen", "top 10 Broadway", "shows coming to NYC", "my favorites from 2025"). Brief mention in a list is not a review. Set showId=null.
+
+- **other**: Catch-all. Includes:
+  - FILM/MOVIE reviews of stage adaptations (Wicked 2024 movie, West Side Story movies) — set showId=null. We don't score films even when the stage version is in the list.
+  - Reply-to-comments or follow-up videos — primary purpose is responding to prior video's reaction, not reviewing the show ("replying to @...", "since my last video", "a lot of you were mad about...", "people in the comments said...")
+  - Non-theater content
 
 Output JSON array:
-[{"index": 1, "showId": "show-id-here" or null, "showTitle": "title", "type": "review"|"commentary"|"other", "confidence": "high"|"medium"|"low", "reason": "brief explanation"}]
+[{"index": 1, "showId": "show-id-here" or null, "showTitle": "title", "type": "review"|"commentary"|"roundup"|"other", "confidence": "high"|"medium"|"low", "reason": "brief explanation"}]
 
-If a transcript covers multiple shows, pick the PRIMARY show being reviewed. If it doesn't match any show on the list, set showId to null.
+If a transcript covers 2 shows, pick the PRIMARY show being reviewed. 3+ shows = roundup. If it doesn't match any show on the list, set showId to null.
 
 Transcripts:
 
@@ -88,9 +110,25 @@ ${items}`
   if (!resp.ok) throw new Error(`API error ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
   const data = await resp.json();
   const text = data.content[0].text;
-  const jsonMatch = text.match(/\[[\s\S]*\]/);
-  if (!jsonMatch) throw new Error('No JSON array in response');
-  return JSON.parse(jsonMatch[0]);
+  // Find the outermost JSON array, tolerating stray "[foo]" tokens that
+  // can appear inside reason text (e.g., "[stage direction]" notation).
+  const start = text.indexOf('[{');
+  if (start === -1) throw new Error('No JSON array in response: ' + text.substring(0, 200));
+  let depth = 0, inStr = false, esc = false, end = -1;
+  for (let i = start; i < text.length; i++) {
+    const c = text[i];
+    if (esc) { esc = false; continue; }
+    if (c === '\\') { esc = true; continue; }
+    if (c === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+    if (c === '[' || c === '{') depth++;
+    else if (c === ']' || c === '}') {
+      depth--;
+      if (depth === 0) { end = i + 1; break; }
+    }
+  }
+  if (end === -1) throw new Error('Unclosed JSON in response');
+  return JSON.parse(text.substring(start, end));
 }
 
 async function main() {
