@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-13T20:23:50.162Z",
+  "generatedAt": "2026-04-14T03:17:57.254Z",
   "summary": {
-    "total": 1,
+    "total": 3,
     "high": 1,
-    "medium": 0,
+    "medium": 2,
     "low": 0
   },
   "collisions": [
@@ -33,6 +33,78 @@
       "suggestedWinner": "an-ark-off-broadway-2026",
       "reason": "publishDate January 30, 2026 is 21 days from an-ark-off-broadway-2026 opening (2026-01-09)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.nytimes.com/2026/04/12/theater/olivier-awards-winners.html",
+      "normalizedUrl": "https://nytimes.com/2026/04/12/theater/olivier-awards-winners.html",
+      "candidates": [
+        {
+          "showId": "rheology-off-broadway-2026",
+          "file": "nytimes--alex-marshall.json",
+          "publishDate": "2026-04-13",
+          "openingDate": "2026-04-14",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "titanique-2026",
+          "file": "nytimes--alex-marshall.json",
+          "publishDate": "2026-04-12",
+          "openingDate": "2026-04-12",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "what-happened-was-off-broadway-2026",
+          "file": "nytimes--alex-marshall.json",
+          "publishDate": "2026-04-13",
+          "openingDate": "2026-04-14",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytimes"
+        }
+      ],
+      "suggestedWinner": "titanique-2026",
+      "reason": "publishDate 2026-04-12 is 0 days from titanique-2026 but also 1 days from rheology-off-broadway-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-drama-fear-of-13-adrien-brody-1236720562/",
+      "normalizedUrl": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-drama-fear-of-13-adrien-brody-1236720562",
+      "candidates": [
+        {
+          "showId": "rheology-off-broadway-2026",
+          "file": "variety--brent-lang.json",
+          "publishDate": "2026-04-13",
+          "openingDate": "2026-04-14",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "variety"
+        },
+        {
+          "showId": "what-happened-was-off-broadway-2026",
+          "file": "variety--brent-lang.json",
+          "publishDate": "2026-04-13",
+          "openingDate": "2026-04-14",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "variety"
+        },
+        {
+          "showId": "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026",
+          "file": "variety--brent-lang.json",
+          "publishDate": "2026-04-13",
+          "openingDate": "2026-04-13",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "variety"
+        }
+      ],
+      "suggestedWinner": "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026",
+      "reason": "publishDate 2026-04-13 is 0 days from yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026 but also 1 days from rheology-off-broadway-2026",
+      "confidence": "medium"
     }
   ]
 }
