@@ -666,12 +666,12 @@ jobs:
   test-summary:
     name: Test Summary
     runs-on: ubuntu-latest
-    needs: [unit-tests, data-validation, e2e-tests, visual-regression]
+    needs: [unit-tests, data-validation, e2e-tests, visual-regression, design-tokens-lint]
     if: always()
     steps:
       - name: Check results
         run: |
-          if [ "${{ needs.unit-tests.result }}" == "failure" ] || [ "${{ needs.data-validation.result }}" == "failure" ] || [ "${{ needs.e2e-tests.result }}" == "failure" ] || [ "${{ needs.visual-regression.result }}" == "failure" ]; then
+          if [ "${{ needs.unit-tests.result }}" == "failure" ] || [ "${{ needs.data-validation.result }}" == "failure" ] || [ "${{ needs.e2e-tests.result }}" == "failure" ] || [ "${{ needs.visual-regression.result }}" == "failure" ] || [ "${{ needs.design-tokens-lint.result }}" == "failure" ]; then
             echo "Some tests failed"
             exit 1
           else
