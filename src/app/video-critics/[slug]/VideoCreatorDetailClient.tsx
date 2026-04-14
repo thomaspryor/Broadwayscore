@@ -91,21 +91,29 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: VideoCreat
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
-            <a
-              href={review.videoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href={`/show/${review.showSlug}`}
               className="font-bold text-white hover:text-brand transition-colors truncate block"
             >
               {review.showTitle}
               {showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
-              <svg className="inline-block w-3 h-3 ml-1 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
+            </Link>
             <p className="text-gray-400 text-sm truncate flex items-center gap-1.5">
               <PlatformPill platform={review.platform} />
               {review.publishedAt && <span>· {formatDate(review.publishedAt)}</span>}
+              <span className="text-gray-600">·</span>
+              <a
+                href={review.videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 hover:text-brand transition-colors"
+                aria-label="Watch video"
+              >
+                Watch
+                <svg className="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
             </p>
           </div>
 

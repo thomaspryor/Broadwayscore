@@ -84,6 +84,39 @@ jobs:
           fi
           echo "All writable workflows with checkout-core-data have matching push-core-data"
 
+      - name: Check workflows don't git-add private core data files
+        run: |
+          # Core data files live in the private broadway-scorecard-data repo
+          # and are gitignored here. They sync via push-core-data after each
+          # workflow. Any `git add data/<core-file>` in this repo is either a
+          # silent no-op (diff on an ignored file is always clean) or a hard
+          # failure (fatal: ignored by one of your .gitignore files).
+          # 2026-04-14: update-lottery-rush.yml hit the hard failure; 5 other
+          # workflows silently failed the same way for weeks.
+          #
+          # The authoritative core-data list is in push-core-data/action.yml
+          # (the loop over files to copy to /tmp/core-data-checkout). Keep
+          # these in sync. Force-adds (`git add -f`) are allowed — they are
+          # explicit overrides, used legitimately for opening-night-sent.json.
+          CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json"
+          VIOLATIONS=""
+          for f in .github/workflows/*.yml; do
+            for core in $CORE_FILES; do
+              # Match `git add` (no -f/--force) then data/<core>. Reject both
+              # `git add data/shows.json` and `git add a b data/shows.json c`.
+              if grep -E "^[[:space:]]*git add([[:space:]]+[^-][^[:space:]]*)*[[:space:]]+data/$core([[:space:]]|$)" "$f" >/dev/null 2>&1; then
+                VIOLATIONS="$VIOLATIONS $(basename "$f"):$core"
+              fi
+            done
+          done
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::Workflows git-add private core data files:$VIOLATIONS"
+            echo "These files are gitignored and synced via push-core-data."
+            echo "Remove them from git-add lines. See .github/workflows/CLAUDE.md §Data Sync Architecture."
+            exit 1
+          fi
+          echo "No workflows git-add private core data files"
+
       - name: Check for tracked symlinks or gitlinks
         run: |
           # Symlinks (120000) and gitlinks (160000) to local paths dangle in CI.

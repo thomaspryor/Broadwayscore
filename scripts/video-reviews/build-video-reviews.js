@@ -34,6 +34,9 @@ function main() {
     for (const file of files) {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
       if (data.score === undefined || data.scoreable === false) continue;
+      // Skip transcripts flagged as wrong production (e.g. movie reviews ending up
+      // on the stage show, casting-announcement videos, reply-to-comments videos).
+      if (data.wrongProduction === true) continue;
       const creator = creatorMap[data.creatorId];
       if (!creator) continue;
 

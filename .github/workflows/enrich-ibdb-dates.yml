@@ -93,30 +93,11 @@ jobs:
           echo "Running: node scripts/enrich-ibdb-dates.js $FLAGS"
           node scripts/enrich-ibdb-dates.js $FLAGS
 
-      - name: Check for changes
-        if: (inputs.mode || 'enrich') != 'verify'
-        id: git-check
-        run: |
-          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
-
-      - name: Commit and push changes
-        if: always() && steps.git-check.outputs.changes == 'true' && (inputs.mode || 'enrich') != 'verify'
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          # Core data files pushed to private repo by push-core-data action
-
-          SHOW_MSG=""
-          if [ -n "${{ inputs.show }}" ]; then
-            SHOW_MSG=" for ${{ inputs.show }}"
-          elif [ "${{ github.event_name }}" = "schedule" ]; then
-            SHOW_MSG=" (weekly scheduled)"
-          fi
-
-          git add data/shows.json
-          git commit -m "data: Enrich IBDB dates${SHOW_MSG}"
-
-          bash scripts/lib/push-with-retry.sh
+      # shows.json is gitignored in the public repo (core-data lives in the
+      # private repo). All syncing happens via `push-core-data` below — no
+      # public-repo commit needed. A prior `git add data/shows.json` step was
+      # either a silent no-op (diff on gitignored file always clean) or a hard
+      # failure, depending on the runner.
 
 
       - name: Push core data to private repo
