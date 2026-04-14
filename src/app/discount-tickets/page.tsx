@@ -171,7 +171,13 @@ export default function DiscountTicketsPage() {
 
         <DiscountTicketsNav active="all" />
 
-        <DiscountTicketsTable rows={rows} />
+        {rows.length > 0 ? (
+          <DiscountTicketsTable rows={rows} />
+        ) : (
+          <div className="card p-8 text-center">
+            <p className="text-gray-400">No discount ticket information available right now. Check back soon — we refresh lottery, rush, and standing-room data twice a week.</p>
+          </div>
+        )}
 
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
           <p>
