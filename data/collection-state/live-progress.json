@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-14T00:27:49.312Z",
-  "processed": 84,
+  "updatedAt": "2026-04-14T03:14:29.603Z",
+  "processed": 89,
   "failed": 1586,
-  "successRate": "5.0%",
+  "successRate": "5.3%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 43,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 18,
+    "scrapingbee": 20,
     "brightdata": 9,
     "archiveToday": 16,
     "archive": 9
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-13T18:57:47.736Z",
-      "event": "bb-session",
-      "session": "7db391e6",
-      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
-    },
-    {
-      "t": "2026-04-13T18:57:48.314Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-13T18:59:58.866Z",
-      "event": "bb-session",
-      "session": "4cf35654",
-      "url": "https://www.northjersey.com/entertainment/stage/40522532.html"
-    },
-    {
-      "t": "2026-04-13T18:59:59.428Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-04-13T19:00:44.896Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-04-14T00:27:21.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-14T03:13:37.660Z",
+      "event": "bb-session",
+      "session": "7bcf723e",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-14T03:13:38.339Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-14T03:14:08.842Z",
+      "event": "bb-session",
+      "session": "6e3e0966",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-14T03:14:09.452Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

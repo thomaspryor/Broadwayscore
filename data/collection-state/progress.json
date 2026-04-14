@@ -83,7 +83,12 @@
     "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/variety--brent-lang.json",
     "what-happened-was-off-broadway-2026/nytimes--unknown.json",
     "what-happened-was-off-broadway-2026/variety--unknown.json",
-    "what-happened-was-off-broadway-2026/guardian--unknown.json"
+    "what-happened-was-off-broadway-2026/guardian--unknown.json",
+    "rheology-off-broadway-2026/nytimes--alex-marshall.json",
+    "rheology-off-broadway-2026/variety--brent-lang.json",
+    "what-happened-was-off-broadway-2026/nytimes--alex-marshall.json",
+    "what-happened-was-off-broadway-2026/variety--brent-lang.json",
+    "what-happened-was-off-broadway-2026/guardian--brian-logan.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1717,7 +1722,8 @@
       "oliver-west-end-2024/standard--nick-curtis.json",
       "flyby-off-west-end-2026/theupcoming--the-editorial-unit.json",
       "flyby-off-west-end-2026/monstagigz--unknown.json",
-      "what-happened-was-off-broadway-2026/guardian--unknown.json"
+      "what-happened-was-off-broadway-2026/guardian--unknown.json",
+      "what-happened-was-off-broadway-2026/guardian--brian-logan.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1732,7 +1738,11 @@
       "data/review-texts/yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/variety--brent-lang.json",
       "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/variety--brent-lang.json",
       "data/review-texts/what-happened-was-off-broadway-2026/variety--unknown.json",
-      "what-happened-was-off-broadway-2026/variety--unknown.json"
+      "what-happened-was-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/rheology-off-broadway-2026/variety--brent-lang.json",
+      "rheology-off-broadway-2026/variety--brent-lang.json",
+      "data/review-texts/what-happened-was-off-broadway-2026/variety--brent-lang.json",
+      "what-happened-was-off-broadway-2026/variety--brent-lang.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1753,7 +1763,9 @@
       "magic-mike-live-west-end-2021/daily-mail--unknown.json",
       "magic-mike-live-west-end-2021/daily-mail--ali-daher.json",
       "rheology-off-broadway-2026/nytimes--unknown.json",
-      "what-happened-was-off-broadway-2026/nytimes--unknown.json"
+      "what-happened-was-off-broadway-2026/nytimes--unknown.json",
+      "rheology-off-broadway-2026/nytimes--alex-marshall.json",
+      "what-happened-was-off-broadway-2026/nytimes--alex-marshall.json"
     ],
     "brightdata": [
       "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
@@ -1797,7 +1809,7 @@
     ]
   },
   "startTime": "2026-04-13T08:58:51.106Z",
-  "lastProcessed": "what-happened-was-off-broadway-2026/guardian--unknown.json",
+  "lastProcessed": "what-happened-was-off-broadway-2026/guardian--brian-logan.json",
   "log": [
     {
       "t": "2026-04-13T10:48:04.835Z",
@@ -1994,6 +2006,28 @@
     },
     {
       "t": "2026-04-14T00:27:21.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-14T03:13:37.660Z",
+      "event": "bb-session",
+      "session": "7bcf723e",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-14T03:13:38.339Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-14T03:14:08.842Z",
+      "event": "bb-session",
+      "session": "6e3e0966",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-14T03:14:09.452Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
