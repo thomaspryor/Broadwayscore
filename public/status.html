@@ -291,7 +291,7 @@ function renderShows(data) {
       : '<div class="card-thumb-placeholder">\u{1F3AD}</div>';
     const badgeEl = '<div><div class="score-badge score-' + tier + '">' + (score != null ? score : 'TBD') + '</div>'
       + '<div class="score-sub">' + s.total + ' reviews</div></div>';
-    const showUrl = 'https://broadwayscorecard.com/shows/' + (s.slug || s.id);
+    const showUrl = 'https://broadwayscorecard.com/show/' + (s.slug || s.id);
     const detId = 'det-' + idx;
 
     return '<div class="card">' +
@@ -347,7 +347,7 @@ function renderUpcoming(data) {
     const imgEl = s.thumbnail
       ? '<img class="card-thumb" src="' + s.thumbnail + '" alt="" loading="lazy">'
       : '<div class="card-thumb-placeholder">\u{1F3AD}</div>';
-    const showUrl = 'https://broadwayscorecard.com/shows/' + (s.slug || s.id);
+    const showUrl = 'https://broadwayscorecard.com/show/' + (s.slug || s.id);
     const dayLabel = s.daysUntil === 0 ? 'today' : s.daysUntil === 1 ? 'tomorrow' : 'in ' + s.daysUntil + ' days';
     // Readiness summary
     let readinessHtml = '';
