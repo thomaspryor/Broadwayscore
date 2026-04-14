@@ -454,6 +454,12 @@ const stats = {
   urlDiscoverySuccess: 0,
   urlDiscoveryCapped: 0,  // Skipped due to per-run cap
   urlDiscoveryDetails: [],  // { reviewId, oldUrl, newUrl }
+  // Cookie expiry tracking — aggregates _cookiesExpired flags from all tier executions.
+  // When paywall cookies expire (NYT, Vulture, WSJ, New Yorker), the direct-cookie tier
+  // fails silently and reviews degrade to ScrapingBee/BrightData — the worst tiers.
+  // (Postmortem audit fix: _cookiesExpired was set but never read.)
+  cookieExpiries: {},  // { outletDomain: count }
+  cookieExpiryCount: 0,
 };
 
 // State tracking
@@ -3047,7 +3053,18 @@ function buildTierChain(ctx, review) {
       onFailure: (error) => {
         ctx.anyTierFailed = true;
         const msg = error.message || '';
-        if (msg.includes('expired')) ctx._cookiesExpired = true;
+        if (msg.includes('expired')) {
+          ctx._cookiesExpired = true;
+          // Aggregate for end-of-run Discord alert
+          try {
+            const domain = new URL(ctx.url || '').hostname.replace(/^www\./, '');
+            stats.cookieExpiries[domain] = (stats.cookieExpiries[domain] || 0) + 1;
+            stats.cookieExpiryCount++;
+          } catch {
+            stats.cookieExpiryCount++;
+          }
+          console.warn(`  ⚠ COOKIE EXPIRED: ${ctx.url} — falling back to lower tiers`);
+        }
       },
     },
 
@@ -6245,6 +6262,26 @@ function generateReport() {
     }
   }
   console.log(`${'╚' + '═'.repeat(58) + '╝'}`);
+
+  // Cookie expiry alert — fires via stderr + GITHUB_STEP_SUMMARY if cookies expired.
+  // Signal to ops: paywall cookies need refreshing (NYT, Vulture, WSJ, New Yorker).
+  // (Postmortem audit fix: _cookiesExpired was set but never read/alerted.)
+  if (stats.cookieExpiryCount > 0) {
+    const domains = Object.entries(stats.cookieExpiries)
+      .map(([domain, count]) => `${domain} (${count}x)`)
+      .join(', ');
+    console.warn(`\n⚠️  COOKIE EXPIRY ALERT: ${stats.cookieExpiryCount} expiry events across: ${domains}`);
+    console.warn(`   Reviews from these outlets degraded to ScrapingBee/BrightData tiers.`);
+    console.warn(`   Action: refresh cookies via check-cookie-health workflow or local extraction.`);
+    if (process.env.GITHUB_STEP_SUMMARY) {
+      try {
+        fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+          `\n## ⚠️ Cookie Expiry Alert\n\n${stats.cookieExpiryCount} expiry events across: ${domains}\n\nRefresh cookies via check-cookie-health workflow.\n`);
+      } catch {}
+    }
+    // Emit GHA warning annotation so it surfaces in the PR/run UI
+    console.log(`::warning::Cookie expiry detected for ${Object.keys(stats.cookieExpiries).length} outlet(s): ${domains}`);
+  }
 
   // Print failures by outlet - helps identify which sites need subscriptions or better scraping
   const outletFailures = Object.entries(stats.failuresByOutlet)
