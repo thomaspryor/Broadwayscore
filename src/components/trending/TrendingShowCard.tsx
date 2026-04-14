@@ -68,10 +68,10 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
   };
 
   const card = (
-    <div className="flex items-stretch gap-2 sm:gap-3">
-      {/* Rank badge — SocialPulseCard style */}
+    <div className="flex items-center gap-2 sm:gap-3">
+      {/* Rank badge — compact, poster is the visual star */}
       <div
-        className="shrink-0 flex flex-col items-center justify-center rounded-lg px-2 sm:px-3 min-w-[48px] sm:min-w-[60px] shadow-sm"
+        className="shrink-0 flex flex-col items-center justify-center rounded-lg w-10 sm:w-12 h-12 sm:h-14 shadow-sm"
         style={{
           backgroundColor: rankColors.bg,
           color: rankColors.text,
@@ -79,10 +79,9 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
         }}
         aria-label={`Ranked #${position} of ${total}`}
       >
-        <div className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-wider opacity-80">Rank</div>
-        <div className="text-xl sm:text-2xl font-extrabold leading-none mt-0.5">#{position}</div>
+        <div className="text-base sm:text-lg font-extrabold leading-none">#{position}</div>
         {total > 0 && (
-          <div className="text-[9px] sm:text-[10px] font-medium opacity-90 mt-0.5">of {total}</div>
+          <div className="text-[8px] sm:text-[9px] font-medium opacity-85 mt-0.5">of {total}</div>
         )}
       </div>
 
