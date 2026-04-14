@@ -517,6 +517,21 @@ async function main() {
     }
     console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
 
+    // Flag-before-send: write pending preview stub BEFORE Resend API call.
+    // If the run is cancelled mid-API-call, the next run's dedup check will
+    // see this entry and refuse to re-send. (Postmortem audit fix #1.)
+    const pendingPreviewTimestamp = new Date().toISOString();
+    const pendingPreviewKey = `preview:${broadcastKey}:${pendingPreviewTimestamp.slice(0, 10)}`;
+    const previewReviewCountForStub = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
+    sentData.shows[pendingPreviewKey] = {
+      sentAt: pendingPreviewTimestamp,
+      status: 'pending-send',
+      previewTo: SEND_TO,
+      reviewCount: previewReviewCountForStub,
+    };
+    saveSentData(sentData);
+    console.log(`  Flagged pending preview BEFORE API call (run-cancel safety)`);
+
     try {
       await postJSON('https://api.resend.com/emails', {
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
@@ -572,6 +587,27 @@ async function main() {
       process.exit(1);
     }
     console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
+
+    // Flag-before-send: write a pending stub BEFORE the Buttondown API call.
+    // If the run is cancelled mid-API-call, the next run will see this entry
+    // (via hasRecentPreviewForShow or the workflow's dedup check) and refuse
+    // to duplicate. False-positive-sent is strictly safer than false-negative-sent
+    // given the March 2026 incident (500 emails to 162 subscribers).
+    // On success, this stub is overwritten with complete data below.
+    // (Postmortem audit fix #1.)
+    const pendingData = {
+      completed: true,  // Dedup-relevant: prevents next run from re-firing
+      status: 'pending-send',
+      flaggedAt: new Date().toISOString(),
+      method: 'buttondown-draft',
+      reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
+    };
+    sentData.shows[broadcastKey] = pendingData;
+    for (const s of showsForEmail) {
+      sentData.shows[s.showId] = { ...pendingData, broadcastKey };
+    }
+    saveSentData(sentData);
+    console.log(`  Flagged pending-send BEFORE API call (run-cancel safety)`);
 
     try {
       const result = await postJSON('https://api.buttondown.com/v1/emails', {
@@ -658,10 +694,17 @@ ${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast.
   // the most recent by `sentAt`. The suffix is no longer load-bearing for dedup —
   // rolling time windows are. See scripts/lib/preview-dedup.js for the full story.
   if (SEND_TO) {
+    // Post-send patch: replace pending stub with actual success data.
+    // (The pending stub was written pre-API call — see flag-before-send above.)
     const previewTimestamp = new Date().toISOString();
     const previewKey = `preview:${broadcastKey}:${previewTimestamp.slice(0, 10)}`;
     const previewReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
-    sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: previewReviewCount };
+    sentData.shows[previewKey] = {
+      sentAt: previewTimestamp,
+      status: 'sent',
+      previewTo: SEND_TO,
+      reviewCount: previewReviewCount,
+    };
     saveSentData(sentData);
 
     // Sync to origin/main so a concurrent workflow run can see the write.
