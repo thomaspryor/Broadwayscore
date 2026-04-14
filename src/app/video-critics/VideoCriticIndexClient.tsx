@@ -14,6 +14,8 @@ export interface VideoCriticSummary {
   name: string;
   slug: string;
   platform: string;
+  handle: string;
+  profileUrl: string;
   subscribers: string | null;
   reviewCount: number;
   avgScore: number;
