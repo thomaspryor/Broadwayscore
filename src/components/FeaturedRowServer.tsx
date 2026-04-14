@@ -58,7 +58,7 @@ function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: 
         {/* Score overlay */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
-            {score !== undefined && score !== null && score >= getGoldThreshold(category) && (
+            {score !== undefined && score !== null && Math.round(score) >= getGoldThreshold(category) && (
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
