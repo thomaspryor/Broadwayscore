@@ -200,6 +200,30 @@ jobs:
             echo "::error::Build took ${BUILD_SECS}s (>10 min) — likely regression in build pipeline"
           fi
 
+      - name: Determine recently-opened show for dynamic smoke test
+        id: recent_show
+        run: |
+          # Pick a show that opened within the last 14 days (or is still in previews).
+          # These are the highest-risk pages — stale data, new reviews, edge cases.
+          # Falls back to no dynamic URL if none found.
+          RECENT_SLUG=$(node -e "
+            try {
+              const shows = require('./data/shows.json').shows;
+              const now = new Date();
+              const cutoff = new Date(now - 14 * 86400000).toISOString().slice(0,10);
+              const candidates = shows.filter(s =>
+                s.slug && s.openingDate && s.openingDate >= cutoff && s.openingDate <= now.toISOString().slice(0,10)
+              ).sort((a, b) => b.openingDate.localeCompare(a.openingDate));
+              if (candidates[0]) process.stdout.write(candidates[0].slug);
+            } catch {}
+          " 2>/dev/null || echo "")
+          echo "slug=$RECENT_SLUG" >> $GITHUB_OUTPUT
+          if [ -n "$RECENT_SLUG" ]; then
+            echo "Dynamic smoke test will check recently-opened show: $RECENT_SLUG"
+          else
+            echo "No recently-opened show found — smoke test uses static URLs only"
+          fi
+
       - name: Smoke test production
         run: |
           # Poll until pages return 200, up to 60s (typically <10s)
@@ -224,6 +248,13 @@ jobs:
           wait $PID1 || FAIL=1
           wait $PID2 || FAIL=1
           wait $PID3 || FAIL=1
+          # Dynamic: check the most-recently-opened show's page — catches opening-night
+          # deploys where the newly-live show page is broken (composite=null, missing data).
+          RECENT_SLUG="${{ steps.recent_show.outputs.slug }}"
+          if [ -n "$RECENT_SLUG" ]; then
+            check_url "https://broadwayscorecard.com/show/$RECENT_SLUG" "Recent opening ($RECENT_SLUG)" & PID4=$!
+            wait $PID4 || FAIL=1
+          fi
           [ $FAIL -eq 0 ] && echo "Smoke test passed — production is live" || exit 1
 
       - name: Setup Playwright
