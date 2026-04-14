@@ -1,5 +1,5 @@
 import { getMarketMinReviews } from '@/lib/market-utils';
-import { getGoldThreshold } from '@/config/score-buckets';
+import { getGoldThreshold, isCriticalGold } from '@/config/score-buckets';
 
 // Score tier labels and tooltips
 export const SCORE_TIERS = {
@@ -151,7 +151,7 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
     </div>
   );
 
-  if (showCrown && roundedScore >= getGoldThreshold(category)) {
+  if (showCrown && isCriticalGold(roundedScore, category)) {
     return (
       <div className="relative overflow-visible">
         <MustSeeCrown size={size} />

@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl, getCdnSrcSet } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreBadge';
-import { getGoldThreshold, hasEnoughReviews } from '@/config/score-buckets';
+import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { HomepageShow } from '@/components/HomePageClient';
 
@@ -58,7 +58,7 @@ function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: 
         {/* Score overlay */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
-            {score !== undefined && score !== null && Math.round(score) >= getGoldThreshold(category) && (
+            {isCriticalGold(score, category) && (
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
