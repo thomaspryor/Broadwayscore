@@ -150,6 +150,8 @@ export interface EnsembleResult {
   needsReview?: boolean;
   /** Reason for needing review */
   reviewReason?: string;
+  /** All models failed — caller must refuse to write score=50 silently */
+  allModelsFailed?: boolean;
   /** Individual model results */
   modelResults: {
     claude?: ModelScore;

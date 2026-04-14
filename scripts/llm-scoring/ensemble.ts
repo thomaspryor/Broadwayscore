@@ -245,7 +245,8 @@ export function ensembleScoreFromArray(results: (ModelScore | null)[]): Ensemble
       note: 'All models failed',
       modelResults: buildModelResultsMap(validResults),
       needsReview: true,
-      reviewReason: 'All models failed to score'
+      reviewReason: 'All models failed to score',
+      allModelsFailed: true, // Caller MUST refuse to write score=50 silently
     };
   }
 

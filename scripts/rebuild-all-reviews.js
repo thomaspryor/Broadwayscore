@@ -3457,8 +3457,21 @@ const output = {
   }
 }
 
-// Write output
-fs.writeFileSync(reviewsJsonPath, JSON.stringify(output, null, 2));
+// Write output atomically (tmp + rename) to prevent torn writes if CI is killed
+// mid-write. Also validate the written file parses — catches encoding bugs.
+// (Postmortem audit fix: reviews.json direct writeFileSync was non-atomic.)
+const reviewsTmpPath = reviewsJsonPath + '.tmp';
+fs.writeFileSync(reviewsTmpPath, JSON.stringify(output, null, 2));
+// Validate the tmp file parses before renaming over the live file
+try {
+  JSON.parse(fs.readFileSync(reviewsTmpPath, 'utf8'));
+} catch (parseErr) {
+  try { fs.unlinkSync(reviewsTmpPath); } catch {}
+  console.error(`❌ reviews.json tmp file failed JSON.parse validation: ${parseErr.message}`);
+  console.error(`   Refusing to overwrite live reviews.json. Rebuild aborted.`);
+  process.exit(1);
+}
+fs.renameSync(reviewsTmpPath, reviewsJsonPath);
 
 // Sync deploy watermark so pre-deploy-check.js doesn't block on intentional count changes.
 // This prevents the scenario where a legitimate cleanup (e.g., excluding wrongProduction reviews)

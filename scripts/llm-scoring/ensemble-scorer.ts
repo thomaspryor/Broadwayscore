@@ -328,6 +328,30 @@ export class EnsembleReviewScorer {
       };
     }
 
+    // Guard: refuse to write score=50 when ALL models failed. Previously this
+    // returned {score: 50, needsReview: true} and the caller saved it silently.
+    // On opening night with simultaneous rate limiting, every review would
+    // collapse to "Mixed 50" and the composite score would be meaningless.
+    // Now: return success:false with a clear error — caller skips and the
+    // adjudication queue picks it up the next day.
+    // (Postmortem audit fix #4.)
+    if ((ensembleResult as any).allModelsFailed) {
+      const stepSummary = process.env.GITHUB_STEP_SUMMARY;
+      if (stepSummary) {
+        try {
+          const fs = require('fs');
+          fs.appendFileSync(stepSummary,
+            `\n## ⚠️ All LLM models failed for ${reviewFile.showId}/${reviewFile.outletId}\n\nAll 3 ensemble models errored. Review not scored. Check API rate limits.\n`);
+        } catch {}
+      }
+      console.log(`::warning::ALL LLM models failed for ${reviewFile.showId}/${reviewFile.outletId} — refusing to write score=50, skipping`);
+      return {
+        success: false,
+        error: 'All ensemble models failed — refusing to write fallback score=50',
+        ensembleResult,
+      };
+    }
+
     // Cap final confidence to the LOWER of ensemble agreement and input quality.
     // See scripts/lib/llm-confidence.js capLlmConfidence (extracted per CLAUDE.md §15
     // so the unit test in tests/unit/llm-confidence-cap.test.mjs requires the same
