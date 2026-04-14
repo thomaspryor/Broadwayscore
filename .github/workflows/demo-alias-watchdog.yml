@@ -1,0 +1,95 @@
+name: Demo Alias Watchdog
+
+# Self-healing check: ensures demo.broadwayscorecard.com keeps pointing at
+# the latest Deploy Demo Site workflow build.
+#
+# Why this exists: the Vercel project lists demo.broadwayscorecard.com as a
+# project-level alias alongside broadwayscorecard.com, westendscorecard.com,
+# etc. When vercel-deploy.yml ships a production build (`vercel deploy --prod`),
+# Vercel auto-routes ALL project domains to it — including demo. That stomps
+# the alias that vercel-demo.yml just set, and because production builds don't
+# rewrite feature-flags.ts, demo-only features (videoReviews, fantasyLeague,
+# etc.) start returning 404.
+#
+# This workflow detects the drift every 5 minutes and re-aliases demo back to
+# the latest READY build from the Deploy Demo Site workflow. Read-only check
+# when nothing's wrong (no API mutations, no new deploys, no cost beyond the
+# workflow runtime itself — repo is public so GHA minutes are unlimited).
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:
+
+concurrency:
+  group: demo-alias-watchdog
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check and re-pin demo alias if drifted
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          PROJECT_ID="prj_wmBnDUrCQCwabIAYPbnMiIP3wg15"
+          DEMO_DOMAIN="demo.broadwayscorecard.com"
+
+          # 1. What deployment does demo currently point to?
+          CURRENT_URL=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v4/aliases/$DEMO_DOMAIN" \
+            | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.deployment?.url || 'UNKNOWN')")
+          echo "Demo currently points to: $CURRENT_URL"
+
+          # 2. What's the latest Deploy Demo Site build?
+          # Demo workflow uses `vercel deploy --prebuilt` (no --prod), so its
+          # deployments have target!=production. Production deploys use --prod
+          # (target=production). Filter on source=cli + ref=main + non-production.
+          LATEST_DEMO=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v6/deployments?projectId=$PROJECT_ID&state=READY&limit=20" \
+            | node -e "
+              const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+              const candidates = (d.deployments || []).filter(x =>
+                x.source === 'cli' &&
+                x.target !== 'production' &&
+                x.meta?.githubCommitRef === 'main'
+              );
+              if (candidates.length === 0) { console.error('No demo-shaped deployments found'); process.exit(2); }
+              console.log(candidates[0].url);
+            ")
+          echo "Latest demo build: $LATEST_DEMO"
+
+          # 3. If they match, nothing to do.
+          if [ "$CURRENT_URL" = "$LATEST_DEMO" ]; then
+            echo "Alias is current. No action needed."
+            exit 0
+          fi
+
+          # 4. Mismatch — re-pin demo to the latest demo build.
+          echo "::warning::Demo alias drifted ($CURRENT_URL → expected $LATEST_DEMO). Re-aliasing now."
+          npx vercel alias set "$LATEST_DEMO" "$DEMO_DOMAIN" \
+            --token=$VERCEL_TOKEN \
+            --scope=thomaspryors-projects
+
+          # 5. Verify.
+          VERIFY=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v4/aliases/$DEMO_DOMAIN" \
+            | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.deployment?.url || 'UNKNOWN')")
+          if [ "$VERIFY" = "$LATEST_DEMO" ]; then
+            echo "::warning::Demo alias was drifted and has been restored to $LATEST_DEMO"
+          else
+            echo "::error::Re-alias failed. Demo still points to $VERIFY (wanted $LATEST_DEMO)"
+            exit 1
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Demo Alias Watchdog Failed'
+          description: 'demo.broadwayscorecard.com may be stuck pointing at a non-demo build. Manual fix: npx vercel alias set <latest-demo-url> demo.broadwayscorecard.com --token=$VERCEL_TOKEN --scope=thomaspryors-projects'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
