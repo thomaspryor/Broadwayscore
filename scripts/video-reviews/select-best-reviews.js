@@ -4,9 +4,10 @@
  *
  * When a creator has multiple videos about the same show, picks the best one:
  * 1. Must have 100+ word transcript
- * 2. Must be about the current production (not off-Broadway, tour, or movie)
- * 3. Among qualifying videos, pick the one closest to the show's opening date
- * 4. If dates unavailable, fall back to longest transcript
+ * 2. Must be published AFTER previews started (not before — would be anticipation/different production)
+ * 3. Must be published BEFORE closing (not after — would be retrospective)
+ * 4. Among qualifying videos, pick the one closest to the show's opening date
+ * 5. If dates unavailable, fall back to longest transcript
  *
  * Pipeline: discover → pre-classify → collect → classify → SELECT-BEST → score → build
  *
@@ -24,14 +25,30 @@ const SHOWS_PATH = path.join(__dirname, '../../data/shows.json');
 
 const MIN_WORDS = 100;
 
-function getOpeningDate(showId) {
-  try {
-    const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-    const show = data.shows.find(s => s && s.id === showId);
-    return show?.openingDate || null;
-  } catch {
-    return null;
+// Cache shows data
+let _showsCache = null;
+function getShowData(showId) {
+  if (!_showsCache) {
+    try { _showsCache = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows; } catch { _showsCache = []; }
   }
+  return _showsCache.find(s => s && s.id === showId) || null;
+}
+
+function getShowDates(showId) {
+  const show = getShowData(showId);
+  if (!show) return { opening: null, earliest: null, closing: null };
+
+  const opening = show.openingDate || null;
+  // Earliest valid date: previewsStartDate, or 30 days before opening as fallback
+  let earliest = show.previewsStartDate || null;
+  if (!earliest && opening) {
+    const d = new Date(opening);
+    d.setDate(d.getDate() - 30);
+    earliest = d.toISOString().slice(0, 10);
+  }
+  const closing = show.closingDate || null;
+
+  return { opening, earliest, closing };
 }
 
 function parseDate(dateStr) {
@@ -70,11 +87,36 @@ function main() {
     groups[key].push({ file: f, ...d });
   }
 
-  let selected = 0, multiChoice = 0;
+  let selected = 0, multiChoice = 0, filtered = 0;
 
-  for (const [key, candidates] of Object.entries(groups)) {
+  for (const [key, allCandidates] of Object.entries(groups)) {
     const [showId, creatorId] = key.split('/');
     const showDir = path.join(SHOW_DIR, showId);
+    const dates = getShowDates(showId);
+    const openingDate = parseDate(dates.opening);
+    const earliestDate = parseDate(dates.earliest);
+    const closingDate = parseDate(dates.closing);
+
+    // Filter by date window: after previews start, before closing
+    const candidates = allCandidates.filter(c => {
+      const pubDate = parseDate(c.date);
+      if (!pubDate) return true; // keep if no date (can't filter)
+      if (earliestDate && pubDate < earliestDate) {
+        return false; // published before previews — likely different production or anticipation
+      }
+      if (closingDate && pubDate > closingDate) {
+        return false; // published after closing — retrospective
+      }
+      return true;
+    });
+
+    const filteredOut = allCandidates.length - candidates.length;
+    if (filteredOut > 0) {
+      filtered += filteredOut;
+      console.log(`  ${key}: filtered out ${filteredOut}/${allCandidates.length} (outside preview→close window)`);
+    }
+
+    if (candidates.length === 0) continue;
 
     // Pick best candidate
     let best;
@@ -82,17 +124,13 @@ function main() {
       best = candidates[0];
     } else {
       multiChoice++;
-      const openingDate = parseDate(getOpeningDate(showId));
-
-      // Sort by closeness to opening date, then by word count as tiebreaker
       candidates.sort((a, b) => {
         const dateA = parseDate(a.date);
         const dateB = parseDate(b.date);
         const distA = daysBetween(dateA, openingDate);
         const distB = daysBetween(dateB, openingDate);
-
-        if (distA !== distB) return distA - distB; // closer to opening wins
-        return b.wordCount - a.wordCount; // longer transcript as tiebreaker
+        if (distA !== distB) return distA - distB;
+        return b.wordCount - a.wordCount;
       });
 
       best = candidates[0];
@@ -103,13 +141,13 @@ function main() {
       }
     }
 
-    // Write to show directory (only if not already scored there)
+    // Write to show directory
     if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
     const outFile = path.join(showDir, `${creatorId}.json`);
 
     if (fs.existsSync(outFile)) {
       const existing = JSON.parse(fs.readFileSync(outFile, 'utf8'));
-      if (existing.score !== undefined && existing.videoId === best.videoId) continue; // already scored, same video
+      if (existing.score !== undefined && existing.videoId === best.videoId) continue;
     }
 
     const out = {
@@ -133,7 +171,7 @@ function main() {
     selected++;
   }
 
-  console.log(`\nSelected ${selected} reviews (${multiChoice} had multiple candidates)`);
+  console.log(`\nSelected ${selected} reviews (${multiChoice} had multiple candidates, ${filtered} filtered by date window)`);
 }
 
 main();
