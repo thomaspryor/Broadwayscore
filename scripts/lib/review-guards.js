@@ -86,14 +86,7 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
     if (!isNaN(opening.getTime()) && !isNaN(publish.getTime())) {
       const daysDiff = Math.abs((publish.getTime() - opening.getTime()) / 86400000);
       if (daysDiff <= 30) {
-        // Don't downgrade HIGH-confidence LLM wrongProd — trust the LLM.
-        // The temporal window is a heuristic for FALSE positives (reviews of the
-        // current production incorrectly flagged). If the LLM says "high
-        // confidence this is about a different production" even within 30 days
-        // of opening (e.g., LLM found explicit 2019 revival references), respect it.
-        // Without this guard, a legitimate wrong-prod review could silently slip
-        // through all 3 opening-night wrongProd guards. (Titanique postmortem audit)
-        if (wpFlag && wpConfidence !== 'high') resultWpConfidence = 'low';
+        if (wpFlag) resultWpConfidence = 'low';
         if (filmTvFlag) resultFilmTvFlag = false;
       }
     }
