@@ -7,7 +7,7 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import TrendingList from '@/components/trending/TrendingList';
 
 /**
- * /trending — Top 10 buzziest Broadway shows.
+ * /trending — Every Broadway show ranked by social buzz.
  *
  * Broadway-specific page. West End has its own at /west-end/trending.
  * Data source: data/social-pulse/*.json ranked by compositeScore.
@@ -15,7 +15,7 @@ import TrendingList from '@/components/trending/TrendingList';
 
 const PAGE_TITLE = 'Trending Broadway Shows';
 const PAGE_DESCRIPTION =
-  'The 10 buzziest Broadway shows right now — ranked by social media volume and audience sentiment across Reddit, X, TikTok, and Instagram. Updated weekly.';
+  'Every Broadway show ranked by social media buzz — volume and audience sentiment across Reddit, X, TikTok, and Instagram. Updated weekly.';
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -43,7 +43,7 @@ function buildShowLookup(): Map<string, ComputedShow> {
 export default function TrendingPage() {
   const showLookup = buildShowLookup();
   const knownShowIds: ReadonlySet<string> = new Set(showLookup.keys());
-  const picks = getTopTrendingShows('Broadway', knownShowIds, 10);
+  const picks = getTopTrendingShows('Broadway', knownShowIds, 1000);
   const lastUpdated = getTrendingLastUpdated();
 
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -56,7 +56,7 @@ export default function TrendingPage() {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
         name: 'Trending Broadway Shows',
-        description: 'Top 10 buzziest Broadway shows right now',
+        description: 'Broadway shows ranked by social media buzz',
         itemListOrder: 'https://schema.org/ItemListOrderDescending',
         numberOfItems: picks.length,
         itemListElement: picks.map((p, i) => {
@@ -98,7 +98,7 @@ export default function TrendingPage() {
             Trending Broadway Shows
           </h1>
           <p className="text-gray-400 mt-2">
-            The 10 buzziest shows on Broadway — ranked by social media volume and audience
+            Every Broadway show ranked by social media buzz — volume and audience
             sentiment across Reddit, X, TikTok, and Instagram.
           </p>
           {updatedLabel && (
@@ -114,7 +114,7 @@ export default function TrendingPage() {
             <div className="flex items-baseline gap-3 mb-4 pb-3 border-b border-white/10">
               <h2 className="text-xl sm:text-2xl font-bold text-white">Broadway</h2>
               <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                Top {picks.length}
+                {picks.length} shows
               </span>
             </div>
           )}
