@@ -93,9 +93,13 @@ export function getVideoCreatorBySlug(slug: string): VideoCreatorProfile | null 
 }
 
 export function getAllVideoCreatorSlugs(): string[] {
-  return Array.from(profiles.keys());
+  const slugs: string[] = [];
+  profiles.forEach((_, slug) => slugs.push(slug));
+  return slugs;
 }
 
 export function getAllVideoCreators(): VideoCreatorProfile[] {
-  return Array.from(profiles.values()).sort((a, b) => b.reviewCount - a.reviewCount);
+  const all: VideoCreatorProfile[] = [];
+  profiles.forEach(p => all.push(p));
+  return all.sort((a, b) => b.reviewCount - a.reviewCount);
 }
