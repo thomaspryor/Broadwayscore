@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <title>Broadway Scorecard — Brand Palette</title>
+  <desc>Canonical color palette for Broadway Scorecard. Upload to Canva Brand Kit as a reference asset.</desc>
+
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DAA520"/>
+      <stop offset="30%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#FFF0A0"/>
+      <stop offset="70%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d4a574"/>
+      <stop offset="100%" stop-color="#b8956a"/>
+    </linearGradient>
+    <style>
+      .title { font: 800 44px 'Inter', -apple-system, sans-serif; fill: #ffffff; }
+      .subtitle { font: 600 16px 'Inter', sans-serif; fill: #9ca3af; letter-spacing: 0.15em; text-transform: uppercase; }
+      .section-label { font: 700 14px 'Inter', sans-serif; fill: #d4a574; letter-spacing: 0.15em; text-transform: uppercase; }
+      .swatch-name { font: 600 13px 'Inter', sans-serif; fill: #ffffff; }
+      .swatch-hex { font: 500 12px 'SF Mono', Monaco, monospace; fill: #9ca3af; }
+      .footer { font: 400 12px 'Inter', sans-serif; fill: #6b7280; }
+      .brand-wordmark { font: 800 36px 'Inter', sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#0f0f14"/>
+
+  <!-- Header -->
+  <g transform="translate(60, 60)">
+    <text class="subtitle" x="0" y="0">Brand Kit</text>
+    <text class="brand-wordmark" x="0" y="48" fill="#ffffff">Broadway <tspan fill="url(#brandGradient)">Scorecard</tspan></text>
+    <text class="footer" x="0" y="78">broadwayscorecard.com/brand  ·  Updated 2026</text>
+  </g>
+
+  <!-- Surfaces -->
+  <g transform="translate(60, 180)">
+    <text class="section-label" x="0" y="0">Surfaces</text>
+    <g transform="translate(0, 20)">
+      <!-- Surface -->
+      <rect x="0" y="0" width="250" height="90" fill="#0f0f14" stroke="#2a2a38" stroke-width="1" rx="8"/>
+      <text class="swatch-name" x="16" y="40">Surface</text>
+      <text class="swatch-hex" x="16" y="62">#0f0f14</text>
+      <!-- Surface Raised -->
+      <rect x="270" y="0" width="250" height="90" fill="#1a1a24" rx="8"/>
+      <text class="swatch-name" x="286" y="40">Surface Raised</text>
+      <text class="swatch-hex" x="286" y="62">#1a1a24</text>
+      <!-- Surface Overlay -->
+      <rect x="540" y="0" width="250" height="90" fill="#2a2a38" rx="8"/>
+      <text class="swatch-name" x="556" y="40">Surface Overlay</text>
+      <text class="swatch-hex" x="556" y="62">#2a2a38</text>
+      <!-- Surface Elevated -->
+      <rect x="810" y="0" width="250" height="90" fill="#32323f" rx="8"/>
+      <text class="swatch-name" x="826" y="40">Surface Elevated</text>
+      <text class="swatch-hex" x="826" y="62">#32323f</text>
+    </g>
+  </g>
+
+  <!-- Brand -->
+  <g transform="translate(60, 330)">
+    <text class="section-label" x="0" y="0">Brand</text>
+    <g transform="translate(0, 20)">
+      <rect x="0" y="0" width="250" height="90" fill="#d4a574" rx="8"/>
+      <text class="swatch-name" x="16" y="40" fill="#1a1a1a">Brand Gold</text>
+      <text class="swatch-hex" x="16" y="62" fill="rgba(26,26,26,0.7)">#d4a574</text>
+
+      <rect x="270" y="0" width="250" height="90" fill="#c4956a" rx="8"/>
+      <text class="swatch-name" x="286" y="40" fill="#1a1a1a">Gold Hover</text>
+      <text class="swatch-hex" x="286" y="62" fill="rgba(26,26,26,0.7)">#c4956a</text>
+
+      <rect x="540" y="0" width="250" height="90" fill="#e4b584" rx="8"/>
+      <text class="swatch-name" x="556" y="40" fill="#1a1a1a">Gold Light</text>
+      <text class="swatch-hex" x="556" y="62" fill="rgba(26,26,26,0.7)">#e4b584</text>
+
+      <rect x="810" y="0" width="250" height="90" fill="#f472b6" rx="8"/>
+      <text class="swatch-name" x="826" y="40">West End Pink</text>
+      <text class="swatch-hex" x="826" y="62" fill="rgba(255,255,255,0.7)">#f472b6</text>
+    </g>
+  </g>
+
+  <!-- Score Tiers -->
+  <g transform="translate(60, 480)">
+    <text class="section-label" x="0" y="0">Score Tiers</text>
+    <g transform="translate(0, 20)">
+      <!-- Must See (gradient) -->
+      <rect x="0" y="0" width="200" height="90" fill="url(#goldGradient)" stroke="#C8960E" stroke-width="2" rx="8"/>
+      <text class="swatch-name" x="16" y="28" fill="#1a1a1a">Must See</text>
+      <text x="16" y="48" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="rgba(26,26,26,0.6)">83-100</text>
+      <text class="swatch-hex" x="16" y="72" fill="rgba(26,26,26,0.7)">#FFD700 (gradient)</text>
+
+      <!-- Recommended -->
+      <rect x="220" y="0" width="200" height="90" fill="#22c55e" rx="8"/>
+      <text class="swatch-name" x="236" y="28">Recommended</text>
+      <text x="236" y="48" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.7)">75-82</text>
+      <text class="swatch-hex" x="236" y="72" fill="rgba(255,255,255,0.8)">#22c55e</text>
+
+      <!-- Worth Seeing -->
+      <rect x="440" y="0" width="200" height="90" fill="#14b8a6" rx="8"/>
+      <text class="swatch-name" x="456" y="28">Worth Seeing</text>
+      <text x="456" y="48" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.7)">65-74</text>
+      <text class="swatch-hex" x="456" y="72" fill="rgba(255,255,255,0.8)">#14b8a6</text>
+
+      <!-- Skippable -->
+      <rect x="660" y="0" width="200" height="90" fill="#d97706" rx="8"/>
+      <text class="swatch-name" x="676" y="28" fill="#1a1a1a">Skippable</text>
+      <text x="676" y="48" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="rgba(26,26,26,0.6)">55-64</text>
+      <text class="swatch-hex" x="676" y="72" fill="rgba(26,26,26,0.7)">#d97706</text>
+
+      <!-- Stay Away -->
+      <rect x="880" y="0" width="200" height="90" fill="#ef4444" rx="8"/>
+      <text class="swatch-name" x="896" y="28">Stay Away</text>
+      <text x="896" y="48" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,0.7)">0-54</text>
+      <text class="swatch-hex" x="896" y="72" fill="rgba(255,255,255,0.8)">#ef4444</text>
+    </g>
+  </g>
+
+  <!-- Text Colors -->
+  <g transform="translate(60, 630)">
+    <text class="section-label" x="0" y="0">Text</text>
+    <g transform="translate(0, 20)">
+      <rect x="0" y="0" width="250" height="90" fill="#ffffff" rx="8"/>
+      <text class="swatch-name" x="16" y="40" fill="#1a1a1a">Primary</text>
+      <text class="swatch-hex" x="16" y="62" fill="rgba(26,26,26,0.7)">#ffffff</text>
+
+      <rect x="270" y="0" width="250" height="90" fill="#d1d5db" rx="8"/>
+      <text class="swatch-name" x="286" y="40" fill="#1a1a1a">Secondary</text>
+      <text class="swatch-hex" x="286" y="62" fill="rgba(26,26,26,0.7)">#d1d5db</text>
+
+      <rect x="540" y="0" width="250" height="90" fill="#9ca3af" rx="8"/>
+      <text class="swatch-name" x="556" y="40" fill="#1a1a1a">Muted</text>
+      <text class="swatch-hex" x="556" y="62" fill="rgba(26,26,26,0.7)">#9ca3af</text>
+
+      <rect x="810" y="0" width="250" height="90" fill="#6b7280" rx="8"/>
+      <text class="swatch-name" x="826" y="40">Faint</text>
+      <text class="swatch-hex" x="826" y="62" fill="rgba(255,255,255,0.7)">#6b7280</text>
+    </g>
+  </g>
+
+  <!-- Typography sample -->
+  <g transform="translate(60, 780)">
+    <text class="section-label" x="0" y="0">Typography</text>
+    <text x="0" y="36" font-family="Inter, sans-serif" font-size="28" font-weight="800" fill="#ffffff">Inter Extrabold · Headline</text>
+    <text x="0" y="62" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#9ca3af">Inter Regular · Body copy — the house font for broadwayscorecard.com</text>
+  </g>
+</svg>

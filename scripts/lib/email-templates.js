@@ -9,8 +9,12 @@
 
 const https = require('https');
 const { isLondonMarket } = require('./venue-classification');
+const BRAND = require('./brand-colors');
 
-const FONT = "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif";
+// Canonical brand values — see scripts/lib/brand-colors.js for full palette.
+// The hardcoded hex throughout this file (#d4a574, #0f0f14, etc.) must match
+// BRAND. When adding new templates, use BRAND.* constants instead of hex literals.
+const FONT = BRAND.font.family;
 
 function postJSON(url, body, headers) {
   return new Promise((resolve, reject) => {

@@ -5,14 +5,17 @@ import { getGoldThreshold } from '@/config/score-buckets';
 
 export const runtime = 'edge';
 
-// Score tier colors (matching the CSS classes)
+// Score tier colors — canonical values from scripts/lib/brand-colors.js.
+// Inlined here because this route runs on Edge (no CommonJS imports). If these
+// colors change, update scripts/lib/brand-colors.js, tailwind.config.ts,
+// src/app/globals.css, AND this block together.
 const SCORE_COLORS = {
-  mustSee: { bg: 'linear-gradient(135deg, #D4AF37 0%, #C5A028 50%, #D4AF37 100%)', text: '#1a1a1a' },
+  mustSee: { bg: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a' },
   great: { bg: '#22c55e', text: '#ffffff' },
   good: { bg: '#14b8a6', text: '#ffffff' },
   tepid: { bg: '#d97706', text: '#1a1a1a' },
   skip: { bg: '#ef4444', text: '#ffffff' },
-  tbd: { bg: '#2a2a2a', text: '#9ca3af' },
+  tbd: { bg: '#2a2a38', text: '#9ca3af' },
 };
 
 function getScoreColor(score: number | null, reviewCount: number, category?: string) {
