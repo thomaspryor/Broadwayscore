@@ -93,9 +93,9 @@ export function getVideoCreatorBySlug(slug: string): VideoCreatorProfile | null 
 }
 
 export function getAllVideoCreatorSlugs(): string[] {
-  return [...profiles.keys()];
+  return Array.from(profiles.keys());
 }
 
 export function getAllVideoCreators(): VideoCreatorProfile[] {
-  return [...profiles.values()].sort((a, b) => b.reviewCount - a.reviewCount);
+  return Array.from(profiles.values()).sort((a, b) => b.reviewCount - a.reviewCount);
 }
