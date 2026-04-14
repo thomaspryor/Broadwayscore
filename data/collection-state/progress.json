@@ -2,7 +2,10 @@
   "processed": [
     "magic-mike-live-west-end-2021/daily-mail--ali-daher.json",
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-    "mj-the-musical-west-end-2024/i-paper--unknown.json"
+    "mj-the-musical-west-end-2024/i-paper--unknown.json",
+    "what-happened-was-off-broadway-2026/guardian--brian-logan.json",
+    "titanique-2026/one-minute-critic--matthew-wexler.json",
+    "titanique-2026/nyt-theater--unknown.json"
   ],
   "failed": [
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -12,13 +15,17 @@
     "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
-    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "titanique-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "mj-the-musical-west-end-2024/i-paper--unknown.json"
+      "mj-the-musical-west-end-2024/i-paper--unknown.json",
+      "what-happened-was-off-broadway-2026/guardian--brian-logan.json",
+      "titanique-2026/one-minute-critic--matthew-wexler.json",
+      "titanique-2026/nyt-theater--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -27,10 +34,12 @@
       "magic-mike-live-west-end-2021/daily-mail--ali-daher.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/titanique-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-04-14T09:09:56.218Z",
-  "lastProcessed": "mj-the-musical-west-end-2024/i-paper--unknown.json",
+  "lastProcessed": "titanique-2026/talkinbroadway--unknown.json",
   "log": []
 }
