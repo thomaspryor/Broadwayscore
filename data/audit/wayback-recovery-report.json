@@ -1,20 +1,29 @@
 {
-  "totalCandidates": 1,
-  "cdxFound": 0,
-  "cdxNotFound": 0,
-  "recovered": 0,
+  "totalCandidates": 51,
+  "cdxFound": 16,
+  "cdxNotFound": 3,
+  "recovered": 15,
   "recoveredByTier": {
-    "1": 0,
-    "2": 0,
-    "3": 0
+    "1": 2,
+    "2": 3,
+    "3": 10
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "nytimes.com": 1,
+    "washingtonpost.com": 1,
+    "huffingtonpost.com": 2,
+    "usatoday.com": 1,
+    "stagebuddy.com": 1,
+    "dcmetrotheaterarts.com": 2,
+    "abcnews.go.com": 5,
+    "newyork.timeout.com": 2
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
-  "notInArchive": 0,
+  "errors": 32,
+  "notInArchive": 3,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
