@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:design": "node scripts/lint-design-tokens.js",
     "test": "npm run test:data && npm run test:e2e",
     "test:data": "node scripts/validate-data.js && node scripts/validate-aggregator-truth.js",
     "audit:critics": "node scripts/audit-critic-outlets.js",

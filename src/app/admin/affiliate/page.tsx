@@ -15,7 +15,7 @@ export default function AdminAffiliatePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-surface text-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <header className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Affiliate Dashboard</h1>
