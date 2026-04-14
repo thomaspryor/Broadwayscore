@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { getScoreColorClass, MustSeeCrown } from '@/components/show-cards';
-import { getGoldThreshold, hasEnoughReviews } from '@/config/score-buckets';
+import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
 import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { ShowCardShow } from './types';
@@ -60,7 +60,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
         {/* Score overlay — outside overflow-hidden so crown can escape */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
-            {score !== undefined && score !== null && Math.round(score) >= getGoldThreshold(category) && (
+            {isCriticalGold(score, category) && (
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${

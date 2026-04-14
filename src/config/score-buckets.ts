@@ -124,6 +124,17 @@ export function getGoldThreshold(category?: string): number {
   return MARKET_GOLD_THRESHOLD[category || ''] ?? DEFAULT_GOLD_THRESHOLD;
 }
 
+/**
+ * Whether a score qualifies as Critical Gold (renders the crown).
+ * Uses Math.round to match the displayed value — a raw score of 82.5 displays
+ * as "83" with the gold tier color, so the crown gate must agree.
+ * Use this everywhere instead of inlining `score >= getGoldThreshold(...)`.
+ */
+export function isCriticalGold(score: number | null | undefined, category?: string): boolean {
+  if (score === null || score === undefined) return false;
+  return Math.round(score) >= getGoldThreshold(category);
+}
+
 // ===========================================
 // HELPER FUNCTIONS
 // ===========================================
