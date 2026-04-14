@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-13T23:59:55.667Z",
+  "timestamp": "2026-04-14T03:32:46.170Z",
   "stats": {
-    "totalReviews": 34846,
-    "alreadyFlagged": 13931,
+    "totalReviews": 34851,
+    "alreadyFlagged": 13938,
     "dateGuardCatches": 107,
-    "directorMismatch": 975,
+    "directorMismatch": 974,
     "tvFilmSignals": 3386,
-    "londonSignals": 1117,
+    "londonSignals": 1116,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
-    "noPublishDate": 4159
+    "noPublishDate": 4158
   },
   "findings": [
     {
@@ -28288,25 +28288,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "reflections-in-the-light--lauren-yarger.json",
-      "score": 42,
-      "publishDate": "2026-04-01",
-      "url": "http://reflectionsinthelight.blogspot.com/2016/11/broadway-theater-review-les-liaisons.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josie rourke\" from les-liaisons-dangereuses-2016"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
