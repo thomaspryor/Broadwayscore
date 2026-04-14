@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-14T09:15:58.898Z",
+  "timestamp": "2026-04-14T09:36:26.592Z",
   "stats": {
-    "totalReviews": 34850,
-    "alreadyFlagged": 13935,
+    "totalReviews": 34851,
+    "alreadyFlagged": 13937,
     "dateGuardCatches": 107,
     "directorMismatch": 973,
-    "tvFilmSignals": 3386,
+    "tvFilmSignals": 3385,
     "londonSignals": 1116,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
@@ -14234,6 +14234,7 @@
     {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 77,
       "publishDate": "2026-02-25",
       "url": "https://www.timeout.com/london/theatre/evening-all-afternoon-review",
       "findings": [
@@ -21840,19 +21841,6 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "publishDate": "2026-01-15",
-      "url": "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "hercules-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 63,
       "publishDate": "2025-06-24",
@@ -24203,6 +24191,7 @@
     {
       "showId": "inter-alia-west-end-2026",
       "file": "timeout-london--caroline-mcginn.json",
+      "score": 78,
       "publishDate": "2026-04-07",
       "url": "https://www.timeout.com/london/theatre/inter-alia-review",
       "findings": [
@@ -25079,19 +25068,6 @@
       "score": 63,
       "publishDate": "December 12th, 2025",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "publishDate": "2026-04-12",
-      "url": "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32983,6 +32959,20 @@
       "score": 42,
       "publishDate": "2024-03-27",
       "url": "https://www.ft.com/content/8039a7c3-1383-46b7-912a-090681c3afb8",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 76,
+      "publishDate": "2024-03-28",
+      "url": "https://inews.co.uk/culture/arts/mj-the-musical-review-myles-frost-2979317?srsltid=AfmBOoqcjbO5yluRMzOU8po3kPzJckB1_hJg4wlDgHRaXFfN_Dwm1Y5s",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45304,6 +45294,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 78,
       "publishDate": "2025-12-01",
       "url": "https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review",
       "findings": [
