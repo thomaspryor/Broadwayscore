@@ -118,56 +118,79 @@ function callOpenAI(prompt) {
 /**
  * Call Claude Sonnet — ~$0.003/review (most expensive, last resort)
  */
-function callClaude(prompt) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
+function callAnthropic(model) {
+  return function (prompt) {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
 
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 400,
-      messages: [{ role: 'user', content: prompt }]
-    });
-
-    const req = https.request('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const json = JSON.parse(data);
-            resolve(json.content?.[0]?.text || '');
-          } catch (e) {
-            reject(new Error(`Claude parse error: ${e.message}`));
-          }
-        } else {
-          reject(new Error(`Claude HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
+    return new Promise((resolve, reject) => {
+      const body = JSON.stringify({
+        model,
+        max_tokens: 400,
+        messages: [{ role: 'user', content: prompt }],
       });
+
+      const req = https.request('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+      }, (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            try {
+              const json = JSON.parse(data);
+              resolve(json.content?.[0]?.text || '');
+            } catch (e) {
+              reject(new Error(`Anthropic parse error: ${e.message}`));
+            }
+          } else {
+            reject(new Error(`Anthropic HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+          }
+        });
+      });
+      req.on('error', reject);
+      req.write(body);
+      req.end();
     });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
+  };
 }
+
+const callClaudeHaiku = callAnthropic('claude-haiku-4-5-20251001');
+const callClaudeSonnet = callAnthropic('claude-sonnet-4-20250514');
 
 // ============================================================
 // Provider Chain
 // ============================================================
 
-/** Get available providers in order of preference (cheapest first) */
+/**
+ * Provider chain — accuracy-ordered (was cheapest-first until 2026-04-15).
+ *
+ * Switched primary from Gemini 2.0 Flash to Claude Haiku 4.5 after a 7-model
+ * sweep against a 30-case golden fixture (scripts/evals/content-verifier-
+ * model-sweep.js). Numbers:
+ *   Gemini Flash:  precision 52%, recall 93%, FP rate 87%, $6/yr
+ *   Claude Haiku:  precision 74%, recall 93%, FP rate 33%, $120/yr
+ * +20pp precision and -54pp FP rate for ~$114/yr extra. The previous chain
+ * shipped 33% wrong-production garbage downstream into scoring.
+ *
+ * Fallback order keeps cheaper models available if Haiku quota runs out.
+ */
 function getProviderChain() {
   const providers = [];
+  if (process.env.ANTHROPIC_API_KEY) {
+    providers.push({ name: 'claude-haiku', call: callClaudeHaiku });
+  }
   if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
   if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });
-  if (process.env.ANTHROPIC_API_KEY) providers.push({ name: 'claude', call: callClaude });
+  if (process.env.ANTHROPIC_API_KEY) {
+    // Keep Sonnet as final fallback — same vendor but stronger model.
+    providers.push({ name: 'claude-sonnet', call: callClaudeSonnet });
+  }
   return providers;
 }
 
