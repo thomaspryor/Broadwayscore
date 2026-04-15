@@ -112,6 +112,7 @@ const BWW_THEATERS: string[] = [
   // Multi-word theaters (must come first to avoid partial matches)
   'CIRCLE IN THE SQUARE',
   'JAMES EARL JONES',
+  'ETHEL BARRYMORE',   // Joe Turner 2026-04: must match before bare BARRYMORE
   'STEPHEN SONDHEIM',
   'RICHARD RODGERS',
   'VIVIAN BEAUMONT',
@@ -144,6 +145,7 @@ const BWW_THEATERS: string[] = [
   'AMBASSADOR',
   'BROADHURST',
   'FRIEDMAN',
+  'MAJESTIC',          // Added 2026-04-14 for Beaches preview run
   'MINSKOFF',
   'IMPERIAL',
   'LONGACRE',
@@ -166,13 +168,43 @@ const BWW_THEATERS: string[] = [
 // Show-Theater Splitting
 // ============================================================
 
+// BWW appends status suffixes to shows that aren't yet open in their regular
+// run. Observed variants (2026-04-14 data): "IN PREVIEWS", "PREVIEWING",
+// "CLOSING WEEK", "FINAL WEEK". Strip these before the theater-suffix match
+// below, otherwise every in-previews show gets dropped (bug: on the week
+// ending 2026-04-12 this lost 12 shows including Titanique's opening week).
+const BWW_STATUS_SUFFIXES: string[] = [
+  ' IN PREVIEWS',
+  ' PREVIEWING',
+  ' CLOSING WEEK',
+  ' FINAL WEEK',
+  ' PREVIEWS',
+];
+
+function stripStatusSuffix(upper: string, original: string): { upper: string; original: string } {
+  for (const suffix of BWW_STATUS_SUFFIXES) {
+    if (upper.endsWith(suffix)) {
+      return {
+        upper: upper.slice(0, upper.length - suffix.length).trim(),
+        original: original.slice(0, original.length - suffix.length).trim(),
+      };
+    }
+  }
+  return { upper, original };
+}
+
 function splitShowTheater(text: string): { show: string; theater: string } | null {
-  const upper = text.toUpperCase().trim();
+  let upper = text.toUpperCase().trim();
   if (!upper) return null;
+
+  // Remove BWW's status suffix (" In Previews" etc.) so the theater name is
+  // actually at the end of the string where endsWith() can find it.
+  let current = text.trim();
+  ({ upper, original: current } = stripStatusSuffix(upper, current));
 
   for (const theater of BWW_THEATERS) {
     if (upper.endsWith(theater)) {
-      const showPart = text.slice(0, text.length - theater.length).trim();
+      const showPart = current.slice(0, current.length - theater.length).trim();
       if (showPart) {
         return { show: showPart, theater };
       }
