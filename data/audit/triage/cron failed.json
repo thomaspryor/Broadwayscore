@@ -1,0 +1,20 @@
+{
+  "system": "cron failed",
+  "status": "warn",
+  "lastChecked": "2026-04-15T07:35:16.855Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Cron failed: LLM Ensemble Score",
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
+    },
+    {
+      "name": "Cron failed: Test Suite",
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
+    }
+  ]
+}
