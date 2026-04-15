@@ -25,6 +25,10 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const {
+  detectBannedClaims,
+  auditCrossTheaterDiversity,
+} = require('./lib/theater-tips-validators');
 
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
 if (!GEMINI_KEY) {
@@ -323,6 +327,20 @@ async function main() {
         delete tips.seating.accessibility;
       }
 
+      // Banned-claim guard — accessibility/safety/medical hallucinations.
+      // Uses the same validator as scripts/evals/theater-tips-eval.js, so the
+      // eval cannot pass while the generator ships a regression.
+      const banned = detectBannedClaims(tips);
+      if (banned.length > 0) {
+        console.log(`  🚫 SKIPPED — ${banned.length} banned claim(s) in LLM output:`);
+        for (const f of banned) {
+          console.log(`     ${f.path}: "${f.match}" (${f.category})`);
+        }
+        errors++;
+        await sleep(RATE_LIMIT_MS);
+        continue;
+      }
+
       // Track restaurant usage for cross-theater dedup audit
       if (tips.dining) {
         for (const category of ['preShow', 'postShow', 'quickBite']) {
@@ -357,17 +375,14 @@ async function main() {
 
   saveDraft(drafts);
 
-  // Cross-theater restaurant diversity audit
+  // Cross-theater restaurant diversity audit (shared with eval harness).
   const totalTheaters = Object.keys(drafts).length;
-  const overusedThreshold = Math.ceil(totalTheaters * 0.5); // >50% = overused
-  const overused = Object.entries(crossTheaterRestaurantCounts)
-    .filter(([, count]) => count > overusedThreshold)
-    .sort((a, b) => b[1] - a[1]);
+  const overused = auditCrossTheaterDiversity(drafts, 0.5);
 
   if (overused.length > 0) {
-    console.log(`\n⚠️  DIVERSITY WARNING: ${overused.length} restaurant(s) appear in >${overusedThreshold} theaters (>50%):`);
-    for (const [name, count] of overused) {
-      console.log(`  ${count}x ${name}`);
+    console.log(`\n⚠️  DIVERSITY WARNING: ${overused.length} restaurant(s) appear in >50% of ${totalTheaters} theaters:`);
+    for (const o of overused) {
+      console.log(`  ${o.count}x ${o.name}`);
     }
     console.log('These may indicate lazy LLM padding. Review before merging.');
   }
