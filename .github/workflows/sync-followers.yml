@@ -21,6 +21,11 @@ jobs:
         with:
           ref: main
 
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - uses: actions/setup-node@v5
         with:
           node-version: 20
@@ -36,17 +41,12 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/sync-followers.js
 
-      - name: Commit changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/followers.json data/subscribers.json data/subscribers-westend.json 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No subscriber changes"
-          else
-            git commit -m "data: Sync followers & subscribers"
-            bash scripts/lib/push-with-retry.sh
-          fi
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Sync followers & subscribers'
 
       - name: Notify on failure
         if: failure()

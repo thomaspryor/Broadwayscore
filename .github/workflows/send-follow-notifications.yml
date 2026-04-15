@@ -80,7 +80,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/followers.json data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json
+          # followers.json is gitignored + owned by sync-followers.yml (private core-data repo).
+          # This workflow only writes audit files — do not re-add followers.json here.
+          git add data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
