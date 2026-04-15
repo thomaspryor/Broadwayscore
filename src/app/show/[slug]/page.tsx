@@ -114,6 +114,21 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
   const sentimentLabel = tier ? (SEO_SENTIMENT[tier.label] ?? null) : null;
 
+  // OG/Twitter titles are seen on social shares (FB, Twitter, iMessage, Slack
+  // previews) where a "Mixed Reviews" or "Poor Reviews" label would actively
+  // discourage clicks. The <title> tag already has sentiment for SEO/SERP
+  // visibility on the tiers where it helps. Restrict OG/Twitter sentiment to
+  // tiers where the label is unambiguously positive — anything else falls back
+  // to a neutral title that doesn't broadcast a negative signal in shares.
+  const OG_POSITIVE_TIERS = new Set(['Critical Gold', 'Recommended']);
+  const ogShowsSentiment = !!(tier && roundedScore && sentimentLabel && OG_POSITIVE_TIERS.has(tier.label));
+  const ogTitle = ogShowsSentiment
+    ? `${show.title} — ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
+    : `${show.title} - ${siteName}`;
+  const twitterTitle = ogShowsSentiment
+    ? `${show.title} — ${sentimentLabel} (${roundedScore}/100)`
+    : `${show.title} - CriticScore ${roundedScore ? `${roundedScore}/100` : 'TBD'}`;
+
   // Sentiment-aware description: lead with verdict, not database dump
   const statusPart = statusLabel ? ` ${statusLabel} at ${show.venue}.` : '';
   const synopsisPart = synopsisSnippet ? ` ${synopsisSnippet}` : '';
@@ -150,7 +165,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${show.title} - ${siteName}`,
+      title: ogTitle,
       description: truncatedDescription,
       url: canonicalUrl,
       type: 'article',
@@ -158,7 +173,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${show.title} - CriticScore ${roundedScore ? `${roundedScore}/100` : 'TBD'}`,
+      title: twitterTitle,
       description: truncatedDescription,
     },
   };
