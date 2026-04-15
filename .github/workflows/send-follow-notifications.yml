@@ -65,6 +65,19 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/send-follow-notifications.js
 
+      - name: Push core data to private repo
+        # sync-followers.js (above) writes data/followers.json +
+        # data/subscribers.json + data/subscribers-westend.json to the working
+        # dir. Without this push, those mutations die with the runner and the
+        # Monday 14:00 UTC run repeats work already persisted at the daily
+        # 12:00 UTC sync. if: always() so we still persist state if the
+        # notification send or change detection fails downstream.
+        if: always() && steps.check.outputs.has_followers == 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Sync followers & subscribers (from send-follow-notifications)'
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
