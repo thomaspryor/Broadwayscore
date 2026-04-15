@@ -65,7 +65,7 @@ function CriticCard({ critic }: { critic: VideoCriticSummary }) {
           <span className="ml-2"><PlatformPill platform={critic.platform} /></span>
         </h2>
         <p className="text-gray-500 text-xs sm:text-sm truncate mt-0.5">
-          {critic.subscribers ? `${critic.subscribers} followers` : 'Video critic'}
+          @{critic.handle}{critic.subscribers ? ` · ${critic.subscribers} followers` : ''}
         </p>
       </div>
 
