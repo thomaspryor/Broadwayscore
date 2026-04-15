@@ -80,7 +80,14 @@ function simulateReplacement(existing) {
   delete replacement.rejectionReason;
   delete replacement.rejectedBy;
   delete replacement.rejectionReasoning;
-  delete replacement.contentVerification;
+  if (replacement.contentVerification) {
+    delete replacement.contentVerification.wrongArticle;
+    delete replacement.contentVerification.verifiedAt;
+    delete replacement.contentVerification.verifiedBy;
+    delete replacement.contentVerification.reasoning;
+    delete replacement.contentVerification.confidence;
+    delete replacement.contentVerification.isValid;
+  }
   delete replacement.fetchAttempts;
   delete replacement.lastFetchDate;
   if (!replacement.fullText) replacement.needsRecollection = true;

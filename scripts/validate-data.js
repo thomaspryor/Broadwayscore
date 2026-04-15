@@ -2698,7 +2698,10 @@ function validateReviewTextQuality(shows) {
     }
   }
 
-  // Build per-show maps of creative team and cast names
+  // Build per-show maps of creative team and cast names.
+  // Skip placeholder values ("Unknown", "TBA", etc.) — they collide with generic "Unknown"
+  // critic bylines and would flag legitimate reviews as garbage.
+  const PLACEHOLDER_NAMES = new Set(['unknown', 'tba', 'tbd', 'tbc', 'n/a', 'na', 'anonymous']);
   const showCreativeTeam = {};  // showId -> Set of lowercase names
   const showCast = {};          // showId -> Set of lowercase names
   for (const show of shows) {
@@ -2706,13 +2709,19 @@ function validateReviewTextQuality(shows) {
     showCast[show.id] = new Set();
     if (show.creativeTeam) {
       for (const member of show.creativeTeam) {
-        if (member.name) showCreativeTeam[show.id].add(member.name.toLowerCase().trim());
+        if (member.name) {
+          const name = member.name.toLowerCase().trim();
+          if (!PLACEHOLDER_NAMES.has(name)) showCreativeTeam[show.id].add(name);
+        }
       }
     }
     if (show.cast) {
       for (const member of show.cast) {
         const name = typeof member === 'string' ? member : member.name;
-        if (name) showCast[show.id].add(name.toLowerCase().trim());
+        if (name) {
+          const n = name.toLowerCase().trim();
+          if (!PLACEHOLDER_NAMES.has(n)) showCast[show.id].add(n);
+        }
       }
     }
   }
