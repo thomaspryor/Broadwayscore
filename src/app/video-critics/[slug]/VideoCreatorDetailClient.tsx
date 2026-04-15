@@ -43,12 +43,24 @@ function PlatformPill({ platform }: { platform: string }) {
   );
 }
 
+function normalizeDate(dateStr: string | null | undefined): string | null {
+  if (!dateStr) return null;
+  return dateStr.length === 8 && /^\d{8}$/.test(dateStr)
+    ? `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`
+    : dateStr;
+}
+
+function parsePublishedAt(dateStr: string | null | undefined): number {
+  const n = normalizeDate(dateStr);
+  if (!n) return 0;
+  const t = Date.parse(n);
+  return Number.isNaN(t) ? 0 : t;
+}
+
 function formatDate(dateStr: string | null): string {
-  if (!dateStr) return '';
+  const normalized = normalizeDate(dateStr);
+  if (!normalized) return '';
   try {
-    const normalized = dateStr.length === 8 && /^\d{8}$/.test(dateStr)
-      ? `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`
-      : dateStr;
     const d = new Date(normalized + 'T00:00:00');
     if (isNaN(d.getTime())) return '';
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -153,11 +165,7 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
   const sortedReviews = useMemo(() => {
     const sorted = [...creator.reviews];
     if (sortMode === 'recent') {
-      sorted.sort((a, b) => {
-        const da = a.publishedAt ? Date.parse(a.publishedAt) : 0;
-        const db = b.publishedAt ? Date.parse(b.publishedAt) : 0;
-        return db - da;
-      });
+      sorted.sort((a, b) => parsePublishedAt(b.publishedAt) - parsePublishedAt(a.publishedAt));
     } else if (sortMode === 'highest') {
       sorted.sort((a, b) => b.score - a.score);
     } else {
