@@ -118,9 +118,9 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews }: Hom
           <Link
             href="/methodology"
             prefetch={false}
-            className="btn btn-primary inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold whitespace-nowrap"
+            className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-light transition-colors whitespace-nowrap"
           >
-            Learn More
+            Read the full methodology
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
