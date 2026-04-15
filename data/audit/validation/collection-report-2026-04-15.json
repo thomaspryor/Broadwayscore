@@ -1,73 +1,85 @@
 {
-  "runDate": "2026-04-15T07:48:47.531Z",
+  "runDate": "2026-04-15T07:52:54.665Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "kenrex-off-broadway-2026",
+    "showFilter": "the-fear-of-13-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 0,
+    "processed": 5,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "83.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.4,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
-    "kenrex-off-broadway-2026/variety--brent-lang.json"
+    "the-fear-of-13-2026/hollywood-reporter--caitlin-huston.json",
+    "the-fear-of-13-2026/nytimes--alex-marshall.json",
+    "the-fear-of-13-2026/deadline--greg-evans.json",
+    "the-fear-of-13-2026/nydailynews--brian-niemietz.json",
+    "the-fear-of-13-2026/playbill--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "the-fear-of-13-2026/talkinbroadway--unknown.json"
+  ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-fear-of-13-2026/playbill--unknown.json"
+    ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/kenrex-off-broadway-2026/variety--brent-lang.json",
-      "kenrex-off-broadway-2026/variety--brent-lang.json"
+      "data/review-texts/the-fear-of-13-2026/hollywood-reporter--caitlin-huston.json",
+      "the-fear-of-13-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-fear-of-13-2026/deadline--greg-evans.json",
+      "the-fear-of-13-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "kenrex-off-broadway-2026/nytimes--alexis-soloski.json"
+      "the-fear-of-13-2026/nytimes--alex-marshall.json",
+      "the-fear-of-13-2026/nydailynews--brian-niemietz.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
