@@ -541,6 +541,52 @@ function validateDropCount(
   return true;
 }
 
+// Compare the scraped count against the live set of Broadway shows that SHOULD
+// have grosses (status=open or previews; not West End / Off-Broadway).
+// Catches silent-drop bugs the other guards miss:
+//   - MIN_SHOWS is an absolute floor; a partial regression (28 of 40) passes it.
+//   - EXPECTED_SHOWS only lists 6 long-runners; a 12-show in-previews drop passes.
+//   - validateDropCount compares this-week-scraped vs last-week-scraped; if the
+//     same shows were missing last week (as on 2026-04-12 for Titanique et al.),
+//     delta is zero and the guard never fires.
+// This guard compares against today's TRUTH from shows.json: if we're capturing
+// <85% of expected open/previews Broadway shows, something is wrong with the
+// BWW parse (new status suffix, new theater, renamed show) and we want a loud
+// warning — but not a hard-fail, because legitimate edge cases exist (a show
+// in previews that hasn't had any performances yet, a dark week).
+function validateCaptureRate(matchedSlugs: string[]): void {
+  try {
+    const shows = loadShowsFromMatching();
+    const expectedBroadway = shows.filter((s: { id: string; status?: string }) => {
+      const status = s.status;
+      if (status !== 'open' && status !== 'previews') return false;
+      // BWW only lists Broadway, so exclude WE / OB / OWE shows.
+      const id = s.id || '';
+      if (id.includes('west-end') || id.includes('off-broadway') || id.includes('off-west-end')) return false;
+      return true;
+    });
+    if (expectedBroadway.length === 0) return;
+    const matched = new Set(matchedSlugs);
+    const missing = expectedBroadway.filter((s: { slug?: string; id: string }) => {
+      const slug = s.slug || s.id;
+      return !matched.has(slug);
+    });
+    const captureRate = (expectedBroadway.length - missing.length) / expectedBroadway.length;
+    if (captureRate < 0.85) {
+      console.error(`⚠ CAPTURE RATE LOW: only ${expectedBroadway.length - missing.length}/${expectedBroadway.length} expected Broadway shows matched (${(captureRate * 100).toFixed(0)}%).`);
+      console.error(`  Missing shows — likely a BWW parse bug (new status suffix, renamed theater, accented title):`);
+      missing.slice(0, 20).forEach((s: { id: string; title?: string; status?: string }) => {
+        console.error(`    - ${s.id} | "${s.title}" | status=${s.status}`);
+      });
+      console.error(`  Note: shows in previews that have not yet had performances are legitimately missing; review the list.`);
+    } else {
+      console.log(`✓ Capture rate: ${expectedBroadway.length - missing.length}/${expectedBroadway.length} (${(captureRate * 100).toFixed(0)}%) — within threshold.`);
+    }
+  } catch (err) {
+    console.warn(`validateCaptureRate skipped: ${(err as Error).message}`);
+  }
+}
+
 function checkWoWDeltas(
   newData: Record<string, ShowGrosses>,
   existingGrosses: GrossesData | null
@@ -693,6 +739,11 @@ async function scrapeGrosses(): Promise<void> {
 
   // Warn if expected long-running shows are missing (soft — pipeline continues)
   warnMissingExpectedShows(matchedRows.map(r => r.slug));
+
+  // Compare capture rate against live shows.json truth (catches silent-drop
+  // class of bugs the fixed-list guards miss). Soft warning, not a hard fail —
+  // legitimate previews can be missing if they haven't had any performances.
+  validateCaptureRate(matchedRows.map(r => r.slug));
 
   // Load existing grosses data
   let existingGrosses: GrossesData | null = null;
