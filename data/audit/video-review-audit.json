@@ -1,2095 +1,655 @@
 {
-  "generatedAt": "2026-04-15T04:43:16.115Z",
+  "generatedAt": "2026-04-15T05:12:53.754Z",
   "model": "gpt-4o",
-  "sideA": [
+  "sideA": null,
+  "sideB": [
     {
-      "showId": "11-to-midnight-off-broadway-2026",
-      "handle": "tyvid5",
-      "score": 95,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a detailed, substantive opinion on it."
-    },
-    {
-      "showId": "11-to-midnight-off-broadway-2026",
-      "handle": "broadwayben",
-      "score": 76,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "showId": "maybe-happy-ending-2024",
       "handle": "mickeyjotheatre",
-      "score": 76,
-      "verdict": "KEEP",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
       "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a detailed, substantive review of it."
+      "reason": "The transcript is a discussion about casting news and representation, not a first-hand review of the specific live stage production."
     },
     {
-      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "showId": "eureka-day-2024",
+      "handle": "mickeyjotheatre",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a roundup review of two plays, 'Eureka Day' and 'English,' rather than a standalone review of the specific production 'Eureka Day.'"
+    },
+    {
+      "showId": "wicked-2003",
+      "handle": "mickeyjotheatre",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript reviews the 2025 musical film adaptation of Wicked, not a live stage production."
+    },
+    {
+      "showId": "good-night-and-good-luck-2025",
+      "handle": "broadwaybob",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "the-notebook-2024",
+      "handle": "broadwaybob",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
       "handle": "tylernabinger",
-      "score": 74,
-      "verdict": "KEEP",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
       "confidence": "high",
-      "reason": "The creator attended the specific production and provides a substantive opinion on it."
+      "reason": "The transcript reviews 'Peter Pan Goes Wrong,' not 'The Play That Goes Wrong,' which is the assigned show."
     },
     {
-      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "showId": "merrily-we-roll-along-2023",
       "handle": "theatreislife",
-      "score": 62,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a detailed, substantive opinion on the specific live stage production of 'A Wonderful World: The Louis Armstrong Musical.'"
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
-      "showId": "aladdin-2014",
-      "handle": "tyvid5",
-      "score": 87,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Aladdin stage production and shared their substantive opinion on it."
+      "showId": "hamlet-off-broadway-2026",
+      "handle": "tylernabinger",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
-      "showId": "all-in-comedy-about-love-2024",
+      "showId": "water-for-elephants-2024",
       "handle": "theatreislife",
-      "score": 74,
-      "verdict": "KEEP",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "hadestown-2019",
+      "handle": "theatreislife",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The video is a reply to a comment and not a standalone review of the specific production."
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "handle": "broadwayben",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "handle": "tylernabinger",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "handle": "sweatyoracle",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "job-2024",
+      "handle": "tylernabinger",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "handle": "overthinkingtheatre",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the specific production in Boston and provides a detailed, substantive review of the show."
+    },
+    {
+      "showId": "harry-potter-2021",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The creator discusses a past experience with the Broadway production but does not review the specific live stage production assigned."
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "handle": "broadwayben",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript does not indicate that the creator attended the specific live stage production; it lacks past-tense attendance or a personal experience narrative."
+    },
+    {
+      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+      "handle": "broadwaybob",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "handle": "theatreislife",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "handle": "theatreislife",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "swept-away-2024",
+      "handle": "broadwayben",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "ragtime-2025",
+      "handle": "broadwayben",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "harmony-2023",
+      "handle": "broadwayben",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "titanique-2026",
+      "handle": "broadwayben",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript reviews a different show, 'Ginger Twinsies,' not 'Titanique.'"
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
       "confidence": "high",
       "reason": "The creator attended the specific live stage production and provides a detailed, substantive opinion on it."
     },
     {
-      "showId": "all-in-comedy-about-love-2024",
+      "showId": "once-upon-a-mattress-2024",
       "handle": "tylernabinger",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
-      "showId": "an-enemy-of-the-people-2024",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production and shares a substantive opinion on it."
+      "showId": "smash-2025",
+      "handle": "broadwayben",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
       "showId": "an-enemy-of-the-people-2024",
       "handle": "ashleyhufford",
-      "score": 77,
+      "hiddenReason": "wrongProduction",
       "verdict": "REMOVE",
       "confidence": "high",
       "reason": "The transcript is a roundup of two shows and does not provide a substantive review of 'An Enemy of the People.'"
     },
     {
-      "showId": "and-juliet-2022",
-      "handle": "tyvid5",
-      "score": 95,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production multiple times and shares a substantive opinion on it."
-    },
-    {
-      "showId": "and-juliet-2022",
-      "handle": "broadwayben",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of & Juliet and provides a substantive opinion on the show."
-    },
-    {
-      "showId": "and-juliet-2022",
+      "showId": "illinoise-2024",
       "handle": "theatreislife",
-      "score": 75,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The transcript reviews the touring production of & Juliet, not the Broadway production it was assigned to."
-    },
-    {
-      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "appropriate-2023",
-      "handle": "theatreislife",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a detailed, substantive review of their experience."
-    },
-    {
-      "showId": "appropriate-2023",
-      "handle": "tylernabinger",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of 'Appropriate' and provides a substantive opinion on the play."
-    },
-    {
-      "showId": "art-2025",
-      "handle": "broadwayben",
-      "score": 78,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on the performances and the play."
-    },
-    {
-      "showId": "art-2025",
-      "handle": "tylernabinger",
-      "score": 67,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of 'Art' and shared a substantive opinion on the performances and overall experience."
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "handle": "tylernabinger",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production and shared a substantive opinion on it."
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "handle": "broadwayben",
-      "score": 44,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator shares a substantive opinion on the specific live stage production, indicating they attended and critiqued it."
-    },
-    {
-      "showId": "beaches-2025",
-      "handle": "tylernabinger",
-      "score": 48,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the show, including specific critiques of the performance and storytelling."
-    },
-    {
-      "showId": "beaches-2026",
-      "handle": "ashleyhufford",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on it, mentioning specific elements like performances and emotional impact."
-    },
-    {
-      "showId": "beaches-2026",
-      "handle": "tylernabinger",
-      "score": 54,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the musical, including specific critiques and praise for Jessica Vosk's performance."
-    },
-    {
-      "showId": "becky-shaw-2026",
-      "handle": "ashleyhufford",
-      "score": 87,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production, shared their substantive opinion, and mentioned a talk back with the cast and creative team."
-    },
-    {
-      "showId": "becky-shaw-2026",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "REVIEW_MANUALLY",
-      "confidence": "medium",
-      "reason": "The transcript discusses the play and provides opinions, but it lacks clear evidence that the creator attended a specific live stage production of 'Becky Shaw.'"
-    },
-    {
-      "showId": "bigfoot-off-broadway-2026",
-      "handle": "ashleyhufford",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "bigfoot-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production at New York City Center and shared their substantive opinion on it."
-    },
-    {
-      "showId": "book-of-mormon-2011",
-      "handle": "mickeyjotheatre",
-      "score": 80,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The transcript is a travel vlog covering multiple shows in Madrid, not a standalone review of The Book of Mormon."
-    },
-    {
-      "showId": "boop-2025",
-      "handle": "tylernabinger",
-      "score": 64,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the second preview of 'Boop! The Musical' and provides a substantive opinion on the production."
-    },
-    {
-      "showId": "boop-2025",
-      "handle": "mickeyjotheatre",
-      "score": 45,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production of Boop! The Musical and provides a detailed, substantive review of the show."
-    },
-    {
-      "showId": "buena-vista-social-club-2025",
-      "handle": "mickeyjotheatre",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator provides a detailed first-hand review of the Broadway production of Buena Vista Social Club, sharing their substantive opinion and experience of attending the show."
-    },
-    {
-      "showId": "buena-vista-social-club-2025",
-      "handle": "tylernabinger",
-      "score": 78,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
-      "handle": "tylernabinger",
-      "score": 91,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
-      "handle": "broadwayben",
-      "score": 77,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "bug-2026",
-      "handle": "broadwayben",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the performances and themes of the play."
-    },
-    {
-      "showId": "burnout-paradise-off-broadway-2026",
-      "handle": "broadwayben",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "burnout-paradise-off-broadway-2026",
-      "handle": "ashleyhufford",
-      "score": 91,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production at Astor Place Theater and shares a substantive opinion on it."
-    },
-    {
-      "showId": "burnout-paradise-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator shares a substantive opinion on the specific live stage production they attended, mentioning details like the venue and their personal engagement with the show."
-    },
-    {
-      "showId": "cabaret-2024",
-      "handle": "theatreislife",
-      "score": 91,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production of Cabaret and provides a detailed, substantive opinion on it."
-    },
-    {
-      "showId": "cabaret-2024",
-      "handle": "ashleyhufford",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production at the Kit Kat Club and shares a substantive opinion on the immersive experience and setup."
-    },
-    {
-      "showId": "cabaret-2024",
-      "handle": "mickeyjotheatre",
-      "score": 83,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a detailed, substantive review of the show."
-    },
-    {
-      "showId": "cabaret-2024",
-      "handle": "tylernabinger",
-      "score": 70,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shared a substantive opinion on it."
-    },
-    {
-      "showId": "cabaret-2024",
-      "handle": "broadwayben",
-      "score": 52,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The transcript discusses opinions on Eddie Redmayne's performance but does not indicate the creator attended the specific production."
-    },
-    {
-      "showId": "calf-scramble-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on the play, including character development and performances."
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "handle": "theatreislife",
-      "score": 96,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'CATS: The Jellicle Ball' and provides a detailed, substantive review of their experience and opinions on the show."
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "handle": "tylernabinger",
-      "score": 96,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "handle": "ashleyhufford",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production in 2024 and shares a substantive opinion on it."
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "handle": "tylernabinger",
-      "score": 95,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "handle": "ashleyhufford",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "handle": "theatreislife",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production at the Perlman Performing Arts Center and provides a detailed, substantive review of the show."
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "handle": "broadwayben",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "chess-2025",
-      "handle": "tylernabinger",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Chess on Broadway and provides a detailed, substantive review of the performance and cast."
-    },
-    {
-      "showId": "chess-2025",
-      "handle": "broadwayben",
-      "score": 70,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a detailed, substantive opinion on the performances, staging, and overall experience."
-    },
-    {
-      "showId": "chess-2025",
-      "handle": "theatreislife",
-      "score": 59,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Chess and provides a detailed, substantive review of the performance, including opinions on casting, staging, and the score."
-    },
-    {
-      "showId": "chess-2025",
-      "handle": "mickeyjotheatre",
-      "score": 20,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway revival of Chess and provides a detailed, substantive review of the production, including opinions on performances, direction, and script changes."
-    },
-    {
-      "showId": "cult-of-love-2024",
-      "handle": "theatreislife",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production of 'Cult of Love' and shares their substantive opinion on it."
-    },
-    {
-      "showId": "cult-of-love-2024",
-      "handle": "broadwayben",
-      "score": 84,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the performances and themes of the show."
-    },
-    {
-      "showId": "cult-of-love-2024",
-      "handle": "tylernabinger",
-      "score": 76,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "data-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 85,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the play, discussing the plot, themes, cast, and production quality."
-    },
-    {
-      "showId": "days-of-wine-and-roses-2024",
-      "handle": "tylernabinger",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "days-of-wine-and-roses-2024",
-      "handle": "theatreislife",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production and provides a detailed, substantive review of the show."
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
       "showId": "dead-outlaw-2025",
-      "handle": "tylernabinger",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "death-becomes-her-2024",
-      "handle": "ashleyhufford",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion, mentioning specific performances and their experience."
-    },
-    {
-      "showId": "death-becomes-her-2024",
-      "handle": "mickeyjotheatre",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production of 'Death Becomes Her' and provides a detailed, substantive review of the show."
-    },
-    {
-      "showId": "death-becomes-her-2024",
-      "handle": "tylernabinger",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "death-becomes-her-2024",
       "handle": "theatreislife",
-      "score": 87,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a detailed, substantive review of it."
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
-      "showId": "death-becomes-her-2024",
-      "handle": "overthinkingtheatre",
-      "score": 78,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of 'Death Becomes Her' and provides a substantive opinion on the show."
+      "showId": "dead-outlaw-2025",
+      "handle": "ashleyhufford",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
       "showId": "death-becomes-her-2024",
       "handle": "broadwaybob",
-      "score": 65,
+      "hiddenReason": "wrongProduction",
       "verdict": "REMOVE",
       "confidence": "high",
-      "reason": "The creator discusses the show but admits they haven't seen this production on Broadway, only clips and the cast recording."
-    },
-    {
-      "showId": "dog-day-afternoon-2026",
-      "handle": "tylernabinger",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the second preview of the stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "dog-day-afternoon-2026",
-      "handle": "overthinkingtheatre",
-      "score": 64,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Dog Day Afternoon and provides a detailed, substantive opinion on the staging, performances, and adaptation."
-    },
-    {
-      "showId": "doubt-2024",
-      "handle": "tylernabinger",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Doubt: A Parable and provides a substantive opinion on it."
-    },
-    {
-      "showId": "elf-2024",
-      "handle": "theatreislife",
-      "score": 84,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Elf and provides a detailed, substantive review of the performance."
-    },
-    {
-      "showId": "elf-2024",
-      "handle": "tylernabinger",
-      "score": 53,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production of Elf on Broadway and shared their substantive opinion on it."
-    },
-    {
-      "showId": "english-2025",
-      "handle": "ashleyhufford",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares their substantive opinion on it."
-    },
-    {
-      "showId": "english-2025",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The transcript does not indicate that the creator attended the specific live stage production; it lacks past-tense attendance or a before-and-after structure."
-    },
-    {
-      "showId": "eureka-day-2024",
-      "handle": "mickeyjotheatre",
-      "score": 94,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The transcript is a roundup review covering two plays, 'Eureka Day' and 'English,' rather than a standalone review of the specific production 'Eureka Day.'"
-    },
-    {
-      "showId": "eureka-day-2024",
-      "handle": "theatreislife",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a detailed, substantive opinion on the show."
-    },
-    {
-      "showId": "eureka-day-2024",
-      "handle": "tylernabinger",
-      "score": 85,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on the specific live stage production of Eureka Day at the Friedman."
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "handle": "mickeyjotheatre",
-      "score": 95,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production at Soho Place and provides a detailed, substantive review of the performance and themes."
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "handle": "theatreislife",
-      "score": 95,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Boulder Ensemble Theatre Company production and shared their experience and opinion on it."
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "handle": "tylernabinger",
-      "score": 76,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "every-brilliant-thing-off-broadway-2026",
-      "handle": "overthinkingtheatre",
-      "score": 59,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a substantive opinion on it, discussing their experience and critique of the show."
-    },
-    {
-      "showId": "floyd-collins-2025",
-      "handle": "tylernabinger",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production at Lincoln Center and provides a substantive opinion on the performances, staging, and overall experience."
-    },
-    {
-      "showId": "floyd-collins-2025",
-      "handle": "theatreislife",
-      "score": 57,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production, shared their experience, and provided a substantive opinion on the staging, performances, and overall production."
-    },
-    {
-      "showId": "giant-2026",
-      "handle": "tylernabinger",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the performance and staging."
-    },
-    {
-      "showId": "glengarry-glen-ross-2025",
-      "handle": "tylernabinger",
-      "score": 47,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "grey-house-2023",
-      "handle": "tylernabinger",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "gutenberg-2023",
-      "handle": "overthinkingtheatre",
-      "score": 70,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "gutenberg-2023",
-      "handle": "tylernabinger",
-      "score": 67,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "gypsy-2024",
-      "handle": "broadwayben",
-      "score": 88,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The video is a reply to a comment, indicating it is not a standalone review."
-    },
-    {
-      "showId": "gypsy-2024",
-      "handle": "overthinkingtheatre",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator discusses their personal experience and opinion after attending Audra McDonald's performance in Gypsy."
-    },
-    {
-      "showId": "gypsy-2024",
-      "handle": "theatreislife",
-      "score": 69,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a detailed, substantive opinion on it."
-    },
-    {
-      "showId": "hadestown-2019",
-      "handle": "broadwayben",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator shares a substantive opinion on the specific Hadestown production they attended, discussing performances of the current cast in detail."
-    },
-    {
-      "showId": "hadestown-2019",
-      "handle": "ashleyhufford",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Hadestown tour in New Haven and shares substantive opinions on the cast and production."
-    },
-    {
-      "showId": "hadestown-2019",
-      "handle": "theatreislife",
-      "score": 87,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The video is a reply to a comment and not a standalone review of the Hadestown production."
-    },
-    {
-      "showId": "hamilton-2015",
-      "handle": "ashleyhufford",
-      "score": 95,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shares their substantive opinion on Leslie Odom Jr.'s performance in Hamilton."
-    },
-    {
-      "showId": "hamilton-2015",
-      "handle": "theatreislife",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Hamilton and shares their substantive opinion on it."
-    },
-    {
-      "showId": "hamilton-2015",
-      "handle": "broadwayben",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Hamilton and provides a detailed, substantive review of the performance and cast."
-    },
-    {
-      "showId": "hamilton-2015",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares their substantive opinion on the performance and cast."
-    },
-    {
-      "showId": "harmony-2023",
-      "handle": "tylernabinger",
-      "score": 76,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'Harmony' on Broadway and shares their substantive opinion on it."
+      "reason": "The creator discusses the show but admits they haven't seen this production on Broadway, only an out-of-town tryout and clips on TikTok."
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
       "handle": "tyvid5",
-      "score": 89,
+      "hiddenReason": "wrongProduction",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the opening night of the specific production and shared their experience and opinion on the show."
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "handle": "theatreislife",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "illinoise-2024",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the specific live stage production of Illinoise on Broadway and provides a detailed, substantive opinion on it."
+    },
+    {
+      "showId": "cabaret-2024",
+      "handle": "broadwayben",
+      "hiddenReason": "wrongProduction",
       "verdict": "REMOVE",
       "confidence": "high",
-      "reason": "The transcript focuses on the experience of attending the opening night event rather than providing a substantive review of the production itself."
-    },
-    {
-      "showId": "heart-of-rock-and-roll-2024",
-      "handle": "ashleyhufford",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the opening night of the specific stage production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "heart-of-rock-and-roll-2024",
-      "handle": "theatreislife",
-      "score": 87,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a detailed, substantive opinion on it."
-    },
-    {
-      "showId": "heart-of-rock-and-roll-2024",
-      "handle": "broadwayben",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview and provides a substantive opinion on the production."
-    },
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
-      "handle": "theatreislife",
-      "score": 77,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific off-Broadway production of Heathers in July and provides a detailed, substantive review of the performance and cast."
-    },
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
-      "handle": "tylernabinger",
-      "score": 76,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the 2025 production at New World Stages and provides a substantive opinion on the performances and production."
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "handle": "tylernabinger",
-      "score": 85,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "handle": "broadwayben",
-      "score": 78,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The transcript discusses the show's concept and music but lacks evidence of the creator having attended the specific production."
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "handle": "theatreislife",
-      "score": 73,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Hell's Kitchen and provides a detailed, substantive review of their experience and opinions on the show."
-    },
-    {
-      "showId": "here-lies-love-2023",
-      "handle": "tylernabinger",
-      "score": 83,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "here-lies-love-2023",
-      "handle": "theatreislife",
-      "score": 82,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production, shared their experience, and provided a substantive opinion on the immersive aspects of the show."
-    },
-    {
-      "showId": "here-lies-love-2023",
-      "handle": "broadwayben",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a detailed, substantive review of their experience and opinions on the show."
-    },
-    {
-      "showId": "home-2024",
-      "handle": "theatreislife",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'Home' and provides a substantive review of the performance, direction, and ticketing options."
-    },
-    {
-      "showId": "home-2024",
-      "handle": "tylernabinger",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "how-to-dance-in-ohio-2023",
-      "handle": "tylernabinger",
-      "score": 69,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production and shared a substantive opinion on it."
-    },
-    {
-      "showId": "i-need-that-2023",
-      "handle": "tylernabinger",
-      "score": 60,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shared a substantive opinion on it."
+      "reason": "The transcript discusses Eddie Redmayne's performance in Cabaret but does not indicate that the creator attended the specific production at the Kit Kat Club."
     },
     {
       "showId": "illinoise-2024",
       "handle": "tyvid5",
-      "score": 78,
+      "hiddenReason": "wrongProduction",
       "verdict": "REMOVE",
       "confidence": "high",
-      "reason": "The transcript does not indicate that the creator attended the production; it reads more like a promotional overview."
+      "reason": "The creator discusses the show but never indicates they saw this production, lacking past-tense attendance or a substantive opinion."
     },
     {
-      "showId": "inter-alia-2026",
-      "handle": "mickeyjotheatre",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production at the National Theatre and provides a detailed, substantive review of the performance."
-    },
-    {
-      "showId": "jajas-african-hair-braiding-2023",
-      "handle": "theatreislife",
-      "score": 96,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a detailed, substantive opinion on the show."
-    },
-    {
-      "showId": "jajas-african-hair-braiding-2023",
-      "handle": "tylernabinger",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "jesa-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 64,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator shares a substantive opinion on the specific live stage production of 'Jesa' at The Public Theater, indicating they attended and reviewed it."
-    },
-    {
-      "showId": "job-2024",
-      "handle": "theatreislife",
-      "score": 84,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of 'Job' and provides a detailed, substantive review of their experience and opinions on the show."
-    },
-    {
-      "showId": "joe-turners-come-and-gone-2026",
-      "handle": "tylernabinger",
-      "score": 84,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the performances and thematic elements of the specific live stage production."
-    },
-    {
-      "showId": "john-proctor-is-the-villain-2025",
-      "handle": "mickeyjotheatre",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production and provides a detailed, substantive review of 'John Proctor is the Villain' at the Booth Theater."
-    },
-    {
-      "showId": "john-proctor-is-the-villain-2025",
-      "handle": "tylernabinger",
-      "score": 91,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the specific live stage production."
-    },
-    {
-      "showId": "just-for-us-2023",
-      "handle": "theatreislife",
-      "score": 93,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of 'Just for Us' and provides a detailed, substantive review of their experience and opinions on the show."
-    },
-    {
-      "showId": "just-for-us-2023",
-      "handle": "tylernabinger",
-      "score": 85,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of 'Just for Us' on Broadway and shares their substantive opinion on the production."
-    },
-    {
-      "showId": "just-in-time-2025",
-      "handle": "mickeyjotheatre",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of 'Just in Time' and provides a detailed, substantive review of the show, including specific observations about the performance, staging, and creative elements."
-    },
-    {
-      "showId": "just-in-time-2025",
-      "handle": "tylernabinger",
-      "score": 73,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the performance, staging, and overall experience."
-    },
-    {
-      "showId": "kenrex-off-broadway-2026",
-      "handle": "mickeyjotheatre",
-      "score": 93,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator provides a detailed, first-hand review of the Ken Rex stage production at The Other Palace Theatre, sharing substantive opinions and observations from attending the show."
-    },
-    {
-      "showId": "la-ternura-off-broadway-2025",
-      "handle": "tylernabinger",
-      "score": 73,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'La Ternura' and shared their substantive opinion on it."
-    },
-    {
-      "showId": "left-on-tenth-2024",
-      "handle": "tylernabinger",
-      "score": 44,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "lempicka-2024",
-      "handle": "tylernabinger",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Lempicka on Broadway and provides a substantive opinion on various aspects of the show."
-    },
-    {
-      "showId": "lempicka-2024",
+      "showId": "queen-versailles-2025",
       "handle": "broadwayben",
-      "score": 67,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of 'Lempicka' and shares substantive opinions on the production."
-    },
-    {
-      "showId": "lempicka-2024",
-      "handle": "theatreislife",
-      "score": 62,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a detailed, substantive opinion on it."
-    },
-    {
-      "showId": "liberation-2025",
-      "handle": "theatreislife",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production, shares a substantive opinion, and provides a clear past-tense review of the specific live stage production."
-    },
-    {
-      "showId": "mary-jane-2024",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'Mary Jane' and provides a substantive opinion on the performance and the play."
-    },
-    {
-      "showId": "mary-jane-2024",
-      "handle": "theatreislife",
-      "score": 63,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a detailed, substantive opinion on the specific live stage production of 'Mary Jane.'"
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "handle": "ashleyhufford",
-      "score": 93,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the immersive production of Masquerade and shares a substantive opinion on it."
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "handle": "broadwayben",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the immersive Phantom production and shares substantive opinions on the experience and performances."
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "handle": "tyvid5",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shared their substantive opinion, describing it as the best theater experience they've ever had."
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "handle": "theatreislife",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'Masquerade' and provides a detailed, substantive review of their experience."
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "handle": "tylernabinger",
-      "score": 84,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the immersive production and provides a detailed, first-hand review of their experience."
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "handle": "mickeyjotheatre",
-      "score": 77,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'Masquerade' and provides a detailed, substantive review of the experience."
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "handle": "broadwayben",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production and provides a substantive opinion on the show, including performances and technical elements."
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "handle": "broadwaybob",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "handle": "overthinkingtheatre",
-      "score": 91,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production and shares a substantive opinion on it, including specific details about the design and storytelling."
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "handle": "ashleyhufford",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on the changes and performances, indicating a first-hand review."
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "handle": "tylernabinger",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "mcneal-2024",
-      "handle": "overthinkingtheatre",
-      "score": 45,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway play 'McNeal' and provides a detailed, substantive opinion on the production."
-    },
-    {
-      "showId": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 61,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
-      "handle": "tylernabinger",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
-      "handle": "mickeyjotheatre",
-      "score": 89,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The transcript primarily reviews the film version of the Merrily We Roll Along Broadway revival, not the specific live stage production."
-    },
-    {
-      "showId": "mexodus-off-broadway-2026",
-      "handle": "ashleyhufford",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of the specific production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "mexodus-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 77,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of Mexodus and provides a substantive opinion on the production."
-    },
-    {
-      "showId": "mexodus-off-broadway-2026",
-      "handle": "overthinkingtheatre",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the show, discussing specific elements like live looping and the performers' talents."
-    },
-    {
-      "showId": "mother-play-2024",
-      "handle": "ashleyhufford",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shared a substantive opinion on it, including details about the performance and a talkback with the playwright."
-    },
-    {
-      "showId": "mother-play-2024",
-      "handle": "tylernabinger",
-      "score": 76,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator shares a substantive opinion on the production, indicating they attended by mentioning adding a Playbill to their collection."
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "handle": "ashleyhufford",
-      "score": 91,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shares their substantive opinion on the performances and experience."
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "handle": "broadwaybob",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first national tour of Moulin Rouge! The Musical and shared their substantive opinion on the production."
-    },
-    {
-      "showId": "my-joy-is-heavy-off-broadway-2025",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "no-singing-in-the-navy-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "oh-mary-off-broadway-2024",
-      "handle": "tylernabinger",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "once-upon-a-one-more-time-2023",
-      "handle": "broadwayben",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production twice and provides a substantive opinion on the changes and improvements observed."
-    },
-    {
-      "showId": "once-upon-a-one-more-time-2023",
-      "handle": "tylernabinger",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "operation-mincemeat-2025",
-      "handle": "ashleyhufford",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production of Operation Mincemeat and shared their substantive opinion on it."
-    },
-    {
-      "showId": "operation-mincemeat-2025",
-      "handle": "tylernabinger",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on it, using past-tense observations and personal reactions."
-    },
-    {
-      "showId": "othello-2025",
-      "handle": "tylernabinger",
-      "score": 47,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production of Othello and provides a detailed, substantive opinion on it."
-    },
-    {
-      "showId": "our-town-2024",
-      "handle": "tylernabinger",
-      "score": 68,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production of Our Town on Broadway and shared their substantive opinion on it."
-    },
-    {
-      "showId": "our-town-2024",
-      "handle": "overthinkingtheatre",
-      "score": 67,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the current Broadway production of 'Our Town' and provides a substantive opinion on it."
-    },
-    {
-      "showId": "our-town-2024",
-      "handle": "theatreislife",
-      "score": 36,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'Our Town' and provided a detailed, substantive opinion on it."
-    },
-    {
-      "showId": "patriots-2024",
-      "handle": "tylernabinger",
-      "score": 67,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Patriots and provides a substantive opinion on the show."
-    },
-    {
-      "showId": "pirates-the-penzance-musical-2025",
-      "handle": "tylernabinger",
-      "score": 77,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production at Roundabout and provides a substantive opinion on it."
-    },
-    {
-      "showId": "prayer-for-the-french-republic-2024",
-      "handle": "tylernabinger",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "proof-2026",
-      "handle": "tylernabinger",
-      "score": 84,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'Proof' on Broadway and provides a substantive opinion on the performances and production."
-    },
-    {
-      "showId": "public-charge-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 60,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the play, discussing its plot, characters, and overall impact."
-    },
-    {
-      "showId": "punch-2025",
-      "handle": "overthinkingtheatre",
-      "score": 82,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "punch-2025",
-      "handle": "tylernabinger",
-      "score": 82,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "purlie-victorious-2023",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of the specific production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "purpose-2025",
-      "handle": "tylernabinger",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on the play, mentioning specific elements like cast and direction."
-    },
-    {
-      "showId": "ragtime-2025",
-      "handle": "tylernabinger",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Ragtime production at Lincoln Center and provides a substantive opinion on it."
-    },
-    {
-      "showId": "ragtime-2025",
-      "handle": "theatreislife",
-      "score": 57,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Lincoln Center Theater production of Ragtime and provides a detailed, substantive review of their experience and opinions on the production."
-    },
-    {
-      "showId": "redwood-2025",
-      "handle": "tylernabinger",
-      "score": 60,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the early previews of the specific live stage production of Redwood and provides a substantive opinion on it."
-    },
-    {
-      "showId": "redwood-2025",
-      "handle": "mickeyjotheatre",
-      "score": 34,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Redwood and provides a detailed, substantive review of the show."
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "handle": "theatreislife",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and provides a detailed, substantive review of their experience and opinions on it."
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "handle": "broadwayben",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "handle": "overthinkingtheatre",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Romeo and Juliet and provides a substantive opinion on it."
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "handle": "tylernabinger",
-      "score": 59,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production and shared a substantive opinion on it."
-    },
-    {
-      "showId": "schmigadoon-2026",
-      "handle": "tylernabinger",
-      "score": 70,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "scorched-earth-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 78,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator provides a substantive opinion on the specific live stage production of 'Scorched Earth' at St Ann's Warehouse, indicating they attended and reviewed it."
-    },
-    {
-      "showId": "seagull-true-story-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on it, using past-tense and present-tense critique."
-    },
-    {
-      "showId": "six-2021",
-      "handle": "ashleyhufford",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first show of the new cast and shared their substantive opinion on the production."
-    },
-    {
-      "showId": "smash-2025",
-      "handle": "ashleyhufford",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of Smash on Broadway and shares their substantive opinion on the production."
-    },
-    {
-      "showId": "smash-2025",
-      "handle": "tylernabinger",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "spamalot-2023",
-      "handle": "broadwayben",
-      "score": 67,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of the specific Spamalot production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "spamalot-2023",
-      "handle": "theatreislife",
-      "score": 63,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Spamalot and shared their substantive opinion on it."
-    },
-    {
-      "showId": "spamalot-2023",
-      "handle": "tylernabinger",
-      "score": 47,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Spamalot Broadway production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "stephen-sondheims-old-friends-2025",
-      "handle": "tylernabinger",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares their substantive opinion on it."
-    },
-    {
-      "showId": "stereophonic-2024",
-      "handle": "mickeyjotheatre",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the West End production of Stereophonic and provides a detailed, substantive review of the performances, direction, and production elements."
-    },
-    {
-      "showId": "stereophonic-2024",
-      "handle": "tylernabinger",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "stereophonic-off-broadway-2023",
-      "handle": "tylernabinger",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Stereophonic at Playwrights Horizons and shares a substantive opinion on it."
-    },
-    {
-      "showId": "suffs-2024",
-      "handle": "tylernabinger",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of Suffs on Broadway and provides a substantive opinion on the production."
-    },
-    {
-      "showId": "suffs-2024",
-      "handle": "theatreislife",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of 'Suffs' and provides a detailed, substantive review of the changes and their opinions on the show."
-    },
-    {
-      "showId": "sunset-boulevard-2024",
-      "handle": "ashleyhufford",
-      "score": 94,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of the specific production and shares their substantive opinion on it."
-    },
-    {
-      "showId": "sunset-boulevard-2024",
-      "handle": "broadwayben",
-      "score": 93,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Sunset Boulevard with Mandy Gonzalez and shares a substantive opinion on her performance."
-    },
-    {
-      "showId": "sunset-boulevard-2024",
-      "handle": "tylernabinger",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended a preview of the specific production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "sunset-boulevard-2024",
-      "handle": "overthinkingtheatre",
-      "score": 40,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific revival of Sunset Boulevard and provides a detailed, substantive opinion on the production."
-    },
-    {
-      "showId": "swept-away-2024",
-      "handle": "tylernabinger",
-      "score": 59,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "handle": "ashleyhufford",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the opening night of the Broadway production and shared their substantive opinion on the show."
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "handle": "theatreislife",
-      "score": 77,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production of Tammy Faye and provides a detailed, substantive opinion on it."
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "handle": "tylernabinger",
-      "score": 59,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of 'Tammy Faye' on Broadway and provides a substantive opinion on it."
-    },
-    {
-      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
-      "handle": "mickeyjotheatre",
-      "score": 92,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific off-Broadway production and provides a detailed, substantive review of the performances and production elements."
-    },
-    {
-      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
-      "handle": "tylernabinger",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production, mentioning cast members and sharing a substantive opinion on the experience."
-    },
-    {
-      "showId": "the-cottage-2023",
-      "handle": "broadwayben",
-      "score": 78,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on the show, mentioning specific elements like the cast, set, and plot."
-    },
-    {
-      "showId": "the-cottage-2023",
-      "handle": "theatreislife",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the show."
-    },
-    {
-      "showId": "the-cottage-2023",
-      "handle": "tylernabinger",
-      "score": 71,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "the-disappear-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 73,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the performances and themes."
-    },
-    {
-      "showId": "the-fear-of-13-2026",
-      "handle": "tylernabinger",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on Adrien Brody's performance and the overall staging."
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "handle": "broadwayben",
-      "score": 70,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on it, indicating a first-hand review."
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "handle": "theatreislife",
-      "score": 70,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of The Great Gatsby and provides a detailed, substantive review of the show, including comparisons to a previous production they saw."
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "handle": "mickeyjotheatre",
-      "score": 68,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended multiple performances of the specific stage production and provides a detailed, substantive review of it."
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "handle": "tylernabinger",
-      "score": 60,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production and shared a substantive opinion on it."
-    },
-    {
-      "showId": "the-hills-of-california-2024",
-      "handle": "theatreislife",
-      "score": 88,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a detailed, substantive opinion on the specific live stage production."
-    },
-    {
-      "showId": "the-hills-of-california-2024",
-      "handle": "tylernabinger",
-      "score": 77,
-      "verdict": "REVIEW_MANUALLY",
-      "confidence": "medium",
-      "reason": "The transcript discusses the play in detail, but it lacks explicit confirmation that the creator attended the specific production."
-    },
-    {
-      "showId": "the-last-five-years-2025",
-      "handle": "tylernabinger",
-      "score": 57,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a detailed, substantive opinion on the performances and production elements."
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "handle": "ashleyhufford",
-      "score": 85,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares their substantive opinion on it."
-    },
-    {
-      "showId": "the-lost-boys-2026",
-      "handle": "tyvid5",
-      "score": 92,
-      "verdict": "REMOVE",
-      "confidence": "high",
-      "reason": "The creator discusses an exclusive sneak peek, not a full live stage production review."
-    },
-    {
-      "showId": "the-lost-boys-2026",
-      "handle": "theatreislife",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared substantive opinions on the changes and performances observed."
-    },
-    {
-      "showId": "the-lost-boys-2026",
-      "handle": "broadwayben",
-      "score": 65,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended an early preview of the specific stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "the-notebook-2024",
-      "handle": "theatreislife",
-      "score": 95,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production multiple times and provides a detailed, substantive review of it."
-    },
-    {
-      "showId": "the-notebook-2024",
-      "handle": "broadwayben",
-      "score": 87,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of The Notebook on Broadway and shares their substantive opinion on the production."
-    },
-    {
-      "showId": "the-notebook-2024",
-      "handle": "tylernabinger",
-      "score": 73,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of The Notebook and provides a substantive opinion on it."
-    },
-    {
-      "showId": "the-outsiders-2024",
-      "handle": "theatreislife",
-      "score": 91,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of 'The Outsiders' and provides a detailed, substantive review of the show."
-    },
-    {
-      "showId": "the-outsiders-2024",
-      "handle": "tylernabinger",
-      "score": 75,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production and shared a substantive opinion on it."
-    },
-    {
-      "showId": "the-outsiders-2024",
-      "handle": "overthinkingtheatre",
-      "score": 62,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a detailed critique of the show, indicating a first-hand review."
-    },
-    {
-      "showId": "the-picture-of-dorian-gray-2025",
-      "handle": "tylernabinger",
-      "score": 85,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "the-roommate-2024",
-      "handle": "tylernabinger",
-      "score": 75,
-      "verdict": "REVIEW_MANUALLY",
-      "confidence": "medium",
-      "reason": "The transcript discusses the play and actors in detail, but it doesn't explicitly state that the creator attended the production."
-    },
-    {
-      "showId": "the-roommate-2024",
-      "handle": "overthinkingtheatre",
-      "score": 74,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the performances and themes of the show."
-    },
-    {
-      "showId": "the-shark-is-broken-2023",
-      "handle": "theatreislife",
-      "score": 78,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of 'The Shark Is Broken' on Broadway and provides a substantive opinion on the production."
-    },
-    {
-      "showId": "the-shark-is-broken-2023",
-      "handle": "broadwayben",
-      "score": 65,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the first preview of The Shark Is Broken and provides a substantive opinion on the production."
-    },
-    {
-      "showId": "the-shark-is-broken-2023",
-      "handle": "tylernabinger",
-      "score": 41,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific Broadway production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "the-unknown-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 84,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and shares a substantive opinion on it, discussing the performance and staging in detail."
-    },
-    {
-      "showId": "the-whos-tommy-2024",
-      "handle": "tylernabinger",
-      "score": 72,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared a substantive opinion on it."
-    },
-    {
-      "showId": "the-whos-tommy-2024",
-      "handle": "theatreislife",
-      "score": 69,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a detailed, substantive opinion on the specific live stage production of The Who's Tommy."
-    },
-    {
-      "showId": "the-wiz-2024",
-      "handle": "tylernabinger",
-      "score": 70,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shared their substantive opinion on it."
-    },
-    {
-      "showId": "the-wiz-2024",
-      "handle": "theatreislife",
-      "score": 63,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a detailed, substantive opinion on various aspects of the show."
-    },
-    {
-      "showId": "this-is-my-favorite-song-off-broadway-2024",
-      "handle": "tylernabinger",
-      "score": 85,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and shares a substantive opinion on it."
-    },
-    {
-      "showId": "titanique-2026",
-      "handle": "ashleyhufford",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the final dress rehearsal and shared a substantive opinion on the production."
-    },
-    {
-      "showId": "titanique-2026",
-      "handle": "tylernabinger",
-      "score": 68,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Titanique and shares a substantive opinion on it."
-    },
-    {
-      "showId": "tru-off-broadway-2026",
-      "handle": "tylernabinger",
-      "score": 55,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the production and provides a substantive opinion on the performance and direction."
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
       "showId": "two-strangers-bway-2025",
-      "handle": "tylernabinger",
-      "score": 91,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator clearly attended the production and provides a substantive opinion on the performances, direction, and design."
+      "handle": "ashleyhufford",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
-      "showId": "two-strangers-bway-2025",
-      "handle": "mickeyjotheatre",
-      "score": 90,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production and provides a detailed, substantive review of the show."
-    },
-    {
-      "showId": "two-strangers-bway-2025",
+      "showId": "im-almost-there-off-broadway-2026",
       "handle": "theatreislife",
-      "score": 89,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production in New York and provides a detailed, substantive review of the show."
-    },
-    {
-      "showId": "uncle-vanya-2024",
-      "handle": "overthinkingtheatre",
-      "score": 79,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Uncle Vanya and provides a substantive opinion on the performances and direction."
-    },
-    {
-      "showId": "uncle-vanya-2024",
-      "handle": "theatreislife",
-      "score": 44,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Uncle Vanya and provides a detailed, substantive review of their experience and opinions on the show."
-    },
-    {
-      "showId": "waiting-for-godot-2025",
-      "handle": "tylernabinger",
-      "score": 65,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "water-for-elephants-2024",
-      "handle": "overthinkingtheatre",
-      "score": 64,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the Broadway production of Water for Elephants and provides a substantive opinion on the show."
-    },
-    {
-      "showId": "water-for-elephants-2024",
-      "handle": "tylernabinger",
-      "score": 60,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific live stage production and provides a substantive opinion on it."
-    },
-    {
-      "showId": "yellow-face-2024",
-      "handle": "tylernabinger",
-      "score": 80,
-      "verdict": "KEEP",
-      "confidence": "high",
-      "reason": "The creator attended the specific production of Yellow Face and provides a substantive opinion on it."
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
     },
     {
       "showId": "yellow-face-2024",
       "handle": "overthinkingtheatre",
-      "score": 79,
+      "hiddenReason": "wrongProduction",
       "verdict": "REMOVE",
       "confidence": "high",
       "reason": "The transcript discusses the relevance and themes of the play 'Yellow Face' but does not indicate that the creator attended or reviewed a specific live stage production."
     },
     {
-      "showId": "you-got-older-off-broadway-2026",
+      "showId": "im-almost-there-off-broadway-2026",
       "handle": "tylernabinger",
-      "score": 85,
-      "verdict": "KEEP",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "ragtime-2025",
+      "handle": "ashleyhufford",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "music-city-off-broadway-2026",
+      "handle": "tylernabinger",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "burnout-paradise-off-broadway-2026",
+      "handle": "theatreislife",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "wicked-2003",
+      "handle": "sweatyoracle",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
       "confidence": "high",
-      "reason": "The creator attended the production at the Cherry Lane Theatre and provides a substantive opinion on the performance and actors."
+      "reason": "The transcript reviews the Wicked movie adaptation, not the stage production."
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended a preview of 'Death Becomes Her' on Broadway and provides a detailed review of the production, including opinions on performances, set, and score."
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "handle": "sweatyoracle",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a roundup of favorite theater moments from 2024, not a standalone review of a specific production of Little Shop of Horrors."
+    },
+    {
+      "showId": "english-2025",
+      "handle": "tylernabinger",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript does not indicate that the creator attended the specific live stage production; it lacks past-tense attendance or a before-and-after structure."
+    },
+    {
+      "showId": "and-juliet-2022",
+      "handle": "ashleyhufford",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "night-side-songs-off-broadway-2026",
+      "handle": "tylernabinger",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "handle": "theatreislife",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "handle": "ashleyhufford",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a casting announcement and discussion, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the production and shares a substantive opinion on the direction, set design, performances, and emotional impact of the show."
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "handle": "tylernabinger",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript reviews 'Creditors,' not 'Sexual Misconduct of the Middle Classes.'"
+    },
+    {
+      "showId": "can-i-be-frank-off-broadway-2026",
+      "handle": "tylernabinger",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "handle": "broadwayben",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a casting announcement and reaction, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "and-juliet-2022",
+      "handle": "theatreislife",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript reviews the touring production of & Juliet, not the Broadway production it was assigned to."
+    },
+    {
+      "showId": "masquerade-off-broadway-2025",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the immersive production of Masquerade and provides a detailed, substantive opinion on the experience."
+    },
+    {
+      "showId": "chess-2025",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator provides a detailed first-hand review of the specific Chess revival, discussing their attendance, opinions on performances, and critiques of the production."
+    },
+    {
+      "showId": "wicked-2003",
+      "handle": "overthinkingtheatre",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a personal anecdote about past experiences with Wicked, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "wicked-2003",
+      "handle": "broadwayben",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript reviews the movie adaptation of Wicked, not the stage production."
+    },
+    {
+      "showId": "wicked-2003",
+      "handle": "theatreislife",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript reviews the film adaptation 'Wicked: For Good,' not a live stage production."
+    },
+    {
+      "showId": "wicked-2003",
+      "handle": "broadwaybob",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REVIEW_MANUALLY",
+      "confidence": "low",
+      "reason": "The transcript is too fragmented and lacks clear context to determine if it's a first-hand review of the specific production."
+    },
+    {
+      "showId": "chicago-1996",
+      "handle": "theatreislife",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a casting discussion, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "beaches-2026",
+      "handle": "broadwayben",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a casting announcement and discussion about the show's Broadway plans, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "ragtime-2025",
+      "handle": "sweatyoracle",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript discusses general trends in Broadway tempos and does not provide a first-hand review of a specific live stage production of Ragtime."
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "handle": "ashleyhufford",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a casting announcement and news reaction, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "handle": "broadwayben",
+      "hiddenReason": "scoreable:false",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the specific performance and shared their substantive opinion on the ad libs and overall experience."
+    },
+    {
+      "showId": "perfect-crime-off-broadway-1987",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a commentary on women labeled as difficult in the theater industry, not a first-hand review of the specific production of Perfect Crime."
+    },
+    {
+      "showId": "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025",
+      "handle": "ashleyhufford",
+      "hiddenReason": "no-score",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript reviews an opera production, not a live stage production of 'The Amazing Adventures of Kavalier & Clay.'"
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "handle": "broadwayben",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a casting announcement and discussion, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "handle": "theatreislife",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a casting announcement and discussion, not a review of a specific live stage production."
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "handle": "ashleyhufford",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a reaction to a casting announcement, not a review of a specific live stage production."
+    },
+    {
+      "showId": "the-lost-boys-2026",
+      "handle": "ashleyhufford",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript describes a sneak peek and rehearsal visit, not a review of a specific live stage production."
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "handle": "ashleyhufford",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript primarily discusses the TV show and casting announcements for the Broadway run, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "six-2021",
+      "handle": "tyvid5",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "titanique-2026",
+      "handle": "broadwaybob",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "handle": "sweatyoracle",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript focuses on casting drama and comparisons rather than a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "hadestown-2019",
+      "handle": "sweatyoracle",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a critique of casting decisions and not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "proof-2026",
+      "handle": "ashleyhufford",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a casting announcement and anticipation video, not a review of the specific live stage production."
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "handle": "broadwayben",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a follow-up video addressing comments, not a standalone review of the production."
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the specific Broadway production of Moulin Rouge with Megan Thee Stallion and provides a detailed, substantive opinion on the performance."
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "handle": "sweatyoracle",
+      "hiddenReason": "below-floor-or-other",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the specific Broadway revival of The Rocky Horror Show and provides a detailed, substantive opinion on the production."
+    },
+    {
+      "showId": "the-last-five-years-2025",
+      "handle": "tyvid5",
+      "hiddenReason": "not-in-show-dir",
+      "verdict": "MISSING_TRANSCRIPT"
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "handle": "mickeyjotheatre",
+      "hiddenReason": "no-score",
+      "verdict": "RECOVER",
+      "confidence": "high",
+      "reason": "The creator attended the specific 2025 production of CATS: The Jellicle Ball at Paramount Theatre, Aurora, and provides a detailed, substantive review of the performance."
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "handle": "mickeyjotheatre",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript primarily reviews the film version of the Merrily We Roll Along Broadway revival, not the specific live stage production."
+    },
+    {
+      "showId": "titanique-2026",
+      "handle": "mickeyjotheatre",
+      "hiddenReason": "scoreable:false",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a discussion about the Broadway transfer of Titanique, not a first-hand review of a specific live stage production."
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "handle": "mickeyjotheatre",
+      "hiddenReason": "wrongProduction",
+      "verdict": "REMOVE",
+      "confidence": "high",
+      "reason": "The transcript is a travel vlog covering multiple shows in Madrid, not a standalone review of The Book of Mormon."
     }
-  ],
-  "sideB": null
+  ]
 }
