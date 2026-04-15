@@ -38,7 +38,6 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
   const showAggregate = reviews.length >= 2;
   const avgScore = Math.round(reviews.reduce((sum, r) => sum + r.score, 0) / reviews.length);
   const tier = showAggregate ? getScoreTier(avgScore) : null;
-  const hasOverflow = reviews.length > 3;
 
   return (
     <section className="card p-4 sm:p-5 mb-6">
@@ -135,14 +134,6 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
             );
           })}
 
-          {/* Scroll hint — shows a dimmed "more" indicator when cards overflow */}
-          {hasOverflow && (
-            <div className="flex-shrink-0 w-8 flex items-center justify-center self-stretch opacity-40" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-gray-400">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          )}
         </div>
       </div>
     </section>
