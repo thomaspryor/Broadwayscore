@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-14T09:05:12.884Z",
+  "generatedAt": "2026-04-15T09:28:11.355Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -3479,6 +3479,128 @@
       "researchedAt": "2026-04-14T09:05:12.884Z",
       "model": "o4-mini",
       "researchTrigger": "manual"
+    },
+    "bloodlove-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": "",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Fizzle",
+      "notes": "No public data on budget/cost; show closed after ~2 months and did not recoup.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/article/BLOODLOVE-Extends-Off-Broadway-Run-20260302",
+          "date": "2026-03-02"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/job/blood-love-stage-manager-submissions-deadline-10-02-2025/850e20f7-6b34-44bd-8159-e8693ebc2e5b",
+          "date": "2025-10-02"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatrely.com/news/new-vampire-pop-opera-bloodlove-heads-to-new-york-this-february-20251204",
+          "date": "2025-12-04"
+        }
+      ],
+      "title": "Blood/Love",
+      "slug": "bloodlove-off-broadway",
+      "openingDate": "2026-03-03",
+      "status": "open",
+      "researchedAt": "2026-04-15T08:46:13.895Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "la-traviata-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public budget or weekly cost data found; produced by the nonprofit Met Opera ([projects.propublica.org](https://projects.propublica.org/nonprofits/organizations/131624087#:~:text=Metropolitan%20Opera%20Association%20Inc)).",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://apnews.com/article/bbedd129ccff79f6b0edb96edab280dd",
+          "date": "2025-02-19"
+        },
+        {
+          "type": "manual",
+          "url": "https://projects.propublica.org/nonprofits/organizations/131624087",
+          "date": null
+        }
+      ],
+      "title": "La Traviata",
+      "slug": "la-traviata-off-broadway",
+      "openingDate": "2026-03-20",
+      "status": "open",
+      "researchedAt": "2026-04-15T08:50:41.158Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "harry-connick-jr-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "No public budget or cost info found; show closed in previews May 2026, never recouped",
+      "confidence": "low",
+      "sources": [],
+      "title": "Harry Connick Jr.",
+      "slug": "harry-connick-jr-off-broadway",
+      "openingDate": null,
+      "status": "previews",
+      "researchedAt": "2026-04-15T09:24:31.329Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "flyby-off-west-end": {
+      "capitalization": null,
+      "capitalizationSource": "",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "World-premiere limited run at Southwark Playhouse in 2026. No public budget or recoupment figures were released.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://southwarkplayhouse.co.uk/productions/flyby/",
+          "date": "2026-01-20"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/new-musical-flyby-to-have-world-premiere-in-london",
+          "date": "2026-01-20"
+        }
+      ],
+      "title": "FLYBY",
+      "slug": "flyby-off-west-end",
+      "openingDate": "2026-04-09",
+      "status": "open",
+      "researchedAt": "2026-04-15T09:28:11.355Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
     }
   }
 }
