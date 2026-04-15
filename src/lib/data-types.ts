@@ -73,7 +73,7 @@ export interface TheaterStructuredTips {
   };
   logistics?: {
     entrance?: string;
-    nearestSubway?: string;
+    nearestSubway?: string | null;
     exitStrategy?: string;
     restrooms?: string;
   };
