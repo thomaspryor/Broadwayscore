@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-15T00:41:37.090Z",
-  "processed": 14,
-  "failed": 1,
-  "successRate": "93.3%",
+  "updatedAt": "2026-04-15T01:13:18.123Z",
+  "processed": 15,
+  "failed": 2,
+  "successRate": "88.2%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 2,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-15T00:36:17.964Z",
@@ -69,6 +69,17 @@
       "t": "2026-04-15T00:40:47.015Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-15T01:10:44.081Z",
+      "event": "bb-session",
+      "session": "0b9d82f8",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-15T01:10:44.989Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
