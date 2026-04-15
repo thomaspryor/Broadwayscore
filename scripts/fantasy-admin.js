@@ -8,6 +8,7 @@
  *   show <show-id>                      — Scoring breakdown for a show
  *   scores [--dry-run]                  — Recompute fantasy scores (delegates)
  *   email [--dry-run|--draft]           — Generate/create weekly email (delegates)
+ *   winner                              — Declare the season winner
  *
  * Env: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
  *
@@ -179,6 +180,40 @@ function cmdEmail() {
   execSync(`node ${path.join(__dirname, 'fantasy-weekly-email.js')} ${flags}`, { stdio: 'inherit' });
 }
 
+async function cmdWinner() {
+  const leagueData = loadJSON('fantasy-league.json');
+  const scoresData = loadJSON('fantasy-scores.json');
+
+  const entries = await fetchFantasyEntries({ season: leagueData._meta.season });
+  if (entries.length === 0) {
+    console.log('No entries found — no winner to declare.');
+    return;
+  }
+
+  const leaderboard = computeLeaderboard(entries, scoresData.showScores, leagueData.shows);
+  const winners = leaderboard.filter(e => e.rank === 1);
+
+  console.log(`\n  Broadway Fantasy League — Season Winner${winners.length > 1 ? 's (tied)' : ''}`);
+  console.log(`  Season: ${leagueData._meta.season}`);
+  console.log(`  Prize:  $500 TodayTix voucher`);
+  console.log(`  ${'─'.repeat(70)}`);
+
+  for (const w of winners) {
+    console.log(`  ${w.displayName}  —  ${w.email}`);
+    console.log(`  Points: ${w.totalPoints.toFixed(1)}`);
+    console.log(`  Picks:`);
+    for (const p of w.picks) {
+      console.log(`    $${p.price.toString().padStart(2)}  ${p.showTitle}  (+${p.points.toFixed(1)} pts)`);
+    }
+    console.log();
+  }
+
+  if (winners.length > 1) {
+    console.log(`  ${winners.length} winners tied. Apply tiebreaker questions (see fantasy-league.json tiebreakers).`);
+  }
+  console.log(`  ${entries.length} total entries scored.\n`);
+}
+
 // ── Helpers ────────────────────────────────────────────────────────
 
 function loadJSON(filename) {
@@ -202,6 +237,7 @@ function printUsage() {
     show      <show-id>                   Scoring breakdown for a show
     scores    [--dry-run]                 Recompute fantasy scores
     email     [--dry-run|--draft]         Generate/create weekly email
+    winner                                Declare the season winner
 
   Env: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
 `);
@@ -216,6 +252,7 @@ async function main() {
     case 'show': return cmdShow();
     case 'scores': return cmdScores();
     case 'email': return cmdEmail();
+    case 'winner': return cmdWinner();
     default:
       printUsage();
       if (command) console.error(`Unknown command: ${command}`);
