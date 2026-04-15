@@ -34,6 +34,14 @@ jobs:
             "sweep-we-aggregators.yml|192|Sweep WE Aggregators"
             "enrich-west-end-dates.yml|50|Enrich West End Dates"
             "scrape-westendtheatre.yml|192|Scrape WestEndTheatre"
+            # User-facing data refresh workflows. Stale data hits /lotteries,
+            # /rush, /standing-room, /discount-tickets, /box-office — pages
+            # Reddit users screenshot. Added 2026-04-14 after
+            # update-lottery-rush silently failed 5 days in a row.
+            "update-lottery-rush.yml|192|Update Lottery/Rush"
+            "weekly-grosses.yml|192|Weekly Grosses"
+            "update-show-score.yml|192|Update Show Score"
+            "update-mezzanine.yml|192|Update Mezzanine"
           )
 
           FAILURES=""
