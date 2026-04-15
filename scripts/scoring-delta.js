@@ -20,8 +20,8 @@
  *   node scripts/scoring-delta.js --limit=100    # sample first N shows (faster)
  *
  * Exit codes:
- *   0 — no meaningful delta (≤5 T1 flips AND ≤30 total flips)
- *   2 — significant delta (session must confirm with user before merging)
+ *   0 — no T1 flips AND ≤5 total flips (safe to merge)
+ *   2 — any T1 flip OR >5 total flips (session must post summary to user before merging)
  *   1 — script error
  */
 
@@ -29,6 +29,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 
 const ARGS = process.argv.slice(2);
@@ -77,12 +78,21 @@ function log(...args) {
   if (!OUT_JSON) console.error(...args);
 }
 
+// Track temp dirs we create so we can clean them up at exit.
+const TMP_DIRS_TO_CLEAN = [];
+process.on('exit', () => {
+  for (const d of TMP_DIRS_TO_CLEAN) {
+    try { fs.rmSync(d, { recursive: true, force: true }); } catch { /* ignore */ }
+  }
+});
+
 // ─── Load two versions of review-guards ──────────────────────────────────────
 
 function loadBaselineGuards() {
   // Dump HEAD's version of review-guards.js + date-utils.js to a temp dir so we
   // can require() them independently from the working-tree version.
   const tmpDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'scoring-delta-'));
+  TMP_DIRS_TO_CLEAN.push(tmpDir);
   const baselineLibDir = path.join(tmpDir, 'lib');
   fs.mkdirSync(baselineLibDir, { recursive: true });
 
@@ -144,16 +154,36 @@ function decideInclusion(review, show, guards) {
   if (review.contentTier === 'invalid') return { included: false, reason: 'contentTier:invalid' };
   if (review.assignedScore == null) return { included: false, reason: 'no score' };
 
+  // Manual-clear bypass: treat as included for both versions identically.
+  // Mirrors rebuild's shouldSkipWrongProductionAudit() + allowCrossMarket/allowEarlyDate semantics.
+  const manuallyCleared =
+    review.wrongProductionManualClear === true ||
+    review.humanReviewedWrongProduction === false ||
+    review.wrongProductionOverride === true ||
+    review.allowCrossMarket === true ||
+    review.allowEarlyDate === true;
+  if (manuallyCleared) return { included: true, reason: 'manually cleared' };
+
   // 2. Content-verification promotion chain (this is where temporal override acts)
+  //    Mirrors rebuild-all-reviews.js:1095-1113 CV pre-pass staleness logic.
   const cv = review.contentVerification;
   if (cv && (cv.confidence === 'high' || cv.confidence === 'medium')) {
-    // Staleness check — skip if fullText fetched after verification
+    // Staleness check: (a) timestamp-based, (b) content-hash-based, with a
+    // high-confidence-wrongArticle exception that survives staleness.
     let stale = false;
     if (review.textFetchedAt && cv.verifiedAt) {
       if (new Date(review.textFetchedAt).getTime() > new Date(cv.verifiedAt).getTime()) {
         stale = true;
       }
     }
+    if (!stale && cv.contentHash && review.fullText) {
+      const h = crypto.createHash('md5').update(review.fullText.substring(0, 2500)).digest('hex');
+      if (cv.contentHash !== h) stale = true;
+    }
+    // wrongArticle @ high confidence survives staleness (see rebuild-all-reviews.js:1106-1112)
+    const trustWrongArticleDespiteStale = cv.wrongArticle === true && cv.confidence === 'high';
+    if (stale && trustWrongArticleDespiteStale) stale = false;
+
     if (!stale) {
       // Apply temporal override — the function under test
       const openingDate = show?.openingDate || null;
