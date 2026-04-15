@@ -202,13 +202,28 @@ Just return the synopsis text, nothing else.`;
 }
 
 // Generate creative team via Claude API (fallback)
+// Pass synopsis + opening year + venue as production-specific context so the LLM
+// doesn't confuse the requested show with a same-title production by a different
+// team (e.g. Seagull: True Story vs Jamie Lloyd's 2025 WE Seagull).
 async function generateCreativeTeamWithLLM(show) {
   if (!ANTHROPIC_API_KEY) return null;
 
-  const prompt = `List the main creative team for the Broadway show "${show.title}" (${show.type || 'play'}).
+  const year = show.openingDate?.slice(0, 4) || 'upcoming';
+  const synopsis = (show.synopsis || '').slice(0, 500);
+  const venueLine = show.venue ? `\nVenue: ${show.venue}` : '';
+  const contextLine = synopsis ? `\nSynopsis: ${synopsis}` : '';
+
+  const prompt = `List the main creative team for this specific theatrical production.
+
+Title: ${show.title}
+Type: ${show.type || 'play'}
+Year: ${year}${venueLine}${contextLine}
+
 Return ONLY a JSON array with objects containing "name" and "role" fields.
 Include: Director, Book writer, Composer, Lyricist, Choreographer (if applicable).
-Only include people you are confident about - better to have fewer accurate entries than guesses.
+If the synopsis names specific people and roles, you MUST use them.
+Only include people you are certain about for THIS production (not same-title revivals).
+If uncertain, return an empty array [] rather than guessing.
 Example format: [{"name": "Lin-Manuel Miranda", "role": "Music & Lyrics"}, {"name": "Thomas Kail", "role": "Director"}]
 Return ONLY the JSON array, no other text.`;
 
@@ -340,6 +355,15 @@ async function fixCreativeTeam(show, todayTixIds) {
         seen.add(key);
         return true;
       });
+      // Synopsis cross-check: if synopsis explicitly names "directed by X", the
+      // LLM's director must be X. Catches cross-production hallucinations like
+      // Seagull: True Story (Molochnikov) getting Jamie Lloyd from his 2025 WE
+      // Seagull production.
+      if (!creativeTeamMatchesSynopsis(creativeTeam, show.synopsis)) {
+        console.log(`    ⚠️  LLM director contradicts synopsis for ${show.title}; rejecting.`);
+        return null;
+      }
+
       if (creativeTeam.length >= 1) {
         show.creativeTeam = creativeTeam;
         return `Generated creative team via Claude for ${show.title} (${creativeTeam.length} members)`;
@@ -348,6 +372,24 @@ async function fixCreativeTeam(show, todayTixIds) {
   }
 
   return null;
+}
+
+// Returns false only if synopsis explicitly names a director AND the team's
+// director contradicts it. No synopsis mention → pass (can't verify). No team
+// director → pass (nothing to contradict).
+function creativeTeamMatchesSynopsis(team, synopsis) {
+  if (!synopsis) return true;
+  const m = synopsis.match(/directed\s+by\s+([A-Z][a-zA-Z'’\-]+(?:\s+[A-Z][a-zA-Z'’\-]+){1,3})/);
+  if (!m) return true;
+  const synopsisDir = m[1].toLowerCase();
+  const teamDirs = team.filter(c => /(^|\s|&\s*)Director(\s|$|&)/i.test(c.role || ''));
+  if (!teamDirs.length) return true;
+  return teamDirs.some(d => {
+    const n = d.name.toLowerCase();
+    const lastSyn = synopsisDir.split(/\s+/).pop();
+    const lastTeam = n.split(/\s+/).pop();
+    return n.includes(synopsisDir) || synopsisDir.includes(n) || (lastSyn && lastSyn === lastTeam);
+  });
 }
 
 // Fix ticket links - just ensure valid ones exist, hide broken ones
