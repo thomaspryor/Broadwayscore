@@ -41,6 +41,7 @@ const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, is
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
+const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
 
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
@@ -1608,8 +1609,12 @@ showDirs.forEach(showId => {
           } catch {}
         }
       }
-      // allowEarlyDate/allowCrossMarket override wrongProduction — user explicitly approved the review
-      if (data.wrongProduction === true && (data.allowEarlyDate || data.allowCrossMarket)) {
+      // allowEarlyDate/allowCrossMarket override wrongProduction — user explicitly approved the review.
+      // EXCEPT: if there's an explicit wrongProductionReason (manual flag, audit-driven, CV-promoted)
+      // OR contentVerification confirms wrongProduction with high confidence, keep the flag. Cross-market
+      // contamination flags set by audit-review-contamination.js were getting stripped here, leaving
+      // contamination unflagged on the next rebuild. See scripts/lib/wrong-production-autoclear.js.
+      if (shouldAutoClearWrongProduction(data)) {
         delete data.wrongProduction;
         delete data.wrongProductionNote;
         const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
@@ -1665,8 +1670,10 @@ showDirs.forEach(showId => {
         try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
-      // allowEarlyDate/allowCrossMarket override wrongShow — user explicitly approved this review
-      if (data.wrongShow === true && (data.allowEarlyDate || data.allowCrossMarket)) {
+      // allowEarlyDate/allowCrossMarket override wrongShow — user explicitly approved this review.
+      // EXCEPT: if there's an explicit wrongShowReason (manual/audit/CV-promoted) OR contentVerification
+      // confirms wrongArticle with high confidence, keep the flag. See scripts/lib/wrong-production-autoclear.js.
+      if (shouldAutoClearWrongShow(data)) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         delete data.wrongShowReason;
