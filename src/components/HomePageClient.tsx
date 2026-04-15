@@ -9,6 +9,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Lazy-load below-fold email capture to reduce initial hydration cost
 const FooterEmailCapture = lazy(() => import('@/components/FooterEmailCapture'));
+const HomepageExplainerShelf = lazy(() => import('@/components/HomepageExplainerShelf'));
 import type { ScoreModeParam } from '@/components/show-cards';
 
 export interface FeaturedRowData {
@@ -733,6 +734,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
           ))}
         </div>
       </LazySection>
+
+      {/* Explainer shelf (demo only) — lazy-loaded below fold */}
+      <Suspense fallback={null}>
+        <HomepageExplainerShelf totalShows={totalShows} totalReviews={totalReviews} />
+      </Suspense>
 
       {/* Email Capture — lazy-loaded since it's below the fold */}
       <div id="subscribe" className="mt-8 max-w-md mx-auto">
