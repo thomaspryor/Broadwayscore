@@ -8,7 +8,12 @@
     "kenrex-off-broadway-2026/deadline--unknown.json",
     "kenrex-off-broadway-2026/guardian--unknown.json",
     "the-receptionist-off-broadway-2026/guardian--unknown.json",
-    "kenrex-off-broadway-2026/nytimes--alexis-soloski.json"
+    "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
+    "the-fear-of-13-2026/nytimes--alex-marshall.json",
+    "the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "kenrex-off-broadway-2026/guardian--mark-fisher.json",
+    "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json"
   ],
   "failed": [
     "the-fear-of-13-2026/talkinbroadway--unknown.json"
@@ -28,22 +33,29 @@
       "data/review-texts/the-receptionist-off-broadway-2026/hollywood-reporter--unknown.json",
       "the-receptionist-off-broadway-2026/hollywood-reporter--unknown.json",
       "data/review-texts/kenrex-off-broadway-2026/deadline--unknown.json",
-      "kenrex-off-broadway-2026/deadline--unknown.json"
+      "kenrex-off-broadway-2026/deadline--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
+      "the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "kenrex-off-broadway-2026/nytimes--unknown.json",
       "the-receptionist-off-broadway-2026/nytimes--unknown.json",
-      "kenrex-off-broadway-2026/nytimes--alexis-soloski.json"
+      "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
+      "the-fear-of-13-2026/nytimes--alex-marshall.json",
+      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "kenrex-off-broadway-2026/guardian--mark-fisher.json",
+      "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json"
+    ],
     "archiveToday": [
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-15T00:35:45.395Z",
-  "lastProcessed": "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json",
   "log": [
     {
       "t": "2026-04-15T00:36:17.964Z",
@@ -88,6 +100,17 @@
       "t": "2026-04-15T00:37:27.214Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-15T00:40:45.835Z",
+      "event": "bb-session",
+      "session": "91f8adeb",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/receptionist-review-11100"
+    },
+    {
+      "t": "2026-04-15T00:40:47.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

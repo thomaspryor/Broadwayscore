@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-15T00:40:28.858Z",
-  "processed": 9,
+  "updatedAt": "2026-04-15T00:41:37.090Z",
+  "processed": 14,
   "failed": 1,
-  "successRate": "90.0%",
+  "successRate": "93.3%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 0,
+    "scrapingbee": 5,
+    "brightdata": 2,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-15T00:36:17.964Z",
@@ -58,6 +58,17 @@
       "t": "2026-04-15T00:37:27.214Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-15T00:40:45.835Z",
+      "event": "bb-session",
+      "session": "91f8adeb",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/receptionist-review-11100"
+    },
+    {
+      "t": "2026-04-15T00:40:47.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
