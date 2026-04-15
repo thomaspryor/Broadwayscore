@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-15T11:02:15.996Z",
+    "generatedAt": "2026-04-15T18:43:10.207Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 90,
-    "highConfidence": 14,
-    "mediumConfidence": 76,
+    "totalFlagged": 88,
+    "highConfidence": 11,
+    "mediumConfidence": 77,
     "lowConfidence": 0,
-    "reassignable": 37
+    "reassignable": 34
   },
   "results": [
     {
@@ -23,21 +23,6 @@
         "publishDate 2024 is 21 years after original opening 2003"
       ],
       "textSnippet": "“Defying Gravity” is quite a bit more than just the well-known song from the Stephen Schwartz musical Wicked. It accurately describes the phenomenon of that Broadway vehicle that is still stealing hea"
-    },
-    {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "broadwayworld--david-copney.json",
-      "outlet": "BroadwayWorld",
-      "criticName": "David Copney",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: twitter"
-      ],
-      "textSnippet": "Something 'Wicked' comes to Broadway - Score: 9\n\nFrom: USA Today By: Elysa Gardner Publication Date: 10/30/2003\n\nIt's too soon to tell whether Schwartz's score for Wicked, which opened Thursday at the"
     },
     {
       "showId": "wicked-2003",
@@ -68,6 +53,22 @@
         "revival text signals: revival, this production, new revival"
       ],
       "textSnippet": "Who says it’s not easy being green? Well, Kermit the Frog did actually, but if you’re literal high-flyer Elphaba in the musical Wicked, it’s pretty darn boss, especially give that the teen-adored Step"
+    },
+    {
+      "showId": "wicked-2003",
+      "showTitle": "Wicked",
+      "showYear": 2003,
+      "file": "guardian--peter-bradshaw.json",
+      "outlet": "The Guardian",
+      "criticName": "Peter Bradshaw",
+      "publishDate": "2023-09-09",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2023 is 20 years after original opening 2003",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "Memory is a funny thing. It’s been 20 years since the first performance of Wicked, the Wizard of Oz prequel musical based on Gregory Maguire’s 1995 novel. These days it’s hard to think of it as anythi"
     },
     {
       "showId": "wicked-2003",
@@ -1015,6 +1016,22 @@
       "textSnippet": "The brand-new Hudson Theatre officially opened Thursday night with a star-studded new production of Steven Sondheim's \"Sunday in the Park With George.\" NY1's Roma Torre filed the following review. Ste"
     },
     {
+      "showId": "broadway-1987",
+      "showTitle": "Broadway",
+      "showYear": 1987,
+      "file": "vulture--jackson-mchenry.json",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "publishDate": "2024-04-22",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2024 is 37 years after original opening 1987",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "The ache for an absent artist permeates Lanford Wilson’s “Burn This,” now receiving a finely-tuned Broadway revival that features incendiary performances by Adam Driver and Keri Russell, playing two l"
+    },
+    {
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
@@ -1028,36 +1045,6 @@
         "publishDate 1981 matches revival macbeth-1982 (opened 1982)"
       ],
       "textSnippet": "https://www.nytimes.com/1981/01/24/theater/stage-macbeth-returns.htmlShare full articleAdvertisement\n\nTo put it simply, there can be no ''Macbeth'' without Macbeth. Such is the sad case with the Linco"
-    },
-    {
-      "showId": "children-of-a-lesser-god-1980",
-      "showTitle": "Children of a Lesser God",
-      "showYear": 1980,
-      "file": "broadwayworld--michael-dale.json",
-      "outlet": "BroadwayWorld",
-      "criticName": "Michael Dale",
-      "publishDate": "2018-04-12",
-      "confidence": "high",
-      "suggestedShowId": "children-of-a-lesser-god-2018",
-      "signals": [
-        "publishDate 2018 matches revival children-of-a-lesser-god-2018 (opened 2018)"
-      ],
-      "textSnippet": "Tickets\n\nCast\n\nPhotos\n\nVideos\n\nInfo\n\nWhile audiences gather at Lincoln Center to see Lerner and Lowe's musical adaptation of George Bernard Shaw's classic, there's a different kind of Pygmalion story "
-    },
-    {
-      "showId": "children-of-a-lesser-god-1980",
-      "showTitle": "Children of a Lesser God",
-      "showYear": 1980,
-      "file": "thewrap--robert-hofler.json",
-      "outlet": "The Wrap",
-      "criticName": "Robert Hofler",
-      "publishDate": "2018-04-12",
-      "confidence": "high",
-      "suggestedShowId": "children-of-a-lesser-god-2018",
-      "signals": [
-        "publishDate 2018 matches revival children-of-a-lesser-god-2018 (opened 2018)"
-      ],
-      "textSnippet": "As issue plays go, “Children of a Lesser God” has sprouted a brand new one. Back in 1980, Mark Medoff’s play was all about an instructor-therapist who can’t fathom the silent reality of the deaf femal"
     },
     {
       "showId": "sweeney-todd-1979",
@@ -1374,21 +1361,6 @@
         "modern references: pandemic"
       ],
       "textSnippet": "Among the many events involved in the reopening of the theater industry following the industrywide shutdown, one of the most significant – at least for passionate devotees of musical theater – occurre"
-    },
-    {
-      "showId": "glengarry-glen-ross-1984",
-      "showTitle": "Glengarry Glen Ross",
-      "showYear": 1984,
-      "file": "financialtimes--brendan-lemon.json",
-      "outlet": "Financial Times",
-      "criticName": "Brendan Lemon",
-      "publishDate": "2012-12-09",
-      "confidence": "high",
-      "suggestedShowId": "glengarry-glen-ross-2012",
-      "signals": [
-        "publishDate 2012 matches revival glengarry-glen-ross-2012 (opened 2012)"
-      ],
-      "textSnippet": "David Mamet-bashing is so rife right now in New York that it is reassuring to be reminded why he presents such a large target in the first place: his masterpiece, Glengarry Glen Ross. Even in an only "
     },
     {
       "showId": "sunday-in-the-park-with-george-1984",
