@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-15T02:14:56.702Z",
-  "processed": 23,
-  "failed": 3,
-  "successRate": "88.5%",
+  "updatedAt": "2026-04-15T02:40:35.643Z",
+  "processed": 22,
+  "failed": 4,
+  "successRate": "84.6%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
     "browserbase": 22,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 2,
-    "archiveToday": 3,
-    "archive": 0
+    "scrapingbee": 5,
+    "brightdata": 3,
+    "archiveToday": 4,
+    "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-15T00:36:36.818Z",
@@ -124,6 +124,39 @@
       "t": "2026-04-15T02:14:40.533Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-15T02:39:36.457Z",
+      "event": "bb-session",
+      "session": "7843cd5f",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-15T02:39:37.423Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-15T02:39:53.399Z",
+      "event": "bb-session",
+      "session": "bf7130af",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/kim-kardashian-the-fear-of-13-1"
+    },
+    {
+      "t": "2026-04-15T02:39:54.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-15T02:40:10.071Z",
+      "event": "bb-session",
+      "session": "a1b16bf2",
+      "url": "https://deadline.com/2026/04/kim-kardashian-broadway-the-fear-of-13-adrien-brody"
+    },
+    {
+      "t": "2026-04-15T02:40:11.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
