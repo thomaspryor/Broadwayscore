@@ -266,6 +266,8 @@ export default function HomePage() {
           westEndShows={weShows.map(serializeShow)}
           totalShows={stats.totalShows}
           totalReviews={stats.totalReviews}
+          totalCritics={stats.totalCritics}
+          totalOutlets={stats.totalOutlets}
           skipHero
           skipFirstMusicals
           featuredRows={featuredRows}
