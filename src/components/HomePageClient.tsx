@@ -51,6 +51,8 @@ interface HomePageClientProps {
   westEndShows?: HomepageShow[];
   totalShows: number;
   totalReviews: number;
+  totalCritics?: number;
+  totalOutlets?: number;
   skipHero?: boolean;
   skipFirstMusicals?: boolean;
   featuredRows?: FeaturedRowData[];
@@ -193,7 +195,7 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Home
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, skipHero, skipFirstMusicals, featuredRows = [] }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [] }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -735,9 +737,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         </div>
       </LazySection>
 
-      {/* Explainer shelf (demo only) — lazy-loaded below fold */}
+      {/* Explainer shelf — lazy-loaded below fold */}
       <Suspense fallback={null}>
-        <HomepageExplainerShelf totalShows={totalShows} totalReviews={totalReviews} />
+        <HomepageExplainerShelf totalShows={totalShows} totalReviews={totalReviews} totalCritics={totalCritics} totalOutlets={totalOutlets} />
       </Suspense>
 
       {/* Email Capture — lazy-loaded since it's below the fold */}
