@@ -42,7 +42,9 @@
     "the-scottsboro-boys-2010/new-jersey-newsroom--michael-sommers.json",
     "driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
     "fences-2010/wsj--christopher-john-farley.json",
-    "million-dollar-quartet-2010/theatermania--unknown.json"
+    "million-dollar-quartet-2010/theatermania--unknown.json",
+    "after-miss-julie-2009/wsj--unknown.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -419,7 +421,15 @@
     "come-fly-away-2010/backstage--david-sheward.json",
     "looped-2010/ny1--roma-torre.json",
     "next-fall-2010/new-jersey-newsroom--michael-sommers.json",
-    "next-fall-2010/backstage--david-sheward.json"
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "a-behanding-in-spokane-2010/new-jersey-newsroom--michael-sommers.json",
+    "a-behanding-in-spokane-2010/backstage--david-sheward.json",
+    "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
+    "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "fela-2009/new-jersey-newsroom--michael-sommers.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -449,7 +459,8 @@
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
       "the-fear-of-13-2026/ew--shania-russell.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
-      "million-dollar-quartet-2010/theatermania--unknown.json"
+      "million-dollar-quartet-2010/theatermania--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -480,11 +491,12 @@
       "data/review-texts/the-addams-family-2010/abc-news--unknown.json"
     ],
     "archive": [
-      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "after-miss-julie-2009/wsj--unknown.json"
     ]
   },
   "startTime": "2026-04-15T08:50:43.089Z",
-  "lastProcessed": "next-fall-2010/backstage--david-sheward.json",
+  "lastProcessed": "oleanna-2009/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -494,6 +506,17 @@
     },
     {
       "t": "2026-04-15T10:43:03.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-15T10:48:35.759Z",
+      "event": "bb-session",
+      "session": "7bbb65d7",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-15T10:48:37.395Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
