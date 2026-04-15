@@ -37,6 +37,15 @@ const { _meta, ...showReviews } = videoReviewsData as Record<string, any>;
 const creators = videoCreatorsData.creators;
 const showsList = (showsData as any).shows as any[];
 
+function parsePublishedAt(dateStr: string | null | undefined): number {
+  if (!dateStr) return 0;
+  const normalized = dateStr.length === 8 && /^\d{8}$/.test(dateStr)
+    ? `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`
+    : dateStr;
+  const t = Date.parse(normalized);
+  return Number.isNaN(t) ? 0 : t;
+}
+
 // Build show lookup
 const showMap = new Map<string, any>();
 for (const s of showsList) {
@@ -70,12 +79,9 @@ function buildCreatorProfile(creator: typeof creators[0]): VideoCreatorProfile |
 
   if (reviews.length === 0) return null;
 
-  // Default sort: most recent first (matches /critics page default)
-  reviews.sort((a, b) => {
-    const da = a.publishedAt ? Date.parse(a.publishedAt) : 0;
-    const db = b.publishedAt ? Date.parse(b.publishedAt) : 0;
-    return db - da;
-  });
+  // Default sort: most recent first (matches /critics page default).
+  // publishedAt is YYYYMMDD (no dashes) — Date.parse returns NaN on that, so normalize first.
+  reviews.sort((a, b) => parsePublishedAt(b.publishedAt) - parsePublishedAt(a.publishedAt));
 
   const avgScore = Math.round(reviews.reduce((sum, r) => sum + r.score, 0) / reviews.length);
   const highScore = reviews.reduce((m, r) => Math.max(m, r.score), 0);
