@@ -86,8 +86,15 @@ async function classifyOne(transcript, showList) {
     .replace('${showNames}', showList)
     .replace('${items}', item);
   const text = await callClaude(prompt);
-  // Find the outermost JSON array, tolerating stray "[foo]" tokens in reason text.
-  const start = text.indexOf('[{');
+  // Find the outermost JSON array. Walk to first '[' followed (after optional
+  // whitespace) by '{'. Tolerates markdown fences and stray "[foo]" tokens.
+  let start = -1;
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] !== '[') continue;
+    let j = i + 1;
+    while (j < text.length && /\s/.test(text[j])) j++;
+    if (text[j] === '{') { start = i; break; }
+  }
   if (start === -1) throw new Error('No JSON array in classify response: ' + text.substring(0, 200));
   // Walk forward tracking bracket depth to find the matching close.
   let depth = 0, inStr = false, esc = false, end = -1;
