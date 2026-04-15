@@ -16,6 +16,12 @@
     "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json",
     "the-receptionist-off-broadway-2026/variety--unknown.json",
     "kenrex-off-broadway-2026/variety--unknown.json",
+    "the-fear-of-13-2026/hollywood-reporter--unknown.json",
+    "the-fear-of-13-2026/deadline--unknown.json",
+    "the-fear-of-13-2026/ew--unknown.json",
+    "kenrex-off-broadway-2026/theatrely--unknown.json",
+    "the-fear-of-13-2026/playbill--unknown.json",
+    "kenrex-off-broadway-2026/variety--brent-lang.json",
     "the-receptionist-off-broadway-2026/variety--brent-lang.json"
   ],
   "failed": [
@@ -27,7 +33,9 @@
   "tierBreakdown": {
     "playwright": [
       "kenrex-off-broadway-2026/guardian--unknown.json",
-      "the-receptionist-off-broadway-2026/guardian--unknown.json"
+      "the-receptionist-off-broadway-2026/guardian--unknown.json",
+      "the-fear-of-13-2026/ew--unknown.json",
+      "the-fear-of-13-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -45,6 +53,12 @@
       "the-receptionist-off-broadway-2026/variety--unknown.json",
       "data/review-texts/kenrex-off-broadway-2026/variety--unknown.json",
       "kenrex-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/the-fear-of-13-2026/hollywood-reporter--unknown.json",
+      "the-fear-of-13-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/the-fear-of-13-2026/deadline--unknown.json",
+      "the-fear-of-13-2026/deadline--unknown.json",
+      "data/review-texts/kenrex-off-broadway-2026/variety--brent-lang.json",
+      "kenrex-off-broadway-2026/variety--brent-lang.json",
       "data/review-texts/the-receptionist-off-broadway-2026/variety--brent-lang.json",
       "the-receptionist-off-broadway-2026/variety--brent-lang.json"
     ],
@@ -54,7 +68,8 @@
       "the-receptionist-off-broadway-2026/nytimes--unknown.json",
       "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
       "the-fear-of-13-2026/nytimes--alex-marshall.json",
-      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
+      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+      "kenrex-off-broadway-2026/theatrely--unknown.json"
     ],
     "brightdata": [
       "kenrex-off-broadway-2026/guardian--mark-fisher.json",
@@ -137,24 +152,57 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-04-15T01:49:28.882Z",
+      "t": "2026-04-15T02:11:08.968Z",
       "event": "bb-session",
-      "session": "231c1da0",
+      "session": "7d24f48e",
       "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
     },
     {
-      "t": "2026-04-15T01:49:29.926Z",
+      "t": "2026-04-15T02:11:10.167Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-04-15T01:51:17.390Z",
+      "t": "2026-04-15T02:11:28.747Z",
       "event": "bb-session",
-      "session": "0d9a5612",
+      "session": "21be6efb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/kim-kardashian-the-fear-of-13-1"
+    },
+    {
+      "t": "2026-04-15T02:11:29.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-15T02:11:47.718Z",
+      "event": "bb-session",
+      "session": "ada91823",
+      "url": "https://deadline.com/2026/04/kim-kardashian-broadway-the-fear-of-13-adrien-brody"
+    },
+    {
+      "t": "2026-04-15T02:11:48.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-15T02:14:20.114Z",
+      "event": "bb-session",
+      "session": "4a8ac92e",
       "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
     },
     {
-      "t": "2026-04-15T01:51:18.396Z",
+      "t": "2026-04-15T02:14:21.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-15T02:14:39.400Z",
+      "event": "bb-session",
+      "session": "84d8e052",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-15T02:14:40.533Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
