@@ -21,6 +21,14 @@ export function marketAlternates(
   currentMarket: 'broadway' | 'westEnd',
   sharedPath: string
 ): { canonical: string; languages: Record<string, string> } {
+  // sharedPath is the Broadway-relative path (e.g. '/discount-tickets'). The
+  // helper applies the '/west-end' prefix itself. Passing '/west-end/...'
+  // would produce '/west-end/west-end/...' — reject at the call site.
+  if (sharedPath.startsWith('/west-end')) {
+    throw new Error(
+      `marketAlternates: sharedPath must be the Broadway-relative path without /west-end prefix; got ${sharedPath}`
+    );
+  }
   const broadwayUrl = `${BASE_URL}${sharedPath}`;
   const westEndUrl = `${BASE_URL}/west-end${sharedPath}`;
   const selfUrl = currentMarket === 'broadway' ? broadwayUrl : westEndUrl;
