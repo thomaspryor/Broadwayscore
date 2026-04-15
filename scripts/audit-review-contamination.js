@@ -228,10 +228,13 @@ for (const showId of showDirs) {
     }
 
     // ─── F: Empty --unknown junk ────
+    // Skip legitimate aggregator stubs (stagedoor, show-score, etc.) that carry
+    // aggregator star ratings and await SERP-based outlet URL discovery.
     if (shouldRunClass('F') && f.includes('--unknown')) {
       const noUrl = !d.url;
       const noText = !(d.fullText || '').trim();
-      if (noUrl && noText) {
+      const hasAggregatorData = !!(d.aggregatorStars || d.scoreSource || d.stagedoorUrl || d.stagedoorExcerpt);
+      if (noUrl && noText && !hasAggregatorData) {
         hits.F_empty_unknown.push({ showId, file: f });
       }
     }
