@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-15T01:05:26.063Z",
+  "lastRunAt": "2026-04-15T03:27:34.934Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -27,7 +27,8 @@
     "google:de799799919ab38f": true,
     "google:711317a52c5d5ad3": true,
     "google:d56696d55e8246e3": true,
-    "google:5983496330a4a15e": true
+    "google:5983496330a4a15e": true,
+    "news:30e91e2e5be73f61": true
   },
   "mentions": [
     {
@@ -552,10 +553,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-13T22:32:37.596Z"
+    },
+    {
+      "id": "news:30e91e2e5be73f61",
+      "source": "forum",
+      "url": "https://forum.broadwayworld.com/thread/TITANQUE-Reviews/3",
+      "title": "TITANÍQUE Reviews - Page 3",
+      "excerpt": "2 days ago — https://broadwayscorecard.com/show/titanique. \"When we die, we go bye bye.\" - Abe Lincolns. MezzA101. Profile. Broadway Legend Joined: 3/29/23 ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-15T03:27:12.930Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "This is just a URL link drop in a reviews thread with no question, discussion prompt, or conversational opening — replying would look promotional.",
+      "draftResponse": null,
+      "dispatched": "2026-04-15T03:27:34.934Z"
     }
   ],
   "stats": {
-    "totalSeen": 27,
+    "totalSeen": 28,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -585,6 +606,7 @@
     "/goto?url=CAEScQE7q4ylSg_fP-tUOTMJmmZpk6v7TFmwod3ZOAcN1BZlqQyd74OOzbHZJsLmk62wN5kQXy0oubLvs4K8bhIN1Ksl6B9JQmCU7bxaji4yGhkCYeNLBqxN0dGS_YZzkT6WJGc7SZRWWKhQMPxM7eL2wshT": true,
     "/goto?url=CAESggEBO6uMpc-6EkSUsq8BlydMXfilXIJ8tH9NwtVeLyxJcynhZGihAUdioJld7EVtN-q16QeBg8X9TdUO5RCJddML4zYIk5upls1qIi9uGjS-QFamsrZO7fVr_pC6VXKrhWVgJ6c8KbgRifAuwzw9zuDfDz_sQ9qxDS6V2dG3xi5xQlSA": true,
     "/goto?url=CAESowEBO6uMpberMvRkOcCtHi7JrAK2NdXGBNaAe2M4mvCg4bpMhmtfq6fokDSv3Pu19tp0X3DXxTXxjmwNTGVPyRDyzGi7rJOpp6YHY_aQkPX9eqXGpqkkjylPjJEbJ6VjcPoaY-gjP3GTIFlhgKHSm00T65HUVOQXPgy8pGQcdZIai9zNxWTqf8eZczlVnDIAyLyqdkQHobVZzO-M8dwjG65wkdf_": true,
-    "/goto?url=CAESYAE7q4ylJI-z_f_ZltritlUfOvj-8kenCOYIsL5zu9_dvVaeGza5ROwNuI0VPn09JhZfKDB62hpP1x5kben1SpI6cq9zLElxlP-dV2_2JzQK4ShbCHzRo8GEJFtxOGsnKA==": true
+    "/goto?url=CAESYAE7q4ylJI-z_f_ZltritlUfOvj-8kenCOYIsL5zu9_dvVaeGza5ROwNuI0VPn09JhZfKDB62hpP1x5kben1SpI6cq9zLElxlP-dV2_2JzQK4ShbCHzRo8GEJFtxOGsnKA==": true,
+    "https://forum.broadwayworld.com/thread/TITANQUE-Reviews/3": true
   }
 }
