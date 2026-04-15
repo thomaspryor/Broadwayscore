@@ -185,6 +185,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
         offers: show.ticketLinks?.[0] ? {
           '@type': 'Offer',
           url: show.ticketLinks[0].url,
+          priceCurrency: 'USD',
           availability: 'https://schema.org/InStock',
         } : undefined,
       }))
