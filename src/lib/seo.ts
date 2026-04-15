@@ -14,6 +14,26 @@ export function toAbsoluteUrl(url: string): string {
   return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
 }
 
+// Build hreflang/canonical alternates for pages mirrored across Broadway and West End markets.
+// Returns canonical (self) + reciprocal en-US/en-GB language alternates + x-default fallback.
+// Both URLs MUST exist — Google silently ignores hreflang when the alternate 404s.
+export function marketAlternates(
+  currentMarket: 'broadway' | 'westEnd',
+  sharedPath: string
+): { canonical: string; languages: Record<string, string> } {
+  const broadwayUrl = `${BASE_URL}${sharedPath}`;
+  const westEndUrl = `${BASE_URL}/west-end${sharedPath}`;
+  const selfUrl = currentMarket === 'broadway' ? broadwayUrl : westEndUrl;
+  return {
+    canonical: selfUrl,
+    languages: {
+      'en-US': broadwayUrl,
+      'en-GB': westEndUrl,
+      'x-default': broadwayUrl,
+    },
+  };
+}
+
 // Convert 0-100 score to 1-5 star scale for schema.org
 // Google prefers 1-5 scale for rich snippet star display
 function toFiveStarScale(score: number): number {

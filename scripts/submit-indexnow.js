@@ -23,6 +23,7 @@ const args = process.argv.slice(2);
 let mode = 'sitemap'; // default: submit key pages from sitemap
 let specificUrls = [];
 let specificShows = [];
+let dryRun = false;
 
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--urls' && args[i + 1]) {
@@ -35,6 +36,8 @@ for (let i = 0; i < args.length; i++) {
     i++;
   } else if (args[i] === '--all') {
     mode = 'all';
+  } else if (args[i] === '--dry-run') {
+    dryRun = true;
   } else if (args[i] === '--help') {
     console.log(`
 IndexNow URL Submission Script
@@ -48,37 +51,84 @@ Usage:
 Options:
   --urls <paths>    Comma-separated URL paths (e.g., /show/hamilton,/rankings)
   --shows <ids>     Comma-separated show IDs (e.g., hamilton-2015,wicked-2003)
-  --all             Submit all pages from sitemap.xml
+  --all             Submit all pages from sitemap.xml (recurses sitemap-index)
+  --dry-run         Print URL count + first 10 URLs but do not POST to IndexNow
   --help            Show this help message
 `);
     process.exit(0);
   }
 }
 
-async function getUrlsFromBuildSitemap() {
-  // Try to read URLs from the build output sitemap (stays in sync automatically)
-  const sitemapPath = path.join(__dirname, '../out/sitemap.xml');
-  if (!fs.existsSync(sitemapPath)) return null;
-
-  const xml = fs.readFileSync(sitemapPath, 'utf8');
+function extractLocs(xml) {
   const urls = [];
   const locRegex = /<loc>([^<]+)<\/loc>/g;
   let match;
-  while ((match = locRegex.exec(xml)) !== null) {
-    urls.push(match[1]);
+  while ((match = locRegex.exec(xml)) !== null) urls.push(match[1]);
+  return urls;
+}
+
+async function fetchSitemapXml(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return await res.text();
+  } catch {
+    return null;
   }
-  return urls.length > 0 ? urls : null;
+}
+
+async function getUrlsFromLiveSitemap() {
+  // Fetch the production sitemap-index. If it's a <sitemapindex>, recurse into
+  // each sub-sitemap and union all <loc>. If it's a <urlset>, return URLs directly.
+  const indexXml = await fetchSitemapXml(`https://${SITE_HOST}/sitemap.xml`);
+  if (!indexXml) return null;
+
+  if (indexXml.includes('<sitemapindex')) {
+    const subSitemapUrls = extractLocs(indexXml);
+    console.log(`Sitemap index found with ${subSitemapUrls.length} sub-sitemaps; fetching each...`);
+    const allUrls = [];
+    for (const subUrl of subSitemapUrls) {
+      const subXml = await fetchSitemapXml(subUrl);
+      if (subXml) {
+        const subLocs = extractLocs(subXml);
+        console.log(`  ${subUrl.split('/').pop()}: ${subLocs.length} URLs`);
+        allUrls.push(...subLocs);
+      } else {
+        console.warn(`  failed to fetch ${subUrl}`);
+      }
+    }
+    return allUrls.length > 0 ? allUrls : null;
+  }
+
+  // Legacy single-sitemap case
+  return extractLocs(indexXml);
+}
+
+async function getUrlsFromBuildSitemap() {
+  // Legacy: read URLs from a static-export build output (out/sitemap.xml).
+  // No longer used in CI (Vercel SSR doesn't produce out/), kept for back-compat.
+  const sitemapPath = path.join(__dirname, '../out/sitemap.xml');
+  if (!fs.existsSync(sitemapPath)) return null;
+  const xml = fs.readFileSync(sitemapPath, 'utf8');
+  return extractLocs(xml);
 }
 
 async function getUrlsFromSitemap() {
-  // Prefer build output sitemap — always in sync with actual deployed sitemap
+  // Prefer live production sitemap — always reflects what crawlers actually see.
+  const liveUrls = await getUrlsFromLiveSitemap();
+  if (liveUrls && liveUrls.length > 0) {
+    console.log(`Read ${liveUrls.length} URLs from live sitemap (https://${SITE_HOST}/sitemap.xml)`);
+    return liveUrls;
+  }
+
+  // Fallback 1: legacy static-export build output
   const buildUrls = await getUrlsFromBuildSitemap();
-  if (buildUrls) {
+  if (buildUrls && buildUrls.length > 0) {
     console.log(`Read ${buildUrls.length} URLs from build sitemap (out/sitemap.xml)`);
     return buildUrls;
   }
 
-  console.log('Build sitemap not found, falling back to data-driven URL generation');
+  console.log('Live and build sitemaps unavailable, falling back to data-driven URL generation');
 
   // Fallback: build URL list from shows.json + hardcoded page types
   const showsPath = path.join(__dirname, '../data/shows.json');
@@ -170,6 +220,13 @@ async function submitToIndexNow(urls) {
 
   for (let i = 0; i < urls.length; i += batchSize) {
     batches.push(urls.slice(i, i + batchSize));
+  }
+
+  if (dryRun) {
+    console.log(`[DRY RUN] Would submit ${urls.length} URLs in ${batches.length} batch(es). First 10:`);
+    urls.slice(0, 10).forEach(u => console.log(`  - ${u}`));
+    console.log(`[DRY RUN] No POST sent to ${INDEXNOW_ENDPOINT}.`);
+    return;
   }
 
   console.log(`Submitting ${urls.length} URLs to IndexNow in ${batches.length} batch(es)...`);

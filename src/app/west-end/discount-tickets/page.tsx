@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getWestEndShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { DiscountTicketsTable, type DiscountShowRow } from '../../discount-tickets/DiscountTicketsTable';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 
@@ -10,9 +10,7 @@ export const metadata: Metadata = {
   title: { absolute: 'Cheap West End Tickets — Lotteries, Rush & Standing Room' },
   description:
     'Every discount West End ticket option in one place. Compare lottery, rush, day seats, and standing room prices for all London shows.',
-  alternates: {
-    canonical: `${BASE_URL}/west-end/discount-tickets`,
-  },
+  alternates: marketAlternates('westEnd', '/discount-tickets'),
   openGraph: {
     title: 'Cheap West End Tickets — All Discount Options',
     description: 'Compare every lottery, rush, and standing room ticket for West End shows.',
