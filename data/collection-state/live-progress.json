@@ -1,28 +1,39 @@
 {
-  "updatedAt": "2026-04-15T07:48:43.902Z",
-  "processed": 2,
+  "updatedAt": "2026-04-15T07:50:12.441Z",
+  "processed": 4,
   "failed": 0,
   "successRate": "100.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-04-15T07:48:28.587Z",
+      "t": "2026-04-15T07:49:13.034Z",
       "event": "bb-session",
-      "session": "9c76354f",
+      "session": "b88dd855",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/receptionist-review-11100"
+    },
+    {
+      "t": "2026-04-15T07:49:13.451Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-15T07:49:45.715Z",
+      "event": "bb-session",
+      "session": "4b890bf5",
       "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
     },
     {
-      "t": "2026-04-15T07:48:29.742Z",
+      "t": "2026-04-15T07:49:46.098Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

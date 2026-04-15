@@ -1,36 +1,53 @@
 {
   "processed": [
-    "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
-    "kenrex-off-broadway-2026/variety--brent-lang.json"
+    "the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "the-receptionist-off-broadway-2026/variety--brent-lang.json",
+    "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json"
+    ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/kenrex-off-broadway-2026/variety--brent-lang.json",
-      "kenrex-off-broadway-2026/variety--brent-lang.json"
+      "data/review-texts/the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
+      "the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/variety--brent-lang.json",
+      "the-receptionist-off-broadway-2026/variety--brent-lang.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "kenrex-off-broadway-2026/nytimes--alexis-soloski.json"
+      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-04-15T07:48:08.483Z",
-  "lastProcessed": "kenrex-off-broadway-2026/variety--brent-lang.json",
+  "startTime": "2026-04-15T07:49:07.158Z",
+  "lastProcessed": "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json",
   "log": [
     {
-      "t": "2026-04-15T07:48:28.587Z",
+      "t": "2026-04-15T07:49:13.034Z",
       "event": "bb-session",
-      "session": "9c76354f",
+      "session": "b88dd855",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/receptionist-review-11100"
+    },
+    {
+      "t": "2026-04-15T07:49:13.451Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-15T07:49:45.715Z",
+      "event": "bb-session",
+      "session": "4b890bf5",
       "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
     },
     {
-      "t": "2026-04-15T07:48:29.742Z",
+      "t": "2026-04-15T07:49:46.098Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
