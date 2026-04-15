@@ -817,7 +817,7 @@ function checkAPICredits() {
 
 async function getWorkflowRunSummary() {
   if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
-    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], skipped: true };
+    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true };
   }
 
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -843,6 +843,25 @@ async function getWorkflowRunSummary() {
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');
 
+    // Group by workflow name to surface repeat offenders. A workflow failing
+    // 4+ consecutive runs gets drowned in the top-5 "latest failures" list
+    // (scheduled update-lottery-rush.yml did exactly this 2026-04-10→14).
+    // repeatFailures holds workflows with >=2 failures in the window; they're
+    // rendered in their own section of the digest so the pattern is visible.
+    const byWorkflow = new Map();
+    for (const run of failed) {
+      const entry = byWorkflow.get(run.name) || { name: run.name, count: 0, latestUrl: null, latestAt: null };
+      entry.count += 1;
+      if (!entry.latestAt || run.created_at > entry.latestAt) {
+        entry.latestAt = run.created_at;
+        entry.latestUrl = run.html_url;
+      }
+      byWorkflow.set(run.name, entry);
+    }
+    const repeatFailures = Array.from(byWorkflow.values())
+      .filter(entry => entry.count >= 2)
+      .sort((a, b) => b.count - a.count);
+
     return {
       total: completed.length,
       failed: failed.length,
@@ -852,11 +871,12 @@ async function getWorkflowRunSummary() {
         url: r.html_url,
         created: r.created_at,
       })),
+      repeatFailures,
       skipped: false,
     };
   } catch (err) {
     console.error(`[Workflows] API error: ${err.message}`);
-    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], skipped: true, error: err.message };
+    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true, error: err.message };
   }
 }
 
@@ -1089,10 +1109,23 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
   // Workflow runs section
   let workflowHtml = '';
   if (workflowSummary && !workflowSummary.skipped) {
+    const repeats = workflowSummary.repeatFailures || [];
+    const repeatHtml = repeats.length > 0
+      ? `
+        <h3 style="color:#e74c3c;margin:24px 0 8px;">⚠️ Repeat Workflow Failures (24h)</h3>
+        <p style="color:#ccc;margin:4px 0;">
+          These workflows failed 2+ times in the last 24 hours. Likely broken, not transient.
+        </p>
+        <ul style="padding-left:20px;margin:4px 0;">
+          ${repeats.map(r => `<li style="color:#e74c3c;margin-bottom:4px;"><strong>${r.name}</strong> — ${r.count} failures — <a href="${r.latestUrl}" style="color:#e74c3c;">latest run</a></li>`).join('')}
+        </ul>
+      `
+      : '';
     const failedList = workflowSummary.failedRuns.length > 0
       ? workflowSummary.failedRuns.map(r => `<li style="color:#e74c3c;margin-bottom:4px;"><a href="${r.url}" style="color:#e74c3c;">${r.name}</a></li>`).join('')
       : '';
     workflowHtml = `
+      ${repeatHtml}
       <h3 style="color:#aaa;margin:24px 0 8px;">Workflow Runs (24h)</h3>
       <p style="color:#ccc;margin:4px 0;">
         ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total)
