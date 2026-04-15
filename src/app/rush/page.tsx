@@ -229,13 +229,16 @@ export default function RushPage() {
 
   // Stats
   const cheapestRush = showsWithRush.length > 0 ? showsWithRush[0] : null;
-  const cheapestPrice = cheapestRush
-    ? Math.min(
-        cheapestRush.rushData?.rush?.price ?? 999,
-        cheapestRush.rushData?.digitalRush?.price ?? 999,
-        cheapestRush.rushData?.studentRush?.price ?? 999
-      )
-    : null;
+  // Filter to numeric prices only; some shows have rush with no listed price
+  // (PWYC, TBD). See SortableLotteryRushTables.tsx for the same pattern.
+  const cheapestPrice = cheapestRush ? (() => {
+    const prices = [
+      cheapestRush.rushData?.rush?.price,
+      cheapestRush.rushData?.digitalRush?.price,
+      cheapestRush.rushData?.studentRush?.price,
+    ].filter((p): p is number => typeof p === 'number' && !Number.isNaN(p));
+    return prices.length > 0 ? Math.min(...prices) : null;
+  })() : null;
 
   const boxOfficeRushCount = showsWithRush.filter(item => item.rushData?.rush?.type === 'general').length;
   const digitalRushCount = showsWithRush.filter(item => item.rushData?.digitalRush || item.rushData?.rush?.type === 'digital').length;
