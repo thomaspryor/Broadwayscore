@@ -7,9 +7,17 @@ import { SCORE_TIERS } from '@/components/show-cards';
 interface HomepageExplainerShelfProps {
   totalShows: number;
   totalReviews: number;
+  totalCritics: number;
+  totalOutlets: number;
 }
 
-export default function HomepageExplainerShelf({ totalShows, totalReviews }: HomepageExplainerShelfProps) {
+// Round a count down to the nearest 50 for "X+" display, so the copy
+// degrades gracefully as reviews are added.
+function roundedFloor(n: number, step: number): number {
+  return Math.max(step, Math.floor(n / step) * step);
+}
+
+export default function HomepageExplainerShelf({ totalShows, totalReviews, totalCritics, totalOutlets }: HomepageExplainerShelfProps) {
   if (!featureFlags.homepageExplainer) return null;
 
   const tiers = [
@@ -71,7 +79,7 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews }: Hom
           <ul className="space-y-3 text-sm sm:text-base text-gray-300">
             <li className="flex gap-3">
               <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-brand" />
-              <span>We collect reviews from <strong className="text-white">420+ critics</strong> — The New York Times, Vulture, Variety, and every outlet that covers Broadway.</span>
+              <span>We collect reviews from <strong className="text-white">{roundedFloor(totalCritics, 50)}+ critics</strong> across <strong className="text-white">{roundedFloor(totalOutlets, 50)}+ outlets</strong> — The New York Times, Vulture, Variety, and every publication that covers Broadway.</span>
             </li>
             <li className="flex gap-3">
               <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-brand" />
