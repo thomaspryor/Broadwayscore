@@ -11,11 +11,17 @@
   "wordCount": 1291,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-13T03:09:26.013Z",
-  "score": 78,
+  "score": 75,
   "bucket": "Positive",
   "confidence": "high",
-  "reasoning": "Kate clearly recommends the show despite acknowledging its flaws, calling it a 'guilty pleasure' that she 'always really enjoys.' She emphasizes it's entertaining, fun, and perfect for audiences who want to interact and have a good time.",
-  "keyQuote": "if interacting with a show and having a silly good time sounds fun to you then And Juliet is your show",
-  "scoredAt": "2026-04-13T13:23:57.165Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer clearly enjoys And Juliet and recommends it to audiences who like interactive, fun theater experiences, while acknowledging writing flaws and calling it a 'guilty pleasure.' She praises the touring cast extensively, particularly Lois Ellise and Nick Drake, and argues the show works better with tour audiences. However, she qualifies her recommendation significantly, noting it's not for everyone and that other shows are 'beautifully layered and well crafted' by comparison.",
+  "keyQuote": "And Juliet has definitely become just a guilty pleasure musical of mine every time I see it I find more things to critique about the writing of it but I always really enjoy myself",
+  "scoredAt": "2026-04-15T04:12:22.540Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 78,
+    "opus": 72
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "GPT-4o audit: Reviews touring production, not Broadway"
 }

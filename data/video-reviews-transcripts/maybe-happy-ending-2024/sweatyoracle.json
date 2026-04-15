@@ -11,11 +11,15 @@
   "wordCount": 999,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-13T03:04:34.329Z",
-  "score": 74,
-  "bucket": "Positive",
+  "score": 68,
+  "bucket": "Mixed",
   "confidence": "high",
-  "reasoning": "Despite the creator's emotional disconnect with the ending, they clearly recommend the show, calling it 'absolutely must see theater' and praising the direction, performances, and visuals extensively. Their critique is more about personal preference than fundamental flaws.",
-  "keyQuote": "Michael Arden's direction elevates this material so, so, so high. It becomes must see theater. Absolutely must see theater.",
-  "scoredAt": "2026-04-14T05:00:49.755Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer explicitly states the show was 'just okay' and that they couldn't emotionally connect with the material, which is their primary criticism. However, they lavish praise on the direction, set design, performances, and special effects, calling it 'must see theater' and 'one of the most beautiful visual Broadway shows I've ever seen.' They still recommend seeing it but with significant caveats about the ending and emotional payoff. The mixed feelings — strong praise for production elements but personal disappointment with the story's resolution — place this firmly in the Mixed bucket.",
+  "keyQuote": "I only found maybe happy ending to be just okay... Michael Arden's direction elevates this material so, so, so high. It becomes must see theater. Absolutely must see theater... But I couldn't find myself moved by the material at all.",
+  "scoredAt": "2026-04-15T04:26:31.206Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 74,
+    "opus": 62
+  }
 }

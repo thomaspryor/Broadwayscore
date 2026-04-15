@@ -11,11 +11,17 @@
   "wordCount": 195,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-15T01:28:01.080Z",
-  "score": 88,
+  "score": 87,
   "bucket": "Rave",
-  "confidence": "high",
-  "reasoning": "The creator shows deep appreciation and enthusiasm for Hadestown, particularly praising the staging and lighting of 'Doubt Comes In' as 'one of the most thrilling moments I've seen on a Broadway stage' and calling it 'complete chef's kiss.' The analysis is detailed and passionate.",
+  "confidence": "medium",
+  "reasoning": "The creator explicitly states Hadestown is not overrated but 'perfectly rated,' and speaks with strong enthusiasm about specific staging and lighting moments, calling them 'chef's kiss' and 'one of the most thrilling moments I've seen on a Broadway stage.' While the format is a response to a prompt rather than a traditional review, it clearly reflects first-hand viewing and enthusiastic praise.",
   "keyQuote": "The staging for doubt comes in is one of the most thrilling moments I've seen on a Broadway stage.",
-  "scoredAt": "2026-04-15T03:20:46.803Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "scoredAt": "2026-04-15T04:21:02.106Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 88,
+    "opus": 86
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "GPT-4o audit: Reply-to-comments video, not a standalone review"
 }

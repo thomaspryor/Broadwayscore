@@ -11,11 +11,17 @@
   "wordCount": 6375,
   "transcriptSource": "youtube-auto-captions",
   "extractedAt": "2026-04-13T02:41:11.343Z",
-  "score": 88,
+  "score": 89,
   "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "The reviewer gave the Broadway production a 5-star rating and describes it as 'extraordinary,' 'fantastic,' and calls it 'a definitive staging of the show.' While noting some technical issues with the close-up filming choices, the overall enthusiasm for both the production and the filmed version is clear throughout.",
-  "keyQuote": "the five-star verdict that I gave the show... Everything that has ever kept audiences at a distance from the brilliant writing of Merrily We Roll Along suddenly didn't matter anymore with this production. And just like that, it was fixed.",
-  "scoredAt": "2026-04-14T05:01:06.298Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer gave the stage production a five-star verdict and repeatedly expresses deep admiration for the production, direction, performances, and storytelling. While the video focuses significantly on the filmed version (pro-shot) and has some critiques about close-up choices in the filming, the underlying assessment of the production itself is overwhelmingly positive. The reviewer praises Maria Friedman's direction, all lead performances (Groff, Mendez, Radcliffe), the choreography, and calls it 'a pretty definitive staging of the show.' The critiques are limited to filming technique choices, not the production itself.",
+  "keyQuote": "I think as it endures and now that it's been captured for posterity, I think this will be remembered as a pretty definitive staging of the show.",
+  "scoredAt": "2026-04-15T04:26:54.954Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 88,
+    "opus": 90
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "GPT-4o audit: Primarily reviews the film version, not the stage production"
 }

@@ -14,8 +14,12 @@
   "score": 95,
   "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "The creator expresses overwhelming enthusiasm, calling it 'spectacular' and 'easily one of my favorite theater pieces I've seen so far this year.' They give an unequivocal recommendation saying 'I really cannot recommend this production enough.'",
-  "keyQuote": "this production was spectacular, easily one of my favorite theater pieces I've seen so far this year",
-  "scoredAt": "2026-04-15T03:19:12.641Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer expresses overwhelming enthusiasm, calling it 'spectacular,' 'easily one of my favorite theater pieces I've seen so far this year,' and says it exceeded high expectations. They give an unequivocal recommendation with no meaningful caveats.",
+  "keyQuote": "I really cannot recommend this production enough. It's so creative, so well done, the directorial choices and overall concept is so smart, and the performances eat.",
+  "scoredAt": "2026-04-15T04:16:25.487Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 95,
+    "opus": 95
+  }
 }

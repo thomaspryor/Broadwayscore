@@ -11,11 +11,17 @@
   "wordCount": 542,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-15T01:02:09.295Z",
-  "score": 78,
+  "score": 79,
   "bucket": "Positive",
   "confidence": "high",
-  "reasoning": "The reviewer clearly enjoyed the production and found it compelling, praising its relevance, entertainment value, and Hwang's bold approach. While analytical rather than effusive, the positive language ('exhilarating,' 'fun,' 'utterly fascinated') indicates a strong recommendation.",
-  "keyQuote": "it's honestly kind of exhilarating how brazenly he uses the theater just as a platform for his own perspective",
-  "scoredAt": "2026-04-15T03:25:59.287Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer is clearly enthusiastic about the play, praising it as entertaining, relevant, and exhilarating, calling it 'fun' and 'fascinating.' However, the review is more analytical than purely enthusiastic—noting that at times it feels like an 'I told you so'—which tempers the rave slightly. The overall tone is strongly positive with a clear recommendation signal.",
+  "keyQuote": "I'm utterly fascinated by this play not just as an entertaining, meta, satire (which it is) but also as kind of a piece of performance art it's honestly kind of exhilarating how brazenly he uses the theater just as a platform for his own perspective",
+  "scoredAt": "2026-04-15T04:38:03.136Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 78,
+    "opus": 80
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "GPT-4o audit: Commentary on relevance and themes without attendance"
 }

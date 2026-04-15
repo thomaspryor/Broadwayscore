@@ -11,11 +11,15 @@
   "wordCount": 231,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-14T04:18:15.681Z",
-  "score": 42,
+  "score": 41,
   "bucket": "Negative",
   "confidence": "high",
-  "reasoning": "Clear negative recommendation with multiple criticisms (not funny, no stakes, vanity project feel) and explicit comparison that there are 'much funnier and more interesting shows to see right now.'",
-  "keyQuote": "there are just much funnier and more interesting shows to see right now",
-  "scoredAt": "2026-04-14T05:04:43.775Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer explicitly says the show 'wasn't for me,' found the script self-indulgent, couldn't find stakes in the plot, and most critically, didn't find it funny enough for a comedy. He would not recommend it, noting 'there are just much funnier and more interesting shows to see right now.'",
+  "keyQuote": "the nail in the coffin for me was that it just wasn't very funny",
+  "scoredAt": "2026-04-15T04:36:19.371Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 42,
+    "opus": 40
+  }
 }
