@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-04-15T03:46:03.666Z",
+  "runDate": "2026-04-15T08:52:27.030Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,20 +11,20 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 44,
-    "failed": 282,
+    "processed": 29,
+    "failed": 276,
     "skipped": 0,
-    "successRate": "13.5%"
+    "successRate": "9.5%"
   },
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 12,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 14,
-    "brightdata": 4,
-    "archiveToday": 5,
-    "archive": 3
+    "scrapingbee": 9,
+    "brightdata": 1,
+    "archiveToday": 2,
+    "archive": 5
   },
   "statistics": {
     "tier1Attempts": 16,
@@ -33,57 +33,41 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 9,
+    "tier2Attempts": 10,
+    "tier2Success": 8,
     "tier3Attempts": 2,
     "tier3Success": 2,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 6,
+    "tier4Attempts": 5,
     "tier4Success": 0,
-    "totalFailed": 277,
-    "scrapingBeePageCredits": 81,
+    "totalFailed": 276,
+    "scrapingBeePageCredits": 71,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 279,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 277,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "kenrex-off-broadway-2026/nytimes--unknown.json",
-    "the-fear-of-13-2026/nytimes--unknown.json",
-    "the-fear-of-13-2026/variety--unknown.json",
-    "the-receptionist-off-broadway-2026/hollywood-reporter--unknown.json",
-    "the-receptionist-off-broadway-2026/nytimes--unknown.json",
-    "kenrex-off-broadway-2026/deadline--unknown.json",
-    "kenrex-off-broadway-2026/guardian--unknown.json",
-    "the-receptionist-off-broadway-2026/guardian--unknown.json",
-    "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
-    "the-fear-of-13-2026/nytimes--alex-marshall.json",
-    "the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
-    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
-    "kenrex-off-broadway-2026/guardian--mark-fisher.json",
-    "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json",
-    "the-receptionist-off-broadway-2026/variety--unknown.json",
-    "kenrex-off-broadway-2026/variety--unknown.json",
-    "the-receptionist-off-broadway-2026/variety--brent-lang.json",
-    "the-fear-of-13-2026/nydailynews--unknown.json",
-    "kenrex-off-broadway-2026/variety--brent-lang.json",
     "the-fear-of-13-2026/hollywood-reporter--caitlin-huston.json",
+    "the-fear-of-13-2026/nytimes--alex-marshall.json",
     "the-fear-of-13-2026/deadline--greg-evans.json",
-    "the-fear-of-13-2026/playbill--unknown.json",
     "the-fear-of-13-2026/nydailynews--brian-niemietz.json",
+    "the-fear-of-13-2026/playbill--unknown.json",
+    "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "titanique-2026/ew--unknown.json",
+    "titanique-2026/talkinbroadway--unknown.json",
     "pied-a-terre-off-broadway-2026/nytg--unknown.json",
     "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
     "bigfoot-off-broadway-2026/timeout--unknown.json",
     "just-in-time-2025/billboard--rebecca-milzoff.json",
-    "magic-mike-live-west-end-2021/daily-mail--ali-daher.json",
     "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
     "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "data-off-broadway-2026/timeout--unknown.json",
-    "mj-the-musical-west-end-2024/i-paper--unknown.json",
     "life-of-pi-2023/newyorker--katy-waldman.json",
     "some-like-it-hot-2022/newyorker--helen-shaw.json",
     "tina-2019/newyorker--michael-schulman.json",
@@ -94,13 +78,10 @@
     "the-bands-visit-2017/show-showdown--wendy-caster.json",
     "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
     "the-lyons-2012/theatermania--dan-bacalzo.json",
-    "clybourne-park-2012/theatermania--dan-bacalzo.json"
+    "clybourne-park-2012/theatermania--dan-bacalzo.json",
+    "once-2012/theatermania--dan-bacalzo.json"
   ],
   "failed": [
-    "the-fear-of-13-2026/talkinbroadway--unknown.json",
-    "the-fear-of-13-2026/talkinbroadway--unknown.json",
-    "the-fear-of-13-2026/talkinbroadway--unknown.json",
-    "the-fear-of-13-2026/talkinbroadway--unknown.json",
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
@@ -333,7 +314,6 @@
     "end-of-the-rainbow-2012/backstage--david-sheward.json",
     "newsies-the-musical-2012/new-jersey-newsroom--michael-sommers.json",
     "jesus-christ-superstar-2012/backstage--david-sheward.json",
-    "once-2012/theatermania--dan-bacalzo.json",
     "once-2012/backstage--david-sheward.json",
     "death-of-a-salesman-2012/northjerseycom--robert-feldberg.json",
     "wit-2012/ap--mark-kennedy.json",
@@ -377,53 +357,25 @@
     "wonderland-2011/nytheatre--jo-ann-rosen.json",
     "wonderland-2011/vulture--jesse-green.json",
     "war-horse-2011/new-jersey-newsroom--michael-sommers.json",
-    "war-horse-2011/backstage--erik-haagensen.json",
-    "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json"
+    "war-horse-2011/backstage--erik-haagensen.json"
   ],
   "tierDetails": {
     "playwright": [
-      "kenrex-off-broadway-2026/guardian--unknown.json",
-      "the-receptionist-off-broadway-2026/guardian--unknown.json",
-      "the-fear-of-13-2026/ew--unknown.json",
       "the-fear-of-13-2026/playbill--unknown.json",
+      "titanique-2026/ew--unknown.json",
       "pied-a-terre-off-broadway-2026/nytg--unknown.json",
       "little-shop-of-horrors-off-broadway-2019/theatermania--unknown.json",
-      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "mj-the-musical-west-end-2024/i-paper--unknown.json",
       "burn-this-2019/nyt-theater--unknown.json",
       "the-office-a-musical-parody-off-broadway-2018/theatermania--editorial-staff.json",
       "angels-in-america-2018/broadwaynews--charles-isherwood.json",
       "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
       "the-bands-visit-2017/show-showdown--wendy-caster.json",
       "the-lyons-2012/theatermania--dan-bacalzo.json",
-      "clybourne-park-2012/theatermania--dan-bacalzo.json"
+      "clybourne-park-2012/theatermania--dan-bacalzo.json",
+      "once-2012/theatermania--dan-bacalzo.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/the-fear-of-13-2026/nytimes--unknown.json",
-      "the-fear-of-13-2026/nytimes--unknown.json",
-      "data/review-texts/the-fear-of-13-2026/variety--unknown.json",
-      "the-fear-of-13-2026/variety--unknown.json",
-      "data/review-texts/the-receptionist-off-broadway-2026/hollywood-reporter--unknown.json",
-      "the-receptionist-off-broadway-2026/hollywood-reporter--unknown.json",
-      "data/review-texts/kenrex-off-broadway-2026/deadline--unknown.json",
-      "kenrex-off-broadway-2026/deadline--unknown.json",
-      "data/review-texts/the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
-      "the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
-      "data/review-texts/the-receptionist-off-broadway-2026/variety--unknown.json",
-      "the-receptionist-off-broadway-2026/variety--unknown.json",
-      "data/review-texts/kenrex-off-broadway-2026/variety--unknown.json",
-      "kenrex-off-broadway-2026/variety--unknown.json",
-      "data/review-texts/the-fear-of-13-2026/hollywood-reporter--unknown.json",
-      "the-fear-of-13-2026/hollywood-reporter--unknown.json",
-      "data/review-texts/the-fear-of-13-2026/deadline--unknown.json",
-      "the-fear-of-13-2026/deadline--unknown.json",
-      "data/review-texts/kenrex-off-broadway-2026/variety--brent-lang.json",
-      "kenrex-off-broadway-2026/variety--brent-lang.json",
-      "data/review-texts/the-receptionist-off-broadway-2026/variety--brent-lang.json",
-      "the-receptionist-off-broadway-2026/variety--brent-lang.json",
-      "data/review-texts/kenrex-off-broadway-2026/variety--brent-lang.json",
-      "kenrex-off-broadway-2026/variety--brent-lang.json",
       "data/review-texts/the-fear-of-13-2026/hollywood-reporter--caitlin-huston.json",
       "the-fear-of-13-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/the-fear-of-13-2026/deadline--greg-evans.json",
@@ -431,59 +383,31 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "kenrex-off-broadway-2026/nytimes--unknown.json",
-      "the-receptionist-off-broadway-2026/nytimes--unknown.json",
-      "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
       "the-fear-of-13-2026/nytimes--alex-marshall.json",
-      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
-      "kenrex-off-broadway-2026/theatrely--unknown.json",
       "the-fear-of-13-2026/nydailynews--brian-niemietz.json",
+      "kenrex-off-broadway-2026/nytimes--alexis-soloski.json",
+      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
       "bigfoot-off-broadway-2026/timeout--adam-feldman.json",
       "bigfoot-off-broadway-2026/timeout--unknown.json",
-      "magic-mike-live-west-end-2021/daily-mail--ali-daher.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "data-off-broadway-2026/timeout--unknown.json",
-      "life-of-pi-2023/newyorker--katy-waldman.json",
-      "some-like-it-hot-2022/newyorker--helen-shaw.json",
-      "tina-2019/newyorker--michael-schulman.json"
+      "some-like-it-hot-2022/newyorker--helen-shaw.json"
     ],
     "brightdata": [
-      "kenrex-off-broadway-2026/guardian--mark-fisher.json",
-      "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json",
-      "the-fear-of-13-2026/nydailynews--unknown.json",
-      "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
+      "titanique-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
-      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
-      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
-      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
       "data/review-texts/stranger-things-2024/thestage--unknown.json"
     ],
     "archive": [
-      "the-fear-of-13-2026/playbill--unknown.json",
       "just-in-time-2025/billboard--rebecca-milzoff.json",
+      "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+      "life-of-pi-2023/newyorker--katy-waldman.json",
+      "tina-2019/newyorker--michael-schulman.json",
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
     ]
   },
-  "failuresByOutlet": {
-    "TheaterMania": {
-      "count": 1,
-      "domain": "theatermania.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "magic-mike-live-west-end-2021/daily-mail--ali-daher.json",
-      "oldUrl": "https://www.dailymail.co.uk/tvshowbiz/article-7749353/Channing-Tatum-announces-huge-162-Magic-Mike-Live-Australia-tour-2020.html",
-      "newUrl": "https://www.dailymail.co.uk/tvshowbiz/article-8217877/Channing-Tatums-Magic-Mike-Live-stage-postpones-Melbourne-tour-till-2021.html"
-    },
-    {
-      "reviewId": "catch-me-if-you-can-2011/new-jersey-newsroom--michael-sommers.json",
-      "oldUrl": "https://www.newjerseynewsroom.com/movies/review-catch-me-if-you-can-musical-delivers-solid-entertainment",
-      "newUrl": "http://www.newjerseynewsroom.com/movies/review-catch-me-if-you-can-musical-delivers-solid-entertainment"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
