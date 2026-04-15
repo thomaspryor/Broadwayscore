@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-15T09:41:41.277Z",
+  "generatedAt": "2026-04-15T10:59:17.714Z",
   "summary": {
-    "total": 3,
+    "total": 7,
     "high": 2,
-    "medium": 1,
-    "low": 0
+    "medium": 2,
+    "low": 3
   },
   "collisions": [
     {
@@ -33,6 +33,69 @@
       "suggestedWinner": "an-ark-off-broadway-2026",
       "reason": "publishDate January 30, 2026 is 21 days from an-ark-off-broadway-2026 opening (2026-01-09)",
       "confidence": "high"
+    },
+    {
+      "url": "http://abcnews.go.com/Entertainment/wireStory?id=13474424",
+      "normalizedUrl": "https://abcnews.go.com/entertainment/wirestory",
+      "candidates": [
+        {
+          "showId": "baby-its-you-2011",
+          "file": "abc-news--mark-kennedy.json",
+          "publishDate": "April 27, 2011",
+          "openingDate": "2011-04-27",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "abc-news"
+        },
+        {
+          "showId": "enron-2010",
+          "file": "abc-news--unknown.json",
+          "publishDate": "April 27, 2010",
+          "openingDate": "2010-04-27",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "abc-news"
+        },
+        {
+          "showId": "follies-2011",
+          "file": "abc-news--mark-kennedy.json",
+          "publishDate": "September 12, 2011",
+          "openingDate": "2011-09-12",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "abc-news"
+        },
+        {
+          "showId": "la-cage-aux-folles-2010",
+          "file": "abc-news--michael-kuchwara.json",
+          "publishDate": "April 18, 2010",
+          "openingDate": "2010-04-18",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "abc-news"
+        },
+        {
+          "showId": "the-addams-family-2010",
+          "file": "abc-news--unknown.json",
+          "publishDate": "April 8, 2010",
+          "openingDate": "2010-04-08",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "abc-news"
+        },
+        {
+          "showId": "the-scottsboro-boys-2010",
+          "file": "abc-news--unknown.json",
+          "publishDate": "October 31, 2010",
+          "openingDate": "2010-10-31",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "abc-news"
+        }
+      ],
+      "suggestedWinner": "baby-its-you-2011",
+      "reason": "publishDate April 27, 2011 is 0 days from baby-its-you-2011 but also 0 days from enron-2010",
+      "confidence": "medium"
     },
     {
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645164",
@@ -87,6 +150,114 @@
       "suggestedWinner": "wicked-west-end-2021",
       "reason": "publishDate 2006-10-01 is 4 days from wicked-west-end-2021 opening (2006-09-27)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.theguardian.com/stage/1986/oct/11/theatre.artsfeatures",
+      "normalizedUrl": "https://theguardian.com/stage/1986/oct/11/theatre.artsfeatures",
+      "candidates": [
+        {
+          "showId": "the-phantom-of-the-opera-off-west-end-2021",
+          "file": "guardian--michael-billington.json",
+          "publishDate": "October 11th, 1986",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        },
+        {
+          "showId": "the-phantom-of-the-opera-west-end-1986",
+          "file": "guardian--michael-billington.json",
+          "publishDate": "October 11th, 1986",
+          "openingDate": "2021-08-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        },
+        {
+          "showId": "the-phantom-of-the-opera-west-end-2021",
+          "file": "guardian--michael-billington.json",
+          "publishDate": "October 11th, 1986",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        }
+      ],
+      "suggestedWinner": "the-phantom-of-the-opera-west-end-1986",
+      "reason": "publishDate October 11th, 1986 is 12722+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
+      "normalizedUrl": "https://thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre",
+      "candidates": [
+        {
+          "showId": "the-phantom-of-the-opera-off-west-end-2021",
+          "file": "thestage--aleks-sierz.json",
+          "publishDate": "June 1st, 2004",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "thestage"
+        },
+        {
+          "showId": "the-phantom-of-the-opera-west-end-1986",
+          "file": "thestage--aleks-sierz.json",
+          "publishDate": "June 1st, 2004",
+          "openingDate": "2021-08-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        },
+        {
+          "showId": "the-phantom-of-the-opera-west-end-2021",
+          "file": "thestage--aleks-sierz.json",
+          "publishDate": "June 1st, 2004",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        }
+      ],
+      "suggestedWinner": "the-phantom-of-the-opera-west-end-1986",
+      "reason": "publishDate June 1st, 2004 is 6279+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-phantom-of-the-opera-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/the-phantom-of-the-opera-review",
+      "candidates": [
+        {
+          "showId": "the-phantom-of-the-opera-off-west-end-2021",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "April 1st, 2009",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "the-phantom-of-the-opera-west-end-1986",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "April 1st, 2009",
+          "openingDate": "2021-08-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "the-phantom-of-the-opera-west-end-2021",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "April 1st, 2009",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "the-phantom-of-the-opera-west-end-1986",
+      "reason": "publishDate April 1st, 2009 is 4514+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
     }
   ]
 }
