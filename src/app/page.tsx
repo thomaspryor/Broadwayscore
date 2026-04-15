@@ -3,7 +3,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
+import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -203,6 +203,13 @@ export default function HomePage() {
       return { ...serializeShow(s), subtitle: startDate ? `Starts ${shortDate(startDate)}` : undefined, subtitleColor: 'text-gray-400' };
     });
 
+  // NYT Critic's Picks — open Broadway shows with at least one NYT Critic's Pick review
+  const nytPickIds = getNYTCriticsPickShowIds();
+  const nytCriticsPicksList = allShows
+    .filter(s => s.status === 'open' && nytPickIds.has(s.id))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
   // Best of the West End — open WE shows with scores, sorted by score
   const bestWestEndList = weShows
     .filter(s => s.status === 'open' && s.criticScore?.score)
@@ -211,6 +218,7 @@ export default function HomePage() {
 
   const featuredRows: FeaturedRowData[] = [
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
+    { title: "New York Times Critic's Picks", shows: nytCriticsPicksList, viewAllHref: '/critics/outlets/the-new-york-times' },
     { title: 'In Previews', shows: inPreviewsList, viewAllHref: '/browse/upcoming-broadway-shows' },
     { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
