@@ -110,9 +110,17 @@ ${items}`
   if (!resp.ok) throw new Error(`API error ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
   const data = await resp.json();
   const text = data.content[0].text;
-  // Find the outermost JSON array, tolerating stray "[foo]" tokens that
-  // can appear inside reason text (e.g., "[stage direction]" notation).
-  const start = text.indexOf('[{');
+  // Find the outermost JSON array. Walk to the first '[' that's followed
+  // (after optional whitespace) by '{' — that's the object-array opener.
+  // Tolerates markdown code fences (```json\n[\n  {...) and stray "[foo]"
+  // tokens that can appear inside reason text.
+  let start = -1;
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] !== '[') continue;
+    let j = i + 1;
+    while (j < text.length && /\s/.test(text[j])) j++;
+    if (text[j] === '{') { start = i; break; }
+  }
   if (start === -1) throw new Error('No JSON array in response: ' + text.substring(0, 200));
   let depth = 0, inStr = false, esc = false, end = -1;
   for (let i = start; i < text.length; i++) {
