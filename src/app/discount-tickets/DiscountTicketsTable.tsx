@@ -315,13 +315,13 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                       <div className="flex items-center gap-1.5 min-w-0">
                         <Link
                           href={`/show/${row.slug}`}
-                          className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate"
+                          className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate min-w-0 flex-1"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {row.title}
                         </Link>
                         {hasDetails && (
-                          <span className="shrink-0">
+                          <span className="shrink-0 ml-auto pl-1">
                             <ChevronIcon open={isExpanded} />
                           </span>
                         )}
