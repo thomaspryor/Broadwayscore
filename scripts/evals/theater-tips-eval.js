@@ -25,7 +25,7 @@ const {
 } = require('../lib/theater-tips-validators');
 
 function parseArgs(argv) {
-  const args = { json: false, strict: false };
+  const args = { json: false, strict: false, mode: 'draft' };
   const list = argv.slice(2);
   for (let i = 0; i < list.length; i++) {
     const a = list[i];
@@ -33,12 +33,27 @@ function parseArgs(argv) {
     else if (a === '--strict') args.strict = true;
     else if (a === '--draft') args.draft = list[++i];
     else if (a === '--scraped') args.scraped = list[++i];
+    // --metadata scans theater-metadata.json, the file the site ACTUALLY
+    // reads. Ship-check 2026-04-15 found the draft eval passing clean
+    // while metadata shipped 12 wrong subway claims live. Always run with
+    // --metadata after a merge.
+    else if (a === '--metadata') { args.mode = 'metadata'; args.metadata = list[++i] || null; }
     else if (a === '--help' || a === '-h') {
-      console.log('Usage: theater-tips-eval.js [--json] [--strict] [--draft PATH] [--scraped PATH]');
+      console.log('Usage: theater-tips-eval.js [--json] [--strict] [--draft PATH | --metadata PATH] [--scraped PATH]');
       process.exit(0);
     }
   }
   return args;
+}
+
+function loadTheatersFromMetadata(metadataPath) {
+  const raw = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+  const out = {};
+  for (const [name, v] of Object.entries(raw)) {
+    if (name === '_meta') continue;
+    if (v && v.structuredTips) out[name] = v.structuredTips;
+  }
+  return { theaters: out };
 }
 
 function loadJSON(filePath) {
@@ -51,10 +66,16 @@ function loadJSON(filePath) {
 function main() {
   const args = parseArgs(process.argv);
   const root = path.join(__dirname, '..', '..');
-  const draftPath = args.draft || path.join(root, 'data', 'theater-tips-draft.json');
   const scrapedPath = args.scraped || path.join(root, 'data', 'theater-tips-scraped.json');
 
-  const draft = loadJSON(draftPath);
+  let draft;
+  if (args.mode === 'metadata') {
+    const metadataPath = args.metadata || path.join(root, 'data', 'theater-metadata.json');
+    draft = loadTheatersFromMetadata(metadataPath);
+  } else {
+    const draftPath = args.draft || path.join(root, 'data', 'theater-tips-draft.json');
+    draft = loadJSON(draftPath);
+  }
   const scraped = loadJSON(scrapedPath);
 
   const theaters = draft.theaters || {};
@@ -68,12 +89,20 @@ function main() {
   let totalSubway = 0;
   let totalEntrance = 0;
 
+  // Schema check applies only to raw LLM output (draft mode). Metadata has
+  // legitimate extra fields (injected accessibility) and optional omissions
+  // (avoidSeats absent when null). Only banned-claims, subway, entrance,
+  // grounding, and dedup run in metadata mode — those are the user-facing
+  // correctness checks.
+  const skipSchema = args.mode === 'metadata';
+
   for (const name of theaterNames) {
     const tips = theaters[name];
     const scrapedForTheater = scraped.theaters?.[name] || null;
     const result = validateTips(tips, scrapedForTheater, name);
     const subwayFindings = result.subwayFindings || [];
     const entranceFindings = result.entranceFindings || [];
+    if (skipSchema) result.schemaErrors = [];
 
     totalSchemaErrors += result.schemaErrors.length;
     totalBannedClaims += result.bannedClaims.length;

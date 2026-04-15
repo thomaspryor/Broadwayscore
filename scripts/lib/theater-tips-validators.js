@@ -491,7 +491,9 @@ function extractClaimedEntranceStreets(text) {
   const lower = scope.toLowerCase();
   if (/\bbroadway\b/.test(lower)) tokens.add('broadway');
   if (/\b(shubert\s+alley|the\s+alley)\b/.test(lower)) tokens.add('alley');
-  if (/\b(lincoln\s+center|plaza)\b/.test(lower)) tokens.add('plaza');
+  // Require "Lincoln Center" — "plaza" alone matches building names like
+  // "Paramount Plaza" (observed false positive on Circle in the Square).
+  if (/\blincoln\s+cent(?:er|re|r)\b/.test(lower)) tokens.add('plaza');
   return Array.from(tokens);
 }
 
