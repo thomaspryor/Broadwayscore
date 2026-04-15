@@ -10,7 +10,7 @@ import {
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
 import { getAllActorSlugs } from '@/lib/data-actors';
-import { getCreativeSlugs, getUnifiedCreativeSlugs, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
+import { getUnifiedCreativeSlugs, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
 import { getAllComparisonSlugs } from '@/config/comparisons';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
@@ -18,48 +18,147 @@ import { getSeasonsForList } from '@/lib/data-gold-list-badges';
 import { featureFlags } from '@/config/feature-flags';
 import { getAllPredictionSeasons, getTonySeasonWindow } from '@/lib/data-tony-predictions';
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
+import { SITEMAP_SHARDS, getActorBucket, type ShardName } from '@/config/sitemap-shards';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const showSlugs = getAllShowSlugs();
-  const bestOfCategories = getAllBestOfCategories();
-  const theaterSlugs = getAllTheaterSlugs();
-  const londonTheaterSlugs = getAllLondonTheaterSlugs();
-  const browseSlugs = getAllBrowseSlugs();
-  const guideSlugs = getAllGuideSlugs();
-  const currentYear = new Date().getFullYear();
+export function generateSitemaps() {
+  return SITEMAP_SHARDS.map((_, i) => ({ id: i }));
+}
 
-  // Use actual data freshness dates instead of build-time new Date()
+type DateContext = { showsDate: Date; reviewsDate: Date; latestDate: Date; currentYear: number };
+
+function getDateContext(): DateContext {
   const freshness = getDataFreshness();
   const showsDate = new Date(freshness.showsLastUpdated);
   const reviewsDate = new Date(freshness.reviewsLastUpdated);
-  // Use the most recent data update for hub pages
   const latestDate = new Date(Math.max(showsDate.getTime(), reviewsDate.getTime()));
+  const currentYear = new Date().getFullYear();
+  return { showsDate, reviewsDate, latestDate, currentYear };
+}
 
-  // Show pages - prioritize open shows higher than closed shows
-  const showPages = showSlugs.map((slug) => {
+function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
+  return getAllShowSlugs().map((slug) => {
     const show = getShowBySlug(slug);
     const isOpen = show?.status === 'open';
-
     return {
       url: `${BASE_URL}/show/${slug}`,
-      lastModified: isOpen ? latestDate : showsDate,
+      lastModified: isOpen ? ctx.latestDate : ctx.showsDate,
       changeFrequency: isOpen ? 'weekly' as const : 'monthly' as const,
       priority: isOpen ? 0.9 : 0.6,
     };
   });
+}
 
-  // Best-of list pages - high priority, updated frequently
-  const bestOfPages = bestOfCategories.map((category) => ({
-    url: `${BASE_URL}/best/${category}`,
-    lastModified: latestDate,
-    changeFrequency: 'weekly' as const,
-    priority: 0.85,
+function buildTheatersShard(ctx: DateContext): MetadataRoute.Sitemap {
+  const theaterPages = getAllTheaterSlugs().map((slug) => ({
+    url: `${BASE_URL}/theater/${slug}`,
+    lastModified: ctx.showsDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
   }));
+  const londonTheaterPages = getAllLondonTheaterSlugs().map((slug) => ({
+    url: `${BASE_URL}/west-end/theater/${slug}`,
+    lastModified: ctx.showsDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+  return [
+    {
+      url: `${BASE_URL}/theater`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    ...theaterPages,
+    {
+      url: `${BASE_URL}/west-end/theater`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    ...londonTheaterPages,
+    {
+      url: `${BASE_URL}/broadway-theaters-map`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+  ];
+}
 
-  // Browse pages - high priority SEO landing pages
-  // Exclude browse slugs that redirect to guide pages (301 in vercel.json)
+function buildCriticsShard(ctx: DateContext): MetadataRoute.Sitemap {
+  return [
+    {
+      url: `${BASE_URL}/critics`,
+      lastModified: ctx.reviewsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/critics/outlets`,
+      lastModified: ctx.reviewsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    },
+    ...getAllCriticSlugs().map((slug) => ({
+      url: `${BASE_URL}/critics/${slug}`,
+      lastModified: ctx.reviewsDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    ...getAllOutletSlugs().map((slug) => ({
+      url: `${BASE_URL}/critics/outlets/${slug}`,
+      lastModified: ctx.reviewsDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+  ];
+}
+
+function buildCreativesShard(ctx: DateContext): MetadataRoute.Sitemap {
+  return [
+    ...ALL_CREATIVE_CATEGORIES.map(cat => ({
+      url: `${BASE_URL}/${CREATIVE_CATEGORY_CONFIG[cat].routePath}`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })),
+    ...getUnifiedCreativeSlugs().map(slug => ({
+      url: `${BASE_URL}/creative/${slug}`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+  ];
+}
+
+function buildActorsShard(ctx: DateContext, bucket: 'actors-ah' | 'actors-iq' | 'actors-rz'): MetadataRoute.Sitemap {
+  if (!featureFlags.castPages) return [];
+  const slugs = getAllActorSlugs().filter(slug => getActorBucket(slug) === bucket);
+  const pages: MetadataRoute.Sitemap = slugs.map(slug => ({
+    url: `${BASE_URL}/cast/${slug}`,
+    lastModified: ctx.showsDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.65,
+  }));
+  // Include the /cast index in the first actor shard so it's listed exactly once.
+  if (bucket === 'actors-ah') {
+    pages.unshift({
+      url: `${BASE_URL}/cast`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    });
+  }
+  return pages;
+}
+
+function buildCoreShard(ctx: DateContext): MetadataRoute.Sitemap {
+  const bestOfCategories = getAllBestOfCategories();
+  const browseSlugs = getAllBrowseSlugs();
+  const guideSlugs = getAllGuideSlugs();
+
   const redirectedBrowseSlugs = new Set([
     'best-broadway-musicals',
     'best-broadway-plays',
@@ -70,71 +169,54 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(slug => !redirectedBrowseSlugs.has(slug))
     .map((slug) => ({
       url: `${BASE_URL}/browse/${slug}`,
-      lastModified: latestDate,
+      lastModified: ctx.latestDate,
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     }));
 
-  // Theater pages - medium priority
-  const theaterPages = theaterSlugs.map((slug) => ({
-    url: `${BASE_URL}/theater/${slug}`,
-    lastModified: showsDate,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  // London theater pages (West End + Off-West End) - medium priority
-  const londonTheaterPages = londonTheaterSlugs.map((slug) => ({
-    url: `${BASE_URL}/west-end/theater/${slug}`,
-    lastModified: showsDate,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
+  const bestOfPages = bestOfCategories.map((category) => ({
+    url: `${BASE_URL}/best/${category}`,
+    lastModified: ctx.latestDate,
+    changeFrequency: 'weekly' as const,
+    priority: 0.85,
   }));
 
   return [
-    // Homepage - highest priority
     {
       url: BASE_URL,
-      lastModified: latestDate,
-      changeFrequency: 'daily',
+      lastModified: ctx.latestDate,
+      changeFrequency: 'daily' as const,
       priority: 1,
     },
-    // Guide pages - editorial SEO landing pages
     ...guideSlugs.map(slug => {
       const { year } = parseGuideSlug(slug);
-      const isOldYear = year !== undefined && year < currentYear - 2;
-      // Skip old year pages from sitemap (they're noindexed anyway)
+      const isOldYear = year !== undefined && year < ctx.currentYear - 2;
       if (isOldYear) return null;
       return {
         url: `${BASE_URL}/guides/${slug}`,
-        lastModified: latestDate,
+        lastModified: ctx.latestDate,
         changeFrequency: year ? 'monthly' as const : 'weekly' as const,
         priority: year ? 0.7 : 0.85,
       };
     }).filter((p): p is NonNullable<typeof p> => p !== null),
-    // Guides index page
     {
       url: `${BASE_URL}/guides`,
-      lastModified: latestDate,
+      lastModified: ctx.latestDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    // Browse pages - high priority SEO landing pages
     ...browsePages,
-    // Best-of lists - high priority discovery pages
     ...bestOfPages,
-    // Tony Awards hub
     {
       url: `${BASE_URL}/tony-awards`,
-      lastModified: latestDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
-    // Tony Awards predictions overview + per-season pages
     ...(featureFlags.tonyPredictions ? [
       {
         url: `${BASE_URL}/tony-awards/predictions`,
-        lastModified: latestDate,
+        lastModified: ctx.latestDate,
         changeFrequency: 'weekly' as const,
         priority: 0.85,
       },
@@ -142,236 +224,159 @@ export default function sitemap(): MetadataRoute.Sitemap {
         const isCurrent = s.label === getTonySeasonWindow().label;
         return {
           url: `${BASE_URL}/tony-awards/predictions/${s.label}`,
-          lastModified: isCurrent ? latestDate : showsDate,
+          lastModified: isCurrent ? ctx.latestDate : ctx.showsDate,
           changeFrequency: isCurrent ? 'weekly' as const : 'monthly' as const,
           priority: isCurrent ? 0.85 : 0.7,
         };
       }),
     ] : []),
-    // Tony Awards leaderboard (only when feature flag is on, otherwise 404)
     ...(featureFlags.tonyPeople ? [{
       url: `${BASE_URL}/tony-awards/people`,
-      lastModified: latestDate,
+      lastModified: ctx.latestDate,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     }] : []),
-    // West End page
     {
       url: `${BASE_URL}/west-end`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
-    // Off-Broadway page
     {
       url: `${BASE_URL}/off-broadway`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
-    // Off-West End page
     {
       url: `${BASE_URL}/off-west-end`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    // Rankings hub page
     {
       url: `${BASE_URL}/rankings`,
-      lastModified: latestDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
-    // Broadway theaters map
-    {
-      url: `${BASE_URL}/broadway-theaters-map`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    // Index pages - good for SEO crawling
-    {
-      url: `${BASE_URL}/theater`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    // Show pages - core content
-    ...showPages,
-    // Theater pages
-    ...theaterPages,
-    {
-      url: `${BASE_URL}/west-end/theater`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    // London theater pages
-    ...londonTheaterPages,
-    // Static pages
     {
       url: `${BASE_URL}/methodology`,
-      lastModified: showsDate,
-      changeFrequency: 'monthly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'monthly' as const,
       priority: 0.5,
     },
     {
       url: `${BASE_URL}/west-end/methodology`,
-      lastModified: showsDate,
-      changeFrequency: 'monthly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'monthly' as const,
       priority: 0.5,
     },
     {
       url: `${BASE_URL}/olivier-awards`,
-      lastModified: showsDate,
-      changeFrequency: 'monthly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'monthly' as const,
       priority: 0.75,
     },
-    // Data pages - high value for AI citations
     {
       url: `${BASE_URL}/box-office`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/biz`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
-    // Lottery and Rush pages - high value for discount ticket seekers
     {
       url: `${BASE_URL}/discount-tickets`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
       url: `${BASE_URL}/lotteries`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
     {
       url: `${BASE_URL}/rush`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
     {
       url: `${BASE_URL}/standing-room`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/best-value`,
-      lastModified: latestDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
-    // West End discount ticket pages — new for WE launch 2026-04-13
     {
       url: `${BASE_URL}/west-end/discount-tickets`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
       url: `${BASE_URL}/west-end/lotteries`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
     {
       url: `${BASE_URL}/west-end/rush`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
     {
       url: `${BASE_URL}/west-end/standing-room`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/west-end/best-value`,
-      lastModified: latestDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
-    // Socials Scorecard trending leaderboards — separate per market
     {
       url: `${BASE_URL}/trending`,
-      lastModified: latestDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
       url: `${BASE_URL}/west-end/trending`,
-      lastModified: latestDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
-    // Audience data pages
     {
       url: `${BASE_URL}/audience-buzz`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/west-end/audience-buzz`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly',
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    // Critic & Outlet pages - high value for authority and AI citations
-    {
-      url: `${BASE_URL}/critics`,
-      lastModified: reviewsDate,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/critics/outlets`,
-      lastModified: reviewsDate,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    },
-    ...getAllCriticSlugs().map((slug) => ({
-      url: `${BASE_URL}/critics/${slug}`,
-      lastModified: reviewsDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    })),
-    ...getAllOutletSlugs().map((slug) => ({
-      url: `${BASE_URL}/critics/outlets/${slug}`,
-      lastModified: reviewsDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    })),
-    // Creative team index pages (directors, playwrights, composers, lyricists)
-    ...ALL_CREATIVE_CATEGORIES.map(cat => ({
-      url: `${BASE_URL}/${CREATIVE_CATEGORY_CONFIG[cat].routePath}`,
-      lastModified: showsDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.85,
-    })),
-    // Unified creative person pages (/creative/[slug])
-    ...getUnifiedCreativeSlugs().map(slug => ({
-      url: `${BASE_URL}/creative/${slug}`,
-      lastModified: showsDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    })),
-    // Gold List pages - curated ranking lists
     {
       url: `${BASE_URL}/lists`,
-      lastModified: latestDate,
+      lastModified: ctx.latestDate,
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
@@ -380,37 +385,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return [
         {
           url: `${BASE_URL}/lists/${config.type}/all-time`,
-          lastModified: latestDate,
+          lastModified: ctx.latestDate,
           changeFrequency: 'weekly' as const,
           priority: 0.8,
         },
         ...seasons.map(season => ({
           url: `${BASE_URL}/lists/${config.type}/${season}`,
-          lastModified: latestDate,
+          lastModified: ctx.latestDate,
           changeFrequency: 'monthly' as const,
           priority: 0.7,
         })),
       ];
     }),
-    // Cast/Actor pages - individual performer profiles
-    ...(featureFlags.castPages ? [
-      {
-        url: `${BASE_URL}/cast`,
-        lastModified: showsDate,
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-      },
-      ...getAllActorSlugs().map(slug => ({
-        url: `${BASE_URL}/cast/${slug}`,
-        lastModified: showsDate,
-        changeFrequency: 'monthly' as const,
-        priority: 0.65,
-      })),
-    ] : []),
-    // Reviews index + individual blog reviews
     {
       url: `${BASE_URL}/reviews`,
-      lastModified: reviewsDate,
+      lastModified: ctx.reviewsDate,
       changeFrequency: 'weekly' as const,
       priority: 0.75,
     },
@@ -420,32 +409,46 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     })),
-    // Cast changes page
     {
       url: `${BASE_URL}/cast-changes`,
-      lastModified: showsDate,
+      lastModified: ctx.showsDate,
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
-    // About page
     {
       url: `${BASE_URL}/about`,
-      lastModified: showsDate,
+      lastModified: ctx.showsDate,
       changeFrequency: 'monthly' as const,
       priority: 0.4,
     },
-    // Compare pages - programmatic SEO goldmine
     {
       url: `${BASE_URL}/compare`,
-      lastModified: latestDate,
+      lastModified: ctx.latestDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     ...getAllComparisonSlugs().map((slug) => ({
       url: `${BASE_URL}/compare/${slug}`,
-      lastModified: latestDate,
+      lastModified: ctx.latestDate,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
   ];
+}
+
+export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
+  const ctx = getDateContext();
+  const shard = SITEMAP_SHARDS[id];
+  if (!shard) return [];
+  const name: ShardName = shard.name;
+  switch (name) {
+    case 'core': return buildCoreShard(ctx);
+    case 'shows': return buildShowsShard(ctx);
+    case 'theaters': return buildTheatersShard(ctx);
+    case 'critics': return buildCriticsShard(ctx);
+    case 'creatives': return buildCreativesShard(ctx);
+    case 'actors-ah': return buildActorsShard(ctx, 'actors-ah');
+    case 'actors-iq': return buildActorsShard(ctx, 'actors-iq');
+    case 'actors-rz': return buildActorsShard(ctx, 'actors-rz');
+  }
 }
