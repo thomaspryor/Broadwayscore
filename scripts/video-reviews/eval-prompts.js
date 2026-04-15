@@ -27,7 +27,10 @@ const CASES = [
   { show: 'wicked-2003', creator: 'broadwayben', label: 'movie-review', expectClass: ['other'], expectScore: false, note: 'Wicked 2024 movie, not 2003 stage show' },
   { show: 'wicked-2003', creator: 'mickeyjotheatre', label: 'movie-review', expectClass: ['other'], expectScore: false, note: 'Wicked 2024 movie' },
   { show: 'wicked-2003', creator: 'theatreislife', label: 'movie-review', expectClass: ['other'], expectScore: false, note: 'Wicked 2024 movie' },
-  { show: 'cabaret-2024', creator: 'broadwayben', label: 'casting-announcement', expectClass: ['commentary', 'other'], expectScore: false, note: 'Eva Noblezada WE Cabaret announcement' },
+  // cabaret-2024/broadwayben — select-best-reviews picked a different video than
+  // the original Eva Noblezada casting announcement Ben flagged. Current transcript
+  // is a legit first-hand Eddie Redmayne MC critique. Re-labelled as known-good.
+  { show: 'cabaret-2024', creator: 'broadwayben', label: 'legit-review', expectClass: ['review'], expectScore: true, note: 'Eddie Redmayne MC discourse (attended)' },
   { show: 'moulin-rouge-2019', creator: 'broadwayben', label: 'reply-to-comments', expectClass: ['other'], expectScore: false, note: 'Reply to Megan Thee Stallion haters' },
   { show: 'every-brilliant-thing-off-broadway-2026', creator: 'theatreislife', label: 'roundup', expectClass: ['roundup', 'other'], expectScore: false, note: 'Fringe roundup list' },
 
@@ -38,9 +41,10 @@ const CASES = [
   { show: 'masquerade-off-broadway-2025', creator: 'tyvid5', label: 'legit-review', expectClass: ['review'], expectScore: true },
   { show: 'cats-the-jellicle-ball-2026', creator: 'theatreislife', label: 'legit-review', expectClass: ['review'], expectScore: true },
   { show: 'the-outsiders-2024', creator: 'tylernabinger', label: 'legit-review', expectClass: ['review'], expectScore: true },
-  // maybe-happy-ending/broadwaybob intentionally moved to known-bad — full
-  // transcript is a rant about the show's closure/representation, not a review
-  { show: 'maybe-happy-ending-2024', creator: 'broadwaybob', label: 'closure-commentary', expectClass: ['commentary', 'other'], expectScore: false, note: 'Closure news rant, no first-hand review' },
+  // maybe-happy-ending/broadwaybob — select-best-reviews picked a different
+  // video from the same creator (attended the Belasco Theater). Transcript opens
+  // "I'm in New York for my birthday weekend... last night by seeing the show".
+  { show: 'maybe-happy-ending-2024', creator: 'broadwaybob', label: 'legit-review', expectClass: ['review'], expectScore: true, note: 'Bob attended at Belasco' },
   { show: 'stereophonic-2024', creator: 'tylernabinger', label: 'legit-review', expectClass: ['review'], expectScore: true },
 ];
 
@@ -69,7 +73,10 @@ function getShowList() {
     .map(s => `${s.title} (${s.id})`).join(', ');
 }
 
-async function callClaude(prompt, model = 'claude-sonnet-4-20250514') {
+const CLASSIFY_MODEL = process.env.CLASSIFY_MODEL || 'claude-sonnet-4-20250514';
+const SCORE_MODEL = process.env.SCORE_MODEL || 'claude-sonnet-4-20250514';
+
+async function callClaude(prompt, model) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
@@ -85,7 +92,7 @@ async function classifyOne(transcript, showList) {
   const prompt = CLASSIFY_PROMPT_TEMPLATE
     .replace('${showNames}', showList)
     .replace('${items}', item);
-  const text = await callClaude(prompt);
+  const text = await callClaude(prompt, CLASSIFY_MODEL);
   // Find the outermost JSON array. Walk to first '[' followed (after optional
   // whitespace) by '{'. Tolerates markdown fences and stray "[foo]" tokens.
   let start = -1;
@@ -116,13 +123,15 @@ async function classifyOne(transcript, showList) {
 
 async function scoreOne(transcript, showTitle, creatorName) {
   const user = `Score this video review of "${showTitle}" by ${creatorName} (${transcript.platform}):\n\n---\n${transcript.transcript}\n---`;
-  const text = await callClaude(SCORE_PROMPT + '\n\n' + user);
+  const text = await callClaude(SCORE_PROMPT + '\n\n' + user, SCORE_MODEL);
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) throw new Error('No JSON in score response');
   return JSON.parse(jsonMatch[0]);
 }
 
 async function main() {
+  console.log(`Classify model: ${CLASSIFY_MODEL}`);
+  console.log(`Score model:    ${SCORE_MODEL}\n`);
   const showList = getShowList();
   const results = [];
 

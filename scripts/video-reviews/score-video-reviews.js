@@ -49,7 +49,11 @@ Output JSON:
 {"scoreable": true, "score": <0-100>, "bucket": "<Rave|Positive|Mixed|Negative|Pan>", "confidence": "<high|medium|low>", "reasoning": "<1-2 sentences>", "keyQuote": "<most representative quote>"}`;
 
 const MODEL_ARG = process.argv.find(a => a.startsWith('--model='))?.split('=')[1];
-const MODEL = MODEL_ARG || process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514';
+// Opus is the default for scoring. Sonnet was false-rejecting legit reviews
+// with nuanced framing (Eddie Redmayne Cabaret critique tagged "reply/follow-up").
+// Eval: Opus 9/9 legit accepted + 5/5 bad rejected; Sonnet 8/9 + 5/5.
+// See scripts/video-reviews/eval-prompts.js.
+const MODEL = MODEL_ARG || process.env.ANTHROPIC_MODEL || 'claude-opus-4-6';
 
 async function scoreTranscript(transcript, showTitle, creatorName, platform) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
