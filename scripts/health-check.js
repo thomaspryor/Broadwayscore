@@ -90,7 +90,9 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^SEO:/, urgency: 'this-week',
     humanAction: 'SEO health has degraded. Open Claude Code and say: "Check the SEO health report and fix any issues."' },
 
-  // Cron — auto-dispatch for critical ones, low-priority for the rest
+  // Cron staleness — low-priority; auto-dispatch for a few known-fixable ones.
+  // NB: failed-last-run cases are emitted under `Cron failed:` (see below)
+  // so they route to fix-now instead of being buried here.
   { match: /^Cron: Rebuild Reviews$/, urgency: 'low', workflow: 'rebuild-reviews.yml',
     humanFallback: 'The review rebuild pipeline may be stalled.' },
   { match: /^Cron: Update Show Status$/, urgency: 'low', workflow: 'update-show-status.yml',
@@ -99,6 +101,12 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Review text collection may be stalled.' },
   { match: /^Cron:/, urgency: 'low',
     humanAction: "A scheduled job hasn't run recently. It'll likely run on its next schedule. If it persists, open Claude Code and say: \"Check why the cron jobs aren't running.\"" },
+
+  // Cron failed-last-run — surfaces in the daily digest's prominent section.
+  // Added 2026-04-14 so that update-lottery-rush / weekly-grosses / etc.
+  // failures don't sit silently in the Actions log for a week.
+  { match: /^Cron failed:/, urgency: 'fix-now',
+    humanAction: 'A critical scheduled workflow failed its most recent run. Open Claude Code and say: "Check what broke in {workflow} and fix it."' },
 
   // Secrets — needs manual rotation
   { match: /^Secrets:/, urgency: 'fix-now',
@@ -680,6 +688,11 @@ function checkCronHealth() {
     return [{ name: 'Cron: health', status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
   }
 
+  // Keep in sync with .github/workflows/check-cron-health.yml CRITICAL_CRONS.
+  // User-facing data refresh workflows were added 2026-04-14 so that their
+  // most-recent-run failures surface in the daily digest with fix-now
+  // urgency (playbook entry: `^Cron failed:`). Owner reads the email, not
+  // the Discord channel the workflow's native notify-failure targets.
   const CRITICAL_CRONS = [
     { workflow: 'update-show-status.yml', maxHours: 36, name: 'Update Show Status' },
     { workflow: 'rebuild-reviews.yml', maxHours: 36, name: 'Rebuild Reviews' },
@@ -687,6 +700,10 @@ function checkCronHealth() {
     { workflow: 'llm-ensemble-score.yml', maxHours: 48, name: 'LLM Ensemble Score' },
     { workflow: 'test.yml', maxHours: 48, name: 'Test Suite' },
     { workflow: 'opening-night-broadcast.yml', maxHours: 36, name: 'Opening Night Broadcast' },
+    { workflow: 'update-lottery-rush.yml', maxHours: 192, name: 'Update Lottery/Rush' },
+    { workflow: 'weekly-grosses.yml', maxHours: 192, name: 'Weekly Grosses' },
+    { workflow: 'update-show-score.yml', maxHours: 192, name: 'Update Show Score' },
+    { workflow: 'update-mezzanine.yml', maxHours: 192, name: 'Update Mezzanine' },
   ];
 
   return CRITICAL_CRONS.map(({ workflow, maxHours, name }) =>
@@ -705,7 +722,10 @@ function checkCronHealth() {
           return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion}`, hint: 'Check Actions tab — workflow may be disabled' };
         }
         if (run.conclusion === 'failure') {
-          return { name: `Cron: ${name}`, status: 'warn', message: `Last run failed (${formatAge(age)} ago)` };
+          // Emit under a distinct name so the playbook can route failed-last-run
+          // crons to fix-now urgency (prominent in digest), separate from the
+          // baseline `Cron: X` staleness checks which stay at low urgency.
+          return { name: `Cron failed: ${name}`, status: 'warn', message: `Last run failed (${formatAge(age)} ago)` };
         }
         return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, ${run.conclusion}` };
       } catch (err) {
