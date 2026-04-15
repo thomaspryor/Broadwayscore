@@ -1,17 +1,26 @@
 #!/usr/bin/env node
 /**
- * fantasy-weekly-email.js — Generate and send weekly BFL score update
+ * fantasy-weekly-email.js — Generate the weekly BFL score update email
  *
  * Reads fantasy-scores.json + leaderboard from Supabase,
  * generates an HTML email with top 10 shows + leaderboard standings.
  *
  * Usage:
  *   node scripts/fantasy-weekly-email.js --dry-run     # preview HTML, send nothing
- *   node scripts/fantasy-weekly-email.js --preview     # send to Tom only (via Resend)
- *   node scripts/fantasy-weekly-email.js --draft       # create Buttondown draft for review
+ *   node scripts/fantasy-weekly-email.js --preview     # send to Tom only (Resend transactional)
+ *   node scripts/fantasy-weekly-email.js --draft       # create Resend broadcast draft for review
  *
- * SAFETY: Default is --dry-run. --draft creates a Buttondown draft that the owner
- * reviews and sends manually. Code never pushes the Send button.
+ * SAFETY:
+ *   - Only Resend is used (no Buttondown).
+ *   - --draft creates a Resend broadcast in draft state. Code never calls
+ *     POST /broadcasts/{id}/send. Tom reviews and hits send in the Resend UI.
+ *   - Before creating the broadcast, player emails are synced to the fantasy
+ *     audience (add-only, idempotent). Anyone who drafted a team gets the email.
+ *
+ * Required env (for --draft):
+ *   RESEND_API_KEY
+ *   RESEND_FANTASY_AUDIENCE_ID   — dedicated Resend audience for BFL players
+ *   NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY (for entries)
  */
 
 const fs = require('fs');
@@ -21,7 +30,7 @@ const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 const { fetchFantasyEntries, computeLeaderboard } = require('./lib/fantasy-helpers');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const BUTTONDOWN_API_KEY = process.env.BUTTONDOWN_API_KEY;
+const RESEND_FANTASY_AUDIENCE_ID = process.env.RESEND_FANTASY_AUDIENCE_ID;
 const OWNER_EMAIL = process.env.OWNER_EMAIL || 'tom@broadwayscorecard.com';
 const FROM_EMAIL = 'Broadway Fantasy League <fantasy@broadwayscorecard.com>';
 
@@ -35,8 +44,13 @@ if (isPreview && !RESEND_API_KEY) {
   console.error('ERROR: RESEND_API_KEY required for --preview');
   process.exit(1);
 }
-if (isDraft && !BUTTONDOWN_API_KEY) {
-  console.error('ERROR: BUTTONDOWN_API_KEY required for --draft');
+if (isDraft && !RESEND_API_KEY) {
+  console.error('ERROR: RESEND_API_KEY required for --draft');
+  process.exit(1);
+}
+if (isDraft && !RESEND_FANTASY_AUDIENCE_ID) {
+  console.error('ERROR: RESEND_FANTASY_AUDIENCE_ID required for --draft');
+  console.error('Create a dedicated BFL audience in Resend and set its ID here.');
   process.exit(1);
 }
 
@@ -81,9 +95,9 @@ function buildEmailHtml(leaderboard) {
   <p style="color:#71717a;font-size:12px;margin-top:8px;">${leaderboard.length} teams total</p>`;
   }
 
-  // Buttondown unsubscribe variable (only for draft mode, ignored by Resend)
+  // Resend unsubscribe variable (substituted by Resend at send time for broadcasts)
   const unsubscribeHtml = isDraft
-    ? `<p style="text-align:center;color:#3f3f46;font-size:11px;margin-top:8px;"><a href="{{ unsubscribe_url }}" style="color:#3f3f46;">Unsubscribe</a></p>`
+    ? `<p style="text-align:center;color:#3f3f46;font-size:11px;margin-top:8px;"><a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#3f3f46;">Unsubscribe</a></p>`
     : '';
 
   return `
@@ -194,8 +208,9 @@ async function main() {
   }
 
   if (isDraft) {
-    // Create Buttondown draft — same pattern as send-opening-night-broadcast.js
-    console.error(`Creating Buttondown draft: "${subject}"`);
+    // Create a Resend broadcast in draft state. Tom reviews in the Resend UI
+    // and clicks Send there. This script never calls POST /broadcasts/{id}/send.
+    console.error(`Creating Resend broadcast draft: "${subject}"`);
     console.error(`Leaderboard entries: ${leaderboard.length}`);
 
     const lock = acquireSendLock({
@@ -209,47 +224,124 @@ async function main() {
     console.error(`  Send lock acquired: ${lock.sessionId.slice(0, 8)}`);
 
     try {
-      const result = await postJSON('https://api.buttondown.com/v1/emails', {
+      // Step 1: sync player emails into the fantasy audience (add-only, idempotent)
+      const entries = await fetchFantasyEntries({ season: leagueData._meta.season }).catch(() => []);
+      const playerEmails = [...new Set(entries.map(e => (e.email || '').toLowerCase().trim()).filter(Boolean))];
+      const syncResult = await syncAudienceContacts(playerEmails, RESEND_FANTASY_AUDIENCE_ID, RESEND_API_KEY);
+      console.error(`  Audience sync: ${syncResult.added} added, ${syncResult.existing} existing, ${syncResult.errors} errors`);
+
+      // Step 2: create broadcast draft
+      const result = await postJSON('https://api.resend.com/broadcasts', {
+        audience_id: RESEND_FANTASY_AUDIENCE_ID,
+        from: FROM_EMAIL,
         subject,
-        body: html,
-        status: 'draft',
+        html,
+        name: `BFL weekly ${weekEnding}`,
       }, {
-        'Authorization': `Token ${BUTTONDOWN_API_KEY}`,
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
 
       const draftId = result.id;
-      const draftUrl = `https://buttondown.com/emails/${draftId}`;
+      const draftUrl = `https://resend.com/broadcasts/${draftId}`;
       console.error(`  Draft created: ${draftId}`);
       console.error(`  Review at: ${draftUrl}`);
 
-      // Notify owner via Resend transactional email
-      if (RESEND_API_KEY) {
-        const notificationHtml = `
-<p>A weekly fantasy league email draft is ready for your review in Buttondown.</p>
+      // Step 3: notify owner via Resend transactional email
+      const notificationHtml = `
+<p>A weekly fantasy league email draft is ready for your review in Resend.</p>
 <table style="margin:16px 0;border-collapse:collapse;">
   <tr><td style="padding:4px 12px 4px 0;color:#666">Week</td><td><strong>${weekEnding}</strong></td></tr>
   <tr><td style="padding:4px 12px 4px 0;color:#666">Teams</td><td><strong>${leaderboard.length}</strong></td></tr>
+  <tr><td style="padding:4px 12px 4px 0;color:#666">Audience sync</td><td>${syncResult.added} added / ${syncResult.existing} existing</td></tr>
   <tr><td style="padding:4px 12px 4px 0;color:#666">Subject</td><td>${subject}</td></tr>
 </table>
-<p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Buttondown &rarr;</a></p>
+<p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Resend &rarr;</a></p>
 <p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}</p>`;
 
-        await postJSON('https://api.resend.com/emails', {
-          from: `Broadway Scorecard <${OWNER_EMAIL}>`,
-          to: [OWNER_EMAIL],
-          subject: `[Action Required] Fantasy weekly draft ready — ${weekEnding}`,
-          html: notificationHtml,
-        }, { 'Authorization': `Bearer ${RESEND_API_KEY}` });
-        console.error(`  Owner notification sent to ${OWNER_EMAIL}`);
-      }
+      await postJSON('https://api.resend.com/emails', {
+        from: `Broadway Scorecard <${OWNER_EMAIL}>`,
+        to: [OWNER_EMAIL],
+        subject: `[Action Required] Fantasy weekly draft ready — ${weekEnding}`,
+        html: notificationHtml,
+      }, { 'Authorization': `Bearer ${RESEND_API_KEY}` });
+      console.error(`  Owner notification sent to ${OWNER_EMAIL}`);
 
-      console.error(`\nDraft ready — log into Buttondown to send: ${draftUrl}`);
+      console.error(`\nDraft ready — log into Resend to send: ${draftUrl}`);
     } finally {
       const rel = releaseSendLock(lock);
       if (!rel.released) console.error(`  WARNING: lock release failed: ${rel.reason}`);
       else console.error(`  Send lock released`);
     }
   }
+}
+
+// ── Resend audience sync ────────────────────────────────────────────
+
+/**
+ * Add-only sync of emails into a Resend audience. Idempotent.
+ * Returns { added, existing, errors }.
+ */
+async function syncAudienceContacts(emails, audienceId, apiKey) {
+  if (!emails.length) return { added: 0, existing: 0, errors: 0 };
+
+  // Fetch existing contacts to avoid redundant POSTs
+  const existing = new Set();
+  try {
+    const list = await fetchJSON(
+      `https://api.resend.com/audiences/${audienceId}/contacts`,
+      { 'Authorization': `Bearer ${apiKey}` },
+    );
+    for (const c of (list.data || list || [])) {
+      if (c.email) existing.add(c.email.toLowerCase());
+    }
+  } catch (err) {
+    console.error(`  Warning: could not list audience contacts: ${err.message}`);
+    // Fall through — we'll try to add all emails, Resend will reject duplicates
+  }
+
+  let added = 0, errors = 0, alreadyExisting = 0;
+  for (const email of emails) {
+    if (existing.has(email)) { alreadyExisting++; continue; }
+    try {
+      await postJSON(
+        `https://api.resend.com/audiences/${audienceId}/contacts`,
+        { email, unsubscribed: false },
+        { 'Authorization': `Bearer ${apiKey}` },
+      );
+      added++;
+    } catch (err) {
+      // Treat "already exists" as existing, not an error
+      if (/already|exist|409/i.test(err.message)) alreadyExisting++;
+      else errors++;
+    }
+  }
+  return { added, existing: alreadyExisting, errors };
+}
+
+/** GET + JSON parse helper (postJSON in email-templates only handles POST) */
+function fetchJSON(url, headers) {
+  const https = require('https');
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const req = https.request({
+      hostname: urlObj.hostname,
+      path: urlObj.pathname + urlObj.search,
+      method: 'GET',
+      headers,
+    }, (res) => {
+      let body = '';
+      res.on('data', (c) => body += c);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          try { resolve(JSON.parse(body)); } catch { resolve(body); }
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 300)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.end();
+  });
 }
 
 main().catch(err => {

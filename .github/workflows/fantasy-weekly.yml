@@ -70,8 +70,8 @@ jobs:
       - name: Create email draft
         if: steps.season-check.outputs.in_season == 'true' && inputs.dry_run != true
         env:
-          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FANTASY_AUDIENCE_ID: ${{ secrets.RESEND_FANTASY_AUDIENCE_ID }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
