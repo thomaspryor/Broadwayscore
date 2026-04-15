@@ -581,7 +581,12 @@ function matchTitleToShow(externalTitle, shows, options) {
   const preferredMarket = options?.market || null;
   const prefer = options?.prefer || null;
   const cleaned = cleanExternalTitle(externalTitle);
-  const lowerCleaned = cleaned.toLowerCase().trim();
+  // Strip diacritics (NFD decompose then drop combining marks) so accented
+  // titles match their plain counterparts in shows.json and KNOWN_ALIASES.
+  // Without this, "TITANÍQUE" (from BroadwayWorld) never matches the alias
+  // key "titanique" and falls through to medium-confidence word matching,
+  // which scrape-grosses.ts rejects for financial data. Caught 2026-04-14.
+  const lowerCleaned = cleaned.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   if (!lowerCleaned) return null;
 
   // Try the full title first, then try stripping subtitle after colon/dash
