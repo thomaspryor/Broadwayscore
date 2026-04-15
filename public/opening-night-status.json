@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-15T08:01:28.689Z",
+  "generatedAt": "2026-04-15T08:54:12.517Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -43,6 +43,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -324,6 +328,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -1591,7 +1599,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
