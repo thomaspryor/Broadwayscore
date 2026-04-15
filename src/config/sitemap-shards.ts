@@ -12,7 +12,12 @@ export const SITEMAP_SHARDS = [
 export type ShardName = typeof SITEMAP_SHARDS[number]['name'];
 
 export function getActorBucket(slug: string): 'actors-ah' | 'actors-iq' | 'actors-rz' {
-  const first = slug.charAt(0).toLowerCase();
+  // Normalize unicode (é → e, ö → o) so accented names bucket by base letter.
+  const normalized = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const first = normalized.charAt(0);
+  // Only bucket by letter for a-z. Non-letter starts (digits, symbols, empty)
+  // fall to actors-ah as the default catch-all.
+  if (first < 'a' || first > 'z') return 'actors-ah';
   if (first <= 'h') return 'actors-ah';
   if (first <= 'q') return 'actors-iq';
   return 'actors-rz';
