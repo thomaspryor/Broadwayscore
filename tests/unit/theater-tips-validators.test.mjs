@@ -25,6 +25,8 @@ const {
   validateSubwayFacts,
   extractClaimedLines,
   findKnownStation,
+  validateEntranceAddress,
+  extractClaimedEntranceStreets,
   validateTips,
 } = require('../../scripts/lib/theater-tips-validators.js');
 
@@ -342,5 +344,75 @@ describe('golden fixtures from live Gemini Flash output (2026-04-15)', () => {
     const findings = validateSubwayFacts(tips);
     assert.ok(findings.length >= 1);
     assert.ok(findings[0].wrongLines.includes('2'));
+  });
+});
+
+// --- validateEntranceAddress ----------------------------------------------
+//
+// Empirical iteration (2026-04-15): Todd Haimes Theatre draft claimed 43rd
+// Street entrance (actual 42). Gershwin false-positive during dev: extractor
+// naively grabbed "Broadway" from "between Broadway and 8th Ave" directional.
+
+describe('extractClaimedEntranceStreets', () => {
+  test('standard entrance sentence extracts the street', () => {
+    const streets = extractClaimedEntranceStreets('The main entrance is located on West 45th Street.');
+    assert.deepStrictEqual(streets.sort(), ['45']);
+  });
+
+  test('directional reference (between X and Y) is NOT extracted as entrance', () => {
+    const streets = extractClaimedEntranceStreets('The main entrance is located on 51st Street, between Broadway and 8th Avenue.');
+    // Only 51 — "Broadway" in "between Broadway and..." is directional.
+    assert.deepStrictEqual(streets.sort(), ['51']);
+  });
+
+  test('Marquis-style entrance-via-Broadway is extracted', () => {
+    const streets = extractClaimedEntranceStreets('Enter through the Marriott Marquis hotel lobby on Broadway.');
+    assert.ok(streets.includes('broadway'));
+  });
+
+  test('Vivian Beaumont plaza entrance extracts plaza token', () => {
+    const streets = extractClaimedEntranceStreets('The main entrance faces Lincoln Center Plaza.');
+    assert.ok(streets.includes('plaza'));
+  });
+
+  test('building number like "1633 Broadway" does not get extracted as street number', () => {
+    const streets = extractClaimedEntranceStreets('The theater is at 1633 Broadway.');
+    assert.ok(!streets.includes('1633'));
+    assert.ok(streets.includes('broadway'));
+  });
+});
+
+describe('validateEntranceAddress', () => {
+  test('Todd Haimes claiming 43rd is flagged (actual 42)', () => {
+    const tips = { logistics: { entrance: 'The theater entrance is located on 43rd Street.' } };
+    const findings = validateEntranceAddress(tips, 'Todd Haimes Theatre');
+    assert.strictEqual(findings.length, 1);
+    assert.ok(findings[0].wrongStreets.includes('43'));
+    assert.deepStrictEqual(findings[0].validStreets, ['42']);
+  });
+
+  test('Al Hirschfeld claiming 45th St is valid', () => {
+    const tips = { logistics: { entrance: 'The main entrance is located on West 45th Street.' } };
+    assert.strictEqual(validateEntranceAddress(tips, 'Al Hirschfeld Theatre').length, 0);
+  });
+
+  test('Gershwin claim with directional "between Broadway" — no false positive', () => {
+    const tips = { logistics: { entrance: 'The main entrance is located on 51st Street, between Broadway and 8th Avenue.' } };
+    assert.strictEqual(validateEntranceAddress(tips, 'Gershwin Theatre').length, 0);
+  });
+
+  test('Marquis via-Broadway entrance is valid (multi-entrance theater)', () => {
+    const tips = { logistics: { entrance: 'Enter via the Marriott hotel lobby on Broadway.' } };
+    assert.strictEqual(validateEntranceAddress(tips, 'Marquis Theatre').length, 0);
+  });
+
+  test('unknown theater -> no finding (can verify)', () => {
+    const tips = { logistics: { entrance: 'Some fake entrance text' } };
+    assert.strictEqual(validateEntranceAddress(tips, 'Fictional Playhouse').length, 0);
+  });
+
+  test('null entrance -> no finding', () => {
+    const tips = { logistics: { entrance: null } };
+    assert.strictEqual(validateEntranceAddress(tips, 'Todd Haimes Theatre').length, 0);
   });
 });

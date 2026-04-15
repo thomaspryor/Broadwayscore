@@ -2,7 +2,7 @@
   "_meta": {
     "description": "LLM-generated structured theater tips from scraped data",
     "model": "gemini-2.0-flash",
-    "lastUpdated": "2026-04-15T04:23:18.075Z"
+    "lastUpdated": "2026-04-15T04:31:45.964Z"
   },
   "theaters": {
     "Al Hirschfeld Theatre": {
@@ -3755,7 +3755,7 @@
     },
     "Todd Haimes Theatre": {
       "seating": {
-        "bestSeats": "The Todd Haimes Theatre is a smaller venue, so most seats offer a good view. Aim for the center orchestra for the most immersive experience.",
+        "bestSeats": "The Todd Haimes Theatre is a smaller venue, so most seats offer a good view. Center orchestra seats provide the most immersive experience.",
         "avoidSeats": null
       },
       "parking": {
@@ -3783,7 +3783,7 @@
             "cuisine": "Pizzeria",
             "walkMinutes": 2,
             "priceRange": "$$",
-            "notes": "Classic New York-style pizza just a short walk from the theater."
+            "notes": "Classic New York-style pizza, perfect for a casual pre-theater meal."
           }
         ],
         "postShow": [
@@ -3792,14 +3792,7 @@
             "cuisine": "American",
             "walkMinutes": 9,
             "priceRange": "$$$",
-            "notes": "Enjoy creative cocktails and a lively atmosphere after the show."
-          },
-          {
-            "name": "Sardi's",
-            "cuisine": "Continental",
-            "walkMinutes": 9,
-            "priceRange": "$$$",
-            "notes": "A classic Broadway institution, perfect for a post-show celebration."
+            "notes": "Enjoy creative cocktails and a sophisticated atmosphere after the show."
           }
         ],
         "quickBite": [
@@ -3808,24 +3801,17 @@
             "cuisine": "American",
             "walkMinutes": 9,
             "priceRange": "$$",
-            "notes": "A reliable spot for a quick burger or sandwich."
-          },
-          {
-            "name": "O'Donoghue's Bar & Restaurant",
-            "cuisine": "Irish",
-            "walkMinutes": 9,
-            "priceRange": "$$",
-            "notes": "A cozy Irish pub offering quick bites and drinks."
+            "notes": "A classic diner experience with a wide variety of options for a quick bite."
           }
         ]
       },
       "logistics": {
-        "entrance": "The theater entrance is located on 43rd Street.",
+        "entrance": null,
         "nearestSubway": "The nearest station is 42 St-Times Sq, served by the 1, 2, 3, 7, N, Q, R, W, and S trains.",
-        "exitStrategy": "Exiting onto 43rd Street provides easy access to taxis and the subway.",
+        "exitStrategy": "Exiting onto 43rd Street allows for easy access to taxis and the subway.",
         "restrooms": null
       },
-      "lastUpdated": "2026-04-15T04:23:08.861Z",
+      "lastUpdated": "2026-04-15T04:31:44.461Z",
       "hasScrapedData": true
     },
     "Vivian Beaumont Theater": {

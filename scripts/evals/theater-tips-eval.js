@@ -66,24 +66,28 @@ function main() {
   let totalGrounding = 0;
   let totalCategoryDupes = 0;
   let totalSubway = 0;
+  let totalEntrance = 0;
 
   for (const name of theaterNames) {
     const tips = theaters[name];
     const scrapedForTheater = scraped.theaters?.[name] || null;
-    const result = validateTips(tips, scrapedForTheater);
+    const result = validateTips(tips, scrapedForTheater, name);
     const subwayFindings = result.subwayFindings || [];
+    const entranceFindings = result.entranceFindings || [];
 
     totalSchemaErrors += result.schemaErrors.length;
     totalBannedClaims += result.bannedClaims.length;
     totalGrounding += result.groundingFindings.length;
     totalCategoryDupes += result.categoryDupes.length;
     totalSubway += subwayFindings.length;
+    totalEntrance += entranceFindings.length;
 
     const hasAnyFinding = result.schemaErrors.length > 0 ||
       result.bannedClaims.length > 0 ||
       result.groundingFindings.length > 0 ||
       result.categoryDupes.length > 0 ||
-      subwayFindings.length > 0;
+      subwayFindings.length > 0 ||
+      entranceFindings.length > 0;
 
     if (hasAnyFinding) {
       perTheater.push({ theater: name, ...result });
@@ -100,6 +104,7 @@ function main() {
     totalGrounding,
     totalCategoryDupes,
     totalSubway,
+    totalEntrance,
     overusedRestaurants: diversity.length,
   };
 
@@ -117,6 +122,7 @@ function main() {
     console.log(`Invented names:     ${summary.totalGrounding}`);
     console.log(`Category dupes:     ${summary.totalCategoryDupes}`);
     console.log(`Subway line errors: ${summary.totalSubway}  ← MTA truth-table cross-check`);
+    console.log(`Entrance errors:    ${summary.totalEntrance}  ← theater-address truth-table cross-check`);
     console.log(`Overused (>50%):    ${summary.overusedRestaurants}`);
     console.log('');
 
@@ -130,6 +136,7 @@ function main() {
         for (const g of t.groundingFindings) console.log(`  grounding: invented ${g.kind} "${g.name}" at ${g.path}`);
         for (const d of t.categoryDupes) console.log(`  dupe: "${d.name}" at ${d.path} (already in ${d.duplicateOf})`);
         for (const s of (t.subwayFindings || [])) console.log(`  subway: claimed ${s.wrongLines.join(',')} at "${s.station}" — actual lines: ${s.truthLines.join(',')}`);
+        for (const e of (t.entranceFindings || [])) console.log(`  entrance: claimed streets ${e.wrongStreets.join(',')} — valid for this theater: ${e.validStreets.join(',')}`);
       }
     }
 
@@ -144,7 +151,7 @@ function main() {
   }
 
   // Hard failures: schema, banned claims, invented names, category dupes.
-  const hardFail = totalSchemaErrors + totalBannedClaims + totalGrounding + totalCategoryDupes + totalSubway;
+  const hardFail = totalSchemaErrors + totalBannedClaims + totalGrounding + totalCategoryDupes + totalSubway + totalEntrance;
   const softFail = args.strict && diversity.length > 0;
 
   if (hardFail > 0 || softFail) {
