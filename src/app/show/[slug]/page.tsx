@@ -951,9 +951,20 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           />
         )}
 
+        {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
+        <div id="box-office" className="scroll-mt-20" />
+        {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
+          grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
+            <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
+          ) : show.status === 'previews' || show.status === 'upcoming' ? (
+            <section className="card p-5 sm:p-6 mb-6">
+              <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
+              <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
+            </section>
+          ) : null
+        )}
+
         {/* Social Buzz — weekly X+TikTok+Instagram mention tiering */}
-        {/* Positioned below Audience Grade and below Show times per product */}
-        {/* spec; renders nothing if no data, tier=Hidden, or flag disabled. */}
         <div id="social-buzz" className="scroll-mt-20" />
         <SocialPulseCard sp={socialPulse} />
 
@@ -966,19 +977,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             theaterName={theater.name}
             theaterSlug={theater.slug}
           />
-        )}
-
-        {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
-        <div id="box-office" className="scroll-mt-20" />
-        {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
-          grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
-            <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
-          ) : show.status === 'previews' || show.status === 'upcoming' ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
-              <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
-            </section>
-          ) : null
         )}
 
         {/* Lottery/Rush Tickets */}
