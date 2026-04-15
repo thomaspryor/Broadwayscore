@@ -11,11 +11,15 @@
   "wordCount": 1506,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-13T03:03:33.168Z",
-  "score": 72,
-  "bucket": "Positive",
+  "score": 67,
+  "bucket": "Mixed",
   "confidence": "medium",
-  "reasoning": "The creator explicitly states they 'genuinely liked Perfect Crime off Broadway' despite not understanding it, appreciating its atmospheric and engaging qualities. However, the review quickly pivots to a broader commentary about treatment of women in theater, making the actual show recommendation somewhat buried.",
-  "keyQuote": "I genuinely liked Perfect Crime off Broadway more than I liked Butthole Good Dough... because there was something spooky, interesting, atmospheric, and genuinely engaging about taking a rickety elevator up to a broken theater",
-  "scoredAt": "2026-04-14T05:02:13.040Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The review of Perfect Crime itself is brief and mixed - the creator explicitly says it's not good and they didn't understand it, but found it 'spooky, interesting, atmospheric, and genuinely engaging.' They liked it more than the recent Godot production, but the bulk of the video pivots to a broader essay about double standards for women in theater. The actual review content is ambivalent - appreciative of the atmosphere and Catherine Russell's performance while acknowledging the show's flaws.",
+  "keyQuote": "Not because perfect crime is good, not because I understood a god thing that happened in perfect crime, I did not. But because there was something spooky, interesting, atmospheric, and genuinely engaging about taking a rickety elevator up to a broken theater that seems to be out of David Lynch's Mulholland Drive.",
+  "scoredAt": "2026-04-15T04:29:04.090Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 72,
+    "opus": 62
+  }
 }

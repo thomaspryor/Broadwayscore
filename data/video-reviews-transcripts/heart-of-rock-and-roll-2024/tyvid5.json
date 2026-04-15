@@ -11,11 +11,17 @@
   "wordCount": 299,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-15T01:42:47.948Z",
-  "score": 88,
+  "score": 89,
   "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "Strong enthusiastic recommendation with multiple superlatives ('amazing', 'electric cast', 'highlight of the season', 'one of the most fun times I've had at a Broadway show') and creative metaphorical praise comparing the experience to 'power of love' fragrance.",
-  "keyQuote": "To quote the New York Post, it's the highlight of the season and one of the most fun times I've had at a Broadway show.",
-  "scoredAt": "2026-04-15T03:21:05.958Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer attended opening night and expressed strong enthusiasm throughout, calling the show 'amazing,' describing it as 'the highlight of the season and one of the most fun times I've had at a Broadway show,' and praising the 'electric cast.' The closing metaphor about 'power of love' reinforces the overwhelmingly positive sentiment.",
+  "keyQuote": "And that is the perfect word to describe this show in the electric cast that brings it to life.",
+  "scoredAt": "2026-04-15T04:21:55.645Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 88,
+    "opus": 90
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "GPT-4o audit: Opening night event experience, not a substantive review"
 }

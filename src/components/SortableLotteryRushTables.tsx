@@ -671,11 +671,14 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
               const rush = item.rushData.rush;
               const digital = item.rushData.digitalRush;
               const student = item.rushData.studentRush;
-              const cheapestPrice = Math.min(
-                rush?.price ?? 999,
-                digital?.price ?? 999,
-                student?.price ?? 999
-              );
+              // A rush entry with no price is legitimate ("Pay what you can",
+              // "TBD", "Varies"). Preserve null through to the renderer so
+              // formatTicketPrice produces "—" instead of leaking the 999
+              // sort-sentinel into the UI. 2026-04-14: Romeo & Juliet WE
+              // shipped as "£999" before this guard was in place.
+              const rushPrices = [rush?.price, digital?.price, student?.price]
+                .filter((p): p is number => typeof p === 'number' && !Number.isNaN(p));
+              const cheapestPrice = rushPrices.length > 0 ? Math.min(...rushPrices) : null;
               const rushType = rush ? 'Box Office' : digital ? 'Digital' : 'Student';
               const score = item.show.criticScore?.score;
               const isExpanded = expandedSlug === item.show.slug;

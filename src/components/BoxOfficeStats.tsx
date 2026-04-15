@@ -89,17 +89,18 @@ function ChangeIndicator({ change, label }: ChangeIndicatorProps) {
 
 interface StatCardProps {
   value: string;
+  valueTitle?: string;
   label: string;
   wowChange?: number | null;
   yoyChange?: number | null;
 }
 
-function StatCard({ value, label, wowChange, yoyChange }: StatCardProps) {
+function StatCard({ value, valueTitle, label, wowChange, yoyChange }: StatCardProps) {
   const hasChanges = wowChange !== undefined || yoyChange !== undefined;
 
   return (
     <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5 hover:bg-white/5 transition-colors">
-      <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+      <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight" title={valueTitle}>
         {value}
       </div>
       <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
@@ -151,7 +152,16 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
               yoyChange={grossYoY}
             />
             <StatCard
-              value={formatPercentage(grosses.thisWeek.capacity)}
+              value={
+                (grosses.thisWeek.capacity ?? 0) > 100
+                  ? formatPercentage(grosses.thisWeek.capacity) + '*'
+                  : formatPercentage(grosses.thisWeek.capacity)
+              }
+              valueTitle={
+                (grosses.thisWeek.capacity ?? 0) > 100
+                  ? 'Above 100% reflects extra performances or premium pricing reported by The Broadway League.'
+                  : undefined
+              }
               label="Capacity"
               wowChange={capacityWoW}
               yoyChange={capacityYoY}
@@ -163,6 +173,11 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
               yoyChange={atpYoY}
             />
           </div>
+          {(grosses.thisWeek.capacity ?? 0) > 100 && (
+            <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
+              <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
+            </p>
+          )}
         </div>
       )}
 

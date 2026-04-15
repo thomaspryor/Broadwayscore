@@ -11,11 +11,15 @@
   "wordCount": 555,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-15T01:26:31.267Z",
-  "score": 95,
+  "score": 96,
   "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "This is an enthusiastic rave review with clear language of strong recommendation ('my new favorite play of the Broadway season', 'Go see this' repeated multiple times, 'I cannot recommend this play enough'). The reviewer praises every aspect from writing to direction to design with superlative language.",
-  "keyQuote": "This is my new favorite play of the Broadway season. I loved this... Go see this. I cannot recommend this play enough.",
-  "scoredAt": "2026-04-15T03:21:46.017Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "Extremely enthusiastic review with repeated strong recommendations. The reviewer calls it their 'new favorite play of the Broadway season,' praises virtually every element (directing, acting, design, writing), calls it 'the complete package,' and repeatedly urges viewers to go see it. No caveats or negatives mentioned.",
+  "keyQuote": "The directing, the acting, the design and the writing are just so good. This play, to me, is the complete package.",
+  "scoredAt": "2026-04-15T04:23:19.526Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 95,
+    "opus": 97
+  }
 }

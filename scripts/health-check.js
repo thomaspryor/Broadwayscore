@@ -58,8 +58,8 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Commercial data is out of date.' },
   { match: /^Freshness: critic-consensus\.json$/, urgency: 'low', workflow: 'update-critic-consensus.yml',
     humanFallback: 'Critic consensus summaries are out of date.' },
-  { match: /^Freshness: lottery-rush\.json$/, urgency: 'low', workflow: 'update-lottery-rush.yml',
-    humanFallback: 'Lottery/rush data is out of date.' },
+  { match: /^Freshness: lottery-rush\.json$/, urgency: 'fix-now', workflow: 'update-lottery-rush.yml',
+    humanFallback: 'Lottery/rush data is out of date. Workflow runs hourly — stale >48h means it is failing silently, or running without producing output.' },
 
   // Sync — some auto-fixable
   { match: /^Sync: review-texts vs reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
@@ -90,7 +90,9 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^SEO:/, urgency: 'this-week',
     humanAction: 'SEO health has degraded. Open Claude Code and say: "Check the SEO health report and fix any issues."' },
 
-  // Cron — auto-dispatch for critical ones, low-priority for the rest
+  // Cron staleness — low-priority; auto-dispatch for a few known-fixable ones.
+  // NB: failed-last-run cases are emitted under `Cron failed:` (see below)
+  // so they route to fix-now instead of being buried here.
   { match: /^Cron: Rebuild Reviews$/, urgency: 'low', workflow: 'rebuild-reviews.yml',
     humanFallback: 'The review rebuild pipeline may be stalled.' },
   { match: /^Cron: Update Show Status$/, urgency: 'low', workflow: 'update-show-status.yml',
@@ -99,6 +101,12 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Review text collection may be stalled.' },
   { match: /^Cron:/, urgency: 'low',
     humanAction: "A scheduled job hasn't run recently. It'll likely run on its next schedule. If it persists, open Claude Code and say: \"Check why the cron jobs aren't running.\"" },
+
+  // Cron failed-last-run — surfaces in the daily digest's prominent section.
+  // Added 2026-04-14 so that update-lottery-rush / weekly-grosses / etc.
+  // failures don't sit silently in the Actions log for a week.
+  { match: /^Cron failed:/, urgency: 'fix-now',
+    humanAction: 'A critical scheduled workflow failed its most recent run. Open Claude Code and say: "Check what broke in {workflow} and fix it."' },
 
   // Secrets — needs manual rotation
   { match: /^Secrets:/, urgency: 'fix-now',
@@ -201,7 +209,7 @@ const FRESHNESS_CHECKS = [
   { file: 'audience-buzz.json', field: '_meta.lastUpdated', warnH: 240, errorH: 336, hint: 'Check audience buzz workflows in Actions tab' },
   { file: 'commercial.json', field: '_meta.lastUpdated', warnH: 336, errorH: 504, hint: 'Check commercial-weekly workflow in Actions tab' },
   { file: 'critic-consensus.json', field: '_meta.lastGenerated', warnH: 336, errorH: 504, hint: 'Check update-critic-consensus workflow in Actions tab' },
-  { file: 'lottery-rush.json', field: 'lastUpdated', warnH: 336, errorH: 504, hint: 'Check update-lottery-rush workflow in Actions tab' },
+  { file: 'lottery-rush.json', field: 'lastUpdated', warnH: 48, errorH: 72, hint: 'Check update-lottery-rush workflow in Actions tab' },
 ];
 
 function checkFreshness() {
@@ -680,6 +688,11 @@ function checkCronHealth() {
     return [{ name: 'Cron: health', status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
   }
 
+  // Keep in sync with .github/workflows/check-cron-health.yml CRITICAL_CRONS.
+  // User-facing data refresh workflows were added 2026-04-14 so that their
+  // most-recent-run failures surface in the daily digest with fix-now
+  // urgency (playbook entry: `^Cron failed:`). Owner reads the email, not
+  // the Discord channel the workflow's native notify-failure targets.
   const CRITICAL_CRONS = [
     { workflow: 'update-show-status.yml', maxHours: 36, name: 'Update Show Status' },
     { workflow: 'rebuild-reviews.yml', maxHours: 36, name: 'Rebuild Reviews' },
@@ -687,6 +700,10 @@ function checkCronHealth() {
     { workflow: 'llm-ensemble-score.yml', maxHours: 48, name: 'LLM Ensemble Score' },
     { workflow: 'test.yml', maxHours: 48, name: 'Test Suite' },
     { workflow: 'opening-night-broadcast.yml', maxHours: 36, name: 'Opening Night Broadcast' },
+    { workflow: 'update-lottery-rush.yml', maxHours: 192, name: 'Update Lottery/Rush' },
+    { workflow: 'weekly-grosses.yml', maxHours: 192, name: 'Weekly Grosses' },
+    { workflow: 'update-show-score.yml', maxHours: 192, name: 'Update Show Score' },
+    { workflow: 'update-mezzanine.yml', maxHours: 192, name: 'Update Mezzanine' },
   ];
 
   return CRITICAL_CRONS.map(({ workflow, maxHours, name }) =>
@@ -705,7 +722,10 @@ function checkCronHealth() {
           return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion}`, hint: 'Check Actions tab — workflow may be disabled' };
         }
         if (run.conclusion === 'failure') {
-          return { name: `Cron: ${name}`, status: 'warn', message: `Last run failed (${formatAge(age)} ago)` };
+          // Emit under a distinct name so the playbook can route failed-last-run
+          // crons to fix-now urgency (prominent in digest), separate from the
+          // baseline `Cron: X` staleness checks which stay at low urgency.
+          return { name: `Cron failed: ${name}`, status: 'warn', message: `Last run failed (${formatAge(age)} ago)` };
         }
         return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, ${run.conclusion}` };
       } catch (err) {
@@ -817,7 +837,7 @@ function checkAPICredits() {
 
 async function getWorkflowRunSummary() {
   if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
-    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], skipped: true };
+    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true };
   }
 
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -843,6 +863,25 @@ async function getWorkflowRunSummary() {
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');
 
+    // Group by workflow name to surface repeat offenders. A workflow failing
+    // 4+ consecutive runs gets drowned in the top-5 "latest failures" list
+    // (scheduled update-lottery-rush.yml did exactly this 2026-04-10→14).
+    // repeatFailures holds workflows with >=2 failures in the window; they're
+    // rendered in their own section of the digest so the pattern is visible.
+    const byWorkflow = new Map();
+    for (const run of failed) {
+      const entry = byWorkflow.get(run.name) || { name: run.name, count: 0, latestUrl: null, latestAt: null };
+      entry.count += 1;
+      if (!entry.latestAt || run.created_at > entry.latestAt) {
+        entry.latestAt = run.created_at;
+        entry.latestUrl = run.html_url;
+      }
+      byWorkflow.set(run.name, entry);
+    }
+    const repeatFailures = Array.from(byWorkflow.values())
+      .filter(entry => entry.count >= 2)
+      .sort((a, b) => b.count - a.count);
+
     return {
       total: completed.length,
       failed: failed.length,
@@ -852,11 +891,12 @@ async function getWorkflowRunSummary() {
         url: r.html_url,
         created: r.created_at,
       })),
+      repeatFailures,
       skipped: false,
     };
   } catch (err) {
     console.error(`[Workflows] API error: ${err.message}`);
-    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], skipped: true, error: err.message };
+    return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true, error: err.message };
   }
 }
 
@@ -1089,10 +1129,23 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
   // Workflow runs section
   let workflowHtml = '';
   if (workflowSummary && !workflowSummary.skipped) {
+    const repeats = workflowSummary.repeatFailures || [];
+    const repeatHtml = repeats.length > 0
+      ? `
+        <h3 style="color:#e74c3c;margin:24px 0 8px;">⚠️ Repeat Workflow Failures (24h)</h3>
+        <p style="color:#ccc;margin:4px 0;">
+          These workflows failed 2+ times in the last 24 hours. Likely broken, not transient.
+        </p>
+        <ul style="padding-left:20px;margin:4px 0;">
+          ${repeats.map(r => `<li style="color:#e74c3c;margin-bottom:4px;"><strong>${r.name}</strong> — ${r.count} failures — <a href="${r.latestUrl}" style="color:#e74c3c;">latest run</a></li>`).join('')}
+        </ul>
+      `
+      : '';
     const failedList = workflowSummary.failedRuns.length > 0
       ? workflowSummary.failedRuns.map(r => `<li style="color:#e74c3c;margin-bottom:4px;"><a href="${r.url}" style="color:#e74c3c;">${r.name}</a></li>`).join('')
       : '';
     workflowHtml = `
+      ${repeatHtml}
       <h3 style="color:#aaa;margin:24px 0 8px;">Workflow Runs (24h)</h3>
       <p style="color:#ccc;margin:4px 0;">
         ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total)
