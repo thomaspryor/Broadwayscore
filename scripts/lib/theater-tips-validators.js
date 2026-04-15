@@ -402,17 +402,146 @@ function validateSubwayFacts(tips) {
 }
 
 /**
+ * Broadway theater → valid entrance street numbers. These are cross-street
+ * names (e.g. a theater at 227 W 42nd St has valid entrance "42"). Addresses
+ * are stable data — physical theaters don't move. Verified against IBDB and
+ * the Broadway League.
+ *
+ * Values are arrays because some theaters have multiple valid entrances
+ * (e.g. Marquis enters through the Marriott hotel on Broadway, Palace
+ * entrance is also on Broadway, Shubert's audience entrance is on 44th but
+ * many people approach from Shubert Alley).
+ *
+ * Special tokens: "broadway", "alley", "plaza" cover non-numbered streets.
+ *
+ * Empirical iteration finding (2026-04-15): Todd Haimes Theatre (227 W 42)
+ * draft said entrance on "43rd Street" — classic LLM off-by-one hallucination
+ * on theater addresses. This table pins every theater's valid streets.
+ */
+const THEATER_VALID_ENTRANCE_STREETS = {
+  "Al Hirschfeld Theatre":                          ["45"],
+  "Ambassador Theatre":                             ["49"],
+  "August Wilson Theatre":                          ["52"],
+  "Belasco Theatre":                                ["44"],
+  "Bernard B. Jacobs Theatre":                      ["45"],
+  "Booth Theatre":                                  ["45"],
+  "Broadhurst Theatre":                             ["44"],
+  "Broadway Theatre":                               ["53", "broadway"],
+  "Lena Horne Theatre":                             ["47"],
+  "Circle in the Square Theatre":                   ["50", "broadway"],
+  "Ethel Barrymore Theatre":                        ["47"],
+  "Eugene O'Neill Theatre":                         ["49"],
+  "Gerald Schoenfeld Theatre":                      ["45"],
+  "Gershwin Theatre":                               ["51"],
+  "Harold and Miriam Steinberg Center for Theatre": ["46"],
+  "Helen Hayes Theater":                            ["44"],
+  "Hudson Theatre":                                 ["44"],
+  "Imperial Theatre":                               ["45"],
+  "James Earl Jones Theatre":                       ["48"],
+  "John Golden Theatre":                            ["45"],
+  "Longacre Theatre":                               ["48"],
+  "Lunt-Fontanne Theatre":                          ["46"],
+  "Lyceum Theatre":                                 ["45"],
+  "Lyric Theatre":                                  ["43", "42"],  // entrances on both
+  "Majestic Theatre":                               ["44"],
+  "Marquis Theatre":                                ["46", "broadway"],  // enter via Marriott
+  "Minskoff Theatre":                               ["45", "broadway"],
+  "Music Box Theatre":                              ["45"],
+  "Nederlander Theatre":                            ["41"],
+  "Neil Simon Theatre":                             ["52"],
+  "New Amsterdam Theatre":                          ["42"],
+  "Palace Theatre":                                 ["47", "broadway"],
+  "Richard Rodgers Theatre":                        ["46"],
+  "Samuel J. Friedman Theatre":                     ["47"],
+  "Shubert Theatre":                                ["44", "alley"],
+  "St. James Theatre":                              ["44"],
+  "Stephen Sondheim Theatre":                       ["43"],
+  "Studio 54":                                      ["54"],
+  "Todd Haimes Theatre":                            ["42"],
+  "Vivian Beaumont Theater":                        ["plaza", "65"],
+  "Walter Kerr Theatre":                            ["48"],
+  "Winter Garden Theatre":                          ["50", "broadway"],
+};
+
+/**
+ * Extract street tokens the LLM claimed as the entrance location. Only looks
+ * at the phrase that follows "entrance is on / located on / enter via", not
+ * directional references like "between Broadway and 8th Ave".
+ *
+ * Returns an array of normalized tokens: numeric street numbers (as strings)
+ * plus special words "broadway", "alley", "plaza".
+ */
+function extractClaimedEntranceStreets(text) {
+  if (!text || typeof text !== 'string') return [];
+  // Capture only the segment after an entrance-locator phrase up to the next
+  // sentence boundary or a disqualifying connector ("between", "just off").
+  const locatorMatch = text.match(
+    /(?:entrance\s+(?:is\s+)?(?:located\s+)?(?:on|at)|enter(?:ed)?\s+(?:via|through|from|on))\s+([^.]+?)(?=\s+between\s|\s+just\s|$|\.)/i
+  );
+  const scope = locatorMatch ? locatorMatch[1] : text;
+
+  const tokens = new Set();
+  // Numbered streets in Midtown West cross-street range (40-70).
+  // Avoids building numbers like "1633 Broadway" and street-address prefixes
+  // like "242 W 45" picking up the 242.
+  for (const m of scope.matchAll(/\b(\d+)(?:st|nd|rd|th)?\b/g)) {
+    const n = parseInt(m[1], 10);
+    if (n >= 40 && n <= 70) tokens.add(String(n));
+  }
+  const lower = scope.toLowerCase();
+  if (/\bbroadway\b/.test(lower)) tokens.add('broadway');
+  if (/\b(shubert\s+alley|the\s+alley)\b/.test(lower)) tokens.add('alley');
+  if (/\b(lincoln\s+center|plaza)\b/.test(lower)) tokens.add('plaza');
+  return Array.from(tokens);
+}
+
+/**
+ * Cross-check entrance text against the truth table. Returns findings for
+ * any claimed street that is not a valid entrance for this theater.
+ *
+ * NOTE: this is one of the few validators that needs theaterName context —
+ * the caller must pass it in.
+ */
+function validateEntranceAddress(tips, theaterName) {
+  const findings = [];
+  const entrance = tips?.logistics?.entrance;
+  if (!entrance || typeof entrance !== 'string') return findings;
+  const valid = THEATER_VALID_ENTRANCE_STREETS[theaterName];
+  if (!valid) return findings; // unknown theater — can't verify
+
+  const claimed = extractClaimedEntranceStreets(entrance);
+  if (claimed.length === 0) return findings; // nothing concrete claimed
+
+  const validSet = new Set(valid);
+  const wrong = claimed.filter(c => !validSet.has(c));
+  if (wrong.length > 0) {
+    findings.push({
+      path: 'logistics.entrance',
+      theater: theaterName,
+      text: entrance,
+      validStreets: valid,
+      claimedStreets: claimed,
+      wrongStreets: wrong,
+    });
+  }
+  return findings;
+}
+
+/**
  * Top-level runner — validates one theater's tip object and returns a
  * structured result. Used by both the eval harness and the generator's
  * runtime guards.
+ *
+ * @param {string} theaterName - optional; enables entrance-address check
  */
-function validateTips(tips, scrapedData) {
+function validateTips(tips, scrapedData, theaterName = null) {
   return {
     schemaErrors: validateSchema(tips),
     bannedClaims: detectBannedClaims(tips),
     groundingFindings: validateGrounding(tips, scrapedData || {}),
     categoryDupes: validateCategoryDedup(tips),
     subwayFindings: validateSubwayFacts(tips),
+    entranceFindings: theaterName ? validateEntranceAddress(tips, theaterName) : [],
   };
 }
 
@@ -420,6 +549,7 @@ module.exports = {
   BANNED_CLAIM_PATTERNS,
   FREE_TEXT_PATHS,
   SUBWAY_STATION_LINES,
+  THEATER_VALID_ENTRANCE_STREETS,
   validateSchema,
   detectBannedClaims,
   validateGrounding,
@@ -428,5 +558,7 @@ module.exports = {
   validateSubwayFacts,
   extractClaimedLines,
   findKnownStation,
+  validateEntranceAddress,
+  extractClaimedEntranceStreets,
   validateTips,
 };

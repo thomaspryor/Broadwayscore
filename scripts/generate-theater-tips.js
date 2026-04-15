@@ -28,6 +28,7 @@ const https = require('https');
 const {
   detectBannedClaims,
   validateSubwayFacts,
+  validateEntranceAddress,
   auditCrossTheaterDiversity,
 } = require('./lib/theater-tips-validators');
 
@@ -370,6 +371,16 @@ async function main() {
           console.log(`  ⚠️  Stripped hallucinated subway claim at ${f.station}: ${f.wrongLines.join(',')} (actual: ${f.truthLines.join(',')})`);
         }
         tips.logistics.nearestSubway = null;
+      }
+
+      // Entrance-address guard — cross-check against hardcoded truth table.
+      // Empirical (2026-04-15): Todd Haimes draft claimed 43rd St (actual 42).
+      const entranceWrong = validateEntranceAddress(tips, theaterName);
+      if (entranceWrong.length > 0) {
+        for (const f of entranceWrong) {
+          console.log(`  ⚠️  Stripped hallucinated entrance: claimed ${f.wrongStreets.join(',')} (valid: ${f.validStreets.join(',')})`);
+        }
+        tips.logistics.entrance = null;
       }
 
       // Track restaurant usage for cross-theater dedup audit
