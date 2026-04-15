@@ -11,11 +11,15 @@
   "wordCount": 1288,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-15T01:12:04.485Z",
-  "score": 73,
-  "bucket": "Positive",
+  "score": 69,
+  "bucket": "Mixed",
   "confidence": "high",
-  "reasoning": "The reviewer calls it a 'good production of a fantastic show' and recommends seeing it, especially for newcomers to Gypsy, but clearly wanted more from this high-profile production with Audra McDonald. The Simone Biles vault analogy perfectly captures the sentiment - impressive but didn't stick the landing.",
-  "keyQuote": "this is a good production of a fantastic show... if you've never seen a production of Gypsy before, I would say go see this, because it's a very good production of what is a fantastic musical",
-  "scoredAt": "2026-04-15T03:20:29.055Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer repeatedly emphasizes the production was 'good' but not 'great,' expressing disappointment that it didn't reach the level she wanted, particularly in the final 20 minutes and Rose's Turn. She praises individual elements (Audra McDonald's performance mostly, supporting cast, costume design) but cites significant issues with pacing, scenic design, and the climactic moment. She recommends it conditionally ('if you've never seen Gypsy before') but her overall tone is one of unfulfilled expectations.",
+  "keyQuote": "This is a good production of a fantastic show... I just wish it had stuck the landing.",
+  "scoredAt": "2026-04-15T04:20:45.705Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 73,
+    "opus": 65
+  }
 }

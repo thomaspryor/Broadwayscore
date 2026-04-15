@@ -11,11 +11,15 @@
   "wordCount": 472,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-15T00:11:54.090Z",
-  "score": 75,
+  "score": 70,
   "bucket": "Positive",
   "confidence": "high",
-  "reasoning": "The reviewer clearly recommends the show despite acknowledging its flaws, giving it 3/5 stars and stating multiple times he 'had a great time' and thinks others will too if they like spectacular musicals.",
-  "keyQuote": "I'm going to give this Great Gatsby three out of five stars because it's a fun time... And if you are someone who likes big, spectacular musicals, I honestly think you're going to have a great time at this show.",
-  "scoredAt": "2026-04-15T03:24:25.244Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer gives the show 3 out of 5 stars, explicitly acknowledging it's 'not a perfect musical' and 'not the most intellectual version' while still saying he had a great time and enjoyed it. He recommends it with significant caveats, positioning it as enjoyable spectacle but not groundbreaking. The 3/5 rating and balanced tone place this squarely in the mixed range, leaning slightly toward positive.",
+  "keyQuote": "I'm going to give this Great Gatsby three out of five stars because it's a fun time. It's not a perfect musical. There are certainly things about it that I'm like, yeah, they could have done that a little bit better. But I still had a great time.",
+  "scoredAt": "2026-04-15T04:33:50.445Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 75,
+    "opus": 65
+  }
 }

@@ -11,11 +11,15 @@
   "wordCount": 184,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-13T03:21:11.380Z",
-  "score": 58,
-  "bucket": "Mixed",
+  "score": 53,
+  "bucket": "Negative",
   "confidence": "high",
-  "reasoning": "The reviewer explicitly states they didn't like the show, calling the story 'tired' and music 'generic,' but acknowledges it delivers what it promises and praises Grey Henson's performance. They neither recommend nor discourage attendance.",
-  "keyQuote": "call me Scrooge but I didn't like this — but I can see why other people do",
-  "scoredAt": "2026-04-14T04:58:15.957Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer explicitly says 'I didn't like this,' found the story 'tired' and music 'generic,' though he acknowledges Grey Henson's performance as wonderful and concedes others might enjoy it. Overall, he would not recommend it for himself.",
+  "keyQuote": "Call me Scrooge but I didn't like this — but I can see why other people do. I thought the story was tired and the music was generic, but I guess it was fun for what it was.",
+  "scoredAt": "2026-04-15T04:18:52.809Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 58,
+    "opus": 48
+  }
 }

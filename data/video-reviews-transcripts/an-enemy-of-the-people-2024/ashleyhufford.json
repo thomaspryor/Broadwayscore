@@ -11,11 +11,17 @@
   "wordCount": 262,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-14T23:59:31.573Z",
-  "score": 78,
+  "score": 77,
   "bucket": "Positive",
   "confidence": "medium",
-  "reasoning": "The creator expresses clear enthusiasm for 'An Enemy of the People' with positive language ('I am so excited', 'I love that', 'Great show day') and highlights engaging production elements like the staged intermission with free shots and audience interaction on stage. While brief, the positive sentiment and recommendation signal are evident.",
-  "keyQuote": "I love that. I feel like I'm kind of a mix on Ibsen, but I don't know, it's. It feels very relevant even though it was written in like 1882 or whatever. Hot Take Jeremy Strong. It's very good at acting, man. Great to show day",
-  "scoredAt": "2026-04-15T03:18:05.164Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer expresses excitement and enjoyment, noting the show feels relevant despite being written in 1882, and praises Jeremy Strong's acting. However, they also express mixed feelings about Ibsen generally and don't give an overwhelmingly enthusiastic endorsement. The review is brief and somewhat casual.",
+  "keyQuote": "Hot Take Jeremy Strong. It's very good at acting, man.",
+  "scoredAt": "2026-04-15T04:12:05.228Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 78,
+    "opus": 76
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "GPT-4o audit: Roundup covering 2 shows, not a standalone review"
 }

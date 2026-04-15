@@ -14,8 +14,14 @@
   "score": 78,
   "bucket": "Positive",
   "confidence": "medium",
-  "reasoning": "Tyler gives a clear recommendation ('don't miss your chance') and positive framing about the show being 'epic' and having the 'perfect show life' runtime, though the review is relatively brief and promotional in tone.",
-  "keyQuote": "This is a limited run Broadway musical, so don't miss your chance to come feel the Illinois by August 10th.",
-  "scoredAt": "2026-04-15T03:21:40.762Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer describes the show positively, calling it 'epic,' praising the 90-minute format as 'perfect show life,' and encouraging people not to miss it. There's clear recommendation, though the review is more informational/promotional than deeply enthusiastic.",
+  "keyQuote": "bringing the iconic album by Sufjan Stevens to life on stage in an epic way",
+  "scoredAt": "2026-04-15T04:23:05.631Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 78,
+    "opus": 78
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "GPT-4o audit: Promotional overview, not a first-hand review"
 }

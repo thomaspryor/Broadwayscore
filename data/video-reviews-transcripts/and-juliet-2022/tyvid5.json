@@ -14,8 +14,12 @@
   "score": 95,
   "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "The creator expresses overwhelming enthusiasm, calling it their 'favorite show currently on Broadway' after seeing it four times, describing it as 'fucking perfect' and saying 'it truly gets better each time.' They give a strong recommendation that it 'checks all the boxes.'",
-  "keyQuote": "I've seen Anne Juliet four times now, and it truly gets better each time. I've brought gays and streets of all ages, and they all agree it's fucking perfect.",
-  "scoredAt": "2026-04-15T03:18:13.543Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer calls And Juliet their 'favorite show currently on Broadway,' has seen it four times, says it 'gets better each time,' and describes it as 'fucking perfect.' The entire review is an enthusiastic, unqualified recommendation.",
+  "keyQuote": "I've seen Anne Juliet four times now, and it truly gets better each time... they all agree it's fucking perfect.",
+  "scoredAt": "2026-04-15T04:12:53.535Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 95,
+    "opus": 95
+  }
 }

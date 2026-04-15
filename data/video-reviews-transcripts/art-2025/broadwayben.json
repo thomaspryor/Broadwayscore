@@ -14,8 +14,12 @@
   "score": 78,
   "bucket": "Positive",
   "confidence": "high",
-  "reasoning": "Broadway Ben clearly recommends the show, praising all three leads and calling it 'a really solid production of a really solid play.' He highlights James Corden's standout performance and the effective casting chemistry.",
-  "keyQuote": "this is a really solid production of a really solid play",
-  "scoredAt": "2026-04-14T04:44:59.155Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer praises all three actors, especially James Corden, highlights great chemistry, and calls it 'a really solid production of a really solid play.' The tone is consistently positive but uses measured language ('solid') rather than ecstatic superlatives, placing it in the positive-with-mild-restraint range.",
+  "keyQuote": "This is a really solid production of a really solid play.",
+  "scoredAt": "2026-04-15T04:13:15.015Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 78,
+    "opus": 78
+  }
 }

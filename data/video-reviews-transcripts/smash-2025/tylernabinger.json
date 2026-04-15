@@ -14,8 +14,12 @@
   "score": 75,
   "bucket": "Positive",
   "confidence": "high",
-  "reasoning": "The reviewer clearly attended the show and gives a positive recommendation with some reservations. They praise the humor, performances, and songs while acknowledging the plot is 'whatever' and it toes the line between clever and cringe.",
-  "keyQuote": "I thought this show was quite good... I had a good time",
-  "scoredAt": "2026-04-14T05:02:55.496Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer expresses generally positive feelings about the show, calling it 'quite good' and noting he 'had a good time,' while acknowledging caveats like the plot being 'kind of whatever' and the show toeing the line between clever and cringe. Overall a recommendation with reservations.",
+  "keyQuote": "I thought this show was quite good.",
+  "scoredAt": "2026-04-15T04:31:17.160Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 75,
+    "opus": 75
+  }
 }

@@ -11,11 +11,15 @@
   "wordCount": 268,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-13T03:21:40.995Z",
-  "score": 62,
+  "score": 59,
   "bucket": "Mixed",
   "confidence": "high",
-  "reasoning": "The reviewer explicitly states 'I liked it but I didn't love it' and concludes it's 'not a must see' unless you're into the specific music style. This signals a lukewarm recommendation with significant reservations.",
-  "keyQuote": "Overall, I would say the main draw here is if you're into the kind of music that the show offers, and otherwise it's not a must see.",
-  "scoredAt": "2026-04-14T05:03:28.099Z",
-  "scoringModel": "claude-sonnet-4-20250514"
+  "reasoning": "The reviewer explicitly states 'I liked it but I didn't love it' and concludes 'it's not a must see.' He has significant criticisms — the plot struggles to fill 95 minutes, generic vocals, monotonous score, songs don't advance the plot — balanced by some positives like the shipwreck scene and John Gallagher Jr.'s acting. This is a clearly mixed review without a strong recommendation.",
+  "keyQuote": "I liked it but I didn't love it... it's not a must see.",
+  "scoredAt": "2026-04-15T04:32:36.471Z",
+  "scoringModel": "ensemble-sonnet-4+opus-4-6",
+  "ensembleScores": {
+    "sonnet": 62,
+    "opus": 56
+  }
 }
