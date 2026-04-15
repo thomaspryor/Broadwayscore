@@ -222,11 +222,17 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
           { label: 'Lowest', value: creator.lowScore },
         ]} />
 
-        <div className="flex flex-wrap gap-3 text-sm text-gray-400">
-          <span>{ordinalSuffix(creator.volumeRank)} most prolific video critic</span>
-          <span className="text-gray-600">·</span>
-          <span>{ordinalSuffix(creator.generosityRank)} most generous scorer</span>
-        </div>
+        {/* Rankings only display when the creator has enough reviews to be in the
+            ranked pool (10+). Below that, the ranks are computed but set to 0 in
+            data-video-critics.ts so we just hide them here — saves screenshots
+            from showing "1st most generous" off n=4. */}
+        {creator.volumeRank > 0 && creator.generosityRank > 0 && (
+          <div className="flex flex-wrap gap-3 text-sm text-gray-400">
+            <span>{ordinalSuffix(creator.volumeRank)} most prolific video critic</span>
+            <span className="text-gray-600">·</span>
+            <span>{ordinalSuffix(creator.generosityRank)} most generous scorer</span>
+          </div>
+        )}
       </div>
 
       <ToggleBar

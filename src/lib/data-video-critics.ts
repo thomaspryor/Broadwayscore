@@ -113,15 +113,19 @@ for (const creator of creators) {
   if (profile) profiles.set(profile.slug, profile);
 }
 
-// Compute ranks once across all profiles
+// Compute ranks once across all profiles. Require min 10 reviews to participate
+// in rankings — without it, low-n creators (e.g. n=2-4) skew the leaderboard
+// (a creator who only happened to review a few raves would rank "most generous"
+// based on no real sample). Profiles below the floor get rank=0 (don't display).
+const RANK_MIN_REVIEWS = 10;
 {
-  const all: VideoCreatorProfile[] = [];
-  profiles.forEach(p => all.push(p));
+  const eligible: VideoCreatorProfile[] = [];
+  profiles.forEach(p => { if (p.reviewCount >= RANK_MIN_REVIEWS) eligible.push(p); });
 
-  const byVolume = [...all].sort((a, b) => b.reviewCount - a.reviewCount);
+  const byVolume = [...eligible].sort((a, b) => b.reviewCount - a.reviewCount);
   byVolume.forEach((p, i) => { p.volumeRank = i + 1; });
 
-  const byGenerosity = [...all].sort((a, b) => b.avgScore - a.avgScore);
+  const byGenerosity = [...eligible].sort((a, b) => b.avgScore - a.avgScore);
   byGenerosity.forEach((p, i) => { p.generosityRank = i + 1; });
 }
 
