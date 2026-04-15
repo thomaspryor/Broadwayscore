@@ -180,6 +180,20 @@ export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[
 }
 
 /**
+ * Show IDs that have at least one NYT "Critic's Pick" review. Built once per process.
+ */
+let _nytCriticsPickShowIds: Set<string> | null = null;
+export function getNYTCriticsPickShowIds(): Set<string> {
+  if (_nytCriticsPickShowIds) return _nytCriticsPickShowIds;
+  _nytCriticsPickShowIds = new Set(
+    baseReviews
+      .filter(r => r.outletId === 'nytimes' && r.designation === 'Critics_Pick')
+      .map(r => r.showId)
+  );
+  return _nytCriticsPickShowIds;
+}
+
+/**
  * Get data freshness info
  */
 export function getDataFreshness() {
