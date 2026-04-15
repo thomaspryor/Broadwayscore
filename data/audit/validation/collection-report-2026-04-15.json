@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-04-15T12:22:46.853Z",
+  "runDate": "2026-04-15T18:36:25.199Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,44 +11,44 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 50,
-    "failed": 1027,
+    "processed": 55,
+    "failed": 1030,
     "skipped": 0,
-    "successRate": "4.6%"
+    "successRate": "5.1%"
   },
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 31,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 12,
+    "scrapingbee": 15,
     "brightdata": 4,
-    "archiveToday": 5,
+    "archiveToday": 6,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 300,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 300,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
-    "urlDiscoveryCapped": 2
+    "urlDiscoveryCapped": 0
   },
   "processed": [
     "the-fear-of-13-2026/hollywood-reporter--caitlin-huston.json",
@@ -100,7 +100,12 @@
     "a-steady-rain-2009/latimes--unknown.json",
     "barnum-1980/nytimes--frank-rich.json",
     "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
-    "once-2012/theatermania--dan-bacalzo.json"
+    "once-2012/theatermania--dan-bacalzo.json",
+    "the-fear-of-13-2026/front-row-center--vahni-kurra.json",
+    "inter-alia-west-end-2026/daily-mail--unknown.json",
+    "hadestown-west-end-2024/nytg--unknown.json",
+    "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
+    "the-play-that-goes-wrong-west-end-2021/independent--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1129,7 +1134,10 @@
     "the-peewee-herman-show-2010/new-jersey-newsroom--michael-sommers.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
-    "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json"
+    "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
+    "the-fear-of-13-2026/talkinbroadway--unknown.json",
+    "master-class-1995/ny1--david-cote.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1161,7 +1169,9 @@
       "million-dollar-quartet-2010/theatermania--unknown.json",
       "oleanna-2009/theatermania--unknown.json",
       "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
-      "once-2012/theatermania--dan-bacalzo.json"
+      "once-2012/theatermania--dan-bacalzo.json",
+      "hadestown-west-end-2024/nytg--unknown.json",
+      "the-play-that-goes-wrong-west-end-2021/independent--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -1178,7 +1188,10 @@
       "some-like-it-hot-2022/newyorker--helen-shaw.json",
       "the-scottsboro-boys-2010/new-jersey-newsroom--michael-sommers.json",
       "driving-miss-daisy-2010/new-jersey-newsroom--michael-sommers.json",
-      "barnum-1980/nytimes--frank-rich.json"
+      "barnum-1980/nytimes--frank-rich.json",
+      "the-fear-of-13-2026/front-row-center--vahni-kurra.json",
+      "inter-alia-west-end-2026/daily-mail--unknown.json",
+      "magic-mike-live-west-end-2021/times-uk--clive-davis.json"
     ],
     "brightdata": [
       "titanique-2026/talkinbroadway--unknown.json",
@@ -1191,7 +1204,8 @@
       "data/review-texts/follies-2011/abc-news--mark-kennedy.json",
       "data/review-texts/the-scottsboro-boys-2010/abc-news--unknown.json",
       "data/review-texts/la-cage-aux-folles-2010/abc-news--michael-kuchwara.json",
-      "data/review-texts/the-addams-family-2010/abc-news--unknown.json"
+      "data/review-texts/the-addams-family-2010/abc-news--unknown.json",
+      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
@@ -1199,6 +1213,14 @@
       "a-steady-rain-2009/backstage--unknown.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "NY1": {
+      "count": 1,
+      "domain": "ny1.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
