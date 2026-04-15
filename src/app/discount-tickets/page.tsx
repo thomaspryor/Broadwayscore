@@ -2,16 +2,14 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { DiscountTicketsTable, type DiscountShowRow } from './DiscountTicketsTable';
 import { DiscountTicketsNav } from '@/components/DiscountTicketsNav';
 
 export const metadata: Metadata = {
   title: 'Cheap Broadway Tickets - Lotteries, Rush & Standing Room',
   description: 'Every discount Broadway ticket option in one place. Compare lottery, rush, and standing room prices for all shows. Find the cheapest way to see Broadway.',
-  alternates: {
-    canonical: `${BASE_URL}/discount-tickets`,
-  },
+  alternates: marketAlternates('broadway', '/discount-tickets'),
   openGraph: {
     title: 'Cheap Broadway Tickets - All Discount Options',
     description: 'Compare every lottery, rush, and standing room ticket for Broadway shows. Updated weekly.',
