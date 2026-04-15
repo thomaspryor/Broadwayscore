@@ -1,96 +1,52 @@
 {
-  "updatedAt": "2026-04-14T20:22:53.416Z",
-  "processed": 62,
-  "failed": 1567,
-  "successRate": "3.8%",
+  "updatedAt": "2026-04-15T00:32:39.777Z",
+  "processed": 8,
+  "failed": 1,
+  "successRate": "88.9%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 10,
-    "brightdata": 2,
-    "archiveToday": 9,
-    "archive": 7
+    "scrapingbee": 3,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-04-14T18:46:12.707Z",
+      "t": "2026-04-15T00:29:12.171Z",
       "event": "bb-session",
-      "session": "54b7e225",
-      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
+      "session": "15ed0cb1",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
     },
     {
-      "t": "2026-04-14T18:46:13.839Z",
+      "t": "2026-04-15T00:29:13.218Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "variety.com"
     },
     {
-      "t": "2026-04-14T18:50:26.129Z",
+      "t": "2026-04-15T00:29:29.333Z",
       "event": "bb-session",
-      "session": "762ec217",
-      "url": "https://www.hollywoodreporter.com/hr/film-reviews/time-stands-still-theater-revi"
+      "session": "ad6e1c4b",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/receptionist-review-11100"
     },
     {
-      "t": "2026-04-14T18:50:27.226Z",
+      "t": "2026-04-15T00:29:30.271Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     },
     {
-      "t": "2026-04-14T18:52:47.747Z",
+      "t": "2026-04-15T00:30:05.709Z",
       "event": "bb-session",
-      "session": "97218dc8",
-      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+      "session": "f34d6a3f",
+      "url": "https://deadline.com/2026/01/jack-holden-kenrex-off-broadway-new-york-1236697491"
     },
     {
-      "t": "2026-04-14T18:52:48.967Z",
+      "t": "2026-04-15T00:30:06.685Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-14T18:56:37.281Z",
-      "event": "bb-session",
-      "session": "f11d8145",
-      "url": "https://online.wsj.com/news/articles/SB10001424052702303289904579197850257715732"
-    },
-    {
-      "t": "2026-04-14T18:56:38.389Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-14T18:59:14.015Z",
-      "event": "bb-session",
-      "session": "f07514ff",
-      "url": "https://www.northjersey.com/entertainment/stage/40522532.html"
-    },
-    {
-      "t": "2026-04-14T18:59:15.196Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-04-14T19:00:07.338Z",
-      "event": "bb-session",
-      "session": "ff09f694",
-      "url": "https://www.nypost.com/seven/03102008/entertainment/theater/uptown_upstaged_1012"
-    },
-    {
-      "t": "2026-04-14T19:00:08.356Z",
-      "event": "bb-cookie-inject",
-      "domain": "nypost.com"
-    },
-    {
-      "t": "2026-04-14T19:06:31.211Z",
-      "event": "bb-session",
-      "session": "7c2a1c96",
-      "url": "https://www.nytimes.com/1980/05/01/archives/theater-barnum-a-circus-musical-ring"
-    },
-    {
-      "t": "2026-04-14T19:06:32.354Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "deadline.com"
     }
   ]
 }

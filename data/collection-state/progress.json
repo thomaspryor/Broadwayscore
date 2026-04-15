@@ -1,0 +1,79 @@
+{
+  "processed": [
+    "kenrex-off-broadway-2026/nytimes--unknown.json",
+    "the-fear-of-13-2026/nytimes--unknown.json",
+    "the-fear-of-13-2026/variety--unknown.json",
+    "the-receptionist-off-broadway-2026/hollywood-reporter--unknown.json",
+    "the-receptionist-off-broadway-2026/nytimes--unknown.json",
+    "kenrex-off-broadway-2026/deadline--unknown.json",
+    "kenrex-off-broadway-2026/guardian--unknown.json",
+    "the-receptionist-off-broadway-2026/guardian--unknown.json"
+  ],
+  "failed": [
+    "the-fear-of-13-2026/talkinbroadway--unknown.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [
+      "kenrex-off-broadway-2026/guardian--unknown.json",
+      "the-receptionist-off-broadway-2026/guardian--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/the-fear-of-13-2026/variety--unknown.json",
+      "the-fear-of-13-2026/variety--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/hollywood-reporter--unknown.json",
+      "the-receptionist-off-broadway-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/kenrex-off-broadway-2026/deadline--unknown.json",
+      "kenrex-off-broadway-2026/deadline--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [
+      "kenrex-off-broadway-2026/nytimes--unknown.json",
+      "the-fear-of-13-2026/nytimes--unknown.json",
+      "the-receptionist-off-broadway-2026/nytimes--unknown.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
+    ],
+    "archive": []
+  },
+  "startTime": "2026-04-15T00:28:37.999Z",
+  "lastProcessed": "the-fear-of-13-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-15T00:29:12.171Z",
+      "event": "bb-session",
+      "session": "15ed0cb1",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-15T00:29:13.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-15T00:29:29.333Z",
+      "event": "bb-session",
+      "session": "ad6e1c4b",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/receptionist-review-11100"
+    },
+    {
+      "t": "2026-04-15T00:29:30.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-15T00:30:05.709Z",
+      "event": "bb-session",
+      "session": "f34d6a3f",
+      "url": "https://deadline.com/2026/01/jack-holden-kenrex-off-broadway-new-york-1236697491"
+    },
+    {
+      "t": "2026-04-15T00:30:06.685Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
+}
