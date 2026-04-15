@@ -43,6 +43,7 @@
     "llm:status": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/status.ts",
     "eval:theater-tips": "node scripts/evals/theater-tips-eval.js",
     "eval:buzz-classifier": "node scripts/evals/buzz-classifier-eval.js",
+    "eval:content-verifier": "node scripts/evals/content-verifier-eval.js",
     "reviews:collect": "node scripts/collect-review-texts.js",
     "reviews:coverage": "node scripts/analyze-review-coverage.js",
     "consensus": "node scripts/generate-critic-consensus.js",

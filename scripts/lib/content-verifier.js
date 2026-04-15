@@ -346,6 +346,13 @@ Analyze the content and respond with ONLY valid JSON (no markdown fences):
 ${wrongProdList}
    A review of the ${mc.label} production that merely *mentions* other productions is NOT a wrong production — it must be *reviewing* a non-${mc.label} staging.
 
+   **YEAR / PRODUCTION MATCHING (most common failure mode):** The showTitle may contain a year suffix (e.g. "Cats 1982", "A Christmas Carol 2001", "Art 1998"). Many shows have multiple revivals — Cats had a 1982 original and a 2016 Broadway revival at different venues. DO NOT assume the review matches the showTitle year just because the show name matches. Cross-check:
+   - What year/run does the review actually describe? Look for opening-year mentions, cast names, venue names, and the review's publishDate.
+   - If the showTitle says "Cats 1982" but the review describes a production at Neil Simon Theatre (the 2016 revival was at Neil Simon; the 1982 original was at Winter Garden), that is wrongProduction=true.
+   - If the showTitle says "Art 1998" and the review mentions cast members famously in a LATER revival (e.g. Bobby Cannavale / NPH were in the 2025 Art revival, not 1998), that is wrongProduction=true.
+   - If the review's publishDate is more than 2 years away from the year in the showTitle, treat it as a strong signal the review is for a different production.
+   - Do NOT hallucinate or invent a cast/venue to match the showTitle. Only use facts actually in the scraped text.
+
 3. **Film/TV content**: Is this a review of a film adaptation, TV special, streaming version, or filmed stage production (not a live ${mc.label} performance)?
 
 4. **Truncation**: Does the text end mid-sentence, hit a paywall ("subscribe to read more"), or appear incomplete?
