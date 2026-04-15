@@ -93,6 +93,15 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const score = show.criticScore?.score;
   const roundedScore = score ? Math.round(score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
+  const tier1Count = show.criticScore?.tier1Count || 0;
+  const tier2Count = show.criticScore?.tier2Count || 0;
+  // Match the on-page UI's TBD gate (StickyScoreHeader + show body): previews
+  // and upcoming shows never broadcast a score in metadata even if reviews
+  // exist; scored shows must clear the per-market minimum-reviews threshold.
+  // Without this, a previews show with 2 high-T1 reviews would show "Rave
+  // Reviews (84/100)" in OG/Twitter/title while the page itself shows TBD.
+  const isTBD = show.status === 'previews' || show.status === 'upcoming' ||
+    !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
@@ -103,8 +112,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const marketLabel = isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
 
-  // Sentiment label maps tier → SEO-friendly phrase used in title + description
-  const tier = roundedScore ? getScoreTier(roundedScore, show.category) : null;
+  // Sentiment label maps tier → SEO-friendly phrase used in title + description.
+  // Suppressed for TBD shows (previews/upcoming or below review-count threshold)
+  // so metadata never broadcasts a verdict the show page itself doesn't show.
+  const tier = (!isTBD && roundedScore) ? getScoreTier(roundedScore, show.category) : null;
   const SEO_SENTIMENT: Record<string, string> = {
     'Critical Gold': 'Rave Reviews',
     'Recommended': 'Positive Reviews',
