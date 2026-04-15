@@ -98,7 +98,7 @@ jobs:
           # (the loop over files to copy to /tmp/core-data-checkout). Keep
           # these in sync. Force-adds (`git add -f`) are allowed — they are
           # explicit overrides, used legitimately for opening-night-sent.json.
-          CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json"
+          CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json followers.json subscribers.json subscribers-westend.json"
           VIOLATIONS=""
           for f in .github/workflows/*.yml; do
             for core in $CORE_FILES; do
