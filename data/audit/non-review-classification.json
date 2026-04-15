@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-14T23:46:10.143Z",
+    "generatedAt": "2026-04-15T05:03:23.265Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 35474,
-      "inReviewsJson": 17339,
+      "totalFiles": 35427,
+      "inReviewsJson": 17318,
       "skippedExcluded": 44,
-      "withFullText": 27,
-      "excerptOnly": 1624,
-      "llmClassified": 26,
+      "withFullText": 20,
+      "excerptOnly": 1607,
+      "llmClassified": 19,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 18,
-      "budgetUsed": 0.0026999999999999993,
-      "llmCalls": 27,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 15644
+      "skippedAlreadyClassified": 15647
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion about the quality of the production itself. It also includes unrelated theater news.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The text mentions the play 'Evening All Afternoon' and discusses the theme of grief, suggesting a feature article about the play's subject matter rather than a review. The presence of a theatre critic's bio also points away from a review itself.",
+      "reasoning": "The text mentions the play 'Evening All Afternoon' and discusses the theme of grief, suggesting a feature article about the play's subject matter rather than a review. The presence of a critic's bio also points to a review, but the lack of evaluative language makes it more likely a feature.",
       "currentScore": 100
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of Fences.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and other general theater topics.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "labor-press",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production itself. It reads like a preview or introductory piece.",
+      "reasoning": "The article describes the plot and background of the musical \"Groundhog Day\" and mentions its transfer from London, but it does not offer a critical evaluation of the production's quality.",
       "currentScore": 81
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. It mentions 'Liberation' but does not contain a review of it.",
       "currentScore": 88
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated and contains elements of a news website, such as subscription prompts and time stamps. It does not contain any evaluative content about the show 'Parade'.",
+      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
       "currentScore": 78
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
+      "reasoning": "The article describes the plot of the play and sets the stage for the audience, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms, not an actual review or article. It mentions 'Broadway review subscriptions' and 'Musical theatre reviews' but does not contain any review content itself.",
       "currentScore": 42
     },
     {
@@ -170,7 +170,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article provides production details and ticket information, resembling a news item or listing rather than a review with critical evaluation.",
       "currentScore": 64
     },
     {
@@ -190,7 +190,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It lacks any evaluative content about 'Three Tall Women' or any other show.",
       "currentScore": 89
     },
     {
@@ -200,20 +200,13 @@
       "outletId": "joysauce",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of the play \"Yellow Face\" and mentions the playwright's connection to the work, but it does not offer a critical evaluation or opinion on the quality of the production itself. It reads more like a preview or feature piece introducing the play.",
+      "reasoning": "This article describes the plot and context of the play \"Yellow Face\" but does not offer a critical evaluation or opinion about the quality of the production. It mentions the play's autobiographical nature and the themes it explores, but it lacks a clear verdict or recommendation.",
       "currentScore": 78
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
-    "august-osage-county-2007/usatoday--unknown.json",
-    "carrie-1988/splash-magazines--adam-feldman.json",
-    "long-days-journey-into-night-2016/dc-metro-theater-arts--richard-seff.json",
-    "the-bands-visit-2017/dc-metro-theater-arts--richard-seff.json",
-    "the-bands-visit-2017/show-showdown--wendy-caster.json",
-    "the-bands-visit-2017/the-times-of-israel--jordan-hoffman.json",
-    "topdog-underdog-2022/talkinbroadway--elyse-trevers.json"
+    "mj-the-musical-west-end-2024/i-paper--fiona-mountford.json"
   ],
   "perShowSummary": []
 }

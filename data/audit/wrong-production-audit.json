@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-15T00:01:42.368Z",
+  "timestamp": "2026-04-15T05:14:59.460Z",
   "stats": {
-    "totalReviews": 34871,
-    "alreadyFlagged": 13943,
+    "totalReviews": 34886,
+    "alreadyFlagged": 13951,
     "dateGuardCatches": 107,
     "directorMismatch": 957,
     "tvFilmSignals": 3387,
-    "londonSignals": 1118,
+    "londonSignals": 1120,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
     "noPublishDate": 4154
@@ -32728,7 +32728,6 @@
     {
       "showId": "mj-the-musical-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
-      "score": 76,
       "publishDate": "2024-03-28",
       "url": "https://inews.co.uk/culture/arts/mj-the-musical-review-myles-frost-2979317?srsltid=AfmBOoqcjbO5yluRMzOU8po3kPzJckB1_hJg4wlDgHRaXFfN_Dwm1Y5s",
       "findings": [
@@ -80609,6 +80608,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-fear-of-13-2026",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "score": null,
+      "publishDate": "2026-04-13",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/kim-kardashian-the-fear-of-13-1236562762/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-fear-of-13-2026",
+      "file": "variety--brent-lang.json",
+      "score": null,
+      "publishDate": "2026-04-13",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-drama-fear-of-13-adrien-brody-1236720562/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
