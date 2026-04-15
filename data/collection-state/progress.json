@@ -14,9 +14,12 @@
     "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
     "kenrex-off-broadway-2026/guardian--mark-fisher.json",
     "the-receptionist-off-broadway-2026/guardian--hannah-j-davies.json",
-    "the-receptionist-off-broadway-2026/variety--unknown.json"
+    "the-receptionist-off-broadway-2026/variety--unknown.json",
+    "kenrex-off-broadway-2026/variety--unknown.json",
+    "the-receptionist-off-broadway-2026/variety--brent-lang.json"
   ],
   "failed": [
+    "the-fear-of-13-2026/talkinbroadway--unknown.json",
     "the-fear-of-13-2026/talkinbroadway--unknown.json",
     "the-fear-of-13-2026/talkinbroadway--unknown.json"
   ],
@@ -39,7 +42,11 @@
       "data/review-texts/the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
       "the-receptionist-off-broadway-2026/hollywood-reporter--elizabeth-kerr.json",
       "data/review-texts/the-receptionist-off-broadway-2026/variety--unknown.json",
-      "the-receptionist-off-broadway-2026/variety--unknown.json"
+      "the-receptionist-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/kenrex-off-broadway-2026/variety--unknown.json",
+      "kenrex-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/variety--brent-lang.json",
+      "the-receptionist-off-broadway-2026/variety--brent-lang.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -55,12 +62,13 @@
     ],
     "archiveToday": [
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-15T00:35:45.395Z",
-  "lastProcessed": "the-fear-of-13-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/variety--brent-lang.json",
   "log": [
     {
       "t": "2026-04-15T00:36:17.964Z",
@@ -125,6 +133,28 @@
     },
     {
       "t": "2026-04-15T01:13:45.503Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-15T01:49:28.882Z",
+      "event": "bb-session",
+      "session": "231c1da0",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-15T01:49:29.926Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-15T01:51:17.390Z",
+      "event": "bb-session",
+      "session": "0d9a5612",
+      "url": "https://variety.com/2026/legit/news/kim-kardashian-producing-broadway-prison-dra"
+    },
+    {
+      "t": "2026-04-15T01:51:18.396Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
