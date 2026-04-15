@@ -27,6 +27,7 @@ const path = require('path');
 const https = require('https');
 const {
   detectBannedClaims,
+  validateSubwayFacts,
   auditCrossTheaterDiversity,
 } = require('./lib/theater-tips-validators');
 
@@ -49,7 +50,11 @@ if (!API_KEY) {
 
 const SCRAPED_FILE = path.join(__dirname, '..', 'data', 'theater-tips-scraped.json');
 const METADATA_FILE = path.join(__dirname, '..', 'data', 'theater-metadata.json');
-const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'theater-tips-draft.json');
+// Output path is overridable via TIPS_OUTPUT so eval iterations don't
+// disturb the production draft. Defaults to data/theater-tips-draft.json.
+const OUTPUT_FILE = process.env.TIPS_OUTPUT
+  ? path.resolve(process.env.TIPS_OUTPUT)
+  : path.join(__dirname, '..', 'data', 'theater-tips-draft.json');
 const RATE_LIMIT_MS = 1500; // Gemini Flash rate limit
 
 function sleep(ms) {
@@ -112,6 +117,20 @@ GROUNDING RULES (strictly enforced):
 - For seating and logistics: use your knowledge of NYC theater locations ONLY for subway info, entrance info, and exit strategy.
 
 ACCESSIBILITY: Do NOT generate accessibility information. The "accessibility" field will be injected from verified data. Omit it entirely from your response.
+
+SUBWAY FACTS (strictly enforced — no exceptions):
+Use ONLY this MTA truth table when writing nearestSubway. Never list a line not in the table for a station. Write as a natural-language sentence ("The nearest station is X, served by the A and B trains") — do NOT copy the table format verbatim into the output.
+- 42 St-Times Sq: 1, 2, 3, 7, N, Q, R, W, S
+- 42 St-Port Authority: A, C, E
+- 49 St: N, R, W   ← Q does NOT stop here
+- 50 St (Broadway-7 Av): 1 only   ← 2, 3 express skip this station
+- 50 St (8 Av): C, E   ← different physical station from the 1 stop
+- 47-50 Sts-Rockefeller Ctr: B, D, F, M
+- 42 St-Bryant Pk: B, D, F, M, 7
+- 34 St-Herald Sq: B, D, F, M, N, Q, R, W
+- 59 St-Columbus Circle: 1, A, B, C, D
+Never combine the two different 50 St stations into one list. If you cite "50 St", name either the Broadway line (1) or the 8 Av line (C, E), not both.
+If you are not confident about which lines serve the station, name the station only and omit the line list — incomplete is better than wrong.
 
 DIVERSITY RULES (critical — prevents lazy padding):
 - Prioritize restaurants that are CLOSEST to this specific theater (lowest distance in scraped data).
@@ -339,6 +358,18 @@ async function main() {
         errors++;
         await sleep(RATE_LIMIT_MS);
         continue;
+      }
+
+      // Subway-fact guard — cross-check claimed lines against MTA truth.
+      // Empirical (iter1): 3/10 theaters had wrong subway lines (Q at 49 St,
+      // 2 at 50 St, C/E conflated with 50 St). Strip the field rather than
+      // drop the whole entry so the rest of the (verified) tips still ship.
+      const subwayWrong = validateSubwayFacts(tips);
+      if (subwayWrong.length > 0) {
+        for (const f of subwayWrong) {
+          console.log(`  ⚠️  Stripped hallucinated subway claim at ${f.station}: ${f.wrongLines.join(',')} (actual: ${f.truthLines.join(',')})`);
+        }
+        tips.logistics.nearestSubway = null;
       }
 
       // Track restaurant usage for cross-theater dedup audit

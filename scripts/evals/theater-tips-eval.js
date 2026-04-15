@@ -65,21 +65,25 @@ function main() {
   let totalBannedClaims = 0;
   let totalGrounding = 0;
   let totalCategoryDupes = 0;
+  let totalSubway = 0;
 
   for (const name of theaterNames) {
     const tips = theaters[name];
     const scrapedForTheater = scraped.theaters?.[name] || null;
     const result = validateTips(tips, scrapedForTheater);
+    const subwayFindings = result.subwayFindings || [];
 
     totalSchemaErrors += result.schemaErrors.length;
     totalBannedClaims += result.bannedClaims.length;
     totalGrounding += result.groundingFindings.length;
     totalCategoryDupes += result.categoryDupes.length;
+    totalSubway += subwayFindings.length;
 
     const hasAnyFinding = result.schemaErrors.length > 0 ||
       result.bannedClaims.length > 0 ||
       result.groundingFindings.length > 0 ||
-      result.categoryDupes.length > 0;
+      result.categoryDupes.length > 0 ||
+      subwayFindings.length > 0;
 
     if (hasAnyFinding) {
       perTheater.push({ theater: name, ...result });
@@ -95,6 +99,7 @@ function main() {
     totalBannedClaims,
     totalGrounding,
     totalCategoryDupes,
+    totalSubway,
     overusedRestaurants: diversity.length,
   };
 
@@ -111,6 +116,7 @@ function main() {
     console.log(`Banned claims:      ${summary.totalBannedClaims}  ← accessibility/safety/medical hallucinations`);
     console.log(`Invented names:     ${summary.totalGrounding}`);
     console.log(`Category dupes:     ${summary.totalCategoryDupes}`);
+    console.log(`Subway line errors: ${summary.totalSubway}  ← MTA truth-table cross-check`);
     console.log(`Overused (>50%):    ${summary.overusedRestaurants}`);
     console.log('');
 
@@ -123,6 +129,7 @@ function main() {
         for (const b of t.bannedClaims) console.log(`  banned [${b.category}] ${b.path}: "${b.match}" — ${b.reason}`);
         for (const g of t.groundingFindings) console.log(`  grounding: invented ${g.kind} "${g.name}" at ${g.path}`);
         for (const d of t.categoryDupes) console.log(`  dupe: "${d.name}" at ${d.path} (already in ${d.duplicateOf})`);
+        for (const s of (t.subwayFindings || [])) console.log(`  subway: claimed ${s.wrongLines.join(',')} at "${s.station}" — actual lines: ${s.truthLines.join(',')}`);
       }
     }
 
@@ -137,7 +144,7 @@ function main() {
   }
 
   // Hard failures: schema, banned claims, invented names, category dupes.
-  const hardFail = totalSchemaErrors + totalBannedClaims + totalGrounding + totalCategoryDupes;
+  const hardFail = totalSchemaErrors + totalBannedClaims + totalGrounding + totalCategoryDupes + totalSubway;
   const softFail = args.strict && diversity.length > 0;
 
   if (hardFail > 0 || softFail) {

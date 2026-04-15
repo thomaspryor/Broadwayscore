@@ -290,6 +290,118 @@ function auditCrossTheaterDiversity(allDrafts, thresholdFraction = 0.5) {
 }
 
 /**
+ * MTA station → served lines. Truth table for the Broadway theater district.
+ * Sourced from mta.info station pages. Keep keys normalized: lower case, no
+ * punctuation except hyphens, "st" not "street".
+ *
+ * Empirical iteration finding (2026-04-15): Gemini hallucinates nearby lines
+ * that don't actually stop at the claimed station. Observed in iteration 1:
+ *   - "49 St (N/Q/R/W)"   → Q does not stop at 49 St
+ *   - "50 St (1, 2)"       → 2 does not stop at 50 St (express bypass)
+ */
+const SUBWAY_STATION_LINES = {
+  '42 st-times sq':             ['1', '2', '3', '7', 'N', 'Q', 'R', 'W', 'S'],
+  'times sq-42 st':             ['1', '2', '3', '7', 'N', 'Q', 'R', 'W', 'S'],
+  'times square-42 st':         ['1', '2', '3', '7', 'N', 'Q', 'R', 'W', 'S'],
+  '42 st-port authority':       ['A', 'C', 'E'],
+  '49 st':                      ['N', 'R', 'W'],
+  '50 st':                      ['1'],            // Broadway-7 Av line
+  '50 st-8 av':                 ['C', 'E'],       // ambiguous — LLM usually means the 1 stop
+  '47-50 sts-rockefeller ctr':  ['B', 'D', 'F', 'M'],
+  '47-50 sts':                  ['B', 'D', 'F', 'M'],
+  'rockefeller ctr':            ['B', 'D', 'F', 'M'],
+  '42 st-bryant pk':            ['B', 'D', 'F', 'M', '7'],
+  'bryant park':                ['B', 'D', 'F', 'M', '7'],
+  '34 st-herald sq':            ['B', 'D', 'F', 'M', 'N', 'Q', 'R', 'W'],
+  '59 st-columbus circle':      ['1', 'A', 'B', 'C', 'D'],
+  'grand central-42 st':        ['4', '5', '6', '7', 'S'],
+};
+
+function normalizeStationName(text) {
+  if (!text || typeof text !== 'string') return null;
+  return text
+    .toLowerCase()
+    // Strip ordinal suffixes on numbers first: "49th" → "49", "42nd" → "42".
+    // Otherwise "49th street" doesn't match the "49 st" key.
+    .replace(/(\d+)(st|nd|rd|th)\b/g, '$1')
+    .replace(/street/g, 'st')
+    .replace(/avenue/g, 'av')
+    .replace(/center/g, 'ctr')
+    .replace(/park/g, 'pk')
+    .replace(/square/g, 'sq')
+    .replace(/[^\w\s-]/g, ' ')
+    .replace(/\bthe\b|\bstation\b|\bsubway\b|\bstop\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function findKnownStation(text) {
+  const norm = normalizeStationName(text);
+  if (!norm) return null;
+  // Score candidates by longest-matching key
+  let best = null;
+  for (const key of Object.keys(SUBWAY_STATION_LINES)) {
+    if (norm.includes(key) && (!best || key.length > best.length)) {
+      best = key;
+    }
+  }
+  return best;
+}
+
+/**
+ * Extract subway line tokens from LLM free text. Looks for single uppercase
+ * letters (A/C/E/...) and single digits (1-7) mentioned in parenthesized or
+ * comma-separated lists.
+ *
+ * Returns unique set of normalized line tokens, preserving case for letters.
+ */
+function extractClaimedLines(text) {
+  if (!text) return [];
+  // Grab the parenthesized list after "station" or "lines" if present,
+  // otherwise scan the whole string.
+  const parenMatch = text.match(/\(([^)]+)\)/);
+  const scope = parenMatch ? parenMatch[1] : text;
+  const tokens = new Set();
+  // Letter lines A-Z (single letter surrounded by non-letter)
+  for (const m of scope.matchAll(/\b([ABCDEFGJLMNQRSWZ])\b/g)) tokens.add(m[1]);
+  // Numbered lines 1-7
+  for (const m of scope.matchAll(/\b([1-7])\b/g)) tokens.add(m[1]);
+  return Array.from(tokens);
+}
+
+/**
+ * Cross-check the nearestSubway claim against MTA truth. Returns findings for
+ * any claimed line that does not actually stop at the identified station.
+ */
+function validateSubwayFacts(tips) {
+  const findings = [];
+  const text = tips?.logistics?.nearestSubway;
+  if (!text || typeof text !== 'string') return findings;
+
+  const station = findKnownStation(text);
+  if (!station) {
+    // No known station match — can't verify. Not an error.
+    return findings;
+  }
+
+  const truth = new Set(SUBWAY_STATION_LINES[station]);
+  const claimed = extractClaimedLines(text);
+  const wrong = claimed.filter(l => !truth.has(l));
+
+  if (wrong.length > 0) {
+    findings.push({
+      path: 'logistics.nearestSubway',
+      text,
+      station,
+      claimedLines: claimed,
+      truthLines: Array.from(truth),
+      wrongLines: wrong,
+    });
+  }
+  return findings;
+}
+
+/**
  * Top-level runner — validates one theater's tip object and returns a
  * structured result. Used by both the eval harness and the generator's
  * runtime guards.
@@ -300,16 +412,21 @@ function validateTips(tips, scrapedData) {
     bannedClaims: detectBannedClaims(tips),
     groundingFindings: validateGrounding(tips, scrapedData || {}),
     categoryDupes: validateCategoryDedup(tips),
+    subwayFindings: validateSubwayFacts(tips),
   };
 }
 
 module.exports = {
   BANNED_CLAIM_PATTERNS,
   FREE_TEXT_PATHS,
+  SUBWAY_STATION_LINES,
   validateSchema,
   detectBannedClaims,
   validateGrounding,
   validateCategoryDedup,
   auditCrossTheaterDiversity,
+  validateSubwayFacts,
+  extractClaimedLines,
+  findKnownStation,
   validateTips,
 };

@@ -11,6 +11,9 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const {
@@ -19,8 +22,15 @@ const {
   validateGrounding,
   validateCategoryDedup,
   auditCrossTheaterDiversity,
+  validateSubwayFacts,
+  extractClaimedLines,
+  findKnownStation,
   validateTips,
 } = require('../../scripts/lib/theater-tips-validators.js');
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const FIXTURES = path.join(__dirname, '..', 'fixtures', 'theater-tips-golden');
+const loadFixture = name => JSON.parse(fs.readFileSync(path.join(FIXTURES, name), 'utf8'));
 
 // --- Fixtures --------------------------------------------------------------
 
@@ -242,5 +252,95 @@ describe('validateTips (end-to-end)', () => {
     const result = validateTips(bad, cleanScraped);
     assert.ok(result.bannedClaims.length >= 1, 'should flag banned claim');
     assert.ok(result.groundingFindings.length >= 1, 'should flag invented name');
+  });
+});
+
+// --- validateSubwayFacts ---------------------------------------------------
+//
+// Empirical iteration 2026-04-15: ran current Gemini Flash prompt against 10
+// theaters and found 3/10 had wrong subway lines. These tests pin each real
+// hallucination we saw so the same class cannot regress silently.
+
+describe('validateSubwayFacts', () => {
+  test('correct claim ("49 St N, R, W") -> no findings', () => {
+    const tips = { logistics: { nearestSubway: 'The nearest station is 49 St, served by the N, R, and W trains.' } };
+    assert.strictEqual(validateSubwayFacts(tips).length, 0);
+  });
+
+  test('Q claimed at 49 St is flagged (observed Al Hirschfeld iter1)', () => {
+    const tips = { logistics: { nearestSubway: 'The 49th Street subway station (N, Q, R, W lines) is the closest.' } };
+    const findings = validateSubwayFacts(tips);
+    assert.strictEqual(findings.length, 1);
+    assert.ok(findings[0].wrongLines.includes('Q'));
+    assert.strictEqual(findings[0].station, '49 st');
+  });
+
+  test('2 claimed at 50 St is flagged (observed Broadway Theatre iter1)', () => {
+    const tips = { logistics: { nearestSubway: 'The 50 St. subway station (1, 2 lines) is the closest.' } };
+    const findings = validateSubwayFacts(tips);
+    assert.ok(findings[0].wrongLines.includes('2'));
+  });
+
+  test('7 train claimed at 50 St is flagged (persistent iter2/iter3 failure)', () => {
+    const tips = { logistics: { nearestSubway: '50 St: 1, 7' } };
+    const findings = validateSubwayFacts(tips);
+    assert.ok(findings[0].wrongLines.includes('7'));
+  });
+
+  test('unknown station -> no finding (can verify)', () => {
+    const tips = { logistics: { nearestSubway: 'The 23 St station (F, M) is a short cab ride.' } };
+    assert.strictEqual(validateSubwayFacts(tips).length, 0);
+  });
+
+  test('null subway field -> no finding', () => {
+    const tips = { logistics: { nearestSubway: null } };
+    assert.strictEqual(validateSubwayFacts(tips).length, 0);
+  });
+
+  test('extractClaimedLines: parenthesized list preferred over full text', () => {
+    const lines = extractClaimedLines('The 49 St station (N, Q, R, W lines) is closest.');
+    assert.deepStrictEqual(lines.sort(), ['N', 'Q', 'R', 'W']);
+  });
+
+  test('findKnownStation: ordinal "49th Street" normalizes to "49 st"', () => {
+    assert.strictEqual(findKnownStation('The 49th Street subway station'), '49 st');
+  });
+
+  test('findKnownStation: "42nd Street-Bryant Park" matches bryant pk', () => {
+    const key = findKnownStation('The 42nd Street-Bryant Park station');
+    assert.ok(key === '42 st-bryant pk' || key === 'bryant pk' || key === 'bryant park');
+  });
+});
+
+// --- Golden fixture tests (real model output) ------------------------------
+
+describe('golden fixtures from live Gemini Flash output (2026-04-15)', () => {
+  test('clean-ambassador: real iter3 output passes all validators', () => {
+    const tips = loadFixture('clean-ambassador.json');
+    const result = validateTips(tips, { dining: [], parking: [] });
+    assert.strictEqual(result.bannedClaims.length, 0);
+    assert.strictEqual(result.categoryDupes.length, 0);
+    assert.strictEqual(result.subwayFindings.length, 0);
+  });
+
+  test('clean-lena-horne: real iter3 output passes all validators', () => {
+    const tips = loadFixture('clean-lena-horne.json');
+    const result = validateTips(tips, { dining: [], parking: [] });
+    assert.strictEqual(result.bannedClaims.length, 0);
+    assert.strictEqual(result.subwayFindings.length, 0);
+  });
+
+  test('regression-subway-q-at-49: real iter1 hallucination must be flagged', () => {
+    const tips = loadFixture('regression-subway-q-at-49.json');
+    const findings = validateSubwayFacts(tips);
+    assert.ok(findings.length >= 1);
+    assert.ok(findings[0].wrongLines.includes('Q'));
+  });
+
+  test('regression-subway-2-at-50: real iter1 hallucination must be flagged', () => {
+    const tips = loadFixture('regression-subway-2-at-50.json');
+    const findings = validateSubwayFacts(tips);
+    assert.ok(findings.length >= 1);
+    assert.ok(findings[0].wrongLines.includes('2'));
   });
 });
