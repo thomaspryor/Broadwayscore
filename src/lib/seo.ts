@@ -88,6 +88,9 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   const isLondon = isLondonMarket(show.category);
   const country = getMarketCountry(show.category);
   const currency = getMarketCurrency(show.category);
+  // Event spec requires startDate. Fall back to previewsStartDate when openingDate
+  // isn't yet announced.
+  const startDate = show.openingDate || show.previewsStartDate;
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'TheaterEvent',
@@ -100,7 +103,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
       name: show.venue,
       address: toPostalAddress(show.theaterAddress || show.venue, country),
     },
-    startDate: show.openingDate,
+    ...(startDate && { startDate }),
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
     ...(lastUpdated && { dateModified: lastUpdated }),
