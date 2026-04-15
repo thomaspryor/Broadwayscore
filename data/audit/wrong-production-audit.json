@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-15T09:56:32.067Z",
+  "timestamp": "2026-04-15T11:15:04.549Z",
   "stats": {
-    "totalReviews": 34895,
-    "alreadyFlagged": 13958,
+    "totalReviews": 34883,
+    "alreadyFlagged": 13956,
     "dateGuardCatches": 107,
     "directorMismatch": 957,
-    "tvFilmSignals": 3387,
+    "tvFilmSignals": 3389,
     "londonSignals": 1120,
     "offBroadwaySignals": 967,
     "yearMismatch": 75,
@@ -52591,6 +52591,20 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "independent--paul-taylor.json",
+      "score": 76,
+      "publishDate": "1999-10-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "london-box-office--miriam-gibson.json",
       "score": 66,
       "publishDate": "2022-07-01",
@@ -52670,6 +52684,20 @@
       "score": 88,
       "publishDate": "1999-10-20",
       "url": "https://www.standard.co.uk/go/london/theatre/lion-king-is-a-roaring-success-7435263.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "telegraph--charles-spencer.json",
+      "score": 88,
+      "publishDate": "1999-10-20",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
