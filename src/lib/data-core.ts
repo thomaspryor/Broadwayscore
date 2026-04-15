@@ -346,7 +346,7 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(show.venue, existing);
   }
 
-  const meta = theaterMetaData as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string }; venueScores?: Omit<TheaterVenueScores, 'overall'>; accessibility?: TheaterAccessibility; externalLinks?: TheaterExternalLinks }>;
+  const meta = theaterMetaData as unknown as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string }; venueScores?: Omit<TheaterVenueScores, 'overall'>; accessibility?: TheaterAccessibility; externalLinks?: TheaterExternalLinks }>;
 
   _theatersCache = Array.from(theaterMap.entries())
     .filter(([name]) => !name.startsWith('_'))
