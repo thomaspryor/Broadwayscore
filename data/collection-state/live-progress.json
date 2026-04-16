@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-04-16T08:37:21.874Z",
-  "processed": 4,
-  "failed": 10,
-  "successRate": "28.6%",
+  "updatedAt": "2026-04-16T08:51:07.497Z",
+  "processed": 1,
+  "failed": 1,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingbee": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-04-16T08:49:47.211Z",
+      "event": "bb-session",
+      "session": "3b98a011",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T08:49:48.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T08:50:20.496Z",
+      "event": "bb-session",
+      "session": "c0bc2458",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
+    },
+    {
+      "t": "2026-04-16T08:50:21.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
