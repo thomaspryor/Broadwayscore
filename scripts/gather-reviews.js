@@ -1569,8 +1569,62 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
 // isBWWRoundupContent() moved to scripts/lib/bww-roundup-validator.js (shared module)
 
 /**
+ * Find a Review Roundup link on the BWW homepage that matches the given show title.
+ * BWW features the latest roundup prominently on their homepage on opening night,
+ * before Google has indexed it. Returns the URL or null.
+ */
+function findBWWRoundupLinkOnHomepage(html, showTitle) {
+  // Extract all Review-Roundup links from the homepage HTML
+  const linkPattern = /href=["'](https?:\/\/(?:www\.)?broadwayworld\.com\/(?:london\/)?article\/Review-Roundup[^"']*?)["']/gi;
+  const foundUrls = new Set();
+  let match;
+  while ((match = linkPattern.exec(html)) !== null) {
+    // Decode HTML entities in URLs
+    const url = match[1].replace(/&amp;/g, '&');
+    foundUrls.add(url);
+  }
+
+  if (foundUrls.size === 0) return null;
+
+  // Normalize title for matching: lowercase, strip punctuation, split into content words
+  const STOP_WORDS = new Set(['the', 'and', 'for', 'from', 'with', 'that', 'this', 'its']);
+  const normalizeForMatch = (str) => str.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 1 && !STOP_WORDS.has(w));
+  const titleWords = normalizeForMatch(showTitle);
+  if (titleWords.length === 0) return null;
+
+  // Check each URL — the slug contains the title with hyphens between words
+  for (const url of foundUrls) {
+    // Extract the slug portion after "Review-Roundup-"
+    const slugMatch = url.match(/Review-Roundup-(.+)/i);
+    if (!slugMatch) continue;
+    const slug = slugMatch[1].toLowerCase();
+
+    // Split slug into segments for exact-segment matching on short titles
+    const slugSegments = slug.split(/[-_]/);
+
+    // Count how many title words appear in the slug
+    const matchedWords = titleWords.filter(w => slug.includes(w));
+    const matchRatio = matchedWords.length / titleWords.length;
+
+    // Single-word titles: require exact segment match (prevents "fear" matching "fear-of-13")
+    if (titleWords.length === 1) {
+      if (slugSegments.includes(titleWords[0])) return url;
+      continue;
+    }
+
+    // 2-word titles: require all words; 3+ words: require 80%+
+    const threshold = titleWords.length <= 2 ? 1.0 : 0.8;
+    if (matchRatio >= threshold) {
+      return url;
+    }
+  }
+
+  return null;
+}
+
+/**
  * Search BroadwayWorld for Review Roundup article
- * Priority: 1) URL override, 2) Valid archive, 3) Live fetch
+ * Priority: 1) URL override, 2) Valid archive, 2.5) Homepage scrape, 3) SERP, 4) URL guess
  */
 async function searchBWWRoundup(show, year, options = {}) {
   console.log('  Searching BroadwayWorld Review Roundups...');
@@ -1631,6 +1685,32 @@ async function searchBWWRoundup(show, year, options = {}) {
     }
   } else if (isNearOpeningNight && fs.existsSync(archivePath)) {
     console.log('    Skipping BWW cache — show opens within 48h, fetching fresh');
+  }
+
+  // Priority 2.5: Scrape BWW homepage for Review Roundup links
+  // On opening night, BWW features the roundup prominently on their homepage
+  // but Google hasn't indexed it yet, so SERP returns the homepage instead.
+  // This discovers the URL directly — faster and more reliable than SERP on day-of.
+  if (isNearOpeningNight) {
+    try {
+      console.log('    Checking BWW homepage for Review Roundup link...');
+      const homepageResult = await searchAggregator('BWW-Homepage', 'https://www.broadwayworld.com');
+      if (homepageResult.found && homepageResult.html) {
+        const roundupUrl = findBWWRoundupLinkOnHomepage(homepageResult.html, show.title);
+        if (roundupUrl) {
+          console.log(`    ✓ Found roundup link on BWW homepage: ${roundupUrl}`);
+          const result = await searchAggregator('BWW', roundupUrl);
+          if (result.found && result.html && isBWWRoundupContent(result.html)) {
+            console.log(`    ✓ Confirmed BWW roundup content from homepage discovery`);
+            return { url: roundupUrl, html: result.html };
+          }
+        } else {
+          console.log('    No matching roundup link found on BWW homepage');
+        }
+      }
+    } catch (e) {
+      console.log(`    BWW homepage check failed: ${e.message}`);
+    }
   }
 
   // Priority 3: Google SERP search — BWW uses unpredictable URL formats
