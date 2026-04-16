@@ -1,17 +1,23 @@
 {
   "processed": [
     "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
-    "proof-2026/nytimes--sarah-bahr.json"
+    "proof-2026/nytimes--sarah-bahr.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/independent--unknown.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/standard--unknown.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
     "proof-2026/variety--unknown.json",
     "avenue-q-west-end-2026/times-uk--unknown.json",
-    "proof-2026/talkinbroadway--unknown.json"
+    "proof-2026/talkinbroadway--unknown.json",
+    "avenue-q-west-end-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "one-flew-over-the-cuckoos-nest-west-end-2026/independent--unknown.json",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/standard--unknown.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -29,7 +35,7 @@
     "archive": []
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "proof-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "one-flew-over-the-cuckoos-nest-west-end-2026/standard--unknown.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
