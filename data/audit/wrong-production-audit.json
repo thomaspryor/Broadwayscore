@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-16T09:57:36.531Z",
+  "timestamp": "2026-04-16T12:17:14.516Z",
   "stats": {
-    "totalReviews": 34735,
-    "alreadyFlagged": 15173,
+    "totalReviews": 34790,
+    "alreadyFlagged": 15185,
     "dateGuardCatches": 98,
-    "directorMismatch": 815,
-    "tvFilmSignals": 3142,
-    "londonSignals": 1018,
-    "offBroadwaySignals": 881,
+    "directorMismatch": 817,
+    "tvFilmSignals": 3148,
+    "londonSignals": 1021,
+    "offBroadwaySignals": 886,
     "yearMismatch": 66,
-    "noPublishDate": 3731
+    "noPublishDate": 3728
   },
   "findings": [
     {
@@ -17352,6 +17352,20 @@
     },
     {
       "showId": "good-night-oscar-2023",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "April 24, 2023",
+      "url": "https://www.theatermania.com/news/review-sean-hayes-plays-oscar-levant-in-good-night-oscar_1699644/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-2023",
       "file": "variety--charles-isherwood.json",
       "score": 77,
       "publishDate": "May 19, 2023",
@@ -24068,6 +24082,20 @@
       ]
     },
     {
+      "showId": "just-for-us-2023",
+      "file": "vulture--jackson-mchenry.json",
+      "score": null,
+      "publishDate": "June 26th, 2023",
+      "url": "https://www.vulture.com/2023/06/theater-reviews-just-for-us-and-one-woman-show.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "just-in-time-2025",
       "file": "deadline--greg-evans.json",
       "score": 73,
@@ -24409,6 +24437,20 @@
       "file": "nytimes--ben-brantley.json",
       "score": 12,
       "publishDate": "November 9, 2018",
+      "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "king-kong-2018",
+      "file": "nytimes--ben-brantleyjesse-green.json",
+      "score": null,
+      "publishDate": "November 8th, 2018",
       "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html",
       "findings": [
         {
@@ -32708,6 +32750,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "oklahoma-2019",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "April 7, 2019",
+      "url": "https://www.nytimes.com/2019/04/07/theater/oklahoma-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from oklahoma-2002"
         }
       ]
     },
@@ -43059,6 +43115,20 @@
     },
     {
       "showId": "tammy-faye-2024",
+      "file": "variety--frank-rizzo.json",
+      "score": null,
+      "publishDate": "November 14, 2024",
+      "url": "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-john-1236210176/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "tammy-faye-2024",
       "file": "village-voice--michael-musto.json",
       "score": 72,
       "publishDate": "2024-11-15",
@@ -49314,6 +49384,20 @@
     },
     {
       "showId": "the-parisian-woman-2017",
+      "file": "guardian--jake-nevins.json",
+      "score": null,
+      "publishDate": "November 30, 2017",
+      "url": "https://www.theguardian.com/stage/2017/nov/30/the-parisian-woman-uma-thurman-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-parisian-woman-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 25,
       "publishDate": "2017-11-30",
@@ -52599,6 +52683,20 @@
     },
     {
       "showId": "to-kill-a-mockingbird-2018",
+      "file": "nytimes--jesse-green.json",
+      "score": null,
+      "publishDate": "December 13, 2018",
+      "url": "https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-2018",
       "file": "observer--rex-reed.json",
       "score": 72,
       "publishDate": "December 14, 2018",
@@ -52973,6 +53071,25 @@
       "file": "vulture--helen-shaw.json",
       "score": 72,
       "publishDate": "October 21, 2022",
+      "url": "https://www.vulture.com/2022/10/theater-review-topdog-underdog-suzan-lori-parks-broadway.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. wolfe\" from topdog-underdog-2002"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "topdog-underdog-2022",
+      "file": "vulture--rob-weinert-kendt.json",
+      "score": 77,
+      "publishDate": "October 20th, 2022",
       "url": "https://www.vulture.com/2022/10/theater-review-topdog-underdog-suzan-lori-parks-broadway.html",
       "findings": [
         {
@@ -60128,6 +60245,19 @@
       ]
     },
     {
+      "showId": "death-of-a-salesman-2026",
+      "file": "washpost--thomas-floyd.json",
+      "publishDate": "2026-04-15",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "deep-azure-globe-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
       "score": 78,
@@ -63239,6 +63369,19 @@
       ]
     },
     {
+      "showId": "heart-wall-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2026-04-15",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/heart-wall-theatre-review-pbwhxxk5w",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "heathers-the-musical-off-broadway-2025",
       "file": "amny--matt-windman.json",
       "score": 89,
@@ -63660,6 +63803,20 @@
     },
     {
       "showId": "here-lies-love-2023",
+      "file": "nytimes--jesse-green.json",
+      "score": null,
+      "publishDate": "July 20, 2023",
+      "url": "https://www.nytimes.com/2023/07/20/theater/here-lies-love-review-david-byrne.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "here-lies-love-2023",
       "file": "stagebuddy--unknown.json",
       "score": 76,
       "publishDate": "2023-11-03",
@@ -64032,6 +64189,20 @@
       "file": "vulture--helen-shaw.json",
       "score": 92,
       "publishDate": "April 25, 2024",
+      "url": "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "vulture--sara-holdren.json",
+      "score": null,
+      "publishDate": "April 26, 2024",
       "url": "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html",
       "findings": [
         {
@@ -69553,6 +69724,20 @@
       ]
     },
     {
+      "showId": "romeo-juliet-2024",
+      "file": "vulture--sara-holdren.json",
+      "score": null,
+      "publishDate": "October 24, 2024",
+      "url": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
       "showId": "saint-joan-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 57,
@@ -71870,6 +72055,20 @@
     },
     {
       "showId": "sweat-2017",
+      "file": "timeout--david-cote.json",
+      "score": null,
+      "publishDate": "March 26, 2017",
+      "url": "https://www.timeout.com/newyork/theater/sweat-1",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "sweat-2017",
       "file": "timeout--david-rooney.json",
       "score": 88,
       "publishDate": "2017-03-29",
@@ -73635,6 +73834,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-fear-of-13-2026",
+      "file": "guardian--adrian-horton.json",
+      "score": 64,
+      "publishDate": "April 15, 2026",
+      "url": "https://www.theguardian.com/stage/2026/apr/15/the-fear-of-13-review-adrien-brody-tessa-thompson",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
