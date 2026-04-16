@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-16T13:53:08.797Z",
+  "timestamp": "2026-04-16T19:33:05.333Z",
   "stats": {
-    "totalReviews": 34790,
-    "alreadyFlagged": 15187,
+    "totalReviews": 34797,
+    "alreadyFlagged": 15192,
     "dateGuardCatches": 98,
     "directorMismatch": 817,
     "tvFilmSignals": 3148,
-    "londonSignals": 1021,
+    "londonSignals": 1022,
     "offBroadwaySignals": 886,
     "yearMismatch": 66,
-    "noPublishDate": 3728
+    "noPublishDate": 3729
   },
   "findings": [
     {
@@ -68556,6 +68556,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "guardian--david-jays.json",
+      "score": null,
+      "publishDate": "2026-04-16",
+      "url": "https://www.theguardian.com/stage/2026/apr/16/one-flew-over-the-cuckoos-nest-review-old-vic-london-aaron-pierre-clint-dyer-giles-terera-olivia-williams",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
