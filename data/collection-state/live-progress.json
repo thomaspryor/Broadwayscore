@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-04-16T11:45:04.929Z",
-  "processed": 58,
-  "failed": 255,
-  "successRate": "18.5%",
+  "updatedAt": "2026-04-16T11:57:25.117Z",
+  "processed": 59,
+  "failed": 264,
+  "successRate": "18.3%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 21,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 13,
     "archive": 11
   },
-  "browserbaseSessions": 27,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:12:01.062Z",
-      "event": "bb-session",
-      "session": "219f5459",
-      "url": "https://www.washingtonpost.com/goingoutguide/theater/betrayal-review-tom-hiddles"
-    },
-    {
-      "t": "2026-04-16T11:12:01.898Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-16T11:14:27.759Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-16T11:39:57.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:55:12.516Z",
+      "event": "bb-session",
+      "session": "1fecfe06",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-re"
+    },
+    {
+      "t": "2026-04-16T11:55:13.717Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
