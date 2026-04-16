@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import type { TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks } from '@/lib/data-types';
+import type { TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks, SeatingSection } from '@/lib/data-types';
 import { featureFlags } from '@/config/feature-flags';
+import SeatingGuidance from './SeatingGuidance';
 
 interface TheaterScorecardCardProps {
   venueScores: TheaterVenueScores;
@@ -10,6 +11,8 @@ interface TheaterScorecardCardProps {
   externalLinks?: TheaterExternalLinks;
   theaterName: string;
   theaterSlug: string;
+  seatingSections?: SeatingSection[];
+  bestSeats?: string;
 }
 
 const DIMENSIONS: { key: keyof Pick<TheaterVenueScores, 'sightlines' | 'sound' | 'comfort' | 'ambiance' | 'facilities'>; label: string; icon: JSX.Element }[] = [
@@ -21,15 +24,15 @@ const DIMENSIONS: { key: keyof Pick<TheaterVenueScores, 'sightlines' | 'sound' |
 ];
 
 function getScoreColor(score: number): string {
-  if (score >= 4) return 'bg-emerald-500';
-  if (score >= 3) return 'bg-amber-500';
-  return 'bg-red-400';
+  if (score >= 4) return 'bg-score-great';
+  if (score >= 3) return 'bg-score-tepid';
+  return 'bg-score-skip';
 }
 
 function getScoreTextColor(score: number): string {
-  if (score >= 4) return 'text-emerald-400';
-  if (score >= 3) return 'text-amber-400';
-  return 'text-red-400';
+  if (score >= 4) return 'text-score-great';
+  if (score >= 3) return 'text-score-tepid';
+  return 'text-score-skip';
 }
 
 function getScoreLabel(score: number): string {
@@ -41,11 +44,11 @@ function getScoreLabel(score: number): string {
 }
 
 function getVenueDesignation(overall: number): { label: string; color: string } {
-  if (overall >= 4.5) return { label: 'Exceptional Venue', color: 'text-emerald-400' };
-  if (overall >= 3.8) return { label: 'Great Venue', color: 'text-emerald-400' };
-  if (overall >= 3.0) return { label: 'Typical Venue', color: 'text-amber-400' };
-  if (overall >= 2.5) return { label: 'Below Average', color: 'text-red-400' };
-  return { label: 'Rough Venue', color: 'text-red-400' };
+  if (overall >= 4.5) return { label: 'Exceptional Venue', color: 'text-score-great' };
+  if (overall >= 3.8) return { label: 'Great Venue', color: 'text-score-great' };
+  if (overall >= 3.0) return { label: 'Typical Venue', color: 'text-score-tepid' };
+  if (overall >= 2.5) return { label: 'Below Average', color: 'text-score-skip' };
+  return { label: 'Rough Venue', color: 'text-score-skip' };
 }
 
 // Icons
@@ -132,6 +135,8 @@ export default function TheaterScorecardCard({
   externalLinks,
   theaterName,
   theaterSlug,
+  seatingSections,
+  bestSeats,
 }: TheaterScorecardCardProps) {
   // Feature flag check must live here (client component) — not in the SSR parent
   if (!featureFlags.theaterScorecard) return null;
@@ -177,28 +182,36 @@ export default function TheaterScorecardCard({
         })}
       </div>
 
+      {/* Seat guidance */}
+      {seatingSections && seatingSections.length > 0 && (
+        <div className="border-t border-white/5 pt-4 mb-4">
+          <h3 className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-3">Where to Sit</h3>
+          <SeatingGuidance sections={seatingSections} bestSeats={bestSeats} />
+        </div>
+      )}
+
       {/* Accessibility badges */}
       {accessibility && accessibility.verified && (
         <div className="border-t border-white/5 pt-3 mb-3">
           <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-2">Accessibility</p>
           <div className="flex flex-wrap gap-1.5">
             {accessibility.wheelchair && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-medium border border-blue-500/20">
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
                 <WheelchairIcon /> Wheelchair
               </span>
             )}
             {accessibility.elevator && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-medium border border-blue-500/20">
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
                 Elevator
               </span>
             )}
             {accessibility.hearingLoop && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-medium border border-blue-500/20">
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
                 Hearing Loop
               </span>
             )}
             {accessibility.assistiveListening && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-medium border border-blue-500/20">
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
                 Assistive Listening
               </span>
             )}
