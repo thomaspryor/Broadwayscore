@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T12:07:07.490Z",
+  "updatedAt": "2026-04-16T12:09:30.258Z",
   "processed": 59,
-  "failed": 304,
-  "successRate": "16.3%",
+  "failed": 314,
+  "successRate": "15.8%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 15,
     "archive": 11
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:20:03.926Z",
-      "event": "bb-session",
-      "session": "c46a8e12",
-      "url": "https://www.wsj.com/articles/torch-song-review-harvey-fierstein-returns-to-broad"
-    },
-    {
-      "t": "2026-04-16T11:20:04.473Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T11:27:06.355Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-16T12:06:14.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T12:07:23.744Z",
+      "event": "bb-session",
+      "session": "42dda6d2",
+      "url": "https://www.wsj.com/articles/trouble-in-mind-review-alice-childress-roundabout-t"
+    },
+    {
+      "t": "2026-04-16T12:07:24.891Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
