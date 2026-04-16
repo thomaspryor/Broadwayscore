@@ -182,20 +182,29 @@ export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[
 /**
  * Show IDs that have at least one NYT "Critic's Pick" review. Built once per process.
  *
- * NOTE: Not currently used on homepage — the designation data from
- * check-nyt-critics-pick.js has ~10% false positive rate (regex matches
- * sidebar/widget text). Needs migration to NYT Article Search API or
- * JSON-LD structured data extraction before this is trustworthy enough
- * for a public shelf. See Notion card for the fix plan.
+ * Source: data/nyt-critics-picks.json — scraped from the authoritative NYT
+ * spotlight page (nytimes.com/spotlight/theater-critics-picks). Cross-referenced
+ * against our review URLs. This replaces the unreliable designation field from
+ * check-nyt-critics-pick.js which had ~10% false positive rate.
+ *
+ * Refresh: run `node scripts/refresh-nyt-critics-picks.js` periodically.
  */
 let _nytCriticsPickShowIds: Set<string> | null = null;
 export function getNYTCriticsPickShowIds(): Set<string> {
   if (_nytCriticsPickShowIds) return _nytCriticsPickShowIds;
-  _nytCriticsPickShowIds = new Set(
-    baseReviews
-      .filter(r => r.outletId === 'nytimes' && r.designation === 'Critics_Pick')
-      .map(r => r.showId)
-  );
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const picksData = require('../../data/nyt-critics-picks.json') as { urls: string[] };
+    const pickUrlSet = new Set(picksData.urls);
+    _nytCriticsPickShowIds = new Set(
+      baseReviews
+        .filter(r => r.outletId === 'nytimes' && r.url && pickUrlSet.has(r.url))
+        .map(r => r.showId)
+    );
+  } catch {
+    // File missing — return empty set (shelf just won't render)
+    _nytCriticsPickShowIds = new Set();
+  }
   return _nytCriticsPickShowIds;
 }
 
