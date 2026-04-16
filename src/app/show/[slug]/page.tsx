@@ -637,6 +637,15 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 ) : null}
               </p>
 
+              {/* Seat one-liner (Broadway only; self-gates when no sweet-spot) */}
+              {!isWestEnd && !isOffBroadway && (
+                <SeatingOneLiner
+                  sections={theater?.structuredTips?.seating?.sections}
+                  venueSlug={slugify(show.venue)}
+                  venueName={show.venue}
+                />
+              )}
+
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
                 const reviewCount = show.criticScore?.reviewCount || 0;
