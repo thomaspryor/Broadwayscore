@@ -31,7 +31,7 @@ export default function TermsOfServicePage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Terms of Service</h1>
-      <p className="text-sm text-gray-500 mb-10">Last updated: February 20, 2026</p>
+      <p className="text-sm text-gray-500 mb-10">Last updated: April 15, 2026</p>
 
       <div className="prose prose-invert prose-gray max-w-none space-y-8 text-gray-300 leading-relaxed">
 
@@ -89,9 +89,72 @@ export default function TermsOfServicePage() {
               not publish Score Data for multiple shows in a table, database, directory, or recurring format
             </li>
             <li>Use the site to inform personal ticket-buying decisions</li>
+            <li>
+              <strong className="text-white">Use the Official Embed Program</strong> (Section 3a) to display CriticScore
+              badges on third-party websites, blogs, and applications — subject to the conditions in Section 3a
+            </li>
           </ul>
           <p className="font-medium text-white">
             All rights not expressly granted herein are reserved by Broadway Scorecard LLC.
+          </p>
+        </section>
+
+        {/* 3a. Official Embed Program */}
+        <section>
+          <h2 className="text-xl font-semibold text-white">3a. Official Embed Program</h2>
+          <p>
+            Broadway Scorecard provides hosted embed endpoints that you may use — free of charge, without a written
+            agreement — to display a single show&apos;s CriticScore on a third-party website, blog, email newsletter,
+            or application, subject to the following conditions:
+          </p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>
+              <strong className="text-white">Use the official endpoints.</strong> Embeds must load content from
+              <code className="text-xs text-brand mx-1">broadwayscorecard.com/embed/&#123;slug&#125;</code> (iframe) or
+              <code className="text-xs text-brand mx-1">broadwayscorecard.com/api/badge/&#123;slug&#125;</code> (SVG).
+              Do not proxy, mirror, cache, or rehost these URLs.
+            </li>
+            <li>
+              <strong className="text-white">Attribution must remain intact.</strong> The embed includes the text
+              &ldquo;CriticScore™ by Broadway Scorecard&rdquo; linking back to our site. You may not remove, obscure,
+              alter, or visually suppress this text or link.
+            </li>
+            <li>
+              <strong className="text-white">The lockup stays together.</strong> The score number, tier color, tier
+              label, and attribution travel as a single unit. Do not strip any element, recolor the badge, or present
+              the score number without its tier context.
+            </li>
+            <li>
+              <strong className="text-white">No modification of values.</strong> Do not alter, normalize, round
+              differently, or transform Score Data pulled from these endpoints. Do not present stale values — use the
+              live embed so scores update automatically.
+            </li>
+            <li>
+              <strong className="text-white">Per-page limit.</strong> A single page or screen may display badges for
+              a single show (the show that page is about), or — with prior written consent — a bounded list of shows
+              directly relevant to that page&apos;s editorial subject. This license does not permit directories,
+              leaderboards, or tables of CriticScores.
+            </li>
+            <li>
+              <strong className="text-white">No derivative indexes.</strong> You may not aggregate, compile, or
+              cross-reference embedded scores with other data to create a ranking product, recommendation engine, or
+              search feature.
+            </li>
+            <li>
+              <strong className="text-white">We may revoke embed access.</strong> We may disable embed endpoints for
+              specific domains or IPs at any time, with or without notice, if we determine these conditions have been
+              violated.
+            </li>
+          </ul>
+          <p>
+            Copy-paste snippets and a live preview are available at{' '}
+            <Link href="/partners" className={linkClass}>broadwayscorecard.com/partners</Link>. Embedding the endpoints
+            constitutes acceptance of these conditions.
+          </p>
+          <p>
+            <strong className="text-white">Bulk or large-scale embedding</strong> (multiple shows per page, database-
+            style integration, API-level access to Score Data) continues to require a separate written licensing
+            agreement — see Section 6.
           </p>
         </section>
 
@@ -113,7 +176,8 @@ export default function TermsOfServicePage() {
             </li>
             <li>
               <strong className="text-white">Unauthorized commercial display:</strong> Displaying, embedding, syndicating, or integrating
-              Score Data, Rankings, or Database content on any third-party website, application, platform, API, widget, tooltip, badge, or product
+              Score Data, Rankings, or Database content on any third-party website, application, platform, API, widget, tooltip, badge, or product —
+              <em className="text-gray-200"> except via the Official Embed Program described in Section 3a, subject to its conditions</em>
             </li>
             <li>
               <strong className="text-white">Caching or storing:</strong> Caching, storing, or archiving Score Data for the purpose of
