@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T12:17:20.809Z",
+  "updatedAt": "2026-04-16T12:19:19.360Z",
   "processed": 59,
-  "failed": 344,
-  "successRate": "14.6%",
+  "failed": 354,
+  "successRate": "14.3%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 16,
     "archive": 11
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:34:17.007Z",
-      "event": "bb-session",
-      "session": "a40d2e75",
-      "url": "https://www.wsj.com/articles/side-show-review-twin-bill-1414450800"
-    },
-    {
-      "t": "2026-04-16T11:34:17.668Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T11:36:57.957Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-16T12:14:30.597Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T12:17:45.150Z",
+      "event": "bb-session",
+      "session": "58c9dfe5",
+      "url": "https://www.wsj.com/articles/torch-song-review-harvey-fierstein-returns-to-broad"
+    },
+    {
+      "t": "2026-04-16T12:17:46.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
