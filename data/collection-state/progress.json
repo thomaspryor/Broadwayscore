@@ -16,7 +16,10 @@
     "proof-2026/guardian--michael-billington.json",
     "proof-2026/observer--casey-epstein-gross.json",
     "proof-2026/ap--unknown.json",
-    "proof-2026/playbill--unknown.json"
+    "proof-2026/playbill--unknown.json",
+    "the-fear-of-13-2026/ew--shania-russell.json",
+    "the-fear-of-13-2026/nydailynews--brian-niemietz.json",
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json"
   ],
   "failed": [
     "the-fear-of-13-2026/wsj--charles-isherwood.json",
@@ -26,7 +29,9 @@
     "avenue-q-west-end-2026/times-uk--unknown.json",
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
     "proof-2026/variety--unknown.json",
-    "proof-2026/talkinbroadway--unknown.json"
+    "proof-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "the-fear-of-13-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -40,7 +45,8 @@
       "avenue-q-west-end-2026/thestage--unknown.json",
       "proof-2026/guardian--michael-billington.json",
       "proof-2026/ap--unknown.json",
-      "proof-2026/playbill--unknown.json"
+      "proof-2026/playbill--unknown.json",
+      "the-fear-of-13-2026/ew--shania-russell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -57,7 +63,9 @@
       "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
       "avenue-q-west-end-2026/whatsonstage--alun-hood.json",
       "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
-      "proof-2026/nytimes--sarah-bahr.json"
+      "proof-2026/nytimes--sarah-bahr.json",
+      "the-fear-of-13-2026/nydailynews--brian-niemietz.json",
+      "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -67,7 +75,7 @@
     "archive": []
   },
   "startTime": "2026-04-16T07:00:28.511Z",
-  "lastProcessed": "proof-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
   "log": [
     {
       "t": "2026-04-16T08:50:03.590Z",
@@ -167,6 +175,28 @@
       "t": "2026-04-16T08:51:35.928Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T08:51:53.841Z",
+      "event": "bb-session",
+      "session": "5339f85c",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T08:51:54.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T08:53:14.283Z",
+      "event": "bb-session",
+      "session": "9c0673f2",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T08:53:15.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
