@@ -62,7 +62,13 @@
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
     "proof-2026/ew--shania-russell.json",
     "proof-2026/cititour--brian-scott-lipton.json",
-    "proof-2026/cote-notices--david-cote.json"
+    "proof-2026/cote-notices--david-cote.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--brent-lang.json",
+    "proof-2026/deadline--anthony-dalessandro.json",
+    "proof-2026/guardian--michael-billington.json",
+    "proof-2026/ap--unknown.json",
+    "the-fear-of-13-2026/nypost--johnny-oleksinski.json",
+    "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -823,7 +829,11 @@
     "proof-2026/wsj--charles-isherwood.json",
     "proof-2026/talkinbroadway--unknown.json",
     "the-fear-of-13-2026/wsj--charles-isherwood.json",
-    "the-fear-of-13-2026/wsj--unknown.json"
+    "the-fear-of-13-2026/wsj--unknown.json",
+    "good-people-2011/new-jersey-newsroom--michael-sommers.json",
+    "good-people-2011/backstage--erik-haagensen.json",
+    "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
+    "elling-2010/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -849,7 +859,10 @@
       "the-lyons-2012/theatermania--dan-bacalzo.json",
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
       "stranger-things-2024/thestage--unknown.json",
-      "proof-2026/ew--shania-russell.json"
+      "proof-2026/ew--shania-russell.json",
+      "proof-2026/guardian--michael-billington.json",
+      "proof-2026/ap--unknown.json",
+      "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -873,7 +886,13 @@
       "clydes-2021/variety--naveen-kumar.json",
       "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
       "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
-      "data/review-texts/proof-2026/variety--unknown.json"
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--brent-lang.json",
+      "milk-and-honey-amt-theater-off-broadway-2026/variety--brent-lang.json",
+      "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
+      "proof-2026/deadline--anthony-dalessandro.json",
+      "data/review-texts/the-fear-of-13-2026/nypost--johnny-oleksinski.json",
+      "the-fear-of-13-2026/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -937,7 +956,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "the-fear-of-13-2026/wsj--unknown.json",
+  "lastProcessed": "elling-2010/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -1499,6 +1518,39 @@
       "t": "2026-04-16T14:12:26.251Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T18:35:12.729Z",
+      "event": "bb-session",
+      "session": "a408fa5a",
+      "url": "https://variety.com/2026/legit/news/a-walk-on-the-moon-musical-new-york-stage-de"
+    },
+    {
+      "t": "2026-04-16T18:35:13.368Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T18:35:33.657Z",
+      "event": "bb-session",
+      "session": "0c04eaf1",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T18:35:34.236Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T18:36:54.799Z",
+      "event": "bb-session",
+      "session": "f0f2b0cf",
+      "url": "https://nypost.com/2026/04/15/entertainment/the-fear-of-13-review-adrien-brody-g"
+    },
+    {
+      "t": "2026-04-16T18:36:55.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
     }
   ]
 }
