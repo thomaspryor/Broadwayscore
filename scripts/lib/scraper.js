@@ -68,7 +68,8 @@ const PLAYWRIGHT_FIRST_DOMAINS = new Set([
   'broadway.org',       // Playbill/closing dates — public HTML
   'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
   'dailymail.co.uk',    // Star ratings rendered via client-side JS (rating-star CSS classes)
-  'talkinbroadway.com', // Simple HTML blog — free Playwright works reliably
+  // talkinbroadway.com removed — behind Cloudflare managed challenge since ~2026-04;
+  // Playwright (headless, even with stealth) cannot solve it. BrightData goes first.
   'stagebuddy.com',     // WordPress blog — free Playwright works reliably
   'londontheatre.co.uk', // React SPA (Material-UI) — BD returns empty, Playwright renders JS
 ]);
