@@ -31,7 +31,11 @@
     "life-of-pi-2023/newyorker--katy-waldman.json",
     "the-collaboration-2022/vulture--jackson-mchenry.json",
     "some-like-it-hot-2022/newyorker--helen-shaw.json",
-    "kpop-2022/vulture--jackson-mchenry.json"
+    "kpop-2022/vulture--jackson-mchenry.json",
+    "almost-famous-2022/nydailynews--chris-jones.json",
+    "topdog-underdog-2022/vulture--rob-weinert-kendt.json",
+    "topdog-underdog-2022/talkinbroadway--elyse-trevers.json",
+    "the-kite-runner-2022/vulture--naveen-kumar.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -84,7 +88,13 @@
     "fat-ham-2023/newyorker--naomi-fry.json",
     "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
     "the-collaboration-2022/hollywood-reporter--angie-han.json",
-    "the-collaboration-2022/hollywood-reporter--david-rooney.json"
+    "the-collaboration-2022/hollywood-reporter--david-rooney.json",
+    "walking-with-ghosts-2022/dtli--ran-xia.json",
+    "topdog-underdog-2022/talkinbroadway--matthew-murray.json",
+    "into-the-woods-2022/newyorker--alexandra-schwartz.json",
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "girl-from-the-north-country-2022/theater-news-online--david-cote.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -96,7 +106,8 @@
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "marjorie-prime-2025/nytg--joe-dziemianowicz.json",
       "hells-kitchen-2024/theatermania--zachary-stewart.json",
-      "good-night-oscar-2023/theatermania--zachary-stewart.json"
+      "good-night-oscar-2023/theatermania--zachary-stewart.json",
+      "topdog-underdog-2022/talkinbroadway--elyse-trevers.json"
     ],
     "amp": [],
     "browserbase": [
@@ -129,12 +140,15 @@
     "brightdata": [
       "the-roommate-2024/vulture--sara-holdren.json",
       "the-shark-is-broken-2023/wsj--terry-teachout.json",
-      "kpop-2022/vulture--jackson-mchenry.json"
+      "kpop-2022/vulture--jackson-mchenry.json",
+      "almost-famous-2022/nydailynews--chris-jones.json",
+      "topdog-underdog-2022/vulture--rob-weinert-kendt.json"
     ],
     "archiveToday": [
       "data/review-texts/proof-2026/talkinbroadway--unknown.json",
       "data/review-texts/proof-2026/talkinbroadway--unknown.json",
-      "data/review-texts/stranger-things-2024/thestage--unknown.json"
+      "data/review-texts/stranger-things-2024/thestage--unknown.json",
+      "data/review-texts/topdog-underdog-2022/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -145,11 +159,12 @@
       "just-for-us-2023/vulture--jackson-mchenry.json",
       "life-of-pi-2023/newyorker--katy-waldman.json",
       "the-collaboration-2022/vulture--jackson-mchenry.json",
-      "some-like-it-hot-2022/newyorker--helen-shaw.json"
+      "some-like-it-hot-2022/newyorker--helen-shaw.json",
+      "the-kite-runner-2022/vulture--naveen-kumar.json"
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "kpop-2022/vulture--jackson-mchenry.json",
+  "lastProcessed": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -337,6 +352,17 @@
       "t": "2026-04-16T10:54:05.262Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-16T11:00:54.780Z",
+      "event": "bb-session",
+      "session": "a24edaa1",
+      "url": "https://www.talkinbroadway.com/world/TopDogUnderDog.html"
+    },
+    {
+      "t": "2026-04-16T11:00:55.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
