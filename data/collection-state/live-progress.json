@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T12:11:51.068Z",
+  "updatedAt": "2026-04-16T12:15:18.984Z",
   "processed": 59,
-  "failed": 324,
-  "successRate": "15.4%",
+  "failed": 334,
+  "successRate": "15.0%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 7,
-    "archiveToday": 15,
+    "archiveToday": 16,
     "archive": 11
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:29:32.645Z",
-      "event": "bb-session",
-      "session": "2088523d",
-      "url": "http://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-1477614600"
-    },
-    {
-      "t": "2026-04-16T11:29:33.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T11:34:17.007Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-16T12:09:53.831Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T12:14:29.488Z",
+      "event": "bb-session",
+      "session": "46ce6c88",
+      "url": "http://www.talkinbroadway.com/world/Tootsie.html"
+    },
+    {
+      "t": "2026-04-16T12:14:30.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

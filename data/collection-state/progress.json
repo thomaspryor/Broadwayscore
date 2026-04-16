@@ -384,7 +384,17 @@
     "linda-vista-2019/theater-news-online--joe-dziemianowicz.json",
     "the-great-society-2019/theater-news-online--jeremy-gerard.json",
     "the-height-of-the-storm-2019/theater-news-online--david-cote.json",
-    "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json"
+    "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json",
+    "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json",
+    "betrayal-2019/theater-news-online--robert-cashill.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
+    "ink-2019/theater-news-online--joe-dziemianowicz.json",
+    "ink-2019/ny1--ny1-roma-torre.json",
+    "tootsie-2019/theater-news-online--joe-dziemianowicz.json",
+    "tootsie-2019/talkinbroadway--matthew-murray.json",
+    "hillary-and-clinton-2019/theater-news-online--david-cote.json",
+    "king-lear-2019/theater-news-online--david-cote.json",
+    "king-lear-2019/theater-news-online--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -471,7 +481,8 @@
       "data/review-texts/the-prom-2018/talkinbroadway--matthew-murray.json",
       "data/review-texts/cabaret-2014/wsj--terry-teachout.json",
       "data/review-texts/illinoise-2024/talkinbroadway--matthew-murray.json",
-      "data/review-texts/topdog-underdog-2022/talkinbroadway--matthew-murray.json"
+      "data/review-texts/topdog-underdog-2022/talkinbroadway--matthew-murray.json",
+      "data/review-texts/tootsie-2019/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -488,7 +499,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json",
+  "lastProcessed": "king-lear-2019/theater-news-online--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -940,6 +951,17 @@
       "t": "2026-04-16T12:09:53.831Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T12:14:29.488Z",
+      "event": "bb-session",
+      "session": "46ce6c88",
+      "url": "http://www.talkinbroadway.com/world/Tootsie.html"
+    },
+    {
+      "t": "2026-04-16T12:14:30.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
