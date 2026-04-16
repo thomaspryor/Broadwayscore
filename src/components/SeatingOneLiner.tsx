@@ -10,10 +10,12 @@ interface SeatingOneLinerProps {
 export default function SeatingOneLiner({ sections, venueSlug, venueName }: SeatingOneLinerProps) {
   if (!sections || !sections.length) return null;
 
-  const sweetSpot = sections.find((s) => s?.verdict === 'sweet-spot');
-  if (!sweetSpot) return null;
+  const sweetSpots = sections.filter((s) => s?.verdict === 'sweet-spot');
+  if (!sweetSpots.length) return null;
 
-  const sectionLabel = sweetSpot.rowRange ? `${sweetSpot.name}, rows ${sweetSpot.rowRange}` : sweetSpot.name;
+  const sectionLabel = sweetSpots.length === 1
+    ? (sweetSpots[0].rowRange ? `${sweetSpots[0].name}, rows ${sweetSpots[0].rowRange}` : sweetSpots[0].name)
+    : sweetSpots.map((s) => s.name).join(' + ');
 
   return (
     <div className="mt-1 text-xs">
