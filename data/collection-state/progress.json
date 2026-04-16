@@ -913,7 +913,17 @@
     "next-to-normal-2009/neontommy--jason-kehe.json",
     "rock-of-ages-2009/theatermania--david-rooney.json",
     "rock-of-ages-2009/usatoday--unknown.json",
-    "rock-of-ages-2009/theater-news-online--unknown.json"
+    "rock-of-ages-2009/theater-news-online--unknown.json",
+    "reasons-to-be-pretty-2009/variety--charles-isherwood.json",
+    "exit-the-king-2009/variety--david-rooney.json",
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "impressionism-2009/variety--david-rooney.json",
+    "impressionism-2009/newsday--linda-winer.json",
+    "33-variations-2009/variety--charles-isherwood.json",
+    "33-variations-2009/newsday--unknown.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "american-buffalo-2008/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1026,7 +1036,8 @@
       "data/review-texts/proof-2026/talkinbroadway--unknown.json",
       "data/review-texts/the-peewee-herman-show-2010/nytimes--ben-brantley.json",
       "data/review-texts/next-fall-2010/washpost--peter-marks.json",
-      "data/review-texts/rock-of-ages-2009/usatoday--unknown.json"
+      "data/review-texts/rock-of-ages-2009/usatoday--unknown.json",
+      "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -1043,7 +1054,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "rock-of-ages-2009/theater-news-online--unknown.json",
+  "lastProcessed": "american-buffalo-2008/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -1704,6 +1715,17 @@
       "t": "2026-04-16T18:52:29.765Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-04-16T18:53:44.903Z",
+      "event": "bb-session",
+      "session": "90c77d98",
+      "url": "https://www.nytimes.com/2008/10/17/theater/reviews/17buff.html"
+    },
+    {
+      "t": "2026-04-16T18:53:45.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
