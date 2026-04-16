@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-16T09:33:37.189Z",
-  "processed": 11,
-  "failed": 13,
-  "successRate": "45.8%",
+  "updatedAt": "2026-04-16T09:39:18.264Z",
+  "processed": 16,
+  "failed": 16,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 4,
-    "brightdata": 1,
-    "archiveToday": 0,
+    "brightdata": 2,
+    "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-04-16T09:31:09.167Z",
@@ -47,6 +47,39 @@
       "t": "2026-04-16T09:33:24.510Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T09:36:46.412Z",
+      "event": "bb-session",
+      "session": "04aa9577",
+      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
+    },
+    {
+      "t": "2026-04-16T09:36:47.119Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T09:37:03.932Z",
+      "event": "bb-session",
+      "session": "08e660e0",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T09:37:04.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T09:37:55.935Z",
+      "event": "bb-session",
+      "session": "f458073d",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T09:37:56.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
