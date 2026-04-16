@@ -1,25 +1,56 @@
 {
   "processed": [
+    "the-fear-of-13-2026/ew--unknown.json",
+    "the-fear-of-13-2026/guardian--arifa-akbar.json",
+    "the-fear-of-13-2026/nydailynews--unknown.json",
+    "kenrex-off-broadway-2026/thestage--unknown.json",
+    "the-fear-of-13-2026/independent--alice-saville.json",
+    "the-fear-of-13-2026/playbill--unknown.json",
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "avenue-q-west-end-2026/london-theatre--the-anonymous-reviewer.json",
+    "avenue-q-west-end-2026/thestage--unknown.json",
+    "avenue-q-west-end-2026/whatsonstage--alun-hood.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
     "proof-2026/nytimes--sarah-bahr.json",
     "proof-2026/deadline--anthony-dalessandro.json",
     "proof-2026/guardian--michael-billington.json",
     "proof-2026/observer--casey-epstein-gross.json",
     "proof-2026/ap--unknown.json",
-    "proof-2026/playbill--unknown.json"
+    "proof-2026/playbill--unknown.json",
+    "the-fear-of-13-2026/ew--shania-russell.json",
+    "the-fear-of-13-2026/nydailynews--brian-niemietz.json",
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json"
   ],
   "failed": [
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "the-fear-of-13-2026/wsj--unknown.json",
+    "the-fear-of-13-2026/talkinbroadway--unknown.json",
+    "avenue-q-west-end-2026/times-uk--unknown.json",
+    "avenue-q-west-end-2026/times-uk--unknown.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
     "proof-2026/variety--unknown.json",
-    "proof-2026/talkinbroadway--unknown.json"
+    "proof-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "the-fear-of-13-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
+      "the-fear-of-13-2026/ew--unknown.json",
+      "the-fear-of-13-2026/guardian--arifa-akbar.json",
+      "kenrex-off-broadway-2026/thestage--unknown.json",
+      "the-fear-of-13-2026/independent--alice-saville.json",
+      "the-fear-of-13-2026/playbill--unknown.json",
+      "avenue-q-west-end-2026/london-theatre--the-anonymous-reviewer.json",
+      "avenue-q-west-end-2026/thestage--unknown.json",
       "proof-2026/guardian--michael-billington.json",
       "proof-2026/ap--unknown.json",
-      "proof-2026/playbill--unknown.json"
+      "proof-2026/playbill--unknown.json",
+      "the-fear-of-13-2026/ew--shania-russell.json"
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
       "data/review-texts/proof-2026/variety--unknown.json",
       "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
       "proof-2026/deadline--anthony-dalessandro.json",
@@ -28,16 +59,23 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "proof-2026/nytimes--sarah-bahr.json"
+      "the-fear-of-13-2026/nydailynews--unknown.json",
+      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+      "avenue-q-west-end-2026/whatsonstage--alun-hood.json",
+      "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+      "proof-2026/nytimes--sarah-bahr.json",
+      "the-fear-of-13-2026/nydailynews--brian-niemietz.json",
+      "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json"
     ],
     "brightdata": [],
     "archiveToday": [
+      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
       "data/review-texts/proof-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
-  "startTime": "2026-04-16T08:50:00.842Z",
-  "lastProcessed": "proof-2026/talkinbroadway--unknown.json",
+  "startTime": "2026-04-16T07:00:28.511Z",
+  "lastProcessed": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
   "log": [
     {
       "t": "2026-04-16T08:50:03.590Z",
@@ -82,6 +120,83 @@
       "t": "2026-04-16T08:54:16.024Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T08:46:55.276Z",
+      "event": "bb-session",
+      "session": "1c61b2ee",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T08:46:56.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T08:47:09.200Z",
+      "event": "bb-session",
+      "session": "2f0af581",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T08:47:10.294Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T08:48:02.894Z",
+      "event": "bb-session",
+      "session": "e0d1241c",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T08:48:04.012Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T08:48:28.155Z",
+      "event": "bb-session",
+      "session": "353ecf3a",
+      "url": "https://observer.com/2023/06/burden-of-proof-review-true-crime-that-questions-mo"
+    },
+    {
+      "t": "2026-04-16T08:48:29.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-16T08:51:34.809Z",
+      "event": "bb-session",
+      "session": "e354b0d9",
+      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
+    },
+    {
+      "t": "2026-04-16T08:51:35.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T08:51:53.841Z",
+      "event": "bb-session",
+      "session": "5339f85c",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T08:51:54.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T08:53:14.283Z",
+      "event": "bb-session",
+      "session": "9c0673f2",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T08:53:15.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

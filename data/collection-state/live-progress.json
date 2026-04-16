@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-16T08:54:33.538Z",
-  "processed": 6,
-  "failed": 2,
-  "successRate": "75.0%",
+  "updatedAt": "2026-04-16T08:54:50.103Z",
+  "processed": 20,
+  "failed": 10,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-04-16T08:50:03.590Z",
@@ -58,6 +58,83 @@
       "t": "2026-04-16T08:54:16.024Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T08:46:55.276Z",
+      "event": "bb-session",
+      "session": "1c61b2ee",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T08:46:56.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T08:47:09.200Z",
+      "event": "bb-session",
+      "session": "2f0af581",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T08:47:10.294Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T08:48:02.894Z",
+      "event": "bb-session",
+      "session": "e0d1241c",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T08:48:04.012Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T08:48:28.155Z",
+      "event": "bb-session",
+      "session": "353ecf3a",
+      "url": "https://observer.com/2023/06/burden-of-proof-review-true-crime-that-questions-mo"
+    },
+    {
+      "t": "2026-04-16T08:48:29.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-16T08:51:34.809Z",
+      "event": "bb-session",
+      "session": "e354b0d9",
+      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
+    },
+    {
+      "t": "2026-04-16T08:51:35.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T08:51:53.841Z",
+      "event": "bb-session",
+      "session": "5339f85c",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T08:51:54.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T08:53:14.283Z",
+      "event": "bb-session",
+      "session": "9c0673f2",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T08:53:15.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
