@@ -14,6 +14,17 @@
  * When adding known critic name variations, add them to CRITIC_ALIASES below.
  */
 
+/**
+ * isPreviewPlaceholder: true — a review file created before openingDate, likely
+ * a stub with incomplete fullText or pre-opening aggregator signal. Safe to
+ * REPLACE on post-opening discovery. Contrast with a real review (no flag)
+ * which must NEVER be replaced by a downstream discovery.
+ *
+ * This flag is respected by mergeReviews(): when existing.isPreviewPlaceholder
+ * is true and the caller passes { fromPostOpening: true }, the incoming review
+ * fully replaces the placeholder rather than being merged into it.
+ */
+
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
