@@ -1,25 +1,96 @@
 {
   "processed": [
-    "avenue-q-west-end-2026/guardian--unknown.json"
+    "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json",
+    "hadestown-west-end-2024/nytg--gillian-russo.json",
+    "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "avenue-q-west-end-2026/guardian--unknown.json",
+    "proof-2026/theatermania--unknown.json",
+    "proof-2026/frontmezzjunkies--unknown.json",
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+    "proof-2026/nytimes--sarah-bahr.json",
+    "proof-2026/deadline--anthony-dalessandro.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/times-uk--unknown.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+    "proof-2026/variety--unknown.json",
     "avenue-q-west-end-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "avenue-q-west-end-2026/guardian--unknown.json"
+      "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json",
+      "hadestown-west-end-2024/nytg--gillian-russo.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+      "proof-2026/theatermania--unknown.json",
+      "proof-2026/frontmezzjunkies--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
+      "proof-2026/deadline--anthony-dalessandro.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
+      "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
+      "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+      "proof-2026/nytimes--sarah-bahr.json"
+    ],
+    "brightdata": [
+      "avenue-q-west-end-2026/guardian--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-04-16T09:00:44.767Z",
-  "lastProcessed": "avenue-q-west-end-2026/times-uk--unknown.json",
-  "log": []
+  "startTime": "2026-04-16T08:35:23.966Z",
+  "lastProcessed": "proof-2026/deadline--anthony-dalessandro.json",
+  "log": [
+    {
+      "t": "2026-04-16T09:31:09.167Z",
+      "event": "bb-session",
+      "session": "9fe75d77",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T09:31:09.863Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T09:31:21.655Z",
+      "event": "bb-session",
+      "session": "307ab127",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T09:31:22.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T09:33:23.893Z",
+      "event": "bb-session",
+      "session": "887ace5c",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T09:33:24.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
