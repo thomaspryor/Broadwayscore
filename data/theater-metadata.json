@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-02T16:13:44.090Z",
+    "lastUpdated": "2026-04-16T20:58:43.117Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -3232,10 +3232,159 @@
     "yearBuilt": 1927,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:40.328Z",
+      "lastUpdated": "2026-04-16T20:58:43.117Z",
       "seating": {
         "bestSeats": "Center orchestra rows E-M offer an ideal viewing experience at the Majestic Theatre.",
-        "accessibility": "4 wheelchair locations in Orchestra. No steps to rows AA-H. Infrared devices available."
+        "accessibility": "4 wheelchair locations in Orchestra. No steps to rows AA-H. Infrared devices available.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "rowRange": "F-L",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "priceTier": "premium",
+            "rationale": "Center rows F-L sit just past the first-row neck-crane and just before the Row H mezz overhang bites. Sharp sightlines, clean sound, full set visible from deck to fly loft.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Reviewers repeatedly call center orchestra legroom below average for a 1,600-seat house, especially M1 and aisle-adjacent seats"
+              }
+            ],
+            "dataPoints": 16,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/majestic-theatre/orchestra/",
+              "https://seatplan.com/new-york/majestic-theatre/seating-plan/",
+              "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/",
+              "https://www.headout.com/blog/majestic-theatre-seating-chart/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7112058-What_s_the_Majestic_Theatre_on_broadway_best_seat-New_York_City_New_York.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k471009-Majestic_Theatre_orchestra_vs_front_mezzanine-New_York_City_New_York.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2465945-Majestic_Theatre_best_seats-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "rowRange": "A-C",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best elevation",
+            "priceTier": "premium",
+            "rationale": "Panoramic top-down view with zero overhang and a steep-enough rake that no head blocks you. The better pick than center orchestra for big choreography or any show with stage-high spectacle.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Double-digit seats on the far sides of Row A/B start to face the stage at an angle; stay single-digit or low double-digit to keep it square"
+              }
+            ],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/majestic-theatre/front-mezzanine/",
+              "https://seatplan.com/new-york/majestic-theatre/seating-plan/",
+              "https://www.headout.com/blog/majestic-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k471009-Majestic_Theatre_orchestra_vs_front_mezzanine-New_York_City_New_York.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k8182541-o10-Obstructed_view_Majestic_Theatre_Phantom_of_the_Opera_row_Q-New_York_City_New_York.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2465945-Majestic_Theatre_best_seats-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine Center",
+            "rowRange": "A-C",
+            "verdict": "solid",
+            "verdictLabel": "Value pick",
+            "priceTier": "budget",
+            "rationale": "Steep rake, no one in front of you, nothing cut off. You trade intimacy for a clean full-stage read at roughly a third of center-orchestra pricing.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Majestic is a 1,645-seat house, so facial expression reads soft from here — fine for spectacle, not for dialogue-driven plays"
+              }
+            ],
+            "dataPoints": 12,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/majestic-theatre/rear-mezzanine/",
+              "https://forum.broadwayworld.com/readmessage.php?thread=1106482",
+              "https://www.tripadvisor.com/FAQ_Answers-g60763-d548873-t807905-How_is_the_viewing_in_Rear_Mezzanine.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7425922-Majestic_Theatre_NYC_Are_orchestra_row_R_seats_views-New_York_City_New_York.html",
+              "https://www.headout.com/blog/majestic-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Orchestra Sides",
+            "rowRange": "E-N (seats 9+ / 10+)",
+            "verdict": "solid",
+            "verdictLabel": "Budget orchestra",
+            "priceTier": "mid",
+            "rationale": "Priced to move and close to the action, but the higher seat numbers clip the far side of the stage and you'll crane for anything upstage. Stay in single-digit seats or accept the compromise.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Seats toward the outer end of each row lose the far upstage corner and face the stage at an angle; Seatplan notes sightlines become 'side-on' in the outer seats"
+              }
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/majestic-theatre/orchestra/",
+              "https://seatplan.com/new-york/majestic-theatre/seating-plan/",
+              "https://www.headout.com/blog/majestic-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2465945-Majestic_Theatre_best_seats-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Rear Orchestra (under overhang)",
+            "rowRange": "P-W",
+            "verdict": "skip",
+            "verdictLabel": "Avoid",
+            "priceTier": "mid",
+            "rationale": "The front-mezz overhang starts clipping upstage action from Row H and fully buries anything high by Row P. You're paying mid-orchestra prices for a letterboxed view — rear mezz front row beats this every time.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Multiple reviewers report top of the set and anything flying in (chandelier, set pieces, aerial entrances) cut off from Row N back; Row Q specifically flagged as obstructed"
+              },
+              {
+                "type": "sound-dead-spot",
+                "note": "Sitting under a deep overhang flattens dynamics in a house this size; rear mezz gets cleaner sound for similar money"
+              }
+            ],
+            "dataPoints": 11,
+            "evidenceUrls": [
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k8182541-o10-Obstructed_view_Majestic_Theatre_Phantom_of_the_Opera_row_Q-New_York_City_New_York.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7425922-Majestic_Theatre_NYC_Are_orchestra_row_R_seats_views-New_York_City_New_York.html",
+              "https://seatplan.com/new-york/majestic-theatre/orchestra/",
+              "https://seatplan.com/new-york/majestic-theatre/seating-plan/",
+              "https://www.headout.com/blog/majestic-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k471009-Majestic_Theatre_orchestra_vs_front_mezzanine-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Boxes",
+            "rowRange": "Box A-G (sides)",
+            "verdict": "skip",
+            "verdictLabel": "Skip",
+            "priceTier": "premium",
+            "rationale": "You sit sideways to the proscenium and lose a chunk of stage — one reviewer reported the entire stage-left out of view. Priced like a premium seat, performs like a partial-view.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Direct user report: 'the entire stage left was out of view' from a Majestic box; another noted leaning throughout to see past the overhang"
+              },
+              {
+                "type": "side-angle",
+                "note": "Boxes look sideways at performers rather than face-on; fine for architecture fans, punishing for musicals with symmetric staging"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tripadvisor.com/FAQ_Answers-g60763-d548873-t2921957-Does_anyone_have_information_about_the_box_seats.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k8182541-o10-Obstructed_view_Majestic_Theatre_Phantom_of_the_Opera_row_Q-New_York_City_New_York.html",
+              "https://seatplan.com/new-york/majestic-theatre/seating-plan/",
+              "https://www.headout.com/blog/majestic-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -3647,11 +3796,109 @@
     "yearBuilt": 1921,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:03.664Z",
+      "lastUpdated": "2026-04-16T20:58:43.117Z",
       "seating": {
         "bestSeats": "The Music Box Theatre is a smaller venue, so most seats offer good views. Center orchestra seats provide the optimal experience.",
         "avoidSeats": "Balcony seats may feel distant for some viewers. Check the specific seating chart for any obstructed views before booking.",
-        "accessibility": "5 wheelchair spaces in Orchestra. No steps from sidewalk. Infrared devices available."
+        "accessibility": "5 wheelchair spaces in Orchestra. No steps from sidewalk. Infrared devices available.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "rowRange": "E-L",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "priceTier": "premium",
+            "rationale": "In a 1,023-seat house, rows E-L are the Goldilocks zone: close enough to read faces, far enough to take the whole set at once without the neck strain that rows A-B force under this unusually high stage.",
+            "hazards": [],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/music-box-theatre/orchestra/",
+              "https://www.headout.com/blog/music-box-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/",
+              "https://aviewfrommyseat.com/venue/Music+Box+Theatre/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "rowRange": "A-B",
+            "verdict": "sweet-spot",
+            "verdictLabel": "The sleeper pick",
+            "priceTier": "premium",
+            "rationale": "Arguably the best seats in the house: Row A overhangs Orchestra Row J, so you're practically on top of the action with a clean elevated angle on the set. Stay center; the side boxes eat seats 25-28 on both sides.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Seats A25-28 and B25-28 L/R Mezz blocked by jutting side boxes"
+              }
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/music-box-theatre/mezzanine/",
+              "https://www.headout.com/blog/music-box-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/"
+            ]
+          },
+          {
+            "name": "Orchestra Rear",
+            "rowRange": "M-P",
+            "verdict": "solid",
+            "verdictLabel": "The value play",
+            "priceTier": "mid",
+            "rationale": "This is the small-house dividend: rows M-O still feel detailed at Music Box scale and cost less than the prime band. Skip row P if your show has a tall set, where the mezz overhang starts clipping the top.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Mezz overhang starts cutting into the top of stage at row P"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/music-box-theatre/orchestra/",
+              "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
+              "https://www.headout.com/blog/music-box-theatre-seating-chart/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine Center",
+            "rowRange": "G-L",
+            "verdict": "solid",
+            "verdictLabel": "The cheap seat that works",
+            "priceTier": "budget",
+            "rationale": "A strong rake and a 1,023-seat footprint mean the last row of the mezz still reads the stage cleanly — the back of this house beats the back of most Broadway houses. Worth it if you'd rather spend the money on two shows than one.",
+            "hazards": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/music-box-theatre/mezzanine/",
+              "https://www.headout.com/blog/music-box-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/"
+            ]
+          },
+          {
+            "name": "Orchestra Front (Row AA and A-B)",
+            "rowRange": "AA-B",
+            "verdict": "solid",
+            "verdictLabel": "Only if you want the sweat",
+            "priceTier": "premium",
+            "rationale": "The Music Box's stage sits high, so rows AA-B put you looking up for two hours and missing upstage blocking. Take them for a two-hander where proximity is the whole point; skip them for anything with dance or scale.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Stage height forces prolonged looking up; row AA often sold as partial view"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/music-box-theatre/orchestra/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/",
+              "https://www.headout.com/blog/music-box-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/music-box-theatre-seating-chart/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
