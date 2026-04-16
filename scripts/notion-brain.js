@@ -447,32 +447,19 @@ async function createCard(args) {
     card[field] = overflow[field];
   }
 
-  // Write Stop-hook sentinels. Belt-and-suspenders with the PostToolUse
-  // verify hook: this fires even when stdout is piped (| jq, | tail) and the
-  // hook can't grep the UUID out of filtered output. Use git toplevel (not
-  // cwd) so main repo and worktrees share the same sentinel.
-  try {
-    const crypto = require('crypto');
-    const { execSync } = require('child_process');
-    let projectRoot;
-    try {
-      projectRoot = execSync('git rev-parse --show-superproject-working-tree --show-toplevel 2>/dev/null', { encoding: 'utf8' })
-        .split('\n').filter(Boolean).pop() || process.cwd();
-    } catch { projectRoot = process.cwd(); }
-    // Worktrees: collapse `<repo>/.claude/worktrees/<name>` back to `<repo>`
-    // so worktree creates land on the same sentinel as the main repo.
-    projectRoot = projectRoot.replace(/\/\.claude\/worktrees\/[^/]+$/, '');
-    const cwdHash = crypto.createHash('md5').update(projectRoot).digest('hex').slice(0, 16);
-    fs.writeFileSync(
-      `/tmp/notion-card-cwd-${cwdHash}`,
-      `${page.id}\n${projectRoot}\n${new Date().toISOString()}\n`
-    );
-    if (process.env.CLAUDE_SESSION_ID) {
-      fs.writeFileSync(`/tmp/notion-card-${process.env.CLAUDE_SESSION_ID}`, page.id);
-    }
-  } catch (_e) { /* sentinel write is best-effort */ }
-
   console.log(JSON.stringify(card, null, 2));
+
+  // Print a tagged marker line AFTER the JSON so the PostToolUse verify hook
+  // can reliably extract the card ID even when stdout is piped through
+  // `| tail`, `| jq`, etc. The verify hook greps for __NOTION_CARD_ID__=
+  // instead of blindly matching any UUID in the output. Without this, piping
+  // truncates the JSON and the UUID-fallback grep picks up session IDs,
+  // debug-log UUIDs, or other non-card UUIDs mixed into the combined stdout.
+  // Discovered 2026-04-15: the old approach was writing a sentinel keyed by
+  // CLAUDE_SESSION_ID env var, which is a DIFFERENT UUID from the hook
+  // stdin's session_id — so the sentinel existed but under the wrong name.
+  console.error(`__NOTION_CARD_ID__=${page.id}`);
+
   return card;
 }
 
