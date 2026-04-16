@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-15T20:00:52.049Z",
-  "processed": 57,
-  "failed": 1628,
-  "successRate": "3.4%",
+  "updatedAt": "2026-04-16T00:38:21.958Z",
+  "processed": 64,
+  "failed": 1630,
+  "successRate": "3.8%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 34,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 15,
-    "brightdata": 4,
-    "archiveToday": 6,
+    "scrapingbee": 18,
+    "brightdata": 5,
+    "archiveToday": 7,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -36,6 +36,39 @@
       "t": "2026-04-15T10:48:37.395Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T00:34:51.499Z",
+      "event": "bb-session",
+      "session": "895d4a23",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T00:34:53.132Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T00:35:07.161Z",
+      "event": "bb-session",
+      "session": "9e0169f0",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T00:35:08.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T00:35:32.729Z",
+      "event": "bb-session",
+      "session": "5a92a914",
+      "url": "https://observer.com/2023/06/burden-of-proof-review-true-crime-that-questions-mo"
+    },
+    {
+      "t": "2026-04-16T00:35:33.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
