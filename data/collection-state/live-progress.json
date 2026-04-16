@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-15T20:00:52.049Z",
-  "processed": 57,
-  "failed": 1628,
-  "successRate": "3.4%",
+  "updatedAt": "2026-04-16T00:51:15.039Z",
+  "processed": 65,
+  "failed": 1630,
+  "successRate": "3.8%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 34,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingbee": 15,
-    "brightdata": 4,
-    "archiveToday": 6,
+    "scrapingbee": 18,
+    "brightdata": 5,
+    "archiveToday": 7,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -36,6 +36,61 @@
       "t": "2026-04-15T10:48:37.395Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T00:46:04.056Z",
+      "event": "bb-session",
+      "session": "fcdab089",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
+    },
+    {
+      "t": "2026-04-16T00:46:05.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-16T00:47:15.233Z",
+      "event": "bb-session",
+      "session": "c1a6a649",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T00:47:16.371Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T00:47:30.258Z",
+      "event": "bb-session",
+      "session": "7094a8a7",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T00:47:31.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T00:47:55.428Z",
+      "event": "bb-session",
+      "session": "3d42ef1f",
+      "url": "https://observer.com/2023/06/burden-of-proof-review-true-crime-that-questions-mo"
+    },
+    {
+      "t": "2026-04-16T00:47:56.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-16T00:50:58.964Z",
+      "event": "bb-session",
+      "session": "bb06b822",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T00:51:00.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

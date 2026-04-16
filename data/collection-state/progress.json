@@ -56,7 +56,15 @@
     "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
     "the-play-that-goes-wrong-west-end-2021/independent--unknown.json",
     "hadestown-west-end-2024/nytg--gillian-russo.json",
-    "the-play-that-goes-wrong-west-end-2021/independent--alice-saville.json"
+    "the-play-that-goes-wrong-west-end-2021/independent--alice-saville.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--unknown.json",
+    "proof-2026/nytimes--unknown.json",
+    "proof-2026/deadline--unknown.json",
+    "proof-2026/guardian--unknown.json",
+    "proof-2026/observer--unknown.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+    "proof-2026/nytimes--sarah-bahr.json",
+    "proof-2026/deadline--anthony-dalessandro.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1686,7 +1694,9 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
-    "the-scottsboro-boys-2010/backstage--erik-haagensen.json"
+    "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
+    "proof-2026/variety--unknown.json",
+    "proof-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1723,10 +1733,19 @@
       "hadestown-west-end-2024/nytg--unknown.json",
       "the-play-that-goes-wrong-west-end-2021/independent--unknown.json",
       "hadestown-west-end-2024/nytg--gillian-russo.json",
-      "the-play-that-goes-wrong-west-end-2021/independent--alice-saville.json"
+      "the-play-that-goes-wrong-west-end-2021/independent--alice-saville.json",
+      "proof-2026/guardian--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/proof-2026/observer--unknown.json",
+      "proof-2026/observer--unknown.json",
+      "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
+      "proof-2026/deadline--anthony-dalessandro.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-fear-of-13-2026/nytimes--alex-marshall.json",
@@ -1743,13 +1762,17 @@
       "barnum-1980/nytimes--frank-rich.json",
       "the-fear-of-13-2026/front-row-center--vahni-kurra.json",
       "inter-alia-west-end-2026/daily-mail--unknown.json",
-      "magic-mike-live-west-end-2021/times-uk--clive-davis.json"
+      "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
+      "proof-2026/nytimes--unknown.json",
+      "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+      "proof-2026/nytimes--sarah-bahr.json"
     ],
     "brightdata": [
       "titanique-2026/talkinbroadway--unknown.json",
       "titanique-2026/talkinbroadway--unknown.json",
       "fences-2010/wsj--christopher-john-farley.json",
-      "a-steady-rain-2009/latimes--unknown.json"
+      "a-steady-rain-2009/latimes--unknown.json",
+      "milk-and-honey-amt-theater-off-broadway-2026/nytimes--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
@@ -1757,7 +1780,8 @@
       "data/review-texts/the-scottsboro-boys-2010/abc-news--unknown.json",
       "data/review-texts/la-cage-aux-folles-2010/abc-news--michael-kuchwara.json",
       "data/review-texts/the-addams-family-2010/abc-news--unknown.json",
-      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
+      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
@@ -1766,7 +1790,7 @@
     ]
   },
   "startTime": "2026-04-15T08:50:43.089Z",
-  "lastProcessed": "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "proof-2026/deadline--anthony-dalessandro.json",
   "log": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -1789,6 +1813,61 @@
       "t": "2026-04-15T10:48:37.395Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T00:46:04.056Z",
+      "event": "bb-session",
+      "session": "fcdab089",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
+    },
+    {
+      "t": "2026-04-16T00:46:05.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-16T00:47:15.233Z",
+      "event": "bb-session",
+      "session": "c1a6a649",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T00:47:16.371Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T00:47:30.258Z",
+      "event": "bb-session",
+      "session": "7094a8a7",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T00:47:31.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T00:47:55.428Z",
+      "event": "bb-session",
+      "session": "3d42ef1f",
+      "url": "https://observer.com/2023/06/burden-of-proof-review-true-crime-that-questions-mo"
+    },
+    {
+      "t": "2026-04-16T00:47:56.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-16T00:50:58.964Z",
+      "event": "bb-session",
+      "session": "bb06b822",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T00:51:00.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
