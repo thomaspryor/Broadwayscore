@@ -2951,6 +2951,21 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
 
+  // Mark file as a preview-period placeholder when the show hasn't opened yet.
+  // mergeReviews() respects this flag: post-opening discoveries replace the file
+  // wholesale rather than merging into stale preview data.
+  try {
+    const showForPlaceholder = getShowData(showId);
+    if (showForPlaceholder) {
+      const isPreviewsStatus = showForPlaceholder.status === 'previews';
+      const hasNotOpenedYet = showForPlaceholder.openingDate
+        && new Date(showForPlaceholder.openingDate) > new Date();
+      if (isPreviewsStatus || hasNotOpenedYet) {
+        review.isPreviewPlaceholder = true;
+      }
+    }
+  } catch (e) { /* non-fatal — proceed without flag */ }
+
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
 
   // Register in global URL index so subsequent calls see it
