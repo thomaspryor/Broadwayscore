@@ -91,7 +91,10 @@
     "the-fear-of-13-2026/theatrely--juan-a-ramirez.json",
     "the-fear-of-13-2026/culturesauce--thom-geier.json",
     "the-fear-of-13-2026/nysr--david-finkle.json",
-    "the-fear-of-13-2026/nysr--frank-scheck.json"
+    "the-fear-of-13-2026/nysr--frank-scheck.json",
+    "the-fear-of-13-2026/nytimes--helen-shaw.json",
+    "the-fear-of-13-2026/nypost--johnny-oleksinski.json",
+    "the-fear-of-13-2026/chicagotribune--chris-jones.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -2023,7 +2026,10 @@
     "that-championship-season-2011/new-jersey-newsroom--michael-sommers.json",
     "that-championship-season-2011/ap--jocelyn-noveck.json",
     "good-people-2011/new-jersey-newsroom--michael-sommers.json",
-    "good-people-2011/backstage--erik-haagensen.json"
+    "good-people-2011/backstage--erik-haagensen.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+    "proof-2026/variety--unknown.json",
+    "the-fear-of-13-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2097,7 +2103,11 @@
       "data/review-texts/the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
       "the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-fear-of-13-2026/variety--aramide-timubu.json",
-      "the-fear-of-13-2026/variety--aramide-timubu.json"
+      "the-fear-of-13-2026/variety--aramide-timubu.json",
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/the-fear-of-13-2026/nypost--johnny-oleksinski.json",
+      "the-fear-of-13-2026/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2124,7 +2134,9 @@
       "the-fear-of-13-2026/timeout--adam-feldman.json",
       "the-fear-of-13-2026/nytimes--unknown.json",
       "the-fear-of-13-2026/nydailynews--unknown.json",
-      "the-fear-of-13-2026/theatrely--juan-a-ramirez.json"
+      "the-fear-of-13-2026/theatrely--juan-a-ramirez.json",
+      "the-fear-of-13-2026/nytimes--helen-shaw.json",
+      "the-fear-of-13-2026/chicagotribune--chris-jones.json"
     ],
     "brightdata": [
       "titanique-2026/talkinbroadway--unknown.json",
@@ -2161,7 +2173,7 @@
     ]
   },
   "startTime": "2026-04-15T08:50:43.089Z",
-  "lastProcessed": "good-people-2011/backstage--erik-haagensen.json",
+  "lastProcessed": "the-fear-of-13-2026/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -2382,6 +2394,50 @@
       "t": "2026-04-16T03:28:10.499Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T04:31:48.278Z",
+      "event": "bb-session",
+      "session": "7eb45e20",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T04:31:48.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T04:32:00.255Z",
+      "event": "bb-session",
+      "session": "747ce0b4",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T04:32:00.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T04:32:35.036Z",
+      "event": "bb-session",
+      "session": "b423d3bd",
+      "url": "https://nypost.com/2026/04/15/entertainment/the-fear-of-13-review-adrien-brody-g"
+    },
+    {
+      "t": "2026-04-16T04:32:35.392Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-16T04:33:05.811Z",
+      "event": "bb-session",
+      "session": "5c12a5fe",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T04:33:06.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
