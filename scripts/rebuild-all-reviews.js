@@ -50,11 +50,22 @@ const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./
 //      (Hamilton, Hadestown, Lion King, etc. that fell off the spotlight window)
 // A review is designated only if its URL is in this set. Both are URL-keyed; we
 // look up the designations.json entries by finding the show's NYT review URL.
+function canonicalPickUrl(u) {
+  if (!u) return '';
+  try {
+    const url = new URL(u);
+    // Strip query strings and trailing slashes so ?searchResultPosition=1,
+    // ?ref=theater, #:~:text=... etc. don't hide matches.
+    return url.origin + url.pathname.replace(/\/+$/, '');
+  } catch {
+    return u;
+  }
+}
 const NYT_CRITICS_PICK_URLS = (() => {
   const set = new Set();
   try {
     const picksData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'nyt-critics-picks.json'), 'utf8'));
-    for (const u of (picksData.urls || [])) set.add(u);
+    for (const u of (picksData.urls || [])) set.add(canonicalPickUrl(u));
   } catch (e) {
     console.warn('[nyt-critics-picks] Could not load data/nyt-critics-picks.json:', e.message);
   }
@@ -85,7 +96,7 @@ const NYT_CRITICS_PICK_URLS = (() => {
           const r = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
           // Skip misfiled reviews known to be wrong production.
           if (r.wrongProduction === true || r.contentVerification?.wrongProduction === true) continue;
-          if (r.url) set.add(r.url);
+          if (r.url) set.add(canonicalPickUrl(r.url));
         } catch { /* skip unreadable */ }
       }
     }
@@ -3004,7 +3015,7 @@ showDirs.forEach(showId => {
       const desiredDesignation = (() => {
         if (isNytOutlet) {
           const pickUrl = review.url || data.url;
-          return pickUrl && NYT_CRITICS_PICK_URLS.has(pickUrl) ? 'Critics_Pick' : null;
+          return pickUrl && NYT_CRITICS_PICK_URLS.has(canonicalPickUrl(pickUrl)) ? 'Critics_Pick' : null;
         }
         // Non-NYT: clear Critics_Pick (FP from a legacy path); preserve anything else.
         if (data.designation === 'Critics_Pick') return null;
