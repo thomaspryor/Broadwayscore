@@ -259,6 +259,7 @@ function extractTextFromHtml(html, url) {
   // Step 3: Try article-scoped extraction first (much cleaner than whole-page)
   // Match <article> tags, or common article container classes
   const articlePatterns = [
+    /<section\s+class="page">([\s\S]*?)<\/section>/i, // Talkin' Broadway
     /<article[^>]*>([\s\S]*?)<\/article>/i,
     /<div[^>]*class="[^"]*article-body[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
     /<div[^>]*class="[^"]*story-body[^"]*"[^>]*>([\s\S]*?)<\/div>/i,

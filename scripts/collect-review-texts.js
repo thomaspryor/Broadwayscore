@@ -254,6 +254,7 @@ const CONFIG = {
     'hollywoodreporter.com', 'variety.com', 'deadline.com', // PMC sites — CAPTCHA-block Playwright consistently
     'bloomberg.com',  // PerimeterX anti-bot — needs Browserbase CAPTCHA solving for login
     'ft.com',  // hCaptcha on login — needs Browserbase CAPTCHA solving
+    'talkinbroadway.com',  // Cloudflare managed challenge — headless Playwright/stealth can't solve it
   ],
 
   // Sites that need residential proxies (Bright Data preferred)
@@ -3401,6 +3402,8 @@ async function extractArticleText(page) {
       '.article-body',
       // Entertainment Weekly / People
       '[data-testid="article-body-content"]',
+      // Talkin' Broadway — review content in <section class="page">
+      'section.page',
       // Generic (ordered by specificity)
       'article .entry-content',
       'article .post-content',
@@ -3594,6 +3597,16 @@ function extractTextFromHtml(html, url) {
     .replace(/<section[^>]*class="[^"]*(?:related|comments|author)[^"]*"[^>]*>[\s\S]*?<\/section>/gi, '')
     .replace(/<ul[^>]*class="[^"]*(?:social|share|tag)[^"]*"[^>]*>[\s\S]*?<\/ul>/gi, '');
 
+  // Talkin' Broadway: content lives in <section class="page">, not a <div>.
+  // Check this BEFORE the generic div-class container loop.
+  const sectionPageMatch = text.match(/<section\s+class="page">([\s\S]*?)<\/section>/i);
+  if (sectionPageMatch && sectionPageMatch[1]) {
+    const sectionPs = Array.from(sectionPageMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi));
+    if (sectionPs.length >= 3) {
+      text = sectionPageMatch[1];
+    }
+  }
+
   // Try to isolate article body container using broad class matches.
   // Use greedy [\s\S]* bounded by a known end-marker to capture all nested divs.
   const containerSelectors = [
@@ -3609,7 +3622,7 @@ function extractTextFromHtml(html, url) {
     );
     const containerMatch = text.match(pattern);
     if (containerMatch && containerMatch[1]) {
-      const containerPs = [...containerMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi)];
+      const containerPs = Array.from(containerMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi));
       if (containerPs.length >= 3) {
         text = containerMatch[1];
         break;
