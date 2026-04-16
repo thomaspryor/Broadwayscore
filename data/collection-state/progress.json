@@ -50,7 +50,9 @@
     "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json",
     "angels-in-america-2018/broadwaynews--charles-isherwood.json",
     "the-parisian-woman-2017/guardian--jake-nevins.json",
-    "the-bands-visit-2017/show-showdown--wendy-caster.json"
+    "the-bands-visit-2017/show-showdown--wendy-caster.json",
+    "sweat-2017/timeout--david-cote.json",
+    "the-price-2017/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -204,7 +206,15 @@
     "a-dolls-house-part-2-2017/out-magazine--michael-musto.json",
     "bandstand-2017/theater-news-online--brian-scott-lipton.json",
     "bandstand-2017/li-herald--elyse-trevers.json",
-    "six-degrees-of-separation-2017/bobs-theater-blog--robert-sholiton.json"
+    "six-degrees-of-separation-2017/bobs-theater-blog--robert-sholiton.json",
+    "the-little-foxes-2017/act-three-the-reviews--doug-marino.json",
+    "the-little-foxes-2017/bobs-theater-blog--robert-sholiton.json",
+    "groundhog-day-2017/bobs-theater-blog--robert-sholiton.json",
+    "war-paint-2017/theater-news-online--brian-scott-lipton.json",
+    "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
+    "sweat-2017/wsj--terry-teachout.json",
+    "the-price-2017/theater-news-online--brian-scott-lipton.json",
+    "the-price-2017/bobs-theater-blog--robert-sholiton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -258,7 +268,9 @@
       "oklahoma-2019/nytimes--ben-brantley.json",
       "to-kill-a-mockingbird-2018/nytimes--jesse-green.json",
       "king-kong-2018/nytimes--ben-brantleyjesse-green.json",
-      "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json"
+      "the-lifespan-of-a-fact-2018/nytimes--jesse-green.json",
+      "sweat-2017/timeout--david-cote.json",
+      "the-price-2017/nydailynews--joe-dziemianowicz.json"
     ],
     "brightdata": [
       "the-roommate-2024/vulture--sara-holdren.json",
@@ -297,7 +309,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "six-degrees-of-separation-2017/bobs-theater-blog--robert-sholiton.json",
+  "lastProcessed": "the-price-2017/bobs-theater-blog--robert-sholiton.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -626,6 +638,17 @@
     },
     {
       "t": "2026-04-16T11:20:04.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:27:06.355Z",
+      "event": "bb-session",
+      "session": "c904acd9",
+      "url": "https://www.wsj.com/articles/sweat-review-a-pulitzer-winner-comes-to-broadway-14"
+    },
+    {
+      "t": "2026-04-16T11:27:07.511Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
