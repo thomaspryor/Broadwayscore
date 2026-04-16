@@ -14,6 +14,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Check critical crons ran recently
+        id: check
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -88,6 +89,13 @@ jobs:
           elif [ -n "$WARNINGS" ]; then
             echo "All crons running on schedule, but some have recent failures:"
             echo -e "$WARNINGS"
+            # Emit the warnings to $GITHUB_OUTPUT so the next step can forward them to Discord.
+            # WARNINGS is multi-line, so use the heredoc form.
+            {
+              echo "warnings<<EOF"
+              echo -e "$WARNINGS"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
           else
             echo "✅ All critical crons healthy"
           fi
@@ -143,6 +151,69 @@ jobs:
           else
             echo "✅ Deploy durations healthy"
           fi
+
+      # Real-time Discord warning for the non-stale "last run failed" case.
+      # Previously these only printed to the workflow log (nobody reads that).
+      # Matches notify-failure's 2h cooldown pattern: if check-cron-health itself
+      # already ran successfully within the last 2h (e.g., manual re-dispatch on
+      # top of the noon UTC cron), suppress the second alert.
+      - name: Cooldown check for warning alert
+        id: warn_cooldown
+        if: success() && steps.check.outputs.warnings != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const cooldownMinutes = 120;
+            const cutoff = new Date(Date.now() - cooldownMinutes * 60 * 1000);
+            try {
+              const runs = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'check-cron-health.yml',
+                status: 'success',
+                per_page: 10,
+                created: `>=${cutoff.toISOString().split('T')[0]}`,
+              }).catch(() => ({ data: { workflow_runs: [] } }));
+              const recentSuccess = (runs.data.workflow_runs || []).filter(r => {
+                const created = new Date(r.created_at);
+                return created >= cutoff && r.id !== context.runId;
+              });
+              if (recentSuccess.length > 0) {
+                console.log(`[Cooldown] ${recentSuccess.length} prior success(es) in last ${cooldownMinutes}min — suppressing duplicate warning alert.`);
+                core.setOutput('suppressed', 'true');
+              } else {
+                core.setOutput('suppressed', 'false');
+              }
+            } catch (e) {
+              console.log(`[Cooldown] Check failed (${e.message}), sending alert anyway`);
+              core.setOutput('suppressed', 'false');
+            }
+
+      - name: Send warning Discord alert
+        if: success() && steps.check.outputs.warnings != '' && steps.warn_cooldown.outputs.suppressed != 'true'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          WARNINGS: ${{ steps.check.outputs.warnings }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const warnings = (process.env.WARNINGS || '').trim();
+            if (!warnings) {
+              console.log('[WarnAlert] No warnings payload — skipping.');
+              return;
+            }
+            await sendAlert({
+              title: 'Cron Health Warnings (recent failures)',
+              description: 'All crons are running on schedule, but some have recent failures. Investigate before they go stale.',
+              severity: 'warning',
+              fields: [
+                { name: 'Affected Workflows', value: warnings.slice(0, 1024), inline: false },
+                { name: 'Run', value: `[View logs](${runUrl})`, inline: false },
+              ],
+              url: runUrl,
+            }).catch(e => console.error('Warning alert failed:', e.message));
 
       - name: Notify on failure
         if: failure()
