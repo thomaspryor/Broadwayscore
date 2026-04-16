@@ -254,7 +254,17 @@
     "living-on-love-2015/deadline--jeremy-gerard.json",
     "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
     "wolf-hall-parts-one-and-two-2015/ap--mark-kennedy.json",
-    "on-the-twentieth-century-2015/nytg--tulis-mccall.json"
+    "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+    "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
+    "constellations-2015/ap--jennifer-farrar.json",
+    "side-show-2014/wsj--terry-teachout.json",
+    "the-last-ship-2014/talkinbroadway--matthew-murray.json",
+    "disgraced-2014/forward--jesse-green.json",
+    "cabaret-2014/wsj--terry-teachout.json",
+    "act-one-2014/timeout--david-cote.json",
+    "of-mice-and-men-2014/ap--mark-kennedy.json",
+    "ifthen-2014/huffpost--mark-kennedy.json",
+    "rocky-2014/huffpost--huffington-poststeven-suskin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -334,7 +344,8 @@
       "data/review-texts/tootsie-2019/talkinbroadway--matthew-murray.json",
       "data/review-texts/what-the-constitution-means-to-me-2019/vulture--jesse-green.json",
       "data/review-texts/network-2018/washpost--peter-marks.json",
-      "data/review-texts/the-prom-2018/talkinbroadway--matthew-murray.json"
+      "data/review-texts/the-prom-2018/talkinbroadway--matthew-murray.json",
+      "data/review-texts/cabaret-2014/wsj--terry-teachout.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -351,7 +362,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+  "lastProcessed": "rocky-2014/huffpost--huffington-poststeven-suskin.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -702,6 +713,28 @@
     },
     {
       "t": "2026-04-16T11:29:33.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:34:17.007Z",
+      "event": "bb-session",
+      "session": "a40d2e75",
+      "url": "https://www.wsj.com/articles/side-show-review-twin-bill-1414450800"
+    },
+    {
+      "t": "2026-04-16T11:34:17.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:36:57.957Z",
+      "event": "bb-session",
+      "session": "ccdf4ef1",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702304518704579520353182409832"
+    },
+    {
+      "t": "2026-04-16T11:36:58.627Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

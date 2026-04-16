@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T11:34:05.591Z",
+  "updatedAt": "2026-04-16T11:37:43.071Z",
   "processed": 55,
-  "failed": 198,
-  "successRate": "21.7%",
+  "failed": 208,
+  "successRate": "20.9%",
   "tierBreakdown": {
     "playwright": 17,
     "amp": 0,
@@ -10,33 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 7,
-    "archiveToday": 12,
+    "archiveToday": 13,
     "archive": 11
   },
-  "browserbaseSessions": 24,
+  "browserbaseSessions": 26,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:06:45.083Z",
-      "event": "bb-session",
-      "session": "bcecc0b1",
-      "url": "https://www.wsj.com/articles/worst-side-story-11582246801"
-    },
-    {
-      "t": "2026-04-16T11:06:45.730Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-16T11:07:49.672Z",
-      "event": "bb-session",
-      "session": "9ffc936d",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/grand-horizons-review"
-    },
-    {
-      "t": "2026-04-16T11:07:50.241Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-16T11:09:14.343Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-04-16T11:29:33.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:34:17.007Z",
+      "event": "bb-session",
+      "session": "a40d2e75",
+      "url": "https://www.wsj.com/articles/side-show-review-twin-bill-1414450800"
+    },
+    {
+      "t": "2026-04-16T11:34:17.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:36:57.957Z",
+      "event": "bb-session",
+      "session": "ccdf4ef1",
+      "url": "https://online.wsj.com/news/articles/SB10001424052702304518704579520353182409832"
+    },
+    {
+      "t": "2026-04-16T11:36:58.627Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
