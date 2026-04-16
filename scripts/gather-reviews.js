@@ -2464,6 +2464,8 @@ function createReviewFile(showId, reviewData, options = {}) {
   const outletText = reviewData.outlet || reviewData.outletId || '';
   const allowOffBroadway = options.allowOffBroadway || false;
   const allowWestEnd = options.allowWestEnd || false;
+  const fromPostOpening = options.fromPostOpening || false;
+  const mergeOpts = fromPostOpening ? { fromPostOpening: true } : {};
   if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
@@ -2663,7 +2665,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            });
+            }, mergeOpts);
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             console.log(`    ⟳ Prefix match: merged ${filename} into ${existingFile}`);
             return true;
@@ -2673,7 +2675,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            });
+            }, mergeOpts);
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
@@ -2688,7 +2690,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             const merged = mergeReviews(existingReview, {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
-            });
+            }, mergeOpts);
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
@@ -2782,7 +2784,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           const merged = mergeReviews(existingReview, {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
-          });
+          }, mergeOpts);
           fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
 
           // Rename to canonical filename if different
@@ -2790,7 +2792,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             fs.renameSync(path.join(showDir, existingFile), filepath);
           }
 
-          console.log(`    ⟳ Merged into ${filename}`);
+          console.log(`    ⟳ ${merged.isPreviewPlaceholder === undefined && existingReview.isPreviewPlaceholder ? 'Replaced placeholder' : 'Merged'} into ${filename}`);
           return true;
         }
 
@@ -2801,9 +2803,9 @@ function createReviewFile(showId, reviewData, options = {}) {
           const merged = mergeReviews(existingReview, {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
-          });
+          }, mergeOpts);
           fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
-          console.log(`    ⟳ URL match: merged ${filename} into ${existingFile}`);
+          console.log(`    ⟳ URL match: ${merged.isPreviewPlaceholder === undefined && existingReview.isPreviewPlaceholder ? 'replaced placeholder' : 'merged'} ${filename} into ${existingFile}`);
           return true;
         }
       } catch (e) {
