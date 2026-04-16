@@ -233,16 +233,24 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
 
 /**
  * Count scored reviews and compute rave/positive/mixed/negative for a show.
- * 4-tier breakdown matching the live site's ScoreBreakdownBar.
+ * 4-tier breakdown matching the live site's ScoreBreakdownBar.getBreakdownTier:
+ *   - Rounds score before comparing (a 69.6 displays as 70, so it's Positive)
+ *   - Rave: >=83 Broadway, >=85 West End
+ *   - Positive: >=70
+ *   - Mixed: >=55
+ *   - Negative: <55
+ * Keep in sync with src/components/show-cards/ScoreBreakdownBar.tsx.
  */
-function getReviewStats(reviews, showId) {
-  const showReviews = (reviews || []).filter(r => r.showId === showId && r.assignedScore != null);
+function getReviewStats(reviews, showId, market) {
+  const showReviews = (reviews || []).filter(r => r.showId === showId && Number.isFinite(r.assignedScore));
+  const goldThreshold = isLondonMarket(market) ? 85 : 83;
   let rave = 0, positive = 0, mixed = 0, negative = 0;
 
   for (const r of showReviews) {
-    if (r.assignedScore >= 85) rave++;
-    else if (r.assignedScore >= 70) positive++;
-    else if (r.assignedScore >= 55) mixed++;
+    const rounded = Math.round(r.assignedScore);
+    if (rounded >= goldThreshold) rave++;
+    else if (rounded >= 70) positive++;
+    else if (rounded >= 55) mixed++;
     else negative++;
   }
 
@@ -351,7 +359,7 @@ async function main() {
   const readyShows = [];
   for (const show of pendingShows) {
     const showId = show.id || show.slug;
-    const stats = getReviewStats(reviewsArr, showId);
+    const stats = getReviewStats(reviewsArr, showId, MARKET);
     const showReviews = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
     const t1Count = showReviews.filter(r => getOutletTier(r.outletId) === 1).length;
     const t2Count = showReviews.filter(r => getOutletTier(r.outletId) === 2).length;
