@@ -193,7 +193,6 @@ let _nytCriticsPickShowIds: Set<string> | null = null;
 export function getNYTCriticsPickShowIds(): Set<string> {
   if (_nytCriticsPickShowIds) return _nytCriticsPickShowIds;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const picksData = require('../../data/nyt-critics-picks.json') as { urls: string[] };
     const pickUrlSet = new Set(picksData.urls);
     _nytCriticsPickShowIds = new Set(
