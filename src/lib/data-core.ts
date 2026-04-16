@@ -181,6 +181,12 @@ export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[
 
 /**
  * Show IDs that have at least one NYT "Critic's Pick" review. Built once per process.
+ *
+ * NOTE: Not currently used on homepage — the designation data from
+ * check-nyt-critics-pick.js has ~10% false positive rate (regex matches
+ * sidebar/widget text). Needs migration to NYT Article Search API or
+ * JSON-LD structured data extraction before this is trustworthy enough
+ * for a public shelf. See Notion card for the fix plan.
  */
 let _nytCriticsPickShowIds: Set<string> | null = null;
 export function getNYTCriticsPickShowIds(): Set<string> {
