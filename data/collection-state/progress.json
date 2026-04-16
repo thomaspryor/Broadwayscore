@@ -863,7 +863,17 @@
     "everyday-rapture-2010/backstage--david-sheward.json",
     "collected-stories-2010/ap--unknown.json",
     "collected-stories-2010/backstage--david-sheward.json",
-    "enron-2010/new-jersey-newsroom--michael-sommers.json"
+    "enron-2010/new-jersey-newsroom--michael-sommers.json",
+    "enron-2010/backstage--erik-haagensen.json",
+    "fences-2010/backstage--erik-haagensen.json",
+    "promises-promises-2010/new-jersey-newsroom--michael-sommers.json",
+    "promises-promises-2010/toronto-star--richard-ouzounian.json",
+    "american-idiot-2010/variety--david-rooney.json",
+    "american-idiot-2010/bloomberg--jeremy-gerard.json",
+    "la-cage-aux-folles-2010/new-jersey-newsroom--michael-sommers.json",
+    "la-cage-aux-folles-2010/newsday--linda-winer.json",
+    "la-cage-aux-folles-2010/backstage--david-sheward.json",
+    "million-dollar-quartet-2010/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -988,7 +998,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "enron-2010/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "million-dollar-quartet-2010/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -1605,6 +1615,17 @@
       "t": "2026-04-16T18:41:05.543Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-16T18:44:30.072Z",
+      "event": "bb-session",
+      "session": "45d24222",
+      "url": "http://www.newsday.com/entertainment/la-cage-revival-a-happy-surprise-with-gramm"
+    },
+    {
+      "t": "2026-04-16T18:44:30.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
