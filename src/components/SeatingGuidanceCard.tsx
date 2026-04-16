@@ -1,4 +1,7 @@
+'use client';
+
 import type { SeatingSection } from '@/lib/data-types';
+import { featureFlags } from '@/config/feature-flags';
 import SeatingGuidance from './SeatingGuidance';
 
 interface SeatingGuidanceCardProps {
@@ -7,6 +10,10 @@ interface SeatingGuidanceCardProps {
 }
 
 export default function SeatingGuidanceCard({ sections, bestSeats }: SeatingGuidanceCardProps) {
+  // On demo, TheaterScorecardCard hosts the seat guidance inline — don't render twice.
+  // On prod (where TheaterScorecardCard is hidden), this card is the only surface.
+  if (featureFlags.theaterScorecard) return null;
+
   if (!sections || !sections.length) return null;
 
   return (
