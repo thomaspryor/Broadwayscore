@@ -72,7 +72,8 @@
     "the-peewee-herman-show-2010/theatermania--unknown.json",
     "million-dollar-quartet-2010/theatermania--unknown.json",
     "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
-    "oleanna-2009/theatermania--unknown.json"
+    "oleanna-2009/theatermania--unknown.json",
+    "a-man-for-all-seasons-2008/theatermania--david-finkle.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -923,7 +924,16 @@
     "33-variations-2009/newsday--unknown.json",
     "the-story-of-my-life-2009/newsday--linda-winer.json",
     "hedda-gabler-2009/newsday--linda-winer.json",
-    "american-buffalo-2008/nytimes--ben-brantley.json"
+    "american-buffalo-2008/nytimes--ben-brantley.json",
+    "speedtheplow-2008/usatoday--elysa-gardner.json",
+    "a-tale-of-two-cities-2008/variety--david-rooney.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "thurgood-2008/nytimes--ben-brantley.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "south-pacific-2008/ap--michael-kuchwara.json",
+    "in-the-heights-2008/ap--michael-kuchwara.json",
+    "the-little-mermaid-2008/variety--david-rooney.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -955,7 +965,8 @@
       "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
       "million-dollar-quartet-2010/theatermania--unknown.json",
-      "oleanna-2009/theatermania--unknown.json"
+      "oleanna-2009/theatermania--unknown.json",
+      "a-man-for-all-seasons-2008/theatermania--david-finkle.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1037,7 +1048,9 @@
       "data/review-texts/the-peewee-herman-show-2010/nytimes--ben-brantley.json",
       "data/review-texts/next-fall-2010/washpost--peter-marks.json",
       "data/review-texts/rock-of-ages-2009/usatoday--unknown.json",
-      "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json"
+      "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json",
+      "data/review-texts/speedtheplow-2008/usatoday--elysa-gardner.json",
+      "data/review-texts/thurgood-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -1054,7 +1067,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "american-buffalo-2008/nytimes--ben-brantley.json",
+  "lastProcessed": "the-farnsworth-invention-2007/variety--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -1724,6 +1737,28 @@
     },
     {
       "t": "2026-04-16T18:53:45.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-16T18:56:37.182Z",
+      "event": "bb-session",
+      "session": "ee514c91",
+      "url": "https://www.usatoday.com/life/theater/reviews/2008-10-24-speed-the-plow_N.htm"
+    },
+    {
+      "t": "2026-04-16T18:56:37.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-04-16T18:57:23.437Z",
+      "event": "bb-session",
+      "session": "58456ae7",
+      "url": "https://www.nytimes.com/2008/05/01/theater/reviews/01thur.html"
+    },
+    {
+      "t": "2026-04-16T18:57:24.015Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
