@@ -2,40 +2,47 @@
   "processed": [
     "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
     "proof-2026/nytimes--sarah-bahr.json",
-    "one-flew-over-the-cuckoos-nest-west-end-2026/independent--unknown.json",
-    "one-flew-over-the-cuckoos-nest-west-end-2026/standard--unknown.json"
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
+    "the-fear-of-13-2026/guardian--adrian-horton.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
     "proof-2026/variety--unknown.json",
     "avenue-q-west-end-2026/times-uk--unknown.json",
     "proof-2026/talkinbroadway--unknown.json",
-    "avenue-q-west-end-2026/times-uk--unknown.json"
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+    "proof-2026/variety--unknown.json",
+    "proof-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "the-fear-of-13-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "one-flew-over-the-cuckoos-nest-west-end-2026/independent--unknown.json",
-      "one-flew-over-the-cuckoos-nest-west-end-2026/standard--unknown.json"
+      "the-fear-of-13-2026/guardian--adrian-horton.json"
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/variety--unknown.json",
       "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
       "data/review-texts/proof-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
-      "proof-2026/nytimes--sarah-bahr.json"
+      "proof-2026/nytimes--sarah-bahr.json",
+      "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json"
     ],
     "brightdata": [],
     "archiveToday": [
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json",
       "data/review-texts/proof-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "one-flew-over-the-cuckoos-nest-west-end-2026/standard--unknown.json",
+  "lastProcessed": "the-fear-of-13-2026/wsj--unknown.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -69,6 +76,61 @@
       "t": "2026-04-16T09:51:04.444Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T10:18:14.101Z",
+      "event": "bb-session",
+      "session": "a0d94b68",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T10:18:15.010Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T10:18:29.272Z",
+      "event": "bb-session",
+      "session": "d7e55ab1",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T10:18:30.099Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T10:21:22.238Z",
+      "event": "bb-session",
+      "session": "a377c530",
+      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
+    },
+    {
+      "t": "2026-04-16T10:21:23.221Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T10:21:50.493Z",
+      "event": "bb-session",
+      "session": "e8d29aa3",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T10:21:51.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T10:22:30.913Z",
+      "event": "bb-session",
+      "session": "50d3ddfc",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T10:22:31.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

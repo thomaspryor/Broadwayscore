@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-16T10:11:40.218Z",
+  "updatedAt": "2026-04-16T10:23:15.038Z",
   "processed": 4,
-  "failed": 5,
-  "successRate": "44.4%",
+  "failed": 9,
+  "successRate": "30.8%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -47,6 +47,61 @@
       "t": "2026-04-16T09:51:04.444Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T10:18:14.101Z",
+      "event": "bb-session",
+      "session": "a0d94b68",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T10:18:15.010Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T10:18:29.272Z",
+      "event": "bb-session",
+      "session": "d7e55ab1",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T10:18:30.099Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T10:21:22.238Z",
+      "event": "bb-session",
+      "session": "a377c530",
+      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
+    },
+    {
+      "t": "2026-04-16T10:21:23.221Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T10:21:50.493Z",
+      "event": "bb-session",
+      "session": "e8d29aa3",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T10:21:51.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T10:22:30.913Z",
+      "event": "bb-session",
+      "session": "50d3ddfc",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T10:22:31.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
