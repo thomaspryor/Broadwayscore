@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-16T11:19:51.028Z",
-  "processed": 47,
-  "failed": 106,
-  "successRate": "30.7%",
+  "updatedAt": "2026-04-16T11:21:50.731Z",
+  "processed": 48,
+  "failed": 115,
+  "successRate": "29.4%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 9,
+    "scrapingbee": 10,
     "brightdata": 6,
     "archiveToday": 12,
     "archive": 11
   },
-  "browserbaseSessions": 21,
+  "browserbaseSessions": 22,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:03:48.848Z",
-      "event": "bb-session",
-      "session": "d2fbd074",
-      "url": "https://www.washingtonpost.com/theater_dance/2022/04/20/how-i-learned-to-drive-r"
-    },
-    {
-      "t": "2026-04-16T11:03:49.501Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-16T11:04:14.586Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-16T11:19:05.984Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T11:20:03.926Z",
+      "event": "bb-session",
+      "session": "c46a8e12",
+      "url": "https://www.wsj.com/articles/torch-song-review-harvey-fierstein-returns-to-broad"
+    },
+    {
+      "t": "2026-04-16T11:20:04.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
