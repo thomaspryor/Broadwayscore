@@ -103,7 +103,8 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
 
     if (existing) {
-      for (const field of PROTECTED_FIELDS) {
+      const effectiveFields = getEffectiveProtectedFields(existing);
+      for (const field of effectiveFields) {
         if (existing[field] !== undefined && existing[field] !== null && (newData[field] === undefined || newData[field] === null)) {
           newData[field] = existing[field];
           preserved.push(field);
@@ -142,8 +143,9 @@ function checkForDataLoss(filePath, newData) {
     return [];
   }
 
+  const effectiveFields = getEffectiveProtectedFields(existing);
   const losses = [];
-  for (const field of PROTECTED_FIELDS) {
+  for (const field of effectiveFields) {
     if (existing[field] !== undefined && existing[field] !== null && (newData[field] === undefined || newData[field] === null)) {
       losses.push(field);
     }
@@ -151,4 +153,20 @@ function checkForDataLoss(filePath, newData) {
   return losses;
 }
 
-module.exports = { safeWriteReview, checkForDataLoss, PROTECTED_FIELDS };
+/**
+ * Returns the effective set of protected fields for a given existing file's data.
+ * Unions the global PROTECTED_FIELDS with any per-file protectedFields array.
+ * 'protectedFields' itself is always included so it can't be cleared unless force=true.
+ *
+ * @param {object|null} existingData - Parsed JSON from the existing file (or null)
+ * @returns {string[]}
+ */
+function getEffectiveProtectedFields(existingData) {
+  const perFile = (existingData && Array.isArray(existingData.protectedFields))
+    ? existingData.protectedFields
+    : [];
+  const all = new Set([...PROTECTED_FIELDS, ...perFile, 'protectedFields']);
+  return Array.from(all);
+}
+
+module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, PROTECTED_FIELDS };

@@ -42,6 +42,7 @@ const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
 const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 // Authoritative NYT Critic's Pick set — union of two sources:
 //   1. data/nyt-critics-picks.json — scraped from nytimes.com/spotlight/theater-critics-picks
@@ -1570,7 +1571,7 @@ showDirs.forEach(showId => {
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
           delete data.wrongProductionNote;
           stats.wrongProdWEOBAutoCleared = (stats.wrongProdWEOBAutoCleared || 0) + 1;
-          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
           // Fall through — don't skip
         }
       }
@@ -1642,7 +1643,7 @@ showDirs.forEach(showId => {
           if (promoted) {
             data.contentVerificationPromoted = `rebuild: promoted from contentVerification (${cv.verifiedBy}, ${cv.confidence})`;
             stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
-            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
           }
         }
 
@@ -1655,7 +1656,7 @@ showDirs.forEach(showId => {
           data.wrongShow = true;
           data.contentVerificationPromoted = `rebuild: promoted via wrongShowReason fallback (stale cv)`;
           stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
-          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
       }
 
@@ -1707,7 +1708,7 @@ showDirs.forEach(showId => {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
                 data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
-                try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+                try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
                 stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
               }
             }
@@ -1724,7 +1725,7 @@ showDirs.forEach(showId => {
         delete data.wrongProductionNote;
         const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
         data.wrongProductionAutoCleared = `rebuild: ${reason} bypasses wrongProduction`;
-        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
       }
       // Nuclear guard: if manual clear is set, force wrongProduction=false regardless
@@ -1775,7 +1776,7 @@ showDirs.forEach(showId => {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
-        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
       // allowEarlyDate/allowCrossMarket override wrongShow — user explicitly approved this review.
@@ -1787,7 +1788,7 @@ showDirs.forEach(showId => {
         delete data.wrongShowReason;
         const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
         data.wrongShowAutoCleared = `rebuild: ${reason} bypasses wrongShow`;
-        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
       if (data.wrongShow === true) {
@@ -1828,7 +1829,7 @@ showDirs.forEach(showId => {
       if (data.url && !data.url.startsWith('http://') && !data.url.startsWith('https://')) {
         if (data.url.match(/^\/([-a-z]+)\/article\//)) {
           data.url = `https://www.broadwayworld.com${data.url}`;
-          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
           stats.fixedRelativeUrl = (stats.fixedRelativeUrl || 0) + 1;
         } else {
           // Non-BWW relative path (e.g. /people/Ben-Brantley/) — scraping artifact
@@ -1869,7 +1870,7 @@ showDirs.forEach(showId => {
                 stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
                 data.wrongProduction = true;
                 data.wrongProductionNote = `Same URL exists in ${other.showId} which is closer to review year ${reviewYear}`;
-                fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+                safeWriteReview(path.join(showDir, file), data);
                 return;
               }
             }
@@ -1885,7 +1886,7 @@ showDirs.forEach(showId => {
               stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
               data.wrongProduction = true;
               data.wrongProductionNote = `Dateless show — same URL exists in dated show ${other.showId} (${other.showYear})`;
-              fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+              safeWriteReview(path.join(showDir, file), data);
               return;
             }
           }
@@ -1913,7 +1914,7 @@ showDirs.forEach(showId => {
               delete data.wrongProduction;
               delete data.wrongProductionNote;
             }
-            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
             canonicalOutlet = 'timeout-london';
             stats.autoFixedTimeoutLondon = (stats.autoFixedTimeoutLondon || 0) + 1;
           }
@@ -1939,7 +1940,7 @@ showDirs.forEach(showId => {
             // [GUARD:CROSS-MARKET-US-ON-LONDON]
             data.wrongProduction = true;
             data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing London show`;
-            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
           }
           logExclusion("skippedCrossMarket", showId, file, data);
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
@@ -1970,7 +1971,7 @@ showDirs.forEach(showId => {
             // [GUARD:CROSS-MARKET-LONDON-ON-OTHER]
             data.wrongProduction = true;
             data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
-            try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+            try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
           }
           logExclusion("skippedCrossMarket", showId, file, data);
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
@@ -1996,7 +1997,7 @@ showDirs.forEach(showId => {
                 || /\/(chicago|national-tour)[-/]/.test(urlPath)) {
               data.wrongProduction = true;
               data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains Broadway/tour indicator on London show`;
-              try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
               logExclusion("skippedUrlPathCrossMarket", showId, file, data);
               stats.skippedUrlPathCrossMarket = (stats.skippedUrlPathCrossMarket || 0) + 1;
               return;
@@ -2007,7 +2008,7 @@ showDirs.forEach(showId => {
             if (/[-/](west-end-review|london-review|london[-/])/.test(urlPath)) {
               data.wrongProduction = true;
               data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains London indicator on Broadway show`;
-              try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
               logExclusion("skippedUrlPathCrossMarket", showId, file, data);
               stats.skippedUrlPathCrossMarket = (stats.skippedUrlPathCrossMarket || 0) + 1;
               return;
@@ -2038,7 +2039,7 @@ showDirs.forEach(showId => {
             // [GUARD:DAYS-BEFORE-OPENED]
             data.wrongProduction = true;
             data.wrongProductionNote = `Review published ${daysBefore} days before show opened — likely reviewing a different production`;
-            fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+            safeWriteReview(path.join(showDir, file), data);
           }
           return;
         }
@@ -2345,7 +2346,7 @@ showDirs.forEach(showId => {
               stats.skippedUrlYearStandalone = (stats.skippedUrlYearStandalone || 0) + 1;
               data.wrongProduction = true;
               data.wrongProductionNote = `URL contains year ${closestYear} but show opens in ${showYear} — likely review of different production`;
-              fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+              safeWriteReview(path.join(showDir, file), data);
               return;
             }
           }
