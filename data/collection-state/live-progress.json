@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T12:23:45.481Z",
+  "updatedAt": "2026-04-16T12:25:21.873Z",
   "processed": 59,
-  "failed": 394,
-  "successRate": "13.0%",
+  "failed": 404,
+  "successRate": "12.7%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 16,
     "archive": 11
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:36:57.957Z",
-      "event": "bb-session",
-      "session": "ccdf4ef1",
-      "url": "https://online.wsj.com/news/articles/SB10001424052702304518704579520353182409832"
-    },
-    {
-      "t": "2026-04-16T11:36:58.627Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T11:39:56.885Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-16T12:17:46.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T12:23:55.390Z",
+      "event": "bb-session",
+      "session": "b1662792",
+      "url": "https://www.wsj.com/articles/sweat-review-a-pulitzer-winner-comes-to-broadway-14"
+    },
+    {
+      "t": "2026-04-16T12:23:56.514Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
