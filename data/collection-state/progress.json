@@ -2323,7 +2323,10 @@
     "man-and-boy-2011/backstage--david-sheward.json",
     "man-and-boy-2011/yonkers-tribune--john-simon.json",
     "the-people-in-the-picture-2011/backstage--david-sheward.json",
-    "the-normal-heart-2011/wsj--unknown.json"
+    "the-normal-heart-2011/wsj--unknown.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+    "proof-2026/variety--unknown.json",
+    "the-fear-of-13-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2402,7 +2405,9 @@
       "data/review-texts/the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
       "the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-fear-of-13-2026/variety--aramide-timubu.json",
-      "the-fear-of-13-2026/variety--aramide-timubu.json"
+      "the-fear-of-13-2026/variety--aramide-timubu.json",
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2489,7 +2494,7 @@
     ]
   },
   "startTime": "2026-04-15T08:50:43.089Z",
-  "lastProcessed": "the-normal-heart-2011/wsj--unknown.json",
+  "lastProcessed": "the-fear-of-13-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -2710,6 +2715,39 @@
       "t": "2026-04-16T03:28:10.499Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T05:41:20.959Z",
+      "event": "bb-session",
+      "session": "5f169f5c",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T05:41:21.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T05:41:34.778Z",
+      "event": "bb-session",
+      "session": "9f282c8f",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T05:41:35.590Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T05:41:46.809Z",
+      "event": "bb-session",
+      "session": "d99f8191",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T05:41:47.645Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
