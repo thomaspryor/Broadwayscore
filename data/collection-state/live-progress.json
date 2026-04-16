@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T12:09:30.258Z",
+  "updatedAt": "2026-04-16T12:11:51.068Z",
   "processed": 59,
-  "failed": 314,
-  "successRate": "15.8%",
+  "failed": 324,
+  "successRate": "15.4%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 15,
     "archive": 11
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:27:06.355Z",
-      "event": "bb-session",
-      "session": "c904acd9",
-      "url": "https://www.wsj.com/articles/sweat-review-a-pulitzer-winner-comes-to-broadway-14"
-    },
-    {
-      "t": "2026-04-16T11:27:07.511Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T11:29:32.645Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-16T12:07:24.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T12:09:52.725Z",
+      "event": "bb-session",
+      "session": "9d51d474",
+      "url": "https://www.wsj.com/articles/the-sound-inside-review-mary-louise-parker-shines-i"
+    },
+    {
+      "t": "2026-04-16T12:09:53.831Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
