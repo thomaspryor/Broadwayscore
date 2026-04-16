@@ -1,8 +1,15 @@
 {
-  "timestamp": "2026-04-16T00:58:42.095Z",
-  "existingCount": 17747,
-  "newCount": 16939,
-  "lost": 808,
-  "pctLost": 4.6,
-  "argv": []
+  "timestamp": "2026-04-16T03:50:42.118Z",
+  "regressions": [
+    {
+      "showId": "six-2021",
+      "oldCount": 33,
+      "newCount": 29,
+      "dropped": 4,
+      "scoredOnDisk": 33,
+      "flaggedScored": 16,
+      "inlineGuardExcluded": 1,
+      "reason": "scored files exist but being dropped"
+    }
+  ]
 }
