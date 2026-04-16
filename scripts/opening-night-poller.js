@@ -97,7 +97,8 @@ function getKnownUrls(showId) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
       // Skip wrongProduction/wrongShow files — their URLs shouldn't block fresh discovery
-      if (data.wrongProduction || data.wrongShow) continue;
+      // Skip preview placeholders — post-opening discoveries must be allowed to replace them
+      if (data.wrongProduction || data.wrongShow || data.isPreviewPlaceholder) continue;
       if (data.url) urls.add(data.url);
       if (data.reviewUrl) urls.add(data.reviewUrl);
     } catch {}
@@ -1096,7 +1097,7 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
       continue;
     }
 
-    const result = createReviewFile(showId, review, { allowOffBroadway, allowWestEnd });
+    const result = createReviewFile(showId, review, { allowOffBroadway, allowWestEnd, fromPostOpening: true });
     if (result === true) {
       created++;
       knownUrls.add(review.url);
