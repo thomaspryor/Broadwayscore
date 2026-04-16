@@ -53,7 +53,11 @@ function saveTracking(data) {
 }
 
 /**
- * Fetch submissions from Formspree (last 48 hours with overlap for safety)
+ * Fetch submissions from Formspree (last 48 hours with overlap for safety).
+ * Pulls both the main inbox and the Formshield spam folder — Formshield
+ * false-flags legit submissions (partnership pitches, URLs, phone numbers),
+ * and if we only read the inbox, real messages are silently lost.
+ * Spam-flagged rows are tagged with `_isSpam: true` for downstream handling.
  */
 async function fetchFormspreeSubmissions() {
   const token = process.env.FORMSPREE_TOKEN;
@@ -63,31 +67,41 @@ async function fetchFormspreeSubmissions() {
     return [];
   }
 
-  try {
-    const since = new Date();
-    since.setHours(since.getHours() - 48);
+  const since = new Date();
+  since.setHours(since.getHours() - 48);
+  const sinceParam = since.toISOString();
 
-    const response = await fetch(
-      `https://formspree.io/api/0/forms/mojdjwqo/submissions?since=${since.toISOString()}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+  async function fetchBucket(isSpam) {
+    const qs = `since=${sinceParam}${isSpam ? '&spam=true' : ''}`;
+    try {
+      const response = await fetch(
+        `https://formspree.io/api/0/forms/mojdjwqo/submissions?${qs}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         }
-      }
-    );
+      );
 
-    if (!response.ok) {
-      console.error(`Formspree API error: ${response.status} ${response.statusText}`);
+      if (!response.ok) {
+        console.error(`Formspree ${isSpam ? 'spam' : 'inbox'} API error: ${response.status} ${response.statusText}`);
+        return [];
+      }
+
+      const data = await response.json();
+      return (data.submissions || []).map(s => ({ ...s, _isSpam: isSpam }));
+    } catch (error) {
+      console.error(`Error fetching Formspree ${isSpam ? 'spam' : 'inbox'}:`, error.message);
       return [];
     }
-
-    const data = await response.json();
-    return data.submissions || [];
-  } catch (error) {
-    console.error('Error fetching from Formspree:', error.message);
-    return [];
   }
+
+  const [inbox, spam] = await Promise.all([fetchBucket(false), fetchBucket(true)]);
+  if (spam.length > 0) {
+    console.log(`Pulled ${spam.length} spam-flagged submission(s) from Formshield — will surface for manual review.`);
+  }
+  return [...inbox, ...spam];
 }
 
 /**
@@ -216,18 +230,47 @@ async function sendThankYouEmail(email, name, category, showName) {
 /**
  * Generate markdown summary
  */
-function generateSummary(submissions, categorized, bugDiagnoses = []) {
-  if (submissions.length === 0) return '';
+function generateSummary(submissions, categorized, bugDiagnoses = [], spamFlagged = []) {
+  if (submissions.length === 0 && spamFlagged.length === 0) return '';
 
   const summary = [];
 
   summary.push('# Feedback Digest');
   summary.push('');
   summary.push(`**Period**: ${new Date().toLocaleDateString()}`);
-  summary.push(`**Total Submissions**: ${submissions.length}`);
+  summary.push(`**Inbox Submissions**: ${submissions.length}`);
+  if (spamFlagged.length > 0) {
+    summary.push(`**Spam-Flagged (needs human review)**: ${spamFlagged.length}`);
+  }
   summary.push('');
   summary.push('---');
   summary.push('');
+
+  // Spam-flagged submissions — rendered verbatim at the top so Tom can
+  // decide whether to rescue + "Not Spam" them in Formspree, or ignore.
+  // These bypass AI categorization/emails/diagnosis intentionally.
+  if (spamFlagged.length > 0) {
+    summary.push('## ⚠️ Needs Review — Spam-Flagged by Formshield');
+    summary.push('');
+    summary.push('_Formshield flagged these as spam. Real partnership pitches, follow-ups, and messages containing URLs or phone numbers are routinely false-flagged. Open each in the Formspree **Spam** tab and click "Not Spam" to rescue + train the filter._');
+    summary.push('');
+    spamFlagged.forEach((sub) => {
+      summary.push(`### ${sub.name || 'Anonymous'}${sub.email ? ` — ${sub.email}` : ''}`);
+      summary.push('');
+      summary.push(`- **Category**: ${sub.category || 'n/a'}`);
+      if (sub.show) summary.push(`- **Show**: ${sub.show}`);
+      summary.push(`- **Submitted**: ${sub._date || sub.createdAt || 'unknown'}`);
+      summary.push(`- **Message**: ${sub.message || '(empty)'}`);
+      summary.push('');
+    });
+    summary.push('---');
+    summary.push('');
+  }
+
+  if (submissions.length === 0) {
+    summary.push('*No new inbox submissions this period.*');
+    return summary.join('\n');
+  }
 
   // Group by category
   const byCategory = {
@@ -312,15 +355,22 @@ async function main() {
     console.log(`Fetched ${allSubmissions.length} submissions from Formspree\n`);
 
     // Filter out already-processed and spam
-    const newSubmissions = filterSubmissions(allSubmissions, tracking);
-    console.log(`${newSubmissions.length} new submission(s) to process\n`);
+    const newFiltered = filterSubmissions(allSubmissions, tracking);
 
-    // Output for workflow to know if there are submissions
+    // Split spam-flagged from the main pipeline. Spam-flagged items bypass
+    // AI categorization, thank-you emails, and auto-diagnosis — they land
+    // in a dedicated "Needs Review" section in the digest for human triage.
+    const spamFlagged = newFiltered.filter(s => s._isSpam);
+    const newSubmissions = newFiltered.filter(s => !s._isSpam);
+    console.log(`${newSubmissions.length} new inbox submission(s), ${spamFlagged.length} spam-flagged\n`);
+
+    // Output for workflow to know if there are submissions (either kind)
     if (process.env.GITHUB_OUTPUT) {
-      fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_submissions=${newSubmissions.length > 0}\n`);
+      const has = (newSubmissions.length + spamFlagged.length) > 0;
+      fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_submissions=${has}\n`);
     }
 
-    if (newSubmissions.length === 0) {
+    if (newSubmissions.length === 0 && spamFlagged.length === 0) {
       console.log('No new submissions. Exiting.');
       saveTracking(tracking);
       return;
@@ -332,9 +382,9 @@ async function main() {
       console.log(`WARNING: ${newSubmissions.length} submissions exceed cap of ${MAX_SUBMISSIONS_PER_RUN}. Processing first ${MAX_SUBMISSIONS_PER_RUN} only.`);
     }
 
-    // Categorize
-    const categorized = await categorizeFeedback(submissions);
-    console.log('Categorization complete\n');
+    // Categorize (inbox only — spam-flagged go straight to digest for manual review)
+    const categorized = submissions.length > 0 ? await categorizeFeedback(submissions) : [];
+    if (submissions.length > 0) console.log('Categorization complete\n');
 
     // Send thank-you emails for non-bug categories
     let emailsSent = 0;
@@ -383,7 +433,7 @@ async function main() {
     const diagnosesPath = path.join(__dirname, '../.bug-diagnoses.json');
     fs.writeFileSync(diagnosesPath, JSON.stringify(bugDiagnoses, null, 2));
 
-    const summary = generateSummary(submissions, categorized, bugDiagnoses);
+    const summary = generateSummary(submissions, categorized, bugDiagnoses, spamFlagged);
 
     if (summary) {
       console.log('=== SUMMARY ===');
@@ -395,9 +445,10 @@ async function main() {
     const summaryPath = path.join(__dirname, '../.feedback-summary.md');
     fs.writeFileSync(summaryPath, summary || '');
 
-    // Mark all processed submissions in tracking
-    for (const sub of submissions) {
-      const id = sub._id || sub.id || sub.createdAt;
+    // Mark all processed submissions (inbox + spam-flagged) in tracking
+    // so we don't re-surface the same spam-flagged items every run.
+    for (const sub of [...submissions, ...spamFlagged]) {
+      const id = sub._id || sub.id || sub.createdAt || sub._date;
       if (id && !tracking.processedIds.includes(id)) {
         tracking.processedIds.push(id);
       }
