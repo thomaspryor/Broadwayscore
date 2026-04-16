@@ -131,8 +131,21 @@ const WIRE_OUTLETS = new Set(['ap', 'reuters', 'upi']);
 // Detectors
 // ─────────────────────────────────────────────────
 // Classes included in strict mode (CI gate).
-// C2 and D are report-only — C2 has 55+ unresolvable cases (similar review counts,
-// no distinguishing signal); D has many legitimate preview reviews.
+// C2 and D are intentionally report-only:
+//   - C2: multi-critic-at-same-URL cases. Reduced from 161 (2026-04-14) → ~7
+//     after the cross-show URL cleanup. Remaining cases are ambiguous (same
+//     outlet, different bylines, identical text length) where the correct
+//     critic isn't recoverable from available signal. Promote to strict only
+//     when we have a resolvable signal (e.g., scraped byline metadata).
+//   - D: pre-opening feature heuristic. ~100+ hits are a mix of pre-opening
+//     interviews/profiles AND legitimate embargoed preview reviews
+//     (Broadway critics regularly publish 5-20 days before "official" opening).
+//     Correct classification requires LLM read of the text — use
+//     classify-non-reviews.js to flag genuine non-reviews; the D detector
+//     surfaces candidates but cannot itself distinguish them. Already
+//     excludes files flagged isNonReview/nonReviewFlag/nonReviewContent
+//     via alreadyFlagged above, so the hit count trends down as the
+//     classifier chews through the backlog.
 const STRICT_CLASSES = new Set(['A', 'B', 'C', 'E', 'F']);
 
 const hits = {
@@ -176,7 +189,8 @@ for (const showId of showDirs) {
     catch { continue; }
 
     const alreadyFlagged = d.wrongProduction || d.wrongShow || d.isRoundupArticle
-      || d.wrongAttribution || d.contentVerification?.wrongArticle;
+      || d.wrongAttribution || d.contentVerification?.wrongArticle
+      || d.isNonReview || d.nonReviewFlag || d.nonReviewContent;
 
     // ─── A: Cross-market / cross-production contamination ────
     // `_auditAllowCrossMarket` is a manual allowlist for cases the detector can't
