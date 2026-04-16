@@ -2,9 +2,9 @@
 /**
  * send-opening-night-broadcast.js
  *
- * Creates a Buttondown DRAFT when a show opens and has enough reviews.
- * Owner logs into Buttondown, reviews the draft, and clicks Send manually.
- * Code never pushes the Send button.
+ * Creates a Resend DRAFT broadcast when a show opens and has enough reviews.
+ * Owner logs into Resend, reviews the draft, and clicks Send manually.
+ * Code never calls /broadcasts/{id}/send.
  *
  * Reads shows.json, reviews.json, critic-consensus.json, subscribers.json,
  * and opening-night-sent.json.
@@ -16,7 +16,7 @@
  * --send-to=EMAIL  Preview mode: send a single transactional email via Resend (not a broadcast/draft).
  *                  Use this to review the email rendering before a real draft is created.
  *
- * Env: BUTTONDOWN_API_KEY, RESEND_API_KEY (for --send-to preview and owner notifications), DISCORD_WEBHOOK_ALERTS
+ * Env: RESEND_API_KEY, RESEND_BROADWAY_AUDIENCE_ID, RESEND_WE_AUDIENCE_ID, OWNER_EMAIL, DISCORD_WEBHOOK_ALERTS
  */
 
 const fs = require('fs');
@@ -264,11 +264,10 @@ function getReviewStats(reviews, showId, market) {
 }
 
 async function main() {
-  const BUTTONDOWN_API_KEY = process.env.BUTTONDOWN_API_KEY;
-  const RESEND_API_KEY = process.env.RESEND_API_KEY; // Still used for --send-to preview and owner notification
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
-  if (!BUTTONDOWN_API_KEY && !DRY_RUN && !SEND_TO) {
-    console.log('Missing BUTTONDOWN_API_KEY — skipping draft creation');
+  if (!RESEND_API_KEY && !DRY_RUN) {
+    console.log('Missing RESEND_API_KEY — skipping draft creation');
     process.exit(0);
   }
 
@@ -294,7 +293,7 @@ async function main() {
     const subscribersData = loadJSON(SUBSCRIBERS_PATH);
     const subCount = subscribersData?.subscribers?.length || 0;
     console.log(`Subscribers in local file: ${subCount}`);
-    console.log(`Mode: Buttondown DRAFT — owner reviews and sends manually from Buttondown UI`);
+    console.log(`Mode: Resend DRAFT — owner reviews and sends manually from Resend UI`);
   }
 
   // Load or init sent tracking
@@ -472,10 +471,10 @@ async function main() {
   }
 
   if (DRY_RUN) {
-    console.log(`\n[DRY RUN] Would create Buttondown draft for ${MARKET}`);
+    console.log(`\n[DRY RUN] Would create Resend draft for ${MARKET}`);
     const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
     console.log(`Email HTML length: ${html.length} chars`);
-    console.log('Has Buttondown unsubscribe variable:', html.includes('{{ unsubscribe_url }}'));
+    console.log('Has Resend unsubscribe variable:', html.includes('{{{RESEND_UNSUBSCRIBE_URL}}}'));
     console.log('Has score card:', html.includes('font-size:32px'));
     process.exit(0);
   }
@@ -552,9 +551,9 @@ async function main() {
     if (!rel.released) console.error(`  WARNING: lock release failed: ${rel.reason}`);
     else console.log(`  Send lock released`);
   } else {
-    // Create a Buttondown DRAFT — owner reviews and clicks Send manually from Buttondown UI.
-    // Code never pushes the Send button. This prevents any repeat of the March 2026 incidents.
-    console.log(`\nCreating Buttondown draft for owner review...`);
+    // Create a Resend DRAFT — owner reviews and clicks Send manually from Resend UI.
+    // Code never calls /broadcasts/{id}/send. This prevents any repeat of the March 2026 incidents.
+    console.log(`\nCreating Resend draft for owner review...`);
 
     // Sanity check — prevent test-labeled subjects from becoming drafts
     const FORBIDDEN_SUBJECT_WORDS = ['test', 'ignore', 'debug', 'tracking'];
@@ -562,15 +561,23 @@ async function main() {
       throw new Error(`SAFETY ABORT: Subject contains test-language: "${subject}"\nUse --send-to=EMAIL for preview sends.`);
     }
 
-    // Build HTML — uses {{ unsubscribe_url }} (Buttondown's template variable)
+    // Build HTML — footer uses {{{RESEND_UNSUBSCRIBE_URL}}} (Resend's template variable)
     const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
-    const marketLabel = isLondonMarket(MARKET) ? '[West End] ' : '';
 
-    // Acquire cross-session send lock before creating the Buttondown draft.
-    // The Buttondown draft itself is not a subscriber send — the owner clicks
-    // Send manually — but two sessions racing would create two drafts for the
-    // same show, one of which the owner could accidentally send. Lock here
-    // matches the --send-to preview path.
+    // Resolve Resend audience id for this market. Same Broadway id used by sync-followers.js
+    // (audience ids are not secret). WE audience id is env-only — set RESEND_WE_AUDIENCE_ID
+    // before sending West End broadcasts.
+    const RESEND_BROADWAY_AUDIENCE_ID = '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
+    const audienceId = isLondonMarket(MARKET)
+      ? process.env.RESEND_WE_AUDIENCE_ID
+      : (process.env.RESEND_BROADWAY_AUDIENCE_ID || RESEND_BROADWAY_AUDIENCE_ID);
+    if (!audienceId) {
+      throw new Error(`Missing RESEND_WE_AUDIENCE_ID — cannot create West End Resend broadcast.`);
+    }
+
+    // Acquire cross-session send lock before creating the Resend draft.
+    // The draft itself is not a subscriber send — owner clicks Send manually —
+    // but two sessions racing would create duplicate drafts.
     const lock = acquireSendLock({
       purpose: `${MARKET}-draft-${broadcastKey.replace(`${MARKET}:`, '')}`,
     });
@@ -582,16 +589,18 @@ async function main() {
     console.log(`  Send lock acquired: ${lock.sessionId.slice(0, 8)} (expires ${lock.expiresAt})`);
 
     try {
-      const result = await postJSON('https://api.buttondown.com/v1/emails', {
-        subject: `${marketLabel}${subject}`,
-        body: html,
-        status: 'draft',
+      const result = await postJSON('https://api.resend.com/broadcasts', {
+        audience_id: audienceId,
+        from: `Broadway Scorecard <${FROM_EMAIL}>`,
+        subject,
+        html,
+        name: `Opening night — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
       }, {
-        'Authorization': `Token ${BUTTONDOWN_API_KEY}`,
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
 
       const draftId = result.id;
-      const draftUrl = `https://buttondown.com/emails/${draftId}`;
+      const draftUrl = `https://resend.com/broadcasts/${draftId}`;
 
       console.log(`  Draft created: ${draftId}`);
       console.log(`  Review at: ${draftUrl}`);
@@ -601,15 +610,14 @@ async function main() {
       if (OWNER_EMAIL && RESEND_API_KEY) {
         const marketDisplay = isLondonMarket(MARKET) ? 'West End' : 'Broadway';
         const notificationHtml = `
-<p>An opening night email draft is ready for your review in Buttondown.</p>
+<p>An opening night email draft is ready for your review in Resend.</p>
 <table style="margin:16px 0;border-collapse:collapse;">
   <tr><td style="padding:4px 12px 4px 0;color:#666">Show(s)</td><td><strong>${showsForEmail.map(s => s.showTitle).join(', ')}</strong></td></tr>
   <tr><td style="padding:4px 12px 4px 0;color:#666">Market</td><td><strong>${marketDisplay}</strong></td></tr>
   <tr><td style="padding:4px 12px 4px 0;color:#666">Subject</td><td>${subject}</td></tr>
 </table>
-<p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Buttondown →</a></p>
-<p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}<br>
-${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast. Filter by the "west-end" tag before sending.' : ''}</p>`;
+<p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Resend →</a></p>
+<p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}</p>`;
 
         await postJSON('https://api.resend.com/emails', {
           from: `Broadway Scorecard <${FROM_EMAIL}>`,
@@ -624,12 +632,12 @@ ${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast.
         console.log(`  Draft URL: ${draftUrl}`);
       }
 
-      // Mark as complete from code's perspective — owner sends manually from Buttondown
+      // Mark as complete from code's perspective — owner sends manually from Resend
       const completionData = {
         draftCreatedAt: new Date().toISOString(),
         draftId,
         draftUrl,
-        method: 'buttondown-draft',
+        method: 'resend-draft',
         reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
         completed: true,
       };
@@ -639,20 +647,20 @@ ${isLondonMarket(MARKET) ? '<strong>Note:</strong> This is a West End broadcast.
       }
       saveSentData(sentData);
 
-      console.log(`\nDraft ready — log into Buttondown to send: ${draftUrl}`);
+      console.log(`\nDraft ready — log into Resend to send: ${draftUrl}`);
 
       // Release the lock on success.
       const rel = releaseSendLock(lock);
       if (!rel.released) console.error(`  WARNING: lock release failed: ${rel.reason}`);
       else console.log(`  Send lock released`);
     } catch (err) {
-      console.error(`ERROR creating Buttondown draft: ${err.message}`);
+      console.error(`ERROR creating Resend draft: ${err.message}`);
       // Best-effort release before bailing.
       const rel = releaseSendLock(lock);
       if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
       await sendAlert({
         title: 'Opening Night Draft Creation Failed',
-        description: `Buttondown draft error: ${err.message}`,
+        description: `Resend draft error: ${err.message}`,
         severity: 'error',
       });
       process.exit(1);

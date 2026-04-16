@@ -100,9 +100,11 @@ function buildFooterHtml(showTitle, showId, email, market) {
 }
 
 function buildBroadcastFooterHtml(email, market) {
-  // When email is null, use Buttondown's unsubscribe template variable (for drafts/broadcasts)
-  // When email is provided, use our custom unsubscribe URL (for transactional/preview sends)
-  const unsubscribeUrl = email ? buildUnsubscribeUrl(email, market) : '{{ unsubscribe_url }}';
+  // When email is null, use Resend's unsubscribe template variable (for drafts/broadcasts).
+  // When email is provided, use our custom unsubscribe URL (for transactional/preview sends).
+  // NOTE: Resend uses {{{RESEND_UNSUBSCRIBE_URL}}} (triple braces). The script targets
+  // Resend; if we ever switch back to Buttondown, this becomes {{ unsubscribe_url }}.
+  const unsubscribeUrl = email ? buildUnsubscribeUrl(email, market) : '{{{RESEND_UNSUBSCRIBE_URL}}}';
   const isWE = isLondonMarket(market);
   const siteName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
   const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';

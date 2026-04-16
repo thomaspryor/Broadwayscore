@@ -24,7 +24,7 @@ on:
         type: number
         default: 2
       send_to:
-        description: 'Preview mode: send a test email to this address only (does not create a Buttondown draft)'
+        description: 'Preview mode: send a test email to this address only (does not create a Resend draft)'
         required: false
         type: string
         default: ''
@@ -327,21 +327,21 @@ jobs:
           node scripts/generate-mobile-data.js
           node scripts/generate-mobile-show-details.js
 
-      - name: Create broadcast draft (owner sends manually from Buttondown)
+      - name: Create broadcast draft (owner sends manually from Resend)
         if: steps.check.outputs.pending_shows != ''
         id: broadcast
         env:
-          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_WE_AUDIENCE_ID: ${{ secrets.RESEND_WE_AUDIENCE_ID }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           # Required by scripts/lib/send-lock.js — it acquires a cross-session
-          # advisory lock via the GitHub Contents API before any Resend/Buttondown
+          # advisory lock via the GitHub Contents API before any Resend
           # call, to prevent double-sends when a CLI session and this workflow run
           # in parallel. Without GH_TOKEN, `gh api` in CI would fail auth and the
           # lock helper would exit(1), blocking the send rather than risking a race.
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Code creates a Buttondown DRAFT — owner logs in and clicks Send manually.
+          # Code creates a Resend DRAFT broadcast — owner logs in and clicks Send manually.
           # Use send_to input for preview testing (sends single transactional email, no draft).
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
@@ -354,7 +354,7 @@ jobs:
             SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
             echo "** PREVIEW MODE — sending preview to owner for approval **"
           else
-            echo "** DRAFT MODE — creating Buttondown draft for send_to_all dispatch **"
+            echo "** DRAFT MODE — creating Resend draft for send_to_all dispatch **"
           fi
 
           SENT="false"
