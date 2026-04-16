@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-16T11:16:31.377Z",
-  "processed": 44,
-  "failed": 99,
-  "successRate": "30.8%",
+  "updatedAt": "2026-04-16T11:19:51.028Z",
+  "processed": 47,
+  "failed": 106,
+  "successRate": "30.7%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 9,
     "brightdata": 6,
-    "archiveToday": 10,
+    "archiveToday": 12,
     "archive": 11
   },
-  "browserbaseSessions": 19,
+  "browserbaseSessions": 21,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:00:54.780Z",
-      "event": "bb-session",
-      "session": "a24edaa1",
-      "url": "https://www.talkinbroadway.com/world/TopDogUnderDog.html"
-    },
-    {
-      "t": "2026-04-16T11:00:55.409Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-04-16T11:01:49.284Z",
-      "event": "bb-session",
-      "session": "e45d5056",
-      "url": "https://www.wsj.com/articles/the-skin-of-our-teeth-thornton-wilder-vivian-beaumo"
-    },
-    {
-      "t": "2026-04-16T11:01:49.866Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T11:03:48.848Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-04-16T11:14:28.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T11:17:22.826Z",
+      "event": "bb-session",
+      "session": "50df2dfa",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bryan-cranston"
+    },
+    {
+      "t": "2026-04-16T11:17:23.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-16T11:19:05.358Z",
+      "event": "bb-session",
+      "session": "de0ac8dc",
+      "url": "http://www.talkinbroadway.com/page/regional/ny/ny661.html"
+    },
+    {
+      "t": "2026-04-16T11:19:05.984Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
