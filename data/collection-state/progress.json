@@ -19,7 +19,13 @@
     "the-hills-of-california-2024/vulture--sara-holdren.json",
     "the-roommate-2024/vulture--sara-holdren.json",
     "illinoise-2024/vulture--sara-holdren.json",
-    "hells-kitchen-2024/theatermania--zachary-stewart.json"
+    "hells-kitchen-2024/theatermania--zachary-stewart.json",
+    "harmony-2023/variety--trish-deitch.json",
+    "gutenberg-2023/variety--frank-rizzo.json",
+    "the-shark-is-broken-2023/wsj--terry-teachout.json",
+    "here-lies-love-2023/nytimes--jesse-green.json",
+    "just-for-us-2023/vulture--jackson-mchenry.json",
+    "good-night-oscar-2023/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -64,7 +70,11 @@
     "redwood-2025/gmanetwork--stuart-santiago.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
     "romeo-juliet-2024/thestage--nicole-serratore.json",
-    "illinoise-2024/talkinbroadway--matthew-murray.json"
+    "illinoise-2024/talkinbroadway--matthew-murray.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "prima-facie-2023/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -75,7 +85,8 @@
       "death-of-a-salesman-2026/washpost--unknown.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "marjorie-prime-2025/nytg--joe-dziemianowicz.json",
-      "hells-kitchen-2024/theatermania--zachary-stewart.json"
+      "hells-kitchen-2024/theatermania--zachary-stewart.json",
+      "good-night-oscar-2023/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
@@ -86,7 +97,11 @@
       "data/review-texts/tammy-faye-2024/variety--frank-rizzo.json",
       "tammy-faye-2024/variety--frank-rizzo.json",
       "data/review-texts/mcneal-2024/deadline--greg-evans.json",
-      "mcneal-2024/deadline--greg-evans.json"
+      "mcneal-2024/deadline--greg-evans.json",
+      "data/review-texts/harmony-2023/variety--trish-deitch.json",
+      "harmony-2023/variety--trish-deitch.json",
+      "data/review-texts/gutenberg-2023/variety--frank-rizzo.json",
+      "gutenberg-2023/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -94,10 +109,12 @@
       "proof-2026/nytimes--sarah-bahr.json",
       "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
       "death-of-a-salesman-2026/timeout--unknown.json",
-      "magic-mike-live-west-end-2021/daily-mail--ali-daher.json"
+      "magic-mike-live-west-end-2021/daily-mail--ali-daher.json",
+      "here-lies-love-2023/nytimes--jesse-green.json"
     ],
     "brightdata": [
-      "the-roommate-2024/vulture--sara-holdren.json"
+      "the-roommate-2024/vulture--sara-holdren.json",
+      "the-shark-is-broken-2023/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/proof-2026/talkinbroadway--unknown.json",
@@ -109,11 +126,12 @@
       "swept-away-2024/vulture--sara-holdren.json",
       "romeo-juliet-2024/vulture--sara-holdren.json",
       "the-hills-of-california-2024/vulture--sara-holdren.json",
-      "illinoise-2024/vulture--sara-holdren.json"
+      "illinoise-2024/vulture--sara-holdren.json",
+      "just-for-us-2023/vulture--jackson-mchenry.json"
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "hells-kitchen-2024/theatermania--zachary-stewart.json",
+  "lastProcessed": "prima-facie-2023/newyorker--naomi-fry.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -246,6 +264,39 @@
       "t": "2026-04-16T10:51:11.548Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T10:51:40.440Z",
+      "event": "bb-session",
+      "session": "d4c0e015",
+      "url": "https://variety.com/2023/legit/reviews/harmony-review-barry-manilow-broadway-123"
+    },
+    {
+      "t": "2026-04-16T10:51:41.227Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T10:51:58.986Z",
+      "event": "bb-session",
+      "session": "eb23896d",
+      "url": "https://variety.com/2023/legit/reviews/gutenberg-the-musical-review-broadway-jos"
+    },
+    {
+      "t": "2026-04-16T10:51:59.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T10:52:16.649Z",
+      "event": "bb-session",
+      "session": "d46f7b59",
+      "url": "https://www.wsj.com/articles/the-shark-is-broken-review-in-the-jaws-of-a-blockbu"
+    },
+    {
+      "t": "2026-04-16T10:52:17.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
