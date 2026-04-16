@@ -1,87 +1,88 @@
 {
-  "runDate": "2026-04-16T07:07:13.946Z",
+  "runDate": "2026-04-16T08:54:37.210Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-fear-of-13-2026,the-receptionist-off-broadway-2026,kenrex-off-broadway-2026,rheology-off-broadway-2026,one-flew-over-the-cuckoos-nest-west-end-2026,what-happened-was-off-broadway-2026",
+    "showFilter": "proof-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 3,
+    "processed": 6,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "70.0%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 5,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
-    "tier2Attempts": 4,
-    "tier2Success": 2,
-    "tier3Attempts": 3,
-    "tier3Success": 2,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 3,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 4,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 20,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.5,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 1.1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-fear-of-13-2026/ew--unknown.json",
-    "the-fear-of-13-2026/guardian--arifa-akbar.json",
-    "the-fear-of-13-2026/nydailynews--unknown.json",
-    "kenrex-off-broadway-2026/thestage--unknown.json",
-    "the-fear-of-13-2026/independent--alice-saville.json",
-    "the-fear-of-13-2026/playbill--unknown.json",
-    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
+    "proof-2026/nytimes--sarah-bahr.json",
+    "proof-2026/deadline--anthony-dalessandro.json",
+    "proof-2026/guardian--michael-billington.json",
+    "proof-2026/observer--casey-epstein-gross.json",
+    "proof-2026/ap--unknown.json",
+    "proof-2026/playbill--unknown.json"
   ],
   "failed": [
-    "the-fear-of-13-2026/wsj--charles-isherwood.json",
-    "the-fear-of-13-2026/wsj--unknown.json",
-    "the-fear-of-13-2026/talkinbroadway--unknown.json"
+    "proof-2026/variety--unknown.json",
+    "proof-2026/talkinbroadway--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-fear-of-13-2026/ew--unknown.json",
-      "the-fear-of-13-2026/guardian--arifa-akbar.json",
-      "kenrex-off-broadway-2026/thestage--unknown.json",
-      "the-fear-of-13-2026/independent--alice-saville.json",
-      "the-fear-of-13-2026/playbill--unknown.json"
+      "proof-2026/guardian--michael-billington.json",
+      "proof-2026/ap--unknown.json",
+      "proof-2026/playbill--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
+      "proof-2026/deadline--anthony-dalessandro.json",
+      "data/review-texts/proof-2026/observer--casey-epstein-gross.json",
+      "proof-2026/observer--casey-epstein-gross.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "the-fear-of-13-2026/nydailynews--unknown.json",
-      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
+      "proof-2026/nytimes--sarah-bahr.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
