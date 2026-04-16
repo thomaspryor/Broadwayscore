@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T19:22:22.309Z",
+  "updatedAt": "2026-04-16T19:24:12.790Z",
   "processed": 77,
-  "failed": 925,
-  "successRate": "7.7%",
+  "failed": 935,
+  "successRate": "7.6%",
   "tierBreakdown": {
     "playwright": 31,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 28,
     "archive": 12
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-16T18:47:53.895Z",
-      "event": "bb-session",
-      "session": "3aaf7428",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/03/10/AR2010031004992"
-    },
-    {
-      "t": "2026-04-16T18:47:54.447Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-16T18:48:47.750Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-16T19:17:29.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T19:22:33.083Z",
+      "event": "bb-session",
+      "session": "fe5310c3",
+      "url": "https://www.wsj.com/articles/trouble-in-mind-review-alice-childress-roundabout-t"
+    },
+    {
+      "t": "2026-04-16T19:22:33.479Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
