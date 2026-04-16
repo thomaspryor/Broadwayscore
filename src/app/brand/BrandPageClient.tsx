@@ -190,6 +190,7 @@ export default function BrandPageClient() {
           <a href="#canva" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Canva Setup</a>
           <a href="#buffer" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Buffer</a>
           <a href="#downloads" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Downloads</a>
+          <a href="#attribution" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Attribution</a>
           <a href="#code" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Code</a>
         </div>
 
@@ -364,6 +365,48 @@ export default function BrandPageClient() {
                 href="/og/home.png"
                 filename="bwsc-og.png"
               />
+            </div>
+          </Section>
+        </div>
+
+        {/* Attribution / CriticScore lockup */}
+        <div id="attribution">
+          <Section
+            title="CriticScore™ Lockup"
+            description="How to display the score when embedding on another site. The score and its tier travel as a unit — never split them."
+          >
+            <div className="rounded-card bg-surface-raised border border-white/5 p-6 mb-4">
+              <div className="text-xs font-semibold uppercase text-gray-400 mb-4 tracking-wide">Required lockup</div>
+              <div className="flex items-center gap-4 p-4 bg-surface rounded-card border border-white/5 max-w-md">
+                <div className="flex-shrink-0 w-16 h-16 rounded-xl flex items-center justify-center font-bold text-3xl" style={{ background: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', color: '#1a1a1a', border: '2px solid #C8960E', boxShadow: '0 0 20px rgba(255,215,0,0.4)' }}>
+                  88
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-bold text-white">Proof</div>
+                  <div className="text-xs text-gray-400">Critical Gold · 12 critics</div>
+                  <div className="text-[9px] font-semibold text-brand tracking-[0.5px] uppercase mt-0.5">CriticScore™ by Broadway Scorecard</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
+              <p>
+                <strong className="text-white">The four required elements</strong> for any external display of a BWSC score:
+              </p>
+              <ol className="list-decimal list-inside space-y-2 pl-2">
+                <li><strong className="text-white">Score number</strong> — rounded, as a whole integer (e.g. 88)</li>
+                <li><strong className="text-white">Tier color</strong> — the badge background must match the tier: gold (83+), green (75-82), teal (65-74), orange (55-64), red (&lt;55)</li>
+                <li><strong className="text-white">Tier label</strong> — &ldquo;Critical Gold,&rdquo; &ldquo;Recommended,&rdquo; &ldquo;Worth Seeing,&rdquo; &ldquo;Skippable,&rdquo; or &ldquo;Stay Away&rdquo;</li>
+                <li><strong className="text-white">Attribution</strong> — the text <span className="font-mono text-xs bg-surface-overlay px-2 py-0.5 rounded">CriticScore™ by Broadway Scorecard</span> in brand gold <code className="text-xs text-brand">#d4a574</code>, linking to broadwayscorecard.com</li>
+              </ol>
+              <p>
+                <strong className="text-white">Not allowed:</strong> stripping the tier color, normalizing to a different scale (e.g. /5 stars), removing the attribution, or showing a stale cached score. Partners should use the live{' '}
+                <a href="/partners" className="text-brand hover:text-brand-light">embed or SVG badge</a> so scores update automatically.
+              </p>
+              <p>
+                <strong className="text-white">Want to embed?</strong> Copy-paste snippets are at{' '}
+                <a href="/partners" className="text-brand hover:text-brand-light">/partners</a>. Both iframe and SVG options bake the attribution in automatically.
+              </p>
             </div>
           </Section>
         </div>
