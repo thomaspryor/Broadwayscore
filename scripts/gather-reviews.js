@@ -2792,7 +2792,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             fs.renameSync(path.join(showDir, existingFile), filepath);
           }
 
-          console.log(`    ⟳ ${merged.isPreviewPlaceholder === undefined && existingReview.isPreviewPlaceholder ? 'Replaced placeholder' : 'Merged'} into ${filename}`);
+          console.log(`    ⟳ ${!merged.isPreviewPlaceholder && existingReview.isPreviewPlaceholder ? 'Replaced placeholder' : 'Merged'} into ${filename}`);
           return true;
         }
 
@@ -2805,7 +2805,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             source: reviewData.source || 'gather-reviews',
           }, mergeOpts);
           fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
-          console.log(`    ⟳ URL match: ${merged.isPreviewPlaceholder === undefined && existingReview.isPreviewPlaceholder ? 'replaced placeholder' : 'merged'} ${filename} into ${existingFile}`);
+          console.log(`    ⟳ URL match: ${!merged.isPreviewPlaceholder && existingReview.isPreviewPlaceholder ? 'replaced placeholder' : 'merged'} ${filename} into ${existingFile}`);
           return true;
         }
       } catch (e) {
@@ -2884,16 +2884,21 @@ function createReviewFile(showId, reviewData, options = {}) {
   review.contentTier = tier.contentTier;
   review.contentTierReason = tier.tierReason;
 
+  // Load show metadata once — reused by date guard and placeholder marking below.
+  let _showMeta = null;
+  try {
+    const showsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+    _showMeta = showsJSON.shows.find(s => s.id === showId) || null;
+  } catch (e) {}
+
   // Date-based production guard: warn if review was published >30 days before
   // the show's earliest date (previews/opening). Likely from a prior production.
   // Off-Broadway shows are exempt: they commonly transfer from regional theaters,
   // so date mismatches are expected and wrongProduction flags are almost always false positives.
-  if (review.publishDate) {
+  if (review.publishDate && _showMeta) {
     try {
-      const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
-      const showsJSON = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
-      const show = showsJSON.shows.find(s => s.id === showId);
-      if (show && show.category !== 'off-broadway') {
+      const show = _showMeta;
+      if (show.category !== 'off-broadway') {
         const earliest = show.previewsStartDate || show.openingDate;
         if (earliest) {
           const pubDate = new Date(review.publishDate);
@@ -2956,17 +2961,15 @@ function createReviewFile(showId, reviewData, options = {}) {
   // Mark file as a preview-period placeholder when the show hasn't opened yet.
   // mergeReviews() respects this flag: post-opening discoveries replace the file
   // wholesale rather than merging into stale preview data.
-  try {
-    const showForPlaceholder = getShowData(showId);
-    if (showForPlaceholder) {
-      const isPreviewsStatus = showForPlaceholder.status === 'previews';
-      const hasNotOpenedYet = showForPlaceholder.openingDate
-        && new Date(showForPlaceholder.openingDate) > new Date();
-      if (isPreviewsStatus || hasNotOpenedYet) {
-        review.isPreviewPlaceholder = true;
-      }
+  // _showMeta is already loaded above — no second disk read needed.
+  if (_showMeta) {
+    const isPreviewsStatus = _showMeta.status === 'previews';
+    const hasNotOpenedYet = _showMeta.openingDate
+      && new Date(_showMeta.openingDate) > new Date();
+    if (isPreviewsStatus || hasNotOpenedYet) {
+      review.isPreviewPlaceholder = true;
     }
-  } catch (e) { /* non-fatal — proceed without flag */ }
+  }
 
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
 
