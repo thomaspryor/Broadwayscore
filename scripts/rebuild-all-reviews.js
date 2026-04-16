@@ -61,13 +61,30 @@ const NYT_CRITICS_PICK_URLS = (() => {
   try {
     const designations = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'designations.json'), 'utf8'));
     const manualPicks = designations.nyt_critics_pick || {};
-    for (const showId of Object.keys(manualPicks)) {
+    for (const [showId, entry] of Object.entries(manualPicks)) {
+      // Only trust entries explicitly marked as Critics_Pick — some entries
+      // track non-picks (e.g. "Critic's Notebook" pieces with designation: null).
+      if (entry?.designation !== 'Critics_Pick') continue;
       const showDir = path.join(__dirname, '..', 'data', 'review-texts', showId);
       if (!fs.existsSync(showDir)) continue;
+      // Match the specific critic recorded in designations.json — avoids
+      // picking up misfiled old NYT reviews in the same show directory
+      // (e.g. mamma-mia-2025 also has the 2001 Brantley review on file).
+      const criticSlug = (entry.critic || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       for (const f of fs.readdirSync(showDir)) {
         if (!f.startsWith('nytimes--')) continue;
+        // If we know the critic, require the filename to match. Files are
+        // generated as `nytimes--<slug>.json`; allow partial match to tolerate
+        // slight slug variants (last-name-only, hyphenation).
+        if (criticSlug && !f.toLowerCase().includes(criticSlug)) {
+          // Fall back to last-name match
+          const lastName = criticSlug.split('-').pop();
+          if (lastName && !f.toLowerCase().includes(lastName)) continue;
+        }
         try {
           const r = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+          // Skip misfiled reviews known to be wrong production.
+          if (r.wrongProduction === true || r.contentVerification?.wrongProduction === true) continue;
           if (r.url) set.add(r.url);
         } catch { /* skip unreadable */ }
       }
