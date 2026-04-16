@@ -64,7 +64,11 @@
     "proof-2026/observer--unknown.json",
     "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
     "proof-2026/nytimes--sarah-bahr.json",
-    "proof-2026/deadline--anthony-dalessandro.json"
+    "proof-2026/deadline--anthony-dalessandro.json",
+    "proof-2026/guardian--michael-billington.json",
+    "proof-2026/observer--casey-epstein-gross.json",
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--unknown.json",
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1696,7 +1700,8 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
     "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
     "proof-2026/variety--unknown.json",
-    "proof-2026/talkinbroadway--unknown.json"
+    "proof-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1744,7 +1749,9 @@
       "data/review-texts/proof-2026/observer--unknown.json",
       "proof-2026/observer--unknown.json",
       "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
-      "proof-2026/deadline--anthony-dalessandro.json"
+      "proof-2026/deadline--anthony-dalessandro.json",
+      "data/review-texts/proof-2026/observer--casey-epstein-gross.json",
+      "proof-2026/observer--casey-epstein-gross.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1765,14 +1772,17 @@
       "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
       "proof-2026/nytimes--unknown.json",
       "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
-      "proof-2026/nytimes--sarah-bahr.json"
+      "proof-2026/nytimes--sarah-bahr.json",
+      "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--unknown.json",
+      "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json"
     ],
     "brightdata": [
       "titanique-2026/talkinbroadway--unknown.json",
       "titanique-2026/talkinbroadway--unknown.json",
       "fences-2010/wsj--christopher-john-farley.json",
       "a-steady-rain-2009/latimes--unknown.json",
-      "milk-and-honey-amt-theater-off-broadway-2026/nytimes--unknown.json"
+      "milk-and-honey-amt-theater-off-broadway-2026/nytimes--unknown.json",
+      "proof-2026/guardian--michael-billington.json"
     ],
     "archiveToday": [
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
@@ -1781,7 +1791,8 @@
       "data/review-texts/la-cage-aux-folles-2010/abc-news--michael-kuchwara.json",
       "data/review-texts/the-addams-family-2010/abc-news--unknown.json",
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
-      "data/review-texts/proof-2026/talkinbroadway--unknown.json"
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
@@ -1790,7 +1801,7 @@
     ]
   },
   "startTime": "2026-04-15T08:50:43.089Z",
-  "lastProcessed": "proof-2026/deadline--anthony-dalessandro.json",
+  "lastProcessed": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
   "log": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -1868,6 +1879,17 @@
       "t": "2026-04-16T00:51:00.142Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T00:51:41.749Z",
+      "event": "bb-session",
+      "session": "2b11a150",
+      "url": "https://observer.com/2023/06/burden-of-proof-review-true-crime-that-questions-mo"
+    },
+    {
+      "t": "2026-04-16T00:51:42.841Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
     }
   ]
 }
