@@ -77,7 +77,11 @@
     "barnum-1980/nytimes--frank-rich.json",
     "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json",
-    "once-2012/theatermania--dan-bacalzo.json"
+    "once-2012/theatermania--dan-bacalzo.json",
+    "proof-2026/variety--unknown.json",
+    "proof-2026/culturesauce--thom-geier.json",
+    "proof-2026/nysr--michael-sommers.json",
+    "proof-2026/slantmagazine--mike-dressel.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -1561,7 +1565,11 @@
     "avenue-q-west-end-2026/times-uk--unknown.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/independent--alice-saville.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--dominic-cavendish.json",
-    "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json"
+    "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json",
+    "proof-2026/wsj--charles-isherwood.json",
+    "proof-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "the-fear-of-13-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1597,7 +1605,10 @@
       "a-man-for-all-seasons-2008/theatermania--david-finkle.json",
       "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
       "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json",
-      "once-2012/theatermania--dan-bacalzo.json"
+      "once-2012/theatermania--dan-bacalzo.json",
+      "proof-2026/culturesauce--thom-geier.json",
+      "proof-2026/nysr--michael-sommers.json",
+      "proof-2026/slantmagazine--mike-dressel.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1627,7 +1638,9 @@
       "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
       "proof-2026/deadline--anthony-dalessandro.json",
       "data/review-texts/the-fear-of-13-2026/nypost--johnny-oleksinski.json",
-      "the-fear-of-13-2026/nypost--johnny-oleksinski.json"
+      "the-fear-of-13-2026/nypost--johnny-oleksinski.json",
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "proof-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1684,7 +1697,8 @@
       "data/review-texts/thurgood-2008/nytimes--ben-brantley.json",
       "data/review-texts/hairspray-2002/ap--michael-kuchwara.json",
       "data/review-texts/annie-1977/northjerseycom--robert-feldberg.json",
-      "data/review-texts/hold-on-to-your-butts-2026/thestage--oliver-jones.json"
+      "data/review-texts/hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -1702,7 +1716,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "the-fear-of-13-2026/wsj--unknown.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -2460,6 +2474,61 @@
     },
     {
       "t": "2026-04-16T19:24:30.807Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T23:37:55.121Z",
+      "event": "bb-session",
+      "session": "bda16670",
+      "url": "https://variety.com/2026/legit/news/a-walk-on-the-moon-musical-new-york-stage-de"
+    },
+    {
+      "t": "2026-04-16T23:37:56.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T23:38:12.858Z",
+      "event": "bb-session",
+      "session": "1d6d6c44",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-16T23:38:13.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T23:41:11.658Z",
+      "event": "bb-session",
+      "session": "20cda58b",
+      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
+    },
+    {
+      "t": "2026-04-16T23:41:12.407Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T23:41:30.341Z",
+      "event": "bb-session",
+      "session": "f6dae885",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T23:41:31.112Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T23:42:23.640Z",
+      "event": "bb-session",
+      "session": "4c2b6301",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T23:42:24.381Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
