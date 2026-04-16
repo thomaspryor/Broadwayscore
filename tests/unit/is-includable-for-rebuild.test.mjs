@@ -197,3 +197,67 @@ describe('isIncludableForRebuild — aggregator-only signal', () => {
     assert.strictEqual(isIncludableForRebuild({ ...withAgg, wrongShow: true }), false);
   });
 });
+
+describe('isIncludableForRebuild — garbage text flags (ship-check additions)', () => {
+  it('returns false when rejectionReason is set (any truthy string)', () => {
+    assert.strictEqual(isIncludableForRebuild({ ...withText, rejectionReason: 'garbage_text' }), false);
+  });
+
+  it('returns false when rejectionReason is set even with aggregator signal', () => {
+    assert.strictEqual(isIncludableForRebuild({ ...withAgg, rejectionReason: 'ocr_junk' }), false);
+  });
+
+  it('returns false when rejectedBy has 2+ entries', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...withText, rejectedBy: ['llm1', 'llm2'] }),
+      false
+    );
+  });
+
+  it('returns true when rejectedBy has only 1 entry (rebuild threshold is ≥2)', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...withText, rejectedBy: ['llm1'] }),
+      true
+    );
+  });
+
+  it('returns true when rejectedBy is empty array', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...withText, rejectedBy: [] }),
+      true
+    );
+  });
+});
+
+describe('isIncludableForRebuild — fullTextWrongAuthor (ship-check additions)', () => {
+  it('returns false when fullTextWrongAuthor: true and no excerpts', () => {
+    // rebuild deletes fullText in memory and checks excerpts — on disk fullText still exists
+    // so we must check excerpt fields, not fullText
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: 'Some text.', fullTextWrongAuthor: true }),
+      false
+    );
+  });
+
+  it('returns true when fullTextWrongAuthor: true but dtliExcerpt present', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: 'Some text.', fullTextWrongAuthor: true, dtliExcerpt: 'Great show' }),
+      true
+    );
+  });
+
+  it('returns true when fullTextWrongAuthor: true and bwwExcerpt present', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: 'Some text.', fullTextWrongAuthor: true, bwwExcerpt: 'Excellent' }),
+      true
+    );
+  });
+
+  it('returns false when fullTextWrongAuthor: true and originalScore exists but no excerpts (score alone does not save it)', () => {
+    // rebuild explicitly checks excerpts, not aggregator score, in the fullTextWrongAuthor path
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: 'Some text.', fullTextWrongAuthor: true, originalScore: 85 }),
+      false
+    );
+  });
+});
