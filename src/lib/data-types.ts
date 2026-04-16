@@ -54,12 +54,45 @@ export interface TheaterTipGarage {
   notes?: string;
 }
 
+export type SeatingVerdict = 'sweet-spot' | 'solid' | 'skip';
+export type SeatingPriceTier = 'budget' | 'mid' | 'premium' | 'top';
+export type SeatingHazardType =
+  | 'mezz-overhang'
+  | 'pillar'
+  | 'obstructed-view'
+  | 'side-angle'
+  | 'steep-rake'
+  | 'tight-legroom'
+  | 'distant'
+  | 'partial-stage'
+  | 'sound-dead-spot';
+
+export interface SeatingHazard {
+  type: SeatingHazardType;
+  note?: string;
+}
+
+export interface SeatingSection {
+  name: string;
+  rowRange?: string;
+  verdict: SeatingVerdict;
+  verdictLabel: string;
+  priceTier?: SeatingPriceTier;
+  rationale?: string;
+  hazards?: SeatingHazard[];
+  bestFor?: string[];
+  worstFor?: string[];
+  dataPoints?: number;
+  evidenceUrls?: string[];
+}
+
 export interface TheaterStructuredTips {
   lastUpdated: string;
   seating?: {
     bestSeats?: string;
     avoidSeats?: string;
     accessibility?: string;
+    sections?: SeatingSection[];
   };
   parking?: {
     nearestGarages?: TheaterTipGarage[];
