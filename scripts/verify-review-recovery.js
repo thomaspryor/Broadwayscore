@@ -34,6 +34,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { fetchLiveRc, countAggregate } = require('./lib/review-count-probe');
 
 // ── Parse args ──────────────────────────────────────────────────────────────
 
@@ -276,35 +277,26 @@ if (reviewsData) {
 if (checkProduction) {
   console.log(`\n${BOLD}Step 6: Production check${RESET}`);
 
-  try {
-    // Get the show slug from shows.json
-    const showsData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
-    const show = showsData.shows.find(s => s.id === showId);
-    const slug = show?.slug || showId;
-
-    const url = `${BASE_URL}/show/${slug}`;
-    const html = execSync(`/usr/bin/curl -sL "${url}"`, { encoding: 'utf8', timeout: 15000 });
-    const match = html.match(/"reviewCount":(\d+)/);
-
-    if (match) {
-      const prodCount = parseInt(match[1], 10);
-      const localCount = reviewsData
-        ? (reviewsData.reviews || []).filter(r => r.showId === showId).length
-        : null;
-
-      if (localCount !== null && prodCount === localCount) {
-        pass(`Production matches local: ${prodCount} reviews`);
-      } else if (localCount !== null && prodCount < localCount) {
-        warn(`Production has ${prodCount} reviews but local has ${localCount} — deploy pending`);
-      } else {
-        pass(`Production shows ${prodCount} reviews`);
-      }
-    } else {
-      warn(`Could not extract reviewCount from ${url}`);
+  // fetchLiveRc reads the `rc` field from /data/shows/{id}.json (verified 2026-04-16).
+  // The old HTML grep for "reviewCount" was broken — that field doesn't exist in rendered HTML.
+  fetchLiveRc(showId).then(({ rc, err }) => {
+    if (err) {
+      warn(`Production check failed: ${err}`);
+      return;
     }
-  } catch (e) {
+
+    const localCount = reviewsData ? countAggregate(showId, reviewsData) : null;
+
+    if (localCount !== null && rc === localCount) {
+      pass(`Production matches local: ${rc} reviews`);
+    } else if (localCount !== null && rc < localCount) {
+      warn(`Production has ${rc} reviews but local has ${localCount} — deploy pending`);
+    } else {
+      pass(`Production shows ${rc} reviews`);
+    }
+  }).catch(e => {
     warn(`Production check failed: ${e.message.slice(0, 80)}`);
-  }
+  });
 }
 
 // ── Summary ─────────────────────────────────────────────────────────────────
