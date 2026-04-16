@@ -43,6 +43,17 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
 const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
 
+// Load NYT Critic's Picks authoritative URL set (from spotlight page scrape)
+const NYT_CRITICS_PICK_URLS = (() => {
+  try {
+    const picksData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'nyt-critics-picks.json'), 'utf8'));
+    return new Set(picksData.urls || []);
+  } catch (e) {
+    console.warn('[nyt-critics-picks] Could not load data/nyt-critics-picks.json — designations will be cleared:', e.message);
+    return new Set();
+  }
+})();
+
 // Load outlet registry for cross-market guard
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
 const outletRegionMap = {};  // outletId -> region (e.g., 'london')
@@ -2939,31 +2950,28 @@ showDirs.forEach(showId => {
       if (review.outlet) review.outlet = decodeHtmlEntities(review.outlet);
       if (review.pullQuote) review.pullQuote = decodeHtmlEntities(review.pullQuote);
 
-      // Add designation if present, or auto-detect from text/archive
-      if (data.designation) {
-        review.designation = data.designation;
-      } else if (review.outletId === 'nytimes' || (data.outletId || '').startsWith('nytimes')) {
-        // Auto-detect NYT Critics' Pick from review text or archived HTML
-        const text = data.fullText || data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || '';
-        const textHasPick = /CRITIC['\u2019]?S PICK/i.test(text);
-        let archiveHasPick = false;
-        if (!textHasPick && data.archivePath) {
-          try {
-            const archiveHtml = fs.readFileSync(path.join(__dirname, '..', data.archivePath), 'utf8');
-            archiveHasPick = /critic[''\u2019]?s[''\u2019]?\s*pick/i.test(archiveHtml) || /criticsPick/i.test(archiveHtml);
-          } catch (e) { /* archive not available */ }
-        }
-        if (textHasPick || archiveHasPick) {
-          review.designation = 'Critics_Pick';
-          // Persist back to source file so it's not re-detected every rebuild
-          // Re-read from disk to avoid overwriting fields updated by concurrent processes
-          data.designation = 'Critics_Pick';
+      // NYT Critic's Pick: authoritative only.
+      // Source: data/nyt-critics-picks.json (scraped from NYT spotlight page).
+      // The previous regex-based auto-detection matched NYT site chrome like
+      // the 'criticsPick' CSS class on every review page, producing ~10% false
+      // positives (e.g. Fear of 13 / Helen Shaw 2026-04-15 was flagged despite
+      // not being a pick). If a review is NYT and its URL isn't in the
+      // spotlight list, designation is cleared — regardless of what was
+      // previously persisted.
+      if (review.outletId === 'nytimes' || (data.outletId || '').startsWith('nytimes')) {
+        const pickUrl = review.url || data.url;
+        const isPick = pickUrl && NYT_CRITICS_PICK_URLS.has(pickUrl);
+        review.designation = isPick ? 'Critics_Pick' : null;
+        // Persist back to source so stale FPs get cleared on next run too.
+        if ((data.designation || null) !== review.designation) {
           try {
             const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-            sourceData.designation = 'Critics_Pick';
+            sourceData.designation = review.designation;
             fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2));
           } catch (e) { /* read-only in CI */ }
         }
+      } else if (data.designation) {
+        review.designation = data.designation;
       }
 
       allReviews.push(review);

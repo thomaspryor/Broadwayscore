@@ -1,13 +1,24 @@
 #!/usr/bin/env node
 
 /**
- * Check NYT reviews for Critics' Pick designation
- * Fetches each NYT review URL and looks for the Critics' Pick badge
- * Updates review files with designation field
+ * DEPRECATED — do not use.
  *
- * Usage:
- *   node scripts/check-nyt-critics-pick.js [--dry-run] [--show=showId]
+ * The authoritative NYT Critic's Pick source is data/nyt-critics-picks.json
+ * (scraped from the spotlight page by scripts/refresh-nyt-critics-picks.js).
+ * rebuild-all-reviews.js now assigns the designation field purely from that
+ * URL list.
+ *
+ * This script's regex-based detection matched NYT site chrome — the
+ * 'criticsPick' CSS class appears on every review page — producing ~10%
+ * false positives. On 2026-04-16 it flagged The Fear of 13 (Helen Shaw)
+ * as a Critic's Pick, which was reported as a content error.
+ *
+ * Left as an intentional failure so accidental re-runs are obvious.
  */
+
+console.error('check-nyt-critics-pick.js is DEPRECATED. NYT Critic\'s Pick data comes from data/nyt-critics-picks.json only.');
+console.error('To refresh the authoritative list, run: node scripts/refresh-nyt-critics-picks.js');
+process.exit(1);
 
 const fs = require('fs');
 const path = require('path');
