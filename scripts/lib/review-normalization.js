@@ -14,6 +14,17 @@
  * When adding known critic name variations, add them to CRITIC_ALIASES below.
  */
 
+/**
+ * isPreviewPlaceholder: true — a review file created before openingDate, likely
+ * a stub with incomplete fullText or pre-opening aggregator signal. Safe to
+ * REPLACE on post-opening discovery. Contrast with a real review (no flag)
+ * which must NEVER be replaced by a downstream discovery.
+ *
+ * This flag is respected by mergeReviews(): when existing.isPreviewPlaceholder
+ * is true and the caller passes { fromPostOpening: true }, the incoming review
+ * fully replaces the placeholder rather than being merged into it.
+ */
+
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
@@ -524,8 +535,21 @@ function areOutletsSame(outlet1, outlet2) {
 /**
  * Merge two review objects, keeping the best data from each.
  * Prefers: longer text, more complete URLs, original scores, etc.
+ *
+ * @param {object} existing - The on-disk review object
+ * @param {object} incoming - The newly-discovered review object
+ * @param {object} [options]
+ * @param {boolean} [options.fromPostOpening] - When true, a placeholder file
+ *   (existing.isPreviewPlaceholder === true) will be fully REPLACED by the
+ *   incoming review rather than merged. Has no effect on real reviews.
  */
-function mergeReviews(existing, incoming) {
+function mergeReviews(existing, incoming, options = {}) {
+  // Post-opening discovery replaces preview-period placeholder wholesale.
+  // Real reviews (no isPreviewPlaceholder flag) are never replaced this way.
+  if (existing.isPreviewPlaceholder === true && options.fromPostOpening === true) {
+    return { ...incoming };
+  }
+
   const merged = { ...existing };
 
   // Prefer longer/more complete fullText (decode entities on incoming text)
