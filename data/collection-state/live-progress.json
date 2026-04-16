@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-16T18:46:21.460Z",
+  "updatedAt": "2026-04-16T18:48:39.537Z",
   "processed": 71,
-  "failed": 811,
+  "failed": 821,
   "successRate": "8.0%",
   "tierBreakdown": {
     "playwright": 27,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 14,
     "brightdata": 7,
-    "archiveToday": 20,
+    "archiveToday": 21,
     "archive": 11
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-04-16T14:06:39.543Z",
-      "event": "bb-session",
-      "session": "94afab67",
-      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
-    },
-    {
-      "t": "2026-04-16T14:06:40.141Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T14:11:21.031Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-16T18:44:30.699Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-04-16T18:47:53.895Z",
+      "event": "bb-session",
+      "session": "3aaf7428",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/03/10/AR2010031004992"
+    },
+    {
+      "t": "2026-04-16T18:47:54.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
