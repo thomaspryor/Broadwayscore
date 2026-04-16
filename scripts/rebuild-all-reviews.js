@@ -1459,15 +1459,24 @@ showDirs.forEach(showId => {
       // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
       // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
       // Note: uses showCat (outer scope, line 1334) because showCategory is declared later in this callback
+      // GUARD: Respect manual reasons, high-confidence CV wrongProduction, and CV wrongArticle
+      // (same guards as the UK-URL auto-clear path below — cousin bug fixed 2026-04-15)
       if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
           && (isLondonMarket(showCat) || showCat === 'off-broadway')) {
-        data.wrongProduction = false;
-        data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
-        data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
-        delete data.wrongProductionNote;
-        stats.wrongProdWEOBAutoCleared = (stats.wrongProdWEOBAutoCleared || 0) + 1;
-        try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-        // Fall through — don't skip
+        const wpCvConfirmedWrong = data.contentVerification?.wrongProduction === true
+          && data.contentVerification?.confidence === 'high';
+        const wpCvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
+          && data.contentVerification?.confidence === 'high';
+        const wpHasManualReason = !!data.wrongProductionReason;
+        if (!wpCvConfirmedWrong && !wpCvConfirmedWrongArticle && !wpHasManualReason) {
+          data.wrongProduction = false;
+          data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
+          data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete data.wrongProductionNote;
+          stats.wrongProdWEOBAutoCleared = (stats.wrongProdWEOBAutoCleared || 0) + 1;
+          try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+          // Fall through — don't skip
+        }
       }
 
       // Promote contentVerification flags to top-level if not already set
@@ -1653,9 +1662,10 @@ showDirs.forEach(showId => {
       // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
       // BUT: Do NOT auto-clear if content verification flagged wrongArticle (e.g., news/preview, not a review).
       // AND: Do NOT auto-clear if the review date is >90 days before the show — that's a prior production.
-      // Check multiple signals for wrong-article detection (LLM sets these via different paths)
-      const isWrongArticle = (data.contentVerification && data.contentVerification.wrongArticle === true)
-        || (data.wrongShowReason && /wrong|different|not a review|not the/i.test(data.wrongShowReason));
+      // AND: Do NOT auto-clear if any manual wrongShowReason is set — same pattern as wrongProduction
+      // (cousin bug fixed 2026-04-15: regex filter missed manual reasons like "confirmed via audit")
+      const isWrongArticle = (data.contentVerification && data.contentVerification.wrongArticle === true);
+      const wsHasManualReason = !!data.wrongShowReason;
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
         const wsReviewDate = parseDate(data.publishDate);
@@ -1663,7 +1673,7 @@ showDirs.forEach(showId => {
           wsDateMismatch = true;
         }
       }
-      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsDateMismatch) {
+      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsHasManualReason && !wsDateMismatch) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
