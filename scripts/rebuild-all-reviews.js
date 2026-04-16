@@ -48,15 +48,39 @@ const {
   shouldAutoClearWrongShowUkUrl,
 } = require('./lib/wrong-production-autoclear');
 
-// Load NYT Critic's Picks authoritative URL set (from spotlight page scrape)
+// Authoritative NYT Critic's Pick set — union of two sources:
+//   1. data/nyt-critics-picks.json — scraped from nytimes.com/spotlight/theater-critics-picks
+//      (covers ~100 most recent picks, back to ~April 2024)
+//   2. data/designations.json → nyt_critics_pick — human-verified historical picks
+//      (Hamilton, Hadestown, Lion King, etc. that fell off the spotlight window)
+// A review is designated only if its URL is in this set. Both are URL-keyed; we
+// look up the designations.json entries by finding the show's NYT review URL.
 const NYT_CRITICS_PICK_URLS = (() => {
+  const set = new Set();
   try {
     const picksData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'nyt-critics-picks.json'), 'utf8'));
-    return new Set(picksData.urls || []);
+    for (const u of (picksData.urls || [])) set.add(u);
   } catch (e) {
-    console.warn('[nyt-critics-picks] Could not load data/nyt-critics-picks.json — designations will be cleared:', e.message);
-    return new Set();
+    console.warn('[nyt-critics-picks] Could not load data/nyt-critics-picks.json:', e.message);
   }
+  try {
+    const designations = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'designations.json'), 'utf8'));
+    const manualPicks = designations.nyt_critics_pick || {};
+    for (const showId of Object.keys(manualPicks)) {
+      const showDir = path.join(__dirname, '..', 'data', 'review-texts', showId);
+      if (!fs.existsSync(showDir)) continue;
+      for (const f of fs.readdirSync(showDir)) {
+        if (!f.startsWith('nytimes--')) continue;
+        try {
+          const r = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+          if (r.url) set.add(r.url);
+        } catch { /* skip unreadable */ }
+      }
+    }
+  } catch (e) {
+    console.warn('[nyt-critics-picks] Could not load data/designations.json:', e.message);
+  }
+  return set;
 })();
 
 // Load outlet registry for cross-market guard
