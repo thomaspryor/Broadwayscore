@@ -147,7 +147,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-sm truncate">{show.title}</div>
                       <div className="text-[10px] text-gray-500 uppercase tracking-wide">
-                        {show.category === 'west-end' ? 'West End' : show.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway'} · {show.status}
+                        {show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : show.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway'} · {show.status}
                       </div>
                     </div>
                     {show.hasEnoughReviews && show.score != null && (
