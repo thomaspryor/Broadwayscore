@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-16T11:29:14.733Z",
-  "processed": 53,
-  "failed": 170,
-  "successRate": "23.8%",
+  "updatedAt": "2026-04-16T11:31:49.806Z",
+  "processed": 54,
+  "failed": 179,
+  "successRate": "23.2%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 12,
-    "brightdata": 6,
+    "brightdata": 7,
     "archiveToday": 12,
     "archive": 11
   },
-  "browserbaseSessions": 23,
+  "browserbaseSessions": 24,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:04:30.902Z",
-      "event": "bb-session",
-      "session": "b43d8832",
-      "url": "https://www.wsj.com/articles/trouble-in-mind-review-alice-childress-roundabout-t"
-    },
-    {
-      "t": "2026-04-16T11:04:31.486Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T11:06:45.083Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-16T11:27:07.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:29:32.645Z",
+      "event": "bb-session",
+      "session": "2088523d",
+      "url": "http://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-1477614600"
+    },
+    {
+      "t": "2026-04-16T11:29:33.344Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

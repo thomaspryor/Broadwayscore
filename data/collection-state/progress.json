@@ -52,7 +52,8 @@
     "the-parisian-woman-2017/guardian--jake-nevins.json",
     "the-bands-visit-2017/show-showdown--wendy-caster.json",
     "sweat-2017/timeout--david-cote.json",
-    "the-price-2017/nydailynews--joe-dziemianowicz.json"
+    "the-price-2017/nydailynews--joe-dziemianowicz.json",
+    "falsettos-2016/wsj--terry-teachout.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -224,7 +225,16 @@
     "sunday-in-the-park-with-george-2017/out-magazine--michael-musto.json",
     "the-present-2017/thestage--unknown.json",
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
-    "in-transit-2016/theater-news-online--brian-scott-lipton.json"
+    "in-transit-2016/theater-news-online--brian-scott-lipton.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/northjerseycom--robert-feldberg.json",
+    "les-liaisons-dangereuses-2016/timeout--david-cote.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "the-encounter-2016/bobs-theater-blog--robert-sholiton.json",
+    "an-act-of-god-2016/wsj--terry-teachout.json",
+    "cirque-du-soleil-paramour-2016/variety--marilyn-stasio.json",
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/deadline--jeremy-gerard.json",
+    "long-days-journey-into-night-2016/theater-news-online--david-cote.json",
+    "fully-committed-2016/act-three-the-reviews--doug-marino.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -288,7 +298,8 @@
       "kpop-2022/vulture--jackson-mchenry.json",
       "almost-famous-2022/nydailynews--chris-jones.json",
       "topdog-underdog-2022/vulture--rob-weinert-kendt.json",
-      "west-side-story-2020/wsj--terry-teachout.json"
+      "west-side-story-2020/wsj--terry-teachout.json",
+      "falsettos-2016/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/proof-2026/talkinbroadway--unknown.json",
@@ -319,7 +330,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "in-transit-2016/theater-news-online--brian-scott-lipton.json",
+  "lastProcessed": "fully-committed-2016/act-three-the-reviews--doug-marino.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -659,6 +670,17 @@
     },
     {
       "t": "2026-04-16T11:27:07.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:29:32.645Z",
+      "event": "bb-session",
+      "session": "2088523d",
+      "url": "http://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-1477614600"
+    },
+    {
+      "t": "2026-04-16T11:29:33.344Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
