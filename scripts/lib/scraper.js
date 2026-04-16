@@ -391,8 +391,20 @@ async function fetchPage(url, options = {}) {
     console.log('  → Trying Bright Data...');
     const result = await fetchWithBrightData(url);
     if (result && result.content && result.content.length > 0) {
-      console.log(`  ✅ Success (Bright Data, ${result.format})`);
-      return result;
+      // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge HTML
+      // that passes length > 0 but isn't real content. Fall through to ScrapingBee.
+      const isChallengeOrGarbage = result.content.length < 10000 && (
+        result.content.includes('Just a moment...') ||
+        result.content.includes('cf_chl_opt') ||
+        result.content.includes('challenge-platform') ||
+        result.content.includes('Enable JavaScript and cookies to continue')
+      );
+      if (isChallengeOrGarbage) {
+        console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${result.content.length} bytes), trying next provider...`);
+      } else {
+        console.log(`  ✅ Success (Bright Data, ${result.format})`);
+        return result;
+      }
     } else if (result) {
       console.log('  ⚠️  Bright Data returned empty content, trying next provider...');
     }
