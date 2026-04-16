@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-16T09:16:46.520Z",
+  "timestamp": "2026-04-16T09:57:36.531Z",
   "stats": {
-    "totalReviews": 34732,
-    "alreadyFlagged": 15171,
+    "totalReviews": 34735,
+    "alreadyFlagged": 15173,
     "dateGuardCatches": 98,
     "directorMismatch": 815,
     "tvFilmSignals": 3142,
     "londonSignals": 1018,
     "offBroadwaySignals": 881,
-    "yearMismatch": 65,
-    "noPublishDate": 3732
+    "yearMismatch": 66,
+    "noPublishDate": 3731
   },
   "findings": [
     {
@@ -36039,6 +36039,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
+      "file": "theatermania--hayley-levitt.json",
+      "publishDate": "2026-03-31",
+      "url": "https://www.theatermania.com/news/playwright-david-auburn-and-director-thomas-kail-on-revisiting-proof-at-25_1829638/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2000 (2x) more than 2026 (1x). 2000 matches production: proof-2000"
         }
       ]
     },
