@@ -75,7 +75,8 @@
     "oleanna-2009/theatermania--unknown.json",
     "a-man-for-all-seasons-2008/theatermania--david-finkle.json",
     "barnum-1980/nytimes--frank-rich.json",
-    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
+    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -953,7 +954,16 @@
     "annie-1977/northjerseycom--robert-feldberg.json",
     "a-little-night-music-1973/backstage--erik-haagensen.json",
     "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "proof-2026/wsj--charles-isherwood.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/independent--alice-saville.json",
+    "death-of-a-salesman-2026/wsj--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "john-proctor-is-the-villain-west-end-2026/standard--the-standard.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -987,7 +997,8 @@
       "million-dollar-quartet-2010/theatermania--unknown.json",
       "oleanna-2009/theatermania--unknown.json",
       "a-man-for-all-seasons-2008/theatermania--david-finkle.json",
-      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
+      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1092,7 +1103,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -1808,6 +1819,28 @@
       "t": "2026-04-16T19:03:19.135Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-16T19:16:25.954Z",
+      "event": "bb-session",
+      "session": "42416d47",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-16T19:16:26.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T19:17:28.789Z",
+      "event": "bb-session",
+      "session": "d471f510",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-re"
+    },
+    {
+      "t": "2026-04-16T19:17:29.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
