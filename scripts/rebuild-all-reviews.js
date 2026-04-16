@@ -41,7 +41,12 @@ const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, is
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
-const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
+const {
+  shouldAutoClearWrongProduction,
+  shouldAutoClearWrongShow,
+  shouldAutoClearWrongProductionUrlYear,
+  shouldAutoClearWrongShowUkUrl,
+} = require('./lib/wrong-production-autoclear');
 
 // Load NYT Critic's Picks authoritative URL set (from spotlight page scrape)
 const NYT_CRITICS_PICK_URLS = (() => {
@@ -1506,21 +1511,16 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
-      // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
-      // Note: uses showCat (outer scope, line 1334) because showCategory is declared later in this callback
-      // GUARD: Respect manual reasons, high-confidence CV wrongProduction, and CV wrongArticle
-      // (same guards as the UK-URL auto-clear path below — cousin bug fixed 2026-04-15)
-      if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
-          && (isLondonMarket(showCat) || showCat === 'off-broadway')) {
-        const wpCvConfirmedWrong = data.contentVerification?.wrongProduction === true
-          && data.contentVerification?.confidence === 'high';
-        const wpCvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
-          && data.contentVerification?.confidence === 'high';
-        const wpHasManualReason = !!data.wrongProductionReason;
-        if (!wpCvConfirmedWrong && !wpCvConfirmedWrongArticle && !wpHasManualReason) {
+      // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard.
+      // WE/OB shows transfer from other venues, so URL years mismatch legitimately.
+      // Respect manual reasons and high-confidence CV — see scripts/lib/wrong-production-autoclear.js.
+      // Uses showCat (outer scope) because showCategory is declared later in this callback.
+      {
+        const isLondonOrOffBroadway = isLondonMarket(showCat) || showCat === 'off-broadway';
+        if (shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway })) {
+          const prevNote = data.wrongProductionNote;
           data.wrongProduction = false;
-          data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
+          data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${prevNote})`;
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
           delete data.wrongProductionNote;
           stats.wrongProdWEOBAutoCleared = (stats.wrongProdWEOBAutoCleared || 0) + 1;
@@ -1708,16 +1708,11 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Skip wrong-show reviews (review content is for a different show)
-      // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
-      // the wrongShow flag is almost certainly a false positive from LLM classification.
-      // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
-      // BUT: Do NOT auto-clear if content verification flagged wrongArticle (e.g., news/preview, not a review).
-      // AND: Do NOT auto-clear if the review date is >90 days before the show — that's a prior production.
-      // AND: Do NOT auto-clear if any manual wrongShowReason is set — same pattern as wrongProduction
-      // (cousin bug fixed 2026-04-15: regex filter missed manual reasons like "confirmed via audit")
-      const isWrongArticle = (data.contentVerification && data.contentVerification.wrongArticle === true);
-      const wsHasManualReason = !!data.wrongShowReason;
+      // Skip wrong-show reviews (review content is for a different show).
+      // OVERRIDE: London show + UK outlet URL = almost certainly LLM false positive
+      // (UK outlets only cover London theatre). Respect manual wrongShowReason,
+      // CV wrongArticle, and date-mismatches (review >90d before open = prior production).
+      // See scripts/lib/wrong-production-autoclear.js — cousin bug fixed 2026-04-15.
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
         const wsReviewDate = parseDate(data.publishDate);
@@ -1725,7 +1720,11 @@ showDirs.forEach(showId => {
           wsDateMismatch = true;
         }
       }
-      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsHasManualReason && !wsDateMismatch) {
+      if (shouldAutoClearWrongShowUkUrl(data, {
+        isLondonMarketShow: isLondonMarket(showCat),
+        isUkOutletUrl: isUkOutletUrl(data.url),
+        dateMismatchOver90d: wsDateMismatch,
+      })) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
