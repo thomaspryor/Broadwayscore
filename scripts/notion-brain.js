@@ -447,18 +447,19 @@ async function createCard(args) {
     card[field] = overflow[field];
   }
 
-  // Write session-scoped sentinel for Stop/commit hooks.
-  // Previously also wrote a CWD-scoped sentinel (/tmp/notion-card-cwd-${hash})
-  // as a fallback, but that's shared across parallel sessions: session B's
-  // create overwrites session A's sentinel, causing A's stop hook to block on
-  // B's card ("card still open" for a card that isn't A's). Removed 2026-04-15.
-  try {
-    if (process.env.CLAUDE_SESSION_ID) {
-      fs.writeFileSync(`/tmp/notion-card-${process.env.CLAUDE_SESSION_ID}`, page.id);
-    }
-  } catch (_e) { /* sentinel write is best-effort */ }
-
   console.log(JSON.stringify(card, null, 2));
+
+  // Print a tagged marker line AFTER the JSON so the PostToolUse verify hook
+  // can reliably extract the card ID even when stdout is piped through
+  // `| tail`, `| jq`, etc. The verify hook greps for __NOTION_CARD_ID__=
+  // instead of blindly matching any UUID in the output. Without this, piping
+  // truncates the JSON and the UUID-fallback grep picks up session IDs,
+  // debug-log UUIDs, or other non-card UUIDs mixed into the combined stdout.
+  // Discovered 2026-04-15: the old approach was writing a sentinel keyed by
+  // CLAUDE_SESSION_ID env var, which is a DIFFERENT UUID from the hook
+  // stdin's session_id — so the sentinel existed but under the wrong name.
+  console.error(`__NOTION_CARD_ID__=${page.id}`);
+
   return card;
 }
 
