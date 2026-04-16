@@ -1,18 +1,63 @@
 {
-  "updatedAt": "2026-04-16T08:37:21.874Z",
-  "processed": 4,
-  "failed": 10,
-  "successRate": "28.6%",
+  "updatedAt": "2026-04-16T08:54:33.538Z",
+  "processed": 6,
+  "failed": 2,
+  "successRate": "75.0%",
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-04-16T08:50:03.590Z",
+      "event": "bb-session",
+      "session": "283b4385",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T08:50:04.406Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T08:50:36.793Z",
+      "event": "bb-session",
+      "session": "6b2d1d33",
+      "url": "https://deadline.com/2024/07/rabbit-proof-fence-phillip-noyce-1236015617/"
+    },
+    {
+      "t": "2026-04-16T08:50:37.566Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T08:51:01.954Z",
+      "event": "bb-session",
+      "session": "62b0e601",
+      "url": "https://observer.com/2023/06/burden-of-proof-review-true-crime-that-questions-mo"
+    },
+    {
+      "t": "2026-04-16T08:51:02.746Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-16T08:54:15.194Z",
+      "event": "bb-session",
+      "session": "bd67b25e",
+      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
+    },
+    {
+      "t": "2026-04-16T08:54:16.024Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
