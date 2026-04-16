@@ -1,86 +1,20 @@
 {
-  "updatedAt": "2026-04-16T13:36:32.973Z",
-  "processed": 60,
-  "failed": 853,
-  "successRate": "6.6%",
+  "updatedAt": "2026-04-16T14:13:07.218Z",
+  "processed": 63,
+  "failed": 759,
+  "successRate": "7.7%",
   "tierBreakdown": {
     "playwright": 22,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 21,
     "directCookies": 0,
-    "scrapingbee": 12,
+    "scrapingbee": 14,
     "brightdata": 7,
     "archiveToday": 19,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:55:12.516Z",
-      "event": "bb-session",
-      "session": "1fecfe06",
-      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-re"
-    },
-    {
-      "t": "2026-04-16T11:55:13.717Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-16T12:02:17.584Z",
-      "event": "bb-session",
-      "session": "f599e369",
-      "url": "https://www.talkinbroadway.com/world/Illinoise.html"
-    },
-    {
-      "t": "2026-04-16T12:02:18.659Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-04-16T12:05:33.325Z",
-      "event": "bb-session",
-      "session": "3f886948",
-      "url": "https://www.talkinbroadway.com/world/TopDogUnderDog.html"
-    },
-    {
-      "t": "2026-04-16T12:05:34.430Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-04-16T12:06:13.987Z",
-      "event": "bb-session",
-      "session": "6ea3e2af",
-      "url": "https://www.wsj.com/articles/the-skin-of-our-teeth-thornton-wilder-vivian-beaumo"
-    },
-    {
-      "t": "2026-04-16T12:06:14.962Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-16T12:07:23.744Z",
-      "event": "bb-session",
-      "session": "42dda6d2",
-      "url": "https://www.wsj.com/articles/trouble-in-mind-review-alice-childress-roundabout-t"
-    },
-    {
-      "t": "2026-04-16T12:07:24.891Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-16T12:09:52.725Z",
-      "event": "bb-session",
-      "session": "9d51d474",
-      "url": "https://www.wsj.com/articles/the-sound-inside-review-mary-louise-parker-shines-i"
-    },
-    {
-      "t": "2026-04-16T12:09:53.831Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T12:14:29.488Z",
       "event": "bb-session",
@@ -122,6 +56,72 @@
     },
     {
       "t": "2026-04-16T12:29:39.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T14:05:55.046Z",
+      "event": "bb-session",
+      "session": "a45740df",
+      "url": "https://variety.com/2026/legit/news/a-walk-on-the-moon-musical-new-york-stage-de"
+    },
+    {
+      "t": "2026-04-16T14:05:55.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T14:06:12.701Z",
+      "event": "bb-session",
+      "session": "6af27916",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T14:06:13.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T14:06:39.543Z",
+      "event": "bb-session",
+      "session": "94afab67",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-04-16T14:06:40.141Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T14:11:21.031Z",
+      "event": "bb-session",
+      "session": "fee95486",
+      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
+    },
+    {
+      "t": "2026-04-16T14:11:21.650Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T14:11:39.363Z",
+      "event": "bb-session",
+      "session": "395cb012",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T14:11:39.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T14:12:25.559Z",
+      "event": "bb-session",
+      "session": "af18c86e",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T14:12:26.251Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
