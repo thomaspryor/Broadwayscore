@@ -1,48 +1,12 @@
 {
-  "generatedAt": "2026-04-16T03:20:28.159Z",
+  "generatedAt": "2026-04-16T04:00:55.108Z",
   "summary": {
-    "total": 4,
+    "total": 3,
     "high": 1,
-    "medium": 3,
+    "medium": 2,
     "low": 0
   },
   "collisions": [
-    {
-      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1236721663/",
-      "normalizedUrl": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1236721663",
-      "candidates": [
-        {
-          "showId": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
-          "file": "variety--rebecca-rubin.json",
-          "publishDate": "2026-04-15",
-          "openingDate": "2026-04-16",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "variety"
-        },
-        {
-          "showId": "milk-and-honey-amt-theater-off-broadway-2026",
-          "file": "variety--unknown.json",
-          "publishDate": "2026-04-15",
-          "openingDate": "2026-04-16",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "variety"
-        },
-        {
-          "showId": "proof-2026",
-          "file": "variety--unknown.json",
-          "publishDate": "2026-04-15",
-          "openingDate": "2026-04-16",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "variety"
-        }
-      ],
-      "suggestedWinner": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
-      "reason": "publishDate 2026-04-15 is 1 days from aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026 but also 1 days from milk-and-honey-amt-theater-off-broadway-2026",
-      "confidence": "medium"
-    },
     {
       "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-broadway-eb586d98",
       "normalizedUrl": "https://wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-broadway-eb586d98",
@@ -88,7 +52,7 @@
           "file": "talkinbroadway--unknown.json",
           "publishDate": null,
           "openingDate": "2026-04-12",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": true,
           "outletId": "talkinbroadway"
         }
@@ -98,30 +62,30 @@
       "confidence": "medium"
     },
     {
-      "url": "https://www.nytimes.com/2026/04/07/t-magazine/cats-jellicle-ball-broadway-performance.html",
-      "normalizedUrl": "https://nytimes.com/2026/04/07/t-magazine/cats-jellicle-ball-broadway-performance.html",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1236721663/",
+      "normalizedUrl": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1236721663",
       "candidates": [
         {
-          "showId": "proof-2026",
-          "file": "nytimes--sarah-bahr.json",
+          "showId": "milk-and-honey-amt-theater-off-broadway-2026",
+          "file": "variety--unknown.json",
           "publishDate": "2026-04-15",
           "openingDate": "2026-04-16",
           "hasScore": false,
           "hasFullText": false,
-          "outletId": "nytimes"
+          "outletId": "variety"
         },
         {
-          "showId": "the-fear-of-13-2026",
-          "file": "nytimes--sarah-bahr.json",
+          "showId": "proof-2026",
+          "file": "variety--unknown.json",
           "publishDate": "2026-04-15",
-          "openingDate": "2026-04-15",
+          "openingDate": "2026-04-16",
           "hasScore": false,
           "hasFullText": false,
-          "outletId": "nytimes"
+          "outletId": "variety"
         }
       ],
-      "suggestedWinner": "the-fear-of-13-2026",
-      "reason": "publishDate 2026-04-15 is 0 days from the-fear-of-13-2026 but also 1 days from proof-2026",
+      "suggestedWinner": "milk-and-honey-amt-theater-off-broadway-2026",
+      "reason": "publishDate 2026-04-15 is 1 days from milk-and-honey-amt-theater-off-broadway-2026 but also 1 days from proof-2026",
       "confidence": "medium"
     }
   ]
