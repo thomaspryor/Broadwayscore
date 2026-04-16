@@ -80,7 +80,17 @@
     "the-fear-of-13-2026/guardian--unknown.json",
     "the-fear-of-13-2026/nydailynews--unknown.json",
     "the-fear-of-13-2026/nytimes--sarah-bahr.json",
-    "the-fear-of-13-2026/guardian--tim-lewis.json"
+    "the-fear-of-13-2026/guardian--tim-lewis.json",
+    "proof-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
+    "the-fear-of-13-2026/nyt-theater--jonathan-mandell.json",
+    "the-fear-of-13-2026/nytg--joe-dziemianowicz.json",
+    "the-fear-of-13-2026/variety--aramide-timubu.json",
+    "the-fear-of-13-2026/vulture--jackson-mchenry.json",
+    "the-fear-of-13-2026/thewrap--robert-hofler.json",
+    "the-fear-of-13-2026/theatrely--juan-a-ramirez.json",
+    "the-fear-of-13-2026/culturesauce--thom-geier.json",
+    "the-fear-of-13-2026/nysr--david-finkle.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1765,7 +1775,11 @@
       "proof-2026/ap--unknown.json",
       "the-fear-of-13-2026/nytg--gillian-russo.json",
       "the-fear-of-13-2026/guardian--unknown.json",
-      "the-fear-of-13-2026/guardian--tim-lewis.json"
+      "the-fear-of-13-2026/guardian--tim-lewis.json",
+      "the-fear-of-13-2026/nyt-theater--jonathan-mandell.json",
+      "the-fear-of-13-2026/nytg--joe-dziemianowicz.json",
+      "the-fear-of-13-2026/culturesauce--thom-geier.json",
+      "the-fear-of-13-2026/nysr--david-finkle.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1788,7 +1802,11 @@
       "the-fear-of-13-2026/hollywood-reporter--unknown.json",
       "data/review-texts/the-fear-of-13-2026/deadline--unknown.json",
       "the-fear-of-13-2026/deadline--unknown.json",
-      "data/review-texts/aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--rebecca-rubin.json"
+      "data/review-texts/aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
+      "the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-fear-of-13-2026/variety--aramide-timubu.json",
+      "the-fear-of-13-2026/variety--aramide-timubu.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1814,7 +1832,8 @@
       "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
       "the-fear-of-13-2026/timeout--adam-feldman.json",
       "the-fear-of-13-2026/nytimes--unknown.json",
-      "the-fear-of-13-2026/nydailynews--unknown.json"
+      "the-fear-of-13-2026/nydailynews--unknown.json",
+      "the-fear-of-13-2026/theatrely--juan-a-ramirez.json"
     ],
     "brightdata": [
       "titanique-2026/talkinbroadway--unknown.json",
@@ -1825,7 +1844,10 @@
       "proof-2026/guardian--michael-billington.json",
       "the-fear-of-13-2026/talkinbroadway--unknown.json",
       "proof-2026/talkinbroadway--unknown.json",
-      "the-fear-of-13-2026/nytimes--sarah-bahr.json"
+      "the-fear-of-13-2026/nytimes--sarah-bahr.json",
+      "proof-2026/talkinbroadway--unknown.json",
+      "the-fear-of-13-2026/vulture--jackson-mchenry.json",
+      "the-fear-of-13-2026/thewrap--robert-hofler.json"
     ],
     "archiveToday": [
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
@@ -1848,7 +1870,7 @@
     ]
   },
   "startTime": "2026-04-15T08:50:43.089Z",
-  "lastProcessed": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--rebecca-rubin.json",
+  "lastProcessed": "the-fear-of-13-2026/nysr--david-finkle.json",
   "log": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -2045,6 +2067,28 @@
     },
     {
       "t": "2026-04-16T03:16:43.743Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T03:27:29.864Z",
+      "event": "bb-session",
+      "session": "cec95b12",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/the-fear-of-13-theate"
+    },
+    {
+      "t": "2026-04-16T03:27:30.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-16T03:28:09.756Z",
+      "event": "bb-session",
+      "session": "5021335c",
+      "url": "https://variety.com/2026/legit/reviews/the-fear-of-13-broadway-review-adrien-bro"
+    },
+    {
+      "t": "2026-04-16T03:28:10.499Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
