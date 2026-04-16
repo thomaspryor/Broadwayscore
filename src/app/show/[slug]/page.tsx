@@ -54,6 +54,8 @@ import ShowPageWatchlistButton from '@/components/user/ShowPageWatchlistButton';
 import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
+import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
+import SeatingOneLiner from '@/components/SeatingOneLiner';
 import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import { getSocialPulse } from '@/lib/data-social-pulse';
 
@@ -428,7 +430,14 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   ) : isOffBroadway ? (
                     <div className="text-gray-300 font-medium">{show.venue}</div>
                   ) : (
-                    <div><Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 font-medium hover:text-brand transition-colors">{show.venue}</Link></div>
+                    <>
+                      <div><Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 font-medium hover:text-brand transition-colors">{show.venue}</Link></div>
+                      <SeatingOneLiner
+                        sections={theater?.structuredTips?.seating?.sections}
+                        venueSlug={slugify(show.venue)}
+                        venueName={show.venue}
+                      />
+                    </>
                   )}
                   {show.runtime && <div>{show.runtime}</div>}
                   {show.status === 'previews' || show.status === 'upcoming' ? (
@@ -994,7 +1003,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         <div id="social-buzz" className="scroll-mt-20" />
         <SocialPulseCard sp={socialPulse} />
 
-        {/* Theater Scorecard (Broadway only) */}
+        {/* Theater Scorecard (Broadway only, demo-gated — includes unified seat guidance) */}
         {theater?.venueScores && (
           <TheaterScorecardCard
             venueScores={theater.venueScores}
@@ -1002,6 +1011,16 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
             externalLinks={theater.externalLinks}
             theaterName={theater.name}
             theaterSlug={theater.slug}
+            seatingSections={theater.structuredTips?.seating?.sections}
+            bestSeats={theater.structuredTips?.seating?.bestSeats}
+          />
+        )}
+
+        {/* Seating guidance (prod fallback — self-gates when scorecard renders) */}
+        {theater && (
+          <SeatingGuidanceCard
+            sections={theater.structuredTips?.seating?.sections}
+            bestSeats={theater.structuredTips?.seating?.bestSeats}
           />
         )}
 

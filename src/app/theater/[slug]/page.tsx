@@ -10,6 +10,7 @@ import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from './TheaterDetailClient';
 import TheaterTipsCard from '@/components/TheaterTipsCard';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
+import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
@@ -272,7 +273,7 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
             </Link>
           )}
 
-          {/* Theater Scorecard */}
+          {/* Theater Scorecard (demo only — 5-dim ratings + seat guidance unified) */}
           {theater.venueScores && (
             <TheaterScorecardCard
               venueScores={theater.venueScores}
@@ -280,8 +281,16 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
               externalLinks={theater.externalLinks}
               theaterName={theater.name}
               theaterSlug={theater.slug}
+              seatingSections={theater.structuredTips?.seating?.sections}
+              bestSeats={theater.structuredTips?.seating?.bestSeats}
             />
           )}
+
+          {/* Seating guidance (prod standalone — self-gates when scorecard is hidden) */}
+          <SeatingGuidanceCard
+            sections={theater.structuredTips?.seating?.sections}
+            bestSeats={theater.structuredTips?.seating?.bestSeats}
+          />
 
           {/* Tips */}
           {theater.structuredTips ? (
