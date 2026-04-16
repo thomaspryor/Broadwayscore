@@ -929,16 +929,23 @@ assert(
   'Page with Review Roundup + Photo Credit: ACCEPTED'
 );
 
-// Should ACCEPT: Opens-on-Broadway marker
+// Should ACCEPT: Opens-on-Broadway marker with Review Roundup in <title>
+// (secondary markers now require title check to distinguish from BWW homepage teasers)
 assert(
-  isBWWRoundupContent('<html><body><h1>Review Roundup: SHOW Opens-on-Broadway</h1></body></html>'),
+  isBWWRoundupContent('<html><head><title>Review Roundup: SHOW Opens on Broadway</title></head><body><h1>Review Roundup: SHOW Opens-on-Broadway</h1></body></html>'),
   'Page with Opens-on-Broadway: ACCEPTED'
 );
 
-// Should ACCEPT: Opens-in-the-West-End marker
+// Should ACCEPT: Opens-in-the-West-End marker with Review Roundup in <title>
 assert(
-  isBWWRoundupContent('<html><body><h1>Review Roundup: SHOW Opens-in-the-West-End</h1></body></html>'),
+  isBWWRoundupContent('<html><head><title>Review Roundup: SHOW Opens in the West End</title></head><body><h1>Review Roundup: SHOW Opens-in-the-West-End</h1></body></html>'),
   'Page with Opens-in-the-West-End: ACCEPTED'
+);
+
+// Should REJECT: Opens-on-Broadway WITHOUT Review Roundup in <title> (homepage teaser pattern)
+assert(
+  !isBWWRoundupContent('<html><head><title>BroadwayWorld: Latest News</title></head><body><a>Review Roundup</a><a>Opens-on-Broadway</a></body></html>'),
+  'Homepage with Opens-on-Broadway teaser: REJECTED'
 );
 
 // Should ACCEPT: long page with title tag containing Review Roundup
