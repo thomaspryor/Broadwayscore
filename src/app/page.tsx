@@ -3,7 +3,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
+import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -209,8 +209,16 @@ export default function HomePage() {
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .map(serializeShow);
 
+  // NYT Critic's Picks — sourced from the authoritative spotlight page
+  const nytPickIds = getNYTCriticsPickShowIds();
+  const nytCriticsPicksList = nytPickIds.size > 0 ? allShows
+    .filter(s => s.status === 'open' && nytPickIds.has(s.id))
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow) : [];
+
   const featuredRows: FeaturedRowData[] = [
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
+    ...(nytCriticsPicksList.length > 0 ? [{ title: "New York Times Critic\u2019s Picks", shows: nytCriticsPicksList, viewAllHref: '/critics/outlets/the-new-york-times' }] : []),
     { title: 'In Previews', shows: inPreviewsList, viewAllHref: '/browse/upcoming-broadway-shows' },
     { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
