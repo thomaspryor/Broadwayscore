@@ -76,6 +76,38 @@ const criticRegistry = loadCriticRegistry();
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
 
+// Verbose per-file exclusion logging — set REBUILD_VERBOSE=1 to enable.
+// Emits one structured line per excluded file with the guard name and key context,
+// so debugging "why did this review drop" takes minutes not hours.
+// Filter with: REBUILD_VERBOSE=1 ... | grep EXCLUSION | grep show=SHOW_ID
+const REBUILD_VERBOSE = process.env.REBUILD_VERBOSE === '1';
+
+/**
+ * Log an exclusion with the guard name, file, and key context.
+ * No side effects — pure logging. Call right before stats.skipped* increment.
+ *
+ * @param {string} statKey - e.g. 'skippedWrongProduction'
+ * @param {string} showId
+ * @param {string} file - Review filename
+ * @param {object} data - The review data object (url, outletId, criticName, etc.)
+ * @param {object} [extra] - Extra context (reason, thresholds, etc.)
+ */
+function logExclusion(statKey, showId, file, data, extra) {
+  if (!REBUILD_VERBOSE) return;
+  const ctx = {
+    url: (data && data.url) || null,
+    outlet: (data && (data.outletId || data.outlet)) || null,
+    critic: (data && (data.criticName || data.critic)) || null,
+    publishDate: (data && data.publishDate) || null,
+    ...(extra || {}),
+  };
+  const parts = Object.entries(ctx)
+    .filter(([, v]) => v !== null && v !== undefined && v !== '')
+    .map(([k, v]) => `${k}=${typeof v === 'string' ? v : JSON.stringify(v)}`)
+    .join(' ');
+  console.log(`[EXCLUSION] stat=${statKey} show=${showId} file=${file || '-'} ${parts}`);
+}
+
 // normalizeThumb, normalizePublishDate — imported from ./lib/rebuild-helpers
 
 function flagForHumanReview(data, reason, detail) {
@@ -717,6 +749,7 @@ const showDirs = fs.readdirSync(reviewTextsDir)
     // Skip orphaned review directories (show was renamed/merged/deleted)
     if (!validShowIds.has(f)) {
       console.warn(`  Skipping orphaned review directory: ${f}`);
+      logExclusion("skippedOrphanDirs", f, "-", null, { reason: "show dir not in shows.json" });
       stats.skippedOrphanDirs = (stats.skippedOrphanDirs || 0) + 1;
       return false;
     }
@@ -1148,6 +1181,7 @@ showDirs.forEach(showId => {
   // Off-Broadway and West End shows commonly get reviewed during previews, so don't skip them
   const showCat = showCategoryMap[showId] || 'broadway';
   if (showStatusMap[showId] === 'previews' && showCat === 'broadway') {
+    logExclusion("skippedPreviewsShows", showId, "-", null, { reason: "Broadway show in previews — not yet opened" });
     stats.skippedPreviewsShows = (stats.skippedPreviewsShows || 0) + 1;
     return;
   }
@@ -1183,6 +1217,7 @@ showDirs.forEach(showId => {
         } catch { /* skip malformed */ }
       }
     } catch { /* no dir */ }
+    logExclusion("skippedUpcomingShows", showId, "-", null, { reason: "Show in 'upcoming' status — no valid reviews yet", status: showStatusMap[showId] });
     stats.skippedUpcomingShows = (stats.skippedUpcomingShows || 0) + 1;
     return;
   }
@@ -1253,6 +1288,7 @@ showDirs.forEach(showId => {
       // Guard: detect git merge conflict markers (silent data corruption)
       if (/^<{7}\s|^={7}$|^>{7}\s/m.test(rawContent)) {
         console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
+        logExclusion("skippedCorrupted", showId, file, null, { reason: "git merge conflict markers in file" });
         stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
         stats.corruptedFiles.push(`${showId}/${file}`);
@@ -1370,6 +1406,7 @@ showDirs.forEach(showId => {
         // Sentinel values like "known-outlet-copy-exists" indicate a confirmed duplicate
         // even without a specific reference file — always skip these
         if (!data.duplicateOf.endsWith('.json')) {
+          logExclusion("skippedDuplicateOf", showId, file, data);
           stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
           return;
         }
@@ -1397,6 +1434,7 @@ showDirs.forEach(showId => {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
         if (!refAlsoDupe && !refExcluded) {
+          logExclusion("skippedDuplicateOf", showId, file, data);
           stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
           return;
         }
@@ -1448,6 +1486,7 @@ showDirs.forEach(showId => {
           // Texts no longer match — flag is stale, let this file through
           stats.staleDuplicateTextCleared = (stats.staleDuplicateTextCleared || 0) + 1;
         } else if (!refAlsoDupe && !refWouldBeExcluded) {
+          logExclusion("skippedDuplicateText", showId, file, data);
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
         } else {
@@ -1643,6 +1682,7 @@ showDirs.forEach(showId => {
           console.log(`  [NUCLEAR GUARD FAILURE] ${showId}/${file}: wrongProduction=true despite manual clear — FORCING false`);
           data.wrongProduction = false;
         } else {
+          logExclusion("skippedWrongProduction", showId, file, data);
           stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
           return;
         }
@@ -1652,6 +1692,7 @@ showDirs.forEach(showId => {
       // This catches URLs that slipped through gather-reviews before the isBlockedReviewUrl guard
       // was added. Uses the same domain-filters.js shared with gather-reviews.
       if (data.url && isBlockedReviewUrl(data.url)) {
+        logExclusion("skippedBlockedUrl", showId, file, data);
         stats.skippedBlockedUrl = (stats.skippedBlockedUrl || 0) + 1;
         return;
       }
@@ -1693,18 +1734,21 @@ showDirs.forEach(showId => {
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
       if (data.wrongShow === true) {
+        logExclusion("skippedWrongShow", showId, file, data);
         stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
         return;
       }
 
       // Skip fabricated entries (URLs fabricated by web-search LLM, confirmed dead via HTTP check)
       if (data.fabricatedEntry === true) {
+        logExclusion("skippedFabricated", showId, file, data);
         stats.skippedFabricated = (stats.skippedFabricated || 0) + 1;
         return;
       }
 
       // Skip non-review entries (scraper misidentified content as a review)
       if (data.isNotReview === true) {
+        logExclusion("skippedNotReview", showId, file, data);
         stats.skippedNotReview = (stats.skippedNotReview || 0) + 1;
         return;
       }
@@ -1717,6 +1761,7 @@ showDirs.forEach(showId => {
           || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
         const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt;
         if (!hasAggregatorScore && !hasExcerpt) {
+          logExclusion("skippedScraperGarbage", showId, file, data);
           stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
           return;
         }
@@ -1730,6 +1775,7 @@ showDirs.forEach(showId => {
           stats.fixedRelativeUrl = (stats.fixedRelativeUrl || 0) + 1;
         } else {
           // Non-BWW relative path (e.g. /people/Ben-Brantley/) — scraping artifact
+          logExclusion("skippedInvalidUrl", showId, file, data);
           stats.skippedInvalidUrl = (stats.skippedInvalidUrl || 0) + 1;
           return;
         }
@@ -1762,6 +1808,7 @@ showDirs.forEach(showId => {
               if (Math.abs(other.showYear - reviewYear) < myDist) {
                 if (shouldSkipWrongProductionAudit(data)) continue; // [GUARD:CROSS-SHOW-URL-DATED]
                 console.log(`  [CROSS-SHOW URL] ${showId}/${file}: URL year ${reviewYear} closer to ${other.showId} (${other.showYear}) than ${showId} (${myYear})`);
+                logExclusion("skippedCrossShowUrl", showId, file, data);
                 stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
                 data.wrongProduction = true;
                 data.wrongProductionNote = `Same URL exists in ${other.showId} which is closer to review year ${reviewYear}`;
@@ -1777,6 +1824,7 @@ showDirs.forEach(showId => {
               if (other.showId === showId || !other.showYear) continue;
               if (shouldSkipWrongProductionAudit(data)) continue; // [GUARD:CROSS-SHOW-URL-DATELESS]
               console.log(`  [CROSS-SHOW URL] ${showId}/${file}: dateless show loses to ${other.showId} (${other.showYear}) for URL year ${reviewYear}`);
+              logExclusion("skippedCrossShowUrl", showId, file, data);
               stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
               data.wrongProduction = true;
               data.wrongProductionNote = `Dateless show — same URL exists in dated show ${other.showId} (${other.showYear})`;
@@ -1836,6 +1884,7 @@ showDirs.forEach(showId => {
             data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing London show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
           }
+          logExclusion("skippedCrossMarket", showId, file, data);
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
           if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
           stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file });
@@ -1866,6 +1915,7 @@ showDirs.forEach(showId => {
             data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
             try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
           }
+          logExclusion("skippedCrossMarket", showId, file, data);
           stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
           if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
           stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway', urlFallback: urlIsUK });
@@ -1890,6 +1940,7 @@ showDirs.forEach(showId => {
               data.wrongProduction = true;
               data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains Broadway/tour indicator on London show`;
               try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+              logExclusion("skippedUrlPathCrossMarket", showId, file, data);
               stats.skippedUrlPathCrossMarket = (stats.skippedUrlPathCrossMarket || 0) + 1;
               return;
             }
@@ -1900,6 +1951,7 @@ showDirs.forEach(showId => {
               data.wrongProduction = true;
               data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains London indicator on Broadway show`;
               try { fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+              logExclusion("skippedUrlPathCrossMarket", showId, file, data);
               stats.skippedUrlPathCrossMarket = (stats.skippedUrlPathCrossMarket || 0) + 1;
               return;
             }
@@ -1922,6 +1974,7 @@ showDirs.forEach(showId => {
         const threshold = isFlexCategory ? 90 : 14;
         if (daysBefore > threshold) {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
+          logExclusion("skippedPreOpening", showId, file, data);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
           // Also flag the source file for future reference
           if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
@@ -1936,6 +1989,7 @@ showDirs.forEach(showId => {
 
       // Skip non-reviews (profiles, interviews, previews, features, news articles)
       if (data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true) {
+        logExclusion("skippedNonReview", showId, file, data);
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
       }
@@ -1943,6 +1997,7 @@ showDirs.forEach(showId => {
       // Skip syndicated duplicates (same critic, different outlet, same review text)
       // Flagged by scripts/detect-syndicated-duplicates.js
       if (data.isSyndicatedDuplicate === true) {
+        logExclusion("skippedSyndicated", showId, file, data);
         stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
         return;
       }
@@ -1968,6 +2023,7 @@ showDirs.forEach(showId => {
             } catch { return false; }
           });
           if (hasPrimary) {
+            logExclusion("skippedSyndicated", showId, file, data);
             stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
             return;
           }
@@ -1977,6 +2033,7 @@ showDirs.forEach(showId => {
       // Skip cross-outlet duplicates (different critic, same text across outlets)
       // Flagged by scripts/detect-cross-outlet-duplicates.js
       if (data.crossOutletDuplicate === true) {
+        logExclusion("skippedCrossOutletDupe", showId, file, data);
         stats.skippedCrossOutletDupe = (stats.skippedCrossOutletDupe || 0) + 1;
         return;
       }
@@ -1990,6 +2047,7 @@ showDirs.forEach(showId => {
         const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
         data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
+          logExclusion("skippedFullTextWrongAuthor", showId, file, data);
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
           return;
         }
@@ -2000,6 +2058,7 @@ showDirs.forEach(showId => {
       // Skip reviews flagged as wrong author attribution (hard block — both fullText AND excerpts are bad)
       // Flagged by detect-syndicated-duplicates.js author mismatch scanner
       if (data.wrongAttribution === true) {
+        logExclusion("skippedWrongAttribution", showId, file, data);
         stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
         return;
       }
@@ -2007,6 +2066,7 @@ showDirs.forEach(showId => {
       // Skip reviews flagged as suspected misattribution by critic-registry guard
       // (critic at an outlet outside their known affiliation, and not a freelancer)
       if (data.suspectedMisattribution === true) {
+        logExclusion("skippedSuspectedMisattribution", showId, file, data);
         stats.skippedSuspectedMisattribution = (stats.skippedSuspectedMisattribution || 0) + 1;
         return;
       }
@@ -2016,6 +2076,7 @@ showDirs.forEach(showId => {
       const criticLower = (data.criticName || '').toLowerCase().trim();
       if (criticLower && showCreativeTeamIndex[showId]?.has(criticLower)) {
         console.log(`  [CREATIVE-AS-CRITIC] ${showId}/${file}: critic "${data.criticName}" is a creative team member`);
+        logExclusion("skippedGarbage", showId, file, data);
         stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
         return;
       }
@@ -2028,6 +2089,7 @@ showDirs.forEach(showId => {
         (/^[a-z]+-[a-z]+-[a-z]+-[a-z]+-[a-z]+/.test(data.outletId || '') && !data.url)
       ) {
         console.log(`  [GARBAGE-OUTLET] ${showId}/${file}: outlet "${outlet.substring(0, 60)}" is suspicious`);
+        logExclusion("skippedGarbage", showId, file, data);
         stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
         return;
       }
@@ -2037,6 +2099,7 @@ showDirs.forEach(showId => {
       const rawOutletId = (data.outletId || '').toLowerCase();
       if (BLOCKED_OUTLET_IDS.has(rawOutletId)) {
         console.log(`  [BLOCKED-OUTLET] ${showId}/${file}: outletId "${rawOutletId}" is a scraping artifact`);
+        logExclusion("skippedGarbage", showId, file, data);
         stats.skippedGarbage = (stats.skippedGarbage || 0) + 1;
         return;
       }
@@ -2058,6 +2121,7 @@ showDirs.forEach(showId => {
               critic: data.criticName, publishDate: data.publishDate,
               daysBefore: Math.round(daysBefore), score: data.assignedScore
             });
+            logExclusion("skippedDateMismatch", showId, file, data);
             stats.skippedDateMismatch = (stats.skippedDateMismatch || 0) + 1;
             return;
           }
@@ -2102,6 +2166,7 @@ showDirs.forEach(showId => {
               monthsAfter: Math.round(monthsAfter), score: data.assignedScore,
               dateSource,
             });
+            logExclusion("skippedLateDateMismatch", showId, file, data);
             stats.skippedLateDateMismatch = (stats.skippedLateDateMismatch || 0) + 1;
             return;
           }
@@ -2156,6 +2221,7 @@ showDirs.forEach(showId => {
           if (fs.existsSync(targetPath)) {
             console.log(`  [REROUTE COLLISION] ${showId}/${file}: target ${targetShowId}/${file} exists, dropping (${yearSource}=${detectedYear})`);
             stats.rerouteCollisionDropped = (stats.rerouteCollisionDropped || 0) + 1;
+            logExclusion("skippedUrlYearMismatch", showId, file, data);
             stats.skippedUrlYearMismatch = (stats.skippedUrlYearMismatch || 0) + 1;
             return;
           }
@@ -2182,6 +2248,7 @@ showDirs.forEach(showId => {
               try { fs.unlinkSync(targetPath); } catch { /* best-effort rollback */ }
             }
             stats.rerouteFailedDropped = (stats.rerouteFailedDropped || 0) + 1;
+            logExclusion("skippedUrlYearMismatch", showId, file, data);
             stats.skippedUrlYearMismatch = (stats.skippedUrlYearMismatch || 0) + 1;
           }
           // Skip processing this file in the current rebuild — it now lives at
@@ -2217,6 +2284,7 @@ showDirs.forEach(showId => {
               Math.abs(y - showYear) < Math.abs(best - showYear) ? y : best);
             if (Math.abs(closestYear - showYear) > 2) {
               console.log(`  [URL-YEAR STANDALONE] ${showId}/${file}: URL year ${closestYear}, show year ${showYear} — likely wrong production`);
+              logExclusion("skippedUrlYearStandalone", showId, file, data);
               stats.skippedUrlYearStandalone = (stats.skippedUrlYearStandalone || 0) + 1;
               data.wrongProduction = true;
               data.wrongProductionNote = `URL contains year ${closestYear} but show opens in ${showYear} — likely review of different production`;
@@ -2237,6 +2305,7 @@ showDirs.forEach(showId => {
           for (const [dirName, newerId] of multiProdDirectorGuard[showId]) {
             if (text.includes(dirName)) {
               console.log(`  [DIRECTOR GUARD] ${showId}/${file}: mentions director "${dirName}" from newer production ${newerId}`);
+              logExclusion("skippedDirectorMismatch", showId, file, data);
               stats.skippedDirectorMismatch = (stats.skippedDirectorMismatch || 0) + 1;
               return;
             }
@@ -2252,6 +2321,7 @@ showDirs.forEach(showId => {
         const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
         data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
+          logExclusion("skippedFullTextWrongAuthor", showId, file, data);
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
           return;
         }
@@ -2260,18 +2330,21 @@ showDirs.forEach(showId => {
 
       // Skip misattributed reviews (LLM-hallucinated critic/outlet combos)
       if (data.wrongAttribution === true) {
+        logExclusion("skippedWrongAttribution", showId, file, data);
         stats.skippedWrongAttribution = (stats.skippedWrongAttribution || 0) + 1;
         return;
       }
 
       // Skip suspected misattributions (critic-registry guard)
       if (data.suspectedMisattribution === true) {
+        logExclusion("skippedSuspectedMisattribution", showId, file, data);
         stats.skippedSuspectedMisattribution = (stats.skippedSuspectedMisattribution || 0) + 1;
         return;
       }
 
       // Skip reviews with explicit rejection reason (garbage text, OCR junk, etc.)
       if (data.rejectionReason) {
+        logExclusion("skippedRejectionReason", showId, file, data);
         stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
         return;
       }
@@ -2281,12 +2354,14 @@ showDirs.forEach(showId => {
       // Many reviews are SOURCED from roundup pages but have individual critic/outlet
       // attribution and should count as original reviews.
       if (data.isRoundupArticle === true) {
+        logExclusion("skippedRoundup", showId, file, data);
         stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
         return;
       }
 
       // Skip reviews rejected by LLM ensemble Step 0 (wrong_show, wrong_production, not_a_review, garbage)
       if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) {
+        logExclusion("skippedLlmRejected", showId, file, data);
         stats.skippedLlmRejected = (stats.skippedLlmRejected || 0) + 1;
         return;
       }
@@ -2294,6 +2369,7 @@ showDirs.forEach(showId => {
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
       const reasoning = data.llmScore?.reasoning || '';
       if (reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
+        logExclusion("skippedWrongContent", showId, file, data);
         stats.skippedWrongContent = (stats.skippedWrongContent || 0) + 1;
         return;
       }
@@ -2389,6 +2465,7 @@ showDirs.forEach(showId => {
           const hasOriginalScore = (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
             || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
           if (!hasExcerpt && !hasOriginalScore) {
+            logExclusion("skippedShowNotMentioned", showId, file, data);
             stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
             return;
           }
@@ -2408,6 +2485,7 @@ showDirs.forEach(showId => {
           const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
           const existing = crossShowFingerprints.get(fp);
           if (existing && existing.showId !== showId) {
+            logExclusion("skippedCrossShowDupe", showId, file, data);
             stats.skippedCrossShowDupe = (stats.skippedCrossShowDupe || 0) + 1;
             if (!stats.crossShowDupeDetails) stats.crossShowDupeDetails = [];
             stats.crossShowDupeDetails.push(`${showId}/${file} duplicates ${existing.showId}/${existing.file}`);
@@ -2415,6 +2493,7 @@ showDirs.forEach(showId => {
           }
           if (existing && existing.showId === showId) {
             // Within-show duplicate. Skip the second one.
+            logExclusion("skippedWithinShowDupe", showId, file, data);
             stats.skippedWithinShowDupe = (stats.skippedWithinShowDupe || 0) + 1;
             if (!stats.withinShowDupeDetails) stats.withinShowDupeDetails = [];
             stats.withinShowDupeDetails.push(`${showId}/${file} duplicates ${showId}/${existing.file}`);
@@ -2485,6 +2564,7 @@ showDirs.forEach(showId => {
           }
         }
         if (namedCriticExists) {
+          logExclusion("skippedUnknownCriticDedup", showId, file, data);
           stats.skippedUnknownCriticDedup = (stats.skippedUnknownCriticDedup || 0) + 1;
           return;
         }
@@ -2503,6 +2583,7 @@ showDirs.forEach(showId => {
         );
         if (knownOutletFileExists) {
           console.log(`  [UNKNOWN-OUTLET DEDUP] ${showId}/${file}: critic ${criticKey} has known-outlet file in directory (skipping)`);
+          logExclusion("skippedUnknownOutletDedup", showId, file, data);
           stats.skippedUnknownOutletDedup = (stats.skippedUnknownOutletDedup || 0) + 1;
           return;
         }
@@ -2528,6 +2609,7 @@ showDirs.forEach(showId => {
             }
           }
           if (namedCriticExists) {
+            logExclusion("skippedOutletAsCriticDedup", showId, file, data);
             stats.skippedOutletAsCriticDedup = (stats.skippedOutletAsCriticDedup || 0) + 1;
             return;
           }
@@ -2589,6 +2671,7 @@ showDirs.forEach(showId => {
             stats.allowedMultiCriticUrl = (stats.allowedMultiCriticUrl || 0) + 1;
           } else {
             // Files are sorted so real critic names come before "unknown" — first wins
+            logExclusion("skippedDuplicateUrl", showId, file, data);
             stats.skippedDuplicateUrl = (stats.skippedDuplicateUrl || 0) + 1;
             return;
           }
@@ -2607,6 +2690,7 @@ showDirs.forEach(showId => {
           if (differentPeopleGlobal) {
             stats.allowedMultiCriticUrlCrossOutlet = (stats.allowedMultiCriticUrlCrossOutlet || 0) + 1;
           } else {
+            logExclusion("skippedCrossOutletDuplicateUrl", showId, file, data);
             stats.skippedCrossOutletDuplicateUrl = (stats.skippedCrossOutletDuplicateUrl || 0) + 1;
             return;
           }
@@ -2627,6 +2711,7 @@ showDirs.forEach(showId => {
           if (seenFingerprintsByOutlet.has(fpKey)) {
             const winner = seenFingerprintsByOutlet.get(fpKey);
             console.log(`  [FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winner} at ${outletKey2} (keeping ${winner})`);
+            logExclusion("skippedFingerprintDedup", showId, file, data);
             stats.skippedFingerprintDedup = (stats.skippedFingerprintDedup || 0) + 1;
             return;
           }
@@ -2636,6 +2721,7 @@ showDirs.forEach(showId => {
           if (seenFingerprintsGlobal.has(fingerprint)) {
             const winner = seenFingerprintsGlobal.get(fingerprint);
             console.log(`  [CROSS-OUTLET FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winner} (keeping ${winner})`);
+            logExclusion("skippedCrossOutletFingerprintDedup", showId, file, data);
             stats.skippedCrossOutletFingerprintDedup = (stats.skippedCrossOutletFingerprintDedup || 0) + 1;
             return;
           }
@@ -2661,6 +2747,7 @@ showDirs.forEach(showId => {
           if (tourCheck.isTourReview) {
             flagForHumanReview(data, 'possible-tour-fulltext',
               `Tour signal in fullText intro: ${tourCheck.signal}`);
+            logExclusion("skippedTourContamination", showId, file, data);
             stats.skippedTourContamination = (stats.skippedTourContamination || 0) + 1;
             return;
           }
@@ -2674,6 +2761,7 @@ showDirs.forEach(showId => {
           if (filmCheck.isFilmTv) {
             flagForHumanReview(data, 'possible-film-tv-fulltext',
               `Film/TV signals in fullText intro: ${filmCheck.signals.join(', ')}`);
+            logExclusion("skippedFilmTvContamination", showId, file, data);
             stats.skippedFilmTvContamination = (stats.skippedFilmTvContamination || 0) + 1;
             return;
           }
@@ -2885,6 +2973,7 @@ showDirs.forEach(showId => {
     } catch (e) {
       if (e instanceof SyntaxError) {
         console.error(`  [CORRUPTED] ${showId}/${file}: invalid JSON — ${e.message}`);
+        logExclusion("skippedCorrupted", showId, file, null, { reason: "invalid JSON", error: e.message.substring(0, 200) });
         stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
         stats.corruptedFiles.push(`${showId}/${file}`);
