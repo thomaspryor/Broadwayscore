@@ -2201,7 +2201,11 @@
       "data/review-texts/the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
       "the-fear-of-13-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/the-fear-of-13-2026/variety--aramide-timubu.json",
-      "the-fear-of-13-2026/variety--aramide-timubu.json"
+      "the-fear-of-13-2026/variety--aramide-timubu.json",
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/the-fear-of-13-2026/nypost--johnny-oleksinski.json",
+      "the-fear-of-13-2026/nypost--johnny-oleksinski.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2228,7 +2232,9 @@
       "the-fear-of-13-2026/timeout--adam-feldman.json",
       "the-fear-of-13-2026/nytimes--unknown.json",
       "the-fear-of-13-2026/nydailynews--unknown.json",
-      "the-fear-of-13-2026/theatrely--juan-a-ramirez.json"
+      "the-fear-of-13-2026/theatrely--juan-a-ramirez.json",
+      "the-fear-of-13-2026/nytimes--helen-shaw.json",
+      "the-fear-of-13-2026/chicagotribune--chris-jones.json"
     ],
     "brightdata": [
       "titanique-2026/talkinbroadway--unknown.json",
@@ -2498,6 +2504,50 @@
       "t": "2026-04-16T03:28:10.499Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T04:24:16.087Z",
+      "event": "bb-session",
+      "session": "affa1cac",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T04:24:16.533Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T04:24:28.745Z",
+      "event": "bb-session",
+      "session": "d00c31a0",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T04:24:29.105Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T04:24:56.666Z",
+      "event": "bb-session",
+      "session": "d770a004",
+      "url": "https://nypost.com/2026/04/15/entertainment/the-fear-of-13-review-adrien-brody-g"
+    },
+    {
+      "t": "2026-04-16T04:24:57.847Z",
+      "event": "bb-cookie-inject",
+      "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-16T04:25:15.018Z",
+      "event": "bb-session",
+      "session": "846a25ba",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
+    },
+    {
+      "t": "2026-04-16T04:25:15.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
