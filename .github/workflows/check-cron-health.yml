@@ -43,6 +43,8 @@ jobs:
             "weekly-grosses.yml|192|Weekly Grosses"
             "update-show-score.yml|192|Update Show Score"
             "update-mezzanine.yml|192|Update Mezzanine"
+            # Drift detector runs every 30 min; 2h gap = 4 missed runs = alert needed
+            "check-opening-night-drift.yml|2|Check Opening Night Drift"
           )
 
           FAILURES=""
