@@ -25,7 +25,13 @@
     "the-shark-is-broken-2023/wsj--terry-teachout.json",
     "here-lies-love-2023/nytimes--jesse-green.json",
     "just-for-us-2023/vulture--jackson-mchenry.json",
-    "good-night-oscar-2023/theatermania--zachary-stewart.json"
+    "good-night-oscar-2023/theatermania--zachary-stewart.json",
+    "camelot-2023/variety--frank-rizzo.json",
+    "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+    "life-of-pi-2023/newyorker--katy-waldman.json",
+    "the-collaboration-2022/vulture--jackson-mchenry.json",
+    "some-like-it-hot-2022/newyorker--helen-shaw.json",
+    "kpop-2022/vulture--jackson-mchenry.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -74,7 +80,11 @@
     "stereophonic-2024/usatoday--charles-isherwood.json",
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
     "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
-    "prima-facie-2023/newyorker--naomi-fry.json"
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "the-collaboration-2022/hollywood-reporter--angie-han.json",
+    "the-collaboration-2022/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -101,7 +111,11 @@
       "data/review-texts/harmony-2023/variety--trish-deitch.json",
       "harmony-2023/variety--trish-deitch.json",
       "data/review-texts/gutenberg-2023/variety--frank-rizzo.json",
-      "gutenberg-2023/variety--frank-rizzo.json"
+      "gutenberg-2023/variety--frank-rizzo.json",
+      "data/review-texts/camelot-2023/variety--frank-rizzo.json",
+      "camelot-2023/variety--frank-rizzo.json",
+      "data/review-texts/fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+      "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -114,7 +128,8 @@
     ],
     "brightdata": [
       "the-roommate-2024/vulture--sara-holdren.json",
-      "the-shark-is-broken-2023/wsj--terry-teachout.json"
+      "the-shark-is-broken-2023/wsj--terry-teachout.json",
+      "kpop-2022/vulture--jackson-mchenry.json"
     ],
     "archiveToday": [
       "data/review-texts/proof-2026/talkinbroadway--unknown.json",
@@ -127,11 +142,14 @@
       "romeo-juliet-2024/vulture--sara-holdren.json",
       "the-hills-of-california-2024/vulture--sara-holdren.json",
       "illinoise-2024/vulture--sara-holdren.json",
-      "just-for-us-2023/vulture--jackson-mchenry.json"
+      "just-for-us-2023/vulture--jackson-mchenry.json",
+      "life-of-pi-2023/newyorker--katy-waldman.json",
+      "the-collaboration-2022/vulture--jackson-mchenry.json",
+      "some-like-it-hot-2022/newyorker--helen-shaw.json"
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "prima-facie-2023/newyorker--naomi-fry.json",
+  "lastProcessed": "kpop-2022/vulture--jackson-mchenry.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -297,6 +315,28 @@
       "t": "2026-04-16T10:52:17.238Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T10:53:46.640Z",
+      "event": "bb-session",
+      "session": "a31b9d28",
+      "url": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235"
+    },
+    {
+      "t": "2026-04-16T10:53:47.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T10:54:04.602Z",
+      "event": "bb-session",
+      "session": "3adf8641",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
+    },
+    {
+      "t": "2026-04-16T10:54:05.262Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
