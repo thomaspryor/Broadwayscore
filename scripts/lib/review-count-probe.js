@@ -61,10 +61,14 @@ function countAggregate(showId, reviewsDoc) {
  */
 async function fetchLiveRc(showId) {
   const url = `https://broadwayscorecard.com/data/shows/${showId}.json`;
+  const ac = new AbortController();
+  const timer = setTimeout(() => ac.abort(), 8000);
   try {
     const res = await fetch(url, {
       headers: { 'cache-control': 'no-cache' },
+      signal: ac.signal,
     });
+    clearTimeout(timer);
     if (!res.ok) {
       return { rc: null, err: `HTTP ${res.status}` };
     }
@@ -72,7 +76,8 @@ async function fetchLiveRc(showId) {
     const rc = typeof json.rc === 'number' ? json.rc : null;
     return { rc, err: rc == null ? 'field rc not found in response' : null };
   } catch (err) {
-    return { rc: null, err: String(err) };
+    clearTimeout(timer);
+    return { rc: null, err: err.name === 'AbortError' ? 'timeout (8s)' : String(err) };
   }
 }
 

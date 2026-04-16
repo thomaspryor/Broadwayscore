@@ -73,14 +73,17 @@ jobs:
           if [ -n "${{ github.event.inputs.show_id }}" ]; then
             SHOW_ARG="--show=${{ github.event.inputs.show_id }}"
           fi
-          WINDOW="${{ github.event.inputs.window_days || '7' }}"
+          WINDOW_RAW="${{ github.event.inputs.window_days || '7' }}"
+          # Clamp to integer 0-365 before embedding in JS
+          WINDOW=$(echo "$WINDOW_RAW" | grep -oE '^[0-9]+$' || echo "7")
+          [ "$WINDOW" -gt 365 ] && WINDOW=365
           # Count shows in window
-          COUNT=$(node -e "
+          COUNT=$(DRIFT_WINDOW="$WINDOW" node -e "
             const fs = require('fs');
             const data = JSON.parse(fs.readFileSync('data/shows.json','utf8'));
             const shows = data.shows || data;
             const now = Date.now();
-            const windowMs = ${WINDOW} * 24 * 60 * 60 * 1000;
+            const windowMs = Number(process.env.DRIFT_WINDOW) * 24 * 60 * 60 * 1000;
             const inWindow = shows.filter(s => {
               if (!s.openingDate) return false;
               const d = new Date(s.openingDate).getTime();
@@ -106,8 +109,8 @@ jobs:
           if [ -n "${{ github.event.inputs.show_id }}" ]; then
             SHOW_ARG="--show=${{ github.event.inputs.show_id }}"
           fi
-          THRESHOLD="${{ github.event.inputs.threshold || '2' }}"
-          WINDOW="${{ github.event.inputs.window_days || '7' }}"
+          THRESHOLD=$(echo "${{ github.event.inputs.threshold || '2' }}" | grep -oE '^[0-9]+$' || echo "2")
+          WINDOW=$(echo "${{ github.event.inputs.window_days || '7' }}" | grep -oE '^[0-9]+$' || echo "7")
 
           set +e
           node scripts/check-opening-night-drift.js \
