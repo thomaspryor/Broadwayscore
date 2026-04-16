@@ -1,73 +1,89 @@
 {
-  "runDate": "2026-04-16T08:51:10.962Z",
+  "runDate": "2026-04-16T08:54:37.210Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "milk-and-honey-amt-theater-off-broadway-2026",
+    "showFilter": "proof-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 6,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 3,
     "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier2Success": 1,
     "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.8,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 1.1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json"
+    "proof-2026/nytimes--sarah-bahr.json",
+    "proof-2026/deadline--anthony-dalessandro.json",
+    "proof-2026/guardian--michael-billington.json",
+    "proof-2026/observer--casey-epstein-gross.json",
+    "proof-2026/ap--unknown.json",
+    "proof-2026/playbill--unknown.json"
   ],
   "failed": [
-    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json"
+    "proof-2026/variety--unknown.json",
+    "proof-2026/talkinbroadway--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "proof-2026/guardian--michael-billington.json",
+      "proof-2026/ap--unknown.json",
+      "proof-2026/playbill--unknown.json"
+    ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json"
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
+      "proof-2026/deadline--anthony-dalessandro.json",
+      "data/review-texts/proof-2026/observer--casey-epstein-gross.json",
+      "proof-2026/observer--casey-epstein-gross.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json"
+    "scrapingbee": [
+      "proof-2026/nytimes--sarah-bahr.json"
     ],
-    "archiveToday": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
