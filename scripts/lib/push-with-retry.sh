@@ -10,9 +10,11 @@
 # Conflict resolution strategy:
 #   1. Try git push (fast path, no conflict)
 #   2. On failure: fetch remote, attempt rebase
-#   3. If rebase has conflicts in collection-state/ or audit/ files:
-#      auto-resolve by keeping local run's data (these are per-run state
-#      files that don't need three-way merging)
+#   3. If rebase has conflicts:
+#      a. Modify/delete conflicts (e.g., --unknown renamed to --named-critic
+#         on remote): accept the deletion — remote already has the better version
+#      b. collection-state/ or audit/ files: keep local run's data
+#      c. Other data files: accept remote version
 #   4. If rebase still fails: abort and try merge with same auto-resolution
 #   5. Retry with random jitter to avoid thundering herd
 #
@@ -38,6 +40,41 @@ if [[ "$BRANCH" == *:* ]]; then
 else
   PULL_BRANCH="$BRANCH"
 fi
+
+# Check if a file has a modify/delete conflict.
+# git checkout --ours/--theirs fails on these because one side has no version.
+# Common cause: poller creates --unknown.json, LLM scoring renames it to
+# --named-critic.json on remote — poller's push sees modify/delete.
+# Returns 0 if modify/delete, 1 if normal conflict.
+# Sets IS_DELETED_LOCALLY to "true" or "false".
+is_modify_delete() {
+  local file="$1"
+  local mode="$2"
+  IS_DELETED_LOCALLY=false
+
+  # Check remote side
+  if ! git cat-file -e "origin/$PULL_BRANCH:$file" 2>/dev/null; then
+    # Remote deleted (or never had) this file — local modified
+    return 0
+  fi
+
+  # Check local side (the commit being applied)
+  if [ "$mode" = "rebase" ]; then
+    # During rebase, REBASE_HEAD is the commit being replayed
+    if ! git cat-file -e "REBASE_HEAD:$file" 2>/dev/null; then
+      IS_DELETED_LOCALLY=true
+      return 0
+    fi
+  else
+    # During merge, MERGE_HEAD is the remote, HEAD is local
+    if ! git cat-file -e "HEAD:$file" 2>/dev/null; then
+      IS_DELETED_LOCALLY=true
+      return 0
+    fi
+  fi
+
+  return 1  # Both sides have the file — normal conflict
+}
 
 # Auto-resolve conflicts by keeping our run's version of state files.
 # Args: $1 = "rebase" or "merge" (determines ours/theirs mapping)
@@ -68,6 +105,24 @@ resolve_conflicts() {
   fi
 
   while IFS= read -r file; do
+    # Handle modify/delete conflicts first — git checkout --ours/--theirs
+    # fails when one side deleted the file (no version to checkout).
+    # Common case: poller creates --unknown.json, LLM scoring renames to
+    # --named-critic.json, so the --unknown file is deleted on remote.
+    if is_modify_delete "$file" "$mode"; then
+      if [ "$IS_DELETED_LOCALLY" = "true" ]; then
+        # We deleted it, remote modified — keep remote's version
+        echo "  Auto-resolving modify/delete (accept remote version): $file"
+        git checkout $keep_remote "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+      else
+        # Remote deleted (renamed), we modified — accept the deletion.
+        # The renamed version already exists on remote with the correct data.
+        echo "  Auto-resolving modify/delete (accept deletion): $file"
+        git rm -f "$file" 2>/dev/null && resolved=true
+      fi
+      continue
+    fi
+
     case "$file" in
       data/collection-state/*|data/audit/*)
         # State files: keep our run's version (each run writes independently)
