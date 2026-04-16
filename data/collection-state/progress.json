@@ -70,7 +70,9 @@
     "the-fear-of-13-2026/nypost--johnny-oleksinski.json",
     "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json",
     "the-peewee-herman-show-2010/theatermania--unknown.json",
-    "million-dollar-quartet-2010/theatermania--unknown.json"
+    "million-dollar-quartet-2010/theatermania--unknown.json",
+    "bye-bye-birdie-2009/wsj--ellen-gamerman.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -893,7 +895,15 @@
     "a-behanding-in-spokane-2010/new-jersey-newsroom--michael-sommers.json",
     "a-behanding-in-spokane-2010/backstage--david-sheward.json",
     "a-view-from-the-bridge-2010/huffpost--michael-glitz.json",
-    "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json"
+    "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
+    "race-2009/theatermania--charles-isherwood.json",
+    "fela-2009/new-jersey-newsroom--michael-sommers.json",
+    "the-royal-family-2009/washpost--peter-marks.json",
+    "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -924,7 +934,8 @@
       "proof-2026/ap--unknown.json",
       "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
-      "million-dollar-quartet-2010/theatermania--unknown.json"
+      "million-dollar-quartet-2010/theatermania--unknown.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -980,7 +991,8 @@
       "almost-famous-2022/nydailynews--chris-jones.json",
       "topdog-underdog-2022/vulture--rob-weinert-kendt.json",
       "west-side-story-2020/wsj--terry-teachout.json",
-      "falsettos-2016/wsj--terry-teachout.json"
+      "falsettos-2016/wsj--terry-teachout.json",
+      "bye-bye-birdie-2009/wsj--ellen-gamerman.json"
     ],
     "archiveToday": [
       "data/review-texts/proof-2026/talkinbroadway--unknown.json",
@@ -1020,7 +1032,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "a-little-night-music-2009/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "waiting-for-godot-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -1659,6 +1671,17 @@
       "t": "2026-04-16T18:47:54.447Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-16T18:48:47.750Z",
+      "event": "bb-session",
+      "session": "fd9e4bb4",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-16T18:48:48.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-16T18:48:39.537Z",
-  "processed": 71,
-  "failed": 821,
-  "successRate": "8.0%",
+  "updatedAt": "2026-04-16T18:50:54.553Z",
+  "processed": 73,
+  "failed": 829,
+  "successRate": "8.1%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 28,
     "amp": 0,
     "browserbase": 27,
     "directCookies": 0,
     "scrapingbee": 14,
-    "brightdata": 7,
+    "brightdata": 8,
     "archiveToday": 21,
     "archive": 11
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-04-16T14:11:21.031Z",
-      "event": "bb-session",
-      "session": "fee95486",
-      "url": "https://www.talkinbroadway.com/page/world/Proof2026.html"
-    },
-    {
-      "t": "2026-04-16T14:11:21.650Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-04-16T14:11:39.363Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-16T18:47:54.447Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-16T18:48:47.750Z",
+      "event": "bb-session",
+      "session": "fd9e4bb4",
+      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
+    },
+    {
+      "t": "2026-04-16T18:48:48.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
