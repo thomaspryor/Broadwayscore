@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T12:03:07.643Z",
+  "updatedAt": "2026-04-16T12:07:07.490Z",
   "processed": 59,
-  "failed": 294,
-  "successRate": "16.7%",
+  "failed": 304,
+  "successRate": "16.3%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
@@ -10,33 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 7,
-    "archiveToday": 14,
+    "archiveToday": 15,
     "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:17:22.826Z",
-      "event": "bb-session",
-      "session": "50df2dfa",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bryan-cranston"
-    },
-    {
-      "t": "2026-04-16T11:17:23.461Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-04-16T11:19:05.358Z",
-      "event": "bb-session",
-      "session": "de0ac8dc",
-      "url": "http://www.talkinbroadway.com/page/regional/ny/ny661.html"
-    },
-    {
-      "t": "2026-04-16T11:19:05.984Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-04-16T11:20:03.926Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-16T12:02:18.659Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T12:05:33.325Z",
+      "event": "bb-session",
+      "session": "3f886948",
+      "url": "https://www.talkinbroadway.com/world/TopDogUnderDog.html"
+    },
+    {
+      "t": "2026-04-16T12:05:34.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-16T12:06:13.987Z",
+      "event": "bb-session",
+      "session": "6ea3e2af",
+      "url": "https://www.wsj.com/articles/the-skin-of-our-teeth-thornton-wilder-vivian-beaumo"
+    },
+    {
+      "t": "2026-04-16T12:06:14.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
