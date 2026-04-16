@@ -1051,9 +1051,19 @@ function buildMultiProdYearGuard(shows) {
 
 /**
  * Returns true if rebuild-all-reviews.js would include this review in reviews.json.
- * Mirrors the exclusion logic in rebuild-all-reviews.js without copying it into callers.
- * intentionally does NOT exclude duplicateTextOf — rebuild keeps those when the referenced
- * entry is also excluded; mirroring that precisely requires context this predicate doesn't have.
+ * Mirrors the pure-flag exclusion conditions from rebuild-all-reviews.js.
+ *
+ * Known limitations (context-dependent guards not expressible as pure predicates):
+ *   - showNotMentioned: rebuild has complex auto-clear logic (text scan + LLM CV)
+ *   - cross-market guard: needs show category + outlet registry
+ *   - pre-opening date guard: needs show's earliest date
+ *   - runtime syndication dedup: needs allJsonFiles for the show
+ *   - LLM reasoning keywords: needs llmScore.reasoning string evaluation
+ * These cause countLocalIncluded to over-count by ~3-5 per show on average.
+ *
+ * Intentionally NOT excluded: duplicateTextOf — rebuild keeps those when the
+ * referenced entry is also excluded; mirroring that precisely requires context
+ * this predicate doesn't have.
  */
 function isIncludableForRebuild(data) {
   if (!data) return false;
@@ -1085,6 +1095,22 @@ function isIncludableForRebuild(data) {
     data.contentVerification?.wrongArticle === true &&
     data.contentVerification?.confidence === 'high'
   ) return false;
+
+  // Garbage text flagged by collection pipeline or LLM ensemble
+  if (data.rejectionReason) return false;
+  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
+
+  // fullTextWrongAuthor: rebuild deletes fullText in memory and falls back to excerpts only.
+  // On disk the fullText still exists, so we must check excerpt fields directly.
+  if (data.fullTextWrongAuthor === true) {
+    const hasExcerpt = !!(
+      data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt ||
+      data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt
+    );
+    if (!hasExcerpt) return false;
+    // Has excerpt — fall through to final text/agg check (excerpts count as content)
+    return true;
+  }
 
   // Must have either review text or an aggregator signal
   const hasText = !!(data.fullText && data.fullText.trim());
