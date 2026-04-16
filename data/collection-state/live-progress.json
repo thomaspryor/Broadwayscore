@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T18:50:54.553Z",
+  "updatedAt": "2026-04-16T18:52:52.499Z",
   "processed": 73,
-  "failed": 829,
-  "successRate": "8.1%",
+  "failed": 839,
+  "successRate": "8.0%",
   "tierBreakdown": {
     "playwright": 28,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 14,
     "brightdata": 8,
-    "archiveToday": 21,
+    "archiveToday": 22,
     "archive": 11
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-04-16T14:11:39.363Z",
-      "event": "bb-session",
-      "session": "395cb012",
-      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
-    },
-    {
-      "t": "2026-04-16T14:11:39.931Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T14:12:25.559Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-16T18:48:48.273Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T18:52:29.097Z",
+      "event": "bb-session",
+      "session": "244a2433",
+      "url": "http://www.usatoday.com/life/theater/reviews/2009-04-07-rock-of-ages_N.htm"
+    },
+    {
+      "t": "2026-04-16T18:52:29.765Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
