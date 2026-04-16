@@ -2950,28 +2950,32 @@ showDirs.forEach(showId => {
       if (review.outlet) review.outlet = decodeHtmlEntities(review.outlet);
       if (review.pullQuote) review.pullQuote = decodeHtmlEntities(review.pullQuote);
 
-      // NYT Critic's Pick: authoritative only.
-      // Source: data/nyt-critics-picks.json (scraped from NYT spotlight page).
-      // The previous regex-based auto-detection matched NYT site chrome like
-      // the 'criticsPick' CSS class on every review page, producing ~10% false
-      // positives (e.g. Fear of 13 / Helen Shaw 2026-04-15 was flagged despite
-      // not being a pick). If a review is NYT and its URL isn't in the
-      // spotlight list, designation is cleared — regardless of what was
-      // previously persisted.
-      if (review.outletId === 'nytimes' || (data.outletId || '').startsWith('nytimes')) {
-        const pickUrl = review.url || data.url;
-        const isPick = pickUrl && NYT_CRITICS_PICK_URLS.has(pickUrl);
-        review.designation = isPick ? 'Critics_Pick' : null;
-        // Persist back to source so stale FPs get cleared on next run too.
-        if ((data.designation || null) !== review.designation) {
-          try {
-            const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-            sourceData.designation = review.designation;
-            fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2));
-          } catch (e) { /* read-only in CI */ }
+      // Critic's Pick is NYT-specific — only set when the review's URL is in
+      // data/nyt-critics-picks.json (scraped from the NYT spotlight page).
+      // Any non-NYT outlet carrying designation='Critics_Pick' is categorically
+      // wrong (e.g. nyt-theater blog, newyorker) and gets cleared too.
+      //
+      // The previous regex-based auto-detection matched NYT site chrome (the
+      // 'criticsPick' CSS class on every review page), producing ~10% false
+      // positives — Fear of 13 / Helen Shaw 2026-04-15 was flagged despite not
+      // being a pick. See memory/feedback_nyt_critics_pick_source.md.
+      const isNytOutlet = review.outletId === 'nytimes' || (data.outletId || '').startsWith('nytimes');
+      const desiredDesignation = (() => {
+        if (isNytOutlet) {
+          const pickUrl = review.url || data.url;
+          return pickUrl && NYT_CRITICS_PICK_URLS.has(pickUrl) ? 'Critics_Pick' : null;
         }
-      } else if (data.designation) {
-        review.designation = data.designation;
+        // Non-NYT: clear Critics_Pick (FP from a legacy path); preserve anything else.
+        if (data.designation === 'Critics_Pick') return null;
+        return data.designation || null;
+      })();
+      review.designation = desiredDesignation;
+      if ((data.designation || null) !== desiredDesignation) {
+        try {
+          const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          sourceData.designation = desiredDesignation;
+          fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2));
+        } catch (e) { /* read-only in CI */ }
       }
 
       allReviews.push(review);
