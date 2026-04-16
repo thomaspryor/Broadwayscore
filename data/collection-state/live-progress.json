@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-16T18:37:56.025Z",
-  "processed": 69,
-  "failed": 763,
+  "updatedAt": "2026-04-16T18:40:31.645Z",
+  "processed": 70,
+  "failed": 772,
   "successRate": "8.3%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 26,
     "amp": 0,
     "browserbase": 27,
     "directCookies": 0,
     "scrapingbee": 14,
     "brightdata": 7,
-    "archiveToday": 19,
+    "archiveToday": 20,
     "archive": 11
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-16T12:29:38.443Z",
-      "event": "bb-session",
-      "session": "739bcb53",
-      "url": "https://www.wsj.com/articles/side-show-review-twin-bill-1414450800"
-    },
-    {
-      "t": "2026-04-16T12:29:39.558Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T14:05:55.046Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-16T18:36:55.627Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-16T18:38:24.752Z",
+      "event": "bb-session",
+      "session": "361dfb0f",
+      "url": "https://www.nytimes.com/2010/11/12/theater/reviews/12pee.html"
+    },
+    {
+      "t": "2026-04-16T18:38:25.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

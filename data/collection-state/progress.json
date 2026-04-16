@@ -68,7 +68,8 @@
     "proof-2026/guardian--michael-billington.json",
     "proof-2026/ap--unknown.json",
     "the-fear-of-13-2026/nypost--johnny-oleksinski.json",
-    "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json"
+    "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json",
+    "the-peewee-herman-show-2010/theatermania--unknown.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -833,7 +834,16 @@
     "good-people-2011/new-jersey-newsroom--michael-sommers.json",
     "good-people-2011/backstage--erik-haagensen.json",
     "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
-    "elling-2010/new-jersey-newsroom--michael-sommers.json"
+    "elling-2010/new-jersey-newsroom--michael-sommers.json",
+    "elling-2010/bloomberg--jeremy-gerard.json",
+    "a-free-man-of-color-2010/backstage--erik-haagensen.json",
+    "the-merchant-of-venice-2010/variety--charles-isherwood.json",
+    "the-peewee-herman-show-2010/nytimes--ben-brantley.json",
+    "the-peewee-herman-show-2010/variety--david-rooney.json",
+    "the-peewee-herman-show-2010/new-jersey-newsroom--michael-sommers.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -862,7 +872,8 @@
       "proof-2026/ew--shania-russell.json",
       "proof-2026/guardian--michael-billington.json",
       "proof-2026/ap--unknown.json",
-      "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json"
+      "i-was-a-teenage-shedevil-west-end-2026/london-theatre--unknown.json",
+      "the-peewee-herman-show-2010/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -939,7 +950,8 @@
       "data/review-texts/tootsie-2019/talkinbroadway--matthew-murray.json",
       "data/review-texts/illinoise-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/topdog-underdog-2022/talkinbroadway--matthew-murray.json",
-      "data/review-texts/proof-2026/talkinbroadway--unknown.json"
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-peewee-herman-show-2010/nytimes--ben-brantley.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -956,7 +968,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "elling-2010/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -1551,6 +1563,17 @@
       "t": "2026-04-16T18:36:55.627Z",
       "event": "bb-cookie-inject",
       "domain": "nypost.com"
+    },
+    {
+      "t": "2026-04-16T18:38:24.752Z",
+      "event": "bb-session",
+      "session": "361dfb0f",
+      "url": "https://www.nytimes.com/2010/11/12/theater/reviews/12pee.html"
+    },
+    {
+      "t": "2026-04-16T18:38:25.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
