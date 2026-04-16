@@ -41,7 +41,8 @@
     "west-side-story-2020/broadwaynews--charles-isherwood.json",
     "west-side-story-2020/wsj--terry-teachout.json",
     "grand-horizons-2020/broadwaynews--charles-isherwood.json",
-    "the-inheritance-2019/vulture--helen-shaw.json"
+    "the-inheritance-2019/vulture--helen-shaw.json",
+    "sea-wall-a-life-2019/ew--kerensa-cadenas.json"
   ],
   "failed": [
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
@@ -124,7 +125,16 @@
     "linda-vista-2019/vulture--jesse-green.json",
     "linda-vista-2019/theater-news-online--joe-dziemianowicz.json",
     "the-great-society-2019/theater-news-online--jeremy-gerard.json",
-    "the-height-of-the-storm-2019/theater-news-online--david-cote.json"
+    "the-height-of-the-storm-2019/theater-news-online--david-cote.json",
+    "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json",
+    "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json",
+    "betrayal-2019/washpost--peter-marks.json",
+    "betrayal-2019/theater-news-online--robert-cashill.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
+    "ink-2019/theater-news-online--joe-dziemianowicz.json",
+    "ink-2019/ny1--ny1-roma-torre.json",
+    "tootsie-2019/theater-news-online--joe-dziemianowicz.json",
+    "tootsie-2019/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -140,7 +150,8 @@
       "topdog-underdog-2022/talkinbroadway--elyse-trevers.json",
       "trouble-in-mind-2021/washpost--soyica-diggs-colbert.json",
       "west-side-story-2020/broadwaynews--charles-isherwood.json",
-      "grand-horizons-2020/broadwaynews--charles-isherwood.json"
+      "grand-horizons-2020/broadwaynews--charles-isherwood.json",
+      "sea-wall-a-life-2019/ew--kerensa-cadenas.json"
     ],
     "amp": [],
     "browserbase": [
@@ -187,7 +198,9 @@
       "data/review-texts/topdog-underdog-2022/talkinbroadway--matthew-murray.json",
       "data/review-texts/how-i-learned-to-drive-2022/washpost--peter-marks.json",
       "data/review-texts/grand-horizons-2020/washpost--peter-marks.json",
-      "data/review-texts/linda-vista-2019/vulture--jesse-green.json"
+      "data/review-texts/linda-vista-2019/vulture--jesse-green.json",
+      "data/review-texts/betrayal-2019/washpost--peter-marks.json",
+      "data/review-texts/tootsie-2019/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -204,7 +217,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "the-height-of-the-storm-2019/theater-news-online--david-cote.json",
+  "lastProcessed": "tootsie-2019/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -480,6 +493,28 @@
       "t": "2026-04-16T11:09:14.918Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:12:01.062Z",
+      "event": "bb-session",
+      "session": "219f5459",
+      "url": "https://www.washingtonpost.com/goingoutguide/theater/betrayal-review-tom-hiddles"
+    },
+    {
+      "t": "2026-04-16T11:12:01.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-16T11:14:27.759Z",
+      "event": "bb-session",
+      "session": "0338d950",
+      "url": "http://www.talkinbroadway.com/world/Tootsie.html"
+    },
+    {
+      "t": "2026-04-16T11:14:28.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

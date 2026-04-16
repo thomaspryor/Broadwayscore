@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-16T11:11:22.560Z",
-  "processed": 42,
-  "failed": 81,
-  "successRate": "34.1%",
+  "updatedAt": "2026-04-16T11:14:45.580Z",
+  "processed": 43,
+  "failed": 90,
+  "successRate": "32.3%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 13,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archiveToday": 7,
+    "archiveToday": 9,
     "archive": 11
   },
-  "browserbaseSessions": 17,
+  "browserbaseSessions": 19,
   "recentActivity": [
-    {
-      "t": "2026-04-16T10:53:46.640Z",
-      "event": "bb-session",
-      "session": "a31b9d28",
-      "url": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235"
-    },
-    {
-      "t": "2026-04-16T10:53:47.255Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-16T10:54:04.602Z",
-      "event": "bb-session",
-      "session": "3adf8641",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
-    },
-    {
-      "t": "2026-04-16T10:54:05.262Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-04-16T11:00:54.780Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-16T11:09:14.918Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T11:12:01.062Z",
+      "event": "bb-session",
+      "session": "219f5459",
+      "url": "https://www.washingtonpost.com/goingoutguide/theater/betrayal-review-tom-hiddles"
+    },
+    {
+      "t": "2026-04-16T11:12:01.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-16T11:14:27.759Z",
+      "event": "bb-session",
+      "session": "0338d950",
+      "url": "http://www.talkinbroadway.com/world/Tootsie.html"
+    },
+    {
+      "t": "2026-04-16T11:14:28.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
