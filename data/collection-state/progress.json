@@ -78,7 +78,9 @@
     "the-fear-of-13-2026/nytimes--unknown.json",
     "the-fear-of-13-2026/deadline--unknown.json",
     "the-fear-of-13-2026/guardian--unknown.json",
-    "the-fear-of-13-2026/nydailynews--unknown.json"
+    "the-fear-of-13-2026/nydailynews--unknown.json",
+    "the-fear-of-13-2026/nytimes--sarah-bahr.json",
+    "the-fear-of-13-2026/guardian--tim-lewis.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1720,7 +1722,8 @@
     "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
     "proof-2026/variety--unknown.json",
     "proof-2026/talkinbroadway--unknown.json",
-    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json"
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json",
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1761,7 +1764,8 @@
       "proof-2026/guardian--unknown.json",
       "proof-2026/ap--unknown.json",
       "the-fear-of-13-2026/nytg--gillian-russo.json",
-      "the-fear-of-13-2026/guardian--unknown.json"
+      "the-fear-of-13-2026/guardian--unknown.json",
+      "the-fear-of-13-2026/guardian--tim-lewis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1783,7 +1787,8 @@
       "data/review-texts/the-fear-of-13-2026/hollywood-reporter--unknown.json",
       "the-fear-of-13-2026/hollywood-reporter--unknown.json",
       "data/review-texts/the-fear-of-13-2026/deadline--unknown.json",
-      "the-fear-of-13-2026/deadline--unknown.json"
+      "the-fear-of-13-2026/deadline--unknown.json",
+      "data/review-texts/aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1819,7 +1824,8 @@
       "milk-and-honey-amt-theater-off-broadway-2026/nytimes--unknown.json",
       "proof-2026/guardian--michael-billington.json",
       "the-fear-of-13-2026/talkinbroadway--unknown.json",
-      "proof-2026/talkinbroadway--unknown.json"
+      "proof-2026/talkinbroadway--unknown.json",
+      "the-fear-of-13-2026/nytimes--sarah-bahr.json"
     ],
     "archiveToday": [
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
@@ -1842,7 +1848,7 @@
     ]
   },
   "startTime": "2026-04-15T08:50:43.089Z",
-  "lastProcessed": "the-fear-of-13-2026/nydailynews--unknown.json",
+  "lastProcessed": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--rebecca-rubin.json",
   "log": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -2019,6 +2025,28 @@
       "t": "2026-04-16T02:53:15.095Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-16T03:15:34.006Z",
+      "event": "bb-session",
+      "session": "8bf4805a",
+      "url": "https://www.nytimes.com/2026/04/07/t-magazine/cats-jellicle-ball-broadway-perfor"
+    },
+    {
+      "t": "2026-04-16T03:15:34.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-16T03:16:43.201Z",
+      "event": "bb-session",
+      "session": "e4fbd286",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T03:16:43.743Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
