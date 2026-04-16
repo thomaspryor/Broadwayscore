@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T11:08:34.454Z",
-  "processed": 41,
-  "failed": 72,
-  "successRate": "36.3%",
+  "updatedAt": "2026-04-16T11:11:22.560Z",
+  "processed": 42,
+  "failed": 81,
+  "successRate": "34.1%",
   "tierBreakdown": {
     "playwright": 12,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 6,
-    "archiveToday": 6,
-    "archive": 10
+    "archiveToday": 7,
+    "archive": 11
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-04-16T10:52:16.649Z",
-      "event": "bb-session",
-      "session": "d46f7b59",
-      "url": "https://www.wsj.com/articles/the-shark-is-broken-review-in-the-jaws-of-a-blockbu"
-    },
-    {
-      "t": "2026-04-16T10:52:17.238Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T10:53:46.640Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-16T11:07:50.241Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-16T11:09:14.343Z",
+      "event": "bb-session",
+      "session": "9b16401f",
+      "url": "https://www.wsj.com/articles/the-sound-inside-review-mary-louise-parker-shines-i"
+    },
+    {
+      "t": "2026-04-16T11:09:14.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
