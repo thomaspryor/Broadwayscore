@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T04:14:12.107Z",
+  "generatedAt": "2026-04-16T07:23:01.257Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -342,10 +342,6 @@
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -1069,20 +1065,20 @@
       "status": "open",
       "slug": "the-fear-of-13",
       "thumbnail": "/images/shows/the-fear-of-13-2026/thumbnail.webp",
-      "siteScore": 70,
-      "liveScore": 70,
-      "scoreDrift": 0,
-      "total": 15,
-      "t1": 6,
-      "t2": 7,
-      "t3": 2,
-      "positive": 6,
-      "mixed": 6,
-      "negative": 3,
+      "siteScore": 61.1,
+      "liveScore": 61,
+      "scoreDrift": -0.10000000000000142,
+      "total": 21,
+      "t1": 7,
+      "t2": 11,
+      "t3": 3,
+      "positive": 4,
+      "mixed": 11,
+      "negative": 6,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1138,19 +1134,7 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
           "isDualMarket": false
         },
         {
@@ -1168,6 +1152,10 @@
         {
           "name": "Observer",
           "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -1317,6 +1305,18 @@
           "p": 6,
           "m": 6,
           "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-16T07:23:01.257Z",
+          "rc": 21,
+          "s": 61.1,
+          "t1": 7,
+          "t2": 11,
+          "t3": 3,
+          "p": 4,
+          "m": 11,
+          "n": 6,
           "bc": "waiting"
         }
       ]

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-16T04:14:07.920Z",
+  "timestamp": "2026-04-16T07:22:57.442Z",
   "stats": {
-    "totalReviews": 34713,
-    "alreadyFlagged": 15159,
+    "totalReviews": 34731,
+    "alreadyFlagged": 15170,
     "dateGuardCatches": 98,
     "directorMismatch": 815,
-    "tvFilmSignals": 3143,
-    "londonSignals": 1020,
+    "tvFilmSignals": 3142,
+    "londonSignals": 1018,
     "offBroadwaySignals": 881,
     "yearMismatch": 65,
-    "noPublishDate": 3728
+    "noPublishDate": 3732
   },
   "findings": [
     {
@@ -23088,20 +23088,6 @@
       ]
     },
     {
-      "showId": "jekyll-and-hyde-2013",
-      "file": "newsday--linda-winer.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.newsday.com/entertainment/theater/jekyll-hyde-review-schlock-opera-1.5092189",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
       "showId": "jersey-boys-2005",
       "file": "broadwayworld--michael-sommers.json",
       "score": 78,
@@ -45840,7 +45826,7 @@
     {
       "showId": "the-fear-of-13-2026",
       "file": "nytg--joe-dziemianowicz.json",
-      "score": 72,
+      "score": 66,
       "publishDate": "2026-04-15",
       "url": "https://www.newyorktheatreguide.com/reviews/the-fear-of-13-broadway-review-adrien-brody-tessa-thompson",
       "findings": [
@@ -45859,7 +45845,7 @@
     {
       "showId": "the-fear-of-13-2026",
       "file": "thewrap--robert-hofler.json",
-      "score": 65,
+      "score": 78,
       "publishDate": "2026-04-15",
       "url": "https://www.thewrap.com/creative-content/theater/the-fear-of-13-broadway-review-adrien-brody-tessa-thompson/",
       "findings": [
@@ -73642,6 +73628,7 @@
     {
       "showId": "the-fear-of-13-2026",
       "file": "guardian--richard-lawson.json",
+      "score": 63,
       "publishDate": "2026-04-15",
       "url": "https://www.theguardian.com/stage/2026/apr/15/the-fear-of-13-review-adrien-brody-tessa-thompson",
       "findings": [
@@ -73655,7 +73642,7 @@
     {
       "showId": "the-fear-of-13-2026",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 88,
+      "score": 42,
       "publishDate": "2026-04-15",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/the-fear-of-13-theater-review-adrien-brody-tessa-thompson-1236566080/",
       "findings": [
@@ -73668,20 +73655,8 @@
     },
     {
       "showId": "the-fear-of-13-2026",
-      "file": "nysr--david-finkle.json",
-      "publishDate": "2026-04-15",
-      "url": "https://nystagereview.com/2026/04/15/the-fear-of-13-prison-drama-feels-like-a-long-stretch/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-fear-of-13-2026",
       "file": "nysr--frank-scheck.json",
+      "score": 65,
       "publishDate": "2026-04-15",
       "url": "https://nystagereview.com/2026/04/15/the-fear-of-13-prison-drama-feels-like-a-long-stretch/",
       "findings": [
@@ -73695,7 +73670,7 @@
     {
       "showId": "the-fear-of-13-2026",
       "file": "nytimes--helen-shaw.json",
-      "score": 63,
+      "score": 61,
       "publishDate": "2026-04-16",
       "url": "https://www.nytimes.com/2026/04/15/theater/fear-of-13-review-brody-thompson-broadway.html",
       "findings": [
@@ -73708,22 +73683,8 @@
     },
     {
       "showId": "the-fear-of-13-2026",
-      "file": "variety--brent-lang.json",
-      "score": 65,
-      "publishDate": "2026-04-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-fear-of-13-2026",
       "file": "vulture--jackson-mchenry.json",
-      "score": 88,
+      "score": 64,
       "publishDate": "2026-04-15",
       "url": "https://www.vulture.com/article/theater-review-adrien-brody-on-broadway-in-the-fear-of-13.html",
       "findings": [
