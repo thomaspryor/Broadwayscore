@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-16T12:43:46.314Z",
+  "lastRunAt": "2026-04-16T14:59:20.868Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -28,7 +28,8 @@
     "google:711317a52c5d5ad3": true,
     "google:d56696d55e8246e3": true,
     "google:5983496330a4a15e": true,
-    "news:30e91e2e5be73f61": true
+    "news:30e91e2e5be73f61": true,
+    "google:4a9736f7bcde67ed": true
   },
   "mentions": [
     {
@@ -573,10 +574,30 @@
       "draftReason": "This is just a URL link drop in a reviews thread with no question, discussion prompt, or conversational opening — replying would look promotional.",
       "draftResponse": null,
       "dispatched": "2026-04-15T03:27:34.934Z"
+    },
+    {
+      "id": "google:4a9736f7bcde67ed",
+      "source": "google",
+      "url": "https://forum.broadwayworld.com/thread/THE-FEAR-OF-13-Reviews",
+      "title": "THE FEAR OF 13 Reviews - BWW Forum",
+      "excerpt": "18 hours ago — https://broadwayscorecard.com/show/the-fear-of-13. \"When we die, we go bye bye.\" - Abe Lincolns. Back to the Message Board. Videos. Ariana ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-16T14:58:58.383Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-16T14:59:20.868Z"
     }
   ],
   "stats": {
-    "totalSeen": 28,
+    "totalSeen": 29,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -607,6 +628,7 @@
     "/goto?url=CAESggEBO6uMpc-6EkSUsq8BlydMXfilXIJ8tH9NwtVeLyxJcynhZGihAUdioJld7EVtN-q16QeBg8X9TdUO5RCJddML4zYIk5upls1qIi9uGjS-QFamsrZO7fVr_pC6VXKrhWVgJ6c8KbgRifAuwzw9zuDfDz_sQ9qxDS6V2dG3xi5xQlSA": true,
     "/goto?url=CAESowEBO6uMpberMvRkOcCtHi7JrAK2NdXGBNaAe2M4mvCg4bpMhmtfq6fokDSv3Pu19tp0X3DXxTXxjmwNTGVPyRDyzGi7rJOpp6YHY_aQkPX9eqXGpqkkjylPjJEbJ6VjcPoaY-gjP3GTIFlhgKHSm00T65HUVOQXPgy8pGQcdZIai9zNxWTqf8eZczlVnDIAyLyqdkQHobVZzO-M8dwjG65wkdf_": true,
     "/goto?url=CAESYAE7q4ylJI-z_f_ZltritlUfOvj-8kenCOYIsL5zu9_dvVaeGza5ROwNuI0VPn09JhZfKDB62hpP1x5kben1SpI6cq9zLElxlP-dV2_2JzQK4ShbCHzRo8GEJFtxOGsnKA==": true,
-    "https://forum.broadwayworld.com/thread/TITANQUE-Reviews/3": true
+    "https://forum.broadwayworld.com/thread/TITANQUE-Reviews/3": true,
+    "https://forum.broadwayworld.com/thread/THE-FEAR-OF-13-Reviews": true
   }
 }
