@@ -1,12 +1,48 @@
 {
-  "generatedAt": "2026-04-15T20:04:37.014Z",
+  "generatedAt": "2026-04-16T03:20:28.159Z",
   "summary": {
-    "total": 3,
-    "high": 2,
-    "medium": 1,
+    "total": 4,
+    "high": 1,
+    "medium": 3,
     "low": 0
   },
   "collisions": [
+    {
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1236721663/",
+      "normalizedUrl": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1236721663",
+      "candidates": [
+        {
+          "showId": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
+          "file": "variety--rebecca-rubin.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "variety"
+        },
+        {
+          "showId": "milk-and-honey-amt-theater-off-broadway-2026",
+          "file": "variety--unknown.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "variety"
+        },
+        {
+          "showId": "proof-2026",
+          "file": "variety--unknown.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "variety"
+        }
+      ],
+      "suggestedWinner": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
+      "reason": "publishDate 2026-04-15 is 1 days from aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026 but also 1 days from milk-and-honey-amt-theater-off-broadway-2026",
+      "confidence": "medium"
+    },
     {
       "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-broadway-eb586d98",
       "normalizedUrl": "https://wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-broadway-eb586d98",
@@ -62,31 +98,31 @@
       "confidence": "medium"
     },
     {
-      "url": "https://www.westendtheatre.com/340316/news/reviews/reviews-of-dracula-starring-cynthia-erivo/",
-      "normalizedUrl": "https://westendtheatre.com/340316/news/reviews/reviews-of-dracula-starring-cynthia-erivo",
+      "url": "https://www.nytimes.com/2026/04/07/t-magazine/cats-jellicle-ball-broadway-performance.html",
+      "normalizedUrl": "https://nytimes.com/2026/04/07/t-magazine/cats-jellicle-ball-broadway-performance.html",
       "candidates": [
         {
-          "showId": "dracula-west-end-2025",
-          "file": "telegraph--paul-raven.json",
-          "publishDate": null,
-          "openingDate": "2026-02-17",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "telegraph"
+          "showId": "proof-2026",
+          "file": "nytimes--sarah-bahr.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytimes"
         },
         {
-          "showId": "wicked-west-end-2021",
-          "file": "times-uk--clifford-bishop.json",
-          "publishDate": "2006-10-01",
-          "openingDate": "2006-09-27",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "times-uk"
+          "showId": "the-fear-of-13-2026",
+          "file": "nytimes--sarah-bahr.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-15",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytimes"
         }
       ],
-      "suggestedWinner": "wicked-west-end-2021",
-      "reason": "publishDate 2006-10-01 is 4 days from wicked-west-end-2021 opening (2006-09-27)",
-      "confidence": "high"
+      "suggestedWinner": "the-fear-of-13-2026",
+      "reason": "publishDate 2026-04-15 is 0 days from the-fear-of-13-2026 but also 1 days from proof-2026",
+      "confidence": "medium"
     }
   ]
 }
