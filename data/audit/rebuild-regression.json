@@ -1,25 +1,8 @@
 {
-  "timestamp": "2026-04-14T22:14:04.230Z",
-  "regressions": [
-    {
-      "showId": "machinal-2014",
-      "oldCount": 26,
-      "newCount": 23,
-      "dropped": 3,
-      "scoredOnDisk": 26,
-      "flaggedScored": 7,
-      "inlineGuardExcluded": 1,
-      "reason": "scored files exist but being dropped"
-    },
-    {
-      "showId": "orphans-2013",
-      "oldCount": 22,
-      "newCount": 19,
-      "dropped": 3,
-      "scoredOnDisk": 23,
-      "flaggedScored": 8,
-      "inlineGuardExcluded": 0,
-      "reason": "scored files exist but being dropped"
-    }
-  ]
+  "timestamp": "2026-04-16T00:42:51.467Z",
+  "existingCount": 17747,
+  "newCount": 16939,
+  "lost": 808,
+  "pctLost": 4.6,
+  "argv": []
 }
