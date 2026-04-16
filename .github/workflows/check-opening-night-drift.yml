@@ -1,0 +1,187 @@
+name: Check Opening Night Drift
+
+on:
+  schedule:
+    # Every 30 minutes
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Specific show ID to check (omit for all shows in window)'
+        required: false
+        default: ''
+      threshold:
+        description: 'Drift threshold before alerting (default: 2)'
+        required: false
+        default: '2'
+      window_days:
+        description: 'Days ± around openingDate to include (default: 7)'
+        required: false
+        default: '7'
+
+concurrency:
+  group: check-opening-night-drift
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  drift-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Check if rebuild is in progress (race avoidance)
+        id: rebuild_check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=rebuild-reviews.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING_FAST=$(gh run list --workflow=rebuild-fast.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED_FAST=$(gh run list --workflow=rebuild-fast.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ] || [ "$QUEUED" -gt 0 ] || [ "$RUNNING_FAST" -gt 0 ] || [ "$QUEUED_FAST" -gt 0 ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Rebuild in progress/queued — skipping drift check to avoid stale counts."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Early exit — no shows in window
+        if: steps.rebuild_check.outputs.skip != 'true'
+        id: window_check
+        run: |
+          SHOW_ARG=""
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            SHOW_ARG="--show=${{ github.event.inputs.show_id }}"
+          fi
+          WINDOW="${{ github.event.inputs.window_days || '7' }}"
+          # Count shows in window
+          COUNT=$(node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('data/shows.json','utf8'));
+            const shows = data.shows || data;
+            const now = Date.now();
+            const windowMs = ${WINDOW} * 24 * 60 * 60 * 1000;
+            const inWindow = shows.filter(s => {
+              if (!s.openingDate) return false;
+              const d = new Date(s.openingDate).getTime();
+              return !isNaN(d) && Math.abs(now - d) <= windowMs;
+            }).length;
+            console.log(inWindow);
+          " 2>/dev/null || echo "0")
+          echo "shows_in_window=$COUNT" >> "$GITHUB_OUTPUT"
+          if [ -z "${{ github.event.inputs.show_id }}" ] && [ "$COUNT" -eq 0 ]; then
+            echo "No shows in ±${WINDOW}d window — exiting."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run drift check
+        if: steps.rebuild_check.outputs.skip != 'true' && steps.window_check.outputs.skip != 'true'
+        id: drift
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHOW_ARG=""
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            SHOW_ARG="--show=${{ github.event.inputs.show_id }}"
+          fi
+          THRESHOLD="${{ github.event.inputs.threshold || '2' }}"
+          WINDOW="${{ github.event.inputs.window_days || '7' }}"
+
+          set +e
+          node scripts/check-opening-night-drift.js \
+            $SHOW_ARG \
+            --threshold="$THRESHOLD" \
+            --window="$WINDOW" \
+            --json \
+            --state-file=data/audit/drift-state.json \
+            --review-texts-root=data/review-texts \
+            > /tmp/drift-results.json 2>/tmp/drift-stderr.txt
+          EXIT_CODE=$?
+          set -e
+
+          cat /tmp/drift-stderr.txt >&2 || true
+          cat /tmp/drift-results.json
+
+          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+
+          if [ "$EXIT_CODE" -eq 1 ]; then
+            # Extract alerting shows for Discord message
+            ALERT_SHOWS=$(node -e "
+              const r = JSON.parse(require('fs').readFileSync('/tmp/drift-results.json','utf8'));
+              const alerts = r.filter(x => x.alert);
+              console.log(alerts.map(x =>
+                \`**\${x.title}** (\${x.showId}): local=\${x.local}, agg=\${x.aggregate}, live=\${x.live ?? 'n/a'}, drift=\${x.drift}\`
+              ).join('\n'));
+            " 2>/dev/null || echo "(parse error)")
+            echo "alert_shows<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$ALERT_SHOWS" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "Drift check complete."
+
+      - name: Commit updated drift state
+        if: steps.rebuild_check.outputs.skip != 'true' && steps.window_check.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/drift-state.json
+          if git diff --cached --quiet; then
+            echo "No state changes to commit."
+          else
+            git commit -m "chore: update drift-state.json [skip ci]"
+            bash scripts/lib/push-with-retry.sh 3 main || echo "::warning::State push failed — next run will re-check."
+          fi
+
+      - name: Send drift alert to Discord
+        if: steps.drift.outputs.exit_code == '1'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          ALERT_SHOWS: ${{ steps.drift.outputs.alert_shows }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const alertShows = (process.env.ALERT_SHOWS || '').trim();
+            await sendAlert({
+              title: 'Opening Night Drift Detected',
+              description: 'Review count mismatch between local review-texts, reviews.json aggregate, and live production data. Grace window passed — investigate now.',
+              severity: 'warning',
+              fields: [
+                { name: 'Shows with Drift', value: alertShows.slice(0, 1024) || '(none)', inline: false },
+                { name: 'Fix', value: 'Run `node scripts/verify-review-recovery.js --show=SHOW_ID --production`', inline: false },
+                { name: 'Run', value: `[View logs](${runUrl})`, inline: false },
+              ],
+              url: runUrl,
+            }).catch(e => console.error('Discord alert failed:', e.message));
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Opening Night Drift Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
