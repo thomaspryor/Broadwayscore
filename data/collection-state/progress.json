@@ -344,7 +344,17 @@
     "wicked-2003/the-journal-news--jacques-le-sourd.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
-    "art-2025/broadwaynews--michael-abourizk.json"
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -429,7 +439,8 @@
       "data/review-texts/what-the-constitution-means-to-me-2019/vulture--jesse-green.json",
       "data/review-texts/network-2018/washpost--peter-marks.json",
       "data/review-texts/the-prom-2018/talkinbroadway--matthew-murray.json",
-      "data/review-texts/cabaret-2014/wsj--terry-teachout.json"
+      "data/review-texts/cabaret-2014/wsj--terry-teachout.json",
+      "data/review-texts/illinoise-2024/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "wicked-west-end-2021/timeout-london--honour-bayes.json",
@@ -446,7 +457,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "art-2025/broadwaynews--michael-abourizk.json",
+  "lastProcessed": "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -843,6 +854,17 @@
       "t": "2026-04-16T11:55:13.717Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T12:02:17.584Z",
+      "event": "bb-session",
+      "session": "f599e369",
+      "url": "https://www.talkinbroadway.com/world/Illinoise.html"
+    },
+    {
+      "t": "2026-04-16T12:02:18.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
