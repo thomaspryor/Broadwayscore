@@ -1,67 +1,81 @@
 {
-  "runDate": "2026-04-16T09:01:00.160Z",
+  "runDate": "2026-04-16T09:51:24.319Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "avenue-q-west-end-2026",
+    "showFilter": "avenue-q-west-end-2026,milk-and-honey-amt-theater-off-broadway-2026,proof-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 2,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 2,
+    "tier2Attempts": 3,
+    "tier2Success": 3,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 30,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+    "proof-2026/nytimes--sarah-bahr.json"
+  ],
   "failed": [
-    "avenue-q-west-end-2026/times-uk--unknown.json"
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+    "proof-2026/variety--unknown.json",
+    "avenue-q-west-end-2026/times-uk--unknown.json",
+    "proof-2026/talkinbroadway--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/variety--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+      "proof-2026/nytimes--sarah-bahr.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
