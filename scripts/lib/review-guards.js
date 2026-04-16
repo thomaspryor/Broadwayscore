@@ -1049,6 +1049,55 @@ function buildMultiProdYearGuard(shows) {
   return guard;
 }
 
+/**
+ * Returns true if rebuild-all-reviews.js would include this review in reviews.json.
+ * Mirrors the exclusion logic in rebuild-all-reviews.js without copying it into callers.
+ * intentionally does NOT exclude duplicateTextOf — rebuild keeps those when the referenced
+ * entry is also excluded; mirroring that precisely requires context this predicate doesn't have.
+ */
+function isIncludableForRebuild(data) {
+  if (!data) return false;
+
+  // wrongProduction — excluded unless cleared by one of three override flags
+  if (data.wrongProduction === true) {
+    const cleared =
+      data.wrongProductionManualClear === true ||
+      data.wrongProductionOverride === true ||
+      data.humanReviewedWrongProduction === false;
+    if (!cleared) return false;
+  }
+
+  if (data.wrongShow === true) return false;
+  if (data.wrongAttribution === true) return false;
+  if (data.duplicateOf) return false;
+  if (data.isRoundupArticle === true) return false;
+  if (
+    data.isNonReview === true ||
+    data.isNotReview === true ||
+    data.nonReviewFlag === true ||
+    data.nonReviewContent === true
+  ) return false;
+  if (data.fabricatedEntry === true) return false;
+  if (data.isSyndicatedDuplicate === true) return false;
+  if (data.crossOutletDuplicate === true) return false;
+  if (data.suspectedMisattribution === true) return false;
+  if (
+    data.contentVerification?.wrongArticle === true &&
+    data.contentVerification?.confidence === 'high'
+  ) return false;
+
+  // Must have either review text or an aggregator signal
+  const hasText = !!(data.fullText && data.fullText.trim());
+  const hasAggregatorSignal = !!(
+    data.aggregatorStars ||
+    data.originalScore != null ||
+    data.llmScore
+  );
+  if (!hasText && !hasAggregatorSignal) return false;
+
+  return true;
+}
+
 module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
@@ -1073,6 +1122,7 @@ module.exports = {
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
   pickRerouteTarget,
+  isIncludableForRebuild,
   // Exported for test assertions
   MAX_RETRIES_WRONG_CONTENT,
   COOLDOWN_MS,

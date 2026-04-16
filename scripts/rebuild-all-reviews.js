@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -1480,10 +1480,7 @@ showDirs.forEach(showId => {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
           // Check if reference would be excluded by later guards
-          refExcluded = !!(refData.wrongProduction || refData.wrongShow ||
-            refData.wrongAttribution || refData.suspectedMisattribution || refData.fabricatedEntry || refData.isNotReview ||
-            refData.isNonReview || refData.nonReviewFlag || refData.nonReviewContent ||
-            refData.isSyndicatedDuplicate || refData.crossOutletDuplicate);
+          refExcluded = !isIncludableForRebuild(refData);
           if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
             const refPubDate = new Date(refData.publishDate);
             const openDate = showDateMap[showId];
@@ -1518,10 +1515,7 @@ showDirs.forEach(showId => {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
           // Check if reference would be excluded by later guards
-          refWouldBeExcluded = !!(refData.wrongProduction || refData.wrongShow ||
-            refData.wrongAttribution || refData.suspectedMisattribution || refData.fabricatedEntry || refData.isNotReview ||
-            refData.isNonReview || refData.nonReviewFlag || refData.nonReviewContent ||
-            refData.isSyndicatedDuplicate || refData.crossOutletDuplicate);
+          refWouldBeExcluded = !isIncludableForRebuild(refData);
           if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
             const refPubDate = new Date(refData.publishDate);
             const openDate = showDateMap[showId];
