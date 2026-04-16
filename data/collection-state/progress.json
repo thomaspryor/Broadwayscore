@@ -1013,7 +1013,17 @@
     "is-this-a-room-2021/washpost--peter-marks.json",
     "west-side-story-2020/theater-news-online--jeremy-gerard.json",
     "west-side-story-2020/theater-news-online--mervyn-rothstein.json",
-    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json"
+    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+    "a-soldiers-play-2020/theater-news-online--jeremy-gerard.json",
+    "my-name-is-lucy-barton-2020/theater-news-online--david-cote.json",
+    "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
+    "the-sound-inside-2019/wsj--charles-isherwood.json",
+    "the-sound-inside-2019/theater-news-online--jeremy-gerard.json",
+    "linda-vista-2019/theater-news-online--joe-dziemianowicz.json",
+    "the-great-society-2019/theater-news-online--jeremy-gerard.json",
+    "the-height-of-the-storm-2019/theater-news-online--david-cote.json",
+    "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json",
+    "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1153,7 +1163,7 @@
     ]
   },
   "startTime": "2026-04-16T09:47:35.160Z",
-  "lastProcessed": "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+  "lastProcessed": "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-04-16T09:47:36.085Z",
@@ -1900,6 +1910,17 @@
     },
     {
       "t": "2026-04-16T19:22:33.479Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T19:24:30.388Z",
+      "event": "bb-session",
+      "session": "3d7b13d0",
+      "url": "https://www.wsj.com/articles/the-sound-inside-review-mary-louise-parker-shines-i"
+    },
+    {
+      "t": "2026-04-16T19:24:30.807Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

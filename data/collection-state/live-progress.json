@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T19:24:12.790Z",
+  "updatedAt": "2026-04-16T19:26:01.219Z",
   "processed": 77,
-  "failed": 935,
-  "successRate": "7.6%",
+  "failed": 945,
+  "successRate": "7.5%",
   "tierBreakdown": {
     "playwright": 31,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 28,
     "archive": 12
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-16T18:48:47.750Z",
-      "event": "bb-session",
-      "session": "fd9e4bb4",
-      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
-    },
-    {
-      "t": "2026-04-16T18:48:48.273Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T18:52:29.097Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-16T19:22:33.479Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T19:24:30.388Z",
+      "event": "bb-session",
+      "session": "3d7b13d0",
+      "url": "https://www.wsj.com/articles/the-sound-inside-review-mary-louise-parker-shines-i"
+    },
+    {
+      "t": "2026-04-16T19:24:30.807Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
