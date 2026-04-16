@@ -1701,7 +1701,12 @@
     "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
     "proof-2026/variety--unknown.json",
     "proof-2026/talkinbroadway--unknown.json",
-    "the-fear-of-13-2026/talkinbroadway--unknown.json"
+    "the-fear-of-13-2026/talkinbroadway--unknown.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+    "proof-2026/variety--unknown.json",
+    "proof-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/talkinbroadway--unknown.json",
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1751,7 +1756,10 @@
       "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
       "proof-2026/deadline--anthony-dalessandro.json",
       "data/review-texts/proof-2026/observer--casey-epstein-gross.json",
-      "proof-2026/observer--casey-epstein-gross.json"
+      "proof-2026/observer--casey-epstein-gross.json",
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1792,6 +1800,8 @@
       "data/review-texts/the-addams-family-2010/abc-news--unknown.json",
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
       "data/review-texts/proof-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
+      "data/review-texts/proof-2026/talkinbroadway--unknown.json",
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
@@ -1801,7 +1811,7 @@
     ]
   },
   "startTime": "2026-04-15T08:50:43.089Z",
-  "lastProcessed": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
+  "lastProcessed": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json",
   "log": [
     {
       "t": "2026-04-15T10:43:03.364Z",
@@ -1890,6 +1900,39 @@
       "t": "2026-04-16T00:51:42.841Z",
       "event": "bb-cookie-inject",
       "domain": "observer.com"
+    },
+    {
+      "t": "2026-04-16T01:23:27.401Z",
+      "event": "bb-session",
+      "session": "0462df29",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T01:23:28.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T01:23:39.261Z",
+      "event": "bb-session",
+      "session": "489092ad",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T01:23:41.846Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T01:27:45.163Z",
+      "event": "bb-session",
+      "session": "a0da00ac",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T01:27:45.827Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
