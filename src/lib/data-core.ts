@@ -182,28 +182,46 @@ export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[
 /**
  * Show IDs that have at least one NYT "Critic's Pick" review. Built once per process.
  *
- * Source: data/nyt-critics-picks.json — scraped from the authoritative NYT
- * spotlight page (nytimes.com/spotlight/theater-critics-picks). Cross-referenced
- * against our review URLs. This replaces the unreliable designation field from
- * check-nyt-critics-pick.js which had ~10% false positive rate.
+ * Sources (union):
+ * 1. data/nyt-critics-picks.json — scraped from the NYT spotlight page
+ *    (nytimes.com/spotlight/theater-critics-picks). Covers the ~100 most
+ *    recent picks (back to ~April 2024). URL-matched against our reviews
+ *    after stripping query strings/fragments (fixes mismatches like
+ *    `?searchResultPosition=1`).
+ * 2. reviews.json `designation === 'Critics_Pick'` — written by the rebuild
+ *    pipeline, which itself unions the spotlight list with data/designations.json
+ *    (human-verified historical picks like Book of Mormon, Moulin Rouge, Six,
+ *    Water for Elephants — older than the spotlight window).
  *
- * Refresh: run `node scripts/refresh-nyt-critics-picks.js` periodically.
+ * This makes the homepage shelf consistent with the per-review Critic's Pick
+ * badge rendered by ReviewsList.tsx.
  */
 let _nytCriticsPickShowIds: Set<string> | null = null;
+function canonicalUrl(u: string): string {
+  try {
+    const url = new URL(u);
+    return url.origin + url.pathname.replace(/\/+$/, '');
+  } catch {
+    return u;
+  }
+}
 export function getNYTCriticsPickShowIds(): Set<string> {
   if (_nytCriticsPickShowIds) return _nytCriticsPickShowIds;
+  const ids = new Set<string>();
   try {
     const picksData = require('../../data/nyt-critics-picks.json') as { urls: string[] };
-    const pickUrlSet = new Set(picksData.urls);
-    _nytCriticsPickShowIds = new Set(
-      baseReviews
-        .filter(r => r.outletId === 'nytimes' && r.url && pickUrlSet.has(r.url))
-        .map(r => r.showId)
-    );
-  } catch {
-    // File missing — return empty set (shelf just won't render)
-    _nytCriticsPickShowIds = new Set();
+    const pickUrlSet = new Set((picksData.urls || []).map(canonicalUrl));
+    for (const r of baseReviews) {
+      if (r.outletId !== 'nytimes' || !r.url) continue;
+      if (pickUrlSet.has(canonicalUrl(r.url))) ids.add(r.showId);
+    }
+  } catch { /* file missing */ }
+  // Also include any review already designated Critics_Pick — covers the
+  // designations.json manual-pick path so the shelf matches the badge.
+  for (const r of baseReviews) {
+    if (r.designation === 'Critics_Pick') ids.add(r.showId);
   }
+  _nytCriticsPickShowIds = ids;
   return _nytCriticsPickShowIds;
 }
 
