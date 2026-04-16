@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-16T12:25:21.873Z",
+  "updatedAt": "2026-04-16T12:32:25.536Z",
   "processed": 59,
-  "failed": 404,
-  "successRate": "12.7%",
+  "failed": 454,
+  "successRate": "11.5%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
@@ -13,19 +13,8 @@
     "archiveToday": 16,
     "archive": 11
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-04-16T11:39:56.885Z",
-      "event": "bb-session",
-      "session": "8e19c105",
-      "url": "https://www.wsj.com/articles/SB10001424127887324345804578426070326683684"
-    },
-    {
-      "t": "2026-04-16T11:39:57.626Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-16T11:55:12.516Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-16T12:23:56.514Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-16T12:29:38.443Z",
+      "event": "bb-session",
+      "session": "739bcb53",
+      "url": "https://www.wsj.com/articles/side-show-review-twin-bill-1414450800"
+    },
+    {
+      "t": "2026-04-16T12:29:39.558Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
