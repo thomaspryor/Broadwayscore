@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-16T13:40:12.442Z",
+  "generatedAt": "2026-04-16T19:09:11.010Z",
   "summary": {
-    "total": 2,
+    "total": 3,
     "high": 1,
-    "medium": 1,
-    "low": 0
+    "medium": 0,
+    "low": 2
   },
   "collisions": [
     {
@@ -35,31 +35,58 @@
       "confidence": "high"
     },
     {
-      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1236721663/",
-      "normalizedUrl": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1236721663",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-goes-wrong-review-apollo-shaftsbury-lbgtdhfk3",
+      "normalizedUrl": "https://thetimes.com/culture/theatre-dance/article/christmas-carol-goes-wrong-review-apollo-shaftsbury-lbgtdhfk3",
       "candidates": [
         {
-          "showId": "milk-and-honey-amt-theater-off-broadway-2026",
-          "file": "variety--unknown.json",
-          "publishDate": "2026-04-15",
+          "showId": "avenue-q-west-end-2026",
+          "file": "times-uk--unknown.json",
+          "publishDate": null,
           "openingDate": "2026-04-16",
           "hasScore": false,
           "hasFullText": false,
-          "outletId": "variety"
+          "outletId": "times-uk"
+        },
+        {
+          "showId": "the-play-that-goes-wrong-west-end-2021",
+          "file": "times-uk--clive-davis.json",
+          "publishDate": "2020-12-15",
+          "openingDate": "2014-09-18",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        }
+      ],
+      "suggestedWinner": "avenue-q-west-end-2026",
+      "reason": "publishDate 2020-12-15 is 2280+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway-0e929905?gaa_at=eafs&gaa_n=AWEtsqe78LSIi02FXiPrgNQHhm6LAqKfACdK0fRcgI4OfxOqk-FCzgZzw-h3dkCGZI8%3D&gaa_ts=69d46965&gaa_sig=wnEZeHrUT2mHf5_Sz7bumUlSHnxmJpAopzbKoydnmEgZEmH5PuSddHVYifPXLcZTMtgp-r-3RRT0qgtucEsg3g%3D%3D",
+      "normalizedUrl": "https://wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway-0e929905",
+      "candidates": [
+        {
+          "showId": "becky-shaw-2026",
+          "file": "wsj--charles-isherwood.json",
+          "publishDate": null,
+          "openingDate": "2026-04-06",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "wsj"
         },
         {
           "showId": "proof-2026",
-          "file": "variety--unknown.json",
-          "publishDate": "2026-04-15",
+          "file": "wsj--charles-isherwood.json",
+          "publishDate": null,
           "openingDate": "2026-04-16",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": false,
-          "outletId": "variety"
+          "outletId": "wsj"
         }
       ],
-      "suggestedWinner": "milk-and-honey-amt-theater-off-broadway-2026",
-      "reason": "publishDate 2026-04-15 is 1 days from milk-and-honey-amt-theater-off-broadway-2026 but also 1 days from proof-2026",
-      "confidence": "medium"
+      "suggestedWinner": "proof-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     }
   ]
 }
