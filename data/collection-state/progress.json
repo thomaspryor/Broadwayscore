@@ -69,7 +69,11 @@
     "proof-2026/observer--casey-epstein-gross.json",
     "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--unknown.json",
     "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/nytimes--jessica-testa.json",
-    "the-fear-of-13-2026/talkinbroadway--unknown.json"
+    "the-fear-of-13-2026/talkinbroadway--unknown.json",
+    "proof-2026/ap--unknown.json",
+    "proof-2026/playbill--unknown.json",
+    "proof-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/nytg--unknown.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -1707,6 +1711,9 @@
     "proof-2026/variety--unknown.json",
     "proof-2026/talkinbroadway--unknown.json",
     "the-fear-of-13-2026/talkinbroadway--unknown.json",
+    "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+    "proof-2026/variety--unknown.json",
     "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json"
   ],
   "skipped": [],
@@ -1745,7 +1752,10 @@
       "the-play-that-goes-wrong-west-end-2021/independent--unknown.json",
       "hadestown-west-end-2024/nytg--gillian-russo.json",
       "the-play-that-goes-wrong-west-end-2021/independent--alice-saville.json",
-      "proof-2026/guardian--unknown.json"
+      "proof-2026/guardian--unknown.json",
+      "proof-2026/ap--unknown.json",
+      "proof-2026/playbill--unknown.json",
+      "the-fear-of-13-2026/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1758,6 +1768,9 @@
       "proof-2026/deadline--anthony-dalessandro.json",
       "data/review-texts/proof-2026/observer--casey-epstein-gross.json",
       "proof-2026/observer--casey-epstein-gross.json",
+      "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "data/review-texts/aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json",
       "data/review-texts/milk-and-honey-amt-theater-off-broadway-2026/variety--unknown.json",
       "data/review-texts/proof-2026/variety--unknown.json",
       "data/review-texts/aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026/variety--unknown.json"
@@ -1792,7 +1805,8 @@
       "a-steady-rain-2009/latimes--unknown.json",
       "milk-and-honey-amt-theater-off-broadway-2026/nytimes--unknown.json",
       "proof-2026/guardian--michael-billington.json",
-      "the-fear-of-13-2026/talkinbroadway--unknown.json"
+      "the-fear-of-13-2026/talkinbroadway--unknown.json",
+      "proof-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/the-fear-of-13-2026/talkinbroadway--unknown.json",
@@ -1933,6 +1947,39 @@
     },
     {
       "t": "2026-04-16T01:27:45.827Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T02:23:03.540Z",
+      "event": "bb-session",
+      "session": "d8e5e6d8",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T02:23:04.605Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T02:23:22.345Z",
+      "event": "bb-session",
+      "session": "9c271395",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T02:23:23.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T02:25:23.123Z",
+      "event": "bb-session",
+      "session": "19b922d7",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T02:25:24.076Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-16T01:27:59.321Z",
-  "processed": 69,
-  "failed": 1636,
-  "successRate": "4.0%",
+  "updatedAt": "2026-04-16T02:25:38.094Z",
+  "processed": 74,
+  "failed": 1639,
+  "successRate": "4.3%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 15,
     "directCookies": 0,
     "scrapingbee": 20,
-    "brightdata": 6,
+    "brightdata": 8,
     "archiveToday": 10,
     "archive": 3
   },
   "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-15T10:48:35.759Z",
-      "event": "bb-session",
-      "session": "7bbb65d7",
-      "url": "https://www.wsj.com/articles/SB10001424052970204518504574416801338702692?gaa_at="
-    },
-    {
-      "t": "2026-04-15T10:48:37.395Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-04-16T00:46:04.056Z",
-      "event": "bb-session",
-      "session": "fcdab089",
-      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
-    },
-    {
-      "t": "2026-04-16T00:46:05.147Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-16T00:47:15.233Z",
-      "event": "bb-session",
-      "session": "c1a6a649",
-      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
-    },
-    {
-      "t": "2026-04-16T00:47:16.371Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-16T00:47:30.258Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-04-16T01:27:45.827Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T02:23:03.540Z",
+      "event": "bb-session",
+      "session": "d8e5e6d8",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T02:23:04.605Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T02:23:22.345Z",
+      "event": "bb-session",
+      "session": "9c271395",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T02:23:23.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-16T02:25:23.123Z",
+      "event": "bb-session",
+      "session": "19b922d7",
+      "url": "https://variety.com/2026/legit/news/billy-crystal-broadway-palisades-fire-show-1"
+    },
+    {
+      "t": "2026-04-16T02:25:24.076Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
