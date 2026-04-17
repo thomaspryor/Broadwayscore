@@ -247,7 +247,7 @@ for (const showId of showDirs) {
     if (shouldRunClass('F') && f.includes('--unknown')) {
       const noUrl = !d.url;
       const noText = !(d.fullText || '').trim();
-      const hasAggregatorData = !!(d.aggregatorStars || d.scoreSource || d.stagedoorUrl || d.stagedoorExcerpt);
+      const hasAggregatorData = !!(d.aggregatorStars || d.scoreSource || d.stagedoorUrl || d.stagedoorExcerpt || d.dtliExcerpt);
       if (noUrl && noText && !hasAggregatorData) {
         hits.F_empty_unknown.push({ showId, file: f });
       }
