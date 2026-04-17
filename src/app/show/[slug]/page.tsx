@@ -1030,6 +1030,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           <SeatingGuidanceCard
             sections={theater.structuredTips?.seating?.sections}
             bestSeats={theater.structuredTips?.seating?.bestSeats}
+            variant="show"
           />
         )}
 
