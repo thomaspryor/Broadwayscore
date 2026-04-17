@@ -38,7 +38,7 @@ async function run(show, context) {
     return {
       ok: true,
       severity: 'warning',
-      message: `Could not fetch BWW RR page (${err.message}) — skipping parity check`,
+      message: `Could not fetch BWW RR page (${err?.message || String(err)}) — skipping parity check`,
       details: { rrUrl },
     };
   }
