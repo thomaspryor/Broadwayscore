@@ -431,6 +431,7 @@ async function main() {
       showTitle: show.title,
       score,
       reviewCount,
+      rave: stats.rave,
       positive: stats.positive,
       mixed: stats.mixed,
       negative: stats.negative,
