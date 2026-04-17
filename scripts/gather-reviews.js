@@ -63,6 +63,7 @@ const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { emitStage } = require('./lib/stage-latency');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
@@ -3005,6 +3006,14 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (review.url && _globalUrlIndex) {
     _globalUrlIndex.set(normalizeUrl(review.url), { showId, file: path.basename(filepath) });
   }
+
+  try {
+    emitStage({
+      showId,
+      reviewKey: `${normalizedOutletId}:${normalizeCritic(reviewData.criticName)}:${reviewData.url || ''}`,
+      stage: 'review-first-seen',
+    });
+  } catch (e) { process.stderr.write(`[stage-latency] gather emit failed: ${e.message}\n`); }
 
   console.log(`    ✓ Created ${filename}`);
   return true;

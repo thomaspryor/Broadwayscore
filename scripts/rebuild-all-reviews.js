@@ -36,6 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
@@ -4089,6 +4090,13 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     console.log('  Review tiers manually if needed.');
   }
 }
+
+try {
+  const showCounts = allReviews.reduce((acc, r) => { acc[r.showId] = (acc[r.showId] || 0) + 1; return acc; }, {});
+  for (const [showId, reviewCount] of Object.entries(showCounts)) {
+    emitStage({ showId, stage: 'rebuilt', metadata: { reviewCount } });
+  }
+} catch (e) { process.stderr.write(`[stage-latency] rebuild emit failed: ${e.message}\n`); }
 
 console.log('\n=== DONE ===');
 console.log(`\nReviews saved to: ${reviewsJsonPath}`);

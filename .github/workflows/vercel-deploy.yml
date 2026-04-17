@@ -263,6 +263,23 @@ jobs:
       - name: Content smoke test (Playwright)
         run: npx playwright test --project=chromium tests/e2e/smoke.spec.ts
 
+      - name: Emit deployed-live stage-latency event
+        if: success()
+        continue-on-error: true
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node -e "
+            const { emitStage } = require('./scripts/lib/stage-latency');
+            emitStage({ stage: 'deployed-live', metadata: { runId: '${{ github.run_id }}', sha: '${{ github.sha }}' } });
+          "
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/audit/stage-latency.jsonl || true
+          git diff --cached --quiet || git commit -m "audit: stage-latency deployed-live [${{ github.run_id }}]"
+          bash scripts/lib/push-with-retry.sh || echo "::warning::stage-latency push failed (non-critical)"
+
       - name: Dispatch async watermark update
         if: success()
         continue-on-error: true
