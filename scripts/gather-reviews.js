@@ -2645,6 +2645,25 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
 
+  // Load show metadata early — needed to auto-detect post-opening context BEFORE the
+  // merge loop runs. Also reused by the date guard and placeholder marking below.
+  let _showMeta = null;
+  try {
+    const showsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+    _showMeta = showsJSON.shows.find(s => s.id === showId) || null;
+  } catch (e) {}
+
+  // Auto-detect post-opening context: if caller didn't explicitly pass fromPostOpening
+  // but the show has already opened, treat all merges as post-opening so placeholder
+  // stubs get replaced wholesale by late-arriving reviews (e.g., outlet published next day).
+  if (!fromPostOpening && _showMeta) {
+    const showHasOpened = _showMeta.status === 'open' || _showMeta.status === 'closed'
+      || (_showMeta.openingDate && new Date(_showMeta.openingDate) <= new Date());
+    if (showHasOpened) {
+      mergeOpts = { fromPostOpening: true };
+    }
+  }
+
   // Check for existing review with same normalized key
   if (fs.existsSync(showDir)) {
     const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
@@ -2885,23 +2904,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   review.contentTier = tier.contentTier;
   review.contentTierReason = tier.tierReason;
 
-  // Load show metadata once — reused by date guard and placeholder marking below.
-  let _showMeta = null;
-  try {
-    const showsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
-    _showMeta = showsJSON.shows.find(s => s.id === showId) || null;
-  } catch (e) {}
-
-  // Auto-detect post-opening context: if caller didn't explicitly pass fromPostOpening
-  // but the show has already opened, treat all merges as post-opening so placeholder
-  // stubs get replaced wholesale by late-arriving reviews (e.g., outlet published next day).
-  if (!fromPostOpening && _showMeta) {
-    const showHasOpened = _showMeta.status === 'open' || _showMeta.status === 'closed'
-      || (_showMeta.openingDate && new Date(_showMeta.openingDate) <= new Date());
-    if (showHasOpened) {
-      mergeOpts = { fromPostOpening: true };
-    }
-  }
+  // (_showMeta loaded above, before merge loop)
 
   // Date-based production guard: warn if review was published >30 days before
   // the show's earliest date (previews/opening). Likely from a prior production.
