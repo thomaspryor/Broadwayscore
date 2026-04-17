@@ -116,7 +116,8 @@ function callClaude(systemPrompt, userPrompt) {
     max_tokens: 300,
     temperature: 0.1,
     system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }]
+    messages: [{ role: 'user', content: userPrompt }],
+    tools: [{ type: 'advisor_20260301', name: 'advisor', model: 'claude-opus-4-7', max_uses: 1 }]
   });
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.anthropic.com/v1/messages', {
@@ -124,7 +125,8 @@ function callClaude(systemPrompt, userPrompt) {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'advisor-tool-2026-03-01'
       }
     }, (res) => {
       let data = '';

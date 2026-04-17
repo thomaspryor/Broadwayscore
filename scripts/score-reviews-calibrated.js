@@ -116,7 +116,7 @@ async function scoreReview(client, reviewText, showId, outlet) {
   const truncatedText = reviewText.length > 4000 ? reviewText.substring(0, 4000) + '...' : reviewText;
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 500,
     messages: [
       {
@@ -313,7 +313,7 @@ async function main() {
         // Save to review file (inline)
         review.llmScore = llmScoreData;
         review.llmMetadata = {
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-4-6',
           scoredAt: llmScoreData.scoredAt,
           promptVersion: llmScoreData.promptVersion,
           inputTokens: result.inputTokens,

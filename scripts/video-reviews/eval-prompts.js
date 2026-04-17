@@ -73,8 +73,8 @@ function getShowList() {
     .map(s => `${s.title} (${s.id})`).join(', ');
 }
 
-const CLASSIFY_MODEL = process.env.CLASSIFY_MODEL || 'claude-sonnet-4-20250514';
-const SCORE_MODEL = process.env.SCORE_MODEL || 'claude-sonnet-4-20250514';
+const CLASSIFY_MODEL = process.env.CLASSIFY_MODEL || 'claude-sonnet-4-6';
+const SCORE_MODEL = process.env.SCORE_MODEL || 'claude-sonnet-4-6';
 
 async function callClaude(prompt, model) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {

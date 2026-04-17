@@ -248,7 +248,7 @@ Return ONLY the JSON array, no other text.`;
 function callClaudeAPI(prompt, maxTokens) {
   return new Promise((resolve) => {
     const postData = JSON.stringify({
-      model: 'claude-3-haiku-20240307',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: maxTokens,
       messages: [{ role: 'user', content: prompt }]
     });

@@ -498,7 +498,7 @@ async function parseGrossesPost(selftext) {
 
   try {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 4000,
       messages: [{
         role: 'user',
@@ -1432,7 +1432,7 @@ Respond with ONLY valid JSON (no markdown code fences):
 }`;
 
   const body = JSON.stringify({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 8000,
     system: systemPrompt,
     messages: [{
