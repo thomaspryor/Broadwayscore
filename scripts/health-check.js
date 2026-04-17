@@ -975,6 +975,25 @@ function getStatusIcon(status) {
   return status === 'pass' ? '&#9989;' : status === 'warn' ? '&#9888;&#65039;' : '&#10060;';
 }
 
+function purgeOldExclusionLogs(retentionDays = 30) {
+  try {
+    if (!fs.existsSync(AUDIT_DIR)) return;
+    const cutoff = Date.now() - retentionDays * 24 * 60 * 60 * 1000;
+    const deleted = [];
+    for (const f of fs.readdirSync(AUDIT_DIR)) {
+      const m = f.match(/^exclusions-(\d{4}-\d{2}-\d{2})\.jsonl$/);
+      if (!m) continue;
+      if (new Date(m[1]).getTime() < cutoff) {
+        fs.unlinkSync(path.join(AUDIT_DIR, f));
+        deleted.push(f);
+      }
+    }
+    if (deleted.length) console.log(`[Exclusion Logs] Purged ${deleted.length} file(s) older than ${retentionDays}d: ${deleted.join(', ')}`);
+  } catch (err) {
+    console.warn(`[Exclusion Logs] Purge failed (non-fatal): ${err.message}`);
+  }
+}
+
 function buildExclusionSummaryHtml() {
   try {
     const now = Date.now();
@@ -1463,6 +1482,8 @@ async function main() {
   }
 
   console.log('=== Broadway Scorecard Daily Health Check ===\n');
+
+  purgeOldExclusionLogs();
 
   const allResults = [
     ...checkFreshness(),
