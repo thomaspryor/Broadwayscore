@@ -18,7 +18,6 @@ type PreviewShow = {
 type Screen = 'landing' | 'drafting' | 'review' | 'submitted';
 
 const BUDGET = 100;
-const TEAM_SIZE = 8;
 
 export function FantasyPreviewClient({ shows }: { shows: PreviewShow[] }) {
   useEffect(() => {
@@ -36,7 +35,6 @@ export function FantasyPreviewClient({ shows }: { shows: PreviewShow[] }) {
   );
   const remaining = BUDGET - spent;
   const pickedShows = picks.map(id => shows.find(s => s.id === id)!).filter(Boolean);
-  const slotsLeft = TEAM_SIZE - picks.length;
 
   const visibleShows = useMemo(() => {
     return shows
@@ -51,7 +49,6 @@ export function FantasyPreviewClient({ shows }: { shows: PreviewShow[] }) {
       setPicks(picks.filter(p => p !== id));
       return;
     }
-    if (picks.length >= TEAM_SIZE) return;
     if (spent + show.price > BUDGET) return;
     setPicks([...picks, id]);
   }
@@ -65,7 +62,6 @@ export function FantasyPreviewClient({ shows }: { shows: PreviewShow[] }) {
         pickedShows={pickedShows}
         spent={spent}
         remaining={remaining}
-        slotsLeft={slotsLeft}
         filter={filter}
         setFilter={setFilter}
         togglePick={togglePick}
@@ -114,7 +110,7 @@ function LandingScreen({ onStart, shows }: { onStart: () => void; shows: Preview
           </span>
         </h1>
         <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
-          Draft <strong className="text-gray-200">8 shows</strong>. Stay under <strong className="text-gray-200">$100</strong>.<br />
+          Draft shows. Stay under <strong className="text-gray-200">$100</strong>.<br />
           Earn points from critics, audiences, box office, and the Tonys.<br />
           Winner gets <strong className="text-brand">$500 on TodayTix</strong>.
         </p>
@@ -128,7 +124,7 @@ function LandingScreen({ onStart, shows }: { onStart: () => void; shows: Preview
         <div className="animate-fade-up mt-10 grid grid-cols-3 gap-6" style={{ animationDelay: '1.1s', animationFillMode: 'both' }}>
           <Stat label="Shows" value={shows.length.toString()} />
           <Stat label="Budget" value="$100" />
-          <Stat label="Slots" value={TEAM_SIZE.toString()} />
+          <Stat label="Prize" value="$500" />
         </div>
         <div className="animate-fade-up mt-6 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-brand/[0.08] border border-brand/15" style={{ animationDelay: '1.3s', animationFillMode: 'both' }}>
           <span className="text-xl">🏆</span>
@@ -152,7 +148,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 // ─── Draft ────────────────────────────────────────────────────────────
 
 function DraftScreen({
-  shows, picks, pickedShows, spent, remaining, slotsLeft,
+  shows, picks, pickedShows, spent, remaining,
   filter, setFilter, togglePick, onBack, onReview,
 }: {
   shows: PreviewShow[];
@@ -160,30 +156,23 @@ function DraftScreen({
   pickedShows: PreviewShow[];
   spent: number;
   remaining: number;
-  slotsLeft: number;
   filter: 'all' | 'broadway' | 'off-broadway';
   setFilter: (f: 'all' | 'broadway' | 'off-broadway') => void;
   togglePick: (id: string) => void;
   onBack: () => void;
   onReview: () => void;
 }) {
-  const pctFilled = (picks.length / TEAM_SIZE) * 100;
   const pctBudget = Math.min(100, (spent / BUDGET) * 100);
   const overBudgetShowCount = shows.filter(s => s.price > remaining).length;
 
   return (
     <div className="min-h-screen bg-surface flex flex-col pb-[180px]">
-      {/* Sticky top: budget + slots */}
+      {/* Sticky top: budget */}
       <div className="sticky top-0 z-10 px-5 py-4 border-b border-white/5 bg-surface/95 backdrop-blur-xl">
         <div className="flex items-center justify-between mb-3">
           <button onClick={onBack} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">← Back</button>
-          <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{picks.length} of {TEAM_SIZE}</span>
+          <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{picks.length} pick{picks.length !== 1 ? 's' : ''}</span>
           <div className="w-12" />
-        </div>
-        <div className="flex gap-1.5 mb-2">
-          {Array.from({ length: TEAM_SIZE }).map((_, i) => (
-            <div key={i} className={`h-2 flex-1 rounded transition-all duration-300 ${i < picks.length ? 'bg-brand shadow-[0_0_8px_rgba(212,165,116,0.4)]' : 'bg-surface-overlay'}`} />
-          ))}
         </div>
         <div className="flex items-center justify-between text-xs">
           <span className="text-gray-500">
@@ -248,7 +237,7 @@ function DraftScreen({
       <div className="flex-1 px-5 py-4 max-w-[480px] mx-auto w-full">
         <div className="grid grid-cols-2 gap-3">
           {shows.slice(0, 24).map(show => {
-            const unaffordable = show.price > remaining || slotsLeft <= 0;
+            const unaffordable = show.price > remaining;
             return (
               <button
                 key={show.id}
@@ -295,10 +284,10 @@ function DraftScreen({
         <div className="max-w-[480px] mx-auto">
           <button
             onClick={onReview}
-            disabled={picks.length !== TEAM_SIZE}
-            className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${picks.length === TEAM_SIZE ? 'bg-brand text-[#09090b] shadow-[0_4px_20px_rgba(212,165,116,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}
+            disabled={picks.length === 0}
+            className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${picks.length > 0 ? 'bg-brand text-[#09090b] shadow-[0_4px_20px_rgba(212,165,116,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}
           >
-            {picks.length === TEAM_SIZE ? `Review Team → $${spent}` : `Pick ${slotsLeft} more`}
+            {picks.length > 0 ? `Review Team (${picks.length} picks · $${spent}) →` : 'Pick at least one show'}
           </button>
         </div>
       </div>

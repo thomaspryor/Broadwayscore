@@ -70,10 +70,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
-    // Validate team_name and league_name (length limits, alphanumeric)
+    // Validate team_name and league_name
     const cleanTeamName = team_name ? String(team_name).trim().slice(0, 50) : null;
     const cleanLeagueName = league_name ? String(league_name).trim().toLowerCase().slice(0, 50) : null;
-    // Fix P1: normalize league name to lowercase for case-insensitive matching
+
+    // If league_name looks like a 6-char code, validate it exists
+    const supabase = getServerSupabaseClient();
+    if (cleanLeagueName && /^[a-z0-9]{6}$/.test(cleanLeagueName)) {
+      if (supabase) {
+        const { data: league } = await supabase
+          .from('fantasy_leagues')
+          .select('code')
+          .eq('code', cleanLeagueName)
+          .single();
+        if (!league) {
+          return NextResponse.json({ error: 'League not found. Check the invite link and try again.' }, { status: 400 });
+        }
+      }
+    }
 
     // Validate picks
     if (!Array.isArray(picks)) {
@@ -90,7 +104,6 @@ export async function POST(request: NextRequest) {
     const totalCost = picks.reduce((sum: number, id: string) => sum + shows[id].price, 0);
 
     // Supabase upsert
-    const supabase = getServerSupabaseClient();
     if (!supabase) {
       return NextResponse.json(
         { error: 'Database unavailable. Please try again later.' },
