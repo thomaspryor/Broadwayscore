@@ -316,28 +316,48 @@ function extractRadioTimesScore(html, text) {
  */
 function extractEWScore(html, text) {
   // EW puts "Grade: B+" (or "Grade: B–" with em-dash) at the end of reviews.
+  // New format (2019+): "Grade: B+" inline in article text or <strong>Grade: B+</strong>.
+  // Old format (pre-2019): standalone <strong>B</strong> at end of last paragraph.
   // Search text first (more reliable), then HTML. Handle em/en-dash as minus.
+  //
+  // NOTE: Pattern class="grade" was REMOVED. Old EW pages have 18+ class="grade" spans
+  // from sidebar recommendation widgets (other reviews), ALL outside the <article> element.
+  // That pattern returned the first sidebar grade (e.g. A- book review) instead of the
+  // actual theater review grade (e.g. B). Only article-scoped patterns are safe for old format.
   const patterns = [
-    // Highest confidence: "Grade: X" in review text
     /(?:grade|rating)\s*:?\s*([A-F][+\-–—]?)/i,
-    /\bgrade\s*([A-F][+\-–—]?)\b/i,
+    /\bgrade\s+([A-F][+\-–—]?)\b/i,
     /\b([A-F][+\-–—]?)\s*(?:rating|grade)\b/i,
-    // EW often has grade in a specific div
-    /class="[^"]*grade[^"]*"[^>]*>\s*([A-F][+\-–—]?)\s*</i,
-    // Common pattern: "EW Grade: B+"
     /EW\s+Grade:?\s*([A-F][+\-–—]?)/i
   ];
 
   for (const pattern of patterns) {
-    // Search text first (grade at end of review), then HTML
     const match = text.match(pattern) || html.match(pattern);
     if (match) {
-      // Normalize em-dash/en-dash to ASCII minus
       const grade = match[1].toUpperCase().replace(/[–—]/g, '-');
       if (LETTER_GRADES[grade] !== undefined) {
         // Reject bare "D" and "D-" — overwhelmingly false positives from page templates.
         // Distribution: D=58, D+=2, D-=1. D+ kept (specific enough to be real).
         if (grade === 'D' || grade === 'D-') continue;
+        return {
+          originalScore: grade,
+          normalizedScore: LETTER_GRADES[grade],
+          source: 'letter-grade'
+        };
+      }
+    }
+  }
+
+  // Old EW format (pre-2019): standalone letter grade in <strong> immediately before </p>.
+  // e.g.: "...it packs a wallop. <strong>B</strong></p>"
+  // Scoped to <article> element — all class="grade" sidebar spans are outside <article>.
+  const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+  if (articleMatch) {
+    const articleHtml = articleMatch[1];
+    const gradeBeforeClose = articleHtml.match(/<strong>\s*([A-F][+\-–—]?)\s*<\/strong>\s*<\/p>/i);
+    if (gradeBeforeClose) {
+      const grade = gradeBeforeClose[1].toUpperCase().replace(/[–—]/g, '-');
+      if (LETTER_GRADES[grade] !== undefined && grade !== 'D' && grade !== 'D-') {
         return {
           originalScore: grade,
           normalizedScore: LETTER_GRADES[grade],
@@ -355,7 +375,25 @@ function extractEWScore(html, text) {
  * Format: Unicode stars ★★★☆☆
  */
 function extractNYSRScore(html, text) {
-  // Count filled stars (★) vs empty stars (☆)
+  // NYSR embeds stars at the start of the article intro: <p class="text-xl">★★★☆☆...
+  // This is the most reliable target — it's THIS review's stars, not sidebar content.
+  // html.match() first-occurrence is unreliable because multi-critic show pages embed
+  // other critics' stars in og:description and sidebar links before the article body.
+  const textXlMatch = html.match(/<p[^>]*class="[^"]*\btext-xl\b[^"]*"[^>]*>\s*([★☆]{1,5})/);
+  if (textXlMatch) {
+    const stars = textXlMatch[1];
+    const filled = (stars.match(/★/g) || []).length;
+    const total = stars.length;
+    if (total >= 1 && total <= 5) {
+      return {
+        originalScore: `${filled}/${total} stars`,
+        normalizedScore: starsToNumeric(filled, total),
+        source: 'unicode-stars'
+      };
+    }
+  }
+
+  // Fallback: first star occurrence in text/HTML
   const starMatch = text.match(/([★☆]{1,5})/) || html.match(/([★☆]{1,5})/);
   if (starMatch) {
     const stars = starMatch[1];
@@ -388,10 +426,20 @@ function extractNYSRScore(html, text) {
 
 /**
  * Extract score from Guardian review
- * Format: Star ratings, often in structured data or visual stars
+ * Format: Star ratings — BUT ONLY AVAILABLE VIA CONTENT API, NOT HTML.
+ *
+ * Guardian star ratings are NOT present in the HTML pages returned by their website.
+ * Stars are only available via the Guardian Content API (guardianApi.starRating field).
+ * To recover Guardian star ratings, run:
+ *   node scripts/recover-explicit-ratings.js --outlet=guardian
+ * This requires GUARDIAN_API_KEY set as a CI secret (currently not configured).
+ * Until the API key is added, use humanReviewScore for manual per-file corrections.
+ *
+ * The HTML patterns below (JSON-LD ratingValue, class="rating-N") do not appear
+ * in Guardian HTML and will never match. They are retained as safety nets only.
  */
 function extractGuardianScore(html, text) {
-  // Try JSON-LD
+  // Try JSON-LD (not present in Guardian HTML — retained as safety net)
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+)"?/);
   if (jsonLdMatch) {
     const rating = parseInt(jsonLdMatch[1]);
@@ -1278,6 +1326,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'atd-emoji-stars',
   'text-pattern', 'css-stars', 'word-stars', 'star-rating',
   'reviewshub-percentage', 'explicit-rating', 'afridiziak-star-image', 'manual-verified',
+  'letter-grade', // EW and other outlets with letter grade systems
 ]);
 
 // Outlets known to publish their own star ratings — shared between extractScore()
@@ -1286,6 +1335,8 @@ const OUTLET_VERIFIED_SOURCES = new Set([
 // Changes here affect aggregator-relayed star treatment in getBestScore() P0.5.
 const KNOWN_STAR_OUTLETS = new Set([
   'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
+  // NOTE: nysr (New York Stage Review) publishes unicode stars ★★★☆☆ at start of each review.
+  'nysr',
   'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
   'artsdesk', 'thestage', 'whatsonstage',
   // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
