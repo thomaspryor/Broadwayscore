@@ -202,18 +202,17 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
   <tr><td style="padding:8px 24px 0;">
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
-        ${rave > 0 ? `<td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-          <span style="color:#FFD700;font-weight:600;">${rave}</span> Rave
-        </td>` : ''}
-        <td ${rave > 0 ? 'align="center"' : ''} style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-          <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive
-        </td>
-        <td align="center" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-          <span style="color:#d97706;font-weight:600;">${mixed}</span> Mixed
-        </td>
-        <td align="right" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-          <span style="color:#ef4444;font-weight:600;">${negative}</span> Negative
-        </td>
+        ${[
+          rave > 0     ? { color: '#FFD700', count: rave,     label: 'Rave'     } : null,
+          positive > 0 ? { color: '#22c55e', count: positive, label: 'Positive' } : null,
+          mixed > 0    ? { color: '#d97706', count: mixed,    label: 'Mixed'    } : null,
+          negative > 0 ? { color: '#ef4444', count: negative, label: 'Negative' } : null,
+        ].filter(Boolean).map((seg, i, arr) => {
+          const align = i === 0 ? 'left' : i === arr.length - 1 ? 'right' : 'center';
+          return `<td align="${align}" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background-color:${seg.color};vertical-align:middle;margin-right:4px;"></span><span style="font-weight:600;color:${seg.color};">${seg.count}</span> ${seg.label}
+          </td>`;
+        }).join('')}
       </tr>
     </table>
   </td></tr>` : '';
@@ -357,18 +356,17 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       <tr><td style="padding:8px 24px 0;">
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
-            ${rave > 0 ? `<td style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-              <span style="color:#FFD700;font-weight:600;">${rave}</span> Rave
-            </td>` : ''}
-            <td ${rave > 0 ? 'align="center"' : ''} style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-              <span style="color:#22c55e;font-weight:600;">${positive}</span> Positive
-            </td>
-            <td align="center" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-              <span style="color:#d97706;font-weight:600;">${mixed}</span> Mixed
-            </td>
-            <td align="right" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-              <span style="color:#ef4444;font-weight:600;">${negative}</span> Negative
-            </td>
+            ${[
+              rave > 0     ? { color: '#FFD700', count: rave,     label: 'Rave'     } : null,
+              positive > 0 ? { color: '#22c55e', count: positive, label: 'Positive' } : null,
+              mixed > 0    ? { color: '#d97706', count: mixed,    label: 'Mixed'    } : null,
+              negative > 0 ? { color: '#ef4444', count: negative, label: 'Negative' } : null,
+            ].filter(Boolean).map((seg, i, arr) => {
+              const align = i === 0 ? 'left' : i === arr.length - 1 ? 'right' : 'center';
+              return `<td align="${align}" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background-color:${seg.color};vertical-align:middle;margin-right:4px;"></span><span style="font-weight:600;color:${seg.color};">${seg.count}</span> ${seg.label}
+              </td>`;
+            }).join('')}
           </tr>
         </table>
       </td></tr>` : '';
