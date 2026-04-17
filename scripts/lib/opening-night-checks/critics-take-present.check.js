@@ -14,9 +14,10 @@ function run(show, context) {
   }
 
   const entry = context.criticConsensusDoc[show.id];
-  const hasSummary = entry && typeof entry.summary === 'string' && entry.summary.trim().length > 0;
+  // critic-consensus.json uses 'text' field for the consensus blurb
+  const hasText = entry && typeof entry.text === 'string' && entry.text.trim().length > 0;
 
-  if (!hasSummary) {
+  if (!hasText) {
     return {
       ok: false,
       severity: 'warning',

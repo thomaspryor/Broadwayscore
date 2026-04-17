@@ -52,7 +52,7 @@ describe('opening-night-checks skeleton', () => {
     });
   });
 
-  it('runChecks returns results for both stub checks', () => {
+  it('runChecks returns results for both stub checks', async () => {
     // Re-require after writing stubs to pick them up
     delete require.cache[require.resolve('../../scripts/lib/opening-night-checks/index.js')];
     const { runChecks } = require('../../scripts/lib/opening-night-checks/index.js');
@@ -60,19 +60,22 @@ describe('opening-night-checks skeleton', () => {
     const show = { id: 'test-show-2026', title: 'Test Show', openingDate: '2026-04-16' };
     const context = { reviewsDoc: {}, reviewTextsRoot: '/tmp', driftState: {}, criticConsensusDoc: {}, now: new Date() };
 
-    const { results, summary } = runChecks(show, context);
+    const { results, summary } = await runChecks(show, context);
 
-    assert.equal(results.length, 2, 'should have exactly 2 results (one per stub)');
+    // Results include all real checks + the 2 stubs; just verify both stubs are present
+    const names = results.map(r => r.name);
+    assert.ok(names.includes('stub-passes'), 'stub-passes should be in results');
+    assert.ok(names.includes('stub-throws'), 'stub-throws should be in results');
   });
 
-  it('passing stub has ok=true and severity=ok', () => {
+  it('passing stub has ok=true and severity=ok', async () => {
     delete require.cache[require.resolve('../../scripts/lib/opening-night-checks/index.js')];
     const { runChecks } = require('../../scripts/lib/opening-night-checks/index.js');
 
     const show = { id: 'test-show-2026', title: 'Test Show' };
     const context = { reviewsDoc: {}, reviewTextsRoot: '/tmp', driftState: {}, criticConsensusDoc: {}, now: new Date() };
 
-    const { results } = runChecks(show, context);
+    const { results } = await runChecks(show, context);
     const passing = results.find(r => r.name === 'stub-passes');
 
     assert.ok(passing, 'stub-passes result should exist');
@@ -80,21 +83,21 @@ describe('opening-night-checks skeleton', () => {
     assert.equal(passing.severity, 'ok');
   });
 
-  it('throwing stub is converted to error result without crashing runChecks', () => {
+  it('throwing stub is converted to error result without crashing runChecks', async () => {
     delete require.cache[require.resolve('../../scripts/lib/opening-night-checks/index.js')];
     const { runChecks } = require('../../scripts/lib/opening-night-checks/index.js');
 
     const show = { id: 'test-show-2026', title: 'Test Show' };
     const context = { reviewsDoc: {}, reviewTextsRoot: '/tmp', driftState: {}, criticConsensusDoc: {}, now: new Date() };
 
-    const { results, summary } = runChecks(show, context);
+    const { results, summary } = await runChecks(show, context);
     const throwing = results.find(r => r.name === 'stub-throws');
 
     assert.ok(throwing, 'stub-throws result should exist');
     assert.equal(throwing.ok, false);
     assert.equal(throwing.severity, 'error');
     assert.match(throwing.message, /check threw/);
-    assert.equal(summary.errors, 1);
-    assert.equal(summary.ok, 1);
+    assert.ok(summary.errors >= 1, 'should have at least 1 error from stub-throws');
+    assert.ok(summary.ok >= 1, 'should have at least 1 ok from stub-passes');
   });
 });

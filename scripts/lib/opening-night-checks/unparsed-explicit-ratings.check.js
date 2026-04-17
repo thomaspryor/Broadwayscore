@@ -27,7 +27,8 @@ function run(show, context) {
   const missing = [];
   for (const review of reviews) {
     if (!(review.outletId in RATING_SCHEMA_OUTLETS)) continue;
-    if (review.originalScore != null) continue;
+    // reviews.json uses 'originalRating' (raw string like "3/5 stars"); null means not captured
+    if (review.originalRating != null || review.originalScore != null) continue;
     if (review.wrongProduction === true) continue;
 
     missing.push({

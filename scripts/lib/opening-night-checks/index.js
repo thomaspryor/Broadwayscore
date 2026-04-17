@@ -20,17 +20,17 @@ function loadChecks() {
 }
 
 /**
- * Run all registered checks for a show.
+ * Run all registered checks for a show. Supports both sync and async check functions.
  *
  * @param {Object} show        - Entry from shows.json
  * @param {import('./types').CheckContext} context
- * @returns {{ show: Object, results: import('./types').CheckResult[], summary: { ok: number, warnings: number, errors: number } }}
+ * @returns {Promise<{ show: Object, results: import('./types').CheckResult[], summary: { ok: number, warnings: number, errors: number } }>}
  */
-function runChecks(show, context) {
+async function runChecks(show, context) {
   const checks = loadChecks();
-  const results = checks.map(check => {
+  const results = await Promise.all(checks.map(async check => {
     try {
-      const result = check.run(show, context);
+      const result = await check.run(show, context);
       return { name: check.name, description: check.description, ...result };
     } catch (err) {
       return {
@@ -42,7 +42,7 @@ function runChecks(show, context) {
         details: { stack: err.stack },
       };
     }
-  });
+  }));
 
   const summary = results.reduce(
     (acc, r) => {

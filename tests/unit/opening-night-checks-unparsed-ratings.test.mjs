@@ -17,7 +17,7 @@ describe('unparsed-explicit-ratings check', () => {
   it('Guardian with null originalScore → warning with fix command', () => {
     const show = { id: 'test-2026' };
     const context = makeContext([
-      { outletId: 'the-guardian', originalScore: null, url: 'https://guardian.com/review' }
+      { outletId: 'the-guardian', originalRating: null, url: 'https://guardian.com/review' }
     ]);
     const result = check.run(show, context);
     assert.equal(result.ok, false);
@@ -29,7 +29,7 @@ describe('unparsed-explicit-ratings check', () => {
   it('Guardian with parsed originalScore (80) → ok', () => {
     const show = { id: 'test-2026' };
     const context = makeContext([
-      { outletId: 'the-guardian', originalScore: 80, url: 'https://guardian.com/review' }
+      { outletId: 'the-guardian', originalRating: '4/5 stars', url: 'https://guardian.com/review' }
     ]);
     const result = check.run(show, context);
     assert.equal(result.ok, true);
@@ -39,7 +39,7 @@ describe('unparsed-explicit-ratings check', () => {
   it('outlet not in RATING_SCHEMA_OUTLETS with null score → ok (not our concern)', () => {
     const show = { id: 'test-2026' };
     const context = makeContext([
-      { outletId: 'some-blog', originalScore: null, url: 'https://blog.com/review' }
+      { outletId: 'some-blog', originalRating: null, url: 'https://blog.com/review' }
     ]);
     const result = check.run(show, context);
     assert.equal(result.ok, true);
@@ -49,8 +49,8 @@ describe('unparsed-explicit-ratings check', () => {
   it('multiple outlets missing → multiple warnings in message', () => {
     const show = { id: 'test-2026' };
     const context = makeContext([
-      { outletId: 'the-guardian', originalScore: null, url: 'https://guardian.com/review' },
-      { outletId: 'ny-post', originalScore: null, url: 'https://nypost.com/review' },
+      { outletId: 'the-guardian', originalRating: null, url: 'https://guardian.com/review' },
+      { outletId: 'ny-post', originalRating: null, url: 'https://nypost.com/review' },
     ]);
     const result = check.run(show, context);
     assert.equal(result.ok, false);
@@ -63,7 +63,7 @@ describe('unparsed-explicit-ratings check', () => {
   it('wrongProduction review is skipped even if score is null', () => {
     const show = { id: 'test-2026' };
     const context = makeContext([
-      { outletId: 'the-guardian', originalScore: null, wrongProduction: true, url: 'https://guardian.com/review' }
+      { outletId: 'the-guardian', originalRating: null, wrongProduction: true, url: 'https://guardian.com/review' }
     ]);
     const result = check.run(show, context);
     assert.equal(result.ok, true);

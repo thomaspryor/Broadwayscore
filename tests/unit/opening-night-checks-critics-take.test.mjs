@@ -16,7 +16,7 @@ function makeContext(criticConsensusDoc = {}) {
 describe('critics-take-present check', () => {
   it('compositeScore exists + criticConsensusDoc has summary → ok', () => {
     const show = { id: 'test-2026', compositeScore: 82 };
-    const context = makeContext({ 'test-2026': { summary: 'Critics loved it.' } });
+    const context = makeContext({ 'test-2026': { text: 'Critics loved it.' } });
     const result = check.run(show, context);
     assert.equal(result.ok, true);
     assert.equal(result.severity, 'ok');
@@ -34,7 +34,7 @@ describe('critics-take-present check', () => {
 
   it('compositeScore exists + summary is empty string → warning', () => {
     const show = { id: 'test-2026', compositeScore: 82 };
-    const context = makeContext({ 'test-2026': { summary: '' } });
+    const context = makeContext({ 'test-2026': { text: '' } });
     const result = check.run(show, context);
     assert.equal(result.ok, false);
     assert.equal(result.severity, 'warning');
