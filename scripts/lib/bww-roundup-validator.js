@@ -45,4 +45,63 @@ function isBWWRoundupContent(html) {
   return false;
 }
 
-module.exports = { isBWWRoundupContent };
+// Stop words stripped before title matching — must be lowercase
+const TITLE_STOP_WORDS = new Set(['the', 'and', 'for', 'from', 'with', 'that', 'this', 'its', 'a', 'an', 'of', 'in', 'on', 'at', 'by']);
+
+/**
+ * Normalize a show title into matchable words: lowercase, strip punctuation, remove stop words.
+ * Mirrors the logic in findBWWRoundupLinkOnHomepage (gather-reviews.js).
+ */
+function normalizeTitleWords(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .split(/\s+/)
+    .filter(w => w.length > 0 && !TITLE_STOP_WORDS.has(w));
+}
+
+/**
+ * Validate that a discovered BWW roundup URL slug actually matches the show being gathered.
+ *
+ * Prevents SERP returning the wrong show's roundup — e.g. the Becky Shaw BWW RR when
+ * searching for "Proof Broadway 2026" (Becky Shaw mentions "Proof" in its Pulitzer context,
+ * causing a spurious SERP match). Confirmed incident: 2026-04-16 opening night poller.
+ *
+ * Logic:
+ *  - Single meaningful-word titles (e.g. "Proof", "Cats", "Wit"): require exact segment match
+ *    in the URL slug. Prevents substring false positives ("fear" matching "fear-of-13").
+ *  - 2-word titles: require both words present in slug (100%).
+ *  - 3+ word titles: require ≥80% of meaningful words present in slug.
+ *
+ * Returns true (valid) when:
+ *  - URL is null/empty (can't validate — don't block)
+ *  - URL has no "Review-Roundup-" segment (unexpected format — don't block)
+ *  - Title normalizes to zero words (edge case — don't block)
+ *  - The slug matches the title per above rules
+ *
+ * Returns false (invalid) when a mismatch is detected.
+ */
+function validateBWWRoundupUrlMatchesShow(url, showTitle) {
+  if (!url || !showTitle) return true; // can't validate, don't block
+
+  const slugMatch = url.match(/Review-Roundup-(.+)/i);
+  if (!slugMatch) return true; // unexpected URL format — don't block
+
+  const slug = slugMatch[1].toLowerCase();
+  const slugSegments = new Set(slug.split(/[-_]/));
+
+  const titleWords = normalizeTitleWords(showTitle);
+  if (titleWords.length === 0) return true; // all stop words — can't validate
+
+  // Single meaningful word: exact segment match only (prevents substring collisions)
+  if (titleWords.length === 1) {
+    return slugSegments.has(titleWords[0]);
+  }
+
+  // Multi-word: count how many title words appear anywhere in the slug string
+  const matchedCount = titleWords.filter(w => slug.includes(w)).length;
+  const threshold = titleWords.length <= 2 ? 1.0 : 0.8;
+  return matchedCount / titleWords.length >= threshold;
+}
+
+module.exports = { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow };
