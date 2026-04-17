@@ -47,44 +47,15 @@ function VerdictChip({ section }: { section: SeatingSection }) {
   );
 }
 
-function HazardList({ hazards }: { hazards: NonNullable<SeatingSection['hazards']> }) {
-  if (!hazards.length) return null;
-  const withNotes = hazards.filter((h) => h.note);
-  if (!withNotes.length) {
-    // Just render the type tags quietly
-    return (
-      <div className="flex flex-wrap gap-1.5 mt-2">
-        {hazards.map((h, i) => (
-          <span key={i} className="text-[10px] text-gray-500 bg-surface-overlay px-2 py-0.5 rounded-pill">
-            {h.type.replace(/-/g, ' ')}
-          </span>
-        ))}
-      </div>
-    );
-  }
-  return (
-    <details className="mt-2 group">
-      <summary className="cursor-pointer list-none text-[11px] text-gray-400 hover:text-gray-200 flex items-center gap-1 select-none">
-        <span className="text-score-tepid">⚠</span>
-        <span className="underline decoration-dotted underline-offset-2">
-          {withNotes.length === 1 ? '1 hazard' : `${withNotes.length} hazards`}
-        </span>
-        <span className="text-gray-600 group-open:hidden">&middot; tap for detail</span>
-      </summary>
-      <ul className="mt-1.5 space-y-1 pl-4 text-[11px] text-gray-400 leading-snug">
-        {withNotes.map((h, i) => (
-          <li key={i}>
-            <span className="font-medium text-gray-300">{h.type.replace(/-/g, ' ')}:</span> {h.note}
-          </li>
-        ))}
-      </ul>
-    </details>
-  );
-}
-
 function SectionRow({ section, isHero = false, compactRationale = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean }) {
   const priceLabel = section.priceTier ? PRICE_TIER_LABEL[section.priceTier] : null;
   const nameClass = isHero ? 'text-base font-bold text-white' : 'text-sm font-semibold text-gray-100';
+  const hazardsWithNotes = (section.hazards ?? []).filter((h) => h.note);
+  const hasHazards = (section.hazards?.length ?? 0) > 0;
+  const hazardCountLabel = section.hazards?.length === 1 ? '1 hazard' : `${section.hazards?.length ?? 0} hazards`;
+  const showRationaleInline = section.rationale && !compactRationale;
+  const showRationaleExpand = section.rationale && compactRationale;
+
   return (
     <div className={isHero ? 'pb-3' : 'py-3 border-t border-white/5'}>
       <div className="flex items-start justify-between gap-3">
@@ -106,22 +77,53 @@ function SectionRow({ section, isHero = false, compactRationale = false }: { sec
           </span>
         )}
       </div>
-      {section.rationale && (
-        compactRationale ? (
-          <details className="mt-2 group">
-            <summary className="cursor-pointer list-none text-[11px] text-gray-400 hover:text-gray-200 select-none">
-              <span className="underline decoration-dotted underline-offset-2">More details</span>
-              <span className="text-gray-600 ml-1 group-open:hidden">▾</span>
-              <span className="text-gray-600 ml-1 hidden group-open:inline">▴</span>
-            </summary>
-            <p className="text-sm text-gray-300 leading-relaxed mt-1.5">{section.rationale}</p>
-          </details>
-        ) : (
-          <p className="text-sm text-gray-300 leading-relaxed mt-2">{section.rationale}</p>
-        )
+
+      {/* Inline rationale (theater variant) */}
+      {showRationaleInline && (
+        <p className="text-sm text-gray-300 leading-relaxed mt-2">{section.rationale}</p>
       )}
-      {section.hazards && section.hazards.length > 0 && (
-        <HazardList hazards={section.hazards} />
+
+      {/* Inline expander row: "More details ▾" and "⚠ 1 hazard ▾" on same line */}
+      {(showRationaleExpand || hasHazards) && (
+        <div className="flex items-start gap-x-4 gap-y-1 flex-wrap mt-2 text-[11px] text-gray-400">
+          {showRationaleExpand && (
+            <details className="group">
+              <summary className="cursor-pointer list-none hover:text-gray-200 select-none inline-flex items-center gap-1">
+                <span className="underline decoration-dotted underline-offset-2">More details</span>
+                <span className="text-gray-600 group-open:hidden">▾</span>
+                <span className="text-gray-600 hidden group-open:inline">▴</span>
+              </summary>
+              <p className="text-sm text-gray-300 leading-relaxed mt-1.5">{section.rationale}</p>
+            </details>
+          )}
+          {hasHazards && (
+            <details className="group">
+              <summary className="cursor-pointer list-none hover:text-gray-200 select-none inline-flex items-center gap-1">
+                <span className="text-score-tepid" aria-hidden="true">⚠</span>
+                <span className="underline decoration-dotted underline-offset-2">{hazardCountLabel}</span>
+                <span className="text-gray-600 group-open:hidden">▾</span>
+                <span className="text-gray-600 hidden group-open:inline">▴</span>
+              </summary>
+              {hazardsWithNotes.length > 0 ? (
+                <ul className="mt-1.5 space-y-1 pl-4 text-[11px] text-gray-400 leading-snug">
+                  {hazardsWithNotes.map((h, i) => (
+                    <li key={i}>
+                      <span className="font-medium text-gray-300">{h.type.replace(/-/g, ' ')}:</span> {h.note}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {(section.hazards ?? []).map((h, i) => (
+                    <span key={i} className="text-[10px] text-gray-500 bg-surface-overlay px-2 py-0.5 rounded-pill">
+                      {h.type.replace(/-/g, ' ')}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </details>
+          )}
+        </div>
       )}
     </div>
   );
@@ -153,9 +155,9 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
   return (
     <div className="text-left">
       {bestSeats && (
-        <p className="text-sm text-gray-300 leading-relaxed italic mb-3 border-l-2 border-brand/40 pl-3">
-          {bestSeats}
-        </p>
+        <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
+          <p className="text-sm text-gray-200 leading-relaxed italic">{bestSeats}</p>
+        </div>
       )}
 
       {/* Hero: sweet-spot, given visual weight */}
