@@ -24,7 +24,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { sendAlert } = require('./lib/discord-notify');
 const {
-  postJSON, buildBroadcastOpeningNightHtml, buildUnsubscribeUrl,
+  postJSON, buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, buildUnsubscribeUrl,
 } = require('./lib/email-templates');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { checkPreviewDedup } = require('./lib/preview-dedup');
@@ -468,9 +468,7 @@ async function main() {
   // Build subject line — kept clean (no [PREVIEW] tag) so it's safe to reuse for the
   // actual subscriber broadcast. The preview-only subject is derived separately below
   // and is only used when we call the Resend single-recipient /emails endpoint.
-  const subject = showsForEmail.length === 1
-    ? `${showsForEmail[0].showTitle} is now open, and the critic reviews are in`
-    : `${showsForEmail.length} shows opened ${MARKET === 'west-end' ? 'in the West End' : 'on Broadway'} — the reviews are in`;
+  const subject = buildBroadcastSubjectLine(showsForEmail, MARKET);
 
   // Preview-only subject — prefixed so the owner can tell it apart from the real broadcast
   // in their inbox. NEVER used for the actual subscriber send (which uses `subject` above).

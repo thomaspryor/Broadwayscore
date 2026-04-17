@@ -305,6 +305,22 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
 }
 
 /**
+ * Subject line for opening night broadcast emails.
+ * Extracted so it can be tested independently of the send script.
+ * @param {Array<{showTitle: string}>} shows
+ * @param {string} [market='broadway']
+ * @returns {string}
+ */
+function buildBroadcastSubjectLine(shows, market) {
+  market = market || 'broadway';
+  if (shows.length === 1) {
+    return `${shows[0].showTitle} is now open, and the critic reviews are in`;
+  }
+  const location = isLondonMarket(market) ? 'in the West End' : 'on Broadway';
+  return `${shows.length} shows opened ${location} \u2014 the reviews are in`;
+}
+
+/**
  * Build opening-night broadcast email for general subscribers.
  * Supports single or multiple shows in one email.
  *
@@ -799,6 +815,7 @@ module.exports = {
   buildBroadcastFooterHtml,
   buildEmailHtml,
   buildOpeningNightHtml,
+  buildBroadcastSubjectLine,
   buildBroadcastOpeningNightHtml,
   buildFeedbackThankYouEmail,
   buildFixApprovalEmail,
