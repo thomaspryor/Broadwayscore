@@ -98,7 +98,8 @@ function getKnownUrls(showId) {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
       // Skip wrongProduction/wrongShow files — their URLs shouldn't block fresh discovery
       // Skip preview placeholders — post-opening discoveries must be allowed to replace them
-      if (data.wrongProduction || data.wrongShow || data.isPreviewPlaceholder) continue;
+      // Skip confirmed non-reviews — interviews/news/previews should not block the real review URL
+      if (data.wrongProduction || data.wrongShow || data.isPreviewPlaceholder || data.rejectionReason === 'not_a_review') continue;
       if (data.url) urls.add(data.url);
       if (data.reviewUrl) urls.add(data.reviewUrl);
     } catch {}
@@ -119,7 +120,8 @@ function getFoundOutletIds(showId) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
       // Skip wrongProduction/wrongShow files — they shouldn't block re-discovery
-      if (data.wrongProduction || data.wrongShow) continue;
+      // Skip confirmed non-reviews (interviews, news, previews) — same reason
+      if (data.wrongProduction || data.wrongShow || data.rejectionReason === 'not_a_review') continue;
       if (data.outletId) outletIds.add(data.outletId.toLowerCase());
     } catch {}
   }
