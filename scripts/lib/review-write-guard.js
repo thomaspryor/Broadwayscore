@@ -105,8 +105,21 @@ function safeWriteReview(filePath, newData, options = {}) {
     if (existing) {
       const effectiveFields = getEffectiveProtectedFields(existing);
       for (const field of effectiveFields) {
-        if (existing[field] !== undefined && existing[field] !== null && (newData[field] === undefined || newData[field] === null)) {
-          newData[field] = existing[field];
+        const existingVal = existing[field];
+        const newVal = newData[field];
+        // Preserve existing non-empty when incoming is any form of empty.
+        // Previously only undefined/null were treated as empty — the poller
+        // writes stubs with fullText='' (empty string) which passed the
+        // check and CLOBBERED scored reviews. See 2026-04-17 Proof opening
+        // P0 incident (card 345637c5-416f-81df).
+        const existingIsReal = existingVal !== undefined && existingVal !== null
+          && !(typeof existingVal === 'string' && existingVal.length === 0)
+          && !(Array.isArray(existingVal) && existingVal.length === 0);
+        const incomingIsEmpty = newVal === undefined || newVal === null
+          || (typeof newVal === 'string' && newVal.length === 0)
+          || (Array.isArray(newVal) && newVal.length === 0);
+        if (existingIsReal && incomingIsEmpty) {
+          newData[field] = existingVal;
           preserved.push(field);
         }
       }
