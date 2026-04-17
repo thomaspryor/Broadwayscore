@@ -57,12 +57,6 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
           )}
         </div>
       </div>
-      {score && score.totalPoints > 0 && (
-        <div className="text-right shrink-0">
-          <span className="text-sm font-bold text-brand">{score.totalPoints.toFixed(1)}</span>
-          <span className="text-xs text-gray-500 ml-1">pts</span>
-        </div>
-      )}
     </div>
   );
 }

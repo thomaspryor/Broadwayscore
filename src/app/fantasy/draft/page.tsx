@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import FantasyShowPicker from '@/components/fantasy/FantasyShowPicker';
 import FantasyBudgetBar from '@/components/fantasy/FantasyBudgetBar';
 import {
@@ -23,9 +24,16 @@ type FantasyConfig = {
 const config = fantasyLeagueData as unknown as FantasyConfig;
 
 export default function FantasyDraftPage() {
+  const searchParams = useSearchParams();
+  const leagueFromUrl = searchParams.get('league')?.toLowerCase().trim() || '';
   const [email, setEmail] = useState('');
   const [teamName, setTeamName] = useState('');
   const [leagueName, setLeagueName] = useState('');
+
+  // Pre-fill league from URL param once on mount
+  useEffect(() => {
+    if (leagueFromUrl) setLeagueName(leagueFromUrl);
+  }, [leagueFromUrl]);
   const [picks, setPicks] = useState<string[]>(Array(FANTASY_TEAM_SIZE).fill(''));
   const [tiebreakers, setTiebreakers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -108,8 +116,10 @@ export default function FantasyDraftPage() {
           <div className="text-6xl mb-6">🎭</div>
           <h1 className="text-3xl font-bold mb-4">You&apos;re In!</h1>
           <p className="text-gray-400 mb-2">
-            Your {FANTASY_TEAM_SIZE} picks have been locked in
-            {teamName ? ` as "${teamName}"` : ''}.
+            Your picks have been locked in{teamName ? ` as "${teamName}"` : ''}.
+            {leagueName && (
+              <> You&apos;ve joined league <a href={`/fantasy/league/${leagueName}`} className="text-brand hover:underline font-semibold">{leagueName}</a>.</>
+            )}
           </p>
           <p className="text-gray-400 mb-8">
             Total spent: <span className="text-emerald-400 font-bold">${totalSpent}</span> / ${FANTASY_BUDGET}
@@ -210,16 +220,27 @@ export default function FantasyDraftPage() {
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">League Name</label>
-              <input
-                type="text"
-                className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
-                placeholder="Optional"
-                value={leagueName}
-                onChange={e => setLeagueName(e.target.value)}
-                maxLength={50}
-              />
-              <p className="text-xs text-gray-600 mt-1">Same name = same league</p>
+              <label className="block text-sm text-gray-400 mb-1">League</label>
+              {leagueFromUrl ? (
+                <div className="w-full bg-surface-raised border border-brand/30 rounded-lg px-4 py-2.5 text-brand font-mono text-sm">
+                  {leagueName}
+                  <span className="text-gray-500 font-sans text-xs ml-2">(from invite link)</span>
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+                  placeholder="Optional — or create a league first"
+                  value={leagueName}
+                  onChange={e => setLeagueName(e.target.value)}
+                  maxLength={50}
+                />
+              )}
+              {!leagueFromUrl && (
+                <p className="text-xs text-gray-600 mt-1">
+                  <a href="/fantasy/create-league" className="text-brand/70 hover:text-brand transition-colors">Create a private league →</a>
+                </p>
+              )}
             </div>
           </div>
         </div>
