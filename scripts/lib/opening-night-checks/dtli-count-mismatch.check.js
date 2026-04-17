@@ -146,11 +146,13 @@ async function run(show, context) {
   const haveCount = dtliCount - gap;
   const details = { dtliUrl, dtliCount, haveCount, gap, missingReviews };
 
+  // See bww-rr-count-mismatch: severity stays at warning even for large gaps
+  // because auto-remediation queues stubs immediately.
   if (gap > ALERT_THRESHOLD) {
     return {
-      ok: false,
-      severity: 'error',
-      message: `DTLI shows ${dtliCount} reviews, we have ${haveCount} — gap of ${gap} missing (exceeds threshold ${ALERT_THRESHOLD}): ${dtliUrl}`,
+      ok: true,
+      severity: 'warning',
+      message: `DTLI shows ${dtliCount} reviews, we have ${haveCount} — gap of ${gap} missing (stubs queued for remediation): ${dtliUrl}`,
       details,
     };
   }
