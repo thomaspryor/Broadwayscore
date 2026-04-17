@@ -17,6 +17,7 @@ const path = require('path');
 const { runChecks } = require('./lib/opening-night-checks/index.js');
 const { recordDailySnapshot } = require('./lib/score-history-snapshot.js');
 const { computeCriticScore } = require('./lib/compute-critic-score.js');
+const { createReviewFile } = require('./gather-reviews.js');
 
 const DATA_DIR = path.resolve(__dirname, '../data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -148,6 +149,107 @@ function printHumanReadable(showResults) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Aggregator remediation — proactive stub creation
+// ---------------------------------------------------------------------------
+// When bww-rr-count-mismatch or dtli-count-mismatch checks find reviews on
+// the aggregator we don't have locally, they return `details.missingReviews`.
+// This helper walks those, creates stub review files via createReviewFile
+// (the canonical write primitive — already has all 12 guards). Stubs get
+// picked up by the existing collect-review-texts → rebuild → score → deploy
+// chain.
+//
+// Safety:
+//   - Dedup handled by findExistingReviewFile inside each check + createReviewFile's own url-dedup
+//   - Kill-switch via OPENING_NIGHT_REMEDIATION_DISABLED env var
+//   - Every action logged to data/audit/remediation-log.jsonl
+//   - Uses createReviewFile's guards (junk outlet, cross-market, wrong show, etc.)
+const REMEDIATION_LOG_PATH = path.join(DATA_DIR, 'audit', 'remediation-log.jsonl');
+
+function logRemediation(entry) {
+  try {
+    fs.mkdirSync(path.dirname(REMEDIATION_LOG_PATH), { recursive: true });
+    fs.appendFileSync(REMEDIATION_LOG_PATH, JSON.stringify(entry) + '\n');
+  } catch (_) { /* non-fatal */ }
+}
+
+function remediateMissingReviews(showResults, now) {
+  const disabled = process.env.OPENING_NIGHT_REMEDIATION_DISABLED === 'true';
+  const stats = { shows: 0, considered: 0, created: 0, skipped: 0, rejected: 0, killed: 0 };
+
+  for (const { show, results } of showResults) {
+    const missingAcross = [];
+    for (const r of results) {
+      const m = r?.details?.missingReviews;
+      if (Array.isArray(m) && m.length > 0) missingAcross.push(...m);
+    }
+    if (missingAcross.length === 0) continue;
+    stats.shows++;
+
+    // Dedup missing reviews across checks (e.g. same outlet+critic listed on
+    // both BWW RR and DTLI) — key on (outletId, criticName, url).
+    const seen = new Set();
+    const dedup = [];
+    for (const m of missingAcross) {
+      const key = `${m.outletId}|${m.criticName || ''}|${m.url || ''}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      dedup.push(m);
+    }
+
+    for (const m of dedup) {
+      stats.considered++;
+
+      if (disabled) {
+        stats.killed++;
+        logRemediation({ at: now.toISOString(), showId: show.id, action: 'killed', reason: 'OPENING_NIGHT_REMEDIATION_DISABLED', outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
+        continue;
+      }
+
+      // Build stub review data matching the established stub shape
+      // (see scripts/create-stubs-from-reviews-json.js:72-91).
+      const reviewData = {
+        outlet: m.outlet || m.outletId,
+        outletId: m.outletId,
+        criticName: m.criticName || null,
+        url: m.url || null,
+        source: m.source,            // 'bww-rr-remediation' or 'dtli-remediation'
+        contentTier: 'stub',
+        incompleteReason: m.url ? 'no_text' : 'no_url',
+        fullText: '',
+        createdAt: now.toISOString(),
+      };
+
+      let result;
+      try {
+        const cat = show.category || 'broadway';
+        result = createReviewFile(show.id, reviewData, {
+          allowOffBroadway: cat === 'off-broadway',
+          allowWestEnd: cat === 'west-end' || cat === 'off-west-end',
+        });
+      } catch (err) {
+        result = { error: err.message };
+      }
+
+      if (result?.error) {
+        stats.rejected++;
+        logRemediation({ at: now.toISOString(), showId: show.id, action: 'rejected', reason: result.error, outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
+      } else if (result?.skipped || result?.alreadyExists || result?.duplicate) {
+        stats.skipped++;
+        logRemediation({ at: now.toISOString(), showId: show.id, action: 'skipped', reason: result.skipped || result.duplicate || 'exists', outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
+      } else {
+        stats.created++;
+        logRemediation({ at: now.toISOString(), showId: show.id, action: 'created', file: result?.filename || result?.path, outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
+      }
+    }
+  }
+
+  if (stats.considered > 0) {
+    console.log(`\n[remediation] ${stats.shows} show(s), considered=${stats.considered} created=${stats.created} skipped=${stats.skipped} rejected=${stats.rejected} killed=${stats.killed}`);
+  }
+  return stats;
+}
+
 function appendToHistory(showResults, now) {
   let history = { runs: [] };
   if (fs.existsSync(HISTORY_FILE)) {
@@ -233,8 +335,24 @@ async function main() {
     printHumanReadable(showResults);
   }
 
+  // Aggregator remediation — create stubs for reviews we're missing from BWW RR / DTLI.
+  // Runs AFTER checks produce missingReviews in their details, BEFORE we append history
+  // so the history captures the remediation outcome too.
+  let remediationStats = null;
+  try {
+    remediationStats = remediateMissingReviews(showResults, now);
+  } catch (err) {
+    console.error('[remediation] fatal (non-blocking):', err.message);
+  }
+
   // Append to history
   try { appendToHistory(showResults, now); } catch (_) {}
+
+  // Surface remediation stats in JSON output too
+  if (jsonMode && remediationStats) {
+    // Appended to previous JSON; easier: dump on stderr so stdout stays clean single-JSON
+    process.stderr.write(JSON.stringify({ remediation: remediationStats }) + '\n');
+  }
 
   const hasErrors = showResults.some(({ summary }) => summary.errors > 0);
   process.exit(hasErrors ? 1 : 0);
