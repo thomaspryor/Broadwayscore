@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-17T08:53:46.109Z",
+  "generatedAt": "2026-04-17T09:50:20.322Z",
   "date": "2026-04-17",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 2046,
+  "entryCount": 2049,
   "shows": [
     {
       "showId": "proof-2026",
@@ -51,6 +51,21 @@
     },
     {
       "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "scorched-earth-off-broadway-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
