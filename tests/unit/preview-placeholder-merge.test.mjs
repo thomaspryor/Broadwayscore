@@ -82,4 +82,11 @@ describe('mergeReviews — placeholder replacement', () => {
     assert.strictEqual(result.fullText, 'Review text.', 'fullText from incoming');
     assert.strictEqual(result.isPreviewPlaceholder, undefined, 'no flag introduced');
   });
+
+  it('placeholder + post-opening (fromPostOpening explicit false but passed as true) → replaces', () => {
+    // Regression guard: passing fromPostOpening:true always replaces regardless of other options
+    const result = mergeReviews(placeholder, realReview, { fromPostOpening: true });
+    assert.strictEqual(result.fullText, realReview.fullText, 'fullText from incoming');
+    assert.ok(!result.isPreviewPlaceholder, 'flag cleared');
+  });
 });

@@ -2465,7 +2465,8 @@ function createReviewFile(showId, reviewData, options = {}) {
   const allowOffBroadway = options.allowOffBroadway || false;
   const allowWestEnd = options.allowWestEnd || false;
   const fromPostOpening = options.fromPostOpening || false;
-  const mergeOpts = fromPostOpening ? { fromPostOpening: true } : {};
+  // mergeOpts is finalized after _showMeta is loaded (see below); initialized as empty
+  let mergeOpts = fromPostOpening ? { fromPostOpening: true } : {};
   if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
@@ -2890,6 +2891,17 @@ function createReviewFile(showId, reviewData, options = {}) {
     const showsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
     _showMeta = showsJSON.shows.find(s => s.id === showId) || null;
   } catch (e) {}
+
+  // Auto-detect post-opening context: if caller didn't explicitly pass fromPostOpening
+  // but the show has already opened, treat all merges as post-opening so placeholder
+  // stubs get replaced wholesale by late-arriving reviews (e.g., outlet published next day).
+  if (!fromPostOpening && _showMeta) {
+    const showHasOpened = _showMeta.status === 'open' || _showMeta.status === 'closed'
+      || (_showMeta.openingDate && new Date(_showMeta.openingDate) <= new Date());
+    if (showHasOpened) {
+      mergeOpts = { fromPostOpening: true };
+    }
+  }
 
   // Date-based production guard: warn if review was published >30 days before
   // the show's earliest date (previews/opening). Likely from a prior production.
