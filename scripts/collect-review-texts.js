@@ -333,6 +333,7 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 const { domainMatchesExpected, checkScrapingBeeCredits } = require('./lib/scraper');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
+const { emitStage } = require('./lib/stage-latency');
 
 // Outlet-specific Playwright wait configurations
 // Some outlets render content via JS and need specific selectors/waits
@@ -4848,6 +4849,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // article IDs that resemble years, etc.). Use publish date or review text content instead.
 
   fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
+
+  try {
+    emitStage({
+      showId: data.showId || review.showId,
+      reviewKey: `${data.outletId || review.outletId}:${data.criticName || review.critic}:${data.url || review.url || ''}`,
+      stage: 'review-text-collected',
+      metadata: { textLength: data.fullText ? data.fullText.length : 0 },
+    });
+  } catch (e) { process.stderr.write(`[stage-latency] collect emit failed: ${e.message}\n`); }
 }
 
 function sleep(ms) {
