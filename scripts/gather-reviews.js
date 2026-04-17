@@ -652,7 +652,31 @@ async function searchDTLI(show) {
       console.log(`    ✓ Found via slug map: ${url}`);
       return { url, html: result.html };
     }
-    console.log(`    ⚠ Mapped URL failed, falling back to URL guessing...`);
+    console.log(`    ⚠ Mapped URL failed, falling back to sitemap discovery...`);
+  }
+
+  // Live sitemap discovery — runs when the slug map misses (new shows between
+  // weekly discover-dtli-slugs.js runs) OR when the mapped URL fails validation.
+  // Cheaper than URL-guessing (one sitemap fetch vs N failed HTTPS gets) and
+  // catches shows with non-predictable slugs like "hamlet-bway" or "cabaret-at-the-kit-kat-club".
+  try {
+    const { discoverDtliSlug } = require('./lib/dtli-slug-discover.js');
+    console.log('  DTLI: live sitemap discovery...');
+    const discovery = await discoverDtliSlug(show);
+    if (discovery.url) {
+      console.log(`    sitemap found: ${discovery.slug} (score ${discovery.candidates[0].score})`);
+      const sitemapResult = await searchAggregator('DTLI', discovery.url);
+      if (sitemapResult.found && sitemapResult.html && sitemapResult.html.includes('review-item') &&
+          quickTitleCheck(sitemapResult.html, show.title)) {
+        console.log(`    ✓ Found via sitemap discovery: ${discovery.url}`);
+        return { url: discovery.url, html: sitemapResult.html };
+      }
+      console.log(`    ⚠ Sitemap-discovered URL failed validation, falling back to URL guessing...`);
+    } else {
+      console.log('    sitemap: no candidate (falling back to URL guessing)');
+    }
+  } catch (err) {
+    console.log(`    sitemap discovery error (falling through): ${err.message}`);
   }
 
   const titleSlug = slugify(show.title);
