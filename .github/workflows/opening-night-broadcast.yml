@@ -33,6 +33,11 @@ on:
         required: false
         type: boolean
         default: false
+      force_broadcast:
+        description: 'Override checklist gate — send even if QA errors found (emergency use only)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -286,6 +291,46 @@ jobs:
             " | while IFS= read -r line; do
               echo "$line" >> $GITHUB_OUTPUT
             done
+          fi
+
+      - name: Checklist gate — block send if QA errors (unless FORCE_BROADCAST=true)
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          FORCE="${{ inputs.force_broadcast }}"
+          BLOCKED=false
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            node scripts/opening-night-checklist.js --show="$SHOW" --json > /tmp/checklist-"$SHOW".json 2>&1 || true
+            ERRORS=$(node -e "
+              try {
+                const d = JSON.parse(require('fs').readFileSync('/tmp/checklist-${SHOW}.json','utf8'));
+                const total = (d.shows||[]).reduce((s,x)=>s+(x.summary&&x.summary.errors||0),0);
+                console.log(total);
+              } catch { console.log(0); }
+            " 2>/dev/null || echo 0)
+            echo "Show $SHOW: $ERRORS checklist error(s)"
+            if [ "$ERRORS" -gt 0 ]; then
+              BLOCKED=true
+            fi
+          done
+
+          if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
+            echo "::error::Checklist gate blocked broadcast — QA errors found. Set force_broadcast=true to override."
+            node -e "
+              const { sendAlert } = require('./scripts/lib/discord-notify');
+              sendAlert({
+                title: 'Opening Night Broadcast Blocked — Checklist Errors',
+                description: 'Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.',
+                severity: 'warning',
+                email: true,
+              }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+            "
+          else
+            echo "Checklist gate passed (blocked=$BLOCKED, force=$FORCE)"
           fi
 
       - uses: actions/setup-node@v5
