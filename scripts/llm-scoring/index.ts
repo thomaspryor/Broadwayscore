@@ -69,6 +69,7 @@ import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
+const { emitStage } = require('../lib/stage-latency');
 // venue-classification import removed — market context now passed via input-builder
 
 // ========================================
@@ -1240,6 +1241,15 @@ async function main(): Promise<void> {
 
         if (!options.dryRun) {
           saveReviewFile(filePath, result.scoredFile);
+          try {
+            const sd = result.scoredFile as any;
+            emitStage({
+              showId: sd.showId,
+              reviewKey: `${sd.outletId}:${sd.criticName}:${sd.url || ''}`,
+              stage: 'scored',
+              metadata: { score: (result.scoredFile.llmScore as any).score, ensemble: !!(sd.ensembleData) },
+            });
+          } catch (e: any) { process.stderr.write(`[stage-latency] score emit failed: ${e.message}\n`); }
         }
 
         const score = result.scoredFile.llmScore.score;
