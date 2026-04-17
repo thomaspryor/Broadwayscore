@@ -27,11 +27,13 @@ const DEFAULT_LOG = path.join(__dirname, '../data/audit/stage-latency.jsonl');
 const AUDIT_DIR = path.join(__dirname, '../data/audit');
 
 function parseArgs() {
-  const args = { show: null, date: null };
+  const args = { show: null, date: null, log: null, output: null };
   for (const a of process.argv.slice(2)) {
     const [k, v] = a.replace(/^--/, '').split('=');
     if (k === 'show') args.show = v;
     if (k === 'date') args.date = v;
+    if (k === 'log') args.log = v;
+    if (k === 'output') args.output = v;
   }
   if (!args.date) args.date = new Date().toISOString().slice(0, 10);
   return args;
@@ -170,7 +172,7 @@ function computeLatencyStats(entries, { showFilter, date } = {}) {
 
 function main() {
   const args = parseArgs();
-  const logFile = process.env.STAGE_LATENCY_LOG || DEFAULT_LOG;
+  const logFile = args.log || process.env.STAGE_LATENCY_LOG || DEFAULT_LOG;
   const entries = readJSONL(logFile);
 
   const shows = computeLatencyStats(entries, { showFilter: args.show, date: args.date });
@@ -183,8 +185,10 @@ function main() {
     shows,
   };
 
-  if (!fs.existsSync(AUDIT_DIR)) fs.mkdirSync(AUDIT_DIR, { recursive: true });
-  const outPath = path.join(AUDIT_DIR, `opening-night-latency-${args.date}.json`);
+  const outPath = args.output
+    ? path.resolve(args.output)
+    : path.join(AUDIT_DIR, `opening-night-latency-${args.date}.json`);
+  if (!fs.existsSync(path.dirname(outPath))) fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n');
   console.log(`Written: ${outPath}`);
   console.log(`Shows: ${shows.length}, entries: ${entries.length}`);

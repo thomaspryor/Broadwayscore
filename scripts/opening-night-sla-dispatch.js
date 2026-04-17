@@ -72,7 +72,7 @@ async function main() {
 
   // --- Post checklist error summary ---
   if (checklistData && checklistData.shows && !dryRun) {
-    const errorShows = (checklistData.shows || []).filter(s => s.summary && s.summary.errors > 0);
+    const errorShows = (checklistData.shows || []).filter(s => s.summary && (s.summary.errors || 0) > 0);
     if (errorShows.length > 0) {
       const list = errorShows.map(s => {
         const title = s.show ? s.show.title || s.show.id : '?';
@@ -95,7 +95,7 @@ async function main() {
       }
     }
   } else if (checklistData && dryRun) {
-    const errorShows = (checklistData.shows || []).filter(s => s.summary && s.summary.errors > 0);
+    const errorShows = (checklistData.shows || []).filter(s => s.summary && (s.summary.errors || 0) > 0);
     if (errorShows.length > 0) {
       console.log(`[sla-dispatch dry-run] ${errorShows.length} show(s) with checklist errors`);
     } else {
