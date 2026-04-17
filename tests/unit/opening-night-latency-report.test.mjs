@@ -85,3 +85,19 @@ test('median and percentile helpers', () => {
   assert.equal(percentile([10, 20, 30, 40, 50, 60, 70, 80, 90, 100], 90), 90);
   assert.equal(percentile([], 90), null);
 });
+
+test('negative e2e from clock skew is excluded from stats (not in median/p90)', () => {
+  const base = new Date('2026-04-15T22:00:00Z');
+  // deployed-live is BEFORE first-seen — clock skew
+  const entries = makeEntries({
+    showId: 'show-skew', reviewKey: 'nytimes:brantley:https://x.com',
+    firstSeen: new Date(base.getTime() + 10 * MS_MIN).toISOString(),
+    deployed: new Date(base.getTime() + 5 * MS_MIN).toISOString(), // before firstSeen
+  });
+
+  const shows = computeLatencyStats(entries);
+  const s = shows[0];
+  // Negative e2e should be excluded → no valid measurements → null stats
+  assert.equal(s.median_e2e_ms, null, 'negative e2e should not enter median');
+  assert.equal(s.p90_e2e_ms, null);
+});

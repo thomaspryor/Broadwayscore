@@ -124,7 +124,8 @@ function computeLatencyStats(entries, { showFilter, date } = {}) {
         ? new Date(deployed) - new Date(firstSeen)
         : null;
 
-      if (e2e !== null) e2eTimes.push(e2e);
+      // Guard: skip negative values (clock skew between CI runners)
+      if (e2e !== null && e2e > 0) e2eTimes.push(e2e);
 
       // Per-stage gaps
       for (let i = 0; i < STAGE_ORDER.length - 1; i++) {
@@ -133,7 +134,8 @@ function computeLatencyStats(entries, { showFilter, date } = {}) {
         // Fall back to deployed-live for the final gap
         if (STAGE_ORDER[i + 1] === 'deployed-live') to = to || deployedAt;
         if (from && to) {
-          stageTimes[STAGE_GAP_LABELS[i]].push(new Date(to) - new Date(from));
+          const gap = new Date(to) - new Date(from);
+          if (gap > 0) stageTimes[STAGE_GAP_LABELS[i]].push(gap);
         }
       }
 
