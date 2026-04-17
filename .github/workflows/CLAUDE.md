@@ -143,6 +143,18 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs
 - **Note:** Discord notification for new shows removed Feb 20, 2026 (noise reduction)
 
+## `opening-night-checklist.yml`
+- **Runs:** Hourly at :17 (`17 * * * *`), or manually via `workflow_dispatch`
+- **Does:** Runs 6 automated opening-night QA checks for shows opening within ±2 days, evaluates stage-latency SLA, dispatches Discord/email alerts for breaches. Commits `data/audit/opening-night-history.json` + `data/audit/opening-night-latency-YYYY-MM-DD.json`.
+- **SLA thresholds:** 30-min in-flight review → Discord warning; 60-min → P0 page (Discord + email to owner)
+- **Severity:** `warning` (non-critical — failures surface in daily digest, not real-time alert)
+- **CRITICAL_CRONS:** registered with 3h max gap in `check-cron-health.yml`
+- **Options:** `show_id` (target specific show), `dry_run` (evaluate SLA, skip Discord/email dispatch)
+- **Scripts:** `scripts/opening-night-checklist.js`, `scripts/opening-night-latency-report.js`, `scripts/opening-night-sla-dispatch.js`
+- **Requires:** `DISCORD_WEBHOOK_ALERTS`, `RESEND_API_KEY`, `OWNER_EMAIL`, `REVIEW_TEXTS_TOKEN`
+- **Manual trigger:** `gh workflow run opening-night-checklist.yml -f show_id=the-rocky-horror-show-2026 -f dry_run=true`
+- **Related:** `opening-night-orchestrator.yml` also calls the checklist once after its polling loop; `opening-night-broadcast.yml` gates sends on checklist passing (override with `force_broadcast=true`)
+
 ## `opening-night-reviews.yml`
 - **Runs:** Daily at 5 AM UTC (midnight EST), or manually
 - **Does:** Finds shows that opened in the last 2 days (by `openingDate`), triggers `gather-reviews.yml` to catch opening night reviews the same evening they're published
@@ -159,6 +171,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Data dependency:** Relies on data pipeline chain: `update-show-status` → `gather-reviews` → `rebuild` → `llm-ensemble-score`. The 5 AM run catches shows scored overnight; 8 AM catches shows scored between 5-8 AM.
 - **Early exit:** No recent openers or all already broadcast → exits in <10s (no Node setup)
 - **Readiness gate:** 8+ scored reviews required before sending (in `send-opening-night-broadcast.js`)
+- **Checklist gate (added 2026-04-17):** Before sending, runs `opening-night-checklist.js --show=ID --json` for each pending show. If any show has checklist errors, blocks broadcast and sends Discord warning + email to owner. Override with `force_broadcast=true` input (emergency use only).
 - **Market filter:** Only Broadway and West End shows trigger emails. OB shows get website data via pipeline but no broadcast.
 - **Budget gate:** Cap at 60 sends/market (Broadway) and 35 sends/market (West End) per run
 - **Multi-show coalescing:** If 2+ shows open same night in a market, sends single email with multiple score cards
