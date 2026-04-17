@@ -303,7 +303,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
  * Build opening-night broadcast email for general subscribers.
  * Supports single or multiple shows in one email.
  *
- * @param {Array<{showTitle, score, reviewCount, positive, mixed, negative, consensusText, showType, venue, showUrl, imageUrl}>} shows
+ * @param {Array<{showTitle, score, reviewCount, rave, positive, mixed, negative, consensusText, showType, venue, showUrl, imageUrl}>} shows
  * @param {string} email - Subscriber email (for unsubscribe link)
  * @param {string} [market='broadway'] - 'broadway' or 'west-end'
  * @returns {string} HTML email
