@@ -13,6 +13,7 @@
  *   --show=hamilton-2015    Only process one show
  *   --dry-run               Don't save, just print results
  *   --limit=10              Only process N reviews
+ *   --max-cost=5.00         Stop when cumulative API spend hits $X
  */
 
 const fs = require('fs');
@@ -27,6 +28,12 @@ const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
 const limitArg = args.find(a => a.startsWith('--limit='));
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
+const maxCostArg = args.find(a => a.startsWith('--max-cost='));
+const maxCost = maxCostArg ? parseFloat(maxCostArg.split('=')[1]) : null;
+
+// Sonnet 4.6 pricing: $3/M input, $15/M output
+const COST_PER_INPUT_TOKEN = 3 / 1_000_000;
+const COST_PER_OUTPUT_TOKEN = 15 / 1_000_000;
 
 const SCORING_PROMPT = `You are a theater critic review analyzer. Given a review excerpt, assign a score from 0-100 based on how positive or negative the review is.
 
@@ -59,13 +66,18 @@ async function scoreReview(client, reviewText) {
     ]
   });
 
-  const text = response.content[0].text.trim();
+  const text = (response.content.find(c => c.type === 'text')?.text || '').trim();
+  const inputTokens = response.usage?.input_tokens || 0;
+  const outputTokens = response.usage?.output_tokens || 0;
 
   // Parse JSON response
   try {
     const match = text.match(/\{[\s\S]*\}/);
     if (match) {
-      return JSON.parse(match[0]);
+      const result = JSON.parse(match[0]);
+      result.inputTokens = inputTokens;
+      result.outputTokens = outputTokens;
+      return result;
     }
   } catch (e) {
     console.error('Failed to parse response:', text);
@@ -99,9 +111,11 @@ async function main() {
   let processed = 0;
   let skipped = 0;
   let errors = 0;
+  let totalCost = 0;
 
   console.log(`Scoring reviews with Claude LLM...`);
   console.log(`Shows to process: ${targetShows.length}`);
+  if (maxCost) console.log(`Cost ceiling: $${maxCost.toFixed(2)}`);
   if (dryRun) console.log('DRY RUN - no files will be modified\n');
 
   for (const show of targetShows) {
@@ -111,6 +125,10 @@ async function main() {
     for (const file of files) {
       if (limit && processed >= limit) {
         console.log(`\nLimit of ${limit} reached.`);
+        break;
+      }
+      if (maxCost && totalCost >= maxCost) {
+        console.log(`\nCost ceiling $${maxCost.toFixed(2)} reached ($${totalCost.toFixed(4)} spent).`);
         break;
       }
 
@@ -136,6 +154,9 @@ async function main() {
         const result = await scoreReview(client, review.fullText);
 
         if (result && result.score !== undefined) {
+          const callCost = (result.inputTokens * COST_PER_INPUT_TOKEN) + (result.outputTokens * COST_PER_OUTPUT_TOKEN);
+          totalCost += callCost;
+
           review.assignedScore = result.score;
           review.bucket = result.sentiment;
           review.llmConfidence = result.confidence;
@@ -144,7 +165,7 @@ async function main() {
             fs.writeFileSync(filePath, JSON.stringify(review, null, 2));
           }
 
-          console.log(`${result.score} (${result.sentiment})`);
+          console.log(`${result.score} (${result.sentiment}) [$${totalCost.toFixed(4)}]`);
           processed++;
         } else {
           console.log('FAILED');
@@ -160,12 +181,14 @@ async function main() {
     }
 
     if (limit && processed >= limit) break;
+    if (maxCost && totalCost >= maxCost) break;
   }
 
   console.log(`\n========================================`);
   console.log(`Processed: ${processed}`);
   console.log(`Skipped (already scored or no text): ${skipped}`);
   console.log(`Errors: ${errors}`);
+  console.log(`Total cost: $${totalCost.toFixed(4)}`);
 }
 
 main().catch(console.error);
