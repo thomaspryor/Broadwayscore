@@ -53,7 +53,7 @@ const MODEL_ARG = process.argv.find(a => a.startsWith('--model='))?.split('=')[1
 // with nuanced framing (Eddie Redmayne Cabaret critique tagged "reply/follow-up").
 // Eval: Opus 9/9 legit accepted + 5/5 bad rejected; Sonnet 8/9 + 5/5.
 // See scripts/video-reviews/eval-prompts.js.
-const MODEL = MODEL_ARG || process.env.ANTHROPIC_MODEL || 'claude-opus-4-6';
+const MODEL = MODEL_ARG || process.env.ANTHROPIC_MODEL || 'claude-opus-4-7';
 
 async function scoreTranscript(transcript, showTitle, creatorName, platform) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {

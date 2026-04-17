@@ -69,10 +69,10 @@ const MODELS = {
     priceIn: 3.00, priceOut: 15.00,
     envKey: 'ANTHROPIC_API_KEY',
   },
-  'claude-opus-4-6': {
+  'claude-opus-4-7': {
     provider: 'anthropic',
     api: 'anthropic',
-    model: 'claude-opus-4-6',
+    model: 'claude-opus-4-7',
     priceIn: 15.00, priceOut: 75.00,
     envKey: 'ANTHROPIC_API_KEY',
   },

@@ -161,7 +161,7 @@ function callAnthropic(model) {
 }
 
 const callClaudeHaiku = callAnthropic('claude-haiku-4-5-20251001');
-const callClaudeSonnet = callAnthropic('claude-sonnet-4-20250514');
+const callClaudeSonnet = callAnthropic('claude-sonnet-4-6');
 
 // ============================================================
 // Provider Chain

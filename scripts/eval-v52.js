@@ -167,7 +167,7 @@ async function scoreWithClaude(reviewText, context) {
 
   const prompt = buildPromptV5(reviewText, context);
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 500,
     system: SYSTEM_PROMPT_V5,
     messages: [{ role: 'user', content: prompt }]
