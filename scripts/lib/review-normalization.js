@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
+const { logExclusion } = require('./exclusion-logger');
 
 // Score sources from aggregator sites — these are third-party star ratings,
 // not the outlet's own score. Used to prevent contamination at both ingestion
@@ -543,7 +544,7 @@ function areOutletsSame(outlet1, outlet2) {
  *   (existing.isPreviewPlaceholder === true) will be fully REPLACED by the
  *   incoming review rather than merged. Has no effect on real reviews.
  */
-function mergeReviews(existing, incoming, options = {}) {
+function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Post-opening discovery replaces preview-period placeholder wholesale.
   // Real reviews (no isPreviewPlaceholder flag) are never replaced this way.
   if (existing.isPreviewPlaceholder === true && options.fromPostOpening === true) {
@@ -574,6 +575,15 @@ function mergeReviews(existing, incoming, options = {}) {
   // Block URL changes only when the existing URL is protected AND not
   // obviously broken. First-URL-set and undefined-repair always proceed.
   const blockUrlChange = urlIsProtected && !existingUrlLooksBroken && urlChanged;
+  if (blockUrlChange) {
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedBlockedUrlChange',
+      details: { existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId, criticName: existing.criticName },
+    });
+  }
   if (incoming.url && (!existing.url || existing.url.includes('undefined') || urlChanged)
       && !blockUrlChange) {
     merged.url = incoming.url;

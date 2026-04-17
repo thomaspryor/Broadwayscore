@@ -29,6 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 // Discord daily reports removed — email digest is the single notification channel.
 // Critical workflow failures still alert via notify-failure composite action.
 
@@ -974,6 +975,91 @@ function getStatusIcon(status) {
   return status === 'pass' ? '&#9989;' : status === 'warn' ? '&#9888;&#65039;' : '&#10060;';
 }
 
+function buildExclusionSummaryHtml() {
+  try {
+    const now = Date.now();
+    const cutoff = now - 24 * 60 * 60 * 1000;
+    const summaryFile = path.join(AUDIT_DIR, 'exclusion-summary-yesterday.json');
+
+    // Read today's and yesterday's JSONL files
+    const todayPath = getTodayJsonlPath();
+    const yesterday = new Date(now - 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const yesterdayPath = path.join(path.dirname(todayPath), `exclusions-${yesterday}.jsonl`);
+
+    if (!fs.existsSync(todayPath)) {
+      return '<p style="color:#e74c3c;font-size:13px;margin:4px 0;">⚠️ No exclusion log for today — rebuild/gather/collect may not have run.</p>';
+    }
+
+    const records = [];
+    for (const p of [yesterdayPath, todayPath]) {
+      if (!fs.existsSync(p)) continue;
+      for (const line of fs.readFileSync(p, 'utf8').trim().split('\n').filter(Boolean)) {
+        try {
+          const r = JSON.parse(line);
+          if (new Date(r.ts).getTime() >= cutoff) records.push(r);
+        } catch {}
+      }
+    }
+
+    // Count by reason
+    const counts = {};
+    const showIdsByReason = {};
+    for (const r of records) {
+      counts[r.reason] = (counts[r.reason] || 0) + 1;
+      if (!showIdsByReason[r.reason]) showIdsByReason[r.reason] = new Set();
+      if (r.showId && r.showId !== 'unknown') showIdsByReason[r.reason].add(r.showId);
+    }
+
+    // Load yesterday's counts for spike detection
+    let yesterday_counts = {};
+    try {
+      if (fs.existsSync(summaryFile)) {
+        yesterday_counts = JSON.parse(fs.readFileSync(summaryFile, 'utf8'));
+      }
+    } catch {}
+
+    // Persist today's counts for tomorrow
+    try { fs.writeFileSync(summaryFile, JSON.stringify(counts, null, 2)); } catch {}
+
+    if (Object.keys(counts).length === 0) {
+      return '<p style="color:#888;font-size:13px;margin:4px 0;">No exclusions logged in last 24h.</p>';
+    }
+
+    const top10 = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    const rows = top10.map(([reason, count]) => {
+      const prev = yesterday_counts[reason];
+      let badge = '';
+      if (prev == null) {
+        badge = ' <span style="color:#3498db;font-size:11px;">🆕 NEW</span>';
+      } else if (prev > 0 && count / prev > 1.5) {
+        badge = ` <span style="color:#e74c3c;font-size:11px;">⚠️ SPIKE (was ${prev})</span>`;
+      }
+      const topShows = Array.from(showIdsByReason[reason] || []).slice(0, 3).join(', ') || '—';
+      return `<tr>
+        <td style="padding:4px 8px;color:#ccc;font-size:12px;font-family:monospace;">${reason}${badge}</td>
+        <td style="padding:4px 8px;color:#fff;text-align:center;font-size:12px;">${count}</td>
+        <td style="padding:4px 8px;color:#888;font-size:11px;">${topShows}</td>
+      </tr>`;
+    }).join('');
+
+    return `
+      <h3 style="color:#aaa;margin:24px 0 8px;">Exclusion summary (last 24h)</h3>
+      <table style="width:100%;border-collapse:collapse;background:#16213e;border-radius:6px;overflow:hidden;">
+        <thead>
+          <tr style="border-bottom:1px solid #333;">
+            <th style="padding:4px 8px;text-align:left;color:#888;font-size:11px;text-transform:uppercase;">Reason</th>
+            <th style="padding:4px 8px;text-align:center;color:#888;font-size:11px;text-transform:uppercase;">Count</th>
+            <th style="padding:4px 8px;text-align:left;color:#888;font-size:11px;text-transform:uppercase;">Top Shows</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  } catch (err) {
+    return `<p style="color:#e74c3c;font-size:13px;margin:4px 0;">⚠️ Exclusion summary error: ${err.message}</p>`;
+  }
+}
+
 async function sendEmailDigest(results, history, workflowSummary, autoFixResults) {
   const apiKey = process.env.RESEND_API_KEY;
   const ownerEmail = process.env.OWNER_EMAIL;
@@ -1197,6 +1283,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
 
     ${actionHtml}
     ${workflowHtml}
+    ${buildExclusionSummaryHtml()}
 
     <!-- Footer -->
     <p style="color:#555;font-size:11px;margin-top:24px;text-align:center;">

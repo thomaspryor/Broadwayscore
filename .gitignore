@@ -171,6 +171,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 /data/audit/touring-contamination-report.*.json
 /data/audit/.touring-contamination-checkpoint.json
 /data/audit/.touring-contamination-checkpoint.*.json
+# Structural #1 — daily exclusion logs (may contain URLs, not committed)
+/data/audit/exclusions-*.jsonl
+/data/audit/exclusion-summary-yesterday.json
 /data/integrity-report.md
 /data/review-reports/
 
