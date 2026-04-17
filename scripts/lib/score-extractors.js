@@ -325,7 +325,10 @@ function extractEWScore(html, text) {
   // That pattern returned the first sidebar grade (e.g. A- book review) instead of the
   // actual theater review grade (e.g. B). Only article-scoped patterns are safe for old format.
   const patterns = [
-    /(?:grade|rating)\s*:?\s*([A-F][+\-–—]?)/i,
+    // \b word boundaries prevent false matches inside words like
+    // "frustrating for" (frust-RATING → matches "rating", then "f" from "for" = F)
+    // or "operating against" (ope-RATING → "rating", then "A" from "against" = A).
+    /\b(?:grade|rating)\b\s*:?\s*([A-F][+\-–—]?)/i,
     /\bgrade\s+([A-F][+\-–—]?)\b/i,
     /\b([A-F][+\-–—]?)\s*(?:rating|grade)\b/i,
     /EW\s+Grade:?\s*([A-F][+\-–—]?)/i
