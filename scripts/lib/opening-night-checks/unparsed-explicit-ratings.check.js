@@ -4,16 +4,18 @@ const name = 'unparsed-explicit-ratings';
 const description = 'Outlets with known rating schemas have reviews with no parsed originalScore';
 
 /**
- * Outlets that publish explicit star/letter ratings and should always have an originalScore.
- * Key: outletId, Value: rating schema description for messages.
+ * Outlets that publish explicit star/letter ratings and should always have an originalRating.
+ * Key: outletId (must match reviews.json exactly), Value: rating schema for messages.
+ * Verified against reviews.json outletId values 2026-04-17.
  */
 const RATING_SCHEMA_OUTLETS = {
-  'the-guardian': '5-star',
-  'ny-post': '4-star',
-  'the-telegraph': '5-star',
-  'time-out': '5-star',
-  'the-times': '5-star',
-  'evening-standard': '5-star',
+  'guardian': '5-star',        // The Guardian
+  'nypost': '4-star',          // New York Post
+  'telegraph': '5-star',       // The Telegraph
+  'timeout': '5-star',         // Time Out New York
+  'timeout-london': '5-star',  // Time Out London
+  'times-uk': '5-star',        // The Times (UK)
+  'standard': '5-star',        // Evening Standard
 };
 
 /**
