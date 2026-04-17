@@ -97,6 +97,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords } = require('./lib/review-guards');
+const { logExclusion } = require('./lib/exclusion-logger');
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
 // Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
@@ -5262,11 +5263,17 @@ function findReviewsToProcess() {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
         // Skip fabricated entries unless a reason_filter is active (enables targeted recovery)
-        if (data.fabricatedEntry === true && CONFIG.incompleteReasonFilter.length === 0) continue;
+        if (data.fabricatedEntry === true && CONFIG.incompleteReasonFilter.length === 0) {
+          logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedFabricatedEntry', details: { url: data.url, outletId: data.outletId } });
+          continue;
+        }
 
         // Skip permanently retired URLs (broken redirects, etc.) — these are in failed-fetches.json
         // too, but checking the file field avoids re-reading failed-fetches for files added after load
-        if (data.incompleteReason === 'permanently_unavailable' && CONFIG.incompleteReasonFilter.length === 0) continue;
+        if (data.incompleteReason === 'permanently_unavailable' && CONFIG.incompleteReasonFilter.length === 0) {
+          logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedPermanentlyUnavailable', details: { url: data.url, outletId: data.outletId } });
+          continue;
+        }
 
         // Skip misattributed/wrong reviews (unless explicitly targeting wrong_content)
         // EXCEPTION: if a human reviewed and verified the production (humanReviewedWrongProduction:false)
@@ -5284,6 +5291,7 @@ function findReviewsToProcess() {
           const retryAge = data.wrongShowRetryAt ? Date.now() - new Date(data.wrongShowRetryAt).getTime() : Infinity;
           const retryAllowed = isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000; // 14-day cooldown
           if (!retryAllowed) {
+            logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedWrongContent', details: { url: data.url, outletId: data.outletId, wrongShow: data.wrongShow, wrongProduction: data.wrongProduction } });
             continue;
           }
           // Mark retry attempt timestamp
@@ -5315,10 +5323,16 @@ function findReviewsToProcess() {
         }
 
         // Skip if no URL (unless explicitly targeting no_url reviews for SERP discovery)
-        if (!data.url && !CONFIG.incompleteReasonFilter.includes('no_url')) continue;
+        if (!data.url && !CONFIG.incompleteReasonFilter.includes('no_url')) {
+          logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedNoUrl', details: { outletId: data.outletId, criticName: data.criticName } });
+          continue;
+        }
 
         // Skip print-only outlets — no online content exists, SERP discovery wastes API credits
-        if (UNCOLLECTABLE_OUTLETS.has((data.outletId || '').toLowerCase())) continue;
+        if (UNCOLLECTABLE_OUTLETS.has((data.outletId || '').toLowerCase())) {
+          logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedUncollectableOutlet', details: { url: data.url, outletId: data.outletId } });
+          continue;
+        }
 
         // Determine outlet tier
         const outletId = (data.outletId || '').toLowerCase();
