@@ -15,6 +15,7 @@
  *   --limit=10              Only process N reviews
  *   --force                 Re-score even if already scored
  *   --calibration-only      Only score the calibration set
+ *   --max-cost=5.00         Stop when cumulative API spend hits $X
  */
 
 const fs = require('fs');
@@ -33,6 +34,12 @@ const force = args.includes('--force');
 const calibrationOnly = args.includes('--calibration-only');
 const limitArg = args.find(a => a.startsWith('--limit='));
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
+const maxCostArg = args.find(a => a.startsWith('--max-cost='));
+const maxCost = maxCostArg ? parseFloat(maxCostArg.split('=')[1]) : null;
+
+// Sonnet 4.6 pricing: $3/M input, $15/M output
+const COST_PER_INPUT_TOKEN = 3 / 1_000_000;
+const COST_PER_OUTPUT_TOKEN = 15 / 1_000_000;
 
 // Star rating to expected score ranges - used for validation
 const STAR_RANGES = {
@@ -126,7 +133,7 @@ async function scoreReview(client, reviewText, showId, outlet) {
     ]
   });
 
-  const text = response.content[0].text.trim();
+  const text = (response.content.find(c => c.type === 'text')?.text || '').trim();
 
   // Parse JSON response
   try {
@@ -260,15 +267,21 @@ async function main() {
   let processed = 0;
   let skipped = 0;
   let errors = 0;
+  let totalCost = 0;
   const results = [];
 
   console.log(`Scoring reviews with calibrated LLM prompt...`);
   console.log(`Files to process: ${filesToProcess.length}`);
+  if (maxCost) console.log(`Cost ceiling: $${maxCost.toFixed(2)}`);
   if (dryRun) console.log('DRY RUN - no files will be modified\n');
 
   for (const item of filesToProcess) {
     if (limit && processed >= limit) {
       console.log(`\nLimit of ${limit} reached.`);
+      break;
+    }
+    if (maxCost && totalCost >= maxCost) {
+      console.log(`\nCost ceiling $${maxCost.toFixed(2)} reached ($${totalCost.toFixed(4)} spent).`);
       break;
     }
 
@@ -294,6 +307,9 @@ async function main() {
       const result = await scoreReview(client, text, item.showId, review.outlet);
 
       if (result.score !== null) {
+        const callCost = ((result.inputTokens || 0) * COST_PER_INPUT_TOKEN) + ((result.outputTokens || 0) * COST_PER_OUTPUT_TOKEN);
+        totalCost += callCost;
+
         // Validate against known data
         const flags = validateScore(result, review);
 
@@ -342,7 +358,7 @@ async function main() {
         }
 
         const flagStr = flags.length > 0 ? ` [${flags.length} flags]` : '';
-        console.log(`${result.score} (${result.bucket})${flagStr}`);
+        console.log(`${result.score} (${result.bucket})${flagStr} [$${totalCost.toFixed(4)}]`);
 
         results.push({
           showId: item.showId,
@@ -371,6 +387,7 @@ async function main() {
   console.log(`Processed: ${processed}`);
   console.log(`Skipped: ${skipped}`);
   console.log(`Errors: ${errors}`);
+  console.log(`Total cost: $${totalCost.toFixed(4)}`);
 
   // If calibration only, output accuracy report
   if (calibrationOnly && results.length > 0) {
