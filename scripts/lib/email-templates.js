@@ -73,13 +73,29 @@ function buildBreakdownHtml(rave, positive, mixed, negative) {
   const total = rave + positive + mixed + negative;
   if (total === 0) return '';
 
-  let raveW = 0, posW = 0, mixW = 0, negW = 0;
-  raveW = Math.max(Math.round(rave / total * 100), rave > 0 ? 1 : 0);
-  posW = Math.max(Math.round(positive / total * 100), positive > 0 ? 1 : 0);
-  negW = Math.max(Math.round(negative / total * 100), negative > 0 ? 1 : 0);
-  mixW = 100 - raveW - posW - negW;
-  if (mixW < 0) mixW = 0;
-  if (mixed > 0 && mixW === 0) { mixW = 1; posW = Math.max(posW - 1, 0); }
+  // Hamilton largest-remainder method with min-1px guarantee for non-zero buckets.
+  // Simple residual math (100 - a - b - c) can produce a 0-width bar segment for
+  // a small bucket when larger ones round up — making the label row inconsistent
+  // with the visual bar (e.g. "1 Positive" label but no green segment visible).
+  const slots = [
+    { key: 'raveW', n: rave },
+    { key: 'posW',  n: positive },
+    { key: 'mixW',  n: mixed },
+    { key: 'negW',  n: negative },
+  ];
+  const active = slots.filter(s => s.n > 0);
+  active.forEach(s => { s.exact = s.n / total * 100; s.w = Math.max(1, Math.floor(s.exact)); });
+  let spare = 100 - active.reduce((sum, s) => sum + s.w, 0);
+  if (spare > 0) {
+    active.slice().sort((a, b) => (b.exact % 1) - (a.exact % 1))
+      .forEach((s, i) => { if (i < spare) s.w++; });
+  } else if (spare < 0) {
+    // min-1 over-allocated (very skewed distributions); trim from the largest buckets
+    active.slice().sort((a, b) => b.w - a.w)
+      .forEach(s => { if (spare < 0 && s.w > 1) { s.w--; spare++; } });
+  }
+  const widths = Object.fromEntries(slots.map(s => [s.key, active.find(a => a.key === s.key)?.w ?? 0]));
+  const { raveW, posW, mixW, negW } = widths;
 
   return `
   <tr><td style="padding:16px 24px 0;">

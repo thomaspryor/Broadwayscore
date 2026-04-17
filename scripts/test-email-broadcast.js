@@ -95,7 +95,8 @@ console.log('\n── buildBroadcastOpeningNightHtml ──\n');
 
 {
   const html = buildBroadcastOpeningNightHtml([makeShow({ consensusText: null })], null, 'broadway');
-  assert("omits Critics' Take when consensusText is null", !html.includes("Critics"), "Critics' Take section rendered without consensus");
+  // Check for the section wrapper string rather than the word "Critics" which could appear elsewhere
+  assert("omits Critics' Take when consensusText is null", !html.includes('text-transform:uppercase;letter-spacing:0.8px'), "Critics' Take section wrapper rendered without consensus");
 }
 
 // ─── Multi-show (broadcast coalescing) ───────────────────────────────────────
@@ -107,11 +108,39 @@ console.log('\n── buildBroadcastOpeningNightHtml ──\n');
   const html = buildBroadcastOpeningNightHtml(shows, null, 'broadway');
   assert('multi-show: Show A rave label present', html.includes('>5</span> Rave'));
   assert('multi-show: Show B negative label present', html.includes('>2</span> Negative'));
-  assert('multi-show: Show A has no Negative label', (() => {
-    // Negative for Show A should not appear — check that "Negative" only appears once (for Show B)
-    const count = (html.match(/\bNegative\b/g) || []).length;
+  assert('multi-show: Show A has no Negative bar segment', (() => {
+    // Bar segments use `height:8px;background-color:COLOR` — checking specifically for the
+    // bar context (not score badges or label swatches which also use these colors).
+    // Show B has negative=2 → exactly 1 red bar segment. Show A has negative=0 → 0.
+    const count = (html.match(/height:8px;background-color:#ef4444/g) || []).length;
     return count === 1;
-  })(), 'Negative appeared more than once — Show A (negative=0) may have rendered it');
+  })(), 'red bar segment appeared != 1 time — Show A (negative=0) may have rendered one');
+}
+
+// ─── All-Rave (Critical Gold) ─────────────────────────────────────────────────
+// Most important broadcast scenario — a full-rave show is the highest-stakes email.
+{
+  const html = buildBroadcastOpeningNightHtml([makeShow({ rave: 12, positive: 0, mixed: 0, negative: 0, reviewCount: 12 })], null, 'broadway');
+  assert('all-Rave: Rave label rendered', html.includes('>12</span> Rave'));
+  assert('all-Rave: no other labels', !html.includes('Positive') && !html.includes('Mixed') && !html.includes('Negative'));
+  assert('all-Rave: only gold bar segment', (() => {
+    // Use `height:8px;background-color:` to target only bar segments (not score badges or swatches)
+    return html.includes('height:8px;background-color:#FFD700') &&
+           !html.includes('height:8px;background-color:#22c55e') &&
+           !html.includes('height:8px;background-color:#d97706') &&
+           !html.includes('height:8px;background-color:#ef4444');
+  })(), 'non-gold bar segment appeared in all-Rave show');
+}
+
+// ─── Percentage rounding: bar and label must stay in sync ─────────────────────
+// Regression for the bug where large buckets rounding up pushed a small bucket's
+// bar width to 0 while the label row still showed the non-zero count.
+{
+  // rave=50, positive=1, mixed=1, negative=49: rave+negative round up → posW historically hit 0
+  const html = buildBroadcastOpeningNightHtml([makeShow({ rave: 50, positive: 1, mixed: 1, negative: 49 })], null, 'broadway');
+  assert('rounding: Positive bar segment present when positive > 0', html.includes('background-color:#22c55e'));
+  assert('rounding: Mixed bar segment present when mixed > 0', html.includes('background-color:#d97706'));
+  assert('rounding: Positive label present', html.includes('Positive'));
 }
 
 // ─── West End market ─────────────────────────────────────────────────────────
