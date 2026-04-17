@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T13:19:59.217Z",
+  "generatedAt": "2026-04-17T15:38:00.059Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -313,20 +313,20 @@
       "status": "open",
       "slug": "proof",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 73.33,
-      "liveScore": 73,
-      "scoreDrift": -0.3299999999999983,
-      "total": 19,
+      "siteScore": 73.62,
+      "liveScore": 74,
+      "scoreDrift": 0.37999999999999545,
+      "total": 20,
       "t1": 6,
       "t2": 12,
-      "t3": 1,
-      "positive": 9,
+      "t3": 2,
+      "positive": 10,
       "mixed": 10,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -574,6 +574,18 @@
           "m": 10,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-17T15:38:00.059Z",
+          "rc": 20,
+          "s": 73.62,
+          "t1": 6,
+          "t2": 12,
+          "t3": 2,
+          "p": 10,
+          "m": 10,
+          "n": 0,
+          "bc": "preview-sent"
         }
       ]
     },
