@@ -43,6 +43,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
 const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 
 // Authoritative NYT Critic's Pick set — union of two sources:
 //   1. data/nyt-critics-picks.json — scraped from nytimes.com/spotlight/theater-critics-picks
@@ -140,36 +141,23 @@ const criticRegistry = loadCriticRegistry();
 // Human review queue — flagged items written to data/audit/needs-human-review.json
 const humanReviewQueue = [];
 
-// Verbose per-file exclusion logging — set REBUILD_VERBOSE=1 to enable.
-// Emits one structured line per excluded file with the guard name and key context,
-// so debugging "why did this review drop" takes minutes not hours.
-// Filter with: REBUILD_VERBOSE=1 ... | grep EXCLUSION | grep show=SHOW_ID
-const REBUILD_VERBOSE = process.env.REBUILD_VERBOSE === '1';
-
-/**
- * Log an exclusion with the guard name, file, and key context.
- * No side effects — pure logging. Call right before stats.skipped* increment.
- *
- * @param {string} statKey - e.g. 'skippedWrongProduction'
- * @param {string} showId
- * @param {string} file - Review filename
- * @param {object} data - The review data object (url, outletId, criticName, etc.)
- * @param {object} [extra] - Extra context (reason, thresholds, etc.)
- */
+// Exclusion logging: routes through shared lib (scripts/lib/exclusion-logger.js).
+// Exclusions always write to data/audit/exclusions-YYYY-MM-DD.jsonl and emit a
+// [EXCLUSION] line on stdout for CI grep. REBUILD_VERBOSE no longer required.
 function logExclusion(statKey, showId, file, data, extra) {
-  if (!REBUILD_VERBOSE) return;
-  const ctx = {
-    url: (data && data.url) || null,
-    outlet: (data && (data.outletId || data.outlet)) || null,
-    critic: (data && (data.criticName || data.critic)) || null,
-    publishDate: (data && data.publishDate) || null,
-    ...(extra || {}),
-  };
-  const parts = Object.entries(ctx)
-    .filter(([, v]) => v !== null && v !== undefined && v !== '')
-    .map(([k, v]) => `${k}=${typeof v === 'string' ? v : JSON.stringify(v)}`)
-    .join(' ');
-  console.log(`[EXCLUSION] stat=${statKey} show=${showId} file=${file || '-'} ${parts}`);
+  _sharedLogExclusion({
+    script: 'rebuild-all-reviews',
+    showId: showId || 'unknown',
+    file: file || '-',
+    reason: statKey,
+    details: {
+      url: (data && data.url) || undefined,
+      outletId: (data && (data.outletId || data.outlet)) || undefined,
+      criticName: (data && (data.criticName || data.critic)) || undefined,
+      publishDate: (data && data.publishDate) || undefined,
+      ...(extra || {}),
+    },
+  });
 }
 
 // normalizeThumb, normalizePublishDate — imported from ./lib/rebuild-helpers
