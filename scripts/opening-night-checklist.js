@@ -220,7 +220,13 @@ function remediateMissingReviews(showResults, now) {
         createdAt: now.toISOString(),
       };
 
+      // createReviewFile returns:
+      //   - true       → file written
+      //   - false      → no-op (usually duplicate URL already assigned elsewhere)
+      //   - string     → rejected by a guard (e.g. 'junkOutlet', 'wrongProduction',
+      //                  'tourReview', 'crossMarketBroadway', 'profileUrl', etc.)
       let result;
+      let threw = null;
       try {
         const cat = show.category || 'broadway';
         result = createReviewFile(show.id, reviewData, {
@@ -228,18 +234,26 @@ function remediateMissingReviews(showResults, now) {
           allowWestEnd: cat === 'west-end' || cat === 'off-west-end',
         });
       } catch (err) {
-        result = { error: err.message };
+        threw = err.message;
       }
 
-      if (result?.error) {
+      const base = { at: now.toISOString(), showId: show.id, outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source };
+      if (threw) {
         stats.rejected++;
-        logRemediation({ at: now.toISOString(), showId: show.id, action: 'rejected', reason: result.error, outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
-      } else if (result?.skipped || result?.alreadyExists || result?.duplicate) {
-        stats.skipped++;
-        logRemediation({ at: now.toISOString(), showId: show.id, action: 'skipped', reason: result.skipped || result.duplicate || 'exists', outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
-      } else {
+        logRemediation({ ...base, action: 'rejected', reason: `threw: ${threw}` });
+      } else if (result === true) {
         stats.created++;
-        logRemediation({ at: now.toISOString(), showId: show.id, action: 'created', file: result?.filename || result?.path, outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
+        logRemediation({ ...base, action: 'created' });
+      } else if (result === false) {
+        stats.skipped++;
+        logRemediation({ ...base, action: 'skipped', reason: 'noop (duplicate or existing file)' });
+      } else if (typeof result === 'string') {
+        stats.rejected++;
+        logRemediation({ ...base, action: 'rejected', reason: result });
+      } else {
+        // Unknown shape — log and count as rejected so we don't claim success falsely
+        stats.rejected++;
+        logRemediation({ ...base, action: 'rejected', reason: `unknown return: ${typeof result}` });
       }
     }
   }
