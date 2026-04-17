@@ -34,6 +34,41 @@ function isValidSection(s: SeatingSection | null | undefined): s is SeatingSecti
   return !!s && typeof s.name === 'string' && !!s.verdict && !!s.verdictLabel;
 }
 
+function VerdictDistributionBar({ sections }: { sections: SeatingSection[] }) {
+  const picks = sections.filter((s) => s.verdict === 'sweet-spot').length;
+  const solid = sections.filter((s) => s.verdict === 'solid').length;
+  const skips = sections.filter((s) => s.verdict === 'skip').length;
+  const total = picks + solid + skips;
+  if (total === 0) return null;
+
+  const ariaLabel = `Seating distribution: ${picks} picks, ${solid} solid, ${skips} avoid`;
+
+  return (
+    <div className="mb-4">
+      <div
+        className="flex h-2 rounded-full overflow-hidden gap-[2px] bg-surface-overlay"
+        role="img"
+        aria-label={ariaLabel}
+      >
+        {picks > 0 && <div className="bg-score-great" style={{ flex: picks }} />}
+        {solid > 0 && <div className="bg-gray-600" style={{ flex: solid }} />}
+        {skips > 0 && <div className="bg-score-tepid" style={{ flex: skips }} />}
+      </div>
+      <div className="flex justify-between mt-1.5 text-[11px] font-medium text-gray-400">
+        {picks > 0 && (
+          <span><span className="text-score-great font-bold">{picks}</span> pick{picks === 1 ? '' : 's'}</span>
+        )}
+        {solid > 0 && (
+          <span><span className="text-gray-100 font-bold">{solid}</span> solid</span>
+        )}
+        {skips > 0 && (
+          <span><span className="text-score-tepid font-bold">{skips}</span> avoid</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function VerdictChip({ section }: { section: SeatingSection }) {
   const srLabel = `Verdict: ${section.verdictLabel}`;
   return (
@@ -154,6 +189,8 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
 
   return (
     <div className="text-left">
+      <VerdictDistributionBar sections={validSections} />
+
       {bestSeats && (
         <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
           <p className="text-sm text-gray-200 leading-relaxed italic">{bestSeats}</p>
