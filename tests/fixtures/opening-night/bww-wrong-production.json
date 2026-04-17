@@ -1,0 +1,45 @@
+{
+  "show": {
+    "id": "test-show-2026",
+    "title": "Test Show",
+    "openingDate": "2026-04-15"
+  },
+  "cases": [
+    {
+      "label": "matching date — ok",
+      "review": {
+        "outletId": "broadway-world",
+        "url": "https://www.broadwayworld.com/article/review-test-show-2026-04-15",
+        "wrongProduction": false
+      },
+      "expectOk": true
+    },
+    {
+      "label": "45d off, not flagged — error",
+      "review": {
+        "outletId": "broadway-world",
+        "url": "https://www.broadwayworld.com/article/review-test-show/2025/03/article.html",
+        "wrongProduction": false
+      },
+      "expectOk": false
+    },
+    {
+      "label": "45d off, already flagged wrongProduction — ok",
+      "review": {
+        "outletId": "broadway-world",
+        "url": "https://www.broadwayworld.com/article/review-test-show/2025/03/article.html",
+        "wrongProduction": true
+      },
+      "expectOk": true
+    },
+    {
+      "label": "no date in URL — ok (can't tell)",
+      "review": {
+        "outletId": "broadway-world",
+        "url": "https://www.broadwayworld.com/article/review-test-show-no-date",
+        "wrongProduction": false
+      },
+      "expectOk": true
+    }
+  ]
+}
