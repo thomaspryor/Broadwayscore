@@ -4687,7 +4687,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const showCat = _showsJsonCache?.shows?.find(s => s.id === data.showId)?.category;
     if (shouldSkipWrongProductionAudit(data)) {
       console.log(`    ⚠ wrongProduction override set (human-verified or manual) — skipping wrongProduction check`);
-    } else if (contentVerification.wrongProduction && isHighConfidence && data.fullText && showCat !== 'off-broadway') {
+    } else if (contentVerification.wrongProduction && showCat !== 'off-broadway' &&
+               ((isHighConfidence && data.fullText) || contentVerification.wrongArticle)) {
+      // wrongArticle (completely wrong page fetched) bypasses the isHighConfidence+fullText
+      // requirements — the temporal override can downgrade confidence to "low" and the
+      // wrongArticle handler may have already nulled fullText, but a clearly wrong page
+      // (e.g. Cats article filed under Proof) must still set the top-level flag so the
+      // poller re-discovers the correct review URL. Bug surfaced Proof opening night Apr 16 2026.
       if (alreadyScored) {
         // Don't destroy an already-scored review — flag for human review instead
         data.needsReview = true;
@@ -4695,8 +4701,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         console.log(`    ⚠ LLM: Wrong production (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
       } else {
         const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
-        data.wrongFullText = data.fullText;
-        data.fullText = null;
+        if (data.fullText) {
+          data.wrongFullText = data.fullText;
+          data.fullText = null;
+        }
         data.wrongProduction = true;
         // Record the diagnostic reason so future audits can distinguish LLM-detected
         // wrong-production from silent (reason-less) guard fires. Before this line was
