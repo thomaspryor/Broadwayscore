@@ -49,10 +49,10 @@ on:
         type: number
         default: 8
       poll_interval_minutes:
-        description: 'Minutes between poll cycles (default 10 — aggressive polling during opening windows)'
+        description: 'Minutes between poll cycles (default 15 — rate-limit safe; use 10 only for short windows)'
         required: false
         type: number
-        default: 10
+        default: 15
       fast_path:
         description: 'Poller inlines rebuild+deploy after scoring (default true for opening nights)'
         required: false
