@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T09:26:44.568Z",
+  "generatedAt": "2026-04-17T12:11:24.632Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -313,15 +313,15 @@
       "status": "open",
       "slug": "proof",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 75.54,
-      "liveScore": 76,
-      "scoreDrift": 0.45999999999999375,
+      "siteScore": 73.33,
+      "liveScore": 73,
+      "scoreDrift": -0.3299999999999983,
       "total": 19,
-      "t1": 5,
-      "t2": 13,
+      "t1": 6,
+      "t2": 12,
       "t3": 1,
-      "positive": 10,
-      "mixed": 9,
+      "positive": 9,
+      "mixed": 10,
       "negative": 0,
       "readiness": {
         "ready": true,
@@ -560,6 +560,18 @@
           "t3": 1,
           "p": 10,
           "m": 9,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-17T12:11:24.632Z",
+          "rc": 19,
+          "s": 73.33,
+          "t1": 6,
+          "t2": 12,
+          "t3": 1,
+          "p": 9,
+          "m": 10,
           "n": 0,
           "bc": "waiting"
         }
