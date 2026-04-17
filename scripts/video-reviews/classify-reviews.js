@@ -110,7 +110,7 @@ ${items}`
 
   if (!resp.ok) throw new Error(`API error ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
   const data = await resp.json();
-  const text = data.content[0].text;
+  const text = data.content.find(c => c.type === 'text')?.text;
   // Find the outermost JSON array. Walk to the first '[' that's followed
   // (after optional whitespace) by '{' — that's the object-array opener.
   // Tolerates markdown code fences (```json\n[\n  {...) and stray "[foo]"

@@ -146,7 +146,7 @@ function callClaude(systemPrompt, userPrompt) {
         if (res.statusCode === 200) {
           try {
             const json = JSON.parse(data);
-            resolve(json.content?.[0]?.text || '');
+            resolve(json.content?.find(c => c.type === 'text')?.text || '');
           } catch (e) { reject(new Error(`Claude parse error: ${e.message}`)); }
         } else if (res.statusCode === 429) {
           reject(new Error('RATE_LIMIT'));
