@@ -72,6 +72,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
+const { logExclusion } = require('./lib/exclusion-logger');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -1304,6 +1305,7 @@ function extractShowScoreReviews(html, showId, showTitle) {
     // Skip non-review URLs (social media, ticket sites, aggregators, etc.)
     const { isBlockedReviewUrl } = require('./lib/domain-filters');
     if (isBlockedReviewUrl(url)) {
+      logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedBlockedUrl', details: { url } });
       continue;
     }
 
@@ -1501,6 +1503,7 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
       // but inner classes changed, we'll silently skip it. Log so CI catches it.
       if (reviewHtml.length > 50) {
         console.log(`    ⚠️  DTLI review block skipped (no ${!outletMatch ? 'outlet' : 'URL'} match) — inner class names may have changed. Block preview: ${reviewHtml.substring(0, 120)}...`);
+        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedDtliBlockParseFail', details: { missingField: !outletMatch ? 'outlet' : 'url', preview: reviewHtml.substring(0, 120) } });
       }
       continue;
     }
@@ -2051,6 +2054,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         if (crossShowMatch) {
           urlsRejected++;
           console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch.matchedTitle}" not "${crossShowMatch.showTitle}" — ${candidateUrl.substring(0, 80)}`);
+          logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch.matchedTitle } });
           continue;
         }
         review.url = candidateUrl;
@@ -2214,6 +2218,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         if (crossShowMatch2) {
           urlsRejected2++;
           console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch2.matchedTitle}" not "${crossShowMatch2.showTitle}" — ${candidateUrl.substring(0, 80)}`);
+          logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch2.matchedTitle, method: 2 } });
           continue;
         }
         review.url = candidateUrl;
