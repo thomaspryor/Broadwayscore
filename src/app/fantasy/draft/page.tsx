@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import FantasyShowPicker from '@/components/fantasy/FantasyShowPicker';
 import FantasyBudgetBar from '@/components/fantasy/FantasyBudgetBar';
@@ -24,6 +24,14 @@ type FantasyConfig = {
 const config = fantasyLeagueData as unknown as FantasyConfig;
 
 export default function FantasyDraftPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-surface" />}>
+      <FantasyDraftInner />
+    </Suspense>
+  );
+}
+
+function FantasyDraftInner() {
   const searchParams = useSearchParams();
   const leagueFromUrl = searchParams.get('league')?.toLowerCase().trim() || '';
   const [email, setEmail] = useState('');
