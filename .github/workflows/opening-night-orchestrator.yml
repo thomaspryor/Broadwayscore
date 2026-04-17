@@ -49,10 +49,10 @@ on:
         type: number
         default: 8
       poll_interval_minutes:
-        description: 'Minutes between poll cycles (default 45)'
+        description: 'Minutes between poll cycles (default 10 — aggressive polling during opening windows)'
         required: false
         type: number
-        default: 45
+        default: 10
       fast_path:
         description: 'Poller inlines rebuild+deploy after scoring (default true for opening nights)'
         required: false
@@ -295,7 +295,7 @@ jobs:
           SKIP_SERP: ${{ steps.budget.outputs.skip_serp }}
         run: |
           MAX_ITERATIONS=${{ inputs.max_iterations || 12 }}
-          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 20 }}
+          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 10 }}
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
 
