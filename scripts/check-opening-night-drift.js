@@ -37,6 +37,7 @@ const THRESHOLD       = parseInt(flags.threshold || '2', 10);
 const WINDOW_DAYS     = parseInt(flags.window || '7', 10);
 const JSON_OUTPUT     = !!flags.json;
 const STATE_FILE      = flags['state-file'] || path.join('data', 'audit', 'drift-state.json');
+const ALLOWLIST_FILE  = path.join('data', 'audit', 'drift-detector-allowlist.json');
 const REVIEW_TEXTS    = flags['review-texts-root'] || path.join('data', 'review-texts');
 const REVIEWS_JSON    = path.join('data', 'reviews.json');
 const SHOWS_JSON      = path.join('data', 'shows.json');
@@ -63,6 +64,26 @@ function loadState() {
 function saveState(state) {
   fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2) + '\n');
+}
+
+/**
+ * Loads the drift-detector allowlist. Returns a map of showId → entry.
+ * Entry: { maxDrift, reason, expires }
+ * Shows whose drift <= maxDrift are suppressed (logged but not alerted).
+ */
+function loadAllowlist() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(ALLOWLIST_FILE, 'utf8'));
+    const now = Date.now();
+    const result = {};
+    for (const entry of (raw.allowlist || [])) {
+      if (entry.expires && new Date(entry.expires).getTime() < now) continue;
+      result[entry.showId] = entry;
+    }
+    return result;
+  } catch {
+    return {};
+  }
 }
 
 // ── Show resolution ───────────────────────────────────────────────────────────
@@ -161,6 +182,7 @@ async function main() {
   }
 
   const state = loadState();
+  const allowlist = loadAllowlist();
   const results = [];
   let anyAlert = false;
 
@@ -172,7 +194,12 @@ async function main() {
     const drift  = computeDrift({ local: local.included, aggregate: agg, live: live.rc });
 
     const fingerprint = makeFingerprint(local.included, agg, live.rc);
-    const alert       = shouldAlert(showId, fingerprint, drift.drift, state);
+
+    // Check allowlist before shouldAlert so suppressed shows don't consume grace slots
+    const allowEntry = allowlist[showId];
+    const suppressed  = allowEntry && drift.drift <= allowEntry.maxDrift;
+
+    const alert = suppressed ? false : shouldAlert(showId, fingerprint, drift.drift, state);
     updateState(state, showId, fingerprint, alert);
 
     if (alert) anyAlert = true;
@@ -190,6 +217,7 @@ async function main() {
       drift: drift.drift,
       threshold: THRESHOLD,
       alert,
+      suppressed: suppressed ? allowEntry.reason : undefined,
       fingerprint,
     });
   }
