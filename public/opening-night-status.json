@@ -1,32 +1,32 @@
 {
-  "generatedAt": "2026-04-16T20:48:43.535Z",
+  "generatedAt": "2026-04-17T04:57:44.230Z",
   "lookbackDays": 3,
   "shows": [
     {
-      "id": "proof-2026",
-      "title": "Proof",
+      "id": "paradise-club-presents-salvage-city-supper-club-off-broadway-2026",
+      "title": "Paradise Club Presents: Salvage City Supper Club",
       "market": "broadway",
-      "category": "broadway",
-      "type": "play",
-      "openingDate": "2026-04-16",
-      "status": "open",
-      "slug": "proof",
-      "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
+      "category": "off-broadway",
+      "type": "special",
+      "openingDate": "2026-04-17",
+      "status": "upcoming",
+      "slug": "paradise-club-presents-salvage-city-supper-club-off-broadway",
+      "thumbnail": "/images/shows/paradise-club-presents-salvage-city-supper-club-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 81,
+      "liveScore": null,
       "scoreDrift": null,
-      "total": 1,
-      "t1": 1,
+      "total": 0,
+      "t1": 0,
       "t2": 0,
       "t3": 0,
-      "positive": 1,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
-          "T1:1/3",
+          "0/12 total",
+          "T1:0/3",
           "T2:0/3",
           "hi-conf:0/8"
         ],
@@ -44,8 +44,16 @@
       },
       "missingT1": [
         {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -53,6 +61,10 @@
         },
         {
           "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -103,6 +115,10 @@
         },
         {
           "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -162,11 +178,255 @@
           "isDualMarket": false
         },
         {
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
           "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
           "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Billboard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Village Voice",
+          "isDualMarket": false
+        },
+        {
+          "name": "IndieWire",
+          "isDualMarket": false
+        },
+        {
+          "name": "NorthJersey.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "CurtainUp",
+          "isDualMarket": false
+        },
+        {
+          "name": "NY1",
+          "isDualMarket": false
+        },
+        {
+          "name": "NJ.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "HuffPost",
+          "isDualMarket": false
+        },
+        {
+          "name": "NBC New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time",
+          "isDualMarket": false
+        },
+        {
+          "name": "Backstage",
+          "isDualMarket": false
+        },
+        {
+          "name": "Bloomberg",
+          "isDualMarket": false
+        },
+        {
+          "name": "WNYC",
+          "isDualMarket": false
+        },
+        {
+          "name": "Rolling Stone",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Philadelphia Inquirer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Vox",
+          "isDualMarket": false
+        },
+        {
+          "name": "Parade",
+          "isDualMarket": false
+        },
+        {
+          "name": "People",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slate",
+          "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "CBS News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Sun-Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "proof-2026",
+      "title": "Proof",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-04-16",
+      "status": "open",
+      "slug": "proof",
+      "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
+      "siteScore": 75.71,
+      "liveScore": 76,
+      "scoreDrift": 0.29000000000000625,
+      "total": 19,
+      "t1": 5,
+      "t2": 13,
+      "t3": 1,
+      "positive": 10,
+      "mixed": 9,
+      "negative": 0,
+      "readiness": {
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 17,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Ready — awaiting send"
+      },
+      "missingT1": [
+        {
+          "name": "Vulture",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Hollywood Reporter",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Washington Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Los Angeles Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "Broadway News",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "amNewYork",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Tribune",
+          "isDualMarket": false
+        },
+        {
+          "name": "USA Today",
+          "isDualMarket": false
+        },
+        {
+          "name": "Newsday",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheWrap",
+          "isDualMarket": false
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Theater",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatrely",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -294,6 +554,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-17T04:57:44.230Z",
+          "rc": 19,
+          "s": 75.71,
+          "t1": 5,
+          "t2": 13,
+          "t3": 1,
+          "p": 10,
+          "m": 9,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -308,24 +580,24 @@
       "slug": "avenue-q-west-end",
       "thumbnail": "/images/shows/avenue-q-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 100,
       "scoreDrift": null,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -383,6 +655,20 @@
         {
           "name": "The Stage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-17T04:57:44.230Z",
+          "rc": 1,
+          "s": 100,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -520,6 +806,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -814,8 +1104,16 @@
       },
       "missingT1": [
         {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -1075,9 +1373,9 @@
       "status": "open",
       "slug": "the-fear-of-13",
       "thumbnail": "/images/shows/the-fear-of-13-2026/thumbnail.webp",
-      "siteScore": 60.76,
+      "siteScore": 60.5,
       "liveScore": 61,
-      "scoreDrift": 0.240000000000002,
+      "scoreDrift": 0.5,
       "total": 21,
       "t1": 7,
       "t2": 11,
@@ -1097,8 +1395,8 @@
         }
       },
       "broadcast": {
-        "state": "preview-sent",
-        "detail": "Preview sent (21 reviews)"
+        "state": "waiting",
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1352,6 +1650,18 @@
           "m": 11,
           "n": 6,
           "bc": "preview-sent"
+        },
+        {
+          "t": "2026-04-17T04:57:44.230Z",
+          "rc": 21,
+          "s": 60.5,
+          "t1": 7,
+          "t2": 11,
+          "t3": 3,
+          "p": 4,
+          "m": 11,
+          "n": 6,
+          "bc": "waiting"
         }
       ]
     },
@@ -1403,6 +1713,10 @@
         {
           "name": "Vulture",
           "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -1694,6 +2008,10 @@
       },
       "missingT1": [
         {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
           "name": "Vulture",
           "isDualMarket": false
         },
@@ -1960,20 +2278,20 @@
       "slug": "one-flew-over-the-cuckoos-nest-west-end",
       "thumbnail": "/images/shows/one-flew-over-the-cuckoos-nest-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 60,
+      "liveScore": null,
       "scoreDrift": null,
-      "total": 1,
-      "t1": 1,
+      "total": 0,
+      "t1": 0,
       "t2": 0,
       "t3": 0,
       "positive": 0,
-      "mixed": 1,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:1/3",
+          "0/8 total",
+          "T1:0/3",
           "T2:0/2",
           "hi-conf:0/6"
         ],
@@ -1996,6 +2314,10 @@
         },
         {
           "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Guardian",
           "isDualMarket": true
         },
         {
@@ -2657,45 +2979,6 @@
   ],
   "upcoming": [
     {
-      "id": "paradise-club-presents-salvage-city-supper-club-off-broadway-2026",
-      "title": "Paradise Club Presents: Salvage City Supper Club",
-      "market": "broadway",
-      "category": "off-broadway",
-      "type": "special",
-      "openingDate": "2026-04-17",
-      "status": "upcoming",
-      "slug": "paradise-club-presents-salvage-city-supper-club-off-broadway",
-      "thumbnail": "/images/shows/paradise-club-presents-salvage-city-supper-club-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Paradise-Club-Presents-Salvage-City-Supper-Club-Opens-on-Broadway-20260417",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/ParadiseClubPresentsSalvageCitySupperClub2026.html",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
-    {
       "id": "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026",
       "title": "Agatha Christie's Black Coffee: Grounds for Murder",
       "market": "broadway",
@@ -2705,7 +2988,7 @@
       "status": "upcoming",
       "slug": "agatha-christies-black-coffee-grounds-for-murder-off-broadway",
       "thumbnail": "/images/shows/agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2744,7 +3027,7 @@
       "status": "previews",
       "slug": "fallen-angels",
       "thumbnail": "/images/shows/fallen-angels-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2783,7 +3066,7 @@
       "status": "previews",
       "slug": "hamlet-off-broadway",
       "thumbnail": "/images/shows/hamlet-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2822,7 +3105,7 @@
       "status": "previews",
       "slug": "schmigadoon",
       "thumbnail": "/images/shows/schmigadoon-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2861,7 +3144,7 @@
       "status": "previews",
       "slug": "between-the-river-and-the-sea-west-end",
       "thumbnail": "/images/shows/between-the-river-and-the-sea-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2886,7 +3169,7 @@
       "status": "upcoming",
       "slug": "eugene-onegin-off-broadway",
       "thumbnail": "/images/shows/eugene-onegin-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2925,7 +3208,7 @@
       "status": "previews",
       "slug": "the-balusters",
       "thumbnail": "/images/shows/the-balusters-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2964,7 +3247,7 @@
       "status": "previews",
       "slug": "beaches",
       "thumbnail": "/images/shows/beaches-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -3003,7 +3286,7 @@
       "status": "previews",
       "slug": "worlds-greatest-lover-west-end",
       "thumbnail": "/images/shows/worlds-greatest-lover-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -3028,7 +3311,7 @@
       "status": "upcoming",
       "slug": "juilliard-opera-presents-verdis-falstaff-off-broadway",
       "thumbnail": "/images/shows/juilliard-opera-presents-verdis-falstaff-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -3067,7 +3350,7 @@
       "status": "previews",
       "slug": "clara-sex-love-and-classical-off-broadway",
       "thumbnail": "/images/shows/clara-sex-love-and-classical-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -3106,7 +3389,7 @@
       "status": "previews",
       "slug": "the-rocky-horror-show",
       "thumbnail": "/images/shows/the-rocky-horror-show-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -3145,7 +3428,7 @@
       "status": "upcoming",
       "slug": "a-midsummer-nights-dream-globe-west-end",
       "thumbnail": "/images/shows/a-midsummer-nights-dream-globe-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -3157,6 +3440,45 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "betty-buckley-random-notes-off-broadway-2026",
+      "title": "Betty Buckley: Random Notes",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-04-24",
+      "status": "previews",
+      "slug": "betty-buckley-random-notes-off-broadway",
+      "thumbnail": "/images/shows/betty-buckley-random-notes-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Betty-Buckley-Random-Notes-Opens-on-Broadway-20260424",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/BettyBuckleyRandomNotes2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     }
