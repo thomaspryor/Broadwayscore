@@ -1,8 +1,7 @@
 {
   "processed": [
-    "kenrex-off-broadway-2026/theatrely--unknown.json",
-    "scorched-earth-off-broadway-2026/nysr--unknown.json",
-    "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
+    "kenrex-off-broadway-2026/theatrely--joey-sims.json",
+    "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json"
   ],
   "failed": [
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
@@ -16,21 +15,33 @@
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "scorched-earth-off-broadway-2026/nysr--unknown.json",
-      "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+      "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "kenrex-off-broadway-2026/theatrely--unknown.json"
+      "kenrex-off-broadway-2026/theatrely--joey-sims.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-04-17T08:36:02.734Z",
-  "lastProcessed": "animal-wisdom-off-broadway-2022/theatermania--linda-buchwald.json",
-  "log": []
+  "startTime": "2026-04-17T08:49:20.679Z",
+  "lastProcessed": "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+  "log": [
+    {
+      "t": "2026-04-17T08:50:33.538Z",
+      "event": "bb-session",
+      "session": "0574e3c9",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-04-17T08:50:33.986Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
