@@ -243,19 +243,16 @@ const CONFIG = {
     'ft.com': { emailVar: 'FT_EMAIL', passVar: 'FT_PASSWORD' },
   },
 
-  // Sites known to block aggressively (skip Playwright, start with ScrapingBee)
+  // Sites that require Browserbase (Cloudflare/CAPTCHA/SSO blocks that BD/SB/Playwright can't solve)
+  // Keep this list tight — each session costs ~$0.10. Legacy entries without documented blockers removed.
   knownBlockedSites: [
-    'thewrap.com',
-    'theatermania.com', 'observer.com', 'chicagotribune.com',
-    'dailybeast.com', 'thedailybeast.com', 'amny.com', 'newsday.com',
-    'nypost.com', 'nydailynews.com', 'indiewire.com',
-    'nytimes.com',  // DataDome CAPTCHA in headless — skip to Browserbase
-    'wsj.com',  // Dow Jones SSO anti-bot detection — fake-rejects correct password in automated browsers
-    'newyorker.com',  // Condé Nast id.condenast.com — routes automated browsers to OTP, not password login
+    'nytimes.com',        // DataDome CAPTCHA in headless
+    'wsj.com',            // Dow Jones SSO anti-bot — fake-rejects correct password in automated browsers
+    'newyorker.com',      // Condé Nast id.condenast.com — routes automated browsers to OTP, not password login
     'hollywoodreporter.com', 'variety.com', 'deadline.com', // PMC sites — CAPTCHA-block Playwright consistently
-    'bloomberg.com',  // PerimeterX anti-bot — needs Browserbase CAPTCHA solving for login
-    'ft.com',  // hCaptcha on login — needs Browserbase CAPTCHA solving
-    'talkinbroadway.com',  // Cloudflare managed challenge — headless Playwright/stealth can't solve it
+    'bloomberg.com',      // PerimeterX anti-bot
+    'ft.com',             // hCaptcha on login
+    'talkinbroadway.com', // Cloudflare managed challenge — BD/SB/Playwright all fail
   ],
 
   // Sites that need residential proxies (Bright Data preferred)
