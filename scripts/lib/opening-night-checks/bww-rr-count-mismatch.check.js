@@ -173,11 +173,17 @@ async function run(show, context) {
     missingReviews,  // ← consumed by opening-night-checklist.js post-check step
   };
 
+  // Severity = warning (NOT error) even when gap is large. Reason: this check
+  // emits details.missingReviews, which the checklist's remediation step uses
+  // to auto-create stubs. Stubs flow through the existing 10-min poller →
+  // collect → rebuild → score chain. Using 'error' would block the broadcast
+  // workflow (which gates on any error in the checklist) during the normal
+  // ingestion catch-up window where gap can legitimately hit 5+ for minutes.
   if (gap > ALERT_THRESHOLD) {
     return {
-      ok: false,
-      severity: 'error',
-      message: `BWW Review Roundup shows ${rrCount} reviews, we have ${haveCount} — gap of ${gap} missing (exceeds threshold ${ALERT_THRESHOLD}): ${rrUrl}`,
+      ok: true,
+      severity: 'warning',
+      message: `BWW Review Roundup shows ${rrCount} reviews, we have ${haveCount} — gap of ${gap} missing (stubs queued for remediation): ${rrUrl}`,
       details,
     };
   }
