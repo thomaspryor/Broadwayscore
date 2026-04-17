@@ -290,6 +290,12 @@ jobs:
         # If this fails, a guard regression slipped through — fix the underlying logic, not the test.
         run: node scripts/test-opening-night-fixes.js
 
+      - name: Run email broadcast rendering tests
+        # Tests buildBroadcastOpeningNightHtml output: zero-bucket filtering, color swatches,
+        # Critics' Take rendering, multi-show coalescing. Catches Apr 2026 regression class
+        # where label rows diverged between the two email template functions.
+        run: node scripts/test-email-broadcast.js
+
   data-validation:
     name: Data Validation
     runs-on: ubuntu-latest
