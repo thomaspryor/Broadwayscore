@@ -6,6 +6,7 @@ import type { SeatingSection, SeatingVerdict, SeatingPriceTier } from '@/lib/dat
 interface SeatingGuidanceProps {
   sections?: SeatingSection[];
   bestSeats?: string;
+  compactRationale?: boolean;
 }
 
 const VERDICT_ICON: Record<SeatingVerdict, string> = {
@@ -81,22 +82,21 @@ function HazardList({ hazards }: { hazards: NonNullable<SeatingSection['hazards'
   );
 }
 
-function SectionRow({ section, isHero = false }: { section: SeatingSection; isHero?: boolean }) {
+function SectionRow({ section, isHero = false, compactRationale = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean }) {
   const priceLabel = section.priceTier ? PRICE_TIER_LABEL[section.priceTier] : null;
+  const nameClass = isHero ? 'text-base font-bold text-white' : 'text-sm font-semibold text-gray-100';
   return (
     <div className={isHero ? 'pb-3' : 'py-3 border-t border-white/5'}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <h3 className={`${isHero ? 'text-base font-bold text-white' : 'text-sm font-semibold text-gray-100'} leading-tight`}>
-            {section.name}
-            {section.rowRange && (
-              <span className="ml-1.5 text-gray-500 text-xs font-normal">rows {section.rowRange}</span>
-            )}
-          </h3>
-          <div className="flex items-center gap-2 mt-1 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap leading-tight">
+            <h3 className={nameClass}>{section.name}</h3>
             <VerdictChip section={section} />
+            {section.rowRange && (
+              <span className="text-gray-500 text-xs font-normal">rows {section.rowRange}</span>
+            )}
             {priceLabel && (
-              <span className="text-[11px] text-gray-500">{priceLabel}</span>
+              <span className="text-gray-500 text-xs">· {priceLabel}</span>
             )}
           </div>
         </div>
@@ -107,7 +107,18 @@ function SectionRow({ section, isHero = false }: { section: SeatingSection; isHe
         )}
       </div>
       {section.rationale && (
-        <p className="text-sm text-gray-300 leading-relaxed mt-2">{section.rationale}</p>
+        compactRationale ? (
+          <details className="mt-2 group">
+            <summary className="cursor-pointer list-none text-[11px] text-gray-400 hover:text-gray-200 select-none">
+              <span className="underline decoration-dotted underline-offset-2">More details</span>
+              <span className="text-gray-600 ml-1 group-open:hidden">▾</span>
+              <span className="text-gray-600 ml-1 hidden group-open:inline">▴</span>
+            </summary>
+            <p className="text-sm text-gray-300 leading-relaxed mt-1.5">{section.rationale}</p>
+          </details>
+        ) : (
+          <p className="text-sm text-gray-300 leading-relaxed mt-2">{section.rationale}</p>
+        )
       )}
       {section.hazards && section.hazards.length > 0 && (
         <HazardList hazards={section.hazards} />
@@ -116,7 +127,7 @@ function SectionRow({ section, isHero = false }: { section: SeatingSection; isHe
   );
 }
 
-export default function SeatingGuidance({ sections, bestSeats }: SeatingGuidanceProps) {
+export default function SeatingGuidance({ sections, bestSeats, compactRationale = false }: SeatingGuidanceProps) {
   const [expanded, setExpanded] = useState(false);
 
   const validSections = (sections ?? []).filter(isValidSection);
@@ -148,21 +159,21 @@ export default function SeatingGuidance({ sections, bestSeats }: SeatingGuidance
       )}
 
       {/* Hero: sweet-spot, given visual weight */}
-      <SectionRow section={hero} isHero />
+      <SectionRow section={hero} isHero compactRationale={compactRationale} />
 
       {/* Additional sweet-spots */}
       {remainingSweetSpots.map((s, i) => (
-        <SectionRow key={`ss-${i}`} section={s} />
+        <SectionRow key={`ss-${i}`} section={s} compactRationale={compactRationale} />
       ))}
 
       {/* Skips (always shown — warnings need visibility) */}
       {remainingSkips.map((s, i) => (
-        <SectionRow key={`sk-${i}`} section={s} />
+        <SectionRow key={`sk-${i}`} section={s} compactRationale={compactRationale} />
       ))}
 
       {/* Solids (collapsed by default if many) */}
       {visibleSolids.map((s, i) => (
-        <SectionRow key={`so-${i}`} section={s} />
+        <SectionRow key={`so-${i}`} section={s} compactRationale={compactRationale} />
       ))}
 
       {hiddenSolidCount > 0 && (

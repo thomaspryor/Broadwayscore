@@ -7,24 +7,39 @@ import SeatingGuidance from './SeatingGuidance';
 interface SeatingGuidanceCardProps {
   sections?: SeatingSection[];
   bestSeats?: string;
+  variant?: 'theater' | 'show';
 }
 
-export default function SeatingGuidanceCard({ sections, bestSeats }: SeatingGuidanceCardProps) {
+const VARIANT_CONFIG = {
+  theater: {
+    title: 'Where to Sit',
+    compactRationale: false,
+  },
+  show: {
+    title: 'Seating Chart Scorecard',
+    compactRationale: true,
+  },
+} as const;
+
+export default function SeatingGuidanceCard({ sections, bestSeats, variant = 'theater' }: SeatingGuidanceCardProps) {
   // On demo, TheaterScorecardCard hosts the seat guidance inline — don't render twice.
   // On prod (where TheaterScorecardCard is hidden), this card is the only surface.
   if (featureFlags.theaterScorecard) return null;
 
   if (!sections || !sections.length) return null;
 
+  const config = VARIANT_CONFIG[variant];
+  const headingId = `seating-guidance-heading-${variant}`;
+
   return (
-    <section className="card p-4 sm:p-5 mb-8" aria-labelledby="seating-guidance-heading">
+    <section className="card p-4 sm:p-5 mb-8" aria-labelledby={headingId}>
       <div className="mb-3">
-        <h2 id="seating-guidance-heading" className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
-          Where to Sit
+        <h2 id={headingId} className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
+          {config.title}
         </h2>
       </div>
 
-      <SeatingGuidance sections={sections} bestSeats={bestSeats} />
+      <SeatingGuidance sections={sections} bestSeats={bestSeats} compactRationale={config.compactRationale} />
 
       <p className="text-[10px] text-gray-600 mt-4 pt-3 border-t border-white/5 leading-relaxed">
         Based on aggregated audience reports and editorial judgment. Sightlines vary by show and seat.
