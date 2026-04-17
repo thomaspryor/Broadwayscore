@@ -160,6 +160,33 @@ test(
   true
 );
 
+// ─── SUBSTRING COLLISION PREVENTION (segment matching, not slug.includes) ────
+console.log('\n── Substring collision prevention ──');
+test(
+  '"Into the Woods": "into" must NOT match inside "introduction" — segment-safe',
+  'https://www.broadwayworld.com/article/Review-Roundup-INTRODUCTION-DANCE-Opens-on-Broadway-20260101',
+  'Into the Woods',
+  false  // 'introduction' contains 'intro' but not segment 'into'; 'dance' ≠ 'woods' → REJECT
+);
+test(
+  'Short word "is" must NOT match inside "christmas" — segment-safe',
+  'https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-on-Broadway-20220101',
+  'Is This A Room',  // titleWords: ['is', 'room'] — 2 words, 100% needed
+  false  // 'christmas' contains substring 'is' but NOT exact segment; 'room' not present → REJECT
+);
+test(
+  'Short word "all" must NOT match inside "falls" — segment-safe',
+  'https://www.broadwayworld.com/article/Review-Roundup-NIAGARA-FALLS-Opens-on-Broadway-20260101',
+  'All Quiet',  // titleWords: ['all', 'quiet']
+  false  // 'falls' contains substring 'all' but NOT segment; 'quiet' absent → REJECT
+);
+test(
+  '"Is This A Room" matches its own slug → ACCEPT',
+  'https://www.broadwayworld.com/article/Review-Roundup-IS-THIS-A-ROOM-Opens-on-Broadway-20211001',
+  'Is This A Room',
+  true  // segment 'is' ✓, segment 'room' ✓ (both exact)
+);
+
 // ─── APOSTROPHES / SPECIAL CHARS ─────────────────────────────────────────
 console.log('\n── Special characters ──');
 test(

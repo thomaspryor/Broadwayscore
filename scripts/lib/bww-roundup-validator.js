@@ -98,8 +98,9 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle) {
     return slugSegments.has(titleWords[0]);
   }
 
-  // Multi-word: count how many title words appear anywhere in the slug string
-  const matchedCount = titleWords.filter(w => slug.includes(w)).length;
+  // Multi-word: exact segment match (same as single-word) — prevents substring collisions
+  // e.g. 'to' matching inside 'story', 'is' inside 'christmas', 'all' inside 'falls'
+  const matchedCount = titleWords.filter(w => slugSegments.has(w)).length;
   const threshold = titleWords.length <= 2 ? 1.0 : 0.8;
   return matchedCount / titleWords.length >= threshold;
 }
