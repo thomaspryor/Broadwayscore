@@ -259,14 +259,37 @@ async function runAggregators(show) {
 
   // 1c. BWW Review Roundup (skip for off-Broadway; skip URL guessing for WE — BWW RR rare for WE)
   // For WE: only check if a manual --bww-roundup-url is provided (bypass discovery entirely)
-  // Resolve BWW RR URL: CLI arg > shows.json field > SERP discovery
-  const BWW_ROUNDUP_URL = BWW_ROUNDUP_URL_CLI || show.bwwRoundupUrl || '';
+  // Resolve BWW RR URL: CLI arg > shows.json field > reviews.php listing (Browserbase) > SERP fallback
+  let BWW_ROUNDUP_URL = BWW_ROUNDUP_URL_CLI || show.bwwRoundupUrl || '';
+  let bwwResolvedVia = BWW_ROUNDUP_URL_CLI ? 'CLI' : (show.bwwRoundupUrl ? 'shows.json' : null);
+
+  // Primary auto-discovery: scrape broadwayworld.com/reviews.php via Browserbase.
+  // SERP/Google indexing lags BWW publication by 1-6 hours — direct listing
+  // updates within minutes, so it's the reliable path. Costs ~$0.10/call.
+  // Skipped when a manual override is already present OR for off-Broadway (no BWW RR).
+  if (!BWW_ROUNDUP_URL && !isOffBroadway && !isWestEnd &&
+      process.env.BROWSERBASE_API_KEY && process.env.BROWSERBASE_PROJECT_ID) {
+    try {
+      const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
+      console.log('  Trying BWW reviews.php listing (Browserbase)...');
+      const discovery = await discoverBwwRoundupUrl(show);
+      if (discovery.url) {
+        BWW_ROUNDUP_URL = discovery.url;
+        bwwResolvedVia = 'reviews.php';
+        console.log(`  BWW RR URL auto-discovered: ${BWW_ROUNDUP_URL}`);
+      } else {
+        console.log('  reviews.php: no BWW RR for this show yet (will fall through to SERP)');
+      }
+    } catch (err) {
+      console.log(`  reviews.php discovery error (falling through to SERP): ${err.message}`);
+    }
+  }
+
   if (!isOffBroadway && (!isWestEnd || BWW_ROUNDUP_URL)) {
     try {
-      if (BWW_ROUNDUP_URL) console.log(`  BWW RR URL: ${BWW_ROUNDUP_URL} (${BWW_ROUNDUP_URL_CLI ? 'CLI' : 'shows.json'})`);
+      if (BWW_ROUNDUP_URL) console.log(`  BWW RR URL: ${BWW_ROUNDUP_URL} (${bwwResolvedVia || 'SERP'})`);
       console.log('  Checking BWW Review Roundup...');
-      // Pass runtime override when SERP discovery fails (unindexed page, wrong Google result).
-      // On opening night: use --bww-roundup-url=<url> to bypass discovery entirely.
+      // Pass runtime override when reviews.php/SERP discovery fails.
       const bwwOptions = BWW_ROUNDUP_URL ? { overrideUrl: BWW_ROUNDUP_URL } : {};
       const bww = await searchBWWRoundup(show, year, bwwOptions);
       if (bww && bww.html) {
