@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-17T15:37:56.179Z",
+  "timestamp": "2026-04-17T23:41:03.926Z",
   "stats": {
     "totalReviews": 34836,
     "alreadyFlagged": 15282,
     "dateGuardCatches": 88,
     "directorMismatch": 815,
-    "tvFilmSignals": 3142,
+    "tvFilmSignals": 3144,
     "londonSignals": 1005,
     "offBroadwaySignals": 882,
     "yearMismatch": 67,
@@ -35968,6 +35968,19 @@
     },
     {
       "showId": "proof-2026",
+      "file": "chicagotribune--unknown.json",
+      "publishDate": null,
+      "url": "https://www.chicagotribune.com/2026/04/16/review-proof-broadway-edebiri/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 71,
       "publishDate": "2026-04-16",
@@ -37707,6 +37720,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "scorched-earth-off-broadway-2026",
+      "file": "theatermania--kenji-fujishima.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://www.theatermania.com/news/review-a-cold-murder-case-becomes-dance-theater-in-scorched-earth_1832379/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
