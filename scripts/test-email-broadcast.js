@@ -11,7 +11,7 @@
  * Run: node scripts/test-email-broadcast.js
  */
 
-const { buildBroadcastOpeningNightHtml } = require('./lib/email-templates');
+const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine } = require('./lib/email-templates');
 
 // Minimal show fixture matching the interface from send-opening-night-broadcast.js
 function makeShow(overrides = {}) {
@@ -119,6 +119,59 @@ console.log('\n── buildBroadcastOpeningNightHtml ──\n');
   const html = buildBroadcastOpeningNightHtml([makeShow({ rave: 3, positive: 4, mixed: 0, negative: 0 })], null, 'west-end');
   assert('West End: pink brand color used', html.includes('#f472b6'));
   assert('West End: Mixed label absent when mixed === 0', !html.includes('Mixed'), 'Mixed rendered but mixed=0');
+}
+
+// ─── Unsubscribe link ────────────────────────────────────────────────────────
+console.log('\n── Unsubscribe link ──\n');
+
+{
+  // Broadcast draft (email=null) must use Resend's template variable — not a hardcoded URL.
+  // If this is wrong, the Resend editor will show a broken unsubscribe link and CAN-SPAM fails.
+  const html = buildBroadcastOpeningNightHtml([makeShow()], null, 'broadway');
+  assert('broadcast draft: uses Resend unsubscribe variable', html.includes('{{{RESEND_UNSUBSCRIBE_URL}}}'));
+  assert('broadcast draft: no hardcoded email in unsubscribe href', !html.includes('unsubscribe?email='));
+}
+
+{
+  // Preview send (email provided) must use custom URL, not the Resend variable.
+  const html = buildBroadcastOpeningNightHtml([makeShow()], 'test@example.com', 'broadway');
+  assert('preview: uses custom unsubscribe URL', html.includes('unsubscribe?email=test%40example.com'));
+  assert('preview: no Resend unsubscribe variable', !html.includes('{{{RESEND_UNSUBSCRIBE_URL}}}'));
+}
+
+{
+  // West End unsubscribe URL includes market param so WE subscribers land on correct page.
+  const html = buildBroadcastOpeningNightHtml([makeShow()], 'we@example.com', 'west-end');
+  assert('West End preview: unsubscribe URL includes market=west-end', html.includes('market=west-end'));
+}
+
+// ─── Subject line ────────────────────────────────────────────────────────────
+console.log('\n── Subject line ──\n');
+
+{
+  const single = [makeShow({ showTitle: 'Proof' })];
+  assert('single-show: mentions show title', buildBroadcastSubjectLine(single).includes('Proof'));
+  assert('single-show: no count prefix', !buildBroadcastSubjectLine(single).match(/^\d/));
+  assert('single-show: same for broadway and west-end',
+    buildBroadcastSubjectLine(single, 'broadway') === buildBroadcastSubjectLine(single, 'west-end'));
+}
+
+{
+  const two = [makeShow({ showTitle: 'Show A' }), makeShow({ showTitle: 'Show B' })];
+  assert('multi-show broadway: says "on Broadway"', buildBroadcastSubjectLine(two, 'broadway').includes('on Broadway'));
+  assert('multi-show west-end: says "in the West End"', buildBroadcastSubjectLine(two, 'west-end').includes('in the West End'));
+  assert('multi-show: includes show count', buildBroadcastSubjectLine(two, 'broadway').includes('2'));
+  assert('multi-show: does not include individual show names', !buildBroadcastSubjectLine(two, 'broadway').includes('Show A'));
+}
+
+{
+  // Subject must never contain words that trigger the FORBIDDEN_SUBJECT_WORDS safety abort.
+  // See send-opening-night-broadcast.js FORBIDDEN_SUBJECT_WORDS check.
+  const FORBIDDEN = ['test', 'ignore', 'debug', 'tracking'];
+  const show = makeShow({ showTitle: 'The Outsiders' });
+  const sub = buildBroadcastSubjectLine([show]);
+  const hit = FORBIDDEN.find(w => sub.toLowerCase().includes(w));
+  assert('subject: no forbidden words for normal show title', !hit, `found forbidden word "${hit}" in: ${sub}`);
 }
 
 console.log(`\n${passed + failed} tests: ${passed} passed, ${failed} failed\n`);
