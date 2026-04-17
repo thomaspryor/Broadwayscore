@@ -60,7 +60,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
-const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
+const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
@@ -1701,11 +1701,15 @@ async function searchBWWRoundup(show, year, options = {}) {
       if (homepageResult.found && homepageResult.html) {
         const roundupUrl = findBWWRoundupLinkOnHomepage(homepageResult.html, show.title);
         if (roundupUrl) {
-          console.log(`    ✓ Found roundup link on BWW homepage: ${roundupUrl}`);
-          const result = await searchAggregator('BWW', roundupUrl);
-          if (result.found && result.html && isBWWRoundupContent(result.html)) {
-            console.log(`    ✓ Confirmed BWW roundup content from homepage discovery`);
-            return { url: roundupUrl, html: result.html };
+          if (!validateBWWRoundupUrlMatchesShow(roundupUrl, show.title)) {
+            console.log(`    ✗ Homepage roundup URL slug doesn't match show title "${show.title}" — skipping: ${roundupUrl}`);
+          } else {
+            console.log(`    ✓ Found roundup link on BWW homepage: ${roundupUrl}`);
+            const result = await searchAggregator('BWW', roundupUrl);
+            if (result.found && result.html && isBWWRoundupContent(result.html)) {
+              console.log(`    ✓ Confirmed BWW roundup content from homepage discovery`);
+              return { url: roundupUrl, html: result.html };
+            }
           }
         } else {
           console.log('    No matching roundup link found on BWW homepage');
@@ -1730,12 +1734,16 @@ async function searchBWWRoundup(show, year, options = {}) {
       : null;
     if (searchResult) {
       console.log(`    ✓ Found via Google: ${searchResult}`);
-      if (chromium) {
-        const result = await scrapeBWWRoundupWithPlaywright(searchResult);
-        if (result) return { url: searchResult, html: result.html };
+      if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title)) {
+        console.log(`    ✗ SERP returned wrong-show roundup — URL slug doesn't match title "${show.title}" — skipping`);
+      } else {
+        if (chromium) {
+          const result = await scrapeBWWRoundupWithPlaywright(searchResult);
+          if (result) return { url: searchResult, html: result.html };
+        }
+        const result = await searchAggregator('BWW', searchResult);
+        if (result.found && result.html && isBWWRoundupContent(result.html)) return { url: searchResult, html: result.html };
       }
-      const result = await searchAggregator('BWW', searchResult);
-      if (result.found && result.html && isBWWRoundupContent(result.html)) return { url: searchResult, html: result.html };
     }
   } catch (e) {
     console.log('    Google search unavailable, falling back to URL patterns...');
