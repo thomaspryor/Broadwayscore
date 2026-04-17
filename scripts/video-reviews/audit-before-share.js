@@ -32,10 +32,10 @@ const CLASSIFIED_DIR = path.join(TRANSCRIPTS_DIR, 'classified');
 const OUT_PATH = path.join(ROOT, 'data/audit/video-review-audit.json');
 
 // Auditor defaults to GPT-4o — an independent second opinion on Opus's work.
-// Set AUDIT_PROVIDER=anthropic + AUDIT_MODEL=claude-opus-4-6 to run with Opus
+// Set AUDIT_PROVIDER=anthropic + AUDIT_MODEL=claude-opus-4-7 to run with Opus
 // (useful for cross-check or if OpenAI is down).
 const AUDIT_PROVIDER = process.env.AUDIT_PROVIDER || 'openai';
-const MODEL = process.env.AUDIT_MODEL || (AUDIT_PROVIDER === 'openai' ? 'gpt-4o' : 'claude-opus-4-6');
+const MODEL = process.env.AUDIT_MODEL || (AUDIT_PROVIDER === 'openai' ? 'gpt-4o' : 'claude-opus-4-7');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;

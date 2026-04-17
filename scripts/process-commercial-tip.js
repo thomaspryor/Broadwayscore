@@ -83,7 +83,7 @@ function matchShowToSlug(showName, commercial, shows) {
 function callClaude(prompt) {
   return new Promise((resolve, reject) => {
     const payload = JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
     });

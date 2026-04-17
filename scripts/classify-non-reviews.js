@@ -123,11 +123,12 @@ function callClaude(systemPrompt, userPrompt) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
   const body = JSON.stringify({
-    model: 'claude-sonnet-4-5-20250929',
+    model: 'claude-sonnet-4-6',
     max_tokens: 200,
     temperature: 0.1,
     system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }]
+    messages: [{ role: 'user', content: userPrompt }],
+    tools: [{ type: 'advisor_20260301', name: 'advisor', model: 'claude-opus-4-7', max_uses: 1 }]
   });
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.anthropic.com/v1/messages', {
@@ -135,7 +136,8 @@ function callClaude(systemPrompt, userPrompt) {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'advisor-tool-2026-03-01'
       }
     }, (res) => {
       let data = '';
