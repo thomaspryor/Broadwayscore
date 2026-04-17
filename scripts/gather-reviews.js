@@ -1729,21 +1729,21 @@ async function searchBWWRoundup(show, year, options = {}) {
     const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" ${marketKeyword} ${year}`;
     console.log(`    Searching Google for BWW roundup...`);
     const serpResults = await serpQuery(searchQuery, { nbResults: 5 });
-    const searchResult = serpResults
-      ? (serpResults.map(r => r.url).filter(url => url && url.includes('broadwayworld.com/article/Review-Roundup'))[0] || null)
-      : null;
-    if (searchResult) {
-      console.log(`    ✓ Found via Google: ${searchResult}`);
+    const serpCandidates = serpResults
+      ? serpResults.map(r => r.url).filter(url => url && url.includes('broadwayworld.com/article/Review-Roundup'))
+      : [];
+    for (const searchResult of serpCandidates) {
       if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title)) {
-        console.log(`    ✗ SERP returned wrong-show roundup — URL slug doesn't match title "${show.title}" — skipping`);
-      } else {
-        if (chromium) {
-          const result = await scrapeBWWRoundupWithPlaywright(searchResult);
-          if (result) return { url: searchResult, html: result.html };
-        }
-        const result = await searchAggregator('BWW', searchResult);
-        if (result.found && result.html && isBWWRoundupContent(result.html)) return { url: searchResult, html: result.html };
+        console.log(`    ✗ SERP result doesn't match title "${show.title}" — skipping: ${searchResult.substring(0, 80)}`);
+        continue;
       }
+      console.log(`    ✓ Found via Google: ${searchResult}`);
+      if (chromium) {
+        const result = await scrapeBWWRoundupWithPlaywright(searchResult);
+        if (result) return { url: searchResult, html: result.html };
+      }
+      const result = await searchAggregator('BWW', searchResult);
+      if (result.found && result.html && isBWWRoundupContent(result.html)) return { url: searchResult, html: result.html };
     }
   } catch (e) {
     console.log('    Google search unavailable, falling back to URL patterns...');
