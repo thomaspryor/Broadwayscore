@@ -44,6 +44,10 @@ const SEND_TO = SEND_TO_ARG ? SEND_TO_ARG.split('=')[1] : null; // Preview mode:
 // show in the same market that meets only the looser internal threshold.
 const SHOWS_ARG = process.argv.find(a => a.startsWith('--shows='));
 const ALLOWED_SHOW_IDS = SHOWS_ARG ? new Set(SHOWS_ARG.split('=')[1].split(',').map(s => s.trim()).filter(Boolean)) : null;
+// --recreate-draft: delete the old Resend draft (if any) and create a fresh one.
+// Use this after fixing a bug in the email template — clears completed flag so the script
+// doesn't bail with "already broadcast". Safe: only creates a draft, never calls /send.
+const RECREATE_DRAFT = process.argv.includes('--recreate-draft');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -330,10 +334,11 @@ async function main() {
   // In preview mode, there's no reason to keep re-previewing a show whose full broadcast
   // has already been sent (completed:true). This prevents repeated preview spam when a
   // newly-opened show with 0 reviews keeps the workflow running alongside a completed show.
+  // --recreate-draft bypasses this gate so a corrected draft can replace a bad one.
   const pendingShows = recentlyOpened.filter(s => {
     const showId = s.id || s.slug;
     const individualSent = sentData.shows[showId];
-    if (individualSent && individualSent.completed) {
+    if (individualSent && individualSent.completed && !RECREATE_DRAFT) {
       console.log(`  Skipping ${s.title} — already broadcast (completed)`);
       return false;
     }
@@ -449,6 +454,17 @@ async function main() {
     console.log(`  - ${s.showTitle}: score ${s.score || 'TBD'}, ${s.reviewCount} reviews`);
   }
 
+  // Warn if any show is missing consensus — critic-consensus.json may not be generated yet.
+  // The email will still be created, but without the Critics' Take section. If consensus
+  // arrives later, use --recreate-draft to replace the draft with a complete version.
+  const missingConsensus = showsForEmail.filter(s => !s.consensusText);
+  if (missingConsensus.length > 0) {
+    console.warn(`\n⚠️  Missing Critics' Take for: ${missingConsensus.map(s => s.showTitle).join(', ')}`);
+    console.warn(`   critic-consensus.json may not be generated yet.`);
+    console.warn(`   Continuing — email will send without Critics' Take.`);
+    console.warn(`   Once consensus is available, run again with --recreate-draft to replace this draft.`);
+  }
+
   // Build subject line — kept clean (no [PREVIEW] tag) so it's safe to reuse for the
   // actual subscriber broadcast. The preview-only subject is derived separately below
   // and is only used when we call the Resend single-recipient /emails endpoint.
@@ -466,7 +482,50 @@ async function main() {
   const broadcastKey = `${MARKET}:` + showsForEmail.map(s => s.showId).sort().join('+');
   const previousSent = sentData.shows[broadcastKey];
 
-  if (previousSent?.completed && !SEND_TO) {
+  // --recreate-draft: delete the old Resend draft and clear the sent record so we proceed fresh.
+  if (RECREATE_DRAFT && previousSent) {
+    if (previousSent.draftId) {
+      console.log(`\n--recreate-draft: deleting old draft ${previousSent.draftId}...`);
+      try {
+        const { default: https } = await import('https');
+        await new Promise((resolve, reject) => {
+          const req = https.request({
+            hostname: 'api.resend.com',
+            path: `/broadcasts/${previousSent.draftId}`,
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${RESEND_API_KEY}` },
+          }, res => {
+            let body = '';
+            res.on('data', c => body += c);
+            res.on('end', () => {
+              if (res.statusCode >= 200 && res.statusCode < 300) {
+                console.log(`  Old draft deleted from Resend`);
+                resolve();
+              } else {
+                console.warn(`  Could not delete old draft (${res.statusCode}: ${body.slice(0, 100)}) — continuing anyway`);
+                resolve();
+              }
+            });
+          });
+          req.on('error', err => { console.warn(`  Delete request failed: ${err.message} — continuing`); resolve(); });
+          req.end();
+        });
+      } catch (err) {
+        console.warn(`  Could not delete old draft: ${err.message} — continuing`);
+      }
+    }
+    // Clear all sent records for this broadcast so the script treats it as new
+    delete sentData.shows[broadcastKey];
+    for (const s of showsForEmail) {
+      if (sentData.shows[s.showId]?.broadcastKey === broadcastKey) {
+        delete sentData.shows[s.showId];
+      }
+    }
+    saveSentData(sentData);
+    console.log(`  Sent records cleared — creating fresh draft`);
+  }
+
+  if (previousSent?.completed && !SEND_TO && !RECREATE_DRAFT) {
     console.log('Broadcast already completed for this show combination — nothing to do');
     process.exit(0);
   }

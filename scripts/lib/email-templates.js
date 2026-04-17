@@ -66,6 +66,51 @@ function getScoreColor(score) {
   return { bg: '#ef4444', text: '#ffffff', label: 'Stay Away' };
 }
 
+// Single source of truth for the 4-tier breakdown bar + label row.
+// Both buildOpeningNightHtml and buildBroadcastOpeningNightHtml call this so
+// the two templates can never silently diverge (as happened in Apr 2026).
+function buildBreakdownHtml(rave, positive, mixed, negative) {
+  const total = rave + positive + mixed + negative;
+  if (total === 0) return '';
+
+  let raveW = 0, posW = 0, mixW = 0, negW = 0;
+  raveW = Math.max(Math.round(rave / total * 100), rave > 0 ? 1 : 0);
+  posW = Math.max(Math.round(positive / total * 100), positive > 0 ? 1 : 0);
+  negW = Math.max(Math.round(negative / total * 100), negative > 0 ? 1 : 0);
+  mixW = 100 - raveW - posW - negW;
+  if (mixW < 0) mixW = 0;
+  if (mixed > 0 && mixW === 0) { mixW = 1; posW = Math.max(posW - 1, 0); }
+
+  return `
+  <tr><td style="padding:16px 24px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
+      <tr>
+        ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#FFD700;"></td>` : ''}
+        ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
+        ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#d97706;"></td>` : ''}
+        ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td style="padding:8px 24px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        ${[
+          rave > 0     ? { color: '#FFD700', count: rave,     label: 'Rave'     } : null,
+          positive > 0 ? { color: '#22c55e', count: positive, label: 'Positive' } : null,
+          mixed > 0    ? { color: '#d97706', count: mixed,    label: 'Mixed'    } : null,
+          negative > 0 ? { color: '#ef4444', count: negative, label: 'Negative' } : null,
+        ].filter(Boolean).map((seg, i, arr) => {
+          const align = i === 0 ? 'left' : i === arr.length - 1 ? 'right' : 'center';
+          return `<td align="${align}" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background-color:${seg.color};vertical-align:middle;margin-right:4px;"></span><span style="font-weight:600;color:${seg.color};">${seg.count}</span> ${seg.label}
+          </td>`;
+        }).join('')}
+      </tr>
+    </table>
+  </td></tr>`;
+}
+
 // Map change types to show page section anchors for deep linking
 function getChangeAnchor(changeType) {
   switch (changeType) {
@@ -176,46 +221,7 @@ function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, 
     ? `Based on ${reviewCount} Critic Review${reviewCount !== 1 ? 's' : ''}`
     : 'Reviews pending';
 
-  // 4-tier breakdown bar matching the live site
-  let raveW = 0, posW = 0, mixW = 0, negW = 0;
-  if (total > 0) {
-    raveW = Math.max(Math.round(rave / total * 100), rave > 0 ? 1 : 0);
-    posW = Math.max(Math.round(positive / total * 100), positive > 0 ? 1 : 0);
-    negW = Math.max(Math.round(negative / total * 100), negative > 0 ? 1 : 0);
-    mixW = 100 - raveW - posW - negW;
-    if (mixW < 0) mixW = 0;
-    if (mixed > 0 && mixW === 0) { mixW = 1; posW = Math.max(posW - 1, 0); }
-  }
-
-  // Breakdown bar HTML (only show if we have reviews)
-  const breakdownHtml = total > 0 ? `
-  <tr><td style="padding:16px 24px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
-      <tr>
-        ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#FFD700;"></td>` : ''}
-        ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
-        ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#d97706;"></td>` : ''}
-        ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
-      </tr>
-    </table>
-  </td></tr>
-  <tr><td style="padding:8px 24px 0;">
-    <table width="100%" cellpadding="0" cellspacing="0">
-      <tr>
-        ${[
-          rave > 0     ? { color: '#FFD700', count: rave,     label: 'Rave'     } : null,
-          positive > 0 ? { color: '#22c55e', count: positive, label: 'Positive' } : null,
-          mixed > 0    ? { color: '#d97706', count: mixed,    label: 'Mixed'    } : null,
-          negative > 0 ? { color: '#ef4444', count: negative, label: 'Negative' } : null,
-        ].filter(Boolean).map((seg, i, arr) => {
-          const align = i === 0 ? 'left' : i === arr.length - 1 ? 'right' : 'center';
-          return `<td align="${align}" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-            <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background-color:${seg.color};vertical-align:middle;margin-right:4px;"></span><span style="font-weight:600;color:${seg.color};">${seg.count}</span> ${seg.label}
-          </td>`;
-        }).join('')}
-      </tr>
-    </table>
-  </td></tr>` : '';
+  const breakdownHtml = buildBreakdownHtml(rave, positive, mixed, negative);
 
   // Consensus block (only show if available)
   const consensusHtml = openingChange.consensusText ? `
@@ -331,45 +337,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
       ? `Based on ${reviewCount} Critic Review${reviewCount !== 1 ? 's' : ''}`
       : 'Reviews pending';
 
-    // 4-tier breakdown bar matching the live site
-    let raveW = 0, posW = 0, mixW = 0, negW = 0;
-    if (total > 0) {
-      raveW = Math.max(Math.round(rave / total * 100), rave > 0 ? 1 : 0);
-      posW = Math.max(Math.round(positive / total * 100), positive > 0 ? 1 : 0);
-      negW = Math.max(Math.round(negative / total * 100), negative > 0 ? 1 : 0);
-      mixW = 100 - raveW - posW - negW;
-      if (mixW < 0) mixW = 0;
-      if (mixed > 0 && mixW === 0) { mixW = 1; posW = Math.max(posW - 1, 0); }
-    }
-
-    const breakdownHtml = total > 0 ? `
-      <tr><td style="padding:16px 24px 0;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
-          <tr>
-            ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#FFD700;"></td>` : ''}
-            ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
-            ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#d97706;"></td>` : ''}
-            ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
-          </tr>
-        </table>
-      </td></tr>
-      <tr><td style="padding:8px 24px 0;">
-        <table width="100%" cellpadding="0" cellspacing="0">
-          <tr>
-            ${[
-              rave > 0     ? { color: '#FFD700', count: rave,     label: 'Rave'     } : null,
-              positive > 0 ? { color: '#22c55e', count: positive, label: 'Positive' } : null,
-              mixed > 0    ? { color: '#d97706', count: mixed,    label: 'Mixed'    } : null,
-              negative > 0 ? { color: '#ef4444', count: negative, label: 'Negative' } : null,
-            ].filter(Boolean).map((seg, i, arr) => {
-              const align = i === 0 ? 'left' : i === arr.length - 1 ? 'right' : 'center';
-              return `<td align="${align}" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
-                <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background-color:${seg.color};vertical-align:middle;margin-right:4px;"></span><span style="font-weight:600;color:${seg.color};">${seg.count}</span> ${seg.label}
-              </td>`;
-            }).join('')}
-          </tr>
-        </table>
-      </td></tr>` : '';
+    const breakdownHtml = buildBreakdownHtml(rave, positive, mixed, negative);
 
     const consensusHtml = show.consensusText ? `
       <tr><td style="padding:20px 24px 0;">
