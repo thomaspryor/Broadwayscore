@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T09:32:55.758Z",
+  "generatedAt": "2026-04-17T09:25:19.580Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -3722,6 +3722,134 @@
       "researchedAt": "2026-04-16T09:32:55.758Z",
       "model": "o4-mini",
       "researchTrigger": "manual"
+    },
+    "heathers-the-musical-off-broadway": {
+      "capitalization": 12000000,
+      "capitalizationSource": "NYC tax credit (expected $3M credit) ([www.broadwayworld.com](https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904#:~:text=For%20off,Sexual%20Misconduct%20of%20the%20Middle))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Windfall",
+      "notes": "Tax‐credit filings suggest a ~$12M production cost.  The show extended multiple times on strong advance sales ([www.theatrely.com](https://www.theatrely.com/post/heathers-extends-through-january-at-new-world-stages#:~:text=How%20very%21%20Heathers%20has%20extended,25%2C%202026)), indicating robust business.  No official weekly nut or recoup figures were published.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+          "date": "2025-09-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatrely.com/post/heathers-extends-through-january-at-new-world-stages",
+          "date": "2025-06-30"
+        }
+      ],
+      "title": "Heathers The Musical",
+      "slug": "heathers-the-musical-off-broadway",
+      "openingDate": "2025-06-22",
+      "status": "open",
+      "researchedAt": "2026-04-17T08:42:21.238Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "the-peculiar-patriot-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No financial figures (budget or weekly cost) are publicly available for this non-profit co-production ([www.talkinbroadway.com](https://www.talkinbroadway.com/allthatchat_new/d.php?id=2630296#:~:text=AND%20NYTW%20AND%20NATIONAL%20BLACK,4TH%20STREET%3A%20MENTION%20MY%20BEAUTY)) ([nationalblacktheatre.org](https://nationalblacktheatre.org/production/the-peculiar-patriot/#:~:text=MAINSTAGE%20PRODUCTION)). The show opened in May 2026 and is not reported as recouped (recoupment status unknown).",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2630296",
+          "date": "2025-08-08"
+        },
+        {
+          "type": "manual",
+          "url": "https://nationalblacktheatre.org/production/the-peculiar-patriot/",
+          "date": null
+        }
+      ],
+      "title": "The Peculiar Patriot",
+      "slug": "the-peculiar-patriot-off-broadway",
+      "openingDate": "2026-05-05",
+      "status": "previews",
+      "researchedAt": "2026-04-17T08:46:31.631Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "school-girls-or-the-african-mean-girls-play": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "School Girls is a Broadway-bound MTC production with performances starting Sep 8, 2026 ([playbill.com](https://playbill.com/article/jocelyn-biohs-school-girls-or-the-african-mean-girls-play-will-get-a-broadway-bow#:~:text=Manhattan%20Theatre%20Club%20%20will,Productions%20and%20Susan%20Kelechi%20Watson)). MTC is a not-for-profit theatre ([www.manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/#:~:text=Manhattan%20Theatre%20Club%20is%20one,at%20New%20York%20City%20Center)). No budget or weekly cost figures are publicly reported, and recoupment is not applicable as the show has not yet opened.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/jocelyn-biohs-school-girls-or-the-african-mean-girls-play-will-get-a-broadway-bow",
+          "date": "2026-03-17"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/",
+          "date": null
+        }
+      ],
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "slug": "school-girls-or-the-african-mean-girls-play",
+      "openingDate": "2026-09-08",
+      "status": "previews",
+      "researchedAt": "2026-04-17T09:21:10.344Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "los-soles-truncos-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public data on budget or weekly costs; it opened Feb 21, 2025 ([www.broadwayworld.com](https://www.broadwayworld.com/off-broadway/article/Additional-Performances-of-LOS-SOLES-TRUNCOS-to-be-Presented-at-Repertorio-20250429#:~:text=Repertorio%20will%20present%20additional%20performances,on%20Friday%2C%20February%2021%2C%202025)) and extends into 2026 ([www.broadwayworld.com](https://www.broadwayworld.com/off-broadway/article/Additional-Performances-of-LOS-SOLES-TRUNCOS-to-be-Presented-at-Repertorio-20250429#:~:text=,class%20acting%20trio)).  Produced by nonprofit Repertorio Español ([www.idealist.org](https://www.idealist.org/es/ong/09a75a8a5e924c6b8a1ac1c786b0bdb2-repertorio-espanol-new-york#:~:text=theatre%20to%20a%20broad%20audience,theatre%20company%20in%20the%20United)) with no reported tax credit or recoupment information.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/article/Additional-Performances-of-LOS-SOLES-TRUNCOS-to-be-Presented-at-Repertorio-20250429",
+          "date": "2025-04-29"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.idealist.org/es/ong/09a75a8a5e924c6b8a1ac1c786b0bdb2-repertorio-espanol-new-york",
+          "date": null
+        }
+      ],
+      "title": "LOS SOLES TRUNCOS",
+      "slug": "los-soles-truncos-off-broadway",
+      "openingDate": "2025-02-20",
+      "status": "open",
+      "researchedAt": "2026-04-17T09:25:19.580Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
     }
   }
 }
