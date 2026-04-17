@@ -81,7 +81,8 @@ function loadAllowlist() {
       result[entry.showId] = entry;
     }
     return result;
-  } catch {
+  } catch (e) {
+    if (e.code !== 'ENOENT') console.warn(`[drift] allowlist load error: ${e.message}`);
     return {};
   }
 }
@@ -232,7 +233,7 @@ async function main() {
     console.log('\n' + header);
     console.log('─'.repeat(80));
     for (const r of results) {
-      const alertMark = r.alert ? '🔴 YES' : r.drift > THRESHOLD ? '⏳ grace' : '✅ ok';
+      const alertMark = r.alert ? '🔴 YES' : r.suppressed ? '⏭  suppressed' : r.drift > THRESHOLD ? '⏳ grace' : '✅ ok';
       const liveFmt = r.live != null ? String(r.live) : `err(${r.liveErr})`;
       console.log([r.showId, r.openingDate || '?', r.local, r.aggregate, liveFmt, r.drift, alertMark].join('\t'));
     }
