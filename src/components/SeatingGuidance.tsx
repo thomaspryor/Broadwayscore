@@ -82,6 +82,49 @@ function VerdictChip({ section }: { section: SeatingSection }) {
   );
 }
 
+function ValuePickChip() {
+  return (
+    <span
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill text-[11px] font-semibold uppercase tracking-wide bg-brand/20 text-brand border border-brand/40"
+      aria-label="Best value — bang for buck"
+    >
+      <span aria-hidden="true" className="text-xs leading-none">★</span>
+      <span>Best value</span>
+    </span>
+  );
+}
+
+const SHOW_TAG_LABEL: Record<string, string> = {
+  'musical': 'musicals',
+  'play': 'plays',
+  'dance-heavy': 'dance-heavy shows',
+  'spectacle': 'spectacle',
+  'intimate-drama': 'intimate drama',
+};
+
+function ShowContextLine({ bestFor, worstFor }: { bestFor?: string[]; worstFor?: string[] }) {
+  const hasBest = bestFor && bestFor.length > 0;
+  const hasWorst = worstFor && worstFor.length > 0;
+  if (!hasBest && !hasWorst) return null;
+  const bestStr = hasBest ? bestFor.map((t) => SHOW_TAG_LABEL[t] || t).join(', ') : '';
+  const worstStr = hasWorst ? worstFor.map((t) => SHOW_TAG_LABEL[t] || t).join(', ') : '';
+  return (
+    <div className="text-[11px] text-gray-500 mt-1 leading-relaxed">
+      {hasBest && (
+        <span>
+          <span className="text-gray-400">Best for</span> {bestStr}
+        </span>
+      )}
+      {hasBest && hasWorst && <span className="mx-1.5 text-gray-600">·</span>}
+      {hasWorst && (
+        <span>
+          <span className="text-gray-400">Skip for</span> {worstStr}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function SectionRow({ section, isHero = false, compactRationale = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean }) {
   const priceLabel = section.priceTier ? PRICE_TIER_LABEL[section.priceTier] : null;
   const nameClass = isHero ? 'text-base font-bold text-white' : 'text-sm font-semibold text-gray-100';
@@ -98,13 +141,22 @@ function SectionRow({ section, isHero = false, compactRationale = false }: { sec
           <div className="flex items-center gap-2 flex-wrap leading-tight">
             <h3 className={nameClass}>{section.name}</h3>
             <VerdictChip section={section} />
+            {section.isValuePick && <ValuePickChip />}
             {section.rowRange && (
-              <span className="text-gray-500 text-xs font-normal">rows {section.rowRange}</span>
+              <span className="text-gray-500 text-xs font-normal">
+                rows {section.rowRange}
+                {section.bestRow && (
+                  <span className="text-brand ml-1">
+                    · {section.bestRow} sweetest
+                  </span>
+                )}
+              </span>
             )}
             {priceLabel && (
               <span className="text-gray-500 text-xs">· {priceLabel}</span>
             )}
           </div>
+          <ShowContextLine bestFor={section.bestFor} worstFor={section.worstFor} />
         </div>
         {typeof section.dataPoints === 'number' && section.dataPoints > 0 && (
           <span className="text-[10px] text-gray-600 whitespace-nowrap flex-shrink-0" title={`${section.dataPoints} audience reports informed this verdict`}>
