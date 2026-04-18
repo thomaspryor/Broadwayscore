@@ -336,41 +336,13 @@ async function fixCreativeTeam(show, todayTixIds) {
     }
   }
 
-  // Try LLM generation
-  if (ANTHROPIC_API_KEY) {
-    console.log(`    Generating via Claude...`);
-    creativeTeam = await generateCreativeTeamWithLLM(show);
-    if (creativeTeam && creativeTeam.length >= 1) {
-      // Filter through shared validator (LLMs sometimes return descriptions/hedges)
-      creativeTeam = creativeTeam.filter(m => isValidCreativeTeamName(m.name));
-      // Dedup: if same person appears in multiple roles, keep only the first
-      // (LLMs hallucinate people into roles — e.g. playwright listed as director)
-      const seen = new Set();
-      creativeTeam = creativeTeam.filter(m => {
-        const key = m.name.toLowerCase().trim();
-        if (seen.has(key)) {
-          console.log(`    ⚠️  Dropped duplicate creative team entry: ${m.name} (${m.role})`);
-          return false;
-        }
-        seen.add(key);
-        return true;
-      });
-      // Synopsis cross-check: if synopsis explicitly names "directed by X", the
-      // LLM's director must be X. Catches cross-production hallucinations like
-      // Seagull: True Story (Molochnikov) getting Jamie Lloyd from his 2025 WE
-      // Seagull production.
-      if (!creativeTeamMatchesSynopsis(creativeTeam, show.synopsis)) {
-        console.log(`    ⚠️  LLM director contradicts synopsis for ${show.title}; rejecting.`);
-        return null;
-      }
-
-      if (creativeTeam.length >= 1) {
-        show.creativeTeam = creativeTeam;
-        return `Generated creative team via Claude for ${show.title} (${creativeTeam.length} members)`;
-      }
-    }
-  }
-
+  // LLM fallback intentionally removed: Haiku hallucinated plausible-sounding
+  // directors on 6+ shows (e.g. film directors Billy Wilder/Miloš Forman for
+  // stage adaptations of their films; dead directors for new productions). The
+  // synopsis cross-check didn't catch these because synopses rarely name the
+  // director explicitly. Wrong data is worse than missing data — leave blank
+  // and let a human fill it in, or wait for TodayTix to add structured data.
+  console.log(`    ⚠️  TodayTix has no structured creative team data — leaving blank.`);
   return null;
 }
 
