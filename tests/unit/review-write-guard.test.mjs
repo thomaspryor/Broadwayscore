@@ -227,6 +227,47 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
   });
 });
 
+describe('force=true audit trail', () => {
+  test('warns with field names when force=true overwrites protected fields', () => {
+    const filePath = path.join(tmpDir, 'force-warn.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      showId: 'test-show',
+      assignedScore: 85,
+      fullText: 'Important review text',
+    }, null, 2));
+
+    const warnings = [];
+    const originalWarn = console.warn;
+    console.warn = (...args) => warnings.push(args.join(' '));
+    try {
+      safeWriteReview(filePath, { showId: 'test-show' }, { force: true });
+    } finally {
+      console.warn = originalWarn;
+    }
+
+    const forceWarning = warnings.find(w => w.includes('[review-write-guard] FORCE write'));
+    assert.ok(forceWarning, `Expected a FORCE write warning but got: ${JSON.stringify(warnings)}`);
+    assert.ok(forceWarning.includes('assignedScore'), `Expected 'assignedScore' in warning: ${forceWarning}`);
+    assert.ok(forceWarning.includes('fullText'), `Expected 'fullText' in warning: ${forceWarning}`);
+  });
+
+  test('does not warn when force=true on a new file (no protected data to lose)', () => {
+    const filePath = path.join(tmpDir, 'force-new.json');
+
+    const warnings = [];
+    const originalWarn = console.warn;
+    console.warn = (...args) => warnings.push(args.join(' '));
+    try {
+      safeWriteReview(filePath, { showId: 'test-show', assignedScore: 85 }, { force: true });
+    } finally {
+      console.warn = originalWarn;
+    }
+
+    const forceWarnings = warnings.filter(w => w.includes('[review-write-guard] FORCE write'));
+    assert.equal(forceWarnings.length, 0, `Expected no FORCE write warning for new file, got: ${JSON.stringify(forceWarnings)}`);
+  });
+});
+
 describe('checkForDataLoss', () => {
   test('returns empty for new file', () => {
     const losses = checkForDataLoss('/nonexistent/file.json', { showId: 'test' });

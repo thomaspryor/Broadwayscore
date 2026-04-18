@@ -980,7 +980,7 @@ const crossShowFingerprints = new Map();
             if (norm && bwUrls.has(norm)) {
               d.wrongProduction = true;
               d.wrongProductionNote = `OB review superseded by Broadway transfer ${bw.id} (shared URL)`;
-              fs.writeFileSync(fp, JSON.stringify(d, null, 2) + '\n');
+              safeWriteReview(fp, d);
               transferFlagged++;
             }
           } catch {}
@@ -1038,7 +1038,7 @@ const crossShowFingerprints = new Map();
           console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is 90+ days before show ${showEarliest.toISOString().split('T')[0]}`);
           d.wrongProduction = true;
           d.wrongProductionNote = `Pre-opening guard: review dated ${reviewDate.toISOString().split('T')[0]} is 90+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
-          fs.writeFileSync(path.join(sDir, f), JSON.stringify(d, null, 2) + '\n');
+          safeWriteReview(path.join(sDir, f), d);
           preOpenFlagged++;
         }
       } catch { /* skip unreadable */ }
@@ -1081,7 +1081,7 @@ const crossShowFingerprints = new Map();
             }
           }
           if (merged) {
-            fs.writeFileSync(expectedPath, JSON.stringify(existingData, null, 2) + '\n');
+            safeWriteReview(expectedPath, existingData);
           }
           fs.unlinkSync(filePath);
           mergedCount++;
@@ -1133,7 +1133,7 @@ const crossShowFingerprints = new Map();
             }
           }
           if (merged) {
-            fs.writeFileSync(expectedPath, JSON.stringify(existingData, null, 2) + '\n');
+            safeWriteReview(expectedPath, existingData);
           }
           fs.unlinkSync(filePath);
           mergedCount++;
@@ -1249,7 +1249,7 @@ const crossShowFingerprints = new Map();
         }
         if (promoted) {
           d.contentVerificationPromoted = `rebuild: promoted from contentVerification (${cv.verifiedBy}, ${cv.confidence})`;
-          try { fs.writeFileSync(path.join(sDir, f), JSON.stringify(d, null, 2) + '\n'); } catch {}
+          try { safeWriteReview(path.join(sDir, f), d); } catch {}
           cvPromoted++;
         }
       } catch { /* skip malformed */ }
@@ -1294,7 +1294,7 @@ showDirs.forEach(showId => {
           if (promoted) {
             ud.contentVerificationPromoted = `rebuild: promoted from contentVerification (${ucv.verifiedBy}, ${ucv.confidence})`;
             stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
-            try { fs.writeFileSync(path.join(upcomingDir, uf), JSON.stringify(ud, null, 2) + '\n'); } catch (e) {}
+            try { safeWriteReview(path.join(upcomingDir, uf), ud); } catch (e) {}
           }
         } catch { /* skip malformed */ }
       }
@@ -1403,7 +1403,7 @@ showDirs.forEach(showId => {
           data.originalScoreSource = null;
         }
         try {
-          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+          safeWriteReview(filePath, data, { force: true });
           stats.migratedAggregatorScore = (stats.migratedAggregatorScore || 0) + 1;
         } catch (e) {
           console.warn('  Failed to write back aggregator-score migration:', file, e.message);
@@ -1446,7 +1446,7 @@ showDirs.forEach(showId => {
             sourceData.contentTier = tierResult.contentTier;
             sourceData.contentTierReason = tierResult.tierReason;
             sourceData.wordCount = tierResult.wordCount;
-            fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+            safeWriteReview(filePath, sourceData, { force: true });
             stats.reclassifiedTiers = (stats.reclassifiedTiers || 0) + 1;
           } catch (writeErr) {
             // Non-fatal: source file write failure doesn't block rebuild
@@ -1476,7 +1476,7 @@ showDirs.forEach(showId => {
               delete sourceData.incompleteReason;
               delete sourceData.incompleteDetail;
             }
-            fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+            safeWriteReview(filePath, sourceData, { force: true });
           } catch (writeErr) { /* Non-fatal */ }
         }
       }
@@ -2311,7 +2311,7 @@ showDirs.forEach(showId => {
             sourceData.routedFromShowId = showId;
             sourceData.routedReason = `${yearSource}=${detectedYear} closer to ${targetShowId} (${decision.targetYear}) than ${showId} (${guard.showYear})`;
             sourceData.routedAt = new Date().toISOString();
-            fs.writeFileSync(targetPath, JSON.stringify(sourceData, null, 2) + '\n');
+            safeWriteReview(targetPath, sourceData);
             targetWritten = true;
             fs.unlinkSync(sourcePath);
             console.log(`  [REROUTE] ${showId}/${file} → ${targetShowId}/${file} (${yearSource}=${detectedYear}, dist ${decision.distance})`);
@@ -2485,7 +2485,7 @@ showDirs.forEach(showId => {
                 sourceData.fullText = sourceData.wrongFullText;
                 delete sourceData.wrongFullText;
               }
-              fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+              safeWriteReview(filePath, sourceData, { force: true });
             } catch (e) { console.warn('  Failed to write back showNotMentioned fix:', filePath, e.message); }
           }
         }
@@ -2524,7 +2524,7 @@ showDirs.forEach(showId => {
                   sourceData.fullText = sourceData.wrongFullText;
                   delete sourceData.wrongFullText;
                 }
-                fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+                safeWriteReview(filePath, sourceData, { force: true });
               } catch (e) { console.warn('  Failed to write back showNotMentioned CV fix:', filePath, e.message); }
             } else {
               // LLM verified valid but content fails keyword check — likely an LLM hallucination.
@@ -3041,7 +3041,7 @@ showDirs.forEach(showId => {
         try {
           const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           sourceData.designation = desiredDesignation;
-          fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2));
+          safeWriteReview(filePath, sourceData, { force: true });
         } catch (e) { /* read-only in CI */ }
       }
 

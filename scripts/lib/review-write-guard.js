@@ -100,6 +100,29 @@ function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   const preserved = [];
 
+  // Bug #25: When force=true, log protected fields that would be lost so CI logs show it.
+  if (force && fs.existsSync(filePath)) {
+    let existingForAudit;
+    try { existingForAudit = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch {}
+    if (existingForAudit) {
+      const effectiveFields = getEffectiveProtectedFields(existingForAudit);
+      const overriding = effectiveFields.filter(k => {
+        const existingVal = existingForAudit[k];
+        const newVal = newData[k];
+        const existingIsReal = existingVal !== undefined && existingVal !== null
+          && !(typeof existingVal === 'string' && existingVal.length === 0)
+          && !(Array.isArray(existingVal) && existingVal.length === 0);
+        const incomingIsEmpty = newVal === undefined || newVal === null
+          || (typeof newVal === 'string' && newVal.length === 0)
+          || (Array.isArray(newVal) && newVal.length === 0);
+        return existingIsReal && incomingIsEmpty;
+      });
+      if (overriding.length > 0) {
+        console.warn(`[review-write-guard] FORCE write to ${path.basename(filePath)} — overriding: ${overriding.join(', ')}`);
+      }
+    }
+  }
+
   if (!force && fs.existsSync(filePath)) {
     let existing;
     try {
