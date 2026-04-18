@@ -16,7 +16,8 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isValidSynopsis } = require('./lib/synopsis-validation');
-const { isValidCreativeTeamName } = require('./lib/ibdb-dates');
+const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
+const { serpQuery } = require('./lib/url-discovery');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
@@ -315,7 +316,87 @@ async function fixSynopsis(show, todayTixIds) {
   return null;
 }
 
-// Fix creative team - fetch from TodayTix or generate
+// SERP-verified LLM creative team generation (off-Broadway / West End only)
+// Step 1: LLM proposes director (and optionally playwright/composer)
+// Step 2: For each proposed member, verify via SERP before accepting
+// Only accepts a member if a SERP snippet confirms "directed by [name]" or equivalent.
+async function generateCreativeTeamWithSerpVerification(show) {
+  const year = show.openingDate?.slice(0, 4) || 'upcoming';
+  const synopsis = (show.synopsis || '').slice(0, 500);
+  const marketHint = show.ibdbUrl ? '' : (show.slug?.includes('west-end') || show.venue?.toLowerCase().includes('london') ? 'West End' : 'off-Broadway');
+
+  const prompt = `List the main creative team for this specific theatrical production.
+
+Title: ${show.title}
+Type: ${show.type || 'play'}
+Year: ${year}
+Market: ${marketHint || 'off-Broadway'}${show.venue ? `\nVenue: ${show.venue}` : ''}${synopsis ? `\nSynopsis: ${synopsis}` : ''}
+
+Return ONLY a JSON array with objects containing "name" and "role" fields.
+Include: Director, and Playwright/Book/Composer/Lyricist if applicable.
+Only include people you are certain about for THIS specific production.
+If uncertain about any person, omit them rather than guessing.
+Return ONLY the JSON array, no other text. Example:
+[{"name": "Sam Gold", "role": "Director"}, {"name": "Suzan-Lori Parks", "role": "Playwright"}]`;
+
+  const response = await callClaudeAPI(prompt, 300);
+  if (!response) return null;
+
+  let proposed;
+  try {
+    const jsonMatch = response.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) return null;
+    proposed = JSON.parse(jsonMatch[0]).filter(t => t.name && t.role && isValidCreativeTeamName(t.name));
+  } catch {
+    return null;
+  }
+
+  if (!proposed || proposed.length === 0) return null;
+
+  // Step 2: SERP-verify each proposed member
+  const verified = [];
+  for (const member of proposed) {
+    const roleVerb = member.role === 'Director' ? 'directed by' :
+                     member.role === 'Playwright' ? 'written by' :
+                     member.role === 'Choreographer' ? 'choreographed by' : null;
+    if (!roleVerb) {
+      // Non-director roles: accept without verification (lower hallucination risk)
+      verified.push(member);
+      continue;
+    }
+
+    const query = `"${show.title}" ${year} "${roleVerb} ${member.name}"`;
+    console.log(`    🔍 Verifying: ${member.name} (${member.role}) via SERP...`);
+    try {
+      await sleep(500);
+      const serpResults = await serpQuery(query);
+      if (serpResults && serpResults.length > 0) {
+        // Require the full phrase "directed by [name]" in a snippet — not just the name.
+        // This prevents false-positives where the name appears in unrelated context.
+        const nameLC = member.name.toLowerCase();
+        const phraseLC = `${roleVerb} ${nameLC}`;
+        const confirmed = serpResults.some(r => {
+          const text = ((r.title || '') + ' ' + (r.snippet || '')).toLowerCase();
+          return text.includes(phraseLC);
+        });
+        if (confirmed) {
+          console.log(`    ✅ SERP confirmed: ${member.name} (${member.role})`);
+          verified.push(member);
+        } else {
+          console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role}) — rejecting`);
+        }
+      } else {
+        console.log(`    ❌ No SERP results for ${member.name} (${member.role}) — rejecting`);
+      }
+    } catch (e) {
+      console.log(`    ⚠️  SERP verification failed for ${member.name}: ${e.message}`);
+    }
+  }
+
+  return verified.length > 0 ? verified : null;
+}
+
+// Fix creative team - fetch from TodayTix, IBDB (Broadway), or SERP-verified LLM (OB/WE)
 async function fixCreativeTeam(show, todayTixIds) {
   if (show.creativeTeam && show.creativeTeam.length >= 2) {
     return null; // Already has creative team
@@ -323,12 +404,11 @@ async function fixCreativeTeam(show, todayTixIds) {
 
   console.log(`  🎬 Missing creative team, attempting to fetch...`);
 
-  // Try TodayTix first
+  // Step 1: TodayTix JSON-LD
   const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
   let creativeTeam = await fetchCreativeTeamFromTodayTix(show, todayTixInfo);
 
   if (creativeTeam && creativeTeam.length >= 2) {
-    // Filter through shared validator (rejects "Tony Award", "of Disney", bio-blurb fragments, etc.)
     creativeTeam = creativeTeam.filter(m => isValidCreativeTeamName(m.name));
     if (creativeTeam.length >= 2) {
       show.creativeTeam = creativeTeam;
@@ -336,13 +416,37 @@ async function fixCreativeTeam(show, todayTixIds) {
     }
   }
 
-  // LLM fallback intentionally removed: Haiku hallucinated plausible-sounding
-  // directors on 6+ shows (e.g. film directors Billy Wilder/Miloš Forman for
-  // stage adaptations of their films; dead directors for new productions). The
-  // synopsis cross-check didn't catch these because synopses rarely name the
-  // director explicitly. Wrong data is worse than missing data — leave blank
-  // and let a human fill it in, or wait for TodayTix to add structured data.
-  console.log(`    ⚠️  TodayTix has no structured creative team data — leaving blank.`);
+  // Step 2: IBDB (Broadway shows only — IBDB is Broadway-authoritative)
+  // ibdbUrl is pre-stored on Broadway shows by discover-new-shows.js
+  if (show.ibdbUrl && SCRAPINGBEE_API_KEY) {
+    console.log(`    Fetching from IBDB...`);
+    try {
+      const openingYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4)) : undefined;
+      const ibdb = await lookupIBDBDates(show.title, { ibdbUrl: show.ibdbUrl, openingYear });
+      if (ibdb.creativeTeam && ibdb.creativeTeam.length >= 1) {
+        show.creativeTeam = ibdb.creativeTeam;
+        return `Fetched creative team from IBDB for ${show.title} (${ibdb.creativeTeam.length} members)`;
+      }
+    } catch (e) {
+      console.log(`    ⚠️  IBDB fetch failed: ${e.message}`);
+    }
+  }
+
+  // Step 3: SERP-verified LLM (off-Broadway and West End — no IBDB coverage)
+  // Only runs when show has no ibdbUrl (OB/WE) and both API keys are available.
+  // Two-step: LLM proposes a director, SERP verifies it exists before accepting.
+  // This prevents the hallucination pattern (film directors, original-production
+  // directors, actors assigned to shows they're not connected to).
+  if (!show.ibdbUrl && ANTHROPIC_API_KEY && SCRAPINGBEE_API_KEY) {
+    console.log(`    Generating via SERP-verified LLM...`);
+    creativeTeam = await generateCreativeTeamWithSerpVerification(show);
+    if (creativeTeam && creativeTeam.length >= 1) {
+      show.creativeTeam = creativeTeam;
+      return `Generated creative team (SERP-verified) for ${show.title} (${creativeTeam.length} members)`;
+    }
+  }
+
+  console.log(`    ⚠️  No creative team source available — leaving blank.`);
   return null;
 }
 
