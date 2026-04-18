@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-18T15:33:48.471Z",
-  "processed": 20,
-  "failed": 926,
-  "successRate": "2.1%",
+  "updatedAt": "2026-04-18T18:19:46.574Z",
+  "processed": 22,
+  "failed": 934,
+  "successRate": "2.3%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 7,
     "archiveToday": 2,
     "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-04-18T10:21:54.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-18T18:18:40.560Z",
+      "event": "bb-session",
+      "session": "aa52a791",
+      "url": "https://deadline.com/2018/05/jimmy-buffett-musical-closing-date-escape-to-margar"
+    },
+    {
+      "t": "2026-04-18T18:18:41.126Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }

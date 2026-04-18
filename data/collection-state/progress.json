@@ -19,7 +19,9 @@
     "escape-to-margaritaville-2018/rollingstone--david-browne.json",
     "once-2012/artsfuse--steve-elman.json",
     "heart-wall-west-end-2026/theupcoming--benedetta-mancusi.json",
-    "proof-2000/aislesay--david-spencer.json"
+    "proof-2000/aislesay--david-spencer.json",
+    "angels-in-america-2018/woman-around-town--alix-cohen.json",
+    "escape-to-margaritaville-2018/deadline--greg-evans.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -947,7 +949,15 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
     "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
     "proof-2000/newsday--unknown.json",
-    "proof-2000/nydailynews--unknown.json"
+    "proof-2000/nydailynews--unknown.json",
+    "driving-miss-daisy-2010/nytheatre--martin-denton.json",
+    "driving-miss-daisy-2010/variety--charles-isherwood.json",
+    "lombardi-2010/new-jersey-newsroom--michael-sommers.json",
+    "la-bete-2010/chicagotribune--ben-brantley.json",
+    "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
+    "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
+    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
+    "a-life-in-the-theatre-2010/nytheatre--martin-denton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -957,12 +967,15 @@
       "avenue-q-west-end-2026/artsdesk--unknown.json",
       "kenrex-off-broadway-2026/playbill--unknown.json",
       "heart-wall-west-end-2026/theupcoming--benedetta-mancusi.json",
-      "proof-2000/aislesay--david-spencer.json"
+      "proof-2000/aislesay--david-spencer.json",
+      "angels-in-america-2018/woman-around-town--alix-cohen.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/escape-to-margaritaville-2018/deadline--greg-evans.json",
+      "escape-to-margaritaville-2018/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -990,7 +1003,7 @@
     ]
   },
   "startTime": "2026-04-18T08:29:02.734Z",
-  "lastProcessed": "proof-2000/aislesay--david-spencer.json",
+  "lastProcessed": "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
   "log": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -1000,6 +1013,17 @@
     },
     {
       "t": "2026-04-18T10:21:54.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-18T18:18:40.560Z",
+      "event": "bb-session",
+      "session": "aa52a791",
+      "url": "https://deadline.com/2018/05/jimmy-buffett-musical-closing-date-escape-to-margar"
+    },
+    {
+      "t": "2026-04-18T18:18:41.126Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
