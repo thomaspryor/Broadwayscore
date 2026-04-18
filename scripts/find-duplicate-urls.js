@@ -28,7 +28,7 @@ const filterShow = (args.find(a => a.startsWith('--show=')) || '').replace('--sh
 const verbose = args.includes('--verbose');
 
 function normalizeUrl(url) {
-  if (!url) return null;
+  if (!url || typeof url !== 'string') return null;
   try {
     const u = new URL(url);
     // Strip utm_* and fbclid tracking params
