@@ -74,10 +74,16 @@ const PROTECTED_FIELDS = [
   // SERP retry state — set by collect-review-texts.js + gather-reviews.js lifecycle guard.
   // Losing these on rebase causes the cooldown to reset, which means a single
   // rebase can re-trigger 13K stuck wrong_content files. See sprint-plan-serp-cost-reduction.md S1-T1.
+  // NOTE: serpRetryCount/serpDiscoveryAbandoned are intentionally excluded — clearFailureFlags()
+  // clears them on success. serpRetryAfter is still protected (controls backoff timing).
   'serpRetryAfter',
-  'serpRetryCount',
-  'serpDiscoveryAbandoned',
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
+  // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
+  // They are derived fields that rebuild re-classifies every run. Having them here
+  // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
+  // fetched correct content — blocking valid reviews from reviews.json.
+  // clearFailureFlags() clears them explicitly on success paths. (Pattern Card #1,
+  // Notion 346637c5-416f-8154-9500-f09fd49e5a2a, 2026-04-17)
 ];
 
 /**
