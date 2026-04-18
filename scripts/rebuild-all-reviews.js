@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, isOffTopicExcerpt } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -488,14 +488,12 @@ function selectBestExcerpt(data, showTitle) {
       return null;
     }
 
-    // Layer 2b: Off-topic guard — reject excerpts with no theater-domain or title keywords.
-    // Very loose: only fires when both checks fail simultaneously.
-    if (isOffTopicExcerpt(excerpt, showId)) {
-      if (!stats.offTopicExcerptsRejected) stats.offTopicExcerptsRejected = [];
-      stats.offTopicExcerptsRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
-      console.log(`  🚫 [off-topic] ${showId}: "${source}" rejected as off-topic`);
-      return null;
-    }
+    // Layer 2b: Off-topic guard is disabled in the automated pipeline.
+    // isOffTopicExcerpt() has a ~20% false-positive rate on llmPullQuote: legitimate
+    // theater criticism often uses metaphorical language ("It has remembered the ladies")
+    // without standard theater vocabulary. The guard is kept in pull-quote-guards.js
+    // for targeted use (e.g., validating human-set pullQuotes in audits), but applying
+    // it here would silently downgrade 1-in-5 valid LLM excerpts to lower-quality sources.
 
     // Layer 3: Cross-show validation
     const crossCheck = excerptMentionsWrongShow(excerpt, showId, showTitle);
