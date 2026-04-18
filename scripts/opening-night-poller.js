@@ -1221,11 +1221,13 @@ async function pollCycle() {
   const siteSearchResults = [...ssrSiteSearchResults, ...jsSiteSearchResults];
 
   // ── Layer 4: SERP — gated by time since opening ──
-  // SERP indexes major outlets ~3h after publication. Running before then wastes
-  // credits on empty results. After the gate, run at most once every 2h.
+  // SERP indexes major outlets ~3h after publication (measured: Giant/Proof opening nights).
+  // Skip entirely until 3h after openingDate — calls before then return nothing.
+  // After the gate, SERP runs every poll cycle. Each poller dispatch is a fresh CI runner
+  // so file-based interval tracking is ephemeral and unreliable. Instead, natural dedup
+  // handles redundancy: getFoundOutletIds() excludes already-found outlets from the SERP
+  // queue, so each outlet is only SERP'd until found, then never again.
   const SERP_MIN_HOURS_AFTER_OPENING = 3;
-  const SERP_MIN_INTERVAL_HOURS = 2;
-  const serpStatePath = path.join(DATA_DIR, 'collection-state', `serp-last-run-${SHOW_ID}.json`);
 
   function shouldRunSerp() {
     if (!show.openingDate) return true; // No opening date — can't gate, run normally
@@ -1233,14 +1235,6 @@ async function pollCycle() {
     if (hoursSinceOpening < SERP_MIN_HOURS_AFTER_OPENING) {
       console.log(`\n[Layer 4] SERP Backup... SKIPPED (${hoursSinceOpening.toFixed(1)}h since opening, gate is ${SERP_MIN_HOURS_AFTER_OPENING}h)`);
       return false;
-    }
-    if (fs.existsSync(serpStatePath)) {
-      const { lastRun } = JSON.parse(fs.readFileSync(serpStatePath, 'utf8'));
-      const hoursSinceLastRun = (Date.now() - new Date(lastRun).getTime()) / 3600000;
-      if (hoursSinceLastRun < SERP_MIN_INTERVAL_HOURS) {
-        console.log(`\n[Layer 4] SERP Backup... SKIPPED (ran ${hoursSinceLastRun.toFixed(1)}h ago, interval is ${SERP_MIN_INTERVAL_HOURS}h)`);
-        return false;
-      }
     }
     return true;
   }
@@ -1295,11 +1289,6 @@ async function pollCycle() {
     }
     if (missingOutlets.length > 0) {
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
-      // Write timestamp AFTER SERP completes — prevents locking out next cycle if SERP crashes mid-run
-      if (!DRY_RUN) {
-        fs.mkdirSync(path.dirname(serpStatePath), { recursive: true });
-        fs.writeFileSync(serpStatePath, JSON.stringify({ lastRun: new Date().toISOString() }));
-      }
     } else {
       console.log('\n[Layer 4] SERP Backup... all T1/T2 outlets found');
     }
