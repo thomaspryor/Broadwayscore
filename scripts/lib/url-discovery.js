@@ -492,6 +492,27 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
       }
     }
 
+    // Fallback 3: for historical shows (closed >3 years ago), drop the date filter.
+    // Google's date-range filter is unreliable for articles >5 years old — indexing dates
+    // are often wrong or missing, causing genuine results to be filtered out. The year
+    // keyword in the query is a more reliable disambiguator for historical shows.
+    if (!results || !results.length) {
+      const closingDate = showInfo.closingDate ? new Date(showInfo.closingDate) : null;
+      const isHistorical = closingDate && (Date.now() - closingDate.getTime()) > 3 * 365 * 24 * 3600 * 1000;
+      if (isHistorical && dateRange) {
+        const noDateQuery = domain
+          ? `site:${domain} "${serpTitle}" ${marketTerm}${yearClause}${criticClause}`
+          : `"${serpTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
+        log(`    Fallback 3 (no date filter, historical show): ${noDateQuery}`);
+        ({ results, provider } = await _serpWithChain(noDateQuery, scrapingBeeKey, brightDataKey, log, null, preferSpeed));
+        provider = provider ? provider + '-historical' : null;
+        if (results === null) {
+          log('    ✗ All SERP providers unavailable');
+          return '__SERP_UNAVAILABLE__';
+        }
+      }
+    }
+
     if (!results || !results.length) {
       log('    ✗ No search results found');
       return null;
