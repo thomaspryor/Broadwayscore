@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-17T15:19:33.736Z",
+    "lastUpdated": "2026-04-18T02:45:11.612Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -3232,7 +3232,7 @@
     "yearBuilt": 1927,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-17T15:19:33.735Z",
+      "lastUpdated": "2026-04-18T02:45:11.611Z",
       "seating": {
         "bestSeats": "Ideal: Center orchestra rows F-L offer an ideal viewing experience at the Majestic Theatre.",
         "accessibility": "4 wheelchair locations in Orchestra. No steps to rows AA-H. Infrared devices available.",
@@ -3254,6 +3254,12 @@
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7112058-What_s_the_Majestic_Theatre_on_broadway_best_seat-New_York_City_New_York.html",
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k471009-Majestic_Theatre_orchestra_vs_front_mezzanine-New_York_City_New_York.html",
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2465945-Majestic_Theatre_best_seats-New_York_City_New_York.html"
+            ],
+            "bestRow": "Row I",
+            "bestFor": [
+              "musical",
+              "dance-heavy",
+              "spectacle"
             ]
           },
           {
@@ -3273,13 +3279,23 @@
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k471009-Majestic_Theatre_orchestra_vs_front_mezzanine-New_York_City_New_York.html",
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k8182541-o10-Obstructed_view_Majestic_Theatre_Phantom_of_the_Opera_row_Q-New_York_City_New_York.html",
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2465945-Majestic_Theatre_best_seats-New_York_City_New_York.html"
+            ],
+            "bestRow": "Row A",
+            "isValuePick": true,
+            "bestFor": [
+              "dance-heavy",
+              "spectacle",
+              "musical"
+            ],
+            "worstFor": [
+              "intimate-drama"
             ]
           },
           {
             "name": "Rear Mezzanine Center",
             "rowRange": "A-C",
             "verdict": "solid",
-            "verdictLabel": "Value pick",
+            "verdictLabel": "Budget pick",
             "priceTier": "budget",
             "rationale": "Steep rake, no one in front of you, nothing cut off. You trade intimacy for a clean full-stage read at roughly a third of center-orchestra pricing.",
             "hazards": [
@@ -3296,6 +3312,14 @@
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7425922-Majestic_Theatre_NYC_Are_orchestra_row_R_seats_views-New_York_City_New_York.html",
               "https://www.headout.com/blog/majestic-theatre-seating-chart/",
               "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/"
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle"
+            ],
+            "worstFor": [
+              "intimate-drama",
+              "play"
             ]
           },
           {
@@ -3318,6 +3342,12 @@
               "https://www.headout.com/blog/majestic-theatre-seating-chart/",
               "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/",
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2465945-Majestic_Theatre_best_seats-New_York_City_New_York.html"
+            ],
+            "bestFor": [
+              "play"
+            ],
+            "worstFor": [
+              "dance-heavy"
             ]
           },
           {
@@ -3756,7 +3786,7 @@
     "yearBuilt": 1921,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-17T15:19:33.736Z",
+      "lastUpdated": "2026-04-18T02:45:11.612Z",
       "seating": {
         "bestSeats": "The Music Box Theatre is a smaller venue, so most seats offer good views. Center orchestra seats provide the optimal experience.",
         "avoidSeats": "Balcony seats may feel distant for some viewers. Check the specific seating chart for any obstructed views before booking.",
@@ -3777,6 +3807,12 @@
               "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
               "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/",
               "https://aviewfrommyseat.com/venue/Music+Box+Theatre/"
+            ],
+            "bestRow": "Row H",
+            "bestFor": [
+              "play",
+              "musical",
+              "intimate-drama"
             ]
           },
           {
@@ -3798,6 +3834,14 @@
               "https://www.headout.com/blog/music-box-theatre-seating-chart/",
               "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
               "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/"
+            ],
+            "bestRow": "Row A",
+            "bestFor": [
+              "musical",
+              "spectacle"
+            ],
+            "worstFor": [
+              "intimate-drama"
             ]
           },
           {
@@ -3819,6 +3863,11 @@
               "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
               "https://www.headout.com/blog/music-box-theatre-seating-chart/",
               "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/"
+            ],
+            "isValuePick": true,
+            "bestFor": [
+              "play",
+              "musical"
             ]
           },
           {
@@ -3835,6 +3884,12 @@
               "https://www.headout.com/blog/music-box-theatre-seating-chart/",
               "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
               "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/"
+            ],
+            "bestFor": [
+              "musical"
+            ],
+            "worstFor": [
+              "intimate-drama"
             ]
           },
           {

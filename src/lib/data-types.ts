@@ -72,16 +72,22 @@ export interface SeatingHazard {
   note?: string;
 }
 
+export type SeatingShowTag = 'musical' | 'play' | 'dance-heavy' | 'spectacle' | 'intimate-drama';
+
 export interface SeatingSection {
   name: string;
   rowRange?: string;
+  /** The single sweetest row within the range, if there's a clear pick (e.g. "Row L"). Only for sweet-spot sections. */
+  bestRow?: string;
   verdict: SeatingVerdict;
   verdictLabel: string;
   priceTier?: SeatingPriceTier;
+  /** Exactly one section per theater should be flagged true — best bang-for-buck, orthogonal to sweet-spot. */
+  isValuePick?: boolean;
   rationale?: string;
   hazards?: SeatingHazard[];
-  bestFor?: string[];
-  worstFor?: string[];
+  bestFor?: SeatingShowTag[];
+  worstFor?: SeatingShowTag[];
   dataPoints?: number;
   evidenceUrls?: string[];
 }
