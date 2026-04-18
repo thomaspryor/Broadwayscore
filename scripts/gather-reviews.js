@@ -3024,6 +3024,25 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
 
+  // Pattern Card #4: route --unknown.json files with a URL to _pending/ instead of
+  // the main show directory. Unknown bylines from SERP often duplicate already-ingested
+  // reviews. They'll be resolved by a named-critic discovery pass or manual review.
+  const isUnknownCritic = normalizedCriticName === 'unknown';
+  if (isUnknownCritic && review.url) {
+    const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
+    if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
+    const urlHash = (() => {
+      let h = 0;
+      for (const c of review.url) { h = ((h << 5) - h + c.charCodeAt(0)) | 0; }
+      return Math.abs(h).toString(16).slice(0, 8);
+    })();
+    const pendingFilename = `${normalizedOutletId}--${urlHash}.json`;
+    const pendingPath = path.join(pendingDir, pendingFilename);
+    fs.writeFileSync(pendingPath, JSON.stringify({ ...review, pendingReason: 'no-byline' }, null, 2));
+    console.log(`    → no byline — routing to pending: _pending/${showId}/${pendingFilename}`);
+    return true;
+  }
+
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
 
   // Register in global URL index so subsequent calls see it

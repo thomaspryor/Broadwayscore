@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { safeWriteReview, checkForDataLoss } = require('../../scripts/lib/review-write-guard');
+const { safeWriteReview, checkForDataLoss, checkUrlCollision } = require('../../scripts/lib/review-write-guard');
 
 describe('review-write-guard', () => {
   let tmpDir;
@@ -101,6 +101,71 @@ describe('review-write-guard', () => {
       expect(written.customField).toBe('preserved');
       expect(written.publishDate).toBe('2026-03-01');
       expect(written.url).toBe('https://new-url.com');
+    });
+  });
+
+  describe('checkUrlCollision (Card #4 wire-up)', () => {
+    test('marks duplicate when safeWriteReview detects URL collision', () => {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-collision-'));
+      try {
+        // Write an existing file with a URL
+        fs.writeFileSync(path.join(dir, 'nytimes--jesse-green.json'), JSON.stringify({
+          url: 'https://www.nytimes.com/2026/04/16/theater/proof-review.html',
+          criticName: 'Jesse Green',
+        }, null, 2));
+
+        // Write a new file with the same URL
+        const newPath = path.join(dir, 'nytimes--unknown.json');
+        safeWriteReview(newPath, {
+          url: 'https://www.nytimes.com/2026/04/16/theater/proof-review.html',
+          criticName: 'Unknown',
+        });
+
+        const written = JSON.parse(fs.readFileSync(newPath, 'utf8'));
+        expect(written.duplicateOf).toBe('nytimes--jesse-green.json');
+        expect(written.duplicateReason).toBe('url-collision-detected-at-write');
+      } finally {
+        fs.rmSync(dir, { recursive: true, force: true });
+      }
+    });
+
+    test('does not mark duplicate when URLs differ', () => {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'no-collision-'));
+      try {
+        fs.writeFileSync(path.join(dir, 'nytimes--jesse-green.json'), JSON.stringify({
+          url: 'https://www.nytimes.com/2026/04/16/theater/proof-review.html',
+        }, null, 2));
+
+        const newPath = path.join(dir, 'nytimes--unknown.json');
+        safeWriteReview(newPath, { url: 'https://www.nytimes.com/2026/04/17/theater/other.html' });
+
+        const written = JSON.parse(fs.readFileSync(newPath, 'utf8'));
+        expect(written.duplicateOf).toBeUndefined();
+      } finally {
+        fs.rmSync(dir, { recursive: true, force: true });
+      }
+    });
+
+    test('checkUrlCollision returns null when no collision exists', () => {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'no-coll-'));
+      try {
+        fs.writeFileSync(path.join(dir, 'a.json'), JSON.stringify({ url: 'https://example.com/a' }, null, 2));
+        const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/b' });
+        expect(result).toBeNull();
+      } finally {
+        fs.rmSync(dir, { recursive: true, force: true });
+      }
+    });
+
+    test('checkUrlCollision returns collider filename', () => {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'coll-'));
+      try {
+        fs.writeFileSync(path.join(dir, 'a.json'), JSON.stringify({ url: 'https://example.com/same' }, null, 2));
+        const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/same' });
+        expect(result).toBe('a.json');
+      } finally {
+        fs.rmSync(dir, { recursive: true, force: true });
+      }
     });
   });
 

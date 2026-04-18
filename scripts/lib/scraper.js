@@ -371,6 +371,31 @@ async function fetchPage(url, options = {}) {
 
   console.log(`Fetching: ${url}`);
 
+  // Whether to verify the fetched URL matches what was requested.
+  // Skip for root-level URLs (homepage fetches are intentional).
+  const shouldVerify = options.skipVerify !== true && (() => {
+    try { return new URL(url).pathname.length > 1; } catch { return false; }
+  })();
+
+  /**
+   * Run verifyFetchedUrl and escalate if the result is a known-bad page.
+   * Returns the result unchanged if verified (or if verification is skipped).
+   * Returns null to signal "try next provider" on failure.
+   */
+  function _checkAndReturn(result, source) {
+    if (!shouldVerify) {
+      console.log(`  ✅ Success (${source}, ${result.format})`);
+      return result;
+    }
+    const vr = verifyFetchedUrl(result.content, url);
+    if (vr.verified) {
+      console.log(`  ✅ Success (${source}, ${result.format})`);
+      return result;
+    }
+    console.log(`  ⚠️  ${source} returned wrong page (${vr.reason}${vr.actual ? ': ' + vr.actual.slice(0, 80) : ''}) — trying next provider...`);
+    return null;
+  }
+
   // Playwright-first for known public sites (free, fast with domcontentloaded)
   // Also for BroadwayWorld (complex JS) and explicit preferPlaywright
   if (preferPlaywright || url.includes('broadwayworld.com') || isPublicSite) {
@@ -379,10 +404,10 @@ async function fetchPage(url, options = {}) {
     } else {
       const label = isPublicSite ? 'public site' : 'complex site';
       console.log(`  → Using Playwright (${label})...`);
-      const result = await fetchWithPlaywright(url, { fast: isPublicSite });
-      if (result) {
-        console.log(`  ✅ Success (Playwright, ${result.format})`);
-        return result;
+      const raw = await fetchWithPlaywright(url, { fast: isPublicSite });
+      if (raw) {
+        const checked = _checkAndReturn(raw, 'Playwright');
+        if (checked) return checked;
       }
     }
   }
@@ -390,23 +415,23 @@ async function fetchPage(url, options = {}) {
   // Try Bright Data (primary for non-public sites, fallback for public)
   if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
     console.log('  → Trying Bright Data...');
-    const result = await fetchWithBrightData(url);
-    if (result && result.content && result.content.length > 0) {
+    const raw = await fetchWithBrightData(url);
+    if (raw && raw.content && raw.content.length > 0) {
       // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge HTML
       // that passes length > 0 but isn't real content. Fall through to ScrapingBee.
-      const isChallengeOrGarbage = result.content.length < 10000 && (
-        result.content.includes('Just a moment...') ||
-        result.content.includes('cf_chl_opt') ||
-        result.content.includes('challenge-platform') ||
-        result.content.includes('Enable JavaScript and cookies to continue')
+      const isChallengeOrGarbage = raw.content.length < 10000 && (
+        raw.content.includes('Just a moment...') ||
+        raw.content.includes('cf_chl_opt') ||
+        raw.content.includes('challenge-platform') ||
+        raw.content.includes('Enable JavaScript and cookies to continue')
       );
       if (isChallengeOrGarbage) {
-        console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${result.content.length} bytes), trying next provider...`);
+        console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${raw.content.length} bytes), trying next provider...`);
       } else {
-        console.log(`  ✅ Success (Bright Data, ${result.format})`);
-        return result;
+        const checked = _checkAndReturn(raw, 'Bright Data');
+        if (checked) return checked;
       }
-    } else if (result) {
+    } else if (raw) {
       console.log('  ⚠️  Bright Data returned empty content, trying next provider...');
     }
   }
@@ -414,20 +439,20 @@ async function fetchPage(url, options = {}) {
   // Fall back to ScrapingBee (skip if credits exhausted, budget exceeded, or domain-skipped)
   if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !skips.has('scrapingbee')) {
     console.log('  → Trying ScrapingBee...');
-    const result = await fetchWithScrapingBee(url, options);
-    if (result) {
-      console.log(`  ✅ Success (ScrapingBee, ${result.format})`);
-      return result;
+    const raw = await fetchWithScrapingBee(url, options);
+    if (raw) {
+      const checked = _checkAndReturn(raw, 'ScrapingBee');
+      if (checked) return checked;
     }
   }
 
   // Last resort: Playwright (only if not already tried above)
   if (!preferPlaywright && !isPublicSite && !url.includes('broadwayworld.com') && !skips.has('playwright')) {
     console.log('  → Trying Playwright (last resort)...');
-    const result = await fetchWithPlaywright(url);
-    if (result) {
-      console.log(`  ✅ Success (Playwright, ${result.format})`);
-      return result;
+    const raw = await fetchWithPlaywright(url);
+    if (raw) {
+      const checked = _checkAndReturn(raw, 'Playwright');
+      if (checked) return checked;
     }
   }
 
@@ -515,6 +540,81 @@ async function fetchJSON(url, options = {}) {
   throw new Error(`fetchJSON: all methods failed for ${url}`);
 }
 
+// --- Homepage title detection ---
+// High-risk outlets that return their homepage with HTTP 200 when an article URL fails.
+// Pattern: title starts with the site name followed by punctuation or "Latest News" etc.
+const HOMEPAGE_TITLE_RE = /^BroadwayWorld:\s*Latest News|^The Wall Street Journal\s*$|^The New York Sun\s*$|^Playbill\s*[-|]|^TimeOut\s*[-|]/i;
+
+/**
+ * Verify that fetched HTML actually corresponds to the requested URL.
+ * Detects Cloudflare redirects, homepage returns, and canonical URL mismatches.
+ *
+ * @param {string} html - The fetched HTML content
+ * @param {string} expectedUrl - The URL that was requested
+ * @returns {{ verified: boolean, reason?: string, actual?: string }}
+ */
+function verifyFetchedUrl(html, expectedUrl) {
+  if (!html || !expectedUrl) return { verified: false, reason: 'missing_input' };
+
+  // 1. Homepage title detection — high-risk outlets return homepage with 200
+  const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+  const pageTitle = titleMatch ? titleMatch[1].trim() : '';
+  if (pageTitle && HOMEPAGE_TITLE_RE.test(pageTitle)) {
+    // Only flag if we requested an article URL (not root or /article)
+    try {
+      const { pathname } = new URL(expectedUrl);
+      if (pathname && pathname.length > 1) {
+        return { verified: false, reason: 'title_matches_homepage', actual: pageTitle };
+      }
+    } catch { /* invalid URL, fall through */ }
+  }
+
+  // 2. Canonical URL check — most CMS-powered pages include <link rel="canonical">
+  const canonicalMatch = html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)
+    || html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i);
+  const ogUrlMatch = html.match(/<meta[^>]+property=["']og:url["'][^>]+content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:url["']/i);
+
+  const actualUrl = (canonicalMatch && canonicalMatch[1]) || (ogUrlMatch && ogUrlMatch[1]) || null;
+
+  if (!actualUrl) return { verified: false, reason: 'no_canonical' };
+
+  // Normalize both URLs: lowercase domain, strip trailing slash, remove utm_* params
+  function normalizeForVerify(u) {
+    try {
+      const parsed = new URL(u);
+      parsed.hostname = parsed.hostname.toLowerCase();
+      // Remove utm_* and fbclid tracking params
+      for (const key of [...parsed.searchParams.keys()]) {
+        if (/^utm_|^fbclid/.test(key)) parsed.searchParams.delete(key);
+      }
+      let out = parsed.toString().replace(/\/$/, '');
+      return out;
+    } catch { return u.toLowerCase().replace(/\/$/, ''); }
+  }
+
+  const normExpected = normalizeForVerify(expectedUrl);
+  const normActual = normalizeForVerify(actualUrl);
+
+  if (normExpected === normActual) return { verified: true };
+
+  // Allow if actual is a subdomain/alias of expected (e.g., amp. prefix) but only
+  // when the domains actually differ — same-domain path differences are still mismatches.
+  try {
+    const expHost = new URL(expectedUrl).hostname.replace(/^www\./, '');
+    const actHost = new URL(actualUrl).hostname.replace(/^www\./, '');
+    if (expHost !== actHost) {
+      // Different domains: allow subdomain relationships and known alias groups
+      if (actHost.endsWith('.' + expHost) || expHost.endsWith('.' + actHost)) {
+        return { verified: true };
+      }
+      if (domainMatchesExpected(expHost, actHost)) return { verified: true };
+    }
+  } catch { /* fall through */ }
+
+  return { verified: false, reason: 'url_mismatch', actual: actualUrl };
+}
+
 module.exports = {
   fetchPage,
   fetchJSON,
@@ -527,5 +627,6 @@ module.exports = {
   DOMAIN_ALIAS_GROUPS,
   checkScrapingBeeCredits,
   getScraperStats,
+  verifyFetchedUrl,
   get sbCreditsLow() { return _sbCreditsLow; },
 };
