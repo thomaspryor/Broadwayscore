@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-18T21:30:42.502Z",
+    "lastUpdated": "2026-04-18T23:37:08.306Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -16,10 +16,233 @@
     "yearBuilt": 1924,
     "operator": "ATG Entertainment",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:08:18.115Z",
+      "lastUpdated": "2026-04-18T23:37:08.306Z",
       "seating": {
         "bestSeats": "The mezzanine offers great sightlines of the stage. This theater is well-maintained and comfortable.",
-        "accessibility": "Orchestra-only wheelchair access. Infrared headsets and audio induction neck loops available."
+        "accessibility": "Orchestra-only wheelchair access. Infrared headsets and audio induction neck loops available.",
+        "sections": [
+          {
+            "name": "Orchestra Center G-L",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "isValuePick": false,
+            "rationale": "Multiple guides converge on rows G-L (Tickpick) / D-L (Tickadoo) as the Al Hirschfeld's true center-orchestra sweet spot. This house has an unusually shallow rake for a Broadway musical theatre — Reddit regulars specifically warn 'Orchestra has little to no rake,' so mid-rows behind any head height become a real problem. Rows G-L sit far enough back to minimize Moulin Rouge's set-piece sightline issues (the elephant and catwalk platforms at house left/right) while staying ahead of the mezzanine overhang that drops at row K.",
+            "dataPoints": 6,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/al-hirschfeld-theatre-seating-chart-detailed-seating-guide/",
+              "https://www.tickadoo.com/blogs-and-news/complete-seating-guide-moulin-rouge-at-the-al-hirschfeld-theatre",
+              "https://old.reddit.com/r/Broadway/comments/1aid9pl/moulin_rouge_seating_advice/",
+              "https://www.headout.com/blog/al-hirschfeld-theatre-seating-chart/",
+              "https://aviewfrommyseat.com/venue/al+hirschfeld+theatre/tips/"
+            ],
+            "rowRange": "G-L",
+            "bestFor": [
+              "musical",
+              "spectacle"
+            ],
+            "hazards": []
+          },
+          {
+            "name": "Orchestra Center AA-C",
+            "verdict": "skip",
+            "verdictLabel": "Avoid",
+            "isValuePick": false,
+            "rationale": "Front orchestra at Hirschfeld is unusual for a Broadway house: the Moulin Rouge runway/Can-Can extension pushes performers well forward and above your eyeline, so front rows require craning and miss the show's upper-balcony stage action. Tickpick flatly says 'not recommend to sit in the first three or four rows,' and Tickadoo notes 'elaborate staging may be partially obscured when the action shifts to the upper levels' — a show-specific warning that wouldn't apply at most houses.",
+            "dataPoints": 3,
+            "evidenceUrls": [
+              "https://www.tickpick.com/al-hirschfeld-theatre-seating-chart/",
+              "https://www.tickadoo.com/blogs-and-news/complete-seating-guide-moulin-rouge-at-the-al-hirschfeld-theatre",
+              "https://www.headout.com/blog/al-hirschfeld-theatre-seating-chart/"
+            ],
+            "rowRange": "AA-C",
+            "hazards": [
+              {
+                "type": "partial-stage"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle"
+            ]
+          },
+          {
+            "name": "Orchestra Left (House Left) E-L",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "House-left orchestra is the better of the two side orchestras at the Hirschfeld because Moulin Rouge's elephant set piece lives stage-right — obstruction is 'worse on the right,' per multiple regulars. You still lose some far-stage-left action (from the runway and side catwalk), but trade-off is that actors including Christian routinely enter from this aisle. Reviewers repeatedly single out the left side for close actor access ('Jordan Fisher was two feet away,' 'Aaron entered from there at a couple of points').",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://old.reddit.com/r/Broadway/comments/1k4xvbp/moulin_rouge_partial_view_seats/",
+              "https://aviewfrommyseat.com/venue/al+hirschfeld+theatre/tips/",
+              "https://old.reddit.com/r/Broadway/comments/1dsrsnu/moulin_rouge_at_hirschfeld_is_the_last_row_of/"
+            ],
+            "rowRange": "E-L",
+            "hazards": [
+              {
+                "type": "side-angle"
+              },
+              {
+                "type": "partial-stage"
+              },
+              {
+                "type": "mezz-overhang"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle"
+            ]
+          },
+          {
+            "name": "Orchestra Right (House Right) E-L",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "House-right orchestra has the biggest sightline trade-off at the Hirschfeld but also the biggest actor-proximity payoff for Moulin Rouge specifically. Christian and the Duke both make their debut entrances on this side, and Satine and Nini exit this way — plus the stagedoor lines up with the right-side exits. The cost: the elephant set piece sits stage-right and regulars warn 'on the far right side you'll basically be paying to look at stairs.' Worth it only if you want the actor-traffic side and stagedoor access.",
+            "dataPoints": 7,
+            "evidenceUrls": [
+              "https://old.reddit.com/r/Broadway/comments/1aid9pl/moulin_rouge_seating_advice/",
+              "https://old.reddit.com/r/Broadway/comments/1dsrsnu/moulin_rouge_at_hirschfeld_is_the_last_row_of/",
+              "https://aviewfrommyseat.com/venue/al+hirschfeld+theatre/tips/"
+            ],
+            "rowRange": "E-L",
+            "hazards": [
+              {
+                "type": "side-angle"
+              },
+              {
+                "type": "obstructed-view"
+              },
+              {
+                "type": "partial-stage"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle"
+            ]
+          },
+          {
+            "name": "Mezzanine Center (Front) A-C",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "isValuePick": false,
+            "rationale": "Front-center mezzanine is the specific seat that Moulin Rouge regulars recommend OVER center orchestra — unusual advice for a Broadway musical. The reason is show-specific: the production's scenic design fills the full proscenium top-to-bottom (balconies, ceiling drapes, windmill, elephant), and orchestra viewers 'miss a lot of the theatre's ceiling AND the floor of the stage.' The Hirschfeld mezzanine also juts close to the stage, so A-C feel close rather than distant.",
+            "dataPoints": 5,
+            "evidenceUrls": [
+              "https://old.reddit.com/r/Broadway/comments/1aid9pl/moulin_rouge_seating_advice/",
+              "https://www.tickpick.com/blog/al-hirschfeld-theatre-seating-chart-detailed-seating-guide/",
+              "https://www.tickadoo.com/blogs-and-news/complete-seating-guide-moulin-rouge-at-the-al-hirschfeld-theatre",
+              "https://www.tripadvisor.com/Attraction_Review-g60763-d548354-Reviews-Al_Hirschfeld_Theatre-New_York_City_New_York.html"
+            ],
+            "rowRange": "A-C",
+            "bestFor": [
+              "musical",
+              "spectacle",
+              "dance-heavy"
+            ],
+            "hazards": []
+          },
+          {
+            "name": "Mezzanine Center (Front) G-J",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "The Hirschfeld mezzanine has an unusual quirk — a walkway between rows F and G — so row G seats have nobody seated directly in front of them. Regulars pitch G as a cheaper alternative to front mezz with effectively the same sightline over rows F. A reviewer who asked about row J 105-107 was told 'that view should be great, you might miss a tiiiny bit of action on the very front of the catwalk but nothing important.'",
+            "dataPoints": 2,
+            "evidenceUrls": [
+              "https://old.reddit.com/r/Broadway/comments/1aid9pl/moulin_rouge_seating_advice/"
+            ],
+            "rowRange": "G-J",
+            "hazards": []
+          },
+          {
+            "name": "Mezzanine Left (House Left)",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "Mezzanine left is the safer side mezzanine at the Hirschfeld because the elephant — the biggest sightline hazard during Moulin Rouge — lives stage-right. Reviewers from front-A mezz L report 'Jordan Fisher looked directly at my face when the show started' and 'awesome seat, very close to the stage,' but one specifically flagged that 'faces were blurry even though my vision is average' further back, so rear mezz left reads distances more than obstructions.",
+            "dataPoints": 2,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/al+hirschfeld+theatre/tips/"
+            ],
+            "hazards": [
+              {
+                "type": "distant"
+              },
+              {
+                "type": "side-angle"
+              }
+            ]
+          },
+          {
+            "name": "Mezzanine Right (House Right) A-D (front mezz right)",
+            "verdict": "skip",
+            "verdictLabel": "Avoid",
+            "isValuePick": false,
+            "rationale": "Front mezzanine right is the single most-warned-against section in Moulin Rouge seating threads. The elephant set piece hangs at stage-right and sits directly in your sightline from this angle. 'Avoid mezz right ... unless you like staring at an elephant's trunk.' Multiple repeat viewers confirm the obstruction is specifically show-induced, not a permanent house flaw — worth the callout.",
+            "dataPoints": 4,
+            "evidenceUrls": [
+              "https://old.reddit.com/r/Broadway/comments/1aid9pl/moulin_rouge_seating_advice/",
+              "https://aviewfrommyseat.com/venue/al+hirschfeld+theatre/tips/"
+            ],
+            "hazards": [
+              {
+                "type": "obstructed-view"
+              },
+              {
+                "type": "partial-stage"
+              }
+            ]
+          },
+          {
+            "name": "Mezzanine Right (House Right) G-H (rear mezz right)",
+            "verdict": "solid",
+            "verdictLabel": "Value pick",
+            "rationale": "The rear section of Mezz R is the quirky bright spot of this wing: the rear mezz is staggered so that rows in the 'back half' physically stick out further than the row in front, eliminating head-in-front problems. First row of the rear ('eraic' calls it so) also has 'ample leg room here since it's in the first row of the rear which means there won't be anyone blocking a view.' Elephant obstruction flattens out as you move back and up.",
+            "dataPoints": 5,
+            "evidenceUrls": [
+              "https://old.reddit.com/r/Broadway/comments/1k4xvbp/moulin_rouge_partial_view_seats/",
+              "https://aviewfrommyseat.com/venue/al+hirschfeld+theatre/tips/"
+            ],
+            "hazards": [
+              {
+                "type": "distant"
+              }
+            ]
+          },
+          {
+            "name": "Can-Can Table Seating (Left & Right)",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "Unique to Moulin Rouge at the Hirschfeld: the orchestra pit has been converted into two on-stage table sections flanking a performer catwalk — 5 tables (11 seats) house-left, 4 tables (8 seats) house-right. Performers interact directly with table guests throughout the show. Major caveats that don't apply to any other section: you must be seated 15+ minutes early or you forfeit the seat; no late seating at all in either act 'due to the scenic obstruction and safety'; bench seating at several tables is '2/3 the size of a regular chair' with little padding; children under 12 banned. You cannot see the full set from here and will be turning your head.",
+            "dataPoints": 5,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/al+hirschfeld+theatre/tips/",
+              "https://www.alhirschfeldbroadway.com/box-office/can-can-table-seating-information/",
+              "https://seatplan.com/new-york/al-hirschfeld-theatre/can-can-table-seating-right/",
+              "https://seatplan.com/new-york/al-hirschfeld-theatre/can-can-table-seating-left/"
+            ],
+            "hazards": [
+              {
+                "type": "partial-stage"
+              },
+              {
+                "type": "obstructed-view"
+              },
+              {
+                "type": "tight-legroom"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle",
+              "dance-heavy"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -4877,10 +5100,139 @@
     "yearBuilt": 1925,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:42.524Z",
+      "lastUpdated": "2026-04-18T23:37:08.305Z",
       "seating": {
-        "bestSeats": "The front mezzanine is popular for its full view of the stage. Orchestra seats also offer excellent sightlines.",
-        "accessibility": "Stair lift to orchestra; elevator to mezzanine. Inductive hearing loop installed."
+        "bestSeats": "Ideal: Rear Mezzanine Center (rows A-H) — Rear Mezz Row A is a Richard-Rodgers quirk worth knowing — AVFMS anonymous (Jan 2026): 'the front row of the rear Mezz (Row G) is separated from the front Mezz and is raised up a few feet. In front of you is a curtain and you can extend your feet/legs far more than a traditional seat.' SeatPlan confirms 'a curtain rather than a solid wall' gives Row A 'som",
+        "accessibility": "Stair lift to orchestra; elevator to mezzanine. Inductive hearing loop installed.",
+        "sections": [
+          {
+            "name": "Center Orchestra",
+            "rowRange": "A-L",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Premium sweet spot",
+            "priceTier": "top",
+            "isValuePick": false,
+            "rationale": "Krapp's stadium-style orchestra kicks in at Row L, so the rake elevates you above the flat front rows while keeping you ahead of the Mezzanine overhang line (Row M). AVFMS reviewer groovybones: 'Row M (and 1 row before/all after) are elevated from the lower ORC, didn't have to crane my neck or worry about tall people'; lynnep: 'recommend row L, great elevation.' SeatPlan calls Rows L-M 'unobstructed head-on views' with enhanced elevation — the rare spot that gets close-and-level without the craning of A-E or the overhang risk of S-X.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "AVFMS reports seating is 'very tight' across Center Orchestra even in premium rows ('Excellent seats, very tight seating' — anonymous, Feb 2026; 5'3\" reviewer not blocked, but adjacent 6' guest 'was crushed')."
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Richard+Rodgers+Theatre/tips/",
+              "https://seatplan.com/new-york/richard-rodgers-theatre/orchestra/",
+              "https://en.wikipedia.org/wiki/Richard_Rodgers_Theatre",
+              "https://www.tickpick.com/blog/richard-rodgers-theatre-seating-chart-hamilton-on-broadway/",
+              "https://www.fodors.com/community/united-states/hamilton-are-there-bad-seats-at-the-rodgers-1126802/",
+              "https://www.headout.com/blog/richard-rodgers-theater-seating-chart/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "rowRange": "A-C",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Choreography spot",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "The Front Mezz hangs forward over the orchestra (SeatPlan: 'hangs a bit too far forward over the stage') which is a liability for some shows but a feature for Hamilton specifically — AVFMS reviewer anonymous (Nov 2025): 'Close enough to see all facial expressions... but also able to see and appreciate all the choreography since you're above.' The direct overhead angle is called out by TickPick and SeatPlan as 'perfect for taking in large set pieces and choreography' — a Richard-Rodgers-specific reframe where the forward hang becomes the choreography-viewing advantage.",
+            "hazards": [],
+            "bestFor": [
+              "musical",
+              "dance-heavy",
+              "spectacle"
+            ],
+            "worstFor": [],
+            "dataPoints": 11,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Richard+Rodgers+Theatre/tips/",
+              "https://seatplan.com/new-york/richard-rodgers-theatre/front-mezzanine/",
+              "https://www.tickpick.com/blog/richard-rodgers-theatre-seating-chart-hamilton-on-broadway/",
+              "https://www.fodors.com/community/united-states/hamilton-are-there-bad-seats-at-the-rodgers-1126802/",
+              "https://www.headout.com/blog/richard-rodgers-theater-seating-chart/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine Center",
+            "rowRange": "A-H",
+            "bestRow": "A",
+            "verdict": "solid",
+            "verdictLabel": "Curtain-row value",
+            "priceTier": "budget",
+            "isValuePick": true,
+            "rationale": "Rear Mezz Row A is a Richard-Rodgers quirk worth knowing — AVFMS anonymous (Jan 2026): 'the front row of the rear Mezz (Row G) is separated from the front Mezz and is raised up a few feet. In front of you is a curtain and you can extend your feet/legs far more than a traditional seat.' SeatPlan confirms 'a curtain rather than a solid wall' gives Row A 'some of the best legroom in the theater,' unusual in a house otherwise notorious for 5-inch knee clearance. Cheapest tier, genuinely unobstructed thanks to the cantilevered single balcony (Wikipedia: balcony 'cantilevered over orchestra to reduce obstructed views').",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "SeatPlan: 'feels distant' and 'quite steep.' Fine for sweeping staging; detail reading drops off."
+              },
+              {
+                "type": "steep-rake",
+                "note": "SeatPlan calls the rake 'quite steep' — patrons in Rows A-B may 'lean forward into others' sightlines.'"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "intimate-drama"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Richard+Rodgers+Theatre/tips/",
+              "https://seatplan.com/new-york/richard-rodgers-theatre/rear-mezzanine/",
+              "https://forum.broadwayworld.com/thread/Hamilton-NY-Seats-wLeg-Room",
+              "https://www.fodors.com/community/united-states/hamilton-are-there-bad-seats-at-the-rodgers-1126802/",
+              "https://en.wikipedia.org/wiki/Richard_Rodgers_Theatre"
+            ]
+          },
+          {
+            "name": "Rear Orchestra (Rows S-X)",
+            "rowRange": "S-X",
+            "verdict": "skip",
+            "verdictLabel": "Overhang zone",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "The Mezzanine overhang begins at Row M but becomes aggressive after Row S per SeatPlan: 'patrons may need to duck slightly to see elevated stage action, particularly in rows W and X.' This matters at the Rodgers specifically because Hamilton (and any show using vertical staging on this house's second-level balcony set piece) loses elevated action here — TickPick: 'the overhang from the Mezzanine can obstruct the viewing of that action if you are in the last rows.' Fodor's jv827: 'rear orchestra seats are situated below the overhang, blocking the top of the set in a few scenes.' Paying mid-tier for a seat where you duck is the wrong trade — go Rear Mezz Row A at half the price.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "SeatPlan: overhang 'more prominent after row S'; 'rows W and X' require ducking for upper stage action."
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "spectacle"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/richard-rodgers-theatre/orchestra/",
+              "https://www.tickpick.com/blog/richard-rodgers-theatre-seating-chart-hamilton-on-broadway/",
+              "https://www.fodors.com/community/united-states/hamilton-are-there-bad-seats-at-the-rodgers-1126802/",
+              "https://forum.broadwayworld.com/thread/Best-Place-to-sit-at-The-Richard-Rogers-1080910",
+              "https://aviewfrommyseat.com/venue/Richard+Rodgers+Theatre/tips/"
+            ]
+          },
+          {
+            "name": "Lower Boxes",
+            "rowRange": "Boxes A-D",
+            "verdict": "solid",
+            "verdictLabel": "Intimate trade-off",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "The eight boxes are a Krapp quirk — three movable chairs per box, closest you can get to stage without the front row. The Richard-Rodgers-specific tradeoff: AVFMS Box B reviewer GVseatview: 'Only missing the far left hand side of the stage (stage right). Excellent view. Comfortable seat with plenty of leg room' — i.e. you get the theatre's best legroom (rare here) but lose a specific corner of stage right. Lower boxes (A-D) sit closer to stage level than upper boxes (E-H) and angle better per TickPick/SeatPlan. Because seats are movable, the seat furthest from the stage in each box minimizes the angle loss.",
+            "hazards": [],
+            "bestFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Richard+Rodgers+Theatre/tips/",
+              "https://www.tickpick.com/blog/richard-rodgers-theatre-seating-chart-hamilton-on-broadway/",
+              "https://seatplan.com/new-york/richard-rodgers-theatre/",
+              "https://en.wikipedia.org/wiki/Richard_Rodgers_Theatre"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -5153,11 +5505,150 @@
     "yearBuilt": 1913,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:54.836Z",
+      "lastUpdated": "2026-04-18T23:37:08.306Z",
       "seating": {
-        "bestSeats": "Orchestra seats offer the best views, especially in the center sections. Mezzanine seats can also provide a good vantage point.",
+        "bestSeats": "Ideal: Balcony Left (rows A (front row only; rows B+ get worse sight lines and railing obstruction)) — The front row of side balcony is the Shubert's genuine value play — a single Mockingbird patron posted 'Definitely worth $69' four consecutive times across A3-A9, and a Hell's Kitchen rider describes Balcony Row A as 'felt more like a front mezzanine' because it isn't yet steep there. The tradeof",
         "avoidSeats": "Seats far to the side in the balcony may have obstructed views.",
-        "accessibility": "7 wheelchair spaces in Orchestra. No wheelchair-accessible restrooms (available across street)."
+        "accessibility": "7 wheelchair spaces in Orchestra. No wheelchair-accessible restrooms (available across street).",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "isValuePick": false,
+            "rationale": "Shubert's orchestra rake is shallow, so the center aisle seats and rows in the low center (roughly E-L) give the cleanest unobstructed view without relying on being lifted over people's heads. Patrons repeatedly call out Row G center as 'the best seat in the house' and flag Row Q as the point where the mezzanine overhang starts to clip the very top of the stage.",
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Orchestra+C/?page=2&",
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Orchestra+C/",
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Orchestra+C/?page=4&",
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Orchestra+C/?page=3&",
+              "https://en.wikipedia.org/wiki/Shubert_Theatre_(Broadway)",
+              "https://www.reddit.com/r/Broadway/comments/13j4q0x/shubert_theater_new_york_seating_question/"
+            ],
+            "rowRange": "A-R (front-to-mid); Q can start to feel the overhang",
+            "hazards": []
+          },
+          {
+            "name": "Orchestra Left",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "Orchestra Left sections include rush-priced partial-view seats — the trade is a clipped stage-right view for significantly lower pricing than center orchestra.",
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Orchestra+R/",
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/",
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Orchestra+L/",
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Orchestra+L/?page=2&"
+            ],
+            "rowRange": "A-T (multiple reviews across the full front-to-rear span; rear rows marked partial view)",
+            "hazards": [
+              {
+                "type": "partial-stage"
+              },
+              {
+                "type": "side-angle"
+              }
+            ]
+          },
+          {
+            "name": "Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "isValuePick": false,
+            "rationale": "Front mezzanine center at the Shubert is the most-praised section in this dataset: patrons repeatedly call Row A 'best seats in the house' and note the mezzanine is unusually close to the stage because the house is wider than deep. The critical cutoff is explicit in the sourced Reddit advice — 'I wouldn't go much further back than row F in the mezz' — because the balcony overhang above starts clipping the top of the stage from roughly row G onward.",
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Mezzanine+C/",
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Mezzanine+C/?page=2&",
+              "https://www.reddit.com/r/Broadway/comments/13j4q0x/shubert_theater_new_york_seating_question/",
+              "https://www.reddit.com/r/Broadway/comments/184odgl/um_so_yeah_if_you_go_see_some_like_it_hot_at_the/",
+              "https://www.reddit.com/r/Broadway/comments/1d321e6/does_anyone_know_which_seats_are_partial_view_for/",
+              "https://en.wikipedia.org/wiki/Shubert_Theatre_(Broadway)"
+            ],
+            "rowRange": "A-F (front rows unanimously recommended; avoid G+)",
+            "bestRow": "A",
+            "hazards": [
+              {
+                "type": "mezz-overhang"
+              }
+            ]
+          },
+          {
+            "name": "Mezzanine Left",
+            "verdict": "skip",
+            "verdictLabel": "Avoid",
+            "isValuePick": false,
+            "rationale": "Skip at any price above deep-discount: Mezz Left Row A has a Shubert-specific hazard patrons repeatedly flag — a front rail / metal bar / banner that sits in the eye-line and requires shorter guests to dodge or sit unnaturally straight for the full runtime. Deep on the aisle side (row A27+) the proscenium box itself cuts off stage right, and the rider head-to-head with Mezzanine Right explicitly favors the opposite side here because 'a lot of action happens on the left side and I had to lean across.' Row B onward is tolerable but the front row — the only reason to pay premium — is the compromised row.",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Mezzanine+L/"
+            ],
+            "rowRange": "A-B (most photos); full section goes to row K",
+            "hazards": [
+              {
+                "type": "obstructed-view"
+              },
+              {
+                "type": "partial-stage"
+              }
+            ]
+          },
+          {
+            "name": "Mezzanine Right",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "The padded velvet front-rail barrier on Mezz R Row A is a distinctive Shubert feature — patrons lean into it as a forearm rest rather than fight it. The section-specific tradeoff: Row B actually rates higher than Row A in direct rider comparisons here because the Shubert's aggressive mezz rise means Row B looks cleanly over the Row A patrons, so don't over-pay for A.",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Mezzanine+R/"
+            ],
+            "rowRange": "A-B",
+            "hazards": []
+          },
+          {
+            "name": "Balcony Center",
+            "verdict": "skip",
+            "verdictLabel": "Avoid",
+            "isValuePick": false,
+            "rationale": "Shubert's balcony is the theater's weakest bucket per both riders and Reddit. The section-specific quirk: the balcony's front railing has a 'wide ledge' / light boxes that sit high enough to block the front of the stage — short patrons (≤5'4\") are told to bring a cushion, and every rider reports leaning forward to see action downstage. Combine that with the 'steeply raked' upper tier and patrons describe it as 'watching the show in miniature.'",
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Balcony+C/",
+              "https://www.reddit.com/r/Broadway/comments/1d321e6/does_anyone_know_which_seats_are_partial_view_for/",
+              "https://en.wikipedia.org/wiki/Shubert_Theatre_(Broadway)"
+            ],
+            "rowRange": "Row A",
+            "hazards": [
+              {
+                "type": "obstructed-view"
+              },
+              {
+                "type": "distant"
+              }
+            ]
+          },
+          {
+            "name": "Balcony Left",
+            "verdict": "solid",
+            "verdictLabel": "Value pick",
+            "isValuePick": true,
+            "rationale": "The front row of side balcony is the Shubert's genuine value play — a single Mockingbird patron posted 'Definitely worth $69' four consecutive times across A3-A9, and a Hell's Kitchen rider describes Balcony Row A as 'felt more like a front mezzanine' because it isn't yet steep there. The tradeoff unique to this section: deep-left seats (A25/27) hit a hard partial-view wall, and Row B onward sits behind a railing multiple patrons flag as 'very in the way.' Buy A, not B.",
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Shubert+Theatre/Balcony+L/",
+              "https://www.reddit.com/r/Broadway/comments/1d321e6/does_anyone_know_which_seats_are_partial_view_for/"
+            ],
+            "rowRange": "A (front row only; rows B+ get worse sight lines and railing obstruction)",
+            "hazards": [
+              {
+                "type": "partial-stage"
+              }
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -5221,10 +5712,195 @@
     "yearBuilt": 1927,
     "operator": "ATG Entertainment",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:02.260Z",
+      "lastUpdated": "2026-04-18T23:07:55.744Z",
       "seating": {
         "bestSeats": "The orchestra section offers excellent sightlines. The front mezzanine is also a great option.",
-        "accessibility": "No steps from sidewalk to Orchestra. No elevator. Mezzanine up 29 steps, Balcony up 76 steps."
+        "accessibility": "No steps from sidewalk to Orchestra. No elevator. Mezzanine up 29 steps, Balcony up 76 steps.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "isValuePick": false,
+            "rationale": "Rows B-L are the house's actual sweet-spot band — Row A loses legroom and cranes necks because the St. James stage is raised on multiple recent productions (Sunset's LED wall, Something Rotten!'s set), while Row L is the last row before both the shallow rake AND the mezzanine overhang bite into the view Rows M+ hit the St. James's signature rake-and-overhang double-whammy — shorter patrons report 'craning around heads' and top-of-stage cutoff; a below-average experience for a 1,710-seat house",
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Orchestra+C/",
+              "https://playbill.com/article/how-to-pick-the-best-seats-at-sunset-boulevard-on-broadway"
+            ],
+            "rowRange": "AA-T",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Entire orchestra section has narrow seat width; Row A loses legroom to conductor's pit wall"
+              }
+            ],
+            "bestFor": [
+              "spectacle",
+              "musical"
+            ]
+          },
+          {
+            "name": "Orchestra Left / Right",
+            "verdict": "solid",
+            "verdictLabel": "Value pick",
+            "rationale": "The Row D aisle-angled seats (D1/D2) are a genuine St. James unicorn — the row is set at a different angle than the rows in front so no seat sits directly ahead of you; this bypasses the flat-rake problem that defines the rest of the house 'Partial view' labeled seats in rows A-C side orchestra are heavily production-dependent — Into The Woods and Sunset (downstage-centric) work fine; Frozen's left-side set wall and Something Rotten!'s spread staging defeat them Back rows Q-S side orchestra sit directly under the mezzanine overhang — OK view of downstage action but top-of-set elements (screens, signage) cut off",
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://www.reddit.com/r/Broadway/comments/1grnq3j/st_james_seat_poll/",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Orchestra+R/",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Orchestra+L/"
+            ],
+            "rowRange": "A-Q",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Side orchestra front rows (A-C, high seat numbers) sold as 'partial view' — impact varies sharply by production's blocking"
+              },
+              {
+                "type": "side-angle"
+              },
+              {
+                "type": "partial-stage"
+              }
+            ]
+          },
+          {
+            "name": "Mezzanine Center",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "isValuePick": false,
+            "rationale": "Front mezzanine (Row A) is frequently called the best seat in the 1,710-seat house — Wikipedia notes the mezz 'extends over what were originally the tenth row of orchestra seats,' so you're unusually close for an upper tier, and because the orchestra's rake is so shallow, veterans repeatedly prefer Row A mezz to mid-orchestra at this specific house Row A has two specific St. James quirks that are production-sensitive — a low brass railing and an extension lighting rig on the mezz front; fine for average height but shorter patrons hit them, and Sunset Boulevard's onstage-lip blocking can make Row A worse than Row B-C",
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/st-james-theatre/mezzanine/",
+              "https://forum.broadwayworld.com/thread/StJames-Theater-Balcony-1157162",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Mezzanine+C/",
+              "https://forum.broadwayworld.com/thread/Mezzanine-at-StJames-1079653",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k3930526-St_James_Theather_Seating-New_York_City_New_York.html",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Mezzanine+R/",
+              "https://playbill.com/article/how-to-pick-the-best-seats-at-sunset-boulevard-on-broadway"
+            ],
+            "rowRange": "A-L",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Row A legroom OK-to-tight (production-dependent); Rows B+ in center mezz are notably cramped per multiple Reddit reports including 5'1\" and 5'4\" posters"
+              }
+            ],
+            "bestFor": [
+              "dance-heavy",
+              "spectacle",
+              "musical"
+            ]
+          },
+          {
+            "name": "Mezzanine Left / Right",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "Front rows A-C side mezzanine are the house's best discount — St. James veterans (Patash: 'Gypsy, Bullets Over Broadway, A Funny Thing Happened... my favorite seats... I don't mind the side section in the least') buy them deliberately over pricier orchestra for every major musical High-seat-number side mezz (>18 in rows B-F) hits the mezzanine curvature problem — not just off-angle but the row pitches away from the stage creating sub-inch knee clearance Row B seat 18 area (where pricing typically breaks to a cheaper bracket) is a genuine value sweet spot — view is nearly identical to Row A but noticeably cheaper; confirmed across multiple productions",
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Mezzanine+L/",
+              "https://forum.broadwayworld.com/thread/Mezzanine-at-StJames-1079653",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Mezzanine+R/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k3930526-St_James_Theather_Seating-New_York_City_New_York.html",
+              "https://www.reddit.com/r/Broadway/comments/1i7hswj/st_james_theatre_rear_mezz_experiences/"
+            ],
+            "rowRange": "A-R",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Mezz curvature crushes legroom at high seat numbers (>18) in rows B-F specifically"
+              },
+              {
+                "type": "side-angle",
+                "note": "Side mezz works for center-heavy staging but loses corners; production-dependent"
+              }
+            ]
+          },
+          {
+            "name": "Mezzanine Rear (Rows M-R)",
+            "verdict": "skip",
+            "verdictLabel": "Avoid",
+            "isValuePick": false,
+            "rationale": "Rear mezz is the house's classic value trap — priced as mezzanine but the rake flattens and you're a third of the way back in a 1,710-seat house; reviewers describe needing seat boosters and sliding to the seat edge to see anything. Row Q aisle has an additional specific quirk: a corridor-exit light stays on during the show. Row J is the one exception in the rear-mezz block — it's the first row of a rear bank with a walkway in front, so no heads block the view; veterans specifically target it as the discount version of front mezz",
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://www.reddit.com/r/Broadway/comments/1i7hswj/st_james_theatre_rear_mezz_experiences/",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Mezzanine+L/",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Mezzanine+R/"
+            ],
+            "rowRange": "M-R",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Cramped enough that 5'4\" patrons report knees-on-seat"
+              }
+            ]
+          },
+          {
+            "name": "Balcony Center",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "Row A center balcony is the upper-tier's saving grace — BWW veterans split sharply (one calls it 'one of the worst balconies on Broadway', others swear by it), but the consensus lands on Row A specifically because the no-lean position, sound improvement from the extra speaker truss, and low railing make it better than rear mezz for the same price The balcony is a physical climb — 'like climbing a tower' — and is the second balcony; older patrons or anyone with mobility should not attempt at this house specifically Row A is the ONLY row that reliably clears the railing — behind Row A the rail bisects the stage; chain-reaction lean-forward effect forces everyone below to follow suit",
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.reddit.com/r/Broadway/comments/1intd82/balcony_row_a_for_sunset_blvd/",
+              "https://forum.broadwayworld.com/thread/StJames-Theater-Balcony-1157162",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Balcony+C/",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Balcony+L/",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Balcony+R/"
+            ],
+            "rowRange": "A-H",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Second balcony — the highest level in a 3-level house"
+              },
+              {
+                "type": "partial-stage",
+                "note": "Front-lip staging gets cut by railing in any row except A (and sometimes A if short)"
+              },
+              {
+                "type": "steep-rake",
+                "note": "The climb to reach it is steep; inside the balcony the rake itself is not the issue — the railing is"
+              }
+            ]
+          },
+          {
+            "name": "Balcony Left / Right",
+            "verdict": "skip",
+            "verdictLabel": "Avoid",
+            "isValuePick": false,
+            "rationale": "Side balcony behind Row A combines every St. James hazard in one seat — side-angle, railing blocking downstage, second-balcony height, tight legroom, and (per multiple patrons) lottery-only sales because the house knows they're problematic Row A side balcony aisle seats (1-3 L, 2-4 R) are the one exception — sightlines avoid the railing, you're 'almost right over the front of the mezzanine,' and legroom is usable; anything behind Row A or away from the aisle is genuinely skip-tier at this house because back side-balcony also carries sound-mix issues off-axis from the speaker truss",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Balcony+R/",
+              "https://aviewfrommyseat.com/venue/St.+James+Theatre/Balcony+L/"
+            ],
+            "rowRange": "A-H",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "High and far in a 1,710-seat house"
+              },
+              {
+                "type": "partial-stage"
+              },
+              {
+                "type": "obstructed-view",
+                "note": "Railing cuts through downstage view in any row past A"
+              },
+              {
+                "type": "side-angle",
+                "note": "Side angle compounds the distance"
+              }
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -5967,11 +6643,146 @@
     "yearBuilt": 1911,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:42.491Z",
+      "lastUpdated": "2026-04-18T23:37:08.306Z",
       "seating": {
-        "bestSeats": "The Winter Garden is a wide theater, so aim for seats closer to the center for optimal viewing. Seats in the front mezzanine can offer a good overall view.",
+        "bestSeats": "Ideal: Orchestra Center (Rows O-V, under overhang) (rows O-V) — This is the house's quiet value zone: full center alignment matters more here than proximity does because the auditorium is wider than deep, so row V center still reads front-on. Last orchestra row is short (~6 seats) with unusual legroom per multiple patrons. Tradeoff specific to Winter Garden: the mezzanine overhang starts around ro",
         "avoidSeats": "Seats far to the side may have partially obstructed views of the stage. Check the seating chart when purchasing tickets.",
-        "accessibility": "20 wheelchair spaces (largest of Shubert theaters). 16 aisle transfer seats. Infrared devices available."
+        "accessibility": "20 wheelchair spaces (largest of Shubert theaters). 16 aisle transfer seats. Infrared devices available.",
+        "sections": [
+          {
+            "name": "Orchestra Center (Rows A-G)",
+            "rowRange": "A-G",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "isValuePick": false,
+            "rationale": "With a 44'10\" proscenium and a stage wider than most Broadway houses, Orchestra Center C-G is the only zone where you get the full picture head-on without sacrificing actor-face detail. Spectacle-heavy productions here (BTTF's DeLorean, Mamma Mia! dance numbers) are blocked edge-to-edge, so off-center seats lose pieces even a few rows in.",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Winter%20Garden%20Theatre/",
+              "https://www.headout.com/blog/winter-garden-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/winter-garden-theatre-seating-chart-the-music-man/",
+              "https://seatplan.com/new-york/winter-garden-theatre/orchestra/"
+            ],
+            "hazards": []
+          },
+          {
+            "name": "Orchestra Center (Rows O-V, under overhang)",
+            "rowRange": "O-V",
+            "verdict": "solid",
+            "verdictLabel": "Value pick",
+            "isValuePick": true,
+            "rationale": "This is the house's quiet value zone: full center alignment matters more here than proximity does because the auditorium is wider than deep, so row V center still reads front-on. Last orchestra row is short (~6 seats) with unusual legroom per multiple patrons. Tradeoff specific to Winter Garden: the mezzanine overhang starts around row O per published guides, clipping the top of the stage — fine for naturalistic plays, worse for musicals with fly-in sets.",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Winter%20Garden%20Theatre/",
+              "https://seatplan.com/new-york/winter-garden-theatre/orchestra/",
+              "https://www.headout.com/blog/winter-garden-theatre-seating-chart/"
+            ],
+            "hazards": [
+              {
+                "type": "mezz-overhang"
+              },
+              {
+                "type": "distant"
+              }
+            ],
+            "bestFor": [
+              "play",
+              "intimate-drama"
+            ],
+            "worstFor": [
+              "spectacle"
+            ]
+          },
+          {
+            "name": "Orchestra Left/Right (side sections)",
+            "rowRange": "A-V",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "Wide-house penalty hits hardest here: because the auditorium is broader than deep, side-orchestra angles into the stage are sharper than in a typical Broadway house — the further out you sit, the more the upstage far corner disappears. Multiple patrons specifically call out stage-right pillars clipping their view on Salesman; works better for plays where action holds center than for musicals with full-stage choreography.",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Winter%20Garden%20Theatre/",
+              "https://seatplan.com/new-york/winter-garden-theatre/orchestra/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/winter-garden-theatre/seating-chart/"
+            ],
+            "hazards": [
+              {
+                "type": "side-angle"
+              },
+              {
+                "type": "partial-stage"
+              },
+              {
+                "type": "pillar"
+              }
+            ],
+            "bestFor": [
+              "play"
+            ],
+            "worstFor": [
+              "dance-heavy",
+              "spectacle"
+            ]
+          },
+          {
+            "name": "Mezzanine Center (Rows A-C)",
+            "rowRange": "A-C",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "isValuePick": false,
+            "rationale": "In a wider-than-deep house the front center mezzanine rescues the seat selection by giving you the one thing center orchestra can't: altitude to take in the full 44'10\" proscenium at once. Multiple patrons specifically cite this row range for Mamma Mia! and BTTF over the rear orchestra, and it avoids both the pillar risk on the sides and the mezz overhang clipping rear stalls.",
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Winter%20Garden%20Theatre/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2958707-Best_View_at_the_Winter_Garden_Theatre-New_York_City_New_York.html",
+              "https://seatplan.com/new-york/winter-garden-theatre/mezzanine/",
+              "https://www.tickpick.com/blog/winter-garden-theatre-seating-chart-the-music-man/",
+              "https://www.headout.com/blog/winter-garden-theatre-seating-chart/"
+            ],
+            "hazards": []
+          },
+          {
+            "name": "Mezzanine Left/Right sides",
+            "rowRange": "A-H",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "isValuePick": false,
+            "rationale": "Wide-house geometry pushes the far-left and far-right mezz off at a sharp angle — the stage-opposite corner is the consistent casualty. Reviewers note the speaker stacks on the edge as a recurring blocker, and because the mezz is only ~9 rows deep, distance isn't the killer — angle is. Good option if you're watching a show where the action centers; poor for full-stage choreography.",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Winter%20Garden%20Theatre/",
+              "https://seatplan.com/new-york/winter-garden-theatre/mezzanine/",
+              "https://www.rateyourseats.com/winter-garden-theatre-nyc/seating/mezzanine-level"
+            ],
+            "hazards": [
+              {
+                "type": "side-angle"
+              },
+              {
+                "type": "partial-stage"
+              },
+              {
+                "type": "obstructed-view"
+              }
+            ]
+          },
+          {
+            "name": "Box Seats (Box B, C, F, G)",
+            "verdict": "skip",
+            "verdictLabel": "Avoid",
+            "isValuePick": false,
+            "rationale": "The Winter Garden boxes are widely flagged as among the most obstructed in Broadway — the box structure itself blocks significant stage area and the side angle compounds it. Skip at any price.",
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Winter%20Garden%20Theatre/",
+              "https://www.tiktok.com/@genwithahardg/video/7315253446087593259",
+              "https://seatplan.com/new-york/winter-garden-theatre/orchestra/"
+            ],
+            "hazards": []
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
