@@ -76,6 +76,8 @@ const PROTECTED_FIELDS = [
   // clears them on success. serpRetryAfter is still protected (controls backoff timing).
   'serpRetryAfter',
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
+  // Bug #10: manually-set pull quotes must survive rebuilds and LLM overrides.
+  'pullQuote',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js

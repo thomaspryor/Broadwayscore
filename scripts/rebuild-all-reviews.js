@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { shouldRejectAsReservation } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, isOffTopicExcerpt } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -452,12 +452,50 @@ const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
 function selectBestExcerpt(data, showTitle) {
   const showId = data.showId;
 
+  // Bug #10: Manually-set pullQuote always wins — human editors set this
+  // deliberately and it must not be overridden by LLM or aggregator sources.
+  // Only apply the internal-note and copyright-chrome guards (not cross-show /
+  // tour / hedge guards, which are meant for automated pipeline candidates).
+  if (data.pullQuote && typeof data.pullQuote === 'string' && data.pullQuote.trim()) {
+    const cleaned = cleanExcerpt(data.pullQuote);
+    if (cleaned && cleaned.length > 20) {
+      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned)) {
+        return cleaned;
+      }
+    }
+  }
+
   /**
    * Validate an excerpt candidate against cross-show and tour guards.
    * Returns the excerpt if valid, null if suppressed.
    */
   function validateExcerpt(excerpt, source) {
     if (!excerpt) return null;
+
+    // Layer 1: Internal-note guard — reject editorial notes that leaked into excerpt fields.
+    if (isInternalNote(excerpt)) {
+      if (!stats.internalNoteExcerptsRejected) stats.internalNoteExcerptsRejected = [];
+      stats.internalNoteExcerptsRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [internal-note] ${showId}: "${source}" rejected as internal note`);
+      return null;
+    }
+
+    // Layer 2: Copyright-chrome guard — reject scraping artifacts.
+    if (hasCopyrightChrome(excerpt)) {
+      if (!stats.copyrightChromeRejected) stats.copyrightChromeRejected = [];
+      stats.copyrightChromeRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [copyright-chrome] ${showId}: "${source}" rejected for copyright/subscribe text`);
+      return null;
+    }
+
+    // Layer 2b: Off-topic guard — reject excerpts with no theater-domain or title keywords.
+    // Very loose: only fires when both checks fail simultaneously.
+    if (isOffTopicExcerpt(excerpt, showId)) {
+      if (!stats.offTopicExcerptsRejected) stats.offTopicExcerptsRejected = [];
+      stats.offTopicExcerptsRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [off-topic] ${showId}: "${source}" rejected as off-topic`);
+      return null;
+    }
 
     // Layer 3: Cross-show validation
     const crossCheck = excerptMentionsWrongShow(excerpt, showId, showTitle);
@@ -598,15 +636,6 @@ function selectBestExcerpt(data, showTitle) {
     const extracted = extractExcerptFromFullText(data.fullText, data.showId);
     if (extracted && extracted.length > 50) {
       const validated = validateExcerpt(extracted, 'fullText');
-      if (validated) return validated;
-    }
-  }
-
-  // 7. Try existing pullQuote if nothing else works
-  if (data.pullQuote) {
-    const cleaned = cleanExcerpt(data.pullQuote);
-    if (cleaned && cleaned.length > 40) {
-      const validated = validateExcerpt(cleaned, 'pullQuote');
       if (validated) return validated;
     }
   }

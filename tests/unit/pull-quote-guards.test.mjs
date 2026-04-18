@@ -15,6 +15,9 @@ const {
   isHedgeOpener,
   hasMidSentencePivot,
   shouldRejectAsReservation,
+  isInternalNote,
+  hasCopyrightChrome,
+  isOffTopicExcerpt,
 } = require('../../scripts/lib/pull-quote-guards.js');
 
 describe('isHedgeOpener', () => {
@@ -188,6 +191,132 @@ describe('hasMidSentencePivot', () => {
     assert.strictEqual(
       hasMidSentencePivot('A hit.'),
       false
+    );
+  });
+});
+
+describe('isInternalNote (Bug #11)', () => {
+  test('rejects excerpts starting with [', () => {
+    assert.strictEqual(isInternalNote('[INTERNAL: score needs review]'), true);
+    assert.strictEqual(isInternalNote('[NOTE: check this]'), true);
+    assert.strictEqual(isInternalNote('[TODO: fix excerpt]'), true);
+    assert.strictEqual(isInternalNote('  [leading whitespace]'), true);
+  });
+
+  test('rejects excerpts containing [INTERNAL or [NOTE anywhere', () => {
+    assert.strictEqual(isInternalNote('Great show. [INTERNAL: double-check score]'), true);
+    assert.strictEqual(isInternalNote('Powerful performance [NOTE: needs update]'), true);
+  });
+
+  test('allows normal excerpts that happen to contain brackets', () => {
+    // Show titles with brackets, or legitimate quotation
+    assert.strictEqual(isInternalNote('A dazzling production (see Act 2).'), false);
+    assert.strictEqual(isInternalNote('The cast is superb — especially the lead.'), false);
+  });
+
+  test('handles null / empty / non-string input', () => {
+    assert.strictEqual(isInternalNote(null), false);
+    assert.strictEqual(isInternalNote(undefined), false);
+    assert.strictEqual(isInternalNote(''), false);
+    assert.strictEqual(isInternalNote(42), false);
+  });
+});
+
+describe('hasCopyrightChrome (Bug #14)', () => {
+  test('rejects common copyright/subscribe patterns', () => {
+    assert.strictEqual(hasCopyrightChrome('All Rights Reserved.'), true);
+    assert.strictEqual(hasCopyrightChrome('Subscribe to our newsletter.'), true);
+    assert.strictEqual(hasCopyrightChrome('© 2024 The New York Times.'), true);
+    assert.strictEqual(hasCopyrightChrome('Read more at broadway.com'), true);
+    assert.strictEqual(hasCopyrightChrome('Click here to read the full review.'), true);
+    assert.strictEqual(hasCopyrightChrome('Sign up for our weekly digest.'), true);
+    assert.strictEqual(hasCopyrightChrome('This newsletter covers Broadway.'), true);
+  });
+
+  test('is case-insensitive', () => {
+    assert.strictEqual(hasCopyrightChrome('all rights reserved'), true);
+    assert.strictEqual(hasCopyrightChrome('SUBSCRIBE TO our alerts'), true);
+    assert.strictEqual(hasCopyrightChrome('READ MORE AT nytimes.com'), true);
+  });
+
+  test('allows clean review excerpts', () => {
+    assert.strictEqual(
+      hasCopyrightChrome('A bravura performance from a cast firing on all cylinders.'),
+      false
+    );
+    assert.strictEqual(
+      hasCopyrightChrome('The revival is better than its predecessor in every way.'),
+      false
+    );
+  });
+
+  test('handles null / empty / non-string input', () => {
+    assert.strictEqual(hasCopyrightChrome(null), false);
+    assert.strictEqual(hasCopyrightChrome(undefined), false);
+    assert.strictEqual(hasCopyrightChrome(''), false);
+  });
+});
+
+describe('isOffTopicExcerpt (Bug #13)', () => {
+  test('passes excerpts with theater-domain words', () => {
+    assert.strictEqual(
+      isOffTopicExcerpt('A stunning performance from the entire cast.', 'hamilton-2015'),
+      false
+    );
+    assert.strictEqual(
+      isOffTopicExcerpt('The musical direction is exceptional.', 'hamilton-2015'),
+      false
+    );
+    assert.strictEqual(
+      isOffTopicExcerpt('This production of the play is riveting.', 'giant-2026'),
+      false
+    );
+  });
+
+  test('passes excerpts containing show title keywords', () => {
+    assert.strictEqual(
+      isOffTopicExcerpt('Hamilton delivers on every front.', 'hamilton-2015'),
+      false,
+      'showId keyword match'
+    );
+    assert.strictEqual(
+      isOffTopicExcerpt('Giant looms large as a piece of history.', 'giant-2026'),
+      false
+    );
+  });
+
+  test('rejects excerpts with no theater words and no title match', () => {
+    assert.strictEqual(
+      isOffTopicExcerpt(
+        'Mindfulness is the practice of bringing full attention to the present moment.',
+        'hamilton-2015'
+      ),
+      true,
+      'off-topic meditation excerpt'
+    );
+  });
+
+  test('is loose — does not reject short excerpts that happen to lack title words but have theater words', () => {
+    // "stage" is a theater-domain word
+    assert.strictEqual(
+      isOffTopicExcerpt('She takes the stage with confidence.', 'six-2021'),
+      false
+    );
+  });
+
+  test('handles null / empty / no showId', () => {
+    assert.strictEqual(isOffTopicExcerpt(null, 'hamilton-2015'), false);
+    assert.strictEqual(isOffTopicExcerpt('', 'hamilton-2015'), false);
+    // Without showId, only theater-domain check runs
+    assert.strictEqual(
+      isOffTopicExcerpt('A wonderful performance.', null),
+      false,
+      'theater word present'
+    );
+    assert.strictEqual(
+      isOffTopicExcerpt('Mindfulness is calming.', null),
+      true,
+      'no theater word, no showId'
     );
   });
 });
