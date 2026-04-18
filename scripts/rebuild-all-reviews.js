@@ -36,6 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { shouldRejectAsReservation } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -44,6 +45,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
 const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 
 // Authoritative NYT Critic's Pick set — union of two sources:
@@ -484,6 +486,18 @@ function selectBestExcerpt(data, showTitle) {
         console.log(`  ⚠️  [tour-excerpt] ${showId}: "${source}" has tour signal: ${tourCheck.signal}`);
         // Tour detection is always log-only for now (excerpt still used)
       }
+    }
+
+    // Layer 5: Hedge-opener guard (Pattern Card #3)
+    // Aggregator excerpts on positive reviews often quote a middle-paragraph caveat
+    // ("But the book still needs work") rather than the critic's actual verdict.
+    // shouldRejectAsReservation returns false when score is null (safe for aggregator-only reviews).
+    const reviewScore = data.llmScore?.score ?? null;
+    if (shouldRejectAsReservation(excerpt, reviewScore)) {
+      if (!stats.hedgeExcerptSuppressed) stats.hedgeExcerptSuppressed = [];
+      stats.hedgeExcerptSuppressed.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🛡️  [hedge-guard] ${showId}: "${source}" rejected as reservation (score ${reviewScore})`);
+      return null;
     }
 
     return excerpt;
@@ -1150,21 +1164,7 @@ const crossShowFingerprints = new Map();
   stats.domainMismatchDetected = domainMismatchDetected;
 }
 
-// --- Known syndication pairs (runtime dedup) ---
-// Same critic publishes at primary + secondary outlets simultaneously.
-// Secondary copies are skipped even without isSyndicatedDuplicate flag on file.
-const KNOWN_SYNDICATION_PAIRS = {
-  'chris jones': { primary: 'chicagotribune', secondary: ['nydailynews'] },
-  'kathleen campion': { primary: 'nytg', secondary: ['front-row-center'] },
-  'tulis mccall': { primary: 'nytg', secondary: ['front-row-center'] },
-  'stanford friedman': { primary: 'nytg', secondary: ['front-row-center'] },
-  'david rooney': { primary: 'hollywood-reporter', secondary: ['reuters'] },
-  'alexandra lipari': { primary: 'newsday', secondary: ['entertainmenthour'] },
-  'zachary stewart': { primary: 'theatermania', secondary: ['whatsonstage'] },
-  'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
-  'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune'] },
-  'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
-};
+// KNOWN_SYNDICATION_PAIRS imported from ./lib/syndication-pairs (Pattern Card #6)
 
 // === PRE-PASS: Promote contentVerification flags to top-level on ALL files ===
 // This runs before the main loop so flags are set even on upcoming/duplicate files

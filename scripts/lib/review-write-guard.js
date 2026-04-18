@@ -74,10 +74,16 @@ const PROTECTED_FIELDS = [
   // SERP retry state — set by collect-review-texts.js + gather-reviews.js lifecycle guard.
   // Losing these on rebase causes the cooldown to reset, which means a single
   // rebase can re-trigger 13K stuck wrong_content files. See sprint-plan-serp-cost-reduction.md S1-T1.
+  // NOTE: serpRetryCount/serpDiscoveryAbandoned are intentionally excluded — clearFailureFlags()
+  // clears them on success. serpRetryAfter is still protected (controls backoff timing).
   'serpRetryAfter',
-  'serpRetryCount',
-  'serpDiscoveryAbandoned',
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
+  // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
+  // They are derived fields that rebuild re-classifies every run. Having them here
+  // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
+  // fetched correct content — blocking valid reviews from reviews.json.
+  // clearFailureFlags() clears them explicitly on success paths. (Pattern Card #1,
+  // Notion 346637c5-416f-8154-9500-f09fd49e5a2a, 2026-04-17)
 ];
 
 /**
@@ -135,6 +141,14 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // Pattern Card #7: schema validation — originalScore must be a string, not a bare integer.
+  // A bare number like 5 is ambiguous (5/100 or 5 stars?). The canonical form is always a
+  // string ("5/5", "★★★★★", "5 stars"). Log a warning but don't block the write.
+  if (newData.originalScore != null && typeof newData.originalScore === 'number') {
+    const caller = new Error().stack.split('\n')[2]?.trim() || 'unknown';
+    console.warn(`[review-write-guard] originalScore is a number (${newData.originalScore}) in ${path.basename(filePath)} — should be a string. Caller: ${caller}`);
+  }
+
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved };
 }
@@ -182,4 +196,38 @@ function getEffectiveProtectedFields(existingData) {
   return Array.from(all);
 }
 
-module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, PROTECTED_FIELDS };
+/**
+ * Check if the URL in newData is already used by a different review file in
+ * the same show directory. Returns the conflicting filename, or null if no collision.
+ *
+ * Pattern Card #6: URL collisions cause duplicate content when two passes of
+ * gather-reviews assign the same URL to different filenames for the same show.
+ * Call this before safeWriteReview when creating new files to detect the issue
+ * early rather than letting it propagate to reviews.json.
+ *
+ * @param {string} filePath - The file being written (used to determine show directory)
+ * @param {object} newData - The data to write (must have a .url field to be checked)
+ * @returns {string|null} Conflicting filename (basename only), or null if no collision
+ */
+function checkUrlCollision(filePath, newData) {
+  if (!newData || !newData.url) return null;
+  const dir = path.dirname(filePath);
+  const thisFile = path.basename(filePath);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json' && f !== thisFile);
+  } catch {
+    return null;
+  }
+  for (const f of files) {
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+      if (data.url && data.url === newData.url) {
+        return f;
+      }
+    } catch { /* skip unreadable */ }
+  }
+  return null;
+}
+
+module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, PROTECTED_FIELDS };
