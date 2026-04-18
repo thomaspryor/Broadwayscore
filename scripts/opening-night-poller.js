@@ -1173,37 +1173,41 @@ async function pollCycle() {
     console.log('Show is ALREADY broadcast-ready!');
   }
 
-  // ── Layer 1: Aggregators ──
-  const aggResults = await runAggregators(show);
+  // ── Layers 1+2+3: Parallel Discovery ──
+  // Aggregators, RSS, and direct site-search run simultaneously. Previously,
+  // site-search only started after aggregators finished — adding 1-2h lag.
+  // Now we fetch outlets directly as their reviews post, not after BWW RR compiles them.
+  //
+  // Site-search runs all outlets with templates upfront (no "missing" filter needed
+  // since we don't know what's missing yet). Dedup happens in processDiscoveredReviews.
+  const allSiteSearchIds = !SKIP_SITE_SEARCH
+    ? Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
+        const ep = SITE_SEARCH_ENDPOINTS[id];
+        return !ep.market || ep.market === market;
+      })
+    : [];
 
-  // ── Layer 2: RSS ──
-  const rssResults = await runRSSFeeds(show.title, knownUrls, show.openingDate || null, market);
+  if (SKIP_SITE_SEARCH) console.log('\n[Layer 3] Site Search... SKIPPED (--skip-site-search)');
 
-  // ── Layer 3: Site Search ──
-  let siteSearchResults = [];
-  if (!SKIP_SITE_SEARCH) {
-    const foundOutletIds = getFoundOutletIds(SHOW_ID);
-    // Add outlets found in layers 1-2
-    for (const r of [...aggResults, ...rssResults]) {
-      if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
-    }
-    const missingIds = getMissingT1T2Outlets(SHOW_ID, market)
-      .map(o => o.id)
-      .filter(id => !foundOutletIds.has(id.toLowerCase()));
-    siteSearchResults = await runSiteSearch(show.title, missingIds, knownUrls, market, show.openingDate || null);
-  } else {
-    console.log('\n[Layer 3] Site Search... SKIPPED (--skip-site-search)');
-  }
+  const [aggResults, rssResults, siteSearchResults] = await Promise.all([
+    runAggregators(show),
+    runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
+    allSiteSearchIds.length > 0
+      ? runSiteSearch(show.title, allSiteSearchIds, knownUrls, market, show.openingDate || null)
+      : Promise.resolve([]),
+  ]);
 
-  // ── Layer 4: SERP ──
+  // ── Layer 4: SERP — T1 priority ──
   let serpResults = [];
   if (!SKIP_SERP) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID);
     for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
     }
+    // Sort T1 before T2 so the 30-call SERP budget goes to highest-value outlets first
     let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market)
-      .filter(o => !foundOutletIds.has(o.id.toLowerCase()));
+      .filter(o => !foundOutletIds.has(o.id.toLowerCase()))
+      .sort((a, b) => (a.tier || 3) - (b.tier || 3));
     // For WE shows on day 1+: also search notable T3 WE outlets
     // Skip first 24h (opening night) — T3 outlets haven't published yet and SERP adds ~90s
     const daysSinceOpening = show.openingDate
@@ -1269,7 +1273,7 @@ async function pollCycle() {
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  POLL CYCLE RESULTS');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log(`  Discovered: ${allDiscovered.length} (agg:${aggResults.length} rss:${rssResults.length} site:${siteSearchResults.length} serp:${serpResults.length})`);
+  console.log(`  Discovered: ${allDiscovered.length} (agg:${aggResults.length} rss:${rssResults.length} site:${siteSearchResults.length} serp:${serpResults.length}) [parallel: layers 1-3]`);
   console.log(`  Files created: ${created} | Skipped: ${skipped} | Rejected: ${rejected}`);
   console.log(`  Scored reviews: ${preStatus.total} → ${postStatus.total} (+${newReviews})`);
   console.log(`  T1: ${postStatus.t1} | T2: ${postStatus.t2} | Hi-conf: ${postStatus.highConfidence}`);
