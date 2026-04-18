@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-18T18:36:30.455Z",
+  "generatedAt": "2026-04-18T19:29:09.617Z",
   "summary": {
-    "total": 2,
+    "total": 3,
     "high": 1,
-    "medium": 0,
+    "medium": 1,
     "low": 1
   },
   "collisions": [
@@ -33,6 +33,33 @@
       "suggestedWinner": "an-ark-off-broadway-2026",
       "reason": "publishDate January 30, 2026 is 21 days from an-ark-off-broadway-2026 opening (2026-01-09)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
+      "normalizedUrl": "https://bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
+      "candidates": [
+        {
+          "showId": "catch-me-if-you-can-2011",
+          "file": "bloomberg--jeremy-gerard.json",
+          "publishDate": "2011-04-11",
+          "openingDate": "2011-04-10",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "bloomberg"
+        },
+        {
+          "showId": "high-2011",
+          "file": "bloomberg--jeremy-gerard.json",
+          "publishDate": "2011-04-20",
+          "openingDate": "2011-04-19",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "bloomberg"
+        }
+      ],
+      "suggestedWinner": "catch-me-if-you-can-2011",
+      "reason": "publishDate 2011-04-11 is 1 days from catch-me-if-you-can-2011 but also 1 days from high-2011",
+      "confidence": "medium"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
