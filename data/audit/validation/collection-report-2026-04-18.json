@@ -1,0 +1,141 @@
+{
+  "runDate": "2026-04-18T06:49:18.958Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "proof-2026,the-fear-of-13-2026,the-receptionist-off-broadway-2026,kenrex-off-broadway-2026,avenue-q-west-end-2026,one-flew-over-the-cuckoos-nest-west-end-2026,please-please-me-west-end-2026,aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026,paradise-club-presents-salvage-city-supper-club-off-broadway-2026,milk-and-honey-amt-theater-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 21,
+    "failed": 2,
+    "skipped": 0,
+    "successRate": "91.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 9,
+    "amp": 0,
+    "browserbase": 6,
+    "directCookies": 0,
+    "scrapingbee": 6,
+    "brightdata": 3,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 10,
+    "tier1Success": 9,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 5,
+    "tier1_5Success": 3,
+    "tier2Attempts": 8,
+    "tier2Success": 6,
+    "tier3Attempts": 5,
+    "tier3Success": 5,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 24,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 1.8,
+    "urlDiscoveryAttempts": 11,
+    "urlDiscoverySuccess": 4,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "proof-2026/nyt-theater--unknown.json",
+    "please-please-me-west-end-2026/guardian--susannah-clapp.json",
+    "proof-2026/ew--unknown.json",
+    "proof-2026/theatermania--david-gordon.json",
+    "proof-2026/thewrap--unknown.json",
+    "proof-2026/cititour--brian-scott-lipton.json",
+    "proof-2026/theatrely--unknown.json",
+    "avenue-q-west-end-2026/daily-mail--laura-parkin.json",
+    "proof-2026/nytimes--sarah-bahr.json",
+    "proof-2026/variety--brent-lang.json",
+    "proof-2026/ew--shania-russell.json",
+    "proof-2026/cote-notices--david-cote.json",
+    "proof-2026/nysr--michael-sommers.json",
+    "proof-2026/slantmagazine--mike-dressel.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/hollywood-reporter--arthur-knight.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/deadline--andreas-wiseman.json",
+    "the-fear-of-13-2026/nydailynews--unknown.json",
+    "the-fear-of-13-2026/theatre-reviews-limited--david-roberts.json",
+    "kenrex-off-broadway-2026/theatrely--unknown.json",
+    "kenrex-off-broadway-2026/playbill--unknown.json",
+    "the-fear-of-13-2026/talkinbroadway--unknown.json"
+  ],
+  "failed": [
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "the-fear-of-13-2026/wsj--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "proof-2026/nyt-theater--unknown.json",
+      "please-please-me-west-end-2026/guardian--susannah-clapp.json",
+      "proof-2026/ew--unknown.json",
+      "proof-2026/theatermania--david-gordon.json",
+      "proof-2026/ew--shania-russell.json",
+      "proof-2026/nysr--michael-sommers.json",
+      "proof-2026/slantmagazine--mike-dressel.json",
+      "the-fear-of-13-2026/theatre-reviews-limited--david-roberts.json",
+      "kenrex-off-broadway-2026/playbill--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/variety--brent-lang.json",
+      "proof-2026/variety--brent-lang.json",
+      "data/review-texts/one-flew-over-the-cuckoos-nest-west-end-2026/hollywood-reporter--arthur-knight.json",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/hollywood-reporter--arthur-knight.json",
+      "data/review-texts/one-flew-over-the-cuckoos-nest-west-end-2026/deadline--andreas-wiseman.json",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/deadline--andreas-wiseman.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [
+      "proof-2026/theatrely--unknown.json",
+      "avenue-q-west-end-2026/daily-mail--laura-parkin.json",
+      "proof-2026/nytimes--sarah-bahr.json",
+      "proof-2026/cote-notices--david-cote.json",
+      "the-fear-of-13-2026/nydailynews--unknown.json",
+      "kenrex-off-broadway-2026/theatrely--unknown.json"
+    ],
+    "brightdata": [
+      "proof-2026/thewrap--unknown.json",
+      "proof-2026/cititour--brian-scott-lipton.json",
+      "the-fear-of-13-2026/talkinbroadway--unknown.json"
+    ],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "proof-2026/nytimes--sarah-bahr.json",
+      "oldUrl": "https://www.nytimes.com/2026/04/07/t-magazine/cats-jellicle-ball-broadway-performance.html",
+      "newUrl": "https://www.nytimes.com/2026/04/16/theater/proof-review-ayo-edebiri-don-cheadle.html"
+    },
+    {
+      "reviewId": "proof-2026/variety--brent-lang.json",
+      "oldUrl": "https://variety.com/2026/legit/news/a-walk-on-the-moon-musical-new-york-stage-debut-1236722403/",
+      "newUrl": "https://variety.com/2026/legit/reviews/proof-broadway-review-ayo-edebiri-don-cheadle-1236723836/"
+    },
+    {
+      "reviewId": "proof-2026/ew--shania-russell.json",
+      "oldUrl": "https://ew.com/becky-shaw-review-broadway-alden-ehrenreich-steals-the-show-11943173",
+      "newUrl": "https://ew.com/proof-review-ayo-edebiri-don-cheadle-broadway-11949024?srsltid=AfmBOopgD37bnnPPl2zwiFLTO4Le1htYpYhcWCwJFiMxtLierIwfXYg6"
+    },
+    {
+      "reviewId": "proof-2026/nysr--michael-sommers.json",
+      "oldUrl": "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/",
+      "newUrl": "https://nystagereview.com/2026/04/16/proof-calculated-brilliance/"
+    }
+  ]
+}
