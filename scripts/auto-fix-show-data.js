@@ -361,7 +361,7 @@ Return ONLY the JSON array, no other text. Example:
                      member.role === 'Choreographer' ? 'choreographed by' : null;
     if (!roleVerb) {
       // Non-director roles: accept without verification (lower hallucination risk)
-      verified.push(member);
+      verified.push({ ...member, _source: 'serp-verified-llm' });
       continue;
     }
 
@@ -381,7 +381,7 @@ Return ONLY the JSON array, no other text. Example:
         });
         if (confirmed) {
           console.log(`    ✅ SERP confirmed: ${member.name} (${member.role})`);
-          verified.push(member);
+          verified.push({ ...member, _source: 'serp-verified-llm' });
         } else {
           console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role}) — rejecting`);
         }
