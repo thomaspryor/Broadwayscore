@@ -125,14 +125,15 @@ function ShowContextLine({ bestFor, worstFor }: { bestFor?: string[]; worstFor?:
   );
 }
 
-function SectionRow({ section, isHero = false, compactRationale = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean }) {
+function SectionRow({ section, isHero = false, compactRationale = false, suppressRationale = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean; suppressRationale?: boolean }) {
   const priceLabel = section.priceTier ? PRICE_TIER_LABEL[section.priceTier] : null;
   const nameClass = isHero ? 'text-base font-bold text-white' : 'text-sm font-semibold text-gray-100';
   const hazardsWithNotes = (section.hazards ?? []).filter((h) => h.note);
   const hasHazards = (section.hazards?.length ?? 0) > 0;
   const hazardCountLabel = section.hazards?.length === 1 ? '1 hazard' : `${section.hazards?.length ?? 0} hazards`;
-  const showRationaleInline = section.rationale && !compactRationale;
-  const showRationaleExpand = section.rationale && compactRationale;
+  // suppressRationale: used on the value-pick row when the lede already shows the rationale
+  const showRationaleInline = section.rationale && !compactRationale && !suppressRationale;
+  const showRationaleExpand = section.rationale && compactRationale && !suppressRationale;
 
   return (
     <div className={isHero ? 'pb-3' : 'py-3 border-t border-white/5'}>
@@ -239,32 +240,68 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
   const visibleSolids = shouldCollapseSolids && !expanded ? [] : solids;
   const hiddenSolidCount = shouldCollapseSolids && !expanded ? solids.length : 0;
 
+  // Prefer value-pick lede over generic bestSeats — the value pick is always
+  // non-obvious (otherwise it'd be the sweet-spot), so this guarantees the
+  // gold box says something theater-specific, not "center orch is best."
+  const valuePickSection = validSections.find((s) => s.isValuePick);
+
   return (
     <div className="text-left">
       <VerdictDistributionBar sections={validSections} />
 
-      {bestSeats && (
+      {valuePickSection ? (
+        <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
+          <p className="text-sm text-gray-200 leading-relaxed">
+            <span className="font-semibold text-brand not-italic">★ Best value:</span>{' '}
+            <span className="italic">
+              {valuePickSection.name}
+              {valuePickSection.rowRange && <> (rows {valuePickSection.rowRange})</>}
+              {valuePickSection.rationale && <> — {valuePickSection.rationale}</>}
+            </span>
+          </p>
+        </div>
+      ) : bestSeats ? (
         <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
           <p className="text-sm text-gray-200 leading-relaxed italic">{bestSeats}</p>
         </div>
-      )}
+      ) : null}
 
       {/* Hero: sweet-spot, given visual weight */}
-      <SectionRow section={hero} isHero compactRationale={compactRationale} />
+      <SectionRow
+        section={hero}
+        isHero
+        compactRationale={compactRationale}
+        suppressRationale={hero === valuePickSection}
+      />
 
       {/* Additional sweet-spots */}
       {remainingSweetSpots.map((s, i) => (
-        <SectionRow key={`ss-${i}`} section={s} compactRationale={compactRationale} />
+        <SectionRow
+          key={`ss-${i}`}
+          section={s}
+          compactRationale={compactRationale}
+          suppressRationale={s === valuePickSection}
+        />
       ))}
 
       {/* Skips (always shown — warnings need visibility) */}
       {remainingSkips.map((s, i) => (
-        <SectionRow key={`sk-${i}`} section={s} compactRationale={compactRationale} />
+        <SectionRow
+          key={`sk-${i}`}
+          section={s}
+          compactRationale={compactRationale}
+          suppressRationale={s === valuePickSection}
+        />
       ))}
 
       {/* Solids (collapsed by default if many) */}
       {visibleSolids.map((s, i) => (
-        <SectionRow key={`so-${i}`} section={s} compactRationale={compactRationale} />
+        <SectionRow
+          key={`so-${i}`}
+          section={s}
+          compactRationale={compactRationale}
+          suppressRationale={s === valuePickSection}
+        />
       ))}
 
       {hiddenSolidCount > 0 && (
