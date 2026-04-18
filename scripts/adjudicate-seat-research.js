@@ -137,6 +137,37 @@ async function adjudicateSection(section, theaterName) {
     const desc = `${h.type}${h.note ? ': ' + h.note : ''}`;
     claims.push({ kind: 'hazard', text: desc });
   }
+  // v2 structured fields — audit these as claims too
+  if (section.bestRow) {
+    claims.push({
+      kind: 'bestRow',
+      text: `The single sweetest row within ${section.rowRange || 'this section'} is ${section.bestRow}.`,
+    });
+  }
+  if (section.rowRange) {
+    claims.push({
+      kind: 'rowRange',
+      text: `The section spans rows ${section.rowRange}.`,
+    });
+  }
+  if (section.bestFor && section.bestFor.length > 0) {
+    claims.push({
+      kind: 'bestFor',
+      text: `This section is best suited for these show types: ${section.bestFor.join(', ')}.`,
+    });
+  }
+  if (section.worstFor && section.worstFor.length > 0) {
+    claims.push({
+      kind: 'worstFor',
+      text: `This section should be skipped for these show types: ${section.worstFor.join(', ')}.`,
+    });
+  }
+  if (section.isValuePick) {
+    claims.push({
+      kind: 'valuePick',
+      text: `This section is THE best-value pick for the theater (bang-for-buck beats other sections at this house).`,
+    });
+  }
 
   const evidenceBlock = validEvidence
     .map((e, i) => `[EVIDENCE ${i + 1}] ${e.url}\n${e.text.slice(0, MAX_EVIDENCE_CHARS)}`)
@@ -160,17 +191,56 @@ ${evidenceBlock}
 ${failed.length > 0 ? `UNFETCHED URLs: ${failed.length} (source list incomplete)\n` : ''}
 
 For each claim, rate how well the evidence supports it:
-- STRONG: multiple evidence sources clearly support this exact claim (row ranges, hazards, positioning)
+- STRONG: multiple evidence sources clearly support this exact claim
 - MODERATE: at least one source supports, OR closely related context (not verbatim but consistent)
 - WEAK: plausible but no direct support in the evidence
 - UNSUPPORTED: no source mentions this, OR evidence contradicts it — likely fabricated
+
+FIELD-SPECIFIC RULES (apply by claim kind):
+
+- kind=rationale: standard STRONG/MODERATE/WEAK/UNSUPPORTED per above.
+
+- kind=hazard: a hazard claim needs a source that mentions the specific issue
+  (overhang, pillar, sound dead-spot, etc.). If the hazard has a note with a
+  specific row/seat, that specificity must come from a source.
+
+- kind=bestRow: STRICT. "Row X is the sweetest" is UNSUPPORTED unless a source
+  explicitly says (verbatim or paraphrased): "Row X is best," "Row X is the
+  sweet spot," "sit in Row X," or equivalent. Geometric inference (e.g., "Row
+  X is the middle of the range") is UNSUPPORTED — not good enough. If a
+  source says "Row H or I," the specific row claimed ("Row H") is MODERATE at
+  most.
+
+- kind=rowRange: STRONG if a source explicitly defines this range OR if
+  multiple sources consistently locate the section at these rows. MODERATE if
+  the range is close but slightly wider/narrower than evidence supports.
+  UNSUPPORTED if evidence contradicts (e.g., evidence says A-B, claim says
+  A-D).
+
+- kind=bestFor: the "best for these show types" claim needs evidence tying
+  the section to specific show characteristics (dance, scale, intimate drama,
+  spectacle). A source talking about how the section is good for sound does
+  NOT support "best for dance-heavy shows." MODERATE if the genre label is
+  reasonable given the section's known strengths; UNSUPPORTED if no source
+  discusses genre suitability at all and it's pattern-matched from general
+  knowledge.
+
+- kind=worstFor: same rule as bestFor.
+
+- kind=valuePick: needs evidence that the section offers better
+  price-per-experience than other sections at THIS theater. STRONG if a
+  source explicitly calls it a steal / value pick / great for budget.
+  MODERATE if evidence supports the section is good AND its priceTier is
+  lower than the sweet-spot section. UNSUPPORTED if no source addresses the
+  value proposition.
 
 Also rate the overall VERDICT support (is ${section.verdict} the right verdict given the evidence?).
 
 Flag concerning patterns in "warnings":
 - "all evidence from one site" (weak diversity)
 - "evidence contradicts verdict" (bigger problem)
-- "row range differs from evidence" (precision issue)
+- "bestRow is geometric inference, no source names that row"
+- "bestFor/worstFor genre tags not supported by show-type discussion in evidence"
 - "claim about specific seat/row that no source mentions" (fabrication risk)
 
 Respond ONLY with compact JSON, no prose before or after:

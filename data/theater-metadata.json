@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-18T03:08:15.928Z",
+    "lastUpdated": "2026-04-18T17:12:50.911Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -1797,7 +1797,7 @@
     "yearBuilt": 1972,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-18T03:08:15.927Z",
+      "lastUpdated": "2026-04-18T17:12:50.911Z",
       "seating": {
         "bestSeats": "Ideal: Center orchestra rows F-L — past the front-row neck-crane and before the Row N mezz overhang.",
         "accessibility": "First Broadway theater with hearing loop (2013). Elevator to Orchestra and Mezzanine. 12 wheelchair spaces.",
@@ -1805,7 +1805,6 @@
           {
             "name": "Orchestra Center (mid)",
             "rowRange": "F-L",
-            "bestRow": "Row H",
             "verdict": "sweet-spot",
             "verdictLabel": "Our pick",
             "priceTier": "premium",
@@ -1831,7 +1830,6 @@
           {
             "name": "Front Mezzanine Center",
             "rowRange": "A-E",
-            "bestRow": "Row A",
             "verdict": "sweet-spot",
             "verdictLabel": "Best for spectacle",
             "priceTier": "premium",
@@ -1863,7 +1861,6 @@
           },
           {
             "name": "Rear Mezzanine back rows",
-            "rowRange": "L-N",
             "verdict": "skip",
             "verdictLabel": "Skip — Broadway's longest throw",
             "priceTier": "budget",
@@ -1889,7 +1886,6 @@
           },
           {
             "name": "Side Orchestra partial-view (above Row G)",
-            "rowRange": "H-N",
             "verdict": "solid",
             "verdictLabel": "Best bang-for-buck",
             "priceTier": "budget",
@@ -1900,9 +1896,6 @@
                 "type": "partial-stage",
                 "note": "Listed as partial view; typically misses decorative dragon/house scenery on far side, not live stage action"
               }
-            ],
-            "bestFor": [
-              "musical"
             ],
             "worstFor": [],
             "dataPoints": 8,
@@ -1925,10 +1918,6 @@
                 "type": "mezz-overhang",
                 "note": "Seats under the front mezzanine overhang — top of tall scenery (including dragon) can be clipped"
               }
-            ],
-            "bestFor": [
-              "musical",
-              "play"
             ],
             "worstFor": [],
             "dataPoints": 9,
@@ -3371,7 +3360,7 @@
     "yearBuilt": 1927,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-18T02:45:11.611Z",
+      "lastUpdated": "2026-04-18T17:12:50.910Z",
       "seating": {
         "bestSeats": "Ideal: Center orchestra rows F-L offer an ideal viewing experience at the Majestic Theatre.",
         "accessibility": "4 wheelchair locations in Orchestra. No steps to rows AA-H. Infrared devices available.",
@@ -3394,7 +3383,6 @@
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k471009-Majestic_Theatre_orchestra_vs_front_mezzanine-New_York_City_New_York.html",
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2465945-Majestic_Theatre_best_seats-New_York_City_New_York.html"
             ],
-            "bestRow": "Row I",
             "bestFor": [
               "musical",
               "dance-heavy",
@@ -3431,7 +3419,7 @@
             ]
           },
           {
-            "name": "Rear Mezzanine Center",
+            "name": "Rear Mezzanine (front rows)",
             "rowRange": "A-C",
             "verdict": "solid",
             "verdictLabel": "Budget pick",
@@ -3462,8 +3450,7 @@
             ]
           },
           {
-            "name": "Orchestra Sides",
-            "rowRange": "outer seats",
+            "name": "Orchestra Sides (outer seats)",
             "verdict": "solid",
             "verdictLabel": "Budget orchestra",
             "priceTier": "mid",
@@ -3481,12 +3468,6 @@
               "https://www.headout.com/blog/majestic-theatre-seating-chart/",
               "https://www.tickpick.com/blog/interactive-majestic-theatre-seating-chart/",
               "https://www.tripadvisor.com/ShowTopic-g60763-i5-k2465945-Majestic_Theatre_best_seats-New_York_City_New_York.html"
-            ],
-            "bestFor": [
-              "play"
-            ],
-            "worstFor": [
-              "dance-heavy"
             ]
           },
           {
@@ -3925,7 +3906,7 @@
     "yearBuilt": 1921,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-18T02:45:11.612Z",
+      "lastUpdated": "2026-04-18T17:12:50.911Z",
       "seating": {
         "bestSeats": "The Music Box Theatre is a smaller venue, so most seats offer good views. Center orchestra seats provide the optimal experience.",
         "avoidSeats": "Balcony seats may feel distant for some viewers. Check the specific seating chart for any obstructed views before booking.",
@@ -3946,12 +3927,6 @@
               "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
               "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/",
               "https://aviewfrommyseat.com/venue/Music+Box+Theatre/"
-            ],
-            "bestRow": "Row H",
-            "bestFor": [
-              "play",
-              "musical",
-              "intimate-drama"
             ]
           },
           {
@@ -3973,14 +3948,6 @@
               "https://www.headout.com/blog/music-box-theatre-seating-chart/",
               "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
               "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/"
-            ],
-            "bestRow": "Row A",
-            "bestFor": [
-              "musical",
-              "spectacle"
-            ],
-            "worstFor": [
-              "intimate-drama"
             ]
           },
           {
@@ -4003,11 +3970,7 @@
               "https://www.headout.com/blog/music-box-theatre-seating-chart/",
               "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/seating-chart/"
             ],
-            "isValuePick": true,
-            "bestFor": [
-              "play",
-              "musical"
-            ]
+            "isValuePick": true
           },
           {
             "name": "Rear Mezzanine Center",
@@ -4023,12 +3986,6 @@
               "https://www.headout.com/blog/music-box-theatre-seating-chart/",
               "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
               "https://www.broadway-show-tickets.com/broadway-theaters/music-box-theatre/"
-            ],
-            "bestFor": [
-              "musical"
-            ],
-            "worstFor": [
-              "intimate-drama"
             ]
           },
           {
