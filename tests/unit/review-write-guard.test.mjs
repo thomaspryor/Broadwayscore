@@ -189,6 +189,42 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       fs.rmSync(dir, { recursive: true, force: true });
     }
   });
+
+  test('checkUrlCollision normalizes utm_* params — same article with different tracking', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'utm-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'nytimes--helen-shaw.json'), JSON.stringify({
+        url: 'https://www.nytimes.com/2026/04/16/theater/proof-review.html',
+      }, null, 2));
+      const result = checkUrlCollision(path.join(dir, 'nytimes--unknown.json'), {
+        url: 'https://www.nytimes.com/2026/04/16/theater/proof-review.html?utm_source=google&utm_medium=cpc',
+      });
+      assert.equal(result, 'nytimes--helen-shaw.json');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('checkUrlCollision normalizes trailing slash', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'slash-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'a.json'), JSON.stringify({ url: 'https://example.com/article/' }, null, 2));
+      const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/article' });
+      assert.equal(result, 'a.json');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('checkUrlCollision handles non-string url without crashing', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nonstr-'));
+    try {
+      const result = checkUrlCollision(path.join(dir, 'b.json'), { url: { nested: 'object' } });
+      assert.equal(result, null);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
 });
 
 describe('checkForDataLoss', () => {

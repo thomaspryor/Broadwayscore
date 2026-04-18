@@ -219,7 +219,7 @@ function getEffectiveProtectedFields(existingData) {
  * @returns {string|null} Conflicting filename (basename only), or null if no collision
  */
 function checkUrlCollision(filePath, newData) {
-  if (!newData || !newData.url) return null;
+  if (!newData || !newData.url || typeof newData.url !== 'string') return null;
   const dir = path.dirname(filePath);
   const thisFile = path.basename(filePath);
   let files;
@@ -228,15 +228,30 @@ function checkUrlCollision(filePath, newData) {
   } catch {
     return null;
   }
+  const normNew = _normalizeUrlForCollision(newData.url);
   for (const f of files) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
-      if (data.url && data.url === newData.url) {
+      if (data.url && typeof data.url === 'string' && _normalizeUrlForCollision(data.url) === normNew) {
         return f;
       }
     } catch { /* skip unreadable */ }
   }
   return null;
+}
+
+/** Normalize a URL for collision comparison: lowercase domain, strip trailing slash and utm_* params. */
+function _normalizeUrlForCollision(url) {
+  try {
+    const u = new URL(url);
+    u.hostname = u.hostname.toLowerCase();
+    for (const key of [...u.searchParams.keys()]) {
+      if (/^utm_|^fbclid/.test(key)) u.searchParams.delete(key);
+    }
+    return u.toString().replace(/\/$/, '');
+  } catch {
+    return url.toLowerCase().replace(/\/$/, '');
+  }
 }
 
 module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, PROTECTED_FIELDS };
