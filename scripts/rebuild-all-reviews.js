@@ -1034,7 +1034,7 @@ const crossShowFingerprints = new Map();
           // which is too imprecise for a 90-day guard. This caused 74 false positives
           // in the Class B audit (2026-04-12). Only YYYYMMDD is specific enough.
         }
-        if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && !shouldSkipWrongProductionAudit(d)) {
+        if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
           console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is 90+ days before show ${showEarliest.toISOString().split('T')[0]}`);
           d.wrongProduction = true;
           d.wrongProductionNote = `Pre-opening guard: review dated ${reviewDate.toISOString().split('T')[0]} is 90+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
