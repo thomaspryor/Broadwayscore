@@ -188,4 +188,38 @@ function getEffectiveProtectedFields(existingData) {
   return Array.from(all);
 }
 
-module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, PROTECTED_FIELDS };
+/**
+ * Check if the URL in newData is already used by a different review file in
+ * the same show directory. Returns the conflicting filename, or null if no collision.
+ *
+ * Pattern Card #6: URL collisions cause duplicate content when two passes of
+ * gather-reviews assign the same URL to different filenames for the same show.
+ * Call this before safeWriteReview when creating new files to detect the issue
+ * early rather than letting it propagate to reviews.json.
+ *
+ * @param {string} filePath - The file being written (used to determine show directory)
+ * @param {object} newData - The data to write (must have a .url field to be checked)
+ * @returns {string|null} Conflicting filename (basename only), or null if no collision
+ */
+function checkUrlCollision(filePath, newData) {
+  if (!newData || !newData.url) return null;
+  const dir = path.dirname(filePath);
+  const thisFile = path.basename(filePath);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json' && f !== thisFile);
+  } catch {
+    return null;
+  }
+  for (const f of files) {
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+      if (data.url && data.url === newData.url) {
+        return f;
+      }
+    } catch { /* skip unreadable */ }
+  }
+  return null;
+}
+
+module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, PROTECTED_FIELDS };

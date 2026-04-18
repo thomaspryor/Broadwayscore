@@ -45,6 +45,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
 const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 
 // Authoritative NYT Critic's Pick set — union of two sources:
@@ -1163,21 +1164,7 @@ const crossShowFingerprints = new Map();
   stats.domainMismatchDetected = domainMismatchDetected;
 }
 
-// --- Known syndication pairs (runtime dedup) ---
-// Same critic publishes at primary + secondary outlets simultaneously.
-// Secondary copies are skipped even without isSyndicatedDuplicate flag on file.
-const KNOWN_SYNDICATION_PAIRS = {
-  'chris jones': { primary: 'chicagotribune', secondary: ['nydailynews'] },
-  'kathleen campion': { primary: 'nytg', secondary: ['front-row-center'] },
-  'tulis mccall': { primary: 'nytg', secondary: ['front-row-center'] },
-  'stanford friedman': { primary: 'nytg', secondary: ['front-row-center'] },
-  'david rooney': { primary: 'hollywood-reporter', secondary: ['reuters'] },
-  'alexandra lipari': { primary: 'newsday', secondary: ['entertainmenthour'] },
-  'zachary stewart': { primary: 'theatermania', secondary: ['whatsonstage'] },
-  'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
-  'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune'] },
-  'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
-};
+// KNOWN_SYNDICATION_PAIRS imported from ./lib/syndication-pairs (Pattern Card #6)
 
 // === PRE-PASS: Promote contentVerification flags to top-level on ALL files ===
 // This runs before the main loop so flags are set even on upcoming/duplicate files
