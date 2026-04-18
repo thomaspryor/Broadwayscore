@@ -1188,13 +1188,16 @@ async function pollCycle() {
       })
     : [];
 
-  const [aggResults, rssResults, ssrSiteSearchResults] = await Promise.all([
+  const [aggSettled, rssSettled, ssrSettled] = await Promise.allSettled([
     runAggregators(show),
     runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
     ssrSiteSearchIds.length > 0
       ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null)
       : Promise.resolve([]),
   ]);
+  const aggResults = aggSettled.status === 'fulfilled' ? aggSettled.value : (console.log(`  [Layer 1] ERROR: ${aggSettled.reason?.message}`), []);
+  const rssResults = rssSettled.status === 'fulfilled' ? rssSettled.value : (console.log(`  [Layer 2] ERROR: ${rssSettled.reason?.message}`), []);
+  const ssrSiteSearchResults = ssrSettled.status === 'fulfilled' ? ssrSettled.value : (console.log(`  [Layer 3 SSR] ERROR: ${ssrSettled.reason?.message}`), []);
 
   // JS-rendered site-search: only for outlets still missing after parallel phase.
   // Prevents burning SB credits on outlets aggregators/RSS already found.
@@ -1244,9 +1247,6 @@ async function pollCycle() {
 
   let serpResults = [];
   if (!SKIP_SERP && shouldRunSerp()) {
-    if (!DRY_RUN) {
-      fs.writeFileSync(serpStatePath, JSON.stringify({ lastRun: new Date().toISOString() }));
-    }
     const foundOutletIds = getFoundOutletIds(SHOW_ID);
     for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
@@ -1295,6 +1295,11 @@ async function pollCycle() {
     }
     if (missingOutlets.length > 0) {
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
+      // Write timestamp AFTER SERP completes — prevents locking out next cycle if SERP crashes mid-run
+      if (!DRY_RUN) {
+        fs.mkdirSync(path.dirname(serpStatePath), { recursive: true });
+        fs.writeFileSync(serpStatePath, JSON.stringify({ lastRun: new Date().toISOString() }));
+      }
     } else {
       console.log('\n[Layer 4] SERP Backup... all T1/T2 outlets found');
     }
