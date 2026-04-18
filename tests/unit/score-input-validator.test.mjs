@@ -61,16 +61,16 @@ describe('validateScoreableText', () => {
 
   // ── Keyword density case ──────────────────────────────────────────────────
 
-  it('fails on body with no show keyword matches', () => {
-    // Long text but mentions no show-identifying words
+  it('passes but warns when body has no show keyword matches (keyword gate is warning-only)', () => {
+    // Long text but mentions no show-identifying words — still passes Gates 1+2
     const genericText = 'A ' + 'very interesting production opened last night. '.repeat(40) +
       'The cast was excellent and the direction was superb. ' +
       'The audience responded with enthusiasm. ' +
       'The staging was innovative. The lighting was beautiful. ' +
       'The costumes were period-appropriate.';
     const result = validateScoreableText(genericText, { title: 'Proof', cast: [{ name: 'Alexis Bledel' }] });
-    assert.equal(result.ok, false);
-    assert.equal(result.reason, 'insufficient_show_keywords');
+    assert.equal(result.ok, true, 'keyword gate should not block — it is a warning only');
+    assert.ok(result.warnings.includes('insufficient_show_keywords'), 'should warn about missing keywords');
   });
 
   it('passes when ≥2 show keywords appear in a long body', () => {

@@ -124,19 +124,25 @@ function countShowKeywords(body, show) {
  * Gates (in order):
  *   1. nav_chrome_majority: junk-line ratio of raw text ≥ 0.5
  *   2. body_too_short: stripped body < 1000 chars (unless isExcerpt)
- *   3. insufficient_show_keywords: < 2 show keywords found in body
+ *
+ * NOTE: keyword density is a WARNING only, not a blocker. Calibration against 17K
+ * reviews found 5.38% false-positive rate: critics writing about numeric-titled shows
+ * (1776, 1984, 13) use "the revival" throughout without repeating the title, so keywords
+ * appear 0 times. Gate 1+2 already catch nav-chrome garbage; Gate 3 redundant with
+ * the contentVerification wrongArticle check at the data layer.
  *
  * @param {string} text - Text to validate (fullText or combined excerpt)
  * @param {string|Object|null} show - Show title string or show object for keyword check
  * @param {{ isExcerpt?: boolean }} options
  *   isExcerpt: if true, skip the body-length gate (aggregator excerpts are short by design)
- * @returns {{ ok: boolean, reason: string, body: string }}
+ * @returns {{ ok: boolean, reason: string, body: string, warnings: string[] }}
  */
 function validateScoreableText(text, show, options) {
   const isExcerpt = options && options.isExcerpt;
+  const warnings = [];
 
   if (!text || typeof text !== 'string') {
-    return { ok: false, reason: 'no_text', body: '' };
+    return { ok: false, reason: 'no_text', body: '', warnings };
   }
 
   // Gate 1: nav chrome ratio on the raw text
@@ -144,21 +150,20 @@ function validateScoreableText(text, show, options) {
   // Strip nav chrome before any return so body is always the stripped version
   const body = stripNavChrome(text);
   if (ratio >= 0.5) {
-    return { ok: false, reason: 'nav_chrome_majority', body };
+    return { ok: false, reason: 'nav_chrome_majority', body, warnings };
   }
 
   // Gate 2: body must have enough content (unless caller says it is an excerpt)
   if (!isExcerpt && body.length < 1000) {
-    return { ok: false, reason: 'body_too_short', body };
+    return { ok: false, reason: 'body_too_short', body, warnings };
   }
 
-  // Gate 3: show keyword density (≥ 2 keywords must appear)
-  const kwCount = countShowKeywords(body || text, show);
-  if (kwCount < 2) {
-    return { ok: false, reason: 'insufficient_show_keywords', body };
+  // Keyword density: warning only (not a blocker — 5.38% false-positive rate on real reviews)
+  if (countShowKeywords(body || text, show) < 2) {
+    warnings.push('insufficient_show_keywords');
   }
 
-  return { ok: true, reason: 'ok', body };
+  return { ok: true, reason: 'ok', body, warnings };
 }
 
 /**
