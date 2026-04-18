@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getAllShows } from '@/lib/data-core';
 import { getTopTrendingShows, getTrendingLastUpdated } from '@/lib/data-social-pulse';
 import type { ComputedShow } from '@/lib/engine';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import TrendingList from '@/components/trending/TrendingList';
 
 /**
@@ -20,7 +20,7 @@ const PAGE_DESCRIPTION =
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
-  alternates: { canonical: `${BASE_URL}/trending` },
+  alternates: marketAlternates('broadway', '/trending'),
   openGraph: {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,

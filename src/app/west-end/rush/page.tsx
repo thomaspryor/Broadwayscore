@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getWestEndShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
@@ -16,9 +16,7 @@ export const metadata: Metadata = {
   title: { absolute: 'West End Rush Tickets — Same-Day Discount London Theatre Tickets' },
   description:
     'Same-day rush tickets for West End shows. Box office day seats, digital rush via TodayTix, and student standby. Updated regularly.',
-  alternates: {
-    canonical: `${BASE_URL}/west-end/rush`,
-  },
+  alternates: marketAlternates('westEnd', '/rush'),
   openGraph: {
     title: 'West End Rush Tickets — Same-Day Cheap London Theatre Seats',
     description:

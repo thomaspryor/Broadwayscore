@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getWestEndShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
@@ -16,9 +16,7 @@ export const metadata: Metadata = {
   title: { absolute: 'West End Standing Room Tickets — Sold-Out London Show Seats' },
   description:
     'Standing room tickets for sold-out West End shows. When a show sells out completely, standing places at the back of the stalls are the last resort.',
-  alternates: {
-    canonical: `${BASE_URL}/west-end/standing-room`,
-  },
+  alternates: marketAlternates('westEnd', '/standing-room'),
   openGraph: {
     title: 'West End Standing Room Only Tickets',
     description: 'The cheapest way to see a sold-out West End show — if a show sells out, standing places are the last resort.',

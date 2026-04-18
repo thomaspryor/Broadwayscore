@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
@@ -15,9 +15,7 @@ import { formatTicketPrice } from '@/lib/formatting';
 export const metadata: Metadata = {
   title: 'Broadway Lottery Tickets - Win Cheap Broadway Tickets',
   description: 'Enter digital lotteries to win discounted Broadway tickets for $10-60. Hamilton, Wicked, Lion King, and more. Daily lottery entries for cheap Broadway seats.',
-  alternates: {
-    canonical: `${BASE_URL}/lotteries`,
-  },
+  alternates: marketAlternates('broadway', '/lotteries'),
   openGraph: {
     title: 'Broadway Lottery Tickets - Win Cheap Seats',
     description: 'Enter digital lotteries for discounted Broadway tickets. Popular shows like Hamilton, Wicked, and The Lion King all offer digital lottery programs.',

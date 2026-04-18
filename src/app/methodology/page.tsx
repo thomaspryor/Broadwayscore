@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { BASE_URL } from '@/lib/seo';
+import { marketAlternates, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
 
@@ -10,9 +10,7 @@ const ogImageUrl = `${BASE_URL}/og/home.png`;
 export const metadata: Metadata = {
   title: 'How It Works - Scoring Methodology',
   description: 'Learn how Broadway Scorecard calculates CriticScore ratings and AudienceGrade from aggregated reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
-  alternates: {
-    canonical: `${BASE_URL}/methodology`,
-  },
+  alternates: marketAlternates('broadway', '/methodology'),
   openGraph: {
     title: 'How Broadway Scorecard Works',
     description: 'Our transparent scoring methodology for aggregating Broadway critic reviews and audience sentiment.',
