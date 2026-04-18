@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-18T19:12:34.947Z",
-  "processed": 33,
-  "failed": 1218,
-  "successRate": "2.6%",
+  "updatedAt": "2026-04-18T19:14:07.479Z",
+  "processed": 34,
+  "failed": 1227,
+  "successRate": "2.7%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 8,
     "archiveToday": 3,
     "archive": 6
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -58,6 +58,17 @@
       "t": "2026-04-18T19:06:42.362Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-18T19:12:49.157Z",
+      "event": "bb-session",
+      "session": "d293c363",
+      "url": "https://variety.com/2012/legit/reviews/the-anarchist-1117948864/"
+    },
+    {
+      "t": "2026-04-18T19:12:50.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
