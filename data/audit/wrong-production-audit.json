@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-18T03:38:53.261Z",
+  "timestamp": "2026-04-18T05:08:03.863Z",
   "stats": {
     "totalReviews": 34840,
-    "alreadyFlagged": 15283,
+    "alreadyFlagged": 15285,
     "dateGuardCatches": 88,
     "directorMismatch": 815,
-    "tvFilmSignals": 3144,
+    "tvFilmSignals": 3145,
     "londonSignals": 1005,
     "offBroadwaySignals": 882,
     "yearMismatch": 67,
-    "noPublishDate": 3729
+    "noPublishDate": 3725
   },
   "findings": [
     {
@@ -113,7 +113,7 @@
     {
       "showId": "1984-2017",
       "file": "ew--isabella-biedenahrn.json",
-      "score": null,
+      "score": 73,
       "publishDate": "June 22, 2017",
       "url": "http://ew.com/theater/2017/06/22/1984-ew-stage-review/",
       "findings": [
@@ -873,7 +873,7 @@
     {
       "showId": "a-life-in-the-theatre-2010",
       "file": "hollywood-reporter--frank-scheck.json",
-      "score": null,
+      "score": 50,
       "publishDate": null,
       "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-review-1004120521.story",
       "findings": [
@@ -4427,7 +4427,7 @@
     {
       "showId": "annie-1977",
       "file": "northjerseycom--robert-feldberg.json",
-      "score": null,
+      "score": 82,
       "publishDate": null,
       "url": "http://www.northjersey.com/arts_entertainment/theater/178047031_Theater_review__Broadway_revival_of__Annie_.html",
       "findings": [
@@ -12140,7 +12140,7 @@
     {
       "showId": "dreamgirls-1981",
       "file": "ap--michael-kuchwara.json",
-      "score": null,
+      "score": 55,
       "publishDate": "1982-06-04",
       "url": "https://www.newspapers.com/image/1051929288/",
       "findings": [
@@ -13125,7 +13125,7 @@
     {
       "showId": "fela-2012",
       "file": "nytimes--ben-brantley.json",
-      "score": null,
+      "score": 92,
       "publishDate": "July 12, 2012",
       "url": "http://theater.nytimes.com/2012/07/13/theater/reviews/fela-on-broadway-at-al-hirschfeld-theater.html?ref=theater",
       "findings": [
@@ -13922,7 +13922,7 @@
     {
       "showId": "first-date-2013",
       "file": "ew--tom-geier.json",
-      "score": null,
+      "score": 52,
       "publishDate": "August 8, 2013",
       "url": "https://www.ew.com/ew/article/0,,20724341,00.html",
       "findings": [
@@ -18887,7 +18887,7 @@
     {
       "showId": "harry-potter-2021",
       "file": "telegraph--diane-snyder.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2018-04-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
       "findings": [
@@ -19007,6 +19007,20 @@
       "score": 68,
       "publishDate": "2018-07-26",
       "url": "https://www.theguardian.com/stage/2018/jul/26/head-over-heels-review-go-gos-jukebox-musical-packs-a-power-pop-punch",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "head-over-heels-2018",
+      "file": "huffpost--curtis-m-wong.json",
+      "score": null,
+      "publishDate": "2018-08-01",
+      "url": "https://www.huffpost.com/entry/head-over-heels-spencer-liff-broadway_n_5b606f7fe4b0de86f49b1e8b",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -19457,7 +19471,7 @@
     {
       "showId": "hells-kitchen-2024",
       "file": "guardian--adrian-horton.json",
-      "score": null,
+      "score": 93,
       "publishDate": "April 21, 2024",
       "url": "https://www.theguardian.com/stage/2023/nov/19/hells-kitchen-alicia-keys-musical-review",
       "findings": [
@@ -23840,7 +23854,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "timeout--unknown.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2026-03-27",
       "url": "https://www.westendtheatre.com/346848/news/reviews/reviews-of-john-proctor-is-the-villain-london/",
       "findings": [
@@ -25155,7 +25169,7 @@
     {
       "showId": "legally-blonde-2007",
       "file": "nydailynews--joe-dziemianowicz-bway.json",
-      "score": null,
+      "score": 50,
       "publishDate": "2007-05-02",
       "url": "https://www.newspapers.com/image/409476251/",
       "findings": [
@@ -32764,7 +32778,7 @@
     {
       "showId": "on-a-clear-day-you-can-see-forever-2011",
       "file": "variety--steven-suskin.json",
-      "score": null,
+      "score": 32,
       "publishDate": "December 11, 2011",
       "url": "http://www.variety.com/review/VE1117946735",
       "findings": [
@@ -35969,6 +35983,7 @@
     {
       "showId": "proof-2026",
       "file": "chicagotribune--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2026/04/16/review-proof-broadway-edebiri/",
       "findings": [
@@ -35982,7 +35997,7 @@
     {
       "showId": "proof-2026",
       "file": "culturesauce--thom-geier.json",
-      "score": 71,
+      "score": 88,
       "publishDate": "2026-04-16",
       "url": "https://culturesauce.com/2026/04/16/proof-ayo-edibiri-don-cheadle-broadway-review/",
       "findings": [
@@ -37572,7 +37587,7 @@
     {
       "showId": "saint-joan-2018",
       "file": "telegraph--dominic-cavendish.json",
-      "score": null,
+      "score": 48,
       "publishDate": "2016-12-20",
       "url": null,
       "findings": [
@@ -37726,7 +37741,7 @@
     {
       "showId": "scorched-earth-off-broadway-2026",
       "file": "theatermania--kenji-fujishima.json",
-      "score": 75,
+      "score": 88,
       "publishDate": null,
       "url": "https://www.theatermania.com/news/review-a-cold-murder-case-becomes-dance-theater-in-scorched-earth_1832379/",
       "findings": [
@@ -40088,7 +40103,7 @@
     {
       "showId": "spongebob-squarepants-2017",
       "file": "wsj--edward-rothstein.json",
-      "score": null,
+      "score": 50,
       "publishDate": "2017-12-06",
       "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-camp-1512593375",
       "findings": [
@@ -41070,7 +41085,7 @@
     {
       "showId": "suffs-2024",
       "file": "ap--unknown.json",
-      "score": null,
+      "score": 50,
       "publishDate": null,
       "url": "https://apnews.com/article/suffs-disrupted-broadway-whitewash-05c6df87a220c253b66807f312948a80",
       "findings": [
@@ -46743,7 +46758,7 @@
     {
       "showId": "the-height-of-the-storm-2019",
       "file": "guardian--jesse-green.json",
-      "score": null,
+      "score": 93,
       "publishDate": "October 25, 2019",
       "url": "https://www.theguardian.com/stage/2018/oct/09/the-height-of-the-storm-review-jonathan-pryce-eileen-atkins-florian-zeller",
       "findings": [
@@ -51163,7 +51178,7 @@
     {
       "showId": "the-snow-geese-2013",
       "file": "nytimes--ben-brantley.json",
-      "score": null,
+      "score": 28,
       "publishDate": "October 24, 2013",
       "url": "https://www.nytimes.com/2013/10/25/theater/reviews/the-snow-geese-stars-mary-louise-parker.html?_r=0",
       "findings": [
@@ -52271,7 +52286,7 @@
     {
       "showId": "three-tall-women-2018",
       "file": "theater-life--david-sheward.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2018-04-08",
       "url": "https://theaterlife.com/three-tall-women-lobby-hero-frozen-admissions/",
       "findings": [
@@ -55786,7 +55801,7 @@
     {
       "showId": "wonderland-2011",
       "file": "nytimes--unknown.json",
-      "score": null,
+      "score": 38,
       "publishDate": "April 17, 2011",
       "url": "http://theater.nytimes.com/2011/04/18/theater/reviews/wonderland-gregory-boyd-frank-wildhorn-review.html",
       "findings": [
@@ -56295,7 +56310,7 @@
     {
       "showId": "a-man-for-all-seasons-2008",
       "file": "theatermania--david-finkle.json",
-      "score": null,
+      "score": 50,
       "publishDate": "March 14, 2008",
       "url": "https://www.theatermania.com/news/broadways-a-man-for-all-seasons-to-extend-through-december-14_15730/",
       "findings": [
@@ -57701,7 +57716,7 @@
     {
       "showId": "assassins-2004",
       "file": "ap--michael-kuchwara.json",
-      "score": null,
+      "score": 55,
       "publishDate": "2004-05-30",
       "url": "https://www.newspapers.com/image/535462359/",
       "findings": [
@@ -59536,7 +59551,7 @@
     {
       "showId": "clybourne-park-2012",
       "file": "theatermania--dan-bacalzo.json",
-      "score": null,
+      "score": 50,
       "publishDate": "2012-04-19",
       "url": "https://www.theatermania.com/news/broadway-opening-clybourne-park-at-the-walter-kerr-theatre_55039/",
       "findings": [
@@ -63074,6 +63089,7 @@
     {
       "showId": "heart-wall-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 80,
       "publishDate": "2026-04-15",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/heart-wall-theatre-review-pbwhxxk5w",
       "findings": [
@@ -63951,7 +63967,7 @@
     {
       "showId": "indecent-2017",
       "file": "deadline--jeremy-gerard.json",
-      "score": null,
+      "score": 88,
       "publishDate": "April 18, 2017",
       "url": "https://deadline.com/2016/05/indecent-and-daphnes-dive-review-1201758629/",
       "findings": [
@@ -69933,7 +69949,7 @@
     {
       "showId": "skylight-2015",
       "file": "nbcny--robert-kahn.json",
-      "score": null,
+      "score": 82,
       "publishDate": "April 2, 2015",
       "url": "http://www.nbcnewyork.com/entertainment/the-scene/skylight-mulligan-review-298149311.html",
       "findings": [
@@ -70017,7 +70033,7 @@
     {
       "showId": "smokey-joes-cafe-1995",
       "file": "newsday--linda-winer.json",
-      "score": null,
+      "score": 68,
       "publishDate": "1994-11-18",
       "url": "https://www.newspapers.com/image/158629857/",
       "findings": [
@@ -74799,7 +74815,7 @@
     {
       "showId": "the-mousetrap-west-end-2021",
       "file": "theatre-weekly--unknown.json",
-      "score": null,
+      "score": 55,
       "publishDate": "2025-11-25",
       "url": "https://theatreweekly.com/the-mousetrap-announces-75th-anniversary-uk-tour-and-west-end-extension/",
       "findings": [
