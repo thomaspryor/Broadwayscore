@@ -149,6 +149,17 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] originalScore is a number (${newData.originalScore}) in ${path.basename(filePath)} — should be a string. Caller: ${caller}`);
   }
 
+  // Pattern Card #4: URL collision detection — warn before writing a file whose URL
+  // already exists in another file in the same show directory.
+  if (!force && newData.url) {
+    const collider = checkUrlCollision(filePath, newData);
+    if (collider) {
+      console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);
+      newData.duplicateOf = collider;
+      newData.duplicateReason = 'url-collision-detected-at-write';
+    }
+  }
+
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved };
 }
