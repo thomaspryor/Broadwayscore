@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T09:25:19.580Z",
+  "generatedAt": "2026-04-18T09:16:08.059Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -3848,6 +3848,134 @@
       "openingDate": "2025-02-20",
       "status": "open",
       "researchedAt": "2026-04-17T09:25:19.580Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "moulin-rouge-the-musical-west-end": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2023-07",
+      "recoupedSource": "Deadline report via BroadwayWorld ([www.broadwayworld.com](https://www.broadwayworld.com/sydney/article/MOULIN-ROUGE-THE-MUSICAL-Recoups-on-Broadway-in-the-West-End-in-Australia-20230731#:~:text=Deadline%20has%20reported%20that%20Moulin,West%20End%20and%20in%20Australia))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Windfall",
+      "notes": "No public data on the West End budget or weekly cost; press notes that the London production recouped by mid-2023 ([www.broadwayworld.com](https://www.broadwayworld.com/sydney/article/MOULIN-ROUGE-THE-MUSICAL-Recoups-on-Broadway-in-the-West-End-in-Australia-20230731#:~:text=Deadline%20has%20reported%20that%20Moulin,West%20End%20and%20in%20Australia)).",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/sydney/article/MOULIN-ROUGE-THE-MUSICAL-Recoups-on-Broadway-in-the-West-End-in-Australia-20230731",
+          "date": "2023-07-31"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Moulin Rouge! The Musical",
+      "slug": "moulin-rouge-the-musical-west-end",
+      "openingDate": "2022-01-19",
+      "status": "open",
+      "researchedAt": "2026-04-18T08:33:13.964Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "little-shop-of-horrors-off-broadway": {
+      "capitalization": 2200000,
+      "capitalizationSource": "BroadwayJournal (based on NYS AG filings) Dec 11, 2023",
+      "weeklyRunningCost": 190000,
+      "costMethodology": "trade-reported",
+      "recouped": true,
+      "recoupedDate": "2020-03",
+      "recoupedSource": "BroadwayJournal (based on NYS AG filings) Dec 11, 2023",
+      "estimatedRecoupmentPct": [
+        200,
+        250
+      ],
+      "designation": "Windfall",
+      "notes": "Off-Broadway revival capitalized ~$2.2M ([broadwayjournal.com](https://broadwayjournal.com/behind-the-big-profits-at-little-shop-exclusive/#:~:text=Skid%20Row%20Downtown%20LLC%2C%20the,office%20revenue%20following%20the%20shutdown)) with weekly costs ~$180–200K ([www.broadwayjournal.com](https://www.broadwayjournal.com/behind-the-big-profits-at-little-shop-exclusive/#:~:text=Box%20office%20sales%20fell%20short,Operating%20losses%20for%20Alan%20Menken)).  It reportedly fully recouped by 2020 ([broadwayjournal.com](https://broadwayjournal.com/behind-the-big-profits-at-little-shop-exclusive/#:~:text=Skid%20Row%20Downtown%20LLC%2C%20the,office%20revenue%20following%20the%20shutdown)) ([www.broadwayjournal.com](https://www.broadwayjournal.com/behind-the-big-profits-at-little-shop-exclusive/#:~:text=Box%20office%20sales%20fell%20short,Operating%20losses%20for%20Alan%20Menken)) and doubled investors’ money ([broadwayjournal.com](https://broadwayjournal.com/behind-the-big-profits-at-little-shop-exclusive/#:~:text=Still%2C%20as%20of%20January%202023%2C,5%20million)).",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://broadwayjournal.com/behind-the-big-profits-at-little-shop-exclusive/",
+          "date": "2023-12-11"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Little Shop of Horrors",
+      "slug": "little-shop-of-horrors-off-broadway",
+      "openingDate": "2019-09-17",
+      "status": "open",
+      "researchedAt": "2026-04-18T08:37:21.979Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "the-lost-boys": {
+      "capitalization": 25000000,
+      "capitalizationSource": "Broadway trade press report (Bloomberg Apr 15, 2026)",
+      "weeklyRunningCost": 900000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "BroadwayWorld grosses report (closed Jun 14, 2026)",
+      "estimatedRecoupmentPct": [
+        0,
+        5
+      ],
+      "designation": "Flop",
+      "notes": "Budget reported ~$25M ([www.bloomberg.com](https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula#:~:text=Can%20a%20%2425%20Million%20Vampire,Musical%20Beat%20Broadway%E2%80%99s%20Profit%20Slump)); closed in June 2026 without recoup ([www.broadwayworld.com](https://www.broadwayworld.com/grosses/THE-LOST-BOYS#:~:text=Opening%20Date%204%2F26%2F2026)).",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
+          "date": "2026-04-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/THE-LOST-BOYS",
+          "date": null
+        }
+      ],
+      "title": "The Lost Boys",
+      "slug": "the-lost-boys",
+      "openingDate": "2026-04-26",
+      "status": "previews",
+      "researchedAt": "2026-04-18T09:12:43.277Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": "",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Off-Broadway nonprofit production; no public budget or recoupment info.",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/regionalnew/La-Breve-y-Maravillosa-Vida-de-Oscar-Wao-4282599",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.intellispect.co/organizations/132672755-spanish-theatre-repertory-co-ltd",
+          "date": "2023-08-01"
+        }
+      ],
+      "title": "La Breve y Maravillosa Vida de Oscar Wao",
+      "slug": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway",
+      "openingDate": "2024-02-17",
+      "status": "open",
+      "researchedAt": "2026-04-18T09:16:08.059Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "backlog"
     }
