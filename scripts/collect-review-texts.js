@@ -330,6 +330,7 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 const { domainMatchesExpected, checkScrapingBeeCredits } = require('./lib/scraper');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
+const { clearFailureFlags } = require('./lib/clear-failure-flags');
 const { emitStage } = require('./lib/stage-latency');
 
 // Outlet-specific Playwright wait configurations
@@ -4848,6 +4849,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     delete data.incompleteReason;
     delete data.incompleteDetail;
   }
+
+  // Pattern Card #1: clear stale failure-state flags proactively on the success path.
+  // safeWriteReview's merge behavior would copy them back from disk if not explicitly set.
+  clearFailureFlags(data);
 
   // NOTE: Do NOT extract years from URLs to flag wrong production.
   // URL patterns are inconsistent across outlets (republished content, migrated URLs,

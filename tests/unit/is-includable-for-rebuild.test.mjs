@@ -261,3 +261,62 @@ describe('isIncludableForRebuild — fullTextWrongAuthor (ship-check additions)'
     );
   });
 });
+
+// Pattern Card #1 (Notion 346637c5-416f-8154-9500-f09fd49e5a2a):
+// isIncludableForRebuild must mirror the drift-checker exclusions at rebuild line 3158.
+describe('isIncludableForRebuild — incompleteReason=wrong_content (Pattern Card #1)', () => {
+  it('excludes when wrong_content + wrongShow still set (stale flag is correct)', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: 'Long review text here.', incompleteReason: 'wrong_content', wrongShow: true }),
+      false
+    );
+  });
+
+  it('excludes when wrong_content + wrongProduction still set', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: 'Long review text here.', incompleteReason: 'wrong_content', wrongProduction: true }),
+      false
+    );
+  });
+
+  it('excludes when wrong_content + no substantial text + no aggregator signal', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ incompleteReason: 'wrong_content' }),
+      false
+    );
+  });
+
+  it('allows through when wrong_content + wrongShow/wrongProduction cleared + substantial text', () => {
+    // This is the key case: stale flag on a now-valid review.
+    // clearFailureFlags() clears it proactively; but if it wasn't cleared,
+    // isIncludableForRebuild should still allow it through when flags are clear.
+    const longText = 'A'.repeat(250);
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: longText, incompleteReason: 'wrong_content', llmScore: { score: 80 } }),
+      true
+    );
+  });
+
+  it('allows through when wrong_content + aggregator signal present (no substantial text)', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ aggregatorStars: 4, incompleteReason: 'wrong_content' }),
+      true
+    );
+  });
+});
+
+describe('isIncludableForRebuild — contentTier=invalid (Pattern Card #1)', () => {
+  it('excludes when contentTier: invalid regardless of text or score', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: 'A review.', contentTier: 'invalid', llmScore: { score: 80 } }),
+      false
+    );
+  });
+
+  it('allows through when contentTier: complete', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: 'A review.', contentTier: 'complete' }),
+      true
+    );
+  });
+});

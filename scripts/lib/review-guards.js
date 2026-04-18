@@ -1100,6 +1100,21 @@ function isIncludableForRebuild(data) {
   if (data.rejectionReason) return false;
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
 
+  // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
+  // Clear condition: wrongShow + wrongProduction are both gone AND text is substantial.
+  // Only exclude if the stale flag is still legitimate (wrong flags not cleared yet).
+  if (data.incompleteReason === 'wrong_content') {
+    // If wrongShow/wrongProduction still set, this is correct exclusion
+    if (data.wrongShow || data.wrongProduction) return false;
+    // If no substantial text, also correct to exclude
+    const hasText = !!(data.fullText && data.fullText.trim().length >= 200);
+    const hasSignal = !!(data.aggregatorStars != null || data.originalScore != null || data.llmScore);
+    if (!hasText && !hasSignal) return false;
+  }
+
+  // Invalid content tier: rebuild's drift-checker excludes this at line 3158.
+  if (data.contentTier === 'invalid') return false;
+
   // fullTextWrongAuthor: rebuild deletes fullText in memory and falls back to excerpts only.
   // On disk the fullText still exists, so we must check excerpt fields directly.
   if (data.fullTextWrongAuthor === true) {
