@@ -95,7 +95,17 @@ function hasCopyrightChrome(excerpt) {
 // Bug #13: Off-topic excerpt detection. Very loose — only fires when there are
 // NO theater-domain words AND NO show-title keywords. False positives (blocking
 // a real review) are worse than letting a bad excerpt through.
-const THEATER_DOMAIN_RE = /\b(performance|play|musical|stage|actor|actress|director|cast|scene|theater|theatre|show|production|choreography|choreographer|singing|dancing|acting|script|book|lyrics|revival|broadway|west\s+end|opening\s+night|curtain|audience|playwright|narrative|dramatic|stagecraft|ensemble|understudy|character)\b/i;
+//
+// No trailing \b on inflected base forms (act, perform, direct, danc, sing, stor)
+// so that plurals/inflections match without listing every variant:
+//   act → actor, actors, actress, acting, acts
+//   perform → performance, performed, performing, performer
+//   direct → director, directing, directed, direction
+//   danc → dance, dances, dancing, dancer
+//   sing → singer, singers, singing, sung, song
+//   stor → story, stories
+//   adapt → adaptation, adapted, adapting
+const THEATER_DOMAIN_RE = /\b(?:perform|musical|stages?|act(?:or|ress|ing|s\b)?|direct(?:or|ion|ing|ed)?|cast|scene|theater|theatre|show(?:s\b)?|production|choreograph|danc|sing(?:er)?|song|script|lyric|revival|broadway|west[\s-]end|opening[\s-]night|curtain|audience|playwright|narrative|dramatic|stagecraft|ensemble|understudy|character|ticket|adaptation|adapt|stor[yi])/i;
 
 function isOffTopicExcerpt(excerpt, showId) {
   if (!excerpt || typeof excerpt !== 'string') return false;
