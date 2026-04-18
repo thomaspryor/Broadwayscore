@@ -1358,6 +1358,9 @@ function extractShowScoreReviews(html, showId, showTitle) {
       /\/(?:podcast|podcasts|episode)\//i,
       /\/(?:obituary|obituaries|in-memoriam)\//i,
       /\/(?:behind-the-scenes|backstage)\//i,
+      /\/(?:preview|previews)\//i,        // preview articles are not reviews (Cats postmortem #12)
+      /\/(?:interview|interviews)\//i,    // interviews are not reviews
+      /\/(?:casting|cast-announcement|casting-announced)\//i, // casting news is not a review
     ];
     try {
       const urlPath = new URL(url).pathname;
@@ -2546,6 +2549,30 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
+  }
+
+  // NON-REVIEW URL PATH GUARD: Reject URLs with paths that indicate non-review content.
+  // Applies to all sources (SERP, site-search, aggregators) since aggregators never return
+  // these path patterns. Catches feature articles, interviews, preview articles, cast news
+  // that SERP returns alongside real reviews (Cats postmortem #12: Playbill feature scored).
+  if (reviewData.url) {
+    const NON_REVIEW_PATHS = [
+      /\/(?:video|videos|gallery|galleries|slideshow|photo-gallery)\//i,
+      /\/(?:podcast|podcasts|episode)\//i,
+      /\/(?:obituary|obituaries|in-memoriam)\//i,
+      /\/(?:behind-the-scenes|backstage)\//i,
+      /\/(?:preview|previews)\//i,
+      /\/(?:interview|interviews)\//i,
+      /\/(?:casting|cast-announcement|cast-announced|casting-announced)\//i,
+    ];
+    try {
+      const urlPath = new URL(reviewData.url).pathname;
+      const matchedPattern = NON_REVIEW_PATHS.find(p => p.test(urlPath));
+      if (matchedPattern) {
+        console.log(`    ✗ Skipping ${filename}: non-review URL path (${urlPath})`);
+        return 'nonReviewPath';
+      }
+    } catch { /* malformed URL — let through for downstream handling */ }
   }
 
   // TOUR/REGIONAL GUARD: Reject regional BWW and local paper tour reviews
