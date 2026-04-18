@@ -33,7 +33,8 @@
     "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
     "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
     "hands-on-a-hardbody-2013/newsday--linda-winer.json",
-    "the-anarchist-2012/variety--marilyn-stasio.json"
+    "the-anarchist-2012/variety--marilyn-stasio.json",
+    "the-house-of-blue-leaves-2011/variety--charles-isherwood.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -1302,7 +1303,16 @@
     "relatively-speaking-2011/variety--charles-isherwood.json",
     "relatively-speaking-2011/new-jersey-newsroom--michael-sommers.json",
     "relatively-speaking-2011/backstage--david-sheward.json",
-    "the-mountaintop-2011/backstage--david-sheward.json"
+    "the-mountaintop-2011/backstage--david-sheward.json",
+    "the-mountaintop-2011/yonkers-tribune--john-simon.json",
+    "man-and-boy-2011/backstage--david-sheward.json",
+    "man-and-boy-2011/yonkers-tribune--john-simon.json",
+    "the-people-in-the-picture-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/wsj--unknown.json",
+    "baby-its-you-2011/variety--david-rooney.json",
+    "baby-its-you-2011/backstage--david-sheward.json",
+    "the-normal-heart-2011/backstage--unknown.json",
+    "the-normal-heart-2011/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1328,7 +1338,9 @@
       "data/review-texts/doctor-zhivago-2015/deadline--jeremy-gerard.json",
       "doctor-zhivago-2015/deadline--jeremy-gerard.json",
       "data/review-texts/the-anarchist-2012/variety--marilyn-stasio.json",
-      "the-anarchist-2012/variety--marilyn-stasio.json"
+      "the-anarchist-2012/variety--marilyn-stasio.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+      "the-house-of-blue-leaves-2011/variety--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1363,7 +1375,7 @@
     ]
   },
   "startTime": "2026-04-18T08:29:02.734Z",
-  "lastProcessed": "the-mountaintop-2011/backstage--david-sheward.json",
+  "lastProcessed": "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -1417,6 +1429,17 @@
     },
     {
       "t": "2026-04-18T19:12:50.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-18T19:19:38.807Z",
+      "event": "bb-session",
+      "session": "7420f5b3",
+      "url": "https://variety.com/2011/legit/reviews/the-house-of-blue-leaves-1117945081/"
+    },
+    {
+      "t": "2026-04-18T19:19:39.704Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

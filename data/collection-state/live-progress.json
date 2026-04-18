@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-18T19:18:43.414Z",
-  "processed": 34,
-  "failed": 1267,
-  "successRate": "2.6%",
+  "updatedAt": "2026-04-18T19:19:56.457Z",
+  "processed": 35,
+  "failed": 1276,
+  "successRate": "2.7%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 8,
     "archiveToday": 3,
     "archive": 6
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -67,6 +67,17 @@
     },
     {
       "t": "2026-04-18T19:12:50.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-18T19:19:38.807Z",
+      "event": "bb-session",
+      "session": "7420f5b3",
+      "url": "https://variety.com/2011/legit/reviews/the-house-of-blue-leaves-1117945081/"
+    },
+    {
+      "t": "2026-04-18T19:19:39.704Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
