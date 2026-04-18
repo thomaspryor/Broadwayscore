@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getWestEndShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
@@ -16,9 +16,7 @@ export const metadata: Metadata = {
   title: { absolute: 'West End Lottery Tickets — Win Cheap London Theatre Tickets' },
   description:
     'Enter digital lotteries to win discounted West End tickets. Check lottery prices, platforms, and entry times for every London show that runs one. Updated regularly.',
-  alternates: {
-    canonical: `${BASE_URL}/west-end/lotteries`,
-  },
+  alternates: marketAlternates('westEnd', '/lotteries'),
   openGraph: {
     title: 'West End Lottery Tickets — Win Cheap London Theatre Seats',
     description:

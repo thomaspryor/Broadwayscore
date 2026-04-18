@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { BASE_URL } from '@/lib/seo';
+import { marketAlternates, BASE_URL } from '@/lib/seo';
 import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
 
 // Static OG image (API routes don't work with static export)
@@ -10,9 +10,7 @@ export const metadata: Metadata = {
   title: { absolute: 'How It Works — West End Scorecard Methodology' },
   description:
     'Learn how West End Scorecard calculates CriticScore ratings and AudienceGrade from aggregated London theatre reviews. Our transparent methodology uses weighted averages based on outlet tier and audience sentiment.',
-  alternates: {
-    canonical: `${BASE_URL}/west-end/methodology`,
-  },
+  alternates: marketAlternates('westEnd', '/methodology'),
   openGraph: {
     title: 'How West End Scorecard Works',
     description:

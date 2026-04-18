@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
@@ -15,9 +15,7 @@ import { formatTicketPrice } from '@/lib/formatting';
 export const metadata: Metadata = {
   title: 'Broadway Standing Room Only (SRO) Tickets',
   description: 'Standing room tickets for sold-out Broadway shows. When a show is sold out, SRO tickets let you see it from the back of the orchestra for $35-50.',
-  alternates: {
-    canonical: `${BASE_URL}/standing-room`,
-  },
+  alternates: marketAlternates('broadway', '/standing-room'),
   openGraph: {
     title: 'Broadway Standing Room Only Tickets',
     description: 'Can\'t get seats? Standing room tickets are available when Broadway shows sell out. Usually $35-50 at the back of the orchestra.',

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
@@ -15,9 +15,7 @@ import { formatTicketPrice } from '@/lib/formatting';
 export const metadata: Metadata = {
   title: 'Broadway Rush Tickets - Same-Day Discount Tickets',
   description: 'Get same-day Broadway rush tickets for $30-50. First-come, first-served at the box office or through digital rush apps. Updated daily.',
-  alternates: {
-    canonical: `${BASE_URL}/rush`,
-  },
+  alternates: marketAlternates('broadway', '/rush'),
   openGraph: {
     title: 'Broadway Rush Tickets - Same-Day Deals',
     description: 'Same-day rush tickets for Broadway shows. Arrive early at the box office or use digital rush apps for discounted seats.',

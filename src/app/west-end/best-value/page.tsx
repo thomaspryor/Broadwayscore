@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getWestEndShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
@@ -16,9 +16,7 @@ export const metadata: Metadata = {
   title: { absolute: 'Best Value West End Tickets — Cheapest Ways to See London Shows' },
   description:
     'Find the cheapest West End tickets. Compare lotteries, day seats, rush, student standby, and standing room prices for every London show. Sorted by lowest price.',
-  alternates: {
-    canonical: `${BASE_URL}/west-end/best-value`,
-  },
+  alternates: marketAlternates('westEnd', '/best-value'),
   openGraph: {
     title: 'Best Value West End Tickets',
     description:

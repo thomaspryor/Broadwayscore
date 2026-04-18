@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
 import type { ShowLotteryRush } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { ComputedShow } from '@/lib/engine';
@@ -15,9 +15,7 @@ import { formatTicketPrice } from '@/lib/formatting';
 export const metadata: Metadata = {
   title: 'Best Value Broadway Tickets - Cheapest Ways to See Shows',
   description: 'Find the cheapest Broadway tickets. Compare lotteries, rush, student rush, and standing room prices for every show. Sorted by lowest price.',
-  alternates: {
-    canonical: `${BASE_URL}/best-value`,
-  },
+  alternates: marketAlternates('broadway', '/best-value'),
   openGraph: {
     title: 'Best Value Broadway Tickets',
     description: 'The cheapest ways to see Broadway shows. Compare all discount options: lotteries from $10, rush from $30, and more.',
