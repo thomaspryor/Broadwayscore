@@ -14,6 +14,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const BASE = path.join(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(BASE, 'data', 'review-texts');
@@ -168,7 +169,7 @@ function main() {
           // Canonical is bad, source is good — replace canonical with source
           if (!DRY_RUN) {
             sourceData.showId = canonicalId;
-            fs.writeFileSync(canonicalFilePath, JSON.stringify(sourceData, null, 2) + '\n');
+            safeWriteReview(canonicalFilePath, sourceData);
             fs.unlinkSync(sourceFilePath);
           }
           stats.filesMerged++;
@@ -190,11 +191,11 @@ function main() {
           if (scoreFile(sourceData) > scoreFile(canonicalData)) {
             mergeInto(sourceData, canonicalData);
             sourceData.showId = canonicalId;
-            fs.writeFileSync(canonicalFilePath, JSON.stringify(sourceData, null, 2) + '\n');
+            safeWriteReview(canonicalFilePath, sourceData);
           } else {
             mergeInto(canonicalData, sourceData);
             canonicalData.showId = canonicalId;
-            fs.writeFileSync(canonicalFilePath, JSON.stringify(canonicalData, null, 2) + '\n');
+            safeWriteReview(canonicalFilePath, canonicalData);
           }
           fs.unlinkSync(sourceFilePath);
         }
@@ -204,7 +205,7 @@ function main() {
       } else {
         if (!DRY_RUN) {
           sourceData.showId = canonicalId;
-          fs.writeFileSync(canonicalFilePath, JSON.stringify(sourceData, null, 2) + '\n');
+          safeWriteReview(canonicalFilePath, sourceData);
           fs.unlinkSync(sourceFilePath);
         }
         stats.filesMoved++;

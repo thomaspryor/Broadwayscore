@@ -20,6 +20,7 @@ const { execSync } = require('child_process');
 const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 // ─── PDF review parser ───
 // Parses reviews from pdftotext output. Reviews follow pattern:
@@ -930,13 +931,13 @@ async function main() {
         if (dryRun) {
           console.log(`    MERGE: ${filename} (adding TR data to existing review)`);
         } else {
-          fs.writeFileSync(filepath, JSON.stringify(merged, null, 2));
+          safeWriteReview(filepath, merged);
           console.log(`    MERGED: ${filename} (preserved url=${!!merged.url}, added TR text=${!!reviewData.fullText})`);
         }
       } else if (dryRun) {
         console.log(`    NEW: ${filename} (${review.fullText.length} chars, ${reviewData.textWordCount} words)`);
       } else {
-        fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
+        safeWriteReview(filepath, reviewData);
         console.log(`    SAVED: ${filename} (${reviewData.textWordCount} words)`);
       }
       newCount++;

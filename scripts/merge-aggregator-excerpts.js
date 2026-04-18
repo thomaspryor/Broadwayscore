@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, areCriticsSimilar } = require('./lib/review-normalization');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const BWW_DIR = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 const SS_DIR = path.join(__dirname, '../data/aggregator-archive/show-score');
@@ -200,7 +201,7 @@ function processBWWArchives() {
         // Only add if bwwExcerpt is missing or shorter
         if (!match.data.bwwExcerpt || match.data.bwwExcerpt.length < review.excerpt.length) {
           match.data.bwwExcerpt = review.excerpt;
-          fs.writeFileSync(match.filePath, JSON.stringify(match.data, null, 2));
+          safeWriteReview(match.filePath, match.data);
           stats.bww.added++;
           showAdded++;
         }
@@ -243,7 +244,7 @@ function processShowScoreArchives() {
         // Only add if showScoreExcerpt is missing or shorter
         if (!match.data.showScoreExcerpt || match.data.showScoreExcerpt.length < review.excerpt.length) {
           match.data.showScoreExcerpt = review.excerpt;
-          fs.writeFileSync(match.filePath, JSON.stringify(match.data, null, 2));
+          safeWriteReview(match.filePath, match.data);
           stats.ss.added++;
           showAdded++;
         }

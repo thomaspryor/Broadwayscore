@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { shouldRejectAsReservation } = require('./lib/pull-quote-guards');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -430,7 +431,7 @@ async function processReview(entry) {
 
   if (!DRY_RUN) {
     data.llmPullQuote = quote;
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    safeWriteReview(filePath, data);
     stats.written++;
   }
 }

@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -95,7 +96,7 @@ for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
             d.publishDate = rescueResult.date;
             d.dateSource = rescueResult.source;
             delete d.publishDateNulledReason;
-            fs.writeFileSync(filePath, JSON.stringify(d, null, 2) + '\n');
+            safeWriteReview(filePath, d, { force: true });
           }
           recovered++;
         }
@@ -127,7 +128,7 @@ for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
           d.publishDate = recoveredDate;
           d.dateSource = urlDateResult.source;
           delete d.publishDateNulledReason;
-          fs.writeFileSync(filePath, JSON.stringify(d, null, 2) + '\n');
+          safeWriteReview(filePath, d, { force: true });
         }
         recovered++;
         continue;
@@ -138,7 +139,7 @@ for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
       if (!dryRun) {
         d.publishDate = null;
         d.publishDateNulledReason = `Fake fallback date (source=${src}, was ${showOpening})`;
-        fs.writeFileSync(filePath, JSON.stringify(d, null, 2) + '\n');
+        safeWriteReview(filePath, d);
       }
 
       nulled++;

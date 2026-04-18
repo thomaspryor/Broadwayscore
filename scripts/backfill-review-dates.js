@@ -32,6 +32,7 @@ const path = require('path');
 const axios = require('axios');
 const { fetchPage } = require('./lib/scraper');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const args = process.argv.slice(2);
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '50');
@@ -195,7 +196,7 @@ function markAttempted(filePath, reason) {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     data.dateBackfillAttempted = new Date().toISOString();
     data.dateBackfillAttemptReason = reason;
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    safeWriteReview(filePath, data);
   } catch (e) { /* don't fail the whole run over this */ }
 }
 
@@ -342,7 +343,7 @@ async function main() {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           data.publishDate = urlDateResult.date;
           data.dateSource = `url-backfill-${urlDateResult.source}`;
-          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+          safeWriteReview(filePath, data);
         }
         extracted++;
         continue;
@@ -358,7 +359,7 @@ async function main() {
             if (!dryRun) {
               data.publishDate = textDate;
               data.dateSource = 'text-regex-backfill';
-              fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+              safeWriteReview(filePath, data);
             }
             extracted++;
             continue;
@@ -422,7 +423,7 @@ async function main() {
           data.publishDate = date;
           data.dateSource = dateSource;
           delete data.dateBackfillAttempted; // clear failed marker on success
-          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+          safeWriteReview(filePath, data, { force: true });
         }
       } else {
         console.log('  ✗ No date in HTML metadata');
