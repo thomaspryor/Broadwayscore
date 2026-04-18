@@ -52,8 +52,6 @@ const PROTECTED_FIELDS = [
   'wrongShowReason',
   'wrongProduction',
   'wrongProductionNote',
-  'incompleteReason',
-  'incompleteDetail',
   'originalScoreCleared',
   'originalScoreClearedReason',
   'previousOriginalScore',

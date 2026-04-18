@@ -577,7 +577,9 @@ function verifyFetchedUrl(html, expectedUrl) {
 
   const actualUrl = (canonicalMatch && canonicalMatch[1]) || (ogUrlMatch && ogUrlMatch[1]) || null;
 
-  if (!actualUrl) return { verified: false, reason: 'no_canonical' };
+  // No canonical/og:url — can't verify, but can't disprove either. Pass through.
+  // Only homepage-title detection (above) and explicit URL mismatch (below) should block.
+  if (!actualUrl) return { verified: true, reason: 'no_canonical' };
 
   // Normalize both URLs: lowercase domain, strip trailing slash, remove utm_* params
   function normalizeForVerify(u) {

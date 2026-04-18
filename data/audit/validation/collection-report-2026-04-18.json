@@ -1,54 +1,54 @@
 {
-  "runDate": "2026-04-18T12:10:56.679Z",
+  "runDate": "2026-04-18T15:33:48.488Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 300,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "proof-2000",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 19,
-    "failed": 924,
+    "processed": 20,
+    "failed": 926,
     "skipped": 0,
-    "successRate": "2.0%"
+    "successRate": "2.1%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 7,
-    "archiveToday": 0,
+    "archiveToday": 2,
     "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 3,
     "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 299,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 300,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
-    "urlDiscoveryCapped": 3
+    "urlDiscoveryCapped": 0
   },
   "processed": [
     "avenue-q-west-end-2026/radio-times--joanna-magill.json",
@@ -69,7 +69,8 @@
     "head-over-heels-2018/rollingstone--jerry-portwood.json",
     "escape-to-margaritaville-2018/rollingstone--david-browne.json",
     "once-2012/artsfuse--steve-elman.json",
-    "heart-wall-west-end-2026/theupcoming--benedetta-mancusi.json"
+    "heart-wall-west-end-2026/theupcoming--benedetta-mancusi.json",
+    "proof-2000/aislesay--david-spencer.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -995,7 +996,9 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
-    "the-scottsboro-boys-2010/backstage--erik-haagensen.json"
+    "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
+    "proof-2000/newsday--unknown.json",
+    "proof-2000/nydailynews--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1003,7 +1006,8 @@
       "the-book-of-mormon-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
       "avenue-q-west-end-2026/artsdesk--unknown.json",
       "kenrex-off-broadway-2026/playbill--unknown.json",
-      "heart-wall-west-end-2026/theupcoming--benedetta-mancusi.json"
+      "heart-wall-west-end-2026/theupcoming--benedetta-mancusi.json",
+      "proof-2000/aislesay--david-spencer.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1024,7 +1028,10 @@
       "head-over-heels-2018/rollingstone--jerry-portwood.json",
       "escape-to-margaritaville-2018/rollingstone--david-browne.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/proof-2000/newsday--unknown.json",
+      "data/review-texts/proof-2000/nydailynews--unknown.json"
+    ],
     "archive": [
       "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json",
       "art-2025/indiewire--kate-erbland.json",
