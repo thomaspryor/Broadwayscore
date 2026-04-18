@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-18T07:07:43.753Z",
+  "timestamp": "2026-04-18T11:25:57.674Z",
   "stats": {
-    "totalReviews": 34849,
-    "alreadyFlagged": 15288,
+    "totalReviews": 34860,
+    "alreadyFlagged": 15295,
     "dateGuardCatches": 88,
     "directorMismatch": 816,
-    "tvFilmSignals": 3148,
-    "londonSignals": 1007,
+    "tvFilmSignals": 3149,
+    "londonSignals": 1009,
     "offBroadwaySignals": 882,
     "yearMismatch": 67,
-    "noPublishDate": 3721
+    "noPublishDate": 3722
   },
   "findings": [
     {
@@ -4879,6 +4879,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 85,
+      "publishDate": "2026-04-17",
+      "url": "https://www.standard.co.uk/culture/theatre/avenue-q-review-b1278927.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         },
         {
           "type": "LONDON_SIGNAL",
@@ -57776,6 +57795,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "radio-times--joanna-magill.json",
+      "score": null,
+      "publishDate": "2026-04-17",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/avenue-q-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
