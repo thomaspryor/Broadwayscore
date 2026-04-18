@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-18T18:27:00.235Z",
+  "updatedAt": "2026-04-18T18:29:18.634Z",
   "processed": 22,
-  "failed": 984,
+  "failed": 994,
   "successRate": "2.2%",
   "tierBreakdown": {
     "playwright": 7,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 7,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -36,6 +36,17 @@
       "t": "2026-04-18T18:18:41.126Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-18T18:27:59.011Z",
+      "event": "bb-session",
+      "session": "ab2d5f1f",
+      "url": "http://www.usatoday.com/life/theater/reviews/2009-04-07-rock-of-ages_N.htm"
+    },
+    {
+      "t": "2026-04-18T18:27:59.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
