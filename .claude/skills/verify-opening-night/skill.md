@@ -1,6 +1,6 @@
 ---
 name: verify-opening-night
-version: "1.0.0"
+version: "1.1.0"
 description: "TRIGGER when: user asks 'is everything ready for opening night', user says 'check opening night readiness', session is an opening-night session for a Broadway or West End show. Runs the full 9-point readiness checklist (CLAUDE.md rule 14) and reports PASS/FAIL per check. Takes show_id as argument (e.g. /verify-opening-night giant-2026)."
 argument-hint: "<show_id> [--market=broadway|westend] [--post-opening]"
 allowed-tools: Bash, Read
@@ -25,7 +25,9 @@ If `$SHOW_ID` is empty, ask the user which show they want to check before runnin
 Determine market from shows.json:
 ```bash
 node -e "
-const s = require('./data/shows.json').find(x => x.id === '$SHOW_ID');
+const data = require('./data/shows.json');
+const shows = data.shows || data;
+const s = shows.find(x => x.id === '$SHOW_ID');
 if (!s) { console.log('NOT_FOUND'); process.exit(1); }
 console.log(JSON.stringify({ title: s.title, market: s.market || 'broadway', openingDate: s.openingDate, status: s.status }));
 "
@@ -38,13 +40,13 @@ console.log(JSON.stringify({ title: s.title, market: s.market || 'broadway', ope
 **Purpose:** Confirm the 3 AM UTC Broadway cron (or 10 PM UTC West End) has actually fired before — not just scheduled.
 
 ```bash
-MARKET="broadway"  # or westend
-gh run list --limit 50 --json name,createdAt \
-  --jq ".[] | select(.name == \"Opening Night Orchestrator\") | .createdAt" | head -5
+gh run list --workflow=opening-night-orchestrator.yml --limit 10 \
+  --json createdAt,conclusion \
+  --jq '.[] | .createdAt' | head -5
 ```
 
 PASS if: at least 1 run listed.
-FAIL if: empty — the cron has never fired. Fix: `gh workflow run opening-night-orchestrator.yml -f show_id=$SHOW_ID -f market=$MARKET`
+FAIL if: empty — the cron has never fired. Fix: `gh workflow run opening-night-orchestrator.yml -f show_id=$SHOW_ID -f market=broadway`
 
 ---
 
@@ -142,7 +144,9 @@ FAIL if: `disable` field has a value. Fix: Bright Data UI only — Recover + ena
 Check opening date vs today to determine whether to run:
 ```bash
 node -e "
-const s = require('./data/shows.json').find(x => x.id === '$SHOW_ID');
+const data = require('./data/shows.json');
+const shows = data.shows || data;
+const s = shows.find(x => x.id === '$SHOW_ID');
 const opened = s?.openingDate && new Date(s.openingDate) <= new Date();
 console.log(opened ? 'POST_OPENING' : 'PRE_OPENING');
 "
@@ -155,7 +159,8 @@ If POST_OPENING: Attempt to find the BWW Review Roundup URL:
 # Pattern: https://www.broadwayworld.com/article/Review-Roundup-{TITLE-SLUG}-Opens-on-Broadway-{YYYYMMDD}
 # Search for it:
 node -e "
-const shows = require('./data/shows.json');
+const data = require('./data/shows.json');
+const shows = data.shows || data;
 const s = shows.find(x => x.id === '$SHOW_ID');
 console.log('Show:', s?.title, '| Opening:', s?.openingDate);
 console.log('Expected BWW RR pattern: Review-Roundup-[title-slug]-Opens-on-Broadway-[YYYYMMDD]');
@@ -173,13 +178,24 @@ FAIL if: post-opening and no BWW RR found. Fix: search BWW manually and pass URL
 
 If PRE_OPENING or WEST_END: Mark as `⏭ SKIP`.
 
-If POST_OPENING Broadway: Check if TB review is in reviews.json:
+If POST_OPENING Broadway: Check if TB review is in reviews.json (note: reviews.json is in the private data repo and may not be available locally — if not found, check data/review-texts/$SHOW_ID/ for a talkinbroadway file instead):
 ```bash
 node -e "
-const reviews = require('./data/reviews.json');
-const showReviews = reviews.filter(r => r.showId === '$SHOW_ID');
-const tb = showReviews.find(r => r.outletId === 'talkinbroadway' || (r.url || '').includes('talkinbroadway.com'));
-console.log(tb ? 'FOUND: ' + tb.url : 'NOT_FOUND');
+try {
+  const data = require('./data/reviews.json');
+  const reviews = Array.isArray(data) ? data : (data.reviews || []);
+  const showReviews = reviews.filter(r => r.showId === '$SHOW_ID');
+  const tb = showReviews.find(r => r.outletId === 'talkinbroadway' || (r.url || '').includes('talkinbroadway.com'));
+  console.log(tb ? 'FOUND: ' + tb.url : 'NOT_FOUND');
+} catch(e) {
+  // reviews.json not local — check review-texts folder instead
+  const fs = require('fs');
+  const dir = 'data/review-texts/$SHOW_ID';
+  if (!fs.existsSync(dir)) { console.log('NOT_FOUND (no review-texts dir)'); process.exit(0); }
+  const files = fs.readdirSync(dir);
+  const tb = files.find(f => f.includes('talkinbroadway'));
+  console.log(tb ? 'FOUND in review-texts: ' + tb : 'NOT_FOUND in review-texts');
+}
 "
 ```
 
@@ -188,17 +204,21 @@ FAIL if: post-opening and no TB review. Fix: URL pattern is `https://www.talkinb
 
 ---
 
-## Check 9: Recent Orchestrator Run for This Show
+## Check 9: Orchestrator Ran Successfully in Last 24h
 
-**Purpose:** Confirm the orchestrator actually dispatched for this show (not just ran generally).
+**Purpose:** Confirm the orchestrator ran successfully recently (it processes all active shows per run — show IDs don't appear in run titles).
 
 ```bash
-gh run list --workflow=opening-night-orchestrator.yml --limit 20 --json displayTitle,createdAt,conclusion \
-  --jq ".[] | select(.displayTitle | contains(\"$SHOW_ID\")) | {createdAt, conclusion}" | head -10
+gh run list --workflow=opening-night-orchestrator.yml --limit 20 \
+  --json createdAt,conclusion \
+  --jq '.[] | select(.conclusion == "success") | .createdAt' | head -5
 ```
 
-PASS if: a run exists for this show with `conclusion: success` in last 24h.
-FAIL if: no matching run. Fix: `gh workflow run opening-night-orchestrator.yml -f show_id=$SHOW_ID -f market=broadway`
+Then check if the most recent success is within 24 hours of now.
+
+PASS if: a successful run exists within the last 24 hours.
+WARN if: most recent success is >24h ago but <48h (may just be timing).
+FAIL if: no successful run in last 48 hours. Fix: `gh workflow run opening-night-orchestrator.yml -f show_id=$SHOW_ID -f market=broadway`
 
 ---
 
