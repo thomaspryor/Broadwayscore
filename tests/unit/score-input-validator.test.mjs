@@ -82,6 +82,7 @@ describe('validateScoreableText', () => {
       'Proof continues to resonate with contemporary audiences. '.repeat(15);
     const result = validateScoreableText(text, 'Proof');
     assert.equal(result.ok, true, `Expected ok but got: ${result.reason}`);
+    assert.deepEqual(result.warnings, [], 'clean review should have no warnings');
   });
 
   it('passes with show object containing title + cast', () => {
