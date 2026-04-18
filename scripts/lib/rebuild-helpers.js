@@ -412,7 +412,13 @@ function getBestScore(data, opts = {}) {
     if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon' || data.scoreSource === 'star-icon-cleared') {
       inc('skippedLowConfidenceOriginal');
     } else {
-      const parsed = parseOriginalScore(effectiveOriginalScore, data.outletId);
+      // Pattern Card #7: prefer originalScoreNormalized (set at extraction time with the correct
+      // star/letter/numeric scale) over re-parsing the raw string. Re-parsing "5" as a bare
+      // integer returns 5/100 (pan) when it was extracted as "5 stars" (100/100 rave).
+      // Fall back to parseOriginalScore() when normalizedValue is absent (older records).
+      const normalizedFromExtraction = (typeof data.originalScoreNormalized === 'number' && data.originalScoreNormalized >= 0 && data.originalScoreNormalized <= 100)
+        ? data.originalScoreNormalized : null;
+      const parsed = normalizedFromExtraction ?? parseOriginalScore(effectiveOriginalScore, data.outletId);
       if (parsed !== null) {
         const llm = data.llmScore && data.llmScore.score;
         const llmConf = data.llmScore && data.llmScore.confidence;

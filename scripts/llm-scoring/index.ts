@@ -70,6 +70,7 @@ import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
 const { emitStage } = require('../lib/stage-latency');
+const { clearFailureFlags } = require('../lib/clear-failure-flags');
 // venue-classification import removed — market context now passed via input-builder
 
 // ========================================
@@ -624,9 +625,10 @@ function getAllReviewFiles(showId?: string, showIds?: string[]): Array<{ path: s
 }
 
 /**
- * Save scored review file
+ * Save scored review file — clears stale failure flags before writing (Pattern Card #1).
  */
 function saveReviewFile(filePath: string, data: any): void {
+  clearFailureFlags(data);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
 }
 
