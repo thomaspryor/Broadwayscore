@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-04-18T12:03:48.449Z",
+  "timestamp": "2026-04-18T18:28:29.910Z",
   "stats": {
-    "totalReviews": 34860,
-    "alreadyFlagged": 15295,
-    "dateGuardCatches": 88,
+    "totalReviews": 34868,
+    "alreadyFlagged": 15296,
+    "dateGuardCatches": 90,
     "directorMismatch": 816,
     "tvFilmSignals": 3149,
     "londonSignals": 1009,
@@ -69045,6 +69045,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-2000",
+      "file": "nydailynews--david-kaufman.json",
+      "score": null,
+      "publishDate": "2000-05-24",
+      "url": "https://www.newspapers.com/image/480401075",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 139d before show (2000-05-24 vs 2000-10-10)"
+        }
+      ]
+    },
+    {
+      "showId": "proof-2000",
+      "file": "village-voice--michael-feingold.json",
+      "score": null,
+      "publishDate": "2000-06-06",
+      "url": "https://www.villagevoice.com/2000-05-30/theater/math-about-you/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 126d before show (2000-06-06 vs 2000-10-10)"
         }
       ]
     },
