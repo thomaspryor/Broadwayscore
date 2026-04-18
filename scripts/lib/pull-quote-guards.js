@@ -64,10 +64,64 @@ function shouldRejectAsReservation(quote, score) {
   return false;
 }
 
+// Bug #11: Internal-note excerpts (e.g. "[INTERNAL: score needs review]", "Note: ...")
+// These are editorial notes that accidentally end up in the pullQuote field.
+function isInternalNote(excerpt) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  const trimmed = excerpt.trimStart();
+  if (trimmed.startsWith('[')) return true;
+  if (/\[INTERNAL\b/i.test(excerpt)) return true;
+  if (/\[NOTE\b/i.test(excerpt)) return true;
+  return false;
+}
+
+// Bug #14: Copyright/subscribe chrome patterns that leak from web scraping.
+const COPYRIGHT_CHROME_PATTERNS = [
+  /all rights reserved/i,
+  /subscribe to/i,
+  /\u00A9 20\d\d/,    // © 20xx (unicode © sign)
+  /\(c\) 20\d\d/i,    // (c) 20xx fallback
+  /read more at/i,
+  /click here to/i,
+  /\bsign up\b/i,
+  /\bnewsletter\b/i,
+];
+
+function hasCopyrightChrome(excerpt) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  return COPYRIGHT_CHROME_PATTERNS.some(re => re.test(excerpt));
+}
+
+// Bug #13: Off-topic excerpt detection. Very loose — only fires when there are
+// NO theater-domain words AND NO show-title keywords. False positives (blocking
+// a real review) are worse than letting a bad excerpt through.
+const THEATER_DOMAIN_RE = /\b(performance|play|musical|stage|actor|actress|director|cast|scene|theater|theatre|show|production|choreography|choreographer|singing|dancing|acting|script|book|lyrics|revival|broadway|west\s+end|opening\s+night|curtain|audience|playwright|narrative|dramatic|stagecraft|ensemble|understudy|character)\b/i;
+
+function isOffTopicExcerpt(excerpt, showId) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  // Any theater domain word → passes
+  if (THEATER_DOMAIN_RE.test(excerpt)) return false;
+  // Any show title keyword (from showId) → passes
+  if (showId && typeof showId === 'string') {
+    const titleWords = showId.split('-').filter(w => !/^\d{4}$/.test(w) && w.length >= 3);
+    for (const word of titleWords) {
+      try {
+        if (new RegExp(`\\b${word}\\b`, 'i').test(excerpt)) return false;
+      } catch (_) { /* ignore bad regex */ }
+    }
+  }
+  return true;
+}
+
 module.exports = {
   HEDGE_OPENER_RE,
   MID_SENTENCE_PIVOT_RE,
   isHedgeOpener,
   hasMidSentencePivot,
   shouldRejectAsReservation,
+  isInternalNote,
+  hasCopyrightChrome,
+  isOffTopicExcerpt,
+  COPYRIGHT_CHROME_PATTERNS,
+  THEATER_DOMAIN_RE,
 };
