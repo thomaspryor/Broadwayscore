@@ -1040,7 +1040,7 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
         process.env.SCRAPINGBEE_API_KEY || '',
         {
           brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
-          preferSpeed: true, // Opening night — latency matters
+          preferSpeed: false, // BD-first: SERP only runs after 3h gate so latency no longer critical
           dateRange: openingNightDateRange,
         }
       );
@@ -1217,9 +1217,36 @@ async function pollCycle() {
 
   const siteSearchResults = [...ssrSiteSearchResults, ...jsSiteSearchResults];
 
-  // ── Layer 4: SERP — T1 priority ──
+  // ── Layer 4: SERP — gated by time since opening ──
+  // SERP indexes major outlets ~3h after publication. Running before then wastes
+  // credits on empty results. After the gate, run at most once every 2h.
+  const SERP_MIN_HOURS_AFTER_OPENING = 3;
+  const SERP_MIN_INTERVAL_HOURS = 2;
+  const serpStatePath = path.join(DATA_DIR, 'collection-state', `serp-last-run-${SHOW_ID}.json`);
+
+  function shouldRunSerp() {
+    if (!show.openingDate) return true; // No opening date — can't gate, run normally
+    const hoursSinceOpening = (Date.now() - new Date(show.openingDate).getTime()) / 3600000;
+    if (hoursSinceOpening < SERP_MIN_HOURS_AFTER_OPENING) {
+      console.log(`\n[Layer 4] SERP Backup... SKIPPED (${hoursSinceOpening.toFixed(1)}h since opening, gate is ${SERP_MIN_HOURS_AFTER_OPENING}h)`);
+      return false;
+    }
+    if (fs.existsSync(serpStatePath)) {
+      const { lastRun } = JSON.parse(fs.readFileSync(serpStatePath, 'utf8'));
+      const hoursSinceLastRun = (Date.now() - new Date(lastRun).getTime()) / 3600000;
+      if (hoursSinceLastRun < SERP_MIN_INTERVAL_HOURS) {
+        console.log(`\n[Layer 4] SERP Backup... SKIPPED (ran ${hoursSinceLastRun.toFixed(1)}h ago, interval is ${SERP_MIN_INTERVAL_HOURS}h)`);
+        return false;
+      }
+    }
+    return true;
+  }
+
   let serpResults = [];
-  if (!SKIP_SERP) {
+  if (!SKIP_SERP && shouldRunSerp()) {
+    if (!DRY_RUN) {
+      fs.writeFileSync(serpStatePath, JSON.stringify({ lastRun: new Date().toISOString() }));
+    }
     const foundOutletIds = getFoundOutletIds(SHOW_ID);
     for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
@@ -1271,6 +1298,8 @@ async function pollCycle() {
     } else {
       console.log('\n[Layer 4] SERP Backup... all T1/T2 outlets found');
     }
+  } else if (!SKIP_SERP) {
+    // shouldRunSerp() already logged the skip reason
   } else {
     console.log('\n[Layer 4] SERP Backup... SKIPPED (--skip-serp)');
   }
