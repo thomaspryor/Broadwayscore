@@ -190,7 +190,8 @@ for (const showId of showDirs) {
 
     const alreadyFlagged = d.wrongProduction || d.wrongShow || d.isRoundupArticle
       || d.wrongAttribution || d.contentVerification?.wrongArticle
-      || d.isNonReview || d.nonReviewFlag || d.nonReviewContent;
+      || d.isNonReview || d.nonReviewFlag || d.nonReviewContent
+      || d.duplicateOf; // duplicates are excluded from scoring pipeline
 
     // ─── A: Cross-market / cross-production contamination ────
     // `_auditAllowCrossMarket` is a manual allowlist for cases the detector can't
