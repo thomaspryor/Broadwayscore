@@ -81,12 +81,12 @@ function countShowKeywords(body, show) {
 
   if (typeof show === 'string') {
     const fullTitle = show.toLowerCase().trim();
-    if (fullTitle.length >= 4) keywords.add(fullTitle);
+    if (fullTitle.length >= 2) keywords.add(fullTitle); // always add full title (handles "Six", "Bug", "Wit")
     addWords(show, 4);
   } else {
     if (show.title) {
       const fullTitle = show.title.toLowerCase().trim();
-      if (fullTitle.length >= 4) keywords.add(fullTitle);
+      if (fullTitle.length >= 2) keywords.add(fullTitle); // always add full title
       addWords(show.title, 4);
     }
     for (const c of (show.cast || []).slice(0, 5)) {

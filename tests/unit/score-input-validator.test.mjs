@@ -167,6 +167,21 @@ describe('validateScoreableText', () => {
     // The body should NOT contain the breadcrumb
     assert.ok(!result.body.includes('BroadwayMania >'), 'Body should not include nav chrome');
   });
+
+  it('passes for short single-word title (≤3 chars) like "Wit" or "Six"', () => {
+    // Regression: fullTitle.length >= 4 gate was blocking shows with short titles
+    const review = ('Wit is a devastating play about mortality and intellect. ' +
+      "Margaret Edson's drama about a literature professor confronting ovarian cancer " +
+      'is given a searing production here. Wit demands everything from its lead ' +
+      'performer and gets it. The production of Wit is essential viewing. ' +
+      'This revival of Wit reminds us why theater matters. ' +
+      'The production runs through the end of the month. ' +
+      'Wit earns its reputation as one of the great American plays. ' +
+      'Highly recommended. The staging is spare and powerful. ' +
+      'The final scenes of Wit are unforgettable. Do not miss this. ').repeat(4);
+    const result = validateScoreableText(review, 'Wit');
+    assert.equal(result.ok, true, `Expected ok for short title but got: ${result.reason}`);
+  });
 });
 
 // ─── detectHallucinatedScore ─────────────────────────────────────────────────
