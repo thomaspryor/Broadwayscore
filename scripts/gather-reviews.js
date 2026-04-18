@@ -66,7 +66,7 @@ const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-dis
 const { emitStage } = require('./lib/stage-latency');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
-const { domainMatchesExpected, fetchPage } = require('./lib/scraper');
+const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
 const { cleanSearchTitle } = require('./lib/title-normalization');
@@ -458,9 +458,11 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
     });
   });
 
-  // If direct fetch succeeded with real content, return it
+  // If direct fetch succeeded with real content AND URL matches expected, return it
   if (directResult.found && directResult.html && directResult.html.length > 2000) {
-    return directResult;
+    const vDirect = verifyFetchedUrl(directResult.html, searchUrl);
+    if (vDirect.verified) return directResult;
+    console.log(`    → ${aggregatorName}: https.get returned wrong page (${vDirect.reason}) — escalating`);
   }
 
   // Fallback 1: try fetch() (undici TLS) — passes CDN fingerprinting where https.get() fails.
@@ -474,8 +476,12 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
     if (fetchResp.ok) {
       const fetchHtml = await fetchResp.text();
       if (fetchHtml.length > 2000) {
-        console.log(`    → ${aggregatorName}: fetch() succeeded (${(fetchHtml.length / 1024).toFixed(0)}KB)`);
-        return { found: true, html: fetchHtml, finalUrl: searchUrl, method: 'fetch-fallback' };
+        const vFetch = verifyFetchedUrl(fetchHtml, searchUrl);
+        if (vFetch.verified) {
+          console.log(`    → ${aggregatorName}: fetch() succeeded (${(fetchHtml.length / 1024).toFixed(0)}KB)`);
+          return { found: true, html: fetchHtml, finalUrl: searchUrl, method: 'fetch-fallback' };
+        }
+        console.log(`    → ${aggregatorName}: fetch() returned wrong page (${vFetch.reason}) — escalating to fetchPage`);
       }
     }
   } catch (err) {

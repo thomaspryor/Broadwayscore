@@ -543,7 +543,7 @@ async function fetchJSON(url, options = {}) {
 // --- Homepage title detection ---
 // High-risk outlets that return their homepage with HTTP 200 when an article URL fails.
 // Pattern: title starts with the site name followed by punctuation or "Latest News" etc.
-const HOMEPAGE_TITLE_RE = /^BroadwayWorld:\s*Latest News|^The Wall Street Journal\s*$|^The New York Sun\s*$|^Playbill\s*[-|]|^TimeOut\s*[-|]/i;
+const HOMEPAGE_TITLE_RE = /^BroadwayWorld:|^The Wall Street Journal\s*$|^The New York Sun\s*$|^Playbill\s*[-|]|^TimeOut\s*[-|]/i;
 
 /**
  * Verify that fetched HTML actually corresponds to the requested URL.
