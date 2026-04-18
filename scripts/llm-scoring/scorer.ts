@@ -267,6 +267,17 @@ export class ReviewScorer {
       console.log(`  Reasoning: ${textSelection.reasoning}`);
     }
 
+    // Pre-scoring input validation: reject nav chrome and garbage before sending to LLM.
+    const { validateScoreableText } = require('../lib/score-input-validator.js');
+    const isExcerpt = textSelection.type === 'excerpt';
+    const inputValidation = validateScoreableText(textSelection.text, reviewFile.showTitle, { isExcerpt });
+    if (!inputValidation.ok) {
+      return {
+        success: false,
+        error: `input_validation_failed:${inputValidation.reason}`,
+      };
+    }
+
     const outcome = await this.scoreReview(textSelection.text);
 
     if (!outcome.success || !outcome.result) {
