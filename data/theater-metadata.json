@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-18T17:12:50.911Z",
+    "lastUpdated": "2026-04-18T21:30:42.502Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -2115,10 +2115,93 @@
     "yearBuilt": 1912,
     "operator": "Second Stage Theater",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:31.679Z",
+      "lastUpdated": "2026-04-18T20:37:03.656Z",
       "seating": {
-        "bestSeats": "Given the small size of the Helen Hayes Theater, most seats offer excellent views. Center orchestra seats provide the most immersive experience.",
-        "accessibility": "Elevator from lower lobby to Mezzanine. LOOP system for t-coils and cochlear implants."
+        "bestSeats": "Ideal: Center orchestra rows B-H — far enough back to clear the unusually high stage.",
+        "accessibility": "Elevator from lower lobby to Mezzanine. LOOP system for t-coils and cochlear implants.",
+        "sections": [
+          {
+            "name": "Orchestra Center Rows B-H",
+            "rowRange": "B-H",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best seats in the house",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Multiple guides converge on Rows B to H center as the best views in Broadway's smallest house (597 seats), where the intimate scale means these seats feel closer to the stage than premium orchestra in any other Broadway theater. The Hayes-specific tradeoff: patrons repeatedly flag that the stage sits unusually high for such an intimate room, so Row A and the very front can force neck-craning — one AVFMS viewer described the Hayes stage as 'particularly high for the first couple of rows, so you'll be using your neck to look up,' and a JOB patron noted 'The stage is high so you don't see actors' feet.' Rows B-H sit far enough back to clear that stage-height issue while still letting you read facial expressions in a house this small.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Front of this band (Row A/B) loses actors' lower legs when they stand upstage due to an unusually tall stage for such a small house; multiple AVFMS reviewers note 'actors' legs were cut off' and recommend sitting back a couple rows."
+              }
+            ],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/helen-hayes-theater-seating-chart/",
+              "https://www.headout.com/blog/helen-hayes-theatre-seating-chart/",
+              "https://seatplan.com/new-york/hayes-theater/orchestra/",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=2",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=4",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=6",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=10",
+              "https://www.nytix.com/theatres/helen-hayes-theatre"
+            ]
+          },
+          {
+            "name": "Orchestra Center Rows J-M",
+            "rowRange": "J-M",
+            "verdict": "solid",
+            "verdictLabel": "Value sweet spot where the rake kicks in",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Rows F-M center are consistently flagged as the value band at Hayes — priced below premium but still close in a 597-seat room. The Hayes-specific reason to favor the back half of that band (J-M) over F-I: an AVFMS reviewer explicitly observed that 'Row J in the orchestra level is where the rake of the floor starts to increase so even a short guy like me can see over someone tall.' That makes J-M the first rows where a tall head in front stops being a problem, which matters more at Hayes than at larger houses because the orchestra is 'more long than it is wide' (NYTix) and the stage height is tall, so front-orchestra sightlines are flatter than usual.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Legroom is tight theater-wide and repeatedly called out as the worst issue at Hayes; taller patrons should grab an aisle seat within this band — 'if you can get an aisle seat, get that for Hayes unless you are unusually petite' per TickPick summary and multiple AVFMS reviewers."
+              }
+            ],
+            "dataPoints": 12,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=2",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=6",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=10",
+              "https://www.headout.com/blog/helen-hayes-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/helen-hayes-theater-seating-chart/",
+              "https://seatplan.com/new-york/hayes-theater/orchestra/",
+              "https://www.nytix.com/theatres/helen-hayes-theatre",
+              "https://www.broadwayworld.com/theatre/Hayes-Theatre"
+            ]
+          },
+          {
+            "name": "Mezzanine Rear (Row J)",
+            "rowRange": "J",
+            "verdict": "skip",
+            "verdictLabel": "Back-row usher-booth noise",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "The very back row of the Hayes mezzanine sits directly against the theater's staff/operations area — a quirk specific to this post-2018-renovation layout. Multiple AVFMS reviewers independently complain the ushers or crew are audible throughout the show from Mezz Row J: one wrote 'this row butts up against the row where the theater staff sits and they chatted, loudly, throughout the show'; another said 'the ushers downstairs were loud and I could sometimes hear their murmurings'; an accessible-seat user at Mezz J-101 reported 'there's some sort of operation booth to the right of this seat and it's very loud and distracting. I could hear talking and typing throughout the entire show.' Because Hayes is the smallest house on Broadway, there's no orchestra noise to mask ambient staff chatter the way a 1,500-seat venue would — in this intimate room, the booth chatter carries.",
+            "hazards": [
+              {
+                "type": "sound-dead-spot",
+                "note": "Back row sits at the rear aisle against the staff/usher area; reviewers report audible chatter, typing, and crew conversation during performances — a Hayes-specific quirk of the renovated layout, not present in most Broadway mezzanines."
+              },
+              {
+                "type": "tight-legroom",
+                "note": "Legroom in the mezzanine is consistently called the tightest in the house; multiple AVFMS reviewers under 5'10\" still report knees jammed into the seat ahead."
+              }
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=4",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=5",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/?page=6",
+              "https://aviewfrommyseat.com/venue/Hayes+Theater/tips/",
+              "https://seatplan.com/new-york/hayes-theater/mezzanine/",
+              "https://www.headout.com/blog/helen-hayes-theatre-seating-chart/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -2390,10 +2473,113 @@
     "yearBuilt": 1923,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:46.539Z",
+      "lastUpdated": "2026-04-18T21:30:42.502Z",
       "seating": {
-        "bestSeats": "Center orchestra rows D-L are considered some of the best seats on Broadway due to the theater's wide stage and excellent acoustics.",
-        "accessibility": "5 wheelchair locations in Orchestra. No steps from sidewalk. Infrared devices available."
+        "bestSeats": "Ideal: Center orchestra rows H-P — the wider-than-deep house means Row H still reads the stage cleanly at mid-tier pricing.",
+        "accessibility": "5 wheelchair locations in Orchestra. No steps from sidewalk. Infrared devices available.",
+        "sections": [
+          {
+            "name": "Center Orchestra Rows H-P",
+            "rowRange": "H-P",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best value in the house",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Imperial's auditorium is rectangular and wider than it is deep, so you lose very little distance moving back from the premium C-G band — and once you clear the mezzanine overhang (which hangs over Orchestra row H) the rake picks up enough to see over heads. Multiple Chess (2026) and Water for Elephants (2024) sitters in rows H-P described a dead-center full-stage view at sub-premium prices; one Chess viewer at Orch C H106 called it 'the best broadway seats I've had.' Seatplan, TickPick, and Headout independently pick this same band as the value tier.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "The front mezzanine hangs over Orchestra row H per Entertainment-Link/TripAdvisor subscriber notes; AVFMS reports from later center-orchestra rows describe projections and tall set pieces being clipped at the top (e.g. Carousel Orch R S6 noted 'mezzanine blocks the view of the top of the stage,' Orch L S25 during Smash saw 'slight view obstruction from the mezzanine')."
+              }
+            ],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/imperial-theatre/seating-plan/",
+              "https://www.tickpick.com/blog/imperial-theatre-interactive-seating-chart/",
+              "https://www.headout.com/blog/imperial-theater-seating-chart/",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=5",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=6",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=8",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=22",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k5789409-Imperial_Theatre_seating-New_York_City_New_York.html",
+              "https://www.broadwayworld.com/theatre/Imperial-Theatre--Broadway-"
+            ]
+          },
+          {
+            "name": "Front Mezzanine Center rows C-F",
+            "rowRange": "C-F",
+            "verdict": "solid",
+            "verdictLabel": "Elevated full-stage view",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "TickPick and Seatplan both explicitly recommend Front Mezz row C and back (centered) over rows A-B, because the Imperial's front-mezz railing sits high enough to clip the stage for front-row sitters — a Water for Elephants viewer at Front Mezz R A401 (self-reported 6'3\") wrote 'The bar definitely gets in the way… Avoid.' Rows C-F clear that bar while keeping the whole-stage overhead view that's the main reason to choose mezzanine over orchestra at Imperial.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Front Mezz row A and the first row of its raised back sections (e.g. row A seat 401 in Front Mezz R) sit behind a railing/bar that obstructs tall patrons per AVFMS Water for Elephants report and TickPick."
+              }
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/imperial-theatre/seating-plan/",
+              "https://www.tickpick.com/blog/imperial-theatre-interactive-seating-chart/",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=22",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=5",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=6"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine Center front rows",
+            "rowRange": "A-C",
+            "verdict": "solid",
+            "verdictLabel": "Steep rake saves the cheap seats",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Imperial has no elevators/escalators and the rear mezz is a real climb (one Chess sitter called it 'quite the hike'), but the rake is steep enough that several Chess and Smash viewers reported unobstructed full-stage views from rows A-C even with tall people in front ('Rake is good so most likely no heads blocking the stage,' 'Theater has a good rake so you can see over the person in front of you'). TickPick and Headout both specifically recommend rear-mezz center (not sides) as the cheap-seat sweet spot here.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Rear mezz sits behind the front-mezz overhang and AVFMS reviewers describe it as feeling 'far' or 'cavernous' (Smash Rear Mezz RC F314: 'theatre is pretty cavernous… just felt far away')."
+              },
+              {
+                "type": "tight-legroom",
+                "note": "Multiple Chess, Smash and Water for Elephants rear-mezz reviews flag tight/narrow seating ('Seats and rows are tight, so everyone is packed-in' — Chess Front Mezz D402; 'narrow… par for the course with Shubert theaters' — Chess Orch L F9)."
+              }
+            ],
+            "dataPoints": 12,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/imperial-theatre-interactive-seating-chart/",
+              "https://www.headout.com/blog/imperial-theater-seating-chart/",
+              "https://www.nytix.com/theatres/imperial-theatre",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=5",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=6",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=8",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=15"
+            ]
+          },
+          {
+            "name": "Rear Orchestra behind Row R",
+            "rowRange": "R-T",
+            "verdict": "skip",
+            "verdictLabel": "Under the overhang, far from the action",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Imperial is wider than it is deep, so the penalty for sitting far back is real — you lose closeness without gaining much sightline, and the same mid-tier price bracket gets you a few rows forward.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Multiple seat-review sources recommend avoiding the back rows of orchestra; the trade for a few mid-orchestra rows forward is worth it."
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/imperial-theatre-interactive-seating-chart/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k5789409-Imperial_Theatre_seating-New_York_City_New_York.html",
+              "https://www.broadwayworld.com/theatre/Imperial-Theatre--Broadway-",
+              "https://aviewfrommyseat.com/venue/Imperial+Theatre/?page=22"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
