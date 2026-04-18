@@ -36,6 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { shouldRejectAsReservation } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -484,6 +485,18 @@ function selectBestExcerpt(data, showTitle) {
         console.log(`  ⚠️  [tour-excerpt] ${showId}: "${source}" has tour signal: ${tourCheck.signal}`);
         // Tour detection is always log-only for now (excerpt still used)
       }
+    }
+
+    // Layer 5: Hedge-opener guard (Pattern Card #3)
+    // Aggregator excerpts on positive reviews often quote a middle-paragraph caveat
+    // ("But the book still needs work") rather than the critic's actual verdict.
+    // shouldRejectAsReservation returns false when score is null (safe for aggregator-only reviews).
+    const reviewScore = data.llmScore?.score ?? null;
+    if (shouldRejectAsReservation(excerpt, reviewScore)) {
+      if (!stats.hedgeExcerptSuppressed) stats.hedgeExcerptSuppressed = [];
+      stats.hedgeExcerptSuppressed.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🛡️  [hedge-guard] ${showId}: "${source}" rejected as reservation (score ${reviewScore})`);
+      return null;
     }
 
     return excerpt;
