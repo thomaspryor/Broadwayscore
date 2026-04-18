@@ -1174,28 +1174,48 @@ async function pollCycle() {
   }
 
   // ── Layers 1+2+3: Parallel Discovery ──
-  // Aggregators, RSS, and direct site-search run simultaneously. Previously,
-  // site-search only started after aggregators finished — adding 1-2h lag.
-  // Now we fetch outlets directly as their reviews post, not after BWW RR compiles them.
-  //
-  // Site-search runs all outlets with templates upfront (no "missing" filter needed
-  // since we don't know what's missing yet). Dedup happens in processDiscoveredReviews.
-  const allSiteSearchIds = !SKIP_SITE_SEARCH
+  // Aggregators, RSS, and SSR site-search run simultaneously.
+  // JS-rendered site-search (ScrapingBee cost) runs after, with missing-outlet filter,
+  // to avoid burning SB credits on outlets already found by aggregators/RSS.
+  if (SKIP_SITE_SEARCH) console.log('\n[Layer 3] Site Search... SKIPPED (--skip-site-search)');
+
+  // SSR outlets are free (plain HTTP) — run unconditionally in parallel.
+  // JS-rendered outlets cost SB credits — run only for still-missing outlets after parallel phase.
+  const ssrSiteSearchIds = !SKIP_SITE_SEARCH
     ? Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
         const ep = SITE_SEARCH_ENDPOINTS[id];
-        return !ep.market || ep.market === market;
+        return !ep.requiresJs && (!ep.market || ep.market === market);
       })
     : [];
 
-  if (SKIP_SITE_SEARCH) console.log('\n[Layer 3] Site Search... SKIPPED (--skip-site-search)');
-
-  const [aggResults, rssResults, siteSearchResults] = await Promise.all([
+  const [aggResults, rssResults, ssrSiteSearchResults] = await Promise.all([
     runAggregators(show),
     runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
-    allSiteSearchIds.length > 0
-      ? runSiteSearch(show.title, allSiteSearchIds, knownUrls, market, show.openingDate || null)
+    ssrSiteSearchIds.length > 0
+      ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null)
       : Promise.resolve([]),
   ]);
+
+  // JS-rendered site-search: only for outlets still missing after parallel phase.
+  // Prevents burning SB credits on outlets aggregators/RSS already found.
+  let jsSiteSearchResults = [];
+  if (!SKIP_SITE_SEARCH) {
+    const foundAfterParallel = getFoundOutletIds(SHOW_ID);
+    for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults]) {
+      if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
+    }
+    const missingJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
+      const ep = SITE_SEARCH_ENDPOINTS[id];
+      return ep.requiresJs
+        && (!ep.market || ep.market === market)
+        && !foundAfterParallel.has(id.toLowerCase());
+    });
+    if (missingJsIds.length > 0) {
+      jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null);
+    }
+  }
+
+  const siteSearchResults = [...ssrSiteSearchResults, ...jsSiteSearchResults];
 
   // ── Layer 4: SERP — T1 priority ──
   let serpResults = [];
