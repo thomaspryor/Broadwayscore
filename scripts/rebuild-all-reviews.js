@@ -4096,6 +4096,17 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   }
 
   if (newOutlets.length > 0) {
+    // Build a URL → domain map from existing reviews to auto-populate domain field
+    const outletDomainHints = {};
+    for (const r of allReviews) {
+      if (r.outletId && r.url && !outletDomainHints[r.outletId]) {
+        try {
+          const hostname = new URL(r.url).hostname.replace(/^www\./, '');
+          if (hostname) outletDomainHints[r.outletId] = hostname;
+        } catch (e) { /* ignore invalid URLs */ }
+      }
+    }
+
     // Auto-add missing outlets with tier 3
     for (const outletId of newOutlets) {
       const displayName = outletId
@@ -4106,7 +4117,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
         displayName,
         tier: 3,
         aliases: [outletId],
-        domain: null
+        domain: outletDomainHints[outletId] || null
       };
     }
     if (outletRegistry._meta) {
@@ -4119,6 +4130,9 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       console.log(`  + ${id}`);
     }
     console.log('  Review tiers manually if needed.');
+    console.log('  ⚠ IMPORTANT: Also update outlet-registry.json in the PRIVATE repo (~/broadway-scorecard-data/data/outlet-registry.json).');
+    console.log('    CI uses the private repo copy — reviews scored here won\'t appear in production until the private registry is updated.');
+    console.log('    Quick sync: cp data/outlet-registry.json ~/broadway-scorecard-data/data/ && cd ~/broadway-scorecard-data && git add data/outlet-registry.json && git commit -m "sync outlet registry" && git push');
   }
 }
 

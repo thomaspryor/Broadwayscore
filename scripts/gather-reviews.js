@@ -365,7 +365,7 @@ function getDomainMarketMap() {
  * Search for a review via real Google SERP (ScrapingBee / Bright Data).
  * Returns { url } on success, null on failure or no results.
  */
-async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey) {
+async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false } = {}) {
   if (!scrapingBeeKey && !brightDataKey) {
     return null;
   }
@@ -383,6 +383,7 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
   const result = await discoverCorrectUrl(reviewObj, scrapingBeeKey, {
     brightDataKey,
     log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
+    forceHistorical: historical,
   });
 
   if (result && result !== '__SERP_UNAVAILABLE__') {
@@ -3858,6 +3859,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           const result = await discoverCorrectUrl(reviewObj, scrapingBeeKey, {
             brightDataKey,
             log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
+            forceHistorical: options.historical,
           });
 
           // Advance SERP attempt state even on failure so perpetually-null responses
@@ -3955,7 +3957,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         process.stdout.write(`  ${outlet.name}... `);
         serpCallCount++;
 
-        const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey);
+        const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
 
         if (result && result.url) {
           health.serp.hits++;
@@ -4276,12 +4278,16 @@ async function main() {
   const showIds = showsArg.replace('--shows=', '').split(',').map(s => s.trim());
   const aggregatorsOnly = args.includes('--aggregators-only');
   const validateUrls = args.includes('--validate-urls');
+  const historical = args.includes('--historical');
 
   console.log('========================================');
   console.log('Broadway Review Gatherer');
   console.log('========================================');
   console.log(`Shows to process: ${showIds.join(', ')}`);
   console.log(`Mode: ${aggregatorsOnly ? 'Aggregators only (fast)' : 'Full (aggregators + SERP discovery)'}`);
+  if (historical) {
+    console.log('Historical mode: ON (date filter skipped from first query — better for pre-2005 shows)');
+  }
   if (validateUrls) {
     console.log('URL validation: ON (roundup-sourced URLs will be content-checked)');
   }
@@ -4295,7 +4301,7 @@ async function main() {
   for (const showId of showIds) {
     let result;
     try {
-      result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls });
+      result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical });
     } catch (err) {
       console.error(`✗ Unhandled error for ${showId}: ${err.message}`);
       result = { showId, success: false, error: err.message, reviewsFound: 0, filesCreated: 0 };
