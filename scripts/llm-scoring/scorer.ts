@@ -275,6 +275,7 @@ export class ReviewScorer {
       return {
         success: false,
         error: `input_validation_failed:${inputValidation.reason}`,
+        inputValidationFailed: true,
       };
     }
 
