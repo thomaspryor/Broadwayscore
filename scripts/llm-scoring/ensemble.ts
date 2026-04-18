@@ -236,6 +236,9 @@ export function ensembleScoreFromArray(results: (ModelScore | null)[]): Ensemble
     (r): r is ModelScore => r !== null && r !== undefined && !r.error
   );
 
+  // How many models were actually started (non-null input, whether they succeeded or failed)
+  const startedCount = results.filter(r => r !== null).length;
+
   if (validResults.length === 0) {
     return {
       score: 50,
@@ -251,7 +254,13 @@ export function ensembleScoreFromArray(results: (ModelScore | null)[]): Ensemble
   }
 
   if (validResults.length === 1) {
-    return singleModelFallback(validResults[0]);
+    const result = singleModelFallback(validResults[0]);
+    // If 2+ models were started but only 1 succeeded, the score is unreliable.
+    // Exclude from compositeScore until human review clears singleModelEmergency.
+    if (startedCount > 1) {
+      result.singleModelEmergency = true;
+    }
+    return result;
   }
 
   if (validResults.length === 2) {

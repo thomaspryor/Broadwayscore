@@ -152,6 +152,8 @@ export interface EnsembleResult {
   reviewReason?: string;
   /** All models failed — caller must refuse to write score=50 silently */
   allModelsFailed?: boolean;
+  /** Only 1 of N≥2 started models succeeded — score is unreliable, exclude from compositeScore */
+  singleModelEmergency?: boolean;
   /** Individual model results */
   modelResults: {
     claude?: ModelScore;

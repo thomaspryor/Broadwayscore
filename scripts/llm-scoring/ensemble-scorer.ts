@@ -314,6 +314,19 @@ export class EnsembleReviewScorer {
       };
     }
 
+    // Pre-scoring input validation: reject nav chrome and garbage before sending to LLM.
+    // Prevents the TheaterMania incident (Proof 2026-04-16) where nav chrome was scored 95/Rave.
+    const { validateScoreableText } = require('../lib/score-input-validator.js');
+    const isExcerpt = scoringInput.textQuality === 'excerpt-only';
+    const inputValidation = validateScoreableText(scoringInput.text, reviewFile.showTitle, { isExcerpt });
+    if (!inputValidation.ok) {
+      return {
+        success: false,
+        error: `input_validation_failed:${inputValidation.reason}`,
+        inputValidationFailed: true,
+      } as any;
+    }
+
     // Score with ensemble
     const ensembleResult = await this.scoreReview(scoringInput.text, scoringInput.context);
 
@@ -350,6 +363,28 @@ export class EnsembleReviewScorer {
         error: 'All ensemble models failed — refusing to write fallback score=50',
         ensembleResult,
       };
+    }
+
+    // Post-scoring hallucination guard: if the LLM admitted it had no real review
+    // content and invented a score, refuse to write the result.
+    // The Proof incident: LLM reasoned "no actual review content... assuming
+    // hypothetical positive review" — this catches that pattern.
+    const { detectHallucinatedScore } = require('../lib/score-input-validator.js');
+    const allReasonings = [
+      ensembleResult.modelResults.claude?.reasoning,
+      ensembleResult.modelResults.openai?.reasoning,
+      ensembleResult.modelResults.gemini?.reasoning,
+      ensembleResult.modelResults.kimi?.reasoning,
+      ensembleResult.note,
+    ].filter(Boolean).join(' | ');
+    const hallucinationCheck = detectHallucinatedScore(allReasonings);
+    if (hallucinationCheck.refused) {
+      console.log(`::warning::Hallucinated score detected for ${reviewFile.showId}/${reviewFile.outletId} — refusing to write`);
+      return {
+        success: false,
+        error: `hallucinated_score: LLM admitted scoring non-review content`,
+        inputValidationFailed: true,
+      } as any;
     }
 
     // Cap final confidence to the LOWER of ensemble agreement and input quality.
@@ -427,7 +462,9 @@ export class EnsembleReviewScorer {
         needsReview: ensembleResult.needsReview || false,
         needsReviewReasons: ensembleResult.reviewReason ? [ensembleResult.reviewReason] : [],
         ensembleSource: ensembleResult.source,
-        modelAgreement: ensembleResult.agreement
+        modelAgreement: ensembleResult.agreement,
+        // Propagate emergency flag: 1-of-N model succeeded — score excluded from compositeScore
+        ...(ensembleResult.singleModelEmergency ? { singleModelEmergency: true } : {}),
       }
     };
 

@@ -2975,6 +2975,8 @@ showDirs.forEach(showId => {
           scoreDelta: data.ensembleData.scoreDelta || 0,
           modelAgreement: data.ensembleData.modelAgreement || null,
           needsReview: data.ensembleData.needsReview || false,
+          // Emergency flag: 1-of-N models succeeded — excluded from compositeScore by engine.ts
+          ...(data.ensembleData.singleModelEmergency ? { singleModelEmergency: true } : {}),
         } : {}),
         ...(data.llmScore ? {
           scoreConfidence: data.llmScore.confidence || null,
