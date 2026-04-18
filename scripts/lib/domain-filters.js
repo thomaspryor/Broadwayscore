@@ -93,6 +93,11 @@ function isBlockedReviewUrl(url) {
     if (lowerPath.includes('/tickets/') || lowerPath.includes('/buy-tickets')
       || lowerPath.includes('/book-tickets') || lowerPath.includes('tickets-in-london')
       || lowerPath.includes('/going-out/tickets/')) return true;
+    // Feature articles and interviews — not reviews
+    // Matches exact path segments: /features/, /feature/, /interviews/, /interview/
+    // Does NOT match /featured-review/ or /review-features-xyz/ (substring matches)
+    const pathParts = lowerPath.split('/').filter(Boolean);
+    if (pathParts.some(p => p === 'features' || p === 'feature' || p === 'interviews' || p === 'interview')) return true;
     // Malformed URLs (e.g., "http://Here We Are review — ...")
     if (parsed.hostname.includes(' ') || !parsed.hostname.includes('.')) return true;
     return false;

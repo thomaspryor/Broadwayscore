@@ -95,6 +95,19 @@ const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, norm
 const { setExtractedScore } = require('./lib/score-routing');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+
+// NYT Critics' Pick lookup — lazy-loaded once per run from authoritative URL list.
+// Do NOT check raw HTML (10% FP from NYT page chrome). URL match only.
+let _nytCriticsPicks = null;
+function getNytCriticsPicks() {
+  if (!_nytCriticsPicks) {
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'nyt-critics-picks.json'), 'utf8'));
+      _nytCriticsPicks = new Set(data.urls.map(u => u.replace(/[?#].*$/, '').replace(/\/$/, '')));
+    } catch { _nytCriticsPicks = new Set(); }
+  }
+  return _nytCriticsPicks;
+}
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords } = require('./lib/review-guards');
 const { logExclusion } = require('./lib/exclusion-logger');
@@ -294,7 +307,7 @@ const CONFIG = {
   loginTimeout: 90000,    // 90s for slow logins
   pageTimeout: 60000,     // 60s for page load
   apiTimeout: 20000,      // 20s for API calls (Archive.org/scrapers respond fast or not at all)
-  reviewTimeout: 180000,  // 3 min hard timeout per review (kills hung Playwright)
+  reviewTimeout: 90000,   // 90s hard timeout per review (kills hung Playwright/Browserbase)
 
   // Retry settings
   maxRetries: 3,
@@ -4822,7 +4835,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       'nymag.com': 2500,
       'bloomberg.com': 2000,
     };
-    const PROXY_METHODS = new Set(['brightdata', 'scrapingbee', 'scrapingbee_premium', 'archive']);
+    // Includes playwright/browserbase: paywall truncation is just as common from authenticated
+    // browser sessions as from proxy requests (short text = paywall hit, not a capsule review)
+    const PROXY_METHODS = new Set(['brightdata', 'scrapingbee', 'scrapingbee_premium', 'archive', 'playwright', 'browserbase']);
     try {
       const urlHost = new URL(data.url).hostname.replace(/^www\./, '');
       const minChars = PAYWALL_MIN_CHARS[urlHost];
@@ -4836,6 +4851,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         console.log(`    ⚠ Paywall truncation override: ${urlHost} ${data.fullText.length} chars < ${minChars} (${data.sourceMethod})`);
       }
     } catch (e) { /* invalid URL — skip */ }
+  }
+
+  // NYT Critics' Pick: check URL against authoritative list (no HTML parsing — avoids 10% FP from page chrome)
+  if (data.url && /nytimes\.com/.test(data.url) && !data.isCriticsPick) {
+    const normalizedUrl = data.url.replace(/[?#].*$/, '').replace(/\/$/, '');
+    if (getNytCriticsPicks().has(normalizedUrl)) {
+      data.isCriticsPick = true;
+      console.log(`    ★ NYT Critics' Pick: ${normalizedUrl}`);
+    }
   }
 
   // Set incompleteReason if content is not complete

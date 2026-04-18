@@ -1,0 +1,318 @@
+name: Opening Night Express
+
+# Streamlined single-job opening night pipeline.
+# Runs gather → collect → push → rebuild → deploy inline in strict sequence.
+# Eliminates the concurrent-CI data race (issue #9) that caused 5+ opening night failures.
+#
+# BEFORE RUNNING: This workflow cancels competing orchestrator/poller runs automatically.
+# The existing opening-night-orchestrator.yml will be paused for the duration.
+# When Express completes, the orchestrator resumes on its next cron.
+#
+# DISCARD PLAN: Delete this file. No other files are modified. Existing pipeline is unchanged.
+#
+# Usage:
+#   gh workflow run opening-night-express.yml -f show_id=cats-the-jellicle-ball-2026 -f market=broadway
+#   gh workflow run opening-night-express.yml -f show_id=cats-the-jellicle-ball-2026 -f market=broadway -f clear_stale_scores=true
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID (e.g. cats-the-jellicle-ball-2026)'
+        required: true
+        type: string
+      market:
+        description: 'Market'
+        required: false
+        type: choice
+        options: [broadway, west-end]
+        default: broadway
+      bww_roundup_url:
+        description: 'BWW Review Roundup URL (bypasses SERP discovery)'
+        required: false
+        type: string
+        default: ''
+      clear_stale_scores:
+        description: 'Clear scores from reviews published 30+ days before opening (fixes #13)'
+        required: false
+        type: boolean
+        default: false
+      skip_gather:
+        description: 'Skip gather step (use if URLs already found by poller)'
+        required: false
+        type: boolean
+        default: false
+      skip_collect:
+        description: 'Skip collect step (use if texts already collected)'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Dry run — gather and collect but skip push/rebuild/deploy'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+# One Express run per show at a time. cancel-in-progress:false queues instead of cancels.
+concurrency:
+  group: opening-night-express-${{ inputs.show_id }}
+  cancel-in-progress: false
+
+jobs:
+  express:
+    name: Opening Night Express — ${{ inputs.show_id }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cancel competing orchestrator/poller runs
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "=== Pausing competing workflows to prevent data races ==="
+          CANCELLED=0
+          for WORKFLOW in opening-night-orchestrator.yml opening-night-poller.yml llm-ensemble-score.yml; do
+            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=in_progress --json databaseId --jq '.[].databaseId' 2>/dev/null); do
+              echo "  Cancelling $WORKFLOW run $RUN_ID..."
+              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || echo "  ⚠ Could not cancel $RUN_ID"
+            done
+            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=queued --json databaseId --jq '.[].databaseId' 2>/dev/null); do
+              echo "  Cancelling queued $WORKFLOW run $RUN_ID..."
+              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || echo "  ⚠ Could not cancel $RUN_ID"
+            done
+          done
+          echo "Cancelled $CANCELLED competing runs. Express has the data repo to itself."
+          # Wait briefly for cancellations to propagate
+          [ $CANCELLED -gt 0 ] && sleep 15 || true
+
+      - name: Checkout core data (shows.json, reviews.json, etc.)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Verify show exists and get opening date
+        id: show_meta
+        run: |
+          SHOW_ID="${{ inputs.show_id }}"
+          SHOW=$(node -e "
+            const s = require('./data/shows.json').shows.find(s => s.id === '$SHOW_ID');
+            if (!s) { console.error('Show not found: $SHOW_ID'); process.exit(1); }
+            console.log(JSON.stringify({ name: s.name, openingDate: s.openingDate || '', market: s.market || '${{ inputs.market }}' }));
+          ")
+          echo "show_json=$SHOW" >> $GITHUB_OUTPUT
+          OPENING_DATE=$(echo "$SHOW" | node -e "process.stdin||(r=require);const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));console.log(d.openingDate||'')")
+          SHOW_NAME=$(echo "$SHOW" | node -e "process.stdin||(r=require);const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));console.log(d.name||'$SHOW_ID')")
+          echo "opening_date=$OPENING_DATE" >> $GITHUB_OUTPUT
+          echo "show_name=$SHOW_NAME" >> $GITHUB_OUTPUT
+          echo "Show: $SHOW_NAME | Opening: ${OPENING_DATE:-unknown} | Market: ${{ inputs.market }}"
+
+      - name: Clear stale pre-opening scores
+        if: inputs.clear_stale_scores && steps.show_meta.outputs.opening_date != ''
+        run: |
+          echo "=== Clearing scores from prior-production reviews (30+ days before opening) ==="
+          OPENING="${{ steps.show_meta.outputs.opening_date }}"
+          node scripts/strip-stale-single-model-scores.js \
+            --before-opening="$OPENING" \
+            --show="${{ inputs.show_id }}" \
+            --apply
+          echo "Score clearing complete."
+
+      - name: Gather review URLs
+        if: inputs.skip_gather != true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: 'true'
+        run: |
+          echo "=== Gathering review URLs (aggregator-first: BWW RR → DTLI → Playbill → SERP) ==="
+          BWW_FLAG=""
+          if [ -n "${{ inputs.bww_roundup_url }}" ]; then
+            BWW_FLAG="--bww-roundup-url=${{ inputs.bww_roundup_url }}"
+            echo "  Using provided BWW RR URL: ${{ inputs.bww_roundup_url }}"
+          fi
+          node scripts/gather-reviews.js \
+            --shows="${{ inputs.show_id }}" \
+            --from-post-opening \
+            $BWW_FLAG
+          echo "Gather complete."
+
+      - name: Collect review texts
+        if: inputs.skip_collect != true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: 'true'
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: '20'
+          SHOW_FILTER: ${{ inputs.show_id }}
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+        run: |
+          echo "=== Collecting review texts for ${{ inputs.show_id }} ==="
+          node scripts/collect-review-texts.js \
+            --aggressive \
+            --max-reviews=50
+          echo "Collection complete."
+
+      - name: Push review texts to private repo
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Opening Night Express — review texts for ${{ inputs.show_id }}"
+
+      - name: Score reviews
+        if: inputs.dry_run != true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "=== Scoring reviews (all 3 models) ==="
+          # Score only this show's unscored reviews
+          npx ts-node scripts/llm-scoring/index.ts \
+            --show="${{ inputs.show_id }}" \
+            --unscored-only \
+            --limit=30
+          echo "Scoring complete."
+
+      - name: Get review count before rebuild
+        id: before
+        run: |
+          COUNT=$(node -e "const d=require('./data/reviews.json');console.log(d.reviews.filter(r=>r.showId===\"${{ inputs.show_id }}\").length)" 2>/dev/null || echo "0")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "Reviews for show before rebuild: $COUNT"
+
+      - name: Rebuild reviews.json
+        if: inputs.dry_run != true
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "=== Rebuilding reviews.json ==="
+          node scripts/rebuild-all-reviews.js
+          echo "Rebuild complete."
+
+      - name: Get review count after rebuild
+        id: after
+        run: |
+          COUNT=$(node -e "const d=require('./data/reviews.json');console.log(d.reviews.filter(r=>r.showId===\"${{ inputs.show_id }}\").length)" 2>/dev/null || echo "0")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "Reviews for show after rebuild: $COUNT"
+
+      - name: Check for changes
+        if: inputs.dry_run != true
+        id: changes
+        run: |
+          if ! git diff --quiet data/reviews.json public/data/shows/ 2>/dev/null; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected — skipping commit/deploy"
+          fi
+
+      - name: Commit and push
+        if: inputs.dry_run != true && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/*.json 2>/dev/null || true
+          git add public/data/shows/ 2>/dev/null || true
+          git add public/opening-night-status.json public/status.html 2>/dev/null || true
+          git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
+
+          BEFORE=${{ steps.before.outputs.count }}
+          AFTER=${{ steps.after.outputs.count }}
+          DIFF=$((AFTER - BEFORE))
+          DIFF_STR=$([ $DIFF -ge 0 ] && echo "+$DIFF" || echo "$DIFF")
+
+          git commit -m "data: Opening Night Express — ${{ steps.show_meta.outputs.show_name }} ($DIFF_STR reviews)
+
+          Show: ${{ inputs.show_id }}
+          Reviews: $BEFORE → $AFTER
+          Market: ${{ inputs.market }}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Push core data to private repo
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Opening Night Express — ${{ inputs.show_id }}"
+
+      - name: Deploy to Vercel
+        if: inputs.dry_run != true && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "Triggering production deploy..."
+          gh workflow run vercel-deploy.yml || echo "::warning::Deploy dispatch failed — trigger manually: gh workflow run vercel-deploy.yml"
+
+      - name: Step summary
+        if: always()
+        run: |
+          echo "## Opening Night Express — ${{ steps.show_meta.outputs.show_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Show | ${{ inputs.show_id }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Market | ${{ inputs.market }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Reviews (this show) | ${{ steps.before.outputs.count }} → ${{ steps.after.outputs.count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dry run | ${{ inputs.dry_run }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Express Failed — ${{ inputs.show_id }}'
+          description: 'Express pipeline failed mid-run. Check logs. Manual workaround: cancel orchestrator, local rebuild, push data repo, gh workflow run vercel-deploy.yml'
+          severity: 'critical'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          email: 'true'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
