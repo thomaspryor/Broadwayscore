@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-18T02:45:11.612Z",
+    "lastUpdated": "2026-04-18T03:08:15.928Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -1797,10 +1797,149 @@
     "yearBuilt": 1972,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:20.826Z",
+      "lastUpdated": "2026-04-18T03:08:15.927Z",
       "seating": {
-        "bestSeats": "The Gershwin's steep rake means even rear mezzanine seats offer good views. Center orchestra provides the most immersive experience.",
-        "accessibility": "First Broadway theater with hearing loop (2013). Elevator to Orchestra and Mezzanine. 12 wheelchair spaces."
+        "bestSeats": "Ideal: Center orchestra rows F-L — past the front-row neck-crane and before the Row N mezz overhang.",
+        "accessibility": "First Broadway theater with hearing loop (2013). Elevator to Orchestra and Mezzanine. 12 wheelchair spaces.",
+        "sections": [
+          {
+            "name": "Orchestra Center (mid)",
+            "rowRange": "F-L",
+            "bestRow": "Row H",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Our pick",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "In a 1,933-seat house (the largest on Broadway), mid-orchestra is where the math works: far enough back that Wicked's dragon and flying monkeys clear the top of the frame, but close enough that you still catch faces. Every guide converges on rows F-L as the sweet spot (TickPick, RateYourSeats, Broadway.com), and a Fodor's veteran names 'Row H, as close to center as possible' as the ideal. Critically, the mezz overhang only starts around Orchestra Row N/O (SeatPlan, TickPick), so Row H is fully out from under it — you retain full vertical clearance for aerial scenery that rear-orchestra seats partially lose.",
+            "hazards": [],
+            "bestFor": [
+              "musical",
+              "spectacle",
+              "dance-heavy"
+            ],
+            "worstFor": [],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/gershwin-theatre-seating-chart-wicked-ny/",
+              "https://www.rateyourseats.com/gershwin-theatre/seating/orchestra",
+              "https://seatplan.com/new-york/gershwin-theatre/orchestra/",
+              "https://www.broadway.com/broadway-guide/60/best-seats-wicked-broadway/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k4294428-Gershwin_Theatre_Seating_Advice_Orch_Center_or_Front_Mez-New_York_City_New_York.html",
+              "https://aviewfrommyseat.com/venue/Gershwin+Theatre/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "rowRange": "A-E",
+            "bestRow": "Row A",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best for spectacle",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "The Gershwin's proscenium is scaled for a 1,933-seat house, and Wicked's signature moments — the mechanical dragon perched above the arch, flying monkeys in Act 1, Elphaba's levitation in 'Defying Gravity' — play vertically as much as horizontally. Front orchestra loses all of that to the angle above your head (a Row BB seat reported only seeing 'blinding light' when Elphaba rises). Front mezzanine C is the reframe: SeatPlan calls the center front row 'the best view at this level,' Broadway.com recommends the first two mezz rows for spectacle shows, and a Tripadvisor advisor notes front mezz 'is actually a little closer than Orchestra Row O.' You trade facial detail for a complete aerial frame. Note: a low safety bar sits in front of Row A, an issue for short patrons (Broadway.com).",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Row A has a low safety bar that can clip sightlines for short patrons or children"
+              }
+            ],
+            "bestFor": [
+              "spectacle",
+              "musical",
+              "dance-heavy"
+            ],
+            "worstFor": [
+              "intimate-drama"
+            ],
+            "dataPoints": 12,
+            "evidenceUrls": [
+              "https://www.broadway.com/broadway-guide/60/best-seats-wicked-broadway/",
+              "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
+              "https://www.rateyourseats.com/gershwin-theatre/seating/mezzanine",
+              "https://www.tickpick.com/blog/gershwin-theatre-seating-chart-wicked-ny/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k4294428-Gershwin_Theatre_Seating_Advice_Orch_Center_or_Front_Mez-New_York_City_New_York.html",
+              "https://aviewfrommyseat.com/venue/Gershwin+Theatre/level/2/Front+Mezzanine/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine back rows",
+            "rowRange": "L-N",
+            "verdict": "skip",
+            "verdictLabel": "Skip — Broadway's longest throw",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Because Gershwin is the largest house on Broadway, the rear mezzanine's back rows are genuinely farther from the stage than most theatres' comparable seats. AViewFromMySeat user reports in Rear Mezz L-113 call it 'very far away,' Rear Mezz M-11 calls it 'second to last row — it's very far away and hard to make out exact features of the actors,' Rear Mezz J-29 notes 'the stage is quite far away, so I couldn't see their expressions.' SeatPlan corroborates: rear mezz seats 'a considerable distance from the stage, so it may not be possible to make out facial expressions.' Sound gets good reviews back here (multiple comments note 'sound was amazing'), but for a character-driven show the resolution collapse is real. If price is the only consideration, the mid-rear-mezz rows (F-H) sit closer and perform far better.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Back rows of rear mezz in a 1,933-seat house exceed the distance of most Broadway rear mezzes; facial expressions not readable"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "intimate-drama",
+              "play"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
+              "https://aviewfrommyseat.com/venue/Gershwin+Theatre/level/3/Rear+Mezzanine/",
+              "https://www.rateyourseats.com/gershwin-theatre/seating/mezzanine"
+            ]
+          },
+          {
+            "name": "Side Orchestra partial-view (above Row G)",
+            "rowRange": "H-N",
+            "verdict": "solid",
+            "verdictLabel": "Best bang-for-buck",
+            "priceTier": "budget",
+            "isValuePick": true,
+            "rationale": "TickPick calls this out directly: 'Orchestra Right (even-numbered side), above Row G... you won't miss a thing. In terms of price, you probably won't find a better deal on Wicked Tickets than the partially obstructed view seats.' What you miss on the Left orchestra side is 'a metal dragon' — a decorative element, not live action (TickPick). An AViewFromMySeat user in Orch L row J seats 25/27, sold as partial view, confirms: 'you could see everything but part of the house scenery but no action! Very close and could see facial expressions perfectly!' The value play is real because the discount is priced against a worst-case reading of 'obstructed,' but above Row G the obstruction is almost entirely non-action scenery. Rule of thumb from TickPick: prefer lower seat numbers (closer to the center aisle) within this range — e.g. seat 15 in Row O over seat 17 in Row N.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Listed as partial view; typically misses decorative dragon/house scenery on far side, not live stage action"
+              }
+            ],
+            "bestFor": [
+              "musical"
+            ],
+            "worstFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/gershwin-theatre-seating-chart-wicked-ny/",
+              "https://aviewfrommyseat.com/venue/Gershwin+Theatre/",
+              "https://seatplan.com/new-york/gershwin-theatre/orchestra/"
+            ]
+          },
+          {
+            "name": "Rear Orchestra (stadium seating)",
+            "rowRange": "Q-Z",
+            "verdict": "solid",
+            "verdictLabel": "Under-rated rake",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Gershwin's rear orchestra transitions into stadium-style seating around Row Q — an AViewFromMySeat user in Orch R Row T-32 writes 'Row Q and up are on a steeper incline which is great if you're short like me. Seats were also cheaper!' Another in Orch C Row V-116 notes 'back of orchestra is stadium seating so everything is still very visible. Still feels close given how far back it is.' SeatPlan confirms 'stadium seating on the Orchestra level refers to rows Q-Z.' These rows sit under the mezzanine overhang (TickPick: Front Mezz Row A overhangs Orch Row O; SeatPlan: begins at Row N), which clips the very top of tall scenery — a real trade for Wicked's dragon — but the steep rake solves the biggest problem of a 1,933-seat house: getting a clear sightline over the person in front of you. For short patrons specifically, this section over-performs its price tier.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Seats under the front mezzanine overhang — top of tall scenery (including dragon) can be clipped"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "play"
+            ],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/gershwin-theatre/orchestra/",
+              "https://aviewfrommyseat.com/venue/Gershwin+Theatre/",
+              "https://www.rateyourseats.com/gershwin-theatre/seating/orchestra",
+              "https://www.tickpick.com/blog/gershwin-theatre-seating-chart-wicked-ny/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
