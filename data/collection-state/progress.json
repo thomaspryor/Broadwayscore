@@ -28,7 +28,8 @@
     "beetlejuice-2022/pittsburgh-city-paper--jordana-rosenfeld.json",
     "marvins-room-2017/stageandcinema--dmitry-zvonkov.json",
     "marvins-room-2017/theater-life--paulanne-simmons.json",
-    "les-liaisons-dangereuses-2016/timeout--david-cote.json"
+    "les-liaisons-dangereuses-2016/timeout--david-cote.json",
+    "doctor-zhivago-2015/deadline--jeremy-gerard.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -1212,7 +1213,16 @@
     "fiddler-on-the-roof-2015/out-magazine--michael-musto.json",
     "school-of-rock-the-musical-2015/theatermania--jesse-green.json",
     "on-your-feet-2015/bobs-theater-blog--robert-sholiton.json",
-    "therese-raquin-2015/timeout--adam-feldman.json"
+    "therese-raquin-2015/timeout--adam-feldman.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json",
+    "fool-for-love-2015/bobs-theater-blog--robert-sholiton.json",
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "wolf-hall-parts-one-and-two-2015/ap--mark-kennedy.json",
+    "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+    "on-the-twentieth-century-2015/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1233,7 +1243,9 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/escape-to-margaritaville-2018/deadline--greg-evans.json",
-      "escape-to-margaritaville-2018/deadline--greg-evans.json"
+      "escape-to-margaritaville-2018/deadline--greg-evans.json",
+      "data/review-texts/doctor-zhivago-2015/deadline--jeremy-gerard.json",
+      "doctor-zhivago-2015/deadline--jeremy-gerard.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1266,7 +1278,7 @@
     ]
   },
   "startTime": "2026-04-18T08:29:02.734Z",
-  "lastProcessed": "therese-raquin-2015/timeout--adam-feldman.json",
+  "lastProcessed": "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
   "log": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -1300,6 +1312,17 @@
       "t": "2026-04-18T18:27:59.580Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-04-18T19:06:41.496Z",
+      "event": "bb-session",
+      "session": "f13639e4",
+      "url": "https://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/"
+    },
+    {
+      "t": "2026-04-18T19:06:42.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

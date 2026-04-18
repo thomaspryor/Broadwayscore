@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-18T19:05:52.144Z",
-  "processed": 29,
-  "failed": 1182,
-  "successRate": "2.4%",
+  "updatedAt": "2026-04-18T19:07:22.849Z",
+  "processed": 30,
+  "failed": 1191,
+  "successRate": "2.5%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 8,
     "archiveToday": 3,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -47,6 +47,17 @@
       "t": "2026-04-18T18:27:59.580Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-04-18T19:06:41.496Z",
+      "event": "bb-session",
+      "session": "f13639e4",
+      "url": "https://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/"
+    },
+    {
+      "t": "2026-04-18T19:06:42.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
