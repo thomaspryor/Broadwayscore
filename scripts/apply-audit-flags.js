@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'syndicated-duplicates.json');
 const REVIEW_TEXTS_BASE = path.join(__dirname, '..', 'data', 'review-texts');
@@ -92,7 +93,7 @@ if (audit.authorMismatches && audit.authorMismatches.length > 0) {
       data.needsRescore = 'fullTextWrongAuthor-applied';
       data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
 
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+      safeWriteReview(filePath, data, { force: true });
     }
     applied++;
   }
@@ -126,7 +127,7 @@ if (audit.flagged && audit.flagged.length > 0) {
       data.duplicateOf = pair.primaryFile;
       data._syndicationNote = `Syndicated from ${pair.primaryOutlet} (detected by audit)`;
 
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+      safeWriteReview(filePath, data);
     }
     applied++;
   }
@@ -159,7 +160,7 @@ if (audit.apContentDetections && audit.apContentDetections.length > 0) {
       data._authorMismatch = `AP wire content detected in non-AP file: ${det.signal}`;
       data.needsRescore = 'ap-content-detected';
 
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+      safeWriteReview(filePath, data);
     }
     applied++;
   }

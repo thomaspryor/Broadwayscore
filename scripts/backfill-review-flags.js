@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const { evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
 const args = process.argv.slice(2);
@@ -203,7 +204,7 @@ for (const showId of showDirs) {
 
       // Write if modified
       if (modified && !DRY_RUN) {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        safeWriteReview(filePath, data, { force: true });
         stats.filesModified++;
       } else if (modified) {
         stats.filesModified++;

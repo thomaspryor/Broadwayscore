@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyContentTier } = require('./lib/content-quality');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -100,7 +101,7 @@ function main() {
           if (DRY_RUN === false) {
             delete data.incompleteReason;
             delete data.incompleteDetail;
-            fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+            safeWriteReview(filePath, data, { force: true });
           }
           stats.changed++;
         }
@@ -121,7 +122,7 @@ function main() {
       if (DRY_RUN === false) {
         data.incompleteReason = result.incompleteReason;
         data.incompleteDetail = result.incompleteDetail;
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+        safeWriteReview(filePath, data);
       }
     }
   }

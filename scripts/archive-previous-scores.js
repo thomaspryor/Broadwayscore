@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const dryRun = process.argv.includes('--dry-run');
 const reviewDir = 'data/review-texts';
@@ -72,7 +73,7 @@ for (const show of shows) {
       }
 
       if (modified && !dryRun) {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        safeWriteReview(filePath, data, { force: true });
       }
     } catch (e) {
       // Skip parse errors

@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const envPath = path.join(__dirname, '..', '.env');
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ||
@@ -150,7 +151,7 @@ async function main() {
         delete fileData.assignedScore;
         delete fileData.llmScore;
         delete fileData.llmMetadata;
-        fs.writeFileSync(item.filePath, JSON.stringify(fileData, null, 2) + '\n');
+        safeWriteReview(item.filePath, fileData, { force: true });
         noReview++;
         await new Promise(r => setTimeout(r, 300));
         continue;
@@ -171,7 +172,7 @@ async function main() {
       delete fileData.rejectedBy;
       delete fileData.rejectedReason;
       delete fileData.showNotMentioned;
-      fs.writeFileSync(item.filePath, JSON.stringify(fileData, null, 2) + '\n');
+      safeWriteReview(item.filePath, fileData, { force: true });
       extracted++;
 
       await new Promise(r => setTimeout(r, 300));
