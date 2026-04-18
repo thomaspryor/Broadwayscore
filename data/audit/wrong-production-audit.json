@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-18T05:08:03.863Z",
+  "timestamp": "2026-04-18T07:07:43.753Z",
   "stats": {
-    "totalReviews": 34840,
-    "alreadyFlagged": 15285,
+    "totalReviews": 34849,
+    "alreadyFlagged": 15288,
     "dateGuardCatches": 88,
-    "directorMismatch": 815,
-    "tvFilmSignals": 3145,
-    "londonSignals": 1005,
+    "directorMismatch": 816,
+    "tvFilmSignals": 3148,
+    "londonSignals": 1007,
     "offBroadwaySignals": 882,
     "yearMismatch": 67,
-    "noPublishDate": 3725
+    "noPublishDate": 3721
   },
   "findings": [
     {
@@ -4865,6 +4865,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "independent--louis-chilton.json",
+      "score": null,
+      "publishDate": "2026-04-17",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -36038,6 +36057,39 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
+      "file": "theatermania--david-gordon.json",
+      "score": 62,
+      "publishDate": "April 16, 2026",
+      "url": "https://www.theatermania.com/news/review-ayo-edebiri-and-don-cheadle-try-to-solve-a-precise-but-passionless-proof_1832726/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "2026-04-17",
+      "url": "https://www.thewrap.com/creative-content/reviews/proof-broadway-review-obama-ayo-edebiri-don-cheadle/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel sullivan\" from proof-2000"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -68218,6 +68270,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "guardian--david-jays.json",
+      "score": 68,
+      "publishDate": "2026-04-16",
+      "url": "https://www.theguardian.com/stage/2026/apr/16/one-flew-over-the-cuckoos-nest-review-old-vic-london-aaron-pierre-clint-dyer-giles-terera-olivia-williams",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
