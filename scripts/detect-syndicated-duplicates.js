@@ -7,7 +7,7 @@
  * `isSyndicatedDuplicate: true` + `syndicatedPrimaryFile` so rebuild skips it.
  *
  * The primary outlet is chosen by: higher tier > more text > alphabetical.
- * Known syndication pairs are hardcoded for determinism.
+ * Known syndication pairs are defined in scripts/lib/syndication-pairs.js.
  *
  * Usage:
  *   node scripts/detect-syndicated-duplicates.js [options]
@@ -33,21 +33,8 @@ const THRESHOLD = parseInt((args.find(a => a.startsWith('--threshold=')) || '').
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const AUDIT_DIR = path.join(__dirname, '../data/audit');
 
-// --- Known syndication pairs ---
-// Maps critic → { primary: outlet, secondary: [outlets] }
-// Primary is the outlet we keep; secondary copies get flagged.
-const KNOWN_SYNDICATION = {
-  'chris jones': { primary: 'chicagotribune', secondary: ['nydailynews'] },
-  'kathleen campion': { primary: 'nytg', secondary: ['front-row-center'] },
-  'tulis mccall': { primary: 'nytg', secondary: ['front-row-center'] },
-  'stanford friedman': { primary: 'nytg', secondary: ['front-row-center'] },
-  'david rooney': { primary: 'hollywood-reporter', secondary: ['reuters'] },
-  'alexandra lipari': { primary: 'newsday', secondary: ['entertainmenthour'] },
-  'zachary stewart': { primary: 'theatermania', secondary: ['whatsonstage'] },
-  'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
-  'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune'] },
-  'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
-};
+// Known syndication pairs — single source of truth shared with rebuild-all-reviews.js
+const { KNOWN_SYNDICATION_PAIRS: KNOWN_SYNDICATION } = require('./lib/syndication-pairs');
 
 // --- Known outlet pairs (derived from KNOWN_SYNDICATION) ---
 // Maps "outletA|outletB" (sorted) → { primary, secondary, critic }
