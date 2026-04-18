@@ -239,15 +239,31 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
   const visibleSolids = shouldCollapseSolids && !expanded ? [] : solids;
   const hiddenSolidCount = shouldCollapseSolids && !expanded ? solids.length : 0;
 
+  // Prefer value-pick lede over generic bestSeats — the value pick is always
+  // non-obvious (otherwise it'd be the sweet-spot), so this guarantees the
+  // gold box says something theater-specific, not "center orch is best."
+  const valuePickSection = validSections.find((s) => s.isValuePick);
+
   return (
     <div className="text-left">
       <VerdictDistributionBar sections={validSections} />
 
-      {bestSeats && (
+      {valuePickSection ? (
+        <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
+          <p className="text-sm text-gray-200 leading-relaxed">
+            <span className="font-semibold text-brand not-italic">★ Best value:</span>{' '}
+            <span className="italic">
+              {valuePickSection.name}
+              {valuePickSection.rowRange && <> (rows {valuePickSection.rowRange})</>}
+              {valuePickSection.rationale && <> — {valuePickSection.rationale}</>}
+            </span>
+          </p>
+        </div>
+      ) : bestSeats ? (
         <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
           <p className="text-sm text-gray-200 leading-relaxed italic">{bestSeats}</p>
         </div>
-      )}
+      ) : null}
 
       {/* Hero: sweet-spot, given visual weight */}
       <SectionRow section={hero} isHero compactRationale={compactRationale} />
