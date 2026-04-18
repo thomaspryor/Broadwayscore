@@ -101,7 +101,10 @@ describe('safeWriteReview', () => {
     }, null, 2));
 
     const newData = { showId: 'test-show', assignedScore: 72 };
+    const originalWarn = console.warn;
+    console.warn = () => {};
     const result = safeWriteReview(filePath, newData, { force: true });
+    console.warn = originalWarn;
 
     assert.deepEqual(result.preserved, []);
     const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
