@@ -108,6 +108,7 @@ export interface RawReview {
   dtliThumb?: string | null;   // DTLI thumb signal
   bwwThumb?: string | null;    // BWW thumb signal
   needsReview?: boolean;       // Score doesn't reflect current signals (needs rescore)
+  singleModelEmergency?: boolean; // 1-of-N ensemble models succeeded — unreliable, exclude from compositeScore
 }
 
 export interface RawAudience {
@@ -652,7 +653,10 @@ export function computeShowData(
   // Announced shows: never surface a composite score — any reviews present belong
   // to a prior production and would mislead ("upcoming show with 82 score").
   const hideReviews = shouldHideReviews(show) || show.status === 'announced';
-  let criticScore = hideReviews ? null : computeCriticScore(showReviews);
+  // Exclude single-model emergency reviews: only 1 of N ensemble models succeeded,
+  // so the score is unreliable until a human review clears the flag.
+  const eligibleReviews = showReviews.filter(r => !r.singleModelEmergency);
+  let criticScore = hideReviews ? null : computeCriticScore(eligibleReviews);
 
   // V1: composite score = critic score (audience/buzz coming later)
   // Keep 2 decimal places for tiebreaking in sort order (e.g., 87.96 vs 87.12)
