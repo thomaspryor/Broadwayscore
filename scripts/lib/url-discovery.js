@@ -387,6 +387,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
  * @param {{ dateMin: Date, dateMax: Date }} [options.dateRange] - Optional date range for Google's tbs filter
  * @param {boolean} [options.returnMetadata] - If true, return { url, serpTitle } instead of just url
  * @param {boolean} [options.preferSpeed] - If true, use ScrapingBee first (sync, ~1-3s) instead of BrightData (async, ~4-20s). Use for time-sensitive flows like opening night polling.
+ * @param {boolean} [options.forceHistorical] - If true, skip date filter entirely from the first query (best for pre-2005 shows where Google date metadata is unreliable).
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
@@ -395,6 +396,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   let dateRange = options.dateRange || null;
   const returnMetadata = options.returnMetadata || false;
   const preferSpeed = options.preferSpeed || false;
+  const forceHistorical = options.forceHistorical || false;
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
@@ -402,7 +404,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   if (!showInfo.title) return null;
 
   // Auto-compute date range when caller doesn't provide one (prevents cross-production SERP contamination)
-  if (!dateRange && showInfo) {
+  // Skip entirely for historical mode — Google's date filter is unreliable for articles >5 years old.
+  if (!forceHistorical && !dateRange && showInfo) {
     dateRange = calculateDateWindow(showInfo);
   }
 

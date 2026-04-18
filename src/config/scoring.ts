@@ -23,9 +23,9 @@ export const LOW_CONF_SCORE_SOURCES = new Set([
 
 // Shows pre-dating the 2005 cutoff that have been manually curated with
 // verified opening-night reviews. Bypasses shouldHideReviews.
-export const CURATED_HISTORICAL_SHOWS = new Set([
-  'proof-2000',
-]);
+// To add a new historical show: edit data/curated-historical-shows.json (no code change needed).
+import curatedHistoricalShowsData from '../../data/curated-historical-shows.json';
+export const CURATED_HISTORICAL_SHOWS = new Set<string>(curatedHistoricalShowsData);
 
 /** Returns true if a show's reviews should be completely hidden on the site. */
 export function shouldHideReviews(show: { id?: string | null; openingDate?: string | null; status?: string; category?: string }): boolean {
