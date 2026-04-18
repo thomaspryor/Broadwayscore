@@ -3,7 +3,12 @@
     "avenue-q-west-end-2026/radio-times--joanna-magill.json",
     "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json",
     "the-book-of-mormon-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
-    "avenue-q-west-end-2026/artsdesk--unknown.json"
+    "avenue-q-west-end-2026/artsdesk--unknown.json",
+    "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026/nytimes--houman-barekat.json",
+    "kenrex-off-broadway-2026/playbill--unknown.json",
+    "the-fear-of-13-2026/talkinbroadway--unknown.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -44,26 +49,52 @@
     "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/independent--alice-saville.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--dominic-cavendish.json",
-    "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json"
+    "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "avenue-q-west-end-2026/radio-times--joanna-magill.json",
       "the-book-of-mormon-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
-      "avenue-q-west-end-2026/artsdesk--unknown.json"
+      "avenue-q-west-end-2026/artsdesk--unknown.json",
+      "kenrex-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026/nytimes--houman-barekat.json"
+    ],
+    "brightdata": [
+      "the-fear-of-13-2026/talkinbroadway--unknown.json",
+      "every-brilliant-thing-2026/usatoday--patrick-ryan.json"
+    ],
     "archiveToday": [],
     "archive": [
       "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json"
     ]
   },
   "startTime": "2026-04-18T08:29:02.734Z",
-  "lastProcessed": "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json",
-  "log": []
+  "lastProcessed": "ragtime-2025/bloomberg--chris-rovzar.json",
+  "log": [
+    {
+      "t": "2026-04-18T10:21:53.676Z",
+      "event": "bb-session",
+      "session": "8a0321c5",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-04-18T10:21:54.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
