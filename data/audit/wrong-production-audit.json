@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-18T18:28:29.910Z",
+  "timestamp": "2026-04-18T19:00:27.523Z",
   "stats": {
     "totalReviews": 34868,
     "alreadyFlagged": 15296,
-    "dateGuardCatches": 90,
+    "dateGuardCatches": 91,
     "directorMismatch": 816,
     "tvFilmSignals": 3149,
     "londonSignals": 1009,
     "offBroadwaySignals": 882,
     "yearMismatch": 67,
-    "noPublishDate": 3722
+    "noPublishDate": 3721
   },
   "findings": [
     {
@@ -4871,7 +4871,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "independent--louis-chilton.json",
-      "score": null,
+      "score": 80,
       "publishDate": "2026-04-17",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
@@ -4892,7 +4892,7 @@
       "file": "standard--nick-curtis.json",
       "score": 85,
       "publishDate": "2026-04-17",
-      "url": "https://www.standard.co.uk/culture/theatre/avenue-q-review-b1278927.html",
+      "url": "https://www.standard.co.uk/culture/theatre/christmas-carol-goes-wrong-apollo-theatre-review-b1262590.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -19056,7 +19056,7 @@
     {
       "showId": "head-over-heels-2018",
       "file": "huffpost--curtis-m-wong.json",
-      "score": null,
+      "score": 72,
       "publishDate": "2018-08-01",
       "url": "https://www.huffpost.com/entry/head-over-heels-spencer-liff-broadway_n_5b606f7fe4b0de86f49b1e8b",
       "findings": [
@@ -36096,7 +36096,7 @@
     {
       "showId": "proof-2026",
       "file": "thewrap--robert-hofler.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2026-04-17",
       "url": "https://www.thewrap.com/creative-content/reviews/proof-broadway-review-obama-ayo-edebiri-don-cheadle/",
       "findings": [
@@ -69059,6 +69059,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 139d before show (2000-05-24 vs 2000-10-10)"
+        }
+      ]
+    },
+    {
+      "showId": "proof-2000",
+      "file": "observer--john-heilpern.json",
+      "score": 80,
+      "publishDate": "2000-06-19",
+      "url": "https://observer.com/2000/06/proof-positive-of-fragile-life-and-love-through-higher-math/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 113d before show (2000-06-19 vs 2000-10-10)"
         }
       ]
     },
