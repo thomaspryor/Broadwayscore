@@ -278,6 +278,9 @@ export class ReviewScorer {
         inputValidationFailed: true,
       };
     }
+    if (inputValidation.warnings && inputValidation.warnings.length > 0) {
+      console.log(`  ::warning::Input validator warnings: ${inputValidation.warnings.join(', ')}`);
+    }
 
     const outcome = await this.scoreReview(textSelection.text);
 

@@ -326,6 +326,9 @@ export class EnsembleReviewScorer {
         inputValidationFailed: true,
       } as any;
     }
+    if (inputValidation.warnings && inputValidation.warnings.length > 0) {
+      console.log(`  ::warning::Input validator warnings: ${inputValidation.warnings.join(', ')}`);
+    }
 
     // Score with ensemble
     const ensembleResult = await this.scoreReview(scoringInput.text, scoringInput.context);
