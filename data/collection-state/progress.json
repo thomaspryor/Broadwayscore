@@ -1,7 +1,9 @@
 {
   "processed": [
     "avenue-q-west-end-2026/radio-times--joanna-magill.json",
-    "avenue-q-west-end-2026/standard--nick-curtis.json"
+    "avenue-q-west-end-2026/standard--nick-curtis.json",
+    "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json",
+    "magic-mike-live-west-end-2021/daily-mail--ali-daher.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -11,7 +13,13 @@
     "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--dominic-cavendish.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--clive-davis.json",
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
-    "shadowlands-west-end-2026/times-uk--clive-davis.json"
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -22,12 +30,16 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "magic-mike-live-west-end-2021/daily-mail--ali-daher.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json"
+    ]
   },
   "startTime": "2026-04-18T08:16:49.793Z",
-  "lastProcessed": "shadowlands-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": []
 }
