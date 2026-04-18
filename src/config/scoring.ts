@@ -11,6 +11,7 @@ export const METHODOLOGY_DATE = "2026-02-22";
 // Pre-2005 closed shows have unreliable review data (wrong-production mixing,
 // misattributed reviews from revivals). Hide reviews and scores entirely.
 // Exception: shows still open (e.g., Wicked, Lion King, Chicago).
+// Exception: shows manually curated with verified reviews (CURATED_HISTORICAL_SHOWS).
 export const SCORE_DISPLAY_YEAR_CUTOFF = 2005;
 export const MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF = 3;
 export const LOW_CONF_SCORE_SOURCES = new Set([
@@ -20,13 +21,21 @@ export const LOW_CONF_SCORE_SOURCES = new Set([
   'bwwScore-fallback',
 ]);
 
+// Shows pre-dating the 2005 cutoff that have been manually curated with
+// verified opening-night reviews. Bypasses shouldHideReviews.
+export const CURATED_HISTORICAL_SHOWS = new Set([
+  'proof-2000',
+]);
+
 /** Returns true if a show's reviews should be completely hidden on the site. */
-export function shouldHideReviews(show: { openingDate?: string | null; status?: string; category?: string }): boolean {
+export function shouldHideReviews(show: { id?: string | null; openingDate?: string | null; status?: string; category?: string }): boolean {
   if (!show.openingDate) return false;
   const openingYear = new Date(show.openingDate).getFullYear();
   if (openingYear >= SCORE_DISPLAY_YEAR_CUTOFF) return false;
   // Still-open shows were explicitly collected — show their reviews
   if (show.status === 'open' || show.status === 'previews') return false;
+  // Manually curated historical shows with verified reviews
+  if (show.id && CURATED_HISTORICAL_SHOWS.has(show.id)) return false;
   return true;
 }
 
