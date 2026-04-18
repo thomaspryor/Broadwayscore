@@ -299,6 +299,7 @@ export class ReviewScorer {
 
     const scoredFile: ScoredReviewFile = {
       ...reviewFile,
+      scoreStatus: 'SCORED',
       assignedScore: outcome.result.score,
       llmScore: outcome.result,
       llmMetadata: {
