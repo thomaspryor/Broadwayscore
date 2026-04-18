@@ -459,9 +459,11 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
   });
 
   // If direct fetch succeeded with real content AND URL matches expected, return it
+  let wrongPageAllTiers = false;
   if (directResult.found && directResult.html && directResult.html.length > 2000) {
     const vDirect = verifyFetchedUrl(directResult.html, searchUrl);
     if (vDirect.verified) return directResult;
+    wrongPageAllTiers = true; // mark that https.get had content but it was wrong-page
     console.log(`    → ${aggregatorName}: https.get returned wrong page (${vDirect.reason}) — escalating`);
   }
 
@@ -475,12 +477,14 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
     });
     if (fetchResp.ok) {
       const fetchHtml = await fetchResp.text();
+      const finalUrl = fetchResp.url || searchUrl; // use post-redirect URL for correct canonical comparison
       if (fetchHtml.length > 2000) {
-        const vFetch = verifyFetchedUrl(fetchHtml, searchUrl);
+        const vFetch = verifyFetchedUrl(fetchHtml, finalUrl);
         if (vFetch.verified) {
           console.log(`    → ${aggregatorName}: fetch() succeeded (${(fetchHtml.length / 1024).toFixed(0)}KB)`);
-          return { found: true, html: fetchHtml, finalUrl: searchUrl, method: 'fetch-fallback' };
+          return { found: true, html: fetchHtml, finalUrl, method: 'fetch-fallback' };
         }
+        wrongPageAllTiers = true;
         console.log(`    → ${aggregatorName}: fetch() returned wrong page (${vFetch.reason}) — escalating to fetchPage`);
       }
     }
@@ -498,8 +502,15 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
         return { found: true, html: fpHtml, finalUrl: searchUrl, method: 'fetchPage-fallback' };
       }
     } catch (err) {
-      // fetchPage not available or failed — return original result
+      // fetchPage not available or failed — fall through
     }
+  }
+
+  // If all tiers returned wrong-page HTML (verified:false), report not-found rather than
+  // returning bad HTML that callers will try to parse. If no tier got any HTML at all,
+  // return the original directResult (which will have found:false or the status code).
+  if (wrongPageAllTiers) {
+    return { found: false, wrongPage: true, reason: 'all_tiers_returned_wrong_page' };
   }
 
   return directResult;
