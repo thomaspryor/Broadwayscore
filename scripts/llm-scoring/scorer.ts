@@ -250,6 +250,7 @@ export class ReviewScorer {
     success: boolean;
     scoredFile?: ScoredReviewFile;
     error?: string;
+    inputValidationFailed?: boolean;
   }> {
     // Use text quality assessment to get the best text for scoring
     const textSelection = getBestTextForScoring(reviewFile);
