@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const fixesPath = path.join(__dirname, '../data/audit/human-review-fixes.json');
 const fixes = JSON.parse(fs.readFileSync(fixesPath, 'utf-8'));
@@ -47,7 +48,7 @@ for (const fix of fixes.fixes) {
             appliedAt: new Date().toISOString()
           };
 
-          fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+          safeWriteReview(filePath, data);
           console.log(`✓ ${fix.showId}/${fix.outletId}: LLM ${data.llmScore.score}(${oldConf}→low) — will use thumb override (${fix.newScore})`);
           applied++;
         } else if (data.llmScore && data.llmScore.confidence === 'low') {

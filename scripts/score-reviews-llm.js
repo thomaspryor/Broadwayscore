@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk').default;
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const reviewsDir = path.join(__dirname, '../data/review-texts');
 
@@ -162,7 +163,7 @@ async function main() {
           review.llmConfidence = result.confidence;
 
           if (!dryRun) {
-            fs.writeFileSync(filePath, JSON.stringify(review, null, 2));
+            safeWriteReview(filePath, review);
           }
 
           console.log(`${result.score} (${result.sentiment}) [$${totalCost.toFixed(4)}]`);

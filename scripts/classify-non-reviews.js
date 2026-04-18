@@ -33,6 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 // --- Load .env ---
 try {
@@ -845,7 +846,7 @@ async function main() {
           data.nonReviewType = nr.contentType;
           data.nonReviewClassifiedBy = PROVIDER;
           data.classifiedAt = new Date().toISOString();
-          fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n');
+          safeWriteReview(fullPath, data);
           applied++;
           console.log(`  Applied: ${nr.file} → ${nr.contentType}`);
         } catch (e) {
@@ -864,7 +865,7 @@ async function main() {
           try {
             const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
             data.classifiedAt = now;
-            fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n');
+            safeWriteReview(fullPath, data);
             stamped++;
           } catch (e) {
             if (VERBOSE) console.log(`  ERROR stamping ${relPath}: ${e.message}`);

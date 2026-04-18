@@ -9,6 +9,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -63,7 +64,7 @@ function main() {
         if (data.isCombinedReview && JSON.stringify(newCombinedWith) === JSON.stringify(existingCombinedWith)) continue;
         data.isCombinedReview = true;
         data.combinedWith = showList.filter(s => s !== entry.showId);
-        fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
+        safeWriteReview(entry.filePath, data);
       }
       flagged++;
     }
