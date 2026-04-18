@@ -141,6 +141,14 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // Pattern Card #7: schema validation — originalScore must be a string, not a bare integer.
+  // A bare number like 5 is ambiguous (5/100 or 5 stars?). The canonical form is always a
+  // string ("5/5", "★★★★★", "5 stars"). Log a warning but don't block the write.
+  if (newData.originalScore != null && typeof newData.originalScore === 'number') {
+    const caller = new Error().stack.split('\n')[2]?.trim() || 'unknown';
+    console.warn(`[review-write-guard] originalScore is a number (${newData.originalScore}) in ${path.basename(filePath)} — should be a string. Caller: ${caller}`);
+  }
+
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved };
 }
