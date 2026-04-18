@@ -1511,6 +1511,11 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
   // Pattern matches each review item block
   const reviewItemRegex = /<div class="(?:poster-)?review-item">([\s\S]*?)(?=<div class="(?:poster-)?review-item">|<\/section>|<div class="" id="modal-breakdown")/gi;
 
+  // Track URLs claimed per outlet to detect multi-critic URL collisions (Proof incident:
+  // NYSR listed Torre and Suskin with the same URL; second critic must get null URL
+  // so SERP can discover the correct per-critic URL independently).
+  const claimedUrlsByOutlet = new Map(); // outletId → Set<normalizedUrl>
+
   let match;
   while ((match = reviewItemRegex.exec(html)) !== null) {
     const reviewHtml = match[1];
@@ -1586,6 +1591,21 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
       if (showTitle && !urlLooksLikeReview(reviewUrl, showTitle)) {
         console.log(`    ✗ Rejected URL for ${outletId}: slug doesn't match "${showTitle}" — ${reviewUrl.substring(0, 80)}`);
         reviewUrl = null;
+      }
+
+      // Multi-critic URL collision guard (Proof incident): if this outlet already claimed
+      // this URL for a different critic, nullify it here so each critic gets their own
+      // correct URL discovered via SERP rather than both scoring the same article.
+      if (reviewUrl) {
+        const normalizedForDedup = reviewUrl.toLowerCase().replace(/\/$/, '');
+        if (!claimedUrlsByOutlet.has(outletId)) claimedUrlsByOutlet.set(outletId, new Set());
+        const claimed = claimedUrlsByOutlet.get(outletId);
+        if (claimed.has(normalizedForDedup)) {
+          console.log(`    ⚠ DTLI multi-critic URL collision at ${outletId}: ${criticName} shares URL with prior critic — nulling (will be re-discovered via SERP)`);
+          reviewUrl = null;
+        } else {
+          claimed.add(normalizedForDedup);
+        }
       }
 
       reviews.push({
@@ -2873,8 +2893,21 @@ function createReviewFile(showId, reviewData, options = {}) {
         }
 
         // Check URL match — merge instead of skipping to capture new metadata
-        // But skip URL match if the existing file is wrongShow — same bad URL shouldn't merge
-        if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)
+        // But skip URL match if the existing file is wrongShow — same bad URL shouldn't merge.
+        // Also skip if both critics are different named critics at the same outlet:
+        // multi-critic outlets (NYSR, TimeOut) each get their own file even when DTLI/SERP
+        // discovers them simultaneously with the same URL (Proof incident: Torre's URL leaked
+        // into Suskin's file, which then scored on Torre's content).
+        const existingOutletForUrlCheck = normalizeOutlet(existingReview.outlet || existingReview.outletId);
+        const existingCriticForUrlCheck = normalizeCritic(existingReview.criticName);
+        const isDifferentNamedCriticsAtSameOutlet = existingOutletForUrlCheck === normalizedOutletId
+          && existingCriticForUrlCheck !== 'unknown'
+          && normalizedCriticName !== 'unknown'
+          && existingCriticForUrlCheck !== normalizedCriticName;
+        if (isDifferentNamedCriticsAtSameOutlet && reviewData.url
+            && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)) {
+          console.log(`    ⚠ URL shared by ${existingCriticForUrlCheck} and ${normalizedCriticName} at ${normalizedOutletId} — creating separate file (URL to be re-discovered per critic via SERP)`);
+        } else if (reviewData.url && normalizeUrl(existingReview.url) === normalizeUrl(reviewData.url)
             && !existingReview.wrongShow) {
           const merged = mergeReviews(existingReview, {
             ...reviewData,

@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -84,7 +85,7 @@ function setSourceFileReason(reviewId, reason, detail) {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     data.incompleteReason = reason;
     data.incompleteDetail = detail;
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    safeWriteReview(filePath, data);
     return true;
   } catch {
     return false;
