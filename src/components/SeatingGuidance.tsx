@@ -11,8 +11,16 @@ interface SeatingGuidanceProps {
 
 const VERDICT_ICON: Record<SeatingVerdict, string> = {
   'sweet-spot': '✓',
-  solid: '•',
+  solid: '✓',
   skip: '−',
+};
+
+// Plain-language labels — override whatever label the data supplies so the
+// whole site speaks one consistent vocabulary regardless of historical data.
+const VERDICT_LABEL: Record<SeatingVerdict, string> = {
+  'sweet-spot': 'Best Seats',
+  solid: 'Good Seats',
+  skip: 'Risky Seats',
 };
 
 const VERDICT_CHIP_CLASS: Record<SeatingVerdict, string> = {
@@ -41,7 +49,7 @@ function VerdictDistributionBar({ sections }: { sections: SeatingSection[] }) {
   const total = picks + solid + skips;
   if (total === 0) return null;
 
-  const ariaLabel = `Seating distribution: ${picks} picks, ${solid} solid, ${skips} avoid`;
+  const ariaLabel = `Seating distribution: ${picks} best, ${solid} good, ${skips} risky`;
 
   return (
     <div className="mb-4">
@@ -56,13 +64,13 @@ function VerdictDistributionBar({ sections }: { sections: SeatingSection[] }) {
       </div>
       <div className="flex justify-between mt-1.5 text-[11px] font-medium text-gray-400">
         {picks > 0 && (
-          <span><span className="text-score-great font-bold">{picks}</span> pick{picks === 1 ? '' : 's'}</span>
+          <span><span className="text-score-great font-bold">{picks}</span> best</span>
         )}
         {solid > 0 && (
-          <span><span className="text-gray-100 font-bold">{solid}</span> solid</span>
+          <span><span className="text-gray-100 font-bold">{solid}</span> good</span>
         )}
         {skips > 0 && (
-          <span><span className="text-score-tepid font-bold">{skips}</span> avoid</span>
+          <span><span className="text-score-tepid font-bold">{skips}</span> risky</span>
         )}
       </div>
     </div>
@@ -70,14 +78,14 @@ function VerdictDistributionBar({ sections }: { sections: SeatingSection[] }) {
 }
 
 function VerdictChip({ section }: { section: SeatingSection }) {
-  const srLabel = `Verdict: ${section.verdictLabel}`;
+  const label = VERDICT_LABEL[section.verdict];
   return (
     <span
       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-pill text-[11px] font-semibold uppercase tracking-wide ${VERDICT_CHIP_CLASS[section.verdict]}`}
-      aria-label={srLabel}
+      aria-label={`Verdict: ${label}`}
     >
       <span aria-hidden="true" className="text-xs leading-none">{VERDICT_ICON[section.verdict]}</span>
-      <span>{section.verdictLabel}</span>
+      <span>{label}</span>
     </span>
   );
 }
@@ -86,10 +94,23 @@ function ValuePickChip() {
   return (
     <span
       className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill text-[11px] font-semibold uppercase tracking-wide bg-brand/20 text-brand border border-brand/40"
-      aria-label="Best value — bang for buck"
+      aria-label="Smartest Value — bang for buck"
     >
       <span aria-hidden="true" className="text-xs leading-none">★</span>
-      <span>Best value</span>
+      <span>Smartest Value</span>
+    </span>
+  );
+}
+
+function ReportsPill({ count }: { count: number }) {
+  return (
+    <span
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill text-[10px] font-medium bg-surface-overlay text-gray-400 border border-white/5"
+      title={`${count} audience reports informed this verdict`}
+      aria-label={`Based on ${count} reports`}
+    >
+      <span aria-hidden="true" className="text-[10px] leading-none">·</span>
+      <span>{count} report{count === 1 ? '' : 's'}</span>
     </span>
   );
 }
@@ -125,18 +146,29 @@ function ShowContextLine({ bestFor, worstFor }: { bestFor?: string[]; worstFor?:
   );
 }
 
-function SectionRow({ section, isHero = false, compactRationale = false, suppressRationale = false, isValueAccent = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean; suppressRationale?: boolean; isValueAccent?: boolean }) {
+function SectionRow({ section, isHero = false, compactRationale = false, isValueAccent = false, forceShowRationale = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean; isValueAccent?: boolean; forceShowRationale?: boolean }) {
+  const [heroRationaleExpanded, setHeroRationaleExpanded] = useState(false);
   const priceLabel = section.priceTier ? PRICE_TIER_LABEL[section.priceTier] : null;
   const nameClass = isHero ? 'text-base font-bold text-white' : 'text-sm font-semibold text-gray-100';
   const hazardsWithNotes = (section.hazards ?? []).filter((h) => h.note);
   const hasHazards = (section.hazards?.length ?? 0) > 0;
   const hazardCountLabel = section.hazards?.length === 1 ? '1 hazard' : `${section.hazards?.length ?? 0} hazards`;
-  // suppressRationale: used on the value-pick row when the lede already shows the rationale
-  const showRationaleInline = section.rationale && !compactRationale && !suppressRationale;
-  const showRationaleExpand = section.rationale && compactRationale && !suppressRationale;
 
-  const baseSpacing = isHero ? 'pb-2' : 'py-2 border-t border-white/5';
-  const accentClass = isValueAccent ? 'border-l-2 border-brand/40 pl-2.5 -ml-2.5 bg-brand/[0.03]' : '';
+  // Rationale display logic:
+  // - forceShowRationale (value-pick hero): show inline, clamp to 2 lines, expandable
+  // - compactRationale (show variant): hide behind "More details"
+  // - otherwise (theater variant): show inline, full text
+  const showRationaleForced = !!section.rationale && forceShowRationale;
+  const showRationaleInline = !!section.rationale && !compactRationale && !forceShowRationale;
+  const showRationaleExpand = !!section.rationale && compactRationale && !forceShowRationale;
+  const rationaleLikelyClamped = (section.rationale?.length ?? 0) > 100;
+
+  // Drop "(rows X)" when X is already in the section name (e.g. "Orchestra Center (Rows O-V)")
+  const rowRange = section.rowRange || '';
+  const showRowRange = rowRange && !(section.name || '').toLowerCase().includes(rowRange.toLowerCase());
+
+  const baseSpacing = isHero ? 'pb-3' : 'py-2 border-t border-white/5';
+  const accentClass = isValueAccent ? 'border-l-2 border-brand/50 pl-2.5 -ml-2.5 bg-brand/[0.04] rounded-r' : '';
 
   return (
     <div className={`${baseSpacing} ${accentClass}`.trim()}>
@@ -146,9 +178,9 @@ function SectionRow({ section, isHero = false, compactRationale = false, suppres
             <h3 className={nameClass}>{section.name}</h3>
             <VerdictChip section={section} />
             {section.isValuePick && <ValuePickChip />}
-            {section.rowRange && (
+            {showRowRange && (
               <span className="text-gray-500 text-xs font-normal">
-                rows {section.rowRange}
+                rows {rowRange}
                 {section.bestRow && (
                   <span className="text-brand ml-1">
                     · {section.bestRow} sweetest
@@ -159,19 +191,37 @@ function SectionRow({ section, isHero = false, compactRationale = false, suppres
             {priceLabel && (
               <span className="text-gray-500 text-xs">· {priceLabel}</span>
             )}
+            {typeof section.dataPoints === 'number' && section.dataPoints > 0 && (
+              <ReportsPill count={section.dataPoints} />
+            )}
           </div>
           <ShowContextLine bestFor={section.bestFor} worstFor={section.worstFor} />
         </div>
-        {typeof section.dataPoints === 'number' && section.dataPoints > 0 && (
-          <span className="text-[10px] text-gray-600 whitespace-nowrap flex-shrink-0" title={`${section.dataPoints} audience reports informed this verdict`}>
-            {section.dataPoints} reports
-          </span>
-        )}
       </div>
 
       {/* Inline rationale (theater variant) */}
       {showRationaleInline && (
         <p className="text-sm text-gray-300 leading-relaxed mt-2">{section.rationale}</p>
+      )}
+
+      {/* Forced rationale (value-pick hero) — clamp to 2 lines with expand */}
+      {showRationaleForced && (
+        <>
+          <p className={`text-sm text-gray-300 leading-relaxed mt-1.5 ${heroRationaleExpanded ? '' : 'line-clamp-2'}`}>
+            {section.rationale}
+          </p>
+          {rationaleLikelyClamped && (
+            <button
+              type="button"
+              onClick={() => setHeroRationaleExpanded((v) => !v)}
+              className="mt-1 text-[11px] text-gray-400 hover:text-brand underline decoration-dotted underline-offset-2 transition-colors"
+              aria-expanded={heroRationaleExpanded}
+            >
+              {heroRationaleExpanded ? 'Show less' : 'More details'}
+              <span aria-hidden="true"> {heroRationaleExpanded ? '▴' : '▾'}</span>
+            </button>
+          )}
+        </>
       )}
 
       {/* Inline expander row: "More details ▾" and "⚠ 1 hazard ▾" on same line */}
@@ -220,122 +270,66 @@ function SectionRow({ section, isHero = false, compactRationale = false, suppres
   );
 }
 
-export default function SeatingGuidance({ sections, bestSeats, compactRationale = false }: SeatingGuidanceProps) {
+export default function SeatingGuidance({ sections, bestSeats: _bestSeats, compactRationale = false }: SeatingGuidanceProps) {
   const [expanded, setExpanded] = useState(false);
-  const [ledeExpanded, setLedeExpanded] = useState(false);
 
   const validSections = (sections ?? []).filter(isValidSection);
   if (!validSections.length) return null;
 
-  // Sort: sweet-spot first, then solid, then skip
-  const sorted = [...validSections].sort((a, b) => VERDICT_ORDER.indexOf(a.verdict) - VERDICT_ORDER.indexOf(b.verdict));
-
-  const sweetSpots = sorted.filter((s) => s.verdict === 'sweet-spot');
-  const solids = sorted.filter((s) => s.verdict === 'solid');
-  const skips = sorted.filter((s) => s.verdict === 'skip');
-
-  const hero = sweetSpots[0] ?? sorted[0];
-  const remaining = sorted.filter((s) => s !== hero);
-  const remainingSweetSpots = remaining.filter((s) => s.verdict === 'sweet-spot');
-  const remainingSkips = remaining.filter((s) => s.verdict === 'skip');
-
-  // Prefer value-pick lede over generic bestSeats — the value pick is always
-  // non-obvious (otherwise it'd be the sweet-spot), so this guarantees the
-  // gold box says something theater-specific, not "center orch is best."
   const valuePickSection = validSections.find((s) => s.isValuePick);
 
-  // Always keep the value-pick row visible — otherwise the gold "Best value"
-  // box refers to a section the reader can't see, breaking the mental model.
-  const collapsibleSolids = solids.filter((s) => s !== valuePickSection);
-  const pinnedValueSolid = valuePickSection && solids.includes(valuePickSection) ? valuePickSection : null;
-  const shouldCollapseSolids = collapsibleSolids.length > 2;
-  const visibleSolids = [
-    ...(pinnedValueSolid ? [pinnedValueSolid] : []),
-    ...(shouldCollapseSolids && !expanded ? [] : collapsibleSolids),
-  ];
-  const hiddenSolidCount = shouldCollapseSolids && !expanded ? collapsibleSolids.length : 0;
+  // Ordering: Smartest Value first (regardless of verdict), then Best Seats,
+  // then Risky Seats, then Good Seats (collapsible if >2). This replaces the
+  // old gold lede box — the value pick now IS the top row.
+  const sweetSpots = validSections.filter((s) => s.verdict === 'sweet-spot' && s !== valuePickSection);
+  const skips = validSections.filter((s) => s.verdict === 'skip' && s !== valuePickSection);
+  const solidsExclValue = validSections.filter((s) => s.verdict === 'solid' && s !== valuePickSection);
+
+  const shouldCollapseSolids = solidsExclValue.length > 2;
+  const visibleSolids = shouldCollapseSolids && !expanded ? [] : solidsExclValue;
+  const hiddenSolidCount = shouldCollapseSolids && !expanded ? solidsExclValue.length : 0;
+
+  // Hero styling: value pick if present; otherwise the first sweet-spot.
+  const heroRow = valuePickSection ?? sweetSpots[0] ?? validSections[0];
+  const restSweetSpots = sweetSpots.filter((s) => s !== heroRow);
 
   return (
     <div className="text-left">
       <VerdictDistributionBar sections={validSections} />
 
-      {valuePickSection ? (() => {
-        const rationale = (valuePickSection.rationale || '').trim();
-        // Drop "(rows X)" when X is already in the section name
-        const name = valuePickSection.name || '';
-        const rowRange = valuePickSection.rowRange || '';
-        const showRowRange = rowRange && !name.toLowerCase().includes(rowRange.toLowerCase());
-        // Clamp to 3 lines via CSS; "More details" is the escape hatch for anything longer
-        const likelyClamped = rationale.length > 100;
-        const hasMore = likelyClamped;
-        return (
-          <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
-            <p className={`text-sm text-gray-200 leading-relaxed ${ledeExpanded ? '' : 'line-clamp-3'}`}>
-              <span className="font-semibold text-brand not-italic">★ Best value:</span>{' '}
-              <span className="italic">
-                {name}
-                {showRowRange && <> (rows {rowRange})</>}
-                {rationale && <> — {rationale}</>}
-              </span>
-            </p>
-            {hasMore && (
-              <button
-                type="button"
-                onClick={() => setLedeExpanded((v) => !v)}
-                className="mt-1.5 text-xs text-gray-400 hover:text-brand underline underline-offset-2 transition-colors"
-                aria-expanded={ledeExpanded}
-              >
-                {ledeExpanded ? 'Show less' : 'More details'}
-                <span aria-hidden="true"> {ledeExpanded ? '▴' : '▾'}</span>
-              </button>
-            )}
-          </div>
-        );
-      })() : bestSeats ? (
-        <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
-          <p className="text-sm text-gray-200 leading-relaxed italic">{bestSeats}</p>
-        </div>
-      ) : null}
-
-      {/* Hero: sweet-spot, given visual weight */}
+      {/* Hero: value pick if present, else first sweet-spot */}
       <SectionRow
-        section={hero}
+        section={heroRow}
         isHero
         compactRationale={compactRationale}
-        suppressRationale={hero === valuePickSection}
-        isValueAccent={hero === valuePickSection}
+        isValueAccent={heroRow === valuePickSection}
+        forceShowRationale={heroRow === valuePickSection}
       />
 
-      {/* Additional sweet-spots */}
-      {remainingSweetSpots.map((s, i) => (
+      {/* Remaining sweet-spots (value pick already rendered as hero above) */}
+      {restSweetSpots.map((s, i) => (
         <SectionRow
           key={`ss-${i}`}
           section={s}
           compactRationale={compactRationale}
-          suppressRationale={s === valuePickSection}
-          isValueAccent={s === valuePickSection}
         />
       ))}
 
-      {/* Skips (always shown — warnings need visibility) */}
-      {remainingSkips.map((s, i) => (
+      {/* Risky Seats (always shown — warnings need visibility) */}
+      {skips.map((s, i) => (
         <SectionRow
           key={`sk-${i}`}
           section={s}
           compactRationale={compactRationale}
-          suppressRationale={s === valuePickSection}
-          isValueAccent={s === valuePickSection}
         />
       ))}
 
-      {/* Solids (collapsed by default if many) */}
+      {/* Good Seats (collapsed by default if many) */}
       {visibleSolids.map((s, i) => (
         <SectionRow
           key={`so-${i}`}
           section={s}
           compactRationale={compactRationale}
-          suppressRationale={s === valuePickSection}
-          isValueAccent={s === valuePickSection}
         />
       ))}
 
@@ -346,7 +340,7 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
           className="mt-3 text-xs text-brand hover:text-brand-light underline decoration-dotted underline-offset-2"
           aria-expanded={false}
         >
-          Show {hiddenSolidCount} more solid pick{hiddenSolidCount === 1 ? '' : 's'}
+          Show {hiddenSolidCount} more good seat{hiddenSolidCount === 1 ? '' : 's'}
         </button>
       )}
     </div>
