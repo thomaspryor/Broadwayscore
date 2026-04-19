@@ -1495,9 +1495,11 @@ showDirs.forEach(showId => {
         const refPath = path.join(showDir, data.duplicateOf);
         let refAlsoDupe = false;
         let refExcluded = false;
+        let isCircular = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
+          isCircular = refData.duplicateOf === file || refData.duplicateTextOf === file;
           // Check if reference would be excluded by later guards
           refExcluded = !isIncludableForRebuild(refData);
           if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
@@ -1517,7 +1519,15 @@ showDirs.forEach(showId => {
           stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
           return;
         }
-        // Circular, stale, or ref excluded — let through, fingerprint dedup handles actual duplicates
+        // Circular tiebreaker: when A.duplicateOf=B AND B.duplicateOf=A (and ref isn't excluded
+        // by other guards), both files would otherwise be included — double-counting the review.
+        // Exclude the lexicographically-greater filename; the other side will keep itself.
+        if (isCircular && !refExcluded && file > data.duplicateOf) {
+          logExclusion("skippedCircularDuplicateTiebreak", showId, file, data);
+          stats.skippedCircularDuplicateTiebreak = (stats.skippedCircularDuplicateTiebreak || 0) + 1;
+          return;
+        }
+        // Circular (kept side), stale, or ref excluded — let through
         stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
@@ -1530,9 +1540,11 @@ showDirs.forEach(showId => {
         let refAlsoDupe = false;
         let refWouldBeExcluded = false;
         let staleFlag = false;
+        let isCircular = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
+          isCircular = refData.duplicateTextOf === file || refData.duplicateOf === file;
           // Check if reference would be excluded by later guards
           refWouldBeExcluded = !isIncludableForRebuild(refData);
           if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
@@ -1565,8 +1577,13 @@ showDirs.forEach(showId => {
           logExclusion("skippedDuplicateText", showId, file, data);
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
+        } else if (isCircular && !refWouldBeExcluded && file > data.duplicateTextOf) {
+          // Circular tiebreaker — exclude lexicographically-greater filename so we don't double-count
+          logExclusion("skippedCircularDuplicateTiebreak", showId, file, data);
+          stats.skippedCircularDuplicateTiebreak = (stats.skippedCircularDuplicateTiebreak || 0) + 1;
+          return;
         } else {
-          // Circular, stale, or ref excluded — let through, fingerprint dedup handles actual duplicates
+          // Circular (kept side), stale, or ref excluded — let through
           stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
         }
       }
