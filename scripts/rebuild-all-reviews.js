@@ -746,6 +746,7 @@ const showTitleMap = {};
 const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway')
 const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
+const skipCrossShowDupeIds = new Set(showsData.shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
@@ -896,6 +897,7 @@ function normalizeUrlForDedup(url) {
 const crossShowUrlIndex = new Map();
 {
   for (const sid of showDirs) {
+    if (skipCrossShowDupeIds.has(sid)) continue; // _skipCrossShowDupe: test shows excluded from index
     const sDir = path.join(reviewTextsDir, sid);
     const showYear = showDateMap[sid] ? showDateMap[sid].getFullYear() : null;
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
@@ -1859,7 +1861,7 @@ showDirs.forEach(showId => {
       // flag the copy that's farther from its show's opening year as wrongProduction.
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews
       // on a 2026 Off-Broadway page with the same title).
-      if (data.url && !data.wrongProduction && !data.allowEarlyDate) {
+      if (data.url && !data.wrongProduction && !data.allowEarlyDate && !skipCrossShowDupeIds.has(showId)) {
         const norm = normalizeUrlForDedup(data.url);
         const entry = norm ? crossShowUrlIndex.get(norm) : null;
         if (entry && entry.conflicts.length > 0) {
