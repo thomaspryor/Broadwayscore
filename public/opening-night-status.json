@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T00:38:17.245Z",
+  "generatedAt": "2026-04-19T00:55:33.486Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1530,19 +1530,20 @@
       "status": "open",
       "slug": "avenue-q-west-end",
       "thumbnail": "/images/shows/avenue-q-west-end-2026/thumbnail.webp",
-      "siteScore": 78.24,
-      "liveScore": 78,
-      "scoreDrift": -0.23999999999999488,
-      "total": 8,
+      "siteScore": 76.54,
+      "liveScore": 77,
+      "scoreDrift": 0.45999999999999375,
+      "total": 7,
       "t1": 3,
       "t2": 1,
-      "t3": 4,
-      "positive": 7,
+      "t3": 3,
+      "positive": 6,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
+          "7/8 total",
           "T2:1/2",
           "hi-conf:2/6"
         ],
@@ -1655,6 +1656,18 @@
           "t2": 1,
           "t3": 4,
           "p": 7,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T00:55:33.486Z",
+          "rc": 7,
+          "s": 76.54,
+          "t1": 3,
+          "t2": 1,
+          "t3": 3,
+          "p": 6,
           "m": 0,
           "n": 1,
           "bc": "waiting"
