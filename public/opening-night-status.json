@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T19:40:54.004Z",
+  "generatedAt": "2026-04-19T21:06:22.532Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -300,10 +300,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -597,10 +593,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -916,10 +908,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -1221,10 +1209,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -1238,20 +1222,20 @@
       "status": "open",
       "slug": "proof",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 72.1,
-      "liveScore": 72,
-      "scoreDrift": -0.09999999999999432,
-      "total": 21,
-      "t1": 7,
+      "siteScore": 73.43,
+      "liveScore": 73,
+      "scoreDrift": -0.4300000000000068,
+      "total": 20,
+      "t1": 6,
       "t2": 12,
       "t3": 2,
-      "positive": 9,
-      "mixed": 10,
-      "negative": 2,
+      "positive": 10,
+      "mixed": 9,
+      "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1445,10 +1429,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -1630,6 +1610,18 @@
           "p": 9,
           "m": 10,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T21:06:22.532Z",
+          "rc": 20,
+          "s": 73.43,
+          "t1": 6,
+          "t2": 12,
+          "t3": 2,
+          "p": 10,
+          "m": 9,
+          "n": 1,
           "bc": "waiting"
         }
       ]
@@ -2193,10 +2185,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -2498,10 +2486,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -2515,24 +2499,20 @@
       "status": "open",
       "slug": "proof-express-test",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 68.29,
-      "liveScore": 68,
-      "scoreDrift": -0.29000000000000625,
-      "total": 6,
-      "t1": 2,
-      "t2": 4,
-      "t3": 0,
-      "positive": 3,
-      "mixed": 2,
-      "negative": 1,
+      "siteScore": 69.35,
+      "liveScore": 69,
+      "scoreDrift": -0.3499999999999943,
+      "total": 16,
+      "t1": 5,
+      "t2": 9,
+      "t3": 2,
+      "positive": 8,
+      "mixed": 6,
+      "negative": 2,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "6/12 total",
-          "T1:2/3",
-          "hi-conf:2/8"
-        ],
-        "highConfidence": 2,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2542,7 +2522,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -2746,10 +2726,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -2775,6 +2751,260 @@
           "p": 3,
           "m": 2,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T20:17:53.541Z",
+          "rc": 16,
+          "s": 69.35,
+          "t1": 5,
+          "t2": 9,
+          "t3": 2,
+          "p": 8,
+          "m": 6,
+          "n": 2,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "proof-express-test-v2-2026",
+      "title": "Proof",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-04-16",
+      "status": "open",
+      "slug": "proof",
+      "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
+      "siteScore": 67.38,
+      "liveScore": 67,
+      "scoreDrift": -0.37999999999999545,
+      "total": 18,
+      "t1": 5,
+      "t2": 10,
+      "t3": 3,
+      "positive": 7,
+      "mixed": 7,
+      "negative": 4,
+      "readiness": {
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 17,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Ready — awaiting send"
+      },
+      "missingT1": [
+        {
+          "name": "The Hollywood Reporter",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Washington Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Los Angeles Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "Broadway News",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "amNewYork",
+          "isDualMarket": false
+        },
+        {
+          "name": "USA Today",
+          "isDualMarket": false
+        },
+        {
+          "name": "Newsday",
+          "isDualMarket": false
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Billboard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Village Voice",
+          "isDualMarket": false
+        },
+        {
+          "name": "IndieWire",
+          "isDualMarket": false
+        },
+        {
+          "name": "NorthJersey.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "CurtainUp",
+          "isDualMarket": false
+        },
+        {
+          "name": "NY1",
+          "isDualMarket": false
+        },
+        {
+          "name": "NJ.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "HuffPost",
+          "isDualMarket": false
+        },
+        {
+          "name": "NBC New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time",
+          "isDualMarket": false
+        },
+        {
+          "name": "Backstage",
+          "isDualMarket": false
+        },
+        {
+          "name": "Bloomberg",
+          "isDualMarket": false
+        },
+        {
+          "name": "WNYC",
+          "isDualMarket": false
+        },
+        {
+          "name": "Rolling Stone",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Philadelphia Inquirer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Vox",
+          "isDualMarket": false
+        },
+        {
+          "name": "Parade",
+          "isDualMarket": false
+        },
+        {
+          "name": "People",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slate",
+          "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "CBS News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Sun-Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-19T21:06:22.532Z",
+          "rc": 18,
+          "s": 67.38,
+          "t1": 5,
+          "t2": 10,
+          "t3": 3,
+          "p": 7,
+          "m": 7,
+          "n": 4,
           "bc": "waiting"
         }
       ]

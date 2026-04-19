@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-04-19T08:50:10.370Z",
+    "generatedAt": "2026-04-19T20:51:00.641Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
@@ -36,17 +36,17 @@
       "hasDeepResearch": 92
     },
     "openShowCoverage": {
-      "totalOpenPreviewsShows": 174,
-      "withCommercialData": 35,
-      "withoutCommercialData": 139,
+      "totalOpenPreviewsShows": 180,
+      "withCommercialData": 36,
+      "withoutCommercialData": 144,
       "coveragePct": 20
     },
     "issuesSummary": {
-      "total": 214,
+      "total": 219,
       "bySeverity": {
         "high": 0,
         "medium": 7,
-        "low": 207
+        "low": 212
       },
       "byType": {
         "id-mismatch": 5,
@@ -56,7 +56,7 @@
         "closed-show-tbd": 1,
         "nonprofit-classification": 10,
         "recoupment-pct": 1,
-        "coverage-gap": 139,
+        "coverage-gap": 144,
         "recoupment-citation": 1
       }
     }
@@ -971,6 +971,12 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end",
+      "detail": "Open/previews show \"The Unlikely Pilgrimage of Harold Fry\" at Theatre Royal Haymarket has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "black-is-the-color-of-my-voice-west-end",
       "detail": "Open/previews show \"Black Is The Color Of My Voice\" at Duchess Theatre has no commercial data entry."
     },
@@ -989,8 +995,20 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "into-the-woods-west-end-2025",
+      "detail": "Open/previews show \"Into the Woods\" at Bridge Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "witness-for-the-prosecution-west-end-2022",
       "detail": "Open/previews show \"Witness for the Prosecution\" at London County Hall has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "consumed-west-end",
+      "detail": "Open/previews show \"Consumed\" at Park Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1121,6 +1139,12 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "aim-by-kyle-abraham-cassette-vol-1-off-broadway",
+      "detail": "Open/previews show \"A.I.M by Kyle Abraham: Cassette Vol. 1\" at NYU Skirball has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "i-was-a-teenage-shedevil-west-end",
       "detail": "Open/previews show \"I Was a Teenage She-Devil\" at The Other Palace - Studio has no commercial data entry."
     },
@@ -1135,6 +1159,12 @@
       "severity": "low",
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "detail": "Open/previews show \"The Hunger Games On Stage\" at Troubadour Canary Wharf Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "broken-glass-west-end-2026",
+      "detail": "Open/previews show \"Broken Glass\" at Young Vic has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1337,8 +1367,8 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway",
-      "detail": "Open/previews show \"The Very Hungry Caterpillar Interactive Show\" at Manhattan Movement & Arts Center has no commercial data entry."
+      "showId": "proof-express-test",
+      "detail": "Open/previews show \"Proof\" at Booth Theatre has no commercial data entry."
     },
     {
       "type": "recoupment-citation",

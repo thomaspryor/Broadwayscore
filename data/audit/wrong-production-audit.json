@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-19T19:40:49.909Z",
+  "timestamp": "2026-04-19T21:06:18.603Z",
   "stats": {
-    "totalReviews": 35541,
-    "alreadyFlagged": 15874,
+    "totalReviews": 35563,
+    "alreadyFlagged": 15875,
     "dateGuardCatches": 91,
-    "directorMismatch": 824,
-    "tvFilmSignals": 3160,
+    "directorMismatch": 826,
+    "tvFilmSignals": 3165,
     "londonSignals": 1015,
     "offBroadwaySignals": 886,
-    "yearMismatch": 69,
-    "noPublishDate": 3720
+    "yearMismatch": 71,
+    "noPublishDate": 3723
   },
   "findings": [
     {
@@ -36284,7 +36284,7 @@
     {
       "showId": "proof-express-test-2026",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2026-04-17",
       "url": "https://culturesauce.com/2026/04/16/proof-ayo-edibiri-don-cheadle-broadway-review/",
       "findings": [
@@ -36317,7 +36317,7 @@
     {
       "showId": "proof-express-test-2026",
       "file": "nydailynews--chris-jones.json",
-      "score": null,
+      "score": 86,
       "publishDate": "April 16, 2026",
       "url": "https://www.nydailynews.com/2026/04/16/broadway-review-ayo-edebiri-is-spectacular-captivating-in-proof/",
       "findings": [
@@ -36331,7 +36331,7 @@
     {
       "showId": "proof-express-test-2026",
       "file": "theatermania--david-gordon.json",
-      "score": null,
+      "score": 67,
       "publishDate": "April 16, 2026",
       "url": "https://www.theatermania.com/news/review-ayo-edebiri-and-don-cheadle-try-to-solve-a-precise-but-passionless-proof_1832726/",
       "findings": [
@@ -36345,7 +36345,7 @@
     {
       "showId": "proof-express-test-2026",
       "file": "thewrap--robert-hofler.json",
-      "score": null,
+      "score": 59,
       "publishDate": "April 16, 2026",
       "url": "https://www.thewrap.com/creative-content/reviews/proof-broadway-review-obama-ayo-edebiri-don-cheadle/",
       "findings": [
@@ -36364,7 +36364,115 @@
     {
       "showId": "proof-express-test-2026",
       "file": "timeout--adam-feldman.json",
-      "score": null,
+      "score": 66,
+      "publishDate": "April 16, 2026",
+      "url": "https://www.timeout.com/newyork/news/broadway-review-ayo-edebiri-shows-her-work-in-proof-041626",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel sullivan\" from proof-2000"
+        }
+      ]
+    },
+    {
+      "showId": "proof-express-test-v2-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 85,
+      "publishDate": "2026-04-17",
+      "url": "https://www.chicagotribune.com/2026/04/16/review-proof-broadway-edebiri/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-express-test-v2-2026",
+      "file": "culturesauce--thom-geier.json",
+      "score": 63,
+      "publishDate": "2026-04-17",
+      "url": "https://culturesauce.com/2026/04/16/proof-ayo-edibiri-don-cheadle-broadway-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2000 (2x) more than 2026 (0x). 2000 matches production: proof-2000"
+        }
+      ]
+    },
+    {
+      "showId": "proof-express-test-v2-2026",
+      "file": "deadline--greg-evans.json",
+      "score": 85,
+      "publishDate": "April 16, 2026",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-young-1236861306/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2000 (2x) more than 2026 (0x). 2000 matches production: proof-2000"
+        }
+      ]
+    },
+    {
+      "showId": "proof-express-test-v2-2026",
+      "file": "nydailynews--chris-jones.json",
+      "score": 86,
+      "publishDate": "April 16, 2026",
+      "url": "https://www.nydailynews.com/2026/04/16/broadway-review-ayo-edebiri-is-spectacular-captivating-in-proof/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-express-test-v2-2026",
+      "file": "theatermania--david-gordon.json",
+      "score": 64,
+      "publishDate": "April 16, 2026",
+      "url": "https://www.theatermania.com/news/review-ayo-edebiri-and-don-cheadle-try-to-solve-a-precise-but-passionless-proof_1832726/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-express-test-v2-2026",
+      "file": "thewrap--robert-hofler.json",
+      "score": 49,
+      "publishDate": "April 16, 2026",
+      "url": "https://www.thewrap.com/creative-content/reviews/proof-broadway-review-obama-ayo-edebiri-don-cheadle/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel sullivan\" from proof-2000"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-express-test-v2-2026",
+      "file": "timeout--adam-feldman.json",
+      "score": 73,
       "publishDate": "April 16, 2026",
       "url": "https://www.timeout.com/newyork/news/broadway-review-ayo-edebiri-shows-her-work-in-proof-041626",
       "findings": [
@@ -60154,7 +60262,7 @@
     {
       "showId": "copenhagen-2000",
       "file": "curtainup--elyse-sommer.json",
-      "score": 88,
+      "score": 87,
       "publishDate": "2000-04-11",
       "url": "http://www.curtainup.com/copenhagen.html",
       "findings": [

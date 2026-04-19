@@ -1,101 +1,16 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-19T19:28:51.347Z",
+    "generatedAt": "2026-04-19T20:52:52.562Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
-    "total": 75,
-    "classified": 5,
-    "wrongProduction": 5,
+    "total": 70,
+    "classified": 0,
+    "wrongProduction": 0,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 5,
+    "wrongHighConfidence": 0,
     "wrongMediumConfidence": 0
   },
-  "results": [
-    {
-      "showId": "the-mystery-of-edwin-drood-1985",
-      "showTitle": "The Mystery of Edwin Drood",
-      "showYear": 1985,
-      "file": "amny--matt-windman.json",
-      "outlet": "amNY",
-      "criticName": "Matt Windman",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, this production",
-        "modern references: twitter",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-mystery-of-edwin-drood-2012",
-      "reasoning": "The review mentions cast members (Betsy Wolfe, Will Chase, Stephanie J. Block, Jim Norton, Chita Rivera, Andy Karl, Jessie Mueller, Gregg Edelman, Robert Creighton), director (Scott Ellis), and choreographer (Warren Carlyle) from the 2012 Broadway revival. It also mentions the Roundabout Theatre Com"
-    },
-    {
-      "showId": "the-gin-game-1977",
-      "showTitle": "The Gin Game",
-      "showYear": 1977,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2015 in text matches revival the-gin-game-2015"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
-    },
-    {
-      "showId": "that-championship-season-1972",
-      "showTitle": "That Championship Season",
-      "showYear": 1972,
-      "file": "hollywood-reporter--david-rooney.json",
-      "outlet": "The Hollywood Reporter",
-      "criticName": "David Rooney",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "that-championship-season-2011",
-      "reasoning": "The review mentions the director (Gregory Mosher), set designer (Michael Yeargan), venue (Bernard B. Jacobs Theatre), and cast (Brian Cox, Jim Gaffigan, Chris Noth, Jason Patric, Kiefer Sutherland) of the 2011 revival."
-    },
-    {
-      "showId": "old-times-1971",
-      "showTitle": "Old Times",
-      "showYear": 1971,
-      "file": "amny--matt-windman.json",
-      "outlet": "amNY",
-      "criticName": "Matt Windman",
-      "publishDate": null,
-      "originalSignals": [
-        "revival text signals: revival, new revival",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's revival, Douglas Hodge as director, Clive Owen, Kelly Reilly, and Eve Best in the cast, and the American Airlines Theatre, all associated with the 2015 production."
-    },
-    {
-      "showId": "old-times-1971",
-      "showTitle": "Old Times",
-      "showYear": 1971,
-      "file": "nbcny--robert-kahn.json",
-      "outlet": "NBC New York",
-      "criticName": "Robert Kahn",
-      "publishDate": null,
-      "originalSignals": [
-        "modern references: twitter"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, which aligns with the 2015 production's run."
-    }
-  ]
+  "results": []
 }

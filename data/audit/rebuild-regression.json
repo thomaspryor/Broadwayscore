@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-19T19:40:42.158Z",
+  "timestamp": "2026-04-19T20:40:05.945Z",
   "regressions": [
     {
       "showId": "fiddler-on-the-roof-2015",
@@ -8,6 +8,36 @@
       "dropped": 6,
       "scoredOnDisk": 45,
       "flaggedScored": 18,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "oldCount": 19,
+      "newCount": 13,
+      "dropped": 6,
+      "scoredOnDisk": 16,
+      "flaggedScored": 17,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "king-lear-2019",
+      "oldCount": 45,
+      "newCount": 40,
+      "dropped": 5,
+      "scoredOnDisk": 43,
+      "flaggedScored": 20,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "long-days-journey-into-night-2016",
+      "oldCount": 43,
+      "newCount": 38,
+      "dropped": 5,
+      "scoredOnDisk": 42,
+      "flaggedScored": 16,
       "inlineGuardExcluded": 0,
       "reason": "scored files exist but being dropped"
     },
@@ -28,6 +58,26 @@
       "dropped": 3,
       "scoredOnDisk": 29,
       "flaggedScored": 7,
+      "inlineGuardExcluded": 1,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "evita-2012",
+      "oldCount": 21,
+      "newCount": 18,
+      "dropped": 3,
+      "scoredOnDisk": 22,
+      "flaggedScored": 20,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "my-fair-lady-2018",
+      "oldCount": 52,
+      "newCount": 49,
+      "dropped": 3,
+      "scoredOnDisk": 53,
+      "flaggedScored": 21,
       "inlineGuardExcluded": 1,
       "reason": "scored files exist but being dropped"
     },

@@ -294,7 +294,12 @@ jobs:
           #   Express lease:       JSON {"value":"express","setAt":"<ISO>"} (auto-expires after 90 min)
           # Set manual:   gh variable set ORCHESTRATOR_PAUSED --body true
           # Clear manual: gh variable delete ORCHESTRATOR_PAUSED
-          PAUSED=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null || echo "")
+          # Capture exit code instead of `|| echo ""` inside the subshell — gh prints the 404
+          # error JSON to stdout when the variable doesn't exist, and the inner `|| echo` only
+          # APPENDS to stdout, leaving PAUSED with the error body. That made the next case match
+          # `*)` (Orchestrator PAUSED — value=<404 JSON>) and silently skip every iteration after
+          # Express cleared the variable. Capturing exit code outside resets PAUSED="" on failure.
+          PAUSED=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null) || PAUSED=""
           if [ -n "$PAUSED" ]; then
             DECISION=$(PAUSED_VALUE="$PAUSED" node -e "
               const raw = process.env.PAUSED_VALUE || '';
