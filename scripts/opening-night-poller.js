@@ -454,7 +454,48 @@ async function runAggregators(show) {
           }
         }
         if (!tbFound) {
-          console.log(`  Talkin' Broadway: all ${tbUrls.length} URL variants failed — review may not be published yet`);
+          // Fallback: TB always shows the latest review at /page/world/index.html.
+          // Fetch it, parse the title, and accept if it mentions our show.
+          // Title format: `Talkin' Broadway on Broadway Review: "{TITLE}" {date}`
+          // Body contains: `Theatre Review by {CRITIC NAME} - {date}`
+          console.log(`  Talkin' Broadway: trying index.html fallback...`);
+          try {
+            const tbIndexUrl = 'https://www.talkinbroadway.com/page/world/index.html';
+            const tbIndex = await fetchPage(tbIndexUrl, { renderJs: false });
+            if (tbIndex && tbIndex.content && tbIndex.content.length > 500) {
+              const titleMatch = tbIndex.content.match(/<title>([\s\S]+?)<\/title>/i);
+              const indexTitle = titleMatch ? titleMatch[1].replace(/\s+/g, ' ').trim() : '';
+              // Quoted show title in the page title (e.g. `"Proof"`)
+              const quotedMatch = indexTitle.match(/"([^"]+)"/);
+              const indexShowTitle = quotedMatch ? quotedMatch[1].trim() : '';
+              // Normalize for comparison: strip punctuation, lowercase
+              const normalize = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+              const showNorm = normalize(show.title);
+              const indexNorm = normalize(indexShowTitle);
+              const titleMatches = indexNorm && showNorm && (indexNorm === showNorm || indexNorm.includes(showNorm) || showNorm.includes(indexNorm));
+              console.log(`  TB index title: "${indexShowTitle}" — show: "${show.title}" — match: ${titleMatches}`);
+              if (titleMatches) {
+                // Extract byline from body: `Theatre Review by {CRITIC} - {date}`
+                const bylineMatch = tbIndex.content.replace(/<[^>]+>/g, ' ').match(/(?:Theatre|Broadway|Off-?Broadway)\s+Review\s+by\s+([A-Z][A-Za-z'\-\.\s]{2,60}?)\s*[-–—]\s*[A-Z]/);
+                const tbCritic = bylineMatch ? bylineMatch[1].replace(/\s+/g, ' ').trim() : 'Unknown';
+                console.log(`  Talkin' Broadway: index.html matched — critic="${tbCritic}"`);
+                results.push({
+                  showId: show.id,
+                  outletId: 'talkinbroadway',
+                  outlet: "Talkin' Broadway",
+                  criticName: tbCritic,
+                  url: tbIndexUrl,
+                  source: 'direct-url-index-fallback',
+                });
+                tbFound = true;
+              }
+            }
+          } catch (e) {
+            console.log(`  Talkin' Broadway index.html fetch error: ${e.message}`);
+          }
+        }
+        if (!tbFound) {
+          console.log(`  Talkin' Broadway: all URL variants and index fallback failed — review may not be published yet`);
         }
       }
     } catch (err) {
