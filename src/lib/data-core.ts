@@ -50,9 +50,9 @@ let computedShowsCache: ComputedShow[] | null = null;
 export function getAllShows(): ComputedShow[] {
   if (computedShowsCache) return computedShowsCache;
 
-  computedShowsCache = shows.map(show =>
-    computeShowData(show, reviews, audience, buzz)
-  );
+  computedShowsCache = shows
+    .filter((show: any) => !show._devOnly)
+    .map(show => computeShowData(show, reviews, audience, buzz));
 
   return computedShowsCache;
 }
