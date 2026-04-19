@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-19T18:59:30.705Z",
+    "generatedAt": "2026-04-19T19:28:51.347Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 75,
@@ -13,22 +13,6 @@
     "wrongMediumConfidence": 0
   },
   "results": [
-    {
-      "showId": "the-gin-game-1977",
-      "showTitle": "The Gin Game",
-      "showYear": 1977,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2015 in text matches revival the-gin-game-2015"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
-    },
     {
       "showId": "the-mystery-of-edwin-drood-1985",
       "showTitle": "The Mystery of Edwin Drood",
@@ -46,6 +30,22 @@
       "confidence": "high",
       "targetShowId": "the-mystery-of-edwin-drood-2012",
       "reasoning": "The review mentions cast members (Betsy Wolfe, Will Chase, Stephanie J. Block, Jim Norton, Chita Rivera, Andy Karl, Jessie Mueller, Gregg Edelman, Robert Creighton), director (Scott Ellis), and choreographer (Warren Carlyle) from the 2012 Broadway revival. It also mentions the Roundabout Theatre Com"
+    },
+    {
+      "showId": "the-gin-game-1977",
+      "showTitle": "The Gin Game",
+      "showYear": 1977,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2015 in text matches revival the-gin-game-2015"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-gin-game-2015",
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set design by Riccardo Hernandez, all associated with the 2015 production."
     },
     {
       "showId": "that-championship-season-1972",
@@ -79,7 +79,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's revival, Douglas Hodge as director, Clive Owen, Kelly Reilly, and Eve Best in the cast, and the American Airlines Theatre, all of which are associated with the 2015 production."
+      "reasoning": "The review mentions the Roundabout's revival, Douglas Hodge as director, Clive Owen, Kelly Reilly, and Eve Best in the cast, and the American Airlines Theatre, all associated with the 2015 production."
     },
     {
       "showId": "old-times-1971",
@@ -95,7 +95,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of whom were in the 2015 production. It also mentions the play running through Nov. 29, which aligns with the 2015 production's run."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29 at the American Airlines Theatre, which aligns with the 2015 production's run."
     }
   ]
 }

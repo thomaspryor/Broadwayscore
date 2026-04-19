@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-19T18:59:24.716Z",
+    "generatedAt": "2026-04-19T19:28:45.149Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36186,
-      "inReviewsJson": 16563,
-      "skippedExcluded": 59,
-      "withFullText": 24,
-      "excerptOnly": 1575,
-      "llmClassified": 23,
+      "totalFiles": 36193,
+      "inReviewsJson": 16694,
+      "skippedExcluded": 57,
+      "withFullText": 59,
+      "excerptOnly": 1668,
+      "llmClassified": 50,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
-      "uncertainCases": 15,
-      "budgetUsed": 0.0024,
-      "llmCalls": 24,
+      "nonReviewsFound": 0,
+      "uncertainCases": 11,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
-      "errors": 1,
-      "skippedAlreadyClassified": 14905
+      "errors": 0,
+      "skippedAlreadyClassified": 14910
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "funny-girl-2022/thestage--nicole-serratore.json",
-      "showId": "funny-girl-2022",
-      "outlet": "The Stage",
-      "outletId": "thestage",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a notice about accessing articles on a website, not a review of Funny Girl. It mentions the author and copyright information.",
-      "currentScore": 60
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -41,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -51,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences'.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review of a specific show. It mentions 'Broadway news updates' and 'Music album reviews' but does not contain any evaluative content about 'Funny Girl'.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -71,7 +60,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The text discusses how to stage the play, suggesting a feature article rather than a review. The article does not evaluate the quality of the production.",
       "currentScore": 60
     },
     {
@@ -81,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there's no indication of a review within this excerpt.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -101,7 +90,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -111,7 +100,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and incomplete, but the available text suggests it's a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
       "currentScore": 78
     },
     {
@@ -121,7 +110,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' and sets the stage for the audience, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
       "currentScore": 80
     },
     {
@@ -131,7 +120,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories or tags related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -141,65 +130,51 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the history it represents.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the historical significance of the material.",
       "currentScore": 83
-    },
-    {
-      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
-      "showId": "the-assembled-parties-2013",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms, not an actual article. There is no evaluative content about 'The Assembled Parties' or any other show.",
-      "currentScore": 42
-    },
-    {
-      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
-      "showId": "the-glass-menagerie-2017",
-      "outlet": "The Front Row Center",
-      "outletId": "front-row-center",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
-      "currentScore": 64
-    },
-    {
-      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
-      "showId": "the-price-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
-      "currentScore": 78
-    },
-    {
-      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
-      "showId": "three-tall-women-2018",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It lacks any evaluative content about 'Three Tall Women'.",
-      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "a-dolls-house-2023/thestage--nicole-serratore.json",
-    "an-enemy-of-the-people-2024/guardian--arifa-akbar.json",
-    "copenhagen-2000/curtainup--elyse-sommer.json",
-    "copenhagen-2000/talkinbroadway--thomas-burke.json",
-    "copenhagen-2000/village-voice--michael-feingold.json",
-    "manic-street-creature-west-end-2026/whatsonstage--miriam-sallon.json",
-    "priscilla-queen-of-the-desert-2011/hollywood-reporter--david-rooney.json"
+    "a-streetcar-named-desire-2012/daily-mail--patrick-marmion.json",
+    "a-streetcar-named-desire-2012/independent--jessie-thompson.json",
+    "a-view-from-the-bridge-2015/guardian--arifa-akbar.json",
+    "a-view-from-the-bridge-2015/times-uk--dominic-maxwell.json",
+    "avenue-q-west-end-2026/london-theatre--unknown.json",
+    "bent-through-glass-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "burlesque-west-end-2026/attitude--gary-grimes.json",
+    "cat-on-a-hot-tin-roof-2013/guardian--arifa-akbar.json",
+    "cat-on-a-hot-tin-roof-2013/independent--alice-saville.json",
+    "cat-on-a-hot-tin-roof-2013/times-uk--clive-davis.json",
+    "cat-on-a-hot-tin-roof-2013/whatsonstage--sarah-crompton.json",
+    "chess-2025/thewrap--josh-dickey.json",
+    "evita-2012/times-uk--clive-davis.json",
+    "evita-2012/whatsonstage--sarah-crompton.json",
+    "fiddler-on-the-roof-2015/daily-mail--patrick-marmion.json",
+    "fiddler-on-the-roof-2015/times-uk--clive-davis.json",
+    "fiddler-on-the-roof-2015/times-uk--dominic-maxwell.json",
+    "fiddler-on-the-roof-2015/whatsonstage--alex-wood.json",
+    "jerusalem-2011/daily-mail--robert-gore-langton.json",
+    "proof-express-test-2026/culturesauce--thom-geier.json",
+    "proof-express-test-2026/deadline--greg-evans.json",
+    "proof-express-test-2026/ew--emlyn-travis.json",
+    "proof-express-test-2026/guardian--richard-lawson.json",
+    "proof-express-test-2026/nydailynews--chris-jones.json",
+    "proof-express-test-2026/nypost--johnny-oleksinski.json",
+    "proof-express-test-2026/nysr--roma-torre.json",
+    "proof-express-test-2026/nyt-theater--jonathan-mandell.json",
+    "proof-express-test-2026/nytg--joe-dziemianowicz.json",
+    "proof-express-test-2026/nytimes--helen-shaw.json",
+    "proof-express-test-2026/theatermania--david-gordon.json",
+    "proof-express-test-2026/thewrap--robert-hofler.json",
+    "proof-express-test-2026/timeout--adam-feldman.json",
+    "proof-express-test-2026/variety--aramide-tinubu.json",
+    "proof-express-test-2026/vulture--sara-holdren.json",
+    "ragtime-1998/curtainup--elyse-sommer.json",
+    "richard-iii-2013/guardian--arifa-akbar.json",
+    "richard-iii-2013/independent--tim-bano.json",
+    "sylvia-2015/daily-mail--patrick-marmion.json",
+    "sylvia-2015/guardian--arifa-akbar.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "funny-girl-2022",
-      "currentCount": 40,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
