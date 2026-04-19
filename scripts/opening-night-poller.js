@@ -1295,6 +1295,35 @@ async function pollCycle() {
     const daysSinceOpening = show.openingDate
       ? (Date.now() - new Date(show.openingDate).getTime()) / 86400000
       : 999;
+
+    // Broadway T3 SERP: ~12 historically high-activity Broadway T3 outlets
+    // Curated by 2024-26 review count (covers ~85% of T3 volume vs 800+ total).
+    // One Minute Critic added after Proof opening-night miss (2026-04-17).
+    // Same 3h SERP gate as T1/T2 — Broadway T3 outlets DO publish opening night.
+    // Cost: T3 sorted last, capped by 30/cycle budget. Once found, getFoundOutletIds
+    // excludes them next cycle → natural decay.
+    if (market === 'broadway') {
+      const BROADWAY_T3_SERP_OUTLETS = [
+        'theater-scene', 'theater-life', 'culturesauce', 'front-row-center',
+        'pages-on-stages', 'one-minute-critic', 'theatre-reviews-limited',
+        'cititour', 'digital-journal', 'stageandcinema', 'frontmezzjunkies',
+        'exeunt-magazine',
+      ];
+      const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
+      const allOutlets = reg.outlets || reg;
+      let added = 0;
+      for (const t3Id of BROADWAY_T3_SERP_OUTLETS) {
+        if (foundOutletIds.has(t3Id.toLowerCase())) continue;
+        const outlet = allOutlets[t3Id];
+        if (outlet) {
+          missingOutlets.push({ id: t3Id, name: outlet.displayName || t3Id, tier: outlet.tier || 3, domain: outlet.domain });
+          added++;
+        }
+      }
+      if (added > 0) console.log(`  [Broadway T3 SERP: queued ${added} high-activity outlets]`);
+      missingOutlets.sort((a, b) => (a.tier || 3) - (b.tier || 3));
+    }
+
     if (isLondonMarket(market) && daysSinceOpening < 1) {
       console.log(`  [T3 SERP skipped: opening night (${daysSinceOpening.toFixed(1)} days). T3 outlets added after 24h]`);
     }
