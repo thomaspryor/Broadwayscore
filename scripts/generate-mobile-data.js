@@ -99,6 +99,26 @@ try {
   console.warn('⚠ audience-buzz.json not found — audience grades will be null');
 }
 
+// NYT Critic's Picks: cross-reference nyt-critics-picks.json URLs with reviews
+// Mirrors the logic in src/lib/data-core.ts getNYTCriticsPickShowIds()
+const nytPickShowIds = new Set();
+try {
+  const picksData = JSON.parse(fs.readFileSync(path.join(dataDir, 'nyt-critics-picks.json'), 'utf-8'));
+  const pickUrlSet = new Set((picksData.urls || []).map(u => u.replace(/^https?:\/\//, '').replace(/\/$/, '')));
+  for (const review of reviews) {
+    if (review.outletId !== 'nytimes' || !review.url) continue;
+    const canonical = review.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    if (pickUrlSet.has(canonical)) nytPickShowIds.add(review.showId);
+  }
+  // Also include manual Critics_Pick designations
+  for (const review of reviews) {
+    if (review.designation === 'Critics_Pick') nytPickShowIds.add(review.showId);
+  }
+  console.log(`✓ NYT Critic's Picks: ${nytPickShowIds.size} shows`);
+} catch (err) {
+  console.warn('⚠ nyt-critics-picks.json not found — nyt-pick tag will be skipped');
+}
+
 // ===========================================
 // INDEX REVIEWS BY SHOW
 // ===========================================
@@ -191,7 +211,9 @@ const mobileShows = visibleShows.map(show => {
   if (audienceGrade) entry.ag = audienceGrade;
 
   // Metadata (omit if empty/null to save bytes)
-  if (show.tags?.length > 0) entry.tg = show.tags;
+  const tags = [...(show.tags || [])];
+  if (nytPickShowIds.has(show.id)) tags.push('nyt-pick');
+  if (tags.length > 0) entry.tg = tags;
   if (show.synopsis) entry.syn = show.synopsis;
   if (show.ageRecommendation) entry.ar = show.ageRecommendation;
   if (show.isRevival || show.tags?.includes('revival')) entry.rv = true;
