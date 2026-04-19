@@ -55,6 +55,7 @@ const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const CONSENSUS_PATH = path.join(DATA_DIR, 'critic-consensus.json');
 const SUBSCRIBERS_PATH = path.join(DATA_DIR, isLondonMarket(MARKET) ? 'subscribers-westend.json' : 'subscribers.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
+const EXPRESS_COMPLETED_PATH = path.join(DATA_DIR, 'audit', 'opening-night-express-completed.json');
 
 const MOBILE_SHOWS_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
@@ -359,10 +360,26 @@ async function main() {
     return (entry && entry.tier) || 3; // Default to Tier 3
   }
 
+  // Load Express completion record — written by opening-night-express.yml after rebuild.
+  // Used for operator visibility: logs whether Express ran clean for each show.
+  const expressCompleted = loadJSON(EXPRESS_COMPLETED_PATH) || { shows: {} };
+  function getExpressRecord(showId) {
+    const rec = expressCompleted.shows?.[showId];
+    if (!rec) return null;
+    const ageMs = Date.now() - new Date(rec.completedAt).getTime();
+    return ageMs < 36 * 60 * 60 * 1000 ? rec : null; // stale after 36h
+  }
+
   // Check readiness: 12+ total, 3+ T1, 3+ T2
   const readyShows = [];
   for (const show of pendingShows) {
     const showId = show.id || show.slug;
+    const expressRec = getExpressRecord(showId);
+    if (expressRec) {
+      console.log(`  ℹ️  Express completed for ${showId} at ${expressRec.completedAt} (${expressRec.scoredCount}/${expressRec.reviewCount} scored, run ${expressRec.runId})`);
+    } else {
+      console.warn(`  ⚠️  Express not used for ${showId} — proceeding with standard readiness gate (pipeline data quality unverified by Express)`);
+    }
     const stats = getReviewStats(reviewsArr, showId, MARKET);
     const showReviews = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
     const t1Count = showReviews.filter(r => getOutletTier(r.outletId) === 1).length;

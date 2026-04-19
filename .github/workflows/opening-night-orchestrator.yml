@@ -303,8 +303,9 @@ jobs:
           # Set: gh variable set ORCHESTRATOR_PAUSED --body true
           # Clear: gh variable delete ORCHESTRATOR_PAUSED
           PAUSED=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null || echo "")
-          if [ "$PAUSED" = "true" ]; then
-            echo "::notice::Orchestrator PAUSED for corrections. Exiting. Clear with: gh variable delete ORCHESTRATOR_PAUSED"
+          if [ -n "$PAUSED" ]; then
+            # "true" = manual pause for corrections; "express" = Opening Night Express is running
+            echo "::notice::Orchestrator PAUSED (value=$PAUSED). Exiting. Clear with: gh variable delete ORCHESTRATOR_PAUSED"
             exit 0
           fi
 
