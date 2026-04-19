@@ -14,9 +14,13 @@
  * Usage:
  *   node scripts/batch-commercial-research.js [options]
  *
+ * Default scope: Broadway shows in previews/open status, or closed within the
+ * last 180 days. Historical or off-Broadway/West End shows are NOT researched
+ * by default — use --top-historical=N or --shows= to opt in explicitly.
+ *
  * Options:
  *   --dry-run              Preview without writing
- *   --shows=SLUG,SLUG      Specific shows by slug
+ *   --shows=SLUG,SLUG      Specific shows by slug (bypasses default scope filter)
  *   --top-historical=N     Top N historical shows by all-time gross
  *   --max-per-run=N        Cap new shows researched per invocation (default 30)
  *   --skip-sec             Skip SEC EDGAR lookups
@@ -516,8 +520,27 @@ function selectTargets(shows, commercial, grosses) {
       .slice(0, TOP_HISTORICAL);
   }
 
-  // Default: all shows without commercial data
-  return shows.filter(s => !existingIds.has(s.id));
+  // Default: Broadway shows that are current (open, previews, or recently closed).
+  // Capitalization/recoupment data for historical shows doesn't change, so once
+  // the backlog is seeded there's nothing to re-research. The weekly orchestrator
+  // is about keeping current productions up to date — not grinding through a
+  // 1,800-show historical tail. Use --top-historical=N for deliberate backfill.
+  const RECENT_CLOSE_WINDOW_DAYS = 180;
+  const cutoff = new Date(Date.now() - RECENT_CLOSE_WINDOW_DAYS * 86400 * 1000)
+    .toISOString().slice(0, 10);
+  // Broadway detection: absent category OR explicit 'broadway' — matches
+  // isBroadway() convention across compute-gold-lists.js, generate-guide-editorials.js,
+  // scrape-lottery-rush.js, etc. (West End / off-Broadway / off-West-End are tagged;
+  // Broadway productions are the default state so category is often unset.)
+  return shows
+    .filter(s => !s.category || s.category === 'broadway')
+    .filter(s => !s._devOnly)
+    .filter(s => !existingIds.has(s.id))
+    .filter(s => {
+      if (s.status === 'open' || s.status === 'previews') return true;
+      if (s.status === 'closed' && s.closingDate && s.closingDate >= cutoff) return true;
+      return false;
+    });
 }
 
 // ---------------------------------------------------------------------------
