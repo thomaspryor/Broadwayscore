@@ -154,11 +154,11 @@ export default function TheaterScorecardCard({
       {/* Header — designation heroed */}
       <h2 id="theater-scorecard-heading" className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">Theater Scorecard</h2>
       <div className="flex items-center gap-2 flex-wrap mb-3">
-        <Link href={`/theater/${theaterSlug}`} className="text-white font-bold hover:text-brand transition-colors text-base">
+        <Link href={`/theater/${theaterSlug}`} className="text-white font-bold hover:text-brand transition-colors text-base leading-none">
           {theaterName}
         </Link>
         {designation && (
-          <span className={`inline-flex items-center px-2 py-0.5 rounded-pill text-[11px] font-semibold uppercase tracking-wide ${designation.chip}`}>
+          <span className={`self-center inline-flex items-center px-2 py-0.5 rounded-pill text-[11px] font-semibold uppercase tracking-wide ${designation.chip}`}>
             {designation.label}
           </span>
         )}
