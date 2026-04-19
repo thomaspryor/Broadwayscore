@@ -239,6 +239,8 @@ CREATE TABLE fantasy_entries (
   league_name TEXT,
   picks JSONB NOT NULL,
   total_cost INTEGER NOT NULL,
+  picks_prices_snapshot JSONB,
+  price_version_at_submission TEXT,
   season TEXT NOT NULL DEFAULT '2025-2026',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(email, season)

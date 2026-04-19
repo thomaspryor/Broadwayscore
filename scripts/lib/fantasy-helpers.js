@@ -7,6 +7,9 @@
  *   computeAwardsPoints(showId, awardsData, scoringConfig) — awards.json → fantasy points
  *   fetchFantasyEntries(opts)                              — Supabase REST fetch
  *   computeLeaderboard(entries, showScores, showConfig)    — ranked standings
+ *   sumGrossesInRange(slug, weeks, start, end)             — realized BO grosses
+ *   projectRemainingGrosses(slug, weeks, asOf, end, opts)  — BO projection forward
+ *   computeExpectedAwardsPoints(showId, predictions, cfg)  — E[awards pts] from probs
  */
 
 const https = require('https');
@@ -286,9 +289,201 @@ function maskEmail(email) {
   return `${local[0]}***@${domain}`;
 }
 
+// ── Box office: realized + projection ───────────────────────────────
+
+/**
+ * Sum weekly grosses for a show in a date window [start, end] inclusive.
+ * Returns { totalGross, weekCount, lastObservedWeek }.
+ *
+ * @param {string} showSlug
+ * @param {object} weeksByDate  — grossesHistory.weeks
+ * @param {string} startDate    — 'YYYY-MM-DD'
+ * @param {string} endDate      — 'YYYY-MM-DD'
+ */
+function sumGrossesInRange(showSlug, weeksByDate, startDate, endDate) {
+  let totalGross = 0;
+  let weekCount = 0;
+  let lastObservedWeek = null;
+  const sortedWeeks = Object.keys(weeksByDate).sort();
+  for (const w of sortedWeeks) {
+    if (w < startDate || w > endDate) continue;
+    const row = weeksByDate[w]?.[showSlug];
+    if (row && row.gross) {
+      totalGross += row.gross;
+      weekCount += 1;
+      lastObservedWeek = w;
+    }
+  }
+  return { totalGross, weekCount, lastObservedWeek };
+}
+
+/**
+ * Project expected remaining grosses for a show from `asOfDate` to `endDate`.
+ * Uses the average of the last `trailingWeeks` observed weekly grosses
+ * (defaults to 4-week trailing average) as the per-week estimate.
+ *
+ * Closed shows: expected remaining = $0.
+ * Shows with < 2 weeks of data: low confidence, use the single week or 0.
+ *
+ * Returns { expectedRemaining, weeksRemaining, trailingAvg, confidence }.
+ *   confidence: 'high' (≥4 weeks observed), 'medium' (2-3), 'low' (<2), 'closed'
+ */
+function projectRemainingGrosses(showSlug, weeksByDate, asOfDate, endDate, opts = {}) {
+  const { trailingWeeks = 4, isClosed = false } = opts;
+
+  if (isClosed) {
+    return { expectedRemaining: 0, weeksRemaining: 0, trailingAvg: 0, confidence: 'closed' };
+  }
+
+  const sortedWeeks = Object.keys(weeksByDate).sort();
+  const observed = [];
+  for (const w of sortedWeeks) {
+    if (w > asOfDate) break;
+    const row = weeksByDate[w]?.[showSlug];
+    if (row && typeof row.gross === 'number' && row.gross > 0) {
+      observed.push({ week: w, gross: row.gross });
+    }
+  }
+
+  if (observed.length === 0) {
+    return { expectedRemaining: 0, weeksRemaining: 0, trailingAvg: 0, confidence: 'low' };
+  }
+
+  const trailing = observed.slice(-trailingWeeks);
+  const trailingAvg = trailing.reduce((s, x) => s + x.gross, 0) / trailing.length;
+
+  // Weeks remaining = whole weeks between (asOfDate+1 day) and endDate, inclusive of endDate.
+  const asOf = new Date(asOfDate + 'T00:00:00Z');
+  const end = new Date(endDate + 'T00:00:00Z');
+  const days = Math.max(0, Math.floor((end - asOf) / (1000 * 60 * 60 * 24)));
+  const weeksRemaining = Math.max(0, Math.floor(days / 7));
+
+  const confidence = observed.length >= 4 ? 'high' : observed.length >= 2 ? 'medium' : 'low';
+  const expectedRemaining = Math.round(trailingAvg * weeksRemaining);
+  return { expectedRemaining, weeksRemaining, trailingAvg: Math.round(trailingAvg), confidence };
+}
+
+// ── Expected awards points (pre-event, analytic) ────────────────────
+
+/**
+ * Compute expected awards points from Tony win probabilities.
+ *
+ * `tonyPredictions` shape:
+ *   {
+ *     _meta: { hasNominations: bool, lastUpdated, source },
+ *     shows: {
+ *       [showId]: {
+ *         categories: {
+ *           [category]: { pNom: 0..1 (optional if hasNominations), pWin: 0..1 }
+ *         }
+ *       }
+ *     }
+ *   }
+ *
+ * Post-noms: pNom forced to 1.0 for nominated shows, 0 for non-nominees.
+ * Pre-noms: pNom + pWin used; Best-Musical/Play bonus applied to pWin only.
+ *
+ * Only Tony-specific scoring keys are used here (tonyNom, tonyWin,
+ * tonyBestMusical, tonyBestPlay). Pre-Tony ceremonies are handled by
+ * realized-points (computeAwardsPoints) once nominations are announced.
+ *
+ * @param {string} showId
+ * @param {object} tonyPredictions
+ * @param {object} scoringConfig  — scoring.awards from fantasy-league.json
+ * @returns {{ points: number, breakdown: object }}
+ */
+function computeExpectedAwardsPoints(showId, tonyPredictions, scoringConfig) {
+  const show = tonyPredictions?.shows?.[showId];
+  if (!show || !show.categories) return { points: 0, breakdown: { expectedNoms: 0, expectedWins: 0 } };
+
+  const hasNoms = !!tonyPredictions?._meta?.hasNominations;
+  let expectedNomPoints = 0;
+  let expectedWinPoints = 0;
+  let expectedBestBonusPoints = 0;
+  let expectedNoms = 0;
+  let expectedWins = 0;
+
+  for (const [category, probs] of Object.entries(show.categories)) {
+    const pNom = hasNoms ? 1.0 : (probs.pNom ?? 0);
+    const pWin = probs.pWin ?? 0;
+
+    // E[noms] only counts nomination-only credit (non-winning noms): pNom × (1 - pWin)
+    expectedNomPoints += (pNom * (1 - pWin)) * (scoringConfig.tonyNom || 0);
+    expectedWinPoints += (pNom * pWin) * (scoringConfig.tonyWin || 0);
+    expectedNoms += pNom;
+    expectedWins += pNom * pWin;
+
+    if (category === 'Best Musical') {
+      expectedBestBonusPoints += (pNom * pWin) * (scoringConfig.tonyBestMusical || 0);
+    } else if (category === 'Best Play') {
+      expectedBestBonusPoints += (pNom * pWin) * (scoringConfig.tonyBestPlay || 0);
+    }
+  }
+
+  const points = expectedNomPoints + expectedWinPoints + expectedBestBonusPoints;
+  return {
+    points: Math.round(points * 100) / 100,
+    breakdown: {
+      expectedNoms: Math.round(expectedNoms * 100) / 100,
+      expectedWins: Math.round(expectedWins * 100) / 100,
+      expectedNomPoints: Math.round(expectedNomPoints * 100) / 100,
+      expectedWinPoints: Math.round(expectedWinPoints * 100) / 100,
+      expectedBestBonusPoints: Math.round(expectedBestBonusPoints * 100) / 100,
+    },
+  };
+}
+
+/**
+ * Validate a tony-win-probabilities.json payload.
+ * Returns { ok: bool, reason: string, stats: {...} }.
+ *
+ * Rejects:
+ *   - empty shows object
+ *   - any per-category probability out of [0, 1]
+ *   - fewer than N shows (default 15) — signals scraper drift
+ */
+function validateTonyPredictions(data, opts = {}) {
+  const { minShows = 15, requireCategories = ['Best Musical'] } = opts;
+  if (!data || typeof data !== 'object') return { ok: false, reason: 'not an object' };
+  if (!data.shows || typeof data.shows !== 'object') return { ok: false, reason: 'missing shows' };
+  const showIds = Object.keys(data.shows);
+  if (showIds.length < minShows) {
+    return { ok: false, reason: `only ${showIds.length} shows (need ≥${minShows})`, stats: { showCount: showIds.length } };
+  }
+  const categoriesSeen = new Set();
+  let probabilityCount = 0;
+  for (const sid of showIds) {
+    const cats = data.shows[sid]?.categories;
+    if (!cats) continue;
+    for (const [cat, probs] of Object.entries(cats)) {
+      categoriesSeen.add(cat);
+      for (const key of ['pNom', 'pWin']) {
+        if (probs[key] == null) continue;
+        if (typeof probs[key] !== 'number' || probs[key] < 0 || probs[key] > 1) {
+          return { ok: false, reason: `${sid}.${cat}.${key} out of range: ${probs[key]}` };
+        }
+        probabilityCount += 1;
+      }
+    }
+  }
+  for (const required of requireCategories) {
+    if (!categoriesSeen.has(required)) {
+      return { ok: false, reason: `missing required category: ${required}` };
+    }
+  }
+  return {
+    ok: true,
+    stats: { showCount: showIds.length, categoryCount: categoriesSeen.size, probabilityCount },
+  };
+}
+
 module.exports = {
   computeAwardsPoints,
   fetchFantasyEntries,
   computeLeaderboard,
   maskEmail,
+  sumGrossesInRange,
+  projectRemainingGrosses,
+  computeExpectedAwardsPoints,
+  validateTonyPredictions,
 };
