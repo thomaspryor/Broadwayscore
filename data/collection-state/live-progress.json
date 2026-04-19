@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-19T03:22:02.873Z",
+  "updatedAt": "2026-04-19T03:27:36.574Z",
   "processed": 38,
-  "failed": 2519,
+  "failed": 2569,
   "successRate": "1.5%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 12,
     "amp": 0,
-    "browserbase": 14,
-    "directCookies": 1,
-    "scrapingbee": 11,
+    "browserbase": 10,
+    "directCookies": 0,
+    "scrapingbee": 7,
     "brightdata": 8,
     "archiveToday": 4,
-    "archive": 8
+    "archive": 6
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -80,39 +80,6 @@
       "t": "2026-04-18T19:19:39.704Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-19T03:16:26.123Z",
-      "event": "bb-session",
-      "session": "f1601cec",
-      "url": "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the"
-    },
-    {
-      "t": "2026-04-19T03:16:26.972Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-04-19T03:17:09.419Z",
-      "event": "bb-session",
-      "session": "2e9febcc",
-      "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-an"
-    },
-    {
-      "t": "2026-04-19T03:17:09.965Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-19T03:17:35.550Z",
-      "event": "bb-session",
-      "session": "24985cc0",
-      "url": "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/"
-    },
-    {
-      "t": "2026-04-19T03:17:36.149Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
     }
   ]
 }
