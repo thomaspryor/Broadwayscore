@@ -96,6 +96,82 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
 }
 
 /**
+ * URL-path date fallback for wrongProduction detection.
+ *
+ * When a review lacks publishDate (common on SERP ingests with Unknown bylines),
+ * extract the publish date from the URL path. Supports two patterns:
+ *   - NYT / Variety / Playbill / Vulture / WaPo: /YYYY/MM/DD/ or /YYYY/MM/
+ *   - Guardian: /YYYY/monthname/DD/  (e.g. /2025/jun/30/)
+ *
+ * Applies the same 30-day-before-earliest rule as the existing publishDate guard
+ * at scripts/gather-reviews.js:3060-3082. Also checks post-closing window so
+ * revival/tour articles about closed productions are flagged.
+ *
+ * Mirrors scripts/flag-wrong-production-by-url-date.js:54-65 so both the ingest-
+ * time guard and the post-hoc sweep apply identical logic.
+ *
+ * Returns a reason string (to be used as wrongProductionNote) or null if:
+ *   - url / show missing
+ *   - url path has no /YYYY/MM[/DD]/ or /YYYY/monthname[/DD]/ segment
+ *   - show has no earliest date to compare against
+ *   - show is off-broadway (exempt — regional transfers)
+ *   - extracted URL date is within both the lead window and the trailing window
+ *
+ * @param {string|null} url
+ * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string }} show
+ * @returns {string|null}
+ */
+const URL_MONTH_NAMES = {
+  jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+  jul: '07', aug: '08', sep: '09', sept: '09', oct: '10', nov: '11', dec: '12',
+};
+
+function getWrongProductionReasonFromUrl(url, show) {
+  if (!url || typeof url !== 'string') return null;
+  if (!show || show.category === 'off-broadway') return null;
+  const earliest = show.previewsStartDate || show.openingDate;
+  if (!earliest) return null;
+
+  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
+  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
+  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
+  if (!m) return null;
+
+  const year = m[1];
+  const rawMonth = m[2].toLowerCase();
+  const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
+  if (!month) return null;
+
+  const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
+  const urlDate = new Date(`${year}-${month}-${dayPart}`);
+  if (isNaN(urlDate.getTime())) return null;
+
+  const earliestDate = new Date(earliest);
+  if (isNaN(earliestDate.getTime())) return null;
+
+  const daysBefore = Math.round((earliestDate - urlDate) / 86400000);
+  const urlDateStr = urlDate.toISOString().slice(0, 10);
+
+  // Post-closing check first: an article dated after close is a later production/tour,
+  // independent of whether it's also before the previews of this production's ID.
+  if (show.closingDate) {
+    const closing = new Date(show.closingDate);
+    if (!isNaN(closing.getTime())) {
+      const daysAfter = Math.round((urlDate - closing) / 86400000);
+      if (daysAfter > 30) {
+        return `Auto-flagged: URL date ${urlDateStr} is ${daysAfter} days after show closed (${show.closingDate}). Likely later production/revival/tour.`;
+      }
+    }
+  }
+
+  if (daysBefore > 30) {
+    return `Auto-flagged: URL date ${urlDateStr} is ${daysBefore} days before show earliest date ${earliest}. Likely prior production.`;
+  }
+
+  return null;
+}
+
+/**
  * Check if a URL looks like a review for the given show title.
  * Filters out tag pages, author pages, ticket links, etc.
  * Used in site-search-discovery.js to filter URLs returned by section-page scrapers.
@@ -1173,6 +1249,7 @@ module.exports = {
   shouldSkipScoredReview,
   pickBestDtliSlug,
   applyTemporalOverrides,
+  getWrongProductionReasonFromUrl,
   urlLooksLikeReview,
   isLikelyWrongProduction,
   isLikelyTourReview,
