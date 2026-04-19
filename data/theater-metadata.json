@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-19T01:13:11.293Z",
+    "lastUpdated": "2026-04-19T01:25:33.853Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -959,10 +959,224 @@
     "yearBuilt": 1907,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:11.785Z",
+      "lastUpdated": "2026-04-19T01:25:33.847Z",
       "seating": {
-        "bestSeats": "The mezzanine offers excellent views of the stage and the theater's stunning Tiffany ceiling lights at a lower price point.",
-        "accessibility": "8 wheelchair locations in Orchestra. Induction loops for t-coil hearing aids. Infrared devices available."
+        "bestSeats": "Ideal: Orchestra Rear (under overhang) (rows J-Q) — SeatPlan confirms 'The Mezzanine overhang begins at row J, meaning seats behind this may experience cut-off at the top of the stage.' Rows J-Q trade top-of-stage visibility for lower prices. Headout and TickPick both flag G-P/F-O center as value picks. Row N's extra legroom offsets the overhang compromise for tall patrons.",
+        "accessibility": "8 wheelchair locations in Orchestra. Induction loops for t-coil hearing aids. Infrared devices available.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "rowRange": "BB-Q",
+            "bestRow": "Rows B-D center (SeatPlan: 'Center Orchestra towards the front. In particular, rows B-D aren't so close to the stage'; TickPick: 'Center Orchestra, Rows D through K')",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Premium center, intimate sightlines",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Belasco was designed by David Belasco as a 'living room' with a shallow depth to support the Little Theater movement's emphasis on actor-audience proximity. Center Orchestra rows B-D sit at the ideal distance (reviewers cite row B as the fourth row from stage at 'perfect distance') with head-on actor views. Mezzanine overhang begins at row J per SeatPlan, so rows BB-H stay clear.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "1907 house — reviewer notes 'Legroom isn't the best but that seemed to be every seat in the theatre' (SeatPlan); row A and row N cited as best legroom"
+              }
+            ],
+            "bestFor": [
+              "intimate-drama",
+              "play",
+              "musical"
+            ],
+            "worstFor": [
+              "spectacle"
+            ],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/belasco-theatre/orchestra/",
+              "https://seatplan.com/new-york/belasco-theatre/seating-plan/",
+              "https://www.tickpick.com/blog/belasco-theatre-seating-chart/",
+              "https://www.headout.com/blog/belasco-theatre-seating-chart/",
+              "https://folliesbroadway.com/what-are-the-best-seats-at-belasco-theatre/",
+              "https://aviewfrommyseat.com/venue/Belasco+Theatre/"
+            ]
+          },
+          {
+            "name": "Orchestra Rear (under overhang)",
+            "rowRange": "J-Q",
+            "verdict": "solid",
+            "verdictLabel": "Value with overhang tradeoff",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "SeatPlan confirms 'The Mezzanine overhang begins at row J, meaning seats behind this may experience cut-off at the top of the stage.' Rows J-Q trade top-of-stage visibility for lower prices. Headout and TickPick both flag G-P/F-O center as value picks. Row N's extra legroom offsets the overhang compromise for tall patrons.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Overhang begins at row J per SeatPlan — top of stage/flown scenery can be cut off"
+              },
+              {
+                "type": "partial-stage",
+                "note": "Height-dependent cutoff for staging above proscenium"
+              }
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/belasco-theatre/orchestra/",
+              "https://www.headout.com/blog/belasco-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/belasco-theatre-seating-chart/",
+              "https://seatplan.com/new-york/belasco-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Orchestra Side (Left/Right edges)",
+            "rowRange": "B-Q (odd 1-27 left / even 2-28 right)",
+            "verdict": "skip",
+            "verdictLabel": "Side-angle compromised",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "SeatPlan: 'Seats at the Left and Right edges suffer from restricted views of the stage,' particularly corner seats in rows B-E. TickPick confirms 'Far Left/Right Orchestra: Angled views may occur.' Historic box configuration and shallow house geometry amplify side-angle distortion.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Left/Right edges — curve and historic boxes cut into sightlines"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/belasco-theatre/orchestra/",
+              "https://www.tickpick.com/blog/belasco-theatre-seating-chart/",
+              "https://seatplan.com/new-york/belasco-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Mezzanine Center",
+            "rowRange": "A-H",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Aerial sweet spot, skip row A",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Mezzanine hangs close and center row C delivers aerial perspective with decent rake. Row A is a common trap: 'Mezzanine row A seat 111 was obstructed view, and the rail literally blocks half of the stage' (Tripadvisor user report). Balcony overhang begins at mezz row C per SeatPlan, so rows A-B stay open-topped but row A's safety bar offsets that benefit.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Row A safety/rail bar — Tripadvisor reviewer: 'rail literally blocks half of the stage' for shorter patrons"
+              },
+              {
+                "type": "mezz-overhang",
+                "note": "Balcony overhang begins at mezz row C per SeatPlan — rows D-H lose some top"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "dance-heavy",
+              "spectacle"
+            ],
+            "worstFor": [
+              "intimate-drama"
+            ],
+            "dataPoints": 12,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/belasco-theatre/mezzanine/",
+              "https://www.tripadvisor.in/ShowUserReviews-g60763-d3644090-r907642172-Belasco_Theatre-New_York_City_New_York.html",
+              "https://seatplan.com/new-york/belasco-theatre/seating-plan/",
+              "https://www.headout.com/blog/belasco-theatre-seating-chart/",
+              "https://aviewfrommyseat.com/venue/Belasco+Theatre/"
+            ]
+          },
+          {
+            "name": "Mezzanine Rear / Sides",
+            "rowRange": "E-H",
+            "verdict": "solid",
+            "verdictLabel": "Budget mezz, some overhang",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Headout flags F-H center as the mezzanine value range. Balcony overhang starting at row C means rows E-H sit under it — top of set may be cut. Side mezzanine suffers progressively more restricted angles 'due to stage curvature' (SeatPlan). Acceptable for dialogue-heavy work but not flown spectacle.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Balcony overhang from row C back — top-of-stage cutoff grows with row letter"
+              },
+              {
+                "type": "side-angle",
+                "note": "Left/Right mezzanine progressively angled off stage curvature"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/belasco-theatre/mezzanine/",
+              "https://www.headout.com/blog/belasco-theatre-seating-chart/",
+              "https://seatplan.com/new-york/belasco-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Balcony Center",
+            "rowRange": "A-F",
+            "verdict": "solid",
+            "verdictLabel": "Bargain bird's-eye, lean-forward risk",
+            "priceTier": "budget",
+            "rationale": "Center Balcony 'extends back six rows on a steep rake which provides a bird's-eye-view of the stage' (SeatPlan). Rows B-D balance price and sightline. Distance is the honest tradeoff: AVFMS reviewer on Maybe Happy Ending noted 'the real problem is how far back the balcony is. You'll have to lean forward to see for most of the show.' Row A safety rail can also obstruct.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "AVFMS reviewer: 'how far back the balcony is. You'll have to lean forward to see for most of the show'"
+              },
+              {
+                "type": "steep-rake",
+                "note": "SeatPlan: 'steep rake acts as a double-edged sword' — patrons leaning forward block view"
+              },
+              {
+                "type": "obstructed-view",
+                "note": "Row A safety rail flagged by SeatPlan/AVFMS: 'Rails obstruct the view. Have to lean over to see anything'"
+              }
+            ],
+            "worstFor": [
+              "intimate-drama"
+            ],
+            "dataPoints": 11,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/belasco-theatre/balcony/",
+              "https://aviewfrommyseat.com/team/Maybe+Happy+Ending/Belasco+Theatre/",
+              "https://aviewfrommyseat.com/venue/Belasco+Theatre/",
+              "https://www.headout.com/blog/belasco-theatre-seating-chart/",
+              "https://seatplan.com/new-york/belasco-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Balcony Sides (Left/Right)",
+            "rowRange": "A-F",
+            "verdict": "skip",
+            "verdictLabel": "Up to 1/3 of stage cut off",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "SeatPlan: 'the curve of the section and other features including the Left Boxes may cut off up to a third of the stage at the outside.' Combined with steep rake, distance, and row A rail, side balcony is the worst seat class in the house. Historic 1907 box architecture is the root cause — it cannot be engineered out per production.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "SeatPlan: 'up to a third of the stage' cut off at outer seats"
+              },
+              {
+                "type": "obstructed-view",
+                "note": "Left Boxes block sightlines from side balcony"
+              },
+              {
+                "type": "steep-rake",
+                "note": "Same lean-forward problem as center"
+              },
+              {
+                "type": "distant",
+                "note": "Furthest seats in the house"
+              }
+            ],
+            "worstFor": [
+              "musical",
+              "dance-heavy",
+              "spectacle",
+              "intimate-drama"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/belasco-theatre/balcony/",
+              "https://seatplan.com/new-york/belasco-theatre/seating-plan/",
+              "https://aviewfrommyseat.com/venue/Belasco+Theatre/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -1399,10 +1613,136 @@
     "yearBuilt": 1913,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:25.751Z",
+      "lastUpdated": "2026-04-19T01:25:33.852Z",
       "seating": {
-        "bestSeats": "The Booth is a smaller theater, so most seats offer good views. Center orchestra seats provide the most immersive experience.",
-        "accessibility": "6 wheelchair spaces in Orchestra. Not completely wheelchair accessible. Infrared devices available."
+        "bestSeats": "Ideal: Center Mezzanine (rows A-H (8 rows)) — In a 252-seat mezzanine with only 8 rows, even the back row is close. SeatPlan and Headout both call Center Mezz A-B some of the best seats in the house, and G-H are cited as strong value. With the Booth's intimate scale, the mezzanine never feels distant — this is the value pick.",
+        "accessibility": "6 wheelchair spaces in Orchestra. Not completely wheelchair accessible. Infrared devices available.",
+        "sections": [
+          {
+            "name": "Center Orchestra",
+            "rowRange": "AA-P",
+            "bestRow": "Row C-H per Headout/SeatPlan; Row F-H cited as value sweet spot by TickPick/Headout",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Premium intimacy in a 766-seat house",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "The Booth is one of Broadway's smallest houses at 766 seats, so center orchestra rows C-H give close-up detail of plays and intimate dramas without paying the very-front premium. Row AA front offers max legroom (Headout) but stage is high; step back a few rows for better sightline onto the stage floor.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Stage is high; front row AA/A may struggle to see stage floor (Headout, BWW forum thread)"
+              }
+            ],
+            "bestFor": [
+              "intimate-drama",
+              "play"
+            ],
+            "worstFor": [
+              "dance-heavy",
+              "spectacle"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/booth-theatre-seating-chart/",
+              "https://seatplan.com/new-york/booth-theatre/seating-plan/",
+              "https://www.tickpick.com/blog/booth-theatre-seating-chart/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/booth-theatre/seating-chart/",
+              "https://www.shubert.nyc/theatres/booth/",
+              "https://forum.broadwayworld.com/readmessage.php?thread=1108643"
+            ]
+          },
+          {
+            "name": "Side Orchestra (Left/Right)",
+            "rowRange": "A-P (17 rows, odd 1-15 left, even 2-16 right)",
+            "verdict": "solid",
+            "verdictLabel": "Workable angle, not the sweet spot",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Booth is narrow so side orchestra remains viable, but a 2018 BWW forum post specifically flagged 'angle from the front side seats' as a concern. Closer rows (BB, A) on the side get awkward angles onto the high stage. Mid-house aisle seats recover the view while adding legroom.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Low side rows can clip upstage action"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://forum.broadwayworld.com/readmessage.php?thread=1108643",
+              "https://www.headout.com/blog/booth-theatre-seating-chart/",
+              "https://seatplan.com/new-york/booth-theatre/seating-plan/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/booth-theatre/seating-chart/"
+            ]
+          },
+          {
+            "name": "Center Mezzanine",
+            "rowRange": "A-H (8 rows)",
+            "bestRow": "Row A-B per SeatPlan ('some of the best in the entire theater'); Row G-H per Headout for value",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Front mezz rivals orchestra here",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "In a 252-seat mezzanine with only 8 rows, even the back row is close. SeatPlan and Headout both call Center Mezz A-B some of the best seats in the house, and G-H are cited as strong value. With the Booth's intimate scale, the mezzanine never feels distant — this is the value pick.",
+            "hazards": [
+              {
+                "type": "steep-rake",
+                "note": "Approximately 2 steps up per row; rake gets steeper toward back (Shubert, TickPick)"
+              },
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan notes space is tight; aisle seats recommended for taller patrons"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "play",
+              "intimate-drama"
+            ],
+            "worstFor": [],
+            "dataPoints": 12,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/booth-theatre/mezzanine/",
+              "https://seatplan.com/new-york/booth-theatre/seating-plan/",
+              "https://www.headout.com/blog/booth-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/booth-theatre-seating-chart/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/booth-theatre/seating-chart/",
+              "https://www.shubert.nyc/theatres/booth/"
+            ]
+          },
+          {
+            "name": "Side Mezzanine (Left/Right)",
+            "rowRange": "A-H (8 rows each)",
+            "bestRow": "Row A-B aisle; SeatPlan notes side angles 'slightly more angled' but viable",
+            "verdict": "solid",
+            "verdictLabel": "Small house saves the side angle",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "SeatPlan explicitly notes side-mezz views are 'slightly more angled but still viable' because the Booth is narrow. Decent budget alternative, but the center mezz is a better value at similar price tier so this is solid-not-sweet.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Slight angling on side mezz per SeatPlan"
+              },
+              {
+                "type": "steep-rake",
+                "note": "~2 steps per row, entrance behind row H (Shubert, TickPick)"
+              }
+            ],
+            "bestFor": [
+              "play"
+            ],
+            "worstFor": [
+              "dance-heavy",
+              "spectacle"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/booth-theatre/mezzanine/",
+              "https://seatplan.com/new-york/booth-theatre/seating-plan/",
+              "https://www.headout.com/blog/booth-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/booth-theatre-seating-chart/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -2482,10 +2822,191 @@
     "yearBuilt": 1972,
     "operator": "Independent",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:54.304Z",
+      "lastUpdated": "2026-04-19T01:25:33.853Z",
       "seating": {
-        "bestSeats": "Given the theater-in-the-round setup, aim for seats closer to the stage for an immersive experience. Seats in the center sections generally offer the most balanced views.",
-        "accessibility": "Elevator accessible through adjoining building. Loop technology and neck induction systems available."
+        "bestSeats": "Ideal: Upper Mid Rows (H-I) (rows H-I) — Because the venue only has 10 rows total and stadium-inclined seating, rows H-I still feel close to the thrust while giving elevated sightlines that reveal staging patterns on the floor — useful for musicals with choreography. Headout: 'Rows H and I in the upper middle level offer a great view of the stage and the prices are lower than those of the premium ",
+        "accessibility": "Elevator accessible through adjoining building. Loop technology and neck induction systems available.",
+        "sections": [
+          {
+            "name": "Front Rows Center (Rows AA-B)",
+            "rowRange": "AA-B",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Immersive front edge",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "In the 3/4 thrust configuration these front rows put you at the lip of the playing area with actors entering from aisles directly beside you. Headout notes rows AA-B are 'closest to the stage' and audiences are 'roped into the play's action.' Because the stage is surrounded on three sides, the acting is deliberately blocked so no front row gets a sustained back-of-actor view, but individual moments will face away from you — that is inherent to in-the-round and not a flaw of this section.",
+            "hazards": [
+              {
+                "type": "temporary-back-views",
+                "note": "In-the-round blocking means actors will periodically face the opposite side of the house; this is expected, not an obstruction."
+              }
+            ],
+            "bestFor": [
+              "Fans who want to feel inside the action (Headout: 'roped into the play's action')",
+              "First-time visitors wanting an immersive thrust experience (Wikipedia notes 10 rows total, design philosophy is audience-close-to-stage)"
+            ],
+            "worstFor": [
+              "Patrons who dislike actors turning their backs (inherent to in-the-round per TripAdvisor: '300 degrees of view angle')",
+              "Budget buyers — Headout confirms these are 'the most expensive' seats"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://en.wikipedia.org/wiki/Circle_in_the_Square_Theatre",
+              "https://aviewfrommyseat.com/venue/Circle+in+the+Square+Theatre/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7713728-Circle_in_the_Square_Theatre_Seats-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Center Orchestra Sweet Spot (Rows B-D)",
+            "rowRange": "B-D",
+            "bestRow": "Row C per TickPick — 'level with the performers with no looking up to the stage or down on the performers'",
+            "verdict": "sweet-spot",
+            "verdictLabel": "The house pick",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Universally cited as the optimal vantage in this thrust venue — close enough to feel the intimacy of a 776-seat room with only 10 rows, but one row back from the front so sightlines catch the whole three-sided playing area. Headout: 'Center Orchestra - rows B, C and D' positioned centrally are 'possibly the best seats in the house.' The in-the-round blocking is designed so these central rows at eye-level with the floor see choreography and staging as intended.",
+            "hazards": [
+              {
+                "type": "price",
+                "note": "Premium pricing tier; rarely discounted"
+              }
+            ],
+            "bestFor": [
+              "Seasoned theatergoers who want optimal sightlines (Headout: 'possibly the best seats in the house')",
+              "Musicals with complex staging (TripAdvisor user: 'the closer you are to the center the better')"
+            ],
+            "worstFor": [
+              "Budget-conscious buyers (AVFMS: cheapest side row E seats went for $186 / £112 for The River — center rows materially higher)",
+              "Patrons preferring elevation to see choreography from above (TripAdvisor: 'up is better for musicals')"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7713728-Circle_in_the_Square_Theatre_Seats-New_York_City_New_York.html",
+              "https://aviewfrommyseat.com/venue/Circle+in+the+Square+Theatre/",
+              "https://blog.tickpick.com/circle-in-the-square-seating-chart-fun-home/"
+            ]
+          },
+          {
+            "name": "Upper Mid Rows (H-I)",
+            "rowRange": "H-I",
+            "verdict": "solid",
+            "verdictLabel": "Best value pick",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Because the venue only has 10 rows total and stadium-inclined seating, rows H-I still feel close to the thrust while giving elevated sightlines that reveal staging patterns on the floor — useful for musicals with choreography. Headout: 'Rows H and I in the upper middle level offer a great view of the stage and the prices are lower than those of the premium orchestra seats.' AVFMS reviewer MusicaltheatreWhiz in H144 (Just in Time, Feb 2026): 'There really isn't a bad seat in the house!' TripAdvisor: 'up is better for musicals.'",
+            "hazards": [],
+            "bestFor": [
+              "Budget buyers who still want quality sightlines (Headout: 'prices are lower than premium orchestra seats')",
+              "Musical-goers wanting elevated staging view (TripAdvisor: 'up is better for musicals')"
+            ],
+            "worstFor": [
+              "Fans who prize maximum intimacy (AVFMS front-row reviews consistently mention actor proximity you won't get at row H)"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://aviewfrommyseat.com/venue/Circle+in+the+Square+Theatre/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7713728-Circle_in_the_Square_Theatre_Seats-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Rear Rows (J-K)",
+            "rowRange": "J-K",
+            "verdict": "solid",
+            "verdictLabel": "Back but still close",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "In a typical Broadway house the last row would be a skip, but Circle in the Square is only 10 rows deep so row K is roughly where Row G would be in a standard theater. AVFMS danielb9 at K109 (Just in Time, Feb 28 2026): 'Enough legroom to be comfortable and despite being in the back row felt very connected to the action.' Multiple reviews note 'no obstruction' and 'great seat' for row K. Stadium incline ensures sightlines over heads. The in-the-round nature means some scenes still play toward the opposite side, but this is a venue property not a section flaw.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Wheelchair/accessible seats sit at J/K per official chart — some seats in this row face interior-middle rather than the main stage axis."
+              }
+            ],
+            "bestFor": [
+              "Value seekers (Headout: rows J-K are 'the cheapest'; TickPick calls H and K 'value for money')",
+              "Accessibility needs (official venue chart confirms wheelchair-accessible positions in J141, J142, K101, K102)"
+            ],
+            "worstFor": [
+              "Patrons expecting traditional orchestra-floor intimacy from a front-row ticket (AVFMS user notes feel 'connected' but inherent distance to stage center is ~9 rows)"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Circle+in+the+Square+Theatre/tips/",
+              "https://www.headout.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.circlesquaretheatre.com/seating-chart/"
+            ]
+          },
+          {
+            "name": "Side Sections - Long Arms of the Horseshoe (100s & 200s)",
+            "rowRange": "A-K",
+            "verdict": "solid",
+            "verdictLabel": "Side angle, still intimate",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "The two long 'wide sides' of the horseshoe (the 100 and 200 numbered sections per BWW forum user Patash's question about 102/202 numbering) give a profile view of the main action. TripAdvisor: 'the two wide sides are fine' and are preferred over 'straight in front' which is 'too far from the rear end of the main stage.' AVFMS samr32 at C207 (Just in Time, Feb 26 2026): 'Amazing seat! Can see both stages so well, and the actors (including Jonathan Groff) run up and down the aisle right near you.' The 300-degree blocking means side sections regularly get face-forward moments; not behind-stage.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Profile view of action oriented to the main axis — inherent to in-the-round (TripAdvisor: directors must 'deal with 300 degrees of view angle')"
+              }
+            ],
+            "bestFor": [
+              "Patrons who enjoy actor-aisle proximity (AVFMS C207: 'actors run up and down the aisle right near you')",
+              "Shows where staging extends to the sides (Headout: 'when the performance extends out to the side areas, those in the side sections get an amazing view')"
+            ],
+            "worstFor": [
+              "First-time in-the-round attendees unprepared for profile angles (TripAdvisor thread explicitly warns about 300-degree viewing)"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.com/venue/Circle+in+the+Square+Theatre/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7713728-Circle_in_the_Square_Theatre_Seats-New_York_City_New_York.html",
+              "https://forum.broadwayworld.com/thread/Circle-in-the-Square-Seating--1071087",
+              "https://www.headout.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/circle-in-the-square-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Extreme Corner Seats (437-440 / 437-439 range)",
+            "rowRange": "varies",
+            "verdict": "skip",
+            "verdictLabel": "Corner obstruction risk",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "The one sustained warning across every source is the extreme corner seats where the horseshoe's ends meet the stage. Headout/TickPick specifically: 'seats 438-440 are obstructed when actors perform on the far left of the stage and vice versa for the opposite side' (437-439). Unlike the rest of the house where in-the-round angles are temporary, these corner positions can have whole extended scenes played entirely out of view on the opposite corner. In a 3/4 thrust with actors using the full perimeter, this is a structural flaw of the seat, not a temporary blocking issue.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Headout/TickPick: 'seats 438-440 are obstructed when actors perform on the far left; 437-439 when actors perform on the far right' — sustained, not momentary"
+              },
+              {
+                "type": "side-angle",
+                "note": "Extreme edge of horseshoe — severe profile view of main-axis action"
+              }
+            ],
+            "bestFor": [
+              "Deep-discount rush buyers (only reason to choose these — they are the cheapest corner positions)"
+            ],
+            "worstFor": [
+              "Anyone wanting to see the full show (Headout explicitly: 'avoid the extreme corner seats on all sides')",
+              "First-time visitors (TripAdvisor: 'straight in front is too far from the rear end of the main stage')"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/circle-in-the-square-theatre-seating-chart/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7713728-Circle_in_the_Square_Theatre_Seats-New_York_City_New_York.html",
+              "https://seatplan.com/new-york/circle-in-the-square-theatre/seating-plan/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -3796,10 +4317,78 @@
     "yearBuilt": 2003,
     "operator": "Roundabout Theatre Company",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:24.634Z",
+      "lastUpdated": "2026-04-19T01:25:33.853Z",
       "seating": {
-        "bestSeats": "The theater is small, so most seats offer a good view. Aim for the center sections for the most balanced perspective.",
-        "accessibility": "Accessible by elevator only. Assistive listening devices available."
+        "bestSeats": "Ideal: Mezzanine (rows AA, BB, CC (3 rows)) — SeatPlan explicitly names Left and Right Mezzanine as 'the best value seats at the Laura Pels Theatre,' citing cheap tickets vs. central Orchestra with 'a clear and close view.' Only 3 rows (AA/BB/CC), under 100 seats — feels intimate and close to stage. Headout confirms 'very little restriction from the Mezzanine overhang at the back' of the Orchestra",
+        "accessibility": "Accessible by elevator only. Assistive listening devices available.",
+        "sections": [
+          {
+            "name": "Orchestra",
+            "rowRange": "A-Q (16 rows)",
+            "bestRow": "Rows E-G center (SeatPlan + Headout); Row F-L center (Headout)",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best in the house",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "SeatPlan names Center Orchestra rows E-G as the best seats overall, citing 'a winning mix of perfect proximity and elevated view over the heads in front' on a good rake with a low stage. Headout notes the 'outstanding inclination' keeps sightlines clear from middle rows. AVFMS Row D seat 2: 'Perfect view with unlimited legroom.' 16-row section seats ~350 of the 413 total; low stage means front rows don't require neck strain.",
+            "hazards": [
+              {
+                "type": "corner-cutoff",
+                "note": "AVFMS Orchestra R, Row K, seat 12 had 'the far up left corner of the stage slightly cut off.'"
+              }
+            ],
+            "bestFor": [
+              "Immersive close-up view (SeatPlan: low stage, perfect proximity)",
+              "Dialogue-heavy plays (Headout: warm acoustics, clear sightlines)",
+              "Patrons wanting the definitive view (SeatPlan names center E-G the best seats)"
+            ],
+            "worstFor": [
+              "Budget buyers (SeatPlan calls center orchestra the pricier option vs. mezzanine value)",
+              "Far-side seats for staging-heavy productions (AVFMS Row C seat 6 restricted; Orchestra R Row K corner cutoff)"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/laura-pels-theatre/seating-plan/",
+              "https://www.headout.com/blog/laura-pels-theatre-seating-chart/",
+              "https://aviewfrommyseat.com/venue/Laura+Pels+Theatre/",
+              "https://aviewfrommyseat.com/photo/216738/Laura+Pels+Theatre/section-Orchestra/row-C/row-C/",
+              "https://aviewfrommyseat.com/photo/206188/Laura+Pels+Theatre/section-Orchestra+R/row-K/row-K/",
+              "https://www.laurapelstheatre.com/seating-chart/"
+            ]
+          },
+          {
+            "name": "Mezzanine",
+            "rowRange": "AA, BB, CC (3 rows)",
+            "bestRow": "Row BB (Headout: 'second mezzanine row' offers good sightlines at lower prices); Left/Right Mezzanine overall (SeatPlan)",
+            "verdict": "solid",
+            "verdictLabel": "Smart value pick",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "SeatPlan explicitly names Left and Right Mezzanine as 'the best value seats at the Laura Pels Theatre,' citing cheap tickets vs. central Orchestra with 'a clear and close view.' Only 3 rows (AA/BB/CC), under 100 seats — feels intimate and close to stage. Headout confirms 'very little restriction from the Mezzanine overhang at the back' of the Orchestra, meaning the Mezzanine itself is close/low. Row BB flagged by Headout as a specific value row.",
+            "hazards": [
+              {
+                "type": "rail-obstruction",
+                "note": "SeatPlan: 'the Mezzanine has a couple of restricted views from safety and stair rails in the front row and center aisle seats' — front-row AA center-aisle seats are the specific risk."
+              }
+            ],
+            "bestFor": [
+              "Value buyers (SeatPlan: 'best value seats')",
+              "Broader staging perspective (Headout: 'excellent perspective for a broader view of stage and set design')",
+              "Patrons who want to feel close without premium pricing (SeatPlan: 'clear and close view')"
+            ],
+            "worstFor": [
+              "Front-row AA center-aisle ticket holders (SeatPlan: safety/stair rail obstructions)",
+              "Patrons who want maximum immersion (SeatPlan ranks center Orchestra E-G above this)"
+            ],
+            "dataPoints": 6,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/laura-pels-theatre/seating-plan/",
+              "https://www.headout.com/blog/laura-pels-theatre-seating-chart/",
+              "https://www.laurapelstheatre.com/seating-chart/",
+              "https://www.roundabouttheatre.org/theatres-and-venues/harold-and-miriam-steinberg-center-for-theatre/laura-pels-accessibility"
+            ]
+          }
+        ]
       },
       "parking": {
         "streetParking": "Street parking in this area is extremely limited and difficult to find, especially during show times.",
@@ -4068,10 +4657,81 @@
     "yearBuilt": 1903,
     "operator": "ATG Entertainment",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:10:39.137Z",
+      "lastUpdated": "2026-04-19T01:25:33.851Z",
       "seating": {
-        "bestSeats": "The orchestra section offers great legroom and excellent acoustics. Center orchestra seats provide the most immersive experience.",
-        "accessibility": "Elevator to Dress Circle. No elevator to Balcony. Assisted listening devices at coat check."
+        "bestSeats": "Ideal: Dress Circle (rows A-J) — SeatPlan flags Dress Circle A-B center as offering unobstructed sightlines and the 'front few rows of the Center Dress Circle' as premium; rows D-F center are repeatedly called out as great-value seats with full sweep of the stage. The 258-seat section has a good rake and generous legroom. Balcony overhang only becomes obvious at row J and doesn't cut into the stag",
+        "accessibility": "Elevator to Dress Circle. No elevator to Balcony. Assisted listening devices at coat check.",
+        "sections": [
+          {
+            "name": "Orchestra",
+            "rowRange": "A-U",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best seats in the house",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "SeatPlan, TickPick and Headout all converge: center rows D-K sit at a perfect distance to take in the whole stage without craning. Row A is called out as too close for comfortable viewing. Dress Circle overhangs at Orchestra row L and the Mezz overhang only becomes obvious at row R without significantly cutting the stage, so the middle band is protected. 2017 ATG restoration upgraded legroom throughout.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "SeatPlan: Dress Circle Row A overhangs Orchestra Row L; mezz overhang becomes obvious by row R but doesn't significantly cut the stage."
+              }
+            ],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/hudson-theatre/seating-plan/",
+              "https://seatplan.com/new-york/hudson-theatre/orchestra/",
+              "https://www.tickpick.com/blog/hudson-theatre-seating-chart/",
+              "https://www.headout.com/blog/hudson-theater-seating-chart/",
+              "https://forum.broadwayworld.com/thread/Hudson-Theater-Seating"
+            ]
+          },
+          {
+            "name": "Dress Circle",
+            "rowRange": "A-J",
+            "bestRow": "Row A center (SeatPlan: 'best views are from rows A and B, unobstructed sightlines of the entire set')",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Elevated center-block gem",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "SeatPlan flags Dress Circle A-B center as offering unobstructed sightlines and the 'front few rows of the Center Dress Circle' as premium; rows D-F center are repeatedly called out as great-value seats with full sweep of the stage. The 258-seat section has a good rake and generous legroom. Balcony overhang only becomes obvious at row J and doesn't cut into the stage, so every row is usable.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "SeatPlan: Balcony Row A overhangs Dress Circle Row F; overhang is obvious by row J but doesn't cut into the stage."
+              }
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/hudson-theatre/dress-circle/",
+              "https://seatplan.com/new-york/hudson-theatre/seating-plan/",
+              "https://www.headout.com/blog/hudson-theater-seating-chart/",
+              "https://www.tickpick.com/blog/hudson-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Balcony",
+            "rowRange": "A-H",
+            "bestRow": "Row A center (SeatPlan: 'full, clear view of the stage below with impressive detail')",
+            "verdict": "solid",
+            "verdictLabel": "Budget pick with honest sightlines",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "SeatPlan describes Balcony rows A-B center as hanging close enough for detailed views and reports sightlines 'better than average' for a third level. Rear rows G-H are the cheapest in the house. Rake is very good, but legroom is tighter than the rest of the theater and the top of the stage may be cut by the balcony's angle. AVFMS user at G110 noted that some in-audience action isn't visible from rear balcony.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: legroom in the Balcony is tighter than the rest of the theater; steeper rake than Orchestra/Dress Circle."
+              }
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/hudson-theatre/balcony/",
+              "https://seatplan.com/new-york/hudson-theatre/seating-plan/",
+              "https://aviewfrommyseat.com/venue/Hudson+Theatre/",
+              "https://www.headout.com/blog/hudson-theater-seating-chart/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -4709,11 +5369,114 @@
     "yearBuilt": 1927,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:01.378Z",
+      "lastUpdated": "2026-04-19T01:25:33.852Z",
       "seating": {
-        "bestSeats": "The mezzanine offers surprisingly good views despite its steepness. Center orchestra seats provide the most direct view of the stage.",
+        "bestSeats": "Ideal: Orchestra (Value) (rows G-L) — Headout and TickPick both flag center G-L as the sweet spot for value — priced below front orchestra but still before the Row L overhang line. In an 805-seat house these rows feel close regardless.",
         "avoidSeats": "Legroom can be limited in the orchestra section, so those needing more space might prefer an aisle seat or mezzanine.",
-        "accessibility": "5 wheelchair spaces in Orchestra. No wheelchair-accessible restroom (use adjacent Schoenfeld)."
+        "accessibility": "5 wheelchair spaces in Orchestra. No wheelchair-accessible restroom (use adjacent Schoenfeld).",
+        "sections": [
+          {
+            "name": "Orchestra",
+            "rowRange": "A-R",
+            "bestRow": "Row D-F center (Headout: 'widely regarded as the best in the house'); SeatPlan corroborates rows A-D for intimate views",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best in the house",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "805-seat intimate Shubert house; center Orchestra D-F is the consensus best pick across Headout, SeatPlan, and TickPick. Rows A-D play well for plays/intimate-drama given Golden's small footprint. SeatPlan notes mezzanine overhang begins at Row L with 'minimal' effect, so orchestra rear rows remain viable.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "SeatPlan: overhang begins at Row L, effect described as minimal"
+              }
+            ],
+            "bestFor": [
+              "intimate-drama",
+              "play"
+            ],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/john-golden-theatre-seating-chart/",
+              "https://seatplan.com/new-york/golden-theatre/orchestra/",
+              "https://seatplan.com/new-york/golden-theatre/seating-plan/",
+              "https://www.tickpick.com/blog/john-golden-theatre-seating-chart/",
+              "https://aviewfrommyseat.com/venue/John+Golden+Theatre/tips/"
+            ]
+          },
+          {
+            "name": "Orchestra (Value)",
+            "rowRange": "G-L",
+            "verdict": "solid",
+            "verdictLabel": "Best value in the house",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Headout and TickPick both flag center G-L as the sweet spot for value — priced below front orchestra but still before the Row L overhang line. In an 805-seat house these rows feel close regardless.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "SeatPlan: overhang starts at Row L so rows K-L sit right under the leading edge"
+              }
+            ],
+            "bestFor": [
+              "play",
+              "intimate-drama",
+              "musical"
+            ],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/john-golden-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/john-golden-theatre-seating-chart/",
+              "https://seatplan.com/new-york/golden-theatre/orchestra/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine",
+            "rowRange": "A-D",
+            "bestRow": "Rows A-B center seats 101-114 (SeatPlan: 'excellent elevated views'; Headout: 'comprehensive yet detailed sightlines')",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Elevated direct view",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Front Mezz rows A-C center are the #2 premium pick after center orchestra — elevation gives a clean overhead line on the small Golden stage. SeatPlan flags a safety bar that can distract Row A slightly, and legroom is noted as 'slightly cramped for taller patrons.'",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: 'slightly cramped space for taller patrons'; aisle seats recommended"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/golden-theatre/front-mezzanine/",
+              "https://www.headout.com/blog/john-golden-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/john-golden-theatre-seating-chart/",
+              "https://seatplan.com/new-york/golden-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine",
+            "rowRange": "A-H",
+            "verdict": "solid",
+            "verdictLabel": "Surprisingly good budget pick",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "SeatPlan calls rear mezz 'surprisingly good' because the 805-seat footprint keeps even back rows close. Rake is described as well-designed with good elevation over Front Mezz. Legroom is the main knock — 'cramped' with narrow pitch.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: legroom 'cramped' with 'narrow' pitch; aisle seats recommended"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/golden-theatre/rear-mezzanine/",
+              "https://www.headout.com/blog/john-golden-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/john-golden-theatre-seating-chart/",
+              "https://seatplan.com/new-york/golden-theatre/seating-plan/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -5475,11 +6238,257 @@
     "yearBuilt": 1903,
     "operator": "Shubert Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:22.962Z",
+      "lastUpdated": "2026-04-19T01:25:33.852Z",
       "seating": {
-        "bestSeats": "The Lyceum is an intimate theater, so most seats offer good views. Center orchestra seats provide the most direct view of the stage.",
+        "bestSeats": "Ideal: Mezzanine Center Rear (Rows D-F) (rows D-F) — Folliesbroadway and Headout both flag Mezz D-F center as best value: clean sightlines, excellent rake, priced materially below front-mezz/prime-orchestra. Balcony overhang doesn't cut in until Row C so D-F also sit past the cutoff line without being affected (SeatPlan note is about row C).",
         "avoidSeats": "Seats in the rear of the balcony may feel distant. Side orchestra seats can sometimes have partially obstructed views.",
-        "accessibility": "4 wheelchair spaces in Orchestra. No elevator. Infrared devices available."
+        "accessibility": "4 wheelchair spaces in Orchestra. No elevator. Infrared devices available.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "rowRange": "A-O (15 rows; center numbered 101-114)",
+            "bestRow": "Rows D-G per Headout and SeatPlan; F-J per Folliesbroadway for value",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Sweet Spot",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Center orchestra rows D-G offer head-on sightlines to the high stage without neck strain. Gentle rake; intimate 922-seat house means even mid-orchestra feels close. Playbill notes Oh, Mary! action is downstage center, rewarding central seats.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Tripadvisor: 'Seats were a bit tight'; SeatPlan notes tight seat pitch throughout"
+              },
+              {
+                "type": "partial-stage",
+                "note": "SeatPlan: gentle rake means a tall patron in front can block view in Center Orchestra"
+              }
+            ],
+            "bestFor": [
+              "play",
+              "intimate-drama"
+            ],
+            "worstFor": [
+              "dance-heavy"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lyceum-theatre/orchestra/",
+              "https://seatplan.com/new-york/lyceum-theatre/seating-plan/",
+              "https://www.headout.com/blog/lyceum-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/lyceum-theatre-interactive-seating-chart/",
+              "https://playbill.com/article/how-to-pick-the-best-seats-at-oh-mary-on-broadway",
+              "https://shubert.nyc/theatres/lyceum/"
+            ]
+          },
+          {
+            "name": "Orchestra Sides (Left/Right, rows 1-11 extreme sides)",
+            "rowRange": "A-K on extreme L/R",
+            "verdict": "skip",
+            "verdictLabel": "Skip",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Telecharge lists extreme sides of the first 11 orchestra rows as obstructed-view seats per Playbill. SeatPlan confirms double-digit seats are angled with far-side stage obstruction. 1903 house geometry leaves sharp side angles near stage.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "SeatPlan: 'Double-digit seats are more angled, with the far-right side of the stage...obstructed'"
+              },
+              {
+                "type": "obstructed-view",
+                "note": "Playbill/Telecharge: extreme sides of rows 1-11 sold at discount as obstructed"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://playbill.com/article/how-to-pick-the-best-seats-at-oh-mary-on-broadway",
+              "https://www.tickpick.com/blog/lyceum-theatre-interactive-seating-chart/",
+              "https://seatplan.com/new-york/lyceum-theatre/orchestra/"
+            ]
+          },
+          {
+            "name": "Orchestra Rear (Rows L-O, behind mezz overhang)",
+            "rowRange": "L-O",
+            "verdict": "solid",
+            "verdictLabel": "Solid",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "TickPick and SeatPlan both confirm Mezzanine overhang begins at Row L of Orchestra. AVFMS reviewer for O12 praised tiered rake ('raised above the row in front so you don't have any heads blocking you'). Fine for plays; top-of-stage cutoff limits tall-set musicals.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "TickPick: Mezzanine overhang starts at Row L; SeatPlan confirms"
+              }
+            ],
+            "bestFor": [
+              "play",
+              "intimate-drama"
+            ],
+            "worstFor": [
+              "spectacle"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/lyceum-theatre-interactive-seating-chart/",
+              "https://seatplan.com/new-york/lyceum-theatre/orchestra/",
+              "https://seatplan.com/new-york/lyceum-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Mezzanine Center (Rows A-C)",
+            "rowRange": "A-J (9 rows)",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Sweet Spot",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "SeatPlan: 'patrons can look directly down to the stage, taking advantage of the Mezzanine's fantastic aerial views which don't sacrifice detail.' Excellent rake prevents blocked views. Ideal for spectacle/musicals where staging composition matters.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan user review: 'Great view, but the seat is SO TINY with no leg room to speak of. Prepare to lose all sensation in your lower extremities.'"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle",
+              "dance-heavy"
+            ],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lyceum-theatre/mezzanine/",
+              "https://seatplan.com/new-york/lyceum-theatre/seating-plan/",
+              "https://www.headout.com/blog/lyceum-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/lyceum-theatre-interactive-seating-chart/",
+              "https://folliesbroadway.com/what-are-the-best-seats-in-the-lyceum-theatre-nyc/"
+            ]
+          },
+          {
+            "name": "Mezzanine Center Rear (Rows D-F)",
+            "rowRange": "D-F",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Value Sweet Spot",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Folliesbroadway and Headout both flag Mezz D-F center as best value: clean sightlines, excellent rake, priced materially below front-mezz/prime-orchestra. Balcony overhang doesn't cut in until Row C so D-F also sit past the cutoff line without being affected (SeatPlan note is about row C).",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: 'Legroom can be very tight in the Mezzanine'"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://folliesbroadway.com/what-are-the-best-seats-in-the-lyceum-theatre-nyc/",
+              "https://www.headout.com/blog/lyceum-theatre-seating-chart/",
+              "https://seatplan.com/new-york/lyceum-theatre/mezzanine/"
+            ]
+          },
+          {
+            "name": "Mezzanine Rear (behind Row C — balcony overhang) and Side Double-Digits",
+            "rowRange": "D-J rear plus D24/G22 sides",
+            "verdict": "skip",
+            "verdictLabel": "Skip (tall sets)",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "SeatPlan: 'Balcony overhang kicks in at row C, so views behind this may experience cut-off at the top of the stage.' Double-digit side seats (D24, G22) have partial sightlines. Fine for plays; poor for tall scenic musicals.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "SeatPlan: balcony overhang starts at mezz row C"
+              },
+              {
+                "type": "side-angle",
+                "note": "SeatPlan: D24, G22 flagged for partial sightlines; Playbill notes extreme sides of mezz rows 1-4 are obstructed"
+              },
+              {
+                "type": "partial-stage",
+                "note": "Top-of-stage cut-off behind row C"
+              }
+            ],
+            "bestFor": [
+              "play"
+            ],
+            "worstFor": [
+              "spectacle",
+              "musical"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lyceum-theatre/mezzanine/",
+              "https://playbill.com/article/how-to-pick-the-best-seats-at-oh-mary-on-broadway"
+            ]
+          },
+          {
+            "name": "Balcony Center (Rows B-C)",
+            "rowRange": "A-G (7 rows, 210 seats)",
+            "bestRow": "Rows B-C Center per SeatPlan, Folliesbroadway, and Tripadvisor (reviewer 'Row B center near aisle')",
+            "verdict": "solid",
+            "verdictLabel": "Budget Solid",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Rows B and C clear the Row A safety rail and preserve a steep but clean center view. Tripadvisor: 'Great view of the stage, although a bit of an angled view down.' Starting prices on SeatPlan as low as $68-$80. Steep rake is uncomfortable but preserves sightlines.",
+            "hazards": [
+              {
+                "type": "steep-rake",
+                "note": "SeatPlan: 'very steep rake... hold onto the handrails on your way down to your seats'"
+              },
+              {
+                "type": "distant",
+                "note": "SeatPlan: 'section furthest from the stage'"
+              },
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: 'very cramped' pitch except aisle seats"
+              }
+            ],
+            "bestFor": [
+              "play",
+              "musical"
+            ],
+            "worstFor": [
+              "intimate-drama"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lyceum-theatre/balcony/",
+              "https://folliesbroadway.com/what-are-the-best-seats-in-the-lyceum-theatre-nyc/",
+              "https://www.tripadvisor.com/ShowUserReviews-g60763-d4005296-r276199844-Lyceum_Theatre-New_York_City_New_York.html",
+              "https://www.tickpick.com/blog/lyceum-theatre-interactive-seating-chart/"
+            ]
+          },
+          {
+            "name": "Balcony Row A and Side L/R front rows",
+            "rowRange": "A (front); L/R rows A-B",
+            "verdict": "skip",
+            "verdictLabel": "Skip",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Row A front has a safety rail that cuts across the stage (SeatPlan, Playbill, Tripadvisor all independently confirm). TickPick: Balcony L and R first two rows have partial views due to railing. Shorter patrons especially affected.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "SeatPlan/Playbill/Tripadvisor: safety rail on Row A cuts across stage"
+              },
+              {
+                "type": "partial-stage",
+                "note": "TickPick: Balcony L/R rows A-B partial view from railing"
+              },
+              {
+                "type": "steep-rake",
+                "note": "Very steep rake throughout balcony"
+              }
+            ],
+            "bestFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lyceum-theatre/balcony/",
+              "https://playbill.com/article/how-to-pick-the-best-seats-at-oh-mary-on-broadway",
+              "https://www.tickpick.com/blog/lyceum-theatre-interactive-seating-chart/",
+              "https://www.tripadvisor.com/ShowUserReviews-g60763-d4005296-r276199844-Lyceum_Theatre-New_York_City_New_York.html"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -8626,10 +9635,139 @@
     "yearBuilt": 1925,
     "operator": "Manhattan Theatre Club",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:50.043Z",
+      "lastUpdated": "2026-04-19T01:25:33.852Z",
       "seating": {
-        "bestSeats": "The Samuel J. Friedman Theatre is an intimate space, so most seats offer a good view. Center orchestra seats provide the optimal perspective.",
-        "accessibility": "Elevator to all levels. Built-in induction loop for t-coil hearing aids."
+        "bestSeats": "Ideal: Orchestra (Mid Rows E-J) (rows E-J) — Headout and SeatPlan both flag rows E-J as the best price-to-sightline ratio: meaningfully cheaper than the A-D premium band while staying close in a 634-seat room. Slight orchestra rake keeps sightlines clean. Mezzanine overhang (per SeatPlan) begins at row G but the intimate room means no sound-deadening issue in this band.",
+        "accessibility": "Elevator to all levels. Built-in induction loop for t-coil hearing aids.",
+        "sections": [
+          {
+            "name": "Orchestra (Premium Rows A-D)",
+            "rowRange": "AA-D",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Intimate front-orchestra, no overhang",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "SeatPlan notes rows A-D are ideal at this 634-seat house: close enough to catch facial expressions but not neck-craning. Row AA also called out for superior legroom. No overhang concerns (Mezzanine overhang starts at row G per SeatPlan).",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "SeatPlan: seats at far sides of front rows offer 'more angled views'"
+              }
+            ],
+            "bestFor": [
+              "intimate-drama",
+              "play"
+            ],
+            "worstFor": [
+              "spectacle",
+              "dance-heavy"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/orchestra/",
+              "https://www.headout.com/blog/samuel-j-friedman-theatre-seating-chart/",
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Orchestra (Mid Rows E-J)",
+            "rowRange": "E-J",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best value in the house",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Headout and SeatPlan both flag rows E-J as the best price-to-sightline ratio: meaningfully cheaper than the A-D premium band while staying close in a 634-seat room. Slight orchestra rake keeps sightlines clean. Mezzanine overhang (per SeatPlan) begins at row G but the intimate room means no sound-deadening issue in this band.",
+            "hazards": [],
+            "bestFor": [
+              "play",
+              "intimate-drama"
+            ],
+            "worstFor": [
+              "spectacle"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/samuel-j-friedman-theatre-seating-chart/",
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/orchestra/",
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Orchestra (Rear Rows K-Q)",
+            "rowRange": "K-Q",
+            "verdict": "solid",
+            "verdictLabel": "Under the overhang but still engaged",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "SeatPlan confirms the Mezzanine overhangs from row G back, so K-Q sit fully under. The room is small enough (Headout: 'one of Broadway's more intimate spaces') that rear orchestra remains engaged. Rows P and Q are accessibility-friendly (no aisle stairs per folliesbroadway). Legroom tightens beyond row O per SeatPlan.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: 'Beyond row O, legroom can get slightly tighter'"
+              }
+            ],
+            "bestFor": [
+              "play",
+              "intimate-drama"
+            ],
+            "worstFor": [
+              "spectacle",
+              "dance-heavy"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/orchestra/",
+              "https://www.headout.com/blog/samuel-j-friedman-theatre-seating-chart/",
+              "https://folliesbroadway.com/what-are-the-best-seats-in-the-samuel-friedman-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Mezzanine (Premier Circle AA-BB)",
+            "rowRange": "AA-BB",
+            "bestRow": "Center Mezzanine rows AA-BB (Headout: 'middle seats in rows AA to BB are the most coveted'; SeatPlan confirms Premier Circle designation)",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Premier Circle, panoramic front-mezz",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Headout and SeatPlan both name AA-BB center as premier seats with 'clean, direct look at the stage' and elevation that improves the view. aviewfrommyseat user on Mezzanine L row A aisle reported 'lots of legroom' with only a thin safety bar as minor issue. Excellent rake across the mezzanine.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "aviewfrommyseat: Mezzanine L row A aisle has a 'thin safety bar' slightly in sightline but did not obstruct view"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://aviewfrommyseat.co.uk/venue/Samuel+J.+Friedman+Theatre/Mezzanine+L/A/",
+              "https://www.headout.com/blog/samuel-j-friedman-theatre-seating-chart/",
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/mezzanine/",
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Mezzanine (Rear Rows C-G)",
+            "rowRange": "C-G",
+            "bestRow": "Row C-D center (Headout: 'excellent rake means even the very back rows have plenty to offer with their panoramic views')",
+            "verdict": "solid",
+            "verdictLabel": "Well-raked rear mezz, panoramic view",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "SeatPlan and Headout both emphasize that the mezzanine has 'excellent rake' keeping all rows elevated with clean sightlines; Headout says 'no truly bad seat in the house'. Small 224-seat mezzanine means even row G stays close. Row F offers transfer seats and row E has wheelchair spaces (Headout accessibility).",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Headout and SeatPlan: 'Those sitting in the far corners will have slightly less desirable views' / obstructed corners of stage from far-side mezzanine"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/mezzanine/",
+              "https://www.headout.com/blog/samuel-j-friedman-theatre-seating-chart/",
+              "https://seatplan.com/new-york/samuel-j-friedman-theatre/seating-plan/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -9604,11 +10742,173 @@
     "yearBuilt": 1927,
     "operator": "Roundabout Theatre Company",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:17.800Z",
+      "lastUpdated": "2026-04-19T01:25:33.852Z",
       "seating": {
-        "bestSeats": "The theater is relatively small, so most seats offer a good view. Center orchestra seats provide the most immersive experience.",
+        "bestSeats": "Ideal: Orchestra (Rows F-H Value) (rows F-H) — SeatPlan explicitly flags Rows F-H as 'good value seats' that avoid Front Mezzanine overhang disruption and sit at a comfortable distance from the stage. Headout and TickPick echo the value framing for this band. Pricing typically below the Row A-E premium band.",
         "avoidSeats": "Seats at the far sides of the balcony may have slightly obstructed views.",
-        "accessibility": "No elevator to Mezzanine. 10 induction loops. 81 assistive listening devices. Orchestra wheelchair seating."
+        "accessibility": "No elevator to Mezzanine. 10 induction loops. 81 assistive listening devices. Orchestra wheelchair seating.",
+        "sections": [
+          {
+            "name": "Orchestra (Center)",
+            "rowRange": "A-P",
+            "bestRow": "Rows A-E per SeatPlan; Rows F-H per SeatPlan/TickPick as value pick",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Center Orchestra front-to-mid is the house sweet spot",
+            "priceTier": "top",
+            "isValuePick": false,
+            "rationale": "SeatPlan and TickPick both identify center Orchestra Rows A-E as offering the most direct, immersive sightlines. The stage's setback (per TickPick) enhances Row A viewing, and Rows F-H avoid the Front Mezzanine overhang that begins at Row M. Headout lists 15 orchestra rows (A-P) totaling ~521-538 seats depending on source.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "SeatPlan: Front Mezz overhang begins at Row M, cutting top of stage for rows behind"
+              }
+            ],
+            "bestFor": [
+              "intimate-drama",
+              "play",
+              "musical"
+            ],
+            "worstFor": [
+              "spectacle"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/studio-54-theatre/seating-plan/",
+              "https://seatplan.com/new-york/studio-54-theatre/orchestra/",
+              "https://www.tickpick.com/blog/studio-54-interactive-seating-chart-a-wonderful-world/",
+              "https://www.headout.com/blog/studio-54-theatre-seating-chart/",
+              "https://broadwayscene.com/n-z/studio-54/"
+            ]
+          },
+          {
+            "name": "Orchestra (Rows F-H Value)",
+            "rowRange": "F-H",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best value in the house",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "SeatPlan explicitly flags Rows F-H as 'good value seats' that avoid Front Mezzanine overhang disruption and sit at a comfortable distance from the stage. Headout and TickPick echo the value framing for this band. Pricing typically below the Row A-E premium band.",
+            "hazards": [],
+            "worstFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/studio-54-theatre/seating-plan/",
+              "https://www.headout.com/blog/studio-54-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/studio-54-interactive-seating-chart-a-wonderful-world/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine (Center)",
+            "rowRange": "AA-DD",
+            "bestRow": "Row BB per SeatPlan (avoids AA safety-rail obstruction for shorter patrons)",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Elevated premium with unobstructed sightlines",
+            "priceTier": "top",
+            "isValuePick": false,
+            "rationale": "SeatPlan describes Center Front Mezz AA-BB as 'very popular' with 'excellently raked seats and expansive overhead sightlines.' No Rear Mezz overhang exists above this section. Headout prices most Center Front Mezz seats around $224. Row AA safety rail can clip the stage for shorter patrons, so Row BB is the refined pick.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "SeatPlan: Row AA safety rail 'can cut into the stage slightly' for shorter patrons"
+              },
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: 'Legroom is cramped in the Front Mezzanine,' especially mid-row"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/studio-54-theatre/front-mezzanine/",
+              "https://seatplan.com/new-york/studio-54-theatre/seating-plan/",
+              "https://www.headout.com/blog/studio-54-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/studio-54-interactive-seating-chart-a-wonderful-world/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine (Sides)",
+            "rowRange": "AA-DD",
+            "verdict": "solid",
+            "verdictLabel": "Elevated views with side-angle tradeoff",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "SeatPlan: Left-section Front Mezz has 'more restricted sightlines of action at the corner of stage right'; Right section mirrors this toward stage left. Legroom described as 'particularly cramped' at side seats. Still elevated with no overhang above, so sightlines to center stage remain workable.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "SeatPlan: restricted sightlines to opposite-side stage corner"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/studio-54-theatre/front-mezzanine/",
+              "https://seatplan.com/new-york/studio-54-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine (Center Front Rows)",
+            "rowRange": "EE-NN",
+            "bestRow": "Rows FF-GG per SeatPlan ('perfect'); Row EE per Headout as budget pick",
+            "verdict": "solid",
+            "verdictLabel": "Budget-friendly elevated view, tight legroom",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "SeatPlan calls 'rows FF and GG in the Center Rear Mezzanine' the Rear Mezz sweet spot; Headout flags EE-GG as good value ('a good look at the stage without costing as much'). Row EE sits directly behind a horizontal aisle per the SeatPlan overview. Steep rake trades legroom for sightlines.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: 'legroom is very tight' / 'quite cramped' to accommodate steep rake"
+              },
+              {
+                "type": "steep-rake",
+                "note": "TickPick: 'steeply inclined Rear Mezzanine'"
+              },
+              {
+                "type": "distant",
+                "note": "SeatPlan: 'fairly impressive elevated views' but farthest section from stage"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle"
+            ],
+            "worstFor": [
+              "intimate-drama"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/studio-54-theatre/rear-mezzanine/",
+              "https://seatplan.com/new-york/studio-54-theatre/seating-plan/",
+              "https://www.headout.com/blog/studio-54-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/studio-54-interactive-seating-chart-a-wonderful-world/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine (Sides HH-NN)",
+            "rowRange": "HH-NN",
+            "verdict": "skip",
+            "verdictLabel": "Side-angle obstruction into opposite stage half",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "SeatPlan and TickPick both warn that Left Rear Mezz Rows HH-NN have obstructed sightlines into stage right, and Right Rear Mezz mirrors this to stage left. Combined with the steep rake, tight legroom, and distance, these rows deliver the weakest experience in the house.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan: 'less legroom' due to steep rake"
+              },
+              {
+                "type": "distant",
+                "note": "Farthest rows from stage per Headout (NN is last row)"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/studio-54-theatre/rear-mezzanine/",
+              "https://www.tickpick.com/blog/studio-54-interactive-seating-chart-a-wonderful-world/",
+              "https://www.headout.com/blog/studio-54-theatre-seating-chart/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -9742,10 +11042,128 @@
     "yearBuilt": 1918,
     "operator": "Roundabout Theatre Company",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:24.679Z",
+      "lastUpdated": "2026-04-19T01:25:33.853Z",
       "seating": {
-        "bestSeats": "The Todd Haimes Theatre is a smaller venue, so most seats offer a good view. Center orchestra seats provide the most immersive experience.",
-        "accessibility": "Elevators to all levels. 53 assistive listening devices. 11 wheelchair seats across Orchestra and Balcony."
+        "bestSeats": "Ideal: Rear Mezzanine / Back Rows (rows D-G (within the single A-G mezz; back rows cited)) — Headout: 'rear mezzanine offers budget-friendly options with a pretty good view of the stage for a lower price.' TripAdvisor reviewer sat 'in the very last row of the balcony at this beautiful old theater and had an excellent view' — small-house intimacy holds up to the back wall.",
+        "accessibility": "Elevators to all levels. 53 assistive listening devices. 11 wheelchair seats across Orchestra and Balcony.",
+        "sections": [
+          {
+            "name": "Orchestra Center",
+            "rowRange": "A-P",
+            "bestRow": "Rows E-H center (Headout, TickPick: 'Center Orchestra seats 105-109 in rows C-H offer a great, direct look at the stage without any obstructions'; rows E-J recommended as value)",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Intimate 740-seat house, center orchestra is the premium pick",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Headout and TickPick both name center orchestra rows C-H (seats 105-109) as the best unobstructed views in the 740-seat house; rows E-J are called out as the value sweet spot before mezz overhang begins at row H. TripAdvisor reviewer: 'had great seats (row 3) ... seats further back would have been good too' given the small theater size.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Headout: 'Rows A, B and C are too close to the stage and you may miss out on a few acts that happen at the sides'"
+              }
+            ],
+            "bestFor": [
+              "intimate-drama",
+              "play"
+            ],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/american-airlines-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/todd-haimes-theatre-interactive-seating-chart/",
+              "https://www.tripadvisor.com/ShowUserReviews-g60763-d555920-r313772927-American_Airlines_Theater-New_York_City_New_York.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k7941326-Best_Seats_American_Airlines_Theatre-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Orchestra Rear (rows N-P)",
+            "rowRange": "N-P",
+            "verdict": "skip",
+            "verdictLabel": "Under deep mezz overhang, top of stage cut off",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Headout guidance: 'Avoid the last three orchestra rows (N, O, and P) and the extreme corner seats.' Corroborated by search finding that beyond row N 'seats experience cut-off at the top of the stage' due to the mezzanine overhang that starts at row H.",
+            "hazards": [],
+            "bestFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/american-airlines-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/todd-haimes-theatre-interactive-seating-chart/"
+            ]
+          },
+          {
+            "name": "Mezzanine Front",
+            "rowRange": "A-G (single curved section, ~257 seats, no center aisle)",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Overhead sightline into the set, better-than-average legroom",
+            "priceTier": "mid",
+            "rationale": "Headout: 'Mezzanine seats as close to the middle of rows A to C as possible offer fantastic overhead views of the stage which are perfect for impressive sets and sweeping action.' Headout also notes 'better than average legroom, which makes up for the lack of inside aisles.' BWW forum poster recommended Mezz Row A seats 109-110 as a strong option.",
+            "hazards": [],
+            "worstFor": [],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/american-airlines-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/todd-haimes-theatre-interactive-seating-chart/",
+              "https://forum.broadwayworld.com/readmessage.php?thread=932386"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine / Back Rows",
+            "rowRange": "D-G (within the single A-G mezz; back rows cited)",
+            "verdict": "solid",
+            "verdictLabel": "Budget-friendly with clean sightlines in a small house",
+            "priceTier": "budget",
+            "isValuePick": true,
+            "rationale": "Headout: 'rear mezzanine offers budget-friendly options with a pretty good view of the stage for a lower price.' TripAdvisor reviewer sat 'in the very last row of the balcony at this beautiful old theater and had an excellent view' — small-house intimacy holds up to the back wall.",
+            "hazards": [],
+            "bestFor": [
+              "play",
+              "intimate-drama"
+            ],
+            "worstFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/american-airlines-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/todd-haimes-theatre-interactive-seating-chart/",
+              "https://www.tripadvisor.com/ShowUserReviews-g60763-d555920-r313772927-American_Airlines_Theater-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Box Seats (side)",
+            "rowRange": "Side boxes",
+            "bestRow": "Not recommended by any source consulted",
+            "verdict": "skip",
+            "verdictLabel": "Heavily obstructed per TripAdvisor and BWW forum",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "TripAdvisor reviewer on house-wide sightlines: 'Most seats have excellent views of the stage, apart from the box seats labeled as obstructed view ... When this theater says obstructed, it means obstructed -- not partially obstructed.' BWW forum user tombomb31 on the box seats: 'I'm pretty sure I remember hearing they're incredibly obstructed.' Search notes: 'Anything that is on the far side of the stage you are sitting on is obstructed.'",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "TripAdvisor: boxes 'obstructed -- not partially obstructed'"
+              },
+              {
+                "type": "side-angle",
+                "note": "Far side of stage on same side as box is blocked; miss entrances/exits"
+              },
+              {
+                "type": "partial-stage",
+                "note": "Search: 'limited view of the extreme side of the stage ... probably miss a few entrance and exit bits'"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "dance-heavy",
+              "spectacle",
+              "musical"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tripadvisor.com/ShowUserReviews-g60763-d555920-r313772927-American_Airlines_Theater-New_York_City_New_York.html",
+              "https://forum.broadwayworld.com/readmessage.php?thread=1081491"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -9880,11 +11298,214 @@
     "yearBuilt": 1965,
     "operator": "Lincoln Center Theater",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:28.461Z",
+      "lastUpdated": "2026-04-19T01:25:33.853Z",
       "seating": {
-        "bestSeats": "The thrust stage offers excellent sightlines from most seats, providing an intimate viewing experience. Center orchestra seats provide the most direct view.",
+        "bestSeats": "Ideal: Orchestra Center Back (rows L-P) — Sits on the central axis of the thrust so you see the three-sided staging in balance rather than from an angle. LCT's official chart confirms Row P has a dedicated step-up giving it elevation above Row O, and Headout lists L, P, O, K as the value-balance rows. At a thrust stage, back-center beats side-front because you read the full geometry of audience-wr",
         "avoidSeats": "Seats far to the side may offer a slightly obstructed view of certain stage areas.",
-        "accessibility": "Orchestra accessible via elevator. Induction hearing loop for t-coil. Loge NOT accessible (stairs only)."
+        "accessibility": "Orchestra accessible via elevator. Induction hearing loop for t-coil. Loge NOT accessible (stairs only).",
+        "sections": [
+          {
+            "name": "Orchestra Center Front",
+            "rowRange": "A-C",
+            "verdict": "solid",
+            "verdictLabel": "Immersive but craned",
+            "priceTier": "top",
+            "isValuePick": false,
+            "rationale": "Thrust stage projects into the audience here, so front-center puts you directly in the actors' playing space with 180-degree eye contact. However, SeatPlan and JK's TheatreScene both warn the thrust's elevated downstage lip can obscure upstage action, and the shallow rake this close means you look up at performers working the far edge of the thrust.",
+            "hazards": [],
+            "bestFor": [
+              "immersion seekers (SeatPlan: 'very immersive')",
+              "intimate dialogue plays (Headout: 'closer to all the action')"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/vivian-beaumont-theater/seating-plan/",
+              "https://www.headout.com/blog/vivian-beaumont-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/vivian-beaumont-theater-at-lincoln-center-interactive-seating-chart/",
+              "https://www.jkstheatrescene.com/2025/10/from-where-we-sat-vivian-beaumont.html"
+            ]
+          },
+          {
+            "name": "Orchestra Center Mid (Sweet Spot)",
+            "rowRange": "D-K",
+            "bestRow": "Row H (Headout: 'Orchestra Right Center Row H gives the best view'; also 'best legroom in the house')",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Thrust-stage sweet spot",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "At the middle of the thrust's semicircle, the stadium-style rake lifts you over heads in front while the curved row geometry keeps you square to the playing area — the thrust no longer feels side-on because you're on its central axis. SeatPlan, Headout, TickPick and Broadway Scene all converge on D-K center as the best sightlines in the house.",
+            "hazards": [],
+            "bestFor": [
+              "first-time Beaumont visitors (TickPick: 'best combination of sight and clarity')",
+              "full-stage productions like South Pacific/King and I (Headout)"
+            ],
+            "worstFor": [
+              "budget buyers (Headout calls this the premium tier)"
+            ],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/vivian-beaumont-theater/seating-plan/",
+              "https://www.headout.com/blog/vivian-beaumont-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/vivian-beaumont-theater-at-lincoln-center-interactive-seating-chart/",
+              "https://broadwayscene.com/n-z/the-vivian-beaumont-theatre/",
+              "https://aviewfrommyseat.com/venue/Vivian+Beaumont+Theater/"
+            ]
+          },
+          {
+            "name": "Orchestra Center Back",
+            "rowRange": "L-P",
+            "bestRow": "Row P (Headout: 'great sight lines and plenty of leg room, suggested for tall people'; the single elevated step-up row)",
+            "verdict": "solid",
+            "verdictLabel": "Value center sightline",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Sits on the central axis of the thrust so you see the three-sided staging in balance rather than from an angle. LCT's official chart confirms Row P has a dedicated step-up giving it elevation above Row O, and Headout lists L, P, O, K as the value-balance rows. At a thrust stage, back-center beats side-front because you read the full geometry of audience-wrapping blocking.",
+            "hazards": [
+              {
+                "type": "distance",
+                "note": "SeatPlan notes 'decent views' from back but less detail than center-mid"
+              }
+            ],
+            "bestFor": [
+              "value seekers (Headout: 'balance affordability with quality views')",
+              "tall patrons (Headout: Row P legroom + LCT: 1-step elevation)"
+            ],
+            "worstFor": [
+              "expression-reading at intimate plays (SeatPlan: 'back rows... decent views' vs D-K's 'best')"
+            ],
+            "dataPoints": 11,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/vivian-beaumont-theatre-seating-chart/",
+              "https://www.lct.org/shows/uncle-vanya/seating-chart/",
+              "https://seatplan.com/new-york/vivian-beaumont-theater/seating-plan/",
+              "https://www.tickpick.com/blog/vivian-beaumont-theater-at-lincoln-center-interactive-seating-chart/"
+            ]
+          },
+          {
+            "name": "Orchestra Side",
+            "rowRange": "A-P (Left/Right extremes)",
+            "verdict": "skip",
+            "verdictLabel": "Thrust goes side-on",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "On a thrust stage, the far-side Orchestra seats end up looking ACROSS the playing space rather than at it — you see actors' profiles and often stare at the back of the thrust's far edge. SeatPlan: 'restricted views depending on staging.' JK's TheatreScene explicitly warns 'avoid the 4 or 5 seats closest to the wall.' BWW Forum thread 1082386 exists specifically because patrons worry about side-seat restriction at this venue.",
+            "hazards": [
+              {
+                "type": "side-on-view",
+                "note": "SeatPlan: 'Seats at either end have a side-on view' (inherent to thrust)"
+              },
+              {
+                "type": "neck-turn",
+                "note": "Audience wraps 3 sides, so extreme-side seats face across rather than toward the action"
+              },
+              {
+                "type": "staging-blocked",
+                "note": "SeatPlan: 'restricted views depending on staging'"
+              }
+            ],
+            "bestFor": [
+              "scene-study patrons who want close actor profiles (SeatPlan: 'very immersive')"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/vivian-beaumont-theater/seating-plan/",
+              "https://www.jkstheatrescene.com/2025/10/from-where-we-sat-vivian-beaumont.html",
+              "https://forum.broadwayworld.com/readmessage.php?thread=1082386",
+              "https://www.headout.com/blog/vivian-beaumont-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Loge Center Front",
+            "rowRange": "A-C",
+            "bestRow": "Row A center (SeatPlan/TickPick/Headout all name front-center Loge as premium)",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best overhead on the thrust",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "The elevated Loge wraps the same semicircle as the Orchestra but 2 flights up (LCT: 30 steps), giving you the map-view of the thrust's three-sided blocking that's impossible from Orchestra. TickPick: 'Center, in the first three rows' is premium. SeatPlan confirms 'no bar or obstructions' at the front edge. For a thrust stage this is arguably a better seat than Orchestra for geometry-heavy stagings.",
+            "hazards": [
+              {
+                "type": "stairs-no-elevator",
+                "note": "LCT: 'Loge is not accessible due to structural limitations' — 30 steps up"
+              },
+              {
+                "type": "legroom",
+                "note": "SeatPlan: 'legroom is tight across the auditorium'"
+              }
+            ],
+            "bestFor": [
+              "large-cast musicals — South Pacific/King and I style (JK's TheatreScene)",
+              "patrons who want to read the thrust blocking as a whole (SeatPlan: 'clear views of the set, especially at big musicals')"
+            ],
+            "worstFor": [
+              "mobility-limited patrons (LCT official chart: no elevator)",
+              "intimate character work (JK's: 'missing the smaller details')"
+            ],
+            "dataPoints": 12,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/vivian-beaumont-theater-at-lincoln-center-interactive-seating-chart/",
+              "https://seatplan.com/new-york/vivian-beaumont-theater/loge/",
+              "https://www.headout.com/blog/vivian-beaumont-theatre-seating-chart/",
+              "https://www.lct.org/shows/uncle-vanya/seating-chart/",
+              "https://www.jkstheatrescene.com/2025/10/from-where-we-sat-vivian-beaumont.html"
+            ]
+          },
+          {
+            "name": "Loge Center-Side Back",
+            "rowRange": "D-E (Center Left / Center Right)",
+            "verdict": "solid",
+            "verdictLabel": "Best value in the house",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Only 5 rows exist in the Loge, so 'back Loge' is still close. TickPick: 'Rows D and E of Center Left and Center Right offer amazing views at a lower cost.' JK's TheatreScene paid $99 for similar seats and called them 'budget-friendly and worth every penny... view not appreciably different than the first few rows.' Elevated angle reads the thrust's three-sided blocking well even from slight side.",
+            "hazards": [],
+            "bestFor": [
+              "budget buyers (TickPick: 'amazing views at a lower cost')",
+              "repeat Beaumont visitors (JK's TheatreScene personal review)"
+            ],
+            "worstFor": [
+              "hearing-impaired patrons (TickPick explicit warning)"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/vivian-beaumont-theater-at-lincoln-center-interactive-seating-chart/",
+              "https://www.jkstheatrescene.com/2025/10/from-where-we-sat-vivian-beaumont.html",
+              "https://www.headout.com/blog/vivian-beaumont-theatre-seating-chart/",
+              "https://seatplan.com/new-york/vivian-beaumont-theater/loge/"
+            ]
+          },
+          {
+            "name": "Loge Side Back",
+            "rowRange": "D-E (Left / Right extremes)",
+            "verdict": "skip",
+            "verdictLabel": "Far side + far back",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Compounds both weaknesses of a thrust-stage venue: you're on the far side of the semicircle AND at the back of the elevated tier, so the upstage portion of the thrust turns away from you. TickPick names Loge R Row E Seat 509 as the worked example: 'the rear end of the stage is going to be obstructed.' SeatPlan: 'Views from the Loge can feel distant, especially at the far sides.'",
+            "hazards": [
+              {
+                "type": "distance",
+                "note": "SeatPlan: 'feel distant, especially at far sides'"
+              },
+              {
+                "type": "hearing",
+                "note": "TickPick: rear Loge has acoustic falloff"
+              }
+            ],
+            "bestFor": [
+              "lottery/rush takers with no other option (implicit: cheapest tier per TickPick)"
+            ],
+            "worstFor": [
+              "anyone who has other choices (TickPick explicitly flags this as obstructed)"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/vivian-beaumont-theater-at-lincoln-center-interactive-seating-chart/",
+              "https://seatplan.com/new-york/vivian-beaumont-theater/loge/",
+              "https://seatplan.com/new-york/vivian-beaumont-theater/seating-plan/"
+            ]
+          }
+        ]
       },
       "parking": {
         "streetParking": "Street parking in the Lincoln Center area is extremely limited and difficult to find, especially during performance hours.",
@@ -9934,11 +11555,238 @@
     "yearBuilt": 1921,
     "operator": "ATG Entertainment",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:13:35.151Z",
+      "lastUpdated": "2026-04-19T01:25:33.851Z",
       "seating": {
-        "bestSeats": "The Walter Kerr is a smaller theater, so most seats offer good views. Center orchestra seats provide the most immersive experience.",
+        "bestSeats": "Ideal: Front Center Orchestra (rows A-C) — Most expensive rows in the theater. Delivers immersion but SeatPlan reviewer at C8 (6' tall) warns 'usual up-close view where you are looking up at the action,' and Headout echoes 'stage is high when sitting in the second row center orchestra, so you miss some upstage action.' For Hadestown's turntables and upstage balcony effects this is a real trade-off",
         "avoidSeats": "Seats at the rear of the balcony may feel distant.",
-        "accessibility": "No elevators. All accessible seating on Orchestra level. Infrared headsets and audio induction neck loops."
+        "accessibility": "No elevators. All accessible seating on Orchestra level. Infrared headsets and audio induction neck loops.",
+        "sections": [
+          {
+            "name": "Center Orchestra",
+            "rowRange": "A-S",
+            "verdict": "sweet-spot",
+            "verdictLabel": "House Favorite",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Intimate 975-seat house with curved rows reducing angle loss. Rows D-H sit ahead of the mezzanine overhang (which starts at row H-J per TickPick/SeatPlan) and are past the stage-height issue reported at row B-C ('stage is high when sitting in the second row center orchestra, so you miss some upstage action' — Headout). JK's TheatreScene confirms Row J still delivers 'full view of the action' for Hadestown including turntables/elevators.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Mezzanine overhang begins at Orchestra rows H-J per TickPick and SeatPlan; rows H and deeper risk top-of-stage cutoff"
+              },
+              {
+                "type": "tight-legroom",
+                "note": "Headout notes 'tight seating' throughout the house; non-aisle seats feel cramped for taller patrons"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle",
+              "dance-heavy"
+            ],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/walter-kerr-theatre-seating-chart-guide/",
+              "https://seatplan.com/new-york/walter-kerr-theatre/orchestra/",
+              "https://www.headout.com/blog/walter-kerr-theatre-seating-chart/",
+              "https://www.jkstheatrescene.com/2025/10/from-where-we-sat-walter-kerr-theatre.html",
+              "https://seatplan.com/new-york/walter-kerr-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Front Center Orchestra",
+            "rowRange": "A-C",
+            "verdict": "solid",
+            "verdictLabel": "Immersive but Steep Look-Up",
+            "priceTier": "top",
+            "isValuePick": true,
+            "rationale": "Most expensive rows in the theater. Delivers immersion but SeatPlan reviewer at C8 (6' tall) warns 'usual up-close view where you are looking up at the action,' and Headout echoes 'stage is high when sitting in the second row center orchestra, so you miss some upstage action.' For Hadestown's turntables and upstage balcony effects this is a real trade-off.",
+            "hazards": [
+              {
+                "type": "partial-stage",
+                "note": "Stage lip is high; upstage action (including Hades' balcony in Hadestown) gets partially cut per AVFMS review C8 and Headout"
+              },
+              {
+                "type": "steep-rake",
+                "note": "Looking up at performers; Hadestown revolve/elevator effects compromised"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/walter-kerr-theatre-seating-chart-guide/",
+              "https://seatplan.com/new-york/walter-kerr-theatre/seating-plan/",
+              "https://www.headout.com/blog/walter-kerr-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Rear Orchestra",
+            "rowRange": "N-S",
+            "verdict": "skip",
+            "verdictLabel": "Flat Rake + Overhang",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Sits fully under the mezzanine overhang (begins H-J) and the orchestra rake is notably shallow — AVFMS/SeatPlan reviewer at N116 explicitly calls out 'rake in the orchestra is not great,' meaning head-blocking from patrons in front is a real issue. Combined with the overhang cutting top-of-stage for Hadestown's upper balcony set, these seats underperform their price.",
+            "hazards": [],
+            "dataPoints": 6,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/walter-kerr-theatre/seating-plan/",
+              "https://www.tickpick.com/blog/walter-kerr-theatre-seating-chart-guide/",
+              "https://seatplan.com/new-york/walter-kerr-theatre/orchestra/"
+            ]
+          },
+          {
+            "name": "Side Orchestra",
+            "rowRange": "A-S",
+            "verdict": "solid",
+            "verdictLabel": "Sneaky Side Value",
+            "priceTier": "mid",
+            "rationale": "Rows curve toward stage per SeatPlan, mitigating the side-angle penalty. JK's TheatreScene (Oct 2025) bought J15 for Hadestown at $139, called it 'plenty of leg room' and praised full band visibility plus upstage action (turntable/elevator effects 'perfect from this perspective') because row J sits just ahead of the overhang. TickPick echoes: right side better for band and Hades' balcony visibility than left. Only isValuePick in this dataset.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Far-edge seats still angled per SeatPlan; extreme sides may miss far-wing action"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "dance-heavy"
+            ],
+            "worstFor": [
+              "intimate-drama"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.jkstheatrescene.com/2025/10/from-where-we-sat-walter-kerr-theatre.html",
+              "https://www.tickpick.com/blog/walter-kerr-theatre-seating-chart-guide/",
+              "https://seatplan.com/new-york/walter-kerr-theatre/orchestra/"
+            ]
+          },
+          {
+            "name": "Front Center Mezzanine",
+            "rowRange": "A-B",
+            "bestRow": "Row A center per TickPick ('Mezzanine is most expensive in the Center section, row A... Prices here are on a level with seats a few rows back in the Center Orchestra')",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Hadestown's Best View",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Multiple sources converge: TickPick says Center Mezz 'promises some of the best views in the Walter Kerr Theatre for the show's visual effects and stage revolve'; SeatPlan confirms 'steep rake ensures patrons in front shouldn't block the view'; SeatPlan reviewer davidnewell (Row C, 5'10\") reports 'view is fantastic since row in front is much lower.' Critical for Hadestown specifically because the show's vertical staging (Hades' balcony, revolve) reads best from elevated center.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "SeatPlan davidnewell: 'Tight in width and legroom'"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle",
+              "dance-heavy"
+            ],
+            "worstFor": [],
+            "dataPoints": 11,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/walter-kerr-theatre-seating-chart-guide/",
+              "https://seatplan.com/new-york/walter-kerr-theatre/mezzanine/",
+              "https://seatplan.com/new-york/walter-kerr-theatre/seating-plan/",
+              "https://www.headout.com/blog/walter-kerr-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Side Mezzanine",
+            "rowRange": "A-H",
+            "verdict": "solid",
+            "verdictLabel": "Unobstructed Side Value",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "TickPick explicitly flags Walter Kerr's side mezzanine as unusually strong: 'Unlike many Broadway theaters, the very sides of the Mezzanine are not obstructed.' SeatPlan confirms steep rake keeps sightlines clear, and TickPick recommends Right Mezzanine specifically for Hadestown band/Hades' balcony visibility. Genuine budget pick.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Angled view on far side seats per SeatPlan"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/walter-kerr-theatre-seating-chart-guide/",
+              "https://seatplan.com/new-york/walter-kerr-theatre/mezzanine/",
+              "https://seatplan.com/new-york/walter-kerr-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine",
+            "rowRange": "F-H",
+            "verdict": "solid",
+            "verdictLabel": "Distant but Clear",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "SeatPlan: 'mezzanine has a very steep rake, so most of the seats offer a clear view, but the rear section feels quite far away from the action.' Intimate house (975 cap) + steep rake means even back rows keep a clean unobstructed view per TickPick/SeatPlan, but the distance is real. Better bet for spectacle musicals than dialogue-dense plays.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Rear mezzanine 'feels quite far away from the action' per SeatPlan despite small house"
+              },
+              {
+                "type": "steep-rake",
+                "note": "Steep rake is a feature for sightlines but uncomfortable for mobility-limited patrons per SeatPlan"
+              }
+            ],
+            "dataPoints": 7,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/walter-kerr-theatre/mezzanine/",
+              "https://www.headout.com/blog/walter-kerr-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/walter-kerr-theatre-seating-chart-guide/"
+            ]
+          },
+          {
+            "name": "Balcony",
+            "rowRange": "A-B",
+            "verdict": "skip",
+            "verdictLabel": "The Spotlight Catwalk",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Near-unanimous negative: TickPick quotes a patron calling it 'not a balcony, but rather the catwalk for the spotlights.' TripAdvisor (Gentleman's Guide): 'view was totally obstructed seeing the spot lights... stage was not totally visible without standing up.' SeatPlan: 'lighting rigs attached to the outside of the Balcony and the ceiling' create obstructions, 'B18 also has thin support pillars,' overhang starts at row D (cuts top of stage), and 'legroom at this height is cramped.' Only 68 seats, two rows — avoid unless deeply discounted and the show is vocals-forward.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Spotlight rigs in sightline per TripAdvisor and TickPick"
+              },
+              {
+                "type": "pillar",
+                "note": "SeatPlan flags B18 as having thin support pillars in sight line"
+              },
+              {
+                "type": "partial-stage",
+                "note": "Bottom of stage cut off by lighting rigs and safety railings per SeatPlan"
+              },
+              {
+                "type": "steep-rake",
+                "note": "'Section's stairs and rake are steep' per SeatPlan; patrons must lean forward"
+              },
+              {
+                "type": "tight-legroom",
+                "note": "'Legroom at this height is cramped' per SeatPlan"
+              },
+              {
+                "type": "distant",
+                "note": "'Patrons may feel a bit distant' per SeatPlan balcony guide"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "spectacle",
+              "dance-heavy",
+              "musical",
+              "play"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/walter-kerr-theatre/balcony/",
+              "https://www.tripadvisor.com/ShowUserReviews-g60763-d1482967-r217991312-Walter_Kerr_Theater-New_York_City_New_York.html",
+              "https://www.tripadvisor.com/ShowUserReviews-g60763-d1482967-r301641516-Walter_Kerr_Theater-New_York_City_New_York.html",
+              "https://www.tickpick.com/blog/walter-kerr-theatre-seating-chart-guide/",
+              "https://www.headout.com/blog/walter-kerr-theatre-seating-chart/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
