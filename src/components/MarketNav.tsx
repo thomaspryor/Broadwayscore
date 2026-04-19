@@ -33,15 +33,9 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
       {/* Logo — changes per market */}
       <Link href={isWestEnd || isOffWestEnd ? '/west-end' : '/'} className="flex items-center group">
         {isWestEnd || isOffWestEnd ? (
-          <>
-            <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">West End</span>
-            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span>
-          </>
+          <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">West End<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : (
-          <>
-            <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway</span>
-            <span className="text-2xl sm:text-3xl font-extrabold text-gradient tracking-tight">Scorecard</span>
-          </>
+          <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway<span className="text-gradient">Scorecard</span></span>
         )}
         <span className="text-[8px] sm:text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
       </Link>

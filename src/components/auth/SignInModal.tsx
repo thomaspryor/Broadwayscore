@@ -32,8 +32,7 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
 
         {/* Logo */}
         <div className="flex items-center justify-center mb-4">
-          <span className="text-lg font-bold text-white">Broadway</span>
-          <span className="text-lg font-bold text-gradient">Scorecard</span>
+          <span className="text-lg font-bold text-white">Broadway<span className="text-gradient">Scorecard</span></span>
         </div>
 
         {/* Headline */}
