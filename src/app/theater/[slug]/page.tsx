@@ -218,6 +218,18 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
+          {/* Theater Scorecard — 5-dim venue ratings (top of page, expanded by default) */}
+          {theater.venueScores && (
+            <TheaterScorecardCard
+              venueScores={theater.venueScores}
+              accessibility={theater.accessibility}
+              externalLinks={theater.externalLinks}
+              theaterName={theater.name}
+              theaterSlug={theater.slug}
+              defaultExpanded
+            />
+          )}
+
           {/* Now Playing — prominent current show card */}
           {theater.currentShow && (
             <Link
@@ -273,22 +285,11 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
             </Link>
           )}
 
-          {/* Seating Chart Scorecard — above Theater Scorecard */}
+          {/* Seating Chart Scorecard */}
           <SeatingGuidanceCard
             sections={theater.structuredTips?.seating?.sections}
             bestSeats={theater.structuredTips?.seating?.bestSeats}
           />
-
-          {/* Theater Scorecard — 5-dim venue ratings */}
-          {theater.venueScores && (
-            <TheaterScorecardCard
-              venueScores={theater.venueScores}
-              accessibility={theater.accessibility}
-              externalLinks={theater.externalLinks}
-              theaterName={theater.name}
-              theaterSlug={theater.slug}
-            />
-          )}
 
           {/* Tips */}
           {theater.structuredTips ? (

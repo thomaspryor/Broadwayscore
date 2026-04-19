@@ -11,6 +11,7 @@ interface TheaterScorecardCardProps {
   externalLinks?: TheaterExternalLinks;
   theaterName: string;
   theaterSlug: string;
+  defaultExpanded?: boolean;
 }
 
 const DIMENSIONS: { key: keyof Pick<TheaterVenueScores, 'sightlines' | 'sound' | 'comfort' | 'ambiance' | 'facilities'>; label: string; icon: JSX.Element }[] = [
@@ -133,8 +134,9 @@ export default function TheaterScorecardCard({
   externalLinks,
   theaterName,
   theaterSlug,
+  defaultExpanded = false,
 }: TheaterScorecardCardProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultExpanded);
 
   // Feature flag check must live here (client component) — not in the SSR parent
   if (!featureFlags.theaterScorecard) return null;
