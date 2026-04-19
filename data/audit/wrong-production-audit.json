@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-19T17:52:35.229Z",
+  "timestamp": "2026-04-19T18:47:59.501Z",
   "stats": {
-    "totalReviews": 35515,
+    "totalReviews": 35518,
     "alreadyFlagged": 15868,
     "dateGuardCatches": 91,
     "directorMismatch": 820,
     "tvFilmSignals": 3155,
-    "londonSignals": 1010,
+    "londonSignals": 1011,
     "offBroadwaySignals": 886,
     "yearMismatch": 67,
     "noPublishDate": 3719
@@ -59970,6 +59970,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "copenhagen-2000",
+      "file": "curtainup--elyse-sommer.json",
+      "score": 88,
+      "publishDate": "2000-04-11",
+      "url": "http://www.curtainup.com/copenhagen.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

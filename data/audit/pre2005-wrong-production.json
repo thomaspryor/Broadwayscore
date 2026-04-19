@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-19T17:39:55.638Z",
+    "generatedAt": "2026-04-19T18:32:27.991Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 78,
+    "totalFlagged": 83,
     "highConfidence": 7,
-    "mediumConfidence": 71,
+    "mediumConfidence": 76,
     "lowConfidence": 0,
-    "reassignable": 33
+    "reassignable": 34
   },
   "results": [
     {
@@ -907,6 +907,23 @@
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
     },
     {
+      "showId": "the-mystery-of-edwin-drood-1985",
+      "showTitle": "The Mystery of Edwin Drood",
+      "showYear": 1985,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "modern references: twitter",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Photo credit: Betsy Wolfe, left, and Will Chase in “The Mystery of Edwin Drood”\n\nThe Mystery of Edwin Drood 4 stars\n\n\"The Mystery of Edwin Drood,\" inspired by an unfinished Charles Dickens novel, is o"
+    },
+    {
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
@@ -940,6 +957,21 @@
       "textSnippet": "Josh Groban and Annaleigh Ashford | Photo: Matthew Murphy & Evan Zimmerman At long last, a full-scale production of Sweeney Todd returns to Broadway, allowing Stephen Sondheim’s gorgeous music and lyr"
     },
     {
+      "showId": "the-gin-game-1977",
+      "showTitle": "The Gin Game",
+      "showYear": 1977,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-gin-game-2015",
+      "signals": [
+        "year 2015 in text matches revival the-gin-game-2015"
+      ],
+      "textSnippet": "Published: 2015-10-14 22:01:58 \n Updated: 2015-10-14 22:01:58\n\nBy MARK KENNEDY, AP Drama Writer\n\nNEW YORK — One thing you should probably not bet against at \"The Gin Game\" on Broadway is the little ol"
+    },
+    {
       "showId": "dracula-1977",
       "showTitle": "Dracula",
       "showYear": 1977,
@@ -954,6 +986,22 @@
         "modern references: hamilton"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
+    },
+    {
+      "showId": "that-championship-season-1972",
+      "showTitle": "That Championship Season",
+      "showYear": 1972,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "A drama about the bitter recriminations of a generation of men stung by the reality of their diminished promise and feeling let down by both their leaders and their peers should strike chords in this "
     },
     {
       "showId": "democracy-2004",
@@ -1215,6 +1263,37 @@
         "revival text signals: revival, back on broadway"
       ],
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
+    },
+    {
+      "showId": "old-times-1971",
+      "showTitle": "Old Times",
+      "showYear": 1971,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new revival",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "There’s really no middle ground when it comes to the late English playwright Harold Pinter. You’re either mesmerized by his mysterious, menacing, pause-filled psychological dramas or you find them puz"
+    },
+    {
+      "showId": "old-times-1971",
+      "showTitle": "Old Times",
+      "showYear": 1971,
+      "file": "nbcny--robert-kahn.json",
+      "outlet": "NBC New York",
+      "criticName": "Robert Kahn",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: twitter"
+      ],
+      "textSnippet": "Bright flashes of light and discomforting noises make for a jarring start to Harold Pinter’s 1971 “Old Times,\" which is now enjoying a carefully cultivated revival at Roundabout’s American Airlines Th"
     }
   ]
 }

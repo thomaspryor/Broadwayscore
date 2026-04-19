@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-19T17:39:52.926Z",
+    "generatedAt": "2026-04-19T18:32:25.348Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36238,
-      "inReviewsJson": 16568,
-      "skippedExcluded": 73,
-      "withFullText": 27,
-      "excerptOnly": 1579,
-      "llmClassified": 26,
+      "totalFiles": 36204,
+      "inReviewsJson": 16723,
+      "skippedExcluded": 56,
+      "withFullText": 18,
+      "excerptOnly": 1744,
+      "llmClassified": 17,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
+      "nonReviewsFound": 0,
       "uncertainCases": 15,
-      "budgetUsed": 0.0026999999999999993,
-      "llmCalls": 27,
+      "budgetUsed": 0.0018000000000000006,
+      "llmCalls": 18,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14889
+      "skippedAlreadyClassified": 14905
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "wit-2012/splash-magazines--david-cote.json",
-      "showId": "wit-2012",
-      "outlet": "Splash Magazines",
-      "outletId": "splash-magazines",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a list of various articles and events, not a review of \"Wit\".",
-      "currentScore": 100
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -41,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not evaluate \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, rather than a review of a specific show. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -81,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -111,7 +100,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and contains elements of a news website, such as subscription prompts and time stamps. Without the full article, it's difficult to determine the content type with certainty, but it does not appear to be a review.",
       "currentScore": 78
     },
     {
@@ -121,7 +110,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' and sets the stage for the audience, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer a critical evaluation or opinion on its quality. It sets the stage for an evening of terror but doesn't review the production itself.",
       "currentScore": 80
     },
     {
@@ -141,7 +130,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -161,7 +150,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review that offers an evaluation.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -181,28 +170,14 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It lacks any evaluative content about 'Three Tall Women'.",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific production.",
       "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "cats-the-jellicle-ball-2026/theater-scene--victor-gluck.json",
-    "cats-the-jellicle-ball-2026/theatre-reviews-limited--david-roberts.json",
-    "evita-2012/huffpost--mark-kennedy.json",
-    "gypsy-2003/guardian--edward-karam.json",
-    "gypsy-2003/nytimes--ben-brantley.json",
-    "gypsy-2003/talkinbroadway--matthew-murray.json",
-    "gypsy-2003/variety--charles-isherwood.json",
-    "proof-2026/chicagotribune--chris-jones.json",
-    "the-adding-machine-off-broadway-2026/talkinbroadway--howard-miller.json",
+    "ragtime-1998/curtainup--elyse-sommer.json",
     "woman-in-mind-west-end-2025/thestage--sam-marlowe.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "wit-2012",
-      "currentCount": 14,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
