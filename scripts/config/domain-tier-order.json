@@ -4,16 +4,16 @@
     "scrapingbee"
   ],
   "abcnews.go.com": [
-    "archive-first",
     "archive-cdx-final",
+    "archive-first",
     "scrapingbee",
     "playwright",
     "brightdata"
   ],
   "amny.com": [
     "browserbase",
-    "archive-first",
     "archive-cdx",
+    "archive-first",
     "archive-cdx-final",
     "brightdata",
     "playwright",
@@ -45,6 +45,10 @@
     "scrapingbee",
     "brightdata"
   ],
+  "artsfuse.org": [
+    "playwright",
+    "archive-first"
+  ],
   "backstage.com": [
     "archive-cdx-final",
     "archive-first",
@@ -60,10 +64,8 @@
     "brightdata"
   ],
   "billboard.com": [
-    "archive-cdx",
     "archive-cdx-final",
-    "brightdata",
-    "archive-first"
+    "brightdata"
   ],
   "blogs.villagevoice.com": [
     "archive-first",
@@ -106,8 +108,8 @@
     "brightdata"
   ],
   "broadwayworld.com": [
-    "archive-first",
     "archive-cdx-final",
+    "archive-first",
     "playwright",
     "scrapingbee",
     "brightdata"
@@ -138,6 +140,7 @@
     "playwright"
   ],
   "chicagotribune.com": [
+    "amp-variant",
     "archive-first",
     "scrapingbee",
     "archive-cdx",
@@ -202,11 +205,11 @@
   "deadline.com": [
     "browserbase",
     "direct-cookies",
+    "brightdata",
     "archive-first",
     "amp-variant",
-    "brightdata",
-    "archive-cdx-final",
     "archive-cdx",
+    "archive-cdx-final",
     "scrapingbee",
     "playwright"
   ],
@@ -249,6 +252,11 @@
     "playwright",
     "archive-first"
   ],
+  "forbes.com": [
+    "brightdata",
+    "playwright",
+    "scrapingbee"
+  ],
   "fordhamobserver.com": [
     "scrapingbee",
     "playwright"
@@ -280,8 +288,8 @@
     "browserbase",
     "direct-cookies",
     "amp-variant",
-    "archive-cdx-final",
     "brightdata",
+    "archive-cdx-final",
     "archive-first",
     "scrapingbee",
     "archive-cdx",
@@ -302,8 +310,8 @@
     "direct-cookies"
   ],
   "huffpost.com": [
-    "scrapingbee",
     "playwright",
+    "scrapingbee",
     "amp-variant",
     "direct-cookies",
     "archive-first",
@@ -442,8 +450,8 @@
   ],
   "newyorker.com": [
     "scrapingbee",
-    "archive-cdx",
     "archive-cdx-final",
+    "archive-cdx",
     "archive-first",
     "brightdata",
     "playwright"
@@ -505,8 +513,8 @@
     "direct-cookies",
     "browserbase",
     "archive-first",
-    "amp-variant",
     "brightdata",
+    "amp-variant",
     "scrapingbee",
     "archive-cdx-final",
     "playwright",
@@ -534,8 +542,8 @@
     "playwright"
   ],
   "nytimes.com": [
-    "scrapingbee",
     "browserbase",
+    "scrapingbee",
     "archive-cdx-final",
     "archive-first",
     "brightdata",
@@ -606,14 +614,18 @@
     "brightdata",
     "scrapingbee"
   ],
+  "radiotimes.com": [
+    "playwright",
+    "scrapingbee"
+  ],
   "reuters.com": [
     "scrapingbee",
     "playwright"
   ],
   "rollingstone.com": [
-    "archive-cdx-final",
-    "archive-first",
     "brightdata",
+    "archive-first",
+    "archive-cdx-final",
     "playwright",
     "scrapingbee"
   ],
@@ -652,11 +664,6 @@
     "brightdata",
     "scrapingbee"
   ],
-  "showshowdown.blogspot.com": [
-    "playwright",
-    "archive-first",
-    "archive-cdx"
-  ],
   "slantmagazine.com": [
     "playwright",
     "archive-cdx-final",
@@ -665,8 +672,8 @@
   ],
   "stageandcinema.com": [
     "playwright",
-    "archive-first",
     "archive-cdx-final",
+    "archive-first",
     "archive-cdx"
   ],
   "stagebiz.com": [
@@ -682,9 +689,9 @@
     "scrapingbee"
   ],
   "stagezine.com": [
+    "archive-cdx-final",
     "playwright",
     "scrapingbee",
-    "archive-cdx-final",
     "archive-first"
   ],
   "standard.co.uk": [
@@ -769,7 +776,6 @@
     "archive-cdx"
   ],
   "theatermania.com": [
-    "direct-cookies",
     "playwright",
     "brightdata",
     "archive-first",
@@ -814,10 +820,6 @@
   "theatrereviews.com": [
     "playwright",
     "archive-cdx",
-    "archive-first"
-  ],
-  "theatreweekly.com": [
-    "playwright",
     "archive-first"
   ],
   "thebroadwayblog.com": [
@@ -909,11 +911,11 @@
     "amp-variant",
     "direct-cookies",
     "playwright",
-    "archive-first",
     "scrapingbee",
+    "archive-first",
     "brightdata",
-    "archive-cdx-final",
-    "archive-cdx"
+    "archive-cdx",
+    "archive-cdx-final"
   ],
   "timesunion.com": [
     "brightdata",
@@ -933,8 +935,8 @@
   "variety.com": [
     "direct-cookies",
     "browserbase",
-    "amp-variant",
     "brightdata",
+    "amp-variant",
     "archive-cdx-final",
     "archive-first",
     "scrapingbee",
@@ -975,7 +977,8 @@
     "archive-first",
     "archive-cdx",
     "brightdata",
-    "amp-variant"
+    "amp-variant",
+    "direct-cookies"
   ],
   "washingtontimes.com": [
     "archive-cdx-final",
@@ -983,12 +986,16 @@
     "playwright",
     "scrapingbee"
   ],
+  "westendtheatre.com": [
+    "playwright",
+    "archive-first",
+    "archive-cdx"
+  ],
   "whatsonstage.com": [
     "playwright",
     "scrapingbee",
     "archive-cdx-final",
-    "archive-first",
-    "archive-cdx"
+    "archive-first"
   ],
   "wnyc.org": [
     "playwright",
@@ -1003,10 +1010,10 @@
   "wsj.com": [
     "archive-today",
     "direct-cookies",
-    "archive-cdx",
     "browserbase",
-    "archive-first",
+    "archive-cdx",
     "brightdata",
+    "archive-first",
     "archive-cdx-final",
     "scrapingbee",
     "playwright"
