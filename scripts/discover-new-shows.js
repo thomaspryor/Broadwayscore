@@ -1840,9 +1840,12 @@ async function discoverShows() {
           status = 'open';
         }
       } else if (show.previewsStartDate) {
-        // No opening date but have preview date - show is in previews
+        // No opening date but have preview date — only mark previews if date has been reached
         openingDate = null;
-        status = 'previews';
+        const previewsDateObj = new Date(show.previewsStartDate);
+        const todayForPreviews = new Date();
+        todayForPreviews.setHours(0, 0, 0, 0);
+        status = previewsDateObj > todayForPreviews ? 'upcoming' : 'previews'; // ≥ today = in previews
       } else {
         // No opening date or preview date — show is announced but not yet scheduled
         openingDate = null;
