@@ -13,7 +13,12 @@ const OUTPUT_PATH = path.join(__dirname, '../../data/video-reviews.json');
 
 function main() {
   const creators = JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators;
-  const creatorMap = Object.fromEntries(creators.map(c => [c.id, c]));
+  const creatorMap = Object.fromEntries(creators.flatMap(c => [
+    [c.id, c],
+    [(c.platforms?.youtube?.channelHandle || '').toLowerCase(), c],
+    [(c.platforms?.tiktok?.handle || '').toLowerCase(), c],
+  ].filter(([k]) => k)));
+
 
   const output = {
     _meta: {
@@ -37,7 +42,7 @@ function main() {
       // Skip transcripts flagged as wrong production (e.g. movie reviews ending up
       // on the stage show, casting-announcement videos, reply-to-comments videos).
       if (data.wrongProduction === true) continue;
-      const creator = creatorMap[data.creatorId];
+      const creator = creatorMap[data.creatorId] || creatorMap[(data.creatorId || '').toLowerCase()];
       if (!creator) continue;
 
       reviews.push({
