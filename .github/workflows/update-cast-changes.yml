@@ -30,7 +30,7 @@ on:
 jobs:
   update-cast-changes:
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 80
 
     steps:
       - name: Checkout repository
@@ -62,8 +62,11 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           ARGS="--verbose"
+          # Scheduled runs: playbill-cast only (fast, reliable). Manual dispatch can override.
           if [ -n "${{ github.event.inputs.source }}" ]; then
             ARGS="$ARGS --source=${{ github.event.inputs.source }}"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            ARGS="$ARGS --source=playbill-cast"
           fi
           if [ -n "${{ github.event.inputs.shows }}" ]; then
             ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
