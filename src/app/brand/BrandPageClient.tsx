@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 type Swatch = {
   name: string;
@@ -190,6 +190,7 @@ export default function BrandPageClient() {
           <a href="#canva" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Canva Setup</a>
           <a href="#buffer" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Buffer</a>
           <a href="#downloads" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Downloads</a>
+          <a href="#builder" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Badge Builder</a>
           <a href="#attribution" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Attribution</a>
           <a href="#code" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Code</a>
         </div>
@@ -384,6 +385,16 @@ export default function BrandPageClient() {
             <AssetGallery title="Audience Grade Badges" assets={gradeBadgeAssets} columns="md" />
             <AssetGallery title="Reference Sheets" assets={referenceAssets} />
             <AssetGallery title="Social Templates" assets={socialAssets} />
+          </Section>
+        </div>
+
+        {/* Custom badge builder */}
+        <div id="builder">
+          <Section
+            title="Badge Builder"
+            description="Make a custom score badge for any show. Pick a score, pick a background, download the PNG."
+          >
+            <BadgeBuilder />
           </Section>
         </div>
 
@@ -593,6 +604,216 @@ function AssetTile({ asset }: { asset: Asset }) {
         </svg>
       </div>
     </a>
+  );
+}
+
+function tierForScore(score: number): { key: string; label: string; desc: string; tint: string; crown: boolean; badgeStyle: React.CSSProperties; textColor: string } {
+  if (score >= 83) return {
+    key: 'critical-gold', label: 'Critical Gold', desc: 'Drop-everything great', tint: '#DAA520', crown: true,
+    textColor: '#1a1a1a',
+    badgeStyle: {
+      background: 'linear-gradient(135deg,#DAA520 0%,#FFD700 30%,#FFF0A0 50%,#FFD700 70%,#DAA520 100%)',
+      boxShadow: '0 0 24px rgba(218,165,32,0.55),0 0 12px rgba(255,215,0,0.4),0 4px 12px rgba(0,0,0,0.3),inset 0 2px 0 rgba(255,255,255,0.3)',
+      border: '2px solid #C8960E',
+    },
+  };
+  if (score >= 75) return {
+    key: 'recommended', label: 'Recommended', desc: 'Strong choice', tint: '#22c55e', crown: false,
+    textColor: '#ffffff',
+    badgeStyle: { backgroundColor: '#22c55e', boxShadow: '0 2px 8px rgba(34,197,94,0.3)' },
+  };
+  if (score >= 65) return {
+    key: 'worth-seeing', label: 'Worth Seeing', desc: 'Good, with caveats', tint: '#14b8a6', crown: false,
+    textColor: '#ffffff',
+    badgeStyle: { backgroundColor: '#14b8a6', boxShadow: '0 2px 8px rgba(20,184,166,0.3)' },
+  };
+  if (score >= 55) return {
+    key: 'skippable', label: 'Skippable', desc: 'Fine to miss', tint: '#d97706', crown: false,
+    textColor: '#1a1a1a',
+    badgeStyle: { backgroundColor: '#d97706', boxShadow: '0 2px 8px rgba(217,119,6,0.3)' },
+  };
+  return {
+    key: 'stay-away', label: 'Stay Away', desc: 'Save your time', tint: '#ef4444', crown: false,
+    textColor: '#ffffff',
+    badgeStyle: { backgroundColor: '#ef4444', boxShadow: '0 2px 8px rgba(239,68,68,0.3)' },
+  };
+}
+
+function rangeForScore(score: number): string {
+  if (score >= 83) return '83\u2013100';
+  if (score >= 75) return '75\u201382';
+  if (score >= 65) return '65\u201374';
+  if (score >= 55) return '55\u201364';
+  return '< 55';
+}
+
+function BadgeBuilder() {
+  const [score, setScore] = useState(85);
+  const [transparent, setTransparent] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  const clamped = Math.max(0, Math.min(100, Math.round(score)));
+  const tier = tierForScore(clamped);
+  const range = rangeForScore(clamped);
+
+  const download = async () => {
+    if (!previewRef.current) return;
+    setBusy(true);
+    setErr(null);
+    try {
+      const { toPng } = await import('html-to-image');
+      const dataUrl = await toPng(previewRef.current, {
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: transparent ? undefined : '#0f0f14',
+      });
+      const link = document.createElement('a');
+      const variant = transparent ? 'transparent' : 'dark';
+      link.download = `bwsc-score-${clamped}-${variant}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : 'Download failed');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const checkerStyle: React.CSSProperties = transparent
+    ? {
+        backgroundImage:
+          'linear-gradient(45deg,rgba(255,255,255,0.06) 25%,transparent 25%),' +
+          'linear-gradient(-45deg,rgba(255,255,255,0.06) 25%,transparent 25%),' +
+          'linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.06) 75%),' +
+          'linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.06) 75%)',
+        backgroundSize: '16px 16px',
+        backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
+      }
+    : {};
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-4">
+      {/* Controls */}
+      <div className="rounded-card bg-surface-raised border border-white/5 p-5 space-y-5 self-start">
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wide text-gray-400 block mb-2">Score</label>
+          <div className="flex items-center gap-3">
+            <input
+              type="number"
+              min={0}
+              max={100}
+              value={score}
+              onChange={e => setScore(Number(e.target.value || 0))}
+              className="w-20 px-3 py-2 rounded-lg bg-surface border border-white/10 text-white text-lg font-bold text-center focus:outline-none focus:border-brand/60"
+            />
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={clamped}
+              onChange={e => setScore(Number(e.target.value))}
+              className="flex-1"
+              aria-label="Score slider"
+            />
+          </div>
+          <div className="text-[11px] text-gray-500 mt-2">Tier: <span style={{ color: tier.tint }} className="font-semibold">{tier.label}</span> · Range {range}</div>
+        </div>
+
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wide text-gray-400 block mb-2">Background</label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setTransparent(false)}
+              className={`py-2 px-3 rounded-lg text-xs font-semibold transition-colors ${!transparent ? 'bg-brand text-white' : 'bg-surface border border-white/10 text-gray-300 hover:border-white/20'}`}
+            >
+              Dark
+            </button>
+            <button
+              type="button"
+              onClick={() => setTransparent(true)}
+              className={`py-2 px-3 rounded-lg text-xs font-semibold transition-colors ${transparent ? 'bg-brand text-white' : 'bg-surface border border-white/10 text-gray-300 hover:border-white/20'}`}
+            >
+              Transparent
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label className="flex items-center gap-2 text-xs text-gray-300 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={showLabel}
+              onChange={e => setShowLabel(e.target.checked)}
+              className="accent-brand"
+            />
+            <span>Include tier label (Critical Gold, Recommended, &hellip;)</span>
+          </label>
+        </div>
+
+        <button
+          type="button"
+          onClick={download}
+          disabled={busy}
+          className="w-full py-3 px-4 rounded-lg bg-brand hover:bg-brand-hover text-white font-bold text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {busy ? 'Rendering\u2026' : 'Download PNG'}
+        </button>
+        {err && <div className="text-xs text-red-400">{err}</div>}
+        <div className="text-[11px] text-gray-500 leading-relaxed">
+          Rendered client-side at 2&times; pixel ratio. Matches the kit badges above but may differ very slightly in font anti-aliasing.
+        </div>
+      </div>
+
+      {/* Preview */}
+      <div
+        className="rounded-card border border-white/5 overflow-hidden min-h-[280px] flex items-center justify-center p-4"
+        style={{ background: transparent ? undefined : '#0f0f14', ...checkerStyle }}
+      >
+        <div ref={previewRef} style={{ padding: '40px 48px 32px', display: 'inline-block', background: transparent ? 'transparent' : '#0f0f14' }}>
+          <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+            {tier.crown && (
+              <svg viewBox="0 0 24 14" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '-16px', width: 38, height: 18, zIndex: 2 }}>
+                <path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.9" />
+              </svg>
+            )}
+            <div
+              style={{
+                width: 220,
+                height: 220,
+                borderRadius: 36,
+                fontSize: 96,
+                fontWeight: 700,
+                color: tier.textColor,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif",
+                ...tier.badgeStyle,
+              }}
+            >
+              {clamped}
+            </div>
+          </div>
+          {showLabel && (
+            <>
+              <div style={{ marginTop: 20, textAlign: 'center', fontWeight: 700, fontSize: 18, letterSpacing: 1.5, textTransform: 'uppercase', color: tier.tint, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif" }}>
+                {tier.label}
+              </div>
+              <div style={{ textAlign: 'center', fontSize: 14, color: '#9ca3af', marginTop: 4, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif" }}>
+                {tier.desc}
+              </div>
+              <div style={{ textAlign: 'center', fontSize: 12, color: '#6b7280', marginTop: 2, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif" }}>
+                {range}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
