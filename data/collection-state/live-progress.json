@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-19T16:00:48.794Z",
+  "updatedAt": "2026-04-19T16:02:31.079Z",
   "processed": 39,
-  "failed": 849,
-  "successRate": "4.4%",
+  "failed": 859,
+  "successRate": "4.3%",
   "tierBreakdown": {
     "playwright": 26,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 2,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -36,6 +36,17 @@
       "t": "2026-04-19T15:45:56.823Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-19T16:02:22.294Z",
+      "event": "bb-session",
+      "session": "cc173633",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-josh-groban-cant-save-"
+    },
+    {
+      "t": "2026-04-19T16:02:23.377Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
