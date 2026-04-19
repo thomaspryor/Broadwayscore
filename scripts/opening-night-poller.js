@@ -85,6 +85,70 @@ function getThresholds(market) {
 }
 
 /**
+ * Pre-wipe: mark preview-period files as isPreviewPlaceholder at T-2h.
+ *
+ * Preview-period SERP/aggregator runs create review files BEFORE opening night
+ * that are almost always contamination (preview articles, wrong-production reviews,
+ * wrong-year roundups). The flag system catches most of them but leaks ~9%.
+ *
+ * This function scans the show directory and marks any unscored file modified
+ * more than 2 hours BEFORE the show's opening date as a preview placeholder.
+ * The post-opening mergeReviews(existing, incoming, {fromPostOpening:true}) path
+ * then replaces these files wholesale with fresh post-opening reviews.
+ *
+ * SAFE: already-scored files (llmScore or humanReviewScore present) are never touched.
+ *
+ * @param {string} showId
+ * @param {string} openingDate - ISO date string (YYYY-MM-DD)
+ * @returns {number} count of files marked
+ */
+function preWipePreOpeningFiles(showId, openingDate) {
+  if (!openingDate) return 0;
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  if (!fs.existsSync(showDir)) return 0;
+
+  const openingMs = new Date(openingDate).getTime();
+  // Only mark files modified more than 2h before opening
+  const cutoffMs = openingMs - (2 * 60 * 60 * 1000);
+  const now = Date.now();
+
+  // Only run within 36h window before opening (don't wipe historical shows)
+  if (now < openingMs - (36 * 60 * 60 * 1000)) return 0;
+  // Don't run if opening was more than 7 days ago (past opening window)
+  if (now > openingMs + (7 * 24 * 60 * 60 * 1000)) return 0;
+
+  let marked = 0;
+  for (const file of fs.readdirSync(showDir)) {
+    if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
+    try {
+      const filePath = path.join(showDir, file);
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+      // Never touch already-scored files
+      if ((data.llmScore && data.llmScore.score != null) || data.humanReviewScore != null) continue;
+      // Never touch human-flagged files
+      if (data.humanReviewedWrongProduction != null || data.wrongShowReason) continue;
+      // Never touch already-marked files
+      if (data.isPreviewPlaceholder) continue;
+
+      const stat = fs.statSync(filePath);
+      if (stat.mtimeMs < cutoffMs) {
+        const hoursBeforeOpening = Math.round((openingMs - stat.mtimeMs) / 3600000);
+        data.isPreviewPlaceholder = true;
+        data.previewPlaceholderReason = `Pre-wipe: file modified ${hoursBeforeOpening}h before opening`;
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+        marked++;
+        console.log(`  [PRE-WIPE] ${file} → isPreviewPlaceholder (modified ${hoursBeforeOpening}h before opening)`);
+      }
+    } catch (e) { /* skip unreadable files */ }
+  }
+  if (marked > 0) {
+    console.log(`  Pre-wipe: marked ${marked} preview-period files as placeholders`);
+  }
+  return marked;
+}
+
+/**
  * Get all known URLs for a show (from existing review-text files on disk)
  */
 function getKnownUrls(showId) {
@@ -1171,6 +1235,14 @@ async function pollCycle() {
   console.log(`Title: ${show.title}`);
   console.log(`Market: ${market}`);
 
+  // Pre-wipe: mark preview-period stubs as placeholders before discovery runs.
+  // Any unscored file modified >2h before opening is almost certainly contamination
+  // (preview-period SERP/aggregator). Marking them lets mergeReviews replace wholesale.
+  if (show.openingDate) {
+    const wiped = preWipePreOpeningFiles(SHOW_ID, show.openingDate);
+    if (wiped > 0) console.log(`  Pre-wipe: ${wiped} preview-period files marked as placeholders`);
+  }
+
   // Pre-poll state
   const knownUrls = getKnownUrls(SHOW_ID);
   const preStatus = checkReadiness(SHOW_ID, market);
@@ -1378,4 +1450,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds };
+module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles };
