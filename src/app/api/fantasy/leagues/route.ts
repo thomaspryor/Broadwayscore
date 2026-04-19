@@ -44,13 +44,13 @@ export async function POST(request: NextRequest) {
 
     // Per-email rate cap: max 5 leagues per 24h
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const { count } = await supabase
+    const { data: recentLeagues } = await supabase
       .from('fantasy_leagues')
-      .select('*', { count: 'exact', head: true })
+      .select('id')
       .eq('created_by', cleanEmail)
       .gte('created_at', since);
 
-    if ((count ?? 0) >= 5) {
+    if ((recentLeagues?.length ?? 0) >= 5) {
       return NextResponse.json({ error: 'You can create up to 5 leagues per day' }, { status: 429 });
     }
 

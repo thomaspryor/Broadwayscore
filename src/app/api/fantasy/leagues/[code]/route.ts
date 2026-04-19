@@ -30,16 +30,16 @@ export async function GET(
     return NextResponse.json({ error: 'League not found' }, { status: 404 });
   }
 
-  // Count members
-  const { count } = await supabase
+  // Count members by fetching IDs (head:true unreliable in serverless)
+  const { data: members } = await supabase
     .from('fantasy_entries')
-    .select('*', { count: 'exact', head: true })
+    .select('id')
     .eq('league_name', code);
 
   return NextResponse.json({
     code: league.code,
     name: league.name,
     created_at: league.created_at,
-    member_count: count ?? 0,
+    member_count: members?.length ?? 0,
   });
 }
