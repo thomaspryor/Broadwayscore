@@ -1,85 +1,30 @@
 {
-  "updatedAt": "2026-04-19T04:05:52.006Z",
-  "processed": 38,
-  "failed": 2819,
-  "successRate": "1.3%",
+  "updatedAt": "2026-04-19T08:23:59.530Z",
+  "processed": 1,
+  "failed": 8,
+  "successRate": "11.1%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 7,
-    "brightdata": 8,
-    "archiveToday": 4,
-    "archive": 6
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-04-18T10:21:53.676Z",
+      "t": "2026-04-19T08:22:46.512Z",
       "event": "bb-session",
-      "session": "8a0321c5",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "session": "6af2dbb4",
+      "url": "https://www.nytimes.com/2026/04/16/theater/one-flew-over-the-cuckoos-nest-old-vi"
     },
     {
-      "t": "2026-04-18T10:21:54.954Z",
+      "t": "2026-04-19T08:22:47.610Z",
       "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-18T18:18:40.560Z",
-      "event": "bb-session",
-      "session": "aa52a791",
-      "url": "https://deadline.com/2018/05/jimmy-buffett-musical-closing-date-escape-to-margar"
-    },
-    {
-      "t": "2026-04-18T18:18:41.126Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-18T18:27:59.011Z",
-      "event": "bb-session",
-      "session": "ab2d5f1f",
-      "url": "http://www.usatoday.com/life/theater/reviews/2009-04-07-rock-of-ages_N.htm"
-    },
-    {
-      "t": "2026-04-18T18:27:59.580Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-04-18T19:06:41.496Z",
-      "event": "bb-session",
-      "session": "f13639e4",
-      "url": "https://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/"
-    },
-    {
-      "t": "2026-04-18T19:06:42.362Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-18T19:12:49.157Z",
-      "event": "bb-session",
-      "session": "d293c363",
-      "url": "https://variety.com/2012/legit/reviews/the-anarchist-1117948864/"
-    },
-    {
-      "t": "2026-04-18T19:12:50.079Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-18T19:19:38.807Z",
-      "event": "bb-session",
-      "session": "7420f5b3",
-      "url": "https://variety.com/2011/legit/reviews/the-house-of-blue-leaves-1117945081/"
-    },
-    {
-      "t": "2026-04-18T19:19:39.704Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "nytimes.com"
     }
   ]
 }
