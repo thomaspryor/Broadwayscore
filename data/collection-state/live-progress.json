@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-19T15:45:43.052Z",
-  "processed": 35,
-  "failed": 743,
-  "successRate": "4.5%",
+  "updatedAt": "2026-04-19T15:46:47.083Z",
+  "processed": 36,
+  "failed": 752,
+  "successRate": "4.6%",
   "tierBreakdown": {
     "playwright": 23,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 2,
     "archiveToday": 4,
     "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-04-19T15:39:00.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-19T15:45:55.854Z",
+      "event": "bb-session",
+      "session": "56f10dfe",
+      "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html"
+    },
+    {
+      "t": "2026-04-19T15:45:56.823Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

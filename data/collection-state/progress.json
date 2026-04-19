@@ -34,7 +34,8 @@
     "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json",
     "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
     "hate-radio-off-broadway-2026/theater-pizzazz--jk-clarke.json",
-    "high-noon-west-end-2025/whatsonstage--sarah-crompton.json"
+    "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+    "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -779,7 +780,16 @@
     "book-of-mormon-2011/backstage--david-sheward.json",
     "wicked-2003/the-journal-news--jacques-le-sourd.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json"
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--naomi-fry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -819,7 +829,8 @@
       "the-adding-machine-off-broadway-2026/nytimes--unknown.json",
       "the-adding-machine-off-broadway-2026/another-eye-opens--don-shewey.json",
       "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-      "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json"
+      "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
+      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
     ],
     "brightdata": [
       "hamlet-off-broadway-2026/vulture--unknown.json",
@@ -839,7 +850,7 @@
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "fat-ham-2023/newyorker--naomi-fry.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -849,6 +860,17 @@
     },
     {
       "t": "2026-04-19T15:39:00.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-19T15:45:55.854Z",
+      "event": "bb-session",
+      "session": "56f10dfe",
+      "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html"
+    },
+    {
+      "t": "2026-04-19T15:45:56.823Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
