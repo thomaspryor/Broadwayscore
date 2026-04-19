@@ -3237,7 +3237,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     lbo: { found: false, extracted: 0, skipped: false },
     serp: { calls: 0, hits: 0, skipped: false },
     wrongUrlRetry: { found: 0, retried: 0, fixed: 0, skipped: false },
-    rejections: { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, domainMismatch: 0 },
+    rejections: { junkOutlet: 0, suspiciousOutlet: 0, nonBroadway: 0, tourReview: 0, crossMarket: 0, nonReviewPath: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, domainMismatch: 0 },
     urlValidation: { checked: 0, nulled: 0 },
   };
 
