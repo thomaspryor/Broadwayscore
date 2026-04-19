@@ -1,0 +1,178 @@
+name: Weekly Video Reviews
+
+# Scans all 10 registered theatre video creators (TikTok + YouTube) for new
+# reviews, collects transcripts, classifies + scores via Claude, and rebuilds
+# data/video-reviews.json. Only processes videos not yet in the transcript
+# directory — idempotent and cheap on steady-state runs (~5-15 new/week).
+#
+# Monday 4 AM UTC: Sunday is busy (rebuild 04:00, audience scrapers 12:00-16:00).
+# Monday is empty across all other weekly workflows.
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'  # Mondays 4 AM UTC
+  workflow_dispatch:
+    inputs:
+      creator:
+        description: 'Single creator handle to process (e.g. tylernabinger). Leave blank for all.'
+        required: false
+        type: string
+      refresh:
+        description: 'Re-scan creator feeds even if data is recent (passes --refresh to discover-videos)'
+        required: false
+        type: boolean
+        default: false
+
+# Only one instance at a time. cancel-in-progress: false so a running
+# pipeline is never killed mid-flight.
+concurrency:
+  group: weekly-video-reviews
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  video-reviews:
+    name: Discover, collect, score and publish new video reviews
+    runs-on: ubuntu-latest
+    # Steady state (5-15 new videos): ~15 min.
+    # First run after adding a new creator (up to 300 videos × 10 creators
+    # at --sleep-interval 1 = ~50 min discovery alone). 180 min gives safe
+    # headroom — matches update-social-pulse.yml reasoning.
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js and configure git
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      # yt-dlp is not on ubuntu-latest by default.
+      # --break-system-packages required on Ubuntu 24.04+ (PEP 668).
+      - name: Install yt-dlp
+        run: |
+          pip install yt-dlp --break-system-packages --quiet
+          yt-dlp --version
+
+      # Step 1 of 7 — scan creator feeds for new review candidates.
+      # Writes to data/video-reviews-discovery/{handle}.json.
+      # Skips creators scanned < 24h ago unless --refresh.
+      - name: Discover videos
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ -n "${{ inputs.creator }}" ]; then
+            ARGS+=("--creator=${{ inputs.creator }}")
+          fi
+          if [ "${{ inputs.refresh }}" = "true" ]; then
+            ARGS+=("--refresh")
+          fi
+          node scripts/video-reviews/discover-videos.js "${ARGS[@]}"
+
+      # Step 2 of 7 — extract transcripts for new candidates via yt-dlp.
+      # Writes to data/video-reviews-transcripts/raw/. Skips existing files.
+      - name: Collect transcripts
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ -n "${{ inputs.creator }}" ]; then
+            ARGS+=("--creator=${{ inputs.creator }}")
+          fi
+          node scripts/video-reviews/collect-transcripts.js "${ARGS[@]}"
+
+      # Step 3 of 7 — LLM classification: genuine review vs casting news / commentary.
+      # Writes to data/video-reviews-transcripts/classified/.
+      - name: Classify reviews
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/classify-reviews.js
+
+      # Step 4 of 7 — picks best review per creator per show (by date proximity
+      # to opening + transcript length). Moves from classified/ to per-show dirs.
+      - name: Select best reviews
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/select-best-reviews.js
+
+      # Step 5 of 7 — LLM scoring: writes score/bucket/confidence/keyQuote
+      # into each transcript file. Skips already-scored files.
+      - name: Score video reviews
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/score-video-reviews.js
+
+      # Step 6 of 7 — rebuild data/video-reviews.json from all scored transcripts.
+      # This file is in the Vercel deploy trigger path — pushing it kicks a deploy.
+      - name: Build video-reviews.json
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/build-video-reviews.js
+
+      # Step 7 of 7 — download thumbnails for any new reviews that lack one.
+      # Updates data/video-reviews.json in-place and writes JPGs to
+      # public/images/video-reviews/{handle}-{showId}.jpg.
+      - name: Backfill thumbnails
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/backfill-thumbnails.js
+
+      # Only commit if all 7 steps succeeded. Avoids shipping inconsistent state
+      # (e.g. transcripts collected but video-reviews.json not yet rebuilt).
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+
+          git add \
+            data/video-reviews.json \
+            data/video-reviews-discovery/ \
+            data/video-reviews-transcripts/ \
+            public/images/video-reviews/
+
+          if git diff --cached --quiet; then
+            echo "No changes — all videos already up to date."
+            exit 0
+          fi
+
+          TOTAL=$(node -e "
+            const d = require('./data/video-reviews.json');
+            const n = Object.entries(d)
+              .filter(([k]) => !k.startsWith('_'))
+              .reduce((s, [, v]) => s + (Array.isArray(v) ? v.length : 0), 0);
+            process.stdout.write(String(n));
+          " 2>/dev/null || echo "?")
+
+          git commit -m "chore(video-reviews): weekly update (${TOTAL} reviews total)"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      # Non-critical: weekly misses surface in the morning data-health-check digest.
+      # Escalate to 'critical' if same-day alerting becomes important.
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Video Reviews Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## Weekly Video Reviews" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            try {
+              const d = require('./data/video-reviews.json');
+              const entries = Object.entries(d).filter(([k]) => !k.startsWith('_'));
+              const shows = entries.length;
+              const reviews = entries.reduce((s, [, v]) => s + (Array.isArray(v) ? v.length : 0), 0);
+              console.log('- **Shows with video reviews:** ' + shows);
+              console.log('- **Total video reviews:** ' + reviews);
+            } catch (e) { console.log('Could not parse video-reviews.json'); }
+          " >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
