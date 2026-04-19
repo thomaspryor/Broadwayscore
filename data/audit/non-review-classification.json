@@ -1,36 +1,36 @@
 {
   "meta": {
-    "generatedAt": "2026-04-19T17:39:52.926Z",
+    "generatedAt": "2026-04-19T18:59:24.716Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36238,
-      "inReviewsJson": 16568,
-      "skippedExcluded": 73,
-      "withFullText": 27,
-      "excerptOnly": 1579,
-      "llmClassified": 26,
+      "totalFiles": 36186,
+      "inReviewsJson": 16563,
+      "skippedExcluded": 59,
+      "withFullText": 24,
+      "excerptOnly": 1575,
+      "llmClassified": 23,
       "heuristicFlagged": 0,
       "nonReviewsFound": 1,
       "uncertainCases": 15,
-      "budgetUsed": 0.0026999999999999993,
-      "llmCalls": 27,
+      "budgetUsed": 0.0024,
+      "llmCalls": 24,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14889
+      "skippedAlreadyClassified": 14905
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "wit-2012/splash-magazines--david-cote.json",
-      "showId": "wit-2012",
-      "outlet": "Splash Magazines",
-      "outletId": "splash-magazines",
+      "file": "funny-girl-2022/thestage--nicole-serratore.json",
+      "showId": "funny-girl-2022",
+      "outlet": "The Stage",
+      "outletId": "thestage",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This is a list of various articles and events, not a review of \"Wit\".",
-      "currentScore": 100
+      "reasoning": "This is a notice about accessing articles on a website, not a review of Funny Girl. It mentions the author and copyright information.",
+      "currentScore": 60
     }
   ],
   "uncertainCases": [
@@ -41,7 +41,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -51,7 +51,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -61,7 +61,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not evaluate \"Funny Girl\".",
+      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review of a specific show. It mentions 'Broadway news updates' and 'Music album reviews' but does not contain any evaluative content about 'Funny Girl'.",
       "currentScore": 62
     },
     {
@@ -81,7 +81,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there's no indication of a review within this excerpt.",
       "currentScore": 88
     },
     {
@@ -91,7 +91,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -101,7 +101,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
       "currentScore": 74
     },
     {
@@ -141,7 +141,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and the history it represents.",
       "currentScore": 83
     },
     {
@@ -151,7 +151,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms, not an actual article. There is no evaluative content about 'The Assembled Parties' or any other show.",
       "currentScore": 42
     },
     {
@@ -161,7 +161,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review that offers an evaluation.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -187,21 +187,18 @@
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "cats-the-jellicle-ball-2026/theater-scene--victor-gluck.json",
-    "cats-the-jellicle-ball-2026/theatre-reviews-limited--david-roberts.json",
-    "evita-2012/huffpost--mark-kennedy.json",
-    "gypsy-2003/guardian--edward-karam.json",
-    "gypsy-2003/nytimes--ben-brantley.json",
-    "gypsy-2003/talkinbroadway--matthew-murray.json",
-    "gypsy-2003/variety--charles-isherwood.json",
-    "proof-2026/chicagotribune--chris-jones.json",
-    "the-adding-machine-off-broadway-2026/talkinbroadway--howard-miller.json",
-    "woman-in-mind-west-end-2025/thestage--sam-marlowe.json"
+    "a-dolls-house-2023/thestage--nicole-serratore.json",
+    "an-enemy-of-the-people-2024/guardian--arifa-akbar.json",
+    "copenhagen-2000/curtainup--elyse-sommer.json",
+    "copenhagen-2000/talkinbroadway--thomas-burke.json",
+    "copenhagen-2000/village-voice--michael-feingold.json",
+    "manic-street-creature-west-end-2026/whatsonstage--miriam-sallon.json",
+    "priscilla-queen-of-the-desert-2011/hollywood-reporter--david-rooney.json"
   ],
   "perShowSummary": [
     {
-      "showId": "wit-2012",
-      "currentCount": 14,
+      "showId": "funny-girl-2022",
+      "currentCount": 40,
       "removed": 1
     }
   ]

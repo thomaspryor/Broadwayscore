@@ -114,7 +114,7 @@ export const PRIZE_DESCRIPTION = '$500 TodayTix voucher';
 
 export const TIEBREAKER_QUESTIONS = [
   { id: 'tony-noms-most', question: 'How many nominations will the most-nominated show receive?', type: 'number' as const },
-  { id: 'best-musical-winner', question: 'Which show will win Best Musical?', type: 'text' as const },
+  { id: 'best-musical-winner', question: 'Which show will win Best Musical?', type: 'show-best-musical' as const },
   { id: 'total-tony-noms', question: 'How many total Tony nominations will there be?', type: 'number' as const },
 ];
 

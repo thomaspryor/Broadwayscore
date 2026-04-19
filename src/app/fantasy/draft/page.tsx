@@ -6,7 +6,6 @@ import FantasyShowPicker from '@/components/fantasy/FantasyShowPicker';
 import FantasyBudgetBar from '@/components/fantasy/FantasyBudgetBar';
 import {
   FANTASY_BUDGET,
-  FANTASY_TEAM_SIZE,
   DRAFT_DEADLINE,
   isDraftClosed,
   TIEBREAKER_QUESTIONS,
@@ -42,7 +41,8 @@ function FantasyDraftInner() {
   useEffect(() => {
     if (leagueFromUrl) setLeagueName(leagueFromUrl);
   }, [leagueFromUrl]);
-  const [picks, setPicks] = useState<string[]>(Array(FANTASY_TEAM_SIZE).fill(''));
+  // Dynamic slots: filled picks + one empty "add" slot. No hard cap — budget is the only limit.
+  const [picks, setPicks] = useState<string[]>(['']);
   const [tiebreakers, setTiebreakers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -54,6 +54,14 @@ function FantasyDraftInner() {
     return Object.entries(config.shows)
       .map(([id, show]) => ({ id, ...show }))
       .sort((a, b) => b.price - a.price);
+  }, []);
+
+  // Best Musical-eligible: Broadway musicals with Tony eligibility
+  const bestMusicalCandidates = useMemo(() => {
+    return Object.entries(config.shows)
+      .filter(([, s]) => s.type === 'musical' && s.category === 'broadway' && s.eligible?.tonys)
+      .map(([id, s]) => ({ id, title: s.title }))
+      .sort((a, b) => a.title.localeCompare(b.title));
   }, []);
 
   const selectedIds = picks.filter(Boolean);
@@ -74,13 +82,19 @@ function FantasyDraftInner() {
     setPicks(prev => {
       const next = [...prev];
       next[slotIndex] = showId;
+      // Ensure there's always one empty trailing slot to add more
+      if (next.every(Boolean)) next.push('');
       return next;
     });
     setError(null);
   }
 
   function handleRemove(showId: string) {
-    setPicks(prev => prev.map(id => (id === showId ? '' : id)));
+    setPicks(prev => {
+      const next = prev.filter(id => id !== showId);
+      if (next.length === 0 || next.every(Boolean)) next.push('');
+      return next;
+    });
     setError(null);
   }
 
@@ -156,7 +170,7 @@ function FantasyDraftInner() {
               View Leaderboard
             </a>
             <button
-              onClick={() => { setSubmitted(false); setPicks(Array(FANTASY_TEAM_SIZE).fill('')); }}
+              onClick={() => { setSubmitted(false); setPicks(['']); }}
               className="px-6 py-3 bg-surface-raised text-white rounded-lg hover:bg-surface-overlay transition-colors"
             >
               Change My Picks
@@ -259,7 +273,6 @@ function FantasyDraftInner() {
             spent={totalSpent}
             budget={FANTASY_BUDGET}
             picksCount={selectedIds.length}
-            teamSize={FANTASY_TEAM_SIZE}
           />
         </div>
 
@@ -291,13 +304,26 @@ function FantasyDraftInner() {
           {TIEBREAKER_QUESTIONS.map(q => (
             <div key={q.id}>
               <label className="block text-sm text-gray-400 mb-1">{q.question}</label>
-              <input
-                type={q.type === 'number' ? 'number' : 'text'}
-                className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
-                placeholder={q.type === 'number' ? 'Your guess' : 'Your answer'}
-                value={tiebreakers[q.id] || ''}
-                onChange={e => setTiebreakers(prev => ({ ...prev, [q.id]: e.target.value }))}
-              />
+              {q.type === 'show-best-musical' ? (
+                <select
+                  className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white focus:border-brand/50 focus:outline-none transition-colors"
+                  value={tiebreakers[q.id] || ''}
+                  onChange={e => setTiebreakers(prev => ({ ...prev, [q.id]: e.target.value }))}
+                >
+                  <option value="">Select a show…</option>
+                  {bestMusicalCandidates.map(s => (
+                    <option key={s.id} value={s.id}>{s.title}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={q.type === 'number' ? 'number' : 'text'}
+                  className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+                  placeholder={q.type === 'number' ? 'Your guess' : 'Your answer'}
+                  value={tiebreakers[q.id] || ''}
+                  onChange={e => setTiebreakers(prev => ({ ...prev, [q.id]: e.target.value }))}
+                />
+              )}
             </div>
           ))}
         </div>
