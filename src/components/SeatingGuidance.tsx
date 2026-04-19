@@ -125,7 +125,7 @@ function ShowContextLine({ bestFor, worstFor }: { bestFor?: string[]; worstFor?:
   );
 }
 
-function SectionRow({ section, isHero = false, compactRationale = false, suppressRationale = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean; suppressRationale?: boolean }) {
+function SectionRow({ section, isHero = false, compactRationale = false, suppressRationale = false, isValueAccent = false }: { section: SeatingSection; isHero?: boolean; compactRationale?: boolean; suppressRationale?: boolean; isValueAccent?: boolean }) {
   const priceLabel = section.priceTier ? PRICE_TIER_LABEL[section.priceTier] : null;
   const nameClass = isHero ? 'text-base font-bold text-white' : 'text-sm font-semibold text-gray-100';
   const hazardsWithNotes = (section.hazards ?? []).filter((h) => h.note);
@@ -135,8 +135,11 @@ function SectionRow({ section, isHero = false, compactRationale = false, suppres
   const showRationaleInline = section.rationale && !compactRationale && !suppressRationale;
   const showRationaleExpand = section.rationale && compactRationale && !suppressRationale;
 
+  const baseSpacing = isHero ? 'pb-2' : 'py-2 border-t border-white/5';
+  const accentClass = isValueAccent ? 'border-l-2 border-brand/40 pl-2.5 -ml-2.5 bg-brand/[0.03]' : '';
+
   return (
-    <div className={isHero ? 'pb-3' : 'py-3 border-t border-white/5'}>
+    <div className={`${baseSpacing} ${accentClass}`.trim()}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap leading-tight">
@@ -173,7 +176,7 @@ function SectionRow({ section, isHero = false, compactRationale = false, suppres
 
       {/* Inline expander row: "More details ▾" and "⚠ 1 hazard ▾" on same line */}
       {(showRationaleExpand || hasHazards) && (
-        <div className="flex items-start gap-x-4 gap-y-1 flex-wrap mt-2 text-[11px] text-gray-400">
+        <div className="flex items-start gap-x-4 gap-y-1 flex-wrap mt-1.5 text-[11px] text-gray-400">
           {showRationaleExpand && (
             <details className="group">
               <summary className="cursor-pointer list-none hover:text-gray-200 select-none inline-flex items-center gap-1">
@@ -255,15 +258,21 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
   const remainingSweetSpots = remaining.filter((s) => s.verdict === 'sweet-spot');
   const remainingSkips = remaining.filter((s) => s.verdict === 'skip');
 
-  // Collapse "solid" rows by default if there are more than 2
-  const shouldCollapseSolids = solids.length > 2;
-  const visibleSolids = shouldCollapseSolids && !expanded ? [] : solids;
-  const hiddenSolidCount = shouldCollapseSolids && !expanded ? solids.length : 0;
-
   // Prefer value-pick lede over generic bestSeats — the value pick is always
   // non-obvious (otherwise it'd be the sweet-spot), so this guarantees the
   // gold box says something theater-specific, not "center orch is best."
   const valuePickSection = validSections.find((s) => s.isValuePick);
+
+  // Always keep the value-pick row visible — otherwise the gold "Best value"
+  // box refers to a section the reader can't see, breaking the mental model.
+  const collapsibleSolids = solids.filter((s) => s !== valuePickSection);
+  const pinnedValueSolid = valuePickSection && solids.includes(valuePickSection) ? valuePickSection : null;
+  const shouldCollapseSolids = collapsibleSolids.length > 2;
+  const visibleSolids = [
+    ...(pinnedValueSolid ? [pinnedValueSolid] : []),
+    ...(shouldCollapseSolids && !expanded ? [] : collapsibleSolids),
+  ];
+  const hiddenSolidCount = shouldCollapseSolids && !expanded ? collapsibleSolids.length : 0;
 
   return (
     <div className="text-left">
@@ -308,6 +317,7 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
         isHero
         compactRationale={compactRationale}
         suppressRationale={hero === valuePickSection}
+        isValueAccent={hero === valuePickSection}
       />
 
       {/* Additional sweet-spots */}
@@ -317,6 +327,7 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
           section={s}
           compactRationale={compactRationale}
           suppressRationale={s === valuePickSection}
+          isValueAccent={s === valuePickSection}
         />
       ))}
 
@@ -327,6 +338,7 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
           section={s}
           compactRationale={compactRationale}
           suppressRationale={s === valuePickSection}
+          isValueAccent={s === valuePickSection}
         />
       ))}
 
@@ -337,6 +349,7 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
           section={s}
           compactRationale={compactRationale}
           suppressRationale={s === valuePickSection}
+          isValueAccent={s === valuePickSection}
         />
       ))}
 
