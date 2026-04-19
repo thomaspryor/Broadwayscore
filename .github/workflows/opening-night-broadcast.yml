@@ -571,6 +571,43 @@ jobs:
             "
           fi
 
+      - name: Append broadcast handoff to Express completion audit
+        if: steps.broadcast.outputs.broadcast_sent == 'true' && steps.check.outputs.pending_shows != ''
+        continue-on-error: true
+        run: |
+          # Updates data/audit/opening-night-express-completed.json with broadcastDraftedAt/DraftId
+          # for any show that has an Express completion record AND just got a Resend draft created.
+          # This makes the audit file a single end-to-end view (Express → rebuild → score → broadcast draft).
+          # Non-fatal: if the audit file doesn't exist (broadcast ran without Express), we just skip.
+          node -e "
+            const fs = require('fs');
+            const auditPath = 'data/audit/opening-night-express-completed.json';
+            const sentPath = 'data/opening-night-sent.json';
+            if (!fs.existsSync(auditPath)) {
+              console.log('No Express completion audit — skipping handoff append');
+              process.exit(0);
+            }
+            const audit = JSON.parse(fs.readFileSync(auditPath, 'utf8'));
+            const sent = fs.existsSync(sentPath)
+              ? JSON.parse(fs.readFileSync(sentPath, 'utf8'))
+              : { shows: {} };
+            let updated = 0;
+            for (const [showId, record] of Object.entries(audit.shows || {})) {
+              const sentRec = sent.shows && sent.shows[showId];
+              if (sentRec && sentRec.draftId && record.broadcastDraftId !== sentRec.draftId) {
+                record.broadcastDraftedAt = sentRec.draftCreatedAt || new Date().toISOString();
+                record.broadcastDraftId = sentRec.draftId;
+                updated++;
+              }
+            }
+            if (updated > 0) {
+              fs.writeFileSync(auditPath, JSON.stringify(audit, null, 2) + '\n');
+              console.log('Appended broadcast handoff for ' + updated + ' Express shows');
+            } else {
+              console.log('No Express shows to update (either no drafts this run or already recorded)');
+            }
+          "
+
       - name: Send push notifications (mobile app)
         if: steps.check.outputs.broadway != ''
         continue-on-error: true
@@ -614,6 +651,10 @@ jobs:
             echo "Staged opening-night-sent.json for commit"
           else
             echo "WARNING: opening-night-sent.json not found — sent tracking will be lost"
+          fi
+          if [ -f data/audit/opening-night-express-completed.json ]; then
+            git add data/audit/opening-night-express-completed.json
+            echo "Staged opening-night-express-completed.json (broadcast handoff)"
           fi
           # Skip push if nothing to commit (avoids push race failures)
           if git diff --cached --quiet; then

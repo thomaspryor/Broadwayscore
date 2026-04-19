@@ -204,23 +204,12 @@ jobs:
             echo "No SCRAPINGBEE_API_KEY — SERP enabled by default"
             exit 0
           fi
-          USAGE=$(curl -s --max-time 8 "https://app.scrapingbee.com/api/v1/usage?api_key=$SCRAPINGBEE_API_KEY" 2>/dev/null || echo '{}')
-          MAX=$(echo "$USAGE" | node -e "try{const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));console.log(d.max_api_credit||0)}catch(e){console.log(0)}")
-          USED=$(echo "$USAGE" | node -e "try{const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));console.log(d.used_api_credit||0)}catch(e){console.log(0)}")
-          if [ "$MAX" -gt 0 ]; then
-            PCT_REMAINING=$(( (MAX - USED) * 100 / MAX ))
-            echo "SB credits: $((MAX - USED)) remaining (${PCT_REMAINING}% of $MAX)"
-            # Only disable SERP at absolute floor (1% = ~23K credits).
-            # Opening night SERP costs ~1,800 credits total — worth it.
-            # The 15% threshold was too aggressive; non-essential scrapers are
-            # now disabled separately when credits are low.
-            if [ "$PCT_REMAINING" -lt 1 ]; then
-              echo "skip_serp=true" >> $GITHUB_OUTPUT
-              echo "⚠️  SB credits < 1% — SERP disabled (absolute floor)"
-            else
-              echo "skip_serp=false" >> $GITHUB_OUTPUT
-              echo "✓ SB credits healthy (${PCT_REMAINING}%) — SERP enabled"
-            fi
+          # Delegate to shared helper. Emits ::warning:: at 90% used, skip_serp=true below 1% remaining.
+          OUT=$(node scripts/lib/check-sb-credits.js --warn-used-pct=90 --output=skip_serp --floor-remaining-pct=1 2>&1 || true)
+          echo "$OUT" | grep -v '^{' || true
+          SKIP_LINE=$(echo "$OUT" | grep '^skip_serp=' | tail -1)
+          if [ -n "$SKIP_LINE" ]; then
+            echo "$SKIP_LINE" >> $GITHUB_OUTPUT
           else
             echo "skip_serp=false" >> $GITHUB_OUTPUT
             echo "Could not read SB credit balance — SERP enabled by default"
@@ -299,14 +288,48 @@ jobs:
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
 
-          # Check maintenance mode — pause orchestrator during manual corrections
-          # Set: gh variable set ORCHESTRATOR_PAUSED --body true
-          # Clear: gh variable delete ORCHESTRATOR_PAUSED
+          # Check maintenance mode — pause orchestrator during manual corrections.
+          # Variable formats:
+          #   Legacy manual pause: plain string "true" (honored indefinitely)
+          #   Express lease:       JSON {"value":"express","setAt":"<ISO>"} (auto-expires after 90 min)
+          # Set manual:   gh variable set ORCHESTRATOR_PAUSED --body true
+          # Clear manual: gh variable delete ORCHESTRATOR_PAUSED
           PAUSED=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null || echo "")
           if [ -n "$PAUSED" ]; then
-            # "true" = manual pause for corrections; "express" = Opening Night Express is running
-            echo "::notice::Orchestrator PAUSED (value=$PAUSED). Exiting. Clear with: gh variable delete ORCHESTRATOR_PAUSED"
-            exit 0
+            DECISION=$(PAUSED_VALUE="$PAUSED" node -e "
+              const raw = process.env.PAUSED_VALUE || '';
+              let parsed = null;
+              try { parsed = JSON.parse(raw); } catch (e) { /* legacy string */ }
+              if (parsed && typeof parsed === 'object' && parsed.value === 'express') {
+                const setAt = new Date(parsed.setAt || 0).getTime();
+                const ageMin = (Date.now() - setAt) / 60000;
+                if (!isFinite(ageMin) || ageMin > 90) {
+                  console.log('EXPIRED|' + Math.round(ageMin) + 'min');
+                } else {
+                  console.log('ACTIVE|express|' + Math.round(ageMin) + 'min');
+                }
+              } else {
+                console.log('HONOR|' + raw);
+              }
+            " 2>/dev/null || echo "HONOR|$PAUSED")
+            case "$DECISION" in
+              EXPIRED*)
+                AGE=$(echo "$DECISION" | cut -d'|' -f2)
+                echo "::warning::ORCHESTRATOR_PAUSED=express lease expired ($AGE, >90min). Auto-clearing and proceeding."
+                gh variable delete ORCHESTRATOR_PAUSED 2>/dev/null \
+                  && echo "Stale lease cleared." \
+                  || echo "::warning::Could not clear stale ORCHESTRATOR_PAUSED — continuing anyway"
+                ;;
+              ACTIVE*)
+                AGE=$(echo "$DECISION" | cut -d'|' -f3)
+                echo "::notice::Orchestrator PAUSED (express lease, $AGE old). Exiting."
+                exit 0
+                ;;
+              *)
+                echo "::notice::Orchestrator PAUSED (value=$PAUSED). Exiting. Clear with: gh variable delete ORCHESTRATOR_PAUSED"
+                exit 0
+                ;;
+            esac
           fi
 
           # skip_serp=true when SB credits < 15%; auto-clears when credits renew

@@ -47,6 +47,11 @@ on:
         required: false
         type: boolean
         default: false
+      skip_score:
+        description: 'Skip LLM scoring step (use for text-only re-runs or after a separate scoring run)'
+        required: false
+        type: boolean
+        default: false
       dry_run:
         description: 'Dry run — gather and collect but skip push/rebuild/deploy'
         required: false
@@ -95,14 +100,27 @@ jobs:
           # Wait briefly for cancellations to propagate
           [ $CANCELLED -gt 0 ] && sleep 15 || true
 
-      - name: Set ORCHESTRATOR_PAUSED (blocks cron-triggered orchestrators for Express duration)
+      - name: Set ORCHESTRATOR_PAUSED (time-limited lease, blocks cron-triggered orchestrators)
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          # Set a distinct value so we can safely clear it without clobbering a manual pause.
-          # The orchestrator checks for any non-empty value (including "true" for manual pauses).
-          if gh variable set ORCHESTRATOR_PAUSED --body "express"; then
-            echo "ORCHESTRATOR_PAUSED=express (new orchestrator crons will yield)"
+          # JSON lease body so the orchestrator can auto-expire a hung Express run after 90min.
+          # Manual pauses ("true") are NOT overwritten here — we only set if cleared OR already ours.
+          CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null || echo "")
+          IS_EXPRESS=$(CURRENT="$CURRENT" node -e "
+            const raw = process.env.CURRENT || '';
+            if (!raw) { console.log('empty'); process.exit(0); }
+            try { const p = JSON.parse(raw); console.log(p && p.value === 'express' ? 'express' : 'other'); }
+            catch (e) { console.log(raw === 'express' ? 'express' : 'other'); }
+          " 2>/dev/null || echo "other")
+          if [ "$IS_EXPRESS" = "other" ]; then
+            echo "::error::ORCHESTRATOR_PAUSED already set by non-express pause (value=$CURRENT) — aborting"
+            exit 1
+          fi
+          LEASE_BODY=$(node -e "console.log(JSON.stringify({value:'express',setAt:new Date().toISOString(),runId:'${{ github.run_id }}'}))")
+          if gh variable set ORCHESTRATOR_PAUSED --body "$LEASE_BODY"; then
+            echo "ORCHESTRATOR_PAUSED=$LEASE_BODY"
+            echo "  (new orchestrator crons will yield; lease auto-expires after 90min)"
           else
             echo "::error::Could not set ORCHESTRATOR_PAUSED — aborting to prevent unguarded concurrent orchestrator writes"
             exit 1
@@ -138,6 +156,15 @@ jobs:
           echo "opening_date=$OPENING_DATE" >> $GITHUB_OUTPUT
           echo "show_name=$SHOW_NAME" >> $GITHUB_OUTPUT
           echo "Show: $SHOW_NAME | Opening: ${OPENING_DATE:-unknown} | Market: ${{ inputs.market }}"
+
+      - name: Pre-flight ScrapingBee credit check
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          # Soft warning only — Express typically uses <300 SB credits, so never block on this.
+          # Emits ::warning:: if ≥90% used so the run summary flags it for manual attention.
+          node scripts/lib/check-sb-credits.js --warn-used-pct=90 2>&1 | grep -v '^{' || true
 
       - name: Clear stale pre-opening scores
         if: inputs.clear_stale_scores && steps.show_meta.outputs.opening_date != ''
@@ -216,7 +243,7 @@ jobs:
           message: "data: Opening Night Express — review texts for ${{ inputs.show_id }}"
 
       - name: Score reviews
-        if: inputs.dry_run != true
+        if: inputs.dry_run != true && inputs.skip_score != true
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -395,7 +422,7 @@ jobs:
           fi
 
       # GAP 2 CLEANUP: Always clear ORCHESTRATOR_PAUSED at job end.
-      # Only clears the "express" value we set — does not clobber a manual "true" pause.
+      # Parses JSON lease body and only clears if value==="express" — preserves manual "true" pauses.
       - name: Clear ORCHESTRATOR_PAUSED
         if: always()
         env:
@@ -403,15 +430,29 @@ jobs:
         run: |
           CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED \
             --jq '.value' 2>/dev/null || echo "")
-          if [ "$CURRENT" = "express" ]; then
-            gh variable delete ORCHESTRATOR_PAUSED \
-              && echo "ORCHESTRATOR_PAUSED cleared — orchestrator crons may resume" \
-              || echo "::warning::Could not clear ORCHESTRATOR_PAUSED — run: gh variable delete ORCHESTRATOR_PAUSED"
-          elif [ -n "$CURRENT" ]; then
-            echo "ORCHESTRATOR_PAUSED=$CURRENT (manual pause — not clearing)"
-          else
-            echo "ORCHESTRATOR_PAUSED already cleared"
-          fi
+          DECISION=$(CURRENT="$CURRENT" node -e "
+            const raw = process.env.CURRENT || '';
+            if (!raw) { console.log('empty'); process.exit(0); }
+            try {
+              const p = JSON.parse(raw);
+              console.log(p && p.value === 'express' ? 'express' : 'other');
+            } catch (e) {
+              console.log(raw === 'express' ? 'express' : 'other');
+            }
+          " 2>/dev/null || echo "other")
+          case "$DECISION" in
+            express)
+              gh variable delete ORCHESTRATOR_PAUSED \
+                && echo "ORCHESTRATOR_PAUSED cleared — orchestrator crons may resume" \
+                || echo "::warning::Could not clear ORCHESTRATOR_PAUSED — run: gh variable delete ORCHESTRATOR_PAUSED"
+              ;;
+            other)
+              echo "ORCHESTRATOR_PAUSED=$CURRENT (manual pause — not clearing)"
+              ;;
+            *)
+              echo "ORCHESTRATOR_PAUSED already cleared"
+              ;;
+          esac
 
       - name: Notify on failure
         if: failure()
