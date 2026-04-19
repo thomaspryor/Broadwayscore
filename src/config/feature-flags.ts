@@ -16,7 +16,7 @@ const enabledFeatures = new Set(
 // Features auto-enabled on demo.broadwayscorecard.com (runtime check).
 // Uses getters so the check runs each time the flag is read (client-side).
 // CI: lint-feature-flags checks these are never referenced in server components.
-const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes', 'theaterScorecard']);
+const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
@@ -47,7 +47,7 @@ export const featureFlags = {
   get userAccounts() { return has('userAccounts'); },
   get showPageRedesign() { return has('showPageRedesign'); },
   get showtimes() { return true; }, // launched — flag retained for cleanup
-  get theaterScorecard() { return has('theaterScorecard'); },
+  get theaterScorecard() { return true; }, // launched — flag retained for cleanup
   get fantasyLeague() { return has('fantasyLeague'); },
   get videoReviews() { return has('videoReviews'); },
   get homepageExplainer() { return true; }, // launched — flag retained for cleanup

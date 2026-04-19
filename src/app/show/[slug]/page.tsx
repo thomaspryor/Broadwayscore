@@ -980,6 +980,26 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           />
         )}
 
+        {/* Seating Chart Scorecard — directly under Showtimes */}
+        {theater && (
+          <SeatingGuidanceCard
+            sections={theater.structuredTips?.seating?.sections}
+            bestSeats={theater.structuredTips?.seating?.bestSeats}
+            variant="show"
+          />
+        )}
+
+        {/* Theater Scorecard — directly under Seating Scorecard */}
+        {theater?.venueScores && (
+          <TheaterScorecardCard
+            venueScores={theater.venueScores}
+            accessibility={theater.accessibility}
+            externalLinks={theater.externalLinks}
+            theaterName={theater.name}
+            theaterSlug={theater.slug}
+          />
+        )}
+
         {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
         <div id="box-office" className="scroll-mt-20" />
         {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
@@ -996,28 +1016,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Social Buzz — weekly X+TikTok+Instagram mention tiering */}
         <div id="social-buzz" className="scroll-mt-20" />
         <SocialPulseCard sp={socialPulse} />
-
-        {/* Theater Scorecard (Broadway only, demo-gated — includes unified seat guidance) */}
-        {theater?.venueScores && (
-          <TheaterScorecardCard
-            venueScores={theater.venueScores}
-            accessibility={theater.accessibility}
-            externalLinks={theater.externalLinks}
-            theaterName={theater.name}
-            theaterSlug={theater.slug}
-            seatingSections={theater.structuredTips?.seating?.sections}
-            bestSeats={theater.structuredTips?.seating?.bestSeats}
-          />
-        )}
-
-        {/* Seating guidance (prod fallback — self-gates when scorecard renders) */}
-        {theater && (
-          <SeatingGuidanceCard
-            sections={theater.structuredTips?.seating?.sections}
-            bestSeats={theater.structuredTips?.seating?.bestSeats}
-            variant="show"
-          />
-        )}
 
         {/* Lottery/Rush Tickets */}
         <div id="discount-tickets" className="scroll-mt-20" />
