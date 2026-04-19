@@ -58,7 +58,7 @@ const { verifyProduction, quickDateCheck, getShowData } = require('./lib/product
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonFromUrl } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
@@ -3077,6 +3077,22 @@ function createReviewFile(showId, reviewData, options = {}) {
             review.wrongProductionNote = `Auto-flagged: published ${Math.round(daysBefore)} days before show earliest date ${earliest}`;
           }
         }
+      }
+    } catch (e) {}
+  }
+
+  // URL-path date fallback: when publishDate is null (common on Unknown-byline
+  // SERP hits), extract /YYYY/MM/DD/ from the URL and apply the same 30-day rule.
+  // Catches off-topic NYT/Guardian/Variety/Playbill/Vulture articles ingested for
+  // shows they don't cover. Was gap on Fallen Angels 2026 — 7 wrong files needed
+  // manual cleanup before opening. Fail-safe: helper returns null on any error.
+  if (!review.wrongProduction && _showMeta) {
+    try {
+      const reason = getWrongProductionReasonFromUrl(review.url, _showMeta);
+      if (reason) {
+        console.log(`    ⚠️  ${reason}`);
+        review.wrongProduction = true;
+        review.wrongProductionNote = reason;
       }
     } catch (e) {}
   }
