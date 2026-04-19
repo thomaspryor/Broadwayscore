@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T08:43:27.193Z",
+  "generatedAt": "2026-04-19T08:54:55.079Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -2518,6 +2518,112 @@
       "researchedAt": "2026-04-18T09:12:43.277Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "backlog"
+    },
+    "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": "",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Off-Broadway nonprofit production; no public budget or recoupment info.",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/regionalnew/La-Breve-y-Maravillosa-Vida-de-Oscar-Wao-4282599",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.intellispect.co/organizations/132672755-spanish-theatre-repertory-co-ltd",
+          "date": "2023-08-01"
+        }
+      ],
+      "title": "La Breve y Maravillosa Vida de Oscar Wao",
+      "slug": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway",
+      "openingDate": "2024-02-17",
+      "status": "open",
+      "researchedAt": "2026-04-18T09:16:08.059Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "fallen-angels-2026": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Broadway Scorecard Investment Tracker",
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public data found on capitalization or weekly running cost; production closed after a limited run without recouping.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://broadwayscorecard.com/biz/season/2025-2026",
+          "date": "2026-04-19"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/FALLEN-ANGELS",
+          "date": "2026-04-19"
+        }
+      ],
+      "title": "Fallen Angels",
+      "slug": "fallen-angels-2026",
+      "openingDate": "2026-04-19",
+      "status": "open",
+      "researchedAt": "2026-04-19T08:53:52.373Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
+    },
+    "hamlet-off-broadway-2026": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public financial data found; production operates as a nonprofit partnership between BAM and the National Theatre.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.bam.org/hamlet",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/search?q=Hamlet+capitalization",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://forum.broadwayworld.com/thread/Broadway-JournalWater-for-Elephants-running-cost--960-000-per-week",
+          "date": "2023-11-06"
+        }
+      ],
+      "title": "Hamlet",
+      "slug": "hamlet-off-broadway-2026",
+      "openingDate": "2026-04-19",
+      "status": "open",
+      "researchedAt": "2026-04-19T08:54:55.079Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     }
   }
 }
