@@ -101,9 +101,12 @@ jobs:
         run: |
           # Set a distinct value so we can safely clear it without clobbering a manual pause.
           # The orchestrator checks for any non-empty value (including "true" for manual pauses).
-          gh variable set ORCHESTRATOR_PAUSED --body "express" \
-            && echo "ORCHESTRATOR_PAUSED=express (new orchestrator crons will yield)" \
-            || { echo "::error::Could not set ORCHESTRATOR_PAUSED — aborting to prevent unguarded concurrent orchestrator writes"; exit 1; }
+          if gh variable set ORCHESTRATOR_PAUSED --body "express"; then
+            echo "ORCHESTRATOR_PAUSED=express (new orchestrator crons will yield)"
+          else
+            echo "::error::Could not set ORCHESTRATOR_PAUSED — aborting to prevent unguarded concurrent orchestrator writes"
+            exit 1
+          fi
 
       - name: Checkout core data (shows.json, reviews.json, etc.)
         uses: ./.github/actions/checkout-core-data
