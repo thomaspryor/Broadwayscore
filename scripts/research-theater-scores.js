@@ -71,6 +71,12 @@ REFERENCE ANCHORS (use these to calibrate your scores):
 - Facilities: Modern theaters with adequate restrooms = 4. Old theaters with notoriously insufficient restrooms = 2. Most theaters = 3.
 - Sound: Lincoln Center's Beaumont (purpose-built) = 5. Theaters with known dead spots or muddy acoustics = 2.
 
+SIGHTLINES HARD OVERRIDES — source material for these theaters often over-states sightline quality. The large-house penalty is real even when reviewers say "good sightlines." Use these exact scores regardless of source text:
+- Lyric Theatre: sightlines = 3 (1,930 seats, 4 levels with balcony overhangs — comparable to Gershwin)
+- Gershwin Theatre: sightlines = 3 (1,933 seats, rear seats very far from stage)
+- Broadway Theatre: sightlines = 3 (1,761 seats, extremely deep — rear orchestra and balcony are very far)
+- Palace Theatre: sightlines = 3 (1,648 seats, tall vertical theater with significant depth)
+
 CRITICAL: Do NOT default to safe scores. If a theater has tight legroom, score comfort 2 not 3. If restroom lines are a frequent complaint, score facilities 2 not 3. Differentiate honestly — a score of 4/4/3/5/3 for every theater is useless to ticket buyers.
 
 Do NOT rate accessibility features (wheelchair, elevator, hearing loop). Those will be sourced separately from official theater websites.
