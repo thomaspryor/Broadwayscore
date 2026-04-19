@@ -220,25 +220,6 @@ function SectionRow({ section, isHero = false, compactRationale = false, suppres
   );
 }
 
-function splitRationale(r: string): { preview: string; rest: string } {
-  const trimmed = r.trim();
-  const MAX_PREVIEW = 140;
-  // Prefer breaking at the first sentence if it's short enough
-  const sentenceMatch = trimmed.match(/^([\s\S]+?[.!?])(\s+)([\s\S]+)$/);
-  if (sentenceMatch && sentenceMatch[1].length <= MAX_PREVIEW) {
-    return { preview: sentenceMatch[1], rest: sentenceMatch[3] };
-  }
-  if (trimmed.length <= MAX_PREVIEW) {
-    return { preview: trimmed, rest: '' };
-  }
-  // Fall back to a word-boundary cut
-  const cut = trimmed.slice(0, MAX_PREVIEW);
-  const lastSpace = cut.lastIndexOf(' ');
-  const preview = cut.slice(0, lastSpace > 80 ? lastSpace : MAX_PREVIEW).replace(/[,;:]$/, '');
-  const rest = trimmed.slice(preview.length).replace(/^\s+/, '');
-  return { preview: preview + '…', rest };
-}
-
 export default function SeatingGuidance({ sections, bestSeats, compactRationale = false }: SeatingGuidanceProps) {
   const [expanded, setExpanded] = useState(false);
   const [ledeExpanded, setLedeExpanded] = useState(false);
@@ -279,17 +260,22 @@ export default function SeatingGuidance({ sections, bestSeats, compactRationale 
       <VerdictDistributionBar sections={validSections} />
 
       {valuePickSection ? (() => {
-        const rationale = valuePickSection.rationale || '';
-        const { preview, rest } = splitRationale(rationale);
-        const hasMore = rest.length > 0;
+        const rationale = (valuePickSection.rationale || '').trim();
+        // Drop "(rows X)" when X is already in the section name
+        const name = valuePickSection.name || '';
+        const rowRange = valuePickSection.rowRange || '';
+        const showRowRange = rowRange && !name.toLowerCase().includes(rowRange.toLowerCase());
+        // Clamp to 3 lines via CSS; "More details" is the escape hatch for anything longer
+        const likelyClamped = rationale.length > 100;
+        const hasMore = likelyClamped;
         return (
           <div className="mb-4 p-3 rounded-lg border border-brand/30 bg-brand/5">
-            <p className="text-sm text-gray-200 leading-relaxed">
+            <p className={`text-sm text-gray-200 leading-relaxed ${ledeExpanded ? '' : 'line-clamp-3'}`}>
               <span className="font-semibold text-brand not-italic">★ Best value:</span>{' '}
               <span className="italic">
-                {valuePickSection.name}
-                {valuePickSection.rowRange && <> (rows {valuePickSection.rowRange})</>}
-                {rationale && <> — {ledeExpanded ? rationale : preview}</>}
+                {name}
+                {showRowRange && <> (rows {rowRange})</>}
+                {rationale && <> — {rationale}</>}
               </span>
             </p>
             {hasMore && (
