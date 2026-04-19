@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-19T17:02:29.747Z",
+  "timestamp": "2026-04-19T17:52:35.229Z",
   "stats": {
-    "totalReviews": 34948,
-    "alreadyFlagged": 15318,
+    "totalReviews": 35515,
+    "alreadyFlagged": 15868,
     "dateGuardCatches": 91,
-    "directorMismatch": 816,
-    "tvFilmSignals": 3153,
-    "londonSignals": 1012,
+    "directorMismatch": 820,
+    "tvFilmSignals": 3155,
+    "londonSignals": 1010,
     "offBroadwaySignals": 886,
     "yearMismatch": 67,
-    "noPublishDate": 3741
+    "noPublishDate": 3719
   },
   "findings": [
     {
@@ -2926,7 +2926,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 78,
       "publishDate": "2025-11-21",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15314889/Breaking-Dad-Bryan-Cranston-wringer-tale-family-despair-PATRICK-MARMION-reviews.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8416,6 +8416,20 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 86,
+      "publishDate": "2026-04-10",
+      "url": "https://www.theatrereviews.com/broadway-mini-review-cats-the-jellicle-ball-at-the-broadhurst-theatre-currently-on/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
       "file": "variety--frank-rizzo.json",
       "score": 90,
       "publishDate": "2026-04-08",
@@ -12965,7 +12979,7 @@
     {
       "showId": "evita-2012",
       "file": "huffpost--mark-kennedy.json",
-      "score": null,
+      "score": 42,
       "publishDate": "April 5, 2012",
       "url": "https://www.huffpost.com/entry/theater-do-cry-for-evita_b_1418473",
       "findings": [
@@ -17861,6 +17875,67 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2003",
+      "file": "guardian--edward-karam.json",
+      "score": 62,
+      "publishDate": "2003-05-05",
+      "url": "https://www.theguardian.com/stage/2003/may/05/theatre.artsfeatures2",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2003",
+      "file": "nytimes--ben-brantley.json",
+      "score": 86,
+      "publishDate": "2003-05-04",
+      "url": "https://www.nytimes.com/2003/05/04/theater/theater-gypsy-then-now-and-always.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2003",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": 80,
+      "publishDate": "2003-05-01",
+      "url": "https://www.talkinbroadway.com/world/Gypsy2003.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2003",
+      "file": "variety--charles-isherwood.json",
+      "score": 73,
+      "publishDate": "2003-05-02",
+      "url": "https://variety.com/2003/legit/reviews/gypsy-9-1200541916/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
         }
       ]
     },
@@ -36057,6 +36132,20 @@
     },
     {
       "showId": "proof-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 90,
+      "publishDate": "2026-04-17",
+      "url": "https://www.chicagotribune.com/2026/04/16/review-proof-broadway-edebiri/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
       "file": "chicagotribune--unknown.json",
       "score": 88,
       "publishDate": null,
@@ -40922,7 +41011,7 @@
       "file": "daily-mail--robert-gore-langton.json",
       "score": 90,
       "publishDate": "2023-12-24",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/mailonsunday/index.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -41151,7 +41240,7 @@
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "whatsonstage--alex-wood.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "2023-12-15",
       "url": "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/",
       "findings": [
         {
@@ -43607,6 +43696,7 @@
     {
       "showId": "the-adding-machine-off-broadway-2026",
       "file": "talkinbroadway--howard-miller.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/page/ob/04_14_26.html",
       "findings": [
@@ -45294,25 +45384,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "whatsonstage--alun-hood.json",
-      "score": 61,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/the-comedy-about-spies-review-mischiefs-cold-war-caper-has-japes-aplenty_1677753/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"film review\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -57874,7 +57945,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": null,
+      "score": 50,
       "publishDate": "2026-04-17",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/avenue-q-review/",
       "findings": [
@@ -58888,7 +58959,7 @@
       "showId": "burlesque-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 26,
-      "publishDate": null,
+      "publishDate": "2025-07-23",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
       "findings": [
         {
@@ -58916,7 +58987,7 @@
       "showId": "burlesque-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
       "score": 65,
-      "publishDate": null,
+      "publishDate": "2025-07-23",
       "url": "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
       "findings": [
         {
@@ -66719,7 +66790,7 @@
       "showId": "marie-and-rosetta-west-end-2026",
       "file": "whatsonstage--maygan-forbes.json",
       "score": 61,
-      "publishDate": null,
+      "publishDate": "2026-03-10",
       "url": "https://www.whatsonstage.com/news/marie-and-rosetta-in-the-west-end-review_1714558/",
       "findings": [
         {
@@ -69151,7 +69222,7 @@
     {
       "showId": "proof-2000",
       "file": "nydailynews--david-kaufman.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2000-05-24",
       "url": "https://www.newspapers.com/image/480401075",
       "findings": [
@@ -69179,7 +69250,7 @@
     {
       "showId": "proof-2000",
       "file": "village-voice--michael-feingold.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2000-06-06",
       "url": "https://www.villagevoice.com/2000-05-30/theater/math-about-you/",
       "findings": [
@@ -71481,7 +71552,7 @@
       "file": "daily-mail--luke-jones.json",
       "score": 93,
       "publishDate": "2023-10-13",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-12625643/pop-star-Nicole-Scherzinger-LUKE-JONES-Sunset-Boulevard.html",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -71509,7 +71580,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 91,
       "publishDate": "2023-10-18",
-      "url": null,
+      "url": "https://www.ft.com/content/66bbf718-db34-45eb-8ea5-74cc091c365c",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -71523,7 +71594,7 @@
       "file": "guardian--arifa-akbar.json",
       "score": 64,
       "publishDate": "2023-10-12",
-      "url": null,
+      "url": "https://www.theguardian.com/stage/2023/oct/12/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-savoy-theatre",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -71537,7 +71608,7 @@
       "file": "independent--alice-saville.json",
       "score": 86,
       "publishDate": "2023-10-14",
-      "url": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -71640,7 +71711,7 @@
       "file": "times-uk--patricia-nicol.json",
       "score": 78,
       "publishDate": "2023-10-15",
-      "url": null,
+      "url": "https://www.thetimes.co.uk/article/744433dc-677b-11ee-815f-31c5e4390927",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -73279,20 +73350,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "timeout-london--tom-wicker.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "https://www.timeout.com/london/theatre/the-comedy-about-spies-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -75715,7 +75772,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 68,
       "publishDate": "2025-09-16",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-producers-review-a-five-star-show-for-our-turbulent-times-lmkt79vkw",
+      "url": "https://www.thetimes.com/article/51bc03b7-bdf2-4856-97be-6fb7aa5a7e9b",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -77260,7 +77317,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 91,
       "publishDate": "2024-09-20",
-      "url": null,
+      "url": "https://www.ft.com/content/8b17e655-9624-499e-b1b1-4a98bba39760",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -77274,7 +77331,7 @@
       "file": "guardian--arifa-akbar.json",
       "score": 66,
       "publishDate": "2024-09-20",
-      "url": null,
+      "url": "https://www.theguardian.com/stage/2024/sep/20/waiting-for-godot-review-becketts-absurd-desolate-existential-tragicomedy",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -77316,7 +77373,7 @@
       "file": "thestage--sam-marlowe.json",
       "score": 85,
       "publishDate": "2024-09-20",
-      "url": null,
+      "url": "https://www.thestage.co.uk/reviews/waiting-for-godot-review-at-theatre-royal-haymarket-london-by-samuel-beckett-and-james-macdonald-starring-ben-whishaw-and-lucian-msamati",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -77330,7 +77387,7 @@
       "file": "whatsonstage--sarah-crompton.json",
       "score": 91,
       "publishDate": "2024-09-20",
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/waiting-for-godot-with-lucian-msamati-and-ben-whishaw-west-end-review_1632794/",
       "findings": [
         {
           "type": "DATE_GUARD",

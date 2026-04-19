@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-19T16:50:14.463Z",
+    "generatedAt": "2026-04-19T17:39:55.638Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 72,
-    "highConfidence": 6,
-    "mediumConfidence": 66,
+    "totalFlagged": 78,
+    "highConfidence": 7,
+    "mediumConfidence": 71,
     "lowConfidence": 0,
-    "reassignable": 27
+    "reassignable": 33
   },
   "results": [
     {
@@ -752,6 +752,71 @@
       "textSnippet": "There's not one veil in sight, let alone seven. But for once, Salome's mythic dance is effective in exactly the right way: sexy as all get-out and thoroughly demoralizing.\n\nIt is hard not to identify "
     },
     {
+      "showId": "gypsy-2003",
+      "showTitle": "Gypsy",
+      "showYear": 2003,
+      "file": "guardian--edward-karam.json",
+      "outlet": "The Guardian",
+      "criticName": "Edward Karam",
+      "publishDate": "2003-05-05",
+      "confidence": "medium",
+      "suggestedShowId": "gypsy-2008",
+      "signals": [
+        "revival director match for gypsy-2008: Arthur Laurents",
+        "year 1974 in text matches revival gypsy-1974",
+        "year 1989 in text matches revival gypsy-1989"
+      ],
+      "textSnippet": "Gypsy, arguably the greatest American musical, has never had a Broadway production without one of its original creators in charge. Revivals in 1974 (with Angela Lansbury) and 1989 (with Tyne Daly) wer"
+    },
+    {
+      "showId": "gypsy-2003",
+      "showTitle": "Gypsy",
+      "showYear": 2003,
+      "file": "nytimes--ben-brantley.json",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "publishDate": "2003-05-04",
+      "confidence": "medium",
+      "suggestedShowId": "gypsy-2008",
+      "signals": [
+        "revival director match for gypsy-2008: Arthur Laurents",
+        "revival text signals: revival, new production, new revival"
+      ],
+      "textSnippet": "IT was just as I was turning 10 that my mother brought home the original cast album of ''Gypsy,'' the musical that first opened on Broadway 44 years ago this month. The record had two drawings on its "
+    },
+    {
+      "showId": "gypsy-2003",
+      "showTitle": "Gypsy",
+      "showYear": 2003,
+      "file": "talkinbroadway--matthew-murray.json",
+      "outlet": "Talkin' Broadway",
+      "criticName": "Matthew Murray",
+      "publishDate": "2003-05-01",
+      "confidence": "medium",
+      "suggestedShowId": "gypsy-2008",
+      "signals": [
+        "revival director match for gypsy-2008: Arthur Laurents",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "Gypsy is the best musical revival of the season. The reason for this can be summed up in two words: Sam Mendes. Mendes, the Academy Award-winning director responsible for Roundabout's long-running Cab"
+    },
+    {
+      "showId": "gypsy-2003",
+      "showTitle": "Gypsy",
+      "showYear": 2003,
+      "file": "variety--charles-isherwood.json",
+      "outlet": "Variety",
+      "criticName": "Charles Isherwood",
+      "publishDate": "2003-05-02",
+      "confidence": "medium",
+      "suggestedShowId": "gypsy-2008",
+      "signals": [
+        "revival director match for gypsy-2008: Arthur Laurents",
+        "revival text signals: revival, new interpretation"
+      ],
+      "textSnippet": "Somewhere in the massive trunk of theatrical wit and wisdom that is \"Gypsy,\" there's a line for every showbiz occasion. For the highly anticipated new Broadway revival directed by Sam Mendes, it would"
+    },
+    {
       "showId": "long-days-journey-into-night-2003",
       "showTitle": "Long Day's Journey Into Night",
       "showYear": 2003,
@@ -1064,6 +1129,21 @@
       "showId": "jesus-christ-superstar-2000",
       "showTitle": "Jesus Christ Superstar",
       "showYear": 2000,
+      "file": "ew--melissa-rose-bernardo.json",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Melissa Rose Bernardo",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "jesus-christ-superstar-2012",
+      "signals": [
+        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Chilina Kennedy, Stratford, director: Des McAnuff"
+      ],
+      "textSnippet": "Andrew Lloyd Webber has said he's never really been happy with Jesus Christ Superstar until now  41 years after its stage debut. That's high advance praise for the new Stratford (Ontario) Shakespeare"
+    },
+    {
+      "showId": "jesus-christ-superstar-2000",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 2000,
       "file": "variety--unknown.json",
       "outlet": "Variety",
       "criticName": "Unknown",
@@ -1105,6 +1185,21 @@
         "revival cast/director match for la-cage-aux-folles-2010: Kelsey Grammer, Douglas Hodge, director: Terry Johnson"
       ],
       "textSnippet": "Your City, Your News. NYC’s 24-hour newschannel on the web.\n\nTime Warner Cable. The power of you ™\n\nTo view our videos, you need to\n enable JavaScript. Learn how.\n install Adobe Flash 9 or above. Inst"
+    },
+    {
+      "showId": "the-real-thing-1984",
+      "showTitle": "The Real Thing",
+      "showYear": 1984,
+      "file": "telegraph--matt-wolf.json",
+      "outlet": "Telegraph",
+      "criticName": "Matt Wolf",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-real-thing-2000",
+      "signals": [
+        "year 2000 in text matches revival the-real-thing-2000"
+      ],
+      "textSnippet": "We no longer check to see whether Telegraph.co.uk displays properly in Internet Explorer version 6 or earlier.\n\nTo see our content at its best we recommend upgrading if you wish to continue using IE o"
     },
     {
       "showId": "sunday-in-the-park-with-george-1984",

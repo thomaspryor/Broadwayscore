@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T17:02:33.594Z",
+  "generatedAt": "2026-04-19T17:52:39.039Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1262,10 +1262,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
         },
@@ -1319,6 +1315,10 @@
         }
       ],
       "missingT2": [
+        {
+          "name": "Entertainment Weekly",
+          "isDualMarket": false
+        },
         {
           "name": "New York Post",
           "isDualMarket": false
@@ -1519,14 +1519,14 @@
       "status": "open",
       "slug": "proof",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 74.47,
-      "liveScore": 74,
-      "scoreDrift": -0.46999999999999886,
-      "total": 23,
+      "siteScore": 73.07,
+      "liveScore": 73,
+      "scoreDrift": -0.06999999999999318,
+      "total": 21,
       "t1": 7,
-      "t2": 14,
+      "t2": 12,
       "t3": 2,
-      "positive": 12,
+      "positive": 10,
       "mixed": 9,
       "negative": 2,
       "readiness": {
@@ -1881,6 +1881,18 @@
           "t2": 14,
           "t3": 2,
           "p": 12,
+          "m": 9,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T17:52:39.039Z",
+          "rc": 21,
+          "s": 73.07,
+          "t1": 7,
+          "t2": 12,
+          "t3": 2,
+          "p": 10,
           "m": 9,
           "n": 2,
           "bc": "waiting"

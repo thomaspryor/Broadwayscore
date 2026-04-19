@@ -1,8 +1,16 @@
 {
-  "timestamp": "2026-04-19T17:31:55.457Z",
-  "totalDrifted": 1,
+  "timestamp": "2026-04-19T17:52:20.476Z",
+  "totalDrifted": 4,
   "threshold": 20,
   "reviews": [
+    {
+      "showId": "a-free-man-of-color-2010",
+      "outlet": "ABC News",
+      "critic": null,
+      "oldScore": 35,
+      "newScore": 54,
+      "delta": 19
+    },
     {
       "showId": "the-great-gatsby-2024",
       "outlet": "The Times (UK)",
@@ -10,6 +18,22 @@
       "oldScore": 77,
       "newScore": 60,
       "delta": 17
+    },
+    {
+      "showId": "gypsy-2003",
+      "outlet": "Variety",
+      "critic": "Charles Isherwood",
+      "oldScore": 58,
+      "newScore": 73,
+      "delta": 15
+    },
+    {
+      "showId": "all-about-me-2010",
+      "outlet": "SFGate",
+      "critic": "Lily Janiak",
+      "oldScore": 80,
+      "newScore": 69,
+      "delta": 11
     }
   ]
 }
