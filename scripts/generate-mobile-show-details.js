@@ -64,6 +64,35 @@ try {
   console.warn('⚠ audience-buzz.json not found');
 }
 
+// Theater metadata: venue name → { seatingSections, venueScores }
+let theaterMeta = {};
+try {
+  const rawMeta = JSON.parse(fs.readFileSync(path.join(dataDir, 'theater-metadata.json'), 'utf-8'));
+  for (const [name, data] of Object.entries(rawMeta)) {
+    theaterMeta[name] = data;
+  }
+  const withSeating = Object.values(theaterMeta).filter(t => t.structuredTips?.seating?.sections?.length > 0).length;
+  const withScores = Object.values(theaterMeta).filter(t => t.venueScores).length;
+  console.log(`✓ Theater metadata: ${Object.keys(theaterMeta).length} theaters (${withSeating} seating, ${withScores} scores)`);
+} catch (err) {
+  console.warn('⚠ theater-metadata.json not found — seating/venue data will be skipped');
+}
+
+// Video reviews: keyed by show ID → array (indexed 0,1,2...) of review objects
+let videoReviewsByShow = {};
+try {
+  const vr = JSON.parse(fs.readFileSync(path.join(dataDir, 'video-reviews.json'), 'utf-8'));
+  for (const [key, val] of Object.entries(vr)) {
+    if (key === '_meta' || !Array.isArray(val) && typeof val !== 'object') continue;
+    // Each show entry is an object with numeric keys (0,1,2...) acting as array
+    const reviews = Object.values(val).filter(r => r && r.videoUrl);
+    if (reviews.length > 0) videoReviewsByShow[key] = reviews;
+  }
+  console.log(`✓ Video reviews: ${Object.keys(videoReviewsByShow).length} shows`);
+} catch (err) {
+  console.warn('⚠ video-reviews.json not found — video reviews will be skipped');
+}
+
 // ===========================================
 // INDEX DATA
 // ===========================================
@@ -285,6 +314,49 @@ for (const show of visibleShows) {
   // Theater address
   if (show.theaterAddress) {
     detail.ta = show.theaterAddress;
+  }
+
+  // Seating sections + venue scores — look up by venue name
+  const theater = show.venue ? theaterMeta[show.venue] : null;
+  if (theater) {
+    const sections = theater.structuredTips?.seating?.sections;
+    if (sections?.length > 0) {
+      detail.sg = sections.map(s => ({
+        n: s.name,
+        v: s.verdict,
+        vl: s.verdictLabel,
+        iv: s.isValuePick || false,
+        ra: s.rationale || null,
+        dp: s.dataPoints || 0,
+        rr: s.rowRange || null,
+      }));
+    }
+    if (theater.venueScores) {
+      const raw = theater.venueScores;
+      detail.vs = {
+        sl: raw.sightlines ?? null,
+        so: raw.sound ?? null,
+        co: raw.comfort ?? null,
+        am: raw.ambiance ?? null,
+        fa: raw.facilities ?? null,
+      };
+    }
+  }
+
+  // Video reviews
+  const showVideoReviews = videoReviewsByShow[show.id];
+  if (showVideoReviews?.length > 0) {
+    detail.vr = showVideoReviews.slice(0, 8).map(r => ({
+      ch: r.creatorName || null,       // channel/creator name
+      hd: r.handle || null,            // @handle
+      pl: r.platform || null,          // platform (tiktok/youtube/etc)
+      u: r.videoUrl,                   // video URL
+      s: r.score ?? null,              // score 0-100
+      bk: r.bucket || null,            // Rave/Positive/Mixed/Negative
+      q: r.keyQuote || null,           // pull quote
+      th: r.thumbnail || null,         // thumbnail URL
+      pd: r.publishedAt || null,       // publish date
+    }));
   }
 
   // Previews start date

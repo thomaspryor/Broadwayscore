@@ -1,14 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-19T13:07:05.039Z",
+    "generatedAt": "2026-04-19T16:50:16.706Z",
     "description": "LLM-classified wrong-show results from title-mention guard candidates",
-    "total": 0,
-    "classified": 0,
+    "total": 1,
+    "classified": 1,
     "wrongShow": 0,
-    "correct": 0,
+    "correct": 1,
     "uncertain": 0,
     "errors": 0,
     "applied": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-adding-machine-off-broadway-2026",
+      "showTitle": "The Adding Machine",
+      "file": "talkinbroadway--howard-miller.json",
+      "verdict": "CORRECT",
+      "confidence": "high",
+      "reasoning": "The review discusses the plot, characters (Mr. Zero, Mrs. Zero), and cast (Daphne Rubin-Vega, Michael Cyril Creighton, Jennifer Tilly) of \"The Adding Machine.\""
+    }
+  ]
 }

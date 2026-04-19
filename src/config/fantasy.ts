@@ -250,8 +250,8 @@ export function validatePicks(
   pickIds: string[],
   shows: Record<string, FantasyShow>,
 ): { valid: boolean; error?: string } {
-  if (pickIds.length !== FANTASY_TEAM_SIZE) {
-    return { valid: false, error: `Must pick exactly ${FANTASY_TEAM_SIZE} shows` };
+  if (pickIds.length < 1) {
+    return { valid: false, error: 'Must pick at least 1 show' };
   }
 
   const uniqueIds = new Set(pickIds);

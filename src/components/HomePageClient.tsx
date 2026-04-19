@@ -502,7 +502,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       {!skipHero && (
         <div className="mb-4 sm:mb-8">
           <h1 className="sr-only sm:not-sr-only sm:text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-            Broadway&nbsp;<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
+            Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
           </h1>
           <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
@@ -761,7 +761,7 @@ export default function HomePageClient(props: HomePageClientProps) {
         {!props.skipHero && (
           <div className="mb-8 sm:mb-10">
             <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-              Broadway&nbsp;<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
+              Broadway<span className="text-gradient">Scorecard</span><span className="text-xs text-gray-400 font-normal align-super ml-0.5">™</span>
             </div>
             <p className="text-gray-400 text-lg sm:text-xl">
               Every show. Every review. One score.

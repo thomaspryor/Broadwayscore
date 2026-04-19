@@ -67,7 +67,7 @@ function FantasyDraftInner() {
     !draftClosed &&
     !submitting &&
     email.includes('@') &&
-    selectedIds.length === FANTASY_TEAM_SIZE &&
+    selectedIds.length >= 1 &&
     totalSpent <= FANTASY_BUDGET;
 
   function handleSelect(showId: string, slotIndex: number) {
@@ -197,7 +197,7 @@ function FantasyDraftInner() {
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Draft Your Team</h1>
           <p className="text-gray-400 mt-1">
-            Pick {FANTASY_TEAM_SIZE} shows. ${FANTASY_BUDGET} budget. One entry per email.
+            Stay under ${FANTASY_BUDGET}. One entry per email.
           </p>
         </div>
 
@@ -265,7 +265,7 @@ function FantasyDraftInner() {
 
         {/* Show Pickers */}
         <div className="space-y-3 mb-8">
-          <h2 className="text-sm text-gray-500 uppercase tracking-wider">Your {FANTASY_TEAM_SIZE} Picks</h2>
+          <h2 className="text-sm text-gray-500 uppercase tracking-wider">Your Picks</h2>
           {picks.map((_, index) => (
             <FantasyShowPicker
               key={index}
@@ -319,15 +319,15 @@ function FantasyDraftInner() {
               : 'bg-surface-overlay text-gray-500 cursor-not-allowed'
           }`}
         >
-          {submitting ? 'Submitting...' : `Lock In My ${FANTASY_TEAM_SIZE} Picks`}
+          {submitting ? 'Submitting...' : `Lock In My Picks ($${totalSpent})`}
         </button>
 
         {!canSubmit && !submitting && selectedIds.length > 0 && (
           <p className="text-center text-xs text-gray-500 mt-2">
             {!email.includes('@')
               ? 'Enter your email to submit'
-              : selectedIds.length < FANTASY_TEAM_SIZE
-              ? `Pick ${FANTASY_TEAM_SIZE - selectedIds.length} more show${FANTASY_TEAM_SIZE - selectedIds.length > 1 ? 's' : ''}`
+              : selectedIds.length < 1
+              ? 'Pick at least one show'
               : totalSpent > FANTASY_BUDGET
               ? `Over budget by $${totalSpent - FANTASY_BUDGET}`
               : ''}
