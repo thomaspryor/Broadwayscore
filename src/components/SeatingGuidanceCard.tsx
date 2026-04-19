@@ -15,7 +15,7 @@ const VARIANT_CONFIG = {
     compactRationale: false,
   },
   show: {
-    title: 'Seating Chart Scorecard',
+    title: 'Seating Scorecard',
     compactRationale: true,
   },
 } as const;
