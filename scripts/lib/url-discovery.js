@@ -72,6 +72,8 @@ function getShowInfo(showId) {
     }
     const showEntry = _showsJsonCache.shows.find(s => s.id === showId);
     if (showEntry) {
+      const leadActor = Array.isArray(showEntry.cast) && showEntry.cast.length > 0
+        ? showEntry.cast[0].name : null;
       return {
         title: showEntry.title,
         year: (showEntry.openingDate || '').substring(0, 4),
@@ -79,6 +81,7 @@ function getShowInfo(showId) {
         openingDate: showEntry.openingDate || null,
         closingDate: showEntry.closingDate || null,
         previewsStartDate: showEntry.previewsStartDate || null,
+        leadActor,
       };
     }
   } catch (e) { /* fall through */ }
@@ -422,6 +425,12 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const criticClause = criticName ? ` ${criticName}` : '';
   const outletName = review.outlet || outletId;
 
+  // For historical shows with recent revivals, anchor SERP to the right production
+  // by including the lead actor name. "Bernadette Peters Gypsy Broadway review 2003"
+  // surfaces the correct production; "Gypsy Broadway review 2003" returns only the revival.
+  const leadActorClause = (forceHistorical && showInfo.leadActor)
+    ? ` "${showInfo.leadActor}"` : '';
+
   // Use market-appropriate search term based on show category
   const marketTerm = isLondonMarket(showInfo.category) ? 'West End review'
     : showInfo.category === 'off-broadway' ? 'Off-Broadway review'
@@ -439,9 +448,9 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
   let query;
   if (domain) {
-    query = `site:${domain} "${serpTitle}" ${marketTerm}${yearClause}${criticClause}`;
+    query = `site:${domain} "${serpTitle}"${leadActorClause} ${marketTerm}${yearClause}${criticClause}`;
   } else {
-    query = `"${serpTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
+    query = `"${serpTitle}"${leadActorClause} ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
   }
 
   log(`  [URL Discovery] Searching: ${query}`);

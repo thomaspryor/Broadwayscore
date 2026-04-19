@@ -1,9 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import type { TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks, SeatingSection } from '@/lib/data-types';
+import type { TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks } from '@/lib/data-types';
 import { featureFlags } from '@/config/feature-flags';
-import SeatingGuidance from './SeatingGuidance';
 
 interface TheaterScorecardCardProps {
   venueScores: TheaterVenueScores;
@@ -11,8 +10,6 @@ interface TheaterScorecardCardProps {
   externalLinks?: TheaterExternalLinks;
   theaterName: string;
   theaterSlug: string;
-  seatingSections?: SeatingSection[];
-  bestSeats?: string;
 }
 
 const DIMENSIONS: { key: keyof Pick<TheaterVenueScores, 'sightlines' | 'sound' | 'comfort' | 'ambiance' | 'facilities'>; label: string; icon: JSX.Element }[] = [
@@ -135,8 +132,6 @@ export default function TheaterScorecardCard({
   externalLinks,
   theaterName,
   theaterSlug,
-  seatingSections,
-  bestSeats,
 }: TheaterScorecardCardProps) {
   // Feature flag check must live here (client component) — not in the SSR parent
   if (!featureFlags.theaterScorecard) return null;
@@ -181,14 +176,6 @@ export default function TheaterScorecardCard({
           return <ScoreDots key={key} score={score} label={label} icon={icon} />;
         })}
       </div>
-
-      {/* Seat guidance */}
-      {seatingSections && seatingSections.length > 0 && (
-        <div className="border-t border-white/5 pt-4 mb-4">
-          <h3 className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-3">Where to Sit</h3>
-          <SeatingGuidance sections={seatingSections} bestSeats={bestSeats} />
-        </div>
-      )}
 
       {/* Accessibility badges */}
       {accessibility && accessibility.verified && (

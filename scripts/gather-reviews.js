@@ -2831,9 +2831,15 @@ function createReviewFile(showId, reviewData, options = {}) {
           // came from a legitimate source even though the text content is wrong.
           // EXCEPTION: if a human reviewed and flagged this file (wrongShowReason or
           // humanReviewedWrongProduction set), DO NOT replace — the flag is intentional.
+          // Also protect files that are already LLM-scored: the wrongProduction flag
+          // may be an LLM false-positive (44% FP on opening night; Proof 2026-04-17 P0).
+          // Route scored files through the merge path so we update the URL without
+          // discarding fullText + llmScore. See card 345637c5-416f-81df.
+          const isLlmScored = existingReview.llmScore && existingReview.llmScore.score != null;
           const isHumanFlagged = existingReview.wrongShowReason
             || existingReview.humanReviewedWrongProduction === false
-            || existingReview.humanReviewScore != null;
+            || existingReview.humanReviewScore != null
+            || isLlmScored;
           // DoaS Apr 9-10 #13: variety--unknown loop. When BOTH critics are
           // "unknown", outlet+unknown identity is too weak to claim "same review."
           // Refuse the URL re-assignment; preserve the existing wrongShow flag.
@@ -2859,8 +2865,24 @@ function createReviewFile(showId, reviewData, options = {}) {
               && !isHumanFlagged
               && !existingIsDateBasedWrongProd) {
             const preserved = {};
+            // Aggregator signals: always preserve (independent of production validity)
             for (const key of ['bwwScore', 'bwwExcerpt', 'showScoreRating', 'showScoreExcerpt', 'dtliThumb', 'dtliExcerpt']) {
               if (existingReview[key] !== undefined) preserved[key] = existingReview[key];
+            }
+            // Scored content: preserve if the file already went through the full scoring pipeline.
+            // A file with llmScore + fullText is real content — the wrongProduction flag may be
+            // an LLM false-positive (44% FP rate on opening night; Proof 2026-04-17 P0 incident).
+            // Preserving scored content here ensures a second poller run can't clobber it even
+            // when the incoming URL differs slightly (different query params, subdomain variation).
+            const alreadyScored = (existingReview.llmScore && existingReview.llmScore.score != null)
+              || existingReview.humanReviewScore != null;
+            if (alreadyScored) {
+              for (const key of ['fullText', 'llmScore', 'humanReviewScore', 'scoreStatus',
+                                  'isFullReview', 'contentTier', 'contentTierReason',
+                                  'originalScore', 'originalScoreNormalized', 'originalScoreSource',
+                                  'originalRating', 'publishDate', 'criticName']) {
+                if (existingReview[key] !== undefined) preserved[key] = existingReview[key];
+              }
             }
             const replacement = { ...reviewData, ...preserved, source: reviewData.source || 'gather-reviews' };
             // Explicitly clear ALL blocking metadata — the old file's flags are about
@@ -3215,7 +3237,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     lbo: { found: false, extracted: 0, skipped: false },
     serp: { calls: 0, hits: 0, skipped: false },
     wrongUrlRetry: { found: 0, retried: 0, fixed: 0, skipped: false },
-    rejections: { junkOutlet: 0, nonBroadway: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, domainMismatch: 0 },
+    rejections: { junkOutlet: 0, suspiciousOutlet: 0, nonBroadway: 0, tourReview: 0, crossMarket: 0, nonReviewPath: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, domainMismatch: 0 },
     urlValidation: { checked: 0, nulled: 0 },
   };
 
