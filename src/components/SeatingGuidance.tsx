@@ -161,7 +161,7 @@ function SectionRow({ section, isHero = false, compactRationale = false, isValue
   const showRationaleForced = !!section.rationale && forceShowRationale;
   const showRationaleInline = !!section.rationale && !compactRationale && !forceShowRationale;
   const showRationaleExpand = !!section.rationale && compactRationale && !forceShowRationale;
-  const rationaleLikelyClamped = (section.rationale?.length ?? 0) > 100;
+  const rationaleLikelyClamped = (section.rationale?.length ?? 0) > 60;
 
   // Drop "(rows X)" when X is already in the section name (e.g. "Orchestra Center (Rows O-V)")
   const rowRange = section.rowRange || '';
@@ -338,7 +338,7 @@ export default function SeatingGuidance({ sections, bestSeats: _bestSeats, compa
           type="button"
           onClick={() => setExpanded(true)}
           className="mt-3 text-xs text-brand hover:text-brand-light underline decoration-dotted underline-offset-2"
-          aria-expanded={false}
+          aria-expanded={expanded}
         >
           Show {hiddenSolidCount} more good seat{hiddenSolidCount === 1 ? '' : 's'}
         </button>
