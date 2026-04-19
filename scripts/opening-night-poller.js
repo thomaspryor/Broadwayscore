@@ -53,6 +53,7 @@ const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-revi
 const { matchTitleToShow } = require('./lib/show-matching');
 const { fetchPage, fetchJSON } = require('./lib/scraper');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { tryTbDirectUrl } = require('./lib/tb-direct-url');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -385,76 +386,38 @@ async function runAggregators(show) {
   }
 
   // 1c2. Talkin' Broadway direct URL (Broadway only, not off-Broadway)
-  // SERP returns forum posts (All That Chat) for TB instead of the actual review.
-  // TB URL pattern: https://www.talkinbroadway.com/page/world/{titleslug}{year}.html
-  // Use --tb-review-url=<url> to override if constructed URL fails.
+  // SERP returns forum posts (All That Chat) instead of the review, so we construct the URL.
+  // Verification (title match + byline + date window) lives in scripts/lib/tb-direct-url.js
+  // so the gate is tight enough to reject soft-404s and old-production revival pages.
   if (!isOffBroadway && !isWestEnd) {
     try {
-      // TB uses CamelCase slugs: "MeteorShower2017", "ADollsHouse", "OnceUponaOneMoreTime"
-      // Articles (a, an, the) are lowercase in the middle but capitalized at start.
-      // Year format varies: 4-digit (2017), 2-digit (24), or omitted entirely.
-      const tbCamelSlug = show.title
-        .replace(/[^a-zA-Z0-9\s]/g, '')  // strip punctuation
-        .split(/\s+/)
-        .map((w, i) => {
-          const lower = w.toLowerCase();
-          // Preserve Roman numerals (II, III, IV, V, VI, etc.) — strict pattern avoids
-          // false matches on English words like "Did", "Ill", "Mid", "Mix", "Dim"
-          if (/^(?:I{1,3}|IV|VI{0,3}|IX|XI{0,3}|XIV|XV|XVI{0,3}|XIX|XX)$/i.test(w)) return w.toUpperCase();
-          // Lowercase articles/prepositions in middle position
-          if (i > 0 && ['a', 'an', 'the', 'of', 'in', 'on', 'at', 'to', 'for'].includes(lower)) {
-            return lower;
-          }
-          return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
-        })
-        .join('');
-      const tbLowerSlug = show.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const tbYear2 = String(year).slice(-2);
-
-      // Try multiple URL variants — TB is inconsistent about year format
-      const TB_REVIEW_URL = TB_REVIEW_URL_CLI || show.tbReviewUrl || '';
-      const tbUrls = TB_REVIEW_URL ? [TB_REVIEW_URL] : [
-        `https://www.talkinbroadway.com/page/world/${tbCamelSlug}${year}.html`,
-        `https://www.talkinbroadway.com/page/world/${tbCamelSlug}${tbYear2}.html`,
-        `https://www.talkinbroadway.com/page/world/${tbCamelSlug}.html`,
-        `https://www.talkinbroadway.com/page/world/${tbLowerSlug}${year}.html`,
-      ];
-
-      // Check if we already have a TB review file for this show
       const showReviewDir = path.join(REVIEW_TEXTS_DIR, show.id);
-      let hasTbReview = false;
-      if (fs.existsSync(showReviewDir)) {
-        const files = fs.readdirSync(showReviewDir);
-        hasTbReview = files.some(f => f.startsWith('talkinbroadway--'));
-      }
-
+      const hasTbReview = fs.existsSync(showReviewDir)
+        && fs.readdirSync(showReviewDir).some(f => f.startsWith('talkinbroadway--'));
       if (hasTbReview) {
         console.log('  Talkin\' Broadway: already have review file, skipping');
       } else {
-        let tbFound = false;
-        for (const tbUrl of tbUrls) {
-          console.log(`  Checking Talkin' Broadway: ${tbUrl}`);
-          try {
-            const tbPage = await fetchPage(tbUrl, { renderJs: false });
-            if (tbPage && tbPage.content && tbPage.content.length > 500) {
-              console.log(`  Talkin' Broadway: URL confirmed — creating stub`);
-              results.push({
-                showId: show.id,
-                outletId: 'talkinbroadway',
-                outlet: "Talkin' Broadway",
-                criticName: 'Unknown',
-                url: tbUrl,
-                source: (TB_REVIEW_URL_CLI || show.tbReviewUrl) ? 'direct-url-override' : 'direct-url-construction',
-              });
-              tbFound = true;
-              break;
-            }
-          } catch (e) {
-            // Try next URL variant
-          }
-        }
-        if (!tbFound) {
-          console.log(`  Talkin' Broadway: all ${tbUrls.length} URL variants failed — review may not be published yet`);
+        const overrideUrl = TB_REVIEW_URL_CLI || show.tbReviewUrl || '';
+        const isRevival = !!(show.isRevival || (show.id && /\b(19|20)\d{2}\b/.test(show.id)));
+        const tb = await tryTbDirectUrl({
+          show,
+          year,
+          overrideUrl,
+          fetchPage,
+          isRevival,
+        });
+        if (tb.found) {
+          results.push({
+            showId: show.id,
+            outletId: 'talkinbroadway',
+            outlet: "Talkin' Broadway",
+            criticName: 'Unknown',
+            url: tb.url,
+            source: tb.source,
+            ...(tb.publishDate ? { publishDate: tb.publishDate } : {}),
+          });
+        } else {
+          console.log(`  Talkin' Broadway: ${tb.reason} — review may not be published yet`);
         }
       }
     } catch (err) {
