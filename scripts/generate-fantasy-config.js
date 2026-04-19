@@ -125,49 +125,59 @@ function isEligible(show) {
 }
 
 // ── Pricing algorithm ───────────────────────────────────────────────
-// Price reflects projected point potential. Higher prices for shows
-// likely to score well across multiple pillars.
+// Price reflects projected point potential. Widened to create meaningful
+// tradeoffs: you can't afford every Best Musical favorite in one team.
+//
+// Broadway ceiling: ~230 pts (30 CS + 25 AG + 60 BO + ~100 awards).
+// OB ceiling: ~65 pts (30 CS + 25 AG + ~10 off-BW awards, no BO, no Tonys).
+// Closed shows: no more box office accrues, but Tonys/CS/AG still live.
 function computePrice(show, criticScore) {
-  const isBW = !show.category || show.category === 'broadway';
   const isOB = show.category === 'off-broadway';
   const isMusical = show.type === 'musical';
-  const isOpen = show.status === 'open' || show.status === 'opened';
   const isPreviews = show.status === 'previews';
   const isClosed = show.status === 'closed';
 
-  // OB shows: $6-12 (no box office, no Tonys — but earn CS + AG + Drama Desk/Outer Critics)
-  // Max OB ceiling ~65 pts (30 CS + 25 AG + ~10 awards). Priced so pts/$ is comparable to BW.
+  // OB: narrow range ($5-14) — lower ceiling, no box office, no Tonys.
   if (isOB) {
-    if (criticScore && criticScore >= 83) return 12;
-    if (criticScore && criticScore >= 75) return 10;
-    if (criticScore && criticScore >= 65) return 8;
-    if (criticScore) return 7;
-    return 6;
+    let obBase = 8;
+    if (criticScore) {
+      if (criticScore >= 85) obBase += 6;
+      else if (criticScore >= 80) obBase += 4;
+      else if (criticScore >= 75) obBase += 2;
+      else if (criticScore >= 65) obBase += 0;
+      else if (criticScore >= 55) obBase -= 2;
+      else obBase -= 3;
+    } else if (isPreviews) {
+      obBase += 1;
+    }
+    if (isClosed) obBase -= 2;
+    return Math.max(5, Math.min(14, obBase));
   }
 
-  // Broadway shows: base price by type
-  // Bump up from earlier version — budget needs to be tight ($100 for 8 shows)
-  let base = isMusical ? 16 : 12;
+  // Broadway base by type — musicals have higher ceiling (box office + Tony Best Musical).
+  let base = isMusical ? 22 : 14;
 
-  // Adjust for critic score
+  // Critic score adjustment — stronger reward for Critical Gold (primary awards signal).
   if (criticScore) {
-    if (criticScore >= 83) base += 4;      // Critical Gold
-    else if (criticScore >= 75) base += 2;  // Recommended
-    else if (criticScore >= 65) base += 0;  // Worth Seeing
-    else if (criticScore >= 55) base -= 2;  // Skippable
-    else base -= 4;                          // Stay Away
+    if (criticScore >= 85) base += 12;      // Critical Gold+ (Best Musical/Play frontrunner)
+    else if (criticScore >= 80) base += 8;   // Critical Gold
+    else if (criticScore >= 75) base += 4;   // Recommended
+    else if (criticScore >= 65) base += 0;   // Worth Seeing
+    else if (criticScore >= 55) base -= 4;   // Skippable
+    else base -= 8;                           // Stay Away
   } else if (isPreviews) {
-    // Unknown score — moderate premium for potential
-    base += 1;
+    // Unknown CS — wildcard premium (upside if Gold, downside if weak).
+    base += 3;
   }
 
-  // Closed shows: discount (no more box office)
+  // Closed shows: no further box office accrues (~60 pts of ceiling gone).
+  // Still eligible for Tony noms/wins + CS/AG adjustments, so not a huge discount.
   if (isClosed) {
-    base -= 4;
+    base -= 8;
   }
 
-  // Clamp: BW $4-$22
-  return Math.max(4, Math.min(22, base));
+  // Clamp: BW $5-$34. $100 budget ~= 3 top contenders OR 6-8 value picks.
+  return Math.max(5, Math.min(34, base));
 }
 
 // ── Main ────────────────────────────────────────────────────────────

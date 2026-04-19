@@ -20,12 +20,12 @@ import type { FantasyShow } from '../../src/config/fantasy';
 
 // Minimal show catalog for testing
 const shows: Record<string, FantasyShow> = {
-  'show-a': { title: 'Show A', price: 20, type: 'musical', category: 'broadway', status: 'open', image: null, criticScore: 85, audienceGrade: 'A+' },
-  'show-b': { title: 'Show B', price: 15, type: 'play',    category: 'broadway', status: 'open', image: null, criticScore: 72, audienceGrade: 'A-' },
-  'show-c': { title: 'Show C', price: 10, type: 'musical', category: 'broadway', status: 'open', image: null, criticScore: 60, audienceGrade: 'B+'  },
-  'show-d': { title: 'Show D', price: 8,  type: 'play',    category: 'broadway', status: 'open', image: null, criticScore: 40, audienceGrade: 'B'   },
-  'show-e': { title: 'Show E', price: 50, type: 'musical', category: 'broadway', status: 'open', image: null, criticScore: 90, audienceGrade: 'A+'  },
-  'show-ob': { title: 'Show OB', price: 6, type: 'musical', category: 'off-broadway', status: 'open', image: null, criticScore: null, audienceGrade: null },
+  'show-a': { title: 'Show A', price: 20, type: 'musical', category: 'broadway', status: 'open', image: null, criticScore: 85, audienceGrade: 'A+', eligible: { criticScore: true, audienceGrade: true, boxOffice: true, tonys: true }, openingDate: null, slug: 'show-a' },
+  'show-b': { title: 'Show B', price: 15, type: 'play',    category: 'broadway', status: 'open', image: null, criticScore: 72, audienceGrade: 'A-', eligible: { criticScore: true, audienceGrade: true, boxOffice: true, tonys: true }, openingDate: null, slug: 'show-b' },
+  'show-c': { title: 'Show C', price: 10, type: 'musical', category: 'broadway', status: 'open', image: null, criticScore: 60, audienceGrade: 'B+', eligible: { criticScore: true, audienceGrade: true, boxOffice: true, tonys: true }, openingDate: null, slug: 'show-c' },
+  'show-d': { title: 'Show D', price: 8,  type: 'play',    category: 'broadway', status: 'open', image: null, criticScore: 40, audienceGrade: 'B',  eligible: { criticScore: true, audienceGrade: true, boxOffice: true, tonys: true }, openingDate: null, slug: 'show-d' },
+  'show-e': { title: 'Show E', price: 50, type: 'musical', category: 'broadway', status: 'open', image: null, criticScore: 90, audienceGrade: 'A+', eligible: { criticScore: true, audienceGrade: true, boxOffice: true, tonys: true }, openingDate: null, slug: 'show-e' },
+  'show-ob': { title: 'Show OB', price: 6, type: 'musical', category: 'off-broadway', status: 'open', image: null, criticScore: null, audienceGrade: null, eligible: { criticScore: true, audienceGrade: true, boxOffice: false, tonys: false }, openingDate: null, slug: 'show-ob' },
 };
 
 describe('validatePicks — basic rules', () => {

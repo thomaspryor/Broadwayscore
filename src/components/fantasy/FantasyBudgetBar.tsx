@@ -4,10 +4,9 @@ interface FantasyBudgetBarProps {
   spent: number;
   budget: number;
   picksCount: number;
-  teamSize: number;
 }
 
-export default function FantasyBudgetBar({ spent, budget, picksCount, teamSize }: FantasyBudgetBarProps) {
+export default function FantasyBudgetBar({ spent, budget, picksCount }: FantasyBudgetBarProps) {
   const remaining = budget - spent;
   const percentage = Math.min((spent / budget) * 100, 100);
   const isOverBudget = spent > budget;
@@ -26,7 +25,7 @@ export default function FantasyBudgetBar({ spent, budget, picksCount, teamSize }
     <div className="rounded-xl bg-surface-raised/80 border border-white/10 p-4">
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm text-gray-400">Budget</span>
-        <span className="text-sm text-gray-400">{picksCount}/{teamSize} picks</span>
+        <span className="text-sm text-gray-400">{picksCount} {picksCount === 1 ? 'pick' : 'picks'}</span>
       </div>
 
       {/* Progress bar */}
