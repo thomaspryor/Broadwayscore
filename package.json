@@ -41,6 +41,7 @@
     "llm:ground-truth": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ground-truth",
     "llm:evaluate": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/evaluate.ts",
     "llm:status": "npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/status.ts",
+    "eval:theater-scorecard": "node scripts/evals/theater-scorecard-eval.js",
     "eval:theater-tips": "node scripts/evals/theater-tips-eval.js",
     "eval:buzz-classifier": "node scripts/evals/buzz-classifier-eval.js",
     "eval:content-verifier": "node scripts/evals/content-verifier-eval.js",
