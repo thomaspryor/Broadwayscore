@@ -172,6 +172,33 @@ function getWrongProductionReasonFromUrl(url, show) {
 }
 
 /**
+ * Wrapper around getWrongProductionReasonFromUrl that only fires when the review
+ * has NO named critic (Unknown / Staff / empty). Used at ingest time in
+ * gather-reviews.js to catch Unknown-byline SERP pollution without false-positive
+ * risk on named-critic pre-transfer coverage (e.g. Jesse Green reviewing a
+ * Public Theater OB run before Broadway transfer).
+ *
+ * The base URL-date rule alone can't distinguish "different production" from
+ * "same production, pre-transfer venue" — named critics deserve the benefit of
+ * the doubt there. Unknown-byline SERP hits do not (that's the exact class of
+ * hit that caused the Fallen Angels 2026 opening-night cleanup).
+ *
+ * The raw helper (getWrongProductionReasonFromUrl) is still available for
+ * opt-in post-hoc audits where a human reviews each flag.
+ *
+ * @param {{ url?: string|null, criticName?: string|null }} review
+ * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string }} show
+ * @returns {string|null}
+ */
+function getWrongProductionReasonForUnknownCritic(review, show) {
+  if (!review) return null;
+  const norm = String(review.criticName || '').trim().toLowerCase();
+  const criticIsUnknown = !norm || norm === 'unknown' || norm === 'staff';
+  if (!criticIsUnknown) return null;
+  return getWrongProductionReasonFromUrl(review.url, show);
+}
+
+/**
  * Check if a URL looks like a review for the given show title.
  * Filters out tag pages, author pages, ticket links, etc.
  * Used in site-search-discovery.js to filter URLs returned by section-page scrapers.
@@ -1235,6 +1262,7 @@ module.exports = {
   pickBestDtliSlug,
   applyTemporalOverrides,
   getWrongProductionReasonFromUrl,
+  getWrongProductionReasonForUnknownCritic,
   urlLooksLikeReview,
   isLikelyWrongProduction,
   isLikelyTourReview,
