@@ -13,7 +13,7 @@ export default function FooterBranding({ totalReviews }: { totalReviews: number 
     <>
       <div className="flex flex-col items-center gap-3 text-center">
         <div className="flex items-center">
-          <span className="text-lg font-bold text-white">{logoPrefix}&nbsp;</span>
+          <span className="text-lg font-bold text-white">{logoPrefix}</span>
           <span className={`text-lg font-bold ${isLondon ? 'bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent' : 'text-gradient'}`}>Scorecard</span>
           <span className="text-[8px] text-gray-500 font-normal align-super">™</span>
         </div>
