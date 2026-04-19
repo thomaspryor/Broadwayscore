@@ -1,20 +1,23 @@
 {
-  "totalCandidates": 1,
-  "cdxFound": 0,
-  "cdxNotFound": 0,
-  "recovered": 0,
+  "totalCandidates": 12,
+  "cdxFound": 5,
+  "cdxNotFound": 4,
+  "recovered": 4,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 0
+    "3": 4
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "broadwayworld.com": 3,
+    "musicaltheatrereview.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
-  "notInArchive": 0,
+  "errors": 3,
+  "notInArchive": 4,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
