@@ -399,7 +399,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       {/* Hero */}
       <div className="mb-4 sm:mb-8">
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          West End<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+          WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
         </h1>
         <p className="text-gray-400 text-lg sm:text-xl">
           Every show. Every review. One score.
@@ -630,7 +630,7 @@ export default function WestEndPageClient(props: WestEndPageClientProps) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
           <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-            West End<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+            WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-pink-400 border border-pink-400/30 bg-pink-400/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
           </div>
           <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
