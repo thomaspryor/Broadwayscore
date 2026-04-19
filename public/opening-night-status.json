@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T07:10:57.121Z",
+  "generatedAt": "2026-04-19T08:44:35.045Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1212,14 +1212,14 @@
       "status": "open",
       "slug": "proof",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 72.72,
+      "siteScore": 72.87,
       "liveScore": 73,
-      "scoreDrift": 0.28000000000000114,
-      "total": 20,
+      "scoreDrift": 0.12999999999999545,
+      "total": 21,
       "t1": 6,
-      "t2": 12,
+      "t2": 13,
       "t3": 2,
-      "positive": 10,
+      "positive": 11,
       "mixed": 8,
       "negative": 2,
       "readiness": {
@@ -1553,6 +1553,18 @@
           "m": 8,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T08:44:35.045Z",
+          "rc": 21,
+          "s": 72.87,
+          "t1": 6,
+          "t2": 13,
+          "t3": 2,
+          "p": 11,
+          "m": 8,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -1566,21 +1578,19 @@
       "status": "open",
       "slug": "avenue-q-west-end",
       "thumbnail": "/images/shows/avenue-q-west-end-2026/thumbnail.webp",
-      "siteScore": 76.54,
-      "liveScore": 77,
-      "scoreDrift": 0.45999999999999375,
-      "total": 7,
-      "t1": 3,
+      "siteScore": 79.76,
+      "liveScore": 80,
+      "scoreDrift": 0.23999999999999488,
+      "total": 10,
+      "t1": 4,
       "t2": 1,
-      "t3": 3,
-      "positive": 6,
+      "t3": 5,
+      "positive": 9,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
-          "T2:1/2",
           "hi-conf:2/6"
         ],
         "highConfidence": 2,
@@ -1620,6 +1630,10 @@
         },
         {
           "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
           "isDualMarket": true
         },
         {
@@ -1696,6 +1710,18 @@
           "t2": 1,
           "t3": 3,
           "p": 6,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T08:44:35.045Z",
+          "rc": 10,
+          "s": 79.76,
+          "t1": 4,
+          "t2": 1,
+          "t3": 5,
+          "p": 9,
           "m": 0,
           "n": 1,
           "bc": "waiting"

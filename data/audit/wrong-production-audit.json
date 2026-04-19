@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-19T07:10:53.237Z",
+  "timestamp": "2026-04-19T08:44:30.683Z",
   "stats": {
-    "totalReviews": 34881,
-    "alreadyFlagged": 15302,
+    "totalReviews": 34878,
+    "alreadyFlagged": 15301,
     "dateGuardCatches": 90,
     "directorMismatch": 816,
-    "tvFilmSignals": 3148,
-    "londonSignals": 1009,
+    "tvFilmSignals": 3149,
+    "londonSignals": 1011,
     "offBroadwaySignals": 883,
     "yearMismatch": 67,
-    "noPublishDate": 3725
+    "noPublishDate": 3719
   },
   "findings": [
     {
@@ -4884,6 +4884,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-04-17",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27633",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -56795,6 +56808,20 @@
       ]
     },
     {
+      "showId": "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026",
+      "file": "nytimes--houman-barekat.json",
+      "score": null,
+      "publishDate": "2026-04-16",
+      "url": "https://www.nytimes.com/2026/04/16/theater/one-flew-over-the-cuckoos-nest-old-vic-london.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "aint-no-mo-2022",
       "file": "nysr--bart-greenberg.json",
       "score": 88,
@@ -57776,6 +57803,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 94,
+      "publishDate": "2026-04-17",
+      "url": "https://www.allthatdazzles.co.uk/post/review-avenue-q-shaftesbury-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
