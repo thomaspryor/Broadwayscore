@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
+import { FANTASY_SEASON } from '@/config/fantasy';
 
 /**
  * GET /api/fantasy/leagues/[code] — Fetch league metadata
@@ -30,10 +31,11 @@ export async function GET(
     return NextResponse.json({ error: 'League not found' }, { status: 404 });
   }
 
-  // Count members by fetching IDs (head:true unreliable in serverless)
+  // Count members — must include season filter to match RLS evaluation (mirrors leaderboard query)
   const { data: members } = await supabase
     .from('fantasy_entries')
     .select('id')
+    .eq('season', FANTASY_SEASON)
     .eq('league_name', code);
 
   return NextResponse.json({
