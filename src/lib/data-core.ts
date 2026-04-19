@@ -789,7 +789,7 @@ export function getOtherProductions(show: ComputedShow): ComputedShow[] {
   const baseTitle = normalize(show.title);
   const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3 };
   return getAllShows()
-    .filter(s => s.id !== show.id && normalize(s.title) === baseTitle && (s.category || 'broadway') !== (show.category || 'broadway'))
+    .filter(s => s.id !== show.id && normalize(s.title) === baseTitle)
     .sort((a, b) => {
       const catA = marketOrder[(a.category || 'broadway')] ?? 3;
       const catB = marketOrder[(b.category || 'broadway')] ?? 3;

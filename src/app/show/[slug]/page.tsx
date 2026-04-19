@@ -43,6 +43,7 @@ import RelatedShows from '@/components/RelatedShows';
 import VideoReviewsShelf from '@/components/VideoReviewsShelf';
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
+import MiniShowCard from '@/components/show-cards/MiniShowCard';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
@@ -1218,25 +1219,29 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
 
         {/* Other Productions of the same show */}
         {otherProductions.length > 0 && (
-          <div className="mt-6 bg-surface-raised border border-white/10 rounded-xl p-4">
-            <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-3">
-              Other Productions of {show.title}
-            </h3>
-            <div className="space-y-2">
+          <section className="mt-8 pt-6 border-t border-white/5">
+            <h2 className="text-base font-bold text-white mb-3">Other Productions of {show.title}</h2>
+            <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
               {otherProductions.map(prod => {
-                const market = prod.category === 'west-end' ? 'West End' : prod.category === 'off-west-end' ? 'Off-West End' : prod.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway';
-                const year = prod.openingDate ? new Date(prod.openingDate).getFullYear() : null;
-                const statusLabel = prod.status === 'open' ? 'Now Playing' : prod.status === 'previews' ? 'In Previews' : prod.status === 'upcoming' ? 'Upcoming' : 'Closed';
+                const openYear = prod.openingDate ? new Date(prod.openingDate + 'T12:00:00').getFullYear() : null;
+                const closeYear = prod.closingDate ? new Date(prod.closingDate + 'T12:00:00').getFullYear() : null;
+                const yearRange = openYear
+                  ? closeYear && closeYear !== openYear
+                    ? `${openYear}\u2013${String(closeYear).slice(-2)}`
+                    : String(openYear)
+                  : null;
+                const market = getMarketLabel(prod.category ?? 'broadway');
+                const subtitle = [market, yearRange].filter(Boolean).join(' · ');
+                const subtitleColor = prod.status === 'open' || prod.status === 'previews' ? 'text-emerald-400' : 'text-gray-400';
                 return (
-                  <Link key={prod.id} href={`/show/${prod.slug}`} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group">
-                    <span className="text-sm text-white group-hover:text-brand transition-colors">{prod.title}{year ? ` (${year})` : ''}</span>
-                    <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${prod.category === 'west-end' ? 'bg-teal-500/20 text-teal-400' : prod.category === 'off-west-end' ? 'bg-violet-500/20 text-violet-400' : prod.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-amber-500/20 text-amber-400'}`}>{market}</span>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${prod.status === 'open' ? 'bg-emerald-500/20 text-emerald-400' : prod.status === 'previews' ? 'bg-purple-500/20 text-purple-400' : prod.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-500/20 text-gray-400'}`}>{statusLabel}</span>
-                  </Link>
+                  <MiniShowCard
+                    key={prod.id}
+                    show={{ ...prod as unknown as import('@/components/show-cards/types').ShowCardShow, subtitle, subtitleColor }}
+                  />
                 );
               })}
             </div>
-          </div>
+          </section>
         )}
 
         {/* Related Shows */}
