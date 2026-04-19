@@ -1489,6 +1489,109 @@ assert(
 );
 
 // ============================================================
+// Fix A (opening night clobber): LLM-scored wrongProduction files survive re-discovery
+//
+// Bug: when the poller re-discovers a URL for a file that had wrongProduction=true
+// (LLM false positive), createReviewFile entered the wrongProd replacement branch
+// and clobbered llmScore/fullText. Root cause: isHumanFlagged didn't include
+// isLlmScored, so scored files were treated as unprotected.
+//
+// Fix: isHumanFlagged now includes isLlmScored check.
+//      alreadyScored preserved fields block preserves llmScore, fullText, etc.
+// ============================================================
+console.log('\n--- Fix A: LLM-scored wrongProduction files survive clobber ---');
+
+assert(
+  gatherSrcCRF.includes('isLlmScored') && gatherSrcCRF.includes('llmScore && existingReview.llmScore.score != null'),
+  'Fix A: gather-reviews.js defines isLlmScored from existing llmScore'
+);
+assert(
+  gatherSrcCRF.includes('isHumanFlagged') && gatherSrcCRF.includes('isLlmScored'),
+  'Fix A: isHumanFlagged check includes isLlmScored so scored files skip replacement branch'
+);
+
+// Verify the alreadyScored preserved fields block includes critical fields
+assert(
+  gatherSrcCRF.includes("'llmScore', 'humanReviewScore', 'scoreStatus'"),
+  'Fix A: alreadyScored preserved fields includes llmScore, humanReviewScore, scoreStatus'
+);
+assert(
+  gatherSrcCRF.includes("'fullText'") && gatherSrcCRF.includes("'publishDate'"),
+  'Fix A: alreadyScored preserved fields includes fullText and publishDate'
+);
+
+// Verify the condition fires BEFORE the wrongProd replacement branch
+const isLlmScoredPos = gatherSrcCRF.indexOf('const isLlmScored');
+const alreadyScoredPos = gatherSrcCRF.indexOf('const alreadyScored = (existingReview.llmScore');
+const wrongProdReplacePos = gatherSrcCRF.indexOf('Replaced wrongShow/wrongProd file');
+assert(
+  isLlmScoredPos !== -1 && wrongProdReplacePos !== -1 && isLlmScoredPos < wrongProdReplacePos,
+  'Fix A: isLlmScored guard is defined before the wrongProd replacement log line'
+);
+assert(
+  alreadyScoredPos !== -1 && alreadyScoredPos < wrongProdReplacePos,
+  'Fix A: alreadyScored field preservation is before the replacement branch'
+);
+
+// ============================================================
+// Fix B (publishDate fallback): temporal override fires for fresh opening-night stubs
+//
+// Bug: fresh stubs created by poller had publishDate=null (no text fetched yet).
+//      applyTemporalOverrides requires BOTH openingDate AND publishDate to fire.
+//      Without publishDate, the temporal override was silent → LLM false positive
+//      confidence stayed 'high' → wrongProduction clobbered the file.
+//
+// Fix: collect-review-texts.js now falls back to today's date when publishDate
+//      and textFetchedAt are both absent.
+// ============================================================
+console.log('\n--- Fix B: publishDate fallback enables temporal override for fresh stubs ---');
+
+const collectSrc = require('fs').readFileSync(require('path').join(__dirname, 'collect-review-texts.js'), 'utf8');
+assert(
+  collectSrc.includes("new Date().toISOString().slice(0, 10)"),
+  'Fix B: collect-review-texts.js has today-fallback for publishDate'
+);
+
+// The specific pattern: publishDate || textFetchedAt || today
+assert(
+  collectSrc.includes("reviewData.publishDate || reviewData.textFetchedAt || new Date().toISOString().slice(0, 10)"),
+  'Fix B: publishDate fallback chain is publishDate || textFetchedAt || today'
+);
+
+// Logic test: with null publishDate (old behavior) → no temporal override
+{
+  const r = applyTemporalOverrides(true, false, 'high', '2026-04-19', null);
+  assert(
+    r.wpConfidence === 'high',
+    'Fix B baseline: null publishDate still gives high confidence (no temporal override — confirms the bug was real)'
+  );
+}
+
+// Logic test: with today as publishDate and RECENT opening → temporal override fires
+// Simulates what Fix B now provides: fresh stubs get today's date injected
+{
+  const today = new Date().toISOString().slice(0, 10);
+  // Opening was 5 days ago (within 30d window)
+  const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  const r = applyTemporalOverrides(true, false, 'high', fiveDaysAgo, today);
+  assert(
+    r.wpConfidence === 'low',
+    `Fix B: today publishDate + opening 5d ago → temporal override fires (wpConfidence=low, got ${r.wpConfidence})`
+  );
+}
+
+// Logic test: opening is tomorrow (pre-opening) → today is 1 day before, within 30d → fires
+{
+  const today = new Date().toISOString().slice(0, 10);
+  const tomorrow = new Date(Date.now() + 1 * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  const r = applyTemporalOverrides(true, false, 'high', tomorrow, today);
+  assert(
+    r.wpConfidence === 'low',
+    `Fix B: today publishDate + opening tomorrow → temporal override fires (abs(daysDiff)=1, got ${r.wpConfidence})`
+  );
+}
+
+// ============================================================
 // mergeReviews — URL change clears stale incompleteReason + fetch state
 // Bug: gather-reviews updated a URL but incompleteReason: 'wrong_content'
 // from the OLD URL persisted → collect-review-texts.js skipped the file forever
