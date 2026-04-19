@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T08:54:55.079Z",
+  "generatedAt": "2026-04-19T22:42:25.039Z",
   "shows": {
     "days-of-wine-and-roses-2024": {
       "title": "Days of Wine and Roses",
@@ -2624,6 +2624,65 @@
       "researchedAt": "2026-04-19T08:54:55.079Z",
       "model": "o4-mini",
       "researchTrigger": "manual"
+    },
+    "death-of-a-salesman": {
+      "capitalization": 9058744,
+      "capitalizationSource": "NYC theatrical production tax credit listing ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=Salesman%20Production%20Services%20Corporation%20,%242%2C264%2C686))",
+      "weeklyRunningCost": 600000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Fizzle",
+      "notes": "Tax-credit data imply ~$9.06M budget ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=Salesman%20Production%20Services%20Corporation%20,%242%2C264%2C686)); limited 14-week run (Apr–Aug 2026) with no reported recoup.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "Death of a Salesman",
+      "slug": "death-of-a-salesman",
+      "openingDate": "2026-04-09",
+      "status": "open",
+      "researchedAt": "2026-04-19T22:07:43.501Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "agatha-christies-black-coffee-grounds-for-murder-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "The production ran only Apr 18–26, 2026 ([www.broadwayworld.com](https://www.broadwayworld.com/off-broadway/article/Agatha-ChristiesBLACK-COFFEE-GROUNDS-FOR-MURDER-to-Runat-Players-Theatre-in-April-20260315#:~:text=Agatha%20Christie%27s%20Black%20Coffee%3A%20Grounds,April%2018%20through%2026%2C%202026)) ([broadwayscorecard.com](https://broadwayscorecard.com/show/agatha-christies-black-coffee-grounds-for-murder-off-broadway#:~:text=Opens%20Apr%2018%2C%202026)). No budget or cost data is available, and it closed after one week, indicating it did not recoup.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/article/Agatha-ChristiesBLACK-COFFEE-GROUNDS-FOR-MURDER-to-Runat-Players-Theatre-in-April-20260315",
+          "date": "2026-03-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwayscorecard.com/show/agatha-christies-black-coffee-grounds-for-murder-off-broadway",
+          "date": "2026-03-27"
+        }
+      ],
+      "title": "Agatha Christie's Black Coffee: Grounds for Murder",
+      "slug": "agatha-christies-black-coffee-grounds-for-murder-off-broadway",
+      "openingDate": "2026-04-18",
+      "status": "open",
+      "researchedAt": "2026-04-19T22:42:25.039Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
     }
   }
 }
