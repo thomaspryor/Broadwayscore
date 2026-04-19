@@ -13,7 +13,10 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { getWrongProductionReasonFromUrl } = require('../../scripts/lib/review-guards.js');
+const {
+  getWrongProductionReasonFromUrl,
+  getWrongProductionReasonForUnknownCritic,
+} = require('../../scripts/lib/review-guards.js');
 
 const fallenAngels = {
   id: 'fallen-angels-2026',
@@ -219,5 +222,72 @@ describe('getWrongProductionReasonFromUrl — fail-safe edge cases', () => {
     );
     assert.ok(reason);
     assert.match(reason, /2024-03-15/);
+  });
+});
+
+describe('getWrongProductionReasonForUnknownCritic — criticName gate', () => {
+  const badUrl = 'https://www.theguardian.com/stage/2015/feb/18/hamilton-review-public-theater';
+  const hamilton2015 = {
+    id: 'hamilton-2015',
+    category: 'broadway',
+    previewsStartDate: '2015-07-13',
+    openingDate: '2015-08-06',
+  };
+
+  it('flags Unknown byline with prior-year Guardian URL', () => {
+    const reason = getWrongProductionReasonForUnknownCritic(
+      { url: badUrl, criticName: 'Unknown' },
+      hamilton2015
+    );
+    assert.ok(reason, 'should flag when byline is Unknown');
+  });
+
+  it('flags empty/missing criticName', () => {
+    assert.ok(getWrongProductionReasonForUnknownCritic({ url: badUrl, criticName: '' }, hamilton2015));
+    assert.ok(getWrongProductionReasonForUnknownCritic({ url: badUrl, criticName: null }, hamilton2015));
+    assert.ok(getWrongProductionReasonForUnknownCritic({ url: badUrl }, hamilton2015));
+  });
+
+  it('flags "Staff" byline (generic)', () => {
+    assert.ok(
+      getWrongProductionReasonForUnknownCritic({ url: badUrl, criticName: 'Staff' }, hamilton2015)
+    );
+  });
+
+  it('KEEPS named critic even with prior-year URL (FP protection)', () => {
+    // The core FP class this gate is designed to prevent: Jesse Green / Ben Brantley /
+    // Michael Billington reviewing a legitimate pre-transfer UK or OB run before the
+    // Broadway window. URL date alone can't tell "different show" from "same show,
+    // earlier venue" — named critics get the benefit of the doubt at ingest time.
+    assert.strictEqual(
+      getWrongProductionReasonForUnknownCritic(
+        { url: badUrl, criticName: 'Jesse Green' },
+        hamilton2015
+      ),
+      null
+    );
+  });
+
+  it('case-insensitive on "unknown"', () => {
+    assert.ok(
+      getWrongProductionReasonForUnknownCritic({ url: badUrl, criticName: 'UNKNOWN' }, hamilton2015)
+    );
+    assert.ok(
+      getWrongProductionReasonForUnknownCritic({ url: badUrl, criticName: '  unknown  ' }, hamilton2015)
+    );
+  });
+
+  it('returns null for null review', () => {
+    assert.strictEqual(getWrongProductionReasonForUnknownCritic(null, hamilton2015), null);
+  });
+
+  it('returns null when URL is in-window (Unknown byline, good URL)', () => {
+    assert.strictEqual(
+      getWrongProductionReasonForUnknownCritic(
+        { url: 'https://www.nytimes.com/2015/08/06/theater/hamilton-review.html', criticName: 'Unknown' },
+        hamilton2015
+      ),
+      null
+    );
   });
 });
