@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T20:26:02.226Z",
+  "generatedAt": "2026-04-19T20:41:46.221Z",
   "summary": {
-    "total": 22,
+    "total": 23,
     "high": 11,
-    "medium": 9,
+    "medium": 10,
     "low": 2
   },
   "collisions": [
@@ -491,6 +491,33 @@
       ],
       "suggestedWinner": "proof-express-test-2026",
       "reason": "publishDate April 16, 2026 is 0 days from proof-express-test-2026 but also 1 days from proof-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.nytimes.com/2026/04/16/theater/proof-review-ayo-edebiri-don-cheadle.html",
+      "normalizedUrl": "https://nytimes.com/2026/04/16/theater/proof-review-ayo-edebiri-don-cheadle.html",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "nytimes--helen-shaw.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "nytimes--helen-shaw.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        }
+      ],
+      "suggestedWinner": "proof-2026",
+      "reason": "publishDate April 16, 2026 is 0 days from proof-2026 but also 0 days from proof-express-test-2026",
       "confidence": "medium"
     },
     {
