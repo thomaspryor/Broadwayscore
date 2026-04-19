@@ -104,6 +104,9 @@ function readBudget() {
 
 function writeBudget(budget) {
   ensureDir(SOCIAL_PULSE_DIR);
+  // lastUpdated drives the daily-digest freshness check for /trending data.
+  // Without it the directory rots silently if the Monday workflow breaks.
+  budget.lastUpdated = new Date().toISOString();
   fs.writeFileSync(BUDGET_FILE, JSON.stringify(budget, null, 2));
 }
 
