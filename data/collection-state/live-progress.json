@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-04-19T16:39:44.609Z",
-  "processed": 54,
-  "failed": 984,
-  "successRate": "5.2%",
+  "updatedAt": "2026-04-19T18:22:11.748Z",
+  "processed": 63,
+  "failed": 985,
+  "successRate": "6.0%",
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 30,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 8,
-    "brightdata": 3,
-    "archiveToday": 20,
+    "brightdata": 6,
+    "archiveToday": 21,
     "archive": 14
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-04-19T15:38:59.207Z",
-      "event": "bb-session",
-      "session": "dbf8fb3b",
-      "url": "https://www.nytimes.com/2026/04/16/theater/proof-review-ayo-edebiri-don-cheadle."
-    },
-    {
-      "t": "2026-04-19T15:39:00.057Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-19T15:45:55.854Z",
-      "event": "bb-session",
-      "session": "56f10dfe",
-      "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html"
-    },
-    {
-      "t": "2026-04-19T15:45:56.823Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-19T16:02:22.294Z",
-      "event": "bb-session",
-      "session": "cc173633",
-      "url": "https://www.washingtonpost.com/entertainment/music/review-josh-groban-cant-save-"
-    },
-    {
-      "t": "2026-04-19T16:02:23.377Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-04-19T16:17:17.959Z",
-      "event": "bb-session",
-      "session": "345666d5",
-      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-bways-mothers-a"
-    },
-    {
-      "t": "2026-04-19T16:17:18.782Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-04-19T16:23:10.100Z",
       "event": "bb-session",
@@ -124,6 +80,50 @@
       "t": "2026-04-19T16:30:08.803Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T18:18:30.057Z",
+      "event": "bb-session",
+      "session": "50a60130",
+      "url": "https://variety.com/2026/legit/reviews/proof-broadway-review-ayo-edebiri-don-che"
+    },
+    {
+      "t": "2026-04-19T18:18:30.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T18:19:07.185Z",
+      "event": "bb-session",
+      "session": "4f4b5b4e",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-04-19T18:19:07.591Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T18:19:47.247Z",
+      "event": "bb-session",
+      "session": "423c0114",
+      "url": "https://www.nytimes.com/2026/03/30/theater/dog-day-afternoon-review-bernthal-mos"
+    },
+    {
+      "t": "2026-04-19T18:19:47.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-19T18:21:46.984Z",
+      "event": "bb-session",
+      "session": "2d53bf38",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michel"
+    },
+    {
+      "t": "2026-04-19T18:21:47.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
