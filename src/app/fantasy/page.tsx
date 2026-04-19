@@ -250,7 +250,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'How do show prices work?',
-              a: 'Each show has a price ($3-$22) based on how likely it is to score well. Buzzy new musicals cost more. You have $100 to fill 8 slots, so you need a mix of big bets and value picks.',
+              a: 'Each show has a price ($5-$35) based on how likely it is to score well. Buzzy new musicals cost more. You have $100 to fill 8 slots, so you need a mix of big bets and value picks.',
             },
             {
               q: 'What\'s the best strategy?',
@@ -262,7 +262,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'What about Off-Broadway shows?',
-              a: 'Priced $3-$8. They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.',
+              a: 'Priced $5-$9. They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.',
             },
             {
               q: 'When do scores update?',
