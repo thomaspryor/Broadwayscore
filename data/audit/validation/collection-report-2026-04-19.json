@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-04-19T03:33:46.408Z",
+  "runDate": "2026-04-19T03:47:13.306Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 200,
+    "maxReviews": 1000,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -11,19 +11,19 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 38,
-    "failed": 2619,
+    "processed": 46,
+    "failed": 2620,
     "skipped": 0,
-    "successRate": "1.4%"
+    "successRate": "1.7%"
   },
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 16,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 9,
     "brightdata": 8,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 6
   },
   "statistics": {
@@ -31,9 +31,9 @@
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
@@ -41,12 +41,12 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 200,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 203,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -88,7 +88,15 @@
     "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
     "high-2011/bloomberg--jeremy-gerard.json",
     "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-    "high-2011/backstage--erik-haagensen.json"
+    "high-2011/backstage--erik-haagensen.json",
+    "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
+    "cats-the-jellicle-ball-2026/theatre-reviews-limited--david-roberts.json",
+    "cats-the-jellicle-ball-2026/theater-scene--victor-gluck.json",
+    "gypsy-2003/variety--charles-isherwood.json",
+    "gypsy-2003/nydailynews--chris-jones.json",
+    "gypsy-2003/observer--david-cote.json",
+    "gypsy-2003/culturesauce--thom-geier.json",
+    "gypsy-2003/nytimes--ben-brantley.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -2709,7 +2717,8 @@
     "dead-accounts-2012/variety--marilyn-stasio.json",
     "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
     "elf-2012/new-jersey-newsroom--michael-sommers.json",
-    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json"
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+    "proof-2000/nydailynews--david-kaufman.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -2724,7 +2733,11 @@
       "beetlejuice-2022/pittsburgh-city-paper--jordana-rosenfeld.json",
       "marvins-room-2017/stageandcinema--dmitry-zvonkov.json",
       "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
-      "high-2011/backstage--erik-haagensen.json"
+      "high-2011/backstage--erik-haagensen.json",
+      "cats-the-jellicle-ball-2026/theatre-reviews-limited--david-roberts.json",
+      "cats-the-jellicle-ball-2026/theater-scene--victor-gluck.json",
+      "gypsy-2003/observer--david-cote.json",
+      "gypsy-2003/culturesauce--thom-geier.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2737,7 +2750,11 @@
       "data/review-texts/the-anarchist-2012/variety--marilyn-stasio.json",
       "the-anarchist-2012/variety--marilyn-stasio.json",
       "data/review-texts/the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
-      "the-house-of-blue-leaves-2011/variety--charles-isherwood.json"
+      "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+      "data/review-texts/gypsy-2003/variety--charles-isherwood.json",
+      "gypsy-2003/variety--charles-isherwood.json",
+      "data/review-texts/gypsy-2003/nytimes--ben-brantley.json",
+      "gypsy-2003/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2747,7 +2764,9 @@
       "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
       "hands-on-a-hardbody-2013/newsday--linda-winer.json",
       "high-2011/bloomberg--jeremy-gerard.json",
-      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
+      "gypsy-2003/nydailynews--chris-jones.json"
     ],
     "brightdata": [
       "the-fear-of-13-2026/talkinbroadway--unknown.json",
@@ -2763,7 +2782,8 @@
       "data/review-texts/proof-2000/newsday--unknown.json",
       "data/review-texts/proof-2000/nydailynews--unknown.json",
       "data/review-texts/rock-of-ages-2009/usatoday--unknown.json",
-      "data/review-texts/high-2011/backstage--erik-haagensen.json"
+      "data/review-texts/high-2011/backstage--erik-haagensen.json",
+      "data/review-texts/proof-2000/nydailynews--david-kaufman.json"
     ],
     "archive": [
       "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json",

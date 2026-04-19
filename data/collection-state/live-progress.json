@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-19T03:46:52.933Z",
-  "processed": 38,
-  "failed": 2669,
-  "successRate": "1.4%",
+  "updatedAt": "2026-04-19T03:47:13.291Z",
+  "processed": 46,
+  "failed": 2620,
+  "successRate": "1.7%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 16,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 9,
     "brightdata": 8,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -80,6 +80,28 @@
       "t": "2026-04-18T19:19:39.704Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T03:41:53.219Z",
+      "event": "bb-session",
+      "session": "582b498e",
+      "url": "https://variety.com/2003/legit/reviews/gypsy-9-1200541916/"
+    },
+    {
+      "t": "2026-04-19T03:41:54.604Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T03:46:57.733Z",
+      "event": "bb-session",
+      "session": "1fd109a5",
+      "url": "https://www.nytimes.com/2003/05/04/theater/theater-gypsy-then-now-and-always.htm"
+    },
+    {
+      "t": "2026-04-19T03:46:58.987Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
