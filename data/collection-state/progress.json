@@ -48,7 +48,8 @@
     "on-the-town-2014/abc-news--mark-kennedy.json",
     "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json",
     "this-is-our-youth-2014/abc-news--mark-kennedy.json",
-    "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json"
+    "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
+    "cat-on-a-hot-tin-roof-2013/seattle-times--mark-kennedy.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -969,7 +970,16 @@
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
-    "ann-2013/bloomberg--jeremy-gerard.json"
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "picnic-2013/bloomberg--jeremy-gerard.json",
+    "dead-accounts-2012/washpost--mark-kennedy.json",
+    "dead-accounts-2012/variety--marilyn-stasio.json",
+    "the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
+    "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "whos-afraid-of-virginia-woolf-2012/huffpost--mark-kennedy.json",
+    "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+    "chaplin-2012/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1018,7 +1028,8 @@
     ],
     "brightdata": [
       "hamlet-off-broadway-2026/vulture--unknown.json",
-      "the-adding-machine-off-broadway-2026/talkinbroadway--howard-miller.json"
+      "the-adding-machine-off-broadway-2026/talkinbroadway--howard-miller.json",
+      "cat-on-a-hot-tin-roof-2013/seattle-times--mark-kennedy.json"
     ],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
@@ -1031,7 +1042,9 @@
       "data/review-texts/act-one-2014/abc-news--mark-kennedy.json",
       "data/review-texts/of-mice-and-men-2014/abc-news--mark-kennedy.json",
       "data/review-texts/mothers-and-sons-2014/washpost--mark-kennedy.json",
-      "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json"
+      "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json",
+      "data/review-texts/dead-accounts-2012/washpost--mark-kennedy.json",
+      "data/review-texts/the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
@@ -1050,7 +1063,7 @@
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "ann-2013/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "chaplin-2012/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -1093,6 +1106,28 @@
     },
     {
       "t": "2026-04-19T16:17:18.782Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:23:10.100Z",
+      "event": "bb-session",
+      "session": "7739eb41",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-theresa-rebecks"
+    },
+    {
+      "t": "2026-04-19T16:23:11.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:23:44.677Z",
+      "event": "bb-session",
+      "session": "897ed063",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviva"
+    },
+    {
+      "t": "2026-04-19T16:23:45.502Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }

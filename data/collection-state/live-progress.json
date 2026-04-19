@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-19T16:20:47.771Z",
-  "processed": 49,
-  "failed": 919,
+  "updatedAt": "2026-04-19T16:25:09.407Z",
+  "processed": 50,
+  "failed": 928,
   "successRate": "5.1%",
   "tierBreakdown": {
     "playwright": 27,
@@ -9,11 +9,11 @@
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 6,
-    "brightdata": 2,
-    "archiveToday": 11,
+    "brightdata": 3,
+    "archiveToday": 13,
     "archive": 13
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -56,6 +56,28 @@
     },
     {
       "t": "2026-04-19T16:17:18.782Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:23:10.100Z",
+      "event": "bb-session",
+      "session": "7739eb41",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-theresa-rebecks"
+    },
+    {
+      "t": "2026-04-19T16:23:11.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:23:44.677Z",
+      "event": "bb-session",
+      "session": "897ed063",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviva"
+    },
+    {
+      "t": "2026-04-19T16:23:45.502Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
