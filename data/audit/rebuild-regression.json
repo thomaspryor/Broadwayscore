@@ -1,13 +1,53 @@
 {
-  "timestamp": "2026-04-19T05:27:13.800Z",
+  "timestamp": "2026-04-19T15:53:50.500Z",
   "regressions": [
     {
-      "showId": "cats-express-test-2026",
-      "oldCount": 18,
-      "newCount": 0,
-      "dropped": 18,
-      "scoredOnDisk": 18,
-      "flaggedScored": 0,
+      "showId": "take-me-out-2022",
+      "oldCount": 26,
+      "newCount": 12,
+      "dropped": 14,
+      "scoredOnDisk": 16,
+      "flaggedScored": 14,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "oldCount": 16,
+      "newCount": 12,
+      "dropped": 4,
+      "scoredOnDisk": 15,
+      "flaggedScored": 33,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "machinal-2014",
+      "oldCount": 26,
+      "newCount": 23,
+      "dropped": 3,
+      "scoredOnDisk": 26,
+      "flaggedScored": 9,
+      "inlineGuardExcluded": 1,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "orphans-2013",
+      "oldCount": 21,
+      "newCount": 18,
+      "dropped": 3,
+      "scoredOnDisk": 21,
+      "flaggedScored": 10,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "twelfth-night-2013",
+      "oldCount": 6,
+      "newCount": 3,
+      "dropped": 3,
+      "scoredOnDisk": 10,
+      "flaggedScored": 15,
       "inlineGuardExcluded": 0,
       "reason": "scored files exist but being dropped"
     }
