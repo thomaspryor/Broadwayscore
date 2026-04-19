@@ -339,8 +339,31 @@ export default function BrandPageClient() {
 
         {/* Downloads */}
         <div id="downloads">
-          <Section title="Downloads" description="Raw assets for design tools. Right-click → Save As.">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <Section title="Downloads" description="Ready-made PNGs for social, press, partners. Click any tile to download, or grab the full kit as a zip.">
+            {/* Big kit-zip button */}
+            <a
+              href="/brand-kit/broadway-scorecard-brand-kit.zip"
+              download="broadway-scorecard-brand-kit.zip"
+              className="block mb-6 rounded-card bg-gradient-to-br from-brand/20 to-surface-raised border border-brand/30 hover:border-brand transition-colors p-5 sm:p-6 group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand/20 flex items-center justify-center">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m-4-4l4 4 4-4" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-base sm:text-lg font-bold text-white group-hover:text-brand transition-colors">Download Entire Brand Kit</div>
+                  <div className="text-xs sm:text-sm text-gray-400 mt-0.5">52 PNGs · logos, score/grade badges, social templates · 8.2 MB zip</div>
+                </div>
+                <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-pill bg-brand text-white text-xs font-bold group-hover:bg-brand-hover transition-colors">
+                  Get kit
+                </span>
+              </div>
+            </a>
+
+            {/* Reference downloads */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               <DownloadTile
                 title="Palette Reference (SVG)"
                 description="One-page color reference. Upload to Canva's Brand Kit as a logo asset."
@@ -353,19 +376,14 @@ export default function BrandPageClient() {
                 href="/brand-tokens.json"
                 filename="bwsc-brand-tokens.json"
               />
-              <DownloadTile
-                title="Fantasy League Logo (PNG)"
-                description="BFL shield for fantasy-league-related posts."
-                href="/images/fantasy/bfl-logo.png"
-                filename="bfl-logo.png"
-              />
-              <DownloadTile
-                title="OG Image (PNG)"
-                description="Default social card — 1200×630."
-                href="/og/home.png"
-                filename="bwsc-og.png"
-              />
             </div>
+
+            {/* Asset galleries */}
+            <AssetGallery title="Logos" assets={logoAssets} />
+            <AssetGallery title="Score Badges" assets={scoreBadgeAssets} columns="md" />
+            <AssetGallery title="Audience Grade Badges" assets={gradeBadgeAssets} columns="md" />
+            <AssetGallery title="Reference Sheets" assets={referenceAssets} />
+            <AssetGallery title="Social Templates" assets={socialAssets} />
           </Section>
         </div>
 
@@ -458,6 +476,123 @@ function CanvaCopyRow({ name, hex }: { name: string; hex: string }) {
         {copied ? 'Copied' : 'Copy'}
       </span>
     </button>
+  );
+}
+
+type Asset = {
+  label: string;
+  filename: string;
+  sub?: string;
+  transparent?: boolean;
+  lightBg?: boolean;
+  aspect?: 'square' | 'wide' | 'tall';
+};
+
+const logoAssets: Asset[] = [
+  { label: 'Broadway Wordmark', sub: 'Dark background', filename: 'logos/broadway-wordmark-dark.png', aspect: 'wide' },
+  { label: 'Broadway Wordmark', sub: 'Transparent', filename: 'logos/broadway-wordmark-transparent.png', transparent: true, aspect: 'wide' },
+  { label: 'Broadway Wordmark', sub: 'Light background', filename: 'logos/broadway-wordmark-light.png', lightBg: true, aspect: 'wide' },
+  { label: 'West End Wordmark', sub: 'Dark background', filename: 'logos/west-end-wordmark-dark.png', aspect: 'wide' },
+  { label: 'West End Wordmark', sub: 'Transparent', filename: 'logos/west-end-wordmark-transparent.png', transparent: true, aspect: 'wide' },
+  { label: 'West End Wordmark', sub: 'Light background', filename: 'logos/west-end-wordmark-light.png', lightBg: true, aspect: 'wide' },
+  { label: 'App Icon', sub: 'Dark', filename: 'logos/icon-dark.png', aspect: 'square' },
+  { label: 'App Icon', sub: 'Transparent', filename: 'logos/icon-transparent.png', transparent: true, aspect: 'square' },
+];
+
+const scoreBadgeAssets: Asset[] = [
+  { label: 'Critical Gold', sub: 'Score 83–100', filename: 'score-badges/critical-gold-87-dark.png' },
+  { label: 'Critical Gold', sub: 'Transparent', filename: 'score-badges/critical-gold-87-transparent.png', transparent: true },
+  { label: 'Recommended', sub: 'Score 75–82', filename: 'score-badges/recommended-79-dark.png' },
+  { label: 'Recommended', sub: 'Transparent', filename: 'score-badges/recommended-79-transparent.png', transparent: true },
+  { label: 'Worth Seeing', sub: 'Score 65–74', filename: 'score-badges/worth-seeing-70-dark.png' },
+  { label: 'Worth Seeing', sub: 'Transparent', filename: 'score-badges/worth-seeing-70-transparent.png', transparent: true },
+  { label: 'Skippable', sub: 'Score 55–64', filename: 'score-badges/skippable-60-dark.png' },
+  { label: 'Skippable', sub: 'Transparent', filename: 'score-badges/skippable-60-transparent.png', transparent: true },
+  { label: 'Stay Away', sub: 'Score < 55', filename: 'score-badges/stay-away-45-dark.png' },
+  { label: 'Stay Away', sub: 'Transparent', filename: 'score-badges/stay-away-45-transparent.png', transparent: true },
+];
+
+const gradeLetters: Array<[string, string]> = [
+  ['Aplus', 'A+'], ['A', 'A'], ['Aminus', 'A−'],
+  ['Bplus', 'B+'], ['B', 'B'], ['Bminus', 'B−'],
+  ['Cplus', 'C+'], ['C', 'C'], ['Cminus', 'C−'],
+  ['D', 'D'], ['F', 'F'],
+];
+
+const gradeBadgeAssets: Asset[] = gradeLetters.flatMap(([slug, display]) => [
+  { label: `Grade ${display}`, sub: 'Dark', filename: `grade-badges/grade-${slug}-dark.png` as string },
+  { label: `Grade ${display}`, sub: 'Transparent', filename: `grade-badges/grade-${slug}-transparent.png` as string, transparent: true },
+]);
+
+const referenceAssets: Asset[] = [
+  { label: 'Score Tiers Overview', sub: 'All 5 critic tiers · dark', filename: 'references/score-tiers-dark.png', aspect: 'wide' },
+  { label: 'Score Tiers Overview', sub: 'Transparent', filename: 'references/score-tiers-transparent.png', transparent: true, aspect: 'wide' },
+  { label: 'Grade Tiers Overview', sub: 'All 11 audience grades · dark', filename: 'references/grade-tiers-dark.png', aspect: 'wide' },
+  { label: 'Grade Tiers Overview', sub: 'Transparent', filename: 'references/grade-tiers-transparent.png', transparent: true, aspect: 'wide' },
+];
+
+const socialAssets: Asset[] = [
+  { label: 'Instagram Square', sub: 'Broadway · 1080×1080', filename: 'social/broadway-instagram-square-1080x1080.png', aspect: 'square' },
+  { label: 'Instagram Story', sub: 'Broadway · 1080×1920', filename: 'social/broadway-instagram-story-1080x1920.png', aspect: 'tall' },
+  { label: 'OG / Link Preview', sub: 'Broadway · 1200×630', filename: 'social/broadway-og-1200x630.png', aspect: 'wide' },
+  { label: 'Twitter Header', sub: 'Broadway · 1500×500', filename: 'social/broadway-twitter-header-1500x500.png', aspect: 'wide' },
+  { label: 'Instagram Square', sub: 'West End · 1080×1080', filename: 'social/west-end-instagram-square-1080x1080.png', aspect: 'square' },
+  { label: 'Instagram Story', sub: 'West End · 1080×1920', filename: 'social/west-end-instagram-story-1080x1920.png', aspect: 'tall' },
+  { label: 'OG / Link Preview', sub: 'West End · 1200×630', filename: 'social/west-end-og-1200x630.png', aspect: 'wide' },
+  { label: 'Twitter Header', sub: 'West End · 1500×500', filename: 'social/west-end-twitter-header-1500x500.png', aspect: 'wide' },
+];
+
+function AssetGallery({ title, assets, columns = 'default' }: { title: string; assets: Asset[]; columns?: 'default' | 'md' }) {
+  const gridClass = columns === 'md'
+    ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3'
+    : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3';
+  return (
+    <div className="mb-8">
+      <h3 className="text-sm font-bold uppercase tracking-wider text-gray-300 mb-3">{title} <span className="text-gray-500 font-normal">· {assets.length}</span></h3>
+      <div className={gridClass}>
+        {assets.map(a => <AssetTile key={a.filename} asset={a} />)}
+      </div>
+    </div>
+  );
+}
+
+function AssetTile({ asset }: { asset: Asset }) {
+  const href = `/brand-kit/${asset.filename}`;
+  const downloadName = asset.filename.split('/').pop()!;
+  const aspectClass = asset.aspect === 'tall'
+    ? 'aspect-[9/16]'
+    : asset.aspect === 'wide'
+    ? 'aspect-[16/9]'
+    : 'aspect-square';
+  const checker = asset.transparent
+    ? 'bg-[length:16px_16px] bg-[linear-gradient(45deg,rgba(255,255,255,0.04)_25%,transparent_25%),linear-gradient(-45deg,rgba(255,255,255,0.04)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,rgba(255,255,255,0.04)_75%),linear-gradient(-45deg,transparent_75%,rgba(255,255,255,0.04)_75%)] bg-[position:0_0,0_8px,8px_-8px,-8px_0px]'
+    : '';
+  const tileBg = asset.lightBg ? 'bg-white' : 'bg-surface';
+  return (
+    <a
+      href={href}
+      download={downloadName}
+      className="block rounded-card overflow-hidden border border-white/5 hover:border-brand/50 bg-surface-raised transition-colors group"
+    >
+      <div className={`${aspectClass} ${checker} flex items-center justify-center overflow-hidden ${tileBg}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={href}
+          alt={`${asset.label}${asset.sub ? ' — ' + asset.sub : ''}`}
+          loading="lazy"
+          className="max-w-full max-h-full object-contain"
+        />
+      </div>
+      <div className="p-3 flex items-center justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="text-xs font-semibold text-white truncate group-hover:text-brand transition-colors">{asset.label}</div>
+          {asset.sub && <div className="text-[10px] text-gray-500 truncate">{asset.sub}</div>}
+        </div>
+        <svg className="w-4 h-4 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m-4-4l4 4 4-4" />
+        </svg>
+      </div>
+    </a>
   );
 }
 
