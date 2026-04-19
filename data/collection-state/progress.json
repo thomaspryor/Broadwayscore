@@ -989,7 +989,17 @@
     "dont-dress-for-dinner-2012/backstage--david-sheward.json",
     "leap-of-faith-2012/backstage--erik-haagensen.json",
     "the-columnist-2012/backstage--erik-haagensen.json",
-    "nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json"
+    "nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json",
+    "nice-work-if-you-can-get-it-2012/backstage--david-sheward.json",
+    "ghost-the-musical-2012/washpost--mark-kennedy.json",
+    "the-lyons-2012/washpost--mark-kennedy.json",
+    "ghost-the-musical-2012/variety--steven-suskin.json",
+    "ghost-the-musical-2012/talkinbroadway--matthew-murray.json",
+    "the-lyons-2012/backstage--david-sheward.json",
+    "clybourne-park-2012/huffpost--mark-kennedy.json",
+    "clybourne-park-2012/new-jersey-newsroom--michael-sommers.json",
+    "one-man-two-guvnors-2012/washpost--jennifer-farrar.json",
+    "magicbird-2012/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1055,7 +1065,10 @@
       "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json",
       "data/review-texts/dead-accounts-2012/washpost--mark-kennedy.json",
       "data/review-texts/the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
-      "data/review-texts/nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json"
+      "data/review-texts/nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json",
+      "data/review-texts/ghost-the-musical-2012/washpost--mark-kennedy.json",
+      "data/review-texts/the-lyons-2012/washpost--mark-kennedy.json",
+      "data/review-texts/one-man-two-guvnors-2012/washpost--jennifer-farrar.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
@@ -1075,7 +1088,7 @@
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json",
+  "lastProcessed": "magicbird-2012/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -1151,6 +1164,39 @@
     },
     {
       "t": "2026-04-19T16:26:54.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:27:45.671Z",
+      "event": "bb-session",
+      "session": "80278ecc",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-broadway-musical-of-gho"
+    },
+    {
+      "t": "2026-04-19T16:27:46.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:28:29.294Z",
+      "event": "bb-session",
+      "session": "5d5b1ef2",
+      "url": "http://www.washingtonpost.com/entertainment/review-nicky-silvers-terrific-the-ly"
+    },
+    {
+      "t": "2026-04-19T16:28:30.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:30:07.962Z",
+      "event": "bb-session",
+      "session": "29f70816",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-gleeful-comedy-"
+    },
+    {
+      "t": "2026-04-19T16:30:08.803Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
