@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-18T20:14:10.331Z",
+  "generatedAt": "2026-04-19T00:24:07.622Z",
   "summary": {
-    "total": 3,
-    "high": 1,
+    "total": 4,
+    "high": 2,
     "medium": 1,
     "low": 1
   },
@@ -60,6 +60,33 @@
       "suggestedWinner": "catch-me-if-you-can-2011",
       "reason": "publishDate 2011-04-11 is 1 days from catch-me-if-you-can-2011 but also 1 days from high-2011",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27572",
+      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
+      "candidates": [
+        {
+          "showId": "i-was-a-teenage-shedevil-west-end-2026",
+          "file": "london-theatre--unknown.json",
+          "publishDate": "2026-04-10",
+          "openingDate": "2026-04-02",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre"
+        },
+        {
+          "showId": "the-play-that-goes-wrong-west-end-2021",
+          "file": "london-theatre--unknown.json",
+          "publishDate": "2020-12-14",
+          "openingDate": "2014-09-18",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre"
+        }
+      ],
+      "suggestedWinner": "i-was-a-teenage-shedevil-west-end-2026",
+      "reason": "publishDate 2026-04-10 is 8 days from i-was-a-teenage-shedevil-west-end-2026 opening (2026-04-02); next closest is 2279 days from the-play-that-goes-wrong-west-end-2021",
+      "confidence": "high"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
