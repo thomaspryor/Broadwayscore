@@ -18,6 +18,7 @@
  *   --dry-run              Preview without writing
  *   --shows=SLUG,SLUG      Specific shows by slug
  *   --top-historical=N     Top N historical shows by all-time gross
+ *   --max-per-run=N        Cap new shows researched per invocation (default 30)
  *   --skip-sec             Skip SEC EDGAR lookups
  *   --apply                Apply pending review file to commercial.json
  */
@@ -53,6 +54,7 @@ for (const arg of args) {
 const DRY_RUN = flags['dry-run'] === true;
 const SHOW_LIST = flags['shows'] ? flags['shows'].split(',') : null;
 const TOP_HISTORICAL = parseInt(flags['top-historical']) || 0;
+const MAX_PER_RUN = parseInt(flags['max-per-run']) || 30;
 const SKIP_SEC = flags['skip-sec'] === true;
 const APPLY_MODE = flags['apply'] === true;
 
@@ -476,6 +478,12 @@ function applyPending() {
   }
 
   if (applied > 0) {
+    // Bump the top-level freshness field so the daily digest stops flagging
+    // commercial.json as stale when partial progress IS being made. Without
+    // this, _meta.lastUpdated stayed frozen at the date of the last
+    // full-catchup run even though daily increments were merging cleanly.
+    commercial._meta = commercial._meta || {};
+    commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
     fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
     console.log(`\n✅ Applied ${applied} shows to commercial.json (${skipped} skipped)`);
   } else {
@@ -569,6 +577,15 @@ async function main() {
       console.log(`  ⏭️  "${show.title}" already researched — skipping`);
       succeeded++;
       continue;
+    }
+
+    // Per-run cap. Prior behaviour researched all 1,800+ pending shows in one
+    // invocation, which hit the 60-min job timeout daily and marked the whole
+    // workflow as cancelled. The progress file persists across runs so
+    // capping here just spreads catch-up over multiple days.
+    if (researched >= MAX_PER_RUN) {
+      console.log(`  ⏹️  Reached per-run cap (${MAX_PER_RUN}) — resuming tomorrow`);
+      break;
     }
 
     researched++;
