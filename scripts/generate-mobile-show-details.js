@@ -84,6 +84,42 @@ try {
   console.warn('⚠ tony-nominations.json not found — Tony data will be skipped');
 }
 
+// Critic consensus — keyed by showId
+let criticConsensus = {};
+try {
+  criticConsensus = JSON.parse(fs.readFileSync(path.join(dataDir, 'critic-consensus.json'), 'utf-8')).shows || {};
+  console.log(`✓ Critic consensus: ${Object.keys(criticConsensus).length} shows`);
+} catch (err) {
+  console.warn('⚠ critic-consensus.json not found — Critics Take will be skipped');
+}
+
+// Show schedules — keyed by showId
+let showSchedules = {};
+try {
+  showSchedules = JSON.parse(fs.readFileSync(path.join(dataDir, 'show-schedules.json'), 'utf-8')).shows || {};
+  console.log(`✓ Show schedules: ${Object.keys(showSchedules).length} shows`);
+} catch (err) {
+  console.warn('⚠ show-schedules.json not found — Showtimes will be skipped');
+}
+
+// Box office grosses — keyed by show slug
+let grossesData = {};
+try {
+  grossesData = JSON.parse(fs.readFileSync(path.join(dataDir, 'grosses.json'), 'utf-8')).shows || {};
+  console.log(`✓ Grosses: ${Object.keys(grossesData).length} shows`);
+} catch (err) {
+  console.warn('⚠ grosses.json not found — Box Office will be skipped');
+}
+
+// Lottery / Rush — keyed by showId
+let lotteryRush = {};
+try {
+  lotteryRush = JSON.parse(fs.readFileSync(path.join(dataDir, 'lottery-rush.json'), 'utf-8')).shows || {};
+  console.log(`✓ Lottery/Rush: ${Object.keys(lotteryRush).length} shows`);
+} catch (err) {
+  console.warn('⚠ lottery-rush.json not found — Lottery/Rush will be skipped');
+}
+
 // Theater metadata: venue name → { seatingSections, venueScores }
 let theaterMeta = {};
 try {
@@ -318,6 +354,57 @@ for (const show of visibleShows) {
   if (tonyNoms && tonyNoms.length > 0) {
     const sorted = [...tonyNoms].sort((a, b) => (b.w ? 1 : 0) - (a.w ? 1 : 0));
     detail.tn = sorted.slice(0, 25);
+  }
+
+  // Critics' Take consensus paragraph
+  const consensus = criticConsensus[show.id];
+  if (consensus && consensus.text) {
+    detail.cn = { t: consensus.text, rc: consensus.reviewCount || 0 };
+  }
+
+  // Showtimes weekly grid (most-recent week only — keeps payload small)
+  const schedule = showSchedules[show.id];
+  if (schedule && schedule.weeks && Object.keys(schedule.weeks).length > 0) {
+    const weekKeys = Object.keys(schedule.weeks).sort();
+    const latest = weekKeys[weekKeys.length - 1];
+    detail.sh = { wk: latest, days: schedule.weeks[latest] };
+  }
+
+  // Box Office grosses (keyed by slug, not id)
+  const grosses = grossesData[show.slug];
+  if (grosses) {
+    const tw = grosses.thisWeek;
+    detail.bo = {
+      tw: tw ? {
+        g: tw.gross ?? null,
+        c: tw.capacity ?? null,
+        a: tw.atp ?? null,
+        gp: tw.grossPrevWeek ?? null,
+        cp: tw.capacityPrevWeek ?? null,
+        ap: tw.atpPrevWeek ?? null,
+      } : null,
+      at: grosses.allTime ? {
+        g: grosses.allTime.gross ?? null,
+        p: grosses.allTime.performances ?? null,
+        a: grosses.allTime.attendance ?? null,
+      } : null,
+    };
+  }
+
+  // Lottery / Rush
+  const lr = lotteryRush[show.id];
+  if (lr) {
+    const pick = (x) => x ? {
+      p: x.price ?? null, t: x.time ?? null, loc: x.location ?? null,
+      inst: x.instructions ?? null, url: x.url ?? null, pl: x.platform ?? null,
+    } : undefined;
+    const obj = {};
+    if (lr.lottery) obj.lo = pick(lr.lottery);
+    if (lr.rush) obj.ru = pick(lr.rush);
+    if (lr.digitalRush) obj.dr = pick(lr.digitalRush);
+    if (lr.studentRush) obj.sr = pick(lr.studentRush);
+    if (lr.standingRoom) obj.so = pick(lr.standingRoom);
+    if (Object.keys(obj).length > 0) detail.lr = obj;
   }
 
   // Hero image (not in mobile-shows.json)
