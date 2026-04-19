@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway theater metadata: capacity, tips, and notes. Keyed by venue name (must match shows.json venue field exactly).",
-    "lastUpdated": "2026-04-19T00:20:10.052Z",
+    "lastUpdated": "2026-04-19T00:40:23.750Z",
     "sources": [
       "broadway-show-tickets.com",
       "broadwayworld.com",
@@ -517,11 +517,185 @@
     "yearBuilt": 1925,
     "operator": "ATG Entertainment",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:09:04.619Z",
+      "lastUpdated": "2026-04-19T00:40:23.750Z",
       "seating": {
-        "bestSeats": "Good sightlines throughout the theater. Aim for the front or center orchestra for the most immersive experience.",
+        "bestSeats": "Ideal: Mid Center Mezzanine (rows D-H) — Because August Wilson is a single-balcony house, the mezzanine keeps an effective rake all the way back and is not shadowed by an upper level the way multi-tier Shubert houses are. Mid-center rows D-H stay ahead of where the overhang would cut the top of the stage (the overhang affects the orchestra below from row L onward, not the mezz itself), and row H i",
         "avoidSeats": "The balcony overhang can obstruct the top of the stage in the last few rows of the orchestra.",
-        "accessibility": "Stair lift to orchestra; elevator between orchestra and mezzanine. Infrared headsets available."
+        "accessibility": "Stair lift to orchestra; elevator between orchestra and mezzanine. Infrared headsets available.",
+        "sections": [
+          {
+            "name": "Center Orchestra (mid)",
+            "rowRange": "D-J",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best in the house",
+            "priceTier": "top",
+            "isValuePick": false,
+            "rationale": "August Wilson has no traditional proscenium arch and a 38-ft-wide stage opening that ends at the side walls, so mid-center orchestra rows D-G pick up the full width no other Broadway house exposes; the lower stage (which extends over the usual pit area) also means you are not losing actors' feet here the way you would in a standard proscenium house. Rows E-G sit ahead of the mezzanine overhang line (row L) so nothing is cropped overhead.",
+            "hazards": [],
+            "bestFor": [
+              "musical",
+              "dance-heavy",
+              "spectacle"
+            ],
+            "worstFor": [],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://en.wikipedia.org/wiki/August_Wilson_Theatre",
+              "https://www.headout.com/blog/august-wilson-theatre-seating-chart/",
+              "https://seatplan.com/new-york/august-wilson-theatre/orchestra/",
+              "https://seatplan.com/new-york/august-wilson-theatre/seating-plan/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k3483670-Seating_at_August_Wilson_Theater-New_York_City_New_York.html",
+              "https://www.nytix.com/theatres/august-wilson-theatre"
+            ]
+          },
+          {
+            "name": "Front Center Mezzanine",
+            "rowRange": "A-C",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Elevated premium",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "August Wilson's mezzanine is the house's only elevated level (no balcony above it), so front-mezz row A looks straight down onto the low, pit-extended stage with nothing overhead - an unusually clean overhead angle you cannot get in the three-tier houses across 52nd. Row A is also the one mezz row noted for better legroom in this otherwise tight-rowed house, and it sits well forward of the overhang start at row L.",
+            "hazards": [
+              {
+                "type": "steep-rake",
+                "note": "Mezzanine has a pronounced rake; rail at row A is very close in this compact 1,239-seat house"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "dance-heavy",
+              "spectacle"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/august-wilson-theatre-seating-chart/",
+              "https://seatplan.com/new-york/august-wilson-theatre/mezzanine/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k3483670-Seating_at_August_Wilson_Theater-New_York_City_New_York.html",
+              "https://www.tripadvisor.com/FAQ_Answers-g60763-d548660-t2856823-Which_seats_are_better_row_p_in_orchestra_center.html",
+              "https://seatplan.com/new-york/august-wilson-theatre/seating-plan/",
+              "https://us.atgtickets.com/venues/august-wilson-theatre/seating/"
+            ]
+          },
+          {
+            "name": "Mid Center Mezzanine",
+            "rowRange": "D-H",
+            "bestRow": "H (aisle)",
+            "verdict": "solid",
+            "verdictLabel": "Best value in the house",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Because August Wilson is a single-balcony house, the mezzanine keeps an effective rake all the way back and is not shadowed by an upper level the way multi-tier Shubert houses are. Mid-center rows D-H stay ahead of where the overhang would cut the top of the stage (the overhang affects the orchestra below from row L onward, not the mezz itself), and row H is specifically cited for extra legroom plus elevation over the row in front - unusual in this tight-legroom house. Forum consensus on BWW and TripAdvisor repeatedly recommends mezz over mid/rear orchestra at the same price.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Headout and SeatPlan both flag tight rows outside row H; aisle seats recommended"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/august-wilson-theatre/mezzanine/",
+              "https://www.headout.com/blog/august-wilson-theatre-seating-chart/",
+              "https://www.tripadvisor.com/FAQ_Answers-g60763-d548660-t2856823-Which_seats_are_better_row_p_in_orchestra_center.html",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k3483670-Seating_at_August_Wilson_Theater-New_York_City_New_York.html",
+              "https://seatplan.com/new-york/august-wilson-theatre/seating-plan/",
+              "https://www.nytix.com/theatres/august-wilson-theatre"
+            ]
+          },
+          {
+            "name": "Side Orchestra (Left/Right front)",
+            "rowRange": "A-G",
+            "verdict": "solid",
+            "verdictLabel": "Close but angled",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "August Wilson's front sides are flanked by Roman arches and decorative columns (a feature unique to this 1925 Crane/Franzheim house) - they don't block views but they physically frame side orchestra wings, and the 38-ft-wide proscenium-less opening means side seats can still see stage-width action the way they can't in narrower houses. Front-row sides (A-C) feel uncomfortably close; mid-side D-G is the workable band.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "SeatPlan notes angled views grow the further from center aisle"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/august-wilson-theatre/orchestra/",
+              "https://www.nytix.com/theatres/august-wilson-theatre",
+              "https://en.wikipedia.org/wiki/August_Wilson_Theatre",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k3483670-Seating_at_August_Wilson_Theater-New_York_City_New_York.html",
+              "https://www.headout.com/blog/august-wilson-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Rear Orchestra (under overhang)",
+            "rowRange": "U-Z",
+            "verdict": "skip",
+            "verdictLabel": "Skip - overhang crops stage top",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "The August Wilson mezzanine overhang begins at row L and by rows V-ZZ it cuts off the top of the stage - a specific cutoff repeatedly confirmed by SeatPlan, Headout, and the Tripadvisor forum Q&A about row P. Because this is a single-balcony house the overhang is deep and low, and a BWW forum poster who sat Orch row W for Jersey Boys confirmed losing overhead projections. For the same price, front-to-mid mezzanine always wins here.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Top of stage cut off V-ZZ; overhang starts row L per SeatPlan and Headout"
+              },
+              {
+                "type": "partial-stage",
+                "note": "BWW forum user reported losing overhead projections from Orch row W during Jersey Boys"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "spectacle",
+              "dance-heavy",
+              "musical"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/august-wilson-theatre-seating-chart/",
+              "https://seatplan.com/new-york/august-wilson-theatre/orchestra/",
+              "https://seatplan.com/new-york/august-wilson-theatre/seating-plan/",
+              "https://www.tripadvisor.com/FAQ_Answers-g60763-d548660-t2856823-Which_seats_are_better_row_p_in_orchestra_center.html",
+              "https://forum.broadwayworld.com/readmessage.php?thread=913626",
+              "https://www.nytix.com/theatres/august-wilson-theatre"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine",
+            "rowRange": "M-Q",
+            "verdict": "skip",
+            "verdictLabel": "Distant - only if cheap",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "August Wilson's mezz tops out at row Q (it skips row I) and there is no balcony above it, so rear mezz is physically the back wall of the house. SeatPlan calls rear mezz up to row M 'impressively good' value, but beyond M you're at the back wall of a 1,239-seat house with no upper level to compare against; sightlines remain unobstructed thanks to the effective rake but binoculars help for intimate dramas. Tight legroom here since row H's legroom bump does not apply this far back.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "SeatPlan marks rear mezz as good value only up to row M"
+              },
+              {
+                "type": "tight-legroom",
+                "note": "Headout flags tight rows outside the legroom-row exceptions"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle"
+            ],
+            "worstFor": [
+              "intimate-drama",
+              "play"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/august-wilson-theatre/mezzanine/",
+              "https://seatplan.com/new-york/august-wilson-theatre/seating-plan/",
+              "https://www.headout.com/blog/august-wilson-theatre-seating-chart/",
+              "https://us.atgtickets.com/venues/august-wilson-theatre/seating/",
+              "https://www.nytix.com/theatres/august-wilson-theatre"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -3557,10 +3731,136 @@
     "yearBuilt": 1910,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:15.217Z",
+      "lastUpdated": "2026-04-19T00:40:23.748Z",
       "seating": {
-        "bestSeats": "The front mezzanine offers excellent sightlines in this grand theater.",
-        "accessibility": "Step-free to lobby and Orchestra. Copper induction loop available. 5 wheelchair spaces."
+        "bestSeats": "Ideal: Rear Mezzanine Center (rows A-M) — The Lunt-Fontanne has no balcony, so unlike most large Nederlander houses the Rear Mezz has zero overhang — SeatPlan specifically names rows B-C as best because they clear the railing behind the Front Mezz that can obstruct row A, and the section's rake keeps sightlines clean despite being the cheapest seats in the venue.",
+        "accessibility": "Step-free to lobby and Orchestra. Copper induction loop available. 5 wheelchair spaces.",
+        "sections": [
+          {
+            "name": "Center Orchestra",
+            "rowRange": "D-N",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best in house",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Per SeatPlan and Headout, center rows D-J are the Lunt-Fontanne sweet spot because the house stage sits unusually high and is not raked — patrons halfway back in orchestra report they cannot see the stage floor, so anchoring forward of the overhang line (row W) but back from rows A-C keeps the stage floor visible.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Rows K-N still good but farther from facial detail"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "spectacle",
+              "dance-heavy"
+            ],
+            "worstFor": [],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lunt-fontanne-theatre/orchestra/",
+              "https://www.headout.com/blog/lunt-fontanne-theatre-seating-chart/",
+              "https://folliesbroadway.com/a-guide-to-the-best-seats-at-lunt-fontanne-theatre/",
+              "https://www.tickpick.com/blog/lunt-fontanne-theatre-interactive-seating-chart/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine Center",
+            "rowRange": "A-E",
+            "bestRow": "B",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Elevated clear view",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Front Mezz is only 5 rows deep (A-E) with no balcony above, so every row has clean sightlines — and row B specifically beats row A because a safety railing in front of row A cuts into the stage (one source cites ~35% obstruction for some seats), making B the preferred pick that most guides name by row.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Row A safety bar cuts into stage, worse for shorter patrons"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 11,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lunt-fontanne-theatre/front-mezzanine/",
+              "https://www.headout.com/blog/lunt-fontanne-theatre-seating-chart/",
+              "https://folliesbroadway.com/a-guide-to-the-best-seats-at-lunt-fontanne-theatre/"
+            ]
+          },
+          {
+            "name": "Rear Orchestra (under overhang)",
+            "rowRange": "W-ZZ",
+            "verdict": "skip",
+            "verdictLabel": "Overhang cuts top of stage",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "SeatPlan and forum posts flag that the mezzanine overhang starts at row J but begins cutting into the top of the stage from row W back across Left, Center, and Right Orchestra — combined with the Lunt-Fontanne's high unraked stage (floor already hard to see from mid-orchestra), rear orchestra loses both the top and bottom of the picture.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Overhang clips top of stage from row W in all three orchestra sections"
+              },
+              {
+                "type": "partial-stage",
+                "note": "High non-raked stage also hides stage floor from deep orchestra"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "spectacle",
+              "dance-heavy"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lunt-fontanne-theatre/orchestra/",
+              "https://forum.broadwayworld.com/thread/Lunt-Fontanne-Seating-Advice",
+              "https://www.headout.com/blog/lunt-fontanne-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine Center",
+            "rowRange": "A-M",
+            "bestRow": "B-C",
+            "verdict": "solid",
+            "verdictLabel": "Value pick, no overhang",
+            "priceTier": "budget",
+            "isValuePick": true,
+            "rationale": "The Lunt-Fontanne has no balcony, so unlike most large Nederlander houses the Rear Mezz has zero overhang — SeatPlan specifically names rows B-C as best because they clear the railing behind the Front Mezz that can obstruct row A, and the section's rake keeps sightlines clean despite being the cheapest seats in the venue.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Row A can catch the railing behind the Front Mezzanine"
+              },
+              {
+                "type": "distant",
+                "note": "Back rows feel less immersive at this size house"
+              }
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lunt-fontanne-theatre/rear-mezzanine/",
+              "https://www.headout.com/blog/lunt-fontanne-theatre-seating-chart/",
+              "https://folliesbroadway.com/a-guide-to-the-best-seats-at-lunt-fontanne-theatre/"
+            ]
+          },
+          {
+            "name": "Front Orchestra (rows A-C)",
+            "rowRange": "A-C",
+            "verdict": "skip",
+            "verdictLabel": "High stage + neck strain",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Multiple guides flag that the Lunt-Fontanne's unusually high, non-raked stage makes rows A-C worse than typical Broadway front rows — Headout and TickPick-linked guides warn sightlines can be obstructed because the stage is raised, and any tall patron in front blocks center-stage action at this proximity.",
+            "hazards": [],
+            "bestFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/lunt-fontanne-theatre/orchestra/",
+              "https://www.headout.com/blog/lunt-fontanne-theatre-seating-chart/",
+              "https://folliesbroadway.com/a-guide-to-the-best-seats-at-lunt-fontanne-theatre/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -4473,10 +4773,189 @@
     "yearBuilt": 1986,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:11:48.007Z",
+      "lastUpdated": "2026-04-19T00:40:23.743Z",
       "seating": {
-        "bestSeats": "Orchestra seats offer the most immersive experience. Mezzanine seats provide a good overall view of the stage.",
-        "accessibility": "Elevator via Marriott Marquis hotel. 10 wheelchair spaces. No elevator to Mezzanine."
+        "bestSeats": "Ideal: Rear Orchestra (under overhang) (rows M-Z) — The mezzanine overhang technically begins at Orchestra row M, but multiple source guides agree the Marquis overhang is unusually forgiving — a quirk of the 1986 hotel-integrated design where Portman's 80-ft max-distance rule kept the balcony pulled forward but shallow. Reviewers consistently report the stage itself remains clearly visible even in",
+        "accessibility": "Elevator via Marriott Marquis hotel. 10 wheelchair spaces. No elevator to Mezzanine.",
+        "sections": [
+          {
+            "name": "Center Orchestra",
+            "rowRange": "A-Z (no row I)",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Rows C-H are the bullseye",
+            "priceTier": "top",
+            "isValuePick": false,
+            "rationale": "The Marquis is the only Broadway house built entirely inside a hotel (3rd floor of the Marriott Marquis), so the orchestra was engineered from scratch in 1986 with a gentle continuous rake and no interior columns. Center Orchestra rows C-H deliver the theater's signature payoff: Portman designed every seat to be within 80 ft of the stage, so even at row F you are close enough to read faces, with none of the pre-war pillars or sightline quirks of older 46th Street houses. Aisle seats gain from the above-average legroom the hotel footprint allows.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Center seats (non-aisle) are standard width; above-average overall but not exceptional in the center block"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/marquis-theatre/orchestra/",
+              "https://www.tickpick.com/blog/marquis-theatre-seating-chart-the-wiz-tickets/",
+              "https://www.headout.com/blog/marquis-theatre-seating-chart/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/marquis-theatre/seating-chart/",
+              "https://en.wikipedia.org/wiki/Marquis_Theatre",
+              "https://aviewfrommyseat.com/venue/Marquis+Theatre/"
+            ]
+          },
+          {
+            "name": "Side Orchestra (Left/Right)",
+            "rowRange": "A-Z (no row I)",
+            "verdict": "solid",
+            "verdictLabel": "Angled but honest",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Because the Marquis sits inside the hotel's structural envelope, the proscenium is 40 ft wide but wings are only 20 ft — half code. That unusually shallow stage means side-orchestra patrons lose less upstage action than they would at a wider house; what gets cut is limited to the far corner opposite your seat. Double-digit seats in the Right Orchestra are explicitly noted as giving partial views of the stage-right corner, so shows with heavy blocking at the edges (spectacle musicals) still work here.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Far Left/Right seats get a side-on angle; corresponding stage corner may be partially blocked"
+              }
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/marquis-theatre/orchestra/",
+              "https://www.tickpick.com/blog/marquis-theatre-seating-chart-the-wiz-tickets/",
+              "https://en.wikipedia.org/wiki/Marquis_Theatre",
+              "https://www.headout.com/blog/marquis-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Rear Orchestra (under overhang)",
+            "rowRange": "M-Z",
+            "verdict": "solid",
+            "verdictLabel": "Under the overhang but it barely bites",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "The mezzanine overhang technically begins at Orchestra row M, but multiple source guides agree the Marquis overhang is unusually forgiving — a quirk of the 1986 hotel-integrated design where Portman's 80-ft max-distance rule kept the balcony pulled forward but shallow. Reviewers consistently report the stage itself remains clearly visible even in the back rows, and the rear orchestra prices drop to a mid tier while you keep the same smooth rake. The real tradeoff here is detail/immersion, not obstruction. Accessible (Row Y) seating is in this zone via ramp.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Overhang starts at row M; tall set pieces or projections may be partially cut off at the very top of the proscenium"
+              },
+              {
+                "type": "distant",
+                "note": "Rows past R sacrifice detail; face-reading degrades before sightline does"
+              }
+            ],
+            "bestFor": [
+              "spectacle",
+              "musical"
+            ],
+            "worstFor": [
+              "intimate-drama"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/marquis-theatre/orchestra/",
+              "https://www.tickpick.com/blog/marquis-theatre-seating-chart-the-wiz-tickets/",
+              "https://www.headout.com/blog/marquis-theatre-seating-chart/",
+              "https://www.broadway-show-tickets.com/broadway-theaters/marquis-theatre/seating-chart/",
+              "https://aviewfrommyseat.com/venue/Marquis+Theatre/"
+            ]
+          },
+          {
+            "name": "Front Center Mezzanine",
+            "rowRange": "A-D",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Row A is a premium orchestra alternative",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "The Marquis mezzanine is the theater's signature asset: because the house was built fresh in 1986 inside the hotel shell rather than retrofitted, designers used true stadium stepping with a 'gap' between rows so the person in front of you does not block sightlines. Reviewers and Tripadvisor users repeatedly single out Row A Center Mezz as sometimes preferable to any orchestra seat — elevated, unobstructed, pulled forward by the 80-ft rule. Front-mezz single-digit seats deliver the sweeping view musicals are meant to be seen from.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Some front-row patrons report the safety rail intruding on the lower edge of the stage picture — choose seats carefully if short"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 12,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/marquis-theatre/mezzanine/",
+              "https://www.headout.com/blog/marquis-theatre-seating-chart/",
+              "https://www.tripadvisor.com/ShowUserReviews-g60763-d548871-r677785465-Marquis_Theatre-New_York_City_New_York.html",
+              "https://www.tickpick.com/blog/marquis-theatre-seating-chart-the-wiz-tickets/",
+              "https://aviewfrommyseat.com/venue/Marquis+Theatre/level/2/Mezzanine/",
+              "https://en.wikipedia.org/wiki/Marquis_Theatre"
+            ]
+          },
+          {
+            "name": "Mid Mezzanine (value band)",
+            "rowRange": "G-K",
+            "verdict": "solid",
+            "verdictLabel": "The house's best-kept price/view band",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "The Marquis mezzanine only runs 12 rows deep (A-M, no I) — shallow by Broadway standards because the hotel footprint capped balcony depth. That means row H is still close to the stage by mezzanine math, and the stadium stepping holds all the way back. Rows H-K near center are flagged as good value across multiple guides: single-digit seats clear the rail, the elevated angle still suits musicals, and prices drop meaningfully versus rows A-D.",
+            "hazards": [
+              {
+                "type": "steep-rake",
+                "note": "Stadium stepping means one or two steps down per row inside the section; mezzanine is stairs-only from the theater lobby — no elevator"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "play"
+            ],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/marquis-theatre/mezzanine/",
+              "https://www.headout.com/blog/marquis-theatre-seating-chart/",
+              "https://seatplan.com/new-york/marquis-theatre/access/",
+              "https://www.tickpick.com/blog/marquis-theatre-seating-chart-the-wiz-tickets/",
+              "https://aviewfrommyseat.com/venue/Marquis+Theatre/level/2/Mezzanine/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine (L-M) and Far Sides",
+            "rowRange": "L-M and outer Left/Right",
+            "verdict": "skip",
+            "verdictLabel": "Cheap for a reason",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Two Marquis-specific drawbacks converge here. First, the NYTix venue guide notes 'rear mezz audio is sometimes a bit fuzzy as are the sight lines from this area' — consistent with BWW forum complaints that the Marquis has unusually dead natural acoustics because the carpeted hotel-interior walls absorb sound. Second, mezzanine access is stairs-only from the lobby (no elevator to this level), so the cheapest seats are also the hardest to reach. Far-side mezz seats additionally lose the corresponding stage corner.",
+            "hazards": [
+              {
+                "type": "sound-dead-spot",
+                "note": "Carpeted hotel-interior walls make the Marquis acoustically dead by Broadway standards; rear mezz audio reported as fuzzy"
+              },
+              {
+                "type": "distant",
+                "note": "Row L-M feel remote despite shallow balcony; face detail largely lost"
+              },
+              {
+                "type": "side-angle",
+                "note": "Far Left/Right mezz loses corresponding stage corner"
+              },
+              {
+                "type": "steep-rake",
+                "note": "Mezzanine is stairs-only access from theater lobby; steps between rows inside the section"
+              }
+            ],
+            "bestFor": [
+              "spectacle"
+            ],
+            "worstFor": [
+              "intimate-drama",
+              "play"
+            ],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://www.nytix.com/theatres/marquis-theatre",
+              "https://seatplan.com/new-york/marquis-theatre/mezzanine/",
+              "https://forum.broadwayworld.com/thread/Theatres-with-great-acoustics",
+              "https://seatplan.com/new-york/marquis-theatre/access/",
+              "https://www.headout.com/blog/marquis-theatre-seating-chart/",
+              "https://aviewfrommyseat.com/venue/Marquis+Theatre/level/2/Mezzanine/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -5121,11 +5600,202 @@
     "yearBuilt": 1921,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:11.265Z",
+      "lastUpdated": "2026-04-19T00:40:23.749Z",
       "seating": {
-        "bestSeats": "Good sightlines are generally available throughout the theater, especially in the mezzanine due to its rake. Orchestra seats offer an intimate experience.",
+        "bestSeats": "Ideal: Center Orchestra (Rows L-O) (rows L-O) — The Nederlander mezz overhang is 'notable by row M and cuts into the stage at row Q,' so center rows L-O sit just on the safe side of that line - you get a sub-premium price in a 1921 house known historically for being overlooked on its lone 41st Street block (the southernmost Broadway theater), without the shallow-rake head-blocking that plagues the",
         "avoidSeats": "Some orchestra seats may have limited legroom, so taller patrons should consider seats in the rear orchestra or mezzanine.",
-        "accessibility": "Step-free main entrance to Orchestra. 6 wheelchair spaces. Personal induction loop devices available."
+        "accessibility": "Step-free main entrance to Orchestra. 6 wheelchair spaces. Personal induction loop devices available.",
+        "sections": [
+          {
+            "name": "Center Orchestra (Rows B-E)",
+            "rowRange": "B-E",
+            "bestRow": "B",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Best in the 1921 house",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "The Nederlander is a relatively compact 1,232-seat 1921 Walter C. Jordan house (architect William Neil Smith) with a shallow orchestra rake, so you want to sit forward of where the problems begin; center rows B-E sit forward of the mezz overhang (which becomes notable at row M) and forward of where the shallow rake starts costing shorter patrons their sightlines, giving a direct center look at the 86-ft-wide stage.",
+            "hazards": [],
+            "worstFor": [],
+            "dataPoints": 14,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/nederlander-theatre-seating-chart/",
+              "https://seatplan.com/new-york/nederlander-theatre/seating-plan/",
+              "https://seatplan.com/new-york/nederlander-theatre/orchestra/",
+              "https://folliesbroadway.com/what-are-the-best-seats-at-the-nederlander-theatre/",
+              "https://www.tickpick.com/blog/nederlander-theatre-seating-chart/",
+              "https://en.wikipedia.org/wiki/Nederlander_Theatre",
+              "https://blog.ticketmaster.com/step-inside-nederlander-theatre-new-york-ny/"
+            ]
+          },
+          {
+            "name": "Center Orchestra (Rows L-O)",
+            "rowRange": "L-O",
+            "verdict": "solid",
+            "verdictLabel": "Smart value under the overhang line",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "The Nederlander mezz overhang is 'notable by row M and cuts into the stage at row Q,' so center rows L-O sit just on the safe side of that line - you get a sub-premium price in a 1921 house known historically for being overlooked on its lone 41st Street block (the southernmost Broadway theater), without the shallow-rake head-blocking that plagues the back half.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Row M is the cut-off point per multiple guides; L-O stay clear but are the last rows that do"
+              },
+              {
+                "type": "steep-rake",
+                "note": "Orchestra rake is described as shallow, not steep; row O is the practical cutoff before heads become a problem"
+              }
+            ],
+            "bestFor": [
+              "musical",
+              "play"
+            ],
+            "worstFor": [],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/nederlander-theatre-seating-chart/",
+              "https://seatplan.com/new-york/nederlander-theatre/seating-plan/",
+              "https://seatplan.com/new-york/nederlander-theatre/orchestra/",
+              "https://www.tickpick.com/blog/nederlander-theatre-seating-chart/",
+              "https://folliesbroadway.com/what-are-the-best-seats-at-the-nederlander-theatre/"
+            ]
+          },
+          {
+            "name": "Rear Orchestra (Rows P-Q)",
+            "rowRange": "P-Q",
+            "verdict": "skip",
+            "verdictLabel": "Where the overhang eats the stage",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "This is the Nederlander-specific trap: the mezz overhang 'cuts into the stage at row Q,' and the 1921 orchestra's shallow rake means a tall patron in front of you is a real problem - one Redwood patron reported the overhang 'cuts off about the top 20% of the stage,' which mattered because that show featured climbing a redwood; skip for anything with vertical staging or flying effects.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Overhang cuts into the stage starting at row Q"
+              },
+              {
+                "type": "steep-rake",
+                "note": "Shallow orchestra rake makes tall patrons in front an issue here"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "spectacle",
+              "dance-heavy"
+            ],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/nederlander-theatre-seating-chart/",
+              "https://seatplan.com/new-york/nederlander-theatre/orchestra/",
+              "https://seatplan.com/new-york/nederlander-theatre/seating-plan/",
+              "https://www.tickpick.com/blog/nederlander-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine Center (Rows AA-CC)",
+            "rowRange": "AA-CC",
+            "bestRow": "BB",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Elevation without the overhang penalty",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "The Nederlander's mezz is raked steeply enough that sightlines stay clean even though you're in a 1921 house without an elevator - rows BB and CC beat row AA because AA has a safety bar across the front that 'may be too high for shorter theatergoers' and 'can cut into the stage'; the center front mezz here looks down into the 40-ft proscenium cleanly.",
+            "hazards": [
+              {
+                "type": "obstructed-view",
+                "note": "Row AA safety bar can cut into stage for shorter patrons"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 11,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/nederlander-theatre-seating-chart/",
+              "https://seatplan.com/new-york/nederlander-theatre/mezzanine/",
+              "https://seatplan.com/new-york/nederlander-theatre/seating-plan/",
+              "https://folliesbroadway.com/what-are-the-best-seats-at-the-nederlander-theatre/",
+              "https://en.wikipedia.org/wiki/Nederlander_Theatre"
+            ]
+          },
+          {
+            "name": "Front Mezzanine Back Rows (DD-EE)",
+            "rowRange": "DD-EE",
+            "verdict": "solid",
+            "verdictLabel": "Clean view at front-mezz bargain",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Multiple guides single out the last two front-mezz rows (DD, EE) as the best 'value for money' at the Nederlander - you're still in the front mezz bloc with the steep mezz rake that keeps the 1921 house's sightlines clean, but priced below rows AA-CC; the tradeoff is legroom which is tight across the mezz here.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Mezz legroom described as 'very tight' in middle and back rows"
+              }
+            ],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/nederlander-theatre-seating-chart/",
+              "https://seatplan.com/new-york/nederlander-theatre/mezzanine/",
+              "https://folliesbroadway.com/what-are-the-best-seats-at-the-nederlander-theatre/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine (Rows FF-JJ)",
+            "rowRange": "FF-JJ",
+            "verdict": "solid",
+            "verdictLabel": "Budget option that actually works",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "The Nederlander has no balcony - the rear mezz is the top tier - and the house is a compact 1,232 seats, so even the 'farthest' seat isn't far; the mezz rake stays steep enough that middle seats FF-JJ hold up, and this is the southernmost Broadway theater (208 W 41st, unusually isolated from the 44th-45th Street cluster), which typically keeps these prices lower than comparable rear-mezz at flagship houses.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Farthest section from stage, but house is only 1,232 seats"
+              }
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.headout.com/blog/nederlander-theatre-seating-chart/",
+              "https://seatplan.com/new-york/nederlander-theatre/mezzanine/",
+              "https://www.tickpick.com/blog/nederlander-theatre-seating-chart/",
+              "https://en.wikipedia.org/wiki/Nederlander_Theatre"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine Back (Rows KK-PP)",
+            "rowRange": "KK-PP",
+            "verdict": "skip",
+            "verdictLabel": "Last rows of a no-elevator house",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "The Nederlander has 'no elevators or escalators' - a 1921 house quirk that matters when you're climbing to rows KK-PP - and a Tripadvisor thread flagged that row JJ sits above a stairwell entryway with a railing bar that can intrude; beyond JJ you're in the last stretch of a 10-row rear mezz (FF-PP) with tight legroom and the most angled sightlines in the house, and this is the top tier since there's no balcony.",
+            "hazards": [
+              {
+                "type": "tight-legroom",
+                "note": "Mezz legroom 'very tight' in middle and back rows"
+              },
+              {
+                "type": "distant",
+                "note": "Far end of the 10-row rear mezz"
+              },
+              {
+                "type": "side-angle",
+                "note": "'Far rows and corners will experience more angled views'"
+              },
+              {
+                "type": "obstructed-view",
+                "note": "Tripadvisor: stairwell entryway railing in front of row JJ can intrude"
+              }
+            ],
+            "bestFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://www.tickpick.com/blog/nederlander-theatre-seating-chart/",
+              "https://seatplan.com/new-york/nederlander-theatre/mezzanine/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k5885167-Seating_in_the_mezzanine_at_the_Nederlander_Theatre-New_York_City_New_York.html",
+              "https://www.headout.com/blog/nederlander-theatre-seating-chart/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -5260,10 +5930,177 @@
     "yearBuilt": 1927,
     "operator": "Nederlander Organization",
     "structuredTips": {
-      "lastUpdated": "2026-04-02T16:12:18.200Z",
+      "lastUpdated": "2026-04-19T00:40:23.747Z",
       "seating": {
-        "bestSeats": "The front mezzanine center seats offer the best overall view in this large theater. The wide orchestra can make some side seats feel distant.",
-        "accessibility": "7 wheelchair spaces in Orchestra. Step-free from street to Orchestra. No elevator."
+        "bestSeats": "Ideal: Center Orchestra (mid, value) (rows H-P) — Because Neil Simon's orchestra is unusually deep (25 rows, A-Z) and the mezzanine overhang only starts cutting the top of the stage noticeably by row S, rows H-P give you full head-on views with no overhang effect at non-premium pricing — a specific quirk of this house's long orchestra footprint.",
+        "accessibility": "7 wheelchair spaces in Orchestra. Step-free from street to Orchestra. No elevator.",
+        "sections": [
+          {
+            "name": "Center Orchestra (front)",
+            "rowRange": "A-H",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Dance-visible front center",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "For MJ the Musical's dance-heavy choreography, Center Orchestra rows A-H sit entirely in front of the mezzanine overhang (which begins at row J) and deliver head-on sightlines of the performers' feet — critical for a Michael Jackson dance biomusical. Row A seats 107-110 are frequently cited as the theatre's best, but rows C-D balance proximity with neck-angle comfort.",
+            "hazards": [],
+            "bestFor": [
+              "musical",
+              "dance-heavy"
+            ],
+            "worstFor": [],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/neil-simon-theatre/orchestra/",
+              "https://seatplan.com/new-york/neil-simon-theatre/seating-plan/",
+              "https://www.headout.com/blog/neil-simon-theatre-seating-chart/",
+              "https://www.tickpick.com/blog/neil-simon-theatre-seating-chart-for-mj-the-life-story-of-michael-jackson/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k10177047-Neil_Simon_Theatre_best_seating-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Center Orchestra (mid, value)",
+            "rowRange": "H-P",
+            "verdict": "solid",
+            "verdictLabel": "Best-value orchestra",
+            "priceTier": "mid",
+            "isValuePick": true,
+            "rationale": "Because Neil Simon's orchestra is unusually deep (25 rows, A-Z) and the mezzanine overhang only starts cutting the top of the stage noticeably by row S, rows H-P give you full head-on views with no overhang effect at non-premium pricing — a specific quirk of this house's long orchestra footprint.",
+            "hazards": [],
+            "worstFor": [],
+            "dataPoints": 9,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/neil-simon-theatre/orchestra/",
+              "https://seatplan.com/new-york/neil-simon-theatre/seating-plan/",
+              "https://www.headout.com/blog/neil-simon-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Rear Orchestra",
+            "rowRange": "S-Z",
+            "verdict": "skip",
+            "verdictLabel": "Overhang cuts stage top",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "The mezzanine overhang is felt from row J onward and by rows S-Z it actively cuts off the top of the stage per SeatPlan's orchestra guide — a real issue for MJ the Musical, which uses tall set pieces and lifts. Unique to Neil Simon because the orchestra runs all the way to row Z, pushing rear seats deep under the overhang.",
+            "hazards": [
+              {
+                "type": "mezz-overhang",
+                "note": "Overhang starts row J; rows S-Z lose top of stage"
+              },
+              {
+                "type": "distant",
+                "note": "25-row orchestra puts rear rows far from stage"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "musical",
+              "spectacle"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/neil-simon-theatre/orchestra/",
+              "https://seatplan.com/new-york/neil-simon-theatre/seating-plan/",
+              "https://www.headout.com/blog/neil-simon-theatre-seating-chart/"
+            ]
+          },
+          {
+            "name": "Front Mezzanine (center)",
+            "rowRange": "A-B",
+            "bestRow": "A",
+            "verdict": "sweet-spot",
+            "verdictLabel": "Elevated full-stage sweep",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Front Center Mezzanine rows A-B give an elevated, unobstructed sweep — particularly valuable at Neil Simon because MJ the Musical uses formation choreography that reads better from above. Tripadvisor users confirm no obstruction issues at front mezz (photo cited from row A seat 103). Row A also has the best legroom in the mezzanine.",
+            "hazards": [],
+            "worstFor": [],
+            "dataPoints": 10,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/neil-simon-theatre/mezzanine/",
+              "https://seatplan.com/new-york/neil-simon-theatre/seating-plan/",
+              "https://www.headout.com/blog/neil-simon-theatre-seating-chart/",
+              "https://www.tripadvisor.com/ShowTopic-g60763-i5-k10177047-Neil_Simon_Theatre_best_seating-New_York_City_New_York.html"
+            ]
+          },
+          {
+            "name": "Side Mezzanine (Left/Right crossover rows)",
+            "rowRange": "H, L",
+            "verdict": "skip",
+            "verdictLabel": "Railings at legroom height",
+            "priceTier": "mid",
+            "isValuePick": false,
+            "rationale": "Specific Neil Simon quirk: Left and Right Mezzanine rows H and L sit directly behind railings that border the internal staircase, making legroom 'very tight' — SeatPlan calls out seats H1-7 and L9-15 by number. This is a house-specific hazard, not the generic 'Broadway legroom is tight' complaint.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Partial views of opposite side of stage"
+              }
+            ],
+            "bestFor": [],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/neil-simon-theatre/mezzanine/",
+              "https://seatplan.com/new-york/neil-simon-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Rear Mezzanine",
+            "rowRange": "S-U",
+            "verdict": "skip",
+            "verdictLabel": "Shallow rake, distant",
+            "priceTier": "budget",
+            "isValuePick": false,
+            "rationale": "Rear mezzanine at Neil Simon has a shallow rake — a specific architectural quirk noted by SeatPlan — so rows S-U feel distant and lose detail on the stage front, and the mezzanine's own underside can minor-obstruct the back-row view. For MJ's facial-expression moments in 'Man in the Mirror' numbers this is a real detriment.",
+            "hazards": [
+              {
+                "type": "distant",
+                "note": "Rows S-U feel distant, restricted view of stage front"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "intimate-drama",
+              "dance-heavy"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/neil-simon-theatre/mezzanine/",
+              "https://seatplan.com/new-york/neil-simon-theatre/seating-plan/"
+            ]
+          },
+          {
+            "name": "Boxes (Left Mezzanine side)",
+            "rowRange": "Box 1-3",
+            "verdict": "skip",
+            "verdictLabel": "Side-on box view",
+            "priceTier": "premium",
+            "isValuePick": false,
+            "rationale": "Three boxes are staggered off the Left Mezzanine at Neil Simon — a specific architectural feature of this house — and SeatPlan explicitly states the viewing experience 'isn't the best' because the angle is fully side-on. Priced as premium but not worth it for a dance musical where frontal sightlines matter.",
+            "hazards": [
+              {
+                "type": "side-angle",
+                "note": "Side-on angle to stage from boxes"
+              },
+              {
+                "type": "partial-stage",
+                "note": "Partial sightlines to far side of stage"
+              }
+            ],
+            "bestFor": [],
+            "worstFor": [
+              "musical",
+              "dance-heavy",
+              "spectacle"
+            ],
+            "dataPoints": 8,
+            "evidenceUrls": [
+              "https://seatplan.com/new-york/neil-simon-theatre/mezzanine/",
+              "https://seatplan.com/new-york/neil-simon-theatre/seating-plan/"
+            ]
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
