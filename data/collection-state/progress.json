@@ -37,7 +37,17 @@
     "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
     "high-2011/bloomberg--jeremy-gerard.json",
     "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-    "high-2011/backstage--erik-haagensen.json"
+    "high-2011/backstage--erik-haagensen.json",
+    "cats-express-test-2026/newyorker--emily-nussbaum.json",
+    "cats-express-test-2026/nyt-theater--jonathan-mandell.json",
+    "cats-express-test-2026/nytg--kyle-turner.json",
+    "cats-express-test-2026/nytimes--helen-shaw.json",
+    "cats-express-test-2026/variety--frank-rizzo.json",
+    "cats-express-test-2026/vulture--jackson-mchenry.json",
+    "cats-express-test-2026/deadline--greg-evans.json",
+    "cats-express-test-2026/ew--shania-russell.json",
+    "cats-express-test-2026/guardian--richard-lawson.json",
+    "cats-express-test-2026/nypost--johnny-oleksinski.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -2474,7 +2484,11 @@
       "beetlejuice-2022/pittsburgh-city-paper--jordana-rosenfeld.json",
       "marvins-room-2017/stageandcinema--dmitry-zvonkov.json",
       "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
-      "high-2011/backstage--erik-haagensen.json"
+      "high-2011/backstage--erik-haagensen.json",
+      "cats-express-test-2026/nyt-theater--jonathan-mandell.json",
+      "cats-express-test-2026/nytg--kyle-turner.json",
+      "cats-express-test-2026/ew--shania-russell.json",
+      "cats-express-test-2026/guardian--richard-lawson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2487,9 +2501,15 @@
       "data/review-texts/the-anarchist-2012/variety--marilyn-stasio.json",
       "the-anarchist-2012/variety--marilyn-stasio.json",
       "data/review-texts/the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
-      "the-house-of-blue-leaves-2011/variety--charles-isherwood.json"
+      "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+      "data/review-texts/cats-express-test-2026/variety--frank-rizzo.json",
+      "cats-express-test-2026/variety--frank-rizzo.json",
+      "data/review-texts/cats-express-test-2026/deadline--greg-evans.json",
+      "cats-express-test-2026/deadline--greg-evans.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "cats-express-test-2026/newyorker--emily-nussbaum.json"
+    ],
     "scrapingbee": [
       "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026/nytimes--houman-barekat.json",
       "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
@@ -2497,7 +2517,8 @@
       "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
       "hands-on-a-hardbody-2013/newsday--linda-winer.json",
       "high-2011/bloomberg--jeremy-gerard.json",
-      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "cats-express-test-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [
       "the-fear-of-13-2026/talkinbroadway--unknown.json",
@@ -2521,11 +2542,13 @@
       "the-whos-tommy-2024/billboard--rebecca-milzoff.json",
       "once-2012/artsfuse--steve-elman.json",
       "proof-2000/village-voice--michael-feingold.json",
-      "les-liaisons-dangereuses-2016/timeout--david-cote.json"
+      "les-liaisons-dangereuses-2016/timeout--david-cote.json",
+      "cats-express-test-2026/vulture--jackson-mchenry.json",
+      "cats-express-test-2026/nypost--johnny-oleksinski.json"
     ]
   },
   "startTime": "2026-04-18T08:29:02.734Z",
-  "lastProcessed": "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "cats-express-test-2026/nypost--johnny-oleksinski.json",
   "log": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -2592,6 +2615,39 @@
       "t": "2026-04-18T19:19:39.704Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T03:16:26.123Z",
+      "event": "bb-session",
+      "session": "f1601cec",
+      "url": "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the"
+    },
+    {
+      "t": "2026-04-19T03:16:26.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-04-19T03:17:09.419Z",
+      "event": "bb-session",
+      "session": "2e9febcc",
+      "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-an"
+    },
+    {
+      "t": "2026-04-19T03:17:09.965Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T03:17:35.550Z",
+      "event": "bb-session",
+      "session": "24985cc0",
+      "url": "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/"
+    },
+    {
+      "t": "2026-04-19T03:17:36.149Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
