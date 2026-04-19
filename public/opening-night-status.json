@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T20:47:55.696Z",
+  "generatedAt": "2026-04-19T21:06:22.532Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1222,20 +1222,20 @@
       "status": "open",
       "slug": "proof",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 72.1,
-      "liveScore": 72,
-      "scoreDrift": -0.09999999999999432,
-      "total": 21,
-      "t1": 7,
+      "siteScore": 73.43,
+      "liveScore": 73,
+      "scoreDrift": -0.4300000000000068,
+      "total": 20,
+      "t1": 6,
       "t2": 12,
       "t3": 2,
-      "positive": 9,
-      "mixed": 10,
-      "negative": 2,
+      "positive": 10,
+      "mixed": 9,
+      "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1610,6 +1610,18 @@
           "p": 9,
           "m": 10,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T21:06:22.532Z",
+          "rc": 20,
+          "s": 73.43,
+          "t1": 6,
+          "t2": 12,
+          "t3": 2,
+          "p": 10,
+          "m": 9,
+          "n": 1,
           "bc": "waiting"
         }
       ]
@@ -2757,7 +2769,7 @@
     },
     {
       "id": "proof-express-test-v2-2026",
-      "title": "Proof (Express Test v2)",
+      "title": "Proof",
       "market": "broadway",
       "category": "broadway",
       "type": "play",
@@ -2765,25 +2777,20 @@
       "status": "open",
       "slug": "proof",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "siteScore": 67.38,
+      "liveScore": 67,
+      "scoreDrift": -0.37999999999999545,
+      "total": 18,
+      "t1": 5,
+      "t2": 10,
+      "t3": 3,
+      "positive": 7,
+      "mixed": 7,
+      "negative": 4,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2793,31 +2800,15 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
         {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
         },
         {
           "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -2829,16 +2820,8 @@
           "isDualMarket": false
         },
         {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
           "name": "Los Angeles Times",
           "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -2863,31 +2846,7 @@
       ],
       "missingT2": [
         {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
           "isDualMarket": false
         },
         {
@@ -2895,15 +2854,7 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
           "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -2916,18 +2867,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
           "isDualMarket": false
         },
         {
@@ -3053,6 +2992,20 @@
         {
           "name": "The Stage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-19T21:06:22.532Z",
+          "rc": 18,
+          "s": 67.38,
+          "t1": 5,
+          "t2": 10,
+          "t3": 3,
+          "p": 7,
+          "m": 7,
+          "n": 4,
+          "bc": "waiting"
         }
       ]
     }
