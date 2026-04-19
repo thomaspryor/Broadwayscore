@@ -61,10 +61,14 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Critic consensus summaries are out of date.' },
   { match: /^Freshness: lottery-rush\.json$/, urgency: 'fix-now', workflow: 'update-lottery-rush.yml',
     humanFallback: 'Lottery/rush data is out of date. Workflow runs hourly — stale >48h means it is failing silently, or running without producing output.' },
+  { match: /^Freshness: cast-changes\.json$/, urgency: 'this-week', workflow: 'update-cast-changes.yml',
+    humanFallback: 'Cast change tracking is out of date. Runs Wednesday and Saturday — stale >5 days means the workflow is failing.' },
 
   // Sync — some auto-fixable
   { match: /^Sync: review-texts vs reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
     humanFallback: 'Review database is out of sync with source files.' },
+  { match: /^Sync: cast coverage$/, urgency: 'this-week',
+    humanAction: 'One or more open Broadway shows are missing cast data. Open Claude Code and say: "Run backfill-cast.js to repopulate cast data for open shows."' },
   { match: /^Sync: open show coverage$/, urgency: 'this-week',
     humanAction: 'Some open shows are missing reviews or grosses data. Open Claude Code and say: "Check which open shows are missing data and collect reviews for them."' },
   { match: /^Sync: baseline drift$/, urgency: 'this-week',
@@ -211,6 +215,7 @@ const FRESHNESS_CHECKS = [
   { file: 'commercial.json', field: '_meta.lastUpdated', warnH: 336, errorH: 504, hint: 'Check commercial-weekly workflow in Actions tab' },
   { file: 'critic-consensus.json', field: '_meta.lastGenerated', warnH: 336, errorH: 504, hint: 'Check update-critic-consensus workflow in Actions tab' },
   { file: 'lottery-rush.json', field: 'lastUpdated', warnH: 48, errorH: 72, hint: 'Check update-lottery-rush workflow in Actions tab' },
+  { file: 'cast-changes.json', field: 'lastUpdated', warnH: 72, errorH: 120, hint: 'Check update-cast-changes workflow in Actions tab (runs Wed+Sat)' },
 ];
 
 function checkFreshness() {
@@ -423,7 +428,44 @@ function checkSync() {
     };
   }));
 
-  // B4: Baseline drift
+  // B4: Cast coverage — open/previews Broadway shows missing cast data
+  results.push(runCheck('Sync: cast coverage', () => {
+    const shows = readJSON(path.join(DATA_DIR, 'shows.json'));
+    const castDir = path.join(DATA_DIR, 'cast');
+    const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
+    const activeShows = showList.filter(s =>
+      (s.status === 'open' || s.status === 'previews') &&
+      (!s.category || s.category === 'broadway')
+    );
+
+    const missing = [];
+    const empty = [];
+    for (const show of activeShows) {
+      const castFile = path.join(castDir, `${show.id}.json`);
+      if (!fs.existsSync(castFile)) {
+        missing.push(show.title);
+      } else {
+        try {
+          const cast = readJSON(castFile);
+          if (!cast.openingNightCast || cast.openingNightCast.length === 0) {
+            empty.push(show.title);
+          }
+        } catch {}
+      }
+    }
+
+    const total = missing.length + empty.length;
+    if (total === 0) {
+      return { name: 'Sync: cast coverage', status: 'pass', message: `${activeShows.length} active Broadway shows all have cast data` };
+    }
+    const parts = [];
+    if (missing.length) parts.push(`${missing.length} missing file${missing.length > 1 ? 's' : ''}: ${missing.slice(0, 3).join(', ')}`);
+    if (empty.length) parts.push(`${empty.length} empty cast: ${empty.slice(0, 3).join(', ')}`);
+    const status = total > 3 ? 'error' : 'warn';
+    return { name: 'Sync: cast coverage', status, message: parts.join('; '), hint: 'Run: node scripts/backfill-cast.js to repopulate' };
+  }));
+
+  // B5: Baseline drift
   results.push(runCheck('Sync: baseline drift', () => {
     const baselinePath = path.join(AUDIT_DIR, 'validation-baseline.json');
     if (!fs.existsSync(baselinePath)) {
@@ -705,6 +747,7 @@ function checkCronHealth() {
     { workflow: 'weekly-grosses.yml', maxHours: 192, name: 'Weekly Grosses' },
     { workflow: 'update-show-score.yml', maxHours: 192, name: 'Update Show Score' },
     { workflow: 'update-mezzanine.yml', maxHours: 192, name: 'Update Mezzanine' },
+    { workflow: 'update-cast-changes.yml', maxHours: 120, name: 'Update Cast Changes' },
   ];
 
   return CRITICAL_CRONS.map(({ workflow, maxHours, name }) =>
