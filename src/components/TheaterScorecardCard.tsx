@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import type { TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks } from '@/lib/data-types';
 import { featureFlags } from '@/config/feature-flags';
@@ -40,12 +41,12 @@ function getScoreLabel(score: number): string {
   return 'Bad';
 }
 
-function getVenueDesignation(overall: number): { label: string; color: string } {
-  if (overall >= 4.5) return { label: 'Exceptional Venue', color: 'text-score-great' };
-  if (overall >= 3.8) return { label: 'Great Venue', color: 'text-score-great' };
-  if (overall >= 3.0) return { label: 'Typical Venue', color: 'text-score-tepid' };
-  if (overall >= 2.5) return { label: 'Below Average', color: 'text-score-skip' };
-  return { label: 'Rough Venue', color: 'text-score-skip' };
+function getVenueDesignation(overall: number): { label: string; color: string; chip: string } {
+  if (overall >= 4.5) return { label: 'Exceptional Venue', color: 'text-score-great', chip: 'bg-score-great-bg text-score-great border border-score-great/30' };
+  if (overall >= 3.8) return { label: 'Great Venue', color: 'text-score-great', chip: 'bg-score-great-bg text-score-great border border-score-great/30' };
+  if (overall >= 3.0) return { label: 'Typical Venue', color: 'text-score-tepid', chip: 'bg-score-tepid-bg text-score-tepid border border-score-tepid/30' };
+  if (overall >= 2.5) return { label: 'Below Average', color: 'text-score-skip', chip: 'bg-score-skip-bg text-score-skip border border-score-skip/30' };
+  return { label: 'Rough Venue', color: 'text-score-skip', chip: 'bg-score-skip-bg text-score-skip border border-score-skip/30' };
 }
 
 // Icons
@@ -133,6 +134,8 @@ export default function TheaterScorecardCard({
   theaterName,
   theaterSlug,
 }: TheaterScorecardCardProps) {
+  const [expanded, setExpanded] = useState(false);
+
   // Feature flag check must live here (client component) — not in the SSR parent
   if (!featureFlags.theaterScorecard) return null;
 
@@ -142,106 +145,119 @@ export default function TheaterScorecardCard({
   }
 
   const overall = venueScores.overall;
+  const designation = overall != null ? getVenueDesignation(overall) : null;
+  const hasAccessibility = !!(accessibility && accessibility.verified && (accessibility.wheelchair || accessibility.elevator || accessibility.hearingLoop || accessibility.assistiveListening));
+  const hasExternal = !!(externalLinks && (externalLinks.seatplan || externalLinks.aviewfrommyseat));
 
   return (
     <section className="card p-4 sm:p-5 mb-8" aria-labelledby="theater-scorecard-heading">
-      {/* Header */}
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <h2 id="theater-scorecard-heading" className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Theater Scorecard</h2>
-          <Link href={`/theater/${theaterSlug}`} className="text-white font-bold hover:text-brand transition-colors text-base">
-            {theaterName}
-          </Link>
-        </div>
-        {overall != null && (() => {
-          const designation = getVenueDesignation(overall);
-          return (
-            <span className={`text-xs font-semibold ${designation.color} flex-shrink-0 ml-3`}>
-              {designation.label.toUpperCase()}
-            </span>
-          );
-        })()}
+      {/* Header — designation heroed */}
+      <h2 id="theater-scorecard-heading" className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">Theater Scorecard</h2>
+      <div className="flex items-center gap-2 flex-wrap mb-3">
+        <Link href={`/theater/${theaterSlug}`} className="text-white font-bold hover:text-brand transition-colors text-base">
+          {theaterName}
+        </Link>
+        {designation && (
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-pill text-[11px] font-semibold uppercase tracking-wide ${designation.chip}`}>
+            {designation.label}
+          </span>
+        )}
       </div>
 
       {/* Summary */}
       {venueScores.summary && (
-        <p className="text-sm text-gray-300 leading-relaxed mb-4">{venueScores.summary}</p>
+        <p className="text-sm text-gray-300 leading-relaxed mb-3">{venueScores.summary}</p>
       )}
 
-      {/* Score pips */}
-      <div className="space-y-2.5 mb-4">
-        {DIMENSIONS.map(({ key, label, icon }) => {
-          const score = venueScores[key];
-          if (score == null) return null;
-          return <ScoreDots key={key} score={score} label={label} icon={icon} />;
-        })}
-      </div>
+      {/* Expand toggle */}
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="text-xs text-gray-400 hover:text-brand underline decoration-dotted underline-offset-2 transition-colors"
+        aria-expanded={expanded}
+      >
+        {expanded ? 'Hide full breakdown' : 'View full breakdown'}
+        <span aria-hidden="true"> {expanded ? '▴' : '▾'}</span>
+      </button>
 
-      {/* Accessibility badges */}
-      {accessibility && accessibility.verified && (
-        <div className="border-t border-white/5 pt-3 mb-3">
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-2">Accessibility</p>
-          <div className="flex flex-wrap gap-1.5">
-            {accessibility.wheelchair && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
-                <WheelchairIcon /> Wheelchair
-              </span>
-            )}
-            {accessibility.elevator && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
-                Elevator
-              </span>
-            )}
-            {accessibility.hearingLoop && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
-                Hearing Loop
-              </span>
-            )}
-            {accessibility.assistiveListening && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
-                Assistive Listening
-              </span>
-            )}
+      {expanded && (
+        <>
+          {/* Score pips */}
+          <div className="space-y-2.5 mt-4 mb-4">
+            {DIMENSIONS.map(({ key, label, icon }) => {
+              const score = venueScores[key];
+              if (score == null) return null;
+              return <ScoreDots key={key} score={score} label={label} icon={icon} />;
+            })}
           </div>
-          {accessibility.notes && (
-            <p className="text-xs text-gray-500 mt-1.5">{accessibility.notes}</p>
+
+          {/* Accessibility badges */}
+          {hasAccessibility && (
+            <div className="border-t border-white/5 pt-3 mb-3">
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-2">Accessibility</p>
+              <div className="flex flex-wrap gap-1.5">
+                {accessibility!.wheelchair && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
+                    <WheelchairIcon /> Wheelchair
+                  </span>
+                )}
+                {accessibility!.elevator && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
+                    Elevator
+                  </span>
+                )}
+                {accessibility!.hearingLoop && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
+                    Hearing Loop
+                  </span>
+                )}
+                {accessibility!.assistiveListening && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
+                    Assistive Listening
+                  </span>
+                )}
+              </div>
+              {accessibility!.notes && (
+                <p className="text-xs text-gray-500 mt-1.5">{accessibility!.notes}</p>
+              )}
+            </div>
           )}
-        </div>
-      )}
 
-      {/* External links */}
-      {externalLinks && (externalLinks.seatplan || externalLinks.aviewfrommyseat) && (
-        <div className="border-t border-white/5 pt-3">
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-2">Find Your Seat</p>
-          <div className="flex flex-wrap gap-2">
-            {externalLinks.seatplan && (
-              <a
-                href={externalLinks.seatplan}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors"
-              >
-                SeatPlan <ExternalLinkIcon />
-              </a>
-            )}
-            {externalLinks.aviewfrommyseat && (
-              <a
-                href={externalLinks.aviewfrommyseat}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors"
-              >
-                A View From My Seat <ExternalLinkIcon />
-              </a>
-            )}
-          </div>
-        </div>
-      )}
+          {/* External links */}
+          {hasExternal && (
+            <div className="border-t border-white/5 pt-3">
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-2">Find Your Seat</p>
+              <div className="flex flex-wrap gap-2">
+                {externalLinks!.seatplan && (
+                  <a
+                    href={externalLinks!.seatplan}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors"
+                  >
+                    SeatPlan <ExternalLinkIcon />
+                  </a>
+                )}
+                {externalLinks!.aviewfrommyseat && (
+                  <a
+                    href={externalLinks!.aviewfrommyseat}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors"
+                  >
+                    A View From My Seat <ExternalLinkIcon />
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
 
-      {/* Methodology note */}
-      <p className="text-[9px] text-gray-600 mt-3 leading-relaxed">
-        Venue ratings based on audience reviews from SeatPlan, A View From My Seat, and community feedback.
-      </p>
+          {/* Methodology note */}
+          <p className="text-[9px] text-gray-600 mt-3 leading-relaxed">
+            Venue ratings based on audience reviews from SeatPlan, A View From My Seat, and community feedback.
+          </p>
+        </>
+      )}
     </section>
   );
 }
