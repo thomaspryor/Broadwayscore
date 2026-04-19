@@ -15,7 +15,11 @@ const { getMarketPool } = require('./lib/venue-classification');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
-const shows = data.shows || data;
+const allShows = data.shows || data;
+
+// Exempt Express E2E test fixtures — they intentionally clone real titles.
+const isTestFixture = (s) => /(^|-)express-test(-|$)/.test(s.id || '');
+const shows = allShows.filter((s) => !isTestFixture(s));
 
 const duplicates = [];
 
