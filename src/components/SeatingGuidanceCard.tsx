@@ -1,7 +1,6 @@
 'use client';
 
 import type { SeatingSection } from '@/lib/data-types';
-import { featureFlags } from '@/config/feature-flags';
 import SeatingGuidance from './SeatingGuidance';
 
 interface SeatingGuidanceCardProps {
@@ -22,10 +21,6 @@ const VARIANT_CONFIG = {
 } as const;
 
 export default function SeatingGuidanceCard({ sections, bestSeats, variant = 'theater' }: SeatingGuidanceCardProps) {
-  // On demo, TheaterScorecardCard hosts the seat guidance inline — don't render twice.
-  // On prod (where TheaterScorecardCard is hidden), this card is the only surface.
-  if (featureFlags.theaterScorecard) return null;
-
   if (!sections || !sections.length) return null;
 
   const config = VARIANT_CONFIG[variant];

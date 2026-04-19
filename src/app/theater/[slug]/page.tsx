@@ -273,7 +273,13 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
             </Link>
           )}
 
-          {/* Theater Scorecard (demo only — 5-dim ratings + seat guidance unified) */}
+          {/* Seating Chart Scorecard — above Theater Scorecard */}
+          <SeatingGuidanceCard
+            sections={theater.structuredTips?.seating?.sections}
+            bestSeats={theater.structuredTips?.seating?.bestSeats}
+          />
+
+          {/* Theater Scorecard — 5-dim venue ratings */}
           {theater.venueScores && (
             <TheaterScorecardCard
               venueScores={theater.venueScores}
@@ -281,16 +287,8 @@ export default function TheaterPage({ params }: { params: { slug: string } }) {
               externalLinks={theater.externalLinks}
               theaterName={theater.name}
               theaterSlug={theater.slug}
-              seatingSections={theater.structuredTips?.seating?.sections}
-              bestSeats={theater.structuredTips?.seating?.bestSeats}
             />
           )}
-
-          {/* Seating guidance (prod standalone — self-gates when scorecard is hidden) */}
-          <SeatingGuidanceCard
-            sections={theater.structuredTips?.seating?.sections}
-            bestSeats={theater.structuredTips?.seating?.bestSeats}
-          />
 
           {/* Tips */}
           {theater.structuredTips ? (
