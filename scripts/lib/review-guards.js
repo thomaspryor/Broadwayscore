@@ -1118,7 +1118,16 @@ function isIncludableForRebuild(data) {
   }
 
   // Invalid content tier: rebuild's drift-checker excludes this at line 3158.
-  if (data.contentTier === 'invalid') return false;
+  // Respect manual clears — if wrongProduction was the reason and has since been cleared,
+  // the contentTier=invalid flag is stale and should not block inclusion.
+  if (data.contentTier === 'invalid') {
+    const wpCleared =
+      data.wrongProductionManualClear === true ||
+      data.wrongProductionOverride === true ||
+      data.humanReviewedWrongProduction === false;
+    if (!wpCleared) return false;
+    // Cleared — fall through and let text/signal check decide
+  }
 
   // fullTextWrongAuthor: rebuild deletes fullText in memory and falls back to excerpts only.
   // On disk the fullText still exists, so we must check excerpt fields directly.
