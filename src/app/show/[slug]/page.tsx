@@ -55,7 +55,6 @@ import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
 import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
-import SeatingOneLiner from '@/components/SeatingOneLiner';
 import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import { getSocialPulse } from '@/lib/data-social-pulse';
 
@@ -432,11 +431,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   ) : (
                     <>
                       <div><Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 font-medium hover:text-brand transition-colors">{show.venue}</Link></div>
-                      <SeatingOneLiner
-                        sections={theater?.structuredTips?.seating?.sections}
-                        venueSlug={slugify(show.venue)}
-                        venueName={show.venue}
-                      />
                     </>
                   )}
                   {show.runtime && <div>{show.runtime}</div>}
@@ -636,15 +630,6 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   </>
                 ) : null}
               </p>
-
-              {/* Seat one-liner (Broadway only; self-gates when no sweet-spot) */}
-              {!isWestEnd && !isOffBroadway && (
-                <SeatingOneLiner
-                  sections={theater?.structuredTips?.seating?.sections}
-                  venueSlug={slugify(show.venue)}
-                  venueName={show.venue}
-                />
-              )}
 
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
