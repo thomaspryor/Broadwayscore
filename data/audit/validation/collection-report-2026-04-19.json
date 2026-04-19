@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-04-19T06:51:54.985Z",
+  "runDate": "2026-04-19T09:22:50.809Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "proof-2026,avenue-q-west-end-2026,please-please-me-west-end-2026,aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026,agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026,paradise-club-presents-salvage-city-supper-club-off-broadway-2026,milk-and-honey-amt-theater-off-broadway-2026",
+    "showFilter": "fallen-angels-2026,hamlet-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 3,
+    "processed": 6,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "72.7%"
+    "successRate": "85.7%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 1,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 8,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 3,
     "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 2,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 11,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -51,50 +51,38 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026/nytimes--houman-barekat.json",
-    "proof-2026/ew--unknown.json",
-    "avenue-q-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "avenue-q-west-end-2026/financialtimes--unknown.json",
-    "avenue-q-west-end-2026/london-theatre--unknown.json",
-    "avenue-q-west-end-2026/londontheatre1--unknown.json",
-    "avenue-q-west-end-2026/radio-times--joanna-magill.json",
-    "avenue-q-west-end-2026/whatsonstage--unknown.json"
+    "hamlet-off-broadway-2026/nytg--amelia-merrill.json",
+    "hamlet-off-broadway-2026/vulture--unknown.json",
+    "fallen-angels-2026/playbill--unknown.json",
+    "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
+    "hamlet-off-broadway-2026/front-row-center--vahni-kurra.json",
+    "hamlet-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
-    "avenue-q-west-end-2026/british-theatre--unknown.json",
-    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-    "avenue-q-west-end-2026/the-recs--unknown.json"
+    "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "proof-2026/ew--unknown.json",
-      "avenue-q-west-end-2026/all-that-dazzles-uk--unknown.json",
-      "avenue-q-west-end-2026/financialtimes--unknown.json",
-      "avenue-q-west-end-2026/london-theatre--unknown.json",
-      "avenue-q-west-end-2026/londontheatre1--unknown.json",
-      "avenue-q-west-end-2026/radio-times--joanna-magill.json",
-      "avenue-q-west-end-2026/whatsonstage--unknown.json"
+      "hamlet-off-broadway-2026/nytg--amelia-merrill.json",
+      "fallen-angels-2026/playbill--unknown.json",
+      "hamlet-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026/nytimes--houman-barekat.json"
+      "hamlet-off-broadway-2026/front-row-center--vahni-kurra.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "hamlet-off-broadway-2026/vulture--unknown.json"
+    ],
     "archiveToday": [
-      "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json"
+    ]
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
