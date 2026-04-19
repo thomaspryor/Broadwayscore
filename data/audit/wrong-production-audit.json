@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-19T23:01:44.904Z",
+  "timestamp": "2026-04-19T23:45:22.407Z",
   "stats": {
-    "totalReviews": 35567,
-    "alreadyFlagged": 15878,
+    "totalReviews": 35568,
+    "alreadyFlagged": 15879,
     "dateGuardCatches": 91,
     "directorMismatch": 826,
-    "tvFilmSignals": 3165,
+    "tvFilmSignals": 3166,
     "londonSignals": 1015,
     "offBroadwaySignals": 886,
     "yearMismatch": 71,
@@ -7361,6 +7361,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold pinter\" from butley-1972"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-2014",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/Cabaret-330703.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"episode 1\""
         }
       ]
     },
