@@ -97,7 +97,7 @@ jobs:
 
       - name: Set ORCHESTRATOR_PAUSED (blocks cron-triggered orchestrators for Express duration)
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           # Set a distinct value so we can safely clear it without clobbering a manual pause.
           # The orchestrator checks for any non-empty value (including "true" for manual pauses).
@@ -392,7 +392,7 @@ jobs:
       - name: Clear ORCHESTRATOR_PAUSED
         if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED \
             --jq '.value' 2>/dev/null || echo "")
