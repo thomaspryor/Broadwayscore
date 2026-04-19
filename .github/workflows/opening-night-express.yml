@@ -106,7 +106,11 @@ jobs:
         run: |
           # JSON lease body so the orchestrator can auto-expire a hung Express run after 90min.
           # Manual pauses ("true") are NOT overwritten here — we only set if cleared OR already ours.
-          CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null || echo "")
+          # NOTE: `gh api ... --jq '.value' 2>/dev/null || echo ""` is buggy — when the variable
+          # doesn't exist (404), gh prints the error JSON to stdout and `||echo ""` runs INSIDE the
+          # subshell, appending instead of replacing. Capture exit code then reset CURRENT="" on
+          # failure so a missing variable correctly classifies as 'empty' instead of 'other'.
+          CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null) || CURRENT=""
           IS_EXPRESS=$(CURRENT="$CURRENT" node -e "
             const raw = process.env.CURRENT || '';
             if (!raw) { console.log('empty'); process.exit(0); }
@@ -428,8 +432,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
+          # See "Set ORCHESTRATOR_PAUSED" for why we capture exit code instead of `|| echo ""`
+          # inside the subshell (404 error body would otherwise leak through).
           CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED \
-            --jq '.value' 2>/dev/null || echo "")
+            --jq '.value' 2>/dev/null) || CURRENT=""
           DECISION=$(CURRENT="$CURRENT" node -e "
             const raw = process.env.CURRENT || '';
             if (!raw) { console.log('empty'); process.exit(0); }
